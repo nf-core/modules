@@ -1,20 +1,20 @@
 # ![nf-core/modules](docs/images/nfcore-modules_logo.png)
 
-A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl2.htmlhttps://www.nextflow.io/docs/edge/dsl2.html) module files containing tool-specific process definitions and associated documentation.
-
 > DSL2 IS AN EXPERIMENTAL FEATURE UNDER DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT OF THIS REPOSITORY MAY CHANGE IN THE NEAR FUTURE!
 
+A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl2.htmlhttps://www.nextflow.io/docs/edge/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
+
 ## Table of contents
-* [Using an existing module](#using-an-existing-module)
+* [Using existing modules](#using-existing-modules)
     * [Configuration and parameters](#configuration-and-parameters)
     * [Offline usage](#offline-usage)
-* [Adding a new module](#adding-a-new-module)
+* [Adding a new module file](#adding-a-new-module-file)
     * [Testing](#testing)
     * [Documentation](#documentation)
     * [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 * [Help](#help)
 
-## Using an existing module
+## Using existing modules
 
 The Nextflow [`include`](https://www.nextflow.io/docs/edge/dsl2.html#modules-include) statement can be used within your pipelines in order to load module files that you have available locally.
 
@@ -22,7 +22,9 @@ You should be able to get a good idea as to how other people are using module fi
 
 ### Configuration and parameters
 
-The module files hosted in this repository define a set of processes for software tools such as `fastc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
+The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
+
+> The definition and standards for module files is still under discussion amongst the community but hopefully, a description should be added here soon!
 
 ### Offline usage
 
@@ -43,9 +45,9 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 
 ## Adding a new module file
 
-If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules`](https://github.com/nf-core/modules/tree/master/nf) for examples.
+If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) for examples.
 
-The definition and standards for module files is still under discussion amongst the community but hopefully, a description should be added here soon!
+> The definition and standards for module files is still under discussion amongst the community but hopefully, a description should be added here soon!
 
 ### Testing
 
@@ -53,13 +55,13 @@ If you want to add a new module config file to `nf-core/modules` please test tha
 
 ### Documentation
 
-You will have to create a [Markdown document](https://www.markdownguide.org/getting-started/) outlining the details required to use the module file and extensive links to documentation for the tool(s) used in the module file. You can use the provided [`template.md`](docs/template.md) to guide you as to how to do this appropriately.
+You will have to create a [Markdown document](https://www.markdownguide.org/getting-started/) outlining the details required to use the module file and extensive links to documentation for the tool(s) used in the module file. You can use the provided [`docs/template.md`](docs/template.md) to guide you as to how to do this appropriately.
 
 See [`nf-core/modules/docs`](https://github.com/nf-core/modules/tree/master/docs) for examples.
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf/`](https://github.com/nf-core/modules/tree/master/nf) directory, and the documentation file to the [`docs/`](https://github.com/nf-core/modules/tree/master/docs) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory, and the documentation file to the [`nf-core/modules/docs`](https://github.com/nf-core/modules/tree/master/docs) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on `nf-core/modules` GitHub repo with the appropriate information.
 
