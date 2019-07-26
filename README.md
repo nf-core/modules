@@ -55,13 +55,11 @@ If you want to add a new module config file to `nf-core/modules` please test tha
 
 ### Documentation
 
-You will have to create a [Markdown document](https://www.markdownguide.org/getting-started/) outlining the details required to use the module file and extensive links to documentation for the tool(s) used in the module file. You can use the provided [`docs/template.md`](docs/template.md) to guide you as to how to do this appropriately.
-
-See [`nf-core/modules/docs`](https://github.com/nf-core/modules/tree/master/docs) for examples.
+Please add some documentation to the top of the module file in the form of native Nextflow comments. This has to be specified in a particular format as you will be able to see from other examples in the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory.
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory, and the documentation file to the [`nf-core/modules/docs`](https://github.com/nf-core/modules/tree/master/docs) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on `nf-core/modules` GitHub repo with the appropriate information.
 
