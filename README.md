@@ -24,7 +24,7 @@ You should be able to get a good idea as to how other people are using module fi
 
 The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
 
-> The definition and standards for module files is still under discussion amongst the community but hopefully, a description should be added here soon!
+> The definition and standards for module files are still under discussion amongst the community but hopefully, a description should be added here soon!
 
 ### Offline usage
 
@@ -47,7 +47,7 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 
 If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) for examples.
 
-> The definition and standards for module files is still under discussion amongst the community but hopefully, a description should be added here soon!
+> The definition and standards for module files are still under discussion amongst the community but hopefully, a description should be added here soon!
 
 ### Testing
 
