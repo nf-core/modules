@@ -67,4 +67,4 @@ We will be notified automatically when you have created your pull request, and p
 
 ## Help
 
-If you have any questions or issues please send us a message on [Slack](https://nf-core-invite.herokuapp.com/).
+If you have any questions or issues please send us a message on [Slack](https://nf-co.re/join/slack).
