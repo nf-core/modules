@@ -15,4 +15,4 @@ jobs:
 
     - name: FastQC
       path: tools/fastqc/*
-      uses: ./tools/fastqc/test-action.yml
+      run: nextflow run ./tools/fastqc/test/
