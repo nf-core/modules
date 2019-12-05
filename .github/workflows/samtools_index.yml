@@ -1,0 +1,18 @@
+on:
+  push:
+    paths: tools/samtools/sort*
+  pull_request:
+    paths: tools/samtools/sort*
+
+jobs:
+  run_multiqc:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the repository
+    - uses: actions/checkout@v1
+
+    # Test the module
+    - name: samtools sort
+      run: nextflow run ./tools/samtools/sort/test/

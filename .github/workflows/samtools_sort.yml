@@ -1,0 +1,18 @@
+on:
+  push:
+    paths: tools/samtools/index*
+  pull_request:
+    paths: tools/samtools/index*
+
+jobs:
+  run_multiqc:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the repository
+    - uses: actions/checkout@v1
+
+    # Test the module
+    - name: samtools index
+      run: nextflow run ./tools/samtools/index/test/
