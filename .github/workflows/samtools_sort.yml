@@ -1,8 +1,9 @@
+name: samtools sort
 on:
   push:
-    paths: tools/samtools/index*
+    paths: tools/samtools/sort*
   pull_request:
-    paths: tools/samtools/index*
+    paths: tools/samtools/sort*
 
 jobs:
   run_multiqc:
@@ -14,5 +15,4 @@ jobs:
     - uses: actions/checkout@v1
 
     # Test the module
-    - name: samtools index
-      run: nextflow run ./tools/samtools/index/test/
+    - run: nextflow run ./tools/samtools/sort/test/

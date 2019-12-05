@@ -1,0 +1,1 @@
+/* A mini pipeline to test FastQC here */

@@ -1,9 +1,9 @@
-name: samtools index
+name: Trim Galore!
 on:
   push:
-    paths: tools/samtools/index*
+    paths: tools/trim_galore/*
   pull_request:
-    paths: tools/samtools/index*
+    paths: tools/trim_galore/*
 
 jobs:
   run_multiqc:
@@ -15,4 +15,4 @@ jobs:
     - uses: actions/checkout@v1
 
     # Test the module
-    - run: nextflow run ./tools/samtools/index/test/
+    - run: nextflow run ./tools/trim_galore/test/
