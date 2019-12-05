@@ -14,13 +14,13 @@ jobs:
     # Test each module
 
     - name: FastQC
-      path: tools/fastqc/*
+      paths: tools/fastqc/*
       run: nextflow run ./tools/fastqc/test/
 
     - name: samtools sort
-      path: tools/samtoosl/sort*
+      paths: tools/samtoosl/sort*
       run: nextflow run ./tools/samtools/sort/test/
 
     - name: samtools index
-      path: tools/samtoosl/index*
+      paths: tools/samtoosl/index*
       run: nextflow run ./tools/samtools/index/test/
