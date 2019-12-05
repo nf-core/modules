@@ -19,4 +19,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./tools/samtools/sort/test/
+    - run: nextflow run ./tools/samtools/sort/test/ -ansi-log false
