@@ -19,4 +19,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./tools/trim_galore/test/
+    - run: nextflow run ./tools/trim_galore/test/ -ansi-log false
