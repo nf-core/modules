@@ -1,15 +1,15 @@
 process fastqc {
-    tag "$sample_id"
+    tag "FastQC - $sample_id"
     publishDir "${params.outdir}/fastqc", mode: 'copy',
         saveAs: {filename -> filename.indexOf(".zip") > 0 ? "zips/$filename" : "$filename"}
 
-    container: 'quay.io/biocontainers/fastqc:0.11.8--2'
+    container 'quay.io/biocontainers/fastqc:0.11.8--2'
 
     input:
-    set val(sample_id), file(reads)
+    tuple sample_id, path(reads)
 
     output:
-    file "*_fastqc.{zip,html}"
+    path "*_fastqc.{zip,html}"
 
     script:
     """

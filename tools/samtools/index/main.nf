@@ -1,13 +1,13 @@
 process samtools_index {
     tag "${bam.baseName}"
 
-    container: 'quay.io/biocontainers/samtools:1.9--h10a08f8_12'
+    container 'quay.io/biocontainers/samtools:1.9--h10a08f8_12'
 
     input:
-    set file(bam)
+    path(bam)
 
     output:
-    file "*.sorted.bam"
+    path "*.sorted.bam"
 
     script:
     def suff_mem = ("${(task.memory.toBytes() - 6000000000) / task.cpus}" > 2000000000) ? 'true' : 'false'

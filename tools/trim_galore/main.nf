@@ -7,15 +7,15 @@ process fastqc {
             else filename
         }
 
-    container: 'quay.io/biocontainers/trim-galore:0.6.5--0'
+    container 'quay.io/biocontainers/trim-galore:0.6.5--0'
 
     input:
-    set val(sample_id), file(reads)
+    tuple sample_id, path(reads)
 
     output:
-    set val(name), file("*fq.gz")
-    file "*trimming_report.txt"
-    file "*_fastqc.{zip,html}"
+    tuple name, path("*fq.gz")
+    path "*trimming_report.txt"
+    path "*_fastqc.{zip,html}"
 
     script:
     c_r1 = clip_r1 > 0 ? "--clip_r1 ${clip_r1}" : ''
