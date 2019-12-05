@@ -16,3 +16,11 @@ jobs:
     - name: FastQC
       path: tools/fastqc/*
       run: nextflow run ./tools/fastqc/test/
+
+    - name: samtools sort
+      path: tools/samtoosl/sort*
+      run: nextflow run ./tools/samtools/sort/test/
+
+    - name: samtools index
+      path: tools/samtoosl/index*
+      run: nextflow run ./tools/samtools/index/test/
