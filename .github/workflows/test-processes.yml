@@ -1,0 +1,18 @@
+name: "nf-core/modules CI"
+on: [push, pull_request]
+
+jobs:
+  run_multiqc:
+    name: Test modules
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the repository
+    - uses: actions/checkout@v1
+
+    # Test each module
+
+    - name: FastQC
+      path: tools/fastqc/*
+      uses: ./tools/fastqc/test-action.yml
