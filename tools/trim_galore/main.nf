@@ -1,4 +1,4 @@
-process fastqc {
+process trim_galore {
     tag "$sample_id"
     publishDir "${params.outdir}/trim_galore", mode: 'copy',
         saveAs: {filename ->
