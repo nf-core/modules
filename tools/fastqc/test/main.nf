@@ -12,7 +12,7 @@ readPaths = [
 ]
 Channel
   .from(readPaths)
-  .map { row -> [ row[0], [row[1][0]]] }
+  .map { row -> [ row[0], [ file(row[1][0]) ] ] }
   .set { ch_read_files }
 
 // Run the workflow
