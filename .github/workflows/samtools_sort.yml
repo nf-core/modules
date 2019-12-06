@@ -1,0 +1,23 @@
+name: samtools sort
+on:
+  push: {}
+  pull_request:
+    paths: tools/samtools/sort*
+
+jobs:
+  run_ci_test:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the repository
+    - uses: actions/checkout@v1
+      submodules: true
+
+    - name: Install Nextflow
+      run: |
+        wget -qO- get.nextflow.io | bash
+        sudo mv nextflow /usr/local/bin/
+
+    # Test the module
+    - run: nextflow run ./tools/samtools/sort/test/ -ansi-log false
