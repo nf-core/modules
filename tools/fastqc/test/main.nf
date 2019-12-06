@@ -5,9 +5,10 @@ include '../main.nf' params(params)
 
 // Define input channels
 readPaths = [
-  ['SRR389222_sub1', ['https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz']],
-  ['SRR389222_sub2', ['https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub2.fastq.gz']],
-  ['SRR389222_sub3', ['https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub3.fastq.gz']]
+  ['SRR4238351', ['../../../test-datasets/tools/fastqc/input/SRR4238351_subsamp.fastq.gz']],
+  ['SRR4238355', ['../../../test-datasets/tools/fastqc/input/SRR4238355_subsamp.fastq.gz']],
+  ['SRR4238359', ['../../../test-datasets/tools/fastqc/input/SRR4238359_subsamp.fastq.gz']],
+  ['SRR4238379', ['../../../test-datasets/tools/fastqc/input/SRR4238379_subsamp.fastq.gz']]
 ]
 Channel
   .from(readPaths)
