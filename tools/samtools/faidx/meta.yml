@@ -1,0 +1,27 @@
+name: samtools faidx
+description: index a fasta file
+keywords:
+    - faidx
+tools:
+    - samtools:
+        description: |
+            SAMtools is a set of utilities for interacting with and post-processing
+            short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+            These files are generated as output by short read aligners like BWA.
+        homepage: http://www.htslib.org/
+        documentation: hhttp://www.htslib.org/doc/samtools.html
+        doi: 10.1093/bioinformatics/btp352
+input:
+    -
+        - input:
+            type: file
+            description: Input fasta file
+            pattern: *.{fasta,fa}
+output:
+    -
+        - faidx:
+            type: file
+            description: samtools index fasta file
+            pattern: *.fasta.fai
+authors:
+    - @maxulysse
