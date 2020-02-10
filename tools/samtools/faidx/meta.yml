@@ -1,7 +1,7 @@
-name: samtools index
-description: index a BAM or CRAM file
+name: samtools faidx
+description: index a fasta file
 keywords:
-    - index
+    - faidx
 tools:
     - samtools:
         description: |
@@ -15,13 +15,13 @@ input:
     -
         - input:
             type: file
-            description: Input BAM or CRAM file
-            pattern: *.{bam,cram}
+            description: Input fasta file
+            pattern: *.{fasta,fa}
 output:
     -
-        - index:
+        - faidx:
             type: file
-            description: BAM or CRAM index file
-            pattern: *.{bai}
+            description: samtools index fasta file
+            pattern: *.fasta.fai
 authors:
-    - @ewels
+    - @maxulysse
