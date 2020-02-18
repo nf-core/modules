@@ -8,11 +8,10 @@ package:
 build:
     number: 0
     noarch: generic
-    script: mkdir $PREFIX/nextflow && cp -R tools/{{ name | lower }} $PREFIX/nextflow
+    script: mkdir $PREFIX/nextflow && cp -R . $PREFIX/nextflow/{{ name | lower }}
 
 source:
-    url:
-        - https://github.com/grst/modules/archive/master.zip 
+    path: .
 
 about: 
     home: https://github.com/nf-core/modules/
