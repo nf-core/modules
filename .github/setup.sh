@@ -9,6 +9,8 @@ set -e
 
 set -u
 
+source .github/common.sh
+
 cat >> $BASH_ENV <<EOF
 
 # Set path
