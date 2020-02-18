@@ -4,12 +4,11 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: setup
-      run: .github/setup.sh
-    - name: build
-      run: bioconda-utils build tools config.yml
+      - uses: actions/checkout@v2
+      - name: setup
+        run: source .github/setup.sh
+      - name: build
+        run: bioconda-utils build tools config.yml
