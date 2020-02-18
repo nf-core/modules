@@ -13,6 +13,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: actions/checkout@v2
       - name: setup
-        run: source .github/setup.sh
+        run: .github/setup.sh
       - name: build
-        run: bioconda-utils build tools config.yml
+        run: .github/build.sh
