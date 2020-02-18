@@ -67,8 +67,8 @@ if ! type bioconda-utils 2> /dev/null || [[ $BOOTSTRAP == "true" ]]; then
     rm miniconda.sh
 fi
 
-# Fetch the master branch for comparison (this can fail locally, if git remote 
-# is configured via ssh and this is executed in a container).
-if [[ $BOOTSTRAP != "true" ]]; then
-    git fetch origin +master:master || true
-fi
+# # Fetch the master branch for comparison (this can fail locally, if git remote 
+# # is configured via ssh and this is executed in a container).
+# if [[ $BOOTSTRAP != "true" ]]; then
+#     git fetch origin +master:master || true
+# fi
