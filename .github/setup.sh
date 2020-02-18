@@ -6,6 +6,7 @@ set -e
 [[ -z $BOOTSTRAP ]] && BOOTSTRAP=false
 [[ -z $BASH_ENV ]] && BASH_ENV=`mktemp`
 [[ -z $USE_DOCKER ]] && USE_DOCKER=true
+[[ -z $BASHRC ]] && BASHRC=$HOME/.bashrc
 
 set -u
 
@@ -65,6 +66,8 @@ if ! type bioconda-utils 2> /dev/null || [[ $BOOTSTRAP == "true" ]]; then
     # step 5: cleanup
     conda clean -y --all
     rm miniconda.sh
+
+    cat $BASH_ENV >> $BASHRC
 fi
 
 # # Fetch the master branch for comparison (this can fail locally, if git remote 
