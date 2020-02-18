@@ -15,5 +15,5 @@ jobs:
       - name: setup
         run: .github/setup.sh
       - name: build
-        shell: bash -l ${0}
+        shell: bash -l {0}
         run: .github/build.sh
