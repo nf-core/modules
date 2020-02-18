@@ -1,0 +1,45 @@
+{% set name = 'nf-bwa-index' %}
+{% set version = "0.0.1" %}
+
+package:
+    name: {{ name|lower }}
+    version: {{ version }}
+ 
+build:
+    number: 0
+    noarch: nextflow
+    script: mkdir $PREFIX/nextflow && cp -R tools/{{ name }} $PREFIX/nextflow
+
+source:
+    url:
+        - https://github.com/grst/modules/archive/master.zip 
+
+about: 
+    home: https://github.com/nf-core/modules/
+    license: MIT
+    summary: create indexes for BWA from a fasta file
+
+extra: 
+    keywords:
+        - index
+    tools:
+        - bwa:
+            description: |
+                BWA is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
+            homepage: http://bio-bwa.sourceforge.net/
+            documentation: http://www.htslib.org/doc/samtools.html
+            arxiv: arXiv:1303.3997
+    input:
+        -
+            - input:
+                type: file
+                description: Input fasta file
+                pattern: *.{fasta,fa}
+    output:
+        -
+            - index:
+                type: file
+                description: bwa indexes file
+                pattern: *.{fasta,fa}.{amb,ann,bwt,pac,sa}
+    authors:
+        - @maxulysse
