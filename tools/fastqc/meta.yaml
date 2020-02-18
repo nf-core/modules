@@ -1,32 +1,52 @@
-name: FastQC
-description: Run FastQC on sequenced reads
-keywords:
-    - Quality Control
-    - QC
-    - Adapters
-tools:
-    - fastqc:
-        description: |
-            FastQC gives general quality metrics about your reads.
-            It provides information about the quality score distribution
-            across your reads, the per base sequence content (%A/C/G/T).
-            You get information about adapter contamination and other
-            overrepresented sequences.
-        homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-        documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
-input:
-    -
-        - sample_id:
-            type: string
-            description: Sample identifier
-        - reads:
-            type: file
-            description: Input FastQ file, or pair of files
-output:
-    -
-        - report:
-            type: file
-            description: FastQC report
-            pattern: *_fastqc.{zip,html}
-authors:
-    - @ewels
+{% set name = 'fastqc' %}
+{% set version = "0.0.1" %}
+
+package:
+    name: nf-{{ name|lower }}
+    version: {{ version }}
+ 
+build:
+    number: 0
+    noarch: generic
+    script: mkdir $PREFIX/nextflow && cp -R tools/{{ name | lower }} $PREFIX/nextflow
+
+source:
+    url:
+        - https://github.com/grst/modules/archive/master.zip 
+
+about: 
+    home: https://github.com/nf-core/modules/
+    license: MIT
+    summary: Run FastQC on sequenced reads
+
+extra: 
+    keywords:
+        - Quality Control
+        - QC
+        - Adapters
+    tools:
+        - fastqc:
+            description: |
+                FastQC gives general quality metrics about your reads.
+                It provides information about the quality score distribution
+                across your reads, the per base sequence content (%A/C/G/T).
+                You get information about adapter contamination and other
+                overrepresented sequences.
+            homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+            documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+    input:
+        -
+            - sample_id:
+                type: string
+                description: Sample identifier
+            - reads:
+                type: file
+                description: Input FastQ file, or pair of files
+    output:
+        -
+            - report:
+                type: file
+                description: FastQC report
+                pattern: "*_fastqc.{zip,html}"
+    authors:
+        - ewels

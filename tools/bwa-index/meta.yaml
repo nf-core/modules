@@ -8,7 +8,7 @@ package:
 build:
     number: 0
     noarch: generic
-    script: mkdir $PREFIX/nextflow && cp -R tools/{{ name }} $PREFIX/nextflow
+    script: mkdir $PREFIX/nextflow && cp -R tools/{{ name | lower }} $PREFIX/nextflow
 
 source:
     url:
