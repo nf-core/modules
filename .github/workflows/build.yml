@@ -10,10 +10,10 @@ jobs:
       - uses: goanpeca/setup-miniconda@v1
         with:
           auto-update-conda: true
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.7
       - uses: actions/checkout@v2
       - name: setup
         run: .github/setup.sh
       - name: build
-        shell: bash -l {1}
+        shell: bash -l {0}
         run: .github/build.sh
