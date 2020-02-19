@@ -14,6 +14,9 @@ if ! type bioconda-utils 2> /dev/null || [[ $BOOTSTRAP == "true" ]]; then
     conda config --system --add channels conda-forge
 
     # install bioconda-utils
+    # fix temporary problem with bioconda-utlis not being compatible with the 
+    # latest version of gitdb
+    additional_packages="gitdb<3"
     conda install -y $additional_packages --file https://raw.githubusercontent.com/bioconda/bioconda-utils/$BIOCONDA_UTILS_TAG/bioconda_utils/bioconda_utils-requirements.txt
     pip install git+https://github.com/bioconda/bioconda-utils.git@$BIOCONDA_UTILS_TAG
 
