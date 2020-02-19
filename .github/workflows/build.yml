@@ -18,8 +18,8 @@ jobs:
       - name: lint
         shell: bash -l {0}
         run: |
-          bioconda-utils lint tools config.yml --exclude missing_hash missing_test
+          bioconda-utils lint tools config.yml --exclude missing_hash missing_tests --git-range master HEAD
       - name: build
         shell: bash -l {0}
         run: |
-          bioconda-utils build tools config.yml
+          bioconda-utils build tools config.yml --git-range master HEAD
