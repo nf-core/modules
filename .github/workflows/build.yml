@@ -7,11 +7,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
+      # - name: Cache setup
+      #   uses: actions/cache@v1
+      #   env:
+      #     cache-name: cache-bioconda-utils
+      #   with:
+      #     path: ~/miniconda
+      #   key: ${{ env.cache-name }}-${{ hashFiles('.github/setup.sh') }}
       - uses: goanpeca/setup-miniconda@v1
         with:
           auto-update-conda: true
           python-version: 3.7
-      - uses: actions/checkout@v2
       - name: setup
         shell: bash -l {0}
         run: .github/setup.sh
