@@ -15,6 +15,11 @@ jobs:
       - name: setup
         shell: bash -l {0}
         run: .github/setup.sh
+      - name: lint
+        shell: bash -l {0}
+        run: |
+          bioconda-utils lint tools config.yml --exclude missing_hash missing_test
       - name: build
         shell: bash -l {0}
-        run: .github/build.sh
+        run: |
+          bioconda-utils build tools config.yml
