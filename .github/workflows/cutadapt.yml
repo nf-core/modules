@@ -10,13 +10,8 @@ jobs:
 
     steps:
       # Check out the repository
-      - uses: actions/checkout@v2
-      - name: Checkout submodules
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      - uses: actions/checkout@v1
+        submodules: true
 
       - name: Install Nextflow
         run: |
@@ -24,4 +19,4 @@ jobs:
           sudo mv nextflow /usr/local/bin/
 
       # Test the module
-      - run: nextflow run ./tools/cutadapt/sort/test_paired/ -ansi-log false
+      - run: nextflow run ./tools/cutadapt/sort/test_paired/main.nf -ansi-log false
