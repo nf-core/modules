@@ -23,7 +23,12 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      # Test the module
-      - run: |
+      - name: Test module with paired-end data
+        run: |
           cd tools/cutadapt/test_paired/
+          nextflow run . -ansi-log false
+
+      - name: Test module with single-end data
+        run: |
+          cd tools/cutadapt/test_single/
           nextflow run . -ansi-log false
