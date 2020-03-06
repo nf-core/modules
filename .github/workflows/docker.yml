@@ -20,26 +20,33 @@ jobs:
       # Annoyingly, matrix can't take dynamic variables
       - name: Find changed tools
         run: |
-          TOOLS=$( git diff --name-only HEAD~ | egrep -o 'tools\/[^\/]+\/' | sort | uniq | awk NF )
-          echo "Tools that appear to have been updated:"
-          echo $TOOLS
+          TOOLS=$( git diff --name-only HEAD~ | egrep -o 'tools\/[^\/]+\/' | sort | uniq | awk NF | tr '\r\n' ' ' )
           # Save so that GitHub Actions can see this variable in the next step
           echo "::set-env name=TOOLS::$TOOLS"
+          echo "Tools that appear to have been updated:"
+          echo $TOOLS
+
 
       - name: Build images
         run: |
-          echo "Running the docker build"
-          echo $TOOLS
+          echo "Tools that appear to have been updated:"
+          echo -e $TOOLS
+          echo '-----'
+          for TOOL in $TOOLS; do
+            echo $TOOL
+          done;
+          echo '-----'
           for d in tools/*; do
-            echo "In directory $d"
             for TOOL in $TOOLS; do
-              echo "Tool is $TOOL"
+              echo "$d -- $TOOL"
               if echo $d/ | grep -q "$TOOL"; then
                 cd "$GITHUB_WORKSPACE/$d"
                 TOOLNAME=$(basename `pwd`)
-                IMGNAME=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${TOOLNAME,,}:$GITHUB_SHA
+                # IMGNAME=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${TOOLNAME,,}:$GITHUB_SHA
+                # TODO: How do we have a proper version tag here?
+                IMGNAME=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${TOOLNAME,,}:latest
                 echo "Image name is: $IMGNAME"
-                docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+                echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin docker.pkg.github.com
                 docker build -t $IMGNAME  .
                 docker push $IMGNAME
               fi;
