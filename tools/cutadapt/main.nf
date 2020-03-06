@@ -7,9 +7,12 @@ process cutadapt {
     tuple sample_id, file(input_forward_fq), file(input_reverse_fq)
 
     output:
-    tuple sample_id, file(output_forward_fq), file(output_reverse_fq)
+    tuple sample_id, file(forward_fq), file(reverse_fq)
 
     script:
+    forward_fq = "trimmed_forward.fastq"
+    reverse_fq = "trimmed_reverse.fastq"
+
     """
     cutadapt \
 			-j ${task.cpus} \
@@ -17,7 +20,7 @@ process cutadapt {
 			--minimum-length $params.cutadapt_min_length \
 			--pair-filter=any \
 			--output ${forward_fq} \
-			--paired-output ${reverse_fq} '$input_forward_fq' '$input_reverse_fq'
+			--paired-output ${reverse_fq} '${input_forward_fq}' '${input_reverse_fq}'
     
     cutadapt --version &> v_cutadapt.txt
     """
