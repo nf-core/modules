@@ -25,4 +25,6 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: cd tools/tcoffee/test/ | nextflow run . -ansi-log false
+    - run: |
+        cd tools/tcoffee/test/
+        nextflow run . -ansi-log false
