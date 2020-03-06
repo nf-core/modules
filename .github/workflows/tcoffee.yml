@@ -24,7 +24,5 @@ jobs:
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
-    ls -la test-datasets/tools/tcoffee/input/
-
     # Test the module
-    - run: cd tools/tcoffee/test/ | nextflow run . -ansi-log false
+    - run: cd tools/tcoffee/test/ | nextflow run ./tools/tcoffee/test/ -ansi-log false
