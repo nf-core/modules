@@ -19,6 +19,9 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
           ls -la test-datasets/tools/tcoffee/input/
+          echo "============"
+          rm ./test-datasets/tools/tcoffee/input/BBA0001.tfa
+          cp test-datasets/general/fasta/msa/BBA0001.tfa ./test-datasets/tools/tcoffee/input/
 
     - name: Install Nextflow
       run: |
