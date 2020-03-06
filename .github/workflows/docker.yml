@@ -19,20 +19,26 @@ jobs:
       # Find the tool wrappers that changed
       # Annoyingly, matrix can't take dynamic variables
       - name: Find changed tools
-        run: TOOLS=$( git diff --name-only $GITHUB_SHA | egrep -o 'tools\/[^\/]+\/' | sort | uniq | awk NF )
-
-
+        run: |
+          TOOLS=$( git diff --name-only HEAD~ | egrep -o 'tools\/[^\/]+\/' | sort | uniq | awk NF )
+          echo "Tools that appear to have been updated:"
+          echo $TOOLS
+          # Save so that GitHub Actions can see this variable in the next step
+          echo "::set-env name=TOOLS::$TOOLS"
 
       - name: Build images
         run: |
+          echo "Running the docker build"
+          echo $TOOLS
           for d in tools/*; do
+            echo "In directory $d"
             for TOOL in $TOOLS; do
-              $TOOL
+              echo "Tool is $TOOL"
               if echo $d/ | grep -q "$TOOL"; then
                 cd "$GITHUB_WORKSPACE/$d"
                 TOOLNAME=$(basename `pwd`)
                 IMGNAME=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${TOOLNAME,,}:$GITHUB_SHA
-                echo $IMGNAME
+                echo "Image name is: $IMGNAME"
                 docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
                 docker build -t $IMGNAME  .
                 docker push $IMGNAME
