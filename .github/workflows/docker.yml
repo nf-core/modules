@@ -1,0 +1,41 @@
+name: Build Docker Images
+on:
+  push:
+    # Only on pushes to master (after PRs are merged)
+    branches: master
+    # Only if a conda environment file or a docker build file has been updated
+    paths:
+      - tools/*/environment.yml
+      - tools/*/Dockerfile
+
+jobs:
+  build_docker:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out the repo
+      - uses: actions/checkout@v1
+
+      # Find the tool wrappers that changed
+      # Annoyingly, matrix can't take dynamic variables
+      - name: Find changed tools
+        run: TOOLS=$( git diff --name-only $GITHUB_SHA | egrep -o 'tools\/[^\/]+\/' | sort | uniq | awk NF )
+
+
+
+      - name: Build images
+        run: |
+          for d in tools/*; do
+            for TOOL in $TOOLS; do
+              $TOOL
+              if echo $d/ | grep -q "$TOOL"; then
+                cd "$GITHUB_WORKSPACE/$d"
+                TOOLNAME=$(basename `pwd`)
+                IMGNAME=docker.pkg.github.com/${GITHUB_REPOSITORY,,}/${TOOLNAME,,}:$GITHUB_SHA
+                echo $IMGNAME
+                docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+                docker build -t $IMGNAME  .
+                docker push $IMGNAME
+              fi;
+            done;
+          done;
