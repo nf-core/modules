@@ -29,16 +29,8 @@ jobs:
 
       - name: Build images
         run: |
-          echo "Tools that appear to have been updated:"
-          echo -e $TOOLS
-          echo '-----'
-          for TOOL in $TOOLS; do
-            echo $TOOL
-          done;
-          echo '-----'
           for d in tools/*; do
             for TOOL in $TOOLS; do
-              echo "$d -- $TOOL"
               if echo $d/ | grep -q "$TOOL"; then
                 cd "$GITHUB_WORKSPACE/$d"
                 TOOLNAME=$(basename `pwd`)
