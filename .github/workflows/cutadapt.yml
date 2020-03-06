@@ -1,0 +1,22 @@
+name: cutadapt
+on:
+  push: {}
+  pull_request:
+    paths: tools/cutadapt/*
+
+jobs:
+  run_ci_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v1
+        submodules: true
+
+      - name: Install Nextflow
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      # Test the module
+      - run: nextflow run ./tools/cutadapt/sort/test_paired/ -ansi-log false
