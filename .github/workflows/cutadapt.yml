@@ -24,4 +24,6 @@ jobs:
           sudo mv nextflow /usr/local/bin/
 
       # Test the module
-      - run: nextflow run ./tools/cutadapt/sort/test_paired/main.nf -ansi-log false
+      - run: |
+          cd tools/cutadapt/sort/test_paired/
+          nextflow run . -ansi-log false
