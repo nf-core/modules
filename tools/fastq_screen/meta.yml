@@ -1,5 +1,5 @@
 name: FastQ Screen
-description: Run FastQ Screen on sequenced reads
+description: Run FastQ Screen on sequenced reads for Species Identification
 keywords:
     - Quality Control
     - Species Screen
@@ -7,11 +7,9 @@ keywords:
 tools:
     - fastqc:
         description: |
-            FastQC gives general quality metrics about your reads.
-            It provides information about the quality score distribution
-            across your reads, the per base sequence content (%A/C/G/T).
-            You get information about adapter contamination and other
-            overrepresented sequences.
+            FastQ Screen allows you to screen a library of sequences in
+            FastQ format against a set of sequence databases so you can
+            see if the composition of the library matches with what you expect.
         homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/
         documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/_build/html/index.html
 input:
@@ -26,7 +24,8 @@ output:
     -
         - report:
             type: file
-            description: FastQC report
-            pattern: *_fastqc.{zip,html}
+            description: FastQ Screen report
+            pattern: *_screen.{txt,html,png}
+            optional_pattern: *_screen.bisulfite_orientation.png
 authors:
-    - @felix
+    - @FelixKrueger
