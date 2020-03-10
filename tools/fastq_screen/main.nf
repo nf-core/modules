@@ -9,7 +9,9 @@ process FASTQ_SCREEN {
     input:
 	    tuple val(name), path(reads)
 		val (outputdir)
-		val (fastq_screen_args)
+		// fastq_screen_args are best passed in to the workflow in the following manner:
+		// --fastq_screen_args="--subset 200000 --force"
+		val (fastq_screen_args)  
 		val (verbose)
 
 	output:
@@ -21,8 +23,9 @@ process FASTQ_SCREEN {
 		mode: "link", overwrite: true
 
     script:
-		fastq_screen_args = fastq_screen_args.replaceAll(/'/,"")
-
+		println(name)
+		println(reads)
+		println(outputdir)
 		if (verbose){
 			println ("[MODULE] FASTQ SCREEN ARGS: "+ fastq_screen_args)
 		}
