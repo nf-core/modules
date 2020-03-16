@@ -16,16 +16,16 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
 
 ## Terminology
 
-The DSLv2 features for Nextflow are new for everyone and not just beginners. We discussed some terminology terms to discuss things related to modules & subworkflows more appropriately:
+The features offered by Nextflow DSL 2 can be used in various ways depending on the granularity with which you would like to write pipelines. Please see the listing below for the hierarchy and associated terminology we have decided to use when referring to DSL 2 components:
 
-* *Module*: A `process`that can be used between different pipelines, which is atomic (i.e. can/should not be divided further).
-* *Subworkflow*: A combined set of modules, that combine a logical step in a pipeline using multiple modules together. Example: A preprocessing subworkflow for FastQ input, that could be (re-) used across multiple pipelines to QC input FastQ files.
-* *Workflow*: What DSLv1 users would consider a pipeline, e.g. from input to potentially complex output. Can either consist of individual modules, a large monolithic script as in DSLv1 or a combination of subworkflows (or any combination of these three). 
+* *Module*: A `process`that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`.
+* *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline.  For example, a sub-workflow to run multiple QC tools with FastQ files as input.
+* *Workflow*: What DSL 1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL 1, or by using a combination of DSL 2 individual modules and sub-workflows. 
 
 ## Organization of repository
 
-* Modules should end up in the subdirectory `tools`
-* Subworkflows should be kept with individual pipelines, and not end up here in the modules repository. 
+* This repository has been created to only host atomic module files that should be added to the `tools` sub-directory along with the required documentation, software and tests.
+* Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows.
 
 ## Using existing modules
 
