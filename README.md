@@ -18,8 +18,8 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
 
 The DSLv2 features for Nextflow are new for everyone and not just beginners. We discussed some terminology terms to discuss things related to modules & subworkflows more appropriately:
 
-* *Module*: An "atomic" module (one thing), e.g. a reusable process from an old pipeline that can be used between different pipelines
-* *Subworkflow*: A combined set of modules, that do e.g. preprocessing for a much bigger pipeline. A good example could be a QC subworkflow for FastQ input, that could be (re-) used across multiple pipelines
+* *Module*: A `process`that can be used between different pipelines, which is atomic (i.e. can/should not be divided further).
+* *Subworkflow*: A combined set of modules, that combine a logical step in a pipeline using multiple modules together. Example: A preprocessing subworkflow for FastQ input, that could be (re-) used across multiple pipelines to QC input FastQ files.
 * *Workflow*: What DSLv1 users would consider a pipeline, e.g. from input to potentially complex output. Can either consist of individual modules, a large monolithic script as in DSLv1 or a combination of subworkflows (or any combination of these three). 
 
 ## Organization of repository
