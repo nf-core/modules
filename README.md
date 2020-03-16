@@ -25,9 +25,7 @@ The DSLv2 features for Nextflow are new for everyone and not just beginners. We 
 ## Organization of repository
 
 * Modules should end up in the subdirectory `tools`
-* Subworkflows that are of general interest should end up in `subworkflows` IF they are useful for multiple pipelines (which will be clarified via Review)
-
-Individual pipelines that want to utilize subworkflows to keep their code base cleaner, should probably start implementing subworkflows and then decide / find out which parts can be made accessible to a broader audience here.
+* Subworkflows should be kept with individual pipelines, and not end up here in the modules repository. 
 
 ## Using existing modules
 
