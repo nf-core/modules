@@ -2,7 +2,7 @@
 
 > DSL2 IS AN EXPERIMENTAL FEATURE UNDER DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT OF THIS REPOSITORY MAY CHANGE IN THE NEAR FUTURE!
 
-A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl2.htmlhttps://www.nextflow.io/docs/edge/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
+A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl2.htmlhttps://www.nextflow.io/docs/edge/dsl2.html) module files and subworkflows containing tool-specific process definitions and their associated documentation.
 
 ## Table of contents
 * [Using existing modules](#using-existing-modules)
@@ -13,6 +13,21 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
     * [Documentation](#documentation)
     * [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 * [Help](#help)
+
+## Terminology
+
+The DSLv2 features for Nextflow are new for everyone and not just beginners. We discussed some terminology terms to discuss things related to modules & subworkflows more appropriately:
+
+* *Module*: An "atomic" module (one thing), e.g. a reusable process from an old pipeline that can be used between different pipelines
+* *Subworkflow*: A combined set of modules, that do e.g. preprocessing for a much bigger pipeline. A good example could be a QC subworkflow for FastQ input, that could be (re-) used across multiple pipelines
+* *Workflow*: What DSLv1 users would consider a pipeline, e.g. from input to potentially complex output. Can either consist of individual modules, a large monolithic script as in DSLv1 or a combination of subworkflows (or any combination of these three). 
+
+## Organization of repository
+
+* Modules should end up in the subdirectory `modules`
+* Subworkflows that are of general interest should end up in `subworkflows` IF they are useful for multiple pipelines (which will be clarified via Review)
+
+Individual pipelines that want to utilize subworkflows to keep their code base cleaner, should probably start implementing subworkflows and then decide / find out which parts can be made accessible to a broader audience here.
 
 ## Using existing modules
 
