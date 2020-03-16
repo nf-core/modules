@@ -19,7 +19,7 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
 The features offered by Nextflow DSL 2 can be used in various ways depending on the granularity with which you would like to write pipelines. Please see the listing below for the hierarchy and associated terminology we have decided to use when referring to DSL 2 components:
 
 * *Module*: A `process`that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. This repository has been created to only host atomic module files that should be added to the `tools` sub-directory along with the required documentation, software and tests.
-* *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline.  For example, a sub-workflow to run multiple QC tools with FastQ files as input.
+* *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline.  For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows.
 * *Workflow*: What DSL 1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL 1, or by using a combination of DSL 2 individual modules and sub-workflows. 
 
 ## Using existing modules
