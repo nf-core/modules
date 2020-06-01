@@ -4,12 +4,12 @@
 nextflow.preview.dsl=2
 
 // Log
-log.info ("Starting test pipeline for BAM deduplication")
+log.info ("Starting test for BAM deduplication")
 
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include umi_tools from './umi-tools.nf'
+include dedup from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -52,8 +52,8 @@ Channel
 workflow {
 
     // Run dedup
-    umi_tools( ch_test_meta_bambai )
+    dedup ( ch_test_meta_bambai )
 
     // Collect file names and view output
-    umi_tools.out.dedupBam | view
+    dedup.out.dedupBam | view
 }
