@@ -21,12 +21,6 @@ nfUtils.check_internal_overrides(module_name, params)
 /*-------------------------------------------------> DEDUP OPTIONS <-----------------------------------------------------*/
 
 /*-----------------------------------------------------------------------------------------------------------------------------
-OUTPUT STATS OPTION -> --output-stats=[PREFIX]
--------------------------------------------------------------------------------------------------------------------------------*/
-//Enter the prefix 
-params.internal_output_stats = 'sample'
-
-/*-----------------------------------------------------------------------------------------------------------------------------
 EXTRACT BARCODE OPTION -> --extract-umi-method
 -------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -63,7 +57,18 @@ params.internal_cell_tag = ''
 OUTPUT OPTION -> --stdout or -S
 -------------------------------------------------------------------------------------------------------------------------------*/
 //Insert output file name
-params.internal_output_file_name = "sample.dedup.bam"
+params.internal_output_file_name = ''
+//Activate this option to use sample_id in the output file names -> e.g. sample1.dedup.bam
+params.internal_output_sampleid = true
+
+/*-----------------------------------------------------------------------------------------------------------------------------
+OUTPUT STATS OPTION -> --output-stats=[PREFIX]
+-------------------------------------------------------------------------------------------------------------------------------*/
+//Enter the prefix 
+params.internal_output_stats = ''
+//Activate this option to use sample_id as the prefix -> e.g. sample1_edit_distance
+params.internal_output_stats_sampleid = true
+/*-----------------------------------------------------------------------------------------------------------------------------*/
 
 // dedup reusable component
 process dedup {
@@ -91,14 +96,25 @@ process dedup {
     dedup_pre_args += "-I "
 
     //Output_stats option
-    if (params.internal_output_stats != null){
+    if (params.internal_output_stats_sampleid){
+      dedup_post_args += "--output-stats=$sample_id "
+    } else {
+      if (params.internal_output_stats != null){
       dedup_post_args += "--output-stats=$params.internal_output_stats "
+      }
     }
+    
 
     //Output/ stdout option 
-    if (params.internal_output_file_name != null){
+    //TODO -> figure out how to get rid of the space between sample id and dedup.bam
+    if (params.internal_output_sampleid){
+      dedup_post_args += "-S $sample_id .dedup.bam "
+    }else {
+      if (params.internal_output_file_name != null){
         dedup_post_args += "-S $params.internal_output_file_name "
+      }
     }
+    
 
      // Displays the umi_tools command line to check for mistakes
     println dedup_pre_args
@@ -113,3 +129,9 @@ process dedup {
 //fileName=`basename $bam`
 //sampleName="\${fileName%.Aligned.sortedByCoord.out.bam}"
 //umi_tools dedup --umi-separator=":" -I $bam -S \${sampleName}.dedup.bam --output-stats=\${sampleName}
+
+
+/* 
+Replace by:
+//umi_tools dedup --umi-separator=":" -I $bam -S \${sample_id}.dedup.bam --output-stats=\${sample_id}
+*/
