@@ -4,8 +4,8 @@
 nextflow.preview.dsl = 2
 
 // Include NfUtils
-params.classpath = "umi_tools/groovy/NfUtils.groovy"
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.classpath));
+params.internal_classpath = "umi_tools/groovy/NfUtils.groovy"
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.internal_classpath));
 GroovyObject nfUtils = (GroovyObject) groovyClass.newInstance();
 
 // Define internal params
@@ -88,7 +88,7 @@ process dedup {
     dedup_post_args = ''
 
     //Method used to extract barcodes
-    if (params.internal_umi_separator != null){
+    if (params.internal_umi_separator != ''){
       dedup_pre_args += "--umi-separator=\"$params.internal_umi_separator\" "
     }
 
@@ -99,18 +99,17 @@ process dedup {
     if (params.internal_output_stats_sampleid){
       dedup_post_args += "--output-stats=$sample_id "
     } else {
-      if (params.internal_output_stats != null){
+      if (params.internal_output_stats != ''){
       dedup_post_args += "--output-stats=$params.internal_output_stats "
       }
     }
     
 
     //Output/ stdout option 
-    //TODO -> figure out how to get rid of the space between sample id and dedup.bam
     if (params.internal_output_sampleid){
-      dedup_post_args += "-S $sample_id .dedup.bam "
+      dedup_post_args += "-S ${sample_id}.dedup.bam "
     }else {
-      if (params.internal_output_file_name != null){
+      if (params.internal_output_file_name != ''){
         dedup_post_args += "-S $params.internal_output_file_name "
       }
     }
