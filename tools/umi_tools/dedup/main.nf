@@ -122,7 +122,7 @@ params.internal_gene_tag = false
 
 //--assigned-status-tag
 //BAM tag which describes whether a read is assigned to a gene. Defaults to the same value as given for --gene-tag
-params.internal_assign_status_tag = ''
+params.internal_assigned_status_tag = ''
 
 //--skip-tags-regex
 //Use in conjunction with the --assigned-status-tag option to skip any reads where the tag matches this regex. 
@@ -141,7 +141,70 @@ params.internal_gene_transcript_map = false
 //Reads will only be grouped together if they have the same cell barcode. Can be combined with --per-gene.
 params.internal_per_cell = false
 
+/*-----------------------------------------------------------------------------------------------------------------------------
+SAM/BAM OPTIONS -> --method=[method]
+-------------------------------------------------------------------------------------------------------------------------------*/
+
+//--mapping-quality
+//Minimium mapping quality (MAPQ) for a read to be retained. Default is 0.
+params.internal_mapping_quality = 0
+
+//--unmapped-reads -> How should unmapped reads be handled
+// Activate one of those three options: discard (default), use, output
+params.internal_unmapped_reads_discard = true 
+params.internal_unmapped_reads_use = false 
+params.internal_unmapped_reads_output = false 
+
+
+//--chimeric-pairs -> How should chimeric pairs be handled
+// Activate one of those three options: discard, use (default), output
+params.internal_chimeric_pairs_discard = false
+params.internal_chimeric_pairs_use = false
+params.internal_chimeric_pairs_output = false
+
+
+//--unpaired-reads -> How should unpaired reads be handled
+// Activate one of those three options: discard, use (default), output
+params.internal_unpaired_reads_discard = false 
+params.internal_unpaired_reads_use = false 
+params.internal_unpaired_reads_output = false 
+
+//--ignore-umi
+//Ignore the UMI and group reads using mapping coordinates only
+//CANNOT BE USED WITH --output-stats
+params.internal_ignore_umi = false
+
+//--subset
+//Only consider a fraction of the reads, chosen at random. This is useful for doing saturation analyses.
+params.internal_subset = ''
+
+//--chrom
+//Only consider a single chromosome. This is useful for debugging/testing purposes
+params.internal_chrom = false
+
+// Input/output BAM options
+
+// Parameters for input and output in SAM format instead of BAM
+params.internal_in_sam = false 
+params.internal_out_sam = false
+
+//BAM is paired end - output both read pairs. This will also force the use of the template length to determine reads with the same mapping coordinates.
+//--paired
+params.internal_paired_end = false
+
+/*-----------------------------------------------------------------------------------------------------------------------------
+GROUP/DEDUP OPTIONS 
+-------------------------------------------------------------------------------------------------------------------------------*/
+
+//--no-sort-output
+params.internal_no_sort_output = false
+
+//--buffer-whole-contig
+params.internal_buffer_whole_contig = false
+
 /*-----------------------------------------------------------------------------------------------------------------------------*/
+
+
 
 
 // dedup reusable component
@@ -238,6 +301,73 @@ process dedup {
       dedup_post_args += "--per-cell "
     }
 
+    // SAM/BAM options
+    // Unmapped reads options
+    if (params.internal_unmapped_reads_discard){
+      dedup_post_args += "--unmapped-reads "
+    } 
+    if (params.internal_unmapped_reads_use){
+      dedup_post_args += "--unmapped-reads=use "
+    }
+    if (params.internal_unmapped_reads_output){
+      dedup_post_args += "--unmapped-reads=output "
+    }
+
+    // Chimeric pairs options
+    if (params.internal_chimeric_pairs_discard){
+      dedup_post_args += "--chimeric-pairs=discard "
+    }
+    if (params.internal_chimeric_pairs_use){
+      dedup_post_args += "--chimeric-pairs "
+    }
+    if (params.internal_chimeric_pairs_output){
+      dedup_post_args += "--chimeric-pairs=output "
+    }
+
+    // Unpaired reads options
+    if (params.internal_unpaired_reads_discard){
+      dedup_post_args += "--unpaired-reads=discard "
+    } 
+    if (params.internal_unpaired_reads_use){
+      dedup_post_args += "--unpaired-reads "
+    }
+    if (params.internal_unpaired_reads_output){
+      dedup_post_args += "--unpaired-reads=output "
+    }
+
+    // Additional SAM/BAM options
+    if (params.internal_mapping_quality != 0){
+      dedup_post_args += "--mapping-quality=$params.internal_mapping_quality "
+    }
+    if (params.internal_ignore_umi){
+      dedup_post_args += "--ignore-umi "
+    }
+    if (params.internal_subset != ''){
+      dedup_post_args += "--subset=$params.internal_subset "
+    }
+    if (params.internal_chrom){
+      dedup_post_args += "--chrom "
+    }
+
+    // Input/output BAM options
+    if (params.internal_in_sam){
+      dedup_post_args += "--in-sam "
+    }
+    if (params.internal_out_sam){
+      dedup_post_args += "--out-sam "
+    }
+    if (params.internal_paired_end){
+      dedup_post_args += "--paired "
+    }
+
+    //Group dedup options
+    if (params.internal_no_sort_output){
+      dedup_post_args += "--no-sort-output "
+    }
+    if (params.internal_buffer_whole_contig){
+      dedup_post_args += "--buffer-whole-contig "
+    }
+
     // Displays the umi_tools command line to check for mistakes
     println dedup_pre_args
     println dedup_post_args
@@ -246,14 +376,3 @@ process dedup {
     $dedup_pre_args $bam $dedup_post_args 
     """
 }
-
-
-//fileName=`basename $bam`
-//sampleName="\${fileName%.Aligned.sortedByCoord.out.bam}"
-//umi_tools dedup --umi-separator=":" -I $bam -S \${sampleName}.dedup.bam --output-stats=\${sampleName}
-
-
-/* 
-Replace by:
-//umi_tools dedup --umi-separator=":" -I $bam -S \${sample_id}.dedup.bam --output-stats=\${sample_id}
-*/
