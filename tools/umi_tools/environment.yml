@@ -1,17 +1,13 @@
 # This file creates a conda environment for the umi_tools module
 #   conda env create -f environment.yml
-name: nfcore-umitools-0.1
+name: nfcore-module-umitools
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
   ## basic packages
-  - pigz=2.3.4
+  #- pigz=2.3.4
 
   ## bioconda packages, see above
   - umi_tools=1.0.1
-
-
-
-  

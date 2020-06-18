@@ -3,14 +3,6 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-// Include NfUtils
-params.internal_classpath = "umi_tools/groovy/NfUtils.groovy"
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.internal_classpath));
-GroovyObject nfUtils = (GroovyObject) groovyClass.newInstance();
-
-// Define internal params
-module_name = 'dedup'
-
 // Local default params
 params.internal_outdir = 'results'
 params.internal_process_name = 'dedup'
@@ -211,6 +203,8 @@ params.internal_buffer_whole_contig = false
 process dedup {
     publishDir "umi_tools/dedup/${params.internal_outdir}/${params.internal_process_name}",
         mode: "copy", overwrite: true
+
+    container 'luslab/nf-modules-umitools:latest'
 
     input:
       tuple val(sample_id), path(bai), path(bam)
