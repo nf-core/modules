@@ -16,21 +16,21 @@ include dedup from '../main.nf'
 --------------------------------------------------------------------------------------*/
 
 testMetaDataBam = [
-  ['Sample1', "$baseDir/input/prpf8_ctrl_rep1.Aligned.sortedByCoord.out.bam"],
-  ['Sample2', "$baseDir/input/prpf8_ctrl_rep2.Aligned.sortedByCoord.out.bam"],
-  ['Sample3', "$baseDir/input/prpf8_ctrl_rep4.Aligned.sortedByCoord.out.bam"],
-  ['Sample4', "$baseDir/input/prpf8_eif4a3_rep1.Aligned.sortedByCoord.out.bam"],
-  ['Sample5', "$baseDir/input/prpf8_eif4a3_rep2.Aligned.sortedByCoord.out.bam"],
-  ['Sample6', "$baseDir/input/prpf8_eif4a3_rep4.Aligned.sortedByCoord.out.bam"]
+  ['Sample1', "$baseDir/input/sample1.bam"],
+  ['Sample2', "$baseDir/input/sample2.bam"],
+  ['Sample3', "$baseDir/input/sample3.bam"],
+  ['Sample4', "$baseDir/input/sample4.bam"],
+  ['Sample5', "$baseDir/input/sample5.bam"],
+  ['Sample6', "$baseDir/input/sample6.bam"]
 ]
 
 testMetaDataBai = [
-  ['Sample1', "$baseDir/input/prpf8_ctrl_rep1.Aligned.sortedByCoord.out.bai"],
-  ['Sample2', "$baseDir/input/prpf8_ctrl_rep2.Aligned.sortedByCoord.out.bai"],
-  ['Sample3', "$baseDir/input/prpf8_ctrl_rep4.Aligned.sortedByCoord.out.bai"],
-  ['Sample4', "$baseDir/input/prpf8_eif4a3_rep1.Aligned.sortedByCoord.out.bai"],
-  ['Sample5', "$baseDir/input/prpf8_eif4a3_rep2.Aligned.sortedByCoord.out.bai"],
-  ['Sample6', "$baseDir/input/prpf8_eif4a3_rep4.Aligned.sortedByCoord.out.bai"]
+  ['Sample1', "$baseDir/input/sample1.bai"],
+  ['Sample2', "$baseDir/input/sample2.bai"],
+  ['Sample3', "$baseDir/input/sample3.bai"],
+  ['Sample4', "$baseDir/input/sample4.bai"],
+  ['Sample5', "$baseDir/input/sample5.bai"],
+  ['Sample6', "$baseDir/input/sample6.bai"]
 ]
 
 // Create channels of test data 
