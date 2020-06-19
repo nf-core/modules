@@ -60,11 +60,6 @@ Channel
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Logging
-    if (params.verbose){
-        println ("[MODULE] umi_tools/dedup ARGS: " + params.umitools_dedup_args)
-    }
-
     // Run dedup
     umitools_dedup ( ch_test_meta_bambai )
 

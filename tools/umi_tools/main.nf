@@ -23,28 +23,25 @@ process umitools_dedup {
     shell:
 
     // Init
-    error_message = ""
-    args_exist = "false"
-    internal_prog = "umi_tools dedup "
-    internal_args = ""
+    internal_prog = "umi_tools dedup"
+    internal_args = "--log=${sample_id}.dedup.log"
 
     // Check main args string exists and strip whitespace
     if(params.umitools_dedup_args) {
-        internal_args = params.umitools_dedup_args
-        internal_args = internal_args.trim() + " --log=${sample_id}.dedup.log "
-        args_exist = "true"
+        ext_args = params.umitools_dedup_args
+        internal_args += " " + ext_args.trim()
     }
-    else {
-        error_message = "params.umitools_dedup_args does not exist, please define to run this module."
+
+    // Contruct CL line
+    internal_cl = "${internal_prog} ${internal_args} -I $bam -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
+
+    // Log
+    if (params.verbose){
+        println ("[MODULE] umi_tools/dedup exec: " + internal_cl)
     }
 
     //SHELL
     """
-    if ${args_exist}; then
-        ${internal_prog}${internal_args}-I $bam -S ${sample_id}.dedup.bam --output-stats=${sample_id}
-    else
-        echo "${error_message}" 1>&2
-        exit 1
-    fi
+    ${internal_cl}
     """
 }
