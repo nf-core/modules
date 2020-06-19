@@ -13,11 +13,12 @@ tools:
         documentation: https://umi-tools.readthedocs.io/en/latest/
 processes:
     - dedup:
-        opperation: |
+        operation: |
             Set command args to params.umitools_dedup_args
-            The program will execute with the following pattern: umi_tools dedeup ARGS -I $bam -S SAMPLE_ID.dedup.bam --output-stats=SAMPLE_ID
+            The program will execute with the following pattern:
+                umi_tools dedup --log={SAMPLE_ID}.dedup.log {params.umitools_dedup_args} -I {SAMPLE_ID}.bam -S {SAMPLE_ID}.dedup.bam --output-stats={SAMPLE_ID}
         description: |
-            Groups PCR duplicates and deduplicates reads to yield one read per group. 
+            Groups PCR duplicates and de-duplicates reads to yield one read per group. 
             Use this when you want to remove the PCR duplicates prior to any downstream analysis.
         input:
             - sample_id:
@@ -33,10 +34,10 @@ processes:
             - dedupBam:
                 type: tuple
                 description: A tuple of samples id and output bam file
-                pattern: *SAMPLE_ID.dedup.bam
+                pattern: [sample_id, *SAMPLE_ID.dedup.bam]
             - report:
                 type: file
-                description: Log file for the umi_tools opperation
+                description: Log file for the umi_tools operation
                 pattern: *SAMPLE_ID.dedup.log
 authors:
     - @candiceh08
