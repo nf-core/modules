@@ -24,7 +24,7 @@ process umitools_dedup {
 
     // Init
     internal_prog = "umi_tools dedup"
-    internal_args = "--log=${sample_id}.dedup.log"
+    args = "--log=${sample_id}.dedup.log"
 
     // Check main args string exists and strip whitespace
     if(params.umitools_dedup_args) {
