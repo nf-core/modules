@@ -33,7 +33,7 @@ process umitools_dedup {
     }
 
     // Contruct CL line
-    internal_cl = "${internal_prog} ${internal_args} -I $bam -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
+    command = "${internal_prog} ${internal_args} -I $bam -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
 
     // Log
     if (params.verbose){
