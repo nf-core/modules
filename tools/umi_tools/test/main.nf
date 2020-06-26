@@ -4,7 +4,7 @@
 nextflow.preview.dsl=2
 
 // Log
-log.info ("Starting test for umi_tools dedup...")
+log.info ("Starting tests for umi_tools dedup...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -23,37 +23,21 @@ include umitools_dedup from '../main.nf'
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-// Meta data
-testMetaDataBam = [
-    ['sample1', "$baseDir/input/sample1.bam"],
-    ['sample2', "$baseDir/input/sample2.bam"],
-    ['sample3', "$baseDir/input/sample3.bam"],
-    ['sample4', "$baseDir/input/sample4.bam"],
-    ['sample5', "$baseDir/input/sample5.bam"],
-    ['sample6', "$baseDir/input/sample6.bam"]
+// Define test data
+testData = [
+    ['sample1', "$baseDir/input/sample1.bam", "$baseDir/input/sample1.bai"],
+    ['sample2', "$baseDir/input/sample2.bam", "$baseDir/input/sample2.bai"],
+    ['sample3', "$baseDir/input/sample3.bam", "$baseDir/input/sample3.bai"],
+    ['sample4', "$baseDir/input/sample4.bam", "$baseDir/input/sample4.bai"],
+    ['sample5', "$baseDir/input/sample5.bam", "$baseDir/input/sample5.bai"],
+    ['sample6', "$baseDir/input/sample6.bam", "$baseDir/input/sample6.bai"]
 ]
 
-testMetaDataBai = [
-    ['sample1', "$baseDir/input/sample1.bai"],
-    ['sample2', "$baseDir/input/sample2.bai"],
-    ['sample3', "$baseDir/input/sample3.bai"],
-    ['sample4', "$baseDir/input/sample4.bai"],
-    ['sample5', "$baseDir/input/sample5.bai"],
-    ['sample6', "$baseDir/input/sample6.bai"]
-]
-
-//Bam input channel
+//Define test data input channel
 Channel
-    .from(testMetaDataBam)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ]}
-    .set {ch_test_meta_bam}
-
-//BamBai input channel
-Channel
-    .from(testMetaDataBai)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .join(ch_test_meta_bam)
-    .set {ch_test_meta_bambai} 
+    .from(testData)
+    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)]]}
+    .set {ch_bam}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
@@ -61,7 +45,7 @@ Channel
 
 workflow {
     // Run dedup
-    umitools_dedup ( ch_test_meta_bambai )
+    umitools_dedup ( ch_bam )
 
     // Collect file names and view output
     umitools_dedup.out.dedupBam | view
