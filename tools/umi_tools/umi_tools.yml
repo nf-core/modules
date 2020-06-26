@@ -24,12 +24,9 @@ processes:
             - sample_id:
                 type: string
                 description: Sample identifier
-            - bai:
-                type: file
-                description: BAM file index
             - bam:
-                type: file
-                description: BAM sequence file
+                type: file array
+                description: BAM sequence file and associated BAI index file
         output:
             - dedupBam:
                 type: tuple

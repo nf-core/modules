@@ -17,7 +17,8 @@ process umitools_dedup {
         tuple val(sample_id), path(bam)
        
     output:
-        tuple val(sample_id), path("*.dedup.bam"), emit: dedupBam
+        tuple val(sample_id), path("${sample_id}.dedup.bam"), emit: dedupBam
+        tuple val(sample_id), path("${sample_id}.dedup.bam.bai"), emit: dedupBai
         path "*.dedup.log", emit: report
 
     script:
@@ -32,15 +33,16 @@ process umitools_dedup {
     }
 
     // Contruct CL line
-    command = "umi_tools dedup ${args} -I ${bam[0]} -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
+    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
 
     // Log
     if (params.verbose){
-        println ("[MODULE] umi_tools/dedup exec: " + command)
+        println ("[MODULE] umi_tools/dedup command: " + dedup_command)
     }
 
     //SHELL
     """
-    ${command}
+    ${dedup_command}
+    samtools index ${sample_id}.dedup.bam
     """
 }
