@@ -50,3 +50,16 @@ workflow {
     // Collect file names and view output
     umitools_dedup.out.dedupBam | view
 }
+
+workflow.onComplete {
+    def proc = "$baseDir/verify-checksum.sh $baseDir/../../../results/umitools/dedup/*.bai $baseDir/output/*.bai".execute()
+    def b = new StringBuffer()
+    proc.consumeProcessErrorStream(b)
+
+    log.info proc.text
+
+    errorString = b.toString()
+    if(errorString != '')
+        log.error errorString
+        exit 1
+}
