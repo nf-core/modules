@@ -20,7 +20,7 @@ process umitools_dedup {
       tuple val(sample_id), path("*.dedup.bam"), emit: dedupBam
       path "*.dedup.log", emit: report
 
-    shell:
+    script:
 
     // Init
     internal_prog = "umi_tools dedup"
