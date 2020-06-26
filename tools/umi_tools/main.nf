@@ -3,12 +3,9 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-// Local default params
-params.internal_process_name = 'umitools_dedup'
-
 // Process definition
 process umitools_dedup {
-    publishDir "${params.outdir}/${params.internal_process_name}",
+    publishDir "${params.outdir}/umitools/dedup",
         mode: "copy", overwrite: true
 
     container 'luslab/nf-modules-umitools:latest'
