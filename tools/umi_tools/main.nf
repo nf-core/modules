@@ -14,11 +14,11 @@ process umitools_dedup {
     container 'luslab/nf-modules-umitools:latest'
 
     input:
-      tuple val(sample_id), path(bai), path(bam)
+        tuple val(sample_id), path(bai), path(bam)
        
     output:
-      tuple val(sample_id), path("*.dedup.bam"), emit: dedupBam
-      path "*.dedup.log", emit: report
+        tuple val(sample_id), path("*.dedup.bam"), emit: dedupBam
+        path "*.dedup.log", emit: report
 
     script:
 
