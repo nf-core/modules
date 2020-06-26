@@ -25,35 +25,35 @@ include umitools_dedup from '../main.nf'
 
 // Meta data
 testMetaDataBam = [
-  ['sample1', "$baseDir/input/sample1.bam"],
-  ['sample2', "$baseDir/input/sample2.bam"],
-  ['sample3', "$baseDir/input/sample3.bam"],
-  ['sample4', "$baseDir/input/sample4.bam"],
-  ['sample5', "$baseDir/input/sample5.bam"],
-  ['sample6', "$baseDir/input/sample6.bam"]
+    ['sample1', "$baseDir/input/sample1.bam"],
+    ['sample2', "$baseDir/input/sample2.bam"],
+    ['sample3', "$baseDir/input/sample3.bam"],
+    ['sample4', "$baseDir/input/sample4.bam"],
+    ['sample5', "$baseDir/input/sample5.bam"],
+    ['sample6', "$baseDir/input/sample6.bam"]
 ]
 
 testMetaDataBai = [
-  ['sample1', "$baseDir/input/sample1.bai"],
-  ['sample2', "$baseDir/input/sample2.bai"],
-  ['sample3', "$baseDir/input/sample3.bai"],
-  ['sample4', "$baseDir/input/sample4.bai"],
-  ['sample5', "$baseDir/input/sample5.bai"],
-  ['sample6', "$baseDir/input/sample6.bai"]
+    ['sample1', "$baseDir/input/sample1.bai"],
+    ['sample2', "$baseDir/input/sample2.bai"],
+    ['sample3', "$baseDir/input/sample3.bai"],
+    ['sample4', "$baseDir/input/sample4.bai"],
+    ['sample5', "$baseDir/input/sample5.bai"],
+    ['sample6', "$baseDir/input/sample6.bai"]
 ]
 
 //Bam input channel
 Channel
-  .from(testMetaDataBam)
-  .map { row -> [ row[0], file(row[1], checkIfExists: true) ]}
-  .set {ch_test_meta_bam}
+    .from(testMetaDataBam)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ]}
+    .set {ch_test_meta_bam}
 
 //BamBai input channel
 Channel
-  .from(testMetaDataBai)
-  .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-  .join(ch_test_meta_bam)
-  .set {ch_test_meta_bambai} 
+    .from(testMetaDataBai)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .join(ch_test_meta_bam)
+    .set {ch_test_meta_bambai} 
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
