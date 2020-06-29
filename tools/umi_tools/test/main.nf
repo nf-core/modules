@@ -11,7 +11,7 @@ log.info ("Starting tests for umi_tools dedup...")
 --------------------------------------------------------------------------------------*/
 
 params.umitools_dedup_args = '--umi-separator=":"'
-params.verbose = true
+params.verbose = false
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -46,13 +46,10 @@ Channel
 workflow {
     // Run dedup
     umitools_dedup ( ch_bam )
-
-    // Collect file names and view output
-    umitools_dedup.out.dedupBam | view
 }
 
 workflow.onComplete {
-    def proc = "$baseDir/verify-checksum.sh $baseDir/../../../results/umitools/dedup/*.bai $baseDir/output/*.bai".execute()
+    def proc = "$baseDir/verify-checksum.sh $baseDir/../../../results/umitools/dedup/*.bam $baseDir/output/*.bam".execute()
     def b = new StringBuffer()
     proc.consumeProcessErrorStream(b)
 
