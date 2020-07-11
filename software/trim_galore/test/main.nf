@@ -12,7 +12,7 @@ if (params.verbose){
 }
 
 // TODO: check the output files in some way
-// include '../../../nf-core/module_testing/check_process_outputs.nf'
+// include '../../../tests/functions/check_process_outputs.nf'
 include '../main.nf'  // params (clip_r1: 6, clip_r2: 10) // how to pass additional parameters
 
 ch_read_files = Channel
