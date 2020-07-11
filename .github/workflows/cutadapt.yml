@@ -1,0 +1,34 @@
+name: cutadapt
+on:
+  push: {}
+  pull_request:
+    paths: tools/cutadapt/*
+
+jobs:
+  run_ci_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
+      - name: Install Nextflow
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      - name: Test module with paired-end data
+        run: |
+          cd tools/cutadapt/test_paired/
+          nextflow run . -ansi-log false
+
+      - name: Test module with single-end data
+        run: |
+          cd tools/cutadapt/test_single/
+          nextflow run . -ansi-log false
