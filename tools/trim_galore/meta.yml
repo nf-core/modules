@@ -28,14 +28,13 @@ output:
         - trimmed_fastq:
             type: file
             description: Trimmed FastQ files
-            pattern: *fq.gz
+            pattern: "*fq.gz"
     -
         - report:
             type: file
             description: Trim Galore! trimming report
-            pattern: *trimming_report.txt
+            pattern: "*trimming_report.txt"
 
 authors:
-    -
-        - @ewels
-        - @FelixKrueger
+    - "@ewels"
+    - "@FelixKrueger"

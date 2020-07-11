@@ -14,12 +14,12 @@ input:
         - input:
             type: file
             description: Input fasta file
-            pattern: *.{fasta,fa}
+            pattern: "*.{fasta,fa}"
 output:
     -
         - dict:
             type: file
             description: gatk dictionary file
-            pattern: *.{fasta,fa}.{dict}
+            pattern: "*.{fasta,fa}.{dict}"
 authors:
-    - @maxulysse
+    - "@maxulysse"

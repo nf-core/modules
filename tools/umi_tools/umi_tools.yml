@@ -31,15 +31,15 @@ processes:
             - dedupBam:
                 type: tuple
                 description: A tuple of samples id and output bam file
-                pattern: [sample_id, *SAMPLE_ID.dedup.bam]
+                pattern: [sample_id, "*SAMPLE_ID.dedup.bam"]
             - dedupBam:
                 type: tuple
                 description: A tuple of samples id and output bai file
-                pattern: [sample_id, *SAMPLE_ID.dedup.bam.bai]
+                pattern: [sample_id, "*SAMPLE_ID.dedup.bam.bai"]
             - report:
                 type: file
                 description: Log file for the umi_tools operation
-                pattern: *SAMPLE_ID.dedup.log
+                pattern: "*SAMPLE_ID.dedup.log"
 authors:
-    - @candiceh08
-    - @chris-cheshire
+    - "@candiceh08"
+    - "@chris-cheshire"

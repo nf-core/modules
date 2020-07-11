@@ -16,12 +16,12 @@ input:
         - input:
             type: file
             description: Input BAM or CRAM file
-            pattern: *.{bam,cram}
+            pattern: "*.{bam,cram}"
 output:
     -
         - index:
             type: file
             description: BAM or CRAM index file
-            pattern: *.{bai}
+            pattern: "*.{bai}"
 authors:
-    - @ewels
+    - "@ewels"
