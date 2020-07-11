@@ -2,7 +2,7 @@ name: Trim Galore!
 on:
   push: {}
   pull_request:
-    paths: tools/trim_galore/*
+    paths: software/trim_galore/*
 
 jobs:
   run_ci_test:
@@ -20,4 +20,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./tools/trim_galore/test/ -ansi-log false
+    - run: nextflow run ./software/trim_galore/test/ -ansi-log false

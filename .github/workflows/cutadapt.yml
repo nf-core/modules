@@ -2,7 +2,7 @@ name: cutadapt
 on:
   push: {}
   pull_request:
-    paths: tools/cutadapt/*
+    paths: software/cutadapt/*
 
 jobs:
   run_ci_test:
@@ -25,10 +25,10 @@ jobs:
 
       - name: Test module with paired-end data
         run: |
-          cd tools/cutadapt/test_paired/
+          cd software/cutadapt/test_paired/
           nextflow run . -ansi-log false
 
       - name: Test module with single-end data
         run: |
-          cd tools/cutadapt/test_single/
+          cd software/cutadapt/test_single/
           nextflow run . -ansi-log false

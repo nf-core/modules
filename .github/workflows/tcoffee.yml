@@ -2,7 +2,7 @@ name: tcoffee
 on:
   push: {}
   pull_request:
-    paths: tools/tcoffee/*
+    paths: software/tcoffee/*
 
 jobs:
   run_ci_test:
@@ -26,5 +26,5 @@ jobs:
 
     # Test the module
     - run: |
-        cd tools/tcoffee/test/
+        cd software/tcoffee/test/
         nextflow run . -ansi-log false
