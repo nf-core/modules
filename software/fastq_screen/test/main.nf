@@ -12,7 +12,7 @@ if (params.verbose){
     println ("[WORKFLOW] FASTQ SCREEN ARGS ARE: " + params.fastq_screen_args)
 }
 
-// TODO: include '../../../nf-core/module_testing/check_process_outputs.nf'
+// TODO: include '../../../tests/functions/check_process_outputs.nf'
 include '../main.nf'
 
 // Define input channels

@@ -5,7 +5,7 @@ params.outdir = "."
 params.verbose = false
 params.multiqc_args = ''
 
-// include '../../../nf-core/module_testing/check_process_outputs.nf'
+// include '../../../tests/functions/check_process_outputs.nf'
 include '../main.nf'
 
 if (params.verbose){

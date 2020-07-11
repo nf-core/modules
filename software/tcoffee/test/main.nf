@@ -2,7 +2,7 @@
 
 nextflow.preview.dsl = 2
 
-include check_output from  '../../../nf-core/module_testing/check_process_outputs.nf'
+include check_output from  '../../../tests/functions/check_process_outputs.nf'
 include tcoffee from '../main.nf'
 
 // Define input channels
@@ -13,8 +13,3 @@ workflow {
     tcoffee(fasta)
     // .check_output()
 }
-
-
-
-
-
