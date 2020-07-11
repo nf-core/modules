@@ -25,7 +25,6 @@ process MULTIQC {
 		}
 
 		"""
-		module load multiqc
 		multiqc $multiqc_args -x work . 
 		"""
 
