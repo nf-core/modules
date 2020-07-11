@@ -16,7 +16,7 @@ tools:
         documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
 input:
     -
-        - sample_id:
+        - name:
             type: string
             description: Sample identifier
         - reads:
@@ -29,4 +29,6 @@ output:
             description: FastQC report
             pattern: *_fastqc.{zip,html}
 authors:
-    - @ewels
+    - 
+        - @ewels
+        - @FelixKrueger

@@ -1,22 +1,21 @@
 #!/usr/bin/env nextflow
 nextflow.preview.dsl = 2
-include '../../../nf-core/module_testing/check_process_outputs.nf' params(params)
-include '../main.nf' params(params)
+
+params.outdir = "."             // gets set in nextflow.config file (as './results/fastqc')
+params.fastqc_args = ''
+params.verbose = false
+
+// TODO: check the output files in some way
+// include '../../../nf-core/module_testing/check_process_outputs.nf'
+include '../main.nf'
 
 // Define input channels
-readPaths = [
-  ['SRR4238351', ['../../../test-datasets/tools/fastqc/input/SRR4238351_subsamp.fastq.gz']],
-  ['SRR4238355', ['../../../test-datasets/tools/fastqc/input/SRR4238355_subsamp.fastq.gz']],
-  ['SRR4238359', ['../../../test-datasets/tools/fastqc/input/SRR4238359_subsamp.fastq.gz']],
-  ['SRR4238379', ['../../../test-datasets/tools/fastqc/input/SRR4238379_subsamp.fastq.gz']]
-]
-Channel
-  .from(readPaths)
-  .map { row -> [ row[0], [ file(row[1][0]) ] ] }
-  .set { ch_read_files }
+ch_read_files = Channel 
+    .fromFilePairs('../../../test-datasets/test*{1,2}.fastq.gz',size:-1)
+    // .view()  // to check whether the input channel works
 
 // Run the workflow
 workflow {
-    fastqc(ch_read_files)
+    FASTQC (ch_read_files, params.outdir, params.fastqc_args, params.verbose)
     // .check_output()
 }
