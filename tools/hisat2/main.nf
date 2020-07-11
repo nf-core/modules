@@ -15,17 +15,17 @@ process HISAT2 {
 
     output:
         path "*bam",       emit: bam
-        path "*stats.txt", emit: stats 
+        path "*stats.txt", emit: stats
 
     publishDir "$outdir/hisat2",
         mode: "copy", overwrite: true
 
     script:
-    
+
         if (verbose){
             println ("[MODULE] HISAT2 ARGS: " + hisat2_args)
         }
-    
+
         cores = 4
         readString = ""
         hisat_options = hisat2_args
@@ -41,7 +41,7 @@ process HISAT2 {
             readString = "-U "+reads
         }
         index = params.genome["hisat2"]
-        
+
         splices = ''
         if (params.genome.containsKey("hisat2_splices")){
             splices = " --known-splicesite-infile " + params.genome["hisat2_splices"]
