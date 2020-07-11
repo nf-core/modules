@@ -5,6 +5,7 @@
 A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl2.htmlhttps://www.nextflow.io/docs/edge/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
 ## Table of contents
+
 * [Using existing modules](#using-existing-modules)
     * [Configuration and parameters](#configuration-and-parameters)
     * [Offline usage](#offline-usage)
