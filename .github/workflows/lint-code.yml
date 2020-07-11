@@ -3,7 +3,6 @@ on: [push, pull_request]
 
 jobs:
   Markdown:
-    name: Test Markdown syntax
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +18,6 @@ jobs:
         run: markdownlint ${GITHUB_WORKSPACE} -c ${GITHUB_WORKSPACE}/.github/markdownlint.yml
 
   EditorConfig:
-    name: Test Editor Config rules
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,7 +33,6 @@ jobs:
         run: eclint check $(git ls-files | grep -v test)
 
   YAML:
-    name: Test YAML syntax
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
