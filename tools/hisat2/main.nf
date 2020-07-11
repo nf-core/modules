@@ -52,8 +52,6 @@ process HISAT2 {
         hisat_name = name + "_" + params.genome["name"]
 
         """
-        module load hisat2
-        module load samtools
         hisat2 -p ${cores} ${hisat_options} -x ${index} ${splices} ${readString}  2>${hisat_name}_hisat2_stats.txt | samtools view -bS -F 4 -F 8 -F 256 -> ${hisat_name}_hisat2.bam
         """
 
