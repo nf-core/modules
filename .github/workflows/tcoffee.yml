@@ -7,7 +7,8 @@ on:
 jobs:
   run_ci_test:
     runs-on: ubuntu-latest
-
+    env:
+      NXF_ANSI_LOG: false
     steps:
 
     # Check out the repository
@@ -27,4 +28,4 @@ jobs:
     # Test the module
     - run: |
         cd software/tcoffee/test/
-        nextflow run . -ansi-log false
+        nextflow run .
