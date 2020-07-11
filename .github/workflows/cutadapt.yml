@@ -7,10 +7,11 @@ on:
 jobs:
   run_ci_test:
     runs-on: ubuntu-latest
-
+    env:
+      NXF_ANSI_LOG: false
     steps:
-      # Check out the repository
       - uses: actions/checkout@v2
+
       - name: Checkout submodules
         shell: bash
         run: |
@@ -25,10 +26,10 @@ jobs:
 
       - name: Test module with paired-end data
         run: |
-          cd software/cutadapt/test_paired/
-          nextflow run . -ansi-log false
+          cd software/cutadapt/test/
+          nextflow run .
 
       - name: Test module with single-end data
         run: |
-          cd software/cutadapt/test_single/
-          nextflow run . -ansi-log false
+          cd software/cutadapt/test/
+          nextflow run . --single_end
