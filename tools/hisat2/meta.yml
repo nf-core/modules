@@ -28,10 +28,10 @@ output:
         - report:
             type: file
             description: mapping statistics report
-            pattern: *hisat2_stats.txt
+            pattern: "*hisat2_stats.txt"
         - alignment:
             type: file
             description: alignment file in BAM format
-            pattern: *hisat2.bam
+            pattern: "*hisat2.bam"
 authors:
-    - @FelixKrueger
+    - "@FelixKrueger"
