@@ -34,10 +34,8 @@ output:
             type: file
             description: Trim Galore! trimming report
             pattern: *trimming_report.txt
-    -
-        - fastqc_report:
-            type: file
-            description: FastQC report
-            pattern: *_fastqc.{zip,html}
+
 authors:
-    - @ewels
+    - 
+        - @ewels
+        - @FelixKrueger
