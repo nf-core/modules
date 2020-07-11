@@ -1,6 +1,6 @@
 name: umi_tools
 version: 1.0
-description: Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes. 
+description: Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes.
 keywords:
     - UMI
     - RMT
@@ -8,7 +8,7 @@ keywords:
 tools:
     - umi_tools:
         description: |
-            Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes. 
+            Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes.
         homepage: https://github.com/CGATOxford/UMI-tools
         documentation: https://umi-tools.readthedocs.io/en/latest/
 processes:
@@ -18,7 +18,7 @@ processes:
             The program will execute with the following pattern:
                 umi_tools dedup --log={SAMPLE_ID}.dedup.log {params.umitools_dedup_args} -I {SAMPLE_ID}.bam -S {SAMPLE_ID}.dedup.bam --output-stats={SAMPLE_ID}
         description: |
-            Groups PCR duplicates and de-duplicates reads to yield one read per group. 
+            Groups PCR duplicates and de-duplicates reads to yield one read per group.
             Use this when you want to remove the PCR duplicates prior to any downstream analysis.
         input:
             - sample_id:
@@ -43,4 +43,3 @@ processes:
 authors:
     - @candiceh08
     - @chris-cheshire
-

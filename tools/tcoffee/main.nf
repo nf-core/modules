@@ -14,4 +14,3 @@ process tcoffee {
     t_coffee -seq $fasta -outfile ${fasta}.aln
     """
 }
-
