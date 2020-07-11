@@ -45,10 +45,7 @@ process BOWTIE2 {
 		index = params.genome["bowtie2"]
 		bowtie2_name = name + "_" + params.genome["name"]
 
-		println ("bowtie2 -x ${index} -p ${cores} ${bowtie2_options} ${readString}  2>${bowtie2_name}_bowtie2_stats.txt | samtools view -bS -F 4 -F 8 -F 256 -> ${bowtie2_name}_bowtie2.bam")
 		"""
-		module load bowtie2
-		module load samtools
 		bowtie2 -x ${index} -p ${cores} ${bowtie2_options} ${readString}  2>${bowtie2_name}_bowtie2_stats.txt | samtools view -bS -F 4 -F 8 -F 256 -> ${bowtie2_name}_bowtie2.bam
 		"""
 
