@@ -1,6 +1,6 @@
 FROM nfcore/base:1.7
 LABEL authors="phil.ewels@scilifelab.se" \
-      description="Docker image for nf-core modules fastqc"
+    description="Docker image for nf-core modules fastqc"
 
 # foobar
 COPY environment.yml /

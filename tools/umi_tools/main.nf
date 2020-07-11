@@ -12,7 +12,7 @@ process umitools_dedup {
 
     input:
         tuple val(sample_id), path(bam)
-       
+
     output:
         tuple val(sample_id), path("${sample_id}.dedup.bam"), emit: dedupBam
         tuple val(sample_id), path("${sample_id}.dedup.bam.bai"), emit: dedupBai
