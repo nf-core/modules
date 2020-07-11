@@ -7,7 +7,8 @@ on:
 jobs:
   run_ci_test:
     runs-on: ubuntu-latest
-
+    env:
+      NXF_ANSI_LOG: false
     steps:
 
     # Check out the repository
@@ -20,4 +21,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./software/samtools/index/test/ -ansi-log false
+    - run: nextflow run ./software/samtools/index/test/
