@@ -14,7 +14,7 @@ process cutadapt {
     reverse_fq = "trimmed_2.fastq"
 
 
-    if (params.singleEnd) {
+    if (params.single_end) {
         processing = """
                     cutadapt \
                         -j ${task.cpus} \
@@ -32,14 +32,10 @@ process cutadapt {
                         --pair-filter=any \
                         --output ${forward_fq} \
                         --paired-output ${reverse_fq} ${reads}
-
-
                     """
     }
 
-    version = """
-    cutadapt --version &> v_cutadapt.txt
-    """
+    version = "cutadapt --version &> v_cutadapt.txt"
 
     return processing + version
 }
