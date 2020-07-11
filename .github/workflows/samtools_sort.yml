@@ -2,7 +2,7 @@ name: samtools sort
 on:
   push: {}
   pull_request:
-    paths: tools/samtools/sort*
+    paths: software/samtools/sort*
 
 jobs:
   run_ci_test:
@@ -20,4 +20,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./tools/samtools/sort/test/ -ansi-log false
+    - run: nextflow run ./software/samtools/sort/test/ -ansi-log false

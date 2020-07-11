@@ -2,7 +2,7 @@ name: FastQC
 on:
   push: {}
   pull_request:
-    paths: tools/fastqc/*
+    paths: software/fastqc/*
 
 jobs:
   run_ci_test:
@@ -20,4 +20,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./tools/fastqc/test/ -ansi-log false
+    - run: nextflow run ./software/fastqc/test/ -ansi-log false
