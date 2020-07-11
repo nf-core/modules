@@ -16,13 +16,13 @@ input:
         - fasta:
             type: path
             description: Input fasta file
-            pattern: *.{fasta,fa,tfa}
+            pattern: "*.{fasta,fa,tfa}"
 output:
     -
         - alignment:
             type: file
             description: tcoffee alignment file
-            pattern: *.aln
+            pattern: "*.aln"
 
 authors:
-    - @JoseEspinosa
+    - "@JoseEspinosa"

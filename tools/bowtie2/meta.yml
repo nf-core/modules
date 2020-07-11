@@ -1,4 +1,4 @@
-name: Bowtie 2 
+name: Bowtie 2
 description: Ultrafast alignment to reference genome
 keywords:
     - Alignment
@@ -28,10 +28,10 @@ output:
         - report:
             type: file
             description: mapping statistics report
-            pattern: *bowtie2_stats.txt
+            pattern: "*bowtie2_stats.txt"
         - alignment:
             type: file
             description: alignment file in BAM format
-            pattern: *bowtie2.bam
+            pattern: "*bowtie2.bam"
 authors:
-    - @FelixKrueger
+    - "@FelixKrueger"
