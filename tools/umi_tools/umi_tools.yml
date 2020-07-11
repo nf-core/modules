@@ -1,0 +1,46 @@
+name: umi_tools
+version: 1.0
+description: Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes. 
+keywords:
+    - UMI
+    - RMT
+    - Barcode
+tools:
+    - umi_tools:
+        description: |
+            Tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs) and single cell RNA-Seq cell barcodes. 
+        homepage: https://github.com/CGATOxford/UMI-tools
+        documentation: https://umi-tools.readthedocs.io/en/latest/
+processes:
+    - dedup:
+        operation: |
+            Set command args to params.umitools_dedup_args
+            The program will execute with the following pattern:
+                umi_tools dedup --log={SAMPLE_ID}.dedup.log {params.umitools_dedup_args} -I {SAMPLE_ID}.bam -S {SAMPLE_ID}.dedup.bam --output-stats={SAMPLE_ID}
+        description: |
+            Groups PCR duplicates and de-duplicates reads to yield one read per group. 
+            Use this when you want to remove the PCR duplicates prior to any downstream analysis.
+        input:
+            - sample_id:
+                type: string
+                description: Sample identifier
+            - bam:
+                type: file array
+                description: BAM sequence file and associated BAI index file
+        output:
+            - dedupBam:
+                type: tuple
+                description: A tuple of samples id and output bam file
+                pattern: [sample_id, *SAMPLE_ID.dedup.bam]
+            - dedupBam:
+                type: tuple
+                description: A tuple of samples id and output bai file
+                pattern: [sample_id, *SAMPLE_ID.dedup.bam.bai]
+            - report:
+                type: file
+                description: Log file for the umi_tools operation
+                pattern: *SAMPLE_ID.dedup.log
+authors:
+    - @candiceh08
+    - @chris-cheshire
+
