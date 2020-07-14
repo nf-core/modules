@@ -1,0 +1,30 @@
+name: bedtools intersect
+description: Returns the overlapping features between two sets of genomics features
+keywords:
+    - intersect,bed,bedtools
+tools:
+    - bedtools:
+        description: |
+            Bedtools is a software package that provides with a toolset to perform genome arithmetic operations.
+        homepage: https://bedtools.readthedocs.io/en/latest/index.html
+        documentation: https://bedtools.readthedocs.io/en/latest/index.html
+        doi: 10.093/bioinformatics/btq033
+input:
+    -
+        - input_file_1:
+            type: file
+            description: Input genomic coordinates file
+            pattern: "*.{bam,bed,BED,gff,vcf}"
+        - input_file_2:
+            type: file
+            description: Input genomic coordinates file
+            pattern: "*.{bam,bed,BED,gff,vcf}"
+
+output:
+    -
+        - index:
+            type: stdout,file
+            description:
+            pattern: "stdout,*.{bed,BED}"
+authors:
+    - "@JoseEspinosa"
