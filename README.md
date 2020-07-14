@@ -7,12 +7,12 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
 ## Table of contents
 
 - [Using existing modules](#using-existing-modules)
-    - [Configuration and parameters](#configuration-and-parameters)
-    - [Offline usage](#offline-usage)
+  - [Configuration and parameters](#configuration-and-parameters)
+  - [Offline usage](#offline-usage)
 - [Adding a new module file](#adding-a-new-module-file)
-    - [Testing](#testing)
-    - [Documentation](#documentation)
-    - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
+  - [Testing](#testing)
+  - [Documentation](#documentation)
+  - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 - [Help](#help)
 
 ## Terminology
@@ -27,7 +27,7 @@ The features offered by Nextflow DSL 2 can be used in various ways depending on 
 
 The Nextflow [`include`](https://www.nextflow.io/docs/edge/dsl2.html#modules-include) statement can be used within your pipelines in order to load module files that you have available locally.
 
-You should be able to get a good idea as to how other people are using module files by looking at pipelines available in nf-core e.g. [`nf-core/rnaseq`](https://github.com/nf-core/rnaseq/pull/162)
+You should be able to get a good idea as to how other people are using module files by looking at pipelines available in nf-core e.g. [`nf-core/chipseq`](https://github.com/nf-core/chipseq/tree/dev) (work in progress)
 
 ### Configuration and parameters
 
@@ -54,21 +54,34 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 
 ## Adding a new module file
 
-If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) for examples.
+If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) for examples.
 
 The definition and standards for module files are still under discussion amongst the community.
 
 Currently the following points have been agreed on:
 
-- Module file should only define inputs/outputs as parameters and have the ability to use `params.MODULENAME_options` as an additional parameter to add any additional settings via pipelines.
-- Specify single-end boolean values within the input channel and not be inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
-- Define threads or resources where required for a particular process using `task.cpus`
-- Software that can be piped together should be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM
-- Process names should be all uppercase
+- Module file should only define inputs/outputs as parameters and have the
+  ability to use `params.MODULENAME_options` as an additional parameter to add
+  any additional settings via pipelines.
+- Specify single-end boolean values
+  within the input channel and not be inferred from the data e.g.
+  [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
+- Define threads or resources where required for a particular process using
+  `task.cpus`
+- Software that can be piped together should be added to separate
+  module files unless there is an run-time, storage advantage in implementing
+  in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM -
+  Process names should be all uppercase
 - The `publishDirMode` should be configurable
-- Test data is stored within this repo. Re-use generic files from `tests/data` by
-    symlinking them into the test directory of the module. Add specific files
-    to the test-directory directly. Keep test files as tiny as possible.
+- Test data is stored within this repo. Re-use generic files
+  from `tests/data` by symlinking them into the test directory of the module.
+  Add specific files to the test-directory directly. Keep test files as tiny as
+  possible.
+- Software requirements should be declared in a conda `environment.yml` file,
+  including exact version numbers. Additionally, there should be a `Dockerfile`
+  that containerizes the environment.
+- Each process should emit a file `TOOL.version.txt` containing a single line
+  with the software's version in the format `vX.X.X`.
 
 ### Testing
 
@@ -80,7 +93,7 @@ Please add some documentation to the top of the module file in the form of nativ
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on `nf-core/modules` GitHub repo with the appropriate information.
 
