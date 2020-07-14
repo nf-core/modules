@@ -5,7 +5,7 @@ process GENOMECOV {
 
     input:
         path (bam)
-        path (fasta_sizes)
+        path (chrom_sizes)
         val (genomecov_args)
 
     output:
@@ -13,6 +13,6 @@ process GENOMECOV {
 
     script:
     """
-    bedtools genomecov -ibam ${bam} -g ${fasta_sizes} ${genomecov_args}
+    bedtools genomecov -ibam ${bam} -g ${chrom_sizes} ${genomecov_args}
     """
 }
