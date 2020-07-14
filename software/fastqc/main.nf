@@ -10,8 +10,7 @@ process FASTQC {
         path "*.version.txt", emit: version
 
     container 'docker.pkg.github.com/nf-core/fastqc'
-    // see https://github.com/nextflow-io/nextflow/issues/1674
-    conda "../environment.yml"
+    conda "${moduleDir}/environment.yml"
 
     publishDir "${params.out_dir}", mode: params.publish_dir_mode
 
