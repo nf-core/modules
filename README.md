@@ -7,21 +7,21 @@ A repository for hosting nextflow [`DSL2`](https://www.nextflow.io/docs/edge/dsl
 ## Table of contents
 
 - [Using existing modules](#using-existing-modules)
-  - [Configuration and parameters](#configuration-and-parameters)
-  - [Offline usage](#offline-usage)
+    - [Configuration and parameters](#configuration-and-parameters)
+    - [Offline usage](#offline-usage)
 - [Adding a new module file](#adding-a-new-module-file)
-  - [Testing](#testing)
-  - [Documentation](#documentation)
-  - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
+    - [Testing](#testing)
+    - [Documentation](#documentation)
+    - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 - [Help](#help)
 
 ## Terminology
 
 The features offered by Nextflow DSL 2 can be used in various ways depending on the granularity with which you would like to write pipelines. Please see the listing below for the hierarchy and associated terminology we have decided to use when referring to DSL 2 components:
 
-- _Module_: A `process`that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. This repository has been created to only host atomic module files that should be added to the `tools` sub-directory along with the required documentation, software and tests.
-- _Sub-workflow_: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline. For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows.
-- _Workflow_: What DSL 1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL 1, or by using a combination of DSL 2 individual modules and sub-workflows.
+- *Module*: A `process`that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. This repository has been created to only host atomic module files that should be added to the `tools` sub-directory along with the required documentation, software and tests.
+- *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline. For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows.
+- *Workflow*: What DSL 1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL 1, or by using a combination of DSL 2 individual modules and sub-workflows.
 
 ## Using existing modules
 
@@ -60,28 +60,15 @@ The definition and standards for module files are still under discussion amongst
 
 Currently the following points have been agreed on:
 
-- Module file should only define inputs/outputs as parameters and have the
-  ability to use `params.MODULENAME_options` as an additional parameter to add
-  any additional settings via pipelines.
-- Specify single-end boolean values
-  within the input channel and not be inferred from the data e.g.
-  [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
+- Module file should only define inputs/outputs as parameters and have the ability to use `params.MODULENAME_options` as an additional parameter to add any additional settings via pipelines.
+- Specify single-end boolean values within the input channel and not be inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
 - Define threads or resources where required for a particular process using
-  `task.cpus`
-- Software that can be piped together should be added to separate
-  module files unless there is an run-time, storage advantage in implementing
-  in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM -
-  Process names should be all uppercase
+`task.cpus`
+- Software that can be piped together should be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM - Process names should be all uppercase
 - The `publishDirMode` should be configurable
-- Test data is stored within this repo. Re-use generic files
-  from `tests/data` by symlinking them into the test directory of the module.
-  Add specific files to the test-directory directly. Keep test files as tiny as
-  possible.
-- Software requirements should be declared in a conda `environment.yml` file,
-  including exact version numbers. Additionally, there should be a `Dockerfile`
-  that containerizes the environment.
-- Each process should emit a file `TOOL.version.txt` containing a single line
-  with the software's version in the format `vX.X.X`.
+- Test data is stored within this repo. Re-use generic files from `tests/data` by symlinking them into the test directory of the module. Add specific files to the test-directory directly. Keep test files as tiny as possible.
+- Software requirements should be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there should be a `Dockerfile` that containerizes the environment.
+- Each process should emit a file `TOOL.version.txt` containing a single line with the software's version in the format `vX.X.X`.
 
 ### Testing
 
