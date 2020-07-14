@@ -5,8 +5,8 @@ on:
     branches: master
     # Only if a conda environment file or a docker build file has been updated
     paths:
-      - tools/*/environment.yml
-      - tools/*/Dockerfile
+      - software/*/environment.yml
+      - software/*/Dockerfile
 
 jobs:
   build_docker:
@@ -29,7 +29,14 @@ jobs:
 
       - name: Build images
         run: |
-          for d in tools/*; do
+          echo "Tools that appear to have been updated:"
+          echo -e $TOOLS
+          echo '-----'
+          for TOOL in $TOOLS; do
+            echo $TOOL
+          done;
+          echo '-----'
+          for d in software/*; do
             for TOOL in $TOOLS; do
               if echo $d/ | grep -q "$TOOL"; then
                 cd "$GITHUB_WORKSPACE/$d"
