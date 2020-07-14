@@ -3,21 +3,21 @@ nextflow.preview.dsl = 2
 process FASTQC {
     input:
         tuple val(name), path(reads)
-        val (fastqc_args)
-        val (outputdir)
 
     output:
         tuple val(name), path ("*fastqc*"), emit: all
-        path "*.zip",                       emit: report // e.g. for MultiQC later
+        path "*.zip", emit: report // e.g. for MultiQC later
+        path "*.version.txt", emit: version
 
-    container 'quay.io/biocontainers/fastqc:0.11.8--2'
+    container 'docker.pkg.github.com/nf-core/fastqc'
+    // see https://github.com/nextflow-io/nextflow/issues/1674
+    conda "../environment.yml"
 
-    publishDir "$outputdir",
-        mode: "copy", overwrite: true
+    publishDir "${params.out_dir}", mode: params.publish_dir_mode
 
     script:
         """
-        fastqc $fastqc_args -q -t 2 $reads
-        fastqc --version &> fastqc.version.txt
+        fastqc ${params.fastqc_args} -t ${task.cpus} $reads
+        fastqc --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > fastqc.version.txt
         """
 }
