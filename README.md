@@ -65,10 +65,11 @@ Currently the following points have been agreed on:
 - Define threads or resources where required for a particular process using
 `task.cpus`
 - Software that can be piped together should be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM - Process names should be all uppercase
-- The `publishDirMode` should be configurable
+- The `publishDirMode` should be configurable via `params.publish_dir_mode`
 - Test data is stored within this repo. Re-use generic files from `tests/data` by symlinking them into the test directory of the module. Add specific files to the test-directory directly. Keep test files as tiny as possible.
 - Software requirements should be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there should be a `Dockerfile` that containerizes the environment.
 - Each process should emit a file `TOOL.version.txt` containing a single line with the software's version in the format `vX.X.X`.
+- All outputs should be named
 
 ### Testing
 
