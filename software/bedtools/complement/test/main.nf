@@ -2,9 +2,11 @@
 
 nextflow.preview.dsl = 2
 
+params.out_dir = "test_output"
+params.fastqc_args = ''
+params.publish_dir_mode = "copy"
 params.bedtools_complement_args = ''
 
-include check_output from  '../../../../tests/functions/check_process_outputs.nf' // params(params)
 include BEDTOOLS_COMPLEMENT from '../main.nf' params(params)
 
 // Define input channels
@@ -14,5 +16,4 @@ chrom_sizes = Channel.fromPath('./input_data/genome.sizes')
 // Run the workflow
 workflow {
     BEDTOOLS_COMPLEMENT(ch_input, chrom_sizes, params.bedtools_complement_args)
-    // .check_output()
 }
