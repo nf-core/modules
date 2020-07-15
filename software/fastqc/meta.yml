@@ -1,33 +1,63 @@
 name: FastQC
 description: Run FastQC on sequenced reads
 keywords:
-    - Quality Control
-    - QC
-    - Adapters
+  - Quality Control
+  - QC
+  - Adapters
 tools:
-    - fastqc:
-        description: |
-            FastQC gives general quality metrics about your reads.
-            It provides information about the quality score distribution
-            across your reads, the per base sequence content (%A/C/G/T).
-            You get information about adapter contamination and other
-            overrepresented sequences.
-        homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-        documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+  - fastqc:
+      description: |
+        FastQC gives general quality metrics about your reads.
+        It provides information about the quality score distribution
+        across your reads, the per base sequence content (%A/C/G/T).
+        You get information about adapter contamination and other
+        overrepresented sequences.
+      homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+      documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+params:
+  - fastqc_args:
+      type: string
+      description: Additional command line arguments passed to fastqc.
+  - out_dir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$out_dir/MODULE_NAME`
+  - publish_dir:
+      type: string
+      description: |
+        Append to the path for the standard output directory provided by `$out_dir`.
+  - publish_dir_mode:
+      type: string
+      description: |
+        Provide a value for the Nextflow `publishDir` mode parameter
+        (e.g. copy, link, ...)
+  - publish_results:
+      type: string
+      description: |
+        Whether or not to publish results into `publish_dir`. Set to `none` to not
+        publish any files at all; to `default` to publish all relevant files.
 input:
-    -
-        - name:
-            type: string
-            description: Sample identifier
-        - reads:
-            type: file
-            description: Input FastQ file, or pair of files
+  - name:
+      type: string
+      description: Sample identifier
+  - single_end:
+      type: boolean
+      description: |
+        Boolean indicating whether the corresponding sample is single-end (true)
+        or paired-end (false).
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
 output:
-    -
-        - report:
-            type: file
-            description: FastQC report
-            pattern: "*_fastqc.{zip,html}"
+  - report:
+      type: file
+      description: FastQC report
+      pattern: "*_fastqc.{zip,html}"
 authors:
-    - "@ewels"
-    - "@FelixKrueger"
+  - "@grst"
+  - "@drpatelh"
+  - "@ewels"
+  - "@FelixKrueger"
