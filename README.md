@@ -54,20 +54,23 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 
 ## Adding a new module file
 
-If you decide to upload your module file to `nf-core/modules` then this will ensure that it will be automatically downloaded, and available at run-time to all nf-core pipelines, and to everyone within the Nextflow community! See [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) for examples.
+If you decide to upload your module file to `nf-core/modules` then this will
+ensure that it will be automatically downloaded, and available at run-time to
+all nf-core pipelines, and to everyone within the Nextflow community! See
+[`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
+for examples.
 
-The definition and standards for module files are still under discussion amongst the community.
-
-Currently the following points have been agreed on:
+**The definition and standards for module files are still under discussion
+amongst the community. Currently the following points have been agreed on:**
 
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 ### Defining inputs, outputs and parameters
-- Module files SHOULD only define inputs and outputs as parameters. Additionally,
+- A module file SHOULD only define inputs and outputs as parameters. Additionally,
     - it MUST define threads or resources where required for a particular process using `task.cpus`
-    - It MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_options` parameter.
-    - All NGS modules MUST accept a triplet [name, single_end, reads] as input. The single-end boolean values MUST be specified through the input channel and not inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
-- Process names MUST be all uppercase
+    - it MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_args` parameter.
+    - All NGS modules MUST accept a triplet [name, single_end, reads] as input. The single-end boolean values MUST be specified through the input channel and not inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13).
+- Process names MUST be all uppercase.
 - Each process MUST emit a file `<TOOL>.version.txt` containing a single line with the software's version in the format `v<VERSION_NUMBER>`.
 - All outputs MUST be named using `emit`.
 
@@ -75,11 +78,13 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 - Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
 
 ### Publishing results
+- The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
 - The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
 - The module MUST accept a parameter `params.publish_results` accepting at least
     - `"none"`, to publish no files at all, and
     - `"default"`, to publish a sensible selection of files.
-  It MAY accept further options.
+
+    It MAY accept further options.
 - To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
 
 ### Testing
