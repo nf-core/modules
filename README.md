@@ -60,20 +60,38 @@ The definition and standards for module files are still under discussion amongst
 
 Currently the following points have been agreed on:
 
-- Module file should only define inputs/outputs as parameters and have the ability to use `params.MODULENAME_options` as an additional parameter to add any additional settings via pipelines.
-- Specify single-end boolean values within the input channel and not be inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
-- Define threads or resources where required for a particular process using
-`task.cpus`
-- Software that can be piped together should be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view` to output BAM instead of SAM - Process names should be all uppercase
-- The `publishDirMode` should be configurable via `params.publish_dir_mode`
-- Test data is stored within this repo. Re-use generic files from `tests/data` by symlinking them into the test directory of the module. Add specific files to the test-directory directly. Keep test files as tiny as possible.
-- Software requirements should be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there should be a `Dockerfile` that containerizes the environment.
-- Each process should emit a file `TOOL.version.txt` containing a single line with the software's version in the format `vX.X.X`.
-- All outputs should be named
+The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
+
+### Defining inputs, outputs and parameters
+- Module files SHOULD only define inputs and outputs as parameters. Additionally,
+    - it MUST define threads or resources where required for a particular process using `task.cpus`
+    - It MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_options` parameter.
+    - All NGS modules MUST accept a triplet [name, single_end, reads] as input. The single-end boolean values MUST be specified through the input channel and not inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13)
+- Process names MUST be all uppercase
+- Each process MUST emit a file `<TOOL>.version.txt` containing a single line with the software's version in the format `v<VERSION_NUMBER>`.
+- All outputs MUST be named using `emit`.
+
+### Atomicity
+- Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
+
+### Publishing results
+- The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
+- The module MUST accept a parameter `params.publish_results` accepting at least
+    - `"none"`, to publish no files at all, and
+    - `"default"`, to publish a sensible selection of files.
+  It MAY accept further options.
+- To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
 
 ### Testing
+- Every module MUST be tested by adding a test workflow with a toy dataset.
+- Test data MUST be stored within this repo. It is RECOMMENDED to re-use generic files from `tests/data` by symlinking them into the test directory of the module. Specific files MUST be added to the test-directory directly. Test files MUST be kept as tiny as possible.
 
-If you want to add a new module config file to `nf-core/modules` please test that your pipeline of choice runs as expected by using the [`-include`](https://www.nextflow.io/docs/edge/dsl2.html#modules-include) statement with a local version of the module file.
+### Software requirements
+- Software requirements SHOULD be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there MUST be a `Dockerfile` that containerizes the environment, or packages the software if conda is not available.
+
+### File formats
+- Wherever possible, [CRAM](https://en.wikipedia.org/wiki/CRAM_(file_format)) files SHOULD be used over BAM files.
+- Wherever possible, FASTQ files SHOULD be compressed using gzip.
 
 ### Documentation
 
