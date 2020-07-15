@@ -29,14 +29,28 @@ params:
         Append to the path for the standard output directory provided by `$out_dir`.
   - publish_dir_mode:
       type: string
-      description: Provide a value for the Nextflow `publishDir` mode parameter (e.g. copy, link, ...)
+      description: |
+        Provide a value for the Nextflow `publishDir` mode parameter
+        (e.g. copy, link, ...)
+  - publish_results:
+      type: string
+      description: |
+        Whether or not to publish results into `publish_dir`. Set to `none` to not
+        publish any files at all; to `default` to publish all relevant files.
 input:
   - name:
       type: string
       description: Sample identifier
+  - single_end:
+      type: boolean
+      description: |
+        Boolean indicating whether the corresponding sample is single-end (true)
+        or paired-end (false).
   - reads:
       type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
 output:
   - report:
       type: file
