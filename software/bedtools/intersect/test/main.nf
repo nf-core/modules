@@ -2,6 +2,9 @@
 
 nextflow.preview.dsl = 2
 
+params.out_dir = "test_output"
+params.fastqc_args = ''
+params.publish_dir_mode = "copy"
 params.intersect_args = '' //'-bed -c -f 0.20'
 
 include check_output from  '../../../../tests/functions/check_process_outputs.nf' // params(params)
@@ -14,5 +17,4 @@ ch_input_2 = Channel.fromPath('./input_data/B.bed')
 // Run the workflow
 workflow {
     INTERSECT_BED(ch_input_1, ch_input_2, params.intersect_args)
-    // .check_output()
 }
