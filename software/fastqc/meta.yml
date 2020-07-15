@@ -1,33 +1,44 @@
 name: FastQC
 description: Run FastQC on sequenced reads
 keywords:
-    - Quality Control
-    - QC
-    - Adapters
+  - Quality Control
+  - QC
+  - Adapters
 tools:
-    - fastqc:
-        description: |
-            FastQC gives general quality metrics about your reads.
-            It provides information about the quality score distribution
-            across your reads, the per base sequence content (%A/C/G/T).
-            You get information about adapter contamination and other
-            overrepresented sequences.
-        homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-        documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+  - fastqc:
+      description: |
+        FastQC gives general quality metrics about your reads.
+        It provides information about the quality score distribution
+        across your reads, the per base sequence content (%A/C/G/T).
+        You get information about adapter contamination and other
+        overrepresented sequences.
+      homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+      documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+params:
+  - out_dir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output filese into `$out_dir/MODULE_NAME`
+  - fastqc_publish_dir:
+      type: string
+      description: |
+        Override the automatically generated output directory.
+  - publish_dir_mode:
+      type: string
+      description: Set the publishDir mode (e.g. copy, link, ...)
 input:
-    -
-        - name:
-            type: string
-            description: Sample identifier
-        - reads:
-            type: file
-            description: Input FastQ file, or pair of files
+  - name:
+      type: string
+      description: Sample identifier
+  - reads:
+      type: file
+      description: Input FastQ file, or pair of files
 output:
-    -
-        - report:
-            type: file
-            description: FastQC report
-            pattern: "*_fastqc.{zip,html}"
+  - report:
+      type: file
+      description: FastQC report
+      pattern: "*_fastqc.{zip,html}"
 authors:
-    - "@ewels"
-    - "@FelixKrueger"
+  - "@ewels"
+  - "@FelixKrueger"
