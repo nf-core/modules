@@ -13,7 +13,6 @@ include { FASTQC } from '../main.nf'
 workflow test_single_end {
     input_files = Channel.fromPath("data/test_single_end.fastq.gz")
                     .map {f -> [f.baseName, f]}
-    input_files.view()
     FASTQC(input_files)
 }
 
