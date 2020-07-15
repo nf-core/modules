@@ -9,13 +9,13 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: '10'
+          node-version: "10"
 
       - name: Install markdownlint
         run: npm install -g markdownlint-cli
 
       - name: Run Markdownlint
-        run: markdownlint ${GITHUB_WORKSPACE} -c ${GITHUB_WORKSPACE}/.github/markdownlint.yml
+        run: markdownlint ${GITHUB_WORKSPACE} -c ${GITHUB_WORKSPACE}/.markdownlint.yml
 
   EditorConfig:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: '10'
+          node-version: "10"
 
       - name: Install ECLint
         run: npm install -g eclint
@@ -41,7 +41,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v1
         with:
-          node-version: '10'
+          node-version: "10"
 
       - name: Install yaml-lint
         run: npm install -g yaml-lint

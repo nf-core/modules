@@ -1,37 +1,40 @@
-nextflow.preview.dsl = 2
+def MODULE = "fastqc"
+params.publish_dir = MODULE
+params.publish_results = "default"
 
 process FASTQC {
+    publishDir "${params.out_dir}/${params.publish_dir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename ->
+                    if (params.publish_results == "none") null
+                    else filename }
 
-    // tag "FastQC - $sample_id"
+    container "docker.pkg.github.com/nf-core/$MODULE"
+
+    conda "${moduleDir}/environment.yml"
 
     input:
-        tuple val(name), path(reads)
-        val (outputdir)
-        // fastqc_args are best passed into the workflow in the following manner:
-        // --fastqc_args="--nogroup -a custom_adapter_file.txt"
-        val (fastqc_args)
-        val (verbose)
+    tuple val(name), val(single_end), path(reads)
 
     output:
-        tuple val(name), path ("*fastqc*"), emit: all
-        path "*.zip",                       emit: report // e.g. for MultiQC later
-
-    // container 'quay.io/biocontainers/fastqc:0.11.8--2'
-
-    publishDir "$outputdir",
-        mode: "copy", overwrite: true
+    tuple val(name), val(single_end), path("*.html"), emit: html
+    tuple val(name), val(single_end), path("*.zip"), emit: zip
+    path "*.version.txt", emit: version
 
     script:
-
-        if (verbose){
-            println ("[MODULE] FASTQC ARGS: " + fastqc_args)
-        }
-
+    // Add soft-links to original FastQs for consistent naming in pipeline
+    if (single_end) {
         """
-        module load fastqc
-        fastqc $fastqc_args -q -t 2 $reads
-
-        fastqc --version &> fastqc.version.txt
+        [ ! -f  ${name}.fastq.gz ] && ln -s $reads ${name}.fastq.gz
+        fastqc ${params.fastqc_args} --threads $task.cpus ${name}.fastq.gz
+        fastqc --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > fastqc.version.txt
         """
-
+    } else {
+        """
+        [ ! -f  ${name}_1.fastq.gz ] && ln -s ${reads[0]} ${name}_1.fastq.gz
+        [ ! -f  ${name}_2.fastq.gz ] && ln -s ${reads[1]} ${name}_2.fastq.gz
+        fastqc ${params.fastqc_args} --threads $task.cpus ${name}_1.fastq.gz ${name}_2.fastq.gz
+        fastqc --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > fastqc.version.txt
+        """
+    }
 }
