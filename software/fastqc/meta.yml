@@ -15,6 +15,9 @@ tools:
       homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
       documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
 params:
+  - fastqc_args:
+      type: string
+      description: Additional command line arguments passed to fastqc.
   - out_dir:
       type: string
       description: |
@@ -40,5 +43,6 @@ output:
       description: FastQC report
       pattern: "*_fastqc.{zip,html}"
 authors:
+  - "@grst"
   - "@ewels"
   - "@FelixKrueger"
