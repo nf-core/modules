@@ -1,4 +1,6 @@
 nextflow.preview.dsl = 2
+def MODULE = "fastqc"
+params.fastqc_publish_dir = "${params.out_dir}/$MODULE"
 
 process FASTQC {
     input:
@@ -9,10 +11,10 @@ process FASTQC {
         path "*.zip", emit: report // e.g. for MultiQC later
         path "*.version.txt", emit: version
 
-    container 'docker.pkg.github.com/nf-core/fastqc'
+    container "docker.pkg.github.com/nf-core/$module"
     conda "${moduleDir}/environment.yml"
 
-    publishDir "${params.out_dir}", mode: params.publish_dir_mode
+    publishDir "${params.fastqc_publish_dir}/$name", mode: params.publish_dir_mode
 
     script:
         """
