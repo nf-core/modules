@@ -1,21 +1,31 @@
 #!/usr/bin/env nextflow
 nextflow.preview.dsl = 2
 
-params.outdir = "."             // gets set in nextflow.config file (as './results/fastqc')
+params.out_dir = "test_output"
 params.fastqc_args = ''
-params.verbose = false
+params.publish_dir_mode = "copy"
 
-// TODO: check the output files in some way
-// include '../../../tests/functions/check_process_outputs.nf'
-include '../main.nf'
+include { FASTQC } from '../main.nf'
 
-// Define input channels
-ch_read_files = Channel 
-    .fromFilePairs('../../../test-datasets/test*{1,2}.fastq.gz',size:-1)
-    // .view()  // to check whether the input channel works
+/**
+ * Test if FASTQC runs with single-end data
+ */
+workflow test_single_end {
+    input_files = Channel.fromPath("data/test_single_end.fastq.gz")
+                    .map {f -> [f.baseName, true, f]}
+    FASTQC(input_files)
+}
 
-// Run the workflow
+/**
+ * Test if FASTQC runs with paired end data
+ */
+workflow test_paired_end {
+    input_files = Channel.fromFilePairs("data/test_R{1,2}.fastq.gz")
+                    .map {f -> [f[0], false, f[1]]}
+    FASTQC(input_files)
+}
+
 workflow {
-    FASTQC (ch_read_files, params.outdir, params.fastqc_args, params.verbose)
-    // .check_output()
+    test_single_end()
+    test_paired_end()
 }
