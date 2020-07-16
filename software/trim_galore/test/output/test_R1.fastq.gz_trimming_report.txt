@@ -1,0 +1,97 @@
+
+SUMMARISING RUN PARAMETERS
+==========================
+Input filename: test_R1.fastq.gz
+Trimming mode: paired-end
+Trim Galore version: 0.6.5
+Cutadapt version: 2.3
+Number of cores used for trimming: 1
+Quality Phred score cutoff: 20
+Quality encoding type selected: ASCII+33
+Using Nextera adapter for trimming (count: 83). Second best hit was smallRNA (count: 0)
+Adapter sequence: 'CTGTCTCTTATA' (Nextera Transposase sequence; auto-detected)
+Maximum trimming error rate: 0.1 (default)
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Output file will be GZIP compressed
+
+
+This is cutadapt 2.3 with Python 3.7.3
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA test_R1.fastq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 0.19 s (19 us/read; 3.12 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                  10,000
+Reads with adapters:                     3,225 (32.2%)
+Reads written (passing filters):        10,000 (100.0%)
+
+Total basepairs processed:       760,000 bp
+Quality-trimmed:                   4,492 bp (0.6%)
+Total written (filtered):        748,403 bp (98.5%)
+
+=== Adapter 1 ===
+
+Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 3225 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-12 bp: 1
+
+Bases preceding removed adapters:
+  A: 23.8%
+  C: 28.2%
+  G: 22.7%
+  T: 25.3%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	2170	2500.0	0	2170
+2	622	625.0	0	622
+3	223	156.2	0	223
+4	64	39.1	0	64
+5	14	9.8	0	14
+6	9	2.4	0	9
+7	8	0.6	0	8
+8	5	0.2	0	5
+9	4	0.0	0	4
+10	8	0.0	1	7 1
+11	3	0.0	1	3
+12	4	0.0	1	4
+13	6	0.0	1	6
+14	5	0.0	1	4 1
+15	5	0.0	1	5
+16	6	0.0	1	5 1
+17	3	0.0	1	3
+18	3	0.0	1	3
+19	1	0.0	1	1
+20	3	0.0	1	3
+21	7	0.0	1	7
+22	7	0.0	1	7
+23	3	0.0	1	3
+24	6	0.0	1	6
+25	4	0.0	1	4
+26	2	0.0	1	2
+27	4	0.0	1	4
+28	1	0.0	1	1
+29	3	0.0	1	3
+30	4	0.0	1	4
+32	3	0.0	1	3
+33	2	0.0	1	1 1
+34	1	0.0	1	1
+35	1	0.0	1	1
+40	1	0.0	1	1
+42	1	0.0	1	0 1
+45	1	0.0	1	0 1
+49	1	0.0	1	0 1
+52	1	0.0	1	0 1
+56	2	0.0	1	0 2
+59	1	0.0	1	0 1
+67	1	0.0	1	0 1
+70	2	0.0	1	0 2
+
+RUN STATISTICS FOR INPUT FILE: test_R1.fastq.gz
+=============================================
+10000 sequences processed in total
+
