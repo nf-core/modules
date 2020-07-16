@@ -20,12 +20,18 @@ process INTERSECT_BED {
     path (input_file_2)
     val (intersectbed_args)
 
-    output:
-    stdout()
+    //output:
+    //path "${input_file_1.baseName}_i_${input_file_2.baseName}.bed", emit: intersect
+    //path "*.version.txt", emit: version
 
     script:
+    def params_string = intersectbed_args.collect {
+                            /-$it.key $it.value/
+                        } join " "
+
     """
-    bedtools intersect -a ${input_file_1} -b ${input_file_2} ${intersectbed_args}
+    bedtools intersect -a ${input_file_1} -b ${input_file_2} ${params_string} > ${input_file_1.baseName}_i_${input_file_2.baseName}.bed
+    bedtools --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > bedtools.version.txt
     """
 }
 
