@@ -12,9 +12,7 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
 
-    # Check out the repository
     - uses: actions/checkout@v1
-      submodules: true
 
     - name: Install Nextflow
       run: |

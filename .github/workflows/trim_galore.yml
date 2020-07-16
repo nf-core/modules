@@ -1,8 +1,9 @@
 name: Trim Galore!
 on:
-  push: {}
+  push:
+    paths: software/trim_galore/**
   pull_request:
-    paths: software/trim_galore/*
+    paths: software/trim_galore/**
 
 jobs:
   run_ci_test:
@@ -11,9 +12,7 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
 
-    # Check out the repository
-    - uses: actions/checkout@v1
-      submodules: true
+    - uses: actions/checkout@v2
 
     - name: Install Nextflow
       run: |

@@ -1,8 +1,9 @@
 name: cutadapt
 on:
-  push: {}
+  push:
+    paths: software/cutadapt/**
   pull_request:
-    paths: software/cutadapt/*
+    paths: software/cutadapt/**
 
 jobs:
   run_ci_test:
@@ -11,13 +12,6 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
-
-      - name: Checkout submodules
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
       - name: Install Nextflow
         run: |
