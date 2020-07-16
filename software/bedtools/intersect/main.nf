@@ -20,9 +20,9 @@ process INTERSECT_BED {
     path (input_file_2)
     val (intersectbed_args)
 
-    //output:
-    //path "${input_file_1.baseName}_i_${input_file_2.baseName}.bed", emit: intersect
-    //path "*.version.txt", emit: version
+    output:
+    path "${input_file_1.baseName}_i_${input_file_2.baseName}.bed", emit: intersect
+    path "*.version.txt", emit: version
 
     script:
     def params_string = intersectbed_args.collect {
