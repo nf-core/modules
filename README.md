@@ -81,7 +81,7 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 - Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
 
 ### Resource requirements
-- Each module MUST define a label `process_low`, `process_medium` or `process_high` to declare resource requirements. (*These flags will be ignored outside of nf-core and the developer is free to define adequate resource requirements*)
+- Each module MUST define a label `process_low`, `process_medium` or `process_high` to declare resource requirements. (*These flags will be ignored outside of nf-core and the pipeline developer is free to define adequate resource requirements*)
 
 ### Publishing results
 - The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
