@@ -68,23 +68,30 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 ### Defining inputs, outputs and parameters
 - A module file SHOULD only define inputs and outputs as parameters. Additionally,
     - it MUST define threads or resources where required for a particular process using `task.cpus`
-    - it MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_args` parameter.
+    - ~~it MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_args` parameter.~~
+    - it MUST be possible to pass additional parameters as a [nextflow Map](https://www.nextflow.io/docs/latest/script.html#maps) through an additional input channel `val(options)` [Details require discussion].
     - All NGS modules MUST accept a triplet [name, single_end, reads] as input. The single-end boolean values MUST be specified through the input channel and not inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13).
 - Process names MUST be all uppercase.
 - Each process MUST emit a file `<TOOL>.version.txt` containing a single line with the software's version in the format `v<VERSION_NUMBER>`.
 - All outputs MUST be named using `emit`.
+- A Process MUST NOT contain a `when` statement.
+- Optional inputs need development on the nextflow side. In the meanwhile, "fake files" MAY be used to work around this issue.
 
 ### Atomicity
 - Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
+
+### Resource requirements
+- Each module MUST define a label `process_low`, `process_medium` or `process_high` to declare resource requirements. (*These flags will be ignored outside of nf-core and the developer is free to define adequate resource requirements*)
 
 ### Publishing results
 - The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
 - The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
 - The module MUST accept a parameter `params.publish_results` accepting at least
-    - `"none"`, to publish no files at all, and
-    - `"default"`, to publish a sensible selection of files.
+    - `"none"`, to publish no files at all,
+    - a glob pattern which is initalized to a sensible default value.
 
-    It MAY accept further options.
+    It MAY accept `"logs"` to publish relevant log files, or other flags, if applicable.
+
 - To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
 
 ### Testing
@@ -93,14 +100,14 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 
 ### Software requirements
 - Software requirements SHOULD be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there MUST be a `Dockerfile` that containerizes the environment, or packages the software if conda is not available.
+- Docker containers MUST BE identified by their `sha256(Dockerfile + environment.yml)`. Like that, identical containers are implicitly re-used across subcommands.
 
 ### File formats
 - Wherever possible, [CRAM](https://en.wikipedia.org/wiki/CRAM_(file_format)) files SHOULD be used over BAM files.
 - Wherever possible, FASTQ files SHOULD be compressed using gzip.
 
 ### Documentation
-
-Please add some documentation to the top of the module file in the form of native Nextflow comments. This has to be specified in a particular format as you will be able to see from other examples in the [`nf-core/modules/nf`](https://github.com/nf-core/modules/tree/master/nf) directory.
+- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
 
 ### Uploading to `nf-core/modules`
 
