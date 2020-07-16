@@ -17,7 +17,7 @@ A test alignment should look roughly like this:
 
 `bismark --genome /bi/scratch/Genomes/E_coli/ -1 Ecoli_10K_methylated_R1.fastq.gz -2 Ecoli_10K_methylated_R2.fastq.gz --non_dir`
 
-```
+``` csv
 Bismark report for: Ecoli_10K_methylated_R1.fastq.gz and Ecoli_10K_methylated_R2.fastq.gz (version: v0.22.3)
 Bismark was run with Bowtie 2 against the bisulfite genome of /bi/scratch/Genomes/E_coli/ with the specified options: -q --score-min L,0,-0.2 --ignore-quals --no-mixed --no-discordant --dovetail --maxins 500
 Option '--non_directional' specified: alignments to all strands were being performed (OT, OB, CTOT, CTOB)
