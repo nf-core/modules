@@ -56,6 +56,5 @@ C methylated in CHG context:    10.1%
 C methylated in CHH context:    10.0%
 Can't determine percentage of methylated Cs in unknown context (CN or CHN) if value was 0
 
-
 Bismark completed in 0d 0h 0m 12s
 ```
