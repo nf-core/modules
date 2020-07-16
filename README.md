@@ -100,7 +100,9 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 
 ### Software requirements
 - Software requirements SHOULD be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there MUST be a `Dockerfile` that containerizes the environment, or packages the software if conda is not available.
-- Docker containers MUST BE identified by their `sha256(Dockerfile + environment.yml)`. Like that, identical containers are implicitly re-used across subcommands.
+- Docker containers MUST BE identified by their `sha256(Dockerfile + environment.yml)`.
+- Each module must have it's own `Dockerfile` and `environment.yml` file
+    - Care should be taken to maintain identical files for subcommands that use the same software. Then the hash tag will be the same and they will be implicitly re-used across subcommands.
 
 ### File formats
 - Wherever possible, [CRAM](https://en.wikipedia.org/wiki/CRAM_(file_format)) files SHOULD be used over BAM files.
