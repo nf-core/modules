@@ -1,8 +1,9 @@
 name: FastQC
 on:
-  push: {}
+  push:
+    paths: software/fastqc/**
   pull_request:
-    paths: software/fastqc/*
+    paths: software/fastqc/**
 
 jobs:
   run_ci_test:
