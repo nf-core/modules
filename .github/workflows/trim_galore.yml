@@ -1,9 +1,15 @@
 name: Trim Galore!
 on:
   push:
-    paths: software/trim_galore/**
+    paths:
+      - software/trim_galore/**
+      - .github/workflows/trim_galore.yml
+      - tests
   pull_request:
-    paths: software/trim_galore/**
+    paths:
+      - software/trim_galore/**
+      - .github/workflows/trim_galore.yml
+      - tests
 
 jobs:
   run_ci_test:

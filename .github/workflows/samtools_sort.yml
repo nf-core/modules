@@ -1,9 +1,15 @@
 name: samtools sort
 on:
   push:
-    paths: software/samtools/sort**
+    paths:
+      - software/samtools/sort**
+      - .github/workflows/samtools_sort.yml
+      - tests
   pull_request:
-    paths: software/samtools/sort**
+    paths:
+      - software/samtools/sort**
+      - .github/workflows/samtools_sort.yml
+      - tests
 
 jobs:
   run_ci_test:

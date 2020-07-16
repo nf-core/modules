@@ -1,9 +1,15 @@
 name: tcoffee
 on:
   push:
-    paths: software/tcoffee/**
+    paths:
+      - software/tcoffee/**
+      - .github/workflows/tcoffee.yml
+      - tests
   pull_request:
-    paths: software/tcoffee/**
+    paths:
+      - software/tcoffee/**
+      - .github/workflows/tcoffee.yml
+      - tests
 
 jobs:
   run_ci_test:

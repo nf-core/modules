@@ -1,9 +1,15 @@
 name: cutadapt
 on:
   push:
-    paths: software/cutadapt/**
+    paths:
+      - software/cutadapt/**
+      - .github/workflows/cutadapt.yml
+      - tests
   pull_request:
-    paths: software/cutadapt/**
+    paths:
+      - software/cutadapt/**
+      - .github/workflows/cutadapt.yml
+      - tests
 
 jobs:
   run_ci_test:

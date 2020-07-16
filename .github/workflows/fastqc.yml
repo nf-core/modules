@@ -1,9 +1,15 @@
 name: FastQC
 on:
   push:
-    paths: software/fastqc/**
+    paths:
+      - software/fastqc/**
+      - .github/workflows/fastqc.yml
+      - tests
   pull_request:
-    paths: software/fastqc/**
+    paths:
+      - software/fastqc/**
+      - .github/workflows/fastqc.yml
+      - tests
 
 jobs:
   run_ci_test:
