@@ -11,8 +11,7 @@ process BEDTOOLS_GENOMECOV {
                     if (params.publish_results == "none") null
                     else filename }
 
-    //container "docker.pkg.github.com/nf-core/$MODULE"
-    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
+    container "docker.pkg.github.com/nf-core/$MODULE"
 
     conda "${moduleDir}/environment.yml"
 
