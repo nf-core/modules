@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-import java.security.MessageDigest
+import checksum
 nextflow.preview.dsl = 2
 
 params.out_dir = "test_output"
@@ -7,40 +7,6 @@ params.fastqc_args = ''
 params.publish_dir_mode = "copy"
 
 include { FASTQC } from '../main.nf'
-
-
-private static String getFileChecksum(MessageDigest digest, File file) throws IOException
-{
-    // https://howtodoinjava.com/java/io/how-to-generate-sha-or-md5-file-checksum-hash-in-java/
-    //Get file input stream for reading the file content
-    FileInputStream fis = new FileInputStream(file);
-
-    //Create byte array to read data in chunks
-    byte[] byteArray = new byte[1024];
-    int bytesCount = 0;
-
-    //Read file data and update in message digest
-    while ((bytesCount = fis.read(byteArray)) != -1) {
-        digest.update(byteArray, 0, bytesCount);
-    };
-
-    //close the stream; We don't need it now.
-    fis.close();
-
-    //Get the hash's bytes
-    byte[] bytes = digest.digest();
-
-    //This bytes[] has bytes in decimal format;
-    //Convert it to hexadecimal format
-    StringBuilder sb = new StringBuilder();
-    for(int i=0; i< bytes.length ;i++)
-    {
-        sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-    }
-
-    //return complete hash
-   return sb.toString();
-}
 
 /**
  * Test if FASTQC runs with single-end data
@@ -52,7 +18,7 @@ workflow test_single_end {
 
     // test that the output looks as expected
     FASTQC.out.html.map { name, is_single_end, html_file ->
-        html_hash = getFileChecksum(MessageDigest.getInstance("MD5"), new File("${html_file}"));
+        html_hash = checksum.getMD5(new File("${html_file}"));
 
         assert name == "test_single_end.fastq"
         assert is_single_end == true
@@ -80,8 +46,8 @@ workflow test_paired_end {
         html_r1 = html_files[0]
         html_r2 = html_files[1]
 
-        html_r1_hash = getFileChecksum(MessageDigest.getInstance("MD5"), new File("${html_r1}"));
-        html_r2_hash = getFileChecksum(MessageDigest.getInstance("MD5"), new File("${html_r2}"));
+        html_r1_hash = checksum.getMD5(new File("${html_r1}"));
+        html_r2_hash = checksum.getMD5(new File("${html_r2}"));
 
         assert name == "test_R"
         assert is_single_end == false
