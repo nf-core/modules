@@ -26,7 +26,6 @@ process FASTQC {
     if (single_end) {
         """
         [ ! -f  ${name}.fastq.gz ] && ln -s $reads ${name}.fastq.gz
-        ls -la
         fastqc ${params.fastqc_args} --threads $task.cpus ${name}.fastq.gz
         fastqc --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > fastqc.version.txt
         """
