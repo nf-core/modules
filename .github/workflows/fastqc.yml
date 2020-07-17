@@ -1,9 +1,15 @@
 name: FastQC
 on:
   push:
-    paths: software/fastqc/**
+    paths:
+      - software/fastqc/**
+      - .github/workflows/fastqc.yml
+      - tests
   pull_request:
-    paths: software/fastqc/**
+    paths:
+      - software/fastqc/**
+      - .github/workflows/fastqc.yml
+      - tests
 
 jobs:
   run_ci_test:
@@ -12,12 +18,11 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
 
-    # Check out the repository
-    - uses: actions/checkout@v1
-      submodules: true
+    - uses: actions/checkout@v2
 
     - name: Install Nextflow
       run: |
+        export NXF_VER="20.06.0-edge"
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
