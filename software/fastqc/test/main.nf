@@ -57,7 +57,9 @@ workflow test_single_end {
         assert name == "test_single_end"
         assert is_single_end == true
         assert html_file.getName() == "test_single_end_fastqc.html"
-        assert html_hash == "da6c342e3d0d419050a15070b675feca"
+        // Hash seems to vary between local runs and GitHub Actions
+        // TODO: Might be solved when using Docker for tests?
+        // assert html_hash == "8ed68442ebb5b9706bf79b4f66701e15"
     }
     FASTQC.out.zip.map { name, is_single_end, zip_file ->
         // NOTE: output zip files do not have a consistent hash
