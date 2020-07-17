@@ -46,24 +46,24 @@ private static String getFileChecksum(MessageDigest digest, File file) throws IO
  * Test if FASTQC runs with single-end data
  */
 workflow test_single_end {
-    input_files = Channel.fromPath("input/test_single_end.fastq.gz")
-                    .map {f -> [f.baseName, true, f]}
+    input_files = Channel.fromPath("${baseDir}/input/test_single_end.fastq.gz")
+                    .map {f -> [f.name.replace(".fastq.gz", ""), true, f]}
     FASTQC(input_files)
 
     // test that the output looks as expected
     FASTQC.out.html.map { name, is_single_end, html_file ->
         html_hash = getFileChecksum(MessageDigest.getInstance("MD5"), new File("${html_file}"));
 
-        assert name == "test_single_end.fastq"
+        assert name == "test_single_end"
         assert is_single_end == true
-        assert html_file.getName() == "test_single_end.fastq_fastqc.html"
-        assert html_hash == "ff04679b50beabdbd9e93db646f5667d"
+        assert html_file.getName() == "test_single_end_fastqc.html"
+        assert html_hash == "da6c342e3d0d419050a15070b675feca"
     }
     FASTQC.out.zip.map { name, is_single_end, zip_file ->
         // NOTE: output zip files do not have a consistent hash
-        assert name == "test_single_end.fastq"
+        assert name == "test_single_end"
         assert is_single_end == true
-        assert zip_file.getName() == "test_single_end.fastq_fastqc.zip"
+        assert zip_file.getName() == "test_single_end_fastqc.zip"
     }
 }
 
