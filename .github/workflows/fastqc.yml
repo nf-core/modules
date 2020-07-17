@@ -22,6 +22,7 @@ jobs:
 
     - name: Install Nextflow
       run: |
+        export NXF_VER="20.06.0-edge"
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
