@@ -1,8 +1,15 @@
 name: tcoffee
 on:
-  push: {}
+  push:
+    paths:
+      - software/tcoffee/**
+      - .github/workflows/tcoffee.yml
+      - tests
   pull_request:
-    paths: software/tcoffee/*
+    paths:
+      - software/tcoffee/**
+      - .github/workflows/tcoffee.yml
+      - tests
 
 jobs:
   run_ci_test:
@@ -11,14 +18,7 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
 
-    # Check out the repository
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      shell: bash
-      run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
     - name: Install Nextflow
       run: |
