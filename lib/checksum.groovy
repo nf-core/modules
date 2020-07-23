@@ -30,5 +30,5 @@ private static String getMD5(File file) throws IOException
     }
 
     //return complete hash
-   return sb.toString();
+    return sb.toString();
 }
