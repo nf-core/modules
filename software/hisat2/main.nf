@@ -7,18 +7,18 @@ process HISAT2 {
     // label 'bigMem'
     // label 'multiCore'
 
+    publishDir "$outdir/hisat2",
+        mode: "copy", overwrite: true
+
     input:
         tuple val(name), path(reads)
-        val (outdir)
-        val (hisat2_args)
-        val (verbose)
+        val outdir
+        val hisat2_args
+        val verbose
 
     output:
         path "*bam",       emit: bam
         path "*stats.txt", emit: stats
-
-    publishDir "$outdir/hisat2",
-        mode: "copy", overwrite: true
 
     script:
 
