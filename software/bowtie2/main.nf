@@ -8,6 +8,9 @@ process BOWTIE2 {
     // label 'bigMem'
     // label 'multiCore'
 
+    publishDir "$outdir/bowtie2",
+        mode: "copy", overwrite: true
+
     input:
         tuple val(name), path(reads)
         val (outdir)
@@ -17,9 +20,6 @@ process BOWTIE2 {
     output:
         path "*bam",  emit: bam
         path "*stats.txt", emit: stats
-
-    publishDir "$outdir/bowtie2",
-        mode: "copy", overwrite: true
 
     script:
         if (verbose){

@@ -4,19 +4,19 @@ process MULTIQC {
 
     // tag "FastQC - $sample_id"
 
+    publishDir "${outdir}/multiqc",
+        mode: "copy", overwrite: true
+
     input:
-        path (file)
-        val (outdir)
-        val (multiqc_args)
+        path file
+        val outdir
+        val multiqc_args
         // multiqc_args are best passed into the workflow in the following manner:
         // --multiqc_args="--exlude STAR --title custom_report_title"
-        val (verbose)
+        val verbose
 
     output:
         path "*html",       emit: html
-
-    publishDir "${outdir}/multiqc",
-        mode: "copy", overwrite: true
 
     script:
 

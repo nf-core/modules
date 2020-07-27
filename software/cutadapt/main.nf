@@ -4,10 +4,10 @@ process cutadapt {
     container 'quay.io/biocontainers/cutadapt:1.16--py27_1'
 
     input:
-    tuple val(sample_id), file(reads)
+    tuple val(sample_id), path(reads)
 
     output:
-    tuple sample_id, file("trimmed_*.fastq")
+    tuple sample_id, path("trimmed_*.fastq")
 
     script:
     forward_fq = "trimmed_1.fastq"

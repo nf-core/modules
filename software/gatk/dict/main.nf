@@ -4,14 +4,14 @@ process gatk_dict {
     container 'quay.io/biocontainers/gatk4-spark:4.1.4.1--1'
 
     input:
-        path(fasta)
+        path fasta
 
     output:
-        path("${fasta.baseName}.dict")
+        path "${fasta.baseName}.dict"
 
     script:
     """
-    gatk --java-options "-Xmx${task.memory.toGiga()}g" \
+    gatk --java-options "-Xmx${task.memory.giga}g" \
         CreateSequenceDictionary \
         --REFERENCE ${fasta} \
         --OUTPUT ${fasta.baseName}.dict
