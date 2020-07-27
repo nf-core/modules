@@ -1,13 +1,13 @@
 process samtools_faidx {
-    tag {fasta}
+    tag "$fasta"
 
     container 'quay.io/biocontainers/samtools:1.9--h10a08f8_12'
 
     input:
-        path(fasta)
+        path fasta
 
     output:
-        path("${fasta}.fai")
+        path "${fasta}.fai"
 
     script:
     """

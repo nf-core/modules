@@ -1,13 +1,13 @@
 process htslib_tabix {
-    tag {vcf}
+    tag "$vcf"
 
     container 'quay.io/biocontainers/tabix:0.2.6--ha92aebf_0'
 
     input:
-        path(vcf)
+        path vcf
 
     output:
-        path("${vcf}.tbi")
+        path "${vcf}.tbi"
 
     script:
     """
