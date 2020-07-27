@@ -18,24 +18,26 @@ process TRIM_GALORE {
     // container 'quay.io/biocontainers/trim-galore:0.6.5--0' // maybe later
     // tag "$sample_id"
 
+
+    // Trimming reports are not generated for e.g. --hardtrim5, --clock etc
+    // saveAs: {filename ->
+    //   else if (filename.indexOf("trimming_report.txt") > 0) "logs/$filename"
+    //   else filename
+    // }
+
+    publishDir "${outdir}/trim_galore",
+        mode: "copy", overwrite: true
+
     input:
-        tuple val (name), path (reads)
-        val (outdir)
-        val (trim_galore_args)
-        val (verbose)
+        tuple val(name), path(reads)
+        val outdir
+        val trim_galore_args
+        val verbose
 
     output:
         tuple val(name), path ("*fq.gz"),             emit: reads
         path "*trimming_report.txt", optional: true,  emit: report
 
-        // Trimming reports are not generated for e.g. --hardtrim5, --clock etc
-        // saveAs: {filename ->
-        //   else if (filename.indexOf("trimming_report.txt") > 0) "logs/$filename"
-        //   else filename
-        // }
-
-    publishDir "${outdir}/trim_galore",
-        mode: "copy", overwrite: true
 
     script:
         if (verbose){

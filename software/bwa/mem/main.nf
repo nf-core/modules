@@ -2,7 +2,7 @@ params.bwa_options = "-M -B 2"
 params.sequencer = "ILLUMINA"
 
 process bwa_mem {
-    tag {id}
+    tag "$id"
 
     publishDir "${params.outdir}/bwa_mem", mode: 'copy'
 
