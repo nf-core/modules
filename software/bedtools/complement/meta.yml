@@ -1,0 +1,30 @@
+name: bedtools complement
+description: Returns all intervals in a genome that are not covered by at least one interval in the input BED/GFF/VCF file
+keywords:
+    - complement
+tools:
+    - bedtools:
+        description: |
+            Bedtools is a software package that provides with a toolset to perform genome arithmetic operations.
+        homepage: https://bedtools.readthedocs.io/en/latest/index.html
+        documentation: https://bedtools.readthedocs.io/en/latest/index.html
+        doi: 10.093/bioinformatics/btq033
+input:
+    -
+        - input_file:
+            type: file
+            description: Input genomic coordinates file
+            pattern: "*.{bed,gff,vcf}"
+        - fasta_sizes:
+            type: file
+            description: Genome chromosome sizes
+            pattern: "*.{txt,sizes}"
+
+output:
+    -
+        - index:
+            type: stdout,file
+            description:
+            pattern: "stdout,*.{bed,gff,vcf}"
+authors:
+    - "@JoseEspinosa"
