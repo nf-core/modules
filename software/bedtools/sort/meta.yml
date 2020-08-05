@@ -1,0 +1,26 @@
+name: bedtools sort
+description: Returns a sorted feature file by chromosome and other criteria
+keywords:
+    - sort
+tools:
+    - bedtools:
+        description: |
+          Bedtools is a software package that provides with a toolset to perform genome arithmetic operations.
+        homepage: https://bedtools.readthedocs.io/en/latest/index.html
+        documentation: https://bedtools.readthedocs.io/en/latest/index.html
+        doi: 10.093/bioinformatics/btq033
+input:
+    -
+        - input_file:
+            type: file
+            description: Input genomic coordinates file
+            pattern: "*.{bed,gff,vcf}"
+
+output:
+    -
+        - index:
+            type: stdout,file
+            description:
+            pattern: "stdout,*.{bed,gff,vcf}"
+authors:
+    - "@JoseEspinosa"
