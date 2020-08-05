@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './lib/functions'
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 process FASTQC {
     tag "$meta.id"
