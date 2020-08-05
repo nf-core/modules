@@ -15,12 +15,12 @@ input:
         - input:
             type: file
             description: Input fasta file
-            pattern: *.{fasta,fa}
+            pattern: "*.{fasta,fa}"
 output:
     -
         - index:
             type: file
             description: bwa indexes file
-            pattern: *.{fasta,fa}.{amb,ann,bwt,pac,sa}
+            pattern: "*.{fasta,fa}.{amb,ann,bwt,pac,sa}"
 authors:
     - @maxulysse
