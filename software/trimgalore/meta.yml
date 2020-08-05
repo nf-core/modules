@@ -1,0 +1,40 @@
+name: Trim Galore!
+description: Trim FastQ files using Trim Galore!
+keywords:
+    - trimming
+    - adapters
+    - sequencing adapters
+tools:
+    - fastqc:
+        description: |
+            A wrapper tool around Cutadapt and FastQC to consistently apply quality
+            and adapter trimming to FastQ files, with some extra functionality for
+            MspI-digested RRBS-type (Reduced Representation Bisufite-Seq) libraries.
+        homepage: https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
+        documentation: https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md
+input:
+    -
+        - sample_id:
+            type: string
+            description: Sample identifier
+        - reads:
+            type: file
+            description: Input FastQ file, or pair of files
+output:
+    -
+        - sample_id:
+            type: string
+            description: Sample identifier
+        - trimmed_fastq:
+            type: file
+            description: Trimmed FastQ files
+            pattern: "*fq.gz"
+    -
+        - report:
+            type: file
+            description: Trim Galore! trimming report
+            pattern: "*trimming_report.txt"
+
+authors:
+    - "@ewels"
+    - "@FelixKrueger"
