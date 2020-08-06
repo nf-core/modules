@@ -22,7 +22,7 @@ A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/d
 
 ## Using existing modules
 
-We have written a helper command in the `nf-core/tools` package that allows you to install any module present in the `software/` directory of this repository:
+We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the `software/` directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
 
 1. [Install](https://github.com/nf-core/tools#installation) the latest version of `nf-core/tools` (`>=1.10.2`)
 2. List the available modules:
@@ -84,7 +84,7 @@ We have written a helper command in the `nf-core/tools` package that allows you 
       update   Update one or all software wrapper modules.             (NOT YET IMPLEMENTED)
       remove   Remove a software wrapper from a pipeline.              (NOT YET IMPLEMENTED)
       check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
-```
+    ```
 
 ### Configuration and parameters
 
