@@ -105,7 +105,7 @@ but we are now gladly accepting submissions :)
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
 and to everyone within the Nextflow community! See
-[`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
+[`software/`](software)
 for examples.
 
 ### Guidelines
@@ -196,7 +196,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) directory.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
 
