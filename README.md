@@ -125,7 +125,9 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 - Where applicable, the usage and generation of compressed files SHOULD be enforced as input and output, respectively:
     - `*.fastq.gz` and NOT `*.fastq`
     - `*.bam` and NOT `*.sam`
-- A module MUST NOT contain a `when` statement.
+
+- The process definition MUST NOT contain a `when` statement.
+
 - Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17` e.g.
 
     ```bash
@@ -137,25 +139,33 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 #### Naming conventions
 
 - The directory structure for the module name must be all lowercase e.g. [`software/bwa/mem/`](software/bwa/mem/). The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
+
 - The process name in the module file MUST be all uppercase e.g. `process BWA_MEM {`. The name of the software (i.e. `BWA`) and tool (i.e. `MEM`) MUST be all one word separated by an underscore.
+
 - All parameter names MUST follow the `snake_case` convention.
+
 - All function names MUST follow the `camelCase` convention.
 
 #### Module parameters
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
+
 - All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided in the `input` section of the process.
+
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
+
 - Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
 
 #### Input/output options
 
 - Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
+
 - Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
 
 #### Resource requirements
 
 - An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29) e.g. `process_low`, `process_medium` or `process_high`.
+
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
 #### Software requirements
@@ -187,9 +197,13 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 ### Testing
 
 - All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
+
 - Test files MUST be kept as tiny as possible.
+
 - It is RECOMMENDED to re-use generic files from `tests/data/` by symlinking them into the `test/` directory of the module.
+
 - If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data`](tests/data/).
+
 - Every module MUST be tested by adding a test workflow with a toy dataset in the `test/` directory of the module.
 
 ### Documentation
@@ -209,7 +223,9 @@ We will be notified automatically when you have created your pull request, and p
 The features offered by Nextflow DSL2 can be used in various ways depending on the granularity with which you would like to write pipelines. Please see the listing below for the hierarchy and associated terminology we have decided to use when referring to DSL2 components:
 
 - *Module*: A `process` that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. At present, this repository has been created to only host atomic module files that should be added to the [`software/`](software/) directory along with the required documentation and tests.
+
 - *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline. For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows although this may change in the future since well-written sub-workflows will be the most powerful aspect of DSL2.
+
 - *Workflow*: What DSL1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL1, or by using a combination of DSL2 individual modules and sub-workflows.
 
 ## Help
