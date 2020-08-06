@@ -65,7 +65,6 @@ process SOFTWARE_TOOL {
     def ioptions = initOptions(options)
     // TODO nf-core: If a meta map of sample information is NOT provided in "input:" section delete the line below
     def prefix   = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
-
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
