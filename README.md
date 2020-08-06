@@ -1,6 +1,6 @@
 # ![nf-core/modules](docs/images/nfcore-modules_logo.png)
 
-> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE IN THE NEAR FUTURE!
+> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE!
 
 A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files (see [Terminology](#terminology)) containing tool-specific process definitions and their associated documentation.
 
@@ -18,10 +18,10 @@ A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/d
 
 ## Using existing modules
 
-We have written a helper command in the nf-core/tools package that allows you to install any module present in the `software/` directory of this repository.
+We have written a helper command in the `nf-core/tools` package that allows you to install any module present in the `software/` directory of this repository:
 
-1. [Install](https://github.com/nf-core/tools#installation) the latest version of nf-core/tools (`>=1.10.2`)
-2. List the available modules
+1. [Install](https://github.com/nf-core/tools#installation) the latest version of `nf-core/tools` (`>=1.10.2`)
+2. List the available modules:
 
     ```console
     $ nf-core modules list
@@ -47,6 +47,59 @@ We have written a helper command in the nf-core/tools package that allows you to
     fastqc
     ..truncated..
     ```
+
+3. Install the module in the pipeline directory:
+
+    ```console
+    $ nf-core modules install . fastqc
+
+                                              ,--./,-.
+              ___     __   __   __   ___     /,-._.--~\
+        |\ | |__  __ /  ` /  \ |__) |__         }  {
+        | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                              `._,._,'
+
+        nf-core/tools version 1.10.2
+
+
+
+    INFO      Installing fastqc                                                                                                                                                 modules.py:62
+    INFO      Downloaded 3 files to ./modules/nf-core/software/fastqc                                                                                                           modules.py:97
+    ```
+
+We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository.
+
+```console
+ $ nf-core modules --help
+
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 1.10.2
+
+
+
+Usage: nf-core modules [OPTIONS] COMMAND [ARGS]...
+
+  Work with the nf-core/modules software wrappers.
+
+  Tools to manage DSL 2 nf-core/modules software wrapper imports.
+
+Options:
+  -r, --repository TEXT  GitHub repository hosting software wrapper modules.
+  -b, --branch TEXT      Modules GitHub repo git branch to use.
+  --help                 Show this message and exit.
+
+Commands:
+  list     List available software modules.
+  install  Add a DSL2 software wrapper module to a pipeline.
+  update   Update one or all software wrapper modules.             (NOT YET IMPLEMENTED)
+  remove   Remove a software wrapper from a pipeline.              (NOT YET IMPLEMENTED)
+  check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
+```
 
 ### Configuration and parameters
 
