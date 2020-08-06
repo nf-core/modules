@@ -114,7 +114,7 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 
 #### General
 
-* Software that can be piped together SHOULD be added to separate module files
+- Software that can be piped together SHOULD be added to separate module files
 unless there is a run-time, storage advantage in implementing in this way. For example,
 using a combination of `bwa` and `samtools` to output a BAM file instead of a SAM file:
 
@@ -122,9 +122,9 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     bwa mem | samtools view -B -T ref.fasta
     ```
 
-* Where applicable, the usage/generation of compressed files SHOULD be enforced as input/output e.g. `*.fastq.gz` and NOT `*.fastq`, `*.bam` and NOT `*.sam` etc.
-* A module MUST NOT contain a `when` statement.
-* Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17`:
+- Where applicable, the usage/generation of compressed files SHOULD be enforced as input/output e.g. `*.fastq.gz` and NOT `*.fastq`, `*.bam` and NOT `*.sam` etc.
+- A module MUST NOT contain a `when` statement.
+- Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17`:
 
     ```bash
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
@@ -134,39 +134,39 @@ If the software is unable to output a version number on the command-line then a 
 
 #### Naming conventions
 
-* The directory structure for the module name must be all lowercase e.g. `software/bwa/mem/`. The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
-* The process name in the module file MUST be all uppercase e.g. `process BWA_MEM {`. The name of the software (i.e. `BWA`) and tool (i.e. `MEM`) MUST be all one word separated by an underscore.
-* All parameter names MUST follow the `snake_case` convention.
-* All function names MUST follow the `camelCase` convention.
+- The directory structure for the module name must be all lowercase e.g. `software/bwa/mem/`. The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
+- The process name in the module file MUST be all uppercase e.g. `process BWA_MEM {`. The name of the software (i.e. `BWA`) and tool (i.e. `MEM`) MUST be all one word separated by an underscore.
+- All parameter names MUST follow the `snake_case` convention.
+- All function names MUST follow the `camelCase` convention.
 
 #### Module parameters
 
-* A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
-* All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided in the `input` section of the process.
-* If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
-* Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
+- A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
+- All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided in the `input` section of the process.
+- If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
+- Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
 
 #### Input/output options
 
-* Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
-* Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
+- Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
+- Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
 
 #### Resource requirements
 
-* An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29) e.g. `process_low`, `process_medium` or `process_high`.
-* If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
+- An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29) e.g. `process_low`, `process_medium` or `process_high`.
+- If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
 #### Software requirements
 
 [BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-* Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
+- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
 
-* If the software is available on Conda the software should also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too e.g. `bioconda::bwa=0.7.17=h9402c20_2` is not currently a requirement.
+- If the software is available on Conda the software should also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too e.g. `bioconda::bwa=0.7.17=h9402c20_2` is not currently a requirement.
 
-* If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
+- If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
-* If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
+- If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
 #### Publishing results
 
@@ -184,15 +184,15 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 ### Testing
 
-* All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
-* Test files MUST be kept as tiny as possible.
-* It is RECOMMENDED to re-use generic files from `tests/data/` by symlinking them into the `test/` directory of the module.
-* If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data`](tests/data/).
-* Every module MUST be tested by adding a test workflow with a toy dataset in the `test/` directory of the module.
+- All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
+- Test files MUST be kept as tiny as possible.
+- It is RECOMMENDED to re-use generic files from `tests/data/` by symlinking them into the `test/` directory of the module.
+- If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data`](tests/data/).
+- Every module MUST be tested by adding a test workflow with a toy dataset in the `test/` directory of the module.
 
 ### Documentation
 
-* A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
+- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
 
 ### Uploading to `nf-core/modules`
 
