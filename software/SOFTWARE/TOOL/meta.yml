@@ -1,0 +1,42 @@
+name: bwa mem
+description: Performs fastq alignment to a fasta reference using the burrows-wheeler aligner
+keywords:
+    - mem
+    - bwa
+    - alignment
+tools:
+    - bwa:
+        description: |
+            BWA is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
+        homepage: http://bio-bwa.sourceforge.net/
+        documentation: http://www.htslib.org/doc/samtools.html
+        arxiv: arXiv:1303.3997
+input:
+    -
+        - id:
+            type: val
+            description: read/read pair id
+        - reads:
+            type: file
+            description: Input fastq file
+            pattern: "*.{fastq,fq}"
+        - index:
+            type: file
+            description: bwa indexes file
+            pattern: "*.{amb,ann,bwt,pac,sa}"
+        - prefix:
+            type: val
+            description: bwa index prefix, equivalent to index file names without extensions. Usually the reference genome file name unless otherwise specified.
+output:
+    -
+        - bam:
+            type: file
+            description: Output bam file
+            pattern: "*.bam"
+        - bamindex:
+            type: file
+            description: Output bam index file
+            pattern: "*.bai"
+
+authors:
+    - "@jeremy1805"
