@@ -18,6 +18,7 @@ A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/d
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 - [Terminology](#terminology)
 - [Help](#help)
+- [Citation](#citation)
 
 ## Using existing modules
 
