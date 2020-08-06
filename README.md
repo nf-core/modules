@@ -26,9 +26,35 @@ The features offered by Nextflow DSL2 can be used in various ways depending on t
 
 ## Using existing modules
 
-The Nextflow [`include`](https://www.nextflow.io/docs/edge/dsl2.html#modules-include) statement can be used within your pipelines in order to load module files that you have available locally.
+We have written a helper command in the nf-core/tools package that allows you to install any module present in the `software/` directory of this repository.
 
-You should be able to get a good idea as to how other people are using module files by looking at pipelines available in nf-core e.g. [`nf-core/chipseq`](https://github.com/nf-core/chipseq/tree/dev) (work in progress)
+1. [Install](https://github.com/nf-core/tools#installation) the latest version of nf-core/tools (`>=1.10.2`)
+2. List the available modules
+
+    ```console
+    $ nf-core modules list
+
+                                              ,--./,-.
+              ___     __   __   __   ___     /,-._.--~\
+        |\ | |__  __ /  ` /  \ |__) |__         }  {
+        | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                              `._,._,'
+
+        nf-core/tools version 1.10.2
+
+
+
+    INFO      Modules available from nf-core/modules (master):                                                                                                                  modules.py:51
+
+    bwa/index
+    bwa/mem
+    deeptools/computematrix
+    deeptools/plotfingerprint
+    deeptools/plotheatmap
+    deeptools/plotprofile
+    fastqc
+    ..truncated..
+    ```
 
 ### Configuration and parameters
 
