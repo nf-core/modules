@@ -204,4 +204,4 @@ The features offered by Nextflow DSL2 can be used in various ways depending on t
 
 ## Help
 
-If you have any questions or issues please send us a message on [Slack](https://nf-co.re/join/slack).
+For further information or help, don't hesitate to get in touch on [Slack `#modules` channel](https://nfcore.slack.com/channels/modules) (you can join with [this invite](https://nf-co.re/join/slack)).
