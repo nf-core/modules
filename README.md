@@ -126,8 +126,6 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     - `*.fastq.gz` and NOT `*.fastq`
     - `*.bam` and NOT `*.sam`
 
-- The process definition MUST NOT contain a `when` statement.
-
 - Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17` e.g.
 
     ```bash
@@ -135,6 +133,8 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     ```
 
     If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
+
+- The process definition MUST NOT contain a `when` statement.
 
 #### Naming conventions
 
@@ -174,7 +174,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
 
-- If the software is available on Conda the software should also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too e.g. `bioconda::bwa=0.7.17=h9402c20_2` is not currently a requirement.
+- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too is not currently a requirement e.g. `bioconda::bwa=0.7.17=h9402c20_2`.
 
 - If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
@@ -190,7 +190,7 @@ The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#pub
         saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
-The `saveFiles` function can be found in the `functions.nf` file of utility functions that will be copied into all modules directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
+The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all modules directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
 
