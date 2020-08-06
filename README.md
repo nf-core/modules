@@ -52,7 +52,7 @@ We have written a helper command in the `nf-core/tools` package that allows you 
     ..truncated..
     ```
 
-3. Install the module in the pipeline directory:
+3. Install the module in your pipeline directory:
 
     ```console
     $ nf-core modules install . fastqc
@@ -71,32 +71,9 @@ We have written a helper command in the `nf-core/tools` package that allows you 
     INFO      Downloaded 3 files to ./modules/nf-core/software/fastqc                                                                                                           modules.py:97
     ```
 
-We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository.
+We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository. e.g.
 
 ```console
- $ nf-core modules --help
-
-                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
-
-    nf-core/tools version 1.10.2
-
-
-
-Usage: nf-core modules [OPTIONS] COMMAND [ARGS]...
-
-  Work with the nf-core/modules software wrappers.
-
-  Tools to manage DSL 2 nf-core/modules software wrapper imports.
-
-Options:
-  -r, --repository TEXT  GitHub repository hosting software wrapper modules.
-  -b, --branch TEXT      Modules GitHub repo git branch to use.
-  --help                 Show this message and exit.
-
 Commands:
   list     List available software modules.
   install  Add a DSL2 software wrapper module to a pipeline.
