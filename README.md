@@ -122,13 +122,14 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     ```
 
 * Where applicable, the usage/generation of compressed files SHOULD be enforced as input/output e.g. `*.fastq.gz` and NOT `*.fastq`, `*.bam` and NOT `*.sam` etc.
-* Where applicable, a command MUST be provided to obtain the version number of the software used in the module e.g.
+* A module MUST NOT contain a `when` statement.
+* Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17`:
 
     ```bash
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
     ```
 
-If the software is unable to output a version number on the command-line then it can be manually specified e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
+If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
 
 #### Naming conventions
 
@@ -149,71 +150,22 @@ If the software is unable to output a version number on the command-line then it
 * Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
 * Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
 
-#### Module software
-
-* Fetch "docker pull" address for latest Biocontainer image of software: e.g. https://biocontainers.pro/#/tools/samtools.
-* If required, multi-tool containers may also be available and are usually named to start with "mulled".
-
-* List required Conda packages. Software MUST be pinned to channel (i.e. "bioconda") and version (i.e. "1.10") as in the example below. Pinning the build too e.g. "bioconda::samtools=1.10=h9402c20_2" is not currently a requirement.
-
 #### Resource requirements
 
-* Provide appropriate resource label for process as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29)
+* An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29) e.g. `process_low`, `process_medium` or `process_high`.
 * If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
-
-#### Defining inputs, outputs and parameters
-
-- A module file SHOULD only define inputs and outputs as parameters. Additionally,
-    - it MUST define threads or resources where required for a particular process using `task.cpus`
-    - ~~it MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_args` parameter.~~
-    - it MUST be possible to pass additional parameters as a [nextflow Map](https://www.nextflow.io/docs/latest/script.html#maps) through an additional input channel `val(options)` [Details require discussion].
-    - All NGS modules MUST accept a triplet [name, single_end, reads] as input. The single-end boolean values MUST be specified through the input channel and not inferred from the data e.g. [here](https://github.com/nf-core/tools/blob/028a9b3f9d1ad044e879a1de13d3c3a25a06b9a7/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/modules/nf-core/fastqc.nf#L13).
-- Process names MUST be all uppercase.
-- Each process MUST emit a file `<TOOL>.version.txt` containing a single line with the software's version in the format `v<VERSION_NUMBER>`.
-- All outputs MUST be named using `emit`.
-- A Process MUST NOT contain a `when` statement.
-- Optional inputs need development on the nextflow side. In the meanwhile, "fake files" MAY be used to work around this issue.
-
-#### Atomicity
-
-- Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
-
-#### Resource requirements
-
-- Each module MUST define a label `process_low`, `process_medium` or `process_high` to declare resource requirements. (*These flags will be ignored outside of nf-core and the pipeline developer is free to define adequate resource requirements*)
-
-#### Publishing results
-
-- The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
-- The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
-- The module MUST accept a parameter `params.publish_results` accepting at least
-    - `"none"`, to publish no files at all,
-    - a glob pattern which is initalized to a sensible default value.
-
-    It MAY accept `"logs"` to publish relevant log files, or other flags, if applicable.
-
-- To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
-
-#### Testing
-
-- Every module MUST be tested by adding a test workflow with a toy dataset.
-- Test data MUST be stored within this repo. It is RECOMMENDED to re-use generic files from `tests/data` by symlinking them into the test directory of the module. Specific files MUST be added to the test-directory directly. Test files MUST be kept as tiny as possible.
 
 #### Software requirements
 
-- Software requirements SHOULD be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there MUST be a `Dockerfile` that containerizes the environment, or packages the software if conda is not available.
-- Docker containers MUST BE identified by their `sha256(Dockerfile + environment.yml)`.
-- Each module must have it's own `Dockerfile` and `environment.yml` file
-    - Care should be taken to maintain identical files for subcommands that use the same software. Then the hash tag will be the same and they will be implicitly re-used across subcommands.
+[BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-#### File formats
+* Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
 
-- Wherever possible, [CRAM](https://en.wikipedia.org/wiki/CRAM_(file_format)) files SHOULD be used over BAM files.
-- Wherever possible, FASTQ files SHOULD be compressed using gzip.
+* If the software is available on Conda the software should also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too e.g. "bioconda::bwa=0.7.17=h9402c20_2" is not currently a requirement.
 
-#### Documentation
+* If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
-- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
+* If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
 ### Uploading to `nf-core/modules`
 
@@ -248,6 +200,28 @@ If you use the module files in this repository for your analysis please you can 
 
 
 <!---
+
+#### Publishing results
+
+- The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
+- The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
+- The module MUST accept a parameter `params.publish_results` accepting at least
+    - `"none"`, to publish no files at all,
+    - a glob pattern which is initalized to a sensible default value.
+
+    It MAY accept `"logs"` to publish relevant log files, or other flags, if applicable.
+
+- To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
+
+#### Testing
+
+- Every module MUST be tested by adding a test workflow with a toy dataset.
+- Test data MUST be stored within this repo. It is RECOMMENDED to re-use generic files from `tests/data` by symlinking them into the test directory of the module. Specific files MUST be added to the test-directory directly. Test files MUST be kept as tiny as possible.
+
+#### Documentation
+
+- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
+
 
 ### Configuration and parameters
 
