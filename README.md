@@ -111,6 +111,56 @@ for examples.
 
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
+#### General
+
+* Software that can be piped together SHOULD be added to separate module files
+unless there is a run-time, storage advantage in implementing in this way. For example,
+using a combination of `bwa` and `samtools` to output a BAM file instead of a SAM file:
+
+    ```bash
+    bwa mem | samtools view -B -T ref.fasta
+    ```
+
+* Where applicable, the usage/generation of compressed files SHOULD be enforced as input/output e.g. `*.fastq.gz` and NOT `*.fastq`, `*.bam` and NOT `*.sam` etc.
+* Where applicable, a command MUST be provided to obtain the version number of the software used in the module e.g.
+
+    ```bash
+    echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
+    ```
+
+If the software is unable to output a version number on the command-line then it can be manually specified e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
+
+#### Naming conventions
+
+* The directory structure for the module name must be all lowercase e.g. `software/bwa/mem/`. The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
+* The process name in the module file MUST be all uppercase e.g. `process BWA_MEM {`. The name of the software (i.e. `BWA`) and tool (i.e. `MEM`) MUST be all one word separated by an underscore.
+* All parameter names MUST follow the `snake_case` convention.
+* All function names MUST follow the `camelCase` convention.
+
+#### Module parameters
+
+* A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
+* All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided in the `input` section of the process.
+* If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
+* Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
+
+#### Input/output options
+
+* Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
+* Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
+
+#### Module software
+
+* Fetch "docker pull" address for latest Biocontainer image of software: e.g. https://biocontainers.pro/#/tools/samtools.
+* If required, multi-tool containers may also be available and are usually named to start with "mulled".
+
+* List required Conda packages. Software MUST be pinned to channel (i.e. "bioconda") and version (i.e. "1.10") as in the example below. Pinning the build too e.g. "bioconda::samtools=1.10=h9402c20_2" is not currently a requirement.
+
+#### Resource requirements
+
+* Provide appropriate resource label for process as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29)
+* If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
+
 #### Defining inputs, outputs and parameters
 
 - A module file SHOULD only define inputs and outputs as parameters. Additionally,
