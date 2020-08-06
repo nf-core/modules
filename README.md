@@ -71,7 +71,17 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     INFO      Downloaded 3 files to ./modules/nf-core/software/fastqc                                                                                                           modules.py:97
     ```
 
-4. We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space!
+4. Import the module in your Nextflow script:
+
+    ```nextflow
+    #!/usr/bin/env nextflow
+
+    nextflow.enable.dsl = 2
+
+    include { FASTQC } from './modules/nf-core/software/fastqc/main'
+    ```
+
+5. We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space!
 
     ```console
     $ nf-core modules --help
