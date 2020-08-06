@@ -122,15 +122,17 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     bwa mem | samtools view -B -T ref.fasta
     ```
 
-- Where applicable, the usage/generation of compressed files SHOULD be enforced as input/output e.g. `*.fastq.gz` and NOT `*.fastq`, `*.bam` and NOT `*.sam` etc.
+- Where applicable, the usage and generation of compressed files SHOULD be enforced as input and output, respectively:
+    - `*.fastq.gz` and NOT `*.fastq`
+    - `*.bam` and NOT `*.sam`
 - A module MUST NOT contain a `when` statement.
-- Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17`:
+- Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17` e.g.
 
     ```bash
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
     ```
 
-If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
+    If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
 
 #### Naming conventions
 
