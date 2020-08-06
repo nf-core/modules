@@ -71,15 +71,19 @@ We have written a helper command in the `nf-core/tools` package that allows you 
     INFO      Downloaded 3 files to ./modules/nf-core/software/fastqc                                                                                                           modules.py:97
     ```
 
-We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository. e.g.
+4. We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space!
 
-```console
-Commands:
-  list     List available software modules.
-  install  Add a DSL2 software wrapper module to a pipeline.
-  update   Update one or all software wrapper modules.             (NOT YET IMPLEMENTED)
-  remove   Remove a software wrapper from a pipeline.              (NOT YET IMPLEMENTED)
-  check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
+    ```console
+    $ nf-core modules --help
+
+    ...truncated...
+
+    Commands:
+      list     List available software modules.
+      install  Add a DSL2 software wrapper module to a pipeline.
+      update   Update one or all software wrapper modules.             (NOT YET IMPLEMENTED)
+      remove   Remove a software wrapper from a pipeline.              (NOT YET IMPLEMENTED)
+      check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
 ```
 
 ### Configuration and parameters
