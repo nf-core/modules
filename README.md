@@ -99,8 +99,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 ## Adding a new module file
 
 > **NB:** The definition and standards for module files are still under discussion
-amongst the nf-core community but your contributions but your contributions are always
-more than welcome! :)
+amongst the nf-core community but your contributions are always more than welcome! :)
 
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
@@ -108,9 +107,12 @@ and to everyone within the Nextflow community! See
 [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
 for examples.
 
+### Current guidelines
+
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
-### Defining inputs, outputs and parameters
+#### Defining inputs, outputs and parameters
+
 - A module file SHOULD only define inputs and outputs as parameters. Additionally,
     - it MUST define threads or resources where required for a particular process using `task.cpus`
     - ~~it MUST be possible to pass additional parameters to the tool as a command line string via the `params.<MODULE>_args` parameter.~~
@@ -122,13 +124,16 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 - A Process MUST NOT contain a `when` statement.
 - Optional inputs need development on the nextflow side. In the meanwhile, "fake files" MAY be used to work around this issue.
 
-### Atomicity
+#### Atomicity
+
 - Software that can be piped together SHOULD be added to separate module files unless there is an run-time, storage advantage in implementing in this way e.g. `bwa mem | samtools view -C -T ref.fasta` to output CRAM instead of SAM.
 
-### Resource requirements
+#### Resource requirements
+
 - Each module MUST define a label `process_low`, `process_medium` or `process_high` to declare resource requirements. (*These flags will be ignored outside of nf-core and the pipeline developer is free to define adequate resource requirements*)
 
-### Publishing results
+#### Publishing results
+
 - The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
 - The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
 - The module MUST accept a parameter `params.publish_results` accepting at least
@@ -139,28 +144,32 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 
 - To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
 
-### Testing
+#### Testing
+
 - Every module MUST be tested by adding a test workflow with a toy dataset.
 - Test data MUST be stored within this repo. It is RECOMMENDED to re-use generic files from `tests/data` by symlinking them into the test directory of the module. Specific files MUST be added to the test-directory directly. Test files MUST be kept as tiny as possible.
 
-### Software requirements
+#### Software requirements
+
 - Software requirements SHOULD be declared in a conda `environment.yml` file, including exact version numbers. Additionally, there MUST be a `Dockerfile` that containerizes the environment, or packages the software if conda is not available.
 - Docker containers MUST BE identified by their `sha256(Dockerfile + environment.yml)`.
 - Each module must have it's own `Dockerfile` and `environment.yml` file
     - Care should be taken to maintain identical files for subcommands that use the same software. Then the hash tag will be the same and they will be implicitly re-used across subcommands.
 
-### File formats
+#### File formats
+
 - Wherever possible, [CRAM](https://en.wikipedia.org/wiki/CRAM_(file_format)) files SHOULD be used over BAM files.
 - Wherever possible, FASTQ files SHOULD be compressed using gzip.
 
-### Documentation
+#### Documentation
+
 - A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) directory. Please keep the naming consistent between the module and documentation files e.g. `bwa.nf` and `bwa.md`, respectively.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) directory.
 
-Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on `nf-core/modules` GitHub repo with the appropriate information.
+Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
 
 We will be notified automatically when you have created your pull request, and providing that everything adheres to nf-core guidelines we will endeavour to approve your pull request as soon as possible.
 
