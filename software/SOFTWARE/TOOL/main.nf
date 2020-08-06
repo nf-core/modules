@@ -17,6 +17,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 //               unless there is a run-time, storage advantage in implementing in this way
 //               e.g. bwa mem | samtools view -B -T ref.fasta to output BAM instead of SAM.
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
+//               Check the link below for an example:
+//               http://nextflow-io.github.io/patterns/index.html#_optional_input
 
 // TODO nf-core: Process name MUST be all uppercase,
 //               "SOFTWARE" and (ideally) "TOOL" MUST be all one word separated by an "_".
