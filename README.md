@@ -98,11 +98,11 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
 ## Adding a new module file
 
-> The definition and standards for module files are still under discussion amongst the nf-core community**
+> The definition and standards for module files are still under discussion amongst the nf-core community
 
-If you decide to upload your module file to `nf-core/modules` then this will
-ensure that it will be automatically downloaded, and available at run-time to
-all nf-core pipelines, and to everyone within the Nextflow community! See
+If you decide to upload a module to `nf-core/modules` then this will
+ensure that it will become available to all nf-core pipelines,
+and to everyone within the Nextflow community! See
 [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
 for examples.
 
