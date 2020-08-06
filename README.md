@@ -3,7 +3,7 @@
 ![GitHub Actions Coda Linting](https://github.com/nf-core/modules/workflows/Code%20Linting/badge.svg)
 [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23modules-4A154B?logo=slack)](https://nfcore.slack.com/channels/modules)
 
-> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE!
+> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
 A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files (see [Terminology](#terminology)) containing tool-specific process definitions and their associated documentation.
 
@@ -205,3 +205,14 @@ The features offered by Nextflow DSL2 can be used in various ways depending on t
 ## Help
 
 For further information or help, don't hesitate to get in touch on [Slack `#modules` channel](https://nfcore.slack.com/channels/modules) (you can join with [this invite](https://nf-co.re/join/slack)).
+
+## Citation
+
+If you use the module files in this repository for your analysis please you can cite the `nf-core` publication as follows:
+
+> **The nf-core framework for community-curated bioinformatics pipelines.**
+>
+> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
+>
+> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+> ReadCube: [Full Access Link](https://rdcu.be/b1GjZ)
