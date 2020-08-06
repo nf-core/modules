@@ -1,6 +1,6 @@
 # ![nf-core/modules](docs/images/nfcore-modules_logo.png)
 
-[![GitHub Actions Linting Status](https://github.com/nf-core/modules/workflows/linting/badge.svg)](https://github.com/nf-core/modules/actions)
+![GitHub Actions Coda Linting](https://github.com/nf-core/modules/workflows/Code%20Linting/badge.svg)
 [![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23modules-4A154B?logo=slack)](https://nfcore.slack.com/channels/modules)
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE!
