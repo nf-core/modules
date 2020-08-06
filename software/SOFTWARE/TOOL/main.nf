@@ -33,7 +33,7 @@ process SOFTWARE_TOOL {
         //               change "publish_id:meta.id" to initialise an empty string e.g. "publish_id:''".
         saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    // TODO nf-core: Fetch "docker pull" address for latest Biocontainer image of software: e.g. https://biocontainers.pro/#/tools/samtools
+    // TODO nf-core: Fetch "docker pull" address for latest BioContainer image of software: e.g. https://biocontainers.pro/#/tools/samtools
     //               If required, multi-tool containers may also be available and are usually named to start with "mulled".
     container "quay.io/biocontainers/samtools:1.10--h9402c20_2"
 
