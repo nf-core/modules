@@ -190,7 +190,7 @@ The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#pub
         saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
-The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all modules directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
+The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
 
@@ -200,15 +200,15 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - Test files MUST be kept as tiny as possible.
 
-- It is RECOMMENDED to re-use generic files from `tests/data/` by symlinking them into the `test/` directory of the module.
+- It is RECOMMENDED to re-use generic files from [`tests/data/`](tests/data/) by symlinking them into the [`test/`](software/fastqc/test) directory of the module.
 
 - If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data`](tests/data/).
 
-- Every module MUST be tested by adding a test workflow with a toy dataset in the `test/` directory of the module.
+- Every module MUST be tested by adding a test workflow with a toy dataset in the [`test/`](software/fastqc/test) directory of the module.
 
 ### Documentation
 
-- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
+- A module MUST be documented in the [`meta.yml`](software/fastqc/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
 
 ### Uploading to `nf-core/modules`
 
