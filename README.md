@@ -5,13 +5,11 @@
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
-A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files (see [Terminology](#terminology)) containing tool-specific process definitions and their associated documentation.
+A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
 ## Table of contents
 
 - [Using existing modules](#using-existing-modules)
-    - [Configuration and parameters](#configuration-and-parameters)
-    - [Offline usage](#offline-usage)
 - [Adding a new module file](#adding-a-new-module-file)
     - [Testing](#testing)
     - [Documentation](#documentation)
@@ -21,6 +19,8 @@ A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/d
 - [Citation](#citation)
 
 ## Using existing modules
+
+The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `bwa`, `samtools` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
 
 We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the `software/` directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
 
@@ -96,39 +96,15 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
       check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
     ```
 
-### Configuration and parameters
-
-The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
-
-> The definition and standards for module files are still under discussion amongst the community but hopefully, a description should be added here soon!
-
-### Offline usage
-
-If you want to use an existing module file available in `nf-core/modules`, and you're running on a system that has no internet connection, you'll need to download the repository (e.g. `git clone https://github.com/nf-core/modules.git`) and place it in a location that is visible to the file system on which you are running the pipeline. Then run the pipeline by creating a custom config file called e.g. `custom_module.conf` containing the following information:
-
-```bash
-include /path/to/downloaded/modules/directory/
-```
-
-Then you can run the pipeline by directly passing the additional config file with the `-c` parameter:
-
-```bash
-nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
-```
-
-> Note that the nf-core/tools helper package has a `download` command to download all required pipeline
-> files + singularity containers + institutional configs + modules in one go for you, to make this process easier.
-
 ## Adding a new module file
+
+> The definition and standards for module files are still under discussion amongst the nf-core community**
 
 If you decide to upload your module file to `nf-core/modules` then this will
 ensure that it will be automatically downloaded, and available at run-time to
 all nf-core pipelines, and to everyone within the Nextflow community! See
 [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
 for examples.
-
-**The definition and standards for module files are still under discussion
-amongst the community. Currently the following points have been agreed on:**
 
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
@@ -208,3 +184,31 @@ If you use the module files in this repository for your analysis please you can 
 >
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
 > ReadCube: [Full Access Link](https://rdcu.be/b1GjZ)
+
+
+<!---
+
+### Configuration and parameters
+
+The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
+
+> The definition and standards for module files are still under discussion amongst the community but hopefully, a description should be added here soon!
+
+### Offline usage
+
+If you want to use an existing module file available in `nf-core/modules`, and you're running on a system that has no internet connection, you'll need to download the repository (e.g. `git clone https://github.com/nf-core/modules.git`) and place it in a location that is visible to the file system on which you are running the pipeline. Then run the pipeline by creating a custom config file called e.g. `custom_module.conf` containing the following information:
+
+```bash
+include /path/to/downloaded/modules/directory/
+```
+
+Then you can run the pipeline by directly passing the additional config file with the `-c` parameter:
+
+```bash
+nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
+```
+
+> Note that the nf-core/tools helper package has a `download` command to download all required pipeline
+> files + singularity containers + institutional configs + modules in one go for you, to make this process easier.
+
+-->
