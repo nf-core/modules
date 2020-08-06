@@ -98,7 +98,9 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
 ## Adding a new module file
 
-> The definition and standards for module files are still under discussion amongst the nf-core community
+> **NB:** The definition and standards for module files are still under discussion
+amongst the nf-core community but your contributions but your contributions are always
+more than welcome! :)
 
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
