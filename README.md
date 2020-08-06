@@ -1,5 +1,8 @@
 # ![nf-core/modules](docs/images/nfcore-modules_logo.png)
 
+[![GitHub Actions Linting Status](https://github.com/nf-core/modules/workflows/linting/badge.svg)](https://github.com/nf-core/modules/actions)
+[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23modules-4A154B?logo=slack)](https://nfcore.slack.com/channels/modules)
+
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE!
 
 A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files (see [Terminology](#terminology)) containing tool-specific process definitions and their associated documentation.
