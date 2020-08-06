@@ -5,7 +5,7 @@
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
-A repository for hosting Nextflow [`DSL2`](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
+A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
 ## Table of contents
 
@@ -99,7 +99,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 ## Adding a new module file
 
 > **NB:** The definition and standards for module files are still under discussion
-amongst the nf-core community but your contributions are always more than welcome! :)
+but we are now gladly accepting submissions :)
 
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
