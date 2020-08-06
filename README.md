@@ -11,6 +11,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 - [Using existing modules](#using-existing-modules)
 - [Adding a new module file](#adding-a-new-module-file)
+    - [Guidelines](#guidelines)
     - [Testing](#testing)
     - [Documentation](#documentation)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
@@ -107,7 +108,7 @@ and to everyone within the Nextflow community! See
 [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software)
 for examples.
 
-### Current guidelines
+### Guidelines
 
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
@@ -167,6 +168,32 @@ If the software is unable to output a version number on the command-line then a 
 
 * If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
+#### Publishing results
+
+The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#publishdir) definition is currently quite limited in terms of parameter/option evaluation. To overcome this, the publishing logic we have implemented for use with DSL2 modules attempts to minimise changing the `publishDir` directive (default: `params.outdir`) in favour of constructing and appending the appropriate output directory paths via the `saveAs:` statement e.g.
+
+```nextflow
+    publishDir "${params.outdir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+```
+
+The `saveFiles` function can be found in the `functions.nf` file of utility functions that will be copied into all modules directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
+
+We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
+
+### Testing
+
+* All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
+* Test files MUST be kept as tiny as possible.
+* It is RECOMMENDED to re-use generic files from `tests/data/` by symlinking them into the `test/` directory of the module.
+* If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data`](tests/data/).
+* Every module MUST be tested by adding a test workflow with a toy dataset in the `test/` directory of the module.
+
+### Documentation
+
+* A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
+
 ### Uploading to `nf-core/modules`
 
 [Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`nf-core/modules/software`](https://github.com/nf-core/modules/tree/master/software) directory.
@@ -201,26 +228,13 @@ If you use the module files in this repository for your analysis please you can 
 
 <!---
 
-#### Publishing results
 
-- The module MUST accept the parameters `params.out_dir` and `params.publish_dir` and MUST publish results into `${params.out_dir}/${params.publish_dir}`.
-- The `publishDirMode` MUST be configurable via `params.publish_dir_mode`
 - The module MUST accept a parameter `params.publish_results` accepting at least
     - `"none"`, to publish no files at all,
     - a glob pattern which is initalized to a sensible default value.
 
-    It MAY accept `"logs"` to publish relevant log files, or other flags, if applicable.
 
-- To ensure consistent naming, files SHOULD be renamed according to the `$name` variable before returning them.
 
-#### Testing
-
-- Every module MUST be tested by adding a test workflow with a toy dataset.
-- Test data MUST be stored within this repo. It is RECOMMENDED to re-use generic files from `tests/data` by symlinking them into the test directory of the module. Specific files MUST be added to the test-directory directly. Test files MUST be kept as tiny as possible.
-
-#### Documentation
-
-- A module MUST be documented in the `meta.yml` file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list. [Exact detail need to be elaborated. ]
 
 
 ### Configuration and parameters
