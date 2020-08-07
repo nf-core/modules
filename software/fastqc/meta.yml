@@ -41,11 +41,29 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+  - options:
+      type: map
+      description: |
+        Groovy Map containing module options for passing command-line arguments and
+        output file paths.
 output:
-  - report:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - html:
       type: file
       description: FastQC report
-      pattern: "*_fastqc.{zip,html}"
+      pattern: "*_fastqc.html"
+  - zip:
+      type: file
+      description: FastQC report archive
+      pattern: "*_fastqc.zip"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.version.txt"
 authors:
   - "@drpatelh"
   - "@grst"

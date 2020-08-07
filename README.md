@@ -11,6 +11,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 - [Using existing modules](#using-existing-modules)
 - [Adding a new module file](#adding-a-new-module-file)
+    - [Module template](#module-template)
     - [Guidelines](#guidelines)
     - [Testing](#testing)
     - [Documentation](#documentation)
@@ -108,6 +109,25 @@ and to everyone within the Nextflow community! See
 [`software/`](software)
 for examples.
 
+### Module template
+
+We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/TOOL/) that serves as a template with which to create your own module submission. Where applicable, we have added extensive `TODO` statements to the files in this directory for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+
+```console
+.
+├── software
+│   ├── SOFTWARE
+│   │   └── TOOL
+│   │       ├── functions.nf          ## Utility functions imported in main module script
+│   │       ├── main.nf               ## Main module script
+│   │       ├── meta.yml              ## Documentation for module, input, output, params, author
+│   │       └── test
+│   │           ├── input             ## Soft-link input test data from "tests/"
+│   │           ├── main.nf           ## Minimal workflow to test module
+│   │           ├── nextflow.config   ## Minimal config to test module
+│   │           └── output            ## Upload output files from test for unit testing
+```
+
 ### Guidelines
 
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
@@ -202,11 +222,13 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - Every module MUST be tested by adding a test workflow with a toy dataset in the [`test/`](software/fastqc/test) directory of the module.
 
-- Generic files from [`tests/data/`](tests/data/) SHOULD be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
+- Generic files from [`tests/data/`](tests/data/) MUST be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
 
-- Any outputs produced by the test workflow SHOULD be placed in a folder called [`test/output/`](software/fastqc/test/output/) so that they can be used for unit testing.
+- Any outputs produced by the test workflow MUST be placed in a folder called [`test/output/`](software/fastqc/test/output/) so that they can be used for unit testing.
 
 - If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data/`](tests/data/).
+
+- A GitHub Actions workflow file MUST be added to [`.github/workflows/`](.github/workflows/) e.g. [`.github/workflows/fastqc.yml`](.github/workflows/fastqc.yml).
 
 ### Documentation
 
