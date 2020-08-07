@@ -1,13 +1,18 @@
 #!/usr/bin/env nextflow
-echo true
 
-cheers = Channel.from 'Bonjour', 'Ciao', 'Hello', 'Hola'
+nextflow.enable.dsl = 2
 
-process sayHello {
-  input:
-    val x from cheers
-  script:
-    """
-    echo '$x world!'
-    """
+include { SAMTOOLS_SORT } from '../main.nf'
+
+workflow test {
+
+    def input = []
+    input = [ [ id:'test', single_end:false ], // meta map
+              file("${baseDir}/input/test.paired_end.name.sorted.bam", checkIfExists: true) ]
+
+    SAMTOOLS_SORT ( input, [:] )
+}
+
+workflow {
+    test()
 }
