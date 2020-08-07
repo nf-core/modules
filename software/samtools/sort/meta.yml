@@ -1,7 +1,10 @@
-name: samtools sort
-description: Sort a BAM or CRAM file
+name: samtools_sort
+description: Sort SAM/BAM/CRAM file
 keywords:
     - sort
+    - bam
+    - sam
+    - cram
 tools:
     - samtools:
         description: |
@@ -11,17 +14,51 @@ tools:
         homepage: http://www.htslib.org/
         documentation: hhttp://www.htslib.org/doc/samtools.html
         doi: 10.1093/bioinformatics/btp352
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
 input:
-    -
-        - input:
-            type: file
-            description: Input BAM or CRAM file
-            pattern: "*.{bam,cram}"
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - options:
+        type: map
+        description: |
+            Groovy Map containing module options for passing command-line arguments and
+            output file paths.
 output:
-    -
-        - sorted_file:
-            type: file
-            description: Sorted BAM or CRAM file
-            pattern: "*.{bam,cram}"
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
 authors:
+    - "@drpatelh"
     - "@ewels"
