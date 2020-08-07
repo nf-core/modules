@@ -109,9 +109,9 @@ and to everyone within the Nextflow community! See
 [`software/`](software)
 for examples.
 
-### Template
+### Module template
 
-We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/TOOL/) that serves a template with which to create your own module submission. Where applicable, we have added extensive `TODO` statements to the files in this directory for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/TOOL/) that serves as a template with which to create your own module submission. Where applicable, we have added extensive `TODO` statements to the files in this directory for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
 
 ```console
 .
