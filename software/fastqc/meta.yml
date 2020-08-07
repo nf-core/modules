@@ -1,4 +1,4 @@
-name: FastQC
+name: fastqc
 description: Run FastQC on sequenced reads
 keywords:
   - Quality Control
@@ -15,37 +15,27 @@ tools:
       homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
       documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
 params:
-  - fastqc_args:
-      type: string
-      description: Additional command line arguments passed to fastqc.
-  - out_dir:
+  - outdir:
       type: string
       description: |
         The pipeline's output directory. By default, the module will
-        output files into `$out_dir/MODULE_NAME`
-  - publish_dir:
-      type: string
-      description: |
-        Append to the path for the standard output directory provided by `$out_dir`.
+        output files into `$params.outdir/<SOFTWARE>`
   - publish_dir_mode:
       type: string
       description: |
-        Provide a value for the Nextflow `publishDir` mode parameter
-        (e.g. copy, link, ...)
-  - publish_results:
-      type: string
-      description: |
-        Whether or not to publish results into `publish_dir`. Set to `none` to not
-        publish any files at all; to `default` to publish all relevant files.
-input:
-  - name:
-      type: string
-      description: Sample identifier
-  - single_end:
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - conda:
       type: boolean
       description: |
-        Boolean indicating whether the corresponding sample is single-end (true)
-        or paired-end (false).
+        Run the module with Conda using the software specified
+        via the `conda` directive
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
@@ -57,7 +47,7 @@ output:
       description: FastQC report
       pattern: "*_fastqc.{zip,html}"
 authors:
-  - "@grst"
   - "@drpatelh"
+  - "@grst"
   - "@ewels"
   - "@FelixKrueger"
