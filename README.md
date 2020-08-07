@@ -202,7 +202,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - Every module MUST be tested by adding a test workflow with a toy dataset in the [`test/`](software/fastqc/test) directory of the module.
 
--  Generic files from [`tests/data/`](tests/data/) SHOULD be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
+- Generic files from [`tests/data/`](tests/data/) SHOULD be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
 
 - Any outputs produced by the test workflow SHOULD be placed in a folder called [`test/output/`](software/fastqc/test/output/) so that they can be used for unit testing.
 
