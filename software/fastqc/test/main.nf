@@ -15,7 +15,7 @@ workflow test_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ],
-              [ file('input/test_single_end.fastq.gz', checkIfExists: true) ] ]
+              [ file("${baseDir}/input/test_single_end.fastq.gz", checkIfExists: true) ] ]
 
     FASTQC ( input, [ publish_dir:'test_single_end' ] )
 }
@@ -27,7 +27,8 @@ workflow test_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ],
-              [ file('input/test_R1.fastq.gz', checkIfExists: true), file('input/test_R2.fastq.gz', checkIfExists: true) ] ]
+              [ file("${baseDir}/input/test_R1.fastq.gz", checkIfExists: true),
+                file("${baseDir}/input/test_R2.fastq.gz", checkIfExists: true) ] ]
 
     FASTQC ( input, [ publish_dir:'test_paired_end' ] )
 }
