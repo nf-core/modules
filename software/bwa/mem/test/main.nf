@@ -1,13 +1,45 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl = 2
-include '../../../../tests/functions/check_process_outputs.nf' params(params)
-include '../main.nf' params(params)
 
-reads = '../../../../test-datasets/tools/bwa/mem/reads/*_R{1,2}_001.fastq.gz'
-index = '../../../../test-datasets/tools/bwa/mem/index/H3N2.{amb,ann,bwt,pac,sa}'
-prefix = 'H3N2'
+nextflow.enable.dsl = 2
+
+include { BWA_MEM } from '../main.nf'
+
+/*
+ * Test with single-end data
+ */
+workflow test_single_end {
+
+    def input = []
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file("${baseDir}/input/Ecoli_DNA_R1.fastq.gz", checkIfExists: true) ] ]
+
+    BWA_MEM (
+        input,
+        file("${baseDir}/input/index/NC_010473.fa.{amb,ann,bwt,pac,sa}", checkIfExists: true),
+        file("${baseDir}/input/NC_010473.fa", checkIfExists: true),
+        [ publish_dir:'test_paired_end' ]
+    )
+}
+
+/*
+ * Test with paired-end data
+ */
+workflow test_paired_end {
+
+    def input = []
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file("${baseDir}/input/Ecoli_DNA_R1.fastq.gz", checkIfExists: true),
+                file("${baseDir}/input/Ecoli_DNA_R2.fastq.gz", checkIfExists: true) ] ]
+
+    BWA_MEM (
+        input,
+        file("${baseDir}/input/index/NC_010473.fa.{amb,ann,bwt,pac,sa}", checkIfExists: true),
+        file("${baseDir}/input/NC_010473.fa", checkIfExists: true),
+        [ publish_dir:'test_paired_end' ]
+    )
+}
 
 workflow {
-  read_input=Channel.fromFilePairs(reads)
-  bwa_mem(read_input,file(index),prefix)
+    test_single_end()
+    test_paired_end()
 }
