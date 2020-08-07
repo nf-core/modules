@@ -1,0 +1,30 @@
+name: bwa_index
+on:
+  push:
+    paths:
+      - software/bwa/index/**
+      - .github/workflows/bwa_index.yml
+      - tests
+  pull_request:
+    paths:
+      - software/bwa/index/**
+      - .github/workflows/bwa_index.yml
+      - tests
+
+jobs:
+  ci_test:
+    runs-on: ubuntu-latest
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Install Nextflow
+      run: |
+        export NXF_VER="20.07.1"
+        wget -qO- get.nextflow.io | bash
+        sudo mv nextflow /usr/local/bin/
+
+    # Test the module
+    - run: nextflow run ./software/bwa/index/test/ -profile docker
