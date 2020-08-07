@@ -17,7 +17,7 @@ workflow test_single_end {
         input,
         file("${baseDir}/input/index/NC_010473.fa.{amb,ann,bwt,pac,sa}", checkIfExists: true),
         file("${baseDir}/input/NC_010473.fa", checkIfExists: true),
-        [ publish_dir:'test_paired_end' ]
+        [ publish_dir:'test_single_end' ]
     )
 }
 
