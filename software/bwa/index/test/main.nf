@@ -1,16 +1,13 @@
 #!/usr/bin/env nextflow
-nextflow.preview.dsl = 2
-include '../../../tests/functions/check_process_outputs.nf' params(params)
-include '../main.nf' params(params)
 
-// Define input channels
-input = '../../../test-datasets/tools/bwa/index/input/reference.fasta'
-Channel
-  .from(input)
-  .set { ch_input }
+nextflow.enable.dsl = 2
 
-// Run the workflow
+include { BWA_INDEX } from '../main.nf'
+
+workflow test {
+    BWA_INDEX ( file("${baseDir}/input/NC_010473.fa", checkIfExists: true), [:] )
+}
+
 workflow {
-    fastqc(ch_input)
-    // .check_output()
+    test()
 }
