@@ -1,14 +1,14 @@
 
 SUMMARISING RUN PARAMETERS
 ==========================
-Input filename: test_R2.fastq.gz
+Input filename: test_2.fastq.gz
 Trimming mode: paired-end
-Trim Galore version: 0.6.5
-Cutadapt version: 2.3
+Trim Galore version: 0.6.4_dev
+Cutadapt version: 2.6
 Number of cores used for trimming: 1
 Quality Phred score cutoff: 20
 Quality encoding type selected: ASCII+33
-Using Nextera adapter for trimming (count: 83). Second best hit was smallRNA (count: 0)
+Using Nextera adapter for trimming (count: 83). Second best hit was Illumina (count: 0)
 Adapter sequence: 'CTGTCTCTTATA' (Nextera Transposase sequence; auto-detected)
 Maximum trimming error rate: 0.1 (default)
 Minimum required adapter overlap (stringency): 1 bp
@@ -16,10 +16,10 @@ Minimum required sequence length for both reads before a sequence pair gets remo
 Output file will be GZIP compressed
 
 
-This is cutadapt 2.3 with Python 3.7.3
-Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA test_R2.fastq.gz
+This is cutadapt 2.6 with Python 3.7.3
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA test_2.fastq.gz
 Processing reads on 1 core in single-end mode ...
-Finished in 0.22 s (22 us/read; 2.71 M reads/minute).
+Finished in 0.70 s (70 us/read; 0.86 M reads/minute).
 
 === Summary ===
 
@@ -91,7 +91,7 @@ length	count	expect	max.err	error counts
 70	1	0.0	1	0 1
 73	2	0.0	1	0 2
 
-RUN STATISTICS FOR INPUT FILE: test_R2.fastq.gz
+RUN STATISTICS FOR INPUT FILE: test_2.fastq.gz
 =============================================
 10000 sequences processed in total
 
