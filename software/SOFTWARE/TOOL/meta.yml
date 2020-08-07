@@ -1,42 +1,76 @@
-name: bwa mem
-description: Performs fastq alignment to a fasta reference using the burrows-wheeler aligner
+## TODO nf-core: Change the name of "software_tool" below
+name: software_tool
+## TODO nf-core: Add a description and keywords
+description: Run FastQC on sequenced reads
 keywords:
-    - mem
-    - bwa
-    - alignment
+  - Quality Control
+  - QC
+  - Adapters
 tools:
-    - bwa:
-        description: |
-            BWA is a software package for mapping DNA sequences against a large reference genome, such as the human genome.
-        homepage: http://bio-bwa.sourceforge.net/
-        documentation: http://www.htslib.org/doc/samtools.html
-        arxiv: arXiv:1303.3997
+  ## TODO nf-core: Change the name of "software_tool" below
+  - software_tool:
+      ## TODO nf-core: Add a description and other details for the tool below
+      description: |
+        FastQC gives general quality metrics about your reads.
+        It provides information about the quality score distribution
+        across your reads, the per base sequence content (%A/C/G/T).
+        You get information about adapter contamination and other
+        overrepresented sequences.
+      homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+      documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+## TODO nf-core: If you are using any additional "params" in the main.nf script of the module add them below
+params:
+  - outdir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$params.outdir/<SOFTWARE>`
+  - publish_dir_mode:
+      type: string
+      description: |
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - conda:
+      type: boolean
+      description: |
+        Run the module with Conda using the software specified
+        via the `conda` directive
+## TODO nf-core: Add a description of all of the variables used as input
 input:
-    -
-        - id:
-            type: val
-            description: read/read pair id
-        - reads:
-            type: file
-            description: Input fastq file
-            pattern: "*.{fastq,fq}"
-        - index:
-            type: file
-            description: bwa indexes file
-            pattern: "*.{amb,ann,bwt,pac,sa}"
-        - prefix:
-            type: val
-            description: bwa index prefix, equivalent to index file names without extensions. Usually the reference genome file name unless otherwise specified.
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - options:
+      type: map
+      description: |
+        Groovy Map containing module options for passing command-line arguments and
+        output file paths.
+## TODO nf-core: Add a description of all of the variables used as output
 output:
-    -
-        - bam:
-            type: file
-            description: Output bam file
-            pattern: "*.bam"
-        - bamindex:
-            type: file
-            description: Output bam index file
-            pattern: "*.bai"
-
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - html:
+      type: file
+      description: FastQC report
+      pattern: "*_fastqc.html"
+  - zip:
+      type: file
+      description: FastQC report archive
+      pattern: "*_fastqc.zip"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.version.txt"
+## TODO nf-core: Add your GitHub username below
 authors:
-    - "@jeremy1805"
+  - "@your_github_username"
