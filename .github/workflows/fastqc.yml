@@ -27,4 +27,4 @@ jobs:
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./software/fastqc/test/
+    - run: nextflow run ./software/fastqc/test/ -with-docker
