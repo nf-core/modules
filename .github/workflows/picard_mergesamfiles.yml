@@ -1,18 +1,18 @@
-name: samtools index
+name: picard_mergesamfiles
 on:
   push:
     paths:
-      - software/samtools/index/**
-      - .github/workflows/samtools_index.yml
+      - software/picard/mergesamfiles/**
+      - .github/workflows/picard_mergesamfiles.yml
       - tests
   pull_request:
     paths:
-      - software/samtools/index/**
-      - .github/workflows/samtools_index.yml
+      - software/picard/mergesamfiles/**
+      - .github/workflows/picard_mergesamfiles.yml
       - tests
 
 jobs:
-  run_ci_test:
+  ci_test:
     runs-on: ubuntu-latest
     env:
       NXF_ANSI_LOG: false
@@ -22,8 +22,9 @@ jobs:
 
     - name: Install Nextflow
       run: |
+        export NXF_VER="20.07.1"
         wget -qO- get.nextflow.io | bash
         sudo mv nextflow /usr/local/bin/
 
     # Test the module
-    - run: nextflow run ./software/samtools/index/test/
+    - run: nextflow run ./software/picard/mergesamfiles/test/ -profile docker
