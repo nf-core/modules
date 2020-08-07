@@ -2,10 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-params.outdir = "output/"
-params.publish_dir_mode = "copy"
-params.conda = false
-
 include { FASTQC } from '../main.nf'
 
 /*
