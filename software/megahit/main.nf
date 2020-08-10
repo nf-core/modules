@@ -20,7 +20,7 @@ process MEGAHIT {
     output:
     tuple val(meta), path("*.contigs.fa"), emit: fasta
     tuple val(meta), path("log"), emit: log
-    
+
     path "*.version.txt", emit: version
 
     script:
