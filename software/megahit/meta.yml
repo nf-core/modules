@@ -1,0 +1,72 @@
+name: megahit
+description: Run megahit assembler on reads
+keywords:
+    - fastq
+    - assembly
+    - metagenomics
+tools:
+    - megahit:
+        description: |
+            MEGAHIT is a NGS de novo assembler for assembling large and
+            complex metagenomics data in a time- and cost-efficient manner.
+        homepage: https://github.com/voutcn/megahit
+        documentation: https://github.com/voutcn/megahit
+
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, interleaved:false]
+    - reads_1:
+        type: file list
+        description: |
+            List of forward fastq files (or interleaved/single-end libraries).
+    - reads_2:
+        type: file list
+        description: |
+            List of reverse fastq files.
+    - options:
+        type: map
+        description: |
+            Groovy Map containing module options for passing command-line arguments and
+            output file paths.
+
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, interleaved:false]
+    - fasta:
+        type: file
+        description: Megahit assembly in fasta format
+        pattern: "*.{contigs.fa}"
+    - log:
+        type: file
+        description: Megahit log file
+        pattern: "log"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+
+authors:
+    - "@puumanamana"
