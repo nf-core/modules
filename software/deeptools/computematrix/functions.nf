@@ -20,7 +20,7 @@ def initOptions(Map args) {
     options.args2         = args.args2 ?: ''
     options.publish_by_id = args.publish_by_id ?: false
     options.publish_dir   = args.publish_dir ?: ''
-    options.publish_files = args.publish_files ?: null
+    options.publish_files = (args.publish_files instanceof Map) ? args.publish_files : null
     options.suffix        = args.suffix ?: ''
     return options
 }
