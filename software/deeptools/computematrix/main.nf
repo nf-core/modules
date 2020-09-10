@@ -15,13 +15,13 @@ process DEEPTOOLS_COMPUTEMATRIX {
 
     input:
     tuple val(meta), path(bigwig)
-    path bed
-    val options
+    path  bed
+    val   options
 
     output:
-    tuple val(meta), path("*.mat.gz"), emit: matrix
+    tuple val(meta), path("*.mat.gz") , emit: matrix
     tuple val(meta), path("*.mat.tab"), emit: table
-    path "*.version.txt", emit: version
+    path  "*.version.txt"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)

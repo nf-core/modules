@@ -17,12 +17,12 @@ process UCSC_BEDRAPHTOBIGWIG {
 
     input:
     tuple val(meta), path(bedgraph)
-    path sizes
-    val options
+    path  sizes
+    val   options
 
     output:
     tuple val(meta), path("*.bigWig"), emit: bigwig
-    path "*.version.txt", emit: version
+    path "*.version.txt"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)

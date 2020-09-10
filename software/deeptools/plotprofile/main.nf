@@ -15,17 +15,17 @@ process DEEPTOOLS_PLOTPROFILE {
 
     input:
     tuple val(meta), path(matrix)
-    val options
+    val   options
 
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: table
-    path "*.version.txt", emit: version
+    path  "*.version.txt"         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def ioptions = initOptions(options)
-    prefix = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    def prefix   = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
     """
     plotProfile \\
         $ioptions.args \\
