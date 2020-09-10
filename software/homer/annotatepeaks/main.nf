@@ -17,13 +17,13 @@ process HOMER_ANNOTATEPEAKS {
 
     input:
     tuple val(meta), path(peak)
-    path fasta
-    path gtf
-    val options
+    path  fasta
+    path  gtf
+    val   options
 
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
-    path "*.version.txt", emit: version
+    path  "*.version.txt"                      , emit: version
 
     script:
     def software = getSoftwareName(task.process)

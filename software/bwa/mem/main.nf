@@ -15,23 +15,23 @@ process BWA_MEM {
 
     input:
     tuple val(meta), path(reads)
-    path index
-    path fasta
-    val options
+    path  index
+    path  fasta
+    val   options
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt", emit: version
+    path  "*.version.txt"         , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def ioptions = initOptions(options)
-    def prefix   = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
-    def rg       = meta.read_group ? "-R ${meta.read_group}" : ""
+    def software   = getSoftwareName(task.process)
+    def ioptions   = initOptions(options)
+    def prefix     = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
     bwa mem \\
         $ioptions.args \\
-        $rg \\
+        $read_group \\
         -t $task.cpus \\
         $fasta \\
         $reads \\

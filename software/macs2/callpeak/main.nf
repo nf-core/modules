@@ -15,16 +15,17 @@ process MACS2_CALLPEAK {
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
-    val macs2_gsize
-    val options
+    val   macs2_gsize
+    val   options
 
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
-    tuple val(meta), path("*.xls"), emit: xls
-    tuple val(meta), path("*.gappedPeak"), emit: gapped optional true
-    tuple val(meta), path("*.bed"), emit: bed optional true
-    tuple val(meta), path("*.bdg"), emit: bdg optional true
-    path "*.version.txt", emit: version
+    tuple val(meta), path("*.xls")                   , emit: xls
+    path  "*.version.txt"                            , emit: version
+
+    tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
+    tuple val(meta), path("*.bed")       , optional:true, emit: bed
+    tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
     script:
     def software = getSoftwareName(task.process)

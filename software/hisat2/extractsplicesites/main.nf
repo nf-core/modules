@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName } from './functions'
 
 def VERSION = '2.2.0'
 

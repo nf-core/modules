@@ -15,11 +15,11 @@ process PICARD_MERGESAMFILES {
 
     input:
     tuple val(meta), path(bams)
-    val options
+    val   options
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt", emit: version
+    path  "*.version.txt"         , emit: version
 
     script:
     def software  = getSoftwareName(task.process)

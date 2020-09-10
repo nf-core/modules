@@ -15,13 +15,13 @@ process PICARD_COLLECTMULTIPLEMETRICS {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
-    val options
+    path  fasta
+    val   options
 
     output:
     tuple val(meta), path("*_metrics"), emit: metrics
-    tuple val(meta), path("*.pdf"), emit: pdf
-    path "*.version.txt", emit: version
+    tuple val(meta), path("*.pdf")    , emit: pdf
+    path  "*.version.txt"             , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
