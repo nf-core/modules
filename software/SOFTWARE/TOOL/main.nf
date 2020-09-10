@@ -53,14 +53,14 @@ process SOFTWARE_TOOL {
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(reads)
     // TODO nf-core: List additional required input channels/values here
-    val options
+    val   options
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     // TODO nf-core: If meta is provided in "input:" section then it MUST be added to ALL output channels (except version)
     tuple val(meta), path("*.bam"), emit: bam
     // TODO nf-core: List additional required output channels/values here
-    path "*.version.txt", emit: version
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -24,9 +24,10 @@ process SALMON_QUANT {
     path  "*.version.txt"             , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def ioptions = initOptions(options)
-    prefix       = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    def software  = getSoftwareName(task.process)
+    def ioptions  = initOptions(options)
+    prefix        = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    def endedness = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
 
     def strandedness = meta.single_end ? 'U' : 'IU'
     if (meta.strandedness == 'forward') {
@@ -34,7 +35,6 @@ process SALMON_QUANT {
     } else if (meta.strandedness == 'reverse') {
         strandedness = meta.single_end ? 'SR' : 'ISR'
     }
-    def endedness = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     salmon quant \\
         --geneMap $gtf \\

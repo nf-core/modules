@@ -15,13 +15,13 @@ process DEEPTOOLS_PLOTFINGERPRINT {
 
     input:
     tuple val(meta), path(bams), path(bais)
-    val options
+    val   options
 
     output:
-    tuple val(meta), path("*.pdf"), emit: pdf
-    tuple val(meta), path("*.raw.txt"), emit: matrix
+    tuple val(meta), path("*.pdf")          , emit: pdf
+    tuple val(meta), path("*.raw.txt")      , emit: matrix
     tuple val(meta), path("*.qcmetrics.txt"), emit: metrics
-    path "*.version.txt", emit: version
+    path  "*.version.txt"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)

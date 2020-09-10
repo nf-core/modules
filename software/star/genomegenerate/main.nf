@@ -26,7 +26,7 @@ process STAR_GENOMEGENERATE {
     script:
     def software  = getSoftwareName(task.process)
     def ioptions  = initOptions(options)
-    def avail_mem = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
+    def memory    = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
     """
     mkdir star
     STAR \\
@@ -35,7 +35,7 @@ process STAR_GENOMEGENERATE {
         --genomeFastaFiles $fasta \\
         --sjdbGTFfile $gtf \\
         --runThreadN $task.cpus \\
-        $avail_mem \\
+        $memory \\
         $ioptions.args
 
     STAR --version | sed -e "s/STAR_//g" > ${software}.version.txt

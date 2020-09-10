@@ -15,10 +15,10 @@ process BWA_INDEX {
 
     input:
     path fasta
-    val options
+    val  options
 
     output:
-    path "${fasta}.*", emit: index
+    path "${fasta}.*"   , emit: index
     path "*.version.txt", emit: version
 
     script:
