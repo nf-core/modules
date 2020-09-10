@@ -15,24 +15,32 @@ process SUBREAD_FEATURECOUNTS {
 
     input:
     tuple val(meta), path(bams), path(annotation)
-    val options
+    val   options
 
     output:
-    tuple val(meta), path("*featureCounts.txt"), emit: txt
+    tuple val(meta), path("*featureCounts.txt")        , emit: counts
     tuple val(meta), path("*featureCounts.txt.summary"), emit: summary
-    path "*.version.txt", emit: version
+    path "*.version.txt"                               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def ioptions = initOptions(options)
-    def prefix   = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
-    def pe       = meta.single_end ? '' : '-p'
+    def software   = getSoftwareName(task.process)
+    def ioptions   = initOptions(options)
+    def prefix     = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    def paired_end = meta.single_end ? '' : '-p'
+
+    def strandedness = 0
+    if (meta.strandedness == 'forward') {
+        strandedness = 1
+    } else if (meta.strandedness == 'reverse') {
+        strandedness = 2
+    }
     """
     featureCounts \\
         $ioptions.args \\
-        $pe \\
+        $paired_end \\
         -T $task.cpus \\
         -a $annotation \\
+        -s $strandedness \\
         -o ${prefix}.featureCounts.txt \\
         ${bams.join(' ')}
 
