@@ -32,6 +32,13 @@ process RSEM_CALCULATEEXPRESSION {
     def software   = getSoftwareName(task.process)
     def ioptions   = initOptions(options)
     prefix         = ioptions.suffix ? "${meta.id}${ioptions.suffix}" : "${meta.id}"
+    
+    def strandedness = ''
+    if (meta.strandedness == 'forward') {
+        strandedness = '--strandedness forward'
+    } else if (meta.strandedness == 'reverse') {
+        strandedness = '--strandedness reverse'
+    }
     def paired_end = meta.single_end ? "" : "--paired-end"
     """
     INDEX=`find -L ./ -name "*.grp" | sed 's/.grp//'`
@@ -39,6 +46,7 @@ process RSEM_CALCULATEEXPRESSION {
         --num-threads $task.cpus \\
         --temporary-folder ./tmp/ \\
         $paired_end \\
+        $strandedness \\
         $ioptions.args \\
         $reads \\
         \$INDEX \\
