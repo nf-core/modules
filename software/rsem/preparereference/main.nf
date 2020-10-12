@@ -8,10 +8,10 @@ process RSEM_PREPAREREFERENCE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    container "quay.io/biocontainers/rsem:1.3.3--pl526ha52163a_0"
-    //container "https://depot.galaxyproject.org/singularity/rsem:1.3.3--pl526ha52163a_0"
+    container "quay.io/biocontainers/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0"
+    //container "https://depot.galaxyproject.org/singularity/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0"
 
-    conda (params.conda ? "bioconda::rsem=1.3.3" : null)
+    conda (params.conda ? "bioconda::rsem=1.3.3 bioconda::star=2.7.6a" : null)
 
     input:
     path fasta
