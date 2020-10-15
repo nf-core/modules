@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_COLLECTMULTIPLEMETRICS } from '../main.nf'
+include { PICARD_COLLECTMULTIPLEMETRICS } from '../main.nf' addParams( options: [:] )
 
 workflow test {
 
@@ -12,8 +12,7 @@ workflow test {
 
     PICARD_COLLECTMULTIPLEMETRICS (
         input,
-        file("${baseDir}/input/NC_010473.fa", checkIfExists: true),
-        [:]
+        file("${baseDir}/input/NC_010473.fa", checkIfExists: true)
     )
 }
 
