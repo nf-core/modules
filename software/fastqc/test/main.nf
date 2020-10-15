@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC } from '../main.nf'
+include { FASTQC as FASTQC_SE } from '../main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
+include { FASTQC as FASTQC_PE } from '../main.nf'  addParams( options: [ publish_dir:'test_paired_end' ] )
 
 /*
  * Test with single-end data
@@ -13,7 +14,7 @@ workflow test_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file("${baseDir}/input/test_single_end.fastq.gz", checkIfExists: true) ] ]
 
-    FASTQC ( input, [ publish_dir:'test_single_end' ] )
+    FASTQC_SE ( input )
 }
 
 /*
@@ -26,7 +27,7 @@ workflow test_paired_end {
               [ file("${baseDir}/input/test_R1.fastq.gz", checkIfExists: true),
                 file("${baseDir}/input/test_R2.fastq.gz", checkIfExists: true) ] ]
 
-    FASTQC ( input, [ publish_dir:'test_paired_end' ] )
+    FASTQC_PE ( input )
 }
 
 workflow {

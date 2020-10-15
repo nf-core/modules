@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_MARKDUPLICATES } from '../main.nf'
+include { PICARD_MARKDUPLICATES } from '../main.nf' addParams( options: [:] )
 
 workflow test {
 
@@ -10,7 +10,7 @@ workflow test {
     input = [ [ id:'test', single_end:false ], // meta map
               file("${baseDir}/input/test.paired_end.sorted.bam", checkIfExists: true) ]
 
-    PICARD_MARKDUPLICATES ( input, [:] )
+    PICARD_MARKDUPLICATES ( input )
 }
 
 workflow {
