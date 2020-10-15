@@ -25,7 +25,7 @@ params:
         description: |
             Value for the Nextflow `publishDir` mode parameter.
             Available: symlink, rellink, link, copy, copyNoFollow, move.
-    - conda:
+    - enable_conda:
         type: boolean
         description: |
             Run the module with Conda using the software specified
@@ -43,11 +43,6 @@ input:
     - fasta:
         type: file
         description: Genome fasta file
-    - options:
-        type: map
-        description: |
-            Groovy Map containing module options for passing command-line arguments and
-            output file paths.
 output:
     - meta:
         type: map
