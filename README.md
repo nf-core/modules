@@ -80,7 +80,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
     nextflow.enable.dsl = 2
 
-    include { FASTQC } from './modules/nf-core/software/fastqc/main'
+    include { FASTQC } from './modules/nf-core/software/fastqc/main' addParams( options: [:] )
     ```
 
 5. We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space!
@@ -170,7 +170,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
 
-- All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided in the `input` section of the process.
+- All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided via the Nextflow `addParams` option when including the module via `include` in the parent workflow.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
@@ -207,7 +207,7 @@ The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#pub
 ```nextflow
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
 The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.

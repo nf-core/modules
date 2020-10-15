@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FLAGSTAT } from '../main.nf'
+include { SAMTOOLS_FLAGSTAT } from '../main.nf' addParams( options: [:] )
 
 workflow test {
 
@@ -11,7 +11,7 @@ workflow test {
               file("${baseDir}/input/test.paired_end.sorted.bam", checkIfExists: true),
               file("${baseDir}/input/test.paired_end.sorted.bam.bai", checkIfExists: true) ]
 
-    SAMTOOLS_FLAGSTAT ( input, [:] )
+    SAMTOOLS_FLAGSTAT ( input )
 }
 
 workflow {

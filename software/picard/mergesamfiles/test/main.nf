@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_MERGESAMFILES } from '../main.nf'
+include { PICARD_MERGESAMFILES } from '../main.nf' addParams( options: [:] )
 
 workflow test {
 
@@ -11,7 +11,7 @@ workflow test {
               [ file("${baseDir}/input/test.paired_end.sorted.bam", checkIfExists: true),
                 file("${baseDir}/input/test.paired_end.COPY.sorted.bam", checkIfExists: true), ] ]
 
-    PICARD_MERGESAMFILES ( input, [:] )
+    PICARD_MERGESAMFILES ( input )
 }
 
 workflow {
