@@ -17,11 +17,11 @@ process BEDTOOLS_SLOPEREFSEQ {
     if (workflow.containerEngine == 'singularity' && !params.pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0 "
     } else {
-        container "quay.io/biocontainers/bedtools:2.27.0--he513fc3"
+        container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
     }
 
     input:
-        path(genome_chrom.sizes)
+        path sizes
         tuple val(meta), path(beds)
 
     output:
@@ -33,7 +33,7 @@ process BEDTOOLS_SLOPEREFSEQ {
         def beds_files = beds.sort()
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        slopBed -i $beds -g ${genome_chrom.sizes} -l 1 -r 10 > {prefix}.sloprefseq.bed
+        slopBed -i $beds -g $sizes -l ${params.upstream} -r {params.downstream} > ${prefix}.sloprefseq.bed
         echo $VERSION > ${software}.version.txt
         """
 }
