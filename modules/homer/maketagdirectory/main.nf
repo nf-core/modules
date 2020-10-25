@@ -21,7 +21,7 @@ process HOMER_MAKETAGDIRECTORY {
     }
 
     input:
-    tuple val(meta), path(bed)
+    tuple val(meta), path(bam)
     val   options
 
     output:
