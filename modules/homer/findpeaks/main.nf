@@ -6,7 +6,7 @@ def options    = initOptions(params.options)
 
 def VERSION = '4.11'
 
-process HOMER_MAKETAGDIRECTORY {
+process HOMER_FINDPEAKS {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
