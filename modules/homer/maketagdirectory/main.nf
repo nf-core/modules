@@ -6,6 +6,8 @@ def options    = initOptions(params.options)
 
 def VERSION = '4.11'
 
+def genome = 'hg19'
+
 process HOMER_MAKETAGDIRECTORY {
     tag "$meta.id"
     label 'process_medium'
@@ -32,12 +34,14 @@ process HOMER_MAKETAGDIRECTORY {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
+    perl /usr/local/share/homer-4.11-2/configureHomer.pl \\
+        -install $genome
+
     makeTagDirectory \\
         ${prefix}_tagDir \\
         $options.args \\
         $bed \\
-        -checkGC \\
-        -cpu $task.cpus
+        -genome $genome \\
 
     echo $VERSION > ${software}.version.txt
     """
