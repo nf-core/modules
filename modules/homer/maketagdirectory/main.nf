@@ -23,8 +23,7 @@ process HOMER_MAKETAGDIRECTORY {
     }
 
     input:
-    tuple val(meta), path(bam)
-    val   options
+    tuple val(meta), path(bed)
 
     output:
     tuple val(meta), path("*_tagDir"), emit: dir
