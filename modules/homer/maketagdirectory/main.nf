@@ -26,7 +26,7 @@ process HOMER_MAKETAGDIRECTORY {
     tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path("*_tagDir"), emit: dir
+    tuple val(meta), path("tag_dir"), emit: tagdir
     path  "*.version.txt"            , emit: version
 
     script:
@@ -34,13 +34,14 @@ process HOMER_MAKETAGDIRECTORY {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     perl /usr/local/share/homer-4.11-2/configureHomer.pl \\
-        -install $genome
+        -install $genome \\
+        -keepScript
 
     makeTagDirectory \\
-        ${prefix}_tagDir \\
+        tag_dir \\
         $options.args \\
         $bed \\
-        -genome $genome \\
+        -genome $genome
 
     echo $VERSION > ${software}.version.txt
     """

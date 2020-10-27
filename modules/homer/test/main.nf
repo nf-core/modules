@@ -3,12 +3,13 @@
 nextflow.enable.dsl = 2
 
 include { HOMER_CONFIGUREHOMER } from '../configurehomer/main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
-include { HOMER_MAKETAGDIRECTORY } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_single_end' ] )
+include { HOMER_MAKETAGDIRECTORY } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_one_file' ] )
+include { HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_TWO } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_two_file' ] )
 
 /*
  * Test with single-end data
  */
-workflow test {
+workflow test_one_file {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
@@ -18,6 +19,20 @@ workflow test {
     HOMER_MAKETAGDIRECTORY( input )
 }
 
+workflow test_two_file {
+
+    def input2 = []
+    input2 = [ [ id:'test_two', single_end:true ], // meta map
+              [ file("${baseDir}/input/A.bed", checkIfExists: true),
+                file("${baseDir}/input/B.bed", checkIfExists: true) ] ]
+
+    // HOMER_CONFIGUREHOMER( )
+    HOMER_MAKETAGDIRECTORY_TWO( input2 )
+    HOMER_FINDPEAKS( HOMER_MAKETAGDIRECTORY_TWO.out.tagdir )
+
+}
+
 workflow {
-    test()
+    // FIXME test_one_file()
+    test_two_file()
 }
