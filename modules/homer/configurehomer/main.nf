@@ -8,7 +8,6 @@ def VERSION = '4.11'
 def genome = 'hg19'
 
 process HOMER_CONFIGUREHOMER {
-    time '10m'
     tag "configureHomer"
     label 'process_medium'
     publishDir "${params.outdir}",

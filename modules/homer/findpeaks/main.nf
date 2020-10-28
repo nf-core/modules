@@ -22,7 +22,6 @@ process HOMER_FINDPEAKS {
 
     input:
     tuple val(meta), path(tagDir)
-    val   options
 
     output:
     tuple val(meta), path("*peaks.txt"), emit: txt
@@ -32,11 +31,13 @@ process HOMER_FINDPEAKS {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
+
     findPeaks \\
         $tagDir \\
         -style $options.style \\
         $options.args \\
         -cpu $task.cpus \\
+        -uniqmap $options.uniqmap
         > ${prefix}.peaks.txt
 
     echo $VERSION > ${software}.version.txt

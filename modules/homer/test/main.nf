@@ -18,12 +18,11 @@ workflow test_groseq_file {
               [ file("${baseDir}/input/A.bed", checkIfExists: true),
                 file("${baseDir}/input/B.bed", checkIfExists: true) ] ]
 
-    // HOMER_CONFIGUREHOMER( )
+    // HOMER_CONFIGUREHOMER_GROSEQ( )
     HOMER_MAKETAGDIRECTORY_GROSEQ( input2 )
     // FIXME HOMER_ANNOTATEPEAKS_GROSEQ( HOMER_MAKETAGDIRECTORY_GROSEQ.out.tagdir )
     HOMER_MAKEUCSCFILE_GROSEQ( HOMER_MAKETAGDIRECTORY_GROSEQ.out.tagdir )
     HOMER_FINDPEAKS_GROSEQ( HOMER_MAKETAGDIRECTORY_GROSEQ.out.tagdir )
-
 }
 
 workflow {
