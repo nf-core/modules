@@ -2,39 +2,28 @@
 
 nextflow.enable.dsl = 2
 
-include { HOMER_CONFIGUREHOMER } from '../configurehomer/main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
-include { HOMER_MAKETAGDIRECTORY } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_one_file' ] )
-include { HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_TWO } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_two_file' ] )
-include { HOMER_ANNOTATEPEAKS as HOMER_ANNOTATEPEAKS_TWO } from '../annotatepeaks/main.nf' addParams( options: [ publish_dir:'test_two_file' ] )
+include { HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_GROSEQ } from '../maketagdirectory/main.nf' addParams( options: [ publish_dir:'test_groseq_file' ] )
+include { HOMER_ANNOTATEPEAKS as HOMER_ANNOTATEPEAKS_GROSEQ } from '../annotatepeaks/main.nf' addParams( options: [ publish_dir:'test_groseq_file' ] )
+include { HOMER_FINDPEAKS as HOMER_FINDPEAKS_GROSEQ } from '../findpeaks/main.nf' addParams( options: [ publish_dir:'test_groseq_file' ] )
 
 /*
- * Test with single-end data
+ * GRO-seq Workflow
+ * http://homer.ucsd.edu/homer/ngs/groseq/groseq.html
  */
-workflow test_one_file {
-
-    def input = []
-    input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${baseDir}/input/A.bed", checkIfExists: true) ] ]
-
-    HOMER_CONFIGUREHOMER()
-    HOMER_MAKETAGDIRECTORY( input )
-}
-
-workflow test_two_file {
+workflow test_groseq_file {
 
     def input2 = []
-    input2 = [ [ id:'test_two', single_end:true ], // meta map
+    input2 = [ [ id:'test_groseq', single_end:true ], // meta map
               [ file("${baseDir}/input/A.bed", checkIfExists: true),
                 file("${baseDir}/input/B.bed", checkIfExists: true) ] ]
 
     // HOMER_CONFIGUREHOMER( )
-    HOMER_MAKETAGDIRECTORY_TWO( input2 )
-    HOMER_FINDPEAKS( HOMER_MAKETAGDIRECTORY_TWO.out.tagdir )
-    // FIXME HOMER_ANNOTATEPEAKS_TWO( HOMER_MAKETAGDIRECTORY_TWO.out.tagdir )
+    HOMER_MAKETAGDIRECTORY_GROSEQ( input2 )
+    // FIXME HOMER_ANNOTATEPEAKS_GROSEQ( HOMER_MAKETAGDIRECTORY_GROSEQ.out.tagdir )
+    HOMER_FINDPEAKS_GROSEQ( HOMER_MAKETAGDIRECTORY_GROSEQ.out.tagdir )
 
 }
 
 workflow {
-    // FIXME test_one_file()
-    test_two_file()
+    test_groseq_file()
 }
