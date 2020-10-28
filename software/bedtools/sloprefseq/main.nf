@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-def VERSION = '4.11'
+def VERSION = '2.29'
 
 process BEDTOOLS_SLOPEREFSEQ {
     tag "$meta.id"
