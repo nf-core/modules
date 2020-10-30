@@ -6,7 +6,7 @@ def options    = initOptions(params.options)
 
 def VERSION = '2.29'
 
-process BEDTOOLS_SLOPEREFSEQ {
+process BEDTOOLS_SLOPREFSEQ {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
