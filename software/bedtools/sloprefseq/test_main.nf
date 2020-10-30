@@ -9,11 +9,11 @@ include BEDTOOLS_SLOPEREFSEQ from '../main.nf' params(params)
 
 // Define input channels
 ch_input_1 = Channel.fromPath('./tests/data/bed/A.bed')
-// ch_input_2 = Channel.fromPath('./tests/data/bed/B.bed')
+ch_input_2 = Channel.fromPath('./tests/data/bed/genome.sizes')
 
 def additional_params_map = [:]
 
 // Run the workflow
 workflow {
-    BEDTOOLS_SLOPEREFSEQ(ch_input_1, additional_params_map)
+    BEDTOOLS_SLOPEREFSEQ(ch_input_1, ch_input_2, additional_params_map)
 }
