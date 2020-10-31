@@ -1,10 +1,10 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-params.options = [:]
-def options    = initOptions(params.options)
+params.options = [upstream: 1,
+                  downstream: 10 ]
 
-def VERSION = '2.29'
+def options    = initOptions(params.options)
 
 process BEDTOOLS_SLOPREFSEQ {
     tag "$meta.id"
@@ -21,7 +21,7 @@ process BEDTOOLS_SLOPREFSEQ {
     }
 
     input:
-        path sizes
+        path sizes 
         tuple val(meta), path(beds)
 
     output:
@@ -33,7 +33,7 @@ process BEDTOOLS_SLOPREFSEQ {
         def beds_files = beds.sort()
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        slopBed -i $beds -g $sizes -l ${params.upstream} -r {params.downstream} > ${prefix}.sloprefseq.bed
-        echo $VERSION > ${software}.version.txt
+        slopBed -i ln -s ${beds[0]} -g ln -s $sizes -l ${params.upstream} -r {params.downstream} > ${prefix}.sloprefseq.bed
+        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
