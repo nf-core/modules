@@ -21,8 +21,8 @@ process BEDTOOLS_SLOPREFSEQ {
     }
 
     input:
-        path sizes 
         tuple val(meta), path(beds)
+        path  sizes
 
     output:
         tuple val(meta), path("*.sloprefseq.bed"), emit: bed
@@ -33,7 +33,7 @@ process BEDTOOLS_SLOPREFSEQ {
         def beds_files = beds.sort()
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        slopBed -i ln -s ${beds[0]} -g ln -s $sizes -l ${params.upstream} -r {params.downstream} > ${prefix}.sloprefseq.bed
+        slopBed -i ln -s ${beds[0]} -g ln -s $sizes -l ${params.upstream} -r ${params.downstream} > ${prefix}.sloprefseq.bed
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }

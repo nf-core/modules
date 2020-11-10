@@ -10,10 +10,13 @@ include { BEDTOOLS_SLOPREFSEQ } from '../../sloprefseq/main.nf' addParams( optio
 workflow test_bed_file{
     def input = []
     input = [ [ id:'test', single_end:true ], 
-              [ file("${baseDir}/input/A.bed", checkIfExists: true),
-                file("${baseDir}/input/genome.sizes", checkIfExists: true) ] ]
+              [ file("${baseDir}/input/A.bed", checkIfExists: true),] ]
 
-    BEDTOOLS_SLOPREFSEQ ( input, [ publish_dir:'test_bed_file' ] )
+    BEDTOOLS_SLOPREFSEQ (
+        input, 
+        file("${baseDir}/input/genome.sizes", checkIfExists: true)
+    )
+    
 
 }
 
