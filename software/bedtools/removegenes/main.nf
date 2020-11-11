@@ -4,9 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-def VERSION = '4.11'
-
-process BEDTOOLS_SLOPEREFSEQ {
+process BEDTOOLS_REMOVEGENES {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
@@ -21,11 +19,11 @@ process BEDTOOLS_SLOPEREFSEQ {
     }
 
     input:
-        path metatranscripts
-        tuple val(meta), path("*.sloprefseqsorted.bed")
+        tuple val(meta), path(slopbed)
+        path metatranscript
 
     output:
-        tuple val(meta), path("*.nogenes.bed"), emit: bed
+        tuple val(meta), path("*.nogenes.bed"), emit: nogenesbed
         path  "*.version.txt", emit: version
 
     script:
@@ -33,8 +31,8 @@ process BEDTOOLS_SLOPEREFSEQ {
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         // sorted via chromosome, then by start position
         """
-        bedtools intersect -a $metatranscripts -b ${prefix}.sloprefseqsorted.bed -v \\
-        sort -k1,1 -k2,2n > {prefix}.nogenes.bed 
-        echo $VERSION > ${software}.version.txt
+        bedtools intersect -a $metatranscript -b $slopbed -v \\
+        | sortBed > ${prefix}.nogenes.bed 
+        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
