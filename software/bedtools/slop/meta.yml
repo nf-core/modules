@@ -1,17 +1,23 @@
 name: bedtools_slop
-description: Adds 1 KB to the front of the genes and 10 KB to the end of the sequence.
+description: Adds a specified number of bases in each direction (unique values may be specified for either -l or -r)
 keywords:
     - bed
     - slopBed
-    - downstream
-    - upstream
 tools:
     - bedtools:
         description: |
             A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
         documentation: https://bedtools.readthedocs.io/en/latest/
-
+        
 params:
+    - l:
+        type: integer
+        description:
+            The number of base pairs to subtract from the start coordinate
+    - r:
+        type: integer
+        description:
+        The number of base pairs to add to the end coordinate
     - outdir:
         type: string
         description: |
@@ -27,6 +33,7 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
+
 input:
     - meta:
         type: map
@@ -46,7 +53,8 @@ output:
     - bed:
         type: file
         description: Edited bed file
-        pattern: "*.{bed}"
+        pattern: "*.{slopbed}"
+
     - version:
         type: file
         description: File containing software version
