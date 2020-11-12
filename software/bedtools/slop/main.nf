@@ -1,6 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
-
+params.options = [:]
 def options    = initOptions(params.options)
 
 process BEDTOOLS_SLOP {
@@ -27,10 +27,21 @@ process BEDTOOLS_SLOP {
 
     script:
         def software = getSoftwareName(task.process)
-        def beds_files = beds.sort()
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+        def header = params.header ? "-header":''
+        def pct = params.pct ? "-pct":''
+
+        def symmetry = ''
+        if (meta.symmetry) {
+
         """
-        slopBed -i ${beds[0]} -g $sizes -l ${params.l} -r ${params.r} > ${prefix}.slop.bed
+        slopBed -i $beds -g $sizes -b $params.b $header $pct $options.args> ${prefix}.slop.bed
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
+        } else {
+        """
+        slopBed -i $beds -g $sizes -l $params.l -r $params.r $header $pct $options.args> ${prefix}.slop.bed
+        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
+        """       
+        }
 }
