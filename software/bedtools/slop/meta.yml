@@ -8,7 +8,7 @@ tools:
         description: |
             A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
         documentation: https://bedtools.readthedocs.io/en/latest/
-        
+
 params:
     - l:
         type: integer
@@ -18,6 +18,20 @@ params:
         type: integer
         description:
         The number of base pairs to add to the end coordinate
+    -b:
+        type: integer
+        description:
+        Increases the entry by the same number base pairs in each direction
+    - pct:
+        type: boolean
+        description: |
+        Define -l and -r as a fraction of the feature’s length. E.g. if used on a 1000bp feature, -l 0.50, will add 500 bp “upstream”. Default = false.
+
+    - header:
+        type: boolean
+        description: |
+        Print the header from the input file prior to results.
+
     - outdir:
         type: string
         description: |

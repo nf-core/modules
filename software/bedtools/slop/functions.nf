@@ -22,6 +22,12 @@ def initOptions(Map args) {
     options.publish_dir   = args.publish_dir ?: ''
     options.publish_files = args.publish_files
     options.suffix        = args.suffix ?: ''
+    options.l             = args.l ?: ''
+    options.r             = args.r ?: ''
+    options.b             = args.b ?: ''
+    options.s             = args.s ?: ''
+    options.pct           = args.pct ?: true
+    options.header        = args.header ?: true
     return options
 }
 

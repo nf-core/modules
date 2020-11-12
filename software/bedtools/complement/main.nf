@@ -27,10 +27,9 @@ process BEDTOOLS_COMPLEMENT {
 
     script:
         def software = getSoftwareName(task.process)
-        def beds_files = beds.sort()
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        bedtools complement -i ${beds[0]} -g $sizes ${options.args} > ${prefix}.complement.bed
+        bedtools complement -i $beds -g $sizes ${options.args} > ${prefix}.complement.bed
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
