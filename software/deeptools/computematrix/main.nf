@@ -11,12 +11,8 @@ process DEEPTOOLS_COMPUTEMATRIX {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::deeptools=3.4.3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/deeptools:3.4.3--py_0"
-    } else {
-        container "quay.io/biocontainers/deeptools:3.4.3--py_0"
-    }
+    conda     (params.enable_conda ? "bioconda::deeptools=3.4.3" : null)
+    container "quay.io/biocontainers/deeptools:3.4.3--py_0"
 
     input:
     tuple val(meta), path(bigwig)
