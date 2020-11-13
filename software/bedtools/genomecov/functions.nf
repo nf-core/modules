@@ -22,6 +22,7 @@ def initOptions(Map args) {
     options.publish_dir   = args.publish_dir ?: ''
     options.publish_files = args.publish_files
     options.suffix        = args.suffix ?: ''
+    options.sizeA         - args.sizeA ?: '-sizeA'
     return options
 }
 
