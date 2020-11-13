@@ -1,79 +1,75 @@
 name: bedtools_slop
 description: Adds a specified number of bases in each direction (unique values may be specified for either -l or -r)
 keywords:
-    - bed
-    - slopBed
+  - bed
+  - slopBed
 tools:
-    - bedtools:
-        description: |
-            A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
-        documentation: https://bedtools.readthedocs.io/en/latest/
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/
 
 params:
-    - l:
-        type: integer
-        description:
-            The number of base pairs to subtract from the start coordinate
-    - r:
-        type: integer
-        description:
-        The number of base pairs to add to the end coordinate
-    -b:
-        type: integer
-        description:
-        Increases the entry by the same number base pairs in each direction
-    - pct:
-        type: boolean
-        description: |
-        Define -l and -r as a fraction of the feature’s length. E.g. if used on a 1000bp feature, -l 0.50, will add 500 bp “upstream”. Default = false.
+  - l:
+      type: integer
+      description: The number of base pairs to subtract from the start coordinate
+  - r:
+      type: integer
+      description: The number of base pairs to add to the end coordinate
+  - b:
+      type: integer
+      description: Increases the entry by the same number base pairs in each direction
+  - pct:
+      type: boolean
+      description: |
+        Define -l and -r as a fraction of the feature’s length. E.g. if used on a 1000bp feature, -l 0.50, will add 500 bp “upstream”. By default this is set to false.
 
-    - header:
-        type: boolean
-        description: |
+  - header:
+      type: boolean
+      description: |
         Print the header from the input file prior to results.
 
-    - outdir:
-        type: string
-        description: |
-            The pipeline's output directory. By default, the module will
-            output files into `$params.outdir/<SOFTWARE>`
-    - publish_dir_mode:
-        type: string
-        description: |
-            Value for the Nextflow `publishDir` mode parameter.
-            Available: symlink, rellink, link, copy, copyNoFollow, move.
-    - enable_conda:
-        type: boolean
-        description: |
-            Run the module with Conda using the software specified
-            via the `conda` directive
+  - outdir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$params.outdir/<SOFTWARE>`
+  - publish_dir_mode:
+      type: string
+      description: |
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - enable_conda:
+      type: boolean
+      description: |
+        Run the module with Conda using the software specified
+        via the `conda` directive
 
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-    - bed:
-        type: file
-        description: List of bed files
-        pattern: "*.{bed}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: List of bed files
+      pattern: "*.{bed}"
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-    - bed:
-        type: file
-        description: Edited bed file
-        pattern: "*.{slopbed}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: Edited bed file
+      pattern: "*.{slopbed}"
 
-    - version:
-        type: file
-        description: File containing software version
-        pattern: "*.{version.txt}"
-        
-authors:
-    -"@Emiller88"
-    -"@sruthipsuresh"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+
+authors: -"@Emiller88"
+  -"@sruthipsuresh"
