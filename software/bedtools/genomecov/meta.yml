@@ -1,8 +1,9 @@
-name: bedtools_complement
-description: Returns all intervals in a genome that are not covered by at least one interval in the input BED/GFF/VCF file.
+name: bedtools_genomecov
+description: Computes histograms (default), per-base reports (-d) and BEDGRAPH (-bg) summaries of feature coverage (e.g., aligned sequences) for a given genome.
 keywords:
     - bed
-    - complement
+    - bam
+    - genomecov
 tools:
     - bedtools:
         description: |
@@ -32,9 +33,9 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - bam:
         type: file
-        description: List of bed files
+        description: List of bam files
         pattern: "*.{bed}"
 output:
     - meta:
@@ -44,8 +45,8 @@ output:
             e.g. [ id:'test', single_end:false ]
     - bed:
         type: file
-        description: Edited bed file
-        pattern: "*.{complement.bed}"
+        description: Computed bed file
+        pattern: "*.{bed}"
 
     - version:
         type: file
