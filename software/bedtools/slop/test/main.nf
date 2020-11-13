@@ -1,8 +1,8 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_S } from '../main.nf' addParams( options: [ publish_dir:'test_asymmetrical' ]  )
-include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_AS } from '../main.nf' addParams( options: [ publish_dir:'test_symmetrical' ]  )
+include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_S } from '../main.nf' addParams( options: [ publish_dir:'test_asymmetrical' ], header: true  )
+include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_AS } from '../main.nf' addParams( options: [ publish_dir:'test_symmetrical' ], header: true )
 
 // To run with header and pct enabled, type --pct true and --header true with nextflow run command.
 
