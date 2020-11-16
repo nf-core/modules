@@ -1,0 +1,4 @@
+- name: Run fastqc test workflow
+  command: nextflow run ./software/fastqc/test/ -profile docker
+  tags:
+    - fastqc
