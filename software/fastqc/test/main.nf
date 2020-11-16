@@ -29,8 +29,3 @@ workflow test_paired_end {
 
     FASTQC_PE ( input )
 }
-
-workflow {
-    test_single_end()
-    test_paired_end()
-}
