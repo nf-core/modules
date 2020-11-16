@@ -2,3 +2,13 @@
   command: nextflow run ./software/fastqc/test/ -profile docker
   tags:
     - fastqc
+  files:
+    - path: output/test_single_end/test_fastqc.html
+      md5sum: d4d3d600c8dc4024c05b531c2920659a
+    - path: output/test_single_end/test_fastqc.zip
+    - path: output/test_paired_end/test_1_fastqc.html
+      md5sum: fb13b04d87d4f8b5078c0d92f6ef2d06
+    - path: output/test_paired_end/test_2_fastqc.html
+      md5sum: d1e3f410e15df9612dc2c17e39f5253d
+    - path: output/test_paired_end/test_1_fastqc.zip
+    - path: output/test_paired_end/test_2_fastqc.zip
