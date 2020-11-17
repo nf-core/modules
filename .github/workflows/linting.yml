@@ -17,20 +17,20 @@ jobs:
       - name: Run Markdownlint
         run: markdownlint ${GITHUB_WORKSPACE} -c ${GITHUB_WORKSPACE}/.markdownlint.yml
 
-  # EditorConfig:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
+  EditorConfig:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: "10"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10"
 
-  #     - name: Install ECLint
-  #       run: npm install -g eclint
+      - name: Install editorconfig-checker
+        run: npm install -g editorconfig-checker
 
-  #     - name: Run ECLint check
-  #       run: eclint check $(git ls-files | grep -v test)
+      - name: Run ECLint check
+        run: ec check $(git ls-files | grep -v test)
 
   YAML:
     runs-on: ubuntu-latest
