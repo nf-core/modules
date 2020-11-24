@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC as FASTQC_SE } from '../../software/fastqc/main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
-include { FASTQC as FASTQC_PE } from '../../software/fastqc/main.nf'  addParams( options: [ publish_dir:'test_paired_end' ] )
+include { FASTQC as FASTQC_SE } from '../../../software/fastqc/main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
+include { FASTQC as FASTQC_PE } from '../../../software/fastqc/main.nf'  addParams( options: [ publish_dir:'test_paired_end' ] )
 
 /*
  * Test with single-end data
