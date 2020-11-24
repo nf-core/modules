@@ -12,7 +12,7 @@ workflow test_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${projectDir}/input/test_single_end.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/fastq/rna/test_single_end.fastq.gz", checkIfExists: true) ] ]
 
     FASTQC_SE ( input )
 }
@@ -25,7 +25,7 @@ workflow test_paired_end {
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
               [ file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
-                file("${projectDir}/../data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
+                file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
 
     FASTQC_PE ( input )
 }
