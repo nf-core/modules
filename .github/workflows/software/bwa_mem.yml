@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/bwa/mem/**
-      - .github/workflows/bwa_mem.yml
-      - tests
+      - .github/workflows/software/bwa_mem.yml
+      - tests/software/bwa/**
   pull_request:
     paths:
       - software/bwa/mem/**
-      - .github/workflows/bwa_mem.yml
-      - tests
+      - .github/workflows/software/bwa_mem.yml
+      - tests/software/bwa/**
 
 jobs:
   ci_test:

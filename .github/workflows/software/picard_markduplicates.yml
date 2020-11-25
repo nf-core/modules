@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/picard/markduplicates/**
-      - .github/workflows/picard_markduplicates.yml
-      - tests
+      - .github/workflows/software/picard_markduplicates.yml
+      - tests/software/picard/**
   pull_request:
     paths:
       - software/picard/markduplicates/**
-      - .github/workflows/picard_markduplicates.yml
-      - tests
+      - .github/workflows/software/picard_markduplicates.yml
+      - tests/software/picard/**
 
 jobs:
   ci_test:

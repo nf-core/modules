@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/bwa/index/**
-      - .github/workflows/bwa_index.yml
-      - tests
+      - .github/workflows/software/bwa_index.yml
+      - tests/software/bwa/**
   pull_request:
     paths:
       - software/bwa/index/**
-      - .github/workflows/bwa_index.yml
-      - tests
+      - .github/workflows/software/bwa_index.yml
+      - tests/software/bwa/**
 
 jobs:
   ci_test:

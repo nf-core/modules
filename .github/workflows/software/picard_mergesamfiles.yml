@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/picard/mergesamfiles/**
-      - .github/workflows/picard_mergesamfiles.yml
-      - tests
+      - .github/workflows/software/picard_mergesamfiles.yml
+      - tests/software/picard/**
   pull_request:
     paths:
       - software/picard/mergesamfiles/**
-      - .github/workflows/picard_mergesamfiles.yml
-      - tests
+      - .github/workflows/software/picard_mergesamfiles.yml
+      - tests/software/picard/**
 
 jobs:
   ci_test:

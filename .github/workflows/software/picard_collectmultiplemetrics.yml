@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/picard/collectmultiplemetrics/**
-      - .github/workflows/picard_collectmultiplemetrics.yml
-      - tests
+      - .github/workflows/software/picard_collectmultiplemetrics.yml
+      - tests/software/picard/**
   pull_request:
     paths:
       - software/picard/collectmultiplemetrics/**
-      - .github/workflows/picard_collectmultiplemetrics.yml
-      - tests
+      - .github/workflows/software/picard_collectmultiplemetrics.yml
+      - tests/software/picard/**
 
 jobs:
   ci_test:
