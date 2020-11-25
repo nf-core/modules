@@ -37,3 +37,12 @@ workflow test_picard_markduplicates  {
 
     PICARD_MARKDUPLICATES ( input )
 }
+
+workflow test_picard_markduplicates_not_sorted  {
+
+    def input = []
+    input = [ [ id:'test', single_end:false ], // meta map
+              file("${launchDir}/tests/data/bam/test.paired_end.name.sorted.bam", checkIfExists: true) ]
+
+    PICARD_MARKDUPLICATES ( input )
+}
