@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/samtools/stats/**
-      - .github/workflows/samtools_stats.yml
-      - tests
+      - .github/workflows/software/software/samtools_stats.yml
+      - tests/software/samtools/**
   pull_request:
     paths:
       - software/samtools/stats/**
-      - .github/workflows/samtools_stats.yml
-      - tests
+      - .github/workflows/software/software/samtools_stats.yml
+      - tests/software/samtools/**
 
 jobs:
   ci_test:

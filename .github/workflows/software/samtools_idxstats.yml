@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/samtools/idxstats/**
-      - .github/workflows/samtools_idxstats.yml
-      - tests
+      - .github/workflows/software/samtools_idxstats.yml
+      - tests/software/samtools/**
   pull_request:
     paths:
       - software/samtools/idxstats/**
-      - .github/workflows/samtools_idxstats.yml
-      - tests
+      - .github/workflows/software/samtools_idxstats.yml
+      - tests/software/samtools/**
 
 jobs:
   ci_test:

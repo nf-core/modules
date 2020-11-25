@@ -3,13 +3,13 @@ on:
   push:
     paths:
       - software/trimgalore/**
-      - .github/workflows/trimgalore.yml
-      - tests
+      - .github/workflows/software/trimgalore.yml
+      - tests/software/trimgalore/**
   pull_request:
     paths:
       - software/trimgalore/**
-      - .github/workflows/trimgalore.yml
-      - tests
+      - .github/workflows/software/trimgalore.yml
+      - tests/software/trimgalore/**
 
 jobs:
   ci_test:
