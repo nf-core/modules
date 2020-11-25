@@ -6,3 +6,20 @@
   files:
     - path: output/picard/test.bam
       md5sum: a9c8a28d1aac362df5973ba2d9923f86
+
+- name: Run picard collectmultiplemetrics
+  command: nextflow run ./tests/software/picard -profile docker -entry test_picard_collectmultiplemetrics -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard_collectmultiplemetrics
+  files:
+    # These can't be md5'd consistently
+    - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
+    - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle.pdf
+    - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
+    - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
+    - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
+    - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
+    - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
+    - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
+    - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
