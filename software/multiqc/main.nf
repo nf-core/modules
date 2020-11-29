@@ -18,8 +18,8 @@ process MULTIQC {
     path(generic_report)
 
     output:
-    path("multiqc_data"), emit: dir
-    path("multiqc_report.html"), emit: html
+    path "multiqc_data", emit: dir
+    path "multiqc_report.html", emit: html
     path "*.version.txt", emit: version
 
     script:
