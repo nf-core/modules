@@ -2,20 +2,24 @@
 
 nextflow.enable.dsl = 2
 
-include { MULTIQC } from '../main.nf'  addParams( options: [ publish_dir:'test_single_end' ] )
+include { MULTIQC } from '../main.nf'  addParams( options: [ publish_dir:'test_multi' ] )
 
 /*
  * Test with single-end data
  */
-workflow test_single_end {
+workflow test_multi {
 
     def input = []
-    input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${baseDir}/input/test_single_end.fastq.gz", checkIfExists: true) ] ]
+    input = [
+        file("${baseDir}/input/test_1_fastqc.html", checkIfExists: true),
+        file("${baseDir}/input/test_2_fastqc.html", checkIfExists: true),
+        file("${baseDir}/input/test_1_fastqc.zip", checkIfExists: true),
+        file("${baseDir}/input/test_2_fastqc.zip", checkIfExists: true)
+    ]
 
-    FASTQC_SE ( input )
+    MULTIQC ( input )
 }
 
 workflow {
-    test_single_end()
+    test_multi()
 }

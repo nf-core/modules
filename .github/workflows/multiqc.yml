@@ -1,0 +1,30 @@
+name: multiqc
+on:
+  push:
+    paths:
+      - software/multiqc/**
+      - .github/workflows/multiqc.yml
+      - tests
+  pull_request:
+    paths:
+      - software/multiqc/**
+      - .github/workflows/multiqc.yml
+      - tests
+
+jobs:
+  ci_test:
+    runs-on: ubuntu-latest
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Install Nextflow
+      run: |
+        export NXF_VER="20.07.1"
+        wget -qO- get.nextflow.io | bash
+        sudo mv nextflow /usr/local/bin/
+
+    # Test the module
+    - run: nextflow run ./software/multiqc/test/ -profile docker

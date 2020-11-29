@@ -1,20 +1,16 @@
-name: fastqc
-description: Run FastQC on sequenced reads
+name: MultiQC
+description: Aggregate results from bioinformatics analyses across many samples into a single report
 keywords:
-    - quality control
-    - qc
-    - adapters
-    - fastq
+    - QC
+    - bioinformatics tools
+    - Beautiful stand-alone HTML report
 tools:
-    - fastqc:
+    - multiqc:
         description: |
-            FastQC gives general quality metrics about your reads.
-            It provides information about the quality score distribution
-            across your reads, the per base sequence content (%A/C/G/T).
-            You get information about adapter contamination and other
-            overrepresented sequences.
-        homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-        documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
+            MultiQC searches a given directory for analysis logs and compiles a HTML report.
+            It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.
+        homepage: https://multiqc.info/
+        documentation: https://multiqc.info/docs/
 params:
     - outdir:
         type: string
@@ -32,36 +28,23 @@ params:
             Run the module with Conda using the software specified
             via the `conda` directive
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-    - reads:
+    - generic_report:
         type: file
         description: |
-            List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-            respectively.
+            List of report, for example the html and zip output of FastQC
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+    - dir:
+        type: dir
+        description: MultiQC data dir
+        pattern: "multiqc_data"
     - html:
         type: file
-        description: FastQC report
-        pattern: "*_{fastqc.html}"
-    - zip:
-        type: file
-        description: FastQC report archive
-        pattern: "*_{fastqc.zip}"
+        description: MultiQC report file
+        pattern: "multiqc_report.html"
     - version:
         type: file
         description: File containing software version
         pattern: "*.{version.txt}"
 authors:
-    - "@drpatelh"
-    - "@grst"
-    - "@ewels"
-    - "@FelixKrueger"
+    - "@abhi18av"
+    - "@bunop"

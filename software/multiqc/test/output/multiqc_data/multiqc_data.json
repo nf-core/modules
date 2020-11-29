@@ -2,25 +2,25 @@
     "report_data_sources": {
         "FastQC": {
             "all_sections": {
-                "test_2": "/Users/eklavya/projects/code/ORG_nf_core/modules/software/multiqc/test/input/test_2_fastqc.zip",
-                "test_1": "/Users/eklavya/projects/code/ORG_nf_core/modules/software/multiqc/test/input/test_1_fastqc.zip"
+                "test_1": "/home/paolo/Projects/NEXTFLOWetude/nf-core-modules/work/cc/e69df4c4d3d33e79fbb670c7f14b52/test_1_fastqc.zip",
+                "test_2": "/home/paolo/Projects/NEXTFLOWetude/nf-core-modules/work/cc/e69df4c4d3d33e79fbb670c7f14b52/test_2_fastqc.zip"
             }
         }
     },
     "report_general_stats_data": [
         {
-            "test_2": {
-                "percent_gc": 44.0,
-                "avg_sequence_length": 76.0,
-                "total_sequences": 10000.0,
-                "percent_duplicates": 8.370000000000005,
-                "percent_fails": 9.090909090909092
-            },
             "test_1": {
                 "percent_gc": 44.0,
                 "avg_sequence_length": 76.0,
                 "total_sequences": 10000.0,
                 "percent_duplicates": 8.280000000000001,
+                "percent_fails": 9.090909090909092
+            },
+            "test_2": {
+                "percent_gc": 44.0,
+                "avg_sequence_length": 76.0,
+                "total_sequences": 10000.0,
+                "percent_duplicates": 8.370000000000005,
                 "percent_fails": 9.090909090909092
             }
         }
@@ -133,7 +133,7 @@
             }
         }
     ],
-    "report_multiqc_command": "/Users/eklavya/.pyenv/versions/miniconda3-latest/bin/multiqc input/",
+    "report_multiqc_command": "/usr/local/bin/multiqc .",
     "report_plot_data": {
         "fastqc_sequence_counts_plot": {
             "plot_type": "bar_graph",
@@ -540,8 +540,8 @@
                 "xDecimals": false,
                 "tt_label": "<b>Base {point.x}</b>: {point.y:.2f}",
                 "colors": {
-                    "test_2": "#5cb85c",
-                    "test_1": "#5cb85c"
+                    "test_1": "#5cb85c",
+                    "test_2": "#5cb85c"
                 },
                 "yPlotBands": [
                     {
@@ -749,8 +749,8 @@
                 "xmin": 0,
                 "xDecimals": false,
                 "colors": {
-                    "test_2": "#5cb85c",
-                    "test_1": "#5cb85c"
+                    "test_1": "#5cb85c",
+                    "test_2": "#5cb85c"
                 },
                 "tt_label": "<b>Phred {point.x}</b>: {point.y} reads",
                 "xPlotBands": [
@@ -2424,14 +2424,15 @@
                 "id": "fastqc_per_sequence_gc_content_plot",
                 "title": "FastQC: Per Sequence GC Content",
                 "xlab": "% GC",
+                "ylab": "Percentage",
                 "ymin": 0,
                 "xmax": 100,
                 "xmin": 0,
                 "yDecimals": false,
                 "tt_label": "<b>{point.x}% GC</b>: {point.y}",
                 "colors": {
-                    "test_2": "#5cb85c",
-                    "test_1": "#5cb85c"
+                    "test_1": "#5cb85c",
+                    "test_2": "#5cb85c"
                 },
                 "data_labels": [
                     {
@@ -2442,8 +2443,7 @@
                         "name": "Counts",
                         "ylab": "Count"
                     }
-                ],
-                "ylab": "Percentage"
+                ]
             }
         },
         "fastqc_per_base_n_content_plot": {
@@ -2819,8 +2819,8 @@
                 "xmin": 0,
                 "xDecimals": false,
                 "colors": {
-                    "test_2": "#5cb85c",
-                    "test_1": "#5cb85c"
+                    "test_1": "#5cb85c",
+                    "test_2": "#5cb85c"
                 },
                 "tt_label": "<b>Base {point.x}</b>: {point.y:.2f}%",
                 "yPlotBands": [
@@ -2918,11 +2918,13 @@
                 "ymax": 100,
                 "ymin": 0,
                 "yMinTickInterval": 0.1,
+                "yLabelFormat": "{value:.0f}%",
                 "colors": {
-                    "test_2": "#5cb85c",
-                    "test_1": "#5cb85c"
+                    "test_1": "#5cb85c",
+                    "test_2": "#5cb85c"
                 },
-                "tt_label": "<b>{point.x}</b>: {point.y:.1f}%"
+                "tt_decimals": 2,
+                "tt_suffix": "%"
             }
         },
         "fastqc_adapter_content_plot": {
@@ -3650,35 +3652,13 @@
                 ],
                 "decimalPlaces": 1,
                 "legend": false,
-                "datalabels": false
+                "datalabels": false,
+                "xcats_samples": false
             }
         }
     },
     "report_saved_raw_data": {
-        "multiqc_qualimap_bamqc_genome_results": {},
         "multiqc_fastqc": {
-            "test_2": {
-                "Filename": "test_2.fastq.gz",
-                "File type": "Conventional base calls",
-                "Encoding": "Sanger / Illumina 1.9",
-                "Total Sequences": 10000.0,
-                "Sequences flagged as poor quality": 0.0,
-                "Sequence length": 76.0,
-                "%GC": 44.0,
-                "total_deduplicated_percentage": 91.63,
-                "avg_sequence_length": 76.0,
-                "basic_statistics": "pass",
-                "per_base_sequence_quality": "pass",
-                "per_tile_sequence_quality": "pass",
-                "per_sequence_quality_scores": "pass",
-                "per_base_sequence_content": "fail",
-                "per_sequence_gc_content": "pass",
-                "per_base_n_content": "pass",
-                "sequence_length_distribution": "pass",
-                "sequence_duplication_levels": "pass",
-                "overrepresented_sequences": "warn",
-                "adapter_content": "pass"
-            },
             "test_1": {
                 "Filename": "test_1.fastq.gz",
                 "File type": "Conventional base calls",
@@ -3700,18 +3680,40 @@
                 "sequence_duplication_levels": "pass",
                 "overrepresented_sequences": "warn",
                 "adapter_content": "pass"
+            },
+            "test_2": {
+                "Filename": "test_2.fastq.gz",
+                "File type": "Conventional base calls",
+                "Encoding": "Sanger / Illumina 1.9",
+                "Total Sequences": 10000.0,
+                "Sequences flagged as poor quality": 0.0,
+                "Sequence length": 76.0,
+                "%GC": 44.0,
+                "total_deduplicated_percentage": 91.63,
+                "avg_sequence_length": 76.0,
+                "basic_statistics": "pass",
+                "per_base_sequence_quality": "pass",
+                "per_tile_sequence_quality": "pass",
+                "per_sequence_quality_scores": "pass",
+                "per_base_sequence_content": "fail",
+                "per_sequence_gc_content": "pass",
+                "per_base_n_content": "pass",
+                "sequence_length_distribution": "pass",
+                "sequence_duplication_levels": "pass",
+                "overrepresented_sequences": "warn",
+                "adapter_content": "pass"
             }
         },
         "multiqc_general_stats": {
-            "test_2": {
-                "FastQC_mqc-generalstats-fastqc-percent_duplicates": 8.370000000000005,
+            "test_1": {
+                "FastQC_mqc-generalstats-fastqc-percent_duplicates": 8.280000000000001,
                 "FastQC_mqc-generalstats-fastqc-percent_gc": 44.0,
                 "FastQC_mqc-generalstats-fastqc-avg_sequence_length": 76.0,
                 "FastQC_mqc-generalstats-fastqc-percent_fails": 9.090909090909092,
                 "FastQC_mqc-generalstats-fastqc-total_sequences": 10000.0
             },
-            "test_1": {
-                "FastQC_mqc-generalstats-fastqc-percent_duplicates": 8.280000000000001,
+            "test_2": {
+                "FastQC_mqc-generalstats-fastqc-percent_duplicates": 8.370000000000005,
                 "FastQC_mqc-generalstats-fastqc-percent_gc": 44.0,
                 "FastQC_mqc-generalstats-fastqc-avg_sequence_length": 76.0,
                 "FastQC_mqc-generalstats-fastqc-percent_fails": 9.090909090909092,
@@ -3720,19 +3722,19 @@
         }
     },
     "config_analysis_dir_abs": [
-        "/Users/eklavya/projects/code/ORG_nf_core/modules/software/multiqc/test/input"
+        "/home/paolo/Projects/NEXTFLOWetude/nf-core-modules/work/cc/e69df4c4d3d33e79fbb670c7f14b52"
     ],
     "config_analysis_dir": [
-        "input/"
+        "."
     ],
-    "config_creation_date": "2020-11-23, 18:25",
+    "config_creation_date": "2020-11-28, 16:22",
     "config_git_hash": null,
     "config_intro_text": null,
     "config_report_comment": null,
     "config_report_header_info": null,
-    "config_script_path": "/Users/eklavya/.pyenv/versions/miniconda3-latest/lib/python3.7/site-packages/multiqc/utils",
-    "config_short_version": "1.8",
+    "config_script_path": "/usr/local/lib/python3.8/site-packages/multiqc/utils",
+    "config_short_version": "1.9",
     "config_subtitle": null,
     "config_title": null,
-    "config_version": "1.8"
+    "config_version": "1.9"
 }
