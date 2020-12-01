@@ -1,15 +1,15 @@
-name: bwa_index
+name: picard_markduplicates
 on:
   push:
     paths:
-      - software/bwa/index/**
-      - .github/workflows/software/bwa_index.yml
-      - tests/software/bwa/**
+      - software/picard/markduplicates/**
+      - .github/workflows/picard_markduplicates.yml
+      - tests/software/picard/**
   pull_request:
     paths:
-      - software/bwa/index/**
-      - .github/workflows/software/bwa_index.yml
-      - tests/software/bwa/**
+      - software/picard/markduplicates/**
+      - .github/workflows/picard_markduplicates.yml
+      - tests/software/picard/**
 
 jobs:
   ci_test:
@@ -33,4 +33,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag bwa_index --symlink --wt 2
+      - run: pytest --tag picard_markduplicates --symlink --wt 2

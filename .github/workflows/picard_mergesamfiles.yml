@@ -1,14 +1,14 @@
-name: picard_markduplicates
+name: picard_mergesamfiles
 on:
   push:
     paths:
-      - software/picard/markduplicates/**
-      - .github/workflows/software/picard_markduplicates.yml
+      - software/picard/mergesamfiles/**
+      - .github/workflows/picard_mergesamfiles.yml
       - tests/software/picard/**
   pull_request:
     paths:
-      - software/picard/markduplicates/**
-      - .github/workflows/software/picard_markduplicates.yml
+      - software/picard/mergesamfiles/**
+      - .github/workflows/picard_mergesamfiles.yml
       - tests/software/picard/**
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag picard_markduplicates --symlink --wt 2
+      - run: pytest --tag picard_mergesamfiles --symlink --wt 2

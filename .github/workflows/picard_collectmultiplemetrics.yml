@@ -1,15 +1,15 @@
-name: trimgalore
+name: picard_collectmultiplemetrics.yml
 on:
   push:
     paths:
-      - software/trimgalore/**
-      - .github/workflows/software/trimgalore.yml
-      - tests/software/trimgalore/**
+      - software/picard/collectmultiplemetrics/**
+      - .github/workflows/picard_collectmultiplemetrics.yml
+      - tests/software/picard/**
   pull_request:
     paths:
-      - software/trimgalore/**
-      - .github/workflows/software/trimgalore.yml
-      - tests/software/trimgalore/**
+      - software/picard/collectmultiplemetrics/**
+      - .github/workflows/picard_collectmultiplemetrics.yml
+      - tests/software/picard/**
 
 jobs:
   ci_test:
@@ -33,4 +33,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag trimgalore --symlink --wt 2
+      - run: pytest --tag picard_collectmultiplemetrics --symlink --wt 2
