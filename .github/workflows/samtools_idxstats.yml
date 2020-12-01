@@ -1,15 +1,15 @@
-name: picard_collectmultiplemetrics.yml
+name: samtools_idxstats
 on:
   push:
     paths:
-      - software/picard/collectmultiplemetrics/**
-      - .github/workflows/software/picard_collectmultiplemetrics.yml
-      - tests/software/picard/**
+      - software/samtools/idxstats/**
+      - .github/workflows/samtools_idxstats.yml
+      - tests/software/samtools/**
   pull_request:
     paths:
-      - software/picard/collectmultiplemetrics/**
-      - .github/workflows/software/picard_collectmultiplemetrics.yml
-      - tests/software/picard/**
+      - software/samtools/idxstats/**
+      - .github/workflows/samtools_idxstats.yml
+      - tests/software/samtools/**
 
 jobs:
   ci_test:
@@ -33,4 +33,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag picard_collectmultiplemetrics --symlink --wt 2
+      - run: pytest --tag samtools_idxstats --symlink --wt 2

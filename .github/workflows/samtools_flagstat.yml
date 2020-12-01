@@ -1,14 +1,14 @@
-name: samtools_index
+name: samtools_flagstat
 on:
   push:
     paths:
-      - software/samtools/index/**
-      - .github/workflows/software/samtools_index.yml
+      - software/samtools/flagstat/**
+      - .github/workflows/samtools_flagstat.yml
       - tests/software/samtools/**
   pull_request:
     paths:
-      - software/samtools/index/**
-      - .github/workflows/software/samtools_index.yml
+      - software/samtools/flagstat/**
+      - .github/workflows/samtools_flagstat.yml
       - tests/software/samtools/**
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag samtools_index --symlink --wt 2
+      - run: pytest --tag samtools_flagstat --symlink --wt 2
