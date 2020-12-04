@@ -15,8 +15,8 @@ process MULTIQC {
     container "quay.io/biocontainers/multiqc:1.9--pyh9f0ad1d_0"
 
     input:
-//    path multiqc_config
-//    path multiqc_custom_config
+    path multiqc_config
+    path multiqc_custom_config
     path('fastqc/*')
 
     output:
@@ -25,7 +25,7 @@ process MULTIQC {
     path "*_plots", optional: true, emit: plots
 
     script:
-//    def custom_config = params.multiqc_config ? "--config $multiqc_custom_config" : ''
+    def custom_config = params.multiqc_config ? "--config $multiqc_custom_config" : ''
     """
     multiqc -f $options.args $custom_config .
     """
