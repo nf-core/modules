@@ -8,9 +8,13 @@ include { test_paired_end } from '../fastqc/main.nf'  addParams( options: [ publ
 workflow test_multiqc {
     test_paired_end()
 
+
+//    test_paired_end.out.html.collect { it[1] }
+//        .join(test_paired_end.out.zip)
+//        .view()
+
     input = [
-        [id: 'test'],
-        test_paired_end.out.html.join(test_paired_end.out.zip, by: 0).flatten().filter(java.nio.file.Path).toList()
+        test_paired_end.out.zip.collect { it[1] }.ifEmpty([])
     ]
 
     MULTIQC(input)
