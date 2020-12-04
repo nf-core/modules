@@ -4,12 +4,12 @@ on:
     paths:
       - software/samtools/flagstat/**
       - .github/workflows/samtools_flagstat.yml
-      - tests
+      - tests/software/samtools/**
   pull_request:
     paths:
       - software/samtools/flagstat/**
       - .github/workflows/samtools_flagstat.yml
-      - tests
+      - tests/software/samtools/**
 
 jobs:
   ci_test:
@@ -17,14 +17,20 @@ jobs:
     env:
       NXF_ANSI_LOG: false
     steps:
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
+      - name: Install Nextflow
+        run: |
+          export NXF_VER="20.07.1"
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
 
-    - name: Install Nextflow
-      run: |
-        export NXF_VER="20.07.1"
-        wget -qO- get.nextflow.io | bash
-        sudo mv nextflow /usr/local/bin/
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest-workflow
 
-    # Test the module
-    - run: nextflow run ./software/samtools/flagstat/test/ -profile docker
+      # Test the module
+      - run: pytest --tag samtools_flagstat --symlink --wt 2

@@ -1,30 +1,36 @@
 name: bwa_index
 on:
-  push:
-    paths:
-      - software/bwa/index/**
-      - .github/workflows/bwa_index.yml
-      - tests
-  pull_request:
-    paths:
-      - software/bwa/index/**
-      - .github/workflows/bwa_index.yml
-      - tests
+    push:
+        paths:
+            - software/bwa/index/**
+            - .github/workflows/bwa_index.yml
+            - tests/software/bwa/**
+    pull_request:
+        paths:
+            - software/bwa/index/**
+            - .github/workflows/bwa_index.yml
+            - tests/software/bwa/**
 
 jobs:
-  ci_test:
-    runs-on: ubuntu-latest
-    env:
-      NXF_ANSI_LOG: false
-    steps:
+    ci_test:
+        runs-on: ubuntu-latest
+        env:
+            NXF_ANSI_LOG: false
+        steps:
+            - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
+            - name: Install Nextflow
+              run: |
+                  export NXF_VER="20.07.1"
+                  wget -qO- get.nextflow.io | bash
+                  sudo mv nextflow /usr/local/bin/
 
-    - name: Install Nextflow
-      run: |
-        export NXF_VER="20.07.1"
-        wget -qO- get.nextflow.io | bash
-        sudo mv nextflow /usr/local/bin/
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.x"
+            - name: Install dependencies
+              run: python -m pip install --upgrade pip pytest-workflow
 
-    # Test the module
-    - run: nextflow run ./software/bwa/index/test/ -profile docker
+            # Test the module
+            - run: pytest --tag bwa_index --symlink --wt 2

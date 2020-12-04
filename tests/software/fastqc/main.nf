@@ -29,3 +29,5 @@ workflow test_paired_end {
 
     FASTQC_PE ( input )
 }
+
+// TODO Test e2e

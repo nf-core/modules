@@ -1,0 +1,32 @@
+- name: Run bwa index
+  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_index -c tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa_index
+  files:
+    - path: output/bwa/NC_010473.fa.amb
+      md5sum: 942a990ae872f1c0b8d72dda2db405d5
+    - path: output/bwa/NC_010473.fa.bwt
+      md5sum: 7301b52e2ecb893d429a49fa692447ae
+    - path: output/bwa/NC_010473.fa.pac
+      md5sum: 4d5e6fc45bbc968f7f859e9ca2cc89ad
+    - path: output/bwa/NC_010473.fa.sa
+      md5sum: a47dcc92e750e2f16fbd979b8ff9538e
+
+- name: Run bwa mem single-end
+  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_mem_single_end -c tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa_mem
+  files:
+    - path: output/test_single_end/test.bam
+      md5sum: 3ee21210bac387e0335008146e4728bc
+
+- name: Run bwa mem paired-end
+  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa_mem
+  files:
+    - path: output/test_paired_end/test.bam
+      md5sum: 510d8acc6448c07cdacce8e64ec0904c
