@@ -1,23 +1,36 @@
-name: samtools sort
+name: samtools_sort
 on:
-  push: {}
+  push:
+    paths:
+      - software/samtools/sort/**
+      - .github/workflows/samtools_sort.yml
+      - tests/software/samtools/**
   pull_request:
-    paths: tools/samtools/sort*
+    paths:
+      - software/samtools/sort/**
+      - .github/workflows/samtools_sort.yml
+      - tests/software/samtools/**
 
 jobs:
-  run_ci_test:
+  ci_test:
     runs-on: ubuntu-latest
-
+    env:
+      NXF_ANSI_LOG: false
     steps:
+      - uses: actions/checkout@v2
 
-    # Check out the repository
-    - uses: actions/checkout@v1
-      submodules: true
+      - name: Install Nextflow
+        run: |
+          export NXF_VER="20.07.1"
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
 
-    - name: Install Nextflow
-      run: |
-        wget -qO- get.nextflow.io | bash
-        sudo mv nextflow /usr/local/bin/
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest-workflow
 
-    # Test the module
-    - run: nextflow run ./tools/samtools/sort/test/ -ansi-log false
+      # Test the module
+      - run: pytest --tag samtools_sort --symlink --wt 2

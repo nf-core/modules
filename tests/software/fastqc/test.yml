@@ -1,0 +1,17 @@
+- name: Run fastqc single-end test workflow
+  command: nextflow run ./tests/software/fastqc/ -profile docker -entry test_single_end -c tests/config/nextflow.config
+  tags:
+    - fastqc
+  files:
+    - path: output/test_single_end/test_fastqc.html
+    - path: output/test_single_end/test_fastqc.zip
+
+- name: Run fastqc paired-end test workflow
+  command: nextflow run ./tests/software/fastqc/ -profile docker -entry test_paired_end -c tests/config/nextflow.config
+  tags:
+    - fastqc
+  files:
+    - path: output/test_paired_end/test_1_fastqc.html
+    - path: output/test_paired_end/test_2_fastqc.html
+    - path: output/test_paired_end/test_1_fastqc.zip
+    - path: output/test_paired_end/test_2_fastqc.zip

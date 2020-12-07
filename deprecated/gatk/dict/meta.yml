@@ -1,0 +1,25 @@
+name: gatk dict
+description: create a dictionary file from a fasta file
+keywords:
+    - dictionary
+tools:
+    - gatk:
+        description: |
+            The GATK toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping, developed in the Data Sciences Platform at the Broad Institute.
+        homepage: https://gatk.broadinstitute.org/hc/en-us
+        documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+        doi: 10.1158/1538-7445.AM2017-3590
+input:
+    -
+        - input:
+            type: file
+            description: Input fasta file
+            pattern: "*.{fasta,fa}"
+output:
+    -
+        - dict:
+            type: file
+            description: gatk dictionary file
+            pattern: "*.{fasta,fa}.{dict}"
+authors:
+    - "@maxulysse"
