@@ -33,14 +33,18 @@ input:
         description: |
             List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
 output:
-    - data:
-        type: dir
-        description: MultiQC data dir
-        pattern: "multiqc_data"
     - report:
         type: file
         description: MultiQC report file
         pattern: "multiqc_report.html"
+    - data:
+        type: dir
+        description: MultiQC data dir
+        pattern: "multiqc_data"
+    - plots:
+        type: file
+        description: Plots created by MultiQC
+        pattern: "*_data"
     - version:
         type: file
         description: File containing software version
@@ -48,3 +52,4 @@ output:
 authors:
     - "@abhi18av"
     - "@bunop"
+    - "@drpatelh"
