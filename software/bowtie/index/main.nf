@@ -17,7 +17,6 @@ process BOWTIE_INDEX {
 
     input:
     path fasta
-    path gtf
 
     output:
     path "*.index*"          , emit: index
