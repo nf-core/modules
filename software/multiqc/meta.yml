@@ -28,16 +28,16 @@ params:
             Run the module with Conda using the software specified
             via the `conda` directive
 input:
-    - generic_report:
+    - multiqc_files:
         type: file
         description: |
-            List of report, for example the html and zip output of FastQC
+            List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
 output:
-    - dir:
+    - data:
         type: dir
         description: MultiQC data dir
         pattern: "multiqc_data"
-    - html:
+    - report:
         type: file
         description: MultiQC report file
         pattern: "multiqc_report.html"
