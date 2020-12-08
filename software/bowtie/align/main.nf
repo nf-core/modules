@@ -17,7 +17,6 @@ process BOWTIE_ALIGN {
     input:
     tuple val(meta), path(reads)
     path  index
-    path  gtf
     
     output:
     tuple val(meta), path("*.sam")            , emit: sam
