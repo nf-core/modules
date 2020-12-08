@@ -31,6 +31,6 @@ workflow test_paired_end {
 
     emit:
     html = FASTQC_PE.out.html
-    zip = FASTQC_PE.out.zip
+    zip  = FASTQC_PE.out.zip
 
 }
