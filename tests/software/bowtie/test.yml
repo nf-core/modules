@@ -4,17 +4,17 @@
     - bowtie
     - bowtie_index
   files:
-    - path: output/bowtie/NC_010473.index.1.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.1.ebwt
       md5sum: 90f0b7aa5bbaeaaa999839ac13ad203c
-    - path: output/bowtie/NC_010473.index.2.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.2.ebwt
       md5sum: bfd10c5319c6a0dbc540fd789254a5dd
-    - path: output/bowtie/NC_010473.index.3.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.3.ebwt
       md5sum: cd201e81724f3099131aec16ef2cc53b
-    - path: output/bowtie/NC_010473.index.4.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.4.ebwt
       md5sum: bbb9d6d21ad765d135f95290204e8433
-    - path: output/bowtie/NC_010473.index.rev.1.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.rev.1.ebwt
       md5sum: 44f719c2fe42e1f35d54e798775846d1
-    - path: output/bowtie/NC_010473.index.rev.2.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.rev.2.ebwt
       md5sum: f3c398bba5158f4039334a932d79c051
 
 - name: Run bowtie index and align signle-end
@@ -23,20 +23,44 @@
     - bowtie
     - bowtie_align
   files:
-    - path: output/bowtie/NC_010473.index.1.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.1.ebwt
       md5sum: 90f0b7aa5bbaeaaa999839ac13ad203c
-    - path: output/bowtie/NC_010473.index.2.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.2.ebwt
       md5sum: bfd10c5319c6a0dbc540fd789254a5dd
-    - path: output/bowtie/NC_010473.index.3.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.3.ebwt
       md5sum: cd201e81724f3099131aec16ef2cc53b
-    - path: output/bowtie/NC_010473.index.4.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.4.ebwt
       md5sum: bbb9d6d21ad765d135f95290204e8433
-    - path: output/bowtie/NC_010473.index.rev.1.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.rev.1.ebwt
       md5sum: 44f719c2fe42e1f35d54e798775846d1
-    - path: output/bowtie/NC_010473.index.rev.2.ebwt
+    - path: output/bowtie/bowtie/NC_010473.index.rev.2.ebwt
       md5sum: f3c398bba5158f4039334a932d79c051
     - path: output/bowtie/test.out
       md5sum: 6edce9d0d8ad7f5ce837a5be7e0d7fbe
     - path: output/bowtie/test.sam
       md5sum: acdb36ea915ac2ac71b69a0b704d9d8a
+
+
+- name: Run bowtie index and align paired_end
+  command: nextflow run ./tests/software/bowtie -profile docker -entry test_bowtie_alignment_paired_end -c tests/config/nextflow.config
+  tags:
+    - bowtie
+    - bowtie_align
+  files:
+    - path: output/bowtie/bowtie/NC_010473.index.1.ebwt
+      md5sum: 90f0b7aa5bbaeaaa999839ac13ad203c
+    - path: output/bowtie/bowtie/NC_010473.index.2.ebwt
+      md5sum: bfd10c5319c6a0dbc540fd789254a5dd
+    - path: output/bowtie/bowtie/NC_010473.index.3.ebwt
+      md5sum: cd201e81724f3099131aec16ef2cc53b
+    - path: output/bowtie/bowtie/NC_010473.index.4.ebwt
+      md5sum: bbb9d6d21ad765d135f95290204e8433
+    - path: output/bowtie/bowtie/NC_010473.index.rev.1.ebwt
+      md5sum: 44f719c2fe42e1f35d54e798775846d1
+    - path: output/bowtie/bowtie/NC_010473.index.rev.2.ebwt
+      md5sum: f3c398bba5158f4039334a932d79c051
+    - path: output/bowtie/test.out
+      md5sum: 6edce9d0d8ad7f5ce837a5be7e0d7fbe
+    - path: output/bowtie/test.sam
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
 
