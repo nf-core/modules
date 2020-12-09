@@ -21,7 +21,7 @@ process BOWTIE_ALIGN {
     output:
     tuple val(meta), path("*.sam"), emit: sam
     tuple val(meta), path("*.out"), emit: log
-    path  "bowtie.version.txt"                , emit: version
+    path  "bowtie.version.txt", emit: version
 
     script:
     def software  = getSoftwareName(task.process)
