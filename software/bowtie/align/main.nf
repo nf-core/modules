@@ -28,13 +28,13 @@ process BOWTIE_ALIGN {
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped" : ''
     """
-    INDEX=`find -L ./ -name "*.1.ebwt" | sed 's/.1.ebwt//'`
+    INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
     bowtie \\
         --threads $task.cpus \\
         $options.args \\
-        $INDEX \\
+        \$INDEX \\
         -q ${reads} \\
-	$unaligned \\
+	    $unaligned \\
 	> ${prefix}.sam 2> ${prefix}.out
 
     bowtie --version | head -n 1 | cut -d" " -f3 > ${software}.version.txt
