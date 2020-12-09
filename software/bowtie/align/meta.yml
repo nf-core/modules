@@ -29,6 +29,9 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
+    - save_unaligned:
+        type: boolean
+        description: Save unaligned reads
 input:
     - meta:
         type: map
@@ -45,10 +48,10 @@ input:
         description: Bowtie genome index files
         pattern: "*.ebwt"
 output:
-    - index:
+    - sam:
         type: file
-        description: Bowtie genome index files
-        pattern: "*.ebwt"
+        description: Output SAM file containing read alignments
+        pattern: "*.{sam}"
     - version:
         type: file
         description: File containing software version

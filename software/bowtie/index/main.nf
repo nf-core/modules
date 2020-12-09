@@ -19,13 +19,14 @@ process BOWTIE_INDEX {
     path fasta
 
     output:
-    path "*.index*"          , emit: index
-    path "*.version.txt"     , emit: version
+    path "bowtie", emit: index
+    path "*.version.txt", emit: version
 
     script:
     def software  = getSoftwareName(task.process)
     """
-    bowtie-build --threads $task.cpus ${fasta} ${fasta.baseName}.index
+    mkdir bowtie
+    bowtie-build --threads $task.cpus ${fasta} bowtie/${fasta.baseName}.index
     bowtie --version | head -n 1 | cut -d" " -f3 > ${software}.version.txt
     """
 }
