@@ -19,21 +19,24 @@ process BOWTIE_ALIGN {
     path  index
     
     output:
-    tuple val(meta), path("*.sam")            , emit: sam
-    tuple val(meta), path("*.out")            , emit: log
+    tuple val(meta), path("*.sam"), emit: sam
+    tuple val(meta), path("*.out"), emit: log
     path  "bowtie.version.txt"                , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    index_array = index.collect()
-    index = index_array[0].baseName - ~/.\d$/
+    def software  = getSoftwareName(task.process)
+    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped" : ''
     """
-    bowtie $options.args  \\
-    --threads $task.cpus \\
-    ${index}  \\
-    -q ${reads} \\
-    --un ${prefix}.unAl > ${prefix}.sam 2> ${prefix}.out
+    INDEX=`find -L ./ -name "*.1.ebwt" | sed 's/.1.ebwt//'`
+    bowtie \\
+        --threads $task.cpus \\
+        $options.args \\
+        $INDEX \\
+        -q ${reads} \\
+	$unaligned \\
+	> ${prefix}.sam 2> ${prefix}.out
+
     bowtie --version | head -n 1 | cut -d" " -f3 > ${software}.version.txt
     """
 }
