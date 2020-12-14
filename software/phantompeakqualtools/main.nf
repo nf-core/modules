@@ -13,9 +13,13 @@ process PHANTOMPEAKQUALTOOLS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda     (params.enable_conda ? "bioconda::phantompeakqualtools=1.2.2" : null)
-    container "quay.io/biocontainers/phantompeakqualtools:1.2.2--0"
-
+    conda (params.enable_conda ? "bioconda::phantompeakqualtools=1.2.2" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0"
+    } else {
+        container "quay.io/biocontainers/phantompeakqualtools:1.2.2--0"
+    }
+    
     input:
     tuple val(meta), path(bam)
     

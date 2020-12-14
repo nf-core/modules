@@ -39,13 +39,17 @@ process SOFTWARE_TOOL {
     // TODO nf-core: List required Conda packages.
     //               Software MUST be pinned to channel (i.e. "bioconda") and version (i.e. "1.10") as in the example below.
     //               Pinning the build too e.g. "bioconda::samtools=1.10=h9402c20_2" is not currently a requirement.
-    conda     (params.enable_conda ? "bioconda::samtools=1.10" : null)
+    conda (params.enable_conda ? "bioconda::samtools=1.10" : null)
 
     // TODO nf-core: Fetch "docker pull" address for latest BioContainer image of software: e.g. https://biocontainers.pro/#/tools/samtools
     //               Click on the Pacakages and Containers tab, sort by Version and get the portion of the link after the docker pull command where Type is Docker.
     //               You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
     //               If required, multi-tool containers may also be available and are usually named to start with "mulled".
-    container "quay.io/biocontainers/samtools:1.10--h9402c20_2"
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/samtools:1.10--h9402c20_2"
+    } else {
+        container "quay.io/biocontainers/samtools:1.10--h9402c20_2"
+    }
     
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"

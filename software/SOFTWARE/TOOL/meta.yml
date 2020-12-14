@@ -37,6 +37,11 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
     - meta:
