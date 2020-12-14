@@ -32,7 +32,7 @@
   files:
     - path: output/picard/test.MarkDuplicates.metrics.txt
     - path: output/picard/test.bam
-      md5sum: 50407a1ee722f2bf6a20471c8a7fd6b0
+      md5sum: 0ed0bfc94069380334ccd595f6d8207c
 
 - name: Run picard MarkDuplicates without a sorted bam file so it fails
   command: nextflow run ./tests/software/picard -profile docker -entry test_picard_markduplicates_not_sorted -c tests/config/nextflow.config
