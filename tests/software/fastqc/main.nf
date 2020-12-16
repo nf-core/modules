@@ -23,11 +23,16 @@ workflow test_single_end {
 workflow test_paired_end {
 
     def input = []
-    input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
+    input = [[id: 'test', single_end: false], // meta map
+             [file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
+              file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true)]]
 
-    FASTQC_PE ( input )
+    FASTQC_PE(input)
+
+    emit:
+    html = FASTQC_PE.out.html
+    zip  = FASTQC_PE.out.zip
+
 }
 
 // TODO Test e2e
