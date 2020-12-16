@@ -14,14 +14,18 @@ on:
 jobs:
   ci_test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nxf_version: [20.11.0-edge]
     env:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
 
       - name: Install Nextflow
+        env:
+          NXF_VER: ${{ matrix.nxf_version }}
         run: |
-          export NXF_VER="20.07.1"
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 

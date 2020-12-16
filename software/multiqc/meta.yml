@@ -1,19 +1,16 @@
-name: samtools_index
-description: Index SAM/BAM/CRAM file
+name: MultiQC
+description: Aggregate results from bioinformatics analyses across many samples into a single report
 keywords:
-    - index
-    - bam
-    - sam
-    - cram
+    - QC
+    - bioinformatics tools
+    - Beautiful stand-alone HTML report
 tools:
-    - samtools:
+    - multiqc:
         description: |
-            SAMtools is a set of utilities for interacting with and post-processing
-            short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-            These files are generated as output by short read aligners like BWA.
-        homepage: http://www.htslib.org/
-        documentation: hhttp://www.htslib.org/doc/samtools.html
-        doi: 10.1093/bioinformatics/btp352
+            MultiQC searches a given directory for analysis logs and compiles a HTML report.
+            It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.
+        homepage: https://multiqc.info/
+        documentation: https://multiqc.info/docs/
 params:
     - outdir:
         type: string
@@ -36,29 +33,28 @@ params:
             Instead of directly downloading Singularity images for use with Singularity,
             force the workflow to pull and convert Docker containers instead.
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-    - bam:
+    - multiqc_files:
         type: file
-        description: BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+            List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-    - bai:
+    - report:
         type: file
-        description: BAM/CRAM/SAM index file
-        pattern: "*.{bai,crai,sai}"
+        description: MultiQC report file
+        pattern: "multiqc_report.html"
+    - data:
+        type: dir
+        description: MultiQC data dir
+        pattern: "multiqc_data"
+    - plots:
+        type: file
+        description: Plots created by MultiQC
+        pattern: "*_data"
     - version:
         type: file
         description: File containing software version
         pattern: "*.{version.txt}"
 authors:
+    - "@abhi18av"
+    - "@bunop"
     - "@drpatelh"
-    - "@ewels"
