@@ -11,15 +11,15 @@ process BOWTIE_ALIGN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda     (params.enable_conda ? "bioconda::bowtie=1.3.0" : null)
-    container "quay.io/biocontainers/bowtie:1.3.0--py38hed8969a_1"
+    conda     (params.enable_conda ? "bioconda::bowtie=1.3.0 bioconda::samtools=1.10" : null)
+    container "quay.io/biocontainers/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:9e14e16c284d6860574cf5b624bbc44c793cb024-0"
 
     input:
     tuple val(meta), path(reads)
     path  index
     
     output:
-    tuple val(meta), path("*.sam"), emit: sam
+    tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.out"), emit: log
     path  "bowtie.version.txt", emit: version
 
@@ -27,15 +27,19 @@ process BOWTIE_ALIGN {
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped" : ''
+    def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
     bowtie \\
         --threads $task.cpus \\
-        $options.args \\
-        \$INDEX \\
-        -q ${reads} \\
+        --sam \\
+        -x \$INDEX \\
+        -q \\
 	    $unaligned \\
-	> ${prefix}.sam 2> ${prefix}.out
+        $options.args \\
+        $endedness \\
+	    2> ${prefix}.out \\
+        | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
     bowtie --version | head -n 1 | cut -d" " -f3 > ${software}.version.txt
     """
