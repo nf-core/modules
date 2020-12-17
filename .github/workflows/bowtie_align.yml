@@ -26,10 +26,10 @@ jobs:
 
             - name: Install Nextflow
               env:
-                NXF_VER: ${{ matrix.nxf_version }}
+                  NXF_VER: ${{ matrix.nxf_version }}
               run: |
-              wget -qO- get.nextflow.io | bash
-              sudo mv nextflow /usr/local/bin/
+                  wget -qO- get.nextflow.io | bash
+                  sudo mv nextflow /usr/local/bin/
 
             - name: Set up Python
               uses: actions/setup-python@v2
