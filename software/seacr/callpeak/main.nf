@@ -36,6 +36,6 @@ process SEACR_CALLPEAK {
         $options.args \\
         $prefix
 
-    echo 1.3' > ${software}.version.txt
+    echo 1.3 > ${software}.version.txt
     """
 }
