@@ -1,0 +1,8 @@
+- name: Run phantompeakqualtools  test workflow
+  command: nextflow run ./tests/software/phantompeakqualtools/ -profile docker -entry test_phantompeakqualtools -c tests/config/nextflow.config
+  tags:
+    - phantompeakqualtools
+  files:
+    - path: output/phantompeakqualtools/test.single_end.sorted.bam.out
+    - path: output/phantompeakqualtools/test.single_end.sorted.bam.pdf
+    - path: output/phantompeakqualtools/test.single_end.sorted.bam.Rdata
