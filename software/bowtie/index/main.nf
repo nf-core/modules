@@ -11,19 +11,19 @@ process BOWTIE_INDEX {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    conda (params.enable_conda ? "bioconda::bowtie=1.3.0" : null)
+    conda (params.enable_conda ? 'bioconda::bowtie=1.3.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1"
+        container 'https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1'
     } else {
-        container "quay.io/biocontainers/bowtie:1.3.0--py38hed8969a_1"
+        container 'quay.io/biocontainers/bowtie:1.3.0--py38hed8969a_1'
     }
 
     input:
     path fasta
 
     output:
-    path "bowtie", emit: index
-    path "*.version.txt", emit: version
+    path 'bowtie', emit: index
+    path '*.version.txt', emit: version
 
     script:
     def software  = getSoftwareName(task.process)
