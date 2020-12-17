@@ -21,13 +21,13 @@ process RSEQC_INFEREXPERIMENT {
     input:
     tuple val(meta), path(bam)
     path  bed
-    
+
     output:
     tuple val(meta), path("*.infer_experiment.txt"), emit: txt
     path  "*.version.txt"                          , emit: version
 
     script:
-    def software = getSoftwareName(task.process) 
+    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     infer_experiment.py \\

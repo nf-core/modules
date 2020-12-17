@@ -20,7 +20,7 @@ process BWA_INDEX {
 
     input:
     path fasta
-    
+
     output:
     path "${fasta}.*"   , emit: index
     path "*.version.txt", emit: version

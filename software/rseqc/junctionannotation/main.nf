@@ -21,7 +21,7 @@ process RSEQC_JUNCTIONANNOTATION {
     input:
     tuple val(meta), path(bam)
     path  bed
-    
+
     output:
     tuple val(meta), path("*.junction.bed"), emit: bed
     tuple val(meta), path("*.Interact.bed"), emit: interact_bed

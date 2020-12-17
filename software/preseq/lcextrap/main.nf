@@ -18,10 +18,10 @@ process PRESEQ_LCEXTRAP {
     } else {
         container "quay.io/biocontainers/preseq:2.0.3--hf53bd2b_3"
     }
-    
+
     input:
     tuple val(meta), path(bam)
-    
+
     output:
     tuple val(meta), path("*.ccurve.txt"), emit: ccurve
     tuple val(meta), path("*.log")       , emit: log
