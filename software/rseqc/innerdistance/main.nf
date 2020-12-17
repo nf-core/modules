@@ -21,7 +21,7 @@ process RSEQC_INNERDISTANCE {
     input:
     tuple val(meta), path(bam)
     path  bed
-    
+
     output:
     tuple val(meta), path("*distance.txt"), optional:true, emit: distance
     tuple val(meta), path("*freq.txt")    , optional:true, emit: freq

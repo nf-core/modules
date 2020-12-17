@@ -34,4 +34,3 @@ process INTERSECT_BED {
     bedtools --version | sed -n "s/.*\\(v.*\$\\)/\\1/p" > bedtools.version.txt
     """
 }
-

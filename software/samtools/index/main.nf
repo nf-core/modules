@@ -18,7 +18,7 @@ process SAMTOOLS_INDEX {
 
     input:
     tuple val(meta), path(bam)
-    
+
     output:
     tuple val(meta), path("*.bai"), emit: bai
     path  "*.version.txt"         , emit: version
