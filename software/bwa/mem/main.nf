@@ -17,12 +17,12 @@ process BWA_MEM {
     } else {
         container "quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:eabfac3657eda5818bae4090db989e3d41b01542-0"
     }
-    
+
     input:
     tuple val(meta), path(reads)
     path  index
     path  fasta
-    
+
     output:
     tuple val(meta), path("*.bam"), emit: bam
     path  "*.version.txt"         , emit: version

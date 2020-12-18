@@ -50,7 +50,7 @@ process SOFTWARE_TOOL {
     } else {
         container "quay.io/biocontainers/samtools:1.10--h9402c20_2"
     }
-    
+
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
@@ -59,7 +59,7 @@ process SOFTWARE_TOOL {
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(reads)
-    
+
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     // TODO nf-core: If meta is provided in "input:" section then it MUST be added to ALL output channels (except version)

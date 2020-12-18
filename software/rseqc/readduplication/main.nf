@@ -20,7 +20,7 @@ process RSEQC_READDUPLICATION {
 
     input:
     tuple val(meta), path(bam)
-    
+
     output:
     tuple val(meta), path("*seq.DupRate.xls"), emit: seq_xls
     tuple val(meta), path("*pos.DupRate.xls"), emit: pos_xls
