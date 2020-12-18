@@ -26,6 +26,8 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*.bam'), emit: bam
     tuple val(meta), path('*.out'), emit: log
     path  '*.version.txt'         , emit: version
+    tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
+    path 'test.txt', emit: test
 
     script:
     def software  = getSoftwareName(task.process)
@@ -44,6 +46,15 @@ process BOWTIE_ALIGN {
         $endedness \\
         2> ${prefix}.out \\
         | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
+
+    touch test.txt
+    if [ -f ${prefix}.unmapped.fastq ]; then
+        gzip ${prefix}.unmapped.fastq
+    fi
+    if [ -f ${prefix}.unmapped_1.fastq ]; then
+        gzip ${prefix}.unmapped_1.fastq
+        gzip ${prefix}.unmapped_2.fastq
+    fi
 
     echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//' > ${software}.version.txt
     """
