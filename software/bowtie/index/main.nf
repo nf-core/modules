@@ -29,7 +29,7 @@ process BOWTIE_INDEX {
     def software  = getSoftwareName(task.process)
     """
     mkdir bowtie
-    bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
+    bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}.index
     echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//' > ${software}.version.txt
     """
 }
