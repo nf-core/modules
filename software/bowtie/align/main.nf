@@ -25,7 +25,7 @@ process BOWTIE_ALIGN {
     output:
     tuple val(meta), path('*.bam'), emit: bam
     tuple val(meta), path('*.out'), emit: log
-    path  'bowtie.version.txt', emit: version
+    path  '*.version.txt'         , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
@@ -45,6 +45,6 @@ process BOWTIE_ALIGN {
         2> ${prefix}.out \\
         | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
-    bowtie --version | head -n 1 | cut -d" " -f3 > ${software}.version.txt
+    echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//' > ${software}.version.txt
     """
 }
