@@ -20,7 +20,7 @@ process DEEPTOOLS_PLOTPROFILE {
 
     input:
     tuple val(meta), path(matrix)
-    
+
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: table

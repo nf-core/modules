@@ -24,7 +24,7 @@ process SALMON_QUANT {
     path  gtf
     path  transcript_fasta
     val   alignment_mode
-    
+
     output:
     tuple val(meta), path("${prefix}"), emit: results
     path  "*.version.txt"             , emit: version
@@ -39,7 +39,7 @@ process SALMON_QUANT {
         reference   = "-t $transcript_fasta"
         input_reads = "-a $reads"
     }
-    
+
     def strandedness = meta.single_end ? 'U' : 'IU'
     if (meta.strandedness == 'forward') {
         strandedness = meta.single_end ? 'SF' : 'ISF'

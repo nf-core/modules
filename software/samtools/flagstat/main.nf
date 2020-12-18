@@ -18,7 +18,7 @@ process SAMTOOLS_FLAGSTAT {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    
+
     output:
     tuple val(meta), path("*.flagstat"), emit: flagstat
     path  "*.version.txt"              , emit: version

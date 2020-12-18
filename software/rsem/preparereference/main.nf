@@ -21,7 +21,7 @@ process RSEM_PREPAREREFERENCE {
     input:
     path fasta
     path gtf
-    
+
     output:
     path "rsem"         , emit: index
     path "*.version.txt", emit: version
@@ -42,7 +42,7 @@ process RSEM_PREPAREREFERENCE {
             --runThreadN $task.cpus \\
             $memory \\
             $options.args2
-        
+
         rsem-prepare-reference \\
             --gtf $gtf \\
             --num-threads $task.cpus \\
