@@ -31,4 +31,3 @@ workflow test_bowtie_alignment_paired_end {
                 file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
     BOWTIE_ALIGN ( input, BOWTIE_INDEX.out.index )
 }
-
