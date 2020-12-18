@@ -27,12 +27,11 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*.out'), emit: log
     path  '*.version.txt'         , emit: version
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
-    path 'test.txt', emit: test
 
     script:
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped" : ''
+    def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
@@ -47,7 +46,6 @@ process BOWTIE_ALIGN {
         2> ${prefix}.out \\
         | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
-    touch test.txt
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq
     fi
