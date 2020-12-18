@@ -7,59 +7,63 @@ keywords:
     - reference
 tools:
     - bowtie:
-        description: |
-            bowtie is a software package for mapping DNA sequences against
-            a large reference genome, such as the human genome.
-        homepage: http://bowtie-bio.sourceforge.net/index.shtml
-        documentation: http://bowtie-bio.sourceforge.net/manual.shtml
-        arxiv: arXiv:1303.3997
+          description: |
+              bowtie is a software package for mapping DNA sequences against
+              a large reference genome, such as the human genome.
+          homepage: http://bowtie-bio.sourceforge.net/index.shtml
+          documentation: http://bowtie-bio.sourceforge.net/manual.shtml
+          arxiv: arXiv:1303.3997
 params:
     - outdir:
-        type: string
-        description: |
-            The pipeline's output directory. By default, the module will
-            output files into `$params.outdir/<SOFTWARE>`
+          type: string
+          description: |
+              The pipeline's output directory. By default, the module will
+              output files into `$params.outdir/<SOFTWARE>`
     - publish_dir_mode:
-        type: string
-        description: |
-            Value for the Nextflow `publishDir` mode parameter.
-            Available: symlink, rellink, link, copy, copyNoFollow, move.
+          type: string
+          description: |
+              Value for the Nextflow `publishDir` mode parameter.
+              Available: symlink, rellink, link, copy, copyNoFollow, move.
     - enable_conda:
-        type: boolean
-        description: |
-            Run the module with Conda using the software specified
-            via the `conda` directive
+          type: boolean
+          description: |
+              Run the module with Conda using the software specified
+              via the `conda` directive
     - singularity_pull_docker_container:
-        type: boolean
-        description: |
-            Instead of directly downloading Singularity images for use with Singularity,
-            force the workflow to pull and convert Docker containers instead.
+          type: boolean
+          description: |
+              Instead of directly downloading Singularity images for use with Singularity,
+              force the workflow to pull and convert Docker containers instead.
     - save_unaligned:
-        type: boolean
-        description: Save unaligned reads
+          type: boolean
+          description: Save unaligned reads
 input:
     - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: map
+          description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test', single_end:false ]
     - reads:
-        type: file
-        description: |
-            List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-            respectively.
+          type: file
+          description: |
+              List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+              respectively.
     - index:
-        type: file
-        description: Bowtie genome index files
-        pattern: "*.ebwt"
+          type: file
+          description: Bowtie genome index files
+          pattern: "*.ebwt"
 output:
-    - sam:
-        type: file
-        description: Output SAM file containing read alignments
-        pattern: "*.{sam}"
+    - bam:
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{bam}"
     - version:
-        type: file
-        description: File containing software version
-        pattern: "*.{version.txt}"
+          type: file
+          description: File containing software version
+          pattern: "*.{version.txt}"
+    - fastq:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
 authors:
     - "@kevinmenden"
