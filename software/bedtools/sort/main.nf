@@ -10,21 +10,25 @@ process BEDTOOLS_SORT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda     (params.enable_conda ? "bioconda::bedtools =2.29.2" : null)
+    conda (params.enable_conda ? "bioconda::bedtools =2.29.2" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0"
+    } else {
     container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
+    }
 
     input:
         tuple val(meta), path(beds)
 
     output:
-        tuple val(meta), path("*.sort.bed"), emit: sort
+        tuple val(meta), path("*.sort"), emit: sort
         path  "*.version.txt", emit: version
 
     script:
         def software = getSoftwareName(task.process)
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        bedtools sort -i $beds ${options.args} > ${prefix}.sort.bed
+        bedtools sort -i $beds ${options.args} > ${prefix}.sort
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
