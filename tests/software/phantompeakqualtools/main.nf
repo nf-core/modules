@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PHANTOMPEAKQUALTOOLS } from '../../../software/phantompeakqualtools/main.nf' addParams(options: [publish_dir: 'test_phantompeakqualtools'])
+include { PHANTOMPEAKQUALTOOLS } from '../../../software/phantompeakqualtools/main.nf' addParams( options: [:] )
 
 workflow test_phantompeakqualtools {
     def input = []
