@@ -19,10 +19,10 @@ process SEACR_CALLPEAK {
     } else {
         container 'quay.io/biocontainers/mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:5bb5ed4307a8187a7f34730b00431de93688fa59-0'
     }
-    
+
     input:
     tuple val(meta), path(bedgraph), path(ctrlbedgraph)
-    
+
     output:
     tuple val(meta), path("*.bed"), emit: bed
     path "*.version.txt"          , emit: version
