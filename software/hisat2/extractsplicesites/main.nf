@@ -17,7 +17,7 @@ process HISAT2_EXTRACTSPLICESITES {
     } else {
         container "quay.io/biocontainers/hisat2:2.2.0--py37hfa133b6_4"
     }
-    
+
     input:
     path gtf
 

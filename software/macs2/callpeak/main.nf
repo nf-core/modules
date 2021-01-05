@@ -21,7 +21,7 @@ process MACS2_CALLPEAK {
     input:
     tuple val(meta), path(ipbam), path(controlbam)
     val   macs2_gsize
-    
+
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
@@ -44,7 +44,7 @@ process MACS2_CALLPEAK {
         --format $format \\
         --name $prefix \\
         --treatment $ipbam \\
-         $control
+        $control
 
     macs2 --version | sed -e "s/macs2 //g" > ${software}.version.txt
     """
