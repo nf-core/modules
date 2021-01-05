@@ -15,10 +15,10 @@ process SAMTOOLS_STATS {
     } else {
         container "quay.io/biocontainers/samtools:1.10--h9402c20_2"
     }
-    
+
     input:
     tuple val(meta), path(bam), path(bai)
-    
+
     output:
     tuple val(meta), path("*.stats"), emit: stats
     path  "*.version.txt"           , emit: version

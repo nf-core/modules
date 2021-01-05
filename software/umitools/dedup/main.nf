@@ -20,7 +20,7 @@ process UMITOOLS_DEDUP {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    
+
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.tsv"), emit: tsv

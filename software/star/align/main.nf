@@ -24,7 +24,7 @@ process STAR_ALIGN {
     tuple val(meta), path(reads)
     path  index
     path  gtf
-    
+
     output:
     tuple val(meta), path("*Aligned.out.bam") , emit: bam
     tuple val(meta), path("*Log.final.out")   , emit: log_final

@@ -21,7 +21,7 @@ process RSEQC_JUNCTIONSATURATION {
     input:
     tuple val(meta), path(bam)
     path  bed
-    
+
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.r")  , emit: rscript

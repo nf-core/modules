@@ -20,7 +20,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
 
     input:
     tuple val(meta), path(bams), path(bais)
-    
+
     output:
     tuple val(meta), path("*.pdf")          , emit: pdf
     tuple val(meta), path("*.raw.txt")      , emit: matrix

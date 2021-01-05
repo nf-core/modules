@@ -21,7 +21,7 @@ process STRINGTIE {
     input:
     tuple val(meta), path(bam)
     path  gtf
-    
+
     output:
     tuple val(meta), path("*.coverage.gtf")   , emit: coverage_gtf
     tuple val(meta), path("*.transcripts.gtf"), emit: transcript_gtf
