@@ -14,7 +14,7 @@
     - bedtools_genomecov
   files:
     - path: output/bedtools/test.bed
-      md5sum: 5be12e847b933b02bf42437e8562d06c
+      md5sum: 8c8238ca3cdac7a0e650ade95ee941f4
 
 - name: Run bedtools intersect test workflow
   command: nextflow run ./tests/software/bedtools/ -profile docker -entry test_bedtools_intersect -c tests/config/nextflow.config
@@ -35,7 +35,7 @@
     - path: output/bedtools/test.sort.bed
       md5sum: 4279202e33fcce3d19f420f1b27fddee
 
-# linked to sort module
+# TODO link to sort module
 - name: Run bedtools merge test workflow
   command: nextflow run ./tests/software/bedtools/ -profile docker -entry test_bedtools_merge -c tests/config/nextflow.config
   tags:

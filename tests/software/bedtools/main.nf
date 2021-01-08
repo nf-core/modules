@@ -8,7 +8,7 @@ include { BEDTOOLS_INTERSECT } from '../../../software/bedtools/intersect/main.n
 include { BEDTOOLS_MERGE } from '../../../software/bedtools/merge/main.nf' addParams( options: [:] )
 include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_S} from '../../../software/bedtools/slop/main.nf' addParams( options: [:] )
 include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_AS} from '../../../software/bedtools/slop/main.nf' addParams( options: [:] )
-include { BEDTOOLS_SORT } from '../../../software/bedtools/sort/main.nf' addParams( options: [publish_dir: 'test_bedtools_sort'] ) // needed for merge
+include { BEDTOOLS_SORT } from '../../../software/bedtools/sort/main.nf' addParams( options: [:] )
 
 
 workflow test_bedtools_complement {
@@ -77,10 +77,6 @@ workflow test_bedtools_sort {
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
     BEDTOOLS_SORT( input )
-
-    emit:
-    sort = BEDTOOLS_SORT.out.sort
-
 }
 
 
