@@ -25,7 +25,7 @@ process BEDTOOLS_MERGE {
     script:
         def software = getSoftwareName(task.process)
         """
-        bedtools merge -i $sort ${options.args} > test.merged.bed 
+        bedtools merge -i $sort ${options.args} > ${prefix}.merged.bed 
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
