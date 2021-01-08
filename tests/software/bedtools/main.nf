@@ -13,7 +13,7 @@ include { BEDTOOLS_SORT } from '../../../software/bedtools/sort/main.nf' addPara
 
 workflow test_bedtools_complement {
     def input = []
-    input = [ [ id:'test'], 
+    input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
 
@@ -22,7 +22,7 @@ workflow test_bedtools_complement {
 
 workflow test_bedtools_genomecov {
     def input = []
-    input = [ [ id:'test'], 
+    input = [ [ id:'test'],
               file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true),
               file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
 
@@ -31,7 +31,7 @@ workflow test_bedtools_genomecov {
 
 workflow test_bedtools_intersect {
     def input = []
-    input = [ [ id:'test'], 
+    input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/B.bed", checkIfExists: true) ] //metamap
 
@@ -43,21 +43,21 @@ workflow test_bedtools_intersect {
 workflow test_bedtools_merge {
     test_bedtools_sort()
     def input = []
-    input = [ 
-        test_bedtools_sort.out.sort.collect { it[1] }.ifEmpty([]) 
+    input = [
+        test_bedtools_sort.out.sort.collect { it[1] }.ifEmpty([])
     ]
     BEDTOOLS_MERGE(*input)
 }
 
 // TODO streamline slop module
 
-// To run with header and pct enabled, type --pct true and --header true with nextflow run command. 
+// To run with header and pct enabled, type --pct true and --header true with nextflow run command.
 /*
 Test with l/r method
 */
 workflow test_bedtools_slop_asymmetrical {
     def input = []
-    input = [ [ id:'test', symmetry: false], 
+    input = [ [ id:'test', symmetry: false],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
     BEDTOOLS_SLOP_AS( input )
@@ -67,7 +67,7 @@ Test with b method
 */
 workflow test_bedtools_slop_symmetrical {
     def input = []
-    input = [ [ id:'test', symmetry: true], 
+    input = [ [ id:'test', symmetry: true],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
     BEDTOOLS_SLOP_S( input )
@@ -75,11 +75,11 @@ workflow test_bedtools_slop_symmetrical {
 
 workflow test_bedtools_sort {
     def input = []
-    input = [ [ id:'test'], 
+    input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
     BEDTOOLS_SORT( input )
-    
+
     emit:
     sort = BEDTOOLS_SORT.out.sort
 

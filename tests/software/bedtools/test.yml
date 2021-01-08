@@ -25,7 +25,7 @@
     - path: output/bedtools/test.intersect.bed
       md5sum: cc1bb317886e7df0a942b56f8a320d9c
 
-      
+
 - name: Run bedtools sort test workflow
   command: nextflow run ./tests/software/bedtools/ -profile docker -entry test_bedtools_sort -c tests/config/nextflow.config
   tags:
@@ -62,6 +62,3 @@
   files:
     - path: output/bedtools/test.slop.bed
       md5sum: 4279202e33fcce3d19f420f1b27fddee
-
-
-
