@@ -21,14 +21,14 @@ process BEDTOOLS_SORT {
         tuple val(meta), path(beds)
 
     output:
-        tuple val(meta), path("*.sort"), emit: sort
+        tuple val(meta), path("*.sort.bed"), emit: sort
         path  "*.version.txt", emit: version
 
     script:
         def software = getSoftwareName(task.process)
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
-        bedtools sort -i $beds ${options.args} > ${prefix}.sort
+        bedtools sort -i $beds ${options.args} > ${prefix}.sort.bed
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
         """
 }
