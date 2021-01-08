@@ -77,6 +77,7 @@ workflow test_bedtools_sort {
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
     BEDTOOLS_SORT( input )
+
 }
 
 
