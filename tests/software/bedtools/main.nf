@@ -39,14 +39,12 @@ workflow test_bedtools_intersect {
 }
 
 
-//  ensure input file is presorted (uses output of sort module)
+//  TODO use output of sort module
 workflow test_bedtools_merge {
-    test_bedtools_sort()
     def input = []
-    input = [
-        test_bedtools_sort.out.sort.collect { it[1] }.ifEmpty([])
-    ]
-    BEDTOOLS_MERGE(*input)
+    input = [ [ id:'test' ], // meta map
+                file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
+    BEDTOOLS_MERGE(input)
 }
 
 // TODO streamline slop module
