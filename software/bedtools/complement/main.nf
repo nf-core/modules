@@ -16,7 +16,7 @@ process BEDTOOLS_COMPLEMENT {
     } else {
     container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
     }
-    
+
     input:
         tuple val(meta), path(beds), path (sizes)
 

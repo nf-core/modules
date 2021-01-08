@@ -16,7 +16,7 @@ process BEDTOOLS_SLOP {
     } else {
     container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
     }
-    
+
 
     input:
         tuple val(meta), path(beds), path (sizes)
@@ -42,6 +42,6 @@ process BEDTOOLS_SLOP {
         """
         slopBed -i $beds -g $sizes -l $params.l -r $params.r $header $pct $options.args> ${prefix}.slop.bed
         bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
-        """       
+        """
         }
 }
