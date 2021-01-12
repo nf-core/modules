@@ -1,0 +1,24 @@
+- name: Run stringtie forward strand test workflow
+  command: nextflow run ./tests/software/stringtie/ -profile docker -entry test_stringtie_forward -c tests/config/nextflow.config
+  tags:
+    - stringtie
+  files:
+    - path: output/test_forward/test.ballgown
+    - path: output/test_forward/test.gene_abundance.txt
+    - path: output/test_forward/test.transcripts.gtf
+      md5sum: f1b5baa8d94f86e499556a4ec419a75a
+    - path: output/test_forward/test.coverage.gtf
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+
+
+- name: Run stringtie reverse strand test workflow
+  command: nextflow run ./tests/software/stringtie/ -profile docker -entry test_stringtie_reverse -c tests/config/nextflow.config
+  tags:
+    - stringtie
+  files:
+    - path: output/test_reverse/test.ballgown
+    - path: output/test_reverse/test.gene_abundance.txt
+    - path: output/test_reverse/test.transcripts.gtf
+      md5sum: cb0367e5f98f19fcc2043d248deb513c
+    - path: output/test_reverse/test.coverage.gtf
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
