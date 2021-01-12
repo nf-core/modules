@@ -1,0 +1,7 @@
+- name: Run gffread  test workflow
+  command: nextflow run ./tests/software/gffread/ -profile docker -entry test_gffread -c tests/config/nextflow.config
+  tags:
+    - gffread
+  files:
+    - path: output/gffread/a.gtf
+      md5sum: b6617219068835992ea43e4d3389f448
