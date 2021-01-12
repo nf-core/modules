@@ -1,0 +1,40 @@
+name: gffread
+on:
+  push:
+    paths:
+      - software/gffread/**
+      - .github/workflows/gffread.yml
+      - tests/software/gffread/**
+  pull_request:
+    paths:
+      - software/gffread/**
+      - .github/workflows/gffread.yml
+      - tests/software/gffread/**
+
+jobs:
+  ci_test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nxf_version: [20.07.1, ""]
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Nextflow
+        env:
+          NXF_VER: ${{ matrix.nxf_version }}
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest-workflow
+
+      # Test the module
+      - run: pytest --tag gffread --symlink --wt 2
