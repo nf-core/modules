@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE as STRINGTIE_F } from '../../../software/stringtie/main.nf'  addParams( options: [ publish_dir:'test_forward' ] )
-include { STRINGTIE as STRINGTIE_R } from '../../../software/stringtie/main.nf'  addParams( options: [ publish_dir:'test_reverse' ] )
+include { STRINGTIE as STRINGTIE_F } from '../../../software/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_forward' ] )
+include { STRINGTIE as STRINGTIE_R } from '../../../software/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_reverse' ] )
 
 /*
  * Test with forward strandedness
