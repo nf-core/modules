@@ -37,7 +37,7 @@ process PRESEQ_LCEXTRAP {
         $options.args \\
         $paired_end \\
         -output ${prefix}.ccurve.txt \\
-        $bam
+        -bam $bam
     cp .command.err ${prefix}.command.log
 
     echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//' > ${software}.version.txt
