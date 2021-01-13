@@ -8,6 +8,7 @@
     - path: output/test_preseq_single_end/test.ccurve.txt
       md5sum: 5253ffcfd4b6162851631efdbfe16f92
     - path: output/test_preseq_single_end/test.command.log
+      md5sum: ad83871098825d36d267e375c2b46f01
 
 - name: Run preseq paired-end lcextrap
   command: nextflow run ./tests/software/preseq -profile docker -entry test_preseq_paired_end -c tests/config/nextflow.config
@@ -18,4 +19,5 @@
   files:
     - path: output/test_preseq_paired_end/test.ccurve.txt
       md5sum: 66b339780630fc1aa72dcfbd0a4490fd
-    - path: output/test_preseq_paired_end/test.command.log
+    - path: output/test_preseq_paired_end/test.log
+      md5sum: d41d8cd98f00b204e9800998ecf8427e

@@ -1,9 +1,0 @@
-- name: Run phantompeakqualtools  test workflow
-  command: nextflow run ./tests/software/phantompeakqualtools/ -profile docker -entry test_phantompeakqualtools -c tests/config/nextflow.config
-  tags:
-    - phantompeakqualtools
-  files:
-    - path: output/phantompeakqualtools/test.spp.pdf
-    - path: output/phantompeakqualtools/test.spp.Rdata
-    - path: output/phantompeakqualtools/test.spp.out
-      md5sum: c18220e8082e695995edecc99235ec85
