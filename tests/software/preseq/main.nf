@@ -13,7 +13,7 @@ workflow test_preseq_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]]
+              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true), ] ]
     PRESEQ_LCEXTRAP_SE ( input )
 }
 
@@ -25,7 +25,7 @@ workflow test_preseq_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]]
+              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true), ] ]
 
     PRESEQ_LCEXTRAP_PE ( input )
 }
