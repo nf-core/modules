@@ -1,15 +1,15 @@
-name: phantompeakqualtools
+name: preseq_lcextrap
 on:
   push:
     paths:
-      - software/phantompeakqualtools/**
-      - .github/workflows/phantompeakqualtools.yml
-      - tests/software/phantompeakqualtools/**
+      - software/preseq/lcextrap/**
+      - .github/workflows/preseq_lcextrap.yml
+      - tests/software/preseq/**
   pull_request:
     paths:
-      - software/phantompeakqualtools/**
-      - .github/workflows/phantompeakqualtools.yml
-      - tests/software/phantompeakqualtools/**
+      - software/preseq/lcextrap/**
+      - .github/workflows/preseq_lcextrap.yml
+      - tests/software/preseq/**
 
 jobs:
   ci_test:
@@ -37,4 +37,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag phantompeakqualtools --symlink --wt 2
+      - run: pytest --tag preseq_lcextrap --symlink --wt 2
