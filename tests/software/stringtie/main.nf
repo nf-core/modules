@@ -13,7 +13,7 @@ workflow test_stringtie_forward {
     input = [ [ id:'test', strandedness:'forward' ], // meta map
               [ file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ] ]
 
-    STRINGTIE_FOWARD (
+    STRINGTIE_FORWARD (
         input,
         file("${launchDir}/tests/data/gff/a.gtf", checkIfExists: true)
     )
