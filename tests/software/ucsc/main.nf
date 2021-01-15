@@ -11,5 +11,5 @@ workflow test_ucsc_bedgraphtobigwig {
     UCSC_BEDGRAPHTOBIGWIG (
         input,
         file('https://raw.githubusercontent.com/igvteam/igv.js/master/test/data/wig/chrom.sizes', checkIfExists: true)
-        )
+    )
 }
