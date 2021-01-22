@@ -47,5 +47,6 @@ jobs:
         with:
           name: logs
           path: |
+            /tmp/pytest_workflow_*/*/.nextflow.log
             /tmp/pytest_workflow_*/*/log.out
             /tmp/pytest_workflow_*/*/log.err
