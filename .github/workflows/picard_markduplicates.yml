@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag picard_markduplicates --symlink --wt 2
+      - run: pytest --kwdof --tag picard_markduplicates --symlink --wt 2
 
       - name: Upload logs on failure
         if: ${{ failure() }}
