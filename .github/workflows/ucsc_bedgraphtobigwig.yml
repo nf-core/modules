@@ -36,7 +36,7 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag ucsc_bedgraphtobigwig --symlink --wt 2
+      - run: pytest --kwdof --tag ucsc_bedgraphtobigwig --symlink --wt 2
 
       - name: Upload logs on failure
         if: ${{ failure() }}

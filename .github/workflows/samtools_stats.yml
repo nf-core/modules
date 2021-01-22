@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag samtools_stats --symlink --wt 2
+      - run: pytest --kwdof --tag samtools_stats --symlink --wt 2
 
       - name: Upload logs on failure
         if: ${{ failure() }}
