@@ -1,0 +1,19 @@
+name: Pytest-workflow
+on: [push, pull_request]
+
+jobs:
+  ci_test:
+    runs-on: ubuntu-latest
+    name: CI Test
+    strategy:
+      matrix:
+        nxf_version: [20.11.0-edge]
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Nextflow pytest-workflow
+        uses: Emiller88/pytest-workflow-composite-action@v0.1
+        with:
+          pytest_tags: 'fastqc'
+          nxf_version: ${{ matrix.nxf_version }}
