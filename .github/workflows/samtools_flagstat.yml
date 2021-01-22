@@ -38,3 +38,12 @@ jobs:
 
       # Test the module
       - run: pytest --tag samtools_flagstat --symlink --wt 2
+
+      - name: Upload logs on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: |
+            /tmp/pytest_workflow_*/*/log.out
+            /tmp/pytest_workflow_*/*/log.err
