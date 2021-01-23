@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Nextflow pytest-workflow
-        uses: Emiller88/pytest-workflow-composite-action@v0.1
+        uses: Emiller88/pytest-workflow-composite-action@master
         with:
           pytest_tags: 'fastqc'
           nxf_version: ${{ matrix.nxf_version }}
