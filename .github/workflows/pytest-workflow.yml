@@ -12,6 +12,10 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
       - name: Nextflow pytest-workflow
         uses: Emiller88/pytest-workflow-composite-action@master
         with:
