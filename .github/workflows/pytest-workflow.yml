@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     name: CI Test
     needs: changes
+    if: steps.filter.outputs.any == 'true'
     strategy:
       matrix:
         nxf_version: [20.11.0-edge]
