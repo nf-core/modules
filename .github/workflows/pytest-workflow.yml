@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     name: CI Test
     needs: changes
-    if: ${{ fromJson(needs.changes.outputs.modules) }} == 'true'
+    if: ${{ fromJson(needs.changes.outputs.modules) }} != 'false'
     strategy:
       matrix:
-        nxf_version: [20.11.0-edge]
-        tags: ${{ fromJson(needs.changes.outputs.modules) }}
+        nxf_version: ['20.11.0-edge']
+        tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
     env:
       NXF_ANSI_LOG: false
     steps:
