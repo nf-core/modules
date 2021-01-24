@@ -2,12 +2,26 @@ name: Pytest-workflow
 on: [push, pull_request]
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose matched filters as job 'modules' output variable
+      modules: ${{ steps.filter.outputs.changes }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: '.github/filters.yml'
+
   ci_test:
     runs-on: ubuntu-latest
     name: CI Test
+    needs: changes
     strategy:
       matrix:
         nxf_version: [20.11.0-edge]
+        tags: ${{ fromJson(needs.changes.outputs.modules) }}
     env:
       NXF_ANSI_LOG: false
     steps:
@@ -19,5 +33,5 @@ jobs:
       - name: Nextflow pytest-workflow
         uses: Emiller88/pytest-workflow-composite-action@master
         with:
-          pytest_tags: 'fastqc'
+          pytest_tags: ${{ matrix.tags }}
           nxf_version: ${{ matrix.nxf_version }}
