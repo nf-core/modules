@@ -36,3 +36,13 @@ jobs:
         with:
           pytest_tags: ${{ matrix.tags }}
           nxf_version: ${{ matrix.nxf_version }}
+
+      - name: Upload logs on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: |
+            /tmp/pytest_workflow_*/*/.nextflow.log
+            /tmp/pytest_workflow_*/*/log.out
+            /tmp/pytest_workflow_*/*/log.err
