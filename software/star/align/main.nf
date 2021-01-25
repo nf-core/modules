@@ -12,13 +12,12 @@ process STAR_ALIGN {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
-    conda (params.enable_conda ? "bioconda::star=2.6.1d" : null)
+    conda (params.enable_conda ? 'bioconda::star=2.6.1d' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/star:2.6.1d--0"
+        container 'https://depot.galaxyproject.org/singularity/star:2.6.1d--0'
     } else {
-        container "quay.io/biocontainers/star:2.6.1d--0"
+        container 'quay.io/biocontainers/star:2.6.1d--0'
     }
-
 
     input:
     tuple val(meta), path(reads)
@@ -26,16 +25,16 @@ process STAR_ALIGN {
     path  gtf
 
     output:
-    tuple val(meta), path("*Aligned.out.bam") , emit: bam
-    tuple val(meta), path("*Log.final.out")   , emit: log_final
-    tuple val(meta), path("*Log.out")         , emit: log_out
-    tuple val(meta), path("*Log.progress.out"), emit: log_progress
-    path  "*.version.txt"                     , emit: version
+    tuple val(meta), path('*Aligned.out.bam') , emit: bam
+    tuple val(meta), path('*Log.final.out')   , emit: log_final
+    tuple val(meta), path('*Log.out')         , emit: log_out
+    tuple val(meta), path('*Log.progress.out'), emit: log_progress
+    path  '*.version.txt'                     , emit: version
 
-    tuple val(meta), path("*sortedByCoord.out.bam")  , optional:true, emit: bam_sorted
-    tuple val(meta), path("*toTranscriptome.out.bam"), optional:true, emit: bam_transcript
-    tuple val(meta), path("*fastq.gz")               , optional:true, emit: fastq
-    tuple val(meta), path("*.tab")                   , optional:true, emit: tab
+    tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
+    tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
+    tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
+    tuple val(meta), path('*.tab')                   , optional:true, emit: tab
 
     script:
     def software   = getSoftwareName(task.process)
@@ -48,6 +47,7 @@ process STAR_ALIGN {
         --readFilesIn $reads  \\
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
+        --outSAMtype BAM Unsorted \\
         $ignore_gtf \\
         $seq_center \\
         $options.args
