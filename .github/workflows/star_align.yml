@@ -7,7 +7,7 @@ on:
       - tests/software/star/**
   pull_request:
     paths:
-      - software/star/index/**
+      - software/star/align/**
       - .github/workflows/star_align.yml
       - tests/software/star/**
 
@@ -37,4 +37,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag star_genomegenerate --symlink --wt 2
+      - run: pytest --tag star_align --symlink --wt 2
