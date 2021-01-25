@@ -2,13 +2,13 @@ name: star_genomegenerate
 on:
   push:
     paths:
-      - software/star/genomegenerate/**
-      - .github/workflows/star_genomegenerate.yml
+      - software/star/align/**
+      - .github/workflows/star_align.yml
       - tests/software/star/**
   pull_request:
     paths:
-      - software/star/genomegenerate/**
-      - .github/workflows/star_genomegenerate.yml
+      - software/star/index/**
+      - .github/workflows/star_align.yml
       - tests/software/star/**
 
 jobs:
