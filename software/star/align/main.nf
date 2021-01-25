@@ -25,7 +25,7 @@ process STAR_ALIGN {
     path  gtf
 
     output:
-    tuple val(meta), path('*Aligned.out.bam') , emit: bam
+    tuple val(meta), path('*d.out.bam')        , emit: bam
     tuple val(meta), path('*Log.final.out')   , emit: log_final
     tuple val(meta), path('*Log.out')         , emit: log_out
     tuple val(meta), path('*Log.progress.out'), emit: log_progress
@@ -33,6 +33,7 @@ process STAR_ALIGN {
 
     tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
     tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
+    tuple val(meta), path('*Aligned.unsort.out.bam'), optional:true, emit: bam_unsorted
     tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
 
@@ -41,16 +42,20 @@ process STAR_ALIGN {
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def ignore_gtf = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
     def seq_center = params.seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$params.seq_center' 'SM:$prefix'" : "--outSAMattrRGline ID:$prefix 'SM:$prefix'"
+    def out_sam_type = (options.args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
+    def mv_unsorted_bam = (options.args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
     """
     STAR \\
         --genomeDir $index \\
         --readFilesIn $reads  \\
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
-        --outSAMtype BAM Unsorted \\
+        $out_sam_type \\
         $ignore_gtf \\
         $seq_center \\
         $options.args
+
+    ${mv_unsorted_bam}
 
     if [ -f ${prefix}.Unmapped.out.mate1 ]; then
         mv ${prefix}.Unmapped.out.mate1 ${prefix}.unmapped_1.fastq

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-def options_align = [args: '--readFilesCommand zcat']
+def options_align = [args: '--readFilesCommand zcat --outSAMtype BAM Unsorted SortedByCoordinate']
 def options_gg = [args: '--genomeSAindexNbases 9']
 include { STAR_ALIGN } from '../../../software/star/align/main.nf' addParams( options: options_align )
 include { STAR_GENOMEGENERATE } from '../../../software/star/genomegenerate/main.nf'  addParams( options: options_gg )
