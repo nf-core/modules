@@ -25,7 +25,7 @@ process STAR_ALIGN {
     path  gtf
 
     output:
-    tuple val(meta), path('*d.out.bam')        , emit: bam
+    tuple val(meta), path('*d.out.bam')       , emit: bam
     tuple val(meta), path('*Log.final.out')   , emit: log_final
     tuple val(meta), path('*Log.out')         , emit: log_out
     tuple val(meta), path('*Log.progress.out'), emit: log_progress
@@ -33,7 +33,7 @@ process STAR_ALIGN {
 
     tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
     tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
-    tuple val(meta), path('*Aligned.unsort.out.bam'), optional:true, emit: bam_unsorted
+    tuple val(meta), path('*Aligned.unsort.out.bam') , optional:true, emit: bam_unsorted
     tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
 
@@ -55,7 +55,7 @@ process STAR_ALIGN {
         $seq_center \\
         $options.args
 
-    ${mv_unsorted_bam}
+    $mv_unsorted_bam
 
     if [ -f ${prefix}.Unmapped.out.mate1 ]; then
         mv ${prefix}.Unmapped.out.mate1 ${prefix}.unmapped_1.fastq
