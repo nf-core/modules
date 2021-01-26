@@ -4,8 +4,6 @@
     - salmon
     - salmon_index
   files:
-    - path: output/salmon/salmon/ref_indexing.log
-      md5sum: 712121a1bc50e7ef3e0c0f115886be13
     - path: output/salmon/salmon/refseq.bin
       md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
     - path: output/salmon/salmon/versionInfo.json
@@ -14,10 +12,6 @@
       md5sum: f57562f1fca3ae7b133f895ae13c3d08
     - path: output/salmon/salmon/mphf.bin
       md5sum: 53669a47610e33e031faafd32703b714
-    - path: output/salmon/salmon/pre_indexing.log
-      md5sum: 542ae3f1088357c2f867fe56cc01ca5c
-    - path: output/salmon/salmon/ctable.bin
-      md5sum: 320ed80e82259e47bd178275889067c5
     - path: output/salmon/salmon/duplicate_clusters.tsv
       md5sum: 51b5292e3a874119c0e1aa566e95d70c
     - path: output/salmon/salmon/reflengths.bin
@@ -30,10 +24,6 @@
       md5sum: 27a76542337df436436e66017f66dd25
     - path: output/salmon/salmon/rank.bin
       md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
-    - path: output/salmon/salmon/pos.bin
-      md5sum: 23ba28cc5a2511cb1cd7ef6ed555d3f8
-    - path: output/salmon/salmon/seq.bin
-      md5sum: 8750937e595a8e56e7bc9a9a7d600c44
 
 - name: salmon quant paired end
   command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_quant_pe -c tests/config/nextflow.confi
