@@ -5,32 +5,640 @@
     - salmon_index
   files:
     - path: output/salmon/salmon/ref_indexing.log
-      md5sum: 56bd3d6393c207a3613237d28b7195dd
+      md5sum: 712121a1bc50e7ef3e0c0f115886be13
     - path: output/salmon/salmon/refseq.bin
-      md5sum: 9e887dfd1f681e048b0dd2e259332e42
+      md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
     - path: output/salmon/salmon/versionInfo.json
       md5sum: 204865f645102587c4953fccb256797c
     - path: output/salmon/salmon/complete_ref_lens.bin
-      md5sum: 334223e37c5448ce0412fdf2d431ec04
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
     - path: output/salmon/salmon/mphf.bin
-      md5sum: a30970c2100b446bea832b3a4d1e95ca
+      md5sum: 53669a47610e33e031faafd32703b714
     - path: output/salmon/salmon/pre_indexing.log
-      md5sum: 199d3e6c18c70c53b189727f9cb2b91f
+      md5sum: 542ae3f1088357c2f867fe56cc01ca5c
     - path: output/salmon/salmon/ctable.bin
-      md5sum: d64af0db3ce8c6c00eb3f501f8bdf05b
+      md5sum: 320ed80e82259e47bd178275889067c5
     - path: output/salmon/salmon/duplicate_clusters.tsv
-      md5sum: 17070ad9e9fc7796410af18155c1e7b9
+      md5sum: 51b5292e3a874119c0e1aa566e95d70c
     - path: output/salmon/salmon/reflengths.bin
-      md5sum: 334223e37c5448ce0412fdf2d431ec04
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
     - path: output/salmon/salmon/info.json
-      md5sum: 38a5d4b344b38212a0b8fcf80e5bed52
+      md5sum: 61ff4d3471134c280668355ddd39e99f
     - path: output/salmon/salmon/refAccumLengths.bin
-      md5sum: 09b281c28565aeb970717d3a8246485d
+      md5sum: 8d1970505b2b08ca0eb5ff7722b48cde
     - path: output/salmon/salmon/ctg_offsets.bin
-      md5sum: 71955ebb92e93090ee83d1d731af1fae
+      md5sum: 27a76542337df436436e66017f66dd25
     - path: output/salmon/salmon/rank.bin
-      md5sum: c834b0cb4ffc7831dfc604ab761c14a2
+      md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
     - path: output/salmon/salmon/pos.bin
-      md5sum: d2208181eb65f9e8d49c588720e7acc7
+      md5sum: 23ba28cc5a2511cb1cd7ef6ed555d3f8
     - path: output/salmon/salmon/seq.bin
-      md5sum: 22963941785736e4b7c31c5dcae32886
+      md5sum: 8750937e595a8e56e7bc9a9a7d600c44
+
+- name: salmon quant paired end
+  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_quant_pe -c tests/config/nextflow.confi
+  tags:
+    - salmon
+    - salmon_quant
+    - salmon_quant_pe
+  files:
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/libParams/flenDist.txt
+      md5sum: f90c7256c9b18d4131f4d4ecb69d0f55
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/libParams/flenDist.txt
+      md5sum: f90c7256c9b18d4131f4d4ecb69d0f55
+    - path: output/salmon/test/quant.genes.sf
+      md5sum: eb3e7b44801a0b3af07c25963927e20d
+    - path: output/salmon/salmon/ref_indexing.log
+      md5sum: 1f824b721361da702b5b1b1c3b02be49
+    - path: output/salmon/salmon/refseq.bin
+      md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
+    - path: output/salmon/salmon/versionInfo.json
+      md5sum: 204865f645102587c4953fccb256797c
+    - path: output/salmon/salmon/complete_ref_lens.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: output/salmon/salmon/mphf.bin
+      md5sum: 53669a47610e33e031faafd32703b714
+    - path: output/salmon/salmon/pre_indexing.log
+      md5sum: 68f309b5557feb35829b9715b0afad39
+    - path: output/salmon/salmon/ctable.bin
+      md5sum: 79c06180158c7ee44fab6672c2b27fbb
+    - path: output/salmon/salmon/duplicate_clusters.tsv
+      md5sum: 51b5292e3a874119c0e1aa566e95d70c
+    - path: output/salmon/salmon/reflengths.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: output/salmon/salmon/info.json
+      md5sum: 61ff4d3471134c280668355ddd39e99f
+    - path: output/salmon/salmon/refAccumLengths.bin
+      md5sum: 8d1970505b2b08ca0eb5ff7722b48cde
+    - path: output/salmon/salmon/ctg_offsets.bin
+      md5sum: 27a76542337df436436e66017f66dd25
+    - path: output/salmon/salmon/rank.bin
+      md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
+    - path: output/salmon/salmon/pos.bin
+      md5sum: 3b2d741929d6842e7818fcaa16f01bdc
+    - path: output/salmon/salmon/seq.bin
+      md5sum: 196b06f78c8aa6aa960eb5921288d0f4
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/libParams/flenDist.txt
+      md5sum: f90c7256c9b18d4131f4d4ecb69d0f55
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/cmd_info.json
+      md5sum: 007676e4d79de0809a03e0ea045ed4a1
+    - path: output/salmon/test/quant.sf
+      md5sum: addb78e233f248b8f62cae3e217bf689
+    - path: output/salmon/test/lib_format_counts.json
+      md5sum: a8b6e6bfbc28c6e790ddaec559fad9ea
+    - path: output/salmon/test/logs/salmon_quant.log
+      md5sum: f7fe6e71b4ad4232e217db300c29202b
+    - path: output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/aux_info/meta_info.json
+      md5sum: f82491a19755bb1c32d49e9f0e12eebd
+    - path: output/salmon/test/aux_info/fld.gz
+      md5sum: 7f342560fea53327f0532623e53052f7
+    - path: output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: 950001575c24fb6bc2c7a6848043b126
+    - path: output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test/libParams/flenDist.txt
+      md5sum: f90c7256c9b18d4131f4d4ecb69d0f55
+    - path: output/salmon/test/quant.genes.sf
+      md5sum: eb3e7b44801a0b3af07c25963927e20d
+    - path: output/salmon/salmon/ref_indexing.log
+      md5sum: 1f824b721361da702b5b1b1c3b02be49
+    - path: output/salmon/salmon/refseq.bin
+      md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
+    - path: output/salmon/salmon/versionInfo.json
+      md5sum: 204865f645102587c4953fccb256797c
+    - path: output/salmon/salmon/complete_ref_lens.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: output/salmon/salmon/mphf.bin
+      md5sum: 53669a47610e33e031faafd32703b714
+    - path: output/salmon/salmon/pre_indexing.log
+      md5sum: 68f309b5557feb35829b9715b0afad39
+    - path: output/salmon/salmon/ctable.bin
+      md5sum: 79c06180158c7ee44fab6672c2b27fbb
+    - path: output/salmon/salmon/duplicate_clusters.tsv
+      md5sum: 51b5292e3a874119c0e1aa566e95d70c
+    - path: output/salmon/salmon/reflengths.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: output/salmon/salmon/info.json
+      md5sum: 61ff4d3471134c280668355ddd39e99f
+    - path: output/salmon/salmon/refAccumLengths.bin
+      md5sum: 8d1970505b2b08ca0eb5ff7722b48cde
+    - path: output/salmon/salmon/ctg_offsets.bin
+      md5sum: 27a76542337df436436e66017f66dd25
+    - path: output/salmon/salmon/rank.bin
+      md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
+    - path: output/salmon/salmon/pos.bin
+      md5sum: 3b2d741929d6842e7818fcaa16f01bdc
+    - path: output/salmon/salmon/seq.bin
+      md5sum: 196b06f78c8aa6aa960eb5921288d0f4
+
+- name: salmon quant single-end
+  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_quant_se -c tests/config/nextflow.config
+  tags:
+    - salmon
+    - salmon_quant
+    - salmon_quant_se
+  files:
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/libParams/flenDist.txt
+      md5sum: 2de170bdc9f6fd237d286429b292bb28
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/libParams/flenDist.txt
+      md5sum: 2de170bdc9f6fd237d286429b292bb28
+    - path: ./output/salmon/test/quant.genes.sf
+      md5sum: 5b39785b4d8da533c08ee4a6c8bc1211
+    - path: ./output/salmon/salmon/ref_indexing.log
+      md5sum: 09c472422bd4e77a8a03b5296d947f9c
+    - path: ./output/salmon/salmon/refseq.bin
+      md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
+    - path: ./output/salmon/salmon/versionInfo.json
+      md5sum: 204865f645102587c4953fccb256797c
+    - path: ./output/salmon/salmon/complete_ref_lens.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: ./output/salmon/salmon/mphf.bin
+      md5sum: 53669a47610e33e031faafd32703b714
+    - path: ./output/salmon/salmon/pre_indexing.log
+      md5sum: ea891a7a435745ebcc540740e8cb2f56
+    - path: ./output/salmon/salmon/ctable.bin
+      md5sum: fa76c33c22592a201cbcae299dbf2de6
+    - path: ./output/salmon/salmon/duplicate_clusters.tsv
+      md5sum: 51b5292e3a874119c0e1aa566e95d70c
+    - path: ./output/salmon/salmon/reflengths.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: ./output/salmon/salmon/info.json
+      md5sum: 61ff4d3471134c280668355ddd39e99f
+    - path: ./output/salmon/salmon/refAccumLengths.bin
+      md5sum: 8d1970505b2b08ca0eb5ff7722b48cde
+    - path: ./output/salmon/salmon/ctg_offsets.bin
+      md5sum: 27a76542337df436436e66017f66dd25
+    - path: ./output/salmon/salmon/rank.bin
+      md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
+    - path: ./output/salmon/salmon/pos.bin
+      md5sum: f8e96e67430eac6945ecdecf73d0c025
+    - path: ./output/salmon/salmon/seq.bin
+      md5sum: a64df36de51fc94ab8f707be98c91062
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/libParams/flenDist.txt
+      md5sum: 2de170bdc9f6fd237d286429b292bb28
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/cmd_info.json
+      md5sum: d95f9bd2287a55fa44bbd9b9d4c4ff8a
+    - path: ./output/salmon/test/quant.sf
+      md5sum: b08095ac70f89efc3146cdf488d0eb73
+    - path: ./output/salmon/test/lib_format_counts.json
+      md5sum: aca0a40187eb407b1b8fc85c01284583
+    - path: ./output/salmon/test/logs/salmon_quant.log
+      md5sum: 7a41329e3b6cd24d86b8fe13a420d9e8
+    - path: ./output/salmon/test/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: ./output/salmon/test/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/aux_info/meta_info.json
+      md5sum: 73264fdcfdf915a539c308bc68eaf243
+    - path: ./output/salmon/test/aux_info/fld.gz
+      md5sum: b3f48b080ee24668b94a92a9793d766e
+    - path: ./output/salmon/test/aux_info/ambig_info.tsv
+      md5sum: c3306d26186ffe018ad4f19d52256180
+    - path: ./output/salmon/test/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: ./output/salmon/test/libParams/flenDist.txt
+      md5sum: 2de170bdc9f6fd237d286429b292bb28
+    - path: ./output/salmon/test/quant.genes.sf
+      md5sum: 5b39785b4d8da533c08ee4a6c8bc1211
+    - path: ./output/salmon/salmon/ref_indexing.log
+      md5sum: 09c472422bd4e77a8a03b5296d947f9c
+    - path: ./output/salmon/salmon/refseq.bin
+      md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
+    - path: ./output/salmon/salmon/versionInfo.json
+      md5sum: 204865f645102587c4953fccb256797c
+    - path: ./output/salmon/salmon/complete_ref_lens.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: ./output/salmon/salmon/mphf.bin
+      md5sum: 53669a47610e33e031faafd32703b714
+    - path: ./output/salmon/salmon/pre_indexing.log
+      md5sum: ea891a7a435745ebcc540740e8cb2f56
+    - path: ./output/salmon/salmon/ctable.bin
+      md5sum: fa76c33c22592a201cbcae299dbf2de6
+    - path: ./output/salmon/salmon/duplicate_clusters.tsv
+      md5sum: 51b5292e3a874119c0e1aa566e95d70c
+    - path: ./output/salmon/salmon/reflengths.bin
+      md5sum: f57562f1fca3ae7b133f895ae13c3d08
+    - path: ./output/salmon/salmon/info.json
+      md5sum: 61ff4d3471134c280668355ddd39e99f
+    - path: ./output/salmon/salmon/refAccumLengths.bin
+      md5sum: 8d1970505b2b08ca0eb5ff7722b48cde
+    - path: ./output/salmon/salmon/ctg_offsets.bin
+      md5sum: 27a76542337df436436e66017f66dd25
+    - path: ./output/salmon/salmon/rank.bin
+      md5sum: 3f34dca1ec26cdf89a6d19b1d1c07e71
+    - path: ./output/salmon/salmon/pos.bin
+      md5sum: f8e96e67430eac6945ecdecf73d0c025
+    - path: ./output/salmon/salmon/seq.bin
+      md5sum: a64df36de51fc94ab8f707be98c91062
