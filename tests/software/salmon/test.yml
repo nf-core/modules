@@ -1,0 +1,36 @@
+- name: salmon index
+  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_index -c tests/config/nextflow.config
+  tags:
+    - salmon
+    - salmon_index
+  files:
+    - path: output/salmon/salmon/ref_indexing.log
+      md5sum: 56bd3d6393c207a3613237d28b7195dd
+    - path: output/salmon/salmon/refseq.bin
+      md5sum: 9e887dfd1f681e048b0dd2e259332e42
+    - path: output/salmon/salmon/versionInfo.json
+      md5sum: 204865f645102587c4953fccb256797c
+    - path: output/salmon/salmon/complete_ref_lens.bin
+      md5sum: 334223e37c5448ce0412fdf2d431ec04
+    - path: output/salmon/salmon/mphf.bin
+      md5sum: a30970c2100b446bea832b3a4d1e95ca
+    - path: output/salmon/salmon/pre_indexing.log
+      md5sum: 199d3e6c18c70c53b189727f9cb2b91f
+    - path: output/salmon/salmon/ctable.bin
+      md5sum: d64af0db3ce8c6c00eb3f501f8bdf05b
+    - path: output/salmon/salmon/duplicate_clusters.tsv
+      md5sum: 17070ad9e9fc7796410af18155c1e7b9
+    - path: output/salmon/salmon/reflengths.bin
+      md5sum: 334223e37c5448ce0412fdf2d431ec04
+    - path: output/salmon/salmon/info.json
+      md5sum: 38a5d4b344b38212a0b8fcf80e5bed52
+    - path: output/salmon/salmon/refAccumLengths.bin
+      md5sum: 09b281c28565aeb970717d3a8246485d
+    - path: output/salmon/salmon/ctg_offsets.bin
+      md5sum: 71955ebb92e93090ee83d1d731af1fae
+    - path: output/salmon/salmon/rank.bin
+      md5sum: c834b0cb4ffc7831dfc604ab761c14a2
+    - path: output/salmon/salmon/pos.bin
+      md5sum: d2208181eb65f9e8d49c588720e7acc7
+    - path: output/salmon/salmon/seq.bin
+      md5sum: 22963941785736e4b7c31c5dcae32886
