@@ -71,6 +71,26 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
+  - bam_sorted:
+      type: file
+      description: Sorted BAM file of read alignments (optional)
+      pattern: "*sortedByCoord.out.bam"
+  - bam_transcript:
+      type: file
+      description: Output BAM file of transcriptome alignment (optional)
+      pattern: "*toTranscriptome.out.bam"
+  - bam_unsorted:
+      type: file
+      description: Unsorted BAM file of read alignments (optional)
+      pattern: "*Aligned.unsort.out.bam"
+  - fastq:
+      type: file
+      description: Unmapped FastQ files (optional)
+      pattern: "*fastq.gz"
+  - tab:
+      type: file
+      description: STAR output tab file(s) (optional)
+      pattern: "*.tab"
 
 authors:
   - "@kevinmenden"
