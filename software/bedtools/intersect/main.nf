@@ -22,8 +22,8 @@ process BEDTOOLS_INTERSECT {
     tuple val(meta), path(bed1), path(bed2)
 
     output:
-    tuple val(meta), path("*.intersect.bed"), emit: bed
-    path  "*.version.txt", emit: version
+    tuple val(meta), path('*.intersect.bed'), emit: bed
+    path  '*.version.txt'                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)

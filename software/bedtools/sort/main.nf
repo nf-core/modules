@@ -13,23 +13,28 @@ process BEDTOOLS_SORT {
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bedtools:bedtools:2.30.0--hc088bd4_0"
+        container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
     } else {
-        container "quay.io/biocontainers/bedtools:bedtools:2.30.0--hc088bd4_0"
+        container "quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0"
     }
 
     input:
-        tuple val(meta), path(beds)
+    tuple val(meta), path(beds)
 
     output:
-        tuple val(meta), path("*.sort.bed"), emit: bed
-        path  "*.version.txt", emit: version
+    tuple val(meta), path('*.sort.bed'), emit: bed
+    path  '*.version.txt'              , emit: version
 
     script:
-        def software = getSoftwareName(task.process)
-        def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-        """
-        bedtools sort -i $beds ${options.args} > ${prefix}.sort.bed
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
-        """
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedtools \\
+        sort \\
+        -i $beds \\
+        $options.args \\
+        > ${prefix}.sort.bed
+
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    """
 }
