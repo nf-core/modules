@@ -20,22 +20,22 @@ process BEDTOOLS_INTERSECT {
 
     input:
     tuple val(meta), path(bed1), path(bed2)
-    
-    output:
-        tuple val(meta), path("*.intersect.bed"), emit: bed
-        path  "*.version.txt", emit: version
 
-    script: // TODO change script to account for multiple possible intersections
-        def software = getSoftwareName(task.process)
-        def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-        """
-        bedtools \\
-            intersect \\
-            -a ${bed1} \\
-            -b ${bed2} \\
-            $options.args \\
-            > ${prefix}.intersect.bed
-            
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
-        """
+    output:
+    tuple val(meta), path("*.intersect.bed"), emit: bed
+    path  "*.version.txt", emit: version
+
+    script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedtools \\
+        intersect \\
+        -a ${bed1} \\
+        -b ${bed2} \\
+        $options.args \\
+        > ${prefix}.intersect.bed
+
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    """
 }
