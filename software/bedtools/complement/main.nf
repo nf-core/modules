@@ -26,10 +26,16 @@ process BEDTOOLS_COMPLEMENT {
     path  "*.version.txt"                    , emit: version
 
     script:
-        def software = getSoftwareName(task.process)
-        def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-        """
-        bedtools complement -i $beds -g $sizes ${options.args} > ${prefix}.complement.bed
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
-        """
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedtools \\
+        complement \\
+        -i $beds \\
+        -g $sizes \\
+        $options.args \\
+        > ${prefix}.complement.bed
+
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    """
 }
