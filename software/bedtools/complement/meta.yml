@@ -36,6 +36,11 @@ input:
         type: file
         description: List of bed files
         pattern: "*.{bed}"
+    - sizes:
+        type: file
+        description: File which defines the chromosome lengths for a given genome
+        pattern: "*.{sizes}"
+
 output:
     - meta:
         type: map
@@ -44,13 +49,12 @@ output:
             e.g. [ id:'test', single_end:false ]
     - bed:
         type: file
-        description: Edited bed file
+        description: Bed file with all genomic intervals that are not covered by at least one record from the input file.
         pattern: "*.{complement.bed}"
     - version:
         type: file
         description: File containing software version
         pattern: "*.{version.txt}"
-
 authors:
     -"@Emiller88"
     -"@sruthipsuresh"
