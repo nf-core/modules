@@ -13,22 +13,28 @@ process BEDTOOLS_MERGE {
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bedtools:bedtools:2.30.0--hc088bd4_0"
+        container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
     } else {
-        container "quay.io/biocontainers/bedtools:bedtools:2.30.0--hc088bd4_0"
+        container "quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0"
     }
-    
+
     input:
-        tuple val(meta), path(bed)
+    tuple val(meta), path(beds)
 
     output:
-        path("*.merged.bed"), emit: bed
-        path  "*.version.txt", emit: version
+    tuple val(meta), path('*.merged.bed'), emit: bed
+    path  '*.version.txt'                , emit: version
+
     script:
-        def software = getSoftwareName(task.process)
-        def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-        """
-        bedtools merge -i ${sort} ${options.args} > ${prefix}.merged.bed
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
-        """
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedtools \\
+        merge \\
+        -i $beds \\
+        $options.args \\
+        > ${prefix}.merged.bed
+
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    """
 }

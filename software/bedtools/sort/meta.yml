@@ -1,6 +1,5 @@
 name: bedtools_sort
 description: Sorts a feature file by chromosome and other criteria.
-
 keywords:
     - bed
     - sort
@@ -9,7 +8,6 @@ tools:
         description: |
             A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
         documentation: https://bedtools.readthedocs.io/en/latest/content/tools/sort.html
-
 params:
     - outdir:
         type: string
@@ -33,10 +31,11 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - beds:
         type: file
         description: List of bed files
         pattern: "*.{bed}"
+
 output:
     - meta:
         type: map
