@@ -6,8 +6,7 @@ include { BEDTOOLS_COMPLEMENT } from '../../../software/bedtools/complement/main
 include { BEDTOOLS_GENOMECOV } from '../../../software/bedtools/genomecov/main.nf' addParams( options: [:] )
 include { BEDTOOLS_INTERSECT } from '../../../software/bedtools/intersect/main.nf' addParams( options: [:] )
 include { BEDTOOLS_MERGE } from '../../../software/bedtools/merge/main.nf' addParams( options: [:] )
-include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_S} from '../../../software/bedtools/slop/main.nf' addParams( options: [:] )
-include { BEDTOOLS_SLOP as BEDTOOLS_SLOP_AS} from '../../../software/bedtools/slop/main.nf' addParams( options: [:] )
+include { BEDTOOLS_SLOP} from '../../../software/bedtools/slop/main.nf' addParams( options: [args: '-l 15 -r 30'] )
 include { BEDTOOLS_SORT } from '../../../software/bedtools/sort/main.nf' addParams( options: [:] )
 
 
@@ -47,28 +46,12 @@ workflow test_bedtools_merge {
     BEDTOOLS_MERGE(input)
 }
 
-// TODO streamline slop module
-
-// To run with header and pct enabled, type --pct true and --header true with nextflow run command.
-/*
-Test with l/r method
-*/
-workflow test_bedtools_slop_asymmetrical {
+workflow test_bedtools_slop {
     def input = []
-    input = [ [ id:'test', symmetry: false],
+    input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
-    BEDTOOLS_SLOP_AS( input )
-}
-/*
-Test with b method
-*/
-workflow test_bedtools_slop_symmetrical {
-    def input = []
-    input = [ [ id:'test', symmetry: true],
-              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
-    BEDTOOLS_SLOP_S( input )
+    BEDTOOLS_SLOP ( input )
 }
 
 workflow test_bedtools_sort {
