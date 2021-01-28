@@ -22,8 +22,7 @@ workflow test_bedtools_complement {
 workflow test_bedtools_genomecov {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
+              file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ]
 
     BEDTOOLS_GENOMECOV( input )
 }
@@ -38,7 +37,6 @@ workflow test_bedtools_intersect {
 }
 
 
-//  TODO use output of sort module
 workflow test_bedtools_merge {
     def input = []
     input = [ [ id:'test' ], // meta map
