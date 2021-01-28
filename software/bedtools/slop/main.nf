@@ -15,34 +15,29 @@ process BEDTOOLS_SLOP {
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bedtools:bedtools:2.30.0--hc088bd4_0"
     } else {
-        container "quay.io/biocontainers/bedtools:bedtools:2.30.0--hc088bd4_0"
+        container "quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0"
     }
 
 
     input:
-        tuple val(meta), path(beds), path (sizes)
+    tuple val(meta), path(beds), path (sizes)
 
     output:
-        tuple val(meta), path("*.slop.bed"), emit: bed
-        path  "*.version.txt", emit: version
+    tuple val(meta), path("*.slop.bed"), emit: bed
+    path  "*.version.txt", emit: version
 
     script:
-        def software = getSoftwareName(task.process)
-        def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-        def header = params.header ? "-header":''
-        def pct = params.pct ? "-pct":''
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedtools \\
+        slop \\
+        -i $beds \\
+        -g $sizes \\
+        $options.args \\
+        > ${prefix}.slop.bed
 
-        def symmetry = ''
-        if (meta.symmetry) {
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    """
 
-        """
-        slopBed -i $beds -g $sizes -b $params.b $header $pct $options.args> ${prefix}.slop.bed
-        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
-        """
-        } else {
-        """
-        slopBed -i $beds -g $sizes -l $params.l -r $params.r $header $pct $options.args> ${prefix}.slop.bed
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
-        """
-        }
 }
