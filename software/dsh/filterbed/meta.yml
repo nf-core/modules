@@ -37,7 +37,7 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - features:
+    - bed:
         type: file
         description: Features in gzipped BED format
         pattern: "*.{bed.gz}"
@@ -47,7 +47,7 @@ output:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - features:
+    - bed:
         type: file
         description: Features in gzipped BED format
         pattern: "*.{bed.gz}"

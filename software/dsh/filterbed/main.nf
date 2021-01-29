@@ -20,10 +20,10 @@ process DSH_FILTERBED {
     }
 
     input:
-    tuple val(meta), path(features)
+    tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path("*.bed.gz"), emit: features
+    tuple val(meta), path("*.bed.gz"), emit: bed
     path "*.version.txt"             , emit: version
 
     script:
@@ -33,7 +33,7 @@ process DSH_FILTERBED {
     """
     dsh-filter-bed \\
         $options.args \\
-        -i $features \\
+        -i $bed \\
         -o ${prefix}.bed.gz
 
     echo \$(dsh-bio --version 2>&1) | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ' > ${software}.version.txt
