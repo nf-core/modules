@@ -42,3 +42,21 @@
   files:
     - path: output/samtools/test.paired_end.sorted.bam.stats
       md5sum: 06c183864d6e47ab89b0650cae831a93
+
+- name: Run samtools view test workflow
+  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_view -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_view
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 7ea2c325e2249ed7ef44e1d9fdc4f8ff
+
+- name: Run samtools mpileup test workflow
+  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_mpileup -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_mpileup
+  files:
+    - path: output/samtools/test.mpileup
+      md5sum: 95c2646fa7bd535207722008c581c81d
