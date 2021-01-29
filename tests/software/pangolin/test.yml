@@ -1,0 +1,7 @@
+- name: pangolin
+  command: nextflow run ./tests/software/pangolin -profile docker -entry test_pangolin -c ./tests/config/nextflow.config
+  tags:
+    - pangolin
+  files:
+    - path: ./output/pangolin/test.lineage_report.csv
+      md5sum: a7423586a536a58f14fb4553f92b225e
