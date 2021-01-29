@@ -1,0 +1,18 @@
+- name: Run cutadapt single-end test workflow
+  command: nextflow run ./tests/software/cutadapt -profile docker -entry test_cutadapt_se -c tests/config/nextflow.config
+  tags:
+    - cutadapt
+    - cutadapt_se
+  files:
+    - path: ./output/cutadapt/test.cutadapt.log
+    - path: ./output/cutadapt/test.trim.fastq.gz
+
+- name: Run cutadapt paired-end test workflow
+  command: nextflow run ./tests/software/cutadapt -profile docker -entry test_cutadapt_pe -c tests/config/nextflow.config
+  tags:
+    - cutadapt
+    - cutadapt_pe
+  files:
+    - path: ./output/cutadapt/test.cutadapt.log
+    - path: ./output/cutadapt/test_1.trim.fastq.gz
+    - path: ./output/cutadapt/test_2.trim.fastq.gz
