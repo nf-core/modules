@@ -23,7 +23,7 @@ process PANGOLIN {
 
     output:
     tuple val(meta), path('*.lineage_report.csv'), emit: report
-    path  '*.version.txt'                         , emit: version
+    path  '*.version.txt'                        , emit: version
 
     script:
     def software = getSoftwareName(task.process)
