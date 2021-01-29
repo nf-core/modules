@@ -1,0 +1,66 @@
+name: cutadapt
+description: Perform adapter/quality trimming on sequencing reads
+keywords:
+  - trimming
+  - adapter trimming
+  - adapters
+  - quality trimming
+tools:
+  - cuatadapt:
+      description: |
+        Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.
+      documentation: https://cutadapt.readthedocs.io/en/stable/index.html
+      doi: DOI:10.14806/ej.17.1.200
+params:
+  - outdir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$params.outdir/<SOFTWARE>`
+  - publish_dir_mode:
+      type: string
+      description: |
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - enable_conda:
+      type: boolean
+      description: |
+        Run the module with Conda using the software specified
+        via the `conda` directive
+  - singularity_pull_docker_container:
+      type: boolean
+      description: |
+        Instead of directly downloading Singularity images for use with Singularity,
+        force the workflow to pull and convert Docker containers instead.
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*fastq.gz"
+  - log:
+      type: file
+      description: cuatadapt log file
+      pattern: "*cutadapt.log"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+authors:
+  - "@drpatelh"
+  - "@kevinmenden"
