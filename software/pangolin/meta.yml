@@ -37,13 +37,13 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-  - assembly:
+  - fasta:
       type: file
       description: |
         The virus genome assembly to be evaluated
 
 output:
-  - lineage_report:
+  - report:
       type: file
       description: The lineage report
       pattern: "{prefix}.lineage_report.csv"

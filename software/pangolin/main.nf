@@ -19,10 +19,10 @@ process PANGOLIN {
     }
 
     input:
-    tuple val(meta), path(assembly)
+    tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.lineage_report.csv') , emit: lineage
+    tuple val(meta), path('*.lineage_report.csv'), emit: report
     path  '*.version.txt'                         , emit: version
 
     script:
@@ -30,9 +30,9 @@ process PANGOLIN {
     def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
     pangolin \\
-    $assembly \\
-    --outfile ${prefix}.lineage_report.csv \\
-    $options.args
+        $fasta\\
+        --outfile ${prefix}.lineage_report.csv \\
+        $options.args
 
     pangolin --version | sed "s/pangolin //g" > ${software}.version.txt
     """
