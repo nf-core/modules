@@ -1,0 +1,68 @@
+name: bedtools_maskfasta
+description: Masks sequences in a FASTA file based on intervals defined in a feature file
+keywords:
+    - mask
+    - fasta
+    - bed
+tools:
+    - bedtools:
+        description: |
+            BEDtools is a set of utilities tools that enable genome arithmetic: that 
+            is, set theory on the genome.  For example, bedtools allows one to intersect, 
+            merge, count, complement, and shuffle genomic intervals from multiple files 
+            in widely-used genomic file formats such as BAM, BED, GFF/GTF, VCF.            
+        homepage: https://bedtools.readthedocs.io/
+        documentation: https://bedtools.readthedocs.io/
+        doi: 10.1093/bioinformatics/btq033
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, relink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: BED file
+        pattern: "*.{bed}"
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fasta,fa}"
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Masked FASTA file
+        pattern: "*.{fasta,fa}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@drpatelh"
+    - "@joseespinosa"
