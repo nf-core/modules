@@ -8,6 +8,7 @@ include { SAMTOOLS_INDEX } from '../../../software/samtools/index/main.nf' addPa
 include { SAMTOOLS_SORT } from '../../../software/samtools/sort/main.nf' addParams( options: [:] )
 include { SAMTOOLS_STATS } from '../../../software/samtools/stats/main.nf' addParams( options: [:] )
 include { SAMTOOLS_VIEW } from '../../../software/samtools/view/main.nf' addParams( options: [:] )
+include { SAMTOOLS_MPILEUP } from '../../../software/samtools/mpileup/main.nf' addParams( options: [:] )
 
 workflow test_samtools_flagstat {
 
@@ -65,4 +66,15 @@ workflow test_samtools_view {
               file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ]
 
     SAMTOOLS_VIEW ( input )
+}
+
+workflow test_samtools_mpileup {
+
+    def input = []
+    def fasta = []
+    input = [ [ id:'test', single_end:false ], // meta map
+              file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ]
+    fasta = [  file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)  ]
+
+    SAMTOOLS_MPILEUP ( input, fasta )
 }
