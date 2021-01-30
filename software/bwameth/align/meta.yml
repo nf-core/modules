@@ -1,0 +1,71 @@
+name: bwameth_align
+description: Performs alignment of BS-Seq reads using bwameth
+keywords:
+    - bwameth
+    - alignment
+    - 3-letter genome
+    - map
+    - methylation
+    - 5mC
+    - methylseq
+    - bisulphite
+    - fastq
+    - bam
+tools:
+    - bwameth:
+        description: |
+            Fast and accurate alignment of BS-Seq reads
+            using bwa-mem and a 3-letter genome.
+        homepage: https://github.com/brentp/bwa-meth
+        documentation: https://github.com/brentp/bwa-meth
+        arxiv: arXiv:1401.1129
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+            List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+            respectively.
+    - index:
+        type: file
+        description: BWA genome index files
+        pattern: "*.{amb,ann,bwt,pac,sa}"
+    - fasta:
+        type: file
+        description: Input genome fasta file
+output:
+    - bam:
+        type: file
+        description: Output BAM file containing read alignments
+        pattern: "*.{bam}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@phue"
