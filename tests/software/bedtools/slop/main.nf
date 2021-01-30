@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SLOP } from '../../../../software/bedtools/slop/main.nf' addParams( options: [args: '-l 15 r 30'] )
+include { BEDTOOLS_SLOP } from '../../../../software/bedtools/slop/main.nf' addParams( options: [args: '-l 15 -r 30'] )
 
 workflow test_bedtools_slop {
     def input = []
