@@ -9,7 +9,7 @@ workflow test_bedtools_complement {
     def input = []
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ] //metamap
+              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ]
 
     BEDTOOLS_COMPLEMENT( input )
 }
