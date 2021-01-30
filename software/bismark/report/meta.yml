@@ -1,0 +1,75 @@
+name: bismark_report
+description: Collects bismark alignment reports
+keywords:
+    - bismark
+    - qc
+    - methylation
+    - 5mC
+    - methylseq
+    - bisulphite
+    - report
+tools:
+    - bismark:
+        description: |
+            Bismark is a tool to map bisulfite treated sequencing reads
+            and perform methylation calling in a quick and easy-to-use fashion.
+        homepage: https://github.com/FelixKrueger/Bismark
+        documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+        doi: 10.1093/bioinformatics/btr167
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - align_report:
+        type: file
+        description: Bismark alignment reports
+        pattern: "*{report.txt}"
+    - splitting_report:
+        type: file
+        description: Bismark splitting reports
+        pattern: "*{splitting_report.txt}"
+    - dedup_report:
+        type: file
+        description: Bismark deduplication reports
+        pattern: "*.{deduplication_report.txt}"
+    - mbias:
+        type: file
+        description: Text file containing methylation bias information
+        pattern: "*.{txt}"
+    - fasta:
+        type: file
+        description: Input genome fasta file
+output:
+    - report:
+        type: file
+        description: Bismark reports
+        pattern: "*.{hmtl,txt}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@phue"
