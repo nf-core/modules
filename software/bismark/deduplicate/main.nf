@@ -35,7 +35,7 @@ process BISMARK_DEDUPLICATE {
     deduplicate_bismark \\
         $options.args \\
         $seqtype \\
-        --bam $bam 
+        --bam $bam
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """

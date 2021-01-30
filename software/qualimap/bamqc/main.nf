@@ -29,12 +29,18 @@ process QUALIMAP_BAMQC {
     script:
     def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def memory     = task.memory.toGiga() + "G"
+
+    def memory = 3
+    if (!task.memory) {
+        log.info '[Qualimap BamQC] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        memory = task.memory.toGiga()
+    }
     def threads    = task.cpus
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
 
     // currently there is no convenient way to have optional input in dsl2
-    // there needs to be a placeholder file in the workflow definition with the magic name 'dummy_file.txt' 
+    // there needs to be a placeholder file in the workflow definition with the magic name 'dummy_file.txt'
     def regions_file = regions.name != 'dummy_file.txt' ? '--gff ${regions}' : ''
 
     def gcref = ''
@@ -55,7 +61,7 @@ process QUALIMAP_BAMQC {
     mkdir tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory}G \\
         bamqc \\
         $options.args \\
         -bam $bam \\

@@ -69,7 +69,7 @@ process BISMARK_ALIGN {
         $fastq \\
         $options.args \\
         --genome $index \\
-        --bam \\ 
+        --bam \\
         $multicore
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
