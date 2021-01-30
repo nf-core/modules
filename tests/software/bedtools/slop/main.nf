@@ -4,12 +4,12 @@ nextflow.enable.dsl = 2
 
 include { BEDTOOLS_SLOP } from '../../../../software/bedtools/slop/main.nf' addParams( options: [args: '-l 15 r 30'] )
 
-
 workflow test_bedtools_slop {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
+              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
+              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ]
 
     BEDTOOLS_SLOP( input )
-
 }
+
