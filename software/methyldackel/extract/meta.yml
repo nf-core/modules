@@ -1,0 +1,73 @@
+name: methyldackel_extract
+description: Extracts per-base methylation metrics from alignments
+keywords:
+    - methylation
+    - 5mC
+    - methylseq
+    - bisulphite
+    - consensus
+    - bedGraph
+    - bam
+    - cram
+tools:
+    - methyldackel:
+        description: |
+            A (mostly) universal methylation extractor
+            for BS-seq experiments. 
+        homepage: https://github.com/brentp/bwa-meth
+        documentation: https://github.com/brentp/bwa-meth
+        arxiv: arXiv:1401.1129
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fai}"
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+output:
+    - consensus:
+        type: file
+        description: bedGraph file containing per-base methylation metrics
+        pattern: "*.{bedGraph}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@phue"
