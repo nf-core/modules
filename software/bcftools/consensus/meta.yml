@@ -1,0 +1,64 @@
+name: bcftools_consensus
+description: Compresses VCF files
+keywords:
+    - variant calling
+    - consensus
+    - VCF
+tools:
+    - consensus:
+          description: |
+              Create consensus sequence by applying VCF variants to a reference fasta file.
+          homepage: http://samtools.github.io/bcftools/bcftools.html
+          documentation: http://www.htslib.org/doc/bcftools.html
+          doi: 10.1093/bioinformatics/btp352
+params:
+    - outdir:
+          type: string
+          description: |
+              The pipeline's output directory. By default, the module will
+              output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+          type: string
+          description: |
+              Value for the Nextflow `publishDir` mode parameter.
+              Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+          type: boolean
+          description: |
+              Run the module with Conda using the software specified
+              via the `conda` directive
+    - singularity_pull_docker_container:
+          type: boolean
+          description: |
+              Instead of directly downloading Singularity images for use with Singularity,
+              force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+          type: map
+          description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test', single_end:false ]
+    - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf}"
+    - tbi:
+          type: file
+          description: tabix index file
+          pattern: "*.{tbi}"
+     - fasta:
+        type: file
+        description: FASTA reference file
+        pattern: "*.{fasta,fa}"
+output:
+    - fasta:
+        type: file
+        description: FASTA reference consensus file
+        pattern: "*.{fasta,fa}"
+    - version:
+          type: file
+          description: File containing software version
+          pattern: "*.{version.txt}"
+authors:
+    - "@joseespinosa"
+    - "@drpatelh"
