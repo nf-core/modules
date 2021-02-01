@@ -1,0 +1,79 @@
+name: fastp
+description: Perform adapter/quality trimming on sequencing reads
+keywords:
+  - trimming
+  - quality control
+  - fastq
+tools:
+  - fastq:
+      description: |
+        A tool designed to provide fast all-in-one preprocessing for FastQ files. This tool is developed in C++ with multithreading supported to afford high performance.
+      documentation: https://github.com/OpenGene/fastp
+      doi: https://doi.org/10.1093/bioinformatics/bty560
+params:
+  - outdir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$params.outdir/<SOFTWARE>`
+  - publish_dir_mode:
+      type: string
+      description: |
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - enable_conda:
+      type: boolean
+      description: |
+        Run the module with Conda using the software specified
+        via the `conda` directive
+  - singularity_pull_docker_container:
+      type: boolean
+      description: |
+        Instead of directly downloading Singularity images for use with Singularity,
+        force the workflow to pull and convert Docker containers instead.
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*trim.fastq.gz"
+  - json:
+      type: file
+      description: Results in JSON format
+      pattern: "*.json"
+  - html:
+      type: file
+      description: Results in HTML format
+      pattern: "*.thml"
+  - log:
+      type: file
+      description: fastq log file
+      pattern: "*.log"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - reads_fail:
+      type: file
+      description: Reads the failed the preprocessing
+      pattern: "*fail.fastq.gz"
+authors:
+  - "@drpatelh"
+  - "@kevinmenden"
