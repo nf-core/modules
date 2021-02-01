@@ -18,7 +18,7 @@ process BCFTOOLS_TABIX {
     }
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(gz_genome_position_file)
 
     output:
     tuple val(meta), path("*.tbi"), emit: tbi
@@ -27,7 +27,7 @@ process BCFTOOLS_TABIX {
     script:
     def software = getSoftwareName(task.process)
     """
-    tabix $options.args $vcf
+    tabix $options.args $gz_genome_position_file
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
 }
