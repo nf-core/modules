@@ -38,8 +38,8 @@ process QUAST {
     """
     quast.py \\
         --output-dir $prefix \\
-        ${reference} \\
-        ${features} \\
+        $reference \\
+        $features \\
         --threads $task.cpus \\
         $options.args \\
         ${consensus.join(' ')}
