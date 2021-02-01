@@ -1,14 +1,14 @@
-name: bowtie_index
+name: bowtie_build
 on:
   push:
     paths:
-      - software/bowtie/index/**
-      - .github/workflows/bowtie_index.yml
+      - software/bowtie/build/**
+      - .github/workflows/bowtie_build.yml
       - tests/software/bowtie/**
   pull_request:
     paths:
-      - software/bowtie/index/**
-      - .github/workflows/bowtie_index.yml
+      - software/bowtie/build/**
+      - .github/workflows/bowtie_build.yml
       - tests/software/bowtie/**
 
 jobs:
@@ -37,4 +37,4 @@ jobs:
         run: python -m pip install --upgrade pip pytest-workflow
 
       # Test the module
-      - run: pytest --tag bowtie_index --symlink --wt 2
+      - run: pytest --tag bowtie_build --symlink --wt 2
