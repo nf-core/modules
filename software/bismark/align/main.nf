@@ -25,8 +25,8 @@ process BISMARK_ALIGN {
     output:
     tuple val(meta), path("*bam"), emit: bam
     tuple val(meta), path("*report.txt"), emit: report
-    tuple val(meta), path("*fq.gz"), optional:true ,emit: unmapped
-    path  "*.version.txt"         , emit: version
+    tuple val(meta), path("*fq.gz"), optional:true, emit: unmapped
+    path "*.version.txt" , emit: version
 
     script:
     // Try to assign sensible bismark memory units according to what the task was given
@@ -35,18 +35,6 @@ process BISMARK_ALIGN {
     def mem_per_multicore = (13.GB).toBytes()
 
     if( task.cpus ){
-        // Numbers based on recommendation by Felix for a typical mouse genome
-        if( params.single_cell || params.zymo || params.non_directional ){
-            cpu_per_multicore = 5
-            mem_per_multicore = (18.GB).toBytes()
-        }
-        // Check if the user has specified this and overwrite if so
-        if(params.bismark_align_cpu_per_multicore) {
-            cpu_per_multicore = (params.bismark_align_cpu_per_multicore as int)
-        }
-        if(params.bismark_align_mem_per_multicore) {
-            mem_per_multicore = (params.bismark_align_mem_per_multicore as nextflow.util.MemoryUnit).toBytes()
-        }
         // How many multicore splits can we afford with the cpus we have?
         ccore = ((task.cpus as int) / cpu_per_multicore) as int
         // Check that we have enough memory, assuming 13GB memory per instance (typical for mouse alignment)

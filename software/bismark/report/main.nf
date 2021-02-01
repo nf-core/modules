@@ -23,7 +23,7 @@ process BISMARK_REPORT {
 
     output:
     tuple val(meta), path("*{html,txt}"), emit: report
-    path  "*.version.txt"         , emit: version
+    path  "*.version.txt" ,emit: version
 
     script:
     def software   = getSoftwareName(task.process)

@@ -29,7 +29,6 @@ process BISMARK_DEDUPLICATE {
     script:
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def aligner = params.aligner == 'bismark_hisat' ? '--hisat2' : '--bowtie2'
     def seqtype = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\

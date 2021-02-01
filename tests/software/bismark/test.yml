@@ -1,0 +1,128 @@
+- name: Run bismark_genome_preparation test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_genome_preparation -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_genome_preparation
+  files:
+    - path: output/bismark/BismarkIndex/NC_010473.fa
+      md5sum: ad277e6b3da5dcf9fccfcd3a55fcec8e
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/genome_mfa.CT_conversion.fa
+      md5sum: f878bc2c1d6d1404157ebf931e971f02
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.1.bt2
+      md5sum: d865be3bfe02a3d5e277128fe7902b47
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.2.bt2
+      md5sum: 486dfea5dde17f126cf498ead0e91421
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.3.bt2
+      md5sum: cd201e81724f3099131aec16ef2cc53b
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.4.bt2
+      md5sum: 4c81a7364a80bf3151a5464108593497
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/genome_mfa.GA_conversion.fa
+      md5sum: 8cb16ceaf0543061151d8c1b7d1f85b4
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.1.bt2
+      md5sum: fe77e5d17a7aa30c3a788bb90b396842
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.2.bt2
+      md5sum: 3c6e4a48ad05f8af5f4015db7571d253
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.3.bt2
+      md5sum: cd201e81724f3099131aec16ef2cc53b
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.4.bt2
+      md5sum: f651bcfb9713f6ee1ce648b7c244b50e
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.1.bt2
+      md5sum: 2261afbed214da6f59f1bf648c20fb6b
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.2.bt2
+      md5sum: 622991847ea56f3c4f8583bb23ceee7a
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.1.bt2
+      md5sum: 32220350073a71a9cd69677f3aa4e577
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.2.bt2
+      md5sum: f7467830c4f33497c54c9e7e502a5def
+
+- name: Run bismark align single-end test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_align_single_end -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_align
+  files:
+    - path: output/test_single_end/Ecoli_10K_methylated_R1_bismark_bt2_SE_report.txt
+      md5sum: f4986d98779ae38ac034728f6bd5d679
+    - path: output/test_single_end/Ecoli_10K_methylated_R1_bismark_bt2.bam
+      md5sum: 42f93d49b65eaab7a171509d08682c21
+
+- name: Run bismark align paired-end test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_align_paired_end -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_align
+  files:
+    - path: output/test_paired_end/Ecoli_10K_methylated_R1_bismark_bt2_pe.bam
+      md5sum: 6e5d328f5fd8bfcbc5adf0abd5531937
+    - path: output/test_paired_end/Ecoli_10K_methylated_R1_bismark_bt2_PE_report.txt
+      md5sum: 5ab13274ad7285740053b3b726631d9b
+
+- name: Run bismark deduplicate test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_deduplicate -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_deduplicate
+  files:
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.deduplication_report.txt
+      md5sum: 73bd015b87ec4b57d8f0a863b4c43cb6
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.deduplicated.bam
+      md5sum: ce62f2544489d19f40ad21adaadde917
+
+- name: Run bismark extract test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_extract -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_extract
+  files:
+    - path: output/bismark/CHG_OB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: f1476955daafb6c33a25ac870b7bc3ef
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe_splitting_report.txt
+      md5sum: 5c0e941d5a3ecda2e113f83febfd6fda
+    - path: output/bismark/CHH_CTOB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: b15ab5da22d53b4c3b865a78583b2cf7
+    - path: output/bismark/CpG_CTOB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 8db6f7d9eee74ee4a7914bc4e869c5d5
+    - path: output/bismark/CHG_CTOT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 4de92ff5b45e3fc84a9745b1f933f196
+    - path: output/bismark/CHG_CTOB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: f250bf9729a7ead297c16c00faaa1924
+    - path: output/bismark/CpG_OT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: c55b149169dfff3497a472f8dfccb9d2
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.bedGraph.gz
+      md5sum: db443673921c720e707da0a07c1ebc87
+    - path: output/bismark/CHG_OT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 6263d079a5ad67572b5ee3ee0f2ba159
+    - path: output/bismark/CHH_OB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 8ae194ac2bd33a05a756c26e54c7dad9
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.M-bias.txt
+      md5sum: 89e1a8e09c910392d981bd3d030dcbaa
+    - path: output/bismark/CpG_OB_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: cb15b1faa7ff2c60e69c6d5841237946
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.bismark.cov.gz
+      md5sum: dd841979658d4aac99bee8e0403c807c
+    - path: output/bismark/CHH_CTOT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: a342b8e840cf5c3181b5472083deec39
+    - path: output/bismark/CHH_OT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 2be695db307854ea16120fbbff59224f
+    - path: output/bismark/CpG_CTOT_Ecoli_10K_methylated_R1_bismark_bt2_pe.txt.gz
+      md5sum: 4dd3d0b6d7ae1cf607ca575aca917ff6
+
+- name: Run bismark report test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_report -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_report
+  files:
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_PE_report.html
+      md5sum: ef12b57042664d4b0f6addfe3d415b1e
+
+- name: Run bismark summary test workflow
+  command: nextflow run ./tests/software/bismark/ -profile docker -entry test_bismark_summary -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_summary
+  files:
+    - path: output/bismark/bismark_summary_report.html
+      md5sum: 78049d8654410e8f42a2b41000c2846e
+    - path: output/bismark/bismark_summary_report.txt
+      md5sum: 97677febc24375d1c3480594b9614060
