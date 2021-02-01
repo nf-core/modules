@@ -21,8 +21,8 @@ process QUAST {
     input:
     path consensus
     path fasta
-    val use_fasta
     path gff
+    val use_fasta
     val use_gff
 
     output:
