@@ -42,8 +42,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - vcf:
         type: file
-        description: VCF input file
-        pattern: "*.{vcf,bed,sam,gff}"
+        description: TAB-delimited genome position file compressed with bgzip
+        pattern: "*.{vcf.gz,bed.gz,sam.gz,gff.gz}"
 output:
     - meta:
         type: map
