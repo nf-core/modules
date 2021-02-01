@@ -1,4 +1,4 @@
-name: quast_reference
+name: quast
 description: Quality Assessment Tool for Genome Assemblies
 keywords:
   - quast
@@ -40,10 +40,16 @@ input:
   - fasta:
       type: file
       description: |
-        The genome assembly to be evaluated
+        The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
+  - use_fasta:
+      type: boolean
+      description: Whether to use a fasta reference
   - gff:
       type: file
-      description: The genome GFF file
+      description: The genome GFF file. Has to contain at least a non-empty string dummy value.
+  - use_gff:
+      type: boolean
+      description: Whether to use a gff reference
 
 output:
   - quast:
