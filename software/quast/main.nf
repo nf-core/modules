@@ -21,7 +21,9 @@ process QUAST {
     input:
     path consensus
     path fasta
+    val use_fasta
     path gff
+    val use_gff
 
     output:
     path "${prefix}"    , emit: results
@@ -29,14 +31,15 @@ process QUAST {
     path '*.version.txt', emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    prefix       = options.suffix ?: software
-    def features = params.gff ? "--features $gff" : ''
+    def software  = getSoftwareName(task.process)
+    prefix        = options.suffix ?: software
+    def features  = use_gff ? "--features $gff" : ''
+    def reference = use_fasta ? "-r $fasta" : ''
     """
     quast.py \\
         --output-dir $prefix \\
-        -r $fasta \\
-        $features \\
+        ${reference} \\
+        ${features} \\
         --threads $task.cpus \\
         $options.args \\
         ${consensus.join(' ')}
