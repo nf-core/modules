@@ -21,5 +21,5 @@ workflow test_quast_noref {
     def use_fasta = false
     def use_gtf = false
 
-    QUAST( consensus, fasta, use_fasta, gff, use_gtf)
+    QUAST( consensus, fasta, gff, use_fasta, use_gtf )
 }
