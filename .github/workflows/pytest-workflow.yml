@@ -67,11 +67,12 @@ jobs:
         with:
           singularity-version: 3.5.3
 
-      - name: Setup conda
+      - name: Setup miniconda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
+          channels: defaults, bioconda, conda-forge
           python-version: ${{ matrix.python-version }}
 
       # Test the module
