@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process BOWTIE_INDEX {
+process BOWTIE_BUILD {
     tag "$fasta"
     label 'process_high'
     publishDir "${params.outdir}",
@@ -22,11 +22,11 @@ process BOWTIE_INDEX {
     path fasta
 
     output:
-    path 'bowtie', emit: index
+    path 'bowtie'       , emit: index
     path '*.version.txt', emit: version
 
     script:
-    def software  = getSoftwareName(task.process)
+    def software = getSoftwareName(task.process)
     """
     mkdir bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
