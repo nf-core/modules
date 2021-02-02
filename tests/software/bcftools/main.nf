@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_FILTER } from '../../../software/bcftools/filter/main.nf' addParams( options: [:] )
+//keep arg of bcftools_filter, otherwise md5 will change on each execution
+include { BCFTOOLS_FILTER } from '../../../software/bcftools/filter/main.nf' addParams( options: ['args': '--no-version'] )
 include { BCFTOOLS_STATS } from '../../../software/bcftools/stats/main.nf' addParams( options: [:] )
 include { BCFTOOLS_BGZIP } from '../../../software/bcftools/bgzip/main.nf' addParams( options: [:] )
 include { BCFTOOLS_TABIX } from '../../../software/bcftools/tabix/main.nf' addParams( options: [:] )

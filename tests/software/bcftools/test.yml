@@ -5,7 +5,7 @@
     - bcftools_filter
   files:
     - path: output/bcftools/test.vcf.gz
-      md5sum: b994e60162fd97c118ddd45b08018d98
+      md5sum: 16947ce72a127938d881113a1e6e696b
 
 - name: Run bcftools stats test workflow
   command: nextflow run ./tests/software/bcftools/ -profile docker -entry test_bcftools_stats -c tests/config/nextflow.config
