@@ -1,5 +1,5 @@
 - name: fastp_se
-  command: nextflow run ./tests/software/fastp -profile docker -entry test_fastp_se -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/software/fastp -entry test_fastp_se -c ./tests/config/nextflow.config
   tags:
     - fastp
     - fastp_se
@@ -12,7 +12,7 @@
     - path: ./output/fastp/test.fastp.html
 
 - name: fastp_pe
-  command: nextflow run ./tests/software/fastp -profile docker -entry test_fastp_pe -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/software/fastp -entry test_fastp_pe -c ./tests/config/nextflow.config
   tags:
     - fastp
     - fastp_pe

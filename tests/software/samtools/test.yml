@@ -1,5 +1,5 @@
 - name: Run samtools flagstat test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_flagstat -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_flagstat -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_flagstat
@@ -8,7 +8,7 @@
       md5sum: 80590621c74f5ee43ada20d010a3837f
 
 - name: Run samtools idxstats test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_idxstats -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_idxstats -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_idxstats
@@ -17,7 +17,7 @@
       md5sum: 3bee8b7d55e412da2b3816c5a18d60d5
 
 - name: Run samtools index test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_index -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_index -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_index
@@ -26,7 +26,7 @@
       md5sum: 67338c2995eae82c849830ca55aa7bd1
 
 - name: Run samtools sort test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_sort -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_sort -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_sort
@@ -35,7 +35,7 @@
       md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
 
 - name: Run samtools stats test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_stats -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_stats -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_stats
@@ -44,7 +44,7 @@
       md5sum: 06c183864d6e47ab89b0650cae831a93
 
 - name: Run samtools view test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_view -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_view -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_view
@@ -53,7 +53,7 @@
       md5sum: 7ea2c325e2249ed7ef44e1d9fdc4f8ff
 
 - name: Run samtools mpileup test workflow
-  command: nextflow run ./tests/software/samtools/ -profile docker -entry test_samtools_mpileup -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/samtools/ -entry test_samtools_mpileup -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_mpileup

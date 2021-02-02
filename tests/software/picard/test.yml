@@ -1,5 +1,5 @@
 - name: Run picard mergesamfiles
-  command: nextflow run ./tests/software/picard -profile docker -entry test_picard_mergesamfiles -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard -entry test_picard_mergesamfiles -c tests/config/nextflow.config
   tags:
     - picard
     - picard_mergesamfiles
@@ -8,7 +8,7 @@
       md5sum: a9c8a28d1aac362df5973ba2d9923f86
 
 - name: Run picard collectmultiplemetrics
-  command: nextflow run ./tests/software/picard -profile docker -entry test_picard_collectmultiplemetrics -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard -entry test_picard_collectmultiplemetrics -c tests/config/nextflow.config
   tags:
     - picard
     - picard_collectmultiplemetrics
@@ -25,7 +25,7 @@
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
 
 - name: Run picard MarkDuplicates
-  command: nextflow run ./tests/software/picard -profile docker -entry test_picard_markduplicates -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard -entry test_picard_markduplicates -c tests/config/nextflow.config
   tags:
     - picard
     - picard_markduplicates
@@ -35,7 +35,7 @@
       md5sum: 0ed0bfc94069380334ccd595f6d8207c
 
 - name: Run picard MarkDuplicates without a sorted bam file so it fails
-  command: nextflow run ./tests/software/picard -profile docker -entry test_picard_markduplicates_not_sorted -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard -entry test_picard_markduplicates_not_sorted -c tests/config/nextflow.config
   tags:
     - picard
     - picard_markduplicates

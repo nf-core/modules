@@ -1,5 +1,5 @@
 - name: Run preseq single-end lcextrap
-  command: nextflow run ./tests/software/preseq -profile docker -entry test_preseq_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/preseq -entry test_preseq_single_end -c tests/config/nextflow.config
   tags:
     - preseq
     - preseq_lcextrap
@@ -10,7 +10,7 @@
     - path: output/test_preseq_single_end/test.command.log
 
 - name: Run preseq paired-end lcextrap
-  command: nextflow run ./tests/software/preseq -profile docker -entry test_preseq_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/preseq -entry test_preseq_paired_end -c tests/config/nextflow.config
   tags:
     - preseq
     - preseq_lcextrap

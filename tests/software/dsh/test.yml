@@ -1,5 +1,5 @@
 - name: Run dsh filterbed
-  command: nextflow run ./tests/software/dsh -profile docker -entry test_dsh_filterbed -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/dsh -entry test_dsh_filterbed -c tests/config/nextflow.config
   tags:
     - dsh
     - dsh_filterbed
@@ -8,7 +8,7 @@
       md5sum: 91cee4392d6034793f99f6c53891d866
 
 - name: Run dsh splitbed
-  command: nextflow run ./tests/software/dsh -profile docker -entry test_dsh_splitbed -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/dsh -entry test_dsh_splitbed -c tests/config/nextflow.config
   tags:
     - dsh
     - dsh_splitbed
