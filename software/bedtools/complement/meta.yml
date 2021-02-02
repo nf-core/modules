@@ -32,7 +32,7 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - beds:
         type: file
         description: List of bed files
         pattern: "*.{bed}"
@@ -46,7 +46,6 @@ output:
         type: file
         description: Edited bed file
         pattern: "*.{complement.bed}"
-
     - version:
         type: file
         description: File containing software version
