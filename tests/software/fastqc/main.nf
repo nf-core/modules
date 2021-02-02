@@ -34,5 +34,3 @@ workflow test_paired_end {
     zip  = FASTQC_PE.out.zip
 
 }
-
-// TODO Test e2e
