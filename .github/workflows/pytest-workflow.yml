@@ -16,7 +16,7 @@ jobs:
           filters: '.github/filters.yml'
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: CI Test
     needs: changes
     if: needs.changes.outputs.modules != '[]'
