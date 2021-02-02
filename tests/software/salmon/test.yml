@@ -1,5 +1,5 @@
 - name: salmon index
-  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_index -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/salmon -entry test_salmon_index -c tests/config/nextflow.config
   tags:
     - salmon
     - salmon_index
@@ -31,7 +31,7 @@
       md5sum: 79c4ddf34be3a98d5a7b9d153629a6f7
 
 - name: salmon quant paired end
-  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_quant_pe -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/salmon -entry test_salmon_quant_pe -c tests/config/nextflow.config
   tags:
     - salmon
     - salmon_quant
@@ -85,7 +85,7 @@
       md5sum: 27a76542337df436436e66017f66dd25
 
 - name: salmon quant single-end
-  command: nextflow run ./tests/software/salmon -profile docker -entry test_salmon_quant_se -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/salmon -entry test_salmon_quant_se -c tests/config/nextflow.config
   tags:
     - salmon
     - salmon_quant

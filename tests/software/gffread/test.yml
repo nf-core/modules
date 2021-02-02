@@ -1,5 +1,5 @@
 - name: Run gffread  test workflow
-  command: nextflow run ./tests/software/gffread/ -profile docker -entry test_gffread -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/gffread/ -entry test_gffread -c tests/config/nextflow.config
   tags:
     - gffread
   files:
