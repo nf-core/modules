@@ -18,7 +18,7 @@ process BEDTOOLS_COMPLEMENT {
     }
 
     input:
-        tuple val(meta), path(beds), path (sizes)
+    tuple val(meta), path(beds), path(sizes)
 
     output:
         tuple val(meta), path("*.complement.bed"), emit: complement
