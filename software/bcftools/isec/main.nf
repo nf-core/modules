@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process BCFTOOLS_STATS {
+process BCFTOOLS_ISEC {
     tag "$meta.id"
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -18,17 +18,20 @@ process BCFTOOLS_STATS {
     }
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path('vcfs/*')
 
     output:
-    tuple val(meta), path("*.txt"), emit: stats
-    path  "*.version.txt"         , emit: version
+    tuple val(meta), path("${prefix}"), emit: results
+    path  "*.version.txt"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bcftools stats $options.args $vcf > ${prefix}.bcftools_stats.txt
+    bcftools isec  \\
+        $options.args \\
+        -p $prefix \\
+        */*.vcf.gz
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
 }

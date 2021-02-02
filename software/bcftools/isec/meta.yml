@@ -41,9 +41,10 @@ input:
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - vcf:
-        type: file
-        description: VCF input file
-        pattern: "*.{vcf}"
+        type: files
+        description: |
+          List containing 2 or more vcf files and their respective index (tbi files)
+          e.g. [ 'file1.vcf', 'file1.vcf.tbi', 'file2.vcf', 'file2.vcf.tbi' ]
 output:
     - meta:
         type: map
