@@ -83,7 +83,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs
+          name: logs-${{ matrix.tags }}-${{ matrix.profile }}-${{ matrix.nxf_version }}
           path: |
             /tmp/pytest_workflow_*/*/.nextflow.log
             /tmp/pytest_workflow_*/*/log.out
