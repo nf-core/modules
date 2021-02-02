@@ -1,8 +1,7 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
 
 process BWAMETH_INDEX {
     tag "$fasta"
@@ -26,7 +25,7 @@ process BWAMETH_INDEX {
     path  "*.version.txt" , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
+    def software = getSoftwareName(task.process)
     """
     bwameth.py index $fasta
 

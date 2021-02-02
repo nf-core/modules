@@ -61,7 +61,7 @@ input:
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
 output:
-    - consensus:
+    - bedgraph:
         type: file
         description: bedGraph file containing per-base methylation metrics
         pattern: "*.{bedGraph}"

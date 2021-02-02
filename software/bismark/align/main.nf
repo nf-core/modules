@@ -23,10 +23,10 @@ process BISMARK_ALIGN {
     tuple val(meta), path(index)
 
     output:
-    tuple val(meta), path("*bam"), emit: bam
-    tuple val(meta), path("*report.txt"), emit: report
+    tuple val(meta), path("*bam")                 , emit: bam
+    tuple val(meta), path("*report.txt")          , emit: report
     tuple val(meta), path("*fq.gz"), optional:true, emit: unmapped
-    path "*.version.txt" , emit: version
+    path "*.version.txt"                          , emit: version
 
     script:
     // Try to assign sensible bismark memory units according to what the task was given
@@ -45,13 +45,12 @@ process BISMARK_ALIGN {
         } catch (all) {
             log.warn "Not able to define bismark align multicore based on available memory"
         }
-
     }
 
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
-    def multicore = (ccore > 1) ? "--multicore ${ccore}" : ""
+    def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
+    def multicore  = (ccore > 1) ? "--multicore ${ccore}" : ""
     """
     bismark \\
         $fastq \\

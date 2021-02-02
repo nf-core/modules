@@ -26,14 +26,14 @@ process BISMARK_GENOME_PREPARATION {
     path  "*.version.txt"         , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    mkdir BismarkIndex
-    cp $fasta BismarkIndex/
+    mkdir bismark
+    cp $fasta bismark/
     bismark_genome_preparation \\
         $options.args \\
-        BismarkIndex
+        bismark
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """

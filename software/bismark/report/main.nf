@@ -22,12 +22,13 @@ process BISMARK_REPORT {
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
 
     output:
-    tuple val(meta), path("*{html,txt}"), emit: report
-    path  "*.version.txt" ,emit: version
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.txt}"), emit: txt
+    path  "*.version.txt"          , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bismark2report \\
         --alignment_report $align_report \\

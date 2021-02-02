@@ -36,11 +36,9 @@ process BISMARK_EXTRACT {
     def mbuffer = task.memory ? task.memory.toGiga() - 2.GB : 4.GB
     def buffer = (mbuffer.compareTo(4.GB) == 1) ? "--buffer_size ${mbuffer.toGiga()}G" : ""
 
-
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def seqtype = meta.single_end ? '-s' : '-p --ignore_r2 2 --ignore_3prime_r2 2 --no_overlap'
-
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def seqtype  = meta.single_end ? '-s' : '-p --ignore_r2 2 --ignore_3prime_r2 2 --no_overlap'
     """
     bismark_methylation_extractor \\
         --bedGraph \\

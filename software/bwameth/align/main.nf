@@ -30,15 +30,16 @@ process BWAMETH_ALIGN {
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
-    def fasta = index.first().toString() - '.bwameth' - '.c2t' - '.amb' - '.ann' - '.bwt' - '.pac' - '.sa'
     """
+    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    
     bwameth.py \\
         $options.args \\
         $read_group \\
         -t $task.cpus \\
-        --reference $fasta \\
+        --reference \$INDEX \\
         $reads \\
-        | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
     echo \$(bwameth.py --version 2>&1) | cut -f2 -d" " > ${software}.version.txt
     """

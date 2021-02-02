@@ -22,14 +22,14 @@ process BISMARK_DEDUPLICATE {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.deduplicated.bam"), emit: bam
+    tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "*.version.txt"         , emit: version
+    path  "*.version.txt"                              , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def seqtype = meta.single_end ? '-s' : '-p'
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def seqtype  = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
         $options.args \\

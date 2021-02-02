@@ -21,12 +21,12 @@ process METHYLDACKEL_EXTRACT {
     tuple val(meta), path(bam), path(bai), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.bedGraph") , emit: consensus
-    path  "*.version.txt" , emit: version
+    tuple val(meta), path("*.bedGraph"), emit: bedgraph
+    path  "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix  = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     MethylDackel extract \\
         $options.args \\
