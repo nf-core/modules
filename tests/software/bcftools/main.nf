@@ -8,7 +8,7 @@ include { BCFTOOLS_STATS } from '../../../software/bcftools/stats/main.nf' addPa
 include { BCFTOOLS_BGZIP } from '../../../software/bcftools/bgzip/main.nf' addParams( options: [:] )
 include { BCFTOOLS_TABIX } from '../../../software/bcftools/tabix/main.nf' addParams( options: [:] )
 include { BCFTOOLS_CONSENSUS } from '../../../software/bcftools/consensus/main.nf' addParams( options: [:] )
-include { BCFTOOLS_ISEC } from '../../../software/bcftools/isec/main.nf' addParams( options: ['args': '--nfiles +2 --output-type z'] )
+include { BCFTOOLS_ISEC } from '../../../software/bcftools/isec/main.nf' addParams( options: ['args': '--nfiles +2 --output-type z --no-version'] )
 include { BCFTOOLS_BGZIP as BCFTOOLS_BGZIP2 } from '../../../software/bcftools/bgzip/main.nf' addParams( options: [:] )
 include { BCFTOOLS_TABIX as BCFTOOLS_TABIX2 } from '../../../software/bcftools/tabix/main.nf' addParams( options: [:] )
 include { BCFTOOLS_BGZIP as BCFTOOLS_BGZIP3 } from '../../../software/bcftools/bgzip/main.nf' addParams( options: [:] )
