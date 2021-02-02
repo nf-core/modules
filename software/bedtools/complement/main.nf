@@ -21,8 +21,8 @@ process BEDTOOLS_COMPLEMENT {
     tuple val(meta), path(beds), path(sizes)
 
     output:
-        tuple val(meta), path("*.complement.bed"), emit: complement
-        path  "*.version.txt", emit: version
+    tuple val(meta), path("*.complement.bed"), emit: complement
+    path  "*.version.txt"                    , emit: version
 
     script:
         def software = getSoftwareName(task.process)
