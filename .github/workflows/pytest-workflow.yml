@@ -75,7 +75,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2
+        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
 
       - name: Upload logs on failure
         if: failure()
