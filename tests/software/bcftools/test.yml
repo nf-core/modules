@@ -46,3 +46,36 @@
       md5sum: 06d52177f819730dd409157914534e8d
     - path: output/bcftools/test.fa
       md5sum: c9e7ac4537756a0b33bcf17117f9a065
+
+- name: Run bcftools isec test workflow
+  command: nextflow run ./tests/software/bcftools/ -profile docker -entry test_bcftools_isec -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools_isec
+  files:
+    - path: output/bcftools/test1.vcf.gz
+      md5sum: eb75ae1f08a1884f8edc59ed423471a2
+    - path: output/bcftools/test1.vcf.gz.tbi
+      md5sum: 06d52177f819730dd409157914534e8d
+    - path: output/bcftools/test2.vcf.gz
+      md5sum: eb75ae1f08a1884f8edc59ed423471a2
+    - path: output/bcftools/test2.vcf.gz.tbi
+      md5sum: 06d52177f819730dd409157914534e8d
+    - path: output/bcftools/test3.vcf.gz
+      md5sum: eb75ae1f08a1884f8edc59ed423471a2
+    - path: output/bcftools/test/0000.vcf.gz
+      md5sum: 20bd741594f456c48e1928f07f0be342
+    - path: output/bcftools/test/0000.vcf.gz.tbi
+      md5sum: d4357a62c60df6abcb5cc806b4681dff
+    - path: output/bcftools/test/0001.vcf.gz
+      md5sum: 20bd741594f456c48e1928f07f0be342
+    - path: output/bcftools/test/0001.vcf.gz.tbi
+      md5sum: d4357a62c60df6abcb5cc806b4681dff
+    - path: output/bcftools/test/0002.vcf.gz
+      md5sum: 20bd741594f456c48e1928f07f0be342
+    - path: output/bcftools/test/0002.vcf.gz.tbi
+      md5sum: d4357a62c60df6abcb5cc806b4681dff
+    - path: md5 output/bcftools/test/README.txt
+      md5sum: 9a3a041e63a18e0ad41abab96e2c5f73
+    - path: md5 output/bcftools/test/sites.txt
+      md5sum: 01bb949ed7825ecf692bf0640e363647
