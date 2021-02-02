@@ -21,10 +21,11 @@ jobs:
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
+      fail-fast: false
       matrix:
         nxf_version: ['20.11.0-edge']
         tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
-        profile: ['docker', 'singularity'] #'conda' ]
+        profile: ['docker', 'singularity', 'conda']
     env:
       NXF_ANSI_LOG: false
     steps:
