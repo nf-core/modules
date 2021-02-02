@@ -29,6 +29,6 @@ process BEDTOOLS_COMPLEMENT {
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
         bedtools complement -i $beds -g $sizes ${options.args} > ${prefix}.complement.bed
-        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
+        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
         """
 }
