@@ -61,7 +61,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        run: pytest --tag ${{ matrix.tags }} --symlink --wt 2
+        run: PROFILE=docker pytest --tag ${{ matrix.tags }} --symlink --wt 2
 
       - name: Upload logs on failure
         if: ${{ failure() }}
