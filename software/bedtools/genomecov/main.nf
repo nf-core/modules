@@ -1,6 +1,7 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
+params.options = [:]
 def options    = initOptions(params.options)
 
 process BEDTOOLS_GENOMECOV {
@@ -10,11 +11,11 @@ process BEDTOOLS_GENOMECOV {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::bedtools =2.29.2" : null)
+    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bedtools:2.29.2--hc088bd4_0"
+        container "https://depot.galaxyproject.org/singularity/bedtools:bedtools:2.30.0--hc088bd4_0"
     } else {
-    container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
+        container "quay.io/biocontainers/bedtools:bedtools:2.30.0--hc088bd4_0"
     }
 
     input:
@@ -29,6 +30,6 @@ process BEDTOOLS_GENOMECOV {
         def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
         """
         bedtools genomecov -ibam $bams -g $sizes ${options.args} > ${prefix}.bed
-        bedtools --version | sed -e "s/Bedtools v//g" > ${software}.version.txt
+        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
         """
 }
