@@ -1,6 +1,7 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
+params.options = [:]
 def options    = initOptions(params.options)
 
 process BEDTOOLS_COMPLEMENT {
