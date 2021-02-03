@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FLAGSTAT } from '../../../software/samtools/flagstat/main.nf' addParams( options: [:] )
+include { SAMTOOLS_FLAGSTAT } from '../../../../software/samtools/flagstat/main.nf' addParams( options: [:] )
 
 workflow test_samtools_flagstat {
 

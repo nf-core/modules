@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SALMON_INDEX } from '../../../software/salmon/index/main.nf' addParams( options: [:] )
-include { SALMON_QUANT } from '../../../software/salmon/quant/main.nf' addParams( options: [args: '--minAssignedFrags 1'] )
+include { SALMON_INDEX } from '../../../../software/salmon/index/main.nf' addParams( options: [:] )
+include { SALMON_QUANT } from '../../../../software/salmon/quant/main.nf' addParams( options: [args: '--minAssignedFrags 1'] )
 
 workflow test_salmon_quant_single_end {
 

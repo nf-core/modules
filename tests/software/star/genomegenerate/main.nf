@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE } from '../../../software/star/genomegenerate/main.nf' addParams( options: [args: '--genomeSAindexNbases 9'] )
+include { STAR_GENOMEGENERATE } from '../../../../software/star/genomegenerate/main.nf' addParams( options: [args: '--genomeSAindexNbases 9'] )
 
 workflow test_star_genomegenerate {
 

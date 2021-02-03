@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_MEM } from '../../../software/bwa/mem/main.nf' addParams( options: [:] )
+include { BWA_MEM } from '../../../../software/bwa/mem/main.nf' addParams( options: [:] )
 
 /*
  * Test with single-end data

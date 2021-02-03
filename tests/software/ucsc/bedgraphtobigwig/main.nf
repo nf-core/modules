@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../software/ucsc/bedgraphtobigwig/main.nf' addParams( options: [:] )
+include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../software/ucsc/bedgraphtobigwig/main.nf' addParams( options: [:] )
 
 workflow test_ucsc_bedgraphtobigwig {
     def input = []

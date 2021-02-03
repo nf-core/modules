@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_SORT } from '../../../software/samtools/sort/main.nf' addParams( options: [:] )
+include { SAMTOOLS_SORT } from '../../../../software/samtools/sort/main.nf' addParams( options: [:] )
 
 workflow test_samtools_sort  {
 

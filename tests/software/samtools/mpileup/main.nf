@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_MPILEUP } from '../../../software/samtools/mpileup/main.nf' addParams( options: [:] )
+include { SAMTOOLS_MPILEUP } from '../../../../software/samtools/mpileup/main.nf' addParams( options: [:] )
 
 workflow test_samtools_mpileup {
 
