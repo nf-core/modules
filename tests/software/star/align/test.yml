@@ -1,5 +1,5 @@
 - name: star align single-end
-  command: nextflow run ./tests/software/star -entry test_star_alignment_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/star/align -entry test_star_alignment_single_end -c tests/config/nextflow.config
   tags:
     - star
     - star_align
@@ -37,7 +37,7 @@
       md5sum: d41d8cd98f00b204e9800998ecf8427e
 
 - name: star align paired-end
-  command: nextflow run ./tests/software/star -entry test_star_alignment_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/star/align -entry test_star_alignment_paired_end -c tests/config/nextflow.config
   tags:
     - star
     - star_align
