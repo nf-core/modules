@@ -65,7 +65,7 @@ jobs:
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-singularity@v5
         with:
-          singularity-version: 3.5.2
+          singularity-version: 3.7.1
 
       - name: Setup miniconda
         if: matrix.profile == 'conda'
