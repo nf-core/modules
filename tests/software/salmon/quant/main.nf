@@ -14,7 +14,7 @@ workflow test_salmon_quant_single_end {
                   file("${launchDir}/tests/data/fastq/rna/sarscov2/EPI_ISL_486436_1.fastq.gz", checkIfExists: true) ]
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
-    SALMON_QUANT( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false)
+    SALMON_QUANT ( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false )
     
 }
 
@@ -28,6 +28,6 @@ workflow test_salmon_quant_paired_end {
                     file("${launchDir}/tests/data/fastq/rna/sarscov2/EPI_ISL_486436_2.fastq.gz", checkIfExists: true) ] ]
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
-    SALMON_QUANT( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false)
+    SALMON_QUANT ( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false )
 
 }
