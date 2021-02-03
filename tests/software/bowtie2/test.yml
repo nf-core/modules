@@ -1,5 +1,5 @@
 - name: Run bowtie2 build
-  command: nextflow run ./tests/software/bowtie2 -profile docker -entry test_bowtie2_build -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bowtie2 -entry test_bowtie2_build -c tests/config/nextflow.config
   tags:
     - bowtie2
     - bowtie2_build
@@ -18,7 +18,7 @@
       md5sum: 5e8fb4af677eb3a57a40e76dc3f6db72
 
 - name: Run bowtie2 index and align single-end
-  command: nextflow run ./tests/software/bowtie2 -profile docker -entry test_bowtie2_alignment_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bowtie2 -entry test_bowtie2_alignment_single_end -c tests/config/nextflow.config
   tags:
     - bowtie2
     - bowtie2_align
@@ -41,7 +41,7 @@
       md5sum: 906102f401d8234b6473790988fb09cf
 
 - name: Run bowtie2 index and align paired-end
-  command: nextflow run ./tests/software/bowtie2 -profile docker -entry test_bowtie2_alignment_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bowtie2 -entry test_bowtie2_alignment_paired_end -c tests/config/nextflow.config
   tags:
     - bowtie2
     - bowtie2_align

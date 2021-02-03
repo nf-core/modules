@@ -1,5 +1,5 @@
 - name: Run multiqc test workflow
-  command: nextflow run ./tests/software/multiqc/ -profile docker -entry test_multiqc -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/multiqc/ -entry test_multiqc -c tests/config/nextflow.config
   tags:
     - multiqc
   files:
