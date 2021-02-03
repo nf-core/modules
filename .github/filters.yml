@@ -1,28 +1,28 @@
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/**
-
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/**
-
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
-  - tests/software/bowtie/**
+  - tests/software/bowtie/align/**
 
 bowtie_build:
   - software/bowtie/build/**
-  - tests/software/bowtie/**
+  - tests/software/bowtie/build/**
+
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build/**
 
 bwa_index:
   - software/bwa/index/**
-  - tests/software/bwa/**
+  - tests/software/bwa/index/**
 
 bwa_mem:
   - software/bwa/mem/**
-  - tests/software/bwa/**
+  - tests/software/bwa/mem/**
 
 cutadapt:
   - software/cutadapt/**
@@ -30,11 +30,11 @@ cutadapt:
 
 dsh_filterbed:
   - software/dsh/filterbed/**
-  - tests/software/dsh/**
+  - tests/software/dsh/filterbed/**
 
 dsh_splitbed:
   - software/dsh/splitbed/**
-  - tests/software/dsh/**
+  - tests/software/dsh/splitbed/**
 
 fastp:
   - software/fastp/**
@@ -49,6 +49,7 @@ gffread:
   - tests/software/gffread/**
 
 multiqc:
+  - software/fastqc/**
   - software/multiqc/**
   - tests/software/multiqc/**
 
@@ -58,19 +59,19 @@ pangolin:
 
 picard_collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
-  - tests/software/picard/**
+  - tests/software/picard/collectmultiplemetrics/**
 
 picard_markduplicates:
   - software/picard/markduplicates/**
-  - tests/software/picard/**
+  - tests/software/picard/markduplicates/**
 
 picard_mergesamfiles:
   - software/picard/mergesamfiles/**
-  - tests/software/picard/**
+  - tests/software/picard/mergesamfiles/**
 
 preseq_lcextrap:
   - software/preseq/lcextrap/**
-  - tests/software/preseq/**
+  - tests/software/preseq/lcextrap/**
 
 quast:
   - software/quast/**
@@ -78,56 +79,55 @@ quast:
 
 salmon_index:
   - software/salmon/index/**
-  - tests/software/salmon/**
+  - tests/software/salmon/index/**
 
 salmon_quant:
   - software/salmon/quant/**
-  - tests/software/salmon/**
+  - tests/software/salmon/quant/**
 
 samtools_flagstat:
   - software/samtools/flagstat/**
-  - tests/software/samtools/**
+  - tests/software/samtools/flagstat/**
 
 samtools_idxstats:
   - software/samtools/idxstats/**
-  - tests/software/samtools/**
+  - tests/software/samtools/idxstats/**
 
 samtools_index:
   - software/samtools/index/**
-  - tests/software/samtools/**
+  - tests/software/samtools/index/**
 
 samtools_mpileup:
   - software/samtools/mpileup/**
-  - tests/software/samtools/**
+  - tests/software/samtools/mpileup/**
 
 samtools_sort:
   - software/samtools/sort/**
-  - tests/software/samtools/**
+  - tests/software/samtools/sort/**
 
 samtools_stats:
   - software/samtools/stats/**
-  - tests/software/samtools/**
+  - tests/software/samtools/stats/**
 
 samtools_view:
   - software/samtools/view/**
-  - tests/software/samtools/**
+  - tests/software/samtools/view/**
 
 seacr_callpeak:
   - software/seacr/callpeak/**
-  - tests/software/seacr/**
+  - tests/software/seacr/callpeak/**
 
 star_align:
   - software/star/align/**
-  - tests/software/star/**
+  - tests/software/star/align/**
 
 star_genomegenerate:
   - software/star/genomegenerate/**
-  - tests/software/star/**
-
+  - tests/software/star/genomegenerate/**
 
 stringtie:
-      - software/stringtie/**
-      - tests/software/stringtie/**
+  - software/stringtie/**
+  - tests/software/stringtie/**
 
 trimgalore:
   - software/trimgalore/**
@@ -135,4 +135,4 @@ trimgalore:
 
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
-  - tests/software/ucsc/**
+  - tests/software/ucsc/bedgraphtobigwig/**
