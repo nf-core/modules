@@ -1,8 +1,8 @@
-- name: bowtie build
+- name: bowtie build test
   command: nextflow run ./tests/software/bowtie/build -entry test_bowtie_build -c tests/config/nextflow.config
   tags:
     - bowtie
-    - bowtie_buil
+    - bowtie_build
   files:
     - path: output/bowtie/bowtie/NC_010473.1.ebwt
       md5sum: 90f0b7aa5bbaeaaa999839ac13ad203c
