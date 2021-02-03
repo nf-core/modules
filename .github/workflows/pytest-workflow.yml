@@ -25,7 +25,7 @@ jobs:
       matrix:
         nxf_version: ['20.11.0-edge']
         tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
-        profile: ['docker', 'singularity', 'conda']
+        profile: ['docker'] ## 'conda', 'singularity'
     env:
       NXF_ANSI_LOG: false
     steps:
@@ -72,8 +72,11 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
-          channels: defaults, bioconda, conda-forge
+          channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
+      - name: Conda clean
+        if: matrix.profile == 'conda'
+        run: conda clean -a
 
       # Test the module
       - name: Run pytest-workflow
