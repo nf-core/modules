@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_MERGESAMFILES } from '../../../../../software/picard/mergesamfiles/main.nf' addParams( options: [:] )
+include { PICARD_MERGESAMFILES } from '../../../../software/picard/mergesamfiles/main.nf' addParams( options: [:] )
 
 workflow test_picard_mergesamfiles {
 
