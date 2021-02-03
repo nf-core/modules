@@ -1,4 +1,4 @@
-- name: Run multiqc test workflow
+- name: multiqc
   command: nextflow run ./tests/software/multiqc/ -entry test_multiqc -c tests/config/nextflow.config
   tags:
     - multiqc
