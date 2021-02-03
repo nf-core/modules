@@ -65,7 +65,7 @@ jobs:
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-singularity@v5
         with:
-          singularity-version: 3.5.3
+          singularity-version: 3.5.2
 
       - name: Setup miniconda
         if: matrix.profile == 'conda'
@@ -80,8 +80,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        #run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
-        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --wt 2 --kwdof
+        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
 
       - name: Upload logs on failure
         if: failure()
