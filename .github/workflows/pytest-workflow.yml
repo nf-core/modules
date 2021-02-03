@@ -74,6 +74,9 @@ jobs:
           auto-update-conda: true
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
+      - name: Conda clean
+        if: matrix.profile == 'conda'
+        run: conda clean -a
 
       # Test the module
       - name: Run pytest-workflow
