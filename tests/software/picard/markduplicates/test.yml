@@ -1,5 +1,5 @@
 - name: picard markduplicates on sorted bam
-  command: nextflow run ./tests/software/picard -entry test_picard_markduplicates_sorted_bam -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c tests/config/nextflow.config
   tags:
     - picard
     - picard_markduplicates
@@ -9,7 +9,7 @@
       md5sum: 0ed0bfc94069380334ccd595f6d8207c
 
 - name: picard markduplicates on unsorted bam
-  command: nextflow run ./tests/software/picard -entry test_picard_markduplicates_unsorted_bam -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c tests/config/nextflow.config
   tags:
     - picard
     - picard_markduplicates

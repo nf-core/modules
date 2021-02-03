@@ -1,5 +1,5 @@
 - name: bwa mem single-end
-  command: nextflow run ./tests/software/bwa -entry test_bwa_mem_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_single_end -c tests/config/nextflow.config
   tags:
     - bwa
     - bwa_mem
@@ -9,7 +9,7 @@
       md5sum: 3ee21210bac387e0335008146e4728bc
 
 - name: bwa mem paired-end
-  command: nextflow run ./tests/software/bwa -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
   tags:
     - bwa
     - bwa_mem
