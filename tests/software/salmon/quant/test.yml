@@ -53,7 +53,7 @@
       md5sum: b08095ac70f89efc3146cdf488d0eb73
 
 - name: salmon quant paired end
-  command: nextflow run ./tests/software/salmon -entry test_salmon_quant_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/salmon/quant -entry test_salmon_quant_paired_end -c tests/config/nextflow.config
   tags:
     - salmon
     - salmon_quant
