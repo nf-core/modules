@@ -1,0 +1,8 @@
+- name: samtools stats
+  command: nextflow run ./tests/software/samtools/stats -entry test_samtools_stats -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_stats
+  files:
+    - path: output/samtools/test.paired_end.sorted.bam.stats
+      md5sum: 06c183864d6e47ab89b0650cae831a93
