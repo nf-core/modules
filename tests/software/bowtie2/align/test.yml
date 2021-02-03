@@ -18,8 +18,6 @@
       md5sum: 5e8fb4af677eb3a57a40e76dc3f6db72
     - path: output/bowtie2/test.bowtie2.log
       md5sum: 90041c264231be535042adb93a279356
-    - path: output/bowtie2/test.bam
-      md5sum: 906102f401d8234b6473790988fb09cf
 
 - name: bowtie2 align paired-end
   command: nextflow run ./tests/software/bowtie2 -entry test_bowtie2_align_paired_end -c tests/config/nextflow.config
@@ -41,5 +39,3 @@
       md5sum: 5e8fb4af677eb3a57a40e76dc3f6db72
     - path: output/bowtie2/test.bowtie2.log
       md5sum: 9f9eb40b5f57e0f2d5c874f2c1b5cfd5
-    - path: output/bowtie2/test.bam
-      md5sum: 732a33cd9816b38ea9b919c25eeb78f8
