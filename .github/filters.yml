@@ -1,10 +1,19 @@
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/**
+
 bowtie_align:
   - software/bowtie/align/**
-  - software/bowtie/index/**
+  - software/bowtie/build/**
   - tests/software/bowtie/**
 
-bowtie_index:
-  - software/bowtie/index/**
+bowtie_build:
+  - software/bowtie/build/**
   - tests/software/bowtie/**
 
 bwa_index:
@@ -14,6 +23,22 @@ bwa_index:
 bwa_mem:
   - software/bwa/mem/**
   - tests/software/bwa/**
+
+cutadapt:
+  - software/cutadapt/**
+  - tests/software/cutadapt/**
+
+dsh_filterbed:
+  - software/dsh/filterbed/**
+  - tests/software/dsh/**
+
+dsh_splitbed:
+  - software/dsh/splitbed/**
+  - tests/software/dsh/**
+
+fastp:
+  - software/fastp/**
+  - tests/software/fastp/**
 
 fastqc:
   - software/fastqc/**
@@ -26,6 +51,10 @@ gffread:
 multiqc:
   - software/multiqc/**
   - tests/software/multiqc/**
+
+pangolin:
+  - software/pangolin/**
+  - tests/software/pangolin/**
 
 picard_collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
@@ -43,6 +72,18 @@ preseq_lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/**
 
+quast:
+  - software/quast/**
+  - tests/software/quast/**
+
+salmon_index:
+  - software/salmon/index/**
+  - tests/software/salmon/**
+
+salmon_quant:
+  - software/salmon/quant/**
+  - tests/software/salmon/**
+
 samtools_flagstat:
   - software/samtools/flagstat/**
   - tests/software/samtools/**
@@ -55,6 +96,10 @@ samtools_index:
   - software/samtools/index/**
   - tests/software/samtools/**
 
+samtools_mpileup:
+  - software/samtools/mpileup/**
+  - tests/software/samtools/**
+
 samtools_sort:
   - software/samtools/sort/**
   - tests/software/samtools/**
@@ -62,6 +107,23 @@ samtools_sort:
 samtools_stats:
   - software/samtools/stats/**
   - tests/software/samtools/**
+
+samtools_view:
+  - software/samtools/view/**
+  - tests/software/samtools/**
+
+seacr_callpeak:
+  - software/seacr/callpeak/**
+  - tests/software/seacr/**
+
+star_align:
+  - software/star/align/**
+  - tests/software/star/**
+
+star_genomegenerate:
+  - software/star/genomegenerate/**
+  - tests/software/star/**
+
 
 stringtie:
       - software/stringtie/**

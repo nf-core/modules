@@ -1,5 +1,5 @@
 - name: Run stringtie forward strand test workflow
-  command: nextflow run ./tests/software/stringtie/ -profile docker -entry test_stringtie_forward -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/stringtie/ -entry test_stringtie_forward -c tests/config/nextflow.config
   tags:
     - stringtie
   files:
@@ -21,7 +21,7 @@
       md5sum: 0106f70121a8b520d98b8739aed92915
 
 - name: Run stringtie reverse strand test workflow
-  command: nextflow run ./tests/software/stringtie/ -profile docker -entry test_stringtie_reverse -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/stringtie/ -entry test_stringtie_reverse -c tests/config/nextflow.config
   tags:
     - stringtie
   files:

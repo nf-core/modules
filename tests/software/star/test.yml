@@ -1,5 +1,5 @@
 - name: Run star genomegenerate
-  command: nextflow run ./tests/software/star -profile docker -entry test_star_genomegenerate -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/star -entry test_star_genomegenerate -c tests/config/nextflow.config
   tags:
     - star
     - star_genomegenerate
@@ -32,7 +32,7 @@
       md5sum: 8fbe69abbbef4f89da3854873984dbac
 
 - name: Run star single-end alignment
-  command: nextflow run ./tests/software/star -profile docker -entry test_star_alignment_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/star -entry test_star_alignment_single_end -c tests/config/nextflow.config
   tags:
     - star
     - star_align
@@ -70,7 +70,7 @@
       md5sum: d41d8cd98f00b204e9800998ecf8427e
 
 - name: Run star paired-end alignment
-  command: nextflow run ./tests/software/star -profile docker -entry test_star_alignment_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/star -entry test_star_alignment_paired_end -c tests/config/nextflow.config
   tags:
     - star
     - star_align

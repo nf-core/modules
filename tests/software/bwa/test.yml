@@ -1,5 +1,5 @@
 - name: Run bwa index
-  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_index -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bwa -entry test_bwa_index -c tests/config/nextflow.config
   tags:
     - bwa
     - bwa_index
@@ -14,7 +14,7 @@
       md5sum: a47dcc92e750e2f16fbd979b8ff9538e
 
 - name: Run bwa mem single-end
-  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_mem_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bwa -entry test_bwa_mem_single_end -c tests/config/nextflow.config
   tags:
     - bwa
     - bwa_mem
@@ -23,7 +23,7 @@
       md5sum: 3ee21210bac387e0335008146e4728bc
 
 - name: Run bwa mem paired-end
-  command: nextflow run ./tests/software/bwa -profile docker -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/bwa -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
   tags:
     - bwa
     - bwa_mem
