@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE } from '../../../software/star/genomegenerate/main.nf' addParams( options: [args: '--genomeSAindexNbases 9'] )
-include { STAR_ALIGN          } from '../../../software/star/align/main.nf'          addParams( options: [args: '--readFilesCommand zcat'] )
+include { STAR_GENOMEGENERATE } from '../../../../software/star/genomegenerate/main.nf' addParams( options: [args: '--genomeSAindexNbases 9'] )
+include { STAR_ALIGN          } from '../../../../software/star/align/main.nf'          addParams( options: [args: '--readFilesCommand zcat'] )
 
 workflow test_star_alignment_single_end {
     

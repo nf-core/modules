@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEACR_CALLPEAK } from '../../../software/seacr/callpeak/main.nf' addParams( options: [ args:'norm stringent' ] )
+include { SEACR_CALLPEAK } from '../../../../software/seacr/callpeak/main.nf' addParams( options: [ args:'norm stringent' ] )
 
 workflow test_seacr_callpeak {
 

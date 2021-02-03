@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_INDEX } from '../../../software/samtools/index/main.nf' addParams( options: [:] )
+include { SAMTOOLS_INDEX } from '../../../../software/samtools/index/main.nf' addParams( options: [:] )
 
 workflow test_samtools_index {
 
