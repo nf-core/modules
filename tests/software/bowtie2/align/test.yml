@@ -2,6 +2,7 @@
   command: nextflow run ./tests/software/bowtie2/align -entry test_bowtie2_align_single_end -c tests/config/nextflow.config
   tags:
     - bowtie2
+    - bowtie2_align
     - bowtie2_align_single_end
   files:
     - path: output/bowtie2/bowtie2/NC_010473.1.bt2
@@ -25,6 +26,7 @@
   command: nextflow run ./tests/software/bowtie2/align -entry test_bowtie2_align_paired_end -c tests/config/nextflow.config
   tags:
     - bowtie2
+    - bowtie2_align
     - bowtie2_align_paired_end
   files:
     - path: output/bowtie2/bowtie2/NC_010473.1.bt2
