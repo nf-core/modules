@@ -1,4 +1,4 @@
-- name: Run stringtie forward strand test workflow
+- name: stringtie forward-strand
   command: nextflow run ./tests/software/stringtie/ -entry test_stringtie_forward -c tests/config/nextflow.config
   tags:
     - stringtie
@@ -20,7 +20,7 @@
     - path: output/test_stringtie_forward/test.ballgown/t_data.ctab
       md5sum: 0106f70121a8b520d98b8739aed92915
 
-- name: Run stringtie reverse strand test workflow
+- name: stringtie reverse-strand
   command: nextflow run ./tests/software/stringtie/ -entry test_stringtie_reverse -c tests/config/nextflow.config
   tags:
     - stringtie

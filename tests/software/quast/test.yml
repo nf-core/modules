@@ -1,4 +1,4 @@
-- name: quast_ref
+- name: quast with reference
   command: nextflow run ./tests/software/quast -entry test_quast_ref -c ./tests/config/nextflow.config
   tags:
     - quast
@@ -87,7 +87,7 @@
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: ./output/quast/quast/aligned_stats/NAx_plot.pdf
 
-- name: quast_noref
+- name: quast without reference
   command: nextflow run ./tests/software/quast -entry test_quast_noref -c ./tests/config/nextflow.config
   tags:
     - quast

@@ -1,4 +1,4 @@
-- name: Run trimgalore single-end test workflow
+- name: trimgalore single-end
   command: nextflow run ./tests/software/trimgalore/ -entry test_trimgalore_single_end -c tests/config/nextflow.config
   tags:
     - trimgalore
@@ -8,7 +8,7 @@
     - path: output/test_single_end/test.fastq.gz_trimming_report.txt
     - path: output/test_single_end/test_trimmed.fq.gz
 
-- name: Run trimgalore paired-end test workflow
+- name: trimgalore paired-end
   command: nextflow run ./tests/software/trimgalore/ -entry test_trimgalore_paired_end -c tests/config/nextflow.config
   tags:
     - trimgalore

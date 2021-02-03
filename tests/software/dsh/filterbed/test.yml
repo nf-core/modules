@@ -1,0 +1,8 @@
+- name: dsh filterbed
+  command: nextflow run ./tests/software/dsh -entry test_dsh_filterbed -c tests/config/nextflow.config
+  tags:
+    - dsh
+    - dsh_filterbed
+  files:
+    - path: output/dsh/A.filtered.bed.gz
+      md5sum: 91cee4392d6034793f99f6c53891d866
