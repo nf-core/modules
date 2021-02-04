@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: changes
-    if: needs.changes.outputs.modules != '[]'
+    if: needs.changes.outputs.modules == '[]'
     strategy:
       fail-fast: false
       matrix:
