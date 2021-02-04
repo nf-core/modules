@@ -124,16 +124,16 @@ We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/T
 ```console
 .
 ├── software
-│   ├── SOFTWARE
-│   │   └── TOOL
-│   │       ├── functions.nf          ## Utility functions imported in main module script
-│   │       ├── main.nf               ## Main module script
-│   │       ├── meta.yml              ## Documentation for module, input, output, params, author
-│   │       └── test
-│   │           ├── input             ## Soft-link input test data from "tests/"
-│   │           ├── main.nf           ## Minimal workflow to test module
-│   │           ├── nextflow.config   ## Minimal config to test module
-│   │           └── output            ## Upload output files from test for unit testing
+│   └── SOFTWARE
+│       └── TOOL
+│           ├── functions.nf          ## Utility functions imported in main module script
+│           ├── main.nf               ## Main module script
+│           └── meta.yml              ## Documentation for module, input, output, params, author
+├── test
+│   └── SOFTWARE
+│       └── TOOL
+│           ├── main.nf           ## Minimal workflow to test module
+│           └── test.yml          ## Pytest-workflow test file
 ```
 
 ### Guidelines
@@ -228,15 +228,28 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - Test files MUST be kept as tiny as possible.
 
-- Every module MUST be tested by adding a test workflow with a toy dataset in the [`test/`](software/fastqc/test) directory of the module.
+- Every module MUST be tested by adding a test workflow with a toy dataset in the [`tests/`](tests/software/fastqc/main.nf) test directory of the module.
 
-- Generic files from [`tests/data/`](tests/data/) MUST be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
+- Generic files from [`tests/data/`](tests/data/) MUST be reused by importing them as `file(${launchDir}/tests/data/fastq/rna/test_single_end.fastq.gz)`
 
-- Any outputs produced by the test workflow MUST be placed in a folder called [`test/output/`](software/fastqc/test/output/) so that they can be used for unit testing.
+- Any outputs produced by the test workflow MUST be included in the [pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable) for that tool. md5sum is preferred, however it's acceptable to not have it on files that the hash changes due to various headers and timestamps (html). Please do your best to avoid just checking for the file being present.
 
 - If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data/`](tests/data/).
 
-- A GitHub Actions workflow file MUST be added to [`.github/workflows/`](.github/workflows/) e.g. [`.github/workflows/fastqc.yml`](.github/workflows/fastqc.yml).
+- A filter for the module must be created in [`.github/filters.yml`](.github/filters.yml). Please include any pathes specific that tool or upstream of that tool (For example bowtie build is upstream of bowtie align).
+
+#### Running Tests Locally
+
+0. Have either `docker`, `singularity` or `conda` installed
+1. See [pytest-workflow installation](https://pytest-workflow.readthedocs.io/en/stable/#installation) for directions to install
+2. Run
+
+``` bash
+PROFILE=docker pytest --tag new_module --symlink --wt 2 --kwdof
+PROFILE=conda pytest --tag new_module --symlink --wt 2 --kwdof
+TMPDIR=~ PROFILE=singularity pytest --tag new_module --symlink --wt 2 --kwdof
+alias nf-test="PROFILE=docker pytest --tag new_module --symlink --wt 2 --kwdof"
+```
 
 ### Documentation
 
