@@ -25,7 +25,7 @@ jobs:
       matrix:
         nxf_version: ['20.11.0-edge']
         tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
-        profile: ['docker'] ## 'conda', 'singularity'
+        profile: ['docker', 'singularity'] ## 'conda'
     env:
       NXF_ANSI_LOG: false
     steps:
@@ -65,7 +65,7 @@ jobs:
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-singularity@v5
         with:
-          singularity-version: 3.5.3
+          singularity-version: 3.7.1
 
       - name: Setup miniconda
         if: matrix.profile == 'conda'
@@ -80,7 +80,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        run: PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
 
       - name: Upload logs on failure
         if: failure()
