@@ -1,0 +1,64 @@
+name: bandage_image
+description: Render an assembly graph in GFA 1.0 format to PNG and SVG image formats
+keywords:
+    - gfa
+    - graph
+    - assembly
+    - visualisation
+tools:
+    - bandage:
+        description: |
+            Bandage - a Bioinformatics Application for Navigating De novo Assembly Graphs Easily
+        homepage: https://github.com/rrwick/Bandage
+        documentation: https://github.com/rrwick/Bandage
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Assembly graph in GFA 1.0 format
+        pattern: "*.gfa"
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - png:
+        type: file
+        description: Bandage image in PNG format
+        pattern: "*.png"
+    - svg:
+        type: file
+        description: Bandage image in SVG format
+        pattern: "*.svg"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@heuermh"
