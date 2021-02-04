@@ -6,7 +6,7 @@
     - minimap2_align_single_end
   files:
     - path: output/minimap2/test.paf
-      md5: f92567a67adb0563bd6ff9ed97877be9
+      md5sum: f92567a67adb0563bd6ff9ed97877be9
 
 - name: minimap2 align paired-end
   command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
@@ -16,7 +16,7 @@
     - minimap2_align_paired_end
   files:
     - path: output/minimap2/test.paf
-      md5: b57e4009b113dcd48755cb713f613942
+      md5sum: b57e4009b113dcd48755cb713f613942
 
 - name: minimap2 align pairwise
   command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_pairwise -c tests/config/nextflow.config
