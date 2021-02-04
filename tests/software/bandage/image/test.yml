@@ -1,0 +1,10 @@
+- name: bandage image
+  command: nextflow run ./tests/software/bandage/image -entry test_bandage_image -c tests/config/nextflow.config
+  tags:
+    - bandage
+    - bandage_image
+  files:
+    - path: output/bandage/B-3106.png
+      should_exist: true
+    - path: output/bandage/B-3106.svg
+      should_exist: true
