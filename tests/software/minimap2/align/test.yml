@@ -17,12 +17,3 @@
   files:
     - path: output/minimap2/test.paf
       md5sum: b57e4009b113dcd48755cb713f613942
-
-- name: minimap2 align pairwise
-  command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_pairwise -c tests/config/nextflow.config
-  tags:
-    - minimap2
-    - minimap2_align
-    - minimap2_align_pairwise
-  files:
-    - path: output/minimap2/test.paf
