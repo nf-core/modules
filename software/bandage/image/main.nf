@@ -20,19 +20,19 @@ process BANDAGE_IMAGE {
 
     input:
     tuple val(meta), path(gfa)
-    
+
     output:
     tuple val(meta), path('*.png'), emit: png
     tuple val(meta), path('*.svg'), emit: svg
     path  '*.version.txt'         , emit: version
-    
+
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     Bandage image $gfa ${prefix}.png $options.args
     Bandage image $gfa ${prefix}.svg $options.args
-    
+
     echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
     """
 }
