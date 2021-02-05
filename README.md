@@ -228,7 +228,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - Test files MUST be kept as tiny as possible.
 
-- Every module MUST be tested by adding a test workflow with a toy dataset in the [`tests/`](tests/software/fastqc/main.nf) test directory of the module.
+- Every module MUST be tested by adding a test workflow with a toy dataset in the [`tests/`](tests/software/fastqc/main.nf) directory of the module.
 
 - Generic files from [`tests/data/`](tests/data/) MUST be reused by importing them as `file(${launchDir}/tests/data/fastq/rna/test_single_end.fastq.gz)`
 
@@ -236,7 +236,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 - If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data/`](tests/data/).
 
-- A filter for the module must be created in [`.github/filters.yml`](.github/filters.yml). Please include any pathes specific that tool or upstream of that tool (For example bowtie build is upstream of bowtie align).
+- A filter for the module must be created in [`.github/filters.yml`](.github/filters.yml). Please include any paths specific for that tool or upstream of that tool (For example bowtie build is upstream of bowtie align).
 
 #### Running Tests Locally
 
