@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+def options = initOptions(params.options)
 
 process MINIMAP2_ALIGN {
     tag "$meta.id"
@@ -24,33 +24,20 @@ process MINIMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
-    path "*.version.txt"          , emit: version
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (meta.single_end) {
-        """
-        minimap2 \\
-            $options.args \\
-            -t $task.cpus \\
-            $reference \\
-            $reads \\
-            > ${prefix}.paf
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    """
+    minimap2 \\
+        $options.args \\
+        -t $task.cpus \\
+        $reference \\
+        $input_reads \\
+        > ${prefix}.paf
 
-        echo \$(minimap2 --version 2>&1) > ${software}.version.txt
-        """
-    } else {
-        """
-        minimap2 \\
-            $options.args \\
-            -t $task.cpus \\
-            $reference \\
-            ${reads[0]} \\
-            ${reads[1]} \\
-            > ${prefix}.paf
-
-        echo \$(minimap2 --version 2>&1) > ${software}.version.txt
-        """
-    }
+    echo \$(minimap2 --version 2>&1) > ${software}.version.txt
+    """
 }
