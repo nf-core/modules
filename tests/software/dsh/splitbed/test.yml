@@ -1,0 +1,10 @@
+- name: dsh splitbed
+  command: nextflow run ./tests/software/dsh/splitbed -entry test_dsh_splitbed -c tests/config/nextflow.config
+  tags:
+    - dsh
+    - dsh_splitbed
+  files:
+    - path: output/dsh/A.0.bed.gz
+      md5sum: 619e51c435d0e7138ca41b660ed07e3a
+    - path: output/dsh/A.1.bed.gz
+      md5sum: 223bba025a0bb859de9a1bf385550a7e
