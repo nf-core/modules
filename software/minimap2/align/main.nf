@@ -29,7 +29,7 @@ process MINIMAP2_ALIGN {
     script:
     def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """
     minimap2 \\
         $options.args \\
