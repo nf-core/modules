@@ -1,0 +1,14 @@
+- name: bwa index
+  command: nextflow run ./tests/software/bwa/index -entry test_bwa_index -c tests/config/nextflow.config
+  tags:
+    - bwa
+    - bwa_index
+  files:
+    - path: output/bwa/NC_010473.fa.amb
+      md5sum: 942a990ae872f1c0b8d72dda2db405d5
+    - path: output/bwa/NC_010473.fa.bwt
+      md5sum: 7301b52e2ecb893d429a49fa692447ae
+    - path: output/bwa/NC_010473.fa.pac
+      md5sum: 4d5e6fc45bbc968f7f859e9ca2cc89ad
+    - path: output/bwa/NC_010473.fa.sa
+      md5sum: a47dcc92e750e2f16fbd979b8ff9538e
