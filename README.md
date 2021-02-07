@@ -13,7 +13,7 @@
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
-> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PR PER MODULE UPDATE :)
+> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE SUBMISSION/UPDATE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
@@ -121,7 +121,7 @@ for examples.
 
 ### Module template
 
-We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOOL/) that serves as a template with which to create your own module and  [`tests/TOOL/SUBTOOL/`](tests/TOOL/SUBTOOL/) for adding the required CI tests. Where applicable, we have added extensive `TODO` statements for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOOL/) that serves as a template with which to create your own module and  [`tests/software/TOOL/SUBTOOL/`](tests/software/TOOL/SUBTOOL/) as an example of how to add the required CI tests. Where applicable, we have added extensive `TODO` statements for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
 
 ```console
 .
