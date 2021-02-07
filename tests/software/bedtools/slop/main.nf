@@ -7,9 +7,8 @@ include { BEDTOOLS_SLOP } from '../../../../software/bedtools/slop/main.nf' addP
 workflow test_bedtools_slop {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ]
+              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
-    BEDTOOLS_SLOP( input )
+    BEDTOOLS_SLOP ( input, file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) )
 }
 
