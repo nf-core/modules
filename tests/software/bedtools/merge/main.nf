@@ -4,7 +4,6 @@ nextflow.enable.dsl = 2
 
 include { BEDTOOLS_MERGE } from '../../../../software/bedtools/merge/main.nf' addParams( options: [:] )
 
-
 workflow test_bedtools_merge {
     def input = []
     input = [ [ id:'test'],
@@ -12,5 +11,4 @@ workflow test_bedtools_merge {
 
     BEDTOOLS_MERGE( input )
 }
-
 
