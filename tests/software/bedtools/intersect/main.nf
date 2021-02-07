@@ -4,7 +4,6 @@ nextflow.enable.dsl = 2
 
 include { BEDTOOLS_INTERSECT } from '../../../../software/bedtools/intersect/main.nf' addParams( options: [:] )
 
-
 workflow test_bedtools_intersect {
     def input = []
     input = [ [ id:'test'],
@@ -13,4 +12,3 @@ workflow test_bedtools_intersect {
 
     BEDTOOLS_INTERSECT( input )
 }
-
