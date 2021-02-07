@@ -4,7 +4,6 @@ nextflow.enable.dsl = 2
 
 include { BEDTOOLS_COMPLEMENT } from '../../../../software/bedtools/complement/main.nf' addParams( options: [:] )
 
-
 workflow test_bedtools_complement {
     def input = []
     input = [ [ id:'test'],
@@ -13,4 +12,3 @@ workflow test_bedtools_complement {
 
     BEDTOOLS_COMPLEMENT( input )
 }
-
