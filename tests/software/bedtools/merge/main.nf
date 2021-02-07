@@ -9,6 +9,6 @@ workflow test_bedtools_merge {
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
-    BEDTOOLS_MERGE( input )
+    BEDTOOLS_MERGE ( input )
 }
 
