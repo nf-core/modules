@@ -24,22 +24,20 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
-
 input:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - beds:
+    - bed:
         type: file
-        description: List of bed files
-        pattern: "*.{bed}"
+        description: Input BED file
+        pattern: "*.bed"
     - sizes:
         type: file
         description: File which defines the chromosome lengths for a given genome
-        pattern: "*.{sizes}"
-
+        pattern: "*.sizes"
 output:
     - meta:
         type: map
@@ -49,7 +47,7 @@ output:
     - bed:
         type: file
         description: Bed file with all genomic intervals that are not covered by at least one record from the input file.
-        pattern: "*.{complement.bed}"
+        pattern: "*.bed"
     - version:
         type: file
         description: File containing software version
@@ -57,3 +55,4 @@ output:
 authors:
     -"@Emiller88"
     -"@sruthipsuresh"
+    -"@drpatelh"
