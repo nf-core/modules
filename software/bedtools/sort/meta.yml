@@ -24,18 +24,21 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
-
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
 input:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - beds:
+    - bed:
         type: file
-        description: List of bed files
+        description: Input BED file
         pattern: "*.{bed}"
-
 output:
     - meta:
         type: map
@@ -44,14 +47,13 @@ output:
             e.g. [ id:'test', single_end:false ]
     - bed:
         type: file
-        description: Sorted bed file
-        pattern: "*.{sort.bed}"
-
+        description: Sorted BED file
+        pattern: "*.{bed}"
     - version:
         type: file
         description: File containing software version
         pattern: "*.{version.txt}"
-
 authors:
-    -"@Emiller88"
-    -"@sruthipsuresh"
+    - "@Emiller88"
+    - "@sruthipsuresh"
+    - "@drpatelh"

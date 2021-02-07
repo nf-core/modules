@@ -9,6 +9,5 @@ workflow test_bedtools_sort {
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
-    BEDTOOLS_SORT( input )
-
+    BEDTOOLS_SORT ( input )
 }
