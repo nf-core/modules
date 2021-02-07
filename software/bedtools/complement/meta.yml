@@ -24,6 +24,11 @@ params:
         description: |
             Run the module with Conda using the software specified
             via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
 input:
     - meta:
         type: map
@@ -33,11 +38,11 @@ input:
     - bed:
         type: file
         description: Input BED file
-        pattern: "*.bed"
+        pattern: "*.{bed}"
     - sizes:
         type: file
         description: File which defines the chromosome lengths for a given genome
-        pattern: "*.sizes"
+        pattern: "*.{sizes}"
 output:
     - meta:
         type: map
@@ -47,12 +52,12 @@ output:
     - bed:
         type: file
         description: Bed file with all genomic intervals that are not covered by at least one record from the input file.
-        pattern: "*.bed"
+        pattern: "*.{bed}"
     - version:
         type: file
         description: File containing software version
         pattern: "*.{version.txt}"
 authors:
-    -"@Emiller88"
-    -"@sruthipsuresh"
-    -"@drpatelh"
+    - "@Emiller88"
+    - "@sruthipsuresh"
+    - "@drpatelh"
