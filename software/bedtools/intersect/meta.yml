@@ -1,0 +1,59 @@
+name: bedtools_intersect
+description: allows one to screen for overlaps between two sets of genomic features.
+keywords:
+    - bed
+    - intersect
+tools:
+    - bedtools:
+        description: |
+            A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+        documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bed1:
+        type: file
+        description: Bed file, each feature in 1 is compared to 2 in search of overlaps
+        pattern: "*.{bed}"
+    - bed2:
+        type: file
+        description: Second bed file, used to compare to 1.
+        pattern: "*.{bed}"
+
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Overlapped bed file
+        pattern: "*.{intersect.bed}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    -"@Emiller88"
+    -"@sruthipsuresh"

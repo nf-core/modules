@@ -1,0 +1,8 @@
+- name: bedtools complement
+  command: nextflow run ./tests/software/bedtools/complement -entry test_bedtools_complement -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_complement
+  files:
+    - path: output/bedtools/test.complement.bed
+      md5sum: 55a43973abb1a08ac57290ff44f6c502
