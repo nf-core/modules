@@ -22,8 +22,8 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 // TODO nf-core: Process name MUST be all uppercase,
-//               "SOFTWARE" and (ideally) "TOOL" MUST be all one word separated by an "_".
-process SOFTWARE_TOOL {
+//               "TOOL" and (ideally) "SUBTOOL" MUST be all one word separated by an "_".
+process TOOL_SUBTOOL {
     // TODO nf-core: If a meta map of sample information is NOT provided in "input:" section
     //               change tag value to another appropriate input value e.g. tag "$fasta"
     tag "$meta.id"
@@ -40,10 +40,7 @@ process SOFTWARE_TOOL {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10") and build (i.e. "h9402c20_2") as in the example below.
     conda (params.enable_conda ? "bioconda::samtools=1.10=h9402c20_2" : null)
 
-    // TODO nf-core: Fetch "docker pull" address for latest BioContainer image of software: e.g. https://biocontainers.pro/#/tools/samtools
-    //               Click on the Pacakages and Containers tab, sort by Version and get the portion of the link after the docker pull command where Type is Docker.
-    //               You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
-    //               If required, multi-tool containers may also be available and are usually named to start with "mulled".
+    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/samtools:1.10--h9402c20_2"
     } else {
@@ -57,7 +54,7 @@ process SOFTWARE_TOOL {
     //               https://github.com/nf-core/modules/blob/master/software/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(reads)
+    tuple val(meta), path(bam)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -65,6 +62,7 @@ process SOFTWARE_TOOL {
     tuple val(meta), path("*.bam"), emit: bam
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
+
 
     script:
     def software = getSoftwareName(task.process)
@@ -78,11 +76,13 @@ process SOFTWARE_TOOL {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    software tool \\
+    samtools \\
+        sort \\
         $options.args \\
-        --threads $task.cpus \\
-        $reads \\
-        > ${prefix}.bam
+        -@ $task.cpus \\
+        -o ${prefix}.bam \\
+        -T $prefix \\
+        $bam
 
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """

@@ -13,6 +13,8 @@
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
+> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PR PER MODULE UPDATE :)
+
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
 ## Table of contents
@@ -119,21 +121,21 @@ for examples.
 
 ### Module template
 
-We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/TOOL/) that serves as a template with which to create your own module submission. Where applicable, we have added extensive `TODO` statements to the files in this directory for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOOL/) that serves as a template with which to create your own module and  [`tests/TOOL/SUBTOOL/`](tests/TOOL/SUBTOOL/) for adding the required CI tests. Where applicable, we have added extensive `TODO` statements for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
 
 ```console
 .
 ├── software
-│   └── SOFTWARE
-│       └── TOOL
-│           ├── functions.nf          ## Utility functions imported in main module script
-│           ├── main.nf               ## Main module script
-│           └── meta.yml              ## Documentation for module, input, output, params, author
-├── test
-│   └── SOFTWARE
-│       └── TOOL
-│           ├── main.nf           ## Minimal workflow to test module
-│           └── test.yml          ## Pytest-workflow test file
+│   └── TOOL
+│       └── SUBTOOL
+│           ├── functions.nf    ## Utility functions imported in main module script
+│           ├── main.nf         ## Main module script
+│           └── meta.yml        ## Documentation for module, input, output, params, author
+├── tests
+│   └── TOOL
+│       └── SUBTOOL
+│           ├── main.nf         ## Minimal workflow to test module
+│           └── test.yml        ## Pytest-workflow test file
 ```
 
 ### Guidelines
