@@ -11,7 +11,7 @@ process BEDTOOLS_INTERSECT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
+    conda (params.enable_conda ? "bioconda::bedtools=2.30.0=hc088bd4_0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
     } else {
@@ -22,8 +22,8 @@ process BEDTOOLS_INTERSECT {
     tuple val(meta), path(bed1), path(bed2)
 
     output:
-    tuple val(meta), path('*.intersect.bed'), emit: bed
-    path  '*.version.txt'                   , emit: version
+    tuple val(meta), path('*.bed'), emit: bed
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -31,10 +31,10 @@ process BEDTOOLS_INTERSECT {
     """
     bedtools \\
         intersect \\
-        -a ${bed1} \\
-        -b ${bed2} \\
+        -a $bed1 \\
+        -b $bed2 \\
         $options.args \\
-        > ${prefix}.intersect.bed
+        > ${prefix}.bed
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
