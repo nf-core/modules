@@ -18,7 +18,7 @@ process BCFTOOLS_ISEC {
     }
 
     input:
-    tuple val(meta), path('vcfs/*')
+    tuple val(meta), path(vcfs), path(tbis)
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -31,7 +31,7 @@ process BCFTOOLS_ISEC {
     bcftools isec  \\
         $options.args \\
         -p $prefix \\
-        */*.vcf.gz
+        *.vcf.gz
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
 }
