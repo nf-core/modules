@@ -202,15 +202,15 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 [BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags)). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
+- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
 
     ```nextflow
-        conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              ## Conda package
-        if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-            container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  ## Singularity image
-        } else {
-            container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        ## Docker image
-        }
+    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              ## Conda package
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  ## Singularity image
+    } else {
+        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        ## Docker image
+    }
     ```
 
 - If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Using `bioconda::bwa=0.7.17=hed695b0_7` as an example, software MUST be pinned to the channel (i.e. `bioconda`), version (i.e. `0.7.17`) and build (i.e. `hed695b0_7`). This allows us to perform file output integrity CI tests on the same input test data with Docker, Singularity and Conda.
@@ -223,7 +223,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
     > NB: Build information for all tools within a multi-tool container can be obtained in the `/usr/local/conda-meta/history` file within the container.
 
-- It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
+- It is also possible for a new multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
 - If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
@@ -232,9 +232,9 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#publishdir) definition is currently quite limited in terms of parameter/option evaluation. To overcome this, the publishing logic we have implemented for use with DSL2 modules attempts to minimise changing the `publishDir` directive (default: `params.outdir`) in favour of constructing and appending the appropriate output directory paths via the `saveAs:` statement e.g.
 
 ```nextflow
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+publishDir "${params.outdir}",
+    mode: params.publish_dir_mode,
+    saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
 The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
