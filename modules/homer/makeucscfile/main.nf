@@ -24,7 +24,7 @@ process HOMER_MAKEUCSCFILE {
     tuple val(meta), path(tagDir)
 
     output:
-    tuple val(meta), path("*ucsc.bedGraph.gz"), emit: bedGraph
+    tuple val(meta), path("tag_dir/*ucsc.bedGraph.gz"), emit: bedGraph
     path  "*.version.txt"              , emit: version
 
     script:
