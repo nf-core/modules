@@ -1,6 +1,11 @@
 - name: homer maketagdirectory
   command: nextflow run ./tests/software/homer/maketagdirectory -entry test_homer_maketagdirectory -c tests/config/nextflow.config
-  exit_code: 1 # FIXME passing the wrong args
   tags:
     - homer
     - homer_maketagdirectory
+  files:
+    - path: output/homer/tag_dir/chr1.tags.tsv
+    - path: output/homer/tag_dir/tagAutocorrelation.txt
+    - path: output/homer/tag_dir/tagCountDistribution.txt
+    - path: output/homer/tag_dir/tagInfo.txt
+    - path: output/homer/tag_dir/tagLengthDistribution.txt
