@@ -205,11 +205,11 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 - Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
 
     ```nextflow
-    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              ## Conda package
+    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              // Conda package
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  ## Singularity image
+        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  // Singularity image
     } else {
-        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        ## Docker image
+        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        // Docker image
     }
     ```
 
