@@ -1,4 +1,4 @@
-- name: Run bcftools bgzip test workflow
+- name: bcftools stats
   command: nextflow run ./tests/software/bcftools/stats -entry test_bcftools_stats -c tests/config/nextflow.config
   tags:
     - bcftools
