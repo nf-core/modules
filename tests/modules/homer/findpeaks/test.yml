@@ -1,0 +1,6 @@
+- name: homer findpeaks
+  command: nextflow run ./tests/software/homer/findpeaks -entry test_homer_findpeaks -c tests/config/nextflow.config
+  exit_code: 1 # FIXME passing the wrong args
+  tags:
+    - homer
+    - homer_findpeaks
