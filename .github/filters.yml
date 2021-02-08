@@ -2,47 +2,47 @@ bandage_image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
 
-bcftools_bgzip:
-  - software/bowtie/bgzip/**
-  - tests/software/bcftools/bgzip**
+bedtools_complement:
+  - software/bedtools/complement/**
+  - tests/software/bedtools/complement/**
 
-bcftools_consensus:
-  - software/bowtie/consesus/**
-  - tests/software/bcftools/consesus**
+bedtools_genomecov:
+  - software/bedtools/genomecov/**
+  - tests/software/bedtools/genomecov/**
 
-bcftools_filter:
-  - software/bowtie/filter/**
-  - tests/software/bcftools/filter**
+bedtools_intersect:
+  - software/bedtools/intersect/**
+  - tests/software/bedtools/intersect/**
 
-bcftools_isec:
-  - software/bowtie/isec/**
-  - tests/software/bcftools/isec**
+bedtools_merge:
+  - software/bedtools/merge/**
+  - tests/software/bedtools/merge/**
 
-bcftools_stats:
-  - software/bowtie/stats/**
-  - tests/software/bcftools/stats**
+bedtools_slop:
+  - software/bedtools/slop/**
+  - tests/software/bedtools/slop/**
 
-bcftools_tabix:
-  - software/bowtie/tabix/**
-  - tests/software/bcftools/tabix**
+bedtools_sort:
+  - software/bedtools/sort/**
+  - tests/software/bedtools/sort/**
+
+bowtie:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie:
-  - software/bowtie/build/**
-  - tests/software/bowtie/build/**
+bowtie2:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build/**
 
 bowtie2_align:
   - software/bowtie2/align/**
   - software/bowtie2/build/**
   - tests/software/bowtie2/align/**
-
-bowtie2:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build/**
 
 bwa_index:
   - software/bwa/index/**
@@ -161,6 +161,10 @@ stringtie:
   - software/stringtie/**
   - tests/software/stringtie/**
 
+tool_subtool:
+  - software/TOOL/SUBTOOL/**
+  - tests/software/TOOL/SUBTOOL/**
+
 trimgalore:
   - software/trimgalore/**
   - tests/software/trimgalore/**
@@ -168,27 +172,3 @@ trimgalore:
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
-
-bedtools_complement:
-  - software/bedtools/complement/**
-  - tests/software/bedtools/complement/**
-
-bedtools_genomecov:
-  - software/bedtools/genomecov/**
-  - tests/software/bedtools/genomecov/**
-
-bedtools_intersect:
-  - software/bedtools/intersect/**
-  - tests/software/bedtools/intersect/**
-
-bedtools_merge:
-  - software/bedtools/merge/**
-  - tests/software/bedtools/merge/**
-
-bedtools_slop:
-  - software/bedtools/slop/**
-  - tests/software/bedtools/slop/**
-
-bedtools_sort:
-  - software/bedtools/sort/**
-  - tests/software/bedtools/sort/**
