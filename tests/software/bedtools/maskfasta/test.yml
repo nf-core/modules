@@ -1,0 +1,8 @@
+- name: bedtools merge
+  command: nextflow run ./tests/software/bedtools/maskfasta -entry test_bedtools_maskfasta -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_maskfasta
+  files:
+    - path: output/bedtools/test.fa
+      md5sum: 6ff45e409858b259090e1c04309adc3f
