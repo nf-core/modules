@@ -24,6 +24,7 @@ process HOMER_MAKETAGDIRECTORY {
 
     input:
     tuple val(meta), path(bed)
+    path fasta
 
     output:
     tuple val(meta), path("tag_dir"), emit: tagdir
@@ -33,15 +34,11 @@ process HOMER_MAKETAGDIRECTORY {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    perl /usr/local/share/homer-4.11-2/configureHomer.pl \\
-        -install $genome \\
-        -keepScript
-
     makeTagDirectory \\
         tag_dir \\
         $options.args \\
         $bed \\
-        -genome $genome
+        -genome $fasta
 
     echo $VERSION > ${software}.version.txt
     """
