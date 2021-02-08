@@ -296,6 +296,8 @@ In order to test that each module added to `nf-core/modules` is actually working
 
 - A module MUST be documented in the [`meta.yml`](software/TOOL/SUBTOOL/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
 
+We are aware that there is very little documentation, documenting the (`Documentation`)[#documentation] section. Writing more code and tests is so much cooooler! Please bear with us, we will get here eventually...
+
 ### Uploading to `nf-core/modules`
 
 [Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
