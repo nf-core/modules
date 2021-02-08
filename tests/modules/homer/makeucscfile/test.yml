@@ -1,0 +1,6 @@
+- name: homer makeucscfile
+  command: nextflow run ./tests/software/homer/makeucscfile -entry test_homer_makeucscfile -c tests/config/nextflow.config
+  exit_code: 1 # FIXME passing the wrong args
+  tags:
+    - homer
+    - homer_makeucscfile
