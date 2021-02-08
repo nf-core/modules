@@ -10,7 +10,7 @@ process QUAST {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    conda (params.enable_conda ? 'bioconda::quast=5.0.2' : null)
+    conda (params.enable_conda ? 'bioconda::quast=5.0.2=py37pl526hb5aa323_2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container 'https://depot.galaxyproject.org/singularity/quast:5.0.2--py37pl526hb5aa323_2'
     } else {

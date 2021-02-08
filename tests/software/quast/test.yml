@@ -1,5 +1,5 @@
-- name: quast_ref
-  command: nextflow run ./tests/software/quast -profile docker -entry test_quast_ref -c ./tests/config/nextflow.config
+- name: quast with reference
+  command: nextflow run ./tests/software/quast -entry test_quast_ref -c ./tests/config/nextflow.config
   tags:
     - quast
     - quast_reference
@@ -87,8 +87,8 @@
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: ./output/quast/quast/aligned_stats/NAx_plot.pdf
 
-- name: quast_noref
-  command: nextflow run ./tests/software/quast -profile docker -entry test_quast_noref -c ./tests/config/nextflow.config
+- name: quast without reference
+  command: nextflow run ./tests/software/quast -entry test_quast_noref -c ./tests/config/nextflow.config
   tags:
     - quast
     - quast_no_reference

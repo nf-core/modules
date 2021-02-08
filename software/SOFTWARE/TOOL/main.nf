@@ -37,9 +37,8 @@ process SOFTWARE_TOOL {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     // TODO nf-core: List required Conda packages.
-    //               Software MUST be pinned to channel (i.e. "bioconda") and version (i.e. "1.10") as in the example below.
-    //               Pinning the build too e.g. "bioconda::samtools=1.10=h9402c20_2" is not currently a requirement.
-    conda (params.enable_conda ? "bioconda::samtools=1.10" : null)
+    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10") and build (i.e. "h9402c20_2") as in the example below.
+    conda (params.enable_conda ? "bioconda::samtools=1.10=h9402c20_2" : null)
 
     // TODO nf-core: Fetch "docker pull" address for latest BioContainer image of software: e.g. https://biocontainers.pro/#/tools/samtools
     //               Click on the Pacakages and Containers tab, sort by Version and get the portion of the link after the docker pull command where Type is Docker.
