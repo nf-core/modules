@@ -1,0 +1,22 @@
+- name: bcftools isec
+  command: nextflow run ./tests/software/bcftools/isec -entry test_bcftools_isec -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools_isec
+  files:
+    - path: output/bcftools/test/0000.vcf.gz
+      md5sum: 4e84e3b6903fa44e8bd1acdeff9b265d
+    - path: output/bcftools/test/0000.vcf.gz.tbi
+      md5sum: 8484b151ef902e25e54f7713d46ed90e
+    - path: output/bcftools/test/0001.vcf.gz
+      md5sum: 4e84e3b6903fa44e8bd1acdeff9b265d
+    - path: output/bcftools/test/0001.vcf.gz.tbi
+      md5sum: 8484b151ef902e25e54f7713d46ed90e
+    - path: output/bcftools/test/0002.vcf.gz
+      md5sum: 4e84e3b6903fa44e8bd1acdeff9b265d
+    - path: output/bcftools/test/0002.vcf.gz.tbi
+      md5sum: 8484b151ef902e25e54f7713d46ed90e
+    - path: output/bcftools/test/README.txt
+      md5sum: 63ef64134d2685bc5d50332ef20389d2
+    - path: output/bcftools/test/sites.txt
+      md5sum: 01bb949ed7825ecf692bf0640e363647

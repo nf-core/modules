@@ -1,0 +1,8 @@
+- name: bcftools consensus
+  command: nextflow run ./tests/software/bcftools/consensus -entry test_bcftools_consensus -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools_consensus
+  files:
+    - path: output/bcftools/test.fa
+      md5sum: c9e7ac4537756a0b33bcf17117f9a065
