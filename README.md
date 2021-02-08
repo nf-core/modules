@@ -13,7 +13,7 @@
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 
-> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE SUBMISSION/UPDATE :)
+> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
@@ -202,11 +202,28 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 [BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
+- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags)). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
 
-- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too is not currently a requirement e.g. `bioconda::bwa=0.7.17=h9402c20_2`.
+    ```nextflow
+        conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              ## Conda package
+        if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+            container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  ## Singularity image
+        } else {
+            container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        ## Docker image
+        }
+    ```
 
-- If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
+- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Using `bioconda::bwa=0.7.17=hed695b0_7` as an example, software MUST be pinned to the channel (i.e. `bioconda`), version (i.e. `0.7.17`) and build (i.e. `hed695b0_7`). This allows us to perform file output integrity CI tests on the same input test data with Docker, Singularity and Conda.
+
+- If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). You can install and use the [`galaxy-tool-util`](https://anaconda.org/bioconda/galaxy-tool-util) package to search for both single- and multi-tool containers available in Conda, Docker and Singularity format. e.g. to search for Docker (hosted on Quay.io) and Singularity multi-tool containers with both `bowtie` and `samtools` installed you can use the following command:
+
+    ```console
+    mulled-search --destination quay singularity --channel bioconda --search bowtie samtools | grep "mulled"
+    ```
+
+    > NB: Build information for all tools within a multi-tool container can be obtained in the `/usr/local/conda-meta/history` file within the container.
+
+- It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
 - If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
@@ -277,7 +294,7 @@ In order to test that each module added to `nf-core/modules` is actually working
 
 ### Documentation
 
-- A module MUST be documented in the [`meta.yml`](software/fastqc/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
+- A module MUST be documented in the [`meta.yml`](software/TOOL/SUBTOOL/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
 
 ### Uploading to `nf-core/modules`
 
