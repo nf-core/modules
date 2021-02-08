@@ -226,11 +226,17 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 ### CI tests
 
+In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
+
+#### Test data
+
 - All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
 
 - In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
 
 - Test files MUST be kept as tiny as possible.
+
+#### Pytest workflow
 
 - Every module MUST have a test workflow utilising test data added to the appropriate directory e.g. [`tests/software/fastqc/main.nf`](tests/software/fastqc/main.nf) 
 
@@ -244,28 +250,28 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 
-3. Install [pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#installation)
+3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
 
 4. Start running your own tests!
 
     - Typical command with Docker:
 
         ```console
-        cd /<PATH>/<TO>/<GIT>/<CLONE>/<NF-CORE>/<MODULES>/
+        cd /path/to/git/clone/of/nf-core/modules/
         PROFILE=docker pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
         ```
 
     - Typical command with Singularity:
 
         ```console
-        cd /<PATH>/<TO>/<GIT>/<CLONE>/<NF-CORE>/<MODULES>/
+        cd /path/to/git/clone/of/nf-core/modules/
         TMPDIR=~ PROFILE=singularity pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
         ```
 
     - Typical command with Conda:
 
         ```console
-        cd /<PATH>/<TO>/<GIT>/<CLONE>/<NF-CORE>/<MODULES>/
+        cd /path/to/git/clone/of/nf-core/modules/
         PROFILE=conda pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
         ```
 
@@ -275,7 +281,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
 
@@ -304,8 +310,6 @@ If you use the module files in this repository for your analysis please you can 
 > Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
 >
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
-> ReadCube: [Full Access Link](https://rdcu.be/b1GjZ)
-
 
 <!---
 
