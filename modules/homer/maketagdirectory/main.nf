@@ -15,11 +15,11 @@ process HOMER_MAKETAGDIRECTORY {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::homer=4.11" : null)
-    if (workflow.containerEngine == 'singularity' && !params.pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/homer:4.11--pl526h9a982cc_2"
+    conda (params.enable_conda ? "bioconda::homer=4.11=pl526hc9558a2_3" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3"
     } else {
-        container "quay.io/biocontainers/homer:4.11--pl526h9a982cc_2"
+        container "quay.io/biocontainers/homer:4.11--pl526hc9558a2_3"
     }
 
     input:
