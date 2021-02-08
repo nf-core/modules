@@ -1,8 +1,8 @@
-- name: fastp_se
-  command: nextflow run ./tests/software/fastp -profile docker -entry test_fastp_se -c ./tests/config/nextflow.config
+- name: fastp single-end
+  command: nextflow run ./tests/software/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config
   tags:
     - fastp
-    - fastp_se
+    - fastp_single_end
   files:
     - path: ./output/fastp/test.fastp.json
       md5sum: b81d53bfa5c1553bed89f6475edcf437
@@ -11,11 +11,11 @@
     - path: ./output/fastp/test.fastp.log
     - path: ./output/fastp/test.fastp.html
 
-- name: fastp_pe
-  command: nextflow run ./tests/software/fastp -profile docker -entry test_fastp_pe -c ./tests/config/nextflow.config
+- name: fastp paired-end
+  command: nextflow run ./tests/software/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config
   tags:
     - fastp
-    - fastp_pe
+    - fastp_paired_end
   files:
     - path: ./output/fastp/test.fastp.html
     - path: ./output/fastp/test.fastp.json

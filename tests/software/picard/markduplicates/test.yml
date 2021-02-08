@@ -1,0 +1,17 @@
+- name: picard markduplicates on sorted bam
+  command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard_markduplicates
+  files:
+    - path: output/picard/test.MarkDuplicates.metrics.txt
+    - path: output/picard/test.bam
+      md5sum: 0ed0bfc94069380334ccd595f6d8207c
+
+- name: picard markduplicates on unsorted bam
+  command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard_markduplicates
+    - should fail
+  exit_code: 1

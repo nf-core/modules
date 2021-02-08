@@ -1,0 +1,8 @@
+- name: bedtools genomecov
+  command: nextflow run ./tests/software/bedtools/genomecov -entry test_bedtools_genomecov -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_genomecov
+  files:
+    - path: output/bedtools/test.bed
+      md5sum: 8c8238ca3cdac7a0e650ade95ee941f4
