@@ -34,11 +34,8 @@ process HOMER_FINDPEAKS {
 
     findPeaks \\
         $tagDir \\
-        -style $options.style \\
         $options.args \\
-        -cpu $task.cpus \\
-        -uniqmap $options.uniqmap
-        > ${prefix}.peaks.txt
+        -o ${prefix}.peaks.txt
 
     echo $VERSION > ${software}.version.txt
     """
