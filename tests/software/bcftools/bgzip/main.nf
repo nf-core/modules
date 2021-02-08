@@ -8,7 +8,7 @@ workflow test_bcftools_bgzip {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]
+              [ file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]]
 
     BCFTOOLS_BGZIP ( input )
 }

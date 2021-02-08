@@ -9,8 +9,7 @@ workflow test_bcftools_tabix {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-            file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]
+              [ file("${launchDir}/tests/data/vcf/test.vcf.gz", checkIfExists: true) ]
 
-    BCFTOOLS_BGZIP ( input )
-    BCFTOOLS_TABIX ( BCFTOOLS_BGZIP.out.vcf )
+    BCFTOOLS_TABIX ( input )
 }

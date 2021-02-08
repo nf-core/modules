@@ -9,7 +9,7 @@ workflow test_bcftools_filter {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-            file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]
+              [ file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]]
 
     BCFTOOLS_FILTER ( input )
 }
