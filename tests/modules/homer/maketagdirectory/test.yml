@@ -1,0 +1,6 @@
+- name: homer maketagdirectory
+  command: nextflow run ./tests/software/homer/maketagdirectory -entry test_homer_maketagdirectory -c tests/config/nextflow.config
+  exit_code: 1 # FIXME passing the wrong args
+  tags:
+    - homer
+    - homer_maketagdirectory
