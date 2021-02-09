@@ -15,14 +15,14 @@ process IVAR_TRIM {
 
 
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/1.3.1--h089eab3_0"
+        container "https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0"
     } else {
-        container "quay.io/biocontainers/1.3.1--h089eab3_0"
+        container "quay.io/biocontainers/ivar:1.3.1--h089eab3_0"
     }
 
     input:
     tuple val(meta), path(bam)
-    path bed 
+    path bed
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
