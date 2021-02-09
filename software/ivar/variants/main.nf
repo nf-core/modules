@@ -26,6 +26,7 @@ process IVAR_VARIANTS {
 
     output:
     tuple val(meta), path("*.tsv"), emit: variants
+    tuple val(meta), path("*_mpileup.txt"), emit: mpileup
     path "*.version.txt"          , emit: version
 
     script:
@@ -40,7 +41,9 @@ process IVAR_VARIANTS {
         $options.args2 \\
         --reference $reference_fasta \\
         $bam | \\
-        ivar variants \\
+        tee ${prefix}_mpileup.txt | \\
+        ivar variants
+        tuple val(meta), path("*_mpileup.txt"), emit: mpileup \\
         -p $prefix \\
         $options.args \\
         -r $reference_fasta \\
