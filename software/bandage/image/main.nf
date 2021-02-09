@@ -11,7 +11,7 @@ process BANDAGE_IMAGE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? 'bioconda::bandage=0.8.1' : null)
+    conda (params.enable_conda ? 'bioconda::bandage=0.8.1=hc9558a2_2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2"
     } else {
