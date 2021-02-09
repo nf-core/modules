@@ -25,7 +25,7 @@ process STRINGTIE {
     output:
     tuple val(meta), path("*.coverage.gtf")   , emit: coverage_gtf
     tuple val(meta), path("*.transcripts.gtf"), emit: transcript_gtf
-    tuple val(meta), path("*.txt")            , emit: abundance
+    tuple val(meta), path("*.abundance.txt")  , emit: abundance
     tuple val(meta), path("*.ballgown")       , emit: ballgown
     path  "*.version.txt"                     , emit: version
 
@@ -45,7 +45,7 @@ process STRINGTIE {
         $strandedness \\
         -G $gtf \\
         -o ${prefix}.transcripts.gtf \\
-        -A ${prefix}.gene_abundance.txt \\
+        -A ${prefix}.gene.abundance.txt \\
         -C ${prefix}.coverage.gtf \\
         -b ${prefix}.ballgown \\
         $options.args
