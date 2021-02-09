@@ -1,0 +1,13 @@
+- name: Run ivar consensus test workflow
+  command: nextflow run ./tests/software/ivar/consensus -profile docker -entry test_ivar_consensus -c tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar_consensus
+  files:
+    - path: output/ivar/test.fa
+      md5sum: d791e777b669bd40f6074b5566722a47
+    - path: output/ivar/test.qual.txt
+      md5sum: 723126475ec74adfd876e2b47ffe35a8
+    - path: output/ivar/test_mpileup.txt
+      md5sum: d1c0ef3978bec1c09c549f884ed5b76a
+
