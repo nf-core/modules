@@ -25,7 +25,7 @@ process HOMER_MAKEUCSCFILE {
 
     output:
     tuple val(meta), path("tag_dir/*ucsc.bedGraph.gz"), emit: bedGraph
-    path  "*.version.txt"              , emit: version
+    path  "*.version.txt"                             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -34,7 +34,7 @@ process HOMER_MAKEUCSCFILE {
     makeUCSCfile \\
         $tagDir \\
         -o auto
-        $options.args 
+        $options.args
 
     echo $VERSION > ${software}.version.txt
     """
