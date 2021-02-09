@@ -7,8 +7,7 @@ include { BEDTOOLS_COMPLEMENT } from '../../../../software/bedtools/complement/m
 workflow test_bedtools_complement {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) ]
+              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
 
-    BEDTOOLS_COMPLEMENT( input )
+    BEDTOOLS_COMPLEMENT ( input, file("${launchDir}/tests/data/bed/genome.sizes", checkIfExists: true) )
 }
