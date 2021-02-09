@@ -4,7 +4,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-
 process IVAR_TRIM {
     tag "$meta.id"
     label 'process_low'
@@ -16,9 +15,9 @@ process IVAR_TRIM {
 
 
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ivar:1.3--h089eab3_0"
+        container "https://depot.galaxyproject.org/singularity/ivar:1.3--h089eab3_1"
     } else {
-        container "quay.io/biocontainers/ivar:1.3--h089eab3_0"
+        container "quay.io/biocontainers/ivar:1.3--h089eab3_1"
     }
 
     input:
@@ -33,7 +32,7 @@ process IVAR_TRIM {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    ivar \\
+    ivar trim \\
         $options.args \\
         -i $bam \\
         -b $bed \\
