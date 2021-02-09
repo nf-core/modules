@@ -11,11 +11,11 @@ process BWA_INDEX {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
+    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"
     } else {
-        container "biocontainers/bwa:v0.7.17_cv1"
+        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"
     }
 
     input:

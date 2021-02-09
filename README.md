@@ -12,6 +12,7 @@
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
+> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
@@ -21,7 +22,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 - [Adding a new module file](#adding-a-new-module-file)
     - [Module template](#module-template)
     - [Guidelines](#guidelines)
-    - [Testing](#testing)
+    - [CI tests](#ci-tests)
     - [Documentation](#documentation)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 - [Terminology](#terminology)
@@ -119,21 +120,21 @@ for examples.
 
 ### Module template
 
-We have added a directory called [`software/SOFTWARE/TOOL/`](software/SOFTWARE/TOOL/) that serves as a template with which to create your own module submission. Where applicable, we have added extensive `TODO` statements to the files in this directory for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOOL/) that serves as a template with which to create your own module and  [`tests/software/TOOL/SUBTOOL/`](tests/software/TOOL/SUBTOOL/) as an example of how to add the required CI tests. Where applicable, we have added extensive `TODO` statements for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
 
 ```console
 .
 ├── software
-│   ├── SOFTWARE
-│   │   └── TOOL
-│   │       ├── functions.nf          ## Utility functions imported in main module script
-│   │       ├── main.nf               ## Main module script
-│   │       ├── meta.yml              ## Documentation for module, input, output, params, author
-│   │       └── test
-│   │           ├── input             ## Soft-link input test data from "tests/"
-│   │           ├── main.nf           ## Minimal workflow to test module
-│   │           ├── nextflow.config   ## Minimal config to test module
-│   │           └── output            ## Upload output files from test for unit testing
+│   └── TOOL
+│       └── SUBTOOL
+│           ├── functions.nf    ## Utility functions imported in main module script
+│           ├── main.nf         ## Main module script
+│           └── meta.yml        ## Documentation for module, input, output, params, author
+├── tests
+│   └── TOOL
+│       └── SUBTOOL
+│           ├── main.nf         ## Minimal workflow to test module
+│           └── test.yml        ## Pytest-workflow test file
 ```
 
 ### Guidelines
@@ -200,11 +201,28 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 [BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive e.g. go to the [BWA BioContainers webpage](https://biocontainers.pro/#/tools/bwa), click on the `Pacakages and Containers` tab, sort by `Version` and get the portion of the link after the `docker pull` command where `Type` is Docker. You may need to double-check that you are using the latest version of the software because you may find that containers for older versions have been rebuilt more recently.
+- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
 
-- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`) e.g. `bioconda::bwa=0.7.17`. Pinning the build too is not currently a requirement e.g. `bioconda::bwa=0.7.17=h9402c20_2`.
+    ```nextflow
+    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              // Conda package
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  // Singularity image
+    } else {
+        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"                        // Docker image
+    }
+    ```
 
-- If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). It is also possible for a multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
+- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Using `bioconda::bwa=0.7.17=hed695b0_7` as an example, software MUST be pinned to the channel (i.e. `bioconda`), version (i.e. `0.7.17`) and build (i.e. `hed695b0_7`). This allows us to perform file output integrity CI tests on the same input test data with Docker, Singularity and Conda.
+
+- If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). You can install and use the [`galaxy-tool-util`](https://anaconda.org/bioconda/galaxy-tool-util) package to search for both single- and multi-tool containers available in Conda, Docker and Singularity format. e.g. to search for Docker (hosted on Quay.io) and Singularity multi-tool containers with both `bowtie` and `samtools` installed you can use the following command:
+
+    ```console
+    mulled-search --destination quay singularity --channel bioconda --search bowtie samtools | grep "mulled"
+    ```
+
+    > NB: Build information for all tools within a multi-tool container can be obtained in the `/usr/local/conda-meta/history` file within the container.
+
+- It is also possible for a new multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
 
 - If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
@@ -213,38 +231,75 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 The [Nextflow `publishDir`](https://www.nextflow.io/docs/latest/process.html#publishdir) definition is currently quite limited in terms of parameter/option evaluation. To overcome this, the publishing logic we have implemented for use with DSL2 modules attempts to minimise changing the `publishDir` directive (default: `params.outdir`) in favour of constructing and appending the appropriate output directory paths via the `saveAs:` statement e.g.
 
 ```nextflow
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+publishDir "${params.outdir}",
+    mode: params.publish_dir_mode,
+    saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
 The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
 
-### Testing
+### CI tests
+
+In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
+
+#### Test data
 
 - All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
 
+- In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
+
 - Test files MUST be kept as tiny as possible.
 
-- Every module MUST be tested by adding a test workflow with a toy dataset in the [`test/`](software/fastqc/test) directory of the module.
+#### Pytest workflow
 
-- Generic files from [`tests/data/`](tests/data/) MUST be reused by symlinking them into the [`test/input/`](software/fastqc/test/input/) directory of the module.
+- Every module MUST have a test workflow utilising test data added to the appropriate directory e.g. [`tests/software/fastqc/main.nf`](tests/software/fastqc/main.nf)
 
-- Any outputs produced by the test workflow MUST be placed in a folder called [`test/output/`](software/fastqc/test/output/) so that they can be used for unit testing.
+- Any outputs produced by the test workflow MUST be included in the [pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable) for that tool e.g. [`tests/software/fastqc/test.yml`](tests/software/fastqc/test.yml).  `md5sum` checks are the preferable choice of test to determine file changes, however, this may not be possible for all outputs generated by some tools e.g. if they include time stamps or command-related headers. Please do your best to avoid just checking for the file being present e.g. it may still be possible to check that the file contains the appropriate text snippets.
 
-- If the appropriate test data doesn't exist for your module then it MUST be added to [`tests/data/`](tests/data/).
+- A filter for the module must be created in [`.github/filters.yml`](.github/filters.yml). If the test workflow you have created invokes more than one tool please include any paths specific for those tool's too e.g. `bowtie build` is upstream of `bowtie align` and they have both been chained together to test the latter.
 
-- A GitHub Actions workflow file MUST be added to [`.github/workflows/`](.github/workflows/) e.g. [`.github/workflows/fastqc.yml`](.github/workflows/fastqc.yml).
+#### Running Tests Locally
+
+1. Install [`nextflow`](https://nf-co.re/usage/installation)
+
+2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
+
+3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
+
+4. Start running your own tests!
+
+    - Typical command with Docker:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        PROFILE=docker pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        ```
+
+    - Typical command with Singularity:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        TMPDIR=~ PROFILE=singularity pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        ```
+
+    - Typical command with Conda:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        PROFILE=conda pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        ```
 
 ### Documentation
 
-- A module MUST be documented in the [`meta.yml`](software/fastqc/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
+- A module MUST be documented in the [`meta.yml`](software/TOOL/SUBTOOL/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
+
+We are aware that there is very little documentation, documenting the (`Documentation`)[#documentation] section. Writing more code and tests is so much cooooler! Please bear with us, we will get here eventually...
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
 
@@ -273,8 +328,6 @@ If you use the module files in this repository for your analysis please you can 
 > Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
 >
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
-> ReadCube: [Full Access Link](https://rdcu.be/b1GjZ)
-
 
 <!---
 

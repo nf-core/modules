@@ -1,0 +1,8 @@
+- name: bedtools sort
+  command: nextflow run ./tests/software/bedtools/sort -entry test_bedtools_sort -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_sort
+  files:
+    - path: output/bedtools/test.bed
+      md5sum: 4279202e33fcce3d19f420f1b27fddee

@@ -1,0 +1,8 @@
+- name: bedtools merge
+  command: nextflow run ./tests/software/bedtools/merge -entry test_bedtools_merge -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_merge
+  files:
+    - path: output/bedtools/test.bed
+      md5sum: 13e5a3b254fac35fe0da0c92cbaf1761

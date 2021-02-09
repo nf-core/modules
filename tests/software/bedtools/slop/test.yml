@@ -1,0 +1,8 @@
+- name: bedtools slop
+  command: nextflow run ./tests/software/bedtools/slop -entry test_bedtools_slop -c tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools_slop
+  files:
+    - path: output/bedtools/test.bed
+      md5sum: 5f6ecc3e3cc6cee9537a1d088b02abec

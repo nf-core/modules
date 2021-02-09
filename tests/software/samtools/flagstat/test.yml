@@ -1,0 +1,8 @@
+- name: samtools flagstat
+  command: nextflow run ./tests/software/samtools/flagstat -entry test_samtools_flagstat -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_flagstat
+  files:
+    - path: output/samtools/test.paired_end.sorted.bam.flagstat
+      md5sum: 80590621c74f5ee43ada20d010a3837f
