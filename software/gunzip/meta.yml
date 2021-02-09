@@ -4,10 +4,10 @@ keywords:
     - gunzip
     - compression
 tools:
-    - bedtools:
+    - gunzip:
         description: |
-            A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
-        documentation: https://bedtools.readthedocs.io/en/latest/content/tools/merge.html
+            gzip is a file format and a software application used for file compression and decompression.
+        documentation: https://www.gnu.org/software/gzip/manual/gzip.html
 params:
     - outdir:
         type: string
@@ -37,7 +37,7 @@ input:
             e.g. [ id:'test', single_end:false ]
     - archive:
         type: file
-        description: File to be gzipped
+        description: File to be compressed/uncompressed
         pattern: "*.*"
 output:
     - meta:
@@ -47,8 +47,8 @@ output:
             e.g. [ id:'test', single_end:false ]
     - gunzip:
         type: file
-        description: Compressed gzipped file
-        pattern: "*.{gz}"
+        description: Compressed/uncompressed file
+        pattern: "*.*"
     - version:
         type: file
         description: File containing software version
