@@ -1,0 +1,7 @@
+- name: gunzip
+  command: nextflow run ./tests/software/gunzip -entry test_gunzip -c tests/config/nextflow.config
+  tags:
+    - gunzip
+  files:
+    - path: output/gunzip/test.vcf
+      md5sum: 9b291062f1a43aee8e890901324a5616
