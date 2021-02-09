@@ -1,0 +1,51 @@
+name: blast_makeblastdb
+description: Builds a BLAST database
+keywords:
+    - fasta
+    - blast
+    - database
+tools:
+    - blast:
+          description: |
+              BLAST finds regions of similarity between biological sequences.
+          homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+          documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
+          doi: 10.1016/S0022-2836(05)80360-2
+params:
+    - outdir:
+          type: string
+          description: |
+              The pipeline's output directory. By default, the module will
+              output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+          type: string
+          description: |
+              Value for the Nextflow `publishDir` mode parameter.
+              Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+          type: boolean
+          description: |
+              Run the module with Conda using the software specified
+              via the `conda` directive
+    - singularity_pull_docker_container:
+          type: boolean
+          description: |
+              Instead of directly downloading Singularity images for use with Singularity,
+              force the workflow to pull and convert Docker containers instead.
+input:
+    - fasta:
+        type: file
+        description: Input fasta file
+        pattern: "*.{fa,fasta}"
+output:
+    - db:
+          type: directory
+          description: Output directory containing blast database files
+          pattern: "*"
+    - version:
+          type: file
+          description: File containing software version
+          pattern: "*.{version.txt}"
+authors:
+    - "@joseespinosa"
+    - "@drpatelh"
