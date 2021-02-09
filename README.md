@@ -22,7 +22,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 - [Adding a new module file](#adding-a-new-module-file)
     - [Module template](#module-template)
     - [Guidelines](#guidelines)
-    - [CI tests](#ci-tests)
+    - [Testing](#testing)
     - [Documentation](#documentation)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
 - [Terminology](#terminology)
@@ -131,10 +131,11 @@ We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOO
 │           ├── main.nf         ## Main module script
 │           └── meta.yml        ## Documentation for module, input, output, params, author
 ├── tests
-│   └── TOOL
-│       └── SUBTOOL
-│           ├── main.nf         ## Minimal workflow to test module
-│           └── test.yml        ## Pytest-workflow test file
+│   └── software
+│       └── TOOL
+│           └── SUBTOOL
+│               ├── main.nf     ## Minimal workflow to test module
+│               └── test.yml    ## Pytest-workflow test file
 ```
 
 ### Guidelines
@@ -240,7 +241,7 @@ The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/fu
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
 
-### CI tests
+### Testing
 
 In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
 
@@ -274,22 +275,24 @@ In order to test that each module added to `nf-core/modules` is actually working
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=docker pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        PROFILE=docker pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
         ```
 
     - Typical command with Singularity:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        TMPDIR=~ PROFILE=singularity pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        TMPDIR=~ PROFILE=singularity pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
         ```
 
     - Typical command with Conda:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=conda pytest --tag tests/software/bowtie/build --symlink --wt 2 --keep-workflow-wd
+        PROFILE=conda pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
         ```
+
+    - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.
 
 ### Documentation
 
