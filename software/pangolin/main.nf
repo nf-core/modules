@@ -11,19 +11,19 @@ process PANGOLIN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? 'bioconda::pangolin=2.1.7=py_0' : null)
+    conda (params.enable_conda ? 'bioconda::pangolin=2.2.1=py_0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/pangolin:2.1.7--py_0'
+        container 'https://depot.galaxyproject.org/singularity/pangolin:2.2.1--py_0'
     } else {
-        container 'quay.io/biocontainers/pangolin:2.1.7--py_0'
+        container 'quay.io/biocontainers/pangolin:2.2.1--py_0'
     }
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.lineage_report.csv'), emit: report
-    path  '*.version.txt'                        , emit: version
+    tuple val(meta), path('*.csv'), emit: report
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -31,7 +31,7 @@ process PANGOLIN {
     """
     pangolin \\
         $fasta\\
-        --outfile ${prefix}.lineage_report.csv \\
+        --outfile ${prefix}.pangolin.csv \\
         $options.args
 
     pangolin --version | sed "s/pangolin //g" > ${software}.version.txt
