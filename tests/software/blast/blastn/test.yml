@@ -1,0 +1,22 @@
+- name: blast_blastn
+  command: nextflow run ./tests/software/blast/blastn -entry test_blast_blastn -c tests/config/nextflow.config
+  tags:
+    - blast
+    - blast_blastn
+  files:
+    - path: output/blast/blast_db/NC_010473.fa
+      md5sum: ad277e6b3da5dcf9fccfcd3a55fcec8e
+    - path: output/blast/blast_db/NC_010473.fa.ndb
+      md5sum: 5fc66e1a2b3b38966eb40ed15642ba3e
+    - path: output/blast/blast_db/NC_010473.fa.nhr
+      md5sum: 41702062ff7cce21e0649864013fad73
+    - path: output/blast/blast_db/NC_010473.fa.nin
+      should_exist: true
+    - path: output/blast/blast_db/NC_010473.fa.not
+      md5sum: 1e53e9d08f1d23af0299cfa87478a7bb
+    - path: output/blast/blast_db/NC_010473.fa.nsq
+      md5sum: 8e2d0c3fc02a8c2c886bafb73bdd8a89
+    - path: output/blast/blast_db/NC_010473.fa.ntf
+      md5sum: 1f6027d443e67a98ad0edc2d39971b0c
+    - path: output/blast/test.blastn.txt
+      should_exist: true
