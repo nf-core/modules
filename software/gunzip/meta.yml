@@ -30,21 +30,11 @@ params:
             Instead of directly downloading Singularity images for use with Singularity,
             force the workflow to pull and convert Docker containers instead.
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
     - archive:
         type: file
         description: File to be compressed/uncompressed
         pattern: "*.*"
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
     - gunzip:
         type: file
         description: Compressed/uncompressed file
