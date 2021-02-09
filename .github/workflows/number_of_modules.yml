@@ -1,0 +1,33 @@
+name: Number of modules
+on
+  push:
+    branches:
+      - main
+
+jobs:
+  count_modules:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Modify value # Tried to modify the files based on existing testfile.txt
+        run: |
+          echo "$(date) $(git ls-files software | grep "main.nf" | wc -l) $line" >> how-many-modules.txt
+          MODULE_NUM=$(git ls-files software | grep "main.nf" | wc -l)
+          sed "s/MODULE_NUM/${MODULE_NUM}/g" README-tmp.md > README.md
+
+      - name: move to dir # Move the generated files into output folder
+        run: |
+          yes| cat how-many-modules.txt >> .github/how-many-modules.txt
+      - name: Commit files # commit the output folder
+        run: |
+          git config --local user.email "IamBOT@github.com"
+          git config --local user.name "BOT"
+          git add .github/how-many-modules.txt
+          git add README.md
+          git commit -m "New module count"
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
