@@ -9,9 +9,9 @@ process BEDTOOLS_MERGE {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
+    conda (params.enable_conda ? "bioconda::bedtools=2.30.0=hc088bd4_0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
     } else {
@@ -19,11 +19,11 @@ process BEDTOOLS_MERGE {
     }
 
     input:
-    tuple val(meta), path(beds)
+    tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path('*.merged.bed'), emit: bed
-    path  '*.version.txt'                , emit: version
+    tuple val(meta), path('*.bed'), emit: bed
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -31,9 +31,9 @@ process BEDTOOLS_MERGE {
     """
     bedtools \\
         merge \\
-        -i $beds \\
+        -i $bed \\
         $options.args \\
-        > ${prefix}.merged.bed
+        > ${prefix}.bed
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """

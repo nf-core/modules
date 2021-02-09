@@ -10,5 +10,5 @@ workflow test_bedtools_intersect {
               file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
               file("${launchDir}/tests/data/bed/B.bed", checkIfExists: true) ]
 
-    BEDTOOLS_INTERSECT( input )
+    BEDTOOLS_INTERSECT ( input )
 }
