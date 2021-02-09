@@ -1,57 +1,54 @@
 name: pangolin
 description: Phylogenetic Assignment of Named Global Outbreak LINeages
 keywords:
-  - covid
-  - pangolin
-  - lineage
+    - covid
+    - pangolin
+    - lineage
 tools:
-  - star:
-      description: |
-        Phylogenetic Assignment of Named Global Outbreak LINeages
-      homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
-      manual: https://github.com/cov-lineages/pangolin#pangolearn-description
+    - star:
+        description: |
+            Phylogenetic Assignment of Named Global Outbreak LINeages
+        homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
+        manual: https://github.com/cov-lineages/pangolin#pangolearn-description
 params:
-  - outdir:
-      type: string
-      description: |
-        The pipeline's output directory. By default, the module will
-        output files into `$params.outdir/<SOFTWARE>`
-  - publish_dir_mode:
-      type: string
-      description: |
-        Value for the Nextflow `publishDir` mode parameter.
-        Available: symlink, rellink, link, copy, copyNoFollow, move.
-  - enable_conda:
-      type: boolean
-      description: |
-        Run the module with Conda using the software specified
-        via the `conda` directive
-  - singularity_pull_docker_container:
-      type: boolean
-      description: |
-        Instead of directly downloading Singularity images for use with Singularity,
-        force the workflow to pull and convert Docker containers instead.
-
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-  - fasta:
-      type: file
-      description: |
-        The genome assembly to be evaluated
-
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+    - fasta:
+        type: file
+        description: |
+            The genome assembly to be evaluated
 output:
-  - report:
-      type: file
-      description: The lineage report
-      pattern: "{prefix}.lineage_report.csv"
-
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
-
+    - report:
+        type: file
+        description: Pangolin lineage report
+        pattern: "*.{csv}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
 authors:
-  - "@kevinmenden"
+    - "@kevinmenden"
+    - "@drpatelh"
