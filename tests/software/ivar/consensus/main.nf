@@ -1,8 +1,6 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-params.publish_dir_mode = 'link'
-params.enable_conda = false
 
 include { IVAR_CONSENSUS } from '../../../../software/ivar/consensus/main.nf' addParams([:])
 
