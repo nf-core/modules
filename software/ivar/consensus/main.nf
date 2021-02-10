@@ -36,7 +36,7 @@ process IVAR_CONSENSUS {
         -aa -A -d 0 -Q 0 \\
         $options.args2 \\
         $bam | \\
-        tee ${prefix}_mpileup.txt | \\
+        $save_mpileup \\
         ivar consensus \\
         $options.args \\
         -p $prefix
