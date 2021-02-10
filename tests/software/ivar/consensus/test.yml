@@ -1,4 +1,4 @@
-- name: Run ivar consensus test workflow
+- name: ivar consensus
   command: nextflow run ./tests/software/ivar/consensus -profile docker -entry test_ivar_consensus -c tests/config/nextflow.config
   tags:
     - ivar
