@@ -41,8 +41,8 @@ process IVAR_CONSENSUS {
         $bam | \\
         $save_mpileup \\
         ivar consensus \\
-        $options.args \\
-        -p $prefix
+            $options.args \\
+            -p $prefix
 
     ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
     """
