@@ -1,0 +1,21 @@
+- name: cat fastq single-end
+  command: nextflow run ./tests/software/cat/fastq -entry test_cat_fastq_single_end -c tests/config/nextflow.config
+  tags:
+    - cat
+    - fastq
+    - cat_fastqc_single_end
+  files:
+    - path: output/merged_fastq/test.merged.fastq.gz
+      md5sum: 7f753b793e5b0872758b1574db84d767
+
+- name: cat fastq fastqc_paired_end
+  command: nextflow run ./tests/software/cat/fastq -entry test_cat_fastq_paired_end -c tests/config/nextflow.config
+  tags:
+    - cat
+    - fastq
+    - cat_fastqc_paired_end
+  files:
+    - path: output/merged_fastq/test_1.merged.fastq.gz
+      md5sum: 7f753b793e5b0872758b1574db84d767
+    - path: output/merged_fastq/test_2.merged.fastq.gz
+      md5sum: c71ff917e002b1e852916a021d52921d
