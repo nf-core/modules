@@ -1,0 +1,12 @@
+- name: ivar consensus
+  command: nextflow run ./tests/software/ivar/consensus -entry test_ivar_consensus -c tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar_consensus
+  files:
+    - path: output/ivar/test.fa
+      md5sum: d791e777b669bd40f6074b5566722a47
+    - path: output/ivar/test.qual.txt
+      md5sum: 2546e23f835c9f73edef4323effa772f
+    - path: output/ivar/test.mpileup
+      md5sum: 086996c20a3c55a5291f1f018a0ec1bd
