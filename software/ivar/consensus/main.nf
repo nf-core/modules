@@ -20,6 +20,7 @@ process IVAR_CONSENSUS {
 
     input:
     tuple val(meta), path(bam)
+    path(fasta)
 
     output:
     tuple val(meta), path("*.fa")      , emit: fasta
@@ -33,6 +34,7 @@ process IVAR_CONSENSUS {
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
+        --fasta-ref $fasta
         -aa -A -d 0 -Q 0 \\
         $options.args2 \\
         $bam | \\
