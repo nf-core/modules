@@ -12,5 +12,5 @@ workflow test_ivar_consensus {
     def input = []
     input = [ [ id:'test'], 
                 file("${launchDir}/tests/data/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ]
-  IVAR_CONSENSUS ( input, ref )
+    IVAR_CONSENSUS ( input, ref )
 }
