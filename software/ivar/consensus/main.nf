@@ -20,7 +20,7 @@ process IVAR_CONSENSUS {
 
     input:
     tuple val(meta), path(bam)
-    path(fasta)
+    path  fasta
 
     output:
     tuple val(meta), path("*.fa")      , emit: fasta
