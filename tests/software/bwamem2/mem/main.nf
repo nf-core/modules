@@ -15,8 +15,7 @@ workflow test_bwamem2_mem_single_end {
 
     BWAMEM2_MEM (
         input,
-        file("${launchDir}/tests/data/index/E_coli/bwamem2/", checkIfExists: true),
-        file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+        file("${launchDir}/tests/data/index/E_coli/bwamem2/", checkIfExists: true)
     )
 }
 
@@ -32,7 +31,6 @@ workflow test_bwamem2_mem_paired_end {
 
     BWAMEM2_MEM (
         input,
-        file("${launchDir}/tests/data/index/E_coli/bwamem2/", checkIfExists: true),
-        file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+        file("${launchDir}/tests/data/index/E_coli/bwamem2/", checkIfExists: true)
     )
 }
