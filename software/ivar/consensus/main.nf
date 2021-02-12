@@ -11,7 +11,7 @@ process IVAR_CONSENSUS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::ivar=1.3.1=h089eab3_0" : null)
+    conda (params.enable_conda ? "bioconda::ivar=1.3.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0"
     } else {
@@ -31,20 +31,12 @@ process IVAR_CONSENSUS {
     script:
     def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def save_mpileup = options.save_mpileup ? "tee ${prefix}.mpileup |" : ""
-    def min_bq = options.min_bq ? "-Q ${options.min_bq}" : "-Q 0"
-    def max_depth = options.max_depth ? "-d ${options.max_depth}" : "-d 0"
-    def count_orphans = options.count_orphans ? "-A" : ""
-    def disable_baq = options.disable_baq ? "-B" : ""
-    def output_all_bases = options.output_all_bases ? "-aa" : ""
+    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
+
     """
     samtools mpileup \\
         --fasta-ref $fasta \\
-        $output_all_bases \\
-        $count_orphans \\
-        $disable_baq \\
-        $max_depth \\
-        $min_bq \\
+        -aa \\
         $options.args2 \\
         $bam | \\
         $save_mpileup \\
