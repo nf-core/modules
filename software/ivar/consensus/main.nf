@@ -31,11 +31,20 @@ process IVAR_CONSENSUS {
     script:
     def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
+    def save_mpileup = options.save_mpileup ? "tee ${prefix}.mpileup |" : ""
+    def min_bq = options.min_bq ? "-Q ${options.min_bq}" : "-Q 0"
+    def max_depth = options.max_depth ? "-d ${options.max_depth}" : "-d 0"
+    def count_orphans = options.count_orphans ? "-A" : ""
+    def disable_baq = options.disable_baq ? "-B" : ""
+    def output_all_bases = options.output_all_bases ? "-aa" : ""
     """
     samtools mpileup \\
-        --fasta-ref $fasta
-        -aa -A -d 0 -Q 0 \\
+        --fasta-ref $fasta \\
+        $output_all_bases \\
+        $count_orphans \\
+        $disable_baq \\
+        $max_depth \\
+        $min_bq \\
         $options.args2 \\
         $bam | \\
         $save_mpileup \\
