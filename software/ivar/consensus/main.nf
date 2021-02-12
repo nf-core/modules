@@ -32,7 +32,6 @@ process IVAR_CONSENSUS {
     def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
-
     """
     samtools mpileup \\
         --fasta-ref $fasta \\
