@@ -15,8 +15,7 @@ workflow test_bwa_mem_single_end {
 
     BWA_MEM (
         input,
-        file("${launchDir}/tests/data/index/E_coli/bwa/NC_010473.fa.{amb,ann,bwt,pac,sa}", checkIfExists: true),
-        file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+        file("${launchDir}/tests/data/index/E_coli/bwa/", checkIfExists: true)
     )
 }
 
@@ -32,7 +31,6 @@ workflow test_bwa_mem_paired_end {
 
     BWA_MEM (
         input,
-        file("${launchDir}/tests/data/index/E_coli/bwa/NC_010473.fa.{amb,ann,bwt,pac,sa}", checkIfExists: true),
-        file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+        file("${launchDir}/tests/data/index/E_coli/bwa/", checkIfExists: true)
     )
 }
