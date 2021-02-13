@@ -1,0 +1,72 @@
+name: ivar_trim
+description: Trim primer sequences rom a BAM file with iVar
+keywords:
+    - amplicon sequencing
+    - trimming
+    - fasta
+tools:
+    - ivar:
+        description: |
+            iVar - a computational package that contains functions broadly useful for viral amplicon-based sequencing.
+        homepage: https://github.com/andersen-lab/ivar
+        documentation: https://andersen-lab.github.io/ivar/html/manualpage.html
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: A sorted (with samtools sort) bam file
+        pattern: "*.bam"
+    - bed:
+        type: file
+        description: BED file with primer labels and positions
+        pattern: "*.bed"
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: iVar generated consensus sequence
+        pattern: "*.fa"
+    - qual:
+        type: file
+        description: iVar generated quality file
+        pattern: "*.qual.txt"
+    - mpileup:
+        type: file
+        description: mpileup output from samtools mpileup [OPTIONAL]
+        pattern: "*.mpileup"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@andersgs"
+    - "@drpatelh"
