@@ -51,18 +51,10 @@ output:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - fasta:
+    - bam:
         type: file
-        description: iVar generated consensus sequence
+        description: iVar generated trimmed bam file (unsorted)
         pattern: "*.fa"
-    - qual:
-        type: file
-        description: iVar generated quality file
-        pattern: "*.qual.txt"
-    - mpileup:
-        type: file
-        description: mpileup output from samtools mpileup [OPTIONAL]
-        pattern: "*.mpileup"
     - version:
         type: file
         description: File containing software version
