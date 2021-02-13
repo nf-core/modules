@@ -1,9 +1,6 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-params.publish_dir_mode = 'link'
-params.enable_conda = false
-params.run_id = "test-run"
 
 include { IVAR_TRIM } from '../../../../software/ivar/trim/main.nf' addParams([:])
 
