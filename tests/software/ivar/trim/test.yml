@@ -1,0 +1,8 @@
+- name: Run ivar trim test workflow
+  command: nextflow run ./tests/software/ivar/trim -profile docker -entry test_ivar_trim -c tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar_consensus
+  files:
+    - path: output/ivar/test.bam
+      md5sum: 09fc287d484f3a56d6868e5a3deace78
