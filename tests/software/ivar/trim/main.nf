@@ -12,5 +12,5 @@ workflow test_ivar_trim {
                 file("${launchDir}/tests/data/bam/test-sc2-artic-v3.bam", checkIfExists: true) ]
 
     main:
-      IVAR_TRIM ( input, bed_file )
+  IVAR_TRIM ( input, bed_file )
 }
