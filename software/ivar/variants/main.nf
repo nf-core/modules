@@ -22,7 +22,6 @@ process IVAR_VARIANTS {
     input:
     tuple val(meta), path(bam)
     path fasta
-    path gff_file
 
     output:
     tuple val(meta), path("*.tsv"), emit: variants
@@ -32,10 +31,8 @@ process IVAR_VARIANTS {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
-    // the gff file is optional, so following the pattern suggested here:
-    //https://github.com/nextflow-io/patterns/blob/master/docs/optional-input.adoc
-    def gff      = gff_file.name != 'NO_FILE' ? "-g $gff_file" : ""
+    def save_mpileup = params.containsKey('save_mpileup') ? "tee ${prefix}.mpileup |" : ""
+    def gff      = params.containsKey('gff') ? "-g ${params.get('gff')}" : ""
     """
     samtools mpileup \\
         $options.args2 \\
