@@ -1,0 +1,8 @@
+- name: tabix bgzip
+  command: nextflow run ./tests/software/tabix/bgzip -entry test_tabix_bgzip_vcf -c tests/config/nextflow.config
+  tags:
+    - tabix
+    - tabix_bgzip
+  files:
+    - path: output/bgzip/test.vcf.gz
+      md5sum: 40419fb7562475d1c8ec4ab725796de2
