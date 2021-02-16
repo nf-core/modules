@@ -1,0 +1,8 @@
+- name: gatk createsequencedictionary
+  command: nextflow run ./tests/software/gatk/createsequencedictionary -entry test_gatk_createsequencedictionary -c tests/config/nextflow.config
+  tags:
+    - gatk
+    - gatk_createsequencedictionary
+  files:
+    - path: output/gatk/NC_010473.dict
+      md5sum: 2b5e6b5d82553ddcaf85156ba856a55c
