@@ -1,5 +1,14 @@
-- name: ivar variants no gff
-  command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_no_gff -c tests/config/nextflow.config
+- name: ivar variants no gff no mpileup
+  command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_no_gff_no_mpileup -c tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar_variants
+  files:
+    - path: output/ivar/test.tsv
+      md5sum: 3fd376b8ad80f27a999edf3345d2014a
+      
+- name: ivar variants no gff with mpileup
+  command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_no_gff_with_mpileup -c tests/config/nextflow.config
   tags:
     - ivar
     - ivar_variants
@@ -9,8 +18,8 @@
     - path: output/ivar/test.mpileup
       md5sum: b3dfd337dfcd313d6cc9680d7e796fe6
 
-- name: ivar variants with gff
-  command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_with_gff -c tests/config/nextflow.config
+- name: ivar variants with gff with mpileup
+  command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_with_gff_with_mpileup -c tests/config/nextflow.config
   tags:
     - ivar
     - ivar_variants

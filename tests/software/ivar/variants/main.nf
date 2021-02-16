@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-params.save_mpileup = true
-params.gff = false
-
 include { IVAR_VARIANTS } from '../../../../software/ivar/variants/main.nf' addParams([:])
 
-workflow test_ivar_variants_no_gff {
+params.save_mpileup = false
+params.gff = false
+
+workflow test_ivar_variants_no_gff_no_mpileup {
     def ref   = file("${launchDir}/tests/data/fasta/sarscov2/MN908947.3.fa", checkIfExists: true)
     def dummy = file("${launchDir}/tests/data/dummy/dummy_file.txt", checkIfExists: true)
     def input = []
@@ -16,9 +16,22 @@ workflow test_ivar_variants_no_gff {
     IVAR_VARIANTS ( input, ref, dummy )
 }
 
+params.save_mpileup = true
+params.gff = false
+
+workflow test_ivar_variants_no_gff_with_mpileup {
+    def ref   = file("${launchDir}/tests/data/fasta/sarscov2/MN908947.3.fa", checkIfExists: true)
+    def dummy = file("${launchDir}/tests/data/dummy/dummy_file.txt", checkIfExists: true)
+    def input = []
+    input = [ [ id:'test'], 
+              file("${launchDir}/tests/data/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ]
+    IVAR_VARIANTS ( input, ref, dummy )
+}
+
+params.save_mpileup = true
 params.gff = "${launchDir}/tests/data/gff/sarscov2/MN908947.3.gff3"
 
-workflow test_ivar_variants_with_gff {
+workflow test_ivar_variants_with_gff_with_mpileup {
     
     def ref = file("${launchDir}/tests/data/fasta/sarscov2/MN908947.3.fa", checkIfExists: true)
     def gff = file(params.gff, checkIfExists: true)
