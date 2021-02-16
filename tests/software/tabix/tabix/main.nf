@@ -2,18 +2,30 @@
 
 nextflow.enable.dsl = 2
 
-include { HTSLIB_TABIX as TABIX_BED } from '../../../../software/htslib/tabix/main.nf' addParams( options: ['args': '-p bed'] )
-include { HTSLIB_TABIX as TABIX_GFF } from '../../../../software/htslib/tabix/main.nf' addParams( options: ['args': '-p gff'] )
-include { HTSLIB_TABIX as TABIX_VCF } from '../../../../software/htslib/tabix/main.nf' addParams( options: ['args': '-p vcf'] )
+include { TABIX_TABIX as TABIX_BED } from '../../../../software/tabix/tabix/main.nf' addParams( options: ['args': '-p bed'] )
+include { TABIX_TABIX as TABIX_GFF } from '../../../../software/tabix/tabix/main.nf' addParams( options: ['args': '-p gff'] )
+include { TABIX_TABIX as TABIX_VCF } from '../../../../software/tabix/tabix/main.nf' addParams( options: ['args': '-p vcf'] )
 
-workflow test_htslib_tabix_bed {
-    TABIX_BED ( file("${launchDir}/tests/data/bed/B.bed.gz", checkIfExists: true) )
+workflow test_tabix_tabix_bed {
+    def input = []
+    input = [ [ id:'B.bed' ], // meta map
+              [ file("${launchDir}/tests/data/bed/B.bed.gz", checkIfExists: true) ] ]
+
+    TABIX_BED ( input )
 }
 
-workflow test_htslib_tabix_gff {
-    TABIX_GFF ( file("${launchDir}/tests/data/gff/a.gff3.gz", checkIfExists: true) )
+workflow test_tabix_tabix_gff {
+    def input = []
+    input = [ [ id:'a.gff3' ], // meta map
+              [ file("${launchDir}/tests/data/gff/a.gff3.gz", checkIfExists: true) ] ]
+
+    TABIX_GFF ( input )
 }
 
-workflow test_htslib_tabix_vcf {
-    TABIX_VCF ( file("${launchDir}/tests/data/vcf/test.vcf.gz", checkIfExists: true) )
+workflow test_tabix_tabix_vcf {
+    def input = []
+    input = [ [ id:'test.vcf' ], // meta map
+              [ file("${launchDir}/tests/data/vcf/test.vcf.gz", checkIfExists: true) ] ]
+
+    TABIX_VCF ( input )
 }
