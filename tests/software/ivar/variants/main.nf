@@ -4,7 +4,8 @@ nextflow.enable.dsl = 2
 
 include { IVAR_VARIANTS } from '../../../../software/ivar/variants/main.nf' addParams([:])
 
-params.gff = false
+params.gff          = false
+params.save_mpileup = false
 
 workflow test_ivar_variants_no_gff_no_mpileup {
     def ref   = file("${launchDir}/tests/data/fasta/sarscov2/MN908947.3.fa", checkIfExists: true)
