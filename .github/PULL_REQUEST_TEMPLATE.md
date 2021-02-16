@@ -15,8 +15,8 @@ Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/modu
 
 - [ ] This comment contains a description of changes (with reason).
 - [ ] If you've fixed a bug or added code that should be tested, add tests!
-    - [ ] If you've added a new tool - have you followed the module conventions in the [contribution docs](https://github.com/nf-core/modules/tree/master/.github/CONTRIBUTING.md)
-    - [ ] If necessary, include test data in your PR.
+- [ ] If you've added a new tool - have you followed the module conventions in the [contribution docs](https://github.com/nf-core/modules/tree/master/.github/CONTRIBUTING.md)
+- [ ] If necessary, include test data in your PR.
 - [ ] Remove all TODO statements.
 - [ ] Emit the `<SOFTWARE>.version.txt` file.
 - [ ] Follow the naming conventions.
@@ -25,3 +25,5 @@ Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/modu
 - [ ] Add a resource `label`
 - [ ] Use BioConda and BioContainers if possible to fulfil software requirements.
 - [ ] Ensure that the test works (`PROFILE=docker pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`)
+- [ ] Ensure that the test works (`PROFILE=singularity pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`)
+- [ ] Ensure that the test works (`PROFILE=conda pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`)
