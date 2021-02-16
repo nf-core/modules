@@ -25,7 +25,7 @@ process IVAR_CONSENSUS {
     output:
     tuple val(meta), path("*.fa")      , emit: fasta
     tuple val(meta), path("*.qual.txt"), emit: qual
-    tuple val(meta), path("*.mpileup") , emit: mpileup
+    tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
     path "*.version.txt"               , emit: version
 
     script:
