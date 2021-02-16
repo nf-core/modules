@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 params.save_mpileup = true
+params.gff = false
 
 include { IVAR_VARIANTS } from '../../../../software/ivar/variants/main.nf' addParams([:])
 
