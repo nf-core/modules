@@ -11,7 +11,7 @@ process BLAST_MAKEBLASTDB {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    conda (params.enable_conda ? 'bioconda::blast=2.10.1=pl526he19e7b1_3' : null)
+    conda (params.enable_conda ? 'bioconda::blast=2.10.1' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container 'https://depot.galaxyproject.org/singularity/blast:2.10.1--pl526he19e7b1_3'
     } else {

@@ -11,7 +11,7 @@ process STRINGTIE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::stringtie=2.1.4=h7e0af3c_0" : null)
+    conda (params.enable_conda ? "bioconda::stringtie=2.1.4" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/stringtie:2.1.4--h7e0af3c_0"
     } else {
