@@ -40,10 +40,10 @@ process IVAR_VARIANTS {
         $bam | \\
         $save_mpileup  \\
         ivar variants \\
-        $options.args \\
-        $gff \\
-        -r $fasta \\
-        -p $prefix
+            $options.args \\
+            $features \\
+            -r $fasta \\
+            -p $prefix
 
     ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
     """
