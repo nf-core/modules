@@ -20,7 +20,8 @@ process IVAR_VARIANTS {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
+    path  fasta
+    path  gff
 
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
