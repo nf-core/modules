@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { TABIX_BGZIP } from '../../../../software/tabix/bgzip/main.nf' addParams( options: [:] )
 
-workflow test_tabix_bgzip_vcf {
+workflow test_tabix_bgzip {
 
     def input = []
     input = [ [ id:'test' ], // meta map
