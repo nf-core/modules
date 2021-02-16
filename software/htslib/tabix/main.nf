@@ -5,7 +5,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process HTSLIB_TABIX {
-    tag "$vcf"
+    tag "$tab"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -19,7 +19,7 @@ process HTSLIB_TABIX {
     }
 
     input:
-    path vcf
+    path tab
 
     output:
     path("*.tbi")        , emit: tbi
@@ -28,7 +28,7 @@ process HTSLIB_TABIX {
     script:
     def software = getSoftwareName(task.process)
     """
-    tabix -p vcf $vcf
+    tabix $options.args $tab
 
     echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/(.*\$//' > ${software}.version.txt
     """
