@@ -23,9 +23,9 @@ process IVAR_VARIANTS {
     path fasta
 
     output:
-    tuple val(meta), path("*.tsv"), emit: variants
-    tuple val(meta), path("*.mpileup"), emit: mpileup
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.tsv")    , emit: tsv
+    tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
+    path "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
