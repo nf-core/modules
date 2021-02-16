@@ -16,6 +16,9 @@ workflow test_ivar_variants_no_gff_no_mpileup {
     IVAR_VARIANTS ( input, ref, dummy )
 }
 
+params.gff          = false
+params.save_mpileup = true
+
 workflow test_ivar_variants_no_gff_with_mpileup {
     def ref   = file("${launchDir}/tests/data/fasta/sarscov2/MN908947.3.fa", checkIfExists: true)
     def dummy = file("${launchDir}/tests/data/dummy/dummy_file.txt", checkIfExists: true)
