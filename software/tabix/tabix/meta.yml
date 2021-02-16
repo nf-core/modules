@@ -1,5 +1,5 @@
-name: htslib_tabix
-description: create tabix index from a sorted bgzip vcf file
+name: tabix_tabix
+description: create tabix index from a sorted bgzip tab-delimited genome file
 keywords:
     - index
     - tabix
@@ -7,7 +7,7 @@ keywords:
 tools:
     - tabix:
         description: Generic indexer for TAB-delimited genome position files.
-        homepage: https://www.htslib.org/
+        homepage: https://www.htslib.org/doc/tabix.html
         documentation: https://www.htslib.org/doc/tabix.1.html
         doi: 10.1093/bioinformatics/btq671
 params:
@@ -32,11 +32,21 @@ params:
             Instead of directly downloading Singularity images for use with Singularity,
             force the workflow to pull and convert Docker containers instead.
 input:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - tab:
         type: file
-        description: TAB-delimited genome file
-        pattern: "*"
+        description: TAB-delimited genome position file compressed with bgzip
+        pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
 output:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - tbi:
         type: file
         description: tabix index file
@@ -46,4 +56,6 @@ output:
         description: File containing software version
         pattern: "*.{version.txt}"
 authors:
+    - "@joseespinosa"
+    - "@drpatelh"
     - "@maxulysse"
