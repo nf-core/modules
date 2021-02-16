@@ -18,17 +18,17 @@ process TABIX_BGZIP {
     }
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.gz"), emit: file
+    tuple val(meta), path("*.gz"), emit: gz
     path  "*.version.txt"        , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bgzip -c $options.args $file > ${prefix}.${file.getExtension()}.gz
+    bgzip -c $options.args $input > ${prefix}.${input.getExtension()}.gz
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
 }
