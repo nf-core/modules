@@ -1,4 +1,3 @@
-
 /*
  * -----------------------------------------------------
  *  Utility functions used in nf-core DSL2 module files
@@ -31,7 +30,7 @@ def initOptions(Map args) {
  */
 def getPathFromList(path_list) {
     def paths = path_list.findAll { item -> !item?.trim().isEmpty() }  // Remove empty entries
-    paths = paths.collect { it.trim().replaceAll("^[/]+|[/]+\$", '') } // Trim whitespace and trailing slashes
+    paths = paths.collect { it.trim().replaceAll("^[/]+|[/]+\$", "") } // Trim whitespace and trailing slashes
     return paths.join('/')
 }
 
