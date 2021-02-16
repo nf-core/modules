@@ -37,7 +37,7 @@ process GATK_CREATESEQUENCEDICTIONARY {
     gatk --java-options "-Xmx${avail_mem}g" \\
         CreateSequenceDictionary \\
         --REFERENCE $fasta \\
-        --URI $fasta
+        --URI $fasta \\
         $options.args
 
     echo \$(gatk CreateSequenceDictionary --version 2>&1) | sed 's/^.*(GATK) v//; s/ HTSJDK.*\$//' > ${software}.version.txt
