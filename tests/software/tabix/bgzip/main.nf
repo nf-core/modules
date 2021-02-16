@@ -10,5 +10,5 @@ workflow test_tabix_bgzip_vcf {
     input = [ [ id:'test' ], // meta map
               [ file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]]
 
-    BGZIP_VCF ( input )
+    TABIX_BGZIP ( input )
 }
