@@ -17,6 +17,7 @@ Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/modu
 - [ ] If you've fixed a bug or added code that should be tested, add tests!
     - [ ] If you've added a new tool - have you followed the module conventions in the [contribution docs](https://github.com/nf-core/modules/tree/master/.github/CONTRIBUTING.md)
     - [ ] If necessary, include test data in your PR.
+- [ ] Add to `.github/filters.yml` 
 - [ ] Remove all TODO statements.
 - [ ] Emit the `<SOFTWARE>.version.txt` file.
 - [ ] Follow the naming conventions.
