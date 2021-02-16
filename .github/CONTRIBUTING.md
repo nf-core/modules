@@ -18,10 +18,9 @@ If you'd like to write some code for nf-core/modules, the standard workflow is a
 1. Check that there isn't already an issue about your idea in the [nf-core/modules issues](https://github.com/nf-core/modules/issues) to avoid duplicating work
     * If there isn't one already, please create one so that others know you're working on this
 2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/modules repository](https://github.com/nf-core/modules) to your GitHub account
-3. Make the necessary changes / additions within your forked repository following [Pipeline conventions](#pipeline-contribution-conventions)
-4. When adding a module file, follow the [guidelines](https://github.com/nf-core/modules#adding-a-new-module-file)
-5. Ensure that [tests are working locally](https://github.com/nf-core/modules#running-tests-locally)
-6. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
+3. When adding a module file, follow the [guidelines](https://github.com/nf-core/modules#adding-a-new-module-file)
+4. Ensure that [tests are working locally](https://github.com/nf-core/modules#running-tests-locally)
+5. Submit a Pull Request against the `master` branch and wait for the code to be reviewed and merged
 
 If you're not used to this workflow with git, you can start with some [docs from GitHub](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests) or even their [excellent `git` resources](https://try.github.io/).
 
@@ -56,13 +55,13 @@ If you add a new module, please ensure you add the information of the tool.
 Add to the script block of the process, something like the following:
 
 ```bash
-<YOUR_TOOL> --version &> v_<YOUR_TOOL>.txt 2>&1 || true
+<YOUR_TOOL> --version &> v_<YOUR_TOOL>.txt 2>&1
 ```
 
 or
 
 ```bash
-<YOUR_TOOL> --help | head -n 1 &> v_<YOUR_TOOL>.txt 2>&1 || true
+<YOUR_TOOL> --help | head -n 1 &> v_<YOUR_TOOL>.txt 2>&1
 ```
 
 ### Images and figures
