@@ -1,0 +1,8 @@
+- name: htslib tabix
+  command: nextflow run ./tests/software/htslib/tabix -entry test_htslib_tabix -c tests/config/nextflow.config
+  tags:
+    - htslib
+    - htslib_tabix
+  files:
+    - path: output/htslib/test.vcf.gz.tbi
+      md5sum: a03f56d3e968f32256ffb9f6b7d01812
