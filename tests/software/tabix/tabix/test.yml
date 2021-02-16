@@ -1,26 +1,26 @@
-- name: htslib tabix bed
-  command: nextflow run ./tests/software/htslib/tabix -entry test_htslib_tabix_bed -c tests/config/nextflow.config
+- name: tabix tabix bed
+  command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_bed -c tests/config/nextflow.config
   tags:
-    - htslib
-    - htslib_tabix
+    - tabix
+    - tabix_tabix
     - bed
   files:
     - path: output/tabix/B.bed.gz.tbi
       md5sum: 6d657159c283200109f2ed082296f853
-- name: htslib tabix gff
-  command: nextflow run ./tests/software/htslib/tabix -entry test_htslib_tabix_gff -c tests/config/nextflow.config
+- name: tabix tabix gff
+  command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_gff -c tests/config/nextflow.config
   tags:
-    - htslib
-    - htslib_tabix
+    - tabix
+    - tabix_tabix
     - gff
   files:
     - path: output/tabix/a.gff3.gz.tbi
       md5sum: 77f666b63da45c6af8a394ab5642602e
-- name: htslib tabix vcf
-  command: nextflow run ./tests/software/htslib/tabix -entry test_htslib_tabix_vcf -c tests/config/nextflow.config
+- name: tabix tabix vcf
+  command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_vcf -c tests/config/nextflow.config
   tags:
-    - htslib
-    - htslib_tabix
+    - tabix
+    - tabix_tabix
     - vcf
   files:
     - path: output/tabix/test.vcf.gz.tbi
