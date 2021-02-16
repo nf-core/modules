@@ -1,0 +1,49 @@
+name: htslib_tabix
+description: create tabix index from a sorted bgzip vcf file
+keywords:
+    - index
+    - tabix
+    - vcf
+tools:
+    - tabix:
+        description: Generic indexer for TAB-delimited genome position files.
+        homepage: https://www.htslib.org/
+        documentation: https://www.htslib.org/doc/tabix.1.html
+        doi: 10.1093/bioinformatics/btq671
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - vcf:
+        type: file
+        description: vcf.gz file
+        pattern: "*.{vcf.gz}"
+output:
+    - tbi:
+        type: file
+        description: tabix index file
+        pattern: "*.{tbi}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@maxulysse"
