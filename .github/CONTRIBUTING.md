@@ -36,33 +36,10 @@ Each `nf-core/module` should be set up with a minimal set of test-data.
 If there are any failures then the automated tests fail.
 These tests are run both with the latest available version of `Nextflow` and also the minimum required version that is stated in the pipeline code.
 
-## Patch
-
-:warning: Only in the unlikely and regretful event of a release happening with a bug.
-
-* On your own fork, make a new branch `patch` based on `upstream/master`.
-* Fix the bug, and bump version (X.Y.Z+1).
-* A PR should be made on `master` from patch to directly this particular bug.
-
 ## Getting help
 
 For further information/help, please consult the [nf-core/modules README](https://github.com/nf-core/modules) and don't hesitate to get in touch on the nf-core Slack [#modules](https://nfcore.slack.com/channels/modules) channel ([join our Slack here](https://nf-co.re/join/slack)).
 
-### Software version reporting
-
-If you add a new module, please ensure you add the information of the tool.
-
-Add to the script block of the process, something like the following:
-
-```bash
-<YOUR_TOOL> --version &> v_<YOUR_TOOL>.txt 2>&1
-```
-
-or
-
-```bash
-<YOUR_TOOL> --help | head -n 1 &> v_<YOUR_TOOL>.txt 2>&1
-```
 
 ### Images and figures
 
