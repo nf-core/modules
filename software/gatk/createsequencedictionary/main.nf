@@ -22,7 +22,7 @@ process GATK_CREATESEQUENCEDICTIONARY {
     path fasta
 
     output:
-    path "*.dict"        , emit: dict 
+    path "*.dict"        , emit: dict
     path "*.version.txt" , emit: version
 
     script:
