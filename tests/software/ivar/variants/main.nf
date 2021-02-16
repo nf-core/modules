@@ -15,7 +15,7 @@ workflow test_ivar_variants_no_gff {
     IVAR_VARIANTS ( input, ref, dummy )
 }
 
-params.gff = file("${launchDir}/tests/data/gff/sarscov2/MN908947.3.gff3", checkIfExists: true)
+params.gff = "${launchDir}/tests/data/gff/sarscov2/MN908947.3.gff3"
 
 workflow test_ivar_variants_with_gff {
     
