@@ -37,8 +37,9 @@ process TOOL_SUBTOOL {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     // TODO nf-core: List required Conda packages.
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10") and build (i.e. "h9402c20_2") as in the example below.
-    conda (params.enable_conda ? "bioconda::samtools=1.10=h9402c20_2" : null)
+    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
+    //               For Conda, the build (i.e. "h9402c20_2") must be excluded to support installation on different OS.
+    conda (params.enable_conda ? "bioconda::samtools=1.10" : null)
 
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
