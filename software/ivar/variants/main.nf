@@ -29,10 +29,10 @@ process IVAR_VARIANTS {
     path "*.version.txt"              , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def save_mpileup = params.containsKey('save_mpileup') ? "tee ${prefix}.mpileup |" : ""
-    def gff      = params.containsKey('gff') ? "-g ${params.get('gff')}" : ""
+    def software     = getSoftwareName(task.process)
+    def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
+    def features     = params.gff ? "-g $gff" : ""
     """
     samtools mpileup \\
         $options.args2 \\
