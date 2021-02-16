@@ -27,10 +27,17 @@ process GATK_CREATESEQUENCEDICTIONARY {
 
     script:
     def software = getSoftwareName(task.process)
+    def avail_mem = 6
+    if (!task.memory) {
+        log.info '[GATK] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk --java-options "-Xmx${task.memory.toGiga()}g" \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         CreateSequenceDictionary \\
         --REFERENCE $fasta \\
+        --URI $fasta
         $options.args
 
     echo \$(gatk CreateSequenceDictionary --version 2>&1) | sed 's/^.*(GATK) v//; s/ HTSJDK.*\$//' > ${software}.version.txt
