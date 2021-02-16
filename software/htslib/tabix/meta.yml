@@ -32,10 +32,10 @@ params:
             Instead of directly downloading Singularity images for use with Singularity,
             force the workflow to pull and convert Docker containers instead.
 input:
-    - vcf:
+    - tab:
         type: file
-        description: vcf.gz file
-        pattern: "*.{vcf.gz}"
+        description: TAB-delimited genome file
+        pattern: "*"
 output:
     - tbi:
         type: file
