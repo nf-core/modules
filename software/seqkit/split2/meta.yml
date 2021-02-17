@@ -1,0 +1,68 @@
+name: seqkit_split2
+## TODO nf-core: Add a description and keywords
+description: Split single or paired-end fastq.gz files
+keywords:
+    - split
+    - fastq
+tools:
+    - seqkit:
+        ## TODO nf-core: Add a description and other details for the software below
+        description: |
+            Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+        homepage: https://github.com/shenwei356/seqkit
+        documentation: https://bioinf.shenwei.me/seqkit/
+        doi: 10.1371/journal.pone.0163962
+## TODO nf-core: If you are using any additional "params" in the main.nf script of the module add them below
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - read1:
+        type: file
+        description: First FastQ file
+        pattern: "*.{fq.gz/fastq.gz}"
+    - read2:
+        type: file
+        description: Second FastQ file
+        pattern: "*.{fq.gz/fastq.gz}"
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Split fastq files
+        pattern: "*.{fq.gz}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@FriederikeHanssen"
