@@ -1,0 +1,8 @@
+- name: Run methyldackel extract test workflow
+  command: nextflow run ./tests/software/methyldackel/extract -entry test_methyldackel_extract -c tests/config/nextflow.config
+  tags:
+    - methyldackel
+    - methyldackel_extract
+  files:
+    - path: output/methyldackel/test.paired_end_methylated.sorted_CpG.bedGraph
+      md5sum: a83c1c9abe632e1996402185ddc4d2b6
