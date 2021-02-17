@@ -11,7 +11,7 @@ process CUTADAPT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? 'bioconda::cutadapt:3.2=py38h0213d0e_0' : null)
+    conda (params.enable_conda ? 'bioconda::cutadapt:3.2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container 'https://depot.galaxyproject.org/singularity/cutadapt:3.2--py38h0213d0e_0'
     } else {
