@@ -10,7 +10,7 @@ process BCFTOOLS_CONSENSUS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.11=h7c999a4_0" : null)
+    conda (params.enable_conda ? "bioconda::bcftools=1.11" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bcftools:1.11--h7c999a4_0"
     } else {
