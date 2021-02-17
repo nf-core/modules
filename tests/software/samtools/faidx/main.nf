@@ -6,8 +6,5 @@ include { SAMTOOLS_FAIDX } from '../../../../software/samtools/faidx/main.nf' ad
 
 workflow test_samtools_faidx {
 
-    def input = []
-    input = file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
-
-    SAMTOOLS_FAIDX ( input )
+    SAMTOOLS_FAIDX ( file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true) )
 }
