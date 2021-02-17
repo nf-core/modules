@@ -1,0 +1,53 @@
+name: bwameth_index
+description: Performs indexing of c2t converted reference genome
+keywords:
+    - bwameth
+    - 3-letter genome
+    - index
+    - methylseq
+    - bisulphite
+    - fasta
+tools:
+    - bwameth:
+        description: |
+            Fast and accurate alignment of BS-Seq reads
+            using bwa-mem and a 3-letter genome.
+        homepage: https://github.com/brentp/bwa-meth
+        documentation: https://github.com/brentp/bwa-meth
+        arxiv: arXiv:1401.1129
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - fasta:
+        type: file
+        description: Input genome fasta file
+output:
+    - index:
+        type: file
+        description: c2t converted genome BWA index files
+        pattern: "*.{bwameth.c2t.amb,bwameth.c2t.ann,bwameth.c2t.bwt,bwameth.c2t.pac,bwameth.c2t.sa}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@phue"
