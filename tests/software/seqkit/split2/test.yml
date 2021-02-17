@@ -1,0 +1,19 @@
+- name: seqkit split2 single-end
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_single_end
+  files:
+    - path: output/seqkit/
+      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
+
+- name: seqkit split2 paired-end
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_paired_end
+  files:
+    - path: output/seqkit/
+      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
