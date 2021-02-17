@@ -37,7 +37,7 @@ process SEQKIT_SPLIT2 {
     }
 
     input:
-    tuple val(meta), path(read1), path(read2)
+    tuple val(meta), path(reads)
 
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
@@ -57,13 +57,13 @@ process SEQKIT_SPLIT2 {
     //TODO not sure if this is useful here, as the splits need to be named individually, and this would make the prefix the same and the outputname I am afraid.
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    if(meta.single_end){ //TODO: I guess since optionally inputs are not possible right now, we need two modules, one for single_end and one for paired_end
+    if(meta.single_end){
     """
     seqkit \
         split2 \
         $options.args \
         --threads $task.cpus \
-        -1 $read1 \
+        -1 $reads \
         -O $prefix
 
 
@@ -75,8 +75,8 @@ process SEQKIT_SPLIT2 {
         split2 \
         $options.args \
         --threads $task.cpus \
-        -1 $read1 \
-        -2 $read2 \
+        -1 ${reads[0]} \
+        -2 ${reads[1]} \
         -O $prefix
 
     echo \$(seqkit --version 2>&1) | sed 's/^.*seqkit //; s/Using.*\$//' > ${software}.version.txt

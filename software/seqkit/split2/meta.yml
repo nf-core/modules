@@ -41,13 +41,9 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - read1:
+    - reads:
         type: file
-        description: First FastQ file
-        pattern: "*.{fq.gz/fastq.gz}"
-    - read2:
-        type: file
-        description: Second FastQ file
+        description: FastQ files
         pattern: "*.{fq.gz/fastq.gz}"
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
