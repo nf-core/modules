@@ -11,20 +11,12 @@ include { BWAMETH_ALIGN as BWAMETH_ALIGN_PE } from '../../../../software/bwameth
 workflow test_bwameth_align_single_end {
 
     def input = []
-    def index = []
     input = [ [ id:'test', single_end:true ], // meta map
               [ file("${launchDir}/tests/data/fastq/methylated_dna/Ecoli_10K_methylated_R1.fastq.gz", checkIfExists: true) ] ]
 
-    index = [ file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t",     checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.amb", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.ann", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.bwt", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.sa",  checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.pac", checkIfExists: true) ]
-
     BWAMETH_ALIGN_SE (
         input,
-        index
+        file("${launchDir}/tests/data/index/E_coli/bwameth", checkIfExists: true)
     )
 }
 
@@ -34,20 +26,12 @@ workflow test_bwameth_align_single_end {
 workflow test_bwameth_align_paired_end {
 
     def input = []
-    def index = []
     input = [ [ id:'test', single_end:false ], // meta map
               [ file("${launchDir}/tests/data/fastq/methylated_dna/Ecoli_10K_methylated_R1.fastq.gz", checkIfExists: true),
                 file("${launchDir}/tests/data/fastq/methylated_dna/Ecoli_10K_methylated_R2.fastq.gz", checkIfExists: true) ] ]
 
-    index = [ file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.amb", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.ann", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.bwt", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.sa", checkIfExists: true),
-              file("${launchDir}/tests/data/index/E_coli/bwameth/NC_010473.fa.bwameth.c2t.pac", checkIfExists: true) ]
-
     BWAMETH_ALIGN_PE (
         input,
-        index
+        file("${launchDir}/tests/data/index/E_coli/bwameth", checkIfExists: true)
     )
 }

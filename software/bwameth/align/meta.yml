@@ -52,9 +52,8 @@ input:
             List of input FastQ files of size 1 and 2 for single-end and paired-end data,
             respectively.
     - index:
-        type: file
-        description: BWA genome index files
-        pattern: "*.{amb,ann,bwt,pac,sa}"
+        type: dir
+        description: Directory containing bwameth genome index
     - fasta:
         type: file
         description: Input genome fasta file

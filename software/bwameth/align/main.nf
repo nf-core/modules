@@ -30,13 +30,12 @@ process BWAMETH_ALIGN {
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
-    def c2t = index.first().toString() - '.bwameth' - '.c2t' - '.amb' - '.ann' - '.bwt' - '.pac' - '.sa'
     """
     bwameth.py \\
         $options.args \\
         $read_group \\
         -t $task.cpus \\
-        --reference $c2t \\
+        --reference ${index}/genome.fa \\
         $reads \\
         | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
