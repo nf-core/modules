@@ -31,10 +31,8 @@ process QUALIMAP_BAMQC {
     def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    def threads    = task.cpus
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
     def memory     = task.memory.toGiga() + "G"
-
     def regions = use_gff ? "--gff $gff" : ''
 
     def strandedness = 'non-strand-specific'
@@ -56,7 +54,7 @@ process QUALIMAP_BAMQC {
         -p $strandedness \\
         $collect_pairs \\
         -outdir $prefix \\
-        -nt $threads
+        -nt $task.cpus
 
     echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//' > ${software}.version.txt
     """
