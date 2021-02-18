@@ -19,11 +19,11 @@ process BWAMETH_INDEX {
     }
 
     input:
-    path fasta
+    path fasta, stageAs: "index/genome.fa"
 
     output:
-    path "*.bwameth.c2t*", emit: index
-    path "*.version.txt" , emit: version
+    path "index"        , emit: index
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)

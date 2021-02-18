@@ -42,9 +42,9 @@ input:
         description: Input genome fasta file
 output:
     - index:
-        type: file
-        description: c2t converted genome BWA index files
-        pattern: "*.{bwameth.c2t.amb,bwameth.c2t.ann,bwameth.c2t.bwt,bwameth.c2t.pac,bwameth.c2t.sa}"
+        type: dir
+        description: Directory containing bwameth genome index
+        pattern: "index"
     - version:
         type: file
         description: File containing software version
