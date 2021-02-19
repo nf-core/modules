@@ -1,0 +1,8 @@
+- name: Run samtools faidx test workflow
+  command: nextflow run ./tests/software/samtools/faidx -entry test_samtools_faidx -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_faidx
+  files:
+    - path: output/samtools/NC_010473.fa.fai
+      md5sum: 082de78397fbe9bd3500c7d5c9edc03e

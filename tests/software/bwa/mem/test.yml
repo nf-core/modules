@@ -6,7 +6,7 @@
     - bwa_mem_single_end
   files:
     - path: output/bwa/test.bam
-      md5sum: 52e81e5bd523d0b27fe533b21a0d80f5
+      md5sum: 2bea94a4458cd1216214874b11c2e394
 
 - name: bwa mem paired-end
   command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
@@ -16,4 +16,4 @@
     - bwa_mem_paired_end
   files:
     - path: output/bwa/test.bam
-      md5sum: 86d82fdb68ed384c656cfc62a253052f
+      md5sum: 2d952be81c7d2856712391b5d8556039

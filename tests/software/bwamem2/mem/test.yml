@@ -1,0 +1,19 @@
+- name: bwamem2 mem single-end
+  command: nextflow run ./tests/software/bwamem2/mem -entry test_bwamem2_mem_single_end -c tests/config/nextflow.config
+  tags:
+    - bwamem2
+    - bwamem2_mem
+    - bwamem2_mem_single_end
+  files:
+    - path: output/bwamem2/test.bam
+      md5sum: b8fceee111b3e23372c95ed765ac4401
+
+- name: bwamem2 mem paired-end
+  command: nextflow run ./tests/software/bwamem2/mem -entry test_bwamem2_mem_paired_end -c tests/config/nextflow.config
+  tags:
+    - bwamem2
+    - bwamem2_mem
+    - bwamem2_mem_paired_end
+  files:
+    - path: output/bwamem2/test.bam
+      md5sum: 4b05c7e1b28e0835c647e890854897e4

@@ -1,0 +1,16 @@
+- name: bwamem2 index
+  command: nextflow run ./tests/software/bwamem2/index -entry test_bwamem2_index -c tests/config/nextflow.config
+  tags:
+    - bwamem2
+    - bwamem2_index
+  files:
+    - path: output/bwamem2/bwamem2/NC_010473.fa.0123
+      md5sum: e112e4d2fd893fb939d306b27ece9de5
+    - path: output/bwamem2/bwamem2/NC_010473.fa.amb
+      md5sum: 942a990ae872f1c0b8d72dda2db405d5
+    - path: output/bwamem2/bwamem2/NC_010473.fa.ann
+      md5sum: ebf1a0279cf5b8d7f1a8cb855a3a3705
+    - path: output/bwamem2/bwamem2/NC_010473.fa.bwt.2bit.64
+      md5sum: f0154573be12440aee294b726cd88c86
+    - path: output/bwamem2/bwamem2/NC_010473.fa.pac
+      md5sum: 4d5e6fc45bbc968f7f859e9ca2cc89ad
