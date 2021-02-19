@@ -20,6 +20,8 @@ process GATK4_MERGEVCFS {
 
     input:
     tuple val(meta), path(vcfs)
+    path(ref_dict)
+    val use_ref_dict
 
     output:
     tuple val(meta), path('*.vcf.gz')       , emit: vcf
@@ -33,10 +35,12 @@ process GATK4_MERGEVCFS {
     for (vcf in vcfs) {
         input += " I=${vcf}"
     }
+    def ref = use_ref_dict ? "D=${ref_dict}" : ""
     """
     gatk MergeVcfs \\
         $input \\
         O=${prefix}.merged.vcf.gz \\
+        $ref \\
         $options.args
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
