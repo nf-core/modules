@@ -1,0 +1,19 @@
+- name: gatk4 samtofastq single-end
+  command: nextflow run ./tests/software/gatk4/samtofastq -entry test_gatk4_samtofastq_single_end -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4_samtofastq_single_end
+  files:
+    - path: output/gatk4/test.fastq.gz
+      md5sum: 61c6d3556ac6e0d09d800415b9a48508
+
+- name: gatk4 samtofastq paired-end
+  command: nextflow run ./tests/software/gatk4/samtofastq -entry test_gatk4_samtofastq_paired_end -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4_samtofastq_paired_end
+  files:
+    - path: output/gatk4/test_1.fastq.gz
+      md5sum: 61c6d3556ac6e0d09d800415b9a48508
+    - path: output/gatk4/test_2.fastq.gz
+      md5sum: d0e74ab8dccca91c0ccd7125e588d5cd
