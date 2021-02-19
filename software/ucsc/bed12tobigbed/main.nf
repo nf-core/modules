@@ -20,7 +20,7 @@ process UCSC_BED12TOBIGBED {
 
     input:
     tuple val(sample), path(sizes), val(is_transcripts), path(bed12)
-    
+
     output:
     tuple val(sample), path(sizes), val(is_transcripts), path("*.bigBed"), emit: bigbed
 
