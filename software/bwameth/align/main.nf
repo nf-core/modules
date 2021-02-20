@@ -31,7 +31,7 @@ process BWAMETH_ALIGN {
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
-    INDEX=`find -L ./ -name "*bwameth.c2t" | sed 's/.bwameth.c2t//'`
+    INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/.bwameth.c2t//'`
 
     bwameth.py \\
         $options.args \\
