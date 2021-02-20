@@ -19,10 +19,10 @@ process BWAMETH_INDEX {
     }
 
     input:
-    path fasta, stageAs: "index/genome.fa"
+    path fasta, stageAs: "bwameth/*"
 
     output:
-    path "index"        , emit: index
+    path "bwameth"      , emit: index
     path "*.version.txt", emit: version
 
     script:
