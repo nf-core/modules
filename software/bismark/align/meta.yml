@@ -54,6 +54,11 @@ input:
         description: Bismark genome index directory
         pattern: "BismarkIndex"
 output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
         description: Output BAM file containing read alignments
