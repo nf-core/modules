@@ -5,6 +5,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process UCSC_BED12TOBIGBED {
+    echo true
     tag "$sample"
     label 'process_medium'
     publishDir "${params.outdir}",
@@ -19,12 +20,15 @@ process UCSC_BED12TOBIGBED {
     !params.skip_alignment && !params.skip_bigbed && (params.protocol == 'directRNA' || params.protocol == 'cDNA')
 
     input:
-    tuple val(sample), path(sizes), val(is_transcripts), path(bed12)
+    tuple val(sample), path(sizes), path(bed12)
 
     output:
-    tuple val(sample), path(sizes), val(is_transcripts), path("*.bigBed"), emit: bigbed
+    tuple val(sample), path(sizes), path("*.bigBed"), emit: bigbed
 
     script:
+    echo sample
+    echo sizes
+    echo bed12
     """
     bedToBigBed \\
         $bed12 \\
