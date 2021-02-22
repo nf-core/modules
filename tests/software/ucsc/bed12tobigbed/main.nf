@@ -8,7 +8,7 @@ workflow test_ucsc_bed12tobigbed {
 
     def input = []
     input = [ 'test' , file("${launchDir}/tests/data/chrom_size/hg19.chrom.sizes", checkIfExists: true),
-              FALSE , file("${launchDir}/tests/data/bed/test_ucsc_bed12tobigbed.bed", checkIfExists: true)]
+              'FALSE' , file("${launchDir}/tests/data/bed/test_ucsc_bed12tobigbed.bed", checkIfExists: true)]
 
     UCSC_BED12TOBIGBED ( input )
 }
