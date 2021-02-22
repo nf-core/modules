@@ -44,9 +44,10 @@ input:
       description: BAM/SAM/CRAM file containing reads
       pattern: "*.{bam,sam,cram}"
   - fasta:
-      type: file
-      description: Reference sequence file
-      pattern: "*.fasta"
+      type: tuple of files
+      description: |
+        Tuple of fasta file (first), sequence dict (second) and fasta index (third)
+      pattern: ["*.fasta", "*.dict", "*.fai"]
 output:
   - bam:
       type: file
