@@ -80,7 +80,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 2 --kwdof
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --wt 1 --kwdof
 
       - name: Upload logs on failure
         if: failure()
