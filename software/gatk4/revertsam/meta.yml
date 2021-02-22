@@ -40,21 +40,14 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test']
   - bam:
-      type: list
-      description: Two or more VCF files
-      pattern: "*.{vcf,vcf.gz}"
-  - ref_dict:
       type: file
-      description: Optional Sequence Dictionary as input
-      pattern: "*.dict"
-  - use_ref_dict:
-      type: boolean
-      description: Specify whether or not to use a given reference dictionary
+      description: The input bam/sam file
+      pattern: "*.{bam,sam}"
 output:
-  - vcf:
+  - bam:
       type: file
-      description: merged vcf file
-      pattern: "*.vcf.gz"
+      description: The reverted bam/sam file
+      pattern: "*.reverted.bam"
   - version:
       type: file
       description: File containing software version
