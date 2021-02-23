@@ -8,10 +8,10 @@ include { CUTADAPT } from '../../../software/cutadapt/main.nf'  addParams( optio
  * Test with single-end data
  */
 workflow test_cutadapt_single_end {
-    
+
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/fastq/rna/test_single_end.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true) ] ]
     CUTADAPT( input )
 }
 
@@ -23,8 +23,8 @@ workflow test_cutadapt_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true),
+                file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_2.fastq.gz", checkIfExists: true) ] ]
     CUTADAPT( input )
 }
 
