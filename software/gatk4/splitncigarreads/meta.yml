@@ -1,5 +1,5 @@
-name: gatk4_mergevcfs
-description: Merges several vcf files
+name: gatk4_splitncigarreads
+description: Splits reads that contain Ns in their cigar string
 keywords:
   - vcf
   - merge
@@ -39,22 +39,20 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - vcf:
+  - bam:
       type: list
-      description: Two or more VCF files
-      pattern: "*.{vcf,vcf.gz}"
-  - ref_dict:
-      type: file
-      description: Optional Sequence Dictionary as input
-      pattern: "*.dict"
-  - use_ref_dict:
-      type: boolean
-      description: Specify whether or not to use a given reference dictionary
+      description: BAM/SAM/CRAM file containing reads
+      pattern: "*.{bam,sam,cram}"
+  - fasta:
+      type: tuple of files
+      description: |
+        Tuple of fasta file (first), sequence dict (second) and fasta index (third)
+      pattern: ["*.fasta", "*.dict", "*.fai"]
 output:
-  - vcf:
+  - bam:
       type: file
-      description: merged vcf file
-      pattern: "*.vcf.gz"
+      description: Output file with split reads (BAM/SAM/CRAM)
+      pattern: "*.{bam,sam,cram}"
   - version:
       type: file
       description: File containing software version
