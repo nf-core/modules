@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_MPILEUP } from '../../../../software/bcftools/mpileup/main.nf' addParams( options: ['args2': '--no-version --ploidy 1 --multiallelic-caller'] )
+include { BCFTOOLS_MPILEUP } from '../../../../software/bcftools/mpileup/main.nf' addParams( options: ['args2': '--no-version --ploidy 1 --multiallelic-caller',
+                                                                                                       'args3': '--no-version' ] )
 
 workflow test_bcftools_mpileup {
 
