@@ -50,7 +50,8 @@ process SEQKIT_SPLIT2 {
         split2 \
         $options.args \
         --threads $task.cpus \
-        -1 $reads
+        -1 ${reads} \
+        --out-dir ${prefix}.split 
 
     echo \$(seqkit --version 2>&1) | sed 's/^.*seqkit //; s/Using.*\$//' > ${software}.version.txt
     """
@@ -61,7 +62,9 @@ process SEQKIT_SPLIT2 {
         $options.args \
         --threads $task.cpus \
         -1 ${reads[0]} \
-        -2 ${reads[1]}
+        -2 ${reads[1]} \
+        --out-dir ${prefix}.split 
+
     echo \$(seqkit --version 2>&1) | sed 's/^.*seqkit //; s/Using.*\$//' > ${software}.version.txt
     """
     }
