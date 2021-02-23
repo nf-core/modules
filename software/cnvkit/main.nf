@@ -59,7 +59,7 @@ process CNVKIT {
           --fasta $reffasta \\
           --annotate $annotationfile \\
           --output-reference my_flat_reference.cnn --output-dir output
-          echo $VERSION > ${software}.version.txt
+          cnvkit.py version > ${software}.version.txt
         """
     }
 }
