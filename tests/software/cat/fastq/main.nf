@@ -8,8 +8,8 @@ workflow test_cat_fastq_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-                [ file("${launchDir}/tests/data/fastq/rna/test_R1_val_1.fq.gz", checkIfExists: true),
-                  file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true) ]]
+                [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true),
+                  file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_b_1.fastq.gz", checkIfExists: true) ]]
 
     CAT_FASTQ ( input )
 }
@@ -18,10 +18,10 @@ workflow test_cat_fastq_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-                [ file("${launchDir}/tests/data/fastq/rna/test_R1_val_1.fq.gz", checkIfExists: true),
-                  file("${launchDir}/tests/data/fastq/rna/test_R2_val_2.fq.gz", checkIfExists: true),
-                  file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
-                  file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ]]
+                [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true),
+                  file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_2.fastq.gz", checkIfExists: true),
+                  file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_b_1.fastq.gz", checkIfExists: true),
+                  file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_b_2.fastq.gz", checkIfExists: true) ]]
 
     CAT_FASTQ ( input )
 }
