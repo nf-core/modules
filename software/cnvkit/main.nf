@@ -44,15 +44,31 @@ process CNVKIT {
 	"""
         cnvkit.py batch $options.args $tumourbam \\ 
           --normal $normalbam \\
+<<<<<<< HEAD
           --fasta $fasta \\
         cnvkit.py version > ${software}.version.txt
+=======
+          --method wgs \\
+          --fasta $reffasta \\
+          --annotate $annotationfile \\
+          --output-reference reference.cnn --output-dir output
+          cnvkit.py version > ${software}.version.txt
+>>>>>>> e60433e152ce8d988c04b6a207debea4afb4326d
         """
     } else {
 	"""
         cnvkit.py batch $options.args $tumourbam
           --normal \\
+<<<<<<< HEAD
           --fasta $fasta \\
         cnvkit.py version > ${software}.version.txt
+=======
+          --method wgs \\
+          --fasta $reffasta \\
+          --annotate $annotationfile \\
+          --output-reference my_flat_reference.cnn --output-dir output
+          cnvkit.py version > ${software}.version.txt
+>>>>>>> e60433e152ce8d988c04b6a207debea4afb4326d
         """
     }
 }
