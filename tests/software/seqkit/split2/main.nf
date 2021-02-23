@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQKIT_SPLIT2_LENGTH } from '../../../../software/SEQKIT/SPLIT2/main.nf' addParams( options: ['args': '--by-length 2'] )
-include { SEQKIT_SPLIT2_SIZE } from '../../../../software/SEQKIT/SPLIT2/main.nf' addParams( options: ['args': '--by-size 2 ' ] )
+include { SEQKIT_SPLIT2_LENGTH } from '../../../../software/SEQKIT/SPLIT2/main.nf' addParams( options: ['args': '--by-length 26K'] )
+include { SEQKIT_SPLIT2_SIZE } from '../../../../software/SEQKIT/SPLIT2/main.nf' addParams( options: ['args': '--by-size 5000 ' ] )
 include { SEQKIT_SPLIT2_PART } from '../../../../software/SEQKIT/SPLIT2/main.nf' addParams( options: ['args': '--by-part 2 '] )
 
 workflow test_seqkit_split2_length_single_end {
