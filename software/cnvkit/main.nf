@@ -10,8 +10,8 @@ process CNVKIT {
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
-	
-    conda (params.enable_conda ? "bioconda::cnvkit=0.9.8=0" : null)
+
+	conda (params.enable_conda ? "bioconda::cnvkit=0.9.8=0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/conda:0.9.8--py_0"
     } else {
@@ -41,33 +41,33 @@ process CNVKIT {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     if (meta.with_normal) {
-	"""
-        cnvkit.py batch $options.args $tumourbam \\ 
-          --normal $normalbam \\
+        """
+        cnvkit.py batch $options.args $tumourbam \\
 <<<<<<< HEAD
-          --fasta $fasta \\
+        --normal $normalbam \\
+        --fasta $fasta \\
         cnvkit.py version > ${software}.version.txt
 =======
-          --method wgs \\
-          --fasta $reffasta \\
-          --annotate $annotationfile \\
-          --output-reference reference.cnn --output-dir output
-          cnvkit.py version > ${software}.version.txt
+        --method wgs \\
+        --fasta $reffasta \\
+        --annotate $annotationfile \\
+        --output-reference reference.cnn --output-dir output
+        cnvkit.py version > ${software}.version.txt
 >>>>>>> e60433e152ce8d988c04b6a207debea4afb4326d
         """
     } else {
-	"""
+        """
         cnvkit.py batch $options.args $tumourbam
-          --normal \\
+        --normal \\
 <<<<<<< HEAD
-          --fasta $fasta \\
+        --fasta $fasta \\
         cnvkit.py version > ${software}.version.txt
 =======
-          --method wgs \\
-          --fasta $reffasta \\
-          --annotate $annotationfile \\
-          --output-reference my_flat_reference.cnn --output-dir output
-          cnvkit.py version > ${software}.version.txt
+        --method wgs \\
+        --fasta $reffasta \\
+        --annotate $annotationfile \\
+        --output-reference my_flat_reference.cnn --output-dir output
+        cnvkit.py version > ${software}.version.txt
 >>>>>>> e60433e152ce8d988c04b6a207debea4afb4326d
         """
     }
