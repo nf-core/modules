@@ -42,7 +42,7 @@ input:
     - reads:
         type: file
         description: FastQ files
-        pattern: "*.{fq.gz/fastq.gz}"
+        pattern: "*.fastq.gz"
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
     - meta:
@@ -53,7 +53,7 @@ output:
     - reads:
         type: file
         description: Split fastq files
-        pattern: "*.{fq.gz}"
+        pattern: "*.fastq.gz"
     - version:
         type: file
         description: File containing software version
