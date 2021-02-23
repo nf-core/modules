@@ -7,9 +7,9 @@ include { MOSDEPTH } from '../../../software/mosdepth/main.nf' addParams( option
 workflow test_mosdepth {
 
     input = [ [ id:'test', single_end:true ],
-              [ file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ],
-              [ file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam.bai", checkIfExists: true) ] ]
-    dummy = [ file("${launchDir}/tests/data/dummy/dummy_file.txt", checkIfExists: true) ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ],
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test-sc2-artic-v3-sorted-trimmed.bam.bai", checkIfExists: true) ] ]
+    dummy = [ file("${launchDir}/tests/data/generic/dummy_file.txt", checkIfExists: true) ]
 
     window_size = 100
 
