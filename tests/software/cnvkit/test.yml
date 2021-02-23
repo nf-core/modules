@@ -1,5 +1,5 @@
-- name: cnvkit
-  command: nextflow run ./tests/software/cnvkit -entry test_with_normal -c tests/config/nextflow.config
+- name: cnvkit with_normal
+  command: nextflow run ./tests/software/cnvkit -entry test_cnvkit_with_normal -c tests/config/nextflow.config
   tags:
     - cnvkit
     - cnvkit_with_normal
@@ -8,15 +8,15 @@
     - path: output/cnvkit/human_subseq_chr21.target.bed
     - path: output/cnvkit/human_subseq_chr21.antitarget.bed
     - path: output/cnvkit/reference.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.targetcoverage.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.antitargetcoverage.cnn
-    - path: output/cnvkit/normal_280_sub_chr21.targetcoverage.cnn
-    - path: output/cnvkit/normal_280_sub_chr21.antitargetcoverage.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.cnr
-    - path: output/cnvkit/tumour_278_sub_chr21.cns
+    - path: output/cnvkit/test_tumour_278_sub_chr21.targetcoverage.cnn
+    - path: output/cnvkit/test_tumour_278_sub_chr21.antitargetcoverage.cnn
+    - path: output/cnvkit/test_normal_280_sub_chr21.targetcoverage.cnn
+    - path: output/cnvkit/test_normal_280_sub_chr21.antitargetcoverage.cnn
+    - path: output/cnvkit/test_tumour_278_sub_chr21.cnr
+    - path: output/cnvkit/test_tumour_278_sub_chr21.cns
 
-- name: cnvkit
-  command: nextflow run ./tests/software/cnvkit -entry test_without_normal -c tests/config/nextflow.config
+- name: cnvkit without_normal
+  command: nextflow run ./tests/software/cnvkit -entry test_cnvkit_without_normal -c tests/config/nextflow.config
   tags:
     - cnvkit
     - cnvkit_without_normal
@@ -24,9 +24,9 @@
     - path: output/cnvkit/human_subseq_chr21.bed
     - path: output/cnvkit/human_subseq_chr21.target.bed
     - path: output/cnvkit/human_subseq_chr21.antitarget.bed
-    - path: output/cnvkit/my_flat_reference.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.targetcoverage.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.antitargetcoverage.cnn
-    - path: output/cnvkit/tumour_278_sub_chr21.cnr
-    - path: output/cnvkit/tumour_278_sub_chr21.cns
+    - path: output/cnvkit/reference.cnn
+    - path: output/cnvkit/test_tumour_278_sub_chr21.targetcoverage.cnn
+    - path: output/cnvkit/test_tumour_278_sub_chr21.antitargetcoverage.cnn
+    - path: output/cnvkit/test_tumour_278_sub_chr21.cnr
+    - path: output/cnvkit/test_tumour_278_sub_chr21.cns
 
