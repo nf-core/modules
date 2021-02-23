@@ -4,8 +4,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-def VERSION = '0.9.8'
-
 process CNVKIT {
     tag "$meta.id"
     label 'process_low'
