@@ -1,0 +1,12 @@
+- name: bcftools mpileup
+  command: nextflow run ./tests/software/bcftools/mpileup -entry test_bcftools_mpileup -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools_mpileup
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: cad164d4a83dc8fa0889198acc196ce0
+    - path: output/bcftools/test.vcf.gz.tbi
+      md5sum: 51f4c3c6eec17d54e8f793ba5ba7b350
+    - path: output/bcftools/test.bcftools_stats.txt
+      md5sum: e632d29778c2b95b8b6e28ffec6fe7dd
