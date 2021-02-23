@@ -7,7 +7,7 @@ include { BEDTOOLS_SORT } from '../../../../software/bedtools/sort/main.nf' addP
 workflow test_bedtools_sort {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bed/sarscov2.bed", checkIfExists: true) ]
 
     BEDTOOLS_SORT ( input )
 }
