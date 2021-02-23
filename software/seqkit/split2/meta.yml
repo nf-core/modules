@@ -10,7 +10,6 @@ tools:
         homepage: https://github.com/shenwei356/seqkit
         documentation: https://bioinf.shenwei.me/seqkit/
         doi: 10.1371/journal.pone.0163962
-## TODO nf-core: If you are using any additional "params" in the main.nf script of the module add them below
 params:
     - outdir:
         type: string
@@ -42,7 +41,7 @@ input:
     - reads:
         type: file
         description: FastQ files
-        pattern: "*.fastq.gz"
+        pattern: "*.{fq.gz/fastq.gz}"
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
     - meta:
@@ -53,7 +52,7 @@ output:
     - reads:
         type: file
         description: Split fastq files
-        pattern: "*.fastq.gz"
+        pattern: "*.{fq.gz/fastq.gz}"
     - version:
         type: file
         description: File containing software version
