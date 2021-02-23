@@ -34,7 +34,7 @@ process IVAR_CONSENSUS {
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
-        --fasta-ref $fasta \\
+        --reference $fasta \\
         $options.args2 \\
         $bam | \\
         $save_mpileup \\
