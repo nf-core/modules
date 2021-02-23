@@ -31,7 +31,6 @@ params:
         description: |
             Instead of directly downloading Singularity images for use with Singularity,
             force the workflow to pull and convert Docker containers instead.
-## TODO nf-core: Add a description of all of the variables used as input
 input:
     - meta:
         type: map
@@ -42,7 +41,6 @@ input:
         type: file
         description: FastQ files
         pattern: "*.{fq.gz/fastq.gz}"
-## TODO nf-core: Add a description of all of the variables used as output
 output:
     - meta:
         type: map
