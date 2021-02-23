@@ -18,7 +18,6 @@
     - size
   files:
     - path: output/seqkit/
-      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
 
 - name: seqkit split2 single-end part
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_part_single_end -c tests/config/nextflow.config
@@ -29,7 +28,6 @@
     - part
   files:
     - path: output/seqkit/
-      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
 
 - name: seqkit split2 paired-end length
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_length_paired_end -c tests/config/nextflow.config
@@ -40,7 +38,6 @@
     - length
   files:
     - path: output/seqkit/
-      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
 
 - name: seqkit split2 paired-end size
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_size_paired_end -c tests/config/nextflow.config
@@ -51,7 +48,6 @@
     - size
   files:
     - path: output/seqkit/
-      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
 
 - name: seqkit split2 paired-end part
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_part_paired_end -c tests/config/nextflow.config
@@ -62,4 +58,3 @@
     - part
   files:
     - path: output/seqkit/
-      md5sum: a41bfadacd2eeef1d31e05c135cc4f4e
