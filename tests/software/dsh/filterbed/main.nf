@@ -8,7 +8,7 @@ workflow test_dsh_filterbed {
 
     def input = []
     input = [ [ id:'A' ], // meta map
-              [ file("${launchDir}/tests/data/bed/A.bed.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bed/sarscov2.bed", checkIfExists: true) ] ]
 
     DSH_FILTERBED ( input )
 }
