@@ -5,7 +5,6 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process UCSC_BED12TOBIGBED {
-    echo true
     tag "$sample"
     label 'process_medium'
     publishDir "${params.outdir}",
@@ -16,9 +15,6 @@ process UCSC_BED12TOBIGBED {
     container "quay.io/biocontainers/ucsc-bedtobigbed:377--h446ed27_1"
     if ({ task.exitStatus in [255] }) { errorStrategy = 'ignore' }
 
-    when:
-    !params.skip_alignment && !params.skip_bigbed && (params.protocol == 'directRNA' || params.protocol == 'cDNA')
-
     input:
     tuple val(sample), path(sizes), path(bed12)
 
@@ -26,9 +22,6 @@ process UCSC_BED12TOBIGBED {
     tuple val(sample), path(sizes), path("*.bigBed"), emit: bigbed
 
     script:
-    echo sample
-    echo sizes
-    echo bed12
     """
     bedToBigBed \\
         $bed12 \\
