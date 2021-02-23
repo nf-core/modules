@@ -1,8 +1,8 @@
-name: gatk4_mergevcfs
-description: Merges several vcf files
+name: gatk4_revertsam
+description: Reverts SAM or BAM files to a previous state.
 keywords:
-  - vcf
-  - merge
+  - sam
+  - revert
 tools:
   - gatk4:
       description: |
@@ -39,22 +39,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - vcf:
-      type: list
-      description: Two or more VCF files
-      pattern: "*.{vcf,vcf.gz}"
-  - ref_dict:
+  - bam:
       type: file
-      description: Optional Sequence Dictionary as input
-      pattern: "*.dict"
-  - use_ref_dict:
-      type: boolean
-      description: Specify whether or not to use a given reference dictionary
+      description: The input bam/sam file
+      pattern: "*.{bam,sam}"
 output:
-  - vcf:
+  - bam:
       type: file
-      description: merged vcf file
-      pattern: "*.vcf.gz"
+      description: The reverted bam/sam file
+      pattern: "*.reverted.bam"
   - version:
       type: file
       description: File containing software version
