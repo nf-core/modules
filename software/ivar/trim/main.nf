@@ -19,11 +19,12 @@ process IVAR_TRIM {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path bed
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path('*.log'), emit: log
     path "*.version.txt"          , emit: version
 
     script:
@@ -34,7 +35,8 @@ process IVAR_TRIM {
         $options.args \\
         -i $bam \\
         -b $bed \\
-        -p $prefix
+        -p $prefix \\
+        > ${prefix}.ivar.log
 
     ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
     """
