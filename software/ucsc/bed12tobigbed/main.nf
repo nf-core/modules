@@ -9,7 +9,7 @@ process UCSC_BED12TOBIGBED {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'bigBed', publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'ucsc', publish_id:'') }
 
     conda     (params.enable_conda ? "bioconda::ucsc-bedtobigbed=377" : null)
     container "quay.io/biocontainers/ucsc-bedtobigbed:377--h446ed27_1"
