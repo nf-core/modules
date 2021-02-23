@@ -7,7 +7,7 @@ include { BEDTOOLS_GENOMECOV } from '../../../../software/bedtools/genomecov/mai
 workflow test_bedtools_genomecov {
     def input = []
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/bam/test.paired_end.name.sorted.bam", checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bam/sarscov2_paired_aln.bam", checkIfExists: true) ]
 
     BEDTOOLS_GENOMECOV ( input )
 }
