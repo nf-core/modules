@@ -24,7 +24,7 @@ process SEQKIT_SPLIT2 {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.split/*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.split/*.gz"), emit: reads
     path("*.version.txt")                      , emit: version
 
 
