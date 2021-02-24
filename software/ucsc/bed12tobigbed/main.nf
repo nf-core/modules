@@ -5,7 +5,7 @@ params.options = [:]
 def options    = initOptions(params.options)
 
 process UCSC_BED12TOBIGBED {
-    tag "$sample"
+    tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
