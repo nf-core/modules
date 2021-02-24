@@ -1,0 +1,59 @@
+name: seqkit_split2
+description: Split single or paired-end fastq.gz files
+keywords:
+    - split
+    - fastq
+tools:
+    - seqkit:
+        description: |
+            Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+        homepage: https://github.com/shenwei356/seqkit
+        documentation: https://bioinf.shenwei.me/seqkit/
+        doi: 10.1371/journal.pone.0163962
+params:
+    - outdir:
+        type: string
+        description: |
+            The pipeline's output directory. By default, the module will
+            output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+            Value for the Nextflow `publishDir` mode parameter.
+            Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+            Run the module with Conda using the software specified
+            via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+            Instead of directly downloading Singularity images for use with Singularity,
+            force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FastQ files
+        pattern: "*.{fq.gz/fastq.gz}"
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Split fastq files
+        pattern: "*.{fq.gz/fastq.gz}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@FriederikeHanssen"
