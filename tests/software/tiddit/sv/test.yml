@@ -1,0 +1,27 @@
+- name: tiddit sv
+  command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv -c tests/config/nextflow.config
+  tags:
+    - tiddit
+    - tiddit_sv
+    - vcf
+  files:
+    - path: output/tiddit/test.ploidy.tab
+      md5sum: 207bd22e75de82160f98bedc2d3d262d
+    - path: output/tiddit/test.signals.tab
+      md5sum: 67e041b737fe0fe1a33119c3109e9eff
+    - path: output/tiddit/test.vcf
+      md5sum: 24e749d49a2e91acdfb3bc13c1c6e51d
+
+- name: tiddit sv no ref
+  command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv_no_ref -c tests/config/nextflow.config
+  tags:
+    - tiddit
+    - tiddit_sv
+    - vcf
+  files:
+    - path: output/tiddit/test.ploidy.tab
+      md5sum: 207bd22e75de82160f98bedc2d3d262d
+    - path: output/tiddit/test.signals.tab
+      md5sum: 67e041b737fe0fe1a33119c3109e9eff
+    - path: output/tiddit/test.vcf
+      md5sum: 24e749d49a2e91acdfb3bc13c1c6e51d
