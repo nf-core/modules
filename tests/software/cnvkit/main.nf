@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT } from '../../../../software/cnvkit/main.nf' addParams( options: [ 'args': '--targets my_baits.bed --method wgs --annotate refflat.txt --output-reference reference.cnn' ] )
+include { CNVKIT } from '../../../software/cnvkit/main.nf' addParams( options: [ 'args': '--targets my_baits.bed --method wgs --annotate refflat.txt --output-reference reference.cnn' ] )
 
 /*
  * Test with normal sample
