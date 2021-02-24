@@ -5,8 +5,8 @@
     - tabix_tabix
     - bed
   files:
-    - path: output/tabix/B.bed.gz.tbi
-      md5sum: 6d657159c283200109f2ed082296f853
+    - path: ./output/tabix/sarscov2.bed.gz.tbi
+      md5sum: 115922d881d24879b15d20c3734495ac
 - name: tabix tabix gff
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_gff -c tests/config/nextflow.config
   tags:
