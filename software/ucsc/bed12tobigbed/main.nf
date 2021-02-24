@@ -18,10 +18,12 @@ process UCSC_BED12TOBIGBED {
     if ({ task.exitStatus in [255] }) { errorStrategy = 'ignore' }
 
     input:
-    tuple val(sample), path(sizes), path(bed12)
+    tuple val(meta), path(bed)
+    path  sizes
 
     output:
-    tuple val(sample), path(sizes), path("*.bigBed"), emit: bigbed
+    tuple val(meta), path("*.bigBed"), emit: bigbed
+    path "*.version.txt"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
