@@ -1,0 +1,102 @@
+- name: seqkit split2 single-end length
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_length -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_single_end
+    - length
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: fb45cfec0d0d37f85abe81a0d299137e
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 0dfb5284ee0bb7e1b77b57dc1bd16311
+
+
+- name: seqkit split2 single-end size
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_size -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_single_end
+    - size
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: e76ac276819eb862c0a931755a220b50
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 79eb15ff1aac645308fab188915f9edf
+    - path: output/seqkit/test.split/SRR396636_R1.part_003.fastq.gz
+      md5sum: f01fa62d34012a2e9cc48972dfe8c14c
+
+- name: seqkit split2 single-end part
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_part -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_single_end
+    - part
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: c394bc973e1f0f9bda835e4a7610d2e1
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 152e4470b8caeed1fc1c0326f34aa4e6
+    - path: output/seqkit/test.split/SRR396636_R1.part_003.fastq.gz
+      md5sum: 6d8a9f6ed0f4eadbb8b1c560bfea384d
+
+- name: seqkit split2 paired-end length
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_length -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_paired_end
+    - length
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: fb45cfec0d0d37f85abe81a0d299137e
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 0dfb5284ee0bb7e1b77b57dc1bd16311
+    - path: output/seqkit/test.split/SRR396636_R2.part_001.fastq.gz
+      md5sum: 4e9704a4a0f4bcab4900b6fcd9323d8a
+    - path: output/seqkit/test.split/SRR396636_R2.part_002.fastq.gz
+      md5sum: da93241d0cfa84d4b806e1e102c16977
+
+- name: seqkit split2 paired-end size
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_size -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_paired_end
+    - size
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: e76ac276819eb862c0a931755a220b50
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 79eb15ff1aac645308fab188915f9edf
+    - path: output/seqkit/test.split/SRR396636_R1.part_003.fastq.gz
+      md5sum: f01fa62d34012a2e9cc48972dfe8c14c
+    - path: output/seqkit/test.split/SRR396636_R2.part_001.fastq.gz
+      md5sum: 357bfa5b981f34d87f682aebcf5e46fe
+    - path: output/seqkit/test.split/SRR396636_R2.part_002.fastq.gz
+      md5sum: f48f3389d2870f4934139a901e5c4bb2
+    - path: output/seqkit/test.split/SRR396636_R2.part_003.fastq.gz
+      md5sum: d161aa05bac2f7d1823da0479949512b
+
+- name: seqkit split2 paired-end part
+  command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_part -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit_split2
+    - seqkit_split2_paired_end
+    - part
+  files:
+    - path: output/seqkit/test.split/SRR396636_R1.part_001.fastq.gz
+      md5sum: c394bc973e1f0f9bda835e4a7610d2e1
+    - path: output/seqkit/test.split/SRR396636_R1.part_002.fastq.gz
+      md5sum: 152e4470b8caeed1fc1c0326f34aa4e6
+    - path: output/seqkit/test.split/SRR396636_R1.part_003.fastq.gz
+      md5sum: 6d8a9f6ed0f4eadbb8b1c560bfea384d
+    - path: output/seqkit/test.split/SRR396636_R2.part_001.fastq.gz
+      md5sum: 228aff8f1e56050967476fcad164a4fc
+    - path: output/seqkit/test.split/SRR396636_R2.part_002.fastq.gz
+      md5sum: 41047f3df10126c0df7f8e9bfd752b83
+    - path: output/seqkit/test.split/SRR396636_R1.part_003.fastq.gz
+      md5sum: 6d8a9f6ed0f4eadbb8b1c560bfea384d
