@@ -24,10 +24,14 @@ process UCSC_BED12TOBIGBED {
     tuple val(sample), path(sizes), path("*.bigBed"), emit: bigbed
 
     script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedToBigBed \\
-        $bed12 \\
+        $bed \\
         $sizes \\
-        ${sample}.bigBed
+        ${prefix}.bigBed
+
+    echo $VERSION > ${software}.version.txt
     """
 }
