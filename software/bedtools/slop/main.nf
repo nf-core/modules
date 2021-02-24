@@ -23,7 +23,7 @@ process BEDTOOLS_SLOP {
     path  sizes
 
     output:
-    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("*.slop.bed"), emit: bed
     path  "*.version.txt"         , emit: version
 
     script:
@@ -35,7 +35,7 @@ process BEDTOOLS_SLOP {
         -i $bed \\
         -g $sizes \\
         $options.args \\
-        > ${prefix}.bed
+        > ${prefix}.slop.bed
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
