@@ -9,8 +9,8 @@ workflow test_multiqc {
 
     def input = []
     input = [ [ id: 'test', single_end: false ],
-              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_2.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
+                file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true) ] ]
     FASTQC  ( input )
     MULTIQC ( FASTQC.out.zip.collect { it[1] } )
 }

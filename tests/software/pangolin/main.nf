@@ -6,7 +6,7 @@ include { PANGOLIN } from '../../../software/pangolin/main.nf' addParams( option
 
 workflow test_pangolin {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/GCA_011545545.1_ASM1154554v1_genomic.fasta", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) ] ]
 
     PANGOLIN ( input )
 }
