@@ -8,7 +8,7 @@ workflow test_qualimap_bamqc {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
     def gff = file("dummy_file.txt")
     def use_gff = false
 
