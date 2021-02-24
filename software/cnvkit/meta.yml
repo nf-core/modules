@@ -11,11 +11,6 @@ tools:
       homepage: https://cnvkit.readthedocs.io/en/stable/index.html
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
 params:
-  - params.modules['cnvkit'].args:
-      type: string
-      description: Additional command line arguments passed to cnvkit
-        these are expected to be defined in a structured format under params.modules{}
-        in the nextflow.config file
   - outdir:
       type: string
       description: |
