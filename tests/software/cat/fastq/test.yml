@@ -6,7 +6,7 @@
     - cat_fastqc_single_end
   files:
     - path: ./output/merged_fastq/test.merged.fastq.gz
-      md5sum: 3ad9406595fafec8172368f9cd0b6a22
+      md5sum: 59f6dbe193741bb40f498f254aeb2e99
 
 - name: cat fastq fastqc_paired_end
   command: nextflow run ./tests/software/cat/fastq -entry test_cat_fastq_paired_end -c tests/config/nextflow.config
@@ -16,6 +16,6 @@
     - cat_fastqc_paired_end
   files:
     - path: ./output/merged_fastq/test_2.merged.fastq.gz
-      md5sum: a52cab0b840c7178b0ea83df1fdbe8d5
+      md5sum: d2b1a836eef1058738ecab36c907c5ba
     - path: ./output/merged_fastq/test_1.merged.fastq.gz
-      md5sum: 3ad9406595fafec8172368f9cd0b6a22
+      md5sum: 59f6dbe193741bb40f498f254aeb2e99

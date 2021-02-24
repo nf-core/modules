@@ -11,7 +11,7 @@ workflow test_fastp_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true) ] ]
     FASTP ( input )
 }
 
@@ -22,8 +22,8 @@ workflow test_fastp_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/fastq/sarscov2_2.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
+                file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true) ] ]
     FASTP ( input )
 }
 
