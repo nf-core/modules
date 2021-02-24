@@ -275,21 +275,21 @@ In order to test that each module added to `nf-core/modules` is actually working
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=docker pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
+        PROFILE=docker pytest --tag bowtie --symlink --keep-workflow-wd
         ```
 
     - Typical command with Singularity:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        TMPDIR=~ PROFILE=singularity pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
+        TMPDIR=~ PROFILE=singularity pytest --tag bowtie --symlink --keep-workflow-wd
         ```
 
     - Typical command with Conda:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=conda pytest --tag bowtie --symlink --wt 2 --keep-workflow-wd
+        PROFILE=conda pytest --tag bowtie --symlink --keep-workflow-wd
         ```
 
     - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.

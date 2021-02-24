@@ -18,6 +18,10 @@ bcftools_merge:
   - software/bcftools/merge/**
   - tests/software/bcftools/merge/**
 
+bcftools_mpileup:
+  - software/bcftools/mpileup/**
+  - tests/software/bcftools/mpileup/**
+
 bcftools_stats:
   - software/bcftools/stats/**
   - tests/software/bcftools/stats/**
@@ -53,6 +57,14 @@ bedtools_slop:
 bedtools_sort:
   - software/bedtools/sort/**
   - tests/software/bedtools/sort/**
+
+bismark_deduplicate:
+  - software/bismark/deduplicate/**
+  - tests/software/bismark/deduplicate/**
+
+bismark_genome_preparation:
+  - software/bismark/genome_preparation/**
+  - tests/software/bismark/genome_preparation/**
 
 blast_makeblastdb:
   - software/blast/makeblastdb/**
@@ -96,6 +108,14 @@ bwamem2_mem:
   - software/bwamem2/mem/**
   - tests/software/bwamem2/mem/**
 
+bwameth_align:
+  - software/bwameth/align/**
+  - tests/software/bwameth/align/**
+
+bwameth_index:
+  - software/bwameth/index/**
+  - tests/software/bwameth/index/**
+
 cat_fastq:
   - software/cat/fastq/**
   - tests/software/cat/fastq/**
@@ -124,6 +144,26 @@ gatk_createsequencedictionary:
   - software/gatk/createsequencedictionary/**
   - tests/software/gatk/createsequencedictionary/**
 
+gatk4_mergevcfs:
+  - software/gatk4/mergevcfs/**
+  - tests/software/gatk4/mergevcfs/**
+
+gatk4_bedtointervallist:
+  - software/gatk4/bedtointervallist/**
+  - tests/software/gatk4/bedtointervallist/**
+
+gatk4_revertsam:
+  - software/gatk4/revertsam/**
+  - tests/software/gatk4/revertsam/**
+
+gatk4_samtofastq:
+  - software/gatk4/samtofastq/**
+  - tests/software/gatk4/samtofastq/**
+
+gatk4_splitncigarreads:
+  - software/gatk4/splitncigarreads/**
+  - tests/software/gatk4/splitncigarreads/**
+
 gffread:
   - software/gffread/**
   - tests/software/gffread/**
@@ -147,6 +187,14 @@ ivar_trim:
 ivar_variants:
   - software/ivar/variants/**
   - tests/software/ivar/variants/**
+
+methyldackel_extract:
+  - software/methyldackel/extract/**
+  - tests/software/methyldackel/extract/**
+
+methyldackel_mbias:
+  - software/methyldackel/mbias/**
+  - tests/software/methyldackel/mbias/**
 
 minimap2_align:
   - software/minimap2/align/**
@@ -181,6 +229,10 @@ preseq_lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/lcextrap/**
 
+qualimap_bamqc:
+  - software/qualimap/bamqc/**
+  - tests/software/qualimap/bamqc/**
+
 quast:
   - software/quast/**
   - tests/software/quast/**
@@ -192,6 +244,10 @@ salmon_index:
 salmon_quant:
   - software/salmon/quant/**
   - tests/software/salmon/quant/**
+
+samtools_faidx:
+  - software/samtools/faidx/**
+  - tests/software/samtools/faidx/**
 
 samtools_flagstat:
   - software/samtools/flagstat/**
@@ -228,6 +284,9 @@ seacr_callpeak:
 seqkit_split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
+seqwish_induce:
+  - software/seqwish/induce/**
+  - tests/software/seqwish/induce/**
 
 star_align:
   - software/star/align/**
