@@ -4,6 +4,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
+def VERSION = '377'
+
 process UCSC_BED12TOBIGBED {
     tag "$meta.id"
     label 'process_medium'
