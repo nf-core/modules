@@ -9,7 +9,7 @@ workflow test_mosdepth {
     input = [ [ id:'test', single_end:true ],
               [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ],
               [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam.bai", checkIfExists: true) ] ]
-    dummy = [ file("${launchDir}/tests/data/generic/dummy_file.txt", checkIfExists: true) ]
+    def dummy = file("dummy_file.txt")
 
     window_size = 100
 

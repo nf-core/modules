@@ -9,7 +9,7 @@ workflow test_ivar_variants_no_gff_no_mpileup {
     params.save_mpileup = false
 
     def ref   = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
-    def dummy = file("${launchDir}/tests/data/generic/dummy_file.txt", checkIfExists: true)
+    def dummy = file("dummy_file.txt")
     def input = []
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
@@ -21,7 +21,7 @@ workflow test_ivar_variants_no_gff_with_mpileup {
     params.save_mpileup = true
 
     def ref   = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
-    def dummy = file("${launchDir}/tests/data/generic/dummy_file.txt", checkIfExists: true)
+    def dummy = file("dummy_file.txt")
     def input = []
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
