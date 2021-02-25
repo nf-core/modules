@@ -1,42 +1,41 @@
 # Modules Test Data
 
-# Guidelines
-TODO: add some guidelines on how to use/ when to add data
+This directory contains all data used for the individual module tests. It is currently organised in `genomics` and `generic`. The former contains all typical data required for genomics modules, such as fasta, fastq and bam files. Every folder in `genomics` corresponds to a single organisms. Any other data is stored in `generic`. This contains files that currently cannot be associated to a genomics category, but also depreciated files which will be removed in the future and exchanged by files in `genomics`.
 
-Whenever possible, data in the `genomics` directory should be re-used. The `generic` directory is for special cases only. It's use should be minimal.
+When adding a new module, please check carefully whether the data necessary for the tests exists already in `tests/data/genomics`. If you can't find the data, please ask about it in the slack #modules channel.
 
-TODO: remove unecessary files from `generic` as much as possible. Especially:
-* fasta
-* fastq
-* gtf
-
-Those are mainly used for STAR and methyldackel and take up the majority of the space
-
-# Data Description
+## Data Description
 
 ### genomics
 
 * sarscov2
     * bam:
-        * 'sarscov2_paired_aln.bam': sarscvoc2 sequencing reads aligned against GCA_011545545.1_ASM1154554v1_genomic.fasta using minimap2
-        * 'test-sc2-artic-v3-sorted-trimmed.bam': sarscov2 reads aligned against MN908947.3 genome
+        * 'test_paired_end.bam': sarscvoc2 sequencing reads aligned against test_genomic.fasta using minimap2
+        * 'test_paired_end.sorted.bam': sorted version of the above bam file
+        * 'test_paired_end.bam.sorted.bam.bai': bam index for the sorted bam file
+        * 'test_single_end.bam': alignment (unsorted) of the 'test_1.fastq.gz' reads against test_genomic.fasta using minimap2
     * bed
-        * 'sarscov2.bed': exemplary bed file for MT192765.1 genome
-        * 'test-sc2-artic-v3.bed': exemplary bed file for MN908947.3 genome
+        * 'test.bed': exemplary bed file for the MT192765.1 genome (fasta/test_genomic.fasta)
+        * 'test.2.bed': slightly modified copy of the above file
+        * 'test.bed.gz': gzipped version
+        * 'test.genome.sizes': genome size for the MT192765.1 genome
     * fasta
-        * 'GCA_011545545.1_ASM1154554v1_genomic.fasta': MT192765.1 genomem including GATK .dict file
-        * 'MN908947.3.fa': MN908947.3 genome
+        * 'test_genomic.fasta': MT192765.1 genomem including (GCA_011545545.1_ASM1154554v1)
+        * 'test_genomic.dict': GATK dict for 'test_genomic.fasta'
+        * 'test_genomic.fasta.fai': fasta index for 'test_genomic.fasta'
+        * 'test_cds_from_genomic.fasta': coding sequencing from MT192765.1 genome (transcripts)
     * fastq
-        * 'sarscov2_{1,2}.fastq.gz' sarscov2 paired-end sequencing reads
-        * 'sarscov2_b_{1,2}.fastq.gz‘: copies of the above reads
+        * 'test_{1,2}.fastq.gz' sarscov2 paired-end sequencing reads
+        * 'test_{1,2}.2.fastq.gz‘: copies of the above reads
     * gtf
-        * 'GCA_011545545.1_ASM1154554v1_genomic.gtf': GTF for MT192765.1 genome
-        * 'MN908947.3.gff3': GFF for MN908947.3 genome
-        * 'MN908947.3.gff3.gz': bgzipped-version
+        * 'test_genomic.gtf': GTF for MT192765.1 genome
+        * 'test_genomic.gff3': GFF for MT192765.1 genome
+        * 'test_genomic.gff3.gz': bgzipped-version
     * paf
-        * 'GCA_011545545.1_ASM1154554v1_cds_from_genomic.paf': PAF file for MT192765.1  genome
+        * 'test_cds_from_genomic.paf': PAF file for MT192765.1  genome
 
 ### generic
+
 * 'a.gff3.gz': bgzipped gff3 file currently necessary for TABIX test
 * bam
     * 'test.paired_end_methylated.sorted.bam': methylated bam file currently necessary for methyldackel
