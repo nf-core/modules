@@ -8,6 +8,6 @@ workflow test_samtools_view {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.bam", checkIfExists: true) ]
     SAMTOOLS_VIEW ( input )
 }

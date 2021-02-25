@@ -11,11 +11,11 @@ include { STRINGTIE as STRINGTIE_REVERSE } from '../../../software/stringtie/mai
 workflow test_stringtie_forward {
     def input = []
     input = [ [ id:'test', strandedness:'forward' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/sarscov2_paired_aln.sorted.bam", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
 
     STRINGTIE_FORWARD (
         input,
-        file("${launchDir}/tests/data/genomics/sarscov2/gtf/GCA_011545545.1_ASM1154554v1_genomic.gtf", checkIfExists: true)
+        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gtf", checkIfExists: true)
     )
 }
 
@@ -25,10 +25,10 @@ workflow test_stringtie_forward {
 workflow test_stringtie_reverse {
     def input = []
     input = [ [ id:'test', strandedness:'reverse' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/sarscov2_paired_aln.sorted.bam", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
 
     STRINGTIE_REVERSE (
         input,
-        file("${launchDir}/tests/data/genomics/sarscov2/gtf/GCA_011545545.1_ASM1154554v1_genomic.gtf", checkIfExists: true)
+        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gtf", checkIfExists: true)
     )
 }

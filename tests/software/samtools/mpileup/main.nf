@@ -9,7 +9,7 @@ workflow test_samtools_mpileup {
     def input = []
     def fasta = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test-sc2-artic-v3-sorted-trimmed.bam", checkIfExists: true) ]
-    fasta = [  file("${launchDir}/tests/data/genomics/sarscov2/fasta/MN908947.3.fa", checkIfExists: true)  ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
+    fasta = [  file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)  ]
     SAMTOOLS_MPILEUP ( input, fasta )
 }
