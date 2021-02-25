@@ -9,7 +9,7 @@ include { TABIX_TABIX as TABIX_VCF } from '../../../../software/tabix/tabix/main
 workflow test_tabix_tabix_bed {
     def input = []
     input = [ [ id:'B.bed' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/bed/sarscov2.bed.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed.gz", checkIfExists: true) ] ]
 
     TABIX_BED ( input )
 }
