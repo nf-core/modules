@@ -10,9 +10,9 @@ When adding a new module, please check carefully whether the data necessary for 
 
 * sarscov2
     * bam:
-        * 'test_paired_end.bam': sarscvoc2 sequencing reads aligned against test_genomic.fasta using minimap2
-        * 'test_paired_end.sorted.bam': sorted version of the above bam file
-        * 'test_paired_end.bam.sorted.bam.bai': bam index for the sorted bam file
+        * 'test_{,methylated}_paired_end.bam': sarscov2 sequencing reads aligned against test_genomic.fasta using minimap2
+        * 'test_{,methylated}_paired_end.sorted.bam': sorted version of the above bam file
+        * 'test_{,methylated}_paired_end.bam.sorted.bam.bai': bam index for the sorted bam file
         * 'test_single_end.bam': alignment (unsorted) of the 'test_1.fastq.gz' reads against test_genomic.fasta using minimap2
     * bed
         * 'test.bed': exemplary bed file for the MT192765.1 genome (fasta/test_genomic.fasta)
@@ -27,6 +27,7 @@ When adding a new module, please check carefully whether the data necessary for 
     * fastq
         * 'test_{1,2}.fastq.gz' sarscov2 paired-end sequencing reads
         * 'test_{1,2}.2.fastq.gz‘: copies of the above reads
+        * 'test_methylated_{1,2}.fastq.gz' sarscov2 paired-end bisulfite sequencing reads (generated with [Sherman](https://github.com/FelixKrueger/Sherman))
     * gtf
         * 'test_genomic.gtf': GTF for MT192765.1 genome
         * 'test_genomic.gff3': GFF for MT192765.1 genome
@@ -37,11 +38,8 @@ When adding a new module, please check carefully whether the data necessary for 
 ### generic
 
 * 'a.gff3.gz': bgzipped gff3 file currently necessary for TABIX test
-* bam
-    * 'test.paired_end_methylated.sorted.bam': methylated bam file currently necessary for methyldackel
 * bedgraph: bedgraph files for seacr
-* 'dummy_file.txt': a dummy file for whenever that is required
-* fasta: additional fasta files currently necessary for methyldackel and STAR
+* fasta: additional fasta file currently necessary for STAR
 * fastq: additional fastq files currently necessary for STAR
 * gtf: additional gtf file for STAR
 * vcf: several VCF files for tools using those, will be removed in the future
