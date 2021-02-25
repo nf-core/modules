@@ -1,0 +1,10 @@
+- name: Run bismark deduplicate test workflow
+  command: nextflow run ./tests/software/bismark/deduplicate -entry test_bismark_deduplicate -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_deduplicate
+  files:
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.deduplicated.bam
+      md5sum: 35794f413740d9097010e8411f03b785
+    - path: output/bismark/Ecoli_10K_methylated_R1_bismark_bt2_pe.deduplication_report.txt
+      md5sum: 125b01ad4f1784a77b7802667d4bfee7

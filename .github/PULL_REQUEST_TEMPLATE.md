@@ -25,6 +25,6 @@ Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/modu
 - [ ] Add a resource `label`
 - [ ] Use BioConda and BioContainers if possible to fulfil software requirements.
 - Ensure that the test works with either Docker / Singularity. Conda CI tests can be quite flaky:
-    - [ ] `PROFILE=docker pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`
-    - [ ] `PROFILE=singularity pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`
-    - [ ] `PROFILE=conda pytest --tag <MODULE> --symlink --wt 2 --keep-workflow-wd`
+    - [ ] `PROFILE=docker pytest --tag <MODULE> --symlink --keep-workflow-wd`
+    - [ ] `PROFILE=singularity pytest --tag <MODULE> --symlink --keep-workflow-wd`
+    - [ ] `PROFILE=conda pytest --tag <MODULE> --symlink --keep-workflow-wd`
