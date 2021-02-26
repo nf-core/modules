@@ -20,7 +20,7 @@ process CNVKIT {
 
 
     input:
-    tuple val(meta), path(tumourbam), path(normalbam)
+    tuple val(meta), path(bam)
     path fasta
 
 
@@ -36,8 +36,10 @@ process CNVKIT {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    cnvkit.py batch $options.args $tumourbam \\
-        --normal $normalbam \\
+    [ ! -f  ${prefix}_tumour_278_sub_chr21.bam ] && ln -s ${bam[0]} ${prefix}_tumour_278_sub_chr21.bam
+    [ ! -f  ${prefix}_normal_280_sub_chr21.bam ] && ln -s ${bam[1]} ${prefix}_normal_280_sub_chr21.bam
+    cnvkit.py batch $options.args ${prefix}_tumour_278_sub_chr21.bam\\
+        --normal ${prefix}_normal_280_sub_chr21.bam\\
         --fasta $fasta \\
     cnvkit.py version > ${software}.version.txt
     """
