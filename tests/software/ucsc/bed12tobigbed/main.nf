@@ -7,8 +7,9 @@ include { UCSC_BED12TOBIGBED } from '../../../../software/ucsc/bed12tobigbed/mai
 workflow test_ucsc_bed12tobigbed {
 
     def input = []
-    input = [ 'test' , file("${launchDir}/tests/data/chrom_size/hg19.chrom.sizes", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/test_ucsc_bed12tobigbed.bed", checkIfExists: true)]
+    input = [ [ id: 'test' ], // meta map 
+              [ file("${launchDir}/tests/data/bed/test.bed12", checkIfExists: true )] ]
+    sizes = file("${launchDir}/tests/data/sizes/test.sizes", checkIfExists: true)
 
-    UCSC_BED12TOBIGBED ( input )
+    UCSC_BED12TOBIGBED ( input, sizes )
 }
