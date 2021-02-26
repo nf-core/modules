@@ -37,14 +37,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - tumourbam:
+  - bam:
       type: file
       description: |
-        Input tumour bam file
-  - normalbam:
-      type: file
-      description: |
-        Input normal bam file
+        List of input bam files
   - fasta:
       type: file
       description: |
