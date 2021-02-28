@@ -13,7 +13,7 @@ process CNVKIT {
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.8" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/conda:0.9.8--py_0"
+        container "https://depot.galaxyproject.org/singularity/cnvkit:0.9.8--py_0"
     } else {
         container "quay.io/biocontainers/cnvkit"
     }
@@ -40,7 +40,7 @@ process CNVKIT {
         --normal ${prefix}_normal_280_sub_chr21.bam\\
         --fasta $fasta \\
         --annotate $annotationfile\\
-        $options.args\\
-    cnvkit.py --version | sed -e "s/cnvkit v//g" > ${software}.version.txt 
+        $options.args
+    cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt 
     """
 }
