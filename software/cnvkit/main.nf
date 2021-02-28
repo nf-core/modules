@@ -41,6 +41,6 @@ process CNVKIT {
         --fasta $fasta \\
         --annotate $annotationfile\\
         $options.args
-    cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt 
+    cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
     """
 }
