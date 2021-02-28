@@ -29,7 +29,6 @@ process CNVKIT {
     tuple val(meta), path("*.cnn"), emit: cnn
     tuple val(meta), path("*.cnr"), emit: cnr
     tuple val(meta), path("*.cns"), emit: cns
-    tuple val(meta), path("*.pdf"), emit: pdf
     path "*.version.txt"          , emit: version
 
     script:
@@ -41,6 +40,7 @@ process CNVKIT {
         --fasta $fasta \\
         --annotate $annotationfile\\
         $options.args
+
     cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
     """
 }
