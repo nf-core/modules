@@ -1,5 +1,5 @@
 - name: cnvkit
-  command: nextflow run ./tests/software/cnvkit -entry test_cnvkit -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/cnvkit/ -entry test_cnvkit -c tests/config/nextflow.config
   tags:
     - cnvkit
   files:
@@ -13,3 +13,5 @@
     - path: output/cnvkit/test_normal_280_sub_chr21.antitargetcoverage.cnn
     - path: output/cnvkit/test_tumour_278_sub_chr21.cnr
     - path: output/cnvkit/test_tumour_278_sub_chr21.cns
+    - path: output/cnvkit/test_tumour_278_sub_chr21.bintest.cns
+    - path: output/cnvkit/test_tumour_278_sub_chr21.call.cns
