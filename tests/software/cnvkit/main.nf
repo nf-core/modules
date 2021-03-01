@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT } from '/home/AD/rbhuller/modules-1/software/cnvkit/main.nf' addParams( options: [ 'args': '--method wgs --output-reference reference.cnn' ] )
+include { CNVKIT } from '../../../../software/cnvkit/main.nf' addParams( options: [ 'args': '--method wgs --output-reference reference.cnn' ] )
 
 workflow test_cnvkit {
     
