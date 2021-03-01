@@ -9,6 +9,6 @@ workflow test_bedtools_slop {
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed", checkIfExists: true) ]
 
-    BEDTOOLS_SLOP ( input, file("${launchDir}/tests/data/genomics/sarscov2/bed/test.genome.sizes", checkIfExists: true) )
+    BEDTOOLS_SLOP ( input, file("${launchDir}/tests/data/genomics/sarscov2/general/test.genome.sizes", checkIfExists: true) )
 }
 
