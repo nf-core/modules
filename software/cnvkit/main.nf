@@ -18,7 +18,6 @@ process CNVKIT {
         container "quay.io/biocontainers/cnvkit:0.9.8--py_0"
     }
 
-
     input:
     tuple val(meta), path(tumourbam), path(normalbam)
     path fasta
@@ -38,7 +37,6 @@ process CNVKIT {
     cnvkit.py batch \\
         $tumourbam \\
         --normal $normalbam\\
-        --normal $normalbam \\
         --fasta $fasta \\
         --annotate $annotationfile \\
         $options.args
