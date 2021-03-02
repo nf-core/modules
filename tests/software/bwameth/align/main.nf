@@ -16,7 +16,7 @@ workflow test_bwameth_align_single_end {
               [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_methylated_1.fastq.gz", checkIfExists: true) ] ]
 
 
-    BWAMETH_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) )
+    BWAMETH_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
     BWAMETH_ALIGN_SE (
         input,
         BWAMETH_INDEX.out.index
@@ -33,7 +33,7 @@ workflow test_bwameth_align_paired_end {
               [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_methylated_1.fastq.gz", checkIfExists: true),
                 file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_methylated_2.fastq.gz", checkIfExists: true) ] ]
 
-    BWAMETH_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) )
+    BWAMETH_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
     BWAMETH_ALIGN_PE (
         input,
         BWAMETH_INDEX.out.index

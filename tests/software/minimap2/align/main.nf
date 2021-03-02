@@ -6,7 +6,7 @@ include { MINIMAP2_ALIGN } from '../../../../software/minimap2/align/main.nf' ad
 
 workflow test_minimap2_align_single_end {
 
-    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
+    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
@@ -16,7 +16,7 @@ workflow test_minimap2_align_single_end {
 
 workflow test_minimap2_align_paired_end {
 
-    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
+    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map

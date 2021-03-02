@@ -10,9 +10,9 @@ workflow test_gatk4_splitncigarreads {
     input = [ [ id:'test' ], // meta map
               [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.bam", checkIfExists: true)] ]
 
-    fasta = [ file("tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true),
-              file("tests/data/genomics/sarscov2/fasta/test_genomic.fasta.fai", checkIfExists: true),
-              file("tests/data/genomics/sarscov2/fasta/test_genomic.dict", checkIfExists: true)]
+    fasta = [ file("tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true),
+              file("tests/data/genomics/sarscov2/fasta/test_genome.fasta.fai", checkIfExists: true),
+              file("tests/data/genomics/sarscov2/fasta/test_genome.dict", checkIfExists: true)]
 
     GATK4_SPLITNCIGARREADS ( input, fasta )
 }

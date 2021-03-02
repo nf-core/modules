@@ -6,7 +6,7 @@ include { BEDTOOLS_GETFASTA } from '../../../../software/bedtools/getfasta/main.
 
 workflow test_bedtools_getfasta {
     def bed   = [ file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed", checkIfExists: true) ]
-    def fasta = [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) ]
+    def fasta = [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
 
     BEDTOOLS_GETFASTA ( bed, fasta )
 }

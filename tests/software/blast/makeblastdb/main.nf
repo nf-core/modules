@@ -6,7 +6,7 @@ include { BLAST_MAKEBLASTDB } from '../../../../software/blast/makeblastdb/main.
 
 workflow test_blast_makeblastdb {
     def input = []
-    input =  [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) ]
+    input =  [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
 
     BLAST_MAKEBLASTDB( input )
 }

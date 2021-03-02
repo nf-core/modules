@@ -12,6 +12,6 @@ workflow test_picard_collectmultiplemetrics {
 
     PICARD_COLLECTMULTIPLEMETRICS (
         input,
-        file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
+        file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
     )
 }

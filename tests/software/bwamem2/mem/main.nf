@@ -14,7 +14,7 @@ workflow test_bwamem2_mem_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true) ] ]
 
-    BWAMEM2_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) )
+    BWAMEM2_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
     BWAMEM2_MEM (
         input,
         BWAMEM2_INDEX.out.index
@@ -31,7 +31,7 @@ workflow test_bwamem2_mem_paired_end {
               [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
                 file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true) ] ]
 
-    BWAMEM2_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true) )
+    BWAMEM2_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
     BWAMEM2_MEM (
         input,
         BWAMEM2_INDEX.out.index

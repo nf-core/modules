@@ -7,7 +7,7 @@ include { BOWTIE2_ALIGN } from '../../../../software/bowtie2/align/main.nf' addP
 
 workflow test_bowtie2_align_single_end {
 
-    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
+    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
     BOWTIE2_BUILD ( fasta )
 
     def input = []
@@ -18,7 +18,7 @@ workflow test_bowtie2_align_single_end {
 
 workflow test_bowtie2_align_paired_end {
 
-    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genomic.fasta", checkIfExists: true)
+    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
     BOWTIE2_BUILD ( fasta )
 
     def input = []
