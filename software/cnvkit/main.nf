@@ -15,7 +15,7 @@ process CNVKIT {
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/cnvkit:0.9.8--py_0"
     } else {
-        container "quay.io/biocontainers/cnvkit"
+        container "quay.io/biocontainers/cnvkit:0.9.8--py_0"
     }
 
 
