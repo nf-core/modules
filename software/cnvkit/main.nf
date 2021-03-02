@@ -38,8 +38,9 @@ process CNVKIT {
     cnvkit.py batch \\
         $tumourbam \\
         --normal $normalbam\\
+        --normal $normalbam \\
         --fasta $fasta \\
-        --annotate $annotationfile\\
+        --annotate $annotationfile \\
         $options.args
 
     cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
