@@ -20,7 +20,8 @@ process CNVKIT {
 
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(tumourbam), path(normalbam)
+
     path fasta
     path annotationfile
 
