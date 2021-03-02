@@ -5,7 +5,7 @@
     - bwameth_align
   files:
     - path: output/test_single_end/test.bam
-      md5sum: 63430a231f14aede00e453a1df1399fb
+      md5sum: df75d1d633105d77039634de5cf00c1a
 
 - name: Run bwameth paired-end test workflow
   command: nextflow run ./tests/software/bwameth/align -entry test_bwameth_align_paired_end -c tests/config/nextflow.config
@@ -14,4 +14,4 @@
     - bwameth_align
   files:
     - path: output/test_paired_end/test.bam
-      md5sum: 51ed4caa91451dae3cc529a0ff82ef43
+      md5sum: e359417da97fe092160834091a7fdc0e
