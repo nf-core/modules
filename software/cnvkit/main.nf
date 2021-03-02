@@ -35,10 +35,11 @@ process CNVKIT {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    cnvkit.py batch ${prefix}_tumour_278_sub_chr21.bam \\
-        --normal ${prefix}_normal_280_sub_chr21.bam\\
+    cnvkit.py batch \\
+        $tumourbam \\
+        --normal $normalbam \\
         --fasta $fasta \\
-        --annotate $annotationfile\\
+        --annotate $annotationfile \\
         $options.args
 
     cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
