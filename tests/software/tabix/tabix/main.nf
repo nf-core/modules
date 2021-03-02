@@ -17,7 +17,7 @@ workflow test_tabix_tabix_bed {
 workflow test_tabix_tabix_gff {
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/generic/a.gff3.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gff3.gz", checkIfExists: true) ] ]
 
     TABIX_GFF ( input )
 }

@@ -15,7 +15,7 @@ workflow test_stringtie_forward {
 
     STRINGTIE_FORWARD (
         input,
-        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gtf", checkIfExists: true)
+        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
     )
 }
 
@@ -29,6 +29,6 @@ workflow test_stringtie_reverse {
 
     STRINGTIE_REVERSE (
         input,
-        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gtf", checkIfExists: true)
+        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
     )
 }

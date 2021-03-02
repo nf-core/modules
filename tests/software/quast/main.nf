@@ -6,7 +6,7 @@ include { QUAST }   from '../../../software/quast/main.nf'   addParams(options: 
 
 workflow test_quast_ref {
     consensus = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_transcriptome.fasta", checkIfExists: true)
-    gff = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gtf", checkIfExists: true)
+    gff = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
     fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
     def use_fasta = true
     def use_gtf = true

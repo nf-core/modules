@@ -33,7 +33,7 @@ workflow test_ivar_variants_with_gff_with_mpileup {
     params.save_mpileup = true
 
     def ref = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
-    def gff = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genomic.gff3", checkIfExists: true)
+    def gff = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gff3", checkIfExists: true)
     def input = []
     input = [ [ id:'test'],
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
