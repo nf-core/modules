@@ -13,7 +13,7 @@ workflow test_cnvkit {
     input = [ [ id:'test' ], // meta map
               tumourbam, normalbam ]
     
-    fasta = [ file("${launchDir}/tests/data/fasta/human/human_subseq_chr21.fasta", checkIfExists: true) ]
+    fasta = [ file("${launchDir}/tests/data/fasta/human/GRCh38_subseq_chr21.fasta", checkIfExists: true) ]
     annotationfile = [ file("${launchDir}/tests/data/txt/refflat.txt", checkIfExists: true) ]
 
     CNVKIT ( input, fasta, annotationfile )
