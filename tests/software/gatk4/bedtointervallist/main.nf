@@ -8,9 +8,9 @@ workflow test_gatk4_bedtointervallist {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/bed/sarscov2.bed", checkIfExists: true)] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed", checkIfExists: true)] ]
 
-    sd = file("${launchDir}/tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.dict", checkIfExists: true)
+    sd = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.dict", checkIfExists: true)
 
     GATK4_BEDTOINTERVALLIST ( input, sd )
 }

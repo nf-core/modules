@@ -4,9 +4,9 @@
     - picard
     - picard_markduplicates
   files:
-    - path: output/picard/test.MarkDuplicates.metrics.txt
-    - path: output/picard/test.bam
-      md5sum: 0ed0bfc94069380334ccd595f6d8207c
+    - path: ./output/picard/test.MarkDuplicates.metrics.txt
+    - path: ./output/picard/test.bam
+      md5sum: 19a4891c3b98d0482dce2253fb28d852
 
 - name: picard markduplicates on unsorted bam
   command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c tests/config/nextflow.config
