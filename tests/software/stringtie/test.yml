@@ -3,41 +3,41 @@
   tags:
     - stringtie
   files:
-    - path: output/test_stringtie_forward/test.gene.abundance.txt
-      md5sum: cea2e346f4e8137da13265b9b0a4c573
-    - path: output/test_stringtie_forward/test.transcripts.gtf
-      md5sum: 80a4155b459a124eac64b52cde7e8ad1
-    - path: output/test_stringtie_forward/test.coverage.gtf
+    - path: ./output/test_stringtie_forward/test.transcripts.gtf
+      md5sum: cbce87f06598eb756e7670ba3217a42f
+    - path: ./output/test_stringtie_forward/test.gene.abundance.txt
+      md5sum: 7d8bce7f2a922e367cedccae7267c22e
+    - path: ./output/test_stringtie_forward/test.coverage.gtf
       md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/test_stringtie_forward/test.ballgown/e_data.ctab
-      md5sum: 48d5ddf52a3d203d9f85aded9600edb9
-    - path: output/test_stringtie_forward/test.ballgown/e2t.ctab
-      md5sum: f828838a28ae74dbc21cd5fc75b6d068
-    - path: output/test_stringtie_forward/test.ballgown/i_data.ctab
-      md5sum: 4651c095a12836aa3f7bc4d97ae7b877
-    - path: output/test_stringtie_forward/test.ballgown/i2t.ctab
-      md5sum: 6d598e0e28ef911d50783cd382e80ae6
-    - path: output/test_stringtie_forward/test.ballgown/t_data.ctab
-      md5sum: 0106f70121a8b520d98b8739aed92915
+    - path: ./output/test_stringtie_forward/test.ballgown/e_data.ctab
+      md5sum: 6b4cf69bc03f3f69890f972a0e8b7471
+    - path: ./output/test_stringtie_forward/test.ballgown/i_data.ctab
+      md5sum: be3abe09740603213f83d50dcf81427f
+    - path: ./output/test_stringtie_forward/test.ballgown/t_data.ctab
+      md5sum: 3b66c065da73ae0dd41cc332eff6a818
+    - path: ./output/test_stringtie_forward/test.ballgown/i2t.ctab
+      md5sum: 8a117c8aa4334b4c2d4711932b006fb4
+    - path: ./output/test_stringtie_forward/test.ballgown/e2t.ctab
+      md5sum: e981c0038295ae54b63cedb1083f1540
 
 - name: stringtie reverse-strand
   command: nextflow run ./tests/software/stringtie/ -entry test_stringtie_reverse -c tests/config/nextflow.config
   tags:
     - stringtie
   files:
-    - path: output/test_stringtie_reverse/test.gene.abundance.txt
-      md5sum: cea2e346f4e8137da13265b9b0a4c573
-    - path: output/test_stringtie_reverse/test.transcripts.gtf
-      md5sum: a69eabfc201112167f0844ffb80005c5
-    - path: output/test_stringtie_reverse/test.coverage.gtf
+    - path: ./output/test_stringtie_reverse/test.transcripts.gtf
+      md5sum: bb992085e42bad19877c847dae496c80
+    - path: ./output/test_stringtie_reverse/test.gene.abundance.txt
+      md5sum: 7385b870b955dae2c2ab78a70cf05cce
+    - path: ./output/test_stringtie_reverse/test.coverage.gtf
       md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/test_stringtie_reverse/test.ballgown/e_data.ctab
-      md5sum: 48d5ddf52a3d203d9f85aded9600edb9
-    - path: output/test_stringtie_reverse/test.ballgown/e2t.ctab
-      md5sum: f828838a28ae74dbc21cd5fc75b6d068
-    - path: output/test_stringtie_reverse/test.ballgown/i_data.ctab
-      md5sum: 4651c095a12836aa3f7bc4d97ae7b877
-    - path: output/test_stringtie_reverse/test.ballgown/i2t.ctab
-      md5sum: 6d598e0e28ef911d50783cd382e80ae6
-    - path: output/test_stringtie_reverse/test.ballgown/t_data.ctab
-      md5sum: 0106f70121a8b520d98b8739aed92915
+    - path: ./output/test_stringtie_reverse/test.ballgown/e_data.ctab
+      md5sum: 879b6696029d19c4737b562e9d149218
+    - path: ./output/test_stringtie_reverse/test.ballgown/i_data.ctab
+      md5sum: be3abe09740603213f83d50dcf81427f
+    - path: ./output/test_stringtie_reverse/test.ballgown/t_data.ctab
+      md5sum: 3b66c065da73ae0dd41cc332eff6a818
+    - path: ./output/test_stringtie_reverse/test.ballgown/i2t.ctab
+      md5sum: 8a117c8aa4334b4c2d4711932b006fb4
+    - path: ./output/test_stringtie_reverse/test.ballgown/e2t.ctab
+      md5sum: e981c0038295ae54b63cedb1083f1540

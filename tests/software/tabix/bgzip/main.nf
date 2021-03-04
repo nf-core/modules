@@ -8,7 +8,7 @@ workflow test_tabix_bgzip {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/vcf/test.vcf", checkIfExists: true) ]]
+              [ file("${launchDir}/tests/data/generic/vcf/test.vcf", checkIfExists: true) ]]
 
     TABIX_BGZIP ( input )
 }

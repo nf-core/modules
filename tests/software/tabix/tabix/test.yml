@@ -5,8 +5,8 @@
     - tabix_tabix
     - bed
   files:
-    - path: output/tabix/B.bed.gz.tbi
-      md5sum: 6d657159c283200109f2ed082296f853
+    - path: ./output/tabix/test.bed.gz.tbi
+      md5sum: 115922d881d24879b15d20c3734495ac
 - name: tabix tabix gff
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_gff -c tests/config/nextflow.config
   tags:
@@ -14,8 +14,8 @@
     - tabix_tabix
     - gff
   files:
-    - path: output/tabix/a.gff3.gz.tbi
-      md5sum: 77f666b63da45c6af8a394ab5642602e
+    - path: ./output/tabix/test_genome.gff3.gz.tbi
+      md5sum: 30de27e3f44662272cfe6b3093126ea6
 - name: tabix tabix vcf
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_vcf -c tests/config/nextflow.config
   tags:

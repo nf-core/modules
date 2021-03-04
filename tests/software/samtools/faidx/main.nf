@@ -6,5 +6,5 @@ include { SAMTOOLS_FAIDX } from '../../../../software/samtools/faidx/main.nf' ad
 
 workflow test_samtools_faidx {
 
-    SAMTOOLS_FAIDX ( file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true) )
+    SAMTOOLS_FAIDX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
 }

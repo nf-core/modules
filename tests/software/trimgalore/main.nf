@@ -11,7 +11,7 @@ workflow test_trimgalore_single_end {
 
     def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/fastq/rna/test_single_end.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true) ] ]
     TRIMGALORE ( input )
 }
 
@@ -22,8 +22,8 @@ workflow test_trimgalore_paired_end {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/fastq/rna/test_R1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/fastq/rna/test_R2.fastq.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
+                file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true) ] ]
 
     TRIMGALORE ( input )
 }

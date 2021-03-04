@@ -8,7 +8,7 @@ include { BLAST_BLASTN } from '../../../../software/blast/blastn/main.nf' addPar
 workflow test_blast_blastn {
 
     def input = []
-    input = [ file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true) ]
+    input = [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
 
     BLAST_MAKEBLASTDB (input)
     BLAST_BLASTN ([ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db)
