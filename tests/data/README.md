@@ -14,6 +14,7 @@ When adding a new module, please check carefully whether the data necessary for 
         * 'test_{,methylated}_paired_end.sorted.bam': sorted version of the above bam file
         * 'test_{,methylated}_paired_end.bam.sorted.bam.bai': bam index for the sorted bam file
         * 'test_single_end.bam': alignment (unsorted) of the 'test_1.fastq.gz' reads against test_genomic.fasta using minimap2
+        * 'test_unaligned.bam': unmapped BAM file create from 'test_1.fastq.gz' using GATK4 SamToFastq
     * bed
         * 'test.bed': exemplary bed file for the MT192765.1 genome (fasta/test_genomic.fasta)
         * 'test.2.bed': slightly modified copy of the above file
