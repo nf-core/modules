@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 def options    = initOptions(params.options)
 
-process GATK_CREATESEQUENCEDICTIONARY {
+process GATK4_CREATESEQUENCEDICTIONARY {
     tag "$fasta"
     label 'process_medium'
     publishDir "${params.outdir}",
