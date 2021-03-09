@@ -34,6 +34,11 @@ When adding a new module, please check carefully whether the data necessary for 
         * 'test_genomic.gff3.gz': bgzipped-version
     * paf
         * 'test_cds_from_genomic.paf': PAF file for MT192765.1  genome
+    * vcf
+        * 'test.vcf', 'test2.vcf': generated from 'test_paired_end.sorted.bam' using bcftools mpileup, call and filter
+        * 'test3.vcf': generated from 'test_single_end.sorted.bam' using bcftools mpileup, call and filter
+        * '*.gz': generated from VCF files using bgzip
+        * '.tbi': generated from '.vcf.gz' files using `tabix -p vcf -f <file>`
 
 ### generic
 
