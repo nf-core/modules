@@ -32,6 +32,7 @@ process PANGOLIN {
     pangolin \\
         $fasta\\
         --outfile ${prefix}.pangolin.csv \\
+        --threads $task.cpus \\
         $options.args
 
     pangolin --version | sed "s/pangolin //g" > ${software}.version.txt
