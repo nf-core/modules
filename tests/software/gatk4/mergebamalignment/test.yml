@@ -1,7 +1,7 @@
-- name: tool mergebamalignment
+- name: gatk4 mergebamalignment
   command: nextflow run ./tests/software/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment -c tests/config/nextflow.config
   tags:
-    - tool
+    - gatk4
     - gatk4_mergebamalignment
   files:
     - path: output/gatk4/test.merged.bam
