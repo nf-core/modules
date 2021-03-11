@@ -6,5 +6,5 @@ include { BISMARK_GENOME_PREPARATION } from '../../../../software/bismark/genome
 
 workflow test_bismark_genome_preparation {
 
-    BISMARK_GENOME_PREPARATION ( file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true) )
+    BISMARK_GENOME_PREPARATION ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
 }
