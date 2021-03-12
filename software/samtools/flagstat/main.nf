@@ -2,6 +2,7 @@
 include { saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
+options        = initOptions(params.options)
 
 process SAMTOOLS_FLAGSTAT {
     tag "$meta.id"

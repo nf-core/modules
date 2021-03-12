@@ -19,7 +19,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 // TODO nf-core: Process name MUST be all uppercase,
 //               "TOOL" and (ideally) "SUBTOOL" MUST be all one word separated by an "_".
