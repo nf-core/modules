@@ -1,0 +1,8 @@
+- name: minia 
+  command: nextflow run ./tests/software/minia -entry test_minia -c tests/config/nextflow.config
+  tags:
+    - minia
+    - minia
+  files:
+    - path: output/minia/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc

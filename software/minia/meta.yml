@@ -1,0 +1,73 @@
+## TODO nf-core: Please delete all of these TODO statements once the file has been curated
+## TODO nf-core: Change the name of "tool_subtool" below
+name: { { cookiecutter.tool_name } }
+## TODO nf-core: Add a description and keywords
+description: { { cookiecutter.description } }
+keywords:
+  - sort
+tools:
+  ## TODO nf-core: Change the name of the tool below
+  - { { cookiecutter.tool } }:
+      ## TODO nf-core: Add a description and other details for the software below
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+## TODO nf-core: If you are using any additional "params" in the main.nf script of the module add them below
+params:
+  - outdir:
+      type: string
+      description: |
+        The pipeline's output directory. By default, the module will
+        output files into `$params.outdir/<SOFTWARE>`
+  - publish_dir_mode:
+      type: string
+      description: |
+        Value for the Nextflow `publishDir` mode parameter.
+        Available: symlink, rellink, link, copy, copyNoFollow, move.
+  - enable_conda:
+      type: boolean
+      description: |
+        Run the module with Conda using the software specified
+        via the `conda` directive
+  - singularity_pull_docker_container:
+      type: boolean
+      description: |
+        Instead of directly downloading Singularity images for use with Singularity,
+        force the workflow to pull and convert Docker containers instead.
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+## TODO nf-core: Add your GitHub username below
+authors:
+  - "@kevinmenden"
