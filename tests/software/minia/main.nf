@@ -2,15 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIA } from '../../../../software/minia/main.nf' addParams( options: [:] )
+include { MINIA } from '../../../software/minia/main.nf' addParams( options: [:] )
 
 workflow test_minia {
-    
-    def input = []
-    input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ]
-    
-    
 
-    cookiecutter.tool_name_upper ( input )
+    def input = []
+    input = [ [ id:'test' ], // meta map
+              [file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
+              file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true)] ]
+
+    MINIA ( input )
 }
