@@ -38,6 +38,6 @@ process IVAR_TRIM {
         -p $prefix \\
         > ${prefix}.ivar.log
 
-    ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
+    echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//' > ${software}.version.txt
     """
 }
