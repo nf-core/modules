@@ -1,11 +1,9 @@
 name: minia
-description: description
+description: Minia is a short-read assembler based on a de Bruijn graph
 keywords:
-  - sort
+  - assembly
 tools:
-  ## TODO nf-core: Change the name of the tool below
   - minia:
-      ## TODO nf-core: Add a description and other details for the software below
       description: |
         Minia is a short-read assembler based on a de Bruijn graph, capable of assembling
         a human genome on a desktop computer in a day. The output of Minia is a set of contigs.
@@ -50,10 +48,16 @@ output:
         e.g. [ id:'test', single_end:false ]
   - contigs:
       type: file
+      description: The assembled contigs
+      pattern: "*.contigs.fa"
   - unitigs:
       type: file
+      description: The assembled unitigs
+      pattern: "*.unitigs.fa"
   - h5:
-      type: fille
+      type: file
+      description: Minia output h5 file
+      pattern: "*{.h5}"
   - version:
       type: file
       description: File containing software version
