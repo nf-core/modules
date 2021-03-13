@@ -21,7 +21,7 @@ process CNVKIT {
     input:
     tuple val(meta), path(tumourbam), path(normalbam)
     path fasta
-    path annotationfile
+    path targetfile
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -38,7 +38,7 @@ process CNVKIT {
         $tumourbam \\
         --normal $normalbam\\
         --fasta $fasta \\
-        --annotate $annotationfile \\
+        --targets $targetfile \\
         $options.args
 
     cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
