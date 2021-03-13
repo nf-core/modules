@@ -2,19 +2,19 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT } from '../../../software/cnvkit/main.nf' addParams( options: [ 'args': '--method wgs --output-reference reference.cnn' ] )
+include { CNVKIT } from '../../../software/cnvkit/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn' ] )
 
 workflow test_cnvkit {
     
-    tumourbam = [ file("${launchDir}/tests/data/bam/test_tumour_278_sub_chr21.bam", checkIfExists: true) ]
-    normalbam = [ file("${launchDir}/tests/data/bam/test_normal_280_sub_chr21.bam", checkIfExists: true) ]   
+    tumourbam = [ file("${launchDir}/tests/data/bam/test_paired_end.sorted_sarscov2.bam", checkIfExists: true) ]
+    normalbam = [ file("${launchDir}/tests/data/bam/test_single_end.sorted_sarscov2.bam", checkIfExists: true) ]   
     
     def input = []
     input = [ [ id:'test' ], // meta map
               tumourbam, normalbam ]
     
-    fasta = [ file("${launchDir}/tests/data/fasta/human/GRCh38_subseq_chr21.fasta", checkIfExists: true) ]
-    annotationfile = [ file("${launchDir}/tests/data/txt/refflat.txt", checkIfExists: true) ]
+    fasta = [ file("${launchDir}/tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna", checkIfExists: true) ]
+    targetfile = [ file("${launchDir}/tests/data/bed/baits.bed", checkIfExists: true) ]
 
-    CNVKIT ( input, fasta, annotationfile )
+    CNVKIT ( input, fasta, targetfile )
 }
