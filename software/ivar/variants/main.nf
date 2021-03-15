@@ -45,6 +45,6 @@ process IVAR_VARIANTS {
             -r $fasta \\
             -p $prefix
 
-    ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
+    echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//' > ${software}.version.txt
     """
 }
