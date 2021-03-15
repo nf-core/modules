@@ -4,9 +4,9 @@
     - bismark
     - bismark_align
   files:
-    - path: output/test_single_end/Ecoli_10K_methylated_R1_bismark_bt2.bam
-      md5sum: 42f93d49b65eaab7a171509d08682c21
-    - path: output/test_single_end/Ecoli_10K_methylated_R1_bismark_bt2_SE_report.txt
+    - path: output/test_single_end/test_methylated_1_bismark_bt2.bam
+      md5sum: 7f9744cec5aa7908675e5fae79af36fc
+    - path: output/test_single_end/test_methylated_1_bismark_bt2_SE_report.txt
 
 - name: Run bismark align paired-end test workflow
   command: nextflow run ./tests/software/bismark/align -entry test_bismark_align_paired_end -c tests/config/nextflow.config
@@ -14,6 +14,6 @@
     - bismark
     - bismark_align
   files:
-    - path: output/test_paired_end/Ecoli_10K_methylated_R1_bismark_bt2_pe.bam
-      md5sum: 6e5d328f5fd8bfcbc5adf0abd5531937
-    - path: output/test_paired_end/Ecoli_10K_methylated_R1_bismark_bt2_PE_report.txt
+    - path: output/test_paired_end/test_methylated_1_bismark_bt2_pe.bam
+      md5sum: b13d0d40dffd336375f80fc94acc295f
+    - path: output/test_paired_end/test_methylated_1_bismark_bt2_PE_report.txt

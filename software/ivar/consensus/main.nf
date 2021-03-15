@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process IVAR_CONSENSUS {
     tag "$meta.id"
@@ -34,7 +34,7 @@ process IVAR_CONSENSUS {
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
-        --fasta-ref $fasta \\
+        --reference $fasta \\
         $options.args2 \\
         $bam | \\
         $save_mpileup \\
@@ -42,6 +42,6 @@ process IVAR_CONSENSUS {
             $options.args \\
             -p $prefix
 
-    ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
+    echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//' > ${software}.version.txt
     """
 }

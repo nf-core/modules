@@ -29,36 +29,15 @@ process BISMARK_ALIGN {
     path "*.version.txt"                , emit: version
 
     script:
-    // Try to assign sensible bismark memory units according to what the task was given
-    def ccore = 1
-    def cpu_per_multicore = 3
-    def mem_per_multicore = (13.GB).toBytes()
-
-    if( task.cpus ){
-        // How many multicore splits can we afford with the cpus we have?
-        ccore = ((task.cpus as int) / cpu_per_multicore) as int
-        // Check that we have enough memory, assuming 13GB memory per instance (typical for mouse alignment)
-        try {
-            def tmem = (task.memory as nextflow.util.MemoryUnit).toBytes()
-            def mcore = (tmem / mem_per_multicore) as int
-            ccore = Math.min(ccore, mcore)
-        } catch (all) {
-            log.warn "Not able to define bismark align multicore based on available memory"
-        }
-
-    }
-
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
-    def multicore = (ccore > 1) ? "--multicore ${ccore}" : ""
+    def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     bismark \\
         $fastq \\
         $options.args \\
         --genome $index \\
-        --bam \\
-        $multicore
+        --bam
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """

@@ -63,6 +63,10 @@ output:
         type: file
         description: Output BAM file containing read alignments
         pattern: "*.{bam}"
+    - unmapped:
+        type: file
+        description: Output FastQ file(s) containing unmapped reads
+        pattern: "*.{fq.gz}"
     - report:
         type: file
         description: Bismark alignment reports
