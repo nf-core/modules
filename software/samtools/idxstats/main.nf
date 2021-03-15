@@ -1,7 +1,8 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
+options        = initOptions(params.options)
 
 process SAMTOOLS_IDXSTATS {
     tag "$meta.id"
