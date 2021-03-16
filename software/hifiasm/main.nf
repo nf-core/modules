@@ -4,33 +4,34 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process FASTQC {
-    tag "$meta.id"
-    label 'process_medium'
+process HIFIASM {
+    //tag "$meta.id"
+    label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') } // publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
+    conda (params.enable_conda ? "bioconda::hifiasm=0.14" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0"
+        container "https://depot.galaxyproject.org/singularity/hifiasm:0.14--h8b12597_0"
     } else {
-        container "quay.io/biocontainers/fastqc:0.11.9--0"
+        container "quay.io/biocontainers/hifiasm:0.14--h8b12597_0"
     }
 
-    input:
-    tuple val(meta), path(reads)
+/*     input:
+    tuple val(meta), path(reads) */
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.zip") , emit: zip
+/*     tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.zip") , emit: zip */
     path  "*.version.txt"          , emit: version
 
     script:
     // Add soft-links to original FastQs for consistent naming in pipeline
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
-    if (meta.single_end) {
+    //def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+  
+/*     if (meta.single_end) {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
         fastqc $options.args --threads $task.cpus ${prefix}.fastq.gz
@@ -43,5 +44,9 @@ process FASTQC {
         fastqc $options.args --threads $task.cpus ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz
         fastqc --version | sed -e "s/FastQC v//g" > ${software}.version.txt
         """
-    }
+    } */
+
+    """
+    hifiasm --version > ${software}.version.txt || exit 0
+    """
 }
