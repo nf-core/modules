@@ -20,7 +20,7 @@ process GATK4_MERGEBAMALIGNMENT {
 
     input:
     tuple val(meta), path(aligned)
-    path unmapped
+    path unaligned
     path fasta
     path dict
 
