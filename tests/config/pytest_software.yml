@@ -70,13 +70,18 @@ blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
+bowtie_build:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
-bowtie2:
+bowtie_align:
+  - software/bowtie/align/**
+  - software/bowtie/build/**
+  - tests/software/bowtie/align/**
+
+bowtie2_build:
   - software/bowtie2/build/**
-  - tests/software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie2_align:
   - software/bowtie2/align/**
@@ -312,10 +317,6 @@ tabix_tabix:
 tiddit_sv:
   - software/tiddit/sv/**
   - tests/software/tiddit/sv/**
-
-tool_subtool:
-  - software/TOOL/SUBTOOL/**
-  - tests/software/TOOL/SUBTOOL/**
 
 trimgalore:
   - software/trimgalore/**

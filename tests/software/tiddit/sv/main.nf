@@ -7,24 +7,20 @@ include { SAMTOOLS_FAIDX } from '../../../../software/samtools/faidx/main.nf' ad
 
 workflow test_tiddit_sv {
     def input = []
-    def fasta = file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+    def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
+    def fai   = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta.fai", checkIfExists: true)
 
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
 
-    SAMTOOLS_FAIDX ( fasta )
-
-    TIDDIT_SV ( input, fasta, SAMTOOLS_FAIDX.out.fai )
+    TIDDIT_SV ( input, fasta, fai )
 }
 
 workflow test_tiddit_sv_no_ref {
     def input = []
-    def dummy_file  = file("${launchDir}/tests/data/dummy/dummy_file.txt", checkIfExists: true)
-    def dummy_file2 = file("${launchDir}/tests/data/dummy/dummy_file2.txt", checkIfExists: true)
 
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/bam/test.paired_end.sorted.bam", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
 
-
-    TIDDIT_SV ( input, dummy_file, dummy_file2 )
+    TIDDIT_SV ( input, [], [] )
 }
