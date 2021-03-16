@@ -25,8 +25,8 @@ process GATK4_MERGEBAMALIGNMENT {
     path dict
 
     output:
-    tuple val(meta), path('*.merged.bam')       , emit: bam
-    path  '*.version.txt'                       , emit: version
+    tuple val(meta), path('*.merged.bam'), emit: bam
+    path  '*.version.txt'                , emit: version
 
     script:
     def software = getSoftwareName(task.process)
