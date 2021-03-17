@@ -25,7 +25,7 @@ workflow test_tabix_tabix_gff {
 workflow test_tabix_tabix_vcf {
     def input = []
     input = [ [ id:'test.vcf' ], // meta map
-              [ file("${launchDir}/tests/data/generic/vcf/test.vcf.gz", checkIfExists: true) ] ]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/vcf/test.vcf.gz", checkIfExists: true) ] ]
 
     TABIX_VCF ( input )
 }

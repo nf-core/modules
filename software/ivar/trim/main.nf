@@ -2,11 +2,11 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process IVAR_TRIM {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
@@ -38,6 +38,6 @@ process IVAR_TRIM {
         -p $prefix \\
         > ${prefix}.ivar.log
 
-    ivar version | head -n1 2>&1 | sed 's/^.*iVar version //g' > ${software}.version.txt
+    echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//' > ${software}.version.txt
     """
 }
