@@ -24,7 +24,7 @@ process GATK4_VARIANTFILTRATION {
 
     output:
     tuple val(meta), path("*filtered.vcf"), emit: vcf
-    path "*.version.txt"          , emit: version
+    path "*.version.txt"                  , emit: version
 
 
     script:
