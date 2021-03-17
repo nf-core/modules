@@ -66,26 +66,22 @@ bismark_genome_preparation:
   - software/bismark/genome_preparation/**
   - tests/software/bismark/genome_preparation/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
-
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
 bowtie_build:
   - software/bowtie/build/**
-  - tests/software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie2:
+bowtie2_build:
   - software/bowtie2/build/**
-  - tests/software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie2_align:
   - software/bowtie2/align/**
@@ -195,6 +191,10 @@ methyldackel_extract:
 methyldackel_mbias:
   - software/methyldackel/mbias/**
   - tests/software/methyldackel/mbias/**
+
+minia:
+  - software/minia/**
+  - tests/software/minia/**
 
 minimap2_align:
   - software/minimap2/align/**
@@ -313,18 +313,22 @@ tiddit_sv:
   - software/tiddit/sv/**
   - tests/software/tiddit/sv/**
 
-tool_subtool:
-  - software/TOOL/SUBTOOL/**
-  - tests/software/TOOL/SUBTOOL/**
-
 trimgalore:
   - software/trimgalore/**
   - tests/software/trimgalore/**
+
+ucsc_bedgraphtobigwig:
+  - software/ucsc/bedgraphtobigwig/**
+  - tests/software/ucsc/bedgraphtobigwig/**
 
 untar:
   - software/untar/**
   - tests/software/untar/**
 
-ucsc_bedgraphtobigwig:
-  - software/ucsc/bedgraphtobigwig/**
-  - tests/software/ucsc/bedgraphtobigwig/**
+gatk4_mergebamalignment:
+  - software/gatk4/mergebamalignment/**
+  - tests/software/gatk4/mergebamalignment/**
+
+gatk4_variantfiltration:
+  - software/gatk4/variantfiltration/**
+  - tests/software/gatk4/variantfiltration/**
