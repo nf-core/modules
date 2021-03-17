@@ -44,10 +44,17 @@ input:
       description: Input VCF file
       pattern: "*.{vcf}"
   - fasta:
-      type: tuple of files
-      description: |
-        Tuple of fasta file (first), sequence dict (second) and fasta index (third)
-      pattern: ["*.fasta", "*.dict", "*.fai"]
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of fasta file
+      pattern: "*.fasta.fai"
+  - dict:
+      type: file
+      description: Sequence dictionary of fastea file
+      pattern: "*.dict"
 output:
   - vcf:
       type: file
