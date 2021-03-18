@@ -33,13 +33,13 @@ process SPADES {
     path  '*.version.txt'                      , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def software    = getSoftwareName(task.process)
+    def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "-s $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     def custom_hmms = params.spades_hmm ? "--custom-hmms $hmm" : ""
     def command     = coronaspades ? "coronaspades.py" : "spades.py"
     """
-        $command \\
+    $command \\
         $options.args \\
         --threads $task.cpus \\
         $custom_hmms \\
@@ -67,4 +67,3 @@ process SPADES {
     echo \$(spades.py --version 2>&1) | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//' > ${software}.version.txt
     """
 }
-
