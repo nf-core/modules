@@ -44,4 +44,4 @@ process CNVKIT {
     cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
     """
 }
-    
+
