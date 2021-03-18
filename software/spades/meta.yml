@@ -1,0 +1,74 @@
+name: spades
+description: Assembles a small genome (bacterial, fungal, viral)
+keywords:
+  - genome
+  - assembly
+  - genome assembler
+  - small genome
+  - de novo assembler
+tools:
+  - spades:
+      description: SPAdes (St. Petersburg genome assembler) is intended for both standard isolates and single-cell MDA bacteria assemblies.
+      homepage: http://cab.spbu.ru/files/release3.15.0/manual.html
+      documentation: http://cab.spbu.ru/files/release3.15.0/manual.html
+      tool_dev_url: https://github.com/ablab/spades
+      doi: 10.1089/cmb.2012.0021
+      licence: ['GPL v2']
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - hmm:
+      type: file
+      description:
+        File or directory with amino acid HMMs for Spades HMM-guided mode.
+  - coronaspades:
+      type: boolean
+      description: |
+        Run coronaspades instead of default spades mode. coronaSPAdes is a special
+        mode of rnaviralSPAdes specifically aimed for SARS-CoV-2 de novo assembly.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - scaffolds:
+      type: file
+      description: |
+        Fasta file containing scaffolds
+  - contigs:
+      type: file
+      description: |
+        Fasta file containing contigs
+  - transcripts:
+      type: file
+      description: |
+        Fasta file containing transcripts
+  - gene_clusters:
+      type: file
+      description: |
+        Fasta file containing gene_clusters
+  - gfa:
+      type: file
+      description: |
+        gfa file containing assembly
+  - log:
+      type: file
+      description: |
+        Spades log file
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+
+authors:
+  - "@JoseEspinosa"
+  - "@drpatelh"
