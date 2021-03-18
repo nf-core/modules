@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process MULTIQC {
     label 'process_medium'
@@ -10,7 +10,7 @@ process MULTIQC {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename: filename, options: params.options, publish_dir: getSoftwareName(task.process), publish_id: '') }
 
-    conda (params.enable_conda ? "bioconda::multiqc=1.9=pyh9f0ad1d_0" : null)
+    conda (params.enable_conda ? "bioconda::multiqc=1.9" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/multiqc:1.9--pyh9f0ad1d_0"
     } else {

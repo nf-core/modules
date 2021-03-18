@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process BOWTIE_BUILD {
     tag "$fasta"
@@ -11,7 +11,7 @@ process BOWTIE_BUILD {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
 
-    conda (params.enable_conda ? 'bioconda::bowtie=1.3.0=py38hed8969a_1' : null)
+    conda (params.enable_conda ? 'bioconda::bowtie=1.3.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container 'https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1'
     } else {

@@ -7,8 +7,8 @@ include { DSH_FILTERBED } from '../../../../software/dsh/filterbed/main.nf' addP
 workflow test_dsh_filterbed {
 
     def input = []
-    input = [ [ id:'A' ], // meta map
-              [ file("${launchDir}/tests/data/bed/A.bed.gz", checkIfExists: true) ] ]
+    input = [ [ id:'test' ], // meta map
+              [ file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed", checkIfExists: true) ] ]
 
     DSH_FILTERBED ( input )
 }

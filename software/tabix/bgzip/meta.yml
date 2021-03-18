@@ -1,0 +1,61 @@
+name: tabix_bgzip
+description: Compresses files
+keywords:
+    - compress
+    - bgzip
+    - tabix
+tools:
+    - bgzip:
+        description: |
+          Bgzip compresses files in a similar manner to, and compatible with, gzip.
+        homepage: https://www.htslib.org/doc/tabix.html
+        documentation: http://www.htslib.org/doc/bgzip.html
+        doi: 10.1093/bioinformatics/btp352
+params:
+    - outdir:
+        type: string
+        description: |
+          The pipeline's output directory. By default, the module will
+          output files into `$params.outdir/<SOFTWARE>`
+    - publish_dir_mode:
+        type: string
+        description: |
+          Value for the Nextflow `publishDir` mode parameter.
+          Available: symlink, rellink, link, copy, copyNoFollow, move.
+    - enable_conda:
+        type: boolean
+        description: |
+          Run the module with Conda using the software specified
+          via the `conda` directive
+    - singularity_pull_docker_container:
+        type: boolean
+        description: |
+          Instead of directly downloading Singularity images for use with Singularity,
+          force the workflow to pull and convert Docker containers instead.
+input:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - file:
+        type: file
+        description: text file
+output:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - file:
+        type: file
+        description: Output compressed file
+        pattern: "*.{gz}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@joseespinosa"
+    - "@drpatelh"
+    - "@maxulysse"

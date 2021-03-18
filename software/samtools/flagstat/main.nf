@@ -1,15 +1,17 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
+options        = initOptions(params.options)
 
 process SAMTOOLS_FLAGSTAT {
     tag "$meta.id"
+    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::samtools=1.10=h9402c20_2" : null)
+    conda (params.enable_conda ? "bioconda::samtools=1.10" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/samtools:1.10--h9402c20_2"
     } else {

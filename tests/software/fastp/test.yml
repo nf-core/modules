@@ -4,12 +4,11 @@
     - fastp
     - fastp_single_end
   files:
-    - path: ./output/fastp/test.fastp.json
-      md5sum: b81d53bfa5c1553bed89f6475edcf437
-    - path: ./output/fastp/test.trim.fastq.gz
-      md5sum: 2f5516df477b123e3f78adb67effa3bc
-    - path: ./output/fastp/test.fastp.log
     - path: ./output/fastp/test.fastp.html
+    - path: ./output/fastp/test.fastp.log
+    - path: ./output/fastp/test.trim.fastq.gz
+      md5sum: e2257263668dc8a75d95475099fb472d
+    - path: ./output/fastp/test.fastp.json
 
 - name: fastp paired-end
   command: nextflow run ./tests/software/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config
@@ -18,10 +17,9 @@
     - fastp_paired_end
   files:
     - path: ./output/fastp/test.fastp.html
-    - path: ./output/fastp/test.fastp.json
-      md5sum: 40db7fcbed478b0a96a1c5c1bb5f737b
     - path: ./output/fastp/test.fastp.log
+    - path: ./output/fastp/test.fastp.json
     - path: ./output/fastp/test_1.trim.fastq.gz
-      md5sum: c8844c05194b50ae368e6825e997aa7f
+      md5sum: e2257263668dc8a75d95475099fb472d
     - path: ./output/fastp/test_2.trim.fastq.gz
-      md5sum: 9238b07bb1609e939be7c8889b72c209
+      md5sum: 9eff7203596580cc5e42aceab4a469df

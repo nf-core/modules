@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process PRESEQ_LCEXTRAP {
     tag "$meta.id"
@@ -12,7 +12,7 @@ process PRESEQ_LCEXTRAP {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::preseq=2.0.3=hf53bd2b_3" : null)
+    conda (params.enable_conda ? "bioconda::preseq=2.0.3" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/preseq:2.0.3--hf53bd2b_3"
     } else {

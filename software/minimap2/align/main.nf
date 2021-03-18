@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options = initOptions(params.options)
+options        = initOptions(params.options)
 
 process MINIMAP2_ALIGN {
     tag "$meta.id"
@@ -11,7 +11,7 @@ process MINIMAP2_ALIGN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::minimap2=2.17=hed695b0_3" : null)
+    conda (params.enable_conda ? "bioconda::minimap2=2.17" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/minimap2:2.17--hed695b0_3"
     } else {

@@ -1,8 +1,0 @@
-- name: bcftools bgzip
-  command: nextflow run ./tests/software/bcftools/bgzip -entry test_bcftools_bgzip -c tests/config/nextflow.config
-  tags:
-    - bcftools
-    - bcftools_bgzip
-  files:
-    - path: output/bcftools/test.vcf.gz
-      md5sum: eb75ae1f08a1884f8edc59ed423471a2
