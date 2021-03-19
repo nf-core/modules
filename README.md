@@ -18,17 +18,26 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-- [Using existing modules](#using-existing-modules)
-- [Adding a new module file](#adding-a-new-module-file)
+- [!nf-core/modules](#)
+  - [Table of contents](#table-of-contents)
+  - [Using existing modules](#using-existing-modules)
+  - [Adding a new module file](#adding-a-new-module-file)
     - [Checklist](#checklist)
     - [nf-core modules create](#nf-core-modules-create)
     - [Test data](#test-data)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
     - [Guidelines](#guidelines)
-- [Terminology](#terminology)
-- [Nextflow edge releases](#nextflow-edge-releases)
-- [Help](#help)
-- [Citation](#citation)
+      - [General](#general)
+      - [Naming conventions](#naming-conventions)
+      - [Module parameters](#module-parameters)
+      - [Input/output options](#inputoutput-options)
+      - [Resource requirements](#resource-requirements)
+      - [Software requirements](#software-requirements)
+      - [Publishing results](#publishing-results)
+  - [Terminology](#terminology)
+  - [Nextflow edge releases](#nextflow-edge-releases)
+  - [Help](#help)
+  - [Citation](#citation)
 
 ## Using existing modules
 
@@ -157,10 +166,9 @@ Please check that the module you wish to add isn't already on [`nf-core/modules`
 - Search [open issues](https://github.com/nf-core/modules/issues)
 
 If the module doesn't exist on `nf-core/modules`:
-- Please create a [new issue](https://github.com/nf-core/modules/issues/new/choose) before adding it
+- Please create a [new issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=new%20module&template=new_nodule.md&title=new%20module:) before adding it
 - Set an appropriate subject for the issue e.g. `new module: fastqc`
 - Add yourself to the `Assignees` so we can track who is working on the module
-- Set the appropriate `Labels` for the issue e.g. `new module`
 
 ### nf-core modules create
 
