@@ -35,51 +35,47 @@ The module files hosted in this repository define a set of processes for softwar
 
 We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the [`software/`](software/) directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
 
-1. [Install](https://github.com/nf-core/tools#installation) the latest version of `nf-core/tools` (`>=1.10.2`)
+1. [Install](https://github.com/nf-core/tools#installation) the latest version of `nf-core/tools` (`>=1.13`)
 2. List the available modules:
 
     ```console
     $ nf-core modules list
+    
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
 
-                                              ,--./,-.
-              ___     __   __   __   ___     /,-._.--~\
-        |\ | |__  __ /  ` /  \ |__) |__         }  {
-        | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                              `._,._,'
+    nf-core/tools version 1.13
 
-        nf-core/tools version 1.10.2
+    INFO     Modules available from nf-core/modules (master):                       pipeline_modules.py:164
 
-
-
-    INFO      Modules available from nf-core/modules (master):                                                                                                                  modules.py:51
-
-    bwa/index
-    bwa/mem
-    deeptools/computematrix
-    deeptools/plotfingerprint
-    deeptools/plotheatmap
-    deeptools/plotprofile
-    fastqc
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Module Name                    ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ bandage/image                  │
+    │ bcftools/consensus             │
+    │ bcftools/filter                │
+    │ bcftools/isec                  │
     ..truncated..
     ```
 
 3. Install the module in your pipeline directory:
 
     ```console
-    $ nf-core modules install . fastqc
+    $ nf-core modules install . --tool fastqc
 
-                                              ,--./,-.
-              ___     __   __   __   ___     /,-._.--~\
-        |\ | |__  __ /  ` /  \ |__) |__         }  {
-        | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                              `._,._,'
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
 
-        nf-core/tools version 1.10.2
+    nf-core/tools version 1.13
 
-
-
-    INFO      Installing fastqc                                                                                                                                                 modules.py:62
-    INFO      Downloaded 3 files to ./modules/nf-core/software/fastqc                                                                                                           modules.py:97
+    INFO     Installing fastqc                                                      pipeline_modules.py:213
+    INFO     Downloaded 3 files to ./modules/nf-core/software/fastqc                pipeline_modules.py:236
     ```
 
 4. Import the module in your Nextflow script:
@@ -92,20 +88,57 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     include { FASTQC } from './modules/nf-core/software/fastqc/main' addParams( options: [:] )
     ```
 
-5. We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space!
+5. Remove the module from the pipeline repository if required:
 
     ```console
-    $ nf-core modules --help
+    $ nf-core modules remove . --tool fastqc
 
-    ...truncated...
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
 
-    Commands:
-      list     List available software modules.
-      install  Add a DSL2 software wrapper module to a pipeline.
-      update   Update one or all software wrapper modules.             (NOT YET IMPLEMENTED)
-      remove   Remove a software wrapper from a pipeline.              (NOT YET IMPLEMENTED)
-      check    Check that imported module code has not been modified.  (NOT YET IMPLEMENTED)
+    nf-core/tools version 1.13
+
+    INFO     Removing fastqc                                                        pipeline_modules.py:271
+    INFO     Successfully removed fastqc                                            pipeline_modules.py:285
     ```
+
+6. Check that a locally installed nf-core module is up-to-date compared to the one hosted in this repo:
+
+    ```console
+    $ nf-core modules lint . --tool fastqc
+
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 1.13
+
+    INFO     Linting pipeline: .                                                    lint.py:104
+    INFO     Linting module: fastqc                                                 lint.py:106
+
+    ╭─────────────────────────────────────────────────────────────────────────────────╮
+    │ [!] 1 Test Warning                                                              │
+    ╰─────────────────────────────────────────────────────────────────────────────────╯
+    ╭──────────────┬───────────────────────────────┬──────────────────────────────────╮
+    │ Module name  │ Test message                  │ File path                        │
+    ├──────────────┼───────────────────────────────┼──────────────────────────────────┤
+    │ fastqc       │ Local copy of module outdated │ modules/nf-core/software/fastqc/ │
+    ╰──────────────┴────────────────────────────── ┴──────────────────────────────────╯
+    ╭──────────────────────╮
+    │ LINT RESULTS SUMMARY │
+    ├──────────────────────┤
+    │ [✔]  15 Tests Passed │
+    │ [!]   1 Test Warning │
+    │ [✗]   0 Test Failed  │
+    ╰──────────────────────╯
+    ```
+
+We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space e.g. `nf-core modules update` command to automatically check and update modules installed within the pipeline.
 
 ## Adding a new module file
 
