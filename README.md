@@ -151,25 +151,25 @@ and to everyone within the Nextflow community! See
 [`software/`](software)
 for examples.
 
-### Module template
+Please check that the module you wish to add isn't already on nf-core/modules:
+- Using the `nf-core modules list` command
+- Checking [open pull requests](https://github.com/nf-core/modules/pulls)
+- Searching [open issues](https://github.com/nf-core/modules/issues)
 
-We have added a directory called [`software/TOOL/SUBTOOL/`](software/TOOL/SUBTOOL/) that serves as a template with which to create your own module and  [`tests/software/TOOL/SUBTOOL/`](tests/software/TOOL/SUBTOOL/) as an example of how to add the required CI tests. Where applicable, we have added extensive `TODO` statements for general information, to help guide you as to where to make the appropriate changes, and how to make them. If in doubt, have a look at how we have done things for other modules.
+If the module doesn't exist on nf-core/modules:
+- Please create a [new issue](https://github.com/nf-core/modules/issues/new/choose)
+- Set an appropriate subject for the issue e.g. `new module: fastqc`
+- Add yourself to the `Assignees` so we can track who is working on the module
+- Set the appropriate `Labels` for the issue e.g. `new module`
 
-```console
-.
-├── software
-│   └── TOOL
-│       └── SUBTOOL
-│           ├── functions.nf    ## Utility functions imported in main module script
-│           ├── main.nf         ## Main module script
-│           └── meta.yml        ## Documentation for module, input, output, params, author
-├── tests
-│   └── software
-│       └── TOOL
-│           └── SUBTOOL
-│               ├── main.nf     ## Minimal workflow to test module
-│               └── test.yml    ## Pytest-workflow test file
-```
+
+
+
+
+
+
+
+
 
 ### Guidelines
 
@@ -235,10 +235,10 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 [BioContainers](https://biocontainers.pro/#/) is a registry of Docker and Singularity containers automatically created from all of the software packages on [Bioconda](https://bioconda.github.io/). Where possible we will use BioContainers to fetch pre-built software containers and Bioconda to install software using Conda.
 
-- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the simplest method to obtain the Docker container path is to replace `bwa` with your tool name in this [Quay.io link](https://quay.io/repository/biocontainers/bwa?tab=tags). You will see a list of tags sorted by the most recent. You can then use exactly the same name (e.g. `bwa`) version (e.g. `0.7.17`) and tag (e.g. `hed695b0_7`) to add all of the Conda, Docker and Singularity definitions in the module.
+- Software requirements SHOULD be declared within the module file using the Nextflow `container` directive. For single-tool BioContainers, the `nf-core modules create` command will automatically fetch and fill-in the appropriate Conda / Docker / Singularity definitions by parsing the information provided in the first part of the module name:
 
     ```nextflow
-    conda (params.enable_conda ? "bioconda::bwa=0.7.17=hed695b0_7" : null)              // Conda package
+    conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)                         // Conda package
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"  // Singularity image
     } else {
@@ -246,7 +246,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     }
     ```
 
-- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Using `bioconda::bwa=0.7.17=hed695b0_7` as an example, software MUST be pinned to the channel (i.e. `bioconda`), version (i.e. `0.7.17`) and build (i.e. `hed695b0_7`). This allows us to perform file output integrity CI tests on the same input test data with Docker, Singularity and Conda.
+- If the software is available on Conda it MUST also be defined using the Nextflow `conda` directive. Using `bioconda::bwa=0.7.17` as an example, software MUST be pinned to the channel (i.e. `bioconda`) and version (i.e. `0.7.17`). Conda packages MUST not be pinned to a build because they can vary on different platforms.
 
 - If required, multi-tool containers may also be available on BioContainers e.g. [`bwa` and `samtools`](https://biocontainers.pro/#/tools/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40). You can install and use the [`galaxy-tool-util`](https://anaconda.org/bioconda/galaxy-tool-util) package to search for both single- and multi-tool containers available in Conda, Docker and Singularity format. e.g. to search for Docker (hosted on Quay.io) and Singularity multi-tool containers with both `bowtie` and `samtools` installed you can use the following command:
 
