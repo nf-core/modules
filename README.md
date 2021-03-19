@@ -20,11 +20,11 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 - [Using existing modules](#using-existing-modules)
 - [Adding a new module file](#adding-a-new-module-file)
-    - [Module template](#module-template)
-    - [Guidelines](#guidelines)
-    - [Testing](#testing)
-    - [Documentation](#documentation)
+    - [Checklist](#checklist)
+    - [nf-core modules create](#nf-core-modules-create)
+    - [Test data](#test-data)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
+    - [Guidelines](#guidelines)
 - [Terminology](#terminology)
 - [Help](#help)
 - [Citation](#citation)
@@ -151,6 +151,8 @@ and to everyone within the Nextflow community! See
 [`software/`](software)
 for examples.
 
+### Checklist
+
 Please check that the module you wish to add isn't already on nf-core/modules:
 - Using the `nf-core modules list` command
 - Checking [open pull requests](https://github.com/nf-core/modules/pulls)
@@ -162,14 +164,65 @@ If the module doesn't exist on nf-core/modules:
 - Add yourself to the `Assignees` so we can track who is working on the module
 - Set the appropriate `Labels` for the issue e.g. `new module`
 
+### nf-core modules create
 
+We have implemented a number of commands in the `nf-core/tools` package to make it incredibly easy for you to create and contribute your own modules to nf-core/modules.
 
+1. Install the latest version of [`nf-core/tools`]((https://github.com/nf-core/tools#installation)) (`>=1.13`)
+2. Install [`nextflow`](https://nf-co.re/usage/installation)
+3. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
+4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
+5. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
+    ```console
+    $ nf-core modules create . --tool fastqc --author @joebloggs --label process_low --meta --force
 
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
 
+    nf-core/tools version 1.13
 
+    INFO     Using Bioconda package: 'bioconda::fastqc=0.11.9'                          create.py:130
+    INFO     Using Docker / Singularity container with tag: 'fastqc:0.11.9--0'          create.py:140
+    INFO     Created / edited following files:                                          create.py:218
+                ./software/fastqc/functions.nf
+                ./software/fastqc/main.nf
+                ./software/fastqc/meta.yml
+                ./tests/software/fastqc/main.nf
+                ./tests/software/fastqc/test.yml
+                ./tests/config/pytest_software.yml
+    ```
 
+    All of the files required to add the module to nf-core/modules will be created/edited in the appropriate places. The 4 files you will need to change are:
+    1. [`./software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/software/fastqc/main.nf)
+    This is the main script containing the `process` definition for the module. You will see an extensive number of `TODO` statements to help guide you to fill in the appropriate sections and to ensure that you adhere to the guidelines we have set for module submissions.
+    2. [`./software/fastqc/meta.yml`](https://github.com/nf-core/modules/blob/master/software/fastqc/meta.yml)
+    This file will be used to store general information about the module and author details - the majority of which will already be auto-filled. However, you will need to add a brief description of the files defined in the `input` and `output` section of the main script.
+    3. [`./tests/software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/main.nf)
+    Every module MUST have a test workflow. This file will define one or more Nextflow `workflow` definitions that will be used to unit test the output files created by the module. By default, one `workflow` definition will be added but please feel free to add more so we can ensure the module works on different dataypes / parameters e.g. separate `workflow` for single-end and paired-end data. Minimal test data may already exist for your module, in which case you may just have to change a couple of paths in this file - see the [Test data](#test-data) section for more info and guidelines for adding new standardised data for testing.
+    4. [`./tests/software/fastqc/test.yml`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/test.yml)
+    This file will contain the details required to unit test the main script in the point above using [pytest-workflow](https://pytest-workflow.readthedocs.io/). Any outputs produced by the test workflow MUST be included and listed in this file.  `md5sum` checks are the preferable choice of test to determine file changes, however, this may not be possible for all outputs generated by some tools e.g. if they include time stamps or command-related headers. Please do your best to avoid just checking for the file being present e.g. it may still be possible to check that the file contains the appropriate text snippets.
 
+### Test data
+
+In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
+
+- All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
+
+- In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
+
+- Test files MUST be kept as tiny as possible.
+
+### Uploading to `nf-core/modules`
+
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
+
+Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
+
+We will be notified automatically when you have created your pull request, and providing that everything adheres to nf-core guidelines we will endeavour to approve your pull request as soon as possible.
 
 ### Guidelines
 
@@ -273,73 +326,6 @@ publishDir "${params.outdir}",
 The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
-
-### Testing
-
-In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
-
-#### Test data
-
-- All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
-
-- In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
-
-- Test files MUST be kept as tiny as possible.
-
-#### Pytest workflow
-
-- Every module MUST have a test workflow utilising test data added to the appropriate directory e.g. [`tests/software/fastqc/main.nf`](tests/software/fastqc/main.nf)
-
-- Any outputs produced by the test workflow MUST be included in the [pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable) for that tool e.g. [`tests/software/fastqc/test.yml`](tests/software/fastqc/test.yml).  `md5sum` checks are the preferable choice of test to determine file changes, however, this may not be possible for all outputs generated by some tools e.g. if they include time stamps or command-related headers. Please do your best to avoid just checking for the file being present e.g. it may still be possible to check that the file contains the appropriate text snippets.
-
-- A filter for the module must be created in [`.github/filters.yml`](.github/filters.yml). If the test workflow you have created invokes more than one tool please include any paths specific for those tool's too e.g. `bowtie build` is upstream of `bowtie align` and they have both been chained together to test the latter.
-
-#### Running Tests Locally
-
-1. Install [`nextflow`](https://nf-co.re/usage/installation)
-
-2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
-
-3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
-
-4. Start running your own tests!
-
-    - Typical command with Docker:
-
-        ```console
-        cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=docker pytest --tag bowtie --symlink --keep-workflow-wd
-        ```
-
-    - Typical command with Singularity:
-
-        ```console
-        cd /path/to/git/clone/of/nf-core/modules/
-        TMPDIR=~ PROFILE=singularity pytest --tag bowtie --symlink --keep-workflow-wd
-        ```
-
-    - Typical command with Conda:
-
-        ```console
-        cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=conda pytest --tag bowtie --symlink --keep-workflow-wd
-        ```
-
-    - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.
-
-### Documentation
-
-- A module MUST be documented in the [`meta.yml`](software/TOOL/SUBTOOL/meta.yml) file. It MUST document `params`, `input` and `output`. `input` and `output` MUST be a nested list.
-
-We are aware that there is very little documentation, documenting the (`Documentation`)[#documentation] section. Writing more code and tests is so much cooooler! Please bear with us, we will get here eventually...
-
-### Uploading to `nf-core/modules`
-
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
-
-Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
-
-We will be notified automatically when you have created your pull request, and providing that everything adheres to nf-core guidelines we will endeavour to approve your pull request as soon as possible.
 
 ## Terminology
 
