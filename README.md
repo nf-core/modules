@@ -205,7 +205,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
 
     3. [`./tests/software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/main.nf)
 
-        Every module MUST have a test workflow. This file will define one or more Nextflow `workflow` definitions that will be used to unit test the output files created by the module. By default, one `workflow` definition will be added but please feel free to add as many as possible so we can ensure that the module works on different dataypes / parameters e.g. separate `workflow` for single-end and paired-end data.
+        Every module MUST have a test workflow. This file will define one or more Nextflow `workflow` definitions that will be used to unit test the output files created by the module. By default, one `workflow` definition will be added but please feel free to add as many as possible so we can ensure that the module works on different data types / parameters e.g. separate `workflow` for single-end and paired-end data.
 
         Minimal test data required for your module may already exist within this repository, in which case you may just have to change a couple of paths in this file - see the [Test data](#test-data) section for more info and guidelines for adding new standardised data if required.
 
@@ -231,21 +231,21 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     nf-core/tools version 1.13
 
 
-    INFO     Press enter to use default values (shown in brackets) or type your own responses       test_yml_builder.py:51
+    INFO     Press enter to use default values (shown in brackets) or type your own responses                                             test_yml_builder.py:51
     ? Tool name: fastqc
     Test YAML output path (- for stdout) (tests/software/fastqc/test.yml):
-    INFO     Looking for test workflow entry points: 'tests/software/fastqc/main.nf'                test_yml_builder.py:116
-    INFO     Building test meta for entry point 'test_fastqc_single_end'                            test_yml_builder.py:150
+    INFO     Looking for test workflow entry points: 'tests/software/fastqc/main.nf'                                                      test_yml_builder.py:116
+    INFO     Building test meta for entry point 'test_fastqc_single_end'                                                                  test_yml_builder.py:150
     Test name (fastqc test_fastqc_single_end):
     Test command (nextflow run tests/software/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config):
     Test tags (comma separated) (fastqc,fastqc_single_end):
     Test output folder with results (leave blank to run test):
     ? Choose software profile Singularity
-    INFO     Setting env var '$PROFILE' to 'singularity'                                            test_yml_builder.py:258
-    INFO     Running 'fastqc' test with command:                                                    test_yml_builder.py:263
+    INFO     Setting env var '$PROFILE' to 'singularity'                                                                                  test_yml_builder.py:258
+    INFO     Running 'fastqc' test with command:                                                                                          test_yml_builder.py:263
              nextflow run tests/software/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config --outdir /tmp/tmpgbneftf5
-    INFO     Test workflow finished!                                                                test_yml_builder.py:276
-    INFO     Writing to 'tests/software/fastqc/test.yml'                                            test_yml_builder.py:293
+    INFO     Test workflow finished!                                                                                                      test_yml_builder.py:276
+    INFO     Writing to 'tests/software/fastqc/test.yml'                                                                                  test_yml_builder.py:293
     ```
 
 7. Lint the module locally to check that it adheres to nf-core guidelines before submission
