@@ -431,14 +431,14 @@ There are a number of ways you can install Nextflow `edge` releases, the main di
 
 - If you would like to download and install a Nextflow `edge` release from scratch with minimal fuss:
 
-```bash
-export NXF_VER="20.11.0-edge"
-wget -qO- get.nextflow.io | bash
-sudo mv nextflow /usr/local/bin/
-nextflow run nf-core/rnaseq -profile test,docker -r 3.0
-```
+    ```bash
+    export NXF_VER="20.11.0-edge"
+    wget -qO- get.nextflow.io | bash
+    sudo mv nextflow /usr/local/bin/
+    nextflow run nf-core/rnaseq -profile test,docker -r 3.0
+    ```
 
-> Note if you don't have `sudo` privileges required for the last command above then you can move the `nextflow` binary to somewhere else and export that directory to `$PATH` instead. One way of doing that on Linux would be to add `export PATH=$PATH:/path/to/nextflow/binary/` to your `~/.bashrc` file so that it is available every time you login to your system.
+    > Note if you don't have `sudo` privileges required for the last command above then you can move the `nextflow` binary to somewhere else and export that directory to `$PATH` instead. One way of doing that on Linux would be to add `export PATH=$PATH:/path/to/nextflow/binary/` to your `~/.bashrc` file so that it is available every time you login to your system.
 
 - Manually download and install Nextflow from the available [assets](https://github.com/nextflow-io/nextflow/releases) on Github. See [Nextflow installation docs](https://www.nextflow.io/docs/latest/getstarted.html#installation).
 
