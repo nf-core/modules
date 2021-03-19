@@ -10,28 +10,6 @@ tools:
         QUAST calculates quality metrics for genome assemblies
       homepage: http://bioinf.spbau.ru/quast
       doi:
-params:
-  - outdir:
-      type: string
-      description: |
-        The pipeline's output directory. By default, the module will
-        output files into `$params.outdir/<SOFTWARE>`
-  - publish_dir_mode:
-      type: string
-      description: |
-        Value for the Nextflow `publishDir` mode parameter.
-        Available: symlink, rellink, link, copy, copyNoFollow, move.
-  - enable_conda:
-      type: boolean
-      description: |
-        Run the module with Conda using the software specified
-        via the `conda` directive
-  - singularity_pull_docker_container:
-      type: boolean
-      description: |
-        Instead of directly downloading Singularity images for use with Singularity,
-        force the workflow to pull and convert Docker containers instead.
-
 input:
   - consensus:
       type: file
