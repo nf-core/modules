@@ -35,7 +35,7 @@ The module files hosted in this repository define a set of processes for softwar
 
 We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the [`software/`](software/) directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
 
-1. [Install](https://github.com/nf-core/tools#installation) the latest version of `nf-core/tools` (`>=1.13`)
+1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=1.13`)
 2. List the available modules:
 
     ```console
@@ -142,9 +142,6 @@ We have plans to add other utility commands to help developers install and maint
 
 ## Adding a new module file
 
-> **NB:** The definition and standards for module files are still under discussion
-but we are now gladly accepting submissions :)
-
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
 and to everyone within the Nextflow community! See
@@ -153,13 +150,13 @@ for examples.
 
 ### Checklist
 
-Please check that the module you wish to add isn't already on nf-core/modules:
-- Using the `nf-core modules list` command
-- Checking [open pull requests](https://github.com/nf-core/modules/pulls)
-- Searching [open issues](https://github.com/nf-core/modules/issues)
+Please check that the module you wish to add isn't already on [`nf-core/modules`](https://github.com/nf-core/modules/tree/master/software):
+- Use the [`nf-core modules list`](https://github.com/nf-core/tools#list-modules) command
+- Check [open pull requests](https://github.com/nf-core/modules/pulls)
+- Search [open issues](https://github.com/nf-core/modules/issues)
 
-If the module doesn't exist on nf-core/modules:
-- Please create a [new issue](https://github.com/nf-core/modules/issues/new/choose)
+If the module doesn't exist on `nf-core/modules`:
+- Please create a [new issue](https://github.com/nf-core/modules/issues/new/choose) before adding it
 - Set an appropriate subject for the issue e.g. `new module: fastqc`
 - Add yourself to the `Assignees` so we can track who is working on the module
 - Set the appropriate `Labels` for the issue e.g. `new module`
@@ -168,14 +165,14 @@ If the module doesn't exist on nf-core/modules:
 
 We have implemented a number of commands in the `nf-core/tools` package to make it incredibly easy for you to create and contribute your own modules to nf-core/modules.
 
-1. Install the latest version of [`nf-core/tools`]((https://github.com/nf-core/tools#installation)) (`>=1.13`)
+1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=1.13`)
 2. Install [`nextflow`](https://nf-co.re/usage/installation)
 3. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
 5. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
-    $ nf-core modules create . --tool fastqc --author @joebloggs --label process_low --meta --force
+    $ nf-core modules create . --tool fastqc --author @joebloggs --label process_low --meta
 
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
@@ -196,7 +193,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
                 ./tests/config/pytest_software.yml
     ```
 
-    All of the files required to add the module to nf-core/modules will be created/edited in the appropriate places. The 4 files you will need to change are:
+    All of the files required to add the module to `nf-core/modules` will be created/edited in the appropriate places. The 4 files you will need to change are:
     1. [`./software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/software/fastqc/main.nf)
     This is the main script containing the `process` definition for the module. You will see an extensive number of `TODO` statements to help guide you to fill in the appropriate sections and to ensure that you adhere to the guidelines we have set for module submissions.
     2. [`./software/fastqc/meta.yml`](https://github.com/nf-core/modules/blob/master/software/fastqc/meta.yml)
@@ -204,7 +201,9 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     3. [`./tests/software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/main.nf)
     Every module MUST have a test workflow. This file will define one or more Nextflow `workflow` definitions that will be used to unit test the output files created by the module. By default, one `workflow` definition will be added but please feel free to add more so we can ensure the module works on different dataypes / parameters e.g. separate `workflow` for single-end and paired-end data. Minimal test data may already exist for your module, in which case you may just have to change a couple of paths in this file - see the [Test data](#test-data) section for more info and guidelines for adding new standardised data for testing.
     4. [`./tests/software/fastqc/test.yml`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/test.yml)
-    This file will contain the details required to unit test the main script in the point above using [pytest-workflow](https://pytest-workflow.readthedocs.io/). Any outputs produced by the test workflow MUST be included and listed in this file.  `md5sum` checks are the preferable choice of test to determine file changes, however, this may not be possible for all outputs generated by some tools e.g. if they include time stamps or command-related headers. Please do your best to avoid just checking for the file being present e.g. it may still be possible to check that the file contains the appropriate text snippets.
+
+        This file will contain the details required to unit test the main script in the point above using [pytest-workflow](https://pytest-workflow.readthedocs.io/). Any outputs produced by the test workflow MUST be included and listed in this file.  
+        `md5sum` checks are the preferable choice of test to determine file changes, however, this may not be possible for all outputs generated by some tools e.g. if they include time stamps or command-related headers. Please do your best to avoid just checking for the file being present e.g. it may still be possible to check that the file contains the appropriate text snippets.
 
 ### Test data
 
@@ -352,16 +351,6 @@ If you use the module files in this repository for your analysis please you can 
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
 
 <!---
-
-- The module MUST accept a parameter `params.publish_results` accepting at least
-    - `"none"`, to publish no files at all,
-    - a glob pattern which is initalized to a sensible default value.
-
-### Configuration and parameters
-
-The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `trimgalore`, `bwa` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
-
-> The definition and standards for module files are still under discussion amongst the community but hopefully, a description should be added here soon!
 
 ### Offline usage
 
