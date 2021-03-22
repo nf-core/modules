@@ -42,7 +42,6 @@ process PROKKA {
     prokka \\
         $options.args \\
         -cpus $task.cpus \\
-        -o ${prefix}.bam \\
         -prefix $prefix \\
         $proteins \\
         $fasta
