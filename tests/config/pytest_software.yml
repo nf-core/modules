@@ -70,23 +70,23 @@ blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-bowtie_build:
-  - software/bowtie/build/**
-  - tests/software/bowtie/build_test/**
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
+bowtie_build:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
 bwa_index:
   - software/bwa/index/**
@@ -148,6 +148,10 @@ gatk4_createsequencedictionary:
   - software/gatk4/createsequencedictionary/**
   - tests/software/gatk4/createsequencedictionary/**
 
+gatk4_mergebamalignment:
+  - software/gatk4/mergebamalignment/**
+  - tests/software/gatk4/mergebamalignment/**
+
 gatk4_mergevcfs:
   - software/gatk4/mergevcfs/**
   - tests/software/gatk4/mergevcfs/**
@@ -163,6 +167,10 @@ gatk4_samtofastq:
 gatk4_splitncigarreads:
   - software/gatk4/splitncigarreads/**
   - tests/software/gatk4/splitncigarreads/**
+
+gatk4_variantfiltration:
+  - software/gatk4/variantfiltration/**
+  - tests/software/gatk4/variantfiltration/**
 
 gffread:
   - software/gffread/**
@@ -285,6 +293,10 @@ seqkit_split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
 
+sequenza_wiggle:
+  - software/sequenza/wiggle/**
+  - tests/software/sequenza/wiggle/**
+
 seqwish_induce:
   - software/seqwish/induce/**
   - tests/software/seqwish/induce/**
@@ -324,11 +336,3 @@ ucsc_bedgraphtobigwig:
 untar:
   - software/untar/**
   - tests/software/untar/**
-
-gatk4_mergebamalignment:
-  - software/gatk4/mergebamalignment/**
-  - tests/software/gatk4/mergebamalignment/**
-
-gatk4_variantfiltration:
-  - software/gatk4/variantfiltration/**
-  - tests/software/gatk4/variantfiltration/**
