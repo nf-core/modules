@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { TIDDIT_SV }      from '../../../../software/tiddit/sv/main.nf'      addParams( options: [:] )
-include { SAMTOOLS_FAIDX } from '../../../../software/samtools/faidx/main.nf' addParams( options: [:] )
 
 workflow test_tiddit_sv {
     def input = []
