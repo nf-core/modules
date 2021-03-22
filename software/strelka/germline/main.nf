@@ -25,8 +25,10 @@ process STRELKA_GERMLINE {
     tuple path(target_bed), path(target_bed_tbi)
     
     output:
-    tuple val(meta), path("*_variants.vcf.gz"), path("*_variants.vcf.gz.tbi"), emit: vcf
-    tuple val(meta), path("*_genome.vcf.gz"), path("*_genome.vcf.gz.tbi"), emit: genome_vcf
+    tuple val(meta), path("*_variants.vcf.gz"), emit: vcf
+    tuple val(meta), path("*_variants.vcf.gz.tbi"), emit: vcf_tbi
+    tuple val(meta), path("*_genome.vcf.gz"), emit: genome_vcf
+    tuple val(meta), path("*_genome.vcf.gz.tbi"), emit: genome_vcf_tbi
     path "*.version.txt", emit: version
  
     path "*.version.txt"          , emit: version
