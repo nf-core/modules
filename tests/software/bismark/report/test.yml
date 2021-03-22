@@ -1,0 +1,8 @@
+- name: Run bismark report test workflow
+  command: nextflow run ./tests/software/bismark/report -entry test_bismark_report -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_report
+  files:
+    - path: output/bismark/test_methylated_1_bismark_bt2_PE_report.txt
+    - path: output/bismark/test_methylated_1_bismark_bt2_PE_report.html
