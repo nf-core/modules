@@ -32,8 +32,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
         CallMolecularConsensusReads \\
         -i $bam \\
         $options.args \\
-        -o ${prefix}.bam 
+        -o ${prefix}.bam
     fgbio --version | sed -e "s/fgbio v//g" > ${software}.version.txt
     """
-
 }
