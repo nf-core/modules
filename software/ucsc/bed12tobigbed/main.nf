@@ -1,15 +1,41 @@
-#!/usr/bin/env nextflow
+// Import generic module functions
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-nextflow.enable.dsl = 2
+params.options = [:]
+def options    = initOptions(params.options)
 
-include { UCSC_BED12TOBIGBED } from '../../../../software/ucsc/bed12tobigbed/main.nf' addParams( options: [:] )
+def VERSION = '377'
 
-workflow test_ucsc_bed12tobigbed {
+process UCSC_BED12TOBIGBED {
+    tag "$meta.id"
+    label 'process_medium'
+    publishDir "${params.outdir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    def input = []
-    input = [ [ id: 'test' ], // meta map
-            [ file("${launchDir}/tests/data/bed/test.bed12", checkIfExists: true )] ]
-    sizes = file("${launchDir}/tests/data/sizes/test.sizes", checkIfExists: true)
+    conda (params.enable_conda ? "bioconda::ucsc-bedtobigbed=377" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:377--h446ed27_1"
+    } else {
+        container "quay.io/biocontainers/ucsc-bedtobigbed:377--h446ed27_1"
+    }
 
-    UCSC_BED12TOBIGBED ( input, sizes )
+    input:
+    tuple val(meta), path(bed)
+    path  sizes
+
+    output:
+    tuple val(meta), path("*.bigBed"), emit: bigbed
+    path "*.version.txt"             , emit: version
+
+    script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    """
+    bedToBigBed \\
+        $bed \\
+        $sizes \\
+        ${prefix}.bigBed
+    echo $VERSION > ${software}.version.txt
+    """
 }
