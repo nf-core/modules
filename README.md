@@ -157,10 +157,9 @@ Please check that the module you wish to add isn't already on [`nf-core/modules`
 - Search [open issues](https://github.com/nf-core/modules/issues)
 
 If the module doesn't exist on `nf-core/modules`:
-- Please create a [new issue](https://github.com/nf-core/modules/issues/new/choose) before adding it
+- Please create a [new issue](https://github.com/nf-core/modules/issues/new?assignees=&labels=new%20module&template=new_nodule.md&title=new%20module:) before adding it
 - Set an appropriate subject for the issue e.g. `new module: fastqc`
 - Add yourself to the `Assignees` so we can track who is working on the module
-- Set the appropriate `Labels` for the issue e.g. `new module`
 
 ### nf-core modules create
 
