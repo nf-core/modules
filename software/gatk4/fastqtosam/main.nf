@@ -33,7 +33,7 @@ process GATK4_FASTQTOSAM {
         gatk FastqToSam \\
             -F1 $reads \\
             -O ${prefix}.bam \\
-            -S $prefix \\
+            -SM $prefix \\
             $options.args
 
         gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
@@ -44,7 +44,7 @@ process GATK4_FASTQTOSAM {
             -F1 ${reads[0]} \\
             -F2 {reads[1]} \\
             -O ${prefix}.bam \\
-            -S $prefix \\
+            -SM $prefix \\
             $options.args
 
         gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
