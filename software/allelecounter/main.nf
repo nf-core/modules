@@ -19,7 +19,7 @@ process ALLELECOUNTER {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path loci
 
     output:
@@ -34,7 +34,7 @@ process ALLELECOUNTER {
         $options.args \\
         -l $loci \\
         -b $bam \\
-        -o $prefix.alleleCount
+        -o ${prefix}.alleleCount
 
     alleleCounter --version > ${software}.version.txt
     """
