@@ -4,12 +4,12 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process BISMARK_GENOME_PREPARATION {
-    tag "$fasta"
-    label 'process_high'
+process BISMARK_REPORT {
+    tag "$meta.id"
+    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -19,18 +19,20 @@ process BISMARK_GENOME_PREPARATION {
     }
 
     input:
-    path fasta, stageAs: "BismarkIndex/*"
+    tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
 
     output:
-    path "BismarkIndex" , emit: index
-    path "*.version.txt", emit: version
+    tuple val(meta), path("*{html,txt}"), emit: report
+    path  "*.version.txt"               , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
+    def software = getSoftwareName(task.process)
     """
-    bismark_genome_preparation \\
-        $options.args \\
-        BismarkIndex
+    bismark2report \\
+        --alignment_report $align_report \\
+        --dedup_report $dedup_report \\
+        --splitting_report $splitting_report \\
+        --mbias_report $mbias
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """

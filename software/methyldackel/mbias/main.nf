@@ -11,11 +11,11 @@ process METHYLDACKEL_MBIAS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::methyldackel=0.5.0" : null)
+    conda (params.enable_conda ? "bioconda::methyldackel=0.5.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/methyldackel:0.5.0--hed50d52_0"
+        container "https://depot.galaxyproject.org/singularity/methyldackel:0.5.2--h7435645_0"
     } else {
-        container "quay.io/biocontainers/methyldackel:0.5.0--hed50d52_0"
+        container "quay.io/biocontainers/methyldackel:0.5.2--h7435645_0"
     }
 
     input:

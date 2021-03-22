@@ -1,3 +1,7 @@
+adapterremoval:
+  - software/adapterremoval/**
+  - tests/software/adapterremoval/**
+
 bandage_image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
@@ -60,37 +64,45 @@ bedtools_sort:
 
 bismark_align:
   - software/bismark/align/**
-  - software/bismark/genome_preparation/**
+  - software/bismark/genomepreparation/**
   - tests/software/bismark/align/**
 
 bismark_deduplicate:
   - software/bismark/deduplicate/**
   - tests/software/bismark/deduplicate/**
 
-bismark_genome_preparation:
-  - software/bismark/genome_preparation/**
-  - tests/software/bismark/genome_preparation/**
+bismark_genomepreparation:
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/genomepreparation/**
 
-bismark_methylation_extractor:
-  - software/bismark/methylation_extractor/**
-  - software/bismark/genome_preparation/**
-  - tests/software/bismark/methylation_extractor/**
+bismark_methylationextractor:
+  - software/bismark/methylationextractor/**
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/methylationextractor/**
 
 bismark_report:
-  - software/bismark/genome_preparation/**
+  - software/bismark/genomepreparation/**
   - software/bismark/align/**
   - software/bismark/deduplicate/**
-  - software/bismark/methylation_extractor/**
+  - software/bismark/methylationextractor/**
   - software/bismark/report/**
   - tests/software/bismark/report/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
+bismark_summary:
+  - software/bismark/genomepreparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylationextractor/**
+  - software/bismark/summary/**
+  - tests/software/bismark/summary/**
 
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
+
+blast_makeblastdb:
+  - software/blast/makeblastdb/**
+  - tests/software/blast/makeblastdb/**
 
 bowtie2_align:
   - software/bowtie2/align/**
@@ -165,6 +177,10 @@ gatk4_bedtointervallist:
 gatk4_createsequencedictionary:
   - software/gatk4/createsequencedictionary/**
   - tests/software/gatk4/createsequencedictionary/**
+
+gatk4_fastqtosam:
+  - software/gatk4/fastqtosam/**
+  - tests/software/gatk4/fastqtosam/**
 
 gatk4_mergebamalignment:
   - software/gatk4/mergebamalignment/**
@@ -246,6 +262,10 @@ pangolin:
 picard_collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
   - tests/software/picard/collectmultiplemetrics/**
+
+picard_collectwgsmetrics:
+  - software/picard/collectwgsmetrics/**
+  - tests/software/picard/collectwgsmetrics/**
 
 picard_markduplicates:
   - software/picard/markduplicates/**
@@ -362,6 +382,10 @@ trimgalore:
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
+
+unicycler:
+  - software/unicycler/**
+  - tests/software/unicycler/**
 
 untar:
   - software/untar/**
