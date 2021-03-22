@@ -23,7 +23,7 @@ workflow test_bismark_summary {
     BISMARK_SUMMARY (
         BISMARK_ALIGN.out.bam.collect{ meta, bam -> bam },
         BISMARK_ALIGN.out.report.collect{ meta, report -> report },
-        BISMARK_DEDUPLICATE.out.bam.collect{ meta, bam -> bam },
+        BISMARK_DEDUPLICATE.out.report.collect{ meta, bam -> bam },
         BISMARK_METHYLATION_EXTRACTOR.out.report.collect{ meta, report -> report },
         BISMARK_METHYLATION_EXTRACTOR.out.mbias.collect{ meta, mbias -> mbias }
     )
