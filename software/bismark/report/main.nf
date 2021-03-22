@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process BISMARK_REPORT {
     tag "$meta.id"
@@ -26,7 +26,7 @@ process BISMARK_REPORT {
     path  "*.version.txt"               , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
+    def software = getSoftwareName(task.process)
     """
     bismark2report \\
         --alignment_report $align_report \\
