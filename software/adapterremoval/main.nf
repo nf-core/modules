@@ -38,6 +38,7 @@ process ADAPTERREMOVAL {
                 --threads $task.cpus \\
                 --settings ${prefix}.log \\
                 --output1 ${prefix}.trimmed.fastq.gz \\
+                --seed 42 \\
                 --gzip \\
 
             AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
@@ -53,6 +54,7 @@ process ADAPTERREMOVAL {
                 --settings ${prefix}.log \\
                 --output1 ${prefix}.pair1.trimmed.fastq.gz \\
                 --output2 ${prefix}.pair2.trimmed.fastq.gz \\
+                --seed 42 \\
                 --gzip \\
 
             AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
@@ -67,8 +69,9 @@ process ADAPTERREMOVAL {
                 --basename $prefix \\
                 --threads $task.cpus \\
                 --settings ${prefix}.log \\
+                --seed 42 \\
                 --gzip \\
-            
+
             cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
             AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
             """
