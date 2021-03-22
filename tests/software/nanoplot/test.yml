@@ -1,0 +1,7 @@
+- name: nanoplot
+  command: nextflow run ./tests/software/nanoplot -entry test_plot -c tests/config/nextflow.config
+  tags:
+    - nanoplot
+  files:
+    - path: output/nanoplot/*
+      md5sum: 
