@@ -51,6 +51,6 @@ process GATK4_FASTQTOSAM {
         -T $prefix \\
         $bam
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
     """
 }
