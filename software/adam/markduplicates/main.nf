@@ -43,8 +43,9 @@ process ADAM_MARKDUPLICATES {
         transformAlignments \\
         -mark_duplicate_reads \\
         -single \\
-        -i $bam \\
-        -o ${prefix}.md.bam
+        -stringency LENIENT \\
+        $bam \\
+        ${prefix}.md.bam
 
     echo \$(adam-submit --version 2>&1) | grep -o 'ADAM version: .*' | cut -f2 -d ' ' > ${software}.version.txt
     """
