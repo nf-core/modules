@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process BISMARK_METHYLATION_EXTRACTOR {
+process BISMARK_METHYLATIONEXTRACTOR {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
