@@ -42,7 +42,7 @@ process GATK4_FASTQTOSAM {
         """
         gatk FastqToSam \\
             -F1 ${reads[0]} \\
-            -F2 {reads[1]} \\
+            -F2 ${reads[1]} \\
             -O ${prefix}.bam \\
             -SM $prefix \\
             $options.args
