@@ -62,6 +62,11 @@ bedtools_sort:
   - software/bedtools/sort/**
   - tests/software/bedtools/sort/**
 
+bismark_align:
+  - software/bismark/align/**
+  - software/bismark/genome_preparation/**
+  - tests/software/bismark/align/**
+
 bismark_deduplicate:
   - software/bismark/deduplicate/**
   - tests/software/bismark/deduplicate/**
@@ -74,6 +79,22 @@ bismark_methylation_extractor:
   - software/bismark/methylation_extractor/**
   - software/bismark/genome_preparation/**
   - tests/software/bismark/methylation_extractor/**
+
+bismark_report:
+  - software/bismark/genome_preparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylation_extractor/**
+  - software/bismark/report/**
+  - tests/software/bismark/report/**
+
+bismark_summary:
+  - software/bismark/genome_preparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylation_extractor/**
+  - software/bismark/summary/**
+  - tests/software/bismark/summary/**
 
 blast_blastn:
   - software/blast/blastn/**
@@ -285,6 +306,10 @@ samtools_index:
 samtools_mpileup:
   - software/samtools/mpileup/**
   - tests/software/samtools/mpileup/**
+
+samtools_merge:
+  - software/samtools/merge/**
+  - tests/software/samtools/merge/**
 
 samtools_sort:
   - software/samtools/sort/**
