@@ -20,33 +20,27 @@ tools:
         documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
         doi: 10.1093/bioinformatics/btr167
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Bismark alignment
+        pattern: "*.{bam}"
     - align_report:
         type: file
         description: Bismark alignment reports
         pattern: "*{report.txt}"
-    - splitting_report:
-        type: file
-        description: Bismark splitting reports
-        pattern: "*{splitting_report.txt}"
     - dedup_report:
         type: file
         description: Bismark deduplication reports
         pattern: "*.{deduplication_report.txt}"
+    - splitting_report:
+        type: file
+        description: Bismark splitting reports
+        pattern: "*{splitting_report.txt}"
     - mbias:
         type: file
         description: Text file containing methylation bias information
         pattern: "*.{txt}"
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
     - summary:
         type: file
         description: Bismark summary
