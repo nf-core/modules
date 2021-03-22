@@ -15,7 +15,6 @@ tools:
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: ['BSD-3-clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
               respectively.
       pattern: "*.fastq.gz"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -39,11 +37,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Converted BAM file
+      pattern: "*.bam"
 
 authors:
   - "@ntoda03"
