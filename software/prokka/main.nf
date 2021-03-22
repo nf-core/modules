@@ -23,29 +23,29 @@ process PROKKA {
     val use_proteins
 
     output:
-    tuple val(meta), path("${prefix}.gff"), emit: gff
-    tuple val(meta), path("${prefix}.gbk"), emit: gbk
-    tuple val(meta), path("${prefix}.fna"), emit: fna
-    tuple val(meta), path("${prefix}.faa"), emit: faa
-    tuple val(meta), path("${prefix}.ffn"), emit: ffn
-    tuple val(meta), path("${prefix}.sqn"), emit: sqn
-    tuple val(meta), path("${prefix}.fsa"), emit: fsa
-    tuple val(meta), path("${prefix}.tbl"), emit: tbl
-    tuple val(meta), path("${prefix}.err"), emit: err
-    tuple val(meta), path("${prefix}.log"), emit: log
-    tuple val(meta), path("${prefix}.txt"), emit: txt
-    tuple val(meta), path("${prefix}.tsv"), emit: tsv
+    tuple val(meta), path("${prefix}/*.gff"), emit: gff
+    tuple val(meta), path("${prefix}/*.gbk"), emit: gbk
+    tuple val(meta), path("${prefix}/*.fna"), emit: fna
+    tuple val(meta), path("${prefix}/*.faa"), emit: faa
+    tuple val(meta), path("${prefix}/*.ffn"), emit: ffn
+    tuple val(meta), path("${prefix}/*.sqn"), emit: sqn
+    tuple val(meta), path("${prefix}/*.fsa"), emit: fsa
+    tuple val(meta), path("${prefix}/*.tbl"), emit: tbl
+    tuple val(meta), path("${prefix}/*.err"), emit: err
+    tuple val(meta), path("${prefix}/*.log"), emit: log
+    tuple val(meta), path("${prefix}/*.txt"), emit: txt
+    tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
     path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def proteins_opt = use_proteins ? "--proteins $proteins" : ""
     """
     prokka \\
         $options.args \\
-        -cpus $task.cpus \\
-        -prefix $prefix \\
+        --cpus $task.cpus \\
+        --prefix $prefix \\
         $proteins_opt \\
         $fasta
 

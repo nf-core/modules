@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PROKKA } from '../../../software/prokka/main.nf' addParams( options: ['proteins': false] )
+include { PROKKA } from '../../../software/prokka/main.nf' addParams( options: [:] )
 
 workflow test_prokka {
     def input = []
