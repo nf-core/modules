@@ -71,31 +71,31 @@ bismark_methylation_extractor:
   - software/bismark/genome_preparation/**
   - tests/software/bismark/methylation_extractor/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
-
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-bowtie_build:
-  - software/bowtie/build/**
-  - tests/software/bowtie/build_test/**
+blast_makeblastdb:
+  - software/blast/makeblastdb/**
+  - tests/software/blast/makeblastdb/**
+
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
+bowtie_build:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
 bwa_index:
   - software/bwa/index/**
@@ -246,6 +246,10 @@ preseq_lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/lcextrap/**
 
+prokka:
+  - software/prokka/**
+  - tests/software/prokka/**
+
 qualimap_bamqc:
   - software/qualimap/bamqc/**
   - tests/software/qualimap/bamqc/**
@@ -345,4 +349,3 @@ ucsc_bedgraphtobigwig:
 untar:
   - software/untar/**
   - tests/software/untar/**
-

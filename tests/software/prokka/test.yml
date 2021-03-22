@@ -1,0 +1,17 @@
+- name: prokka
+  command: nextflow run ./tests/software/prokka -entry test_prokka -c tests/config/nextflow.config
+  tags:
+    - prokka
+  files:
+    - path: output/prokka/test.gff
+    - path: output/prokka/test.gbk
+    - path: output/prokka/test.fna
+    - path: output/prokka/test.faa
+    - path: output/prokka/test.ffn
+    - path: output/prokka/test.sqn
+    - path: output/prokka/test.fsa
+    - path: output/prokka/test.tbl
+    - path: output/prokka/test.err
+    - path: output/prokka/test.log
+    - path: output/prokka/test.txt
+    - path: output/prokka/test.tsv
