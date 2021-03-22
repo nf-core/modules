@@ -44,11 +44,22 @@ process GATK4_FASTQTOSAM {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     if (meta.single_end) {
         """
+        gatk FastqToSam \\
+            -F1 $reads \\
+            -O ${prefix}.bam \\
+            -S $prefix \\
+            $options.args
 
         gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
         """
     } else {
         """
+        gatk FastqToSam \\
+            -F1 ${reads[0]} \\
+            -F2 {reads[1]} \\
+            -O ${prefix}.bam \\
+            -S $prefix \\
+            $options.args
 
         gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
         """
