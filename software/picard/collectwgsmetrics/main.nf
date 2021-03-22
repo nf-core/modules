@@ -17,7 +17,7 @@ process PICARD_COLLECTWGSMETRICS {
     } else {
         container "quay.io/biocontainers/picard:2.25.0--0"
     }
-        
+
     input:
     tuple val(meta), path(bam), path(bai)
     path  fasta
