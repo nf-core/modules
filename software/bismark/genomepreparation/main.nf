@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process BISMARK_GENOME_PREPARATION {
+process BISMARK_GENOMEPREPARATION {
     tag "$fasta"
     label 'process_high'
     publishDir "${params.outdir}",
