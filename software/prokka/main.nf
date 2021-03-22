@@ -1,4 +1,5 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
+
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -18,6 +19,8 @@ process PROKKA {
 
     input:
     tuple val(meta), path(fasta)
+    path proteins
+    val use_proteins
 
     output:
     tuple val(meta), path("${prefix}.gff"), emit: gff
@@ -37,13 +40,13 @@ process PROKKA {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def proteins = protein == "dummy_file.txt" ? "--proteins $fasta" : ""
+    def proteins_opt = use_proteins ? "--proteins $proteins" : ""
     """
     prokka \\
         $options.args \\
         -cpus $task.cpus \\
         -prefix $prefix \\
-        $proteins \\
+        $proteins_opt \\
         $fasta
 
     echo \$(prokka --version 2>&1) | sed 's/^.*prokka //' > ${software}.version.txt

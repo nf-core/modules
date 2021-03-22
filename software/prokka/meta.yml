@@ -21,9 +21,12 @@ input:
       type: file
       description: |
         FASTA file to be annotated. Has to contain at least a non-empty string dummy value.
-  - protein:
+  - proteins:
       type: file
       description: FASTA file of trusted proteins to first annotate from (optional)
+  - use_proteins:
+      type: boolean
+      description: Whether to use the provided proteins fasta
 
 output:
   - meta:
