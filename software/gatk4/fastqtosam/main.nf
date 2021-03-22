@@ -26,28 +26,15 @@ process GATK4_FASTQTOSAM {
     path "*.version.txt"          , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (meta.single_end) {
-        """
-        gatk FastqToSam \\
-            -F1 $reads \\
-            -O ${prefix}.bam \\
-            -SM $prefix \\
-            $options.args
-
-        gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
-        """
-    } else {
-        """
-        gatk FastqToSam \\
-            -F1 ${reads[0]} \\
-            -F2 ${reads[1]} \\
-            -O ${prefix}.bam \\
-            -SM $prefix \\
-            $options.args
-
-        gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
-        """
-    }
+    def software   = getSoftwareName(task.process)
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
+    """
+    gatk FastqToSam \\
+        $read_files \\
+        -O ${prefix}.bam \\
+        -SM $prefix \\
+        $options.args
+    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    """
 }
