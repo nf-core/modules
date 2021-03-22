@@ -1,0 +1,8 @@
+- name: adam markduplicates
+  command: nextflow run ./tests/software/adam/markduplicates -entry test_adam_markduplicates -c tests/config/nextflow.config
+  tags:
+    - adam
+    - adam_markduplicates
+  files:
+    - path: ./output/adam/test.md.bam
+      md5sum: 163be0a88c70ca629fd516dbaadad96a
