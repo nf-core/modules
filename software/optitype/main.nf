@@ -22,8 +22,7 @@ process OPTITYPE {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.tsv'), emit: log
-    tuple val(meta), path('*.pdf'), emit: pdf
+    tuple val(meta), path("${prefix}"), emit: output
     path "*.version.txt"          , emit: version
 
     script:
@@ -35,7 +34,7 @@ process OPTITYPE {
     configbuilder --max-cpus $task.cpus $options.args2 > config.ini
 
     # Run the actual OptiType typing with options.args
-    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir .
+    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir $prefix
 
     cat \$(which OptiTypePipeline.py) 2>&1 ${software}.version.txt
     """

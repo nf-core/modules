@@ -33,10 +33,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - log:
+  - output:
       type: file
-      description: OptiType log file
-      pattern: "*.tsv"
+      description: OptiType Results Folder
+      pattern: "${prefix}"
   - pdf:
       type: file
       description: OptiType PDF Plots
