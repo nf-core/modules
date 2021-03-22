@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { OPTITYPE } from '../../../../software/optitype/main.nf' addParams( options: [:] )
+include { OPTITYPE } from '../../../software/optitype/main.nf' addParams( options: [:] )
 
 workflow test_optitype {
 

@@ -35,7 +35,7 @@ process OPTITYPE {
     configbuilder --max-cpus $task.cpus $options.args2 > config.ini
 
     # Run the actual OptiType typing with options.args
-    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir ${prefix}
+    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir .
 
     cat \$(which OptiTypePipeline.py) 2>&1 ${software}.version.txt
     """
