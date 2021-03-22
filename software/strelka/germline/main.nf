@@ -19,7 +19,7 @@ process STRELKA_GERMLINE {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path fasta
     path fai
     tuple path(target_bed), path(target_bed_tbi)
