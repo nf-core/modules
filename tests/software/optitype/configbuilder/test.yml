@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml optitype/configbuilder
+- name: optitype configbuilder
+  command: nextflow run ./tests/software/optitype/configbuilder -entry test_optitype_configbuilder -c tests/config/nextflow.config
+  tags:
+    - optitype
+    - optitype_configbuilder
+  files:
+    - path: output/optitype/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc

@@ -84,31 +84,31 @@ bismark_report:
   - software/bismark/report/**
   - tests/software/bismark/report/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
-
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-bowtie_build:
-  - software/bowtie/build/**
-  - tests/software/bowtie/build_test/**
+blast_makeblastdb:
+  - software/blast/makeblastdb/**
+  - tests/software/blast/makeblastdb/**
+
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
+bowtie_build:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
 bwa_index:
   - software/bwa/index/**
@@ -239,6 +239,14 @@ multiqc:
   - software/multiqc/**
   - tests/software/multiqc/**
 
+optitype_configbuilder:
+  - software/optitype/configbuilder/**
+  - tests/software/optitype/configbuilder/**
+
+optitype_type:
+  - software/optitype/type/**
+  - tests/software/optitype/type/**
+
 pangolin:
   - software/pangolin/**
   - tests/software/pangolin/**
@@ -291,13 +299,13 @@ samtools_index:
   - software/samtools/index/**
   - tests/software/samtools/index/**
 
-samtools_mpileup:
-  - software/samtools/mpileup/**
-  - tests/software/samtools/mpileup/**
-
 samtools_merge:
   - software/samtools/merge/**
   - tests/software/samtools/merge/**
+
+samtools_mpileup:
+  - software/samtools/mpileup/**
+  - tests/software/samtools/mpileup/**
 
 samtools_sort:
   - software/samtools/sort/**
@@ -362,4 +370,3 @@ ucsc_bedgraphtobigwig:
 untar:
   - software/untar/**
   - tests/software/untar/**
-
