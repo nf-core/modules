@@ -1,0 +1,8 @@
+- name: samtools fastq
+  command: nextflow run ./tests/software/samtools/fastq -entry test_samtools_fastq -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools_fastq
+  files:
+    - path: ./output/samtools/test_paired_end.sorted.bam.fastq
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
