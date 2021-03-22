@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml strelka/germline
+- name: strelka germline
+  command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline -c tests/config/nextflow.config
+  tags:
+    - strelka
+    - strelka_germline
+  files:
+    - path: output/strelka/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
