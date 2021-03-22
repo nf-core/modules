@@ -1,8 +1,8 @@
-- name: Run bismark_genome_preparation test workflow
-  command: nextflow run ./tests/software/bismark/genome_preparation -entry test_bismark_genome_preparation -c tests/config/nextflow.config
+- name: Run bismark_genomepreparation test workflow
+  command: nextflow run ./tests/software/bismark/genomepreparation -entry test_bismark_genomepreparation -c tests/config/nextflow.config
   tags:
     - bismark
-    - bismark_genome_preparation
+    - bismark_genomepreparation
   files:
     - path: ./output/bismark/BismarkIndex/test_genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6

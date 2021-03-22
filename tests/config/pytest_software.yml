@@ -1,3 +1,7 @@
+adapterremoval:
+  - software/adapterremoval/**
+  - tests/software/adapterremoval/**
+
 bandage_image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
@@ -58,17 +62,47 @@ bedtools_sort:
   - software/bedtools/sort/**
   - tests/software/bedtools/sort/**
 
+bismark_align:
+  - software/bismark/align/**
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/align/**
+
 bismark_deduplicate:
   - software/bismark/deduplicate/**
   - tests/software/bismark/deduplicate/**
 
-bismark_genome_preparation:
-  - software/bismark/genome_preparation/**
-  - tests/software/bismark/genome_preparation/**
+bismark_genomepreparation:
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/genomepreparation/**
+
+bismark_methylationextractor:
+  - software/bismark/methylationextractor/**
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/methylationextractor/**
+
+bismark_report:
+  - software/bismark/genomepreparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylationextractor/**
+  - software/bismark/report/**
+  - tests/software/bismark/report/**
+
+bismark_summary:
+  - software/bismark/genomepreparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylationextractor/**
+  - software/bismark/summary/**
+  - tests/software/bismark/summary/**
 
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
+
+blast_makeblastdb:
+  - software/blast/makeblastdb/**
+  - tests/software/blast/makeblastdb/**
 
 bowtie2_align:
   - software/bowtie2/align/**
@@ -192,6 +226,10 @@ ivar_variants:
   - software/ivar/variants/**
   - tests/software/ivar/variants/**
 
+kraken2_run:
+  - software/kraken2/run/**
+  - tests/software/kraken2/run/**
+
 methyldackel_extract:
   - software/methyldackel/extract/**
   - tests/software/methyldackel/extract/**
@@ -224,6 +262,10 @@ pangolin:
 picard_collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
   - tests/software/picard/collectmultiplemetrics/**
+
+picard_collectwgsmetrics:
+  - software/picard/collectwgsmetrics/**
+  - tests/software/picard/collectwgsmetrics/**
 
 picard_markduplicates:
   - software/picard/markduplicates/**
@@ -273,6 +315,10 @@ samtools_mpileup:
   - software/samtools/mpileup/**
   - tests/software/samtools/mpileup/**
 
+samtools_merge:
+  - software/samtools/merge/**
+  - tests/software/samtools/merge/**
+
 samtools_sort:
   - software/samtools/sort/**
   - tests/software/samtools/sort/**
@@ -300,6 +346,10 @@ sequenza_wiggle:
 seqwish_induce:
   - software/seqwish/induce/**
   - tests/software/seqwish/induce/**
+
+spades:
+  - software/spades/**
+  - tests/software/spades/**
 
 star_align:
   - software/star/align/**
@@ -332,6 +382,10 @@ trimgalore:
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
+
+unicycler:
+  - software/unicycler/**
+  - tests/software/unicycler/**
 
 untar:
   - software/untar/**
