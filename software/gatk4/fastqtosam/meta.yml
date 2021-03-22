@@ -1,16 +1,18 @@
 name: gatk4_fastqtosam
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Converts FastQ file to BAM format
 keywords:
   - sort
 tools:
   - gatk4:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Genome Analysis Toolkit (GATK4)
-      homepage: None
-      documentation: None
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: ""
+      doi: "10.1158/1538-7445.AM2017-3590"
       licence: ['BSD-3-clause']
 
 ## TODO nf-core: Add a description of all of the variables used as input
@@ -21,7 +23,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
