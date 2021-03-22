@@ -43,6 +43,7 @@ process STRELKA_GERMLINE {
         --bam ${bam} \
         --referenceFasta ${fasta} \
         ${options_strelka} \
+        ${options.args} \
         --runDir strelka
     python strelka/runWorkflow.py -m local -j ${task.cpus}
     mv strelka/results/variants/genome.*.vcf.gz     ${prefix}_genome.vcf.gz
