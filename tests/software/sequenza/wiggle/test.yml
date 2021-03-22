@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml sequenza/wiggle
+- name: sequenza wiggle
+  command: nextflow run ./tests/software/sequenza/wiggle -entry test_sequenza_wiggle -c tests/config/nextflow.config
+  tags:
+    - sequenza
+    - sequenza_wiggle
+  files:
+    - path: output/sequenza/test_genome.wig.gz
+      md5sum: b38ecea84c3db6813b6ce9ec280bd33f
