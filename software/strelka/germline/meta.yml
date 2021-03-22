@@ -40,15 +40,15 @@ output:
       type: file
       description: gzipped germline variant file
       pattern: "*.{vcf.gz}"
-  - vcf_tbi
+  - vcf_tbi:
      type: file
      description: index file for the vcf file
      pattern: "*.vcf.gz.tbi"
-  - genome_vcf
+  - genome_vcf:
      type: file
      description: variant records and compressed non-variant blocks
      pattern: "*_genome.vcf.gz"
-  - genome_vcf_tbi
+  - genome_vcf_tbi:
      type: file
      description: index file for the genome_vcf file
      pattern: "*_genome.vcf.gz.tbi"
