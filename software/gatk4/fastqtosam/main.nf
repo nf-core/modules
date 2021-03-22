@@ -42,15 +42,15 @@ process GATK4_FASTQTOSAM {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    if (meta.single_end) {
+        """
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
-    """
+        gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+        """
+    } else {
+        """
+
+        gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+        """
+    }
 }
