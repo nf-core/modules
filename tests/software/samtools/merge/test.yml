@@ -1,0 +1,7 @@
+name: samtools merge
+command: nextflow run ./tests/software/samtools/merge -entry test_samtools_merge -c tests/config/nextflow.config
+tags:
+  - samtools_merge
+files:
+  - path: output/samtools/test_merged.bam
+    md5sum: 5410335a7fa9188146947b131bb7b59a
