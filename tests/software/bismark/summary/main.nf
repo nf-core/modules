@@ -6,9 +6,9 @@ include { BISMARK_GENOMEPREPARATION    } from '../../../../software/bismark/geno
 include { BISMARK_ALIGN                 } from '../../../../software/bismark/align/main.nf' addParams( options: [:] )
 include { BISMARK_DEDUPLICATE           } from '../../../../software/bismark/deduplicate/main.nf' addParams( options: [:] )
 include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../software/bismark/methylationextractor/main.nf' addParams( options: [:] )
-include { BISMARK_REPORT                } from '../../../../software/bismark/report/main.nf' addParams( options: [:] )
+include { BISMARK_SUMMARY               } from '../../../../software/bismark/summary/main.nf' addParams( options: [:] )
 
-workflow test_bismark_report {
+workflow test_bismark_summary {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
@@ -20,10 +20,11 @@ workflow test_bismark_report {
     BISMARK_DEDUPLICATE ( BISMARK_ALIGN.out.bam )
     BISMARK_METHYLATIONEXTRACTOR ( BISMARK_DEDUPLICATE.out.bam, BISMARK_GENOMEPREPARATION.out.index )
 
-    BISMARK_REPORT (
-        BISMARK_ALIGN.out.report
-            .join(BISMARK_DEDUPLICATE.out.report)
-            .join(BISMARK_METHYLATIONEXTRACTOR.out.report)
-            .join(BISMARK_METHYLATIONEXTRACTOR.out.mbias)
+    BISMARK_SUMMARY (
+        BISMARK_ALIGN.out.bam.collect{ meta, bam -> bam },
+        BISMARK_ALIGN.out.report.collect{ meta, report -> report },
+        BISMARK_DEDUPLICATE.out.report.collect{ meta, bam -> bam },
+        BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ meta, report -> report },
+        BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ meta, mbias -> mbias }
     )
 }
