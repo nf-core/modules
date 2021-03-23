@@ -24,9 +24,9 @@ input:
   - proteins:
       type: file
       description: FASTA file of trusted proteins to first annotate from (optional)
-  - use_proteins:
-      type: boolean
-      description: Whether to use the provided proteins fasta
+  - prodigal_tf:
+      type: file
+      description: Training file to use for Prodigal (optional)
 
 output:
   - meta:
