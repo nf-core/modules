@@ -1,5 +1,4 @@
 #!/usr/bin/env nextflow
-
 nextflow.enable.dsl = 2
 
 include { ALLELECOUNTER } from '../../../software/allelecounter/main.nf' addParams( options: [:] )
