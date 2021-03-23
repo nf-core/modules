@@ -11,7 +11,7 @@
 [![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
-> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!  
+> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 > PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
@@ -42,7 +42,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
     ```console
     $ nf-core modules list
-    
+
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
     |\ | |__  __ /  ` /  \ |__) |__         }  {
@@ -306,7 +306,7 @@ In order to test that each module added to `nf-core/modules` is actually working
 
 ### Running tests manually
 
-As outlined in the [nf-core modules create](#nf-core-modules-create) section we have made it quite trivial to create an initial yaml file (via the `nf-core modules create-test-yml` command) containing a listing of all of the module output files and their associated md5sums. However, md5sum checks may not be appropriate for all output files if for example they contain timestamps. This is why it is a good idea to re-run the tests locally with `pytest-workflow` before you create your pull request adding the module. If your files do indeed have timestamps or other issues that prevent you from using the md5sum check, then you can edit the `test.yml` file to instead check that the file contains some specific content or as a last resort, if it exists. The different test options are listed in the [pytest-workflow docs](https://pytest-workflow.readthedocs.io/en/stable/#test-options). 
+As outlined in the [nf-core modules create](#nf-core-modules-create) section we have made it quite trivial to create an initial yaml file (via the `nf-core modules create-test-yml` command) containing a listing of all of the module output files and their associated md5sums. However, md5sum checks may not be appropriate for all output files if for example they contain timestamps. This is why it is a good idea to re-run the tests locally with `pytest-workflow` before you create your pull request adding the module. If your files do indeed have timestamps or other issues that prevent you from using the md5sum check, then you can edit the `test.yml` file to instead check that the file contains some specific content or as a last resort, if it exists. The different test options are listed in the [pytest-workflow docs](https://pytest-workflow.readthedocs.io/en/stable/#test-options).
 
 Please follow the steps below to run the tests locally:
 
