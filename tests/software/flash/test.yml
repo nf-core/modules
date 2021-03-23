@@ -1,0 +1,9 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml flash/None
+- name: flash
+  command: nextflow run ./tests/software/flash -entry test_flash -c tests/config/nextflow.config
+  tags:
+    - flash
+  files:
+    - path: output/flash/test.flash.log
+    - path: ./output/cutadapt/test.merged.fastq.gz
