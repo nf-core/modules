@@ -8,7 +8,7 @@ workflow test_optitype {
 
     def input = []
     input = [ [ id:'test', seq_type:'dna' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_single_end.sorted.bam", checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/human/bam/example_pe.bam", checkIfExists: true) ]
 
     OPTITYPE ( input )
 }
