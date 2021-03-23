@@ -316,27 +316,27 @@ Please follow the steps below to run the tests locally:
 
 3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
 
-4. Start running your own tests!
+4. Start running your own tests using the appropriate [`tag`](https://github.com/nf-core/modules/blob/3d720a24fd3c766ba56edf3d4e108a1c45d353b2/tests/software/fastqc/test.yml#L3-L5) defined in the `test.yml`:
 
     - Typical command with Docker:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=docker pytest --tag bowtie --symlink --keep-workflow-wd
+        PROFILE=docker pytest --tag fastqc_single_end --symlink --keep-workflow-wd
         ```
 
     - Typical command with Singularity:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        TMPDIR=~ PROFILE=singularity pytest --tag bowtie --symlink --keep-workflow-wd
+        TMPDIR=~ PROFILE=singularity pytest --tag fastqc_single_end --symlink --keep-workflow-wd
         ```
 
     - Typical command with Conda:
 
         ```console
         cd /path/to/git/clone/of/nf-core/modules/
-        PROFILE=conda pytest --tag bowtie --symlink --keep-workflow-wd
+        PROFILE=conda pytest --tag fastqc_single_end --symlink --keep-workflow-wd
         ```
 
     - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.
