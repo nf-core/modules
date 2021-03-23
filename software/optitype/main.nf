@@ -27,7 +27,7 @@ process OPTITYPE {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
     # Create a config for OptiType on a per sample basis with options.args2
