@@ -29,7 +29,10 @@ input:
       type: file
       description: BAM index file
       pattern: "*.{bai}"
-      
+  - target_bed:
+      type: file
+      description: An optional bed file
+      pattern: "*.{bed}"
 output:
   - meta:
       type: map
