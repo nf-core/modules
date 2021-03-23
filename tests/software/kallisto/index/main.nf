@@ -6,7 +6,8 @@ include { KALLISTO_INDEX } from '../../../../software/kallisto/index/main.nf' ad
 
 workflow test_kallisto_index {
     
-    def input = file("${launchDir}/tests/data/genomics/sarscov2/bam/test_single_end.bam", checkIfExists: true)
+    def genome_fasta = file("${launchDir}/tests/data/genomics/sarscov2/bam/test_single_end.bam", checkIfExists: true)
+    def transcript_fasta = file("${launchDir}/tests/data/genomics/sarscov2/bam/test_single_end.bam", checkIfExists: true)
 
-    KALLISTO_INDEX ( input )
+    KALLISTO_INDEX ( genome_fasta, transcript_fasta )
 }
