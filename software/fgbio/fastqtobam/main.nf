@@ -4,6 +4,16 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = '1.3.0'
+/*
+unfortunately need to output the version manually
+as done for module
+https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
+because the solution adopted in iVar, i.e.
+echo \$(fgbio --version 2>&1) >${software}.version.txt
+for FGBIO still generates an error exit in Nextflow for some reasons
+*/
+
 process FGBIO_FASTQTOBAM {
     tag "$meta.id"
     label 'process_low'
@@ -41,6 +51,6 @@ process FGBIO_FASTQTOBAM {
     --sample ${meta.id} \\
     --library ${meta.id}
 
-    echo \$(fgbio --version 2>&1) >${software}.version.txt
+    echo $VERSION >${software}.version.txt
     """
 }
