@@ -7,7 +7,7 @@ include { OPTITYPE } from '../../../software/optitype/main.nf' addParams( option
 workflow test_optitype {
 
     def input = []
-    input = [ [ id:'test', seq_type:'DNA' ], // meta map
+    input = [ [ id:'test', seq_type:'dna' ], // meta map
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_single_end.sorted.bam", checkIfExists: true) ]
 
     OPTITYPE ( input )
