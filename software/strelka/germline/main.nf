@@ -29,7 +29,6 @@ process STRELKA_GERMLINE {
     tuple val(meta), path("*_genome.vcf.gz"), emit: genome_vcf
     tuple val(meta), path("*_genome.vcf.gz.tbi"), emit: genome_vcf_tbi
     path "*.version.txt", emit: version 
-    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -44,7 +43,7 @@ process STRELKA_GERMLINE {
         --referenceFasta ${fasta} \
         ${options_strelka} \
         ${options.args} \
-        --runDir strelka
+        --runDir strelkla
     python strelka/runWorkflow.py -m local -j ${task.cpus}
     mv strelka/results/variants/genome.*.vcf.gz     ${prefix}_genome.vcf.gz
     mv strelka/results/variants/genome.*.vcf.gz.tbi ${prefix}_genome.vcf.gz.tbi
