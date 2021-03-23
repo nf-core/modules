@@ -26,15 +26,11 @@ input:
       description: pair of reads to be converted into BAM file
       pattern: "*.{fastq.gz}"
 
-  - read_structure1:
+  - read_structure:
       type: string
       description: A read structure should always be provided for each of the fastq files.
-                  If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
-                  https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
-
-  - read_structure2:
-      type: string
-      description: A read structure should always be provided for each of the fastq files.
+                  If single end, the string will contain only one structure (i.e. "2M11S+T"), if paired-end the string
+                  will contain two structures separated by a blank space (i.e. "2M11S+T 2M11S+T").
                   If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
                   https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
 

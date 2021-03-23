@@ -20,8 +20,7 @@ process FGBIO_FASTQTOBAM {
 
     input:
     tuple val(meta), path(reads)
-    val(read_structure1)
-    val(read_structure2)
+    val(read_structure)
 
     output:
     tuple val(meta), path("*_umi_converted.bam"), emit: bam
@@ -34,12 +33,12 @@ process FGBIO_FASTQTOBAM {
     """
     mkdir tmpFolder
 
-    fgbio --tmp-dir=${PWD}/tmpFolder \
-    FastqToBam \
-    -i ${reads} \
-    -o "${prefix}_umi_converted.bam" \
-    --read-structures $read_structure1 $read_structure2 \
-    --sample ${meta.id} \
+    fgbio --tmp-dir=${PWD}/tmpFolder \\
+    FastqToBam \\
+    -i ${reads} \\
+    -o "${prefix}_umi_converted.bam" \\
+    --read-structures $read_structure \\
+    --sample ${meta.id} \\
     --library ${meta.id}
 
     echo \$(fgbio --version 2>&1) >${software}.version.txt
