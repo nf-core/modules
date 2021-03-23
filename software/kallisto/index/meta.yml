@@ -1,37 +1,41 @@
 name: kallisto_index
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Create index for kallisto
 keywords:
-  - sort
+  - fasta
+  - genome
+  - reference
+  - index
 tools:
   - kallisto:
       ## TODO nf-core: Add a description and other details for the software below
       description: Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
-      homepage: None
-      documentation: None
+      homepage: https://pachterlab.github.io/kallisto/about
+      documentation: https://pachterlab.github.io/kallisto/manual
       tool_dev_url: None
-      doi: ""
+      doi: https://doi.org/10.1038/nbt.3519
       licence: ['BSD_2_clause']
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - genome_fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Fasta file of the reference genome
+  - transcriptome_fasta:
+      type: file
+      description: Fasta file of the reference transcriptome
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
+  - index:
+      type: directory
+      description: Folder containing the star index files
+      pattern: "kallisto"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@BatoolMM"
