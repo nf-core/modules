@@ -34,13 +34,12 @@ process STRELKA_GERMLINE {
     def software = getSoftwareName(task.process)
     def ioptions = initOptions(options)
     def prefix   = ioptions.suffix ? "strelka_${meta.id}${ioptions.suffix}" : "strelka_${meta.id}"
-    def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     
     options_strelka = params.target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaGermlineWorkflow.py \
         --bam ${bam} \
-        --referenceFasta ${reference} \
+        --referenceFasta ${fasta} \
         ${options_strelka} \
         ${options.args} \
         --runDir strelka
