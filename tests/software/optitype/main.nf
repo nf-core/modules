@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { OPTITYPE } from '../../../software/optitype/main.nf' addParams( options: [:] )
+include { OPTITYPE } from '../../../software/optitype/main.nf' addParams( options: ['args':'-e 1 -b 0.009', 'args2':'--solver "glpk"'] )
 
 workflow test_optitype {
 
