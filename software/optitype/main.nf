@@ -45,8 +45,9 @@ process OPTITYPE {
     echo "use_discordant=false" >> config.ini
 
     # Run the actual OptiType typing with options.args
-    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir $prefix
+    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --prefix $prefix --outdir $prefix
 
-    cat \$(which OptiTypePipeline.py) 2>&1 ${software}.version.txt
+    #Couldn't find a nicer way of doing this
+    cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g" > ${software}.version.txt
     """
 }
