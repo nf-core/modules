@@ -28,24 +28,14 @@ process SAMTOOLS_FASTQ {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def endedness = meta.single_end ? "-0 ${prefix}.fastq.gz" : "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz"
 
-    if (meta.single_end)
-        """
-        samtools fastq \\
-            $options.args \\
-            -@ $task.cpus \\
-            -0 ${prefix}.fastq.gz \\
-            $bam
-        echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
-        """
-    else
-        """
-        samtools fastq \\
-            $options.args \\
-            -@ $task.cpus \\
-            -1 ${prefix}_1.fastq.gz \\
-            -2 ${prefix}_2.fastq.gz \\
-            $bam
-        echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
-        """
+    """
+    samtools fastq \\
+        $options.args \\
+        -@ $task.cpus \\
+        $endedness \\
+        $bam
+    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    """
 }
