@@ -4,8 +4,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '1.3.0'
-
 process FGBIO_FASTQTOBAM {
     tag "$meta.id"
     label 'process_low'
@@ -44,6 +42,6 @@ process FGBIO_FASTQTOBAM {
     --sample ${meta.id} \
     --library ${meta.id}
 
-    echo $VERSION > ${software}.version.txt
+    echo \$(fgbio --version 2>&1) >${software}.version.txt
     """
 }
