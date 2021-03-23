@@ -31,7 +31,18 @@ process OPTITYPE {
 
     """
     # Create a config for OptiType on a per sample basis with options.args2
-    configbuilder --max-cpus $task.cpus $options.args2 > config.ini
+
+    #Doing it old school now
+    echo "[mapping]" > config.ini
+    echo "razers3=razers3" >> config.ini
+    echo "threads=$task.cpus" >> config.ini
+    echo "[ilp]" >> config.ini
+    echo "$options.args2" >> config.ini
+    echo "threads=1" >> config.ini
+    echo "[behavior]" >> config.ini
+    echo "deletebam=true" >> config.ini
+    echo "unpaired_weight=0" >> config.ini
+    echo "use_discordant=false" >> config.ini
 
     # Run the actual OptiType typing with options.args
     OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --outdir $prefix
