@@ -21,8 +21,8 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process KALLISTO_INDEX {
-    tag '$bam'
-    label 'process_low'
+    tag '$transcript_fasta'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
@@ -45,16 +45,23 @@ process KALLISTO_INDEX {
     //               https://github.com/nf-core/modules/blob/master/software/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path bam
+    path genome_fasta
+    path transcript_fasta
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    path "*.bam", emit: bam
+    path "kallisto", emit: index
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
+    def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
+    def gentrome      = "gentrome.fa"
+    if (genome_fasta.endsWith('.gz')) {
+        get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
+        gentrome      = "gentrome.fa.gz"
+    }
     
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -65,12 +72,17 @@ process KALLISTO_INDEX {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        $bam
+    $get_decoy_ids
+    sed -i.bak -e 's/>//g' decoys.txt
+    cat $transcript_fasta $genome_fasta > $gentrome
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    kallisto \\
+        index \\
+        --threads $task.cpus \\
+        -t $gentrome \\
+        -d decoys.txt \\
+        $options.args \\
+        -i kallisto
+    kallisto --version | sed -e "s/kallisto //g" > ${software}.version.txt
     """
 }
