@@ -22,14 +22,14 @@ process BWA_INDEX {
     path fasta
 
     output:
-    path "bwa"          , emit: index
+    path "index"          , emit: index
     path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    mkdir bwa
-    bwa index $options.args $fasta -p bwa/${fasta.baseName}
+    mkdir index
+    bwa index $options.args -p index/${fasta.baseName} $fasta 
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
     """
 }
