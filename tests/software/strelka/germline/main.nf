@@ -10,9 +10,10 @@ workflow test_strelka_germline {
 
     def fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
     def fai   = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta.fai", checkIfExists: true)
+    def target_bed = []
     input = [ [ id:'test'], // meta map
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true),
               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam.bai", checkIfExists: true) ]
 
-    STRELKA_GERMLINE ( input, fasta, fai )
+    STRELKA_GERMLINE ( input, fasta, fai, target_bed )
 }
