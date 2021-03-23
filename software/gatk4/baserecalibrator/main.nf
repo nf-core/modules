@@ -38,13 +38,12 @@ process GATK4_BASERECALIBRATOR {
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')
     """
     gatk BaseRecalibrator  \
-      -R $fasta \
-      -I $bam \
-      $sitesCommand \
-      $intervalsCommand \
-      $options.args \
-      -O ${prefix}.table
-
+        -R $fasta \
+        -I $bam \
+        $sitesCommand \
+        $intervalsCommand \
+        $options.args \
+        -O ${prefix}.table
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
     """
