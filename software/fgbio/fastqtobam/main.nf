@@ -5,6 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 def VERSION = '1.3.0'
+
 /*
 unfortunately need to output the version manually
 as done for module
