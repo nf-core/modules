@@ -22,7 +22,6 @@ process STRELKA_GERMLINE {
     tuple val(meta), path(bam), path(bai)
     path fasta
     path fai
-    tuple path(target_bed), path(target_bed_tbi)
     
     output:
     tuple val(meta), path("*_variants.vcf.gz"), emit: vcf
