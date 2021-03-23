@@ -34,7 +34,7 @@ process FGBIO_FASTQTOBAM {
     val(read_structure)
 
     output:
-    tuple val(meta), path("*_umi_converted.bam"), emit: bam
+    tuple val(meta), path("*_umi_converted.bam"), emit: umibam
     path "*.version.txt"          , emit: version
 
     script:
