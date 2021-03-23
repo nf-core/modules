@@ -31,13 +31,14 @@ process SHOVILL {
 
     script:
     def software = getSoftwareName(task.process)
+    def memory = task.memory.toGiga()
     """
     shovill \\
         --R1 ${reads[0]} \\
         --R2 ${reads[1]} \\
         $options.args \\
         --cpus $task.cpus \\
-        --ram $task.memory \\
+        --ram $memory \\
         --outdir ./ \\
         --force
 

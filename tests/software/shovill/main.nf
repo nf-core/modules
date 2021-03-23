@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SHOVILL } from '../../../software/shovill/main.nf' addParams( options: [args: '--gsize 2800000'] )
+include { SHOVILL } from '../../../software/shovill/main.nf' addParams( options: [args: '--gsize 2800000 --kmers 31'] )
 include { SHOVILL as SHOVILL_SKESA } from '../../../software/shovill/main.nf' addParams( options: [args: '--assembler skesa --gsize 2800000'] )
 include { SHOVILL as SHOVILL_MEGAHIT } from '../../../software/shovill/main.nf' addParams( options: [args: '--assembler megahit --gsize 2800000'] )
 include { SHOVILL as SHOVILL_VELVET } from '../../../software/shovill/main.nf' addParams( options: [args: '--assembler velvet --gsize 2800000'] )
