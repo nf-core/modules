@@ -1,0 +1,7 @@
+- name: allelecounter test_allelecounter
+  command: nextflow run tests/software/allelecounter -entry test_allelecounter -c tests/config/nextflow.config
+  tags:
+    - allelecounter
+  files:
+    - path: output/allelecounter/test.alleleCount
+      md5sum: 2bbe9d7331b78bdac30fe30dbc5fdaf3
