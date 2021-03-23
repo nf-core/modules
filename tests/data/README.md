@@ -36,7 +36,7 @@ When adding a new module, please check carefully whether the data necessary for 
     * paf
         * 'test_cds_from_genomic.paf': PAF file for MT192765.1  genome
     * table:
-      * 'test.table': Recalibration table generated with gatk4 BaseRecalibrator from 'test_paired_end.sorted.bam', using 'test.vcf.gz' as known sites.
+        * 'test.table': Recalibration table generated with gatk4 BaseRecalibrator from 'test_paired_end.sorted.bam', using 'test.vcf.gz' as known sites.
     * vcf
         * 'test.vcf', 'test2.vcf': generated from 'test_paired_end.sorted.bam' using bcftools mpileup, call and filter
         * 'test3.vcf': generated from 'test_single_end.sorted.bam' using bcftools mpileup, call and filter
