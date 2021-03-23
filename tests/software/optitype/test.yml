@@ -1,9 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml optitype
-- name: optitype
-  command: nextflow run ./tests/software/optitype -entry test_optitype -c tests/config/nextflow.config
+- name: optitype test_optitype
+  command: nextflow run tests/software/optitype -entry test_optitype -c tests/config/nextflow.config
   tags:
-    - optitype
+    - type
   files:
-    - path: output/optitype/test.tsv
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/optitype/test/test_result.tsv
+      md5sum: ae1b1e2b0d3b099ad541e6513a7abc8f
+    - path: output/optitype/test/test_coverage_plot.pdf
+      md5sum: 31fc6e5e8ee5c1df96bdff19f674afd1
