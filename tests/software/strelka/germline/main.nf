@@ -16,11 +16,3 @@ workflow test_strelka_germline {
 
     STRELKA_GERMLINE ( input, fasta, fai )
 }
-workflow test_strelka_germline_no_ref {
-    def input = []
-
-    input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
-
-    STRELKA_GERMLINE ( input, [], [] )
-}
