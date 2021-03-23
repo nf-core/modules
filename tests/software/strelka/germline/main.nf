@@ -17,7 +17,7 @@ workflow test_strelka_germline {
 
     STRELKA_GERMLINE ( input, fasta, fai, target_bed )
 }
-workflow test_strelka_germline_targe_bed {
+workflow test_strelka_germline_target_bed {
     
     def input = []
 
