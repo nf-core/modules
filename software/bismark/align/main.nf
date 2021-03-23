@@ -2,9 +2,9 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-options        = initOptions(params.options)
+options    = initOptions(params.options)
 
-process BISMARK_METHYLATION_EXTRACTOR {
+process BISMARK_ALIGN {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
@@ -19,29 +19,25 @@ process BISMARK_METHYLATION_EXTRACTOR {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
     path index
 
     output:
-    tuple val(meta), path("*.bedGraph.gz")         , emit: bedgraph
-    tuple val(meta), path("*.txt.gz")              , emit: methylation_calls
-    tuple val(meta), path("*.cov.gz")              , emit: coverage
-    tuple val(meta), path("*_splitting_report.txt"), emit: report
-    tuple val(meta), path("*.M-bias.txt")          , emit: mbias
-    path "*.version.txt"                           , emit: version
+    tuple val(meta), path("*bam")       , emit: bam
+    tuple val(meta), path("*report.txt"), emit: report
+    tuple val(meta), path("*fq.gz")     , optional:true, emit: unmapped
+    path "*.version.txt"                , emit: version
 
     script:
-    def seqtype  = meta.single_end ? '-s' : '-p'
-    def software = getSoftwareName(task.process)
+    def software   = getSoftwareName(task.process)
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """
-    bismark_methylation_extractor \\
-        --bedGraph \\
-        --counts \\
-        --gzip \\
-        --report \\
-        $seqtype \\
+    bismark \\
+        $fastq \\
         $options.args \\
-        $bam
+        --genome $index \\
+        --bam
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """
