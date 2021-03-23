@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQUENZA_WIGGLE } from '/home/AD/rbhuller/modules/software/sequenza/wiggle/main.nf' addParams( options: [ 'args': '-w 50' ] )
+include { SEQUENZAUTILS_GCWIGGLE } from '../../../../software/sequenzautils/gcwiggle/main.nf' addParams( options: [ 'args': '-w 50' ] )
 
-workflow test_sequenza_wiggle {
+workflow test_sequenzautils_gcwiggle {
     
     def input = []
     input = [ [ id:'test' ], // meta map
               file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
 
-    SEQUENZA_WIGGLE ( input )
+    SEQUENZAUTILS_GCWIGGLE ( input )
 }
