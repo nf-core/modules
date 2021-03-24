@@ -1,8 +1,8 @@
-- name: gatk4 mergebamalignment
-  command: nextflow run ./tests/software/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment -c tests/config/nextflow.config
+- name: gatk4 mergebamalignment test_gatk4_mergebamalignment
+  command: nextflow run tests/software/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4_mergebamalignment
   files:
     - path: output/gatk4/test.merged.bam
-      md5sum: 825816a6b288d644318c46cc9968e129
+      md5sum: bd4a5e2ea916826aadebb5878333e26f

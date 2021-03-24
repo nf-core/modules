@@ -1,8 +1,8 @@
-- name: gatk4 createsequencedictionary
-  command: nextflow run ./tests/software/gatk4/createsequencedictionary -entry test_gatk4_createsequencedictionary -c tests/config/nextflow.config
+- name: gatk4 createsequencedictionary test_gatk4_createsequencedictionary
+  command: nextflow run tests/software/gatk4/createsequencedictionary -entry test_gatk4_createsequencedictionary -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4_createsequencedictionary
   files:
-    - path: ./output/gatk4/test_genome.dict
-      md5sum: 829dd07bd0c9d3be2fd060238c0b37c3
+    - path: output/gatk4/genome.dict
+      md5sum: 7362679f176e0f52add03c08f457f646
