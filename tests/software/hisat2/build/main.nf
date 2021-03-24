@@ -6,11 +6,9 @@ include { HISAT2_BUILD } from '../../../../software/hisat2/build/main.nf' addPar
 
 workflow test_hisat2_build {
     
-    def input = []
-    input = [ file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
-            file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.gtf", checkIfExists: true),
-            file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.splice_sites.txt", checkIfExists: true)
-        ]
+    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+    gtf = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.gtf", checkIfExists: true),
+    splice = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.splice_sites.txt", checkIfExists: true)
 
-    HISAT2_BUILD ( input )
+    HISAT2_BUILD ( fasta, gtf, splice )
 }
