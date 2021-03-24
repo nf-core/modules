@@ -47,6 +47,7 @@ process KALLISTO_QUANT {
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(reads)
     path  index
+    path  gtf
     path  transcript_fasta
     val   alignment_mode
 
@@ -78,6 +79,7 @@ process KALLISTO_QUANT {
     """
     kallisto quant \\
         --threads $task.cpus \\
+        --gtf $gtf
         $reference \\
         $input_reads \\
         $options.args \\
