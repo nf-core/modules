@@ -11,7 +11,7 @@
 [![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
-> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!  
+> THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
 > PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
@@ -23,6 +23,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
     - [Checklist](#checklist)
     - [nf-core modules create](#nf-core-modules-create)
     - [Test data](#test-data)
+    - [Running tests manually](#running-tests-manually)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
     - [Guidelines](#guidelines)
 - [Terminology](#terminology)
@@ -41,7 +42,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
     ```console
     $ nf-core modules list
-    
+
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
     |\ | |__  __ /  ` /  \ |__) |__         }  {
@@ -248,6 +249,8 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     INFO     Writing to 'tests/software/fastqc/test.yml'                                                                                  test_yml_builder.py:293
     ```
 
+    > NB: See docs for [running tests manually](#running-tests-manually) if you would like to run the tests manually.
+
 7. Lint the module locally to check that it adheres to nf-core guidelines before submission
 
     ```console
@@ -300,6 +303,43 @@ In order to test that each module added to `nf-core/modules` is actually working
 - In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
 
 - Test files MUST be kept as tiny as possible.
+
+### Running tests manually
+
+As outlined in the [nf-core modules create](#nf-core-modules-create) section we have made it quite trivial to create an initial yaml file (via the `nf-core modules create-test-yml` command) containing a listing of all of the module output files and their associated md5sums. However, md5sum checks may not be appropriate for all output files if for example they contain timestamps. This is why it is a good idea to re-run the tests locally with `pytest-workflow` before you create your pull request adding the module. If your files do indeed have timestamps or other issues that prevent you from using the md5sum check, then you can edit the `test.yml` file to instead check that the file contains some specific content or as a last resort, if it exists. The different test options are listed in the [pytest-workflow docs](https://pytest-workflow.readthedocs.io/en/stable/#test-options).
+
+Please follow the steps below to run the tests locally:
+
+1. Install [`nextflow`](https://nf-co.re/usage/installation)
+
+2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
+
+3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
+
+4. Start running your own tests using the appropriate [`tag`](https://github.com/nf-core/modules/blob/3d720a24fd3c766ba56edf3d4e108a1c45d353b2/tests/software/fastqc/test.yml#L3-L5) defined in the `test.yml`:
+
+    - Typical command with Docker:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        PROFILE=docker pytest --tag fastqc_single_end --symlink --keep-workflow-wd
+        ```
+
+    - Typical command with Singularity:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        TMPDIR=~ PROFILE=singularity pytest --tag fastqc_single_end --symlink --keep-workflow-wd
+        ```
+
+    - Typical command with Conda:
+
+        ```console
+        cd /path/to/git/clone/of/nf-core/modules/
+        PROFILE=conda pytest --tag fastqc_single_end --symlink --keep-workflow-wd
+        ```
+
+    - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.
 
 ### Uploading to `nf-core/modules`
 
@@ -365,7 +405,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 #### Resource requirements
 
-- An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/%7B%7Bcookiecutter.name_noslash%7D%7D/conf/base.config#L29) e.g. `process_low`, `process_medium` or `process_high`.
+- An appropriate resource `label` MUST be provided for the module as listed in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/conf/base.config#L29-L46) e.g. `process_low`, `process_medium` or `process_high`.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
