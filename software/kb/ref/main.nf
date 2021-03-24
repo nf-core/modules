@@ -18,18 +18,24 @@ process KB_REF {
     }
 
     input:
-    path(fasta), path(gtf)
+    path(fasta)
+    path(gtf)
 
     output:
     path "kb_ref_index" ,   emit: idx
+    path "t2g"          ,   emit: t2g
+    path "cdna"          ,  emit: cdna
     path "*.version.txt",   emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    kb ref \\
-    $options.args
+    kb \\
+    ref \\
+    $options.args \\
     -i kb_ref_index \\
+    -g t2g \\
+    -f1 cdna \\
     $fasta \\
     $gtf
 

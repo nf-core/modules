@@ -31,7 +31,16 @@ output:
   - idx:
       type: file
       description: kb-ref index folder
-      pattern: "*.{bam,cram,sam}"
+      pattern: "*.{idx}"
+  - t2g:
+      type: file
+      description: kb-ref index  folder
+      pattern: "*.{txt}"
+  - cdna:
+      type: file
+      description: kb-ref index folder
+      pattern: "*.{fa}"
 
 authors:
   - "@flowuenne"
+  - "@lassefolkersen"
