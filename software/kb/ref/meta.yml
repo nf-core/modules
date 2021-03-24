@@ -1,0 +1,37 @@
+name: kb_ref
+description: kallisto-bustools (kb) ref is a tool to create kallisto indices for single-cell datasets
+keywords:
+  - kallisto-bustools
+  - index
+tools:
+  - kb:
+      description: kallisto and bustools are wrapped in an easy-to-use program called kb
+      homepage: https://www.kallistobus.tools/
+      documentation: https://kb-python.readthedocs.io/en/latest/index.html
+      tool_dev_url: https://github.com/pachterlab/kb_python
+      doi: ""
+      licence: BSD 3-Clause License
+
+input:
+  - fasta:
+      type: file
+      description: Genomic DNA fasta file
+      pattern: "*.{fasta}"
+
+  - gtf:
+      type: file
+      description: GTF gene annotation file for fasta
+      pattern: "*.{gtf}"
+
+output:
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - idx:
+      type: file
+      description: kb-ref index folder
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@flowuenne"
