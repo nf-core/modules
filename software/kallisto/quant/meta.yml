@@ -5,7 +5,7 @@ keywords:
   - fasta
   - genome
   - reference
-  tools:
+tools:
   - kallisto:
       description: Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
       homepage: https://pachterlab.github.io/kallisto/about
@@ -35,8 +35,8 @@ input:
       type: file
       description: Fasta file of the reference transcriptome
   - alignment_mode:
-    type: boolean
-    description: whether to run kallisto in alignment mode
+      type: boolean
+      description: whether to run kallisto in alignment mode
 
 output:
   - sample_output:
