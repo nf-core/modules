@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml yara/index
+- name: yara index
+  command: nextflow run ./tests/software/yara/index -entry test_yara_index -c tests/config/nextflow.config
+  tags:
+    - yara
+    - yara_index
+  files:
+    - path: output/yara/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
