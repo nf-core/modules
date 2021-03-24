@@ -7,7 +7,7 @@ include { KB_REF } from '../../../../software/kb/ref/main.nf' addParams( options
 workflow test_kb_ref {
     
     KB_REF ( 
-        file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true),
-        file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true) 
+        file("${launchDir}/tests/data/gencode.v26.chr21.GRCh38.p10.genome.fa", checkIfExists: true),
+        file("${launchDir}/tests/data/gencode.v26.chr21.annotation.gtf", checkIfExists: true) 
         )
 }

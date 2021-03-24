@@ -1,10 +1,12 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml kb/ref
-- name: kb ref
-  command: nextflow run ./tests/software/kb/ref -entry test_kb_ref -c tests/config/nextflow.config
+- name: kb ref test_kb_ref
+  command: nextflow run tests/software/kb/ref -entry test_kb_ref -c tests/config/nextflow.config
   tags:
-    - kb
     - kb_ref
+    - kb
   files:
-    - path: output/kb/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/kb/kb_ref_index
+      md5sum: 793be0d0f17b74878b36177fe9464b7b
+    - path: output/kb/cdna
+      md5sum: 0d74c15581e82b09179c6ed708ea8b66
+    - path: output/kb/t2g
+      md5sum: ebe3466814b11140784cebd74391989f
