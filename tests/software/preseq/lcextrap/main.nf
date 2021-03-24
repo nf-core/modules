@@ -8,10 +8,9 @@ include { PRESEQ_LCEXTRAP } from '../../../../software/preseq/lcextrap/main.nf' 
  * Test with single-end data
  */
 workflow test_preseq_single_end {
-
-    def input = []
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true), ] ]
+              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true) ] 
+            ]
     PRESEQ_LCEXTRAP ( input )
 }
 
@@ -19,10 +18,9 @@ workflow test_preseq_single_end {
  * Test with paired-end data
  */
 workflow test_preseq_paired_end {
-
-    def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true), ] ]
+              [ file('https://github.com/smithlabcode/preseq/raw/master/data/SRR1003759_5M_subset.mr', checkIfExists: true) ] 
+            ]
 
     PRESEQ_LCEXTRAP ( input )
 }
