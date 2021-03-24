@@ -10,9 +10,9 @@ workflow test_gatk4_variantfiltration {
               [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
             ]
     fasta = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
-    fasta_fai = [ file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+    fai = [ file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
     genome_dict = [ file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
 
 
-    GATK4_VARIANTFILTRATION ( input, fasta, fasta_fai, genome_dict )
+    GATK4_VARIANTFILTRATION ( input, fasta, fai, genome_dict )
 }
