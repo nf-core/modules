@@ -6,9 +6,9 @@ include { BEDTOOLS_COMPLEMENT } from '../../../../software/bedtools/complement/m
 
 workflow test_bedtools_complement {
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
-    sizes = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.sizes", checkIfExists: true)
+    sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
     BEDTOOLS_COMPLEMENT ( input, sizes )
 }
