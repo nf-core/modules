@@ -7,7 +7,7 @@ include { CUSTOM_SCRAPESOFTWAREVERSIONS } from '../../../../software/custom/scra
 
 workflow test_scrapesoftwareversions {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) ]
+              [ file(params.test_data.sarscov2.illumina.test_1_fastq_gz, checkIfExists: true) ]
             ]
     FASTQC ( input )
     CUSTOM_SCRAPESOFTWAREVERSIONS ( FASTQC.out.version )
