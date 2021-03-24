@@ -32,10 +32,10 @@ process MSISENSOR_MSI {
     echo ${params.outdir}
 
     msisensor msi -d ${homopolymers} \\
-                  -n ${normal_bam} \\
-                  -t ${tumor_bam} \\
-                  -o ${prefix}.paired.output \\
-                  $options.args
+                    -n ${normal_bam} \\
+                    -t ${tumor_bam} \\
+                    -o ${prefix}.paired.output \\
+                    $options.args
 
     ##msisensor 2>&1 |sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
     echo "0.5" > ${software}.version.txt

@@ -32,8 +32,8 @@ process MSISENSOR_SCAN {
     echo ${params.outdir}
 
     msisensor scan -d ${fasta} \\
-                  -o ${prefix}.msisensor_scan.txt \\
-                  $options.args
+                    -o ${prefix}.msisensor_scan.txt \\
+                    $options.args
 
     msisensor 2>&1 |sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
     """
