@@ -7,10 +7,10 @@ include { BCFTOOLS_MERGE } from '../../../../software/bcftools/merge/main.nf' ad
 
 workflow test_bcftools_merge {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test3.vcf.gz", checkIfExists: true) ],
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true) ],
+              [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ]
             ]
 
     BCFTOOLS_MERGE ( input )
