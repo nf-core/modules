@@ -6,7 +6,7 @@ include { BEDTOOLS_MERGE } from '../../../../software/bedtools/merge/main.nf' ad
 
 workflow test_bedtools_merge {
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
 
     BEDTOOLS_MERGE ( input )
