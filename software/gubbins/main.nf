@@ -29,7 +29,7 @@ process GUBBINS {
     path "*.csv", emit: branch_statistics
     path "*.phylip", emit: filtered_variant_phylip
     path "*.final_tree.tre", emit: final_tree
-    path "*.node_labelled.final_tree.tre", emit: final_tree_labelled  
+    path "*.node_labelled.final_tree.tre", emit: final_tree_labelled
     path "*.version.txt", emit: version
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,6 @@ process GUBBINS {
         -v \\
         -t hybrid \\
         $aligned_pseudogenomes
-    
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
+    
