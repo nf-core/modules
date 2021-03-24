@@ -1,6 +1,5 @@
 name: custom_scrapesoftwareversions
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Merges *.software.txt files into a TSV and a multiqc config file
 keywords:
   - sort
 tools:
@@ -13,25 +12,21 @@ tools:
       doi: ""
       licence:
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Text files containing the version numbers of the tools used in the pipeline
+      pattern: "*.software.txt"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
+      description: TSV file with software versions for each tool
+      pattern: "software_versions.tsv"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: MultiQC config file with the software versions
+      pattern: "software_versions_mqc.yaml"
 
 authors:
   - "@grst"
