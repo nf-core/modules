@@ -34,6 +34,6 @@ process KALLISTO_INDEX {
         -i ${fasta.baseName}.idx \\
         $fasta
 
-    echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*$//' > ${software}.version.txt
+    echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//' > ${software}.version.txt
     """
 }
