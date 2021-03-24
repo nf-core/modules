@@ -38,7 +38,7 @@ process GATK4_HAPLOTYPECALLER {
         -R $fasta \\
         -I $bam \\
         -O ${prefix}.vcf.gz \\
-        $options.args 
+        $options.args
 
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
