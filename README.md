@@ -395,7 +395,27 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     > NB: Build information for all tools within a multi-tool container can be obtained in the `/usr/local/conda-meta/history` file within the container.
 
 - It is also possible for a new multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
-
+    - Fork the [multi-package-containers repository](https://github.com/BioContainers/multi-package-containers)
+    - Make a change to the hash.tsv file in the combinations directory see [here](https://github.com/aunderwo/multi-package-containers/blob/master/combinations/hash.tsv#L124) for an example where I added pysam=0.16.0.1,biopython=1.78
+    - Commit the code and then make a pull request to the original repo for [example](https://github.com/BioContainers/multi-package-containers/pull/1661)
+    - Once the PR has been accepted a container will get built and you can find it using  a search tool in the `galaxy-tool-util conda` package
+      ```
+      mulled-search --destination quay singularity conda  --search pysam biopython  | grep "mulled"
+      quay         mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f  185a25ca79923df85b58f42deb48f5ac4481e91f-0  docker pull quay.io/biocontainers/mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f:185a25ca79923df85b58f42deb48f5ac4481e91f-0
+      singularity  mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f  185a25ca79923df85b58f42deb48f5ac4481e91f-0  wget https://depot.galaxyproject.org/singularity/mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f:185a25ca79923df85b58f42deb48f5ac4481e91f-0
+      ```
+    - These can be used to add to the relevant docker and singularity lines in the PROCESS definition
+    - To confirm that this is correct. Spin up a temporary Docker container
+      ```
+      docker run --rm -it quay.io/biocontainers/mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f:185a25ca79923df85b58f42deb48f5ac4481e91f-0  /bin/sh
+      ```
+      And in the command prompt type
+      ```
+      / # grep specs /usr/local/conda-meta/history
+      # update specs: ['biopython=1.78', 'pysam=0.16.0.1']
+      ```
+      The packages should reflect those added to the multi-package-containers repo `hash.tsv` file
+ 
 - If the software is not available on Bioconda a `Dockerfile` MUST be provided within the module directory. We will use GitHub Actions to auto-build the containers on the [GitHub Packages registry](https://github.com/features/packages).
 
 #### Publishing results
