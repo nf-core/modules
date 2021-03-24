@@ -30,7 +30,7 @@ process YARA_INDEX {
 
     """
     mkdir yara
-    yara_indexer $fasta
+    yara_indexer $fasta -o "yara"
     mv *.{lf,rid,sa,txt}.* yara
     cp $fasta yara/
 
