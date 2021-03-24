@@ -19,7 +19,7 @@ process KALLISTO_INDEX {
     }
 
     input:
-    path(fasta)
+    path fasta
 
     output:
     tuple path("*.idx"), emit: idx
