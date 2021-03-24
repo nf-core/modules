@@ -27,7 +27,6 @@ input:
   - index:
       type: file
       description: YARA genome index files
-      pattern: "*.ebwt"
 
 output:
   - meta:
@@ -41,8 +40,8 @@ output:
       pattern: "*.{version.txt}"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted BAM file
+      pattern: "*.{bam}"
 
 authors:
   - "@apeltzer"
