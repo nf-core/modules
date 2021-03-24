@@ -41,10 +41,8 @@ process KALLISTO_INDEX {
     kallisto \\
         index \\
         --threads $task.cpus \\
-        -t $gentrome \\
-        -d decoys.txt \\
         $options.args \\
-        -i kallisto
+        -i $gentrome
     kallisto --version | sed -e "s/kallisto //g" > ${software}.version.txt
     """
 }
