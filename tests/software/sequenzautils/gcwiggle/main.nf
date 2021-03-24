@@ -6,7 +6,7 @@ include { SEQUENZAUTILS_GCWIGGLE } from '../../../../software/sequenzautils/gcwi
 
 workflow test_sequenzautils_gcwiggle {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) 
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
             ]
 
     SEQUENZAUTILS_GCWIGGLE ( input )

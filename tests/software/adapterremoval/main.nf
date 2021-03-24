@@ -6,7 +6,7 @@ include { ADAPTERREMOVAL } from '../../../software/adapterremoval/main.nf' addPa
 
 workflow test_adapterremoval_single_end {
     input = [ [ id:'test', single_end:true, collapse:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
             ]
 
     ADAPTERREMOVAL ( input )
@@ -14,8 +14,8 @@ workflow test_adapterremoval_single_end {
 
 workflow test_adapterremoval_paired_end {
     input = [ [ id:'test', single_end:false, collapse:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     ADAPTERREMOVAL ( input )
@@ -23,8 +23,8 @@ workflow test_adapterremoval_paired_end {
 
 workflow test_adapterremoval_paired_end_collapse {
     input = [ [ id:'test', single_end:false, collapse:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     ADAPTERREMOVAL ( input )

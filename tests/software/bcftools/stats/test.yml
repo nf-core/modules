@@ -1,5 +1,5 @@
-- name: bcftools stats
-  command: nextflow run ./tests/software/bcftools/stats -entry test_bcftools_stats -c tests/config/nextflow.config
+- name: bcftools stats test_bcftools_stats
+  command: nextflow run tests/software/bcftools/stats -entry test_bcftools_stats -c tests/config/nextflow.config
   tags:
     - bcftools
     - bcftools_stats
