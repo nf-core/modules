@@ -406,7 +406,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
       singularity  mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f  185a25ca79923df85b58f42deb48f5ac4481e91f-0  wget https://depot.galaxyproject.org/singularity/mulled-v2-3a59640f3fe1ed11819984087d31d68600200c3f:185a25ca79923df85b58f42deb48f5ac4481e91f-0
       ```
 
-    - These can be used to add to the relevant docker and singularity lines in the PROCESS definition
+    - You can copy and paste the `mulled-*` path into the relevant Docker and Singularity lines in the Nextflow `process` definition of your module
     - To confirm that this is correct. Spin up a temporary Docker container
 
       ```console
