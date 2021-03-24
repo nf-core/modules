@@ -1,9 +1,11 @@
 ## TODO nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml newtests/None
-- name: newtests
-  command: nextflow run ./tests/software/newtests -entry test_newtests -c tests/config/nextflow.config
+- name: hisat2/build
+  command: nextflow run ./tests/software/hisat2/build -entry test_hisat2_build -c tests/config/nextflow.config
   tags:
-    - newtests
+    - hisat2
+    - hisat2_build
+    - build
   files:
-    - path: output/newtests/test.bam
+    - path: output/hisat2/build/test.bam
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
