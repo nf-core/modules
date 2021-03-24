@@ -45,11 +45,14 @@ process KALLISTO_QUANT {
     //               https://github.com/nf-core/modules/blob/master/software/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
+    path  index
+    path  transcript_fasta
+    val   alignment_mode
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("${prefix}"), emit: results
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
 
@@ -64,15 +67,21 @@ process KALLISTO_QUANT {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    def reference   = "--index $index"
+    def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    if (alignment_mode) {
+        reference   = "-t $transcript_fasta"
+        input_reads = "-a $reads"
+    }
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    
+    """
+    kallisto quant \\
+        --threads $task.cpus \\
+        $reference \\
+        $input_reads \\
+        $options.args \\
+        -o $prefix
+    kallisto --version | sed -e "s/kallisto //g" > ${software}.version.txt
     """
 }
