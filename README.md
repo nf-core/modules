@@ -416,7 +416,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
       And in the command prompt type
 
       ```console
-      / # grep specs /usr/local/conda-meta/history
+      $ grep specs /usr/local/conda-meta/history
       # update specs: ['biopython=1.78', 'pysam=0.16.0.1']
       ```
 
