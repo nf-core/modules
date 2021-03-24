@@ -1,12 +1,12 @@
 - name: yara mapper test_yara_single_end
   command: nextflow run tests/software/yara/mapper -entry test_yara_single_end -c tests/config/nextflow.config
   tags:
+    - yara_single_end
     - yara_mapper
     - yara
-    - yara_single_end
   files:
     - path: output/yara/test.mapped.bam
-      md5sum: 97350d6d685c82290adf885c666f7a6a
+      md5sum: 3774e1b2daeaa07e703665d170e771ad
     - path: output/index/yara/yara.txt.size
       md5sum: 063987b3c3f747be7d2b8043c9d91000
     - path: output/index/yara/yara.lf.drs
@@ -41,9 +41,9 @@
     - yara_paired_end
     - yara
   files:
-    - path: output/index/yara/test_2.mapped.bam
+    - path: output/yara/test_2.mapped.bam
       md5sum: 4a792eb93bccdc5f2fd5ca0eeea3476d
-    - path: output/index/yara/test_1.mapped.bam
+    - path: output/yara/test_1.mapped.bam
       md5sum: ee5da98495ee51a87a8d9feac37494c1
     - path: output/index/yara/yara.txt.size
       md5sum: 063987b3c3f747be7d2b8043c9d91000
