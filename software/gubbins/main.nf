@@ -18,7 +18,6 @@ process GUBBINS {
     }
 
     input:
-    
     path aligned_pseudogenomes
 
     output:
@@ -32,7 +31,6 @@ process GUBBINS {
     path "*.final_tree.tre", emit: final_tree
     path "*.node_labelled.final_tree.tre", emit: final_tree_labelled  
     path "*.version.txt", emit: version
-
     script:
     def software = getSoftwareName(task.process)
     """
@@ -44,4 +42,3 @@ process GUBBINS {
     
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
-}

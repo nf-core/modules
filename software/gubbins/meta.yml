@@ -1,7 +1,7 @@
 name: gubbins
-description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences) is an algorithm that iteratively identifies 
-             loci containing elevated densities of base substitutions while concurrently constructing a phylogeny based on the 
-             putative point mutations outside of these regions.
+description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences) is an algorithm that iteratively identifies
+            loci containing elevated densities of base substitutions while concurrently constructing a phylogeny based on the
+            putative point mutations outside of these regions.
 keywords:
   - recombination
 tools:
@@ -9,13 +9,11 @@ tools:
       description: Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins.
       homepage: https://sanger-pathogens.github.io/gubbins/
       documentation: https://sanger-pathogens.github.io/gubbins/
-
 input:
   - alignment:
       type: file
       description: fasta alignment file
       pattern: "*.{fasta,fas,fa,aln}"
-
 output:
   - version:
       type: file
@@ -57,6 +55,5 @@ output:
       type: file
       description: Recombination removed RAxML phylogenetic tree (nodes labelled)
       pattern: "*.{node_labelled.final_tree.tre}"
-
 authors:
   - "@avantonder"
