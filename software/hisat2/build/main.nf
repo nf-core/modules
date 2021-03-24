@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '2.2.0'
+def VERSION = '2.2.1'
 
 process HISAT2_BUILD {
     tag "$fasta"
