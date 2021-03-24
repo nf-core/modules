@@ -22,8 +22,8 @@ process KALLISTO_INDEX {
     path fasta
 
     output:
-    tuple path("*.idx"), emit: idx
-    path "*.version.txt"          , emit: version
+    tuple path("*.idx") , emit: idx
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
