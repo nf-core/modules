@@ -19,10 +19,10 @@ process KALLISTO_INDEX {
     }
 
     input:
-    tuple path(fasta)
+    path(fasta)
 
     output:
-    tuple val(meta), path("*.idx"), emit: idx
+    tuple path("*.idx"), emit: idx
     path "*.version.txt"          , emit: version
 
     script:
