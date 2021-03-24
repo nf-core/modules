@@ -6,7 +6,7 @@ include { DSH_FILTERBED } from '../../../../software/dsh/filterbed/main.nf' addP
 
 workflow test_dsh_filterbed {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) ]
             ]
 
     DSH_FILTERBED ( input )
