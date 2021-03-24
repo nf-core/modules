@@ -5,21 +5,21 @@ nextflow.enable.dsl = 2
 include { QUAST }   from '../../../software/quast/main.nf'   addParams(options: [:])
 
 workflow test_quast_ref {
-    consensus = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_transcriptome.fasta", checkIfExists: true)
-    gff = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
-    def use_fasta = true
-    def use_gtf = true
+    fasta     = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    gff       = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.gtf", checkIfExists: true)
+    consensus = file("${launchDir}/tests/data/genomics/sarscov2/genome/transcriptome.fasta", checkIfExists: true)
+    use_fasta = true
+    use_gtf   = true
 
-    QUAST( consensus, fasta, gff, use_fasta, use_gtf )
+    QUAST ( consensus, fasta, gff, use_fasta, use_gtf )
 }
 
 workflow test_quast_noref {
-    consensus = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
-    gff = file('gff_dummy')
-    fasta = file('fasta_dummy')
-    def use_fasta = false
-    def use_gtf = false
+    fasta     = file('fasta_dummy')
+    gff       = file('gff_dummy')
+    consensus = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    use_fasta = false
+    use_gtf   = false
 
-    QUAST( consensus, fasta, gff, use_fasta, use_gtf )
+    QUAST ( consensus, fasta, gff, use_fasta, use_gtf )
 }

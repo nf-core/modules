@@ -178,13 +178,24 @@ fastqc:
   - software/fastqc/**
   - tests/software/fastqc/**
 
+
 fgbio_fastqtobam:
   - software/fgbio/fastqtobam/**
   - tests/software/fgbio/fastqtobam/**
 
+
+flash:
+  - software/flash/**
+  - tests/software/flash/**
+
+
 gatk4_applybqsr:
   - software/gatk4/applybqsr/**
   - tests/software/gatk4/applybqsr/**
+
+gatk4_baserecalibrator:
+  - software/gatk4/baserecalibrator/**
+  - tests/software/gatk4/baserecalibrator/**
 
 gatk4_bedtointervallist:
   - software/gatk4/bedtointervallist/**
@@ -230,6 +241,10 @@ gunzip:
   - software/gunzip/**
   - tests/software/gunzip/**
 
+homer_annotatepeaks:
+  - software/homer/annotatepeaks/**
+  - tests/software/homer/annotatepeaks/**
+
 ivar_consensus:
   - software/ivar/consensus/**
   - tests/software/ivar/consensus/**
@@ -241,6 +256,10 @@ ivar_trim:
 ivar_variants:
   - software/ivar/variants/**
   - tests/software/ivar/variants/**
+
+kallisto_index:
+  - software/kallisto/index/**
+  - tests/software/kallisto/index/**
 
 kraken2_run:
   - software/kraken2/run/**
@@ -271,6 +290,10 @@ multiqc:
   - software/multiqc/**
   - tests/software/multiqc/**
 
+optitype:
+  - software/optitype/**
+  - tests/software/optitype/**
+
 pangolin:
   - software/pangolin/**
   - tests/software/pangolin/**
@@ -294,6 +317,10 @@ picard_mergesamfiles:
 preseq_lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/lcextrap/**
+
+prodigal:
+  - software/prodigal/**
+  - tests/software/prodigal/**
 
 prokka:
   - software/prokka/**
@@ -335,13 +362,13 @@ samtools_index:
   - software/samtools/index/**
   - tests/software/samtools/index/**
 
-samtools_mpileup:
-  - software/samtools/mpileup/**
-  - tests/software/samtools/mpileup/**
-
 samtools_merge:
   - software/samtools/merge/**
   - tests/software/samtools/merge/**
+
+samtools_mpileup:
+  - software/samtools/mpileup/**
+  - tests/software/samtools/mpileup/**
 
 samtools_sort:
   - software/samtools/sort/**
@@ -363,13 +390,25 @@ seqkit_split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
 
+sequenza_bam2seqz:
+  - software/sequenza/bam2seqz/**
+  - tests/software/sequenza/bam2seqz/**
+
 sequenza_wiggle:
   - software/sequenza/wiggle/**
   - tests/software/sequenza/wiggle/**
 
+sequenzautils_gcwiggle:
+  - software/sequenzautils/gcwiggle/**
+  - tests/software/sequenzautils/gcwiggle/**
+
 seqwish_induce:
   - software/seqwish/induce/**
   - tests/software/seqwish/induce/**
+
+shovill:
+  - software/shovill/**
+  - tests/software/shovill/**
 
 spades:
   - software/spades/**
@@ -382,6 +421,10 @@ star_align:
 star_genomegenerate:
   - software/star/genomegenerate/**
   - tests/software/star/genomegenerate/**
+
+strelka_germline:
+  - software/strelka/germline/**
+  - tests/software/strelka/germline/**
 
 stringtie:
   - software/stringtie/**
@@ -403,6 +446,10 @@ trimgalore:
   - software/trimgalore/**
   - tests/software/trimgalore/**
 
+ucsc_bed12tobigbed:
+  - software/ucsc/bed12tobigbed/**
+  - tests/software/ucsc/bed12tobigbed/**
+
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
@@ -414,3 +461,7 @@ unicycler:
 untar:
   - software/untar/**
   - tests/software/untar/**
+
+vcftools:
+  - software/vcftools/**
+  - tests/software/vcftools/**
