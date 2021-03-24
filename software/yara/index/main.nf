@@ -32,7 +32,7 @@ process YARA_INDEX {
     mkdir yara
     yara_indexer $fasta -o "yara"
     mv *.{lf,rid,sa,txt}.* yara
-    cp $fasta yara/
+    cp $fasta yara/yara.fasta
 
     echo \$(yara_indexer --help  2>&1) | grep -e "yara_indexer version:" | sed 's/yara_indexer version: //g' > ${software}.version.txt
     """
