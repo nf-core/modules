@@ -8,7 +8,7 @@ workflow test_fgbio_sortbam {
     
     def input = []
     input = [ [ id:'test' ], // meta map
-              file('https://github.com/fulcrumgenomics/fgbio/blob/master/src/test/resources/com/fulcrumgenomics/bam/200reads.bam?raw=true', checkIfExists: true) ]
+              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
 
     FGBIO_SORTBAM ( input )
 }
