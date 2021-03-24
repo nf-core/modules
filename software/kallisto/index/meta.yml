@@ -1,5 +1,4 @@
 name: kallisto_index
-## TODO nf-core: Add a description of the module and list keywords
 description: Create index for kallisto
 keywords:
   - fasta
@@ -8,7 +7,6 @@ keywords:
   - index
 tools:
   - kallisto:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
       homepage: https://pachterlab.github.io/kallisto/about
       documentation: https://pachterlab.github.io/kallisto/manual
@@ -16,9 +14,7 @@ tools:
       doi: https://doi.org/10.1038/nbt.3519
       licence: ['BSD_2_clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
   - genome_fasta:
       type: file
       description: Fasta file of the reference genome
@@ -26,7 +22,6 @@ input:
       type: file
       description: Fasta file of the reference transcriptome
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - index:
       type: directory

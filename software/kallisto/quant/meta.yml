@@ -1,5 +1,4 @@
 name: kallisto_quant
-## TODO nf-core: Add a description of the module and list keywords
 description: gene/transcript quantification with kallisto
 keywords:
   - index
@@ -8,7 +7,6 @@ keywords:
   - reference
   tools:
   - kallisto:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
       homepage: https://pachterlab.github.io/kallisto/about
       documentation: https://pachterlab.github.io/kallisto/manual
@@ -16,14 +14,12 @@ keywords:
       doi: https://doi.org/10.1038/nbt.3519
       licence: ['BSD_2_clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - reads:
       type: file
       description: |
@@ -42,7 +38,6 @@ input:
     type: boolean
     description: whether to run kallisto in alignment mode
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - sample_output:
       type: directory
@@ -52,7 +47,6 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
 
 
 authors:
