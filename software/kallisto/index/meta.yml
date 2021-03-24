@@ -17,9 +17,7 @@ input:
   - genome_fasta:
       type: file
       description: Fasta file of the reference genome
-  - transcriptome_fasta:
-      type: file
-      description: Fasta file of the reference transcriptome
+      pattern: "*.{fasta}"
 
 output:
   - index:
