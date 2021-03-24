@@ -396,7 +396,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - It is also possible for a new multi-tool container to be built and added to BioContainers by submitting a pull request on their [`multi-package-containers`](https://github.com/BioContainers/multi-package-containers) repository.
     - Fork the [multi-package-containers repository](https://github.com/BioContainers/multi-package-containers)
-    - Make a change to the `hash.tsv` file in the `combinations` directory see [here](https://github.com/aunderwo/multi-package-containers/blob/master/combinations/hash.tsv#L124) for an example where I added `pysam=0.16.0.1,biopython=1.78`
+    - Make a change to the `hash.tsv` file in the `combinations` directory see [here](https://github.com/aunderwo/multi-package-containers/blob/master/combinations/hash.tsv#L124) for an example where `pysam=0.16.0.1,biopython=1.78` was added.
     - Commit the code and then make a pull request to the original repo, for [example](https://github.com/BioContainers/multi-package-containers/pull/1661)
     - Once the PR has been accepted a container will get built and you can find it using  a search tool in the `galaxy-tool-util conda` package
 
