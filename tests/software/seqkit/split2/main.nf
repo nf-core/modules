@@ -8,7 +8,7 @@ include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_PART   } from '../../../../software/seq
 
 workflow test_seqkit_split2_single_end_length {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_LENGTH ( input )
@@ -16,7 +16,7 @@ workflow test_seqkit_split2_single_end_length {
 
 workflow test_seqkit_split2_single_end_size {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_SIZE ( input )
@@ -24,7 +24,7 @@ workflow test_seqkit_split2_single_end_size {
 
 workflow test_seqkit_split2_single_end_part {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_PART ( input )
