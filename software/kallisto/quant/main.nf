@@ -37,8 +37,6 @@ process KALLISTO_QUANT {
         reference   = "-t $transcript_fasta"
         input_reads = "-a $reads"
     }
-
-    
     """
     kallisto quant \\
         --threads $task.cpus \\

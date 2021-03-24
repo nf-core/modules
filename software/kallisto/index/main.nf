@@ -1,6 +1,5 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -34,7 +33,6 @@ process KALLISTO_INDEX {
         get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
         gentrome      = "gentrome.fa.gz"
     }
-    
     """
     $get_decoy_ids
     sed -i.bak -e 's/>//g' decoys.txt
