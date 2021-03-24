@@ -1,8 +1,8 @@
 - name: samtools index
-  command: nextflow run ./tests/software/samtools/index -entry test_samtools_index -c tests/config/nextflow.config
+  command: nextflow run tests/software/samtools/index -entry test_samtools_index -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_index
   files:
-    - path: ./output/samtools/test_paired_end.sorted.bam.bai
-      md5sum: d7ef575848d1d13000317e4763b9e502
+    - path: output/samtools/test_paired_end.sorted.bam.bai
+      md5sum: 704c10dd1326482448ca3073fdebc2f4

@@ -7,7 +7,7 @@ include { BCFTOOLS_FILTER } from '../../../../software/bcftools/filter/main.nf' 
 
 workflow test_bcftools_filter {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
             ]
 
     BCFTOOLS_FILTER ( input )

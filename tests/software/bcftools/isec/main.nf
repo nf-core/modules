@@ -6,10 +6,10 @@ include { BCFTOOLS_ISEC } from '../../../../software/bcftools/isec/main.nf' addP
 
 workflow test_bcftools_isec {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test2.vcf.gz", checkIfExists: true)],
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi", checkIfExists: true)]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)],
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
             ]
 
     BCFTOOLS_ISEC ( input )
