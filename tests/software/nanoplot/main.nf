@@ -2,15 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../software/ucsc/bedgraphtobigwig/main.nf' addParams( options: [:] )
+include { NANOPLOT  } from '../../../software/nanoplot/main.nf' addParams( options: [:] )
 
-workflow test_ucsc_bedgraphtobigwig {
+workflow test_nanoplot {
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file('https://raw.githubusercontent.com/igvteam/igv.js/master/test/data/wig/bedgraph-example-uscs.bedgraph', checkIfExists: true) ] ]
+            [ file('tests/data/genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ],
+            [ file('tests/data/genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true) ] ]
               
-    UCSC_BEDGRAPHTOBIGWIG (
-        input,
-        file('https://raw.githubusercontent.com/igvteam/igv.js/master/test/data/wig/chrom.sizes', checkIfExists: true)
-    )
+    NANOPLOT ( input )
 }

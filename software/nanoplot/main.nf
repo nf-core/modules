@@ -19,7 +19,7 @@ process NANOPLOT {
     }
 
     input:
-    tuple val(meta), path(fastq), path(summary.txt)
+    tuple val(meta), path(fastq), path(summary_txt)
     
     output:
     tuple val(meta), path("*.html"), emit: html
