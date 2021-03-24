@@ -41,7 +41,7 @@ process YARA_MAPPER {
     yara_mapper $options.args -t ${task.cpus} -f bam $index ${reads[0]} ${reads[1]} > output.bam
     samtools view -@ ${task.cpus} -hF 4 -f 0x40 -b output.bam > ${prefix}_1.mapped.bam
     samtools view -@ ${task.cpus} -hF 4 -f 0x80 -b output.bam > ${prefix}_2.mapped.bam
-    echo \$(yara_mapper --help  2>&1) > ${software}.version.txt
+    echo \$(yara_mapper --version  2>&1) | grep -e "yara_mapper version:" | sed 's/yara_mapper version: //g' > ${software}.version.txt
     """
     }
 

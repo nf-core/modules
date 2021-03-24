@@ -1,37 +1,34 @@
 name: yara_index
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Builds a YARA index for a reference genome
 keywords:
-  - sort
+  - build
+  - index
+  - fasta
+  - genome
+  - reference
 tools:
   - yara:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Yara is an exact tool for aligning DNA sequencing reads to reference genomes.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://github.com/seqan/seqan
+      documentation: https://github.com/seqan/seqan
+      tool_dev_url: https://github.com/seqan/seqan
       doi: ""
       licence: ['https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input genome fasta file
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - index:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: YARA genome index files
+      pattern: "yara.*"
 
 authors:
   - "@apeltzer"
