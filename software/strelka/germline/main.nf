@@ -29,7 +29,7 @@ process STRELKA_GERMLINE {
     tuple val(meta), path("*_variants.vcf.gz.tbi"), emit: vcf_tbi
     tuple val(meta), path("*_genome.vcf.gz")      , emit: genome_vcf
     tuple val(meta), path("*_genome.vcf.gz.tbi")  , emit: genome_vcf_tbi
-    path  "*.version.txt"                         , emit: version 
+    path  "*.version.txt"                         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
