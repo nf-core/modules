@@ -6,7 +6,7 @@ include { PICARD_MARKDUPLICATES } from '../../../../software/picard/markduplicat
 
 workflow test_picard_markduplicates_sorted_bam  {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
             ]
 
     PICARD_MARKDUPLICATES ( input )
@@ -14,7 +14,7 @@ workflow test_picard_markduplicates_sorted_bam  {
 
 workflow test_picard_markduplicates_unsorted_bam  {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.bam", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
             ]
 
     PICARD_MARKDUPLICATES ( input )
