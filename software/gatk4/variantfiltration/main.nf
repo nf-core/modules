@@ -20,7 +20,9 @@ process GATK4_VARIANTFILTRATION {
 
     input:
     tuple val(meta), path(vcf)
-    tuple path(fasta), path(fai), path(dict)
+    path(fasta)
+    path(fai)
+    path(dict)
 
     output:
     tuple val(meta), path("*filtered.vcf"), emit: vcf
@@ -34,7 +36,7 @@ process GATK4_VARIANTFILTRATION {
     gatk VariantFiltration \\
         -R $fasta \\
         -V $vcf \\
-        -O ${prefix}.filtered.vcf \\
+        -O ${prefix}.vcf \\
         $options.args
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
