@@ -15,9 +15,9 @@ process HISAT2_BUILD {
 
     conda (params.enable_conda ? "bioconda::hisat2=2.2.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hisat2:2.2.0--py37hfa133b6_4"
+        container "https://depot.galaxyproject.org/singularity/hisat2:2.2.1--py38he1b5a44_0"
     } else {
-        container "quay.io/biocontainers/hisat2:2.2.1--py37hfa133b6_4"
+        container "quay.io/biocontainers/hisat2:2.2.1--py38he1b5a44_0"
     }
 
     input:
