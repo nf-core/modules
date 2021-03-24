@@ -1,11 +1,9 @@
 name: kallisto_index
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - sort
 tools:
   - kallisto:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Quantifying abundances of transcripts from bulk and single-cell RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
       homepage: https://pachterlab.github.io/kallisto/
       documentation: https://pachterlab.github.io/kallisto/manual
@@ -13,14 +11,12 @@ tools:
       doi: ""
       licence: ['BSD_2_clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - fasta:
       type: file
       description: genome fasta file
       pattern: "*.{fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
