@@ -9,7 +9,7 @@ workflow test_msisensor_msi {
 
     def scaninput  = []
     scaninput = [ [ id:'test', single_end:false ], // meta map
-                  file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
+                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
     scan = MSISENSOR_SCAN ( scaninput )
 
     // IMPERFECT TEST:
@@ -20,10 +20,10 @@ workflow test_msisensor_msi {
     def input      = []
 
     input = Channel.from([ [ id:'test', single_end:false ], // meta map
-               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_methylated_paired_end.sorted.bam", checkIfExists: true),
-               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_methylated_paired_end.sorted.bam.bai", checkIfExists: true),
-               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true),
-               file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam.bai", checkIfExists: true) ])
+               file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam'],     checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam_bai'], checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'],         checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'],     checkIfExists: true) ])
 
     // BIT CLUMSY:
     MSISENSOR_MSI ( input.mix(scan.txt).collect() )

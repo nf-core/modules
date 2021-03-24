@@ -8,7 +8,7 @@ workflow test_msisensor_scan {
 
     def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
 
     MSISENSOR_SCAN ( input )
 }
