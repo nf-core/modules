@@ -18,31 +18,23 @@ process KALLISTO_INDEX {
     }
 
     input:
-    genome_fasta
-    path transcript_fasta
+    tuple path (fasta)
 
     output:
-    path "kallisto", emit: index
+    path tuple(meta), path(*.idx) emit: index
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
-    def gentrome      = "gentrome.fa"
-    if (genome_fasta.endsWith('.gz')) {
-        get_decoy_ids = "grep '^>' <(gunzip -c $genome_fasta) | cut -d ' ' -f 1 > decoys.txt"
-        gentrome      = "gentrome.fa.gz"
+
     }
     """
-    $get_decoy_ids
-    sed -i.bak -e 's/>//g' decoys.txt
-    cat $transcript_fasta $genome_fasta > $gentrome
-
     kallisto \\
         index \\
+        -i ${fasta.naseName}.idx \\
         --threads $task.cpus \\
-        $options.args \\
-        -i $gentrome
+        $options.args
+        $fasta
     kallisto --version | sed -e "s/kallisto //g" > ${software}.version.txt
     """
 }
