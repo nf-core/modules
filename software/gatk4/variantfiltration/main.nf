@@ -20,12 +20,12 @@ process GATK4_VARIANTFILTRATION {
 
     input:
     tuple val(meta), path(vcf)
-    path(fasta)
-    path(fai)
-    path(dict)
+    path fasta
+    path fai
+    path dict
 
     output:
-    tuple val(meta), path("*filtered.vcf"), emit: vcf
+    tuple val(meta), path("*${options.suffix}.vcf"), emit: vcf
     path "*.version.txt"                  , emit: version
 
 
