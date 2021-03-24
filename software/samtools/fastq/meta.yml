@@ -1,10 +1,9 @@
 name: samtools_fastq
-description: Converts a SAM/BAM/CRAM file to FASTA or FASTQ
+description: Converts a SAM/BAM/CRAM file to FASTQ
 keywords:
     - bam
     - sam
     - cram
-    - fasta
     - fastq
 tools:
     - samtools:
@@ -33,8 +32,8 @@ output:
             e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: FASTA/FASTQ file
-        pattern: "*.{fasta,fastq}"
+        description: compressed FASTQ file
+        pattern: "*.fastq.gz"
     - version:
         type: file
         description: File containing software version

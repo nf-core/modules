@@ -6,9 +6,9 @@ nextflow.enable.dsl = 2
 include { BCFTOOLS_FILTER } from '../../../../software/bcftools/filter/main.nf' addParams( options: ['args': '--no-version'] )
 
 workflow test_bcftools_filter {
-    def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/vcf/test.vcf", checkIfExists: true) ]]
+              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) ]
+            ]
 
     BCFTOOLS_FILTER ( input )
 }
