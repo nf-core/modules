@@ -11,9 +11,9 @@ include { BWAMETH_ALIGN as BWAMETH_ALIGN_PE } from '../../../../software/bwameth
  */
 workflow test_bwameth_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_methylated_1.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     BWAMETH_INDEX ( fasta )
     BWAMETH_ALIGN_SE ( input, BWAMETH_INDEX.out.index )
@@ -24,10 +24,10 @@ workflow test_bwameth_align_single_end {
  */
 workflow test_bwameth_align_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_methylated_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_methylated_2.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     BWAMETH_INDEX ( fasta )
     BWAMETH_ALIGN_PE ( input, BWAMETH_INDEX.out.index )
