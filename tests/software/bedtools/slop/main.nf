@@ -6,10 +6,10 @@ include { BEDTOOLS_SLOP } from '../../../../software/bedtools/slop/main.nf' addP
 
 workflow test_bedtools_slop {
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
-    sizes = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.sizes", checkIfExists: true)
-
+    sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+    
     BEDTOOLS_SLOP ( input, sizes )
 }
 
