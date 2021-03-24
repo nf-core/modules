@@ -6,42 +6,30 @@ keywords:
 tools:
   - kallisto:
       ## TODO nf-core: Add a description and other details for the software below
-      description: Quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      description: Quantifying abundances of transcripts from bulk and single-cell RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
+      homepage: https://pachterlab.github.io/kallisto/
+      documentation: https://pachterlab.github.io/kallisto/manual
+      tool_dev_url: https://github.com/pachterlab/kallisto
       doi: ""
       licence: ['BSD_2_clause']
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: genome fasta file
+      pattern: "*.{fasta}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - idx:
+      type: index
+      description: Kallisto genome index
+      pattern: "*.idx"
 
 authors:
   - "@ggabernet"
