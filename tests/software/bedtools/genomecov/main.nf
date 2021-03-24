@@ -6,7 +6,7 @@ include { BEDTOOLS_GENOMECOV } from '../../../../software/bedtools/genomecov/mai
 
 workflow test_bedtools_genomecov {
     input = [ [ id:'test'],
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.bam", checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
             ]
 
     BEDTOOLS_GENOMECOV ( input )
