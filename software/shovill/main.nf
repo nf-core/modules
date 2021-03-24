@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 process SHOVILL {
     tag "$meta.id"
-    label 'shovill'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
@@ -22,12 +22,12 @@ process SHOVILL {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("contigs.fa"), emit: contigs
-    tuple val(meta), path("shovill.corrections"), emit: corrections
-    tuple val(meta), path("shovill.log"), emit: log
+    tuple val(meta), path("contigs.fa")                         , emit: contigs
+    tuple val(meta), path("shovill.corrections")                , emit: corrections
+    tuple val(meta), path("shovill.log")                        , emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
-    tuple val(meta), path("contigs.{fastg,gfa,LastGraph}"), optional:true, emit: gfa
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
+    path "*.version.txt"                                        , emit: version
 
     script:
     def software = getSoftwareName(task.process)
