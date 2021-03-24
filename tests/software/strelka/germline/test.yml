@@ -1,0 +1,22 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml strelka/germline
+- name: strelka germline
+  command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline -c tests/config/nextflow.config
+  tags:
+    - strelka
+    - strelka_germline
+  files:
+    - path: output/strelka/strelka_test_variants.vcf.gz
+    - path: output/strelka/strelka_test_variants.vcf.gz.tbi
+    - path: output/strelka/strelka_test_genome.vcf.gz
+    - path: output/strelka/strelka_test_genome.vcf.gz.tbi
+- name: strelka germline target bed
+  command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline_target_bed -c tests/config/nextflow.config
+  tags:
+    - strelka
+    - strelka_germline
+  files:
+    - path: output/strelka/strelka_test_variants.vcf.gz
+    - path: output/strelka/strelka_test_variants.vcf.gz.tbi
+    - path: output/strelka/strelka_test_genome.vcf.gz
+    - path: output/strelka/strelka_test_genome.vcf.gz.tbi

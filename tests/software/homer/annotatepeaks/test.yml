@@ -1,0 +1,7 @@
+- name: homer annotatepeaks test_homer_annotatepeaks
+  command: nextflow run tests/software/homer/annotatepeaks -entry test_homer_annotatepeaks -c tests/config/nextflow.config
+  tags:
+    - homer
+    - homer_annotatepeaks
+  files:
+    - path: output/homer/test.annotatePeaks.txt
