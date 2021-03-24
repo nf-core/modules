@@ -22,7 +22,7 @@ process KALLISTO_INDEX {
     path fasta
 
     output:
-    tuple path("*.idx") , emit: idx
+    path "kallisto" , emit: idx
     path "*.version.txt", emit: version
 
     script:
@@ -31,7 +31,7 @@ process KALLISTO_INDEX {
     kallisto \\
         index \\
         $options.args \\
-        -i ${fasta.baseName}.idx \\
+        -i kallisto \\
         $fasta
 
     echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//' > ${software}.version.txt
