@@ -29,8 +29,6 @@ process MSISENSOR_SCAN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    echo ${params.outdir}
-
     msisensor scan -d ${fasta} \\
                     -o ${prefix}.msisensor_scan.txt \\
                     $options.args
