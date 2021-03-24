@@ -6,9 +6,9 @@ include { BEDTOOLS_MASKFASTA } from '../../../../software/bedtools/maskfasta/mai
 
 workflow test_bedtools_maskfasta {
     bed   = [ [ id:'test'],
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
-    fasta = [ file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) ]
-
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    
     BEDTOOLS_MASKFASTA ( bed, fasta )
 }
