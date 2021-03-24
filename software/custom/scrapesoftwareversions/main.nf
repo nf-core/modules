@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process SCRAPESOFTWAREVERSIONS {
+process CUSTOM_SCRAPESOFTWAREVERSIONS {
     // TODO does a tag even make sense here?
     tag "scrapesoftwareversions"
     label 'process_low'
