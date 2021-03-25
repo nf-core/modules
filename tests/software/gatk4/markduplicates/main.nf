@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MARKDUPLICATES } from '../../../../software/gatk4/markduplicates/main.nf' addParams( options: [:] )
+include { GATK4_MARKDUPLICATES } from '../../../../software/gatk4/markduplicates/main.nf' addParams( options: [ 'suffix': '.md' ] )
 
 workflow test_gatk4_markduplicates {
 
