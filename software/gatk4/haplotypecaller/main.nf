@@ -30,15 +30,23 @@ process GATK4_HAPLOTYPECALLER {
     path "*.version.txt"             , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    def software  = getSoftwareName(task.process)
+    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk --java-options "-Xmx4g" HaplotypeCaller \\
+    gatk \\
+        --java-options "-Xmx${avail_mem}g" \\
+        HaplotypeCaller \\
         -R $fasta \\
         -I $bam \\
         -O ${prefix}.vcf.gz \\
         $options.args
+        
 
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
