@@ -22,8 +22,9 @@ process GATK4_MARKDUPLICATES {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.bam")    , emit: bam
+    tuple val(meta), path("*.metrics"), emit: metrics
+    path "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
