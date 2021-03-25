@@ -36,7 +36,7 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         --ASSUME_SORT_ORDER coordinate \\
         --CREATE_INDEX true \\
-        --OUTPUT ${prefix}.md.bam \\
+        --OUTPUT ${prefix}.bam \\
         $options.args
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
