@@ -108,3 +108,89 @@ jobs:
             /home/runner/pytest_workflow_*/*/log.out
             /home/runner/pytest_workflow_*/*/log.err
             /home/runner/pytest_workflow_*/*/work
+
+
+  all:
+    runs-on: ubuntu-20.04
+    name: Test all modules
+    needs: changes
+    if: needs.changes.result == 'failure'
+    strategy:
+      fail-fast: false
+      matrix:
+        nxf_version: ['20.11.0-edge', '21.03.0-edge']
+        profile: ['docker', 'singularity', 'conda']
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest-workflow
+        # FIXME: Remove this when nf-core modules lint stabilizes
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint ${{ matrix.tags }}
+        run: nf-core modules lint . -a
+
+      - uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/nextflow
+          key: ${{ runner.os }}-nextflow-${{ matrix.nxf_version }}
+          restore-keys: |
+            ${{ runner.os }}-nextflow-
+
+      - name: Install Nextflow
+        env:
+          NXF_VER: ${{ matrix.nxf_version }}
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-singularity@v5
+        with:
+          singularity-version: 3.7.1
+
+      - name: Setup miniconda
+        if: matrix.profile == 'conda'
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          channels: conda-forge,bioconda,defaults
+          python-version: ${{ matrix.python-version }}
+      - name: Conda clean
+        if: matrix.profile == 'conda'
+        run: conda clean -a
+
+      # Test the module
+      - name: Run pytest-workflow
+        # only use one thread for pytest-workflow to avoid race condition on conda cache.
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --symlink --kwdof
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs-all-${{ matrix.profile }}-${{ matrix.nxf_version }}
+          path: |
+            /home/runner/pytest_workflow_*/*/.nextflow.log
+            /home/runner/pytest_workflow_*/*/log.out
+            /home/runner/pytest_workflow_*/*/log.err
