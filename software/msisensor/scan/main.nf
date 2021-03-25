@@ -22,17 +22,19 @@ process MSISENSOR_SCAN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.msisensor_scan.txt"), emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    msisensor scan -d ${fasta} \\
-                    -o ${prefix}.msisensor_scan.txt \\
-                    $options.args
+    msisensor \\
+        scan \\
+        -d $fasta \\
+        -o ${prefix}.txt \\
+        $options.args
 
-    msisensor 2>&1 |sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
+    echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
     """
 }
