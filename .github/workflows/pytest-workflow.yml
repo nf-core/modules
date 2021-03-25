@@ -8,7 +8,7 @@ jobs:
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
-      num_modules: ${{ steps.yq_modules.outputs.magic_number }}
+      proceed: ${{ steps.less_than.outputs.proceed }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
@@ -25,7 +25,8 @@ jobs:
             echo "::set-output name=magic_number::$output"
       # 256 max jobs / 2 nxf versions / 3 profiles
       - name: Fail if number of modules to be tested is greater than 42
-        run: exit $(test ${{ steps.yq_modules.outputs.magic_number }} -lt 42 )
+        id: less_than
+        run: echo "::set-output name=proceed::$(test ${{ steps.yq_modules.outputs.magic_number }} -lt 42 )"
 
 
 
@@ -33,7 +34,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: changes
-    if: needs.changes.outputs.modules != '[]'
+    if: needs.changes.outputs.modules != '[]' && needs.changes.outputs.proceed == '0'
     strategy:
       fail-fast: false
       matrix:
@@ -113,7 +114,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Test all modules
     needs: changes
-    if: needs.changes.result == 'failure'
+    if: needs.changes.outputs.proceed == '1'
     strategy:
       fail-fast: false
       matrix:
