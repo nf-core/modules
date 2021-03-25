@@ -9,7 +9,7 @@ include { CUTADAPT } from '../../../software/cutadapt/main.nf'  addParams( optio
  */
 workflow test_cutadapt_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ] 
             ]
 
     CUTADAPT ( input )
@@ -21,8 +21,8 @@ workflow test_cutadapt_single_end {
 
 workflow test_cutadapt_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ] 
             ]
 
     CUTADAPT ( input )

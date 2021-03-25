@@ -6,8 +6,8 @@ include { SAMTOOLS_INDEX } from '../../../../software/samtools/index/main.nf' ad
 
 workflow test_samtools_index {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) 
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
             ]
-    
+
     SAMTOOLS_INDEX ( input )
 }
