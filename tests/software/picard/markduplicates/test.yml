@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_sorted_bam -c tests/config/nextflow.config
   tags:
     - picard
-    - picard_markduplicates
+    - picard/markduplicates
   files:
     - path: ./output/picard/test.MarkDuplicates.metrics.txt
     - path: ./output/picard/test.bam
@@ -12,6 +12,6 @@
   command: nextflow run ./tests/software/picard/markduplicates -entry test_picard_markduplicates_unsorted_bam -c tests/config/nextflow.config
   tags:
     - picard
-    - picard_markduplicates
+    - picard/markduplicates
     - should fail
   exit_code: 1
