@@ -1,0 +1,12 @@
+- name: bowtie build
+  command: nextflow run ./tests/software/bowtie/build_test -entry test_bowtie_build -c tests/config/nextflow.config
+  tags:
+    - bowtie
+    - bowtie_build
+  files:
+    - path: ./output/index/bowtie/genome.3.ebwt
+    - path: ./output/index/bowtie/genome.2.ebwt
+    - path: ./output/index/bowtie/genome.rev.2.ebwt
+    - path: ./output/index/bowtie/genome.4.ebwt
+    - path: ./output/index/bowtie/genome.rev.1.ebwt
+    - path: ./output/index/bowtie/genome.1.ebwt
