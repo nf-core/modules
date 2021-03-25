@@ -8,6 +8,7 @@ jobs:
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
+      num_modules: ${{ steps.yq_modules.outputs.magic_number }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
@@ -21,7 +22,12 @@ jobs:
         with:
           cmd: |
             output=$(echo ${{ steps.filter.outputs.changes }} | yq e 'length' -)
-            if [ $output -gt 42 ] then exit 1 fi
+            echo "::set-output name=magic_number::$output"
+      # 256 max jobs / 2 nxf versions / 3 profiles
+      - name: Fail if number of modules to be tested is greater than 42
+        run: if [ $output -gt 42 ] then exit 1 fi
+
+
 
 
   test:
