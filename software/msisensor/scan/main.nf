@@ -32,7 +32,7 @@ process MSISENSOR_SCAN {
     msisensor \\
         scan \\
         -d $fasta \\
-        -o ${prefix}.tab \\
+        -o ${prefix}.msisensor_scan.tab \\
         $options.args
 
     echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
