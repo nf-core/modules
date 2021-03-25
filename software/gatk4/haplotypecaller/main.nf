@@ -21,7 +21,7 @@ process GATK4_HAPLOTYPECALLER {
     input:
     tuple val(meta), path(bam), path(bamidx)
     path fasta
-    path fastaidx
+    path fai
     path dict
 
     output:
