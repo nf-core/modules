@@ -22,19 +22,23 @@ process MSISENSOR_MSI {
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai), val(metascan), path(homopolymers)
 
     output:
-    tuple val(meta), path("*.{output,output_dis,output_germline,output_somatic}"), emit: report
-
-    path "*.version.txt", emit: version
+    tuple val(meta), path("${prefix}.output")         , emit: output
+    tuple val(meta), path("${prefix}.output_dis")     , emit: output_dis
+    tuple val(meta), path("${prefix}.output_germline"), emit: output_germline
+    tuple val(meta), path("${prefix}.output_somatic") , emit: output_somatic
+    path "*.version.txt"                              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    msisensor msi -d ${homopolymers} \\
-                    -n ${normal_bam} \\
-                    -t ${tumor_bam} \\
-                    -o ${prefix}.paired.output \\
-                    $options.args
+    msisensor \\
+        msi \\
+        -d $homopolymers \\
+        -n $normal_bam \\
+        -t $tumor_bam \\
+        -o $prefix \\
+        $options.args
 
     echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
     """
