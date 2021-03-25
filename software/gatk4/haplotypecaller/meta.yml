@@ -24,7 +24,7 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
-  - bamidx:
+  - bai:
       type: file
       description: Index of BAM file
       pattern: "*.bam.bai"
@@ -32,7 +32,7 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-  - fai
+  - fai:
       type: file
       description: Index of reference fasta file
       pattern: "fasta.fai"
@@ -54,7 +54,7 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
-  - tbi
+  - tbi:
       type: file
       description: Index of VCF file
       pattern: "*.vcf.gz.tbi"

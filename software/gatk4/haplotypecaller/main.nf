@@ -19,14 +19,14 @@ process GATK4_HAPLOTYPECALLER {
     }
 
     input:
-    tuple val(meta), path(bam), path(bamidx)
+    tuple val(meta), path(bam), path(bai)
     path fasta
     path fai
     path dict
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path("*.vcf.gz.tbi")             , emit: tbi
+    tuple val(meta), path("*.tbi")   , emit: tbi
     path "*.version.txt"             , emit: version
 
     script:
@@ -46,8 +46,7 @@ process GATK4_HAPLOTYPECALLER {
         -I $bam \\
         -O ${prefix}.vcf.gz \\
         $options.args
-        
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
     """
 }
