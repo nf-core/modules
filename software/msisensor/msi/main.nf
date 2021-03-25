@@ -36,6 +36,6 @@ process MSISENSOR_MSI {
                     -o ${prefix}.paired.output \\
                     $options.args
 
-    msisensor 2>&1 |sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
+    echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
     """
 }
