@@ -25,8 +25,8 @@ jobs:
             echo "::set-output name=magic_number::$output"
       # 256 max jobs / 2 nxf versions / 3 profiles
       - name: Fail if number of modules to be tested is greater than 42
-        uses: cutenode/action-always-fail@v1.0.1
         if: steps.yq_modules.outputs.magic_number <= 42
+        run: exit 1
 
 
 
