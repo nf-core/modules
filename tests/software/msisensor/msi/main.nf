@@ -24,7 +24,8 @@ workflow test_msisensor_msi {
                file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam_bai'], checkIfExists: true),
                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'],         checkIfExists: true),
                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'],     checkIfExists: true) ])
-
+    //scan.txt.view()
+    input.concat(scan.txt).collect().view()
     // BIT CLUMSY:
-    MSISENSOR_MSI ( input.mix(scan.txt).collect() )
+    MSISENSOR_MSI ( input.concat(scan.txt).collect() )
 }

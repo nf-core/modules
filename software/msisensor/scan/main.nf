@@ -22,8 +22,8 @@ process MSISENSOR_SCAN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path "*.version.txt"          , emit: version
+    tuple (val(meta), path("*.tab"), emit: txt)
+    path ("*.version.txt"          , emit: version)
 
     script:
     def software = getSoftwareName(task.process)
@@ -32,7 +32,7 @@ process MSISENSOR_SCAN {
     msisensor \\
         scan \\
         -d $fasta \\
-        -o ${prefix}.txt \\
+        -o ${prefix}.tab \\
         $options.args
 
     echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt

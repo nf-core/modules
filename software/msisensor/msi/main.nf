@@ -22,11 +22,11 @@ process MSISENSOR_MSI {
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai), val(metascan), path(homopolymers)
 
     output:
-    tuple val(meta), path("${prefix}.output")         , emit: output
-    tuple val(meta), path("${prefix}.output_dis")     , emit: output_dis
-    tuple val(meta), path("${prefix}.output_germline"), emit: output_germline
-    tuple val(meta), path("${prefix}.output_somatic") , emit: output_somatic
-    path "*.version.txt"                              , emit: version
+    tuple val(meta), path("${prefix}")         , emit: output
+    tuple val(meta), path("${prefix}_dis")     , emit: output_dis
+    tuple val(meta), path("${prefix}_germline"), emit: output_germline
+    tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
+    path "*.version.txt"                       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
