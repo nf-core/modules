@@ -32,7 +32,7 @@ process GATK4_MARKDUPLICATES {
     """
     gatk MarkDuplicates \\
         --INPUT $bam \\
-        --METRICS_FILE ${prefix}.bam.metrics \\
+        --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         --ASSUME_SORT_ORDER coordinate \\
         --CREATE_INDEX true \\
