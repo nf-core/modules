@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '2.2.1'
+def VERSION = '2.2.0'
 
 process HISAT2_BUILD {
     tag "$fasta"
@@ -13,11 +13,11 @@ process HISAT2_BUILD {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', publish_id:'') }
 
-    conda (params.enable_conda ? "bioconda::hisat2=2.2.1" : null)
+    conda (params.enable_conda ? "bioconda::hisat2=2.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hisat2:2.2.1--py38he1b5a44_0"
+        container "https://depot.galaxyproject.org/singularity/hisat2:2.2.0--py37hfa133b6_4"
     } else {
-        container "quay.io/biocontainers/hisat2:2.2.1--py38he1b5a44_0"
+        container "quay.io/biocontainers/hisat2:2.2.0--py37hfa133b6_4"
     }
 
     input:
