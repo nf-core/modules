@@ -5,10 +5,9 @@ nextflow.enable.dsl = 2
 include { GATK4_MARKDUPLICATES } from '../../../../software/gatk4/markduplicates/main.nf' addParams( options: [ 'suffix': '.md' ] )
 
 workflow test_gatk4_markduplicates {
-
-    def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+            ]
 
     GATK4_MARKDUPLICATES ( input )
 }
