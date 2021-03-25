@@ -11,7 +11,7 @@ workflow test_salmon_quant_single_end {
                 file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) 
             ]
     genome_fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome.fasta'], checkIfExists: true)
+    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
     gtf              = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
@@ -26,7 +26,7 @@ workflow test_salmon_quant_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
     genome_fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome.fasta'], checkIfExists: true)
+    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
     gtf              = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
