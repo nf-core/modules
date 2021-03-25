@@ -8,6 +8,7 @@ jobs:
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
+      num_modules: ${{ steps.yq_modules.outputs.magic_number }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
@@ -15,11 +16,20 @@ jobs:
         with:
           filters: 'tests/config/pytest_software.yml'
 
+      - uses: mikefarah/yq@v4.6.3
+        name: Install yq
+        id: yq_modules
+        with:
+          cmd: |
+            output=$(echo ${{ steps.filter.outputs.changes }} | yq e 'length' -)
+            echo "::set-output name=magic_number::$output"
+
+
   test:
     runs-on: ubuntu-20.04
     name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: changes
-    if: needs.changes.outputs.modules != '[]'
+    if: needs.changes.outputs.modules != '[]' && needs.changes.outputs.num_modules <= 256
     strategy:
       fail-fast: false
       matrix:
