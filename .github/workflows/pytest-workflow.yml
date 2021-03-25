@@ -25,8 +25,7 @@ jobs:
             echo "::set-output name=magic_number::$output"
       # 256 max jobs / 2 nxf versions / 3 profiles
       - name: Fail if number of modules to be tested is greater than 42
-        run: if [ $output -gt 42 ] then exit 1 fi
-
+        run: exit $(test ${{ steps.yq_modules.outputs.magic_number }} -lt 42 )
 
 
 
