@@ -22,7 +22,7 @@ process MSISENSOR_SCAN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.msisensor_scan.txt"), emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     path "*.version.txt"          , emit: version
 
     script:
