@@ -26,7 +26,7 @@ process GATK4_HAPLOTYPECALLER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path("*.vcf.gz.tbi")             , emit: vcfidx
+    path("*.vcf.gz.tbi")             , emit: tbi
     path "*.version.txt"             , emit: version
 
     script:
