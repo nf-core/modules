@@ -1,9 +1,35 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml newtests/None
-- name: newtests
-  command: nextflow run ./tests/software/newtests -entry test_newtests -c tests/config/nextflow.config
+- name: subread featurecounts test_subread_featurecounts_forward
+  command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_forward -c tests/config/nextflow.config
   tags:
-    - newtests
+    - subread_featurecounts
+    - subread
+    - subread_featurecounts_forward
   files:
-    - path: output/newtests/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/subread/test.featureCounts.txt.summary
+      md5sum: d78617192451a57f6ef249ddcaf13720
+    - path: output/subread/test.featureCounts.txt
+      md5sum: b0a1f7563afe49007f422d4c9ca5ee6c
+
+- name: subread featurecounts test_subread_featurecounts_reverse
+  command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_reverse -c tests/config/nextflow.config
+  tags:
+    - subread_featurecounts
+    - subread
+    - subread_featurecounts_reverse
+  files:
+    - path: output/subread/test.featureCounts.txt.summary
+      md5sum: a372fc5cb4a895e921cf58236db2f790
+    - path: output/subread/test.featureCounts.txt
+      md5sum: 41ee5fd784c1d19773c9a67763489f32
+
+- name: subread featurecounts test_subread_featurecounts_unstranded
+  command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_unstranded -c tests/config/nextflow.config
+  tags:
+    - subread_featurecounts
+    - subread
+    - subread_featurecounts_unstranded
+  files:
+    - path: output/subread/test.featureCounts.txt.summary
+      md5sum: ee585faeb1edfcd2188a5e486a0e98a9
+    - path: output/subread/test.featureCounts.txt
+      md5sum: f17a3d04a09cfca0c8ca34164ca2e9ba
