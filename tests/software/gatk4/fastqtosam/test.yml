@@ -2,8 +2,8 @@
   command: nextflow run tests/software/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config
   tags:
     - gatk4_fastqtosam_single_end
-    - gatk4_fastqtosam
     - gatk4
+    - gatk4_fastqtosam
   files:
     - path: output/gatk4/test.bam
       md5sum: 4967100b2e4912c0e4ce0976d946bafb
@@ -12,8 +12,8 @@
   command: nextflow run tests/software/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config
   tags:
     - gatk4_fastqtosam_paired_end
-    - gatk4_fastqtosam
     - gatk4
+    - gatk4_fastqtosam
   files:
     - path: output/gatk4/test.bam
       md5sum: 4967100b2e4912c0e4ce0976d946bafb
