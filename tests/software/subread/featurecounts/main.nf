@@ -2,23 +2,33 @@
 
 nextflow.enable.dsl = 2
 
-include { SUBREAD_FEATURECOUNTS } from '../../../../software/subread/featurecounts/main.nf' addParams( options: [:] )
+include { SUBREAD_FEATURECOUNTS } from '../../../../software/subread/featurecounts/main.nf' addParams( options: [args:'-t CDS -F GTF'] )
 
-workflow test_subread_featurecounts_single_end {
+workflow test_subread_featurecounts_forward {
     
     def input = []
-    input = [ [ id:'test', single_end:false ], // meta map
+    input = [ [ id:'test', single_end:true, strandedness:'forward' ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
               file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
 
     SUBREAD_FEATURECOUNTS ( input )
 }
 
-workflow test_subread_featurecounts_paired_end {
+workflow test_subread_featurecounts_reverse {
     
     def input = []
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+    input = [ [ id:'test', single_end:false, strandedness:'reverse' ], // meta map
+              file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
+              file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
+
+    SUBREAD_FEATURECOUNTS ( input )
+}
+
+workflow test_subread_featurecounts_unstranded {
+    
+    def input = []
+    input = [ [ id:'test', single_end:false, strandedness:'unstranded' ], // meta map
+              file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
               file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
 
     SUBREAD_FEATURECOUNTS ( input )
