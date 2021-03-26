@@ -6,25 +6,25 @@ include { GATK4_APPLYBQSR } from '../../../../software/gatk4/applybqsr/main.nf' 
 
 workflow test_gatk4_applybqsr {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true),
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/gatk/test.table", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+              file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true)
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    fai   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
-    dict  = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.dict", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_APPLYBQSR ( input, fasta, fai, dict, [] )
 }
 
 workflow test_gatk4_applybqsr_intervals {
-  input     = [ [ id:'test' ], // meta map
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/gatk/test.table", checkIfExists: true)  
-            ]
-  fasta     = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-  fai       = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
-  dict      = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.dict", checkIfExists: true)
-  intervals = file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+    input = [ [ id:'test' ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true)
+              ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    intervals = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
   GATK4_APPLYBQSR ( input, fasta, fai, dict, intervals )
 }

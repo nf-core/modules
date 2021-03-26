@@ -1,18 +1,18 @@
 - name: gatk4 applybqsr test_gatk4_applybqsr
   command: nextflow run tests/software/gatk4/applybqsr -entry test_gatk4_applybqsr -c tests/config/nextflow.config
   tags:
-    - gatk4
     - gatk4_applybqsr
+    - gatk4
   files:
     - path: output/gatk4/test.bam
-      md5sum: 943a43de5f575a0435fe13072cbc15c8
+      md5sum: 139a5ffc7601ce3cfa7a896cd381542a
 
-- name: "\e[3~"
+- name: gatk4 applybqsr test_gatk4_applybqsr_intervals
   command: nextflow run tests/software/gatk4/applybqsr -entry test_gatk4_applybqsr_intervals -c tests/config/nextflow.config
   tags:
-    - gatk4
-    - gatk4_applybqsr_intervals
     - gatk4_applybqsr
+    - gatk4_applybqsr_intervals
+    - gatk4
   files:
     - path: output/gatk4/test.bam
-      md5sum: a92238a9a78da48bf437fd5b7d9790a3
+      md5sum: 5b1f6fa2525124c281f71e5a76d28482
