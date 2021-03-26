@@ -1,3 +1,11 @@
+adapterremoval:
+  - software/adapterremoval/**
+  - tests/software/adapterremoval/**
+
+allelecounter:
+  - software/allelecounter/**
+  - tests/software/allelecounter/**
+
 bandage_image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
@@ -58,44 +66,65 @@ bedtools_sort:
   - software/bedtools/sort/**
   - tests/software/bedtools/sort/**
 
+bismark_align:
+  - software/bismark/align/**
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/align/**
+
 bismark_deduplicate:
   - software/bismark/deduplicate/**
   - tests/software/bismark/deduplicate/**
 
-bismark_genome_preparation:
-  - software/bismark/genome_preparation/**
-  - tests/software/bismark/genome_preparation/**
+bismark_genomepreparation:
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/genomepreparation/**
 
-bismark_methylation_extractor:
-  - software/bismark/methylation_extractor/**
-  - software/bismark/genome_preparation/**
-  - tests/software/bismark/methylation_extractor/**
+bismark_methylationextractor:
+  - software/bismark/methylationextractor/**
+  - software/bismark/genomepreparation/**
+  - tests/software/bismark/methylationextractor/**
 
-blast_makeblastdb:
-  - software/blast/makeblastdb/**
-  - tests/software/blast/makeblastdb/**
+bismark_report:
+  - software/bismark/genomepreparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylationextractor/**
+  - software/bismark/report/**
+  - tests/software/bismark/report/**
+
+bismark_summary:
+  - software/bismark/genomepreparation/**
+  - software/bismark/align/**
+  - software/bismark/deduplicate/**
+  - software/bismark/methylationextractor/**
+  - software/bismark/summary/**
+  - tests/software/bismark/summary/**
 
 blast_blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-bowtie_build:
-  - software/bowtie/build/**
-  - tests/software/bowtie/build_test/**
+blast_makeblastdb:
+  - software/blast/makeblastdb/**
+  - tests/software/blast/makeblastdb/**
+
+bowtie2_align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2_build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bowtie_align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
+bowtie_build:
+  - software/bowtie/build/**
+  - tests/software/bowtie/build_test/**
 
 bwa_index:
   - software/bwa/index/**
@@ -125,6 +154,10 @@ cat_fastq:
   - software/cat/fastq/**
   - tests/software/cat/fastq/**
 
+cnvkit:
+  - software/cnvkit/**
+  - tests/software/cnvkit/**
+
 cutadapt:
   - software/cutadapt/**
   - tests/software/cutadapt/**
@@ -145,6 +178,18 @@ fastqc:
   - software/fastqc/**
   - tests/software/fastqc/**
 
+flash:
+  - software/flash/**
+  - tests/software/flash/**
+
+gatk4_applybqsr:
+  - software/gatk4/applybqsr/**
+  - tests/software/gatk4/applybqsr/**
+
+gatk4_baserecalibrator:
+  - software/gatk4/baserecalibrator/**
+  - tests/software/gatk4/baserecalibrator/**
+
 gatk4_bedtointervallist:
   - software/gatk4/bedtointervallist/**
   - tests/software/gatk4/bedtointervallist/**
@@ -156,6 +201,13 @@ gatk4_createsequencedictionary:
 gatk4_markduplicates:
   - software/gatk4/markduplicates/**
   - tests/software/gatk4/markduplicates/**
+gatk4_fastqtosam:
+  - software/gatk4/fastqtosam/**
+  - tests/software/gatk4/fastqtosam/**
+
+gatk4_haplotypecaller:
+  - software/gatk4/haplotypecaller/**
+  - tests/software/gatk4/haplotypecaller/**
 
 gatk4_mergebamalignment:
   - software/gatk4/mergebamalignment/**
@@ -189,6 +241,25 @@ gunzip:
   - software/gunzip/**
   - tests/software/gunzip/**
 
+hisat2_align:
+  - software/hisat2/align/**
+  - software/hisat2/build/**
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/align/**
+
+hisat2_build:
+  - software/hisat2/build/**
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/build_test/**
+
+hisat2_extractsplicesites:
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/extractsplicesites/**
+
+homer_annotatepeaks:
+  - software/homer/annotatepeaks/**
+  - tests/software/homer/annotatepeaks/**
+
 ivar_consensus:
   - software/ivar/consensus/**
   - tests/software/ivar/consensus/**
@@ -200,6 +271,10 @@ ivar_trim:
 ivar_variants:
   - software/ivar/variants/**
   - tests/software/ivar/variants/**
+
+kallisto_index:
+  - software/kallisto/index/**
+  - tests/software/kallisto/index/**
 
 kraken2_run:
   - software/kraken2/run/**
@@ -225,10 +300,22 @@ mosdepth:
   - software/mosdepth/**
   - tests/software/mosdepth/**
 
+msisensor_scan:
+  - software/msisensor/scan/**
+  - tests/software/msisensor/scan/**
+
+msisensor_msi:
+  - software/msisensor/msi/**
+  - tests/software/msisensor/msi/**
+
 multiqc:
   - software/fastqc/**
   - software/multiqc/**
   - tests/software/multiqc/**
+
+optitype:
+  - software/optitype/**
+  - tests/software/optitype/**
 
 pangolin:
   - software/pangolin/**
@@ -237,6 +324,10 @@ pangolin:
 picard_collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
   - tests/software/picard/collectmultiplemetrics/**
+
+picard_collectwgsmetrics:
+  - software/picard/collectwgsmetrics/**
+  - tests/software/picard/collectwgsmetrics/**
 
 picard_markduplicates:
   - software/picard/markduplicates/**
@@ -249,6 +340,14 @@ picard_mergesamfiles:
 preseq_lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/lcextrap/**
+
+prodigal:
+  - software/prodigal/**
+  - tests/software/prodigal/**
+
+prokka:
+  - software/prokka/**
+  - tests/software/prokka/**
 
 qualimap_bamqc:
   - software/qualimap/bamqc/**
@@ -270,6 +369,10 @@ samtools_faidx:
   - software/samtools/faidx/**
   - tests/software/samtools/faidx/**
 
+samtools_fastq:
+  - software/samtools/fastq/**
+  - tests/software/samtools/fastq/**
+
 samtools_flagstat:
   - software/samtools/flagstat/**
   - tests/software/samtools/flagstat/**
@@ -281,6 +384,10 @@ samtools_idxstats:
 samtools_index:
   - software/samtools/index/**
   - tests/software/samtools/index/**
+
+samtools_merge:
+  - software/samtools/merge/**
+  - tests/software/samtools/merge/**
 
 samtools_mpileup:
   - software/samtools/mpileup/**
@@ -306,9 +413,25 @@ seqkit_split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
 
+sequenza_bam2seqz:
+  - software/sequenza/bam2seqz/**
+  - tests/software/sequenza/bam2seqz/**
+
+sequenza_wiggle:
+  - software/sequenza/wiggle/**
+  - tests/software/sequenza/wiggle/**
+
+sequenzautils_gcwiggle:
+  - software/sequenzautils/gcwiggle/**
+  - tests/software/sequenzautils/gcwiggle/**
+
 seqwish_induce:
   - software/seqwish/induce/**
   - tests/software/seqwish/induce/**
+
+shovill:
+  - software/shovill/**
+  - tests/software/shovill/**
 
 spades:
   - software/spades/**
@@ -321,6 +444,10 @@ star_align:
 star_genomegenerate:
   - software/star/genomegenerate/**
   - tests/software/star/genomegenerate/**
+
+strelka_germline:
+  - software/strelka/germline/**
+  - tests/software/strelka/germline/**
 
 stringtie:
   - software/stringtie/**
@@ -342,11 +469,30 @@ trimgalore:
   - software/trimgalore/**
   - tests/software/trimgalore/**
 
+ucsc_bed12tobigbed:
+  - software/ucsc/bed12tobigbed/**
+  - tests/software/ucsc/bed12tobigbed/**
+
 ucsc_bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
+
+unicycler:
+  - software/unicycler/**
+  - tests/software/unicycler/**
 
 untar:
   - software/untar/**
   - tests/software/untar/**
 
+vcftools:
+  - software/vcftools/**
+  - tests/software/vcftools/**
+
+yara:
+  - software/yara/mapper/**
+  - tests/software/yara/mapper/**
+
+yara_index:
+  - software/yara/index/**
+  - tests/software/yara/index/**

@@ -1,0 +1,47 @@
+name: homer_annotatepeaks
+description: Annotate peaks with homer
+keywords:
+  - annotations
+  - peaks
+  - bed
+tools:
+  - cuatadapt:
+      description: |
+        HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
+      documentation: http://homer.ucsd.edu/homer/
+      doi: 10.1016/j.molcel.2010.05.004.
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - peaks:
+      type: file
+      description: The peak files in bed format
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+  - gtf:
+      type: file
+      description: GTF file of reference genome
+      pattern: "*.gtf"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - annotated_peaks:
+      type: file
+      description: The annotated peaks
+      pattern: "*annotatePeaks.txt"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+authors:
+  - "@drpatelh"
+  - "@kevinmenden"

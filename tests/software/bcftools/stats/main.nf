@@ -5,9 +5,9 @@ nextflow.enable.dsl = 2
 include { BCFTOOLS_STATS } from '../../../../software/bcftools/stats/main.nf' addParams( options: [:] )
 
 workflow test_bcftools_stats {
-    def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/vcf/test.vcf", checkIfExists: true) ]]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+            ]
 
     BCFTOOLS_STATS ( input )
 }

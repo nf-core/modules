@@ -1,8 +1,9 @@
-- name: Run tests for gatk4/variantfiltration - test_gatk4_variantfiltration
-  command: nextflow run tests/software/gatk4/variantfiltration -entry test_gatk4_variantfiltration
-    -c tests/config/nextflow.config
+- name: gatk4 variantfiltration test_gatk4_variantfiltration
+  command: nextflow run tests/software/gatk4/variantfiltration -entry test_gatk4_variantfiltration -c tests/config/nextflow.config
   tags:
-    - gatk4
     - gatk4_variantfiltration
+    - gatk4
   files:
     - path: output/gatk4/test.filtered.vcf
+      contains:
+        - "AC=2;AN=2;DP=1;DP4=0,0,1,0;MQ=60;MQ0F=0;SGB=-0.379885"

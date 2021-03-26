@@ -1,0 +1,9 @@
+- name: Run bismark summary test workflow
+  command: nextflow run ./tests/software/bismark/summary -entry test_bismark_summary -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_summary
+  files:
+    - path: output/bismark/bismark_summary_report.html
+    - path: output/bismark/bismark_summary_report.txt
+      md5sum: 06fc717e81b3f8f0d6e279d572f407f6
