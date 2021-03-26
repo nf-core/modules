@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SUBREAD_FEATURECOUNTS } from '../../../../software/subread/featurecounts/main.nf' addParams( options: [args:'-t CDS -F GTF'] )
+include { SUBREAD_FEATURECOUNTS } from '../../../../software/subread/featurecounts/main.nf' addParams( options: [args:'-t CDS'] )
 
 workflow test_subread_featurecounts_forward {
     
