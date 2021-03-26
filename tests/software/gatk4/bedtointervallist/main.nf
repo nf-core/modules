@@ -6,9 +6,9 @@ include { GATK4_BEDTOINTERVALLIST } from '../../../../software/gatk4/bedtointerv
 
 workflow test_gatk4_bedtointervallist {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)] 
+              [ file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) ]
             ]
-    dict  = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.dict", checkIfExists: true)
+    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_BEDTOINTERVALLIST ( input, dict )
 }

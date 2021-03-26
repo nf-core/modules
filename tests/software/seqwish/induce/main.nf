@@ -6,8 +6,8 @@ include { SEQWISH_INDUCE } from '../../../../software/seqwish/induce/main.nf' ad
 
 workflow test_seqwish_induce {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/genome/transcriptome.paf", checkIfExists: true) ],
-              [ file("${launchDir}/tests/data/genomics/sarscov2/genome/transcriptome.fasta", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['genome']['transcriptome_paf'], checkIfExists: true)],
+              [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
             ]
 
     SEQWISH_INDUCE ( input )

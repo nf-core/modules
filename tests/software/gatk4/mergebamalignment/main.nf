@@ -6,11 +6,11 @@ include { GATK4_MERGEBAMALIGNMENT } from '../../../../software/gatk4/mergebamali
 
 workflow test_gatk4_mergebamalignment {
     input    = [ [ id:'test' ], // meta map
-                 file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_single_end.bam", checkIfExists: true) 
+                 file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
                ]
-    unmapped = file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_unaligned.bam", checkIfExists: true)
-    fasta    = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    dict     = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.dict", checkIfExists: true)
+    unmapped = file(params.test_data['sarscov2']['illumina']['test_unaligned_bam'], checkIfExists: true)
+    fasta    = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    dict     = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_MERGEBAMALIGNMENT ( input, unmapped, fasta, dict )
 }

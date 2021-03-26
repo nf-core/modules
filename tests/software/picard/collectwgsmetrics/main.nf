@@ -6,10 +6,10 @@ include { PICARD_COLLECTWGSMETRICS } from '../../../../software/picard/collectwg
 
 workflow test_picard_collectwgsmetrics {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true),
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam.bai", checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) 
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     PICARD_COLLECTWGSMETRICS ( input, fasta )
 }
