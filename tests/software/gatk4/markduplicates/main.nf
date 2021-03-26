@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MARKDUPLICATES } from '../../../../software/gatk4/markduplicates/main.nf' addParams( options: [ 'suffix': '.md' ] )
+include { GATK4_MARKDUPLICATES } from '../../../../software/gatk4/markduplicates/main.nf' addParams( options: [:] )
 
 workflow test_gatk4_markduplicates {
     input = [ [ id:'test', single_end:false ], // meta map
