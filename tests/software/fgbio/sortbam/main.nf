@@ -8,7 +8,7 @@ workflow test_fgbio_sortbam {
     
     def input = []
     input = [ [ id:'test' ], // meta map
-              file(params.test_data['sarscov2']['illumina']['bam']['test_paired_end.sorted.bam'], checkIfExists: true) ]
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), ]
     FGBIO_SORTBAM ( input )
 }
 

@@ -9,8 +9,7 @@ workflow test_fgbio_callmolecularconsensusreads {
     
     def input = []
     input = [ [ id:'test' ], // meta map
-                file(params.test_data['sarscov2']['illumina']['bam']['test_single_end.bam'], checkIfExists: true) ]
+                file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true), ]
     FGBIO_SORTBAM ( input )
     FGBIO_CALLMOLECULARCONSENSUSREADS ( FGBIO_SORTBAM.out.bam  )
 }
-
