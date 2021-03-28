@@ -5,10 +5,7 @@ nextflow.enable.dsl = 2
 include { FGBIO_SORTBAM } from '../../../../software/fgbio/sortbam/main.nf' addParams( options: [:] )
 
 workflow test_fgbio_sortbam {
-    
-    def input = []
     input = [ [ id:'test' ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), ]
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
     FGBIO_SORTBAM ( input )
 }
-

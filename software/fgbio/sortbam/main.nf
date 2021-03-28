@@ -35,7 +35,5 @@ process FGBIO_SORTBAM {
         -o ${prefix}.bam
     fgbio --version | sed -e "s/fgbio v//g" > ${software}.version.txt
     """
-
 }
-
 

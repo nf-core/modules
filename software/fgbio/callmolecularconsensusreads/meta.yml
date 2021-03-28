@@ -19,7 +19,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false, collapse:false ]
-    - reads:
+    - bam:
         type: file
         description: |
           The input SAM or BAM file.
@@ -31,7 +31,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads:
+    - bam:
         type: file
         description: |
           Output SAM or BAM file to write consensus reads.
@@ -43,4 +43,3 @@ output:
 
 authors:
     - "@sruthipsuresh"
-
