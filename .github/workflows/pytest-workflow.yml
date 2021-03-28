@@ -26,7 +26,7 @@ jobs:
         id: yq_modules
         run: |
           output=$(echo ${{ steps.filter.outputs.changes }} | yq e 'length' -)
-          echo "::set-output name=proceed::$(if (test $output -lt 42); then echo 0; fi)"
+          echo "::set-output name=proceed::$(if (test $output -lt 42); then return 0 else return 1 fi)"
 
 
 
@@ -114,7 +114,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Test all modules
     needs: changes
-    if: needs.changes.outputs.proceed == '1'
+    if: needs.changes.outputs.proceed != '0'
     strategy:
       fail-fast: false
       matrix:
