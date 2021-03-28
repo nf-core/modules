@@ -16,14 +16,17 @@ jobs:
         with:
           filters: 'tests/config/pytest_software.yml'
 
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
       # 256 max jobs / 2 nxf versions / 3 profiles
-      - uses: mikefarah/yq@v4.6.3
-        name: Fail if number of modules to be tested is greater than 42
+
+      - name: Fail if number of modules to be tested is greater than 42
         id: yq_modules
-        with:
-          cmd: |
-            output=$(echo ${{ steps.filter.outputs.changes }} | yq e 'length' -)
-            echo "::set-output name=proceed::$(if (test $output -lt 42); then echo 0; fi)"
+        run: |
+          output=$(echo ${{ steps.filter.outputs.changes }} | yq e 'length' -)
+          echo "::set-output name=proceed::$(if (test $output -lt 42); then echo 0; fi)"
 
 
 
