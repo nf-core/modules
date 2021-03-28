@@ -18,7 +18,7 @@ jobs:
 
       - name: Install yq
         run: |
-          sudo wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.6.3/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
       # 256 max jobs / 2 nxf versions / 3 profiles
 
