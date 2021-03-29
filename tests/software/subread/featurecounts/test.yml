@@ -1,9 +1,9 @@
 - name: subread featurecounts test_subread_featurecounts_forward
   command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_forward -c tests/config/nextflow.config
   tags:
-    - subread_featurecounts
     - subread
     - subread_featurecounts_forward
+    - subread_featurecounts
   files:
     - path: output/subread/test.featureCounts.txt.summary
       md5sum: d78617192451a57f6ef249ddcaf13720
@@ -13,23 +13,23 @@
 - name: subread featurecounts test_subread_featurecounts_reverse
   command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_reverse -c tests/config/nextflow.config
   tags:
-    - subread_featurecounts
     - subread
+    - subread_featurecounts
     - subread_featurecounts_reverse
   files:
     - path: output/subread/test.featureCounts.txt.summary
-      md5sum: a372fc5cb4a895e921cf58236db2f790
+      md5sum: 4217004d0b55f870f77092364f59e44d
     - path: output/subread/test.featureCounts.txt
-      md5sum: 41ee5fd784c1d19773c9a67763489f32
+      md5sum: 412840a8880cd29674b3d5404d3de19b
 
 - name: subread featurecounts test_subread_featurecounts_unstranded
   command: nextflow run tests/software/subread/featurecounts -entry test_subread_featurecounts_unstranded -c tests/config/nextflow.config
   tags:
-    - subread_featurecounts
     - subread
+    - subread_featurecounts
     - subread_featurecounts_unstranded
   files:
     - path: output/subread/test.featureCounts.txt.summary
       md5sum: ee585faeb1edfcd2188a5e486a0e98a9
     - path: output/subread/test.featureCounts.txt
-      md5sum: f17a3d04a09cfca0c8ca34164ca2e9ba
+      md5sum: 6b684e11a1e54bec7e1ee5e3f651d7fd
