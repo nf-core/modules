@@ -178,6 +178,14 @@ fastqc:
   - software/fastqc/**
   - tests/software/fastqc/**
 
+fgbio_callmolecularconsensusreads:
+  - software/fgbio/callmolecularconsensusreads/**
+  - tests/software/fgbio/callmolecularconsensusreads/**
+
+fgbio_sortbam:
+  - software/fgbio/sortbam/**
+  - tests/software/fgbio/sortbam/**
+
 flash:
   - software/flash/**
   - tests/software/flash/**
@@ -198,9 +206,16 @@ gatk4_createsequencedictionary:
   - software/gatk4/createsequencedictionary/**
   - tests/software/gatk4/createsequencedictionary/**
 
+gatk4_markduplicates:
+  - software/gatk4/markduplicates/**
+  - tests/software/gatk4/markduplicates/**
 gatk4_fastqtosam:
   - software/gatk4/fastqtosam/**
   - tests/software/gatk4/fastqtosam/**
+
+gatk4_haplotypecaller:
+  - software/gatk4/haplotypecaller/**
+  - tests/software/gatk4/haplotypecaller/**
 
 gatk4_mergebamalignment:
   - software/gatk4/mergebamalignment/**
@@ -233,6 +248,21 @@ gffread:
 gunzip:
   - software/gunzip/**
   - tests/software/gunzip/**
+
+hisat2_align:
+  - software/hisat2/align/**
+  - software/hisat2/build/**
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/align/**
+
+hisat2_build:
+  - software/hisat2/build/**
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/build_test/**
+
+hisat2_extractsplicesites:
+  - software/hisat2/extractsplicesites/**
+  - tests/software/hisat2/extractsplicesites/**
 
 homer_annotatepeaks:
   - software/homer/annotatepeaks/**
@@ -277,6 +307,14 @@ minimap2_align:
 mosdepth:
   - software/mosdepth/**
   - tests/software/mosdepth/**
+
+msisensor_scan:
+  - software/msisensor/scan/**
+  - tests/software/msisensor/scan/**
+
+msisensor_msi:
+  - software/msisensor/msi/**
+  - tests/software/msisensor/msi/**
 
 multiqc:
   - software/fastqc/**
@@ -458,3 +496,11 @@ untar:
 vcftools:
   - software/vcftools/**
   - tests/software/vcftools/**
+
+yara:
+  - software/yara/mapper/**
+  - tests/software/yara/mapper/**
+
+yara_index:
+  - software/yara/index/**
+  - tests/software/yara/index/**

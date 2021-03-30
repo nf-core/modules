@@ -6,7 +6,7 @@ include { BCFTOOLS_STATS } from '../../../../software/bcftools/stats/main.nf' ad
 
 workflow test_bcftools_stats {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
             ]
 
     BCFTOOLS_STATS ( input )

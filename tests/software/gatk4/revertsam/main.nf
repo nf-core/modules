@@ -6,7 +6,7 @@ include { GATK4_REVERTSAM } from '../../../../software/gatk4/revertsam/main.nf' 
 
 workflow test_gatk4_revertsam {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.bam", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
             ]
 
     GATK4_REVERTSAM ( input )

@@ -7,9 +7,9 @@ include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../software/bismark/meth
 
 workflow test_bismark_methylationextractor {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_methylated_paired_end.bam", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_bam'], checkIfExists: true) ]
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     BISMARK_GENOMEPREPARATION ( fasta )
     BISMARK_METHYLATIONEXTRACTOR ( input, BISMARK_GENOMEPREPARATION.out.index )
