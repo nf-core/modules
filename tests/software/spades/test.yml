@@ -11,7 +11,6 @@
     - path: output/spades/test.scaffolds.fa
       md5sum: 2690fefde046bc904e90df09a065257a
     - path: output/spades/test.spades.log
-    - path: output/spades/warnings.log
 
 - name: spades paired end
   command: nextflow run ./tests/software/spades -entry test_spades_paired_end -c tests/config/nextflow.config
@@ -24,7 +23,6 @@
       - path: output/spades/test.contigs.fa
         md5sum: f3e87d68521aa485d70aecd82de519b4
       - path: output/spades/test.spades.log
-      - path: output/spades/warnings.log
 
 - name: coronaspades single end
   command: nextflow run ./tests/software/spades -entry test_coronospades_single_end -c tests/config/nextflow.config
@@ -55,5 +53,4 @@
       - path: output/spades/test.gene_clusters.fa
         md5sum: d41d8cd98f00b204e9800998ecf8427e
       - path: output/spades/test.spades.log
-      - path: output/spades/warnings.log
 
