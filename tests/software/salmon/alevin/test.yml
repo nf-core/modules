@@ -1,10 +1,33 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml salmon/alevin
-- name: salmon alevin
-  command: nextflow run ./tests/software/salmon/alevin -entry test_salmon_alevin -c tests/config/nextflow.config
+- name: salmon alevin test_salmon_alevin
+  command: nextflow run tests/software/salmon/alevin -entry test_salmon_alevin -c tests/config/nextflow.config
   tags:
     - salmon
-    - salmon/alevin
+    - salmon_alevin
   files:
-    - path: output/salmon/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/gffread/gencode.vM26.annotation.out.gtf
+      md5sum: a17717a09c09e94e256392d4b1af43cd
+    - path: output/salmon/test_alevin_results/alevin/alevin.log
+    - path: output/salmon/test_alevin_results/alevin/featureDump.txt
+    - path: output/salmon/test_alevin_results/alevin/quants_mat.gz
+    - path: output/salmon/test_alevin_results/alevin/quants_mat_cols.txt
+      md5sum: d69d6e61713a2f7b7c2778b3e046ebc7
+    - path: output/salmon/test_alevin_results/alevin/quants_mat_rows.txt
+    - path: output/salmon/test_alevin_results/alevin/quants_tier_mat.gz
+    - path: output/salmon/test_alevin_results/aux_info/alevin_meta_info.json
+    - path: output/salmon/test_alevin_results/aux_info/ambig_info.tsv
+      md5sum: 00b08ea010d425fe5e49421bcabdb3fa
+    - path: output/salmon/test_alevin_results/aux_info/expected_bias.gz
+      md5sum: 24ee10af39b41ecf4f4e08faaaf537ee
+    - path: output/salmon/test_alevin_results/aux_info/fld.gz
+    - path: output/salmon/test_alevin_results/aux_info/meta_info.json
+    - path: output/salmon/test_alevin_results/aux_info/observed_bias.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test_alevin_results/aux_info/observed_bias_3p.gz
+      md5sum: ef13c06a538e9c34ca9f84212c82f44e
+    - path: output/salmon/test_alevin_results/cmd_info.json
+      md5sum: 8c944ca05d90a7c51f04b0d8c5f2df02
+    - path: output/salmon/test_alevin_results/libParams/flenDist.txt
+      md5sum: 2de170bdc9f6fd237d286429b292bb28
+    - path: output/salmon/test_alevin_results/lib_format_counts.json
+      md5sum: 7a5c73d989893f8d17ec54193fc3e500
+    - path: output/salmon/test_alevin_results/logs/salmon_quant.log

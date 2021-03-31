@@ -22,6 +22,7 @@ process SALMON_ALEVIN {
     tuple val(meta), path(reads)
     path index
     path txp2gene
+    val protocol
 
     output:
     tuple val(meta), path("*_alevin_results"), emit: alevin_results
@@ -36,11 +37,9 @@ process SALMON_ALEVIN {
         -p $task.cpus \\
         -1 ${reads[0]} \\
         -2 ${reads[1]} \\
+        --${protocol} \\
         -i $index \\
         --tgMap $txp2gene \\
-        --chromium \\
-        --dumpFeatures \\
-        --dumpMtx \\
         $options.args \\
         -o ${prefix}_alevin_results
 
