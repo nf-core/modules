@@ -1,32 +1,41 @@
 name: salmon_alevin
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: scRNA-seq mapping with salmon alevin
 keywords:
-  - sort
+  - salmon
+  - alevin
+  - single-cell
 tools:
   - salmon:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Highly-accurate & wicked fast transcript-level quantification from RNA-seq reads using selective alignment
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['GPL v3']
+      description: |
+        Alevin is a tool — integrated with the salmon software — that introduces a family of
+        algorithms for quantification and analysis of 3’ tagged-end single-cell sequencing data.
+      homepage: https://salmon.readthedocs.io/en/latest/alevin.html
+      documentation: https://salmon.readthedocs.io/en/latest/alevin.html
+      tool_dev_url: https://github.com/COMBINE-lab/salmon
+      doi: "https://doi.org/10.1186/s13059-019-1670-y"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: FastQ input reads
+      pattern: "*.{fastq,fastq.gz}"
+  - index:
+      type: file
+      description: Folder containing the salmon index
+  - txp2gene:
+      type: file
+      description: txp2gene mapping file containing transcript to gene mapping
+  - protocol:
+      type: value
+      description: String value, can be one of "chromium", "dropseq", "chromiumV3"
+      pattern: "{chromium,dropseq,chromiumV3}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +46,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - alevin_results:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Folder with alevin results
+      pattern: "*_alevin_results"
 
 authors:
   - "@KevinMenden"
