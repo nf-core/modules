@@ -22,13 +22,13 @@ process GFFREAD {
     path gff
 
     output:
-    path "*.gtf"        , emit: gtf
+    path "*out.gtf"        , emit: gtf
     path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    gffread $gff $options.args -o ${gff.baseName}.gtf
+    gffread $gff $options.args -o ${gff.baseName}.out.gtf
     echo \$(gffread --version 2>&1) > ${software}.version.txt
     """
 }

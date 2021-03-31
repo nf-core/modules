@@ -19,24 +19,30 @@ process SALMON_ALEVIN {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
+    path index
+    path txp2gene
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*_alevin_results"), emit: alevin_results
+    path "*.version.txt"                     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     salmon alevin \\
-        --geneMap $gtf \\
-        --threads $task.cpus \\
-        --libType=$strandedness \\
-        $reference \\
-        $input_reads \\
+        -l ISR \\
+        -p $task.cpus \\
+        -1 ${reads[0]} \\
+        -2 ${reads[1]} \\
+        -i $index \\
+        --tgMap $txp2gene \\
+        --chromium \\
+        --dumpFeatures \\
+        --dumpMtx \\
         $options.args \\
-        -o $prefix
+        -o ${prefix}_alevin_results
 
     salmon --version | sed -e "s/salmon //g" > ${software}.version.txt
     """
