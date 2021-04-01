@@ -1,0 +1,7 @@
+- name: sequenzautils bam2seqz
+  command: nextflow run ./tests/software/sequenzautils/bam2seqz -entry test_sequenzautils_bam2seqz -c tests/config/nextflow.config
+  tags:
+    - sequenzautils
+    - sequenzautils_bam2seqz
+  files:
+    - path: output/sequenzautils/test.seqz.gz

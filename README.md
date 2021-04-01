@@ -540,4 +540,6 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 > Note that the nf-core/tools helper package has a `download` command to download all required pipeline
 > files + singularity containers + institutional configs + modules in one go for you, to make this process easier.
 
+# New test data created for the module- sequenzautils/bam2seqz
+The new test data is an output from another module- sequenzautils/bcwiggle- (which uses sarscov2 genome fasta file as an input). 
 -->
