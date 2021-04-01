@@ -5,9 +5,10 @@ nextflow.enable.dsl = 2
 include { BEDTOOLS_MASKFASTA } from '../../../../software/bedtools/maskfasta/main.nf' addParams( options: [:] )
 
 workflow test_bedtools_maskfasta {
-    def bed  =  [ [ id:'test'],
-                  file("${launchDir}/tests/data/genomics/sarscov2/bed/test.bed", checkIfExists: true) ]
-    def fasta = [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
-
-    BEDTOOLS_MASKFASTA( bed, fasta )
+    bed   = [ [ id:'test'],
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+            ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    
+    BEDTOOLS_MASKFASTA ( bed, fasta )
 }

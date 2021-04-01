@@ -1,0 +1,7 @@
+- name: optitype test_optitype
+  command: nextflow run tests/software/optitype -entry test_optitype -c tests/config/nextflow.config
+  tags:
+    - optitype
+  files:
+    - path: output/optitype/test/test_result.tsv
+    - path: output/optitype/test/test_coverage_plot.pdf

@@ -1,0 +1,8 @@
+- name: kallisto index test_kallisto_index
+  command: nextflow run tests/software/kallisto/index -entry test_kallisto_index -c tests/config/nextflow.config
+  tags:
+    - kallisto
+    - kallisto_index
+  files:
+    - path: output/kallisto/kallisto
+      md5sum: bf8a58d329dddc96f0c32f7823bc0310

@@ -1,25 +1,40 @@
-- name: fastp single-end
-  command: nextflow run ./tests/software/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config
+- name: fastp test_fastp_single_end
+  command: nextflow run tests/software/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
   tags:
-    - fastp
     - fastp_single_end
-  files:
-    - path: ./output/fastp/test.fastp.html
-    - path: ./output/fastp/test.fastp.log
-    - path: ./output/fastp/test.trim.fastq.gz
-      md5sum: e2257263668dc8a75d95475099fb472d
-    - path: ./output/fastp/test.fastp.json
-
-- name: fastp paired-end
-  command: nextflow run ./tests/software/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config
-  tags:
     - fastp
-    - fastp_paired_end
   files:
-    - path: ./output/fastp/test.fastp.html
-    - path: ./output/fastp/test.fastp.log
-    - path: ./output/fastp/test.fastp.json
-    - path: ./output/fastp/test_1.trim.fastq.gz
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
+        - "single end (151 cycles)"
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 99"
+    - path: output/fastp/test.trim.fastq.gz
       md5sum: e2257263668dc8a75d95475099fb472d
-    - path: ./output/fastp/test_2.trim.fastq.gz
+    - path: output/fastp/test.fastp.json
+      md5sum: e0d856ebb3da9e4462c3ce9683efe01d
+
+- name: fastp test_fastp_paired_end
+  command: nextflow run tests/software/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
+  tags:
+    - fastp_paired_end
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
+        - "The input has little adapter percentage (~0.000000%), probably it's trimmed before."
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "No adapter detected for read1"
+        - "Q30 bases: 12281(88.3716%)"
+    - path: output/fastp/test.fastp.json
+      contains:
+        - '"passed_filter_reads": 198'
+    - path: output/fastp/test_1.trim.fastq.gz
+      md5sum: e2257263668dc8a75d95475099fb472d
+    - path: output/fastp/test_2.trim.fastq.gz
       md5sum: 9eff7203596580cc5e42aceab4a469df

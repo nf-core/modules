@@ -1,8 +1,8 @@
-- name: gatk4 splitncigarreads
-  command: nextflow run ./tests/software/gatk4/splitncigarreads -entry test_gatk4_splitncigarreads -c tests/config/nextflow.config
+- name: gatk4 splitncigarreads test_gatk4_splitncigarreads
+  command: nextflow run tests/software/gatk4/splitncigarreads -entry test_gatk4_splitncigarreads -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4_splitncigarreads
   files:
     - path: output/gatk4/test.split_cigar.bam
-      md5sum: 9dd44d3988b9ff238a6b4771cdf13eba
+      md5sum: a8473bd4abc7b13751fc51b92531da4c
