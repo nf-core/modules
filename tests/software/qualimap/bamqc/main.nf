@@ -6,7 +6,7 @@ include { QUALIMAP_BAMQC } from '../../../../software/qualimap/bamqc/main.nf' ad
 
 workflow test_qualimap_bamqc {
     input   = [ [ id:'test', single_end:false ], // meta map
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) 
+                [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
               ]
     gff     = file("dummy_file.txt")
     use_gff = false
