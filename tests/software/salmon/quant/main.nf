@@ -7,11 +7,12 @@ include { SALMON_QUANT } from '../../../../software/salmon/quant/main.nf' addPar
 
 workflow test_salmon_quant_single_end {
 
-    def genome_fasta     = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
-    def transcript_fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_transcriptome.fasta", checkIfExists: true)
-    def gtf   = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
-    def input = [ [ id:'test', single_end:true ], // meta map
-                  file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true) ]
+    input = [ [ id:'test', single_end:true ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) 
+            ]
+    genome_fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
+    gtf              = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
     SALMON_QUANT ( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false )
@@ -20,12 +21,13 @@ workflow test_salmon_quant_single_end {
 
 workflow test_salmon_quant_paired_end {
 
-    def genome_fasta     = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true)
-    def transcript_fasta = file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_transcriptome.fasta", checkIfExists: true)
-    def gtf   = file("${launchDir}/tests/data/genomics/sarscov2/gtf/test_genome.gtf", checkIfExists: true)
-    def input = [ [ id:'test', single_end:false ], // meta map
-                  [ file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_1.fastq.gz", checkIfExists: true),
-                    file("${launchDir}/tests/data/genomics/sarscov2/fastq/test_2.fastq.gz", checkIfExists: true) ] ]
+    input = [ [ id:'test', single_end:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    genome_fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    transcript_fasta = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
+    gtf              = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
     SALMON_QUANT ( input, SALMON_INDEX.out.index, gtf, transcript_fasta, false )

@@ -5,19 +5,17 @@ nextflow.enable.dsl = 2
 include { PICARD_MARKDUPLICATES } from '../../../../software/picard/markduplicates/main.nf' addParams( options: [:] )
 
 workflow test_picard_markduplicates_sorted_bam  {
-
-    def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+            ]
 
     PICARD_MARKDUPLICATES ( input )
 }
 
 workflow test_picard_markduplicates_unsorted_bam  {
-
-    def input = []
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.bam", checkIfExists: true) ]
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+            ]
 
     PICARD_MARKDUPLICATES ( input )
 }

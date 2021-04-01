@@ -6,10 +6,9 @@ include { BCFTOOLS_MPILEUP } from '../../../../software/bcftools/mpileup/main.nf
                                                                                                        'args3': '--no-version' ] )
 
 workflow test_bcftools_mpileup {
-    def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/bam/test_paired_end.sorted.bam", checkIfExists: true) ]]
-    fasta = [ file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]]
+    fasta = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     BCFTOOLS_MPILEUP ( input, fasta )
 }

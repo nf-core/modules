@@ -1,8 +1,8 @@
 - name: samtools view
-  command: nextflow run ./tests/software/samtools/view -entry test_samtools_view -c tests/config/nextflow.config
+  command: nextflow run tests/software/samtools/view -entry test_samtools_view -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools_view
   files:
-    - path: ./output/samtools/test.bam
-      md5sum: 7e0d4c8eeff88e8f318eb2fe07dbdc0a
+    - path: output/samtools/test.bam
+      md5sum: 8fb1e82f76416e9e30fc6b2357e2cf13

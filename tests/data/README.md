@@ -14,6 +14,7 @@ When adding a new module, please check carefully whether the data necessary for 
         * 'test_{,methylated}_paired_end.sorted.bam': sorted version of the above bam file
         * 'test_{,methylated}_paired_end.bam.sorted.bam.bai': bam index for the sorted bam file
         * 'test_single_end.bam': alignment (unsorted) of the 'test_1.fastq.gz' reads against test_genomic.fasta using minimap2
+        * 'test_unaligned.bam': unmapped BAM file created from 'test_1.fastq.gz' using GATK4 SamToFastq
     * bed
         * 'test.bed': exemplary bed file for the MT192765.1 genome (fasta/test_genomic.fasta)
         * 'test.2.bed': slightly modified copy of the above file
@@ -34,6 +35,8 @@ When adding a new module, please check carefully whether the data necessary for 
         * 'test_genomic.gff3.gz': bgzipped-version
     * paf
         * 'test_cds_from_genomic.paf': PAF file for MT192765.1  genome
+    * table:
+        * 'test.table': Recalibration table generated with gatk4 BaseRecalibrator from 'test_paired_end.sorted.bam', using 'test.vcf.gz' as known sites.
     * vcf
         * 'test.vcf', 'test2.vcf': generated from 'test_paired_end.sorted.bam' using bcftools mpileup, call and filter
         * 'test3.vcf': generated from 'test_single_end.sorted.bam' using bcftools mpileup, call and filter
@@ -49,6 +52,3 @@ When adding a new module, please check carefully whether the data necessary for 
 * gtf: additional gtf file for STAR
 * vcf: several VCF files for tools using those, will be removed in the future
 * 'test.txt.gar.gz' exemplary tar file for the untar module
-
-
-

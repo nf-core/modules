@@ -1,0 +1,11 @@
+- name: picard collectwgsmetrics test_picard_collectwgsmetrics
+  command: nextflow run tests/software/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c tests/config/nextflow.config
+  tags:
+    - picard_collectwgsmetrics
+    - picard
+  files:
+    - path: output/picard/test.CollectWgsMetrics.coverage_metrics
+      contains:
+        - "GENOME_TERRITORY"
+        - "29829"
+        - "17554"

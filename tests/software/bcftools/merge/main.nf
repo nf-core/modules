@@ -6,12 +6,12 @@ nextflow.enable.dsl = 2
 include { BCFTOOLS_MERGE } from '../../../../software/bcftools/merge/main.nf' addParams( options: ['args': '--force-samples --no-version'] )
 
 workflow test_bcftools_merge {
-    def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/vcf/test2.vcf.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/vcf/test3.vcf.gz", checkIfExists: true) ],
-              [ file("${launchDir}/tests/data/genomics/sarscov2/vcf/test2.vcf.gz.tbi", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/vcf/test3.vcf.gz.tbi", checkIfExists: true) ]]
+              [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true) ],
+              [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ]
+            ]
 
     BCFTOOLS_MERGE ( input )
 }

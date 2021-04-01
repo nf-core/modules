@@ -1,0 +1,18 @@
+- name: Run bismark methylation extractor test workflow
+  command: nextflow run ./tests/software/bismark/methylationextractor -entry test_bismark_methylationextractor -c tests/config/nextflow.config
+  tags:
+    - bismark
+    - bismark_methylationextractor
+  files:
+    - path: output/bismark/CHG_OB_test_methylated_paired_end.txt.gz
+    - path: output/bismark/CHG_OT_test_methylated_paired_end.txt.gz
+    - path: output/bismark/CHH_OB_test_methylated_paired_end.txt.gz
+    - path: output/bismark/CHH_OT_test_methylated_paired_end.txt.gz
+    - path: output/bismark/CpG_OB_test_methylated_paired_end.txt.gz
+    - path: output/bismark/CpG_OT_test_methylated_paired_end.txt.gz
+    - path: output/bismark/test_methylated_paired_end.bedGraph.gz
+    - path: output/bismark/test_methylated_paired_end.bismark.cov.gz
+    - path: output/bismark/test_methylated_paired_end.M-bias.txt
+      md5sum: 0b100924d46b3c35115f1206f34c4a59
+    - path: output/bismark/test_methylated_paired_end_splitting_report.txt
+      md5sum: 288d6f0110127e3a8c10391802118202
