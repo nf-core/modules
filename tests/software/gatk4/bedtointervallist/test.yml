@@ -1,5 +1,5 @@
-- name: gatk4 bedtointervallist
-  command: nextflow run ./tests/software/gatk4/bedtointervallist -entry test_gatk4_bedtointervallist -c tests/config/nextflow.config
+- name: gatk4 bedtointervallist test_gatk4_bedtointervallist
+  command: nextflow run tests/software/gatk4/bedtointervallist -entry test_gatk4_bedtointervallist -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4_bedtointervallist

@@ -178,6 +178,14 @@ fastqc:
   - software/fastqc/**
   - tests/software/fastqc/**
 
+fgbio_callmolecularconsensusreads:
+  - software/fgbio/callmolecularconsensusreads/**
+  - tests/software/fgbio/callmolecularconsensusreads/**
+
+fgbio_sortbam:
+  - software/fgbio/sortbam/**
+  - tests/software/fgbio/sortbam/**
+
 flash:
   - software/flash/**
   - tests/software/flash/**
@@ -201,6 +209,14 @@ gatk4_createsequencedictionary:
 gatk4_fastqtosam:
   - software/gatk4/fastqtosam/**
   - tests/software/gatk4/fastqtosam/**
+
+gatk4_haplotypecaller:
+  - software/gatk4/haplotypecaller/**
+  - tests/software/gatk4/haplotypecaller/**
+
+gatk4_markduplicates:
+  - software/gatk4/markduplicates/**
+  - tests/software/gatk4/markduplicates/**
 
 gatk4_mergebamalignment:
   - software/gatk4/mergebamalignment/**
@@ -248,7 +264,7 @@ hisat2_build:
 hisat2_extractsplicesites:
   - software/hisat2/extractsplicesites/**
   - tests/software/hisat2/extractsplicesites/**
-  
+
 homer_annotatepeaks:
   - software/homer/annotatepeaks/**
   - tests/software/homer/annotatepeaks/**
@@ -293,13 +309,13 @@ mosdepth:
   - software/mosdepth/**
   - tests/software/mosdepth/**
 
-msisensor_scan:
-  - software/msisensor/scan/**
-  - tests/software/msisensor/scan/**
-
 msisensor_msi:
   - software/msisensor/msi/**
   - tests/software/msisensor/msi/**
+
+msisensor_scan:
+  - software/msisensor/scan/**
+  - tests/software/msisensor/scan/**
 
 multiqc:
   - software/fastqc/**
@@ -414,6 +430,10 @@ sequenza_wiggle:
   - software/sequenza/wiggle/**
   - tests/software/sequenza/wiggle/**
 
+sequenzautils_bam2seqz:
+  - software/sequenzautils/bam2seqz/**
+  - tests/software/sequenzautils/bam2seqz/**
+
 sequenzautils_gcwiggle:
   - software/sequenzautils/gcwiggle/**
   - tests/software/sequenzautils/gcwiggle/**
@@ -445,6 +465,10 @@ strelka_germline:
 stringtie:
   - software/stringtie/**
   - tests/software/stringtie/**
+
+subread_featurecounts:
+  - software/subread/featurecounts/**
+  - tests/software/subread/featurecounts/**
 
 tabix_bgzip:
   - software/tabix/bgzip/**
