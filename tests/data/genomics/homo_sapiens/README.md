@@ -13,7 +13,7 @@
 
 ## Determine region covered by reads
 
-1. Visual inspection
+1. Visual inspection as to where the reads map to with IGV.
 
     ```bash
     chr22   16570000        16610000
@@ -23,12 +23,12 @@
 
 ## VCF reference files
 
-Following 'reference' vcf files are used. All found in igenomes at `s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/`:
+Following 'reference' vcf files are generated. All found in igenomes at `s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/`:
 - dbsnp_146.hg38
 - Mills_and_1000G_gold_standard.indels.hg38
 - gnomAD.r2.1.1.GRCh38.PASS.AC.AF.only
 
-1. Downsize all vcf files to only cover chromosome 22 with:
+1. Downsize all vcf files to only cover the region in chromosome 22 with:
 
     ```bash
     tabix -l dbsnp_146.hg38.vcf.gz | parallel -j 5 'tabix -h dbsnp_146.hg38.vcf.gz {} > {}.vcf'
@@ -59,7 +59,11 @@ samtools faidx chr22.fasta chr22:16570000-16610000  > region_22/chr22_region.fas
     gatk --java-options -Xmx${task.memory.toGiga()}g SamToFastq --INPUT=${inputFile1} --FASTQ=/dev/stdout --INTERLEAVE=true     --NON_PF=true > ${inputFile1}.fq.gz
     ```
 
-   and `publish` the reads
+   and `publish` the reads. Un-interleave reads after sarek is run:
+
+    ```bash
+    paste - - - - - - - - < testT_umi-consensus.bam.fq.gz | tee >(cut -f 1-4 | tr "\t" "\n" > testT.1.fq) | cut -f 5-8 | tr "\t" "\n" > testT.2.fq
+    ```
 
 4. Add `publishDir` to HaplotypeCaller process to publish `.g.vcf` files
 5. Run sarek with the following command:
@@ -122,13 +126,13 @@ Downloaded the gtf and gff3 files from Ensembl:
 
 ## Limitations
 
-Missing files:
+1. Reads do not cover chromosome 6
+### Missing files
 1. Contamination tables for Mutect2
-2. Reads do not cover chromosome 6
-3. Single-end reads
-4. Methylated bams
-5. Unaligned bams
-6. Panel of Normals
-7. Ploidy files for ASCAT
-8. Mappability files for CONTROLFREEC
-9. snpEff & VEP cache
+2. Single-end reads
+3. Methylated bams
+4. Unaligned bams
+5. Panel of Normals
+6. Ploidy files for ASCAT
+7. Mappability files for CONTROLFREEC
+8. snpEff & VEP cache
