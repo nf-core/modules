@@ -34,7 +34,7 @@ bgzip dbsnp_146.hg38.chr22_region.vcf
 tabix dbsnp_146.hg38.chr22_region.vcf.gz
 ```
 
-2. Manipulate mills & gnoamd file, by changing chr length for 22 to 40001
+2. Manipulate mills & gnomAD file, by changing chr length for chr22 to 40001
 
 
 ## Mapping files:
@@ -106,6 +106,24 @@ gzip -d
 ```
 bedtools intersect -a region.txt -b Homo_sapiens.GRCh38.103.chr.gtf -wa -wb > interesting_genes.gtf
 ```
+
+change 22 to chr22???
+
+
+
+
+ASCAT;
+awk '/^chr22/' ../1000G_phase3_GRCh38_maf0.3.loci > 1000G_phase3_GRCh38_maf0.3.chr22.loci
+
+ awk 'NR%2!=0 && NR%3!=0 && NR%4!=0' 1000G_phase3_GRCh38_maf0.3.chr22.loci > 1000G_phase3_GRCh38_maf0.3.chr22_subsample.loci
+
+ awk '$2 == "22"' ../1000G_phase3_GRCh38_maf0.3.loci.gc > ../1000G_phase3_GRCh38_maf0.3.chr22.loci.gc
+
+  awk 'NR%2!=0 && NR%3!=0 && NR%4!=0 && NR%5!=0 && NR%6!=0 && NR%7!=0 && NR%8!=0 && NR%9!=0 && NR%10!=0 && NR%11!=0 && NR%12!=0 && NR%13!=0 && NR%14!=0 && NR%15!=0 && NR%16!=0 && NR%17!=0 && NR%18!=0 && NR%19!=0 && NR%20!=0' ../1000G_phase3_GRCh38_maf0.3.chr22.loci.gc > 1000G_phase3_GRCh38_maf0.3.chr22_subsample.loci.gc
+
+
+ awk 'NR%2!=0 && NR%3!=0 && NR%4!=0 && NR%5!=0 && NR%6!=0 && NR%7!=0 && NR%8!=0 && NR%9!=0 && NR%10!=0 && NR%11!=0 && NR%12!=0 && NR%13!=0 && NR%14!=0 && NR%15!=0 && NR%16!=0 && NR%17!=0 && NR%18!=0 && NR%19!=0 && NR%20!=0' 1000G_phase3_GRCh38_maf0.3.chr22_subsample.loci.gc > 1000G_phase3_GRCh38_maf0.3.chr22_sub_subsample.loci.gc
+
 
 ## Limitations
 
