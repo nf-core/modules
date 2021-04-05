@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { BWAMETH_INDEX } from '../../../../software/bwameth/index/main.nf' addParams( options: [:] )
 
 workflow test_bwameth_index {
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWAMETH_INDEX ( file("${launchDir}/tests/data/genomics/sarscov2/fasta/test_genome.fasta", checkIfExists: true) )
+    BWAMETH_INDEX ( fasta )
 }

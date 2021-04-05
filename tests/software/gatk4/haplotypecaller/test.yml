@@ -1,0 +1,13 @@
+- name: gatk4 haplotypecaller test_gatk4_haplotypecaller
+  command: nextflow run tests/software/gatk4/haplotypecaller -entry test_gatk4_haplotypecaller -c tests/config/nextflow.config
+  tags:
+    - gatk4_haplotypecaller
+    - gatk4
+  files:
+    - path: output/gatk4/test.vcf.gz
+      should_exist: true
+      contains:
+        - 'MT192765.1'
+        - '54.60'
+        - '37.32'
+    - path: output/gatk4/test.vcf.gz.tbi
