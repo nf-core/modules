@@ -16,3 +16,18 @@ workflow test_homer_maketagdirectory {
     HOMER_MAKETAGDIRECTORY (input, fasta)
 }
 
+
+workflow test_homer_meta_maketagdirectory {
+
+    def input = []
+    input = [[[id: 'test1'], // meta map
+              [file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true)]],
+             [[id: 'test2'],
+              [file("${launchDir}/tests/data/bed/B.bed", checkIfExists: true)]]]
+
+    fasta = file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+
+    meta_input = [[id: 'meta_test']] + [ input.collect{it[1]}.flatten() ]
+
+    HOMER_MAKETAGDIRECTORY (meta_input, fasta)
+}
