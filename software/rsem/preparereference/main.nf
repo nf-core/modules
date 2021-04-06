@@ -19,7 +19,7 @@ process RSEM_PREPAREREFERENCE {
     }
 
     input:
-    path fasta
+    path fasta, stageAs: "rsem/*"
     path gtf
 
     output:
@@ -34,7 +34,6 @@ process RSEM_PREPAREREFERENCE {
         args.removeIf { it.contains('--star') }
         def memory = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
         """
-        mkdir rsem
         STAR \\
             --runMode genomeGenerate \\
             --genomeDir rsem/ \\
@@ -55,7 +54,6 @@ process RSEM_PREPAREREFERENCE {
         """
     } else {
         """
-        mkdir rsem
         rsem-prepare-reference \\
             --gtf $gtf \\
             --num-threads $task.cpus \\
