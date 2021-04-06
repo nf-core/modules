@@ -18,7 +18,7 @@ process GUBBINS {
     }
 
     input:
-    path aligned_pseudogenomes
+    path alignment
 
     output:
     path "*.fasta"                          , emit: fasta
