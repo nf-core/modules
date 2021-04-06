@@ -19,36 +19,7 @@
     - spades_paired_end
   files:
       - path: output/spades/test.assembly.gfa
-        md5sum: d546f9042f5ff911757e895e7b21f620
+        md5sum: faf76135ee390606b899c0197dc38e04
       - path: output/spades/test.contigs.fa
-        md5sum: f3e87d68521aa485d70aecd82de519b4
+        md5sum: 6148e25b33890c80f176f90f2dd88989
       - path: output/spades/test.spades.log
-
-- name: coronaspades single end
-  command: nextflow run ./tests/software/spades -entry test_coronospades_single_end -c tests/config/nextflow.config
-  tags:
-    - spades
-    - coronaspades_single_end
-  files:
-      - path: output/spades/test.assembly.gfa
-        md5sum: 46531ec9b845c1a1cb469627688fecb7
-      - path: output/spades/test.contigs.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.scaffolds.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.gene_clusters.fa
-      - path: output/spades/test.spades.log
-
-- name: coronaspades paired end
-  command: nextflow run ./tests/software/spades -entry test_coronospades_paired_end -c tests/config/nextflow.config
-  tags:
-    - spades
-    - coronaspades_paired_end
-  files:
-      - path: output/spades/test.assembly.gfa
-        md5sum: d546f9042f5ff911757e895e7b21f620
-      - path: output/spades/test.contigs.fa
-        md5sum: f3e87d68521aa485d70aecd82de519b4
-      - path: output/spades/test.gene_clusters.fa
-      - path: output/spades/test.spades.log
-
