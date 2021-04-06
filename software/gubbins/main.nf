@@ -39,7 +39,7 @@ process GUBBINS {
         --threads $task.cpus \\
         -v \\
         -t hybrid \\
-        $aligned_pseudogenomes
+        $alignment
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
     
