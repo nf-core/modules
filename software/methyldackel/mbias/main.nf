@@ -24,8 +24,8 @@ process METHYLDACKEL_MBIAS {
     path fai
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path  "*.version.txt"         , emit: version
+    tuple val(meta), path("*.mbias.txt"), emit: txt
+    path  "*.version.txt"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,8 +37,8 @@ process METHYLDACKEL_MBIAS {
         $bam \\
         $prefix \\
         --txt \\
-        > ${prefix}.txt
+        > ${prefix}.mbias.txt
 
-    echo \$(methyldackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
+    echo \$(MethylDackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
     """
 }
