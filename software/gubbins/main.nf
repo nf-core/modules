@@ -21,16 +21,17 @@ process GUBBINS {
     path aligned_pseudogenomes
 
     output:
-    path "*.fasta", emit: filtered_variant_fasta
-    path "*.recombination_predictions.embl", emit: recombination_predictions_embl
-    path "*.gff", emit: recombination_predictions_gff
-    path "*.branch_base_reconstruction.embl", emit: branch_base_reconstruction
-    path "*.vcf", emit: snp_distribution
-    path "*.csv", emit: branch_statistics
-    path "*.phylip", emit: filtered_variant_phylip
-    path "*.final_tree.tre", emit: final_tree
-    path "*.node_labelled.final_tree.tre", emit: final_tree_labelled
-    path "*.version.txt", emit: version
+    path "*.fasta"                          , emit: fasta
+    path "*.gff"                            , emit: gff
+    path "*.vcf"                            , emit: vcf
+    path "*.csv"                            , emit: stats
+    path "*.phylip"                         , emit: phylip
+    path "*.recombination_predictions.embl" , emit: embl_predicted
+    path "*.branch_base_reconstruction.embl", emit: embl_branch
+    path "*.final_tree.tre"                 , emit: tree
+    path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
+    path "*.version.txt"                    , emit: version
+    
     script:
     def software = getSoftwareName(task.process)
     """
