@@ -1,0 +1,53 @@
+- name: kallistobustools ref test_kallistobustools_ref_standard
+  command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_standard -c tests/config/nextflow.config
+  tags:
+    - kallistobustools
+    - kallistobustools_ref
+    - kallistobustools_ref_standard
+  files:
+    - path: output/kallistobustools/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kallistobustools/t2g.txt
+      md5sum: 3089d303d9cd1a39a27969eca2dcaba7
+    - path: output/kallistobustools/test.standard_kb_ref_out.idx
+      md5sum: c0ffe9554cb6fdcc7cbb4a1285ca8f29
+
+- name: kallistobustools ref test_kallistobustools_ref_lamanno
+  command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_lamanno -c tests/config/nextflow.config
+  tags:
+    - kallistobustools
+    - kallistobustools_ref
+    - kallistobustools_ref_lamanno
+  files:
+    - path: output/kallistobustools/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kallistobustools/cdna_t2c.txt
+      md5sum: 612590b037c1648a34e54347b46a4657
+    - path: output/kallistobustools/intron.fa
+      md5sum: 15d2f18fee5aa89fc897f2cba2c2305e
+    - path: output/kallistobustools/intron_t2c.txt
+      md5sum: 049dad0528e891df1f57229d24262d84
+    - path: output/kallistobustools/t2g.txt
+      md5sum: c9f9d8403e2ede402711c77554f52694
+    - path: output/kallistobustools/test.lamanno_kb_ref_out.idx
+      md5sum: 0ab491f7407153d039585073c797fd42
+
+- name: kallistobustools ref test_kallistobustools_ref_nucleus
+  command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_nucleus -c tests/config/nextflow.config
+  tags:
+    - kallistobustools
+    - kallistobustools_ref
+    - kallistobustools_ref_nucleus
+  files:
+    - path: output/kallistobustools/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kallistobustools/cdna_t2c.txt
+      md5sum: 612590b037c1648a34e54347b46a4657
+    - path: output/kallistobustools/intron.fa
+      md5sum: 15d2f18fee5aa89fc897f2cba2c2305e
+    - path: output/kallistobustools/intron_t2c.txt
+      md5sum: 049dad0528e891df1f57229d24262d84
+    - path: output/kallistobustools/t2g.txt
+      md5sum: c9f9d8403e2ede402711c77554f52694
+    - path: output/kallistobustools/test.nucleus_kb_ref_out.idx
+      md5sum: 0ab491f7407153d039585073c797fd42
