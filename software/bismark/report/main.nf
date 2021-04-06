@@ -22,17 +22,13 @@ process BISMARK_REPORT {
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
 
     output:
-    tuple val(meta), path("*{html,txt}"), emit: report
-    path  "*.version.txt"               , emit: version
+    tuple val(meta), path("*report.{html,txt}"), emit: report
+    path  "*.version.txt"                      , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    bismark2report \\
-        --alignment_report $align_report \\
-        --dedup_report $dedup_report \\
-        --splitting_report $splitting_report \\
-        --mbias_report $mbias
+    bismark2report $options.args
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """
