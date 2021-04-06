@@ -5,10 +5,11 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process KB_REF {
+    tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     conda (params.enable_conda ? "bioconda::kb-python==0.25.1--py_0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -18,27 +19,51 @@ process KB_REF {
     }
 
     input:
-    path(fasta)
-    path(gtf)
+    tuple   val(meta), path(fasta)
+    path    gtf
 
     output:
-    path "kb_ref_index" ,   emit: idx
-    path "t2g"          ,   emit: t2g
-    path "cdna"          ,  emit: cdna
-    path "*.version.txt",   emit: version
+    tuple val(meta), path("*_kb_ref_out.idx") , optional:false  ,   emit: kb_ref_idx
+    path "*t2g.txt"                           , optional:false  ,   emit: t2g
+    path "*cdna.fa"                           , optional:false  ,   emit: cdna
+    path "*intron.fa"                         , optional:true   ,   emit: intron 
+    path "*cdna_t2c.txt"                      , optional:true   ,   emit: cdna_t2c
+    path "*intron_t2c.txt"                    , optional:true   ,   emit: intron_t2c
+    path "*.version.txt"                                        ,   emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    """
-    kb \\
-    ref \\
-    $options.args \\
-    -i kb_ref_index \\
-    -g t2g \\
-    -f1 cdna \\
-    $fasta \\
-    $gtf
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    if(meta.workflow == "standard"){
+        """
+        kb \\
+        ref \\
+        $options.args \\
+        -i ${prefix}_kb_ref_out.idx \\
+        -g t2g.txt \\
+        -f1 cdna.fa \\
+        --workflow ${meta.workflow} \\
+        $fasta \\
+        $gtf
 
-    echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
-    """
+        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        """
+    } else {
+        """
+        kb \\
+        ref \\
+        $options.args \\
+        -i ${prefix}_kb_ref_out.idx \\
+        -g t2g.txt \\
+        -f1 cdna.fa \\
+        -f2 intron.fa \\
+        -c1 cdna_t2c.txt \\
+        -c2 intron_t2c.txt \\
+        --workflow ${meta.workflow} \\
+        $fasta \\
+        $gtf
+
+        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        """
+    }
 }

@@ -1,12 +1,53 @@
-- name: kb ref test_kb_ref
-  command: nextflow run tests/software/kb/ref -entry test_kb_ref -c tests/config/nextflow.config
+- name: kb ref test_kb_ref_standard
+  command: nextflow run tests/software/kb/ref -entry test_kb_ref_standard -c tests/config/nextflow.config
   tags:
+    - kb_ref
+    - kb_ref_standard
+    - kb
+  files:
+    - path: output/kb/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kb/t2g.txt
+      md5sum: 3089d303d9cd1a39a27969eca2dcaba7
+    - path: output/kb/test.standard_kb_ref_out.idx
+      md5sum: c0ffe9554cb6fdcc7cbb4a1285ca8f29
+
+- name: kb ref test_kb_ref_lamanno
+  command: nextflow run tests/software/kb/ref -entry test_kb_ref_lamanno -c tests/config/nextflow.config
+  tags:
+    - kb_ref_lamanno
     - kb_ref
     - kb
   files:
-    - path: output/kb/kb_ref_index
-      md5sum: 793be0d0f17b74878b36177fe9464b7b
-    - path: output/kb/cdna
-      md5sum: 0d74c15581e82b09179c6ed708ea8b66
-    - path: output/kb/t2g
-      md5sum: ebe3466814b11140784cebd74391989f
+    - path: output/kb/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kb/cdna_t2c.txt
+      md5sum: 612590b037c1648a34e54347b46a4657
+    - path: output/kb/intron.fa
+      md5sum: 15d2f18fee5aa89fc897f2cba2c2305e
+    - path: output/kb/intron_t2c.txt
+      md5sum: 049dad0528e891df1f57229d24262d84
+    - path: output/kb/t2g.txt
+      md5sum: c9f9d8403e2ede402711c77554f52694
+    - path: output/kb/test.lamanno_kb_ref_out.idx
+      md5sum: 0ab491f7407153d039585073c797fd42
+
+- name: kb ref test_kb_ref_nucleus
+  command: nextflow run tests/software/kb/ref -entry test_kb_ref_nucleus -c tests/config/nextflow.config
+  tags:
+    - kb_ref
+    - kb_ref_nucleus
+    - kb
+  files:
+    - path: output/kb/cdna.fa
+      md5sum: da194221c883656c68e2f90d8f77a56b
+    - path: output/kb/cdna_t2c.txt
+      md5sum: 612590b037c1648a34e54347b46a4657
+    - path: output/kb/intron.fa
+      md5sum: 15d2f18fee5aa89fc897f2cba2c2305e
+    - path: output/kb/intron_t2c.txt
+      md5sum: 049dad0528e891df1f57229d24262d84
+    - path: output/kb/t2g.txt
+      md5sum: c9f9d8403e2ede402711c77554f52694
+    - path: output/kb/test.nucleus_kb_ref_out.idx
+      md5sum: 0ab491f7407153d039585073c797fd42
