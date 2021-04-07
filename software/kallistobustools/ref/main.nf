@@ -26,7 +26,7 @@ process KALLISTOBUSTOOLS_REF {
     tuple val(meta), path("*_kb_ref_out.idx") , optional:false  ,   emit: kb_ref_idx
     path "*t2g.txt"                           , optional:false  ,   emit: t2g
     path "*cdna.fa"                           , optional:false  ,   emit: cdna
-    path "*intron.fa"                         , optional:true   ,   emit: intron 
+    path "*intron.fa"                         , optional:true   ,   emit: intron
     path "*cdna_t2c.txt"                      , optional:true   ,   emit: cdna_t2c
     path "*intron_t2c.txt"                    , optional:true   ,   emit: intron_t2c
     path "*.version.txt"                      , optional:false  ,   emit: version
