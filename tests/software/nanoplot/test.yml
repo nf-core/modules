@@ -4,24 +4,14 @@
   tags:
     - nanoplot
   files:
-    - path: ./output/nanoplot/ActivePores_Over_Time.png
-    - path: ./output/nanoplot/ActivityMap_ReadsPerChannel.png
-    - path: ./output/nanoplot/CumulativeYieldPlot_Gigabases.png
-    - path: ./output/nanoplot/CumulativeYieldPlot_NumberOfReads.png
-    - path: ./output/nanoplot/Dynamic_Histogram_Read_length.html
-    - path: ./output/nanoplot/HistogramReadlength.png
-    - path: ./output/nanoplot/LogTransformed_HistogramReadlength.png
     - path: ./output/nanoplot/NanoPlot-report.html
-    - path: ./output/nanoplot/NanoStats.txt
-    - path: ./output/nanoplot/NumberOfReads_Over_Time.png
-    - path: ./output/nanoplot/TimeLengthViolinPlot.png
-    - path: ./output/nanoplot/TimeQualityViolinPlot.png
-    - path: ./output/nanoplot/TimeSequencingSpeed_ViolinPlot.png
-    - path: ./output/nanoplot/Weighted_HistogramReadlength.png
-    - path: ./output/nanoplot/Weighted_LogTransformed_HistogramReadlength.png
-    - path: ./output/nanoplot/Yield_By_Length.png
-
+      contains:
+        - "report"
 - name: nanoplot_fastq
   command: nextflow run ./tests/software/nanoplot -entry test_nanoplot_fastq -c tests/config/nextflow.config
   tags:
     - nanoplot
+  files:
+    - path: ./output/nanoplot/NanoPlot-report.html
+      contains:
+        - "report"
