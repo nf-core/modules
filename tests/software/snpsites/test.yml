@@ -1,0 +1,9 @@
+- name: snpsites
+  command: nextflow run ./tests/software/snpsites -entry test_snpsites -c tests/config/nextflow.config
+  tags:
+    - snpsites
+  files:
+    - path: output/snpsites/filtered_alignment.fas
+      md5sum: be00d1ffe8af743750466c6adb420d5a
+    - path: output/snpsites/constant.sites.txt
+      md5sum: f16264f67a888517295ac54028f65c65
