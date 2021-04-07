@@ -20,39 +20,39 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - filtered_variant_fasta:
+  - fasta:
       type: file
       description: Filtered variant alignment in fasta format
       pattern: "*.{fasta}"
-  - recombination_predictions_embl:
+  - embl_predicted:
       type: file
       description: Recombination predictions in embl format
       pattern: "*.{recombination_predictions.embl}"
-  - recombination_predictions_gff:
+  - gff:
       type: file
       description: Recombination predictions in gff format
       pattern: "*.{gff}"
-  - branch_base_reconstruction:
+  - embl_branch:
       type: file
       description: Branch base reconstruction
       pattern: "*.{branch_base_reconstruction.embl}"
-  - snp_distribution:
+  - vcf:
       type: file
       description: SNP distribution
       pattern: "*.{vcf}"
-  - branch_statistics:
+  - stats:
       type: file
       description: Per branch statistics
       pattern: "*.{csv}"
-  - filtered_variant_phylip:
+  - phylip:
       type: file
       description: Filtered variant alignment in phylip format
       pattern: "*.{phylip}"
-  - final_tree:
+  - tree:
       type: file
       description: Recombination removed RAxML phylogenetic tree
       pattern: "*.{final_tree.tre}"
-  - final_tree_labelled:
+  - tree_labelled:
       type: file
       description: Recombination removed RAxML phylogenetic tree (nodes labelled)
       pattern: "*.{node_labelled.final_tree.tre}"
