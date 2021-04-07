@@ -19,48 +19,47 @@ process KALLISTOBUSTOOLS_REF {
     }
 
     input:
-    tuple   val(meta), path(fasta)
-    path    gtf
+    path fasta
+    path  gtf
 
     output:
-    tuple val(meta), path("*_kb_ref_out.idx") , optional:false  ,   emit: kb_ref_idx
-    path "*t2g.txt"                           , optional:false  ,   emit: t2g
-    path "*cdna.fa"                           , optional:false  ,   emit: cdna
-    path "*intron.fa"                         , optional:true   ,   emit: intron
-    path "*cdna_t2c.txt"                      , optional:true   ,   emit: cdna_t2c
-    path "*intron_t2c.txt"                    , optional:true   ,   emit: intron_t2c
-    path "*.version.txt"                      , optional:false  ,   emit: version
+    path "*_kb_ref_out.idx", emit: index
+    path "*t2g.txt"        , emit: t2g
+    path "*cdna.fa"        , emit: cdna
+    path "*.version.txt"   , emit: version
+    path "*intron.fa"      , optional:true, emit: intron
+    path "*cdna_t2c.txt"   , optional:true, emit: cdna_t2c
+    path "*intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def workflow = "${options.args}"
-    if(workflow == "standard"){
+    if (workflow == "standard") {
         """
         kb \\
-        ref \\
-        -i ${prefix}_kb_ref_out.idx \\
-        -g t2g.txt \\
-        -f1 cdna.fa \\
-        --workflow ${workflow} \\
-        $fasta \\
-        $gtf
+            ref \\
+            -i ${prefix}_kb_ref_out.idx \\
+            -g t2g.txt \\
+            -f1 cdna.fa \\
+            --workflow $workflow \\
+            $fasta \\
+            $gtf
 
         echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
         """
     } else {
         """
         kb \\
-        ref \\
-        -i ${prefix}_kb_ref_out.idx \\
-        -g t2g.txt \\
-        -f1 cdna.fa \\
-        -f2 intron.fa \\
-        -c1 cdna_t2c.txt \\
-        -c2 intron_t2c.txt \\
-        --workflow ${workflow} \\
-        $fasta \\
-        $gtf
+            ref \\
+            -i ${prefix}_kb_ref_out.idx \\
+            -g t2g.txt \\
+            -f1 cdna.fa \\
+            -f2 intron.fa \\
+            -c1 cdna_t2c.txt \\
+            -c2 intron_t2c.txt \\
+            --workflow $workflow \\
+            $fasta \\
+            $gtf
 
         echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
         """
