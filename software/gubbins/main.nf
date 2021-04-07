@@ -31,7 +31,7 @@ process GUBBINS {
     path "*.final_tree.tre"                 , emit: tree
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
     path "*.version.txt"                    , emit: version
-    
+
     script:
     def software = getSoftwareName(task.process)
     """
@@ -42,4 +42,4 @@ process GUBBINS {
         $alignment
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
-    
+
