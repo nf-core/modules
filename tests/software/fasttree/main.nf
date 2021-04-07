@@ -6,7 +6,7 @@ include { FASTTREE } from '../../../software/fasttree/main.nf' addParams( option
 
 workflow test_fasttree {
     
-    input = [ file(params.test_data['bacteria']['genome']['alignment']['informative_sites_alignment'], checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['alignment']['informative_sites_alignment'], checkIfExists: true) ]
 
     FASTTREE ( input )
 }
