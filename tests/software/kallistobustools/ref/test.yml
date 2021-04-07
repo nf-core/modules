@@ -1,9 +1,9 @@
 - name: kallistobustools ref test_kallistobustools_ref_standard
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_standard -c tests/config/nextflow.config
   tags:
+    - kallistobustools_ref
     - kallistobustools
     - kallistobustools_ref_standard
-    - kallistobustools_ref
   files:
     - path: output/kallistobustools/cdna.fa
       md5sum: da194221c883656c68e2f90d8f77a56b
@@ -15,9 +15,9 @@
 - name: kallistobustools ref test_kallistobustools_ref_lamanno
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_lamanno -c tests/config/nextflow.config
   tags:
-    - kallistobustools
-    - kallistobustools_ref_lamanno
     - kallistobustools_ref
+    - kallistobustools_ref_lamanno
+    - kallistobustools
   files:
     - path: output/kallistobustools/cdna.fa
       md5sum: da194221c883656c68e2f90d8f77a56b
@@ -35,9 +35,9 @@
 - name: kallistobustools ref test_kallistobustools_ref_nucleus
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_nucleus -c tests/config/nextflow.config
   tags:
-    - kallistobustools
-    - kallistobustools_ref_nucleus
     - kallistobustools_ref
+    - kallistobustools_ref_nucleus
+    - kallistobustools
   files:
     - path: output/kallistobustools/cdna.fa
       md5sum: da194221c883656c68e2f90d8f77a56b

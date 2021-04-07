@@ -21,7 +21,6 @@ process KALLISTOBUSTOOLS_REF {
     input:
     tuple   val(meta), path(fasta)
     path    gtf
-    val     workflow
 
     output:
     tuple val(meta), path("*_kb_ref_out.idx") , optional:false  ,   emit: kb_ref_idx
