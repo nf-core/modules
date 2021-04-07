@@ -2,6 +2,9 @@
   command: nextflow run ./tests/software/nanoplot -entry test_nanoplot_summary -c tests/config/nextflow.config
   tags:
     - nanoplot
+  files:
+    - path: ./output/nanoplot/NanoStats.txt
+
 - name: nanoplot_fastq
   command: nextflow run ./tests/software/nanoplot -entry test_nanoplot_fastq -c tests/config/nextflow.config
   tags:
