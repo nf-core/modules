@@ -14,7 +14,7 @@ workflow test_kallistobustools_ref_standard {
 
     gtf      = file("${launchDir}/tests/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true) 
     
-    KALLISTOBUSTOOLS_REF( input, gtf, workflow)
+    KALLISTOBUSTOOLS_REF( input, gtf)
 }
 
 workflow test_kallistobustools_ref_lamanno {
@@ -25,7 +25,7 @@ workflow test_kallistobustools_ref_lamanno {
 
     gtf      = file("${launchDir}/tests/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true) 
     
-    KALLISTOBUSTOOLS_REF_LAMANNO( input, gtf, workflow)
+    KALLISTOBUSTOOLS_REF_LAMANNO( input, gtf)
 }
 
 workflow test_kallistobustools_ref_nucleus {
@@ -36,5 +36,5 @@ workflow test_kallistobustools_ref_nucleus {
 
     gtf      = file("${launchDir}/tests/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true) 
     
-    KALLISTOBUSTOOLS_REF_NUCLEUS( input, gtf, workflow)
+    KALLISTOBUSTOOLS_REF_NUCLEUS( input, gtf)
 }
