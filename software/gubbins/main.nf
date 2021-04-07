@@ -42,4 +42,4 @@ process GUBBINS {
         $alignment
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
-
+}
