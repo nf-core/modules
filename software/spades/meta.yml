@@ -29,11 +29,6 @@ input:
       type: file
       description:
         File or directory with amino acid HMMs for Spades HMM-guided mode.
-  - coronaspades:
-      type: boolean
-      description: |
-        Run coronaspades instead of default spades mode. coronaSPAdes is a special
-        mode of rnaviralSPAdes specifically aimed for SARS-CoV-2 de novo assembly.
 output:
   - meta:
       type: map

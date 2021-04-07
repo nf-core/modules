@@ -25,8 +25,8 @@ process BISMARK_SUMMARY {
     path(mbias)
 
     output:
-    path("*{html,txt}")  , emit: summary
-    path  "*.version.txt", emit: version
+    path  "*report.{html,txt}", emit: summary
+    path  "*.version.txt"     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
