@@ -39,6 +39,7 @@ process GUBBINS {
         --threads $task.cpus \\
         -v \\
         -t hybrid \\
+        $options.args \\
         $alignment
     echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
     """
