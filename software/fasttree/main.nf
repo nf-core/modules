@@ -9,7 +9,7 @@ process FASTTREE {
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
-        
+
     conda (params.enable_conda ? "bioconda::fasttree=2.1.10" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4"
@@ -33,9 +33,8 @@ process FASTTREE {
         -fastest \\
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
-        > fasttree_phylogeny.tre 
-    
-    
+        > fasttree_phylogeny.tre
+
     fasttree -help 2>&1 | head -1  | sed 's/^FastTree \\([0-9\\.]*\\) .*\$/\\1/' > ${software}.version.txt
     """
 }
