@@ -1,4 +1,8 @@
-- name: nanoplot
-  command: nextflow run ./tests/software/nanoplot -entry test_nanoplot -c tests/config/nextflow.config
+- name: nanoplot_summary
+  command: nextflow run ./tests/software/nanoplot -entry test_nanoplot_summary -c tests/config/nextflow.config
+  tags:
+    - nanoplot
+- name: nanoplot_fastq
+  command: nextflow run ./tests/software/nanoplot -entry test_nanoplot_fastq -c tests/config/nextflow.config
   tags:
     - nanoplot
