@@ -20,25 +20,25 @@ process KALLISTOBUSTOOLS_REF {
 
     input:
     path fasta
-    path  gtf
+    path gtf
+    val  workflow
 
     output:
-    path "*_kb_ref_out.idx", emit: index
-    path "*t2g.txt"        , emit: t2g
-    path "*cdna.fa"        , emit: cdna
-    path "*.version.txt"   , emit: version
-    path "*intron.fa"      , optional:true, emit: intron
-    path "*cdna_t2c.txt"   , optional:true, emit: cdna_t2c
-    path "*intron_t2c.txt" , optional:true, emit: intron_t2c
+    path "*.version.txt"  , emit: version
+    path "kb_ref_out.idx" , emit: index
+    path "t2g.txt"        , emit: t2g
+    path "cdna.fa"        , emit: cdna
+    path "intron.fa"      , optional:true, emit: intron
+    path "cdna_t2c.txt"   , optional:true, emit: cdna_t2c
+    path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
     def software = getSoftwareName(task.process)
-    def workflow = "${options.args}"
     if (workflow == "standard") {
         """
         kb \\
             ref \\
-            -i ${prefix}_kb_ref_out.idx \\
+            -i kb_ref_out.idx \\
             -g t2g.txt \\
             -f1 cdna.fa \\
             --workflow $workflow \\
@@ -51,7 +51,7 @@ process KALLISTOBUSTOOLS_REF {
         """
         kb \\
             ref \\
-            -i ${prefix}_kb_ref_out.idx \\
+            -i kb_ref_out.idx \\
             -g t2g.txt \\
             -f1 cdna.fa \\
             -f2 intron.fa \\
