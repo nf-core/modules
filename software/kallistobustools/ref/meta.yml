@@ -17,6 +17,10 @@ input:
       type: file
       description: Genomic DNA fasta file
       pattern: "*.{fasta,fasta.gz}"
+  - gtf:
+      type: file
+      description: Genomic gtf file
+      pattern: "*.{gtf,gtf.gz}"
 
 output:
   - meta:
