@@ -6,29 +6,13 @@
     - bowtie_align_single_end
   files:
     - path: ./output/bowtie/test.bam
-      contains:
-        - ".bam"
     - path: ./output/bowtie/test.out
-      contains:
-        - ".out"
     - path: ./output/index/bowtie/genome.3.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.2.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.rev.2.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.4.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.rev.1.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.1.ebwt
-      contains:
-        - ".ebwt"
 
 - name: bowtie align paired-end
   command: nextflow run ./tests/software/bowtie/align -entry test_bowtie_align_single_end -c tests/config/nextflow.config
@@ -38,26 +22,10 @@
     - bowtie_align_paired_end
   files:
     - path: ./output/bowtie/test.bam
-      contains:
-        - ".bam"
     - path: ./output/bowtie/test.out
-      contains:
-        - ".out"
     - path: ./output/index/bowtie/genome.3.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.2.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.rev.2.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.4.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.rev.1.ebwt
-      contains:
-        - ".ebwt"
     - path: ./output/index/bowtie/genome.1.ebwt
-      contains:
-        - ".ebwt"
