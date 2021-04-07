@@ -8,7 +8,7 @@ include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_PART   } from '../../../../software/seq
 
 workflow test_seqkit_split2_single_end_length {
     input = [ [ id:'test', single_end:true ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_LENGTH ( input )
@@ -16,7 +16,7 @@ workflow test_seqkit_split2_single_end_length {
 
 workflow test_seqkit_split2_single_end_size {
     input = [ [ id:'test', single_end:true ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_SIZE ( input )
@@ -24,7 +24,7 @@ workflow test_seqkit_split2_single_end_size {
 
 workflow test_seqkit_split2_single_end_part {
     input = [ [ id:'test', single_end:true ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_PART ( input )
@@ -32,7 +32,8 @@ workflow test_seqkit_split2_single_end_part {
 
 workflow test_seqkit_split2_paired_end_length {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_[1-2].fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_LENGTH ( input )
@@ -40,7 +41,8 @@ workflow test_seqkit_split2_paired_end_length {
 
 workflow test_seqkit_split2_paired_end_size {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}//tests/data/genomics/sarscov2/illumina/fastq/test_[1-2].fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_SIZE ( input )
@@ -48,7 +50,8 @@ workflow test_seqkit_split2_paired_end_size {
 
 workflow test_seqkit_split2_paired_end_part {
     input = [ [ id:'test', single_end:false ], // meta map
-              file("${launchDir}//tests/data/genomics/sarscov2/illumina/fastq/test_[1-2].fastq.gz", checkIfExists: true) 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+              file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     SEQKIT_SPLIT2_PART ( input )

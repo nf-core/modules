@@ -19,12 +19,13 @@ process RSEM_PREPAREREFERENCE {
     }
 
     input:
-    path fasta
+    path fasta, stageAs: "rsem/*"
     path gtf
 
     output:
-    path "rsem"         , emit: index
-    path "*.version.txt", emit: version
+    path "rsem"                , emit: index
+    path "rsem/*transcripts.fa", emit: transcript_fasta
+    path "*.version.txt"       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,7 +34,6 @@ process RSEM_PREPAREREFERENCE {
         args.removeIf { it.contains('--star') }
         def memory = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
         """
-        mkdir rsem
         STAR \\
             --runMode genomeGenerate \\
             --genomeDir rsem/ \\
@@ -54,7 +54,6 @@ process RSEM_PREPAREREFERENCE {
         """
     } else {
         """
-        mkdir rsem
         rsem-prepare-reference \\
             --gtf $gtf \\
             --num-threads $task.cpus \\

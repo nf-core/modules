@@ -7,7 +7,7 @@ include { VCFTOOLS as VCFTOOLS_OPTIONAL } from '../../../software/vcftools/main.
 
 workflow test_vcftools_vcf_base {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
             ]
 
     VCFTOOLS_BASE ( input, [], [] )
@@ -15,7 +15,7 @@ workflow test_vcftools_vcf_base {
 
 workflow test_vcftools_vcfgz_base {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
             ]
 
     VCFTOOLS_BASE ( input, [], [] )
@@ -23,18 +23,18 @@ workflow test_vcftools_vcfgz_base {
 
 workflow test_vcftools_vcf_optional {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
             ]
-    bed   = file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+    bed   = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
     VCFTOOLS_OPTIONAL ( input, bed, [] )
 }
 
 workflow test_vcftools_vcfgz_optional {
     input = [ [ id:'test' ], // meta map
-              file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf.gz", checkIfExists: true) 
+              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
             ]
-    bed   = file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+    bed   = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
     VCFTOOLS_OPTIONAL ( input, bed, [] )
 }

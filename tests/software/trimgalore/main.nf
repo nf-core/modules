@@ -9,7 +9,7 @@ include { TRIMGALORE } from '../../../software/trimgalore/main.nf' addParams( op
  */
 workflow test_trimgalore_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
     TRIMGALORE ( input )
@@ -20,8 +20,8 @@ workflow test_trimgalore_single_end {
  */
 workflow test_trimgalore_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
     TRIMGALORE ( input )

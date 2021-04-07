@@ -6,8 +6,8 @@ include { BEDTOOLS_INTERSECT } from '../../../../software/bedtools/intersect/mai
 
 workflow test_bedtools_intersect {
     input = [ [ id:'test' ],
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test2.bed", checkIfExists: true)
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+              file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
             ]
 
     BEDTOOLS_INTERSECT ( input )
