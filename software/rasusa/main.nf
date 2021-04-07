@@ -37,7 +37,6 @@ process RASUSA {
             --genome-size $params.genome_size \\
             --input $reads \\
             --output ${prefix}.${params.depth_cutoff}X.fastq.gz
-        
         echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
         """
     } else {
@@ -48,7 +47,6 @@ process RASUSA {
             --genome-size $params.genome_size \\
             --input $reads \\
             --output ${prefix}_1.${params.depth_cutoff}X.fastq.gz ${prefix}_2.${params.depth_cutoff}X.fastq.gz
-
         echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
         """
     }
