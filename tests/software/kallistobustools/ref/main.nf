@@ -18,13 +18,10 @@ workflow test_kallistobustools_ref_standard {
 }
 
 workflow test_kallistobustools_ref_lamanno {
-
     input = [ [id:'test.lamanno'], // meta map
-        [file("${launchDir}/tests/data/delete_me/kallistobustools/GRCm39.chr19_100k.fa.gz", checkIfExists: true)]
-        ]
-
-    gtf      = file("${launchDir}/tests/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true) 
-    
+              [file("${launchDir}/tests/data/delete_me/kallistobustools/GRCm39.chr19_100k.fa.gz", checkIfExists: true)]
+            ]
+    gtf   = file("${launchDir}/tests/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true) 
     KALLISTOBUSTOOLS_REF_LAMANNO( input, gtf)
 }
 
