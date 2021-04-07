@@ -21,6 +21,7 @@ process KALLISTOBUSTOOLS_REF {
     input:
     tuple   val(meta), path(fasta)
     path    gtf
+    val     workflow
 
     output:
     tuple val(meta), path("*_kb_ref_out.idx") , optional:false  ,   emit: kb_ref_idx
@@ -34,15 +35,15 @@ process KALLISTOBUSTOOLS_REF {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if(meta.workflow == "standard"){
+    def workflow = "${options.args}"
+    if(workflow == "standard"){
         """
         kb \\
         ref \\
-        $options.args \\
         -i ${prefix}_kb_ref_out.idx \\
         -g t2g.txt \\
         -f1 cdna.fa \\
-        --workflow ${meta.workflow} \\
+        --workflow ${workflow} \\
         $fasta \\
         $gtf
 
@@ -52,14 +53,13 @@ process KALLISTOBUSTOOLS_REF {
         """
         kb \\
         ref \\
-        $options.args \\
         -i ${prefix}_kb_ref_out.idx \\
         -g t2g.txt \\
         -f1 cdna.fa \\
         -f2 intron.fa \\
         -c1 cdna_t2c.txt \\
         -c2 intron_t2c.txt \\
-        --workflow ${meta.workflow} \\
+        --workflow ${workflow} \\
         $fasta \\
         $gtf
 

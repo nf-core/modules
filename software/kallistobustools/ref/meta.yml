@@ -22,11 +22,10 @@ input:
       type: file
       description: Genomic DNA fasta file
       pattern: "*.{fasta,fasta.gz}"
-
-  - gtf:
-      type: file
-      description: GTF gene annotation file for fasta
-      pattern: "*.{gtf,gtf.gz}"
+  - workflow:
+      type: value
+      description: String value, can be one of "standard", "lamanno", "nucleus"
+      pattern: "{standard,lamanno,nucleus}"
 
 output:
   - meta:
