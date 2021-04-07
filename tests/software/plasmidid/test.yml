@@ -1,0 +1,7 @@
+- name: plasmidid
+  command: nextflow run ./tests/software/plasmidid -entry test_plasmidid -c tests/config/nextflow.config
+  tags:
+    - plasmidid
+  files:
+    - path: output/plasmidid/test/fasta_files/MT192765.1_term.fasta
+      md5sum: 2387d7d9c861e6f6e7d9f9395f9bad5c
