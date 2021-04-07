@@ -31,3 +31,38 @@
     - path: output/kallistobustools/test_standard_kallistobustools_count/run_info.json
     - path: output/kallistobustools/test_standard_kallistobustools_count/transcripts.txt
       md5sum: 718913d242fd5cce4cce99361149d3c6
+
+- name: kallistobustools count test_kallistobustools_count_kite
+  command: nextflow run tests/software/kallistobustools/count -entry test_kallistobustools_count_kite -c tests/config/nextflow.config
+  tags:
+    - kallistobustools_count
+    - kallistobustools_count_kite
+    - kallistobustools
+  files:
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/10xv3_whitelist.txt
+      md5sum: 3d36d0a4021fd292b265e2b5e72aaaf3
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/adata.h5ad
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cellranger/barcodes.tsv
+      md5sum: 285465158e87fd74f92b20bb82f896cb
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cellranger/genes.tsv
+      md5sum: 27fc83be62d96725e6768d7a1a8a8c0c
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cellranger/matrix.mtx
+      md5sum: 3f033e88187c9067715f3597a78d98f1
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cells_x_features.barcodes.txt
+      md5sum: 508375ed2468f7f7cd4752c7dc16cd74
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cells_x_features.genes.txt
+      md5sum: ecceba1dcf5efa06fb99f8ac02a7062d
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/counts_unfiltered/cells_x_features.mtx
+      md5sum: 06abafdd2b4351a6fe8e030ec738088b
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/inspect.json
+      md5sum: 6bce3c87e4dde6d30949141ac88c6a81
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/kb_info.json
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/matrix.ec
+      md5sum: b8af93eb6010a18859ede417123d58bc
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/output.bus
+      md5sum: 35cbab8a63924ca43e1841cd889e5803
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/output.unfiltered.bus
+      md5sum: a9d4eeac8d0b6a69cd3006711d6b9bf0
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/run_info.json
+    - path: output/kallistobustools/test_lamanno_kallistobustools_count/transcripts.txt
+      md5sum: f7b5d5ead800c6577f1cd54504a049dd
