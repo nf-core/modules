@@ -28,14 +28,14 @@ process KALLISTOBUSTOOLS_COUNT {
     val     use_t2c
 
     output:
-    tuple val(meta), path("*_kallistobustools_count") , optional:false, emit: kallistobustools_count
-    path "*.version.txt"    , optional:false , emit: version
-    path "*.h5ad"           , optional:true  , emit: h5ad
-    path "*.matrix.mtx"     , optional:true  , emit: cellranger_matrix
-    path "*.genes.tsv"      , optional:true  , emit: cellranger_barcodes
-    path "*.barcodes.tsv"   , optional:true  , emit: cellranger_tsv
-    path "*.barcodes.loom"  , optional:true  , emit: loom
-    
+    tuple val(meta), path("*_kallistobustools_count") , optional:false , emit: kallistobustools_count
+    path "*.version.txt"                              , optional:false , emit: version
+    path "*.h5ad"                                     , optional:true  , emit: h5ad
+    path "*.matrix.mtx"                               , optional:true  , emit: cellranger_matrix
+    path "*.genes.tsv"                                , optional:true  , emit: cellranger_barcodes
+    path "*.barcodes.tsv"                             , optional:true  , emit: cellranger_tsv
+    path "*.barcodes.loom"                            , optional:true  , emit: loom
+
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
