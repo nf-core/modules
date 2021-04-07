@@ -19,7 +19,7 @@ process NANOPLOT {
     }
 
     input:
-    tuple val(meta), path(fastq), path(summary_txt)
+    tuple val(meta), path(ontfile)
 
     output:
     tuple val(meta), path("*.html"), emit: html
@@ -30,17 +30,13 @@ process NANOPLOT {
 
     script:
     def software = getSoftwareName(task.process)
+    def input_file = ("$ontfile".endsWith(".fastq.gz")) ? "--fastq ${ontfile}" : 
+        ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """
     NanoPlot \\
         $options.args \\
         -t $task.cpus \\
-        --fastq $fastq
-
-    NanoPlot \\
-        $options.args \\
-        -t $task.cpus \\
-        --summary $summary_txt
-
+        $input_file
     echo \$(NanoPlot --version 2>&1) | sed 's/^.*NanoPlot //; s/ .*\$//' > ${software}.version.txt
     """
 }
