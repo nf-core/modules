@@ -1,0 +1,9 @@
+- name: rasusa test_rasusa
+  command: nextflow run tests/software/rasusa -entry test_rasusa -c tests/config/nextflow.config
+  tags:
+    - rasusa
+  files:
+    - path: output/rasusa/test_1.100X.fastq.gz
+      md5sum: e842d9cfee58a85b1e6182af81a4b909
+    - path: output/rasusa/test_2.100X.fastq.gz
+      md5sum: 5f9e5121f44d239c15a6aa1bff46fa59
