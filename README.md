@@ -189,6 +189,19 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    git merge upstream/master
    ```
 
+   Once the PR has been accepted you should delete the branch and checkout master again.
+
+   ```bash
+   git checkout master
+   git branch -d fastqc
+   ```
+
+   In case there are commits on the local branch that didn't make it into the PR (usually commits made after the PR), git will warn about this and not delete the branch. If you are sure you want to delete, use the following command
+
+   ```bash
+   git branch -D fastqc
+   ```
+
 6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
