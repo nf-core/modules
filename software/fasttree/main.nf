@@ -28,9 +28,7 @@ process FASTTREE {
     def software = getSoftwareName(task.process)
     """
     fasttree \\
-        -gtr \\
-        -gamma \\
-        -fastest \\
+        $options.args \\
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
         > fasttree_phylogeny.tre
