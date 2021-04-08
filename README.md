@@ -185,8 +185,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. This can be performed as follows
 
    ```bash
-   git fetch upstream
-   git merge upstream/master
+   git pull --rebase upstream master
    ```
 
    Once the PR has been accepted you should delete the branch and checkout master again.
