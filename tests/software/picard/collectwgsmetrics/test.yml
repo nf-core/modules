@@ -1,7 +1,7 @@
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics
   command: nextflow run tests/software/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c tests/config/nextflow.config
   tags:
-    - picard_collectwgsmetrics
+    - picard/collectwgsmetrics
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics

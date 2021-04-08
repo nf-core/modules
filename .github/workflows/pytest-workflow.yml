@@ -40,6 +40,20 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pytest-workflow
+        # FIXME: Remove this when nf-core modules lint stabilizes
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint ${{ matrix.tags }}
+        run: nf-core modules lint . -t ${{ matrix.tags }}
+
       - uses: actions/cache@v2
         with:
           path: /usr/local/bin/nextflow
@@ -54,12 +68,6 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.x"
-      - name: Install dependencies
-        run: python -m pip install --upgrade pip pytest-workflow
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'

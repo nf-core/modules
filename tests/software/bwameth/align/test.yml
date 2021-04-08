@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/bwameth/align -entry test_bwameth_align_single_end -c tests/config/nextflow.config
   tags:
     - bwameth
-    - bwameth_align
+    - bwameth/align
   files:
     - path: output/test_single_end/test.bam
 
@@ -10,7 +10,7 @@
   command: nextflow run ./tests/software/bwameth/align -entry test_bwameth_align_paired_end -c tests/config/nextflow.config
   tags:
     - bwameth
-    - bwameth_align
+    - bwameth/align
   files:
     - path: output/test_paired_end/test.bam
 
