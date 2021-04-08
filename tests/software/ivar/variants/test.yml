@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_no_gff_no_mpileup -c tests/config/nextflow.config
   tags:
     - ivar
-    - ivar_variants
+    - ivar/variants
   files:
     - path: output/ivar/test.tsv
       md5sum: 728f1430f2402861396d9953465ac706
@@ -11,7 +11,7 @@
   command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_no_gff_with_mpileup -c tests/config/nextflow.config --save_mpileup
   tags:
     - ivar
-    - ivar_variants
+    - ivar/variants
   files:
     - path: output/ivar/test.tsv
       md5sum: 728f1430f2402861396d9953465ac706
@@ -22,7 +22,7 @@
   command: nextflow run ./tests/software/ivar/variants -entry test_ivar_variants_with_gff_with_mpileup -c tests/config/nextflow.config --gff tests/data/gff/sarscov2/MN908947.3.gff3 --save_mpileup
   tags:
     - ivar
-    - ivar_variants
+    - ivar/variants
   files:
     - path: output/ivar/test.tsv
       md5sum: 7b59146132a60da58444bebffc3c2577

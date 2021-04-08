@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv -c tests/config/nextflow.config
   tags:
     - tiddit
-    - tiddit_sv
+    - tiddit/sv
     - vcf
   files:
     - path: output/tiddit/test.ploidy.tab
@@ -16,7 +16,7 @@
   command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv_no_ref -c tests/config/nextflow.config
   tags:
     - tiddit
-    - tiddit_sv
+    - tiddit/sv
     - vcf
   files:
     - path: output/tiddit/test.ploidy.tab
