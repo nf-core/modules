@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/cat/fastq -entry test_cat_fastq_single_end -c tests/config/nextflow.config
   tags:
     - cat
-    - cat_fastq
+    - cat/fastq
     - cat_fastqc_single_end
   files:
     - path: ./output/merged_fastq/test.merged.fastq.gz
@@ -12,7 +12,7 @@
   command: nextflow run ./tests/software/cat/fastq -entry test_cat_fastq_paired_end -c tests/config/nextflow.config
   tags:
     - cat
-    - cat_fastq
+    - cat/fastq
     - cat_fastqc_paired_end
   files:
     - path: ./output/merged_fastq/test_2.merged.fastq.gz

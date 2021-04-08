@@ -25,6 +25,7 @@ When adding a new module, please check carefully whether the data necessary for 
         * 'test_genomic.dict': GATK dict for 'test_genomic.fasta'
         * 'test_genomic.fasta.fai': fasta index for 'test_genomic.fasta'
         * 'test_cds_from_genomic.fasta': coding sequencing from MT192765.1 genome (transcripts)
+        * 'contigs.fasta': contigs file obtained running Minia on sarscov2 paired-end sequencing reads files (see below)
     * fastq
         * 'test_{1,2}.fastq.gz' sarscov2 paired-end sequencing reads
         * 'test_{1,2}.2.fastq.gz‘: copies of the above reads

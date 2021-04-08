@@ -30,7 +30,7 @@ process RASUSA {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}_${depth_cutoff}X" : "${meta.id}_${depth_cutoff}X"
-    def output = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz" 
+    def output = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
         $options.args \\
