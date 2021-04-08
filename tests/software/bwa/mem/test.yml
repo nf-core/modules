@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_single_end -c tests/config/nextflow.config
   tags:
     - bwa
-    - bwa_mem
+    - bwa/mem
     - bwa_mem_single_end
   files:
     - path: ./output/bwa/test.bam
@@ -22,7 +22,7 @@
   command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
   tags:
     - bwa
-    - bwa_mem
+    - bwa/mem
     - bwa_mem_paired_end
   files:
     - path: ./output/bwa/test.bam
