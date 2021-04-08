@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/star/align -entry test_star_alignment_single_end -c tests/config/nextflow.config
   tags:
     - star
-    - star_align
+    - star/align
     - star_align_single_end
   files:
     - path: output/star/star/Genome
@@ -40,7 +40,7 @@
   command: nextflow run ./tests/software/star/align -entry test_star_alignment_paired_end -c tests/config/nextflow.config
   tags:
     - star
-    - star_align
+    - star/align
     - star_align_paired_end
   files:
     - path: output/star/star/Genome

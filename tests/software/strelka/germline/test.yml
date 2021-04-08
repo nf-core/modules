@@ -4,7 +4,7 @@
   command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline -c tests/config/nextflow.config
   tags:
     - strelka
-    - strelka_germline
+    - strelka/germline
   files:
     - path: output/strelka/strelka_test_variants.vcf.gz
     - path: output/strelka/strelka_test_variants.vcf.gz.tbi
@@ -14,7 +14,7 @@
   command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline_target_bed -c tests/config/nextflow.config
   tags:
     - strelka
-    - strelka_germline
+    - strelka/germline
   files:
     - path: output/strelka/strelka_test_variants.vcf.gz
     - path: output/strelka/strelka_test_variants.vcf.gz.tbi
