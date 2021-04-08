@@ -172,6 +172,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
 4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
 5. Set up git by adding a new remote of the nf-core git repo called `upstream`
 <<<<<<< HEAD
+<<<<<<< HEAD
 
    ```bash
    git remote add upstream https://github.com/nf-core/modules.git
@@ -204,18 +205,31 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
 
 =======
    ```
+=======
+
+   ```bash
+>>>>>>> correct linting errors
    git remote add upstream https://github.com/nf-core/modules.git
    ```
+
    Make a new branch for your module and check it out
-   ```
+
+   ```bash
    git checkout -b fastqc
    ```
+
    On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. This can be performed as follows
-   ```
+
+   ```bash
    git fetch upstream
    git merge upstream/master
+<<<<<<< HEAD
    ``` 
 >>>>>>> Update README to include some git best practices
+=======
+   ```
+
+>>>>>>> correct linting errors
 6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
