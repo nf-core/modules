@@ -1,7 +1,7 @@
 - name: yara index test_yara_index
   command: nextflow run tests/software/yara/index -entry test_yara_index -c tests/config/nextflow.config
   tags:
-    - yara_index
+    - yara/index
     - yara
   files:
     - path: output/index/yara/yara.rid.limits
