@@ -1,0 +1,38 @@
+name: alevinqc
+description: alevinQC reads output files from alevin and generates summary reports.
+keywords:
+  - sort
+tools:
+  - alevinqc:
+      description: Generate QC Reports For Alevin Output
+      homepage: https://github.com/csoneson/alevinQC
+      documentation: https://bioconductor.org/packages/release/bioc/vignettes/alevinQC/inst/doc/alevinqc.html
+      doi: https://doi.org/10.1186/s13059-019-1670-y
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - alevin_results:
+      type: file
+      description: Path to a alevin results folder
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - report:
+      type: file
+      description: The alevinQC report
+      pattern: "alevinReport.html"
+
+authors:
+  - "@kevinmenden"
