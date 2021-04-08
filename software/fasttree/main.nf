@@ -28,13 +28,11 @@ process FASTTREE {
     def software = getSoftwareName(task.process)
     """
     fasttree \\
-        -gtr \\
-        -gamma \\
-        -fastest \\
+        $options.args \\
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
         > fasttree_phylogeny.tre
 
-    fasttree -help 2>&1 | head -1  | sed 's/^FastTree \\([0-9\\.]*\\) .*\$/\\1/' > ${software}.version.txt
+    echo \$(fasttree -help 2>&1) | head -1  | sed 's/^FastTree \\([0-9\\.]*\\) .*\$/\\1/' > ${software}.version.txt
     """
 }
