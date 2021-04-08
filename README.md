@@ -171,18 +171,24 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
 3. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
 5. Set up git by adding a new remote of the nf-core git repo called `upstream`
-   ```
+
+   ```bash
    git remote add upstream https://github.com/nf-core/modules.git
    ```
+
    Make a new branch for your module and check it out
-   ```
+
+   ```bash
    git checkout -b fastqc
    ```
+
    On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. This can be performed as follows
-   ```
+
+   ```bash
    git fetch upstream
    git merge upstream/master
-   ``` 
+   ```
+
 6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
