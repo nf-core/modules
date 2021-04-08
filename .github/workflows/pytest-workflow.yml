@@ -63,6 +63,7 @@ jobs:
       - name: Install Nextflow
         env:
           NXF_VER: ${{ matrix.nxf_version }}
+          CAPSULE_LOG: none
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
