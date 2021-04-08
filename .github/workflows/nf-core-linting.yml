@@ -18,16 +18,17 @@ jobs:
         with:
           filters: 'tests/config/pytest_software.yml'
 
-  test:
+  lint:
     runs-on: ubuntu-20.04
+    env:
+      NXF_VER: 21.03.0-edge
 
-    name: ${{ matrix.tags }} ${{ matrix.nxf_version }}
+    name: ${{ matrix.tags }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
-        nxf_version: ['21.03.0-edge']
         tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
     env:
       NXF_ANSI_LOG: false
@@ -60,7 +61,7 @@ jobs:
 
       - name: Install Nextflow
         env:
-          NXF_VER: ${{ matrix.nxf_version }}
+          CAPSULE_LOG: none
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
@@ -71,6 +72,6 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}-nextflow-${{ matrix.nxf_version }}
+          key: ${{ runner.os }}
           restore-keys: |
-            ${{ runner.os }}-nextflow-
+            ${{ runner.os }}
