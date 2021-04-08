@@ -2,10 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-params.depth_cutoff = 100
-params.genome_size = '1000000b'
-
-include { RASUSA } from '../../../software/rasusa/main.nf' addParams( options: [:], depth_cutoff: params.depth_cutoff, genome_size:  params.genome_size)
+include { RASUSA } from '../../../software/rasusa/main.nf' addParams( options: [:])
 
 workflow test_rasusa {
     def input = []
@@ -15,5 +12,9 @@ workflow test_rasusa {
               ]
             ]
 
-    RASUSA ( input )
+    depth_cutoff = 100
+
+    genome_size = "1000000b"
+
+    RASUSA ( input, depth_cutoff, genome_size )
 }

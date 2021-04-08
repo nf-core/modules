@@ -20,34 +20,25 @@ process RASUSA {
 
     input:
     tuple val(meta), path(reads)
+    val depth_cutoff
+    val genome_size
 
     output:
-    tuple val(meta), path('*X.fastq.gz'), emit: reads
+    tuple val(meta), path('*.fastq.gz'), emit: reads
     path '*.version.txt'                , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
-    if (meta.single_end) {
-        """
-        rasusa \\
-            $options.args \\
-            --coverage $params.depth_cutoff \\
-            --genome-size $params.genome_size \\
-            --input $reads \\
-            --output ${prefix}.${params.depth_cutoff}X.fastq.gz
-        echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
-        """
-    } else {
-        """
-        rasusa \\
-            $options.args \\
-            --coverage $params.depth_cutoff \\
-            --genome-size $params.genome_size \\
-            --input $reads \\
-            --output ${prefix}_1.${params.depth_cutoff}X.fastq.gz ${prefix}_2.${params.depth_cutoff}X.fastq.gz
-        echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
-        """
-    }
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}_${depth_cutoff}X" : "${meta.id}_${depth_cutoff}X"
+    def output = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz" 
+    
+    """
+    rasusa \\
+        $options.args \\
+        --coverage $depth_cutoff \\
+        --genome-size $genome_size \\
+        --input $reads \\
+        $output
+    echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
+    """
 }
