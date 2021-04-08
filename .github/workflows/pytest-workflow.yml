@@ -17,6 +17,7 @@ jobs:
 
   test:
     runs-on: ubuntu-20.04
+
     name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
@@ -30,6 +31,7 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -45,7 +47,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
-      - name: Install dependencies
+
+      - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow
 
       - uses: actions/cache@v2
@@ -62,7 +65,6 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-singularity@v5
@@ -76,6 +78,7 @@ jobs:
           auto-update-conda: true
           channels: conda-forge,bioconda,defaults
           python-version: ${{ matrix.python-version }}
+
       - name: Conda clean
         if: matrix.profile == 'conda'
         run: conda clean -a
