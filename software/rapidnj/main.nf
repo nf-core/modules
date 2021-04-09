@@ -31,14 +31,14 @@ process RAPIDNJ {
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'
-    
+
     rapidnj \\
         alignment.sth \\
         $options.args \\
         -i sth \\
         -c $task.cpus \\
         -x rapidnj_phylogeny.tre
-    
+
     # Doesn't appear to be a way of getting the version number
     echo 2.3.2 > ${software}.version.txt
     """
