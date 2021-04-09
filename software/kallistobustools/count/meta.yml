@@ -48,6 +48,15 @@ input:
   - use_t2c:
       type: boolean
       description: Whether to use the c2 txt file for RNA velocity  and nucleus workflows
+  - kb_workflow:
+      type: value
+      description: String value defining worfklow to use, can be one of "standard", "lamanno", "nucleus"
+      pattern: "{standard,lamanno,nucleus,kite}"
+  - technology:
+      type: value
+      description: String value defining the sequencing technology used.
+      pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
+
 
 output:
   - meta:
@@ -63,26 +72,6 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - h5ad:
-      type: file
-      description: h5ad output file
-      pattern: "*.{h5ad}"
-  - cellranger_matrix:
-      type: file
-      description: cellranger format matrix file
-      pattern: "*matrix.mtx"
-  - cellranger_barcodes:
-      type: file
-      description: cellranger format barcodes file
-      pattern: "*barcodes.tsv"
-  - cellranger_tsv:
-      type: file
-      description: cellranger format genes file
-      pattern: "*genes.tsv}"
-  - loom:
-      type: file
-      description: kb count output folder
-      pattern: "*.{loom}}"
 
 authors:
   - "@flowuenne"

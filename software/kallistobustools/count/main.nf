@@ -26,15 +26,12 @@ process KALLISTOBUSTOOLS_COUNT {
     path    t2c
     val     use_t1c
     val     use_t2c
+    val     workflow
+    val     technology
 
     output:
-    tuple val(meta), path("*_kallistobustools_count") , optional:false , emit: kallistobustools_count
-    tuple val(meta), path "*.version.txt"             , optional:false , emit: version
-    tuple val(meta), path "*.h5ad"                    , optional:true  , emit: h5ad
-    tuple val(meta), path "*.matrix.mtx"              , optional:true  , emit: cellranger_matrix
-    tuple val(meta), path "*.genes.tsv"               , optional:true  , emit: cellranger_barcodes
-    tuple val(meta), path "*.barcodes.tsv"            , optional:true  , emit: cellranger_tsv
-    tuple val(meta), path "*.barcodes.loom"           , optional:true  , emit: loom
+    tuple val(meta), path "*_kallistobustools_count" , optional:false , emit: kallistobustools_count
+    tuple path "*.version.txt"             , optional:false , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -49,6 +46,8 @@ process KALLISTOBUSTOOLS_COUNT {
     -g $t2g \\
     $cdna \\
     $introns \\
+    --workflow $workflow \\
+    -x $technology \\
     $options.args \\
     -o ${prefix}_kallistobustools_count \\
     ${reads[0]} \\
