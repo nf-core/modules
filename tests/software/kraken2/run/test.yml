@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/kraken2/run -entry test_kraken2_run_single_end -c tests/config/nextflow.config
   tags:
     - kraken2
-    - kraken2_run
+    - kraken2/run
     - kraken2_run_single_end
   files:
     - path: output/kraken2/test.classified.fastq.gz
@@ -16,7 +16,7 @@
   command: nextflow run ./tests/software/kraken2/run -entry test_kraken2_run_paired_end -c tests/config/nextflow.config
   tags:
     - kraken2
-    - kraken2_run
+    - kraken2/run
     - kraken2_run_paired_end
   files:
     - path: output/kraken2/test.classified_1.fastq.gz

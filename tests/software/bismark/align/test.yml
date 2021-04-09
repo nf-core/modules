@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/bismark/align -entry test_bismark_align_single_end -c tests/config/nextflow.config
   tags:
     - bismark
-    - bismark_align
+    - bismark/align
   files:
     - path: output/test_single_end/test_methylated_1_bismark_bt2.bam
       md5sum: 7f9744cec5aa7908675e5fae79af36fc
@@ -12,7 +12,7 @@
   command: nextflow run ./tests/software/bismark/align -entry test_bismark_align_paired_end -c tests/config/nextflow.config
   tags:
     - bismark
-    - bismark_align
+    - bismark/align
   files:
     - path: output/test_paired_end/test_methylated_1_bismark_bt2_pe.bam
       md5sum: b13d0d40dffd336375f80fc94acc295f

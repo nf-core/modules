@@ -1,7 +1,7 @@
 - name: bcftools mpileup test_bcftools_mpileup
   command: nextflow run tests/software/bcftools/mpileup -entry test_bcftools_mpileup -c tests/config/nextflow.config
   tags:
-    - bcftools_mpileup
+    - bcftools/mpileup
     - bcftools
   files:
     - path: output/bcftools/test.bcftools_stats.txt

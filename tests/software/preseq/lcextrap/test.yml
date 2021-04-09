@@ -2,7 +2,7 @@
   command: nextflow run ./tests/software/preseq/lcextrap -entry test_preseq_single_end -c tests/config/nextflow.config
   tags:
     - preseq
-    - preseq_lcextrap
+    - preseq/lcextrap
     - preseq_lcextrap_single_end
   files:
     - path: output/preseq/test.ccurve.txt
@@ -13,7 +13,7 @@
   command: nextflow run ./tests/software/preseq/lcextrap -entry test_preseq_paired_end -c tests/config/nextflow.config
   tags:
     - preseq
-    - preseq_lcextrap
+    - preseq/lcextrap
     - preseq_lcextrap_paired_end
   files:
     - path: output/preseq/test.ccurve.txt
