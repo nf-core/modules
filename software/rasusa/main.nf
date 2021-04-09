@@ -20,17 +20,17 @@ process RASUSA {
 
     input:
     tuple val(meta), path(reads)
-    val depth_cutoff
-    val genome_size
+    val  depth_cutoff
+    val  genome_size
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path '*.version.txt'                , emit: version
+    path '*.version.txt'               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}_${depth_cutoff}X" : "${meta.id}_${depth_cutoff}X"
-    def output = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def output   = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
         $options.args \\

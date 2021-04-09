@@ -22,6 +22,12 @@ input:
   - reads:
         type: file
         description: List of input paired-end FastQ files
+  - depth_cutoff:
+        type: integer
+        description: Depth of coverage cutoff
+  - genome_size:
+        type: string
+        description: Genome size of the species
 
 output:
   - meta:
