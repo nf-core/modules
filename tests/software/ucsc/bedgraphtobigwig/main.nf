@@ -6,7 +6,7 @@ include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../software/ucsc/bedgraphtobig
 
 workflow test_ucsc_bedgraphtobigwig {
     input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['sarscov2']['genome']['test_bedgraph'], checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true) ]
             ]
     sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
