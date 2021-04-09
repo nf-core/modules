@@ -33,9 +33,9 @@ process ALEVINQC {
     require(alevinQC)
 
     alevinQCReport(baseDir = "${alevin_results}", sampleId = "${prefix}",
-               outputFile = "alevinReport.html",
-               outputFormat = "html_document",
-               outputDir = "./", forceOverwrite = TRUE)
+                outputFile = "alevinReport.html",
+                outputFormat = "html_document",
+                outputDir = "./", forceOverwrite = TRUE)
 
     write(as.character(packageVersion("alevinQC")), paste0("${software}", ".version.txt"))
     """
