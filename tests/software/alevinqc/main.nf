@@ -5,9 +5,9 @@ nextflow.enable.dsl = 2
 include { ALEVINQC } from '../../../software/alevinqc/main.nf' addParams( options: [:] )
 
 workflow test_alevinqc {
-    
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+
+    input = [ [ id:'test'], // meta map
+              file("${launchDir}/tests/data/delete_me/alevin_example_v0.14", checkIfExists: true)]
 
     ALEVINQC ( input )
 }

@@ -1,9 +1,7 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml alevinqc/None
-- name: alevinqc
-  command: nextflow run ./tests/software/alevinqc -entry test_alevinqc -c tests/config/nextflow.config
+- name: alevinqc test_alevinqc
+  command: nextflow run tests/software/alevinqc -entry test_alevinqc -c tests/config/nextflow.config
   tags:
     - alevinqc
   files:
-    - path: output/alevinqc/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/alevinqc/alevinReport.html
+      md5sum: e5222fc68f9941a4417af927d1d33847
