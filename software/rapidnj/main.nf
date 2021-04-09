@@ -18,12 +18,11 @@ process RAPIDNJ {
     }
 
     input:
-
     path alignment
 
     output:
-    path "*.sth", emit: stockholm_alignment
-    path "*.tre", emit: phylogeny
+    path "*.sth"        , emit: stockholm_alignment
+    path "*.tre"        , emit: phylogeny
     path "*.version.txt", emit: version
 
     script:
