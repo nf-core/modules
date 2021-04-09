@@ -1,0 +1,7 @@
+- name: pycoqc
+  command: nextflow run ./tests/software/pycoqc -entry test_pycoqc -c tests/config/nextflow.config
+  tags:
+    - pycoqc
+  files:
+    - path: output/pycoqc/pycoqc.json
+    - path: output/pycoqc/pycoqc.html
