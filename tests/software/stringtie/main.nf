@@ -10,8 +10,8 @@ include { STRINGTIE as STRINGTIE_REVERSE } from '../../../software/stringtie/mai
  */
 workflow test_stringtie_forward {
     input = [ [ id:'test', strandedness:'forward' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) ] ]
-    gtf   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.gtf", checkIfExists: true)
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ] ]
+    gtf   = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
     
     STRINGTIE_FORWARD ( input, gtf )
 }
@@ -21,9 +21,9 @@ workflow test_stringtie_forward {
  */
 workflow test_stringtie_reverse {
     input = [ [ id:'test', strandedness:'reverse' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ] 
             ]
-    gtf   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.gtf", checkIfExists: true)
+    gtf   = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
     
     STRINGTIE_REVERSE ( input, gtf )
 }
