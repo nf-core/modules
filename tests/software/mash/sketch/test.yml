@@ -1,0 +1,11 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml mash/sketch
+- name: mash sketch
+  command: nextflow run ./tests/software/mash/sketch -entry test_mash_sketch -c tests/config/nextflow.config
+  tags:
+    - mash_sketch
+  files:
+    - path: output/mash/test.msh
+      md5sum: d747145a43dad5f82342036f8f5d9133
+    - path: output/mash/test.mash_stats
+      md5sum: 2a6f297d8e69a5e4160243bc6c89129c
