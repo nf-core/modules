@@ -18,11 +18,9 @@ process SNPSITES {
     }
 
     input:
-
     path alignment
 
     output:
-
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
     path "*.version.txt", emit: version
