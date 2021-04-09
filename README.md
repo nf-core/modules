@@ -182,7 +182,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    git checkout -b fastqc
    ```
 
-   On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. This can be performed as follows
+   On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. Rather than merging changes directly from upstream the rebase strategy is recommended so that your changes are applied on top of the latest master branch from the nf-core repo. This can be performed as follows
 
    ```bash
    git pull --rebase upstream master
