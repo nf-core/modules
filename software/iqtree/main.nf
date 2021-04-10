@@ -9,7 +9,7 @@ process IQTREE {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::iqtree=2.1.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -18,23 +18,23 @@ process IQTREE {
         container "quay.io/biocontainers/iqtree:2.1.2--h56fc30b_0"
     }
 
-        input:
-    path variant_alignment
+    input:
+    path alignment
     val constant_sites
 
     output:
-    path "*.treefile", emit: phylogeny
+    path "*.treefile",    emit: phylogeny
     path "*.version.txt", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
+    def software    = getSoftwareName(task.process)
     def fconst_args = constant_sites ? '-fconst $constant_sites' : ''
-    def memory = task.memory.toString().replaceAll(' ', '')
+    def memory      = task.memory.toString().replaceAll(' ', '')
     """
     iqtree \\
         $fconst_args \\
         $options.args \\
-        -s $variant_alignment \\
+        -s $alignment \\
         -nt AUTO \\
         -ntmax $task.cpus \\
         -mem $memory \\
