@@ -24,7 +24,7 @@ process SNPSITES {
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
     path "*.version.txt", emit: version
-    stdout                emit: constant_sites_string
+    env CONSTANT_SITES,   emit: constant_sites_string
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,7 +35,7 @@ process SNPSITES {
 
     echo \$(snp-sites -C $alignment) > constant.sites.txt
 
-    cat constant.sites.txt
+    CONSTANT_SITES=\$(cat constant.sites.txt)
 
     echo \$(snp-sites -V 2>&1) | sed 's/snp-sites //' > ${software}.version.txt
     """
