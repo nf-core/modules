@@ -24,7 +24,7 @@ process SNPSITES {
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
     path "*.version.txt", emit: version
-    env CONSTANT_SITES,   emit: constant_sites_string
+    env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
     def software = getSoftwareName(task.process)
