@@ -5,7 +5,6 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process IQTREE {
-    tag "$variant_alignment"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -28,7 +27,7 @@ process IQTREE {
 
     script:
     def software    = getSoftwareName(task.process)
-    def fconst_args = constant_sites ? '-fconst $constant_sites' : ''
+    def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
     """
     iqtree \\
