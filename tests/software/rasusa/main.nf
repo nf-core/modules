@@ -14,5 +14,5 @@ workflow test_rasusa {
 
     depth_cutoff = 100
 
-    RASUSA ( input, depth_cutoff, genome_size )
+    RASUSA ( input, depth_cutoff )
 }
