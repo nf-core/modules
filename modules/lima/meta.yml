@@ -1,0 +1,49 @@
+name: lima
+description: lima - The PacBio Barcode Demultiplexer and Primer Remover
+keywords:
+  - sort
+tools:
+  - lima:
+      description: lima - The PacBio Barcode Demultiplexer and Primer Remover
+      homepage: https://github.com/PacificBiosciences/pbbioconda
+      documentation: https://lima.how/
+      tool_dev_url: https://github.com/pacificbiosciences/barcoding/
+      doi: ""
+      licence: ['BSD-3-clause-Clear']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - ccs:
+      type: file
+      description: BAM file, consensus sequences produced by CCS
+      pattern: "*.bam"
+  - primers:
+      type: file
+      description: fasta file, seuences of primers
+      pattern: "*.fa"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - bam:
+      type: file
+      description: BAM and PBI file
+      pattern: "*.{bam,bam.pbi}"
+  - reports:
+      type: file
+      description: report files
+      pattern: "*.{xml,json,clips,counts,guess,report,summary}"
+
+authors:
+  - "@sguizard"
