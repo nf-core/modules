@@ -200,6 +200,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    ```bash
    git branch -D fastqc
    ```
+
 6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
