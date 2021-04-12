@@ -1,0 +1,43 @@
+name: pbccs
+description: Pacbio ccs - Generate Higly Accurate Single-Molecule Consensus Reads
+keywords:
+  - ccs
+tools:
+  - pbccs:
+      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads (HiFi Reads)
+      homepage: https://github.com/PacificBiosciences/pbbioconda
+      documentation: https://ccs.how/
+      tool_dev_url: https://github.com/PacificBiosciences/ccs
+      doi: ""
+      licence: ['BSD-3-clause-Clear']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Raw subreads bam
+      pattern: "*.subreads.bam"
+  - rq:
+      type: value
+      description: Read quality, average of per-base qualities (0 to 1)
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - css:
+      type: file
+      description: Consensus sequences
+      pattern: "*.ccs.bam"
+
+authors:
+  - "@sguizard"
