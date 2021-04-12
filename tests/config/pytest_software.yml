@@ -6,85 +6,85 @@ allelecounter:
   - software/allelecounter/**
   - tests/software/allelecounter/**
 
-bandage_image:
+bandage/image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
 
-bcftools_consensus:
+bcftools/consensus:
   - software/bcftools/consensus/**
   - tests/software/bcftools/consensus/**
 
-bcftools_filter:
+bcftools/filter:
   - software/bcftools/filter/**
   - tests/software/bcftools/filter/**
 
-bcftools_isec:
+bcftools/isec:
   - software/bcftools/isec/**
   - tests/software/bcftools/isec/**
 
-bcftools_merge:
+bcftools/merge:
   - software/bcftools/merge/**
   - tests/software/bcftools/merge/**
 
-bcftools_mpileup:
+bcftools/mpileup:
   - software/bcftools/mpileup/**
   - tests/software/bcftools/mpileup/**
 
-bcftools_stats:
+bcftools/stats:
   - software/bcftools/stats/**
   - tests/software/bcftools/stats/**
 
-bedtools_complement:
+bedtools/complement:
   - software/bedtools/complement/**
   - tests/software/bedtools/complement/**
 
-bedtools_genomecov:
+bedtools/genomecov:
   - software/bedtools/genomecov/**
   - tests/software/bedtools/genomecov/**
 
-bedtools_getfasta:
+bedtools/getfasta:
   - software/bedtools/getfasta/**
   - tests/software/bedtools/getfasta/**
 
-bedtools_intersect:
+bedtools/intersect:
   - software/bedtools/intersect/**
   - tests/software/bedtools/intersect/**
 
-bedtools_maskfasta:
+bedtools/maskfasta:
   - software/bedtools/maskfasta/**
   - tests/software/bedtools/maskfasta/**
 
-bedtools_merge:
+bedtools/merge:
   - software/bedtools/merge/**
   - tests/software/bedtools/merge/**
 
-bedtools_slop:
+bedtools/slop:
   - software/bedtools/slop/**
   - tests/software/bedtools/slop/**
 
-bedtools_sort:
+bedtools/sort:
   - software/bedtools/sort/**
   - tests/software/bedtools/sort/**
 
-bismark_align:
+bismark/align:
   - software/bismark/align/**
   - software/bismark/genomepreparation/**
   - tests/software/bismark/align/**
 
-bismark_deduplicate:
+bismark/deduplicate:
   - software/bismark/deduplicate/**
   - tests/software/bismark/deduplicate/**
 
-bismark_genomepreparation:
+bismark/genomepreparation:
   - software/bismark/genomepreparation/**
   - tests/software/bismark/genomepreparation/**
 
-bismark_methylationextractor:
+bismark/methylationextractor:
   - software/bismark/methylationextractor/**
   - software/bismark/genomepreparation/**
   - tests/software/bismark/methylationextractor/**
 
-bismark_report:
+bismark/report:
   - software/bismark/genomepreparation/**
   - software/bismark/align/**
   - software/bismark/deduplicate/**
@@ -92,7 +92,7 @@ bismark_report:
   - software/bismark/report/**
   - tests/software/bismark/report/**
 
-bismark_summary:
+bismark/summary:
   - software/bismark/genomepreparation/**
   - software/bismark/align/**
   - software/bismark/deduplicate/**
@@ -100,57 +100,57 @@ bismark_summary:
   - software/bismark/summary/**
   - tests/software/bismark/summary/**
 
-blast_blastn:
+blast/blastn:
   - software/blast/blastn/**
   - tests/software/blast/blastn/**
 
-blast_makeblastdb:
+blast/makeblastdb:
   - software/blast/makeblastdb/**
   - tests/software/blast/makeblastdb/**
 
-bowtie2_align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
-
-bowtie2_build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
-bowtie_align:
+bowtie/align:
   - software/bowtie/align/**
   - software/bowtie/build/**
   - tests/software/bowtie/align/**
 
-bowtie_build:
+bowtie/build:
   - software/bowtie/build/**
   - tests/software/bowtie/build_test/**
 
-bwa_index:
+bowtie2/align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2/build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
+
+bwa/index:
   - software/bwa/index/**
   - tests/software/bwa/index/**
 
-bwa_mem:
+bwa/mem:
   - software/bwa/mem/**
   - tests/software/bwa/mem/**
 
-bwamem2_index:
+bwamem2/index:
   - software/bwamem2/index/**
   - tests/software/bwamem2/index/**
 
-bwamem2_mem:
+bwamem2/mem:
   - software/bwamem2/mem/**
   - tests/software/bwamem2/mem/**
 
-bwameth_align:
+bwameth/align:
   - software/bwameth/align/**
   - tests/software/bwameth/align/**
 
-bwameth_index:
+bwameth/index:
   - software/bwameth/index/**
   - tests/software/bwameth/index/**
 
-cat_fastq:
+cat/fastq:
   - software/cat/fastq/**
   - tests/software/cat/fastq/**
 
@@ -162,11 +162,11 @@ cutadapt:
   - software/cutadapt/**
   - tests/software/cutadapt/**
 
-dsh_filterbed:
+dsh/filterbed:
   - software/dsh/filterbed/**
   - tests/software/dsh/filterbed/**
 
-dsh_splitbed:
+dsh/splitbed:
   - software/dsh/splitbed/**
   - tests/software/dsh/splitbed/**
 
@@ -178,11 +178,15 @@ fastqc:
   - software/fastqc/**
   - tests/software/fastqc/**
 
-fgbio_callmolecularconsensusreads:
+fasttree:
+  - software/fasttree/**
+  - tests/software/fasttree/**
+
+fgbio/callmolecularconsensusreads:
   - software/fgbio/callmolecularconsensusreads/**
   - tests/software/fgbio/callmolecularconsensusreads/**
 
-fgbio_sortbam:
+fgbio/sortbam:
   - software/fgbio/sortbam/**
   - tests/software/fgbio/sortbam/**
 
@@ -190,54 +194,55 @@ flash:
   - software/flash/**
   - tests/software/flash/**
 
-gatk4_applybqsr:
+gatk4/applybqsr:
   - software/gatk4/applybqsr/**
   - tests/software/gatk4/applybqsr/**
 
-gatk4_baserecalibrator:
+gatk4/baserecalibrator:
   - software/gatk4/baserecalibrator/**
   - tests/software/gatk4/baserecalibrator/**
 
-gatk4_bedtointervallist:
+gatk4/bedtointervallist:
   - software/gatk4/bedtointervallist/**
   - tests/software/gatk4/bedtointervallist/**
 
-gatk4_createsequencedictionary:
+gatk4/createsequencedictionary:
   - software/gatk4/createsequencedictionary/**
   - tests/software/gatk4/createsequencedictionary/**
 
-gatk4_markduplicates:
-  - software/gatk4/markduplicates/**
-  - tests/software/gatk4/markduplicates/**
-gatk4_fastqtosam:
+gatk4/fastqtosam:
   - software/gatk4/fastqtosam/**
   - tests/software/gatk4/fastqtosam/**
 
-gatk4_haplotypecaller:
+gatk4/haplotypecaller:
   - software/gatk4/haplotypecaller/**
   - tests/software/gatk4/haplotypecaller/**
 
-gatk4_mergebamalignment:
+gatk4/markduplicates:
+  - software/gatk4/markduplicates/**
+  - tests/software/gatk4/markduplicates/**
+
+gatk4/mergebamalignment:
   - software/gatk4/mergebamalignment/**
   - tests/software/gatk4/mergebamalignment/**
 
-gatk4_mergevcfs:
+gatk4/mergevcfs:
   - software/gatk4/mergevcfs/**
   - tests/software/gatk4/mergevcfs/**
 
-gatk4_revertsam:
+gatk4/revertsam:
   - software/gatk4/revertsam/**
   - tests/software/gatk4/revertsam/**
 
-gatk4_samtofastq:
+gatk4/samtofastq:
   - software/gatk4/samtofastq/**
   - tests/software/gatk4/samtofastq/**
 
-gatk4_splitncigarreads:
+gatk4/splitncigarreads:
   - software/gatk4/splitncigarreads/**
   - tests/software/gatk4/splitncigarreads/**
 
-gatk4_variantfiltration:
+gatk4/variantfiltration:
   - software/gatk4/variantfiltration/**
   - tests/software/gatk4/variantfiltration/**
 
@@ -245,54 +250,66 @@ gffread:
   - software/gffread/**
   - tests/software/gffread/**
 
+gubbins:
+  - software/gubbins/**
+  - tests/software/gubbins/**
+
 gunzip:
   - software/gunzip/**
   - tests/software/gunzip/**
 
-hisat2_align:
+hisat2/align:
   - software/hisat2/align/**
   - software/hisat2/build/**
   - software/hisat2/extractsplicesites/**
   - tests/software/hisat2/align/**
 
-hisat2_build:
+hisat2/build:
   - software/hisat2/build/**
   - software/hisat2/extractsplicesites/**
   - tests/software/hisat2/build_test/**
 
-hisat2_extractsplicesites:
+hisat2/extractsplicesites:
   - software/hisat2/extractsplicesites/**
   - tests/software/hisat2/extractsplicesites/**
 
-homer_annotatepeaks:
+homer/annotatepeaks:
   - software/homer/annotatepeaks/**
   - tests/software/homer/annotatepeaks/**
 
-ivar_consensus:
+ivar/consensus:
   - software/ivar/consensus/**
   - tests/software/ivar/consensus/**
 
-ivar_trim:
+ivar/trim:
   - software/ivar/trim/**
   - tests/software/ivar/trim/**
 
-ivar_variants:
+ivar/variants:
   - software/ivar/variants/**
   - tests/software/ivar/variants/**
 
-kallisto_index:
+kallisto/index:
   - software/kallisto/index/**
   - tests/software/kallisto/index/**
 
-kraken2_run:
+kallistobustools/ref:
+  - software/kallistobustools/ref/**
+  - tests/software/kallistobustools/ref/**
+
+kraken2/run:
   - software/kraken2/run/**
   - tests/software/kraken2/run/**
 
-methyldackel_extract:
+mash/sketch:
+  - software/mash/sketch/**
+  - tests/software/mash/sketch/**
+
+methyldackel/extract:
   - software/methyldackel/extract/**
   - tests/software/methyldackel/extract/**
 
-methyldackel_mbias:
+methyldackel/mbias:
   - software/methyldackel/mbias/**
   - tests/software/methyldackel/mbias/**
 
@@ -300,7 +317,7 @@ minia:
   - software/minia/**
   - tests/software/minia/**
 
-minimap2_align:
+minimap2/align:
   - software/minimap2/align/**
   - tests/software/minimap2/align/**
 
@@ -308,18 +325,22 @@ mosdepth:
   - software/mosdepth/**
   - tests/software/mosdepth/**
 
-msisensor_scan:
-  - software/msisensor/scan/**
-  - tests/software/msisensor/scan/**
-
-msisensor_msi:
+msisensor/msi:
   - software/msisensor/msi/**
   - tests/software/msisensor/msi/**
+
+msisensor/scan:
+  - software/msisensor/scan/**
+  - tests/software/msisensor/scan/**
 
 multiqc:
   - software/fastqc/**
   - software/multiqc/**
   - tests/software/multiqc/**
+
+nanoplot:
+  - software/nanoplot/**
+  - tests/software/nanoplot/**
 
 optitype:
   - software/optitype/**
@@ -329,23 +350,27 @@ pangolin:
   - software/pangolin/**
   - tests/software/pangolin/**
 
-picard_collectmultiplemetrics:
+picard/collectmultiplemetrics:
   - software/picard/collectmultiplemetrics/**
   - tests/software/picard/collectmultiplemetrics/**
 
-picard_collectwgsmetrics:
+picard/collectwgsmetrics:
   - software/picard/collectwgsmetrics/**
   - tests/software/picard/collectwgsmetrics/**
 
-picard_markduplicates:
+picard/markduplicates:
   - software/picard/markduplicates/**
   - tests/software/picard/markduplicates/**
 
-picard_mergesamfiles:
+picard/mergesamfiles:
   - software/picard/mergesamfiles/**
   - tests/software/picard/mergesamfiles/**
 
-preseq_lcextrap:
+plasmidid:
+  - software/plasmidid/**
+  - tests/software/plasmidid/**
+
+preseq/lcextrap:
   - software/preseq/lcextrap/**
   - tests/software/preseq/lcextrap/**
 
@@ -357,7 +382,7 @@ prokka:
   - software/prokka/**
   - tests/software/prokka/**
 
-qualimap_bamqc:
+qualimap/bamqc:
   - software/qualimap/bamqc/**
   - tests/software/qualimap/bamqc/**
 
@@ -365,75 +390,79 @@ quast:
   - software/quast/**
   - tests/software/quast/**
 
-salmon_index:
+rapidnj:
+  - software/rapidnj/**
+  - tests/software/rapidnj/**
+
+rasusa:
+  - software/rasusa/**
+  - tests/software/rasusa/**
+
+salmon/index:
   - software/salmon/index/**
   - tests/software/salmon/index/**
 
-salmon_quant:
+salmon/quant:
   - software/salmon/quant/**
   - tests/software/salmon/quant/**
 
-samtools_faidx:
+samtools/faidx:
   - software/samtools/faidx/**
   - tests/software/samtools/faidx/**
 
-samtools_fastq:
+samtools/fastq:
   - software/samtools/fastq/**
   - tests/software/samtools/fastq/**
 
-samtools_flagstat:
+samtools/flagstat:
   - software/samtools/flagstat/**
   - tests/software/samtools/flagstat/**
 
-samtools_idxstats:
+samtools/idxstats:
   - software/samtools/idxstats/**
   - tests/software/samtools/idxstats/**
 
-samtools_index:
+samtools/index:
   - software/samtools/index/**
   - tests/software/samtools/index/**
 
-samtools_merge:
+samtools/merge:
   - software/samtools/merge/**
   - tests/software/samtools/merge/**
 
-samtools_mpileup:
+samtools/mpileup:
   - software/samtools/mpileup/**
   - tests/software/samtools/mpileup/**
 
-samtools_sort:
+samtools/sort:
   - software/samtools/sort/**
   - tests/software/samtools/sort/**
 
-samtools_stats:
+samtools/stats:
   - software/samtools/stats/**
   - tests/software/samtools/stats/**
 
-samtools_view:
+samtools/view:
   - software/samtools/view/**
   - tests/software/samtools/view/**
 
-seacr_callpeak:
+seacr/callpeak:
   - software/seacr/callpeak/**
   - tests/software/seacr/callpeak/**
 
-seqkit_split2:
+seqkit/split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
 
-sequenza_bam2seqz:
-  - software/sequenza/bam2seqz/**
-  - tests/software/sequenza/bam2seqz/**
+sequenzautils/bam2seqz:
+  - software/sequenzautils/bam2seqz/**
+  - tests/software/sequenzautils/bam2seqz/**
 
-sequenza_wiggle:
-  - software/sequenza/wiggle/**
-  - tests/software/sequenza/wiggle/**
-
-sequenzautils_gcwiggle:
+sequenzautils/gcwiggle:
   - software/sequenzautils/gcwiggle/**
   - tests/software/sequenzautils/gcwiggle/**
 
-seqwish_induce:
+seqwish/induce:
   - software/seqwish/induce/**
   - tests/software/seqwish/induce/**
 
@@ -441,19 +470,23 @@ shovill:
   - software/shovill/**
   - tests/software/shovill/**
 
+snpsites:
+  - software/snpsites/**
+  - tests/software/snpsites/**
+
 spades:
   - software/spades/**
   - tests/software/spades/**
 
-star_align:
+star/align:
   - software/star/align/**
   - tests/software/star/align/**
 
-star_genomegenerate:
+star/genomegenerate:
   - software/star/genomegenerate/**
   - tests/software/star/genomegenerate/**
 
-strelka_germline:
+strelka/germline:
   - software/strelka/germline/**
   - tests/software/strelka/germline/**
 
@@ -461,15 +494,19 @@ stringtie:
   - software/stringtie/**
   - tests/software/stringtie/**
 
-tabix_bgzip:
+subread/featurecounts:
+  - software/subread/featurecounts/**
+  - tests/software/subread/featurecounts/**
+
+tabix/bgzip:
   - software/tabix/bgzip/**
   - tests/software/tabix/bgzip/**
 
-tabix_tabix:
+tabix/tabix:
   - software/tabix/tabix/**
   - tests/software/tabix/tabix/**
 
-tiddit_sv:
+tiddit/sv:
   - software/tiddit/sv/**
   - tests/software/tiddit/sv/**
 
@@ -477,11 +514,11 @@ trimgalore:
   - software/trimgalore/**
   - tests/software/trimgalore/**
 
-ucsc_bed12tobigbed:
+ucsc/bed12tobigbed:
   - software/ucsc/bed12tobigbed/**
   - tests/software/ucsc/bed12tobigbed/**
 
-ucsc_bedgraphtobigwig:
+ucsc/bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
 
@@ -497,10 +534,10 @@ vcftools:
   - software/vcftools/**
   - tests/software/vcftools/**
 
-yara:
+yara/mapper:
   - software/yara/mapper/**
   - tests/software/yara/mapper/**
 
-yara_index:
+yara/index:
   - software/yara/index/**
   - tests/software/yara/index/**

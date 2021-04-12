@@ -9,19 +9,18 @@ process SPADES {
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::spades=3.15.0" : null)
+    conda (params.enable_conda ? "bioconda::spades=3.15.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/spades:3.15.0--h633aebb_0"
+        container "https://depot.galaxyproject.org/singularity/spades:3.15.2--h95f258a_1"
     } else {
-        container "quay.io/biocontainers/spades:3.15.0--h633aebb_0"
+        container "quay.io/biocontainers/spades:3.15.2--h95f258a_1"
     }
 
     input:
     tuple val(meta), path(reads)
     path  hmm
-    val   coronaspades
 
     output:
     tuple val(meta), path('*.scaffolds.fa')    , optional:true, emit: scaffolds
@@ -37,9 +36,8 @@ process SPADES {
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "-s $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     def custom_hmms = params.spades_hmm ? "--custom-hmms $hmm" : ""
-    def command     = coronaspades ? "coronaspades.py" : "spades.py"
     """
-    $command \\
+    spades.py \\
         $options.args \\
         --threads $task.cpus \\
         $custom_hmms \\

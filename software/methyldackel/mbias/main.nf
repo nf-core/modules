@@ -9,7 +9,7 @@ process METHYLDACKEL_MBIAS {
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::methyldackel=0.5.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -24,8 +24,8 @@ process METHYLDACKEL_MBIAS {
     path fai
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path  "*.version.txt"         , emit: version
+    tuple val(meta), path("*.mbias.txt"), emit: txt
+    path  "*.version.txt"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,8 +37,8 @@ process METHYLDACKEL_MBIAS {
         $bam \\
         $prefix \\
         --txt \\
-        > ${prefix}.txt
+        > ${prefix}.mbias.txt
 
-    echo \$(methyldackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
+    echo \$(MethylDackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
     """
 }

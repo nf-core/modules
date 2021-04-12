@@ -6,17 +6,17 @@ include { TIDDIT_SV } from '../../../../software/tiddit/sv/main.nf' addParams( o
 
 workflow test_tiddit_sv {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ] 
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    fai   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai   = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
 
     TIDDIT_SV ( input, fasta, fai )
 }
 
 workflow test_tiddit_sv_no_ref {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ] 
             ]
 
     TIDDIT_SV ( input, [], [] )
