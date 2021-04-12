@@ -182,25 +182,6 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    git checkout -b fastqc
    ```
 
-   On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request (PR) - see below. Rather than merging changes directly from upstream the rebase strategy is recommended so that your changes are applied on top of the latest master branch from the nf-core repo. This can be performed as follows
-
-   ```bash
-   git pull --rebase upstream master
-   ```
-
-   Once the PR has been accepted you should delete the branch and checkout master again.
-
-   ```bash
-   git checkout master
-   git branch -d fastqc
-   ```
-
-   In case there are commits on the local branch that didn't make it into the PR (usually commits made after the PR), git will warn about this and not delete the branch. If you are sure you want to delete, use the following command
-
-   ```bash
-   git branch -D fastqc
-   ```
-
 6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
 
     ```console
@@ -324,6 +305,33 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     │ [✗]   1 Test Failed  │
     ╰──────────────────────╯
     ```
+
+9. Once ready, the code can be pushed and a pull request (PR) created
+
+    On a regular basis you can pull upstream changes into this branch and it is recommended to do so before pushing and creating a pull request - see below. Rather than merging changes directly from upstream the rebase strategy is recommended so that your changes are applied on top of the latest master branch from the nf-core repo. This can be performed as follows
+
+   ```bash
+   git pull --rebase upstream master
+   ```
+
+   Once you are ready you can push the code and create a PR
+
+   ```bash
+   git push -u origin fastqc
+   ```
+
+   Once the PR has been accepted you should delete the branch and checkout master again.
+
+   ```bash
+   git checkout master
+   git branch -d fastqc
+   ```
+
+   In case there are commits on the local branch that didn't make it into the PR (usually commits made after the PR), git will warn about this and not delete the branch. If you are sure you want to delete, use the following command
+
+   ```bash
+   git branch -D fastqc
+   ```
 
 ### Test data
 
