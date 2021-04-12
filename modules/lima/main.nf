@@ -9,22 +9,22 @@ process LIMA {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
-    conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
+    conda (params.enable_conda ? "bioconda::lima=2.0.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/lima:2.2.0--h9ee0642_0"
+        container "https://depot.galaxyproject.org/singularity/lima:2.0.0--0"
     } else {
-        container "quay.io/biocontainers/lima:2.2.0--h9ee0642_0"
+        container "quay.io/biocontainers/lima:2.0.0--0"
     }
 
     input:
     tuple val(meta), path(ccs)
-    path(primers)
+    path primers
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "*.{bam.pbi,xml,json,clips,counts,guess,report,summary}", emit: reports
+    tuple val(meta), path("*.bam"), path("*.bam.pbi"), emit: bam
+    path "*.{xml,json,clips,counts,guess,report,summary}", emit: reports
     path "*.version.txt"          , emit: version
 
     script:
@@ -36,7 +36,8 @@ process LIMA {
         $ccs \\
         $primers \\
         $lima_out \\
-        -j $task.cpus \\
+        --isoseq \\
+        --peek-guess \\
         $options.args
 
     lima --version | grep -e 'commit' > ${software}.version.txt
