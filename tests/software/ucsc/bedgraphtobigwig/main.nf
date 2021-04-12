@@ -6,9 +6,9 @@ include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../software/ucsc/bedgraphtobig
 
 workflow test_ucsc_bedgraphtobigwig {
     input = [ [ id:'test' ], // meta map
-              [ file('https://raw.githubusercontent.com/igvteam/igv.js/master/test/data/wig/bedgraph-example-uscs.bedgraph', checkIfExists: true) ] 
+              [ file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true) ]
             ]
-    sizes = file('https://raw.githubusercontent.com/igvteam/igv.js/master/test/data/wig/chrom.sizes', checkIfExists: true)
+    sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
     UCSC_BEDGRAPHTOBIGWIG ( input, sizes )
 }

@@ -108,15 +108,6 @@ blast/makeblastdb:
   - software/blast/makeblastdb/**
   - tests/software/blast/makeblastdb/**
 
-bowtie2/align:
-  - software/bowtie2/align/**
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/align/**
-
-bowtie2/build:
-  - software/bowtie2/build/**
-  - tests/software/bowtie2/build_test/**
-
 bowtie/align:
   - software/bowtie/align/**
   - software/bowtie/build/**
@@ -125,6 +116,15 @@ bowtie/align:
 bowtie/build:
   - software/bowtie/build/**
   - tests/software/bowtie/build_test/**
+
+bowtie2/align:
+  - software/bowtie2/align/**
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/align/**
+
+bowtie2/build:
+  - software/bowtie2/build/**
+  - tests/software/bowtie2/build_test/**
 
 bwa/index:
   - software/bwa/index/**
@@ -301,6 +301,10 @@ kraken2/run:
   - software/kraken2/run/**
   - tests/software/kraken2/run/**
 
+mash/sketch:
+  - software/mash/sketch/**
+  - tests/software/mash/sketch/**
+
 methyldackel/extract:
   - software/methyldackel/extract/**
   - tests/software/methyldackel/extract/**
@@ -390,6 +394,14 @@ quast:
   - software/quast/**
   - tests/software/quast/**
 
+rapidnj:
+  - software/rapidnj/**
+  - tests/software/rapidnj/**
+
+rasusa:
+  - software/rasusa/**
+  - tests/software/rasusa/**
+
 salmon/index:
   - software/salmon/index/**
   - tests/software/salmon/index/**
@@ -445,14 +457,6 @@ seacr/callpeak:
 seqkit/split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
-
-sequenza/bam2seqz:
-  - software/sequenza/bam2seqz/**
-  - tests/software/sequenza/bam2seqz/**
-
-sequenza/wiggle:
-  - software/sequenza/wiggle/**
-  - tests/software/sequenza/wiggle/**
 
 sequenzautils/bam2seqz:
   - software/sequenzautils/bam2seqz/**
@@ -534,7 +538,7 @@ vcftools:
   - software/vcftools/**
   - tests/software/vcftools/**
 
-yara:
+yara/mapper:
   - software/yara/mapper/**
   - tests/software/yara/mapper/**
 
