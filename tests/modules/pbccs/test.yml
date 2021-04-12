@@ -1,0 +1,13 @@
+- name: pbccs test_pbccs
+  command: nextflow run tests/software/pbccs -entry test_pbccs -c tests/config/nextflow.config
+  tags:
+    - pbccs
+  files:
+    - path: output/pbccs/alz.1perc.subreads.10000.ccs.bam
+      md5sum: 12e49871a5a56c1d40bc96eb805b3e46
+    - path: output/pbccs/alz.1perc.subreads.10000.ccs.bam.pbi
+      md5sum: ab2181f674fb670394e3f26ab2c3d15c
+    - path: output/pbccs/alz.1perc.subreads.10000.ccs.ccs_report.txt
+      md5sum: 480e48f8fcb66ede197f3e8b1553bf7a
+    - path: output/pbccs/alz.1perc.subreads.10000.ccs.zmw_metrics.json.gz
+      contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
