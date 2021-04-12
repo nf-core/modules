@@ -1,0 +1,6 @@
+- name: abacas
+  command: nextflow run ./tests/software/abacas -entry test_abacas -c tests/config/nextflow.config
+  tags:
+    - abacas
+  files:
+    - path: output/abacas/test/test.abacas.fasta
