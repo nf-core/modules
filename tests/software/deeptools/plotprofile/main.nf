@@ -7,7 +7,7 @@ include { DEEPTOOLS_PLOTPROFILE } from '../../../../software/deeptools/plotprofi
 workflow test_deeptools_plotprofile {
 
     input = [ [ id:'test' ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_computematrix'], checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['test_computematrix_mat_gz'], checkIfExists: true)
             ]
 
     DEEPTOOLS_PLOTPROFILE ( input )
