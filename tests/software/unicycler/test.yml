@@ -2,7 +2,6 @@
   command: nextflow run ./tests/software/unicycler -entry test_unicycler_single_end -c tests/config/nextflow.config
   tags:
     - unicycler
-    - unicycler_single_end
   files:
     - path: output/unicycler/test.scaffolds.fa
     - path: output/unicycler/test.assembly.gfa
@@ -14,7 +13,6 @@
   command: nextflow run ./tests/software/unicycler -entry test_unicycler_paired_end -c tests/config/nextflow.config
   tags:
     - unicycler
-    - unicycler_paired_end
   files:
     - path: output/unicycler/test.scaffolds.fa
     - path: output/unicycler/test.assembly.gfa
