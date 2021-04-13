@@ -2,7 +2,6 @@
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_standard -c tests/config/nextflow.config
   tags:
     - kallistobustools
-    - kallistobustools_ref_standard
     - kallistobustools/ref
   files:
     - path: output/kallistobustools/cdna.fa
@@ -16,7 +15,6 @@
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_lamanno -c tests/config/nextflow.config
   tags:
     - kallistobustools
-    - kallistobustools_ref_lamanno
     - kallistobustools/ref
   files:
     - path: output/kallistobustools/cdna.fa
@@ -29,7 +27,6 @@
 - name: kallistobustools ref test_kallistobustools_ref_nucleus
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_nucleus -c tests/config/nextflow.config
   tags:
-    - kallistobustools_ref_nucleus
     - kallistobustools
     - kallistobustools/ref
   files:
