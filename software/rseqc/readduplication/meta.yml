@@ -1,8 +1,8 @@
-name: rseqc_innerdistance
-description: Calculate inner distance between read pairs.
+name: rseqc_readduplication
+description: Calculate read duplication rate
 keywords:
-  - fragment_size
-  - inner_distance
+  - rnaseq
+  - duplication
 tools:
   - rseqc:
       description: |
@@ -26,26 +26,22 @@ input:
       description: a bed file for the reference gene model
       pattern: "*.{bed}"
 output:
-  - distance:
+  - seq_xls:
       type: file
-      description: the inner distances
-      pattern: "*.inner_distance.txt"
-  - freq:
+      description: Read duplication rate determined from mapping position of read
+      pattern: "*seq.DupRate.xls"
+  - pos_xls:
       type: file
-      description: frequencies of different insert sizes
-      pattern: "*.inner_distance_freq.txt"
-  - mean:
-      type: file
-      description: mean/median values of inner distances
-      pattern: "*.inner_distance_mean.txt"
+      description: Read duplication rate determined from sequence of read
+      pattern: "*pos.DupRate.xls"
   - pdf:
       type: file
-      description: distribution plot of inner distances
-      pattern: "*.inner_distance_plot.pdf"
+      description: plot of duplication rate
+      pattern: "*.pdf"
   - rscript:
       type: file
       description: script to reproduce the plot
-      pattern: "*.inner_distance_plot.R"
+      pattern: "*.R"
   - version:
       type: file
       description: File containing software version
