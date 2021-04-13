@@ -24,4 +24,10 @@
         - 'sample3:0.000001'
         - 'sample4:0.111'
     - path: output/raxmlng/output.raxml.support
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      contains:
+        - 'sample1:0.359'
+        - 'sample2:1.50'
+        - 'sample3:0.000001'
+        - 'sample4:0.111'
+      contains_regex:
+        - '\)[89]\d:'

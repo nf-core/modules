@@ -31,28 +31,16 @@ process RAXMLNG {
     def software = getSoftwareName(task.process)
 
     if (options.args.contains('--bs-trees')) {
-        """
-        raxml-ng \\
-        --all \\
-        $options.args \\
-        --msa $alignment \\
-        --model GTR+G \\
-        --threads $task.cpus \\
-        --bs-trees 1000 \\
-        --prefix output
+        options.args = "--all ${options.args}"
 
-        echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt
-        """
-    } else {
-        """
-        raxml-ng \\
-        $options.args \\
-        --msa $alignment \\
-        --model GTR+G \\
-        --threads $task.cpus \\
-        --prefix output
-
-        echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt
-        """
     }
+    """
+    raxml-ng \\
+    $options.args \\
+    --msa $alignment \\
+    --threads $task.cpus \\
+    --prefix output
+
+    echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt
+        """
 }
