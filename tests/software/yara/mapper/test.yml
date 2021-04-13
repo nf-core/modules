@@ -1,7 +1,6 @@
 - name: yara mapper test_yara_single_end
   command: nextflow run tests/software/yara/mapper -entry test_yara_single_end -c tests/config/nextflow.config
   tags:
-    - yara_single_end
     - yara/mapper
     - yara
   files:
@@ -37,7 +36,6 @@
   command: nextflow run tests/software/yara/mapper -entry test_yara_paired_end -c tests/config/nextflow.config
   tags:
     - yara/mapper
-    - yara_paired_end
     - yara
   files:
     - path: output/yara/test_2.mapped.bam
