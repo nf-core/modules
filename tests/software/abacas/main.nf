@@ -7,7 +7,7 @@ include { ABACAS } from '../../../software/abacas/main.nf' addParams ( options: 
 workflow test_abacas {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['genome']['scaffolds_fasta'], checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
             ]
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
