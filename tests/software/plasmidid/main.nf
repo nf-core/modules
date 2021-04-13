@@ -7,7 +7,7 @@ include { PLASMIDID } from '../../../software/plasmidid/main.nf' addParams ( opt
 workflow test_plasmidid {
 
     contigs = [ [ id:'test' ], // meta map
-                file(params.test_data['sarscov2']['illumina']['fasta']['contigs_fasta'], checkIfExists: true)
+                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
               ]
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
