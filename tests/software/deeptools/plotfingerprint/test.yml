@@ -1,8 +1,8 @@
 - name: deeptools plotfingerprint
   command: nextflow run tests/software/deeptools/plotfingerprint -entry test_deeptools_plotfingerprint -c tests/config/nextflow.config
   tags:
-    - deeptools/plotfingerprint
     - deeptools
+    - deeptools/plotfingerprint
   files:
     - path: output/deeptools/test.plotFingerprint.pdf
     - path: output/deeptools/test.plotFingerprint.qcmetrics.txt

@@ -1,8 +1,8 @@
 - name: deeptools computematrix
   command: nextflow run tests/software/deeptools/computematrix -entry test_deeptools_computematrix -c tests/config/nextflow.config
   tags:
-    - deeptools/computematrix
     - deeptools
+    - deeptools/computematrix
   files:
     - path: output/deeptools/test.computeMatrix.mat.gz
     - path: output/deeptools/test.computeMatrix.vals.mat.tab
