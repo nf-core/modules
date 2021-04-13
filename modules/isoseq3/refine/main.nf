@@ -9,7 +9,7 @@ process ISOSEQ3_REFINE {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -20,7 +20,7 @@ process ISOSEQ3_REFINE {
 
     input:
     tuple val(meta), path(bam)
-    path(primers)
+    path primers
 
     output:
     tuple val(meta), path("*.flnc.bam"), path("*.flnc.bam.pbi"), emit: bam
@@ -33,12 +33,11 @@ process ISOSEQ3_REFINE {
     refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
     """
     isoseq3 \\
-        refine \\
-        -j $task.cpus \\
-        $options.args \\
-        $bam \\
-        $primers \\
-        $refine_out
+      refine \\
+      $bam \\
+      $primers \\
+      $refine_out \\
+      $options.args
 
     echo \$(isoseq3 refine --version) | grep -e 'commit' > ${software}.version.txt
     """
