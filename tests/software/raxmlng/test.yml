@@ -2,7 +2,6 @@
   command: nextflow run ./tests/software/raxmlng -entry test_raxmlng_no_bootstrap -c tests/config/nextflow.config
   tags:
     - raxmlng
-    - raxmlng_no_bootstrap
   files:
     - path: output/raxmlng/output.raxml.bestTree
       contains:
@@ -15,7 +14,6 @@
   command: nextflow run ./tests/software/raxmlng -entry test_raxmlng_bootstrap -c tests/config/nextflow.config
   tags:
     - raxmlng
-    - raxmlng_bootstrap
   files:
     - path: output/raxmlng/output.raxml.bestTree
       contains:
