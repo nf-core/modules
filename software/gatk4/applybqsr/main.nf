@@ -19,7 +19,7 @@ process GATK4_APPLYBQSR {
     }
 
     input:
-    tuple val(meta), path(bam), path(bqsr_table)
+    tuple val(meta), path(bam), path(bai), path(bqsr_table)
     path fasta
     path fastaidx
     path dict
