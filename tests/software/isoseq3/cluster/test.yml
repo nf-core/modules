@@ -1,0 +1,22 @@
+- name: isoseq3 cluster test_isoseq3_cluster
+  command: nextflow run tests/software/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
+  tags:
+    - isoseq3
+    - isoseq3_cluster
+  files:
+    - path: output/isoseq3/alz.flnc.1000.clustered.bam
+      md5sum: 364ef479bfdf845f5c28f3f73497765d
+    - path: output/isoseq3/alz.flnc.1000.clustered.bam.pbi
+      md5sum: d6aa32e10728d4c18fabacacd19bd030
+    - path: output/isoseq3/alz.flnc.1000.clustered.cluster
+      md5sum: a2eec0abb41114ac54660248d1c67a60
+    - path: output/isoseq3/alz.flnc.1000.clustered.cluster_report.csv
+      md5sum: 4aed8308b41ab9c3d17c0a41dcdb6c77
+    - path: output/isoseq3/alz.flnc.1000.clustered.hq.bam
+      md5sum: 364ef479bfdf845f5c28f3f73497765d
+    - path: output/isoseq3/alz.flnc.1000.clustered.hq.bam.pbi
+      md5sum: d6aa32e10728d4c18fabacacd19bd030
+    - path: output/isoseq3/alz.flnc.1000.clustered.lq.bam.pbi
+      md5sum: d6aa32e10728d4c18fabacacd19bd030
+    - path: output/isoseq3/alz.flnc.1000.clustered.transcriptset.xml
+      contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
