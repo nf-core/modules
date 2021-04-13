@@ -1,0 +1,27 @@
+- name: raxmlng no_bootstrap
+  command: nextflow run ./tests/software/raxmlng -entry test_raxmlng_no_bootstrap -c tests/config/nextflow.config
+  tags:
+    - raxmlng
+    - raxmlng_no_bootstrap
+  files:
+    - path: output/raxmlng/output.raxml.bestTree
+      contains:
+        - 'sample1:0.359'
+        - 'sample2:1.50'
+        - 'sample3:0.000001'
+        - 'sample4:0.111'
+
+- name: raxmlng bootstrap
+  command: nextflow run ./tests/software/raxmlng -entry test_raxmlng_bootstrap -c tests/config/nextflow.config
+  tags:
+    - raxmlng
+    - raxmlng_bootstrap
+  files:
+    - path: output/raxmlng/output.raxml.bestTree
+      contains:
+        - 'sample1:0.359'
+        - 'sample2:1.50'
+        - 'sample3:0.000001'
+        - 'sample4:0.111'
+    - path: output/raxmlng/output.raxml.support
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
