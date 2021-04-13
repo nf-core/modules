@@ -18,28 +18,26 @@ process RAXMLNG {
     }
 
     input:
-
     path alignment
 
     output:
     path "*.raxml.bestTree", emit: phylogeny
-    path "*.raxml.support", optional:true, emit: phylogeny_bootstrapped
-    path "*.version.txt", emit: version
+    path "*.raxml.support" , optional:true, emit: phylogeny_bootstrapped
+    path "*.version.txt"   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
 
     if (options.args.contains('--bs-trees')) {
         options.args = "--all ${options.args}"
-
     }
     """
     raxml-ng \\
-    $options.args \\
-    --msa $alignment \\
-    --threads $task.cpus \\
-    --prefix output
+        $options.args \\
+        --msa $alignment \\
+        --threads $task.cpus \\
+        --prefix output
 
     echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt
-        """
+    """
 }
