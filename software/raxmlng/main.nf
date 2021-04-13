@@ -29,7 +29,7 @@ process RAXMLNG {
 
     script:
     def software = getSoftwareName(task.process)
-    
+
     if (options.args.contains('--bs-trees')) {
         """
         raxml-ng \\
@@ -52,7 +52,7 @@ process RAXMLNG {
         --threads $task.cpus \\
         --prefix output
 
-        echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt 
+        echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//' > ${software}.version.txt
         """
     }
 }
