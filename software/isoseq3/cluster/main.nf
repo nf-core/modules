@@ -35,7 +35,6 @@ process ISOSEQ3_CLUSTER {
       cluster \\
       $bam \\
       $cluster_out \\
-      --use-qvs \\
       $options.args
 
     echo \$(isoseq3 --version 2>&1) | grep -e 'commit' > ${software}.version.txt
