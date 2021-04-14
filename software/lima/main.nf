@@ -23,8 +23,8 @@ process LIMA {
     path primers
 
     output:
-    tuple val(meta), path("*.bam"), path("*.bam.pbi"), emit: bam
-    path "*.{xml,json,clips,counts,guess,report,summary}", emit: reports
+    tuple val(meta), path("*.bam"), emit: bam
+    path path("*.bam.pbi"), "*.{xml,json,clips,counts,guess,report,summary}", emit: reports
     path "*.version.txt"          , emit: version
 
     script:
