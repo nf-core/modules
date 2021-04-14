@@ -2,7 +2,6 @@
   command: nextflow run tests/software/vcftools -entry test_vcftools_vcf_base -c tests/config/nextflow.config
   tags:
     - vcftools
-    - vcftools_vcf_base
   files:
     - path: output/vcftools/test.frq
       md5sum: 7f126655f17268fd1a338734f62868e9
@@ -10,7 +9,6 @@
 - name: vcftools test_vcftools_vcfgz_base
   command: nextflow run tests/software/vcftools -entry test_vcftools_vcfgz_base -c tests/config/nextflow.config
   tags:
-    - vcftools_vcfgz_base
     - vcftools
   files:
     - path: output/vcftools/test.frq
@@ -20,7 +18,6 @@
   command: nextflow run tests/software/vcftools -entry test_vcftools_vcf_optional -c tests/config/nextflow.config
   tags:
     - vcftools
-    - vcftools_vcf_optional
   files:
     - path: output/vcftools/test.frq
       md5sum: 7f126655f17268fd1a338734f62868e9
@@ -29,7 +26,6 @@
   command: nextflow run tests/software/vcftools -entry test_vcftools_vcfgz_optional -c tests/config/nextflow.config
   tags:
     - vcftools
-    - vcftools_vcfgz_optional
   files:
     - path: output/vcftools/test.frq
       md5sum: 7f126655f17268fd1a338734f62868e9

@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/salmon/quant -entry test_salmon_quant_single_end -c tests/config/nextflow.config
   tags:
     - salmon
-    - salmon_quant
-    - salmon_quant_single_end
+    - salmon/quant
   files:
     - path: ./output/salmon/test/cmd_info.json
     - path: ./output/salmon/test/quant.sf
@@ -54,8 +53,7 @@
   command: nextflow run ./tests/software/salmon/quant -entry test_salmon_quant_paired_end -c tests/config/nextflow.config
   tags:
     - salmon
-    - salmon_quant
-    - salmon_quant_paired_end
+    - salmon/quant
   files:
     - path: ./output/salmon/test/cmd_info.json
     - path: ./output/salmon/test/quant.sf

@@ -7,6 +7,7 @@ include { GATK4_APPLYBQSR } from '../../../../software/gatk4/applybqsr/main.nf' 
 workflow test_gatk4_applybqsr {
     input = [ [ id:'test' ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
               file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true)
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
@@ -19,6 +20,7 @@ workflow test_gatk4_applybqsr {
 workflow test_gatk4_applybqsr_intervals {
     input = [ [ id:'test' ], // meta map
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true)
               ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

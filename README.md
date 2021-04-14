@@ -298,11 +298,13 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
 
 In order to test that each module added to `nf-core/modules` is actually working and to be able to track any changes to results files between module updates we have set-up a number of Github Actions CI tests to run each module on a minimal test dataset using Docker, Singularity and Conda.
 
-- All test data for `nf-core/modules` MUST be added to [`tests/data/`](tests/data/) and organised by filename extension.
+- All test data for `nf-core/modules` MUST be added to the `modules` branch of [`nf-core/test-datasets`](https://github.com/nf-core/test-datasets/tree/modules/data) and organised by filename extension.
 
-- In order to keep the size of this repository as minimal as possible, pre-existing files from [`tests/data/`](tests/data/) MUST be reused if at all possible.
+- In order to keep the size of this repository as minimal as possible, pre-existing files from [`nf-core/test-datasets`](https://github.com/nf-core/test-datasets/tree/modules/data) MUST be reused if at all possible.
 
 - Test files MUST be kept as tiny as possible.
+
+- If the appropriate test data doesn't exist in the `modules` branch of [`nf-core/test-datasets`](https://github.com/nf-core/test-datasets/tree/modules/data) please contact us on the [nf-core Slack `#modules` channel](https://nfcore.slack.com/channels/modules) (you can join with [this invite](https://nf-co.re/join/slack)) to discuss possible options.
 
 ### Running tests manually
 
@@ -541,5 +543,5 @@ nextflow run /path/to/pipeline/ -c /path/to/custom_module.conf
 > files + singularity containers + institutional configs + modules in one go for you, to make this process easier.
 
 # New test data created for the module- sequenzautils/bam2seqz
-The new test data is an output from another module- sequenzautils/bcwiggle- (which uses sarscov2 genome fasta file as an input). 
+The new test data is an output from another module- sequenzautils/bcwiggle- (which uses sarscov2 genome fasta file as an input).
 -->
