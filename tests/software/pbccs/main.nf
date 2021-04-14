@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PBCCS } from '../../../software/pbccs/main.nf' addParams( options: [rq:0.9] )
+include { PBCCS } from '../../../software/pbccs/main.nf' addParams( options: [args:'--min-rq 0.9'] )
 
 workflow test_pbccs {
 
