@@ -36,8 +36,6 @@ process LIMA {
         $ccs \\
         $primers \\
         $lima_out \\
-        --isoseq \\
-        --peek-guess \\
         $options.args
 
     lima --version | grep -e 'commit' > ${software}.version.txt
