@@ -20,7 +20,6 @@ process PBCCS {
 
     input:
     tuple val(meta), path(bam)
-    val(rq)
 
     output:
     tuple val(meta), path("*.ccs.bam"), emit: bam
