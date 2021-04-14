@@ -1,11 +1,11 @@
 - name: isoseq3 cluster test_isoseq3_cluster
   command: nextflow run tests/software/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
   tags:
-    - isoseq3
     - isoseq3_cluster
+    - isoseq3
   files:
     - path: output/isoseq3/alz.flnc.1000.clustered.bam
-      md5sum: 364ef479bfdf845f5c28f3f73497765d
+      md5sum: f6ed0965d64d522960d4f8945e069231
     - path: output/isoseq3/alz.flnc.1000.clustered.bam.pbi
       md5sum: d6aa32e10728d4c18fabacacd19bd030
     - path: output/isoseq3/alz.flnc.1000.clustered.cluster
@@ -13,7 +13,7 @@
     - path: output/isoseq3/alz.flnc.1000.clustered.cluster_report.csv
       md5sum: 4aed8308b41ab9c3d17c0a41dcdb6c77
     - path: output/isoseq3/alz.flnc.1000.clustered.hq.bam
-      md5sum: 364ef479bfdf845f5c28f3f73497765d
+      md5sum: f6ed0965d64d522960d4f8945e069231
     - path: output/isoseq3/alz.flnc.1000.clustered.hq.bam.pbi
       md5sum: d6aa32e10728d4c18fabacacd19bd030
     - path: output/isoseq3/alz.flnc.1000.clustered.lq.bam.pbi
