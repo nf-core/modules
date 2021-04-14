@@ -23,7 +23,7 @@ process ISOSEQ3_CLUSTER {
 
     output:
     tuple val(meta), path("*.clustered.bam"), path("*.clustered.bam.pbi"), emit: bam
-    tuple file("*.{clustered.cluster,clustered.cluster_report.csv,clustered.hq.bam,clustered.hq.bam.pbi,clustered.hq.bam,clustered.lq.bam.pbi,clustered.transcriptset.xml}"), emit: reports
+    path("*.{clustered.cluster,clustered.cluster_report.csv,clustered.hq.bam,clustered.hq.bam.pbi,clustered.hq.bam,clustered.lq.bam.pbi,clustered.transcriptset.xml}"), emit: reports
     path "*.version.txt", emit: version
 
     script:
