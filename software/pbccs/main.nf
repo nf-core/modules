@@ -23,7 +23,7 @@ process PBCCS {
     val(rq)
 
     output:
-    tuple val(meta), path("*.ccs.bam"), path("*.ccs.bam.pbi"), emit: ccs
+    tuple val(meta), path("*.ccs.bam"), path("*.ccs.bam.pbi"), emit: bam
     tuple path("*.ccs_report.txt"), path ("*.zmw_metrics.json.gz"), emit: reports
     path "*.version.txt"          , emit: version
 
@@ -35,7 +35,6 @@ process PBCCS {
     ccs \\
         $bam \\
         $ccs \\
-        --min-rq $rq \\
         -j $task.cpus \\
         $options.args
 
