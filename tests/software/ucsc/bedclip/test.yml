@@ -1,0 +1,8 @@
+- name: ucsc bedclip
+  command: nextflow run ./tests/software/ucsc/bedclip -entry test_ucsc_bedclip -c tests/config/nextflow.config
+  tags:
+    - ucsc
+    - ucsc/bedclip
+  files:
+    - path: output/ucsc/test.clip.bedGraph
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
