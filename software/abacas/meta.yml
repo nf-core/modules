@@ -6,7 +6,10 @@ keywords:
   - contiguate
 tools:
   - abacas:
-      description: ABACAS is intended to rapidly contiguate (align, order, orientate), visualize and design primers to close gaps on shotgun assembled contigs based on a reference sequence.
+      description: |
+        ABACAS is intended to rapidly contiguate (align, order, orientate),
+        visualize and design primers to close gaps on shotgun assembled
+        contigs based on a reference sequence.
       homepage: http://abacas.sourceforge.net/documentation.html
       documentation: http://abacas.sourceforge.net/documentation.html
       tool_dev_url: None
@@ -35,9 +38,16 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - results:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      type: files
+      description: |
+        List containing abacas output files
+        [ 'test.abacas.bin', 'test.abacas.fasta', 'test.abacas.gaps',
+        'test.abacas.gaps.tab', 'test.abacas.nucmer.delta',
+        'test.abacas.nucmer.filtered.delta', 'test.abacas.nucmer.tiling',
+        'test.abacas.tab', 'test.abacas.unused.contigs.out',
+        'test.abacas.MULTIFASTA.fa' ]
+      pattern: "*.{abacas}*"
+
   - version:
       type: file
       description: File containing software version
