@@ -1,0 +1,10 @@
+- name: artic guppyplex
+  command: nextflow run tests/software/artic/guppyplex -entry test_artic_guppyplex -c tests/config/nextflow.config
+  tags:
+    - artic
+    - artic/guppyplex
+  files:
+    - path: output/artic/test.fastq.gz
+      contains:
+      - "read=52133 ch=125"
+      - "TTGTGCTTCGTTTCA"
