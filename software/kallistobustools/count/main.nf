@@ -30,8 +30,8 @@ process KALLISTOBUSTOOLS_COUNT {
     val     technology
 
     output:
-    tuple val(meta), path "*_kallistobustools_count" , optional:false , emit: kallistobustools_count
-    tuple path "*.version.txt"             , optional:false , emit: version
+    tuple val(meta), path ("*_kallistobustools_count") , emit: kallistobustools_count
+    path "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
