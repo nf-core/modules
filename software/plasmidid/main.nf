@@ -11,11 +11,11 @@ process PLASMIDID {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::plasmidid=1.6.4' : null)
+    conda (params.enable_conda ? 'bioconda::plasmidid=1.6.5' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/plasmidid:1.6.4--hdfd78af_3'
+        container 'https://depot.galaxyproject.org/singularity/plasmidid:1.6.5--hdfd78af_0'
     } else {
-        container 'quay.io/biocontainers/plasmidid:1.6.4--hdfd78af_3'
+        container 'quay.io/biocontainers/plasmidid:1.6.5--hdfd78af_0'
     }
 
     input:
