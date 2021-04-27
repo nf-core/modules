@@ -11,7 +11,7 @@ workflow test_hmmer_hmmalign {
 
     input = [
         [ id:'test' ], // meta map
-        file('https://raw.githubusercontent.com/erikrikarddaniel/test-datasets/modules/data/delete_me/e_coli_k12_16s.fna')
+        file('https://raw.githubusercontent.com/erikrikarddaniel/test-datasets/modules/data/delete_me/e_coli_k12_16s.fna')      // Change to params.test_data syntax after the data is included in tests/config/test_data.config
     ]
 
     hmm   = file('https://raw.githubusercontent.com/erikrikarddaniel/test-datasets/modules/data/delete_me/bac.16S_rRNA.hmm')
