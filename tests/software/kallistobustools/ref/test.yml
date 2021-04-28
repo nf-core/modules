@@ -1,8 +1,7 @@
 - name: kallistobustools ref test_kallistobustools_ref_standard
   command: nextflow run tests/software/kallistobustools/ref -entry test_kallistobustools_ref_standard -c tests/config/nextflow.config
   tags:
-    - kallistobustools_ref
-    - kallistobustools_ref_standard
+    - kallistobustools/ref
     - kallistobustools
   files:
     - path: output/kallistobustools/cdna.fa
