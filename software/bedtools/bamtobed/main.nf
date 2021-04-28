@@ -16,7 +16,7 @@ process BEDTOOLS_BAMTOBED {
 
     input:
     tuple val(meta), path(sizes), path(bam), path(bai)
-   
+
     output:
     tuple val(meta), path(sizes), path("*.bed12"), emit: bed12
     path "*.version.txt"                         , emit: version
