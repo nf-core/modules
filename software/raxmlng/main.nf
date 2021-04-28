@@ -28,7 +28,7 @@ process RAXMLNG {
     script:
     def software = getSoftwareName(task.process)
 
-    if (options.args.contains('--bs-trees')) {
+    if (options.args.contains('--bs-trees') and !options.args.contains('--all')) {
         options.args = "--all ${options.args}"
     }
     """
