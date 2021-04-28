@@ -15,5 +15,3 @@ workflow test_hmmer_hmmalign {
 
     HMMER_HMMALIGN ( input, hmm )
 }
-
-// vim:sw=4
