@@ -1,0 +1,11 @@
+- name: qcat
+  command: nextflow run ./tests/software/qcat -entry test_qcat -c tests/config/nextflow.config
+  tags:
+    - qcat
+  files:
+    - path: ./output/qcat/fastq/barcode06.fastq.gz
+      md5sum: 27891910e5e97430802cf0f8bac0885b
+    - path: ./output/qcat/fastq/barcode12.fastq.gz 
+      md5sum: 5f6bf95a10e8445d6e8718e638194eb4
+    - path: ./output/qcat/fastq/none.fastq.gz 
+      md5sum: 416417fc0748f57456b8e386509c30b7
