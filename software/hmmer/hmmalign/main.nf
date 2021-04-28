@@ -40,5 +40,3 @@ process HMMER_HMMALIGN {
     echo \$(hmmalign -h | grep -o '^# HMMER [0-9.]*') | sed 's/^# HMMER *//' > ${software}.version.txt
     """
 }
-
-// vim:sw=4
