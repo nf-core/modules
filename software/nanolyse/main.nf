@@ -27,7 +27,7 @@ process NANOLYSE {
     input:
     tuple val(meta), path(fastq)
     path nanolyse_fasta
-    
+
     output:
     tuple val(meta), path("*.fastq.gz")   ,emit: nanolyse_fastq
     path "*.log"                          ,emit: nanolyse_log
