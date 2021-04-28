@@ -5,9 +5,6 @@ nextflow.enable.dsl = 2
 include { HMMER_HMMALIGN } from '../../../../software/hmmer/hmmalign/main.nf' addParams( options: [:] )
 
 workflow test_hmmer_hmmalign {
-    
-//    input = [ [ id:'test' ], // meta map
-//              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 
     input = [
         [ id:'test' ], // meta map
