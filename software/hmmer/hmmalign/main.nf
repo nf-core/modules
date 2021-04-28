@@ -19,8 +19,8 @@ process HMMER_HMMALIGN {
     }
 
     input:
-    tuple val(meta), path(fasta) // Gzipped fasta file
-    path hmm                     // Profile hmm to align to
+    tuple val(meta), path(fasta)
+    path hmm
 
     output:
     tuple val(meta), path("*.sthlm.gz"), emit: sthlm
