@@ -1,0 +1,8 @@
+- name: graphmap2 align
+  command: nextflow run ./tests/software/graphmap2/align -entry test_graphmap2_align -c tests/config/nextflow.config
+  tags:
+    - graphmap2
+    - graphmap2/align
+  files:
+    - path: ./output/graphmap2/test.sam
+      md5sum: 8ebbb08f8fbb0c76afcf60a0e93fd2c4
