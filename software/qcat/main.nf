@@ -17,7 +17,7 @@ process QCAT {
     input:
     tuple val(meta), path(input_path)
     val(barcode_kit)
-    
+
     output:
     tuple val(meta), path("fastq/*.fastq.gz") , emit: fastq
     path "*.version.txt"                      , emit: version
@@ -36,7 +36,7 @@ process QCAT {
     -f \$FILE \\
     -b ./fastq \\
     --kit $barcode_kit
-            
+
     ## Zip fastq files (cannot find pigz command)
     gzip fastq/*
     qcat --version &> qcat.version.txt
