@@ -6,8 +6,8 @@ include { KALLISTOBUSTOOLS_REF } from '../../../../software/kallistobustools/ref
 
 workflow test_kallistobustools_ref_standard {
 
-    fasta       = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/GRCm39.chr19_100k.fa.gz", checkIfExists: true)
-    gtf         = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true)
+    fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    gtf         = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
     workflow    = "standard"
 
     KALLISTOBUSTOOLS_REF(fasta, gtf, workflow)
@@ -15,18 +15,18 @@ workflow test_kallistobustools_ref_standard {
 
 workflow test_kallistobustools_ref_lamanno {
 
-    fasta       = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/GRCm39.chr19_100k.fa.gz", checkIfExists: true)
-    gtf         = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true)
-    workflow    = "standard"
+    fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    gtf         = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    workflow    = "lamanno"
 
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
 
 workflow test_kallistobustools_ref_nucleus {
 
-    fasta       = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/GRCm39.chr19_100k.fa.gz", checkIfExists: true)
-    gtf         = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/kallistobustools/gencode.VM26.chr19_10k.gtf.gz", checkIfExists: true)
-    workflow    = "standard"
+    fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    gtf         = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    workflow    = "nucleus"
 
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
