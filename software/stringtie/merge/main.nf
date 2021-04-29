@@ -17,7 +17,7 @@ process STRINGTIE_MERGE {
     input:
     path  stringtie_gtf
     path  annotation_gtf
-    
+
     output:
     path "stringtie.merged.gtf"   , emit: merged_gtf
 
