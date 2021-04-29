@@ -2,6 +2,7 @@
   command: nextflow run ./tests/software/stringtie/stringtie/ -entry test_stringtie_forward -c tests/config/nextflow.config
   tags:
     - stringtie
+    - stringtie/stringtie
   files:
     - path: ./output/test_stringtie_forward/test.transcripts.gtf
       md5sum: 8abb6a87581bd7a61af74085b5a6daec
@@ -24,6 +25,7 @@
   command: nextflow run ./tests/software/stringtie/stringtie/ -entry test_stringtie_reverse -c tests/config/nextflow.config
   tags:
     - stringtie
+    - stringtie/stringtie
   files:
     - path: ./output/test_stringtie_reverse/test.transcripts.gtf
       md5sum: 8bdcda06f39183fa4312644bd0e41bb5
