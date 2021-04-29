@@ -3,42 +3,22 @@
 nextflow.enable.dsl = 2
 
 include { KALLISTOBUSTOOLS_COUNT } from '../../../../software/kallistobustools/count/main.nf' addParams( options: [args:"--cellranger"] )
-include { KALLISTOBUSTOOLS_COUNT as KALLISTOBUSTOOLS_COUNT_KITE} from '../../../../software/kallistobustools/count/main.nf' addParams( options: [args: "--cellranger --h5ad"] )
 
 workflow test_kallistobustools_count {
     
     input   = [ [id:'test_standard'], // meta map 
-                [file("${launchDir}/tests/data/delete_me/kallistobustools/count/SRR8599150_S1_L001_R1_001.20k_lines.fastq.gz", checkIfExists: true),
-                 file("${launchDir}/tests/data/delete_me/kallistobustools/count/SRR8599150_S1_L001_R2_001.20k_lines.fastq.gz", checkIfExists: true)] 
+                [file("https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/10xgenomics/test_1.fastq.gz?raw=true", checkIfExists: true),
+                 file("https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/10xgenomics/test_2.fastq.gz?raw=true", checkIfExists: true)] 
                  ]  
     
-    index       =   file("${launchDir}/tests/data/delete_me/kallistobustools/count/kb_ref.idx", checkIfExists: true)
-    t2g         =   file("${launchDir}/tests/data/delete_me/kallistobustools/count/t2g.txt", checkIfExists: true)
+    index       =   file("https://github.com/FloWuenne/test-datasets/blob/scrnaseq/reference/kallistobustools/kb_ref.idx?raw=true", checkIfExists: true)
+    t2g         =   file("https://raw.githubusercontent.com/FloWuenne/test-datasets/scrnaseq/reference/kallistobustools/t2g.txt", checkIfExists: true)
     t1c         =   file('t1c_dummy')
     t2c         =   file('t2c_dummy')
     use_t1c     =   false
     use_t2c     =   false
     workflow    =   "standard"
-    technology  =   "10XV2"
+    technology  =   "10XV3"
 
     KALLISTOBUSTOOLS_COUNT (input,index,t2g,t1c,t2c,use_t1c,use_t2c,workflow,technology)
-}
-
-workflow test_kallistobustools_count_kite {
-    
-    input   = [ [id:'test_lamanno'], // meta map
-                [file("${launchDir}/tests/data/delete_me/kallistobustools/count/pbmc_1k_protein_v3_antibody_S2_L001_R1_001.100k_sub.fastq.gz", checkIfExists: true),
-                 file("${launchDir}/tests/data/delete_me/kallistobustools/count/pbmc_1k_protein_v3_antibody_S2_L001_R2_001.100k_sub.fastq.gz", checkIfExists: true)] 
-                 ]  
-    
-    index       =   file("${launchDir}/tests/data/delete_me/kallistobustools/count/mismatch.idx", checkIfExists: true)
-    t2g         =   file("${launchDir}/tests/data/delete_me/kallistobustools/count/t2g.kite.txt", checkIfExists: true)
-    t1c         =   file('t1c_dummy')
-    t2c         =   file('t2c_dummy')
-    use_t1c     =   false
-    use_t2c     =   false
-    workflow    =   "kite"
-    technology  =   "10XV2"
-
-    KALLISTOBUSTOOLS_COUNT_KITE (input,index,t2g,t1c,t2c,use_t1c,use_t2c,workflow,technology)
 }

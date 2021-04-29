@@ -31,7 +31,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     output:
     tuple val(meta), path ("*_kallistobustools_count") , emit: kallistobustools_count
-    path "*.version.txt"              , emit: version
+    path "*.version.txt"                               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
