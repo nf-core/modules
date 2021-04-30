@@ -9,16 +9,19 @@ include { GFFREAD }       from '../../../../software/gffread/main.nf'       addP
 workflow test_salmon_alevin {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              [file("${launchDir}/tests/data/delete_me/salmon_alevin_data/S10_L001_R1_001.fastq.gz", checkIfExists: true),
-               file("${launchDir}/tests/data/delete_me/salmon_alevin_data/S10_L001_R2_001.fastq.gz", checkIfExists: true)]
+              [file(params.test_data['homo_sapiens']['illumina']['test_1.fastq.gz'], checkIfExists: true),
+               file(params.test_data['homo_sapiens']['illumina']['test_1.fastq.gz'], checkIfExists: true)]
               ]
 
 
-    transcriptome_fasta     = file("${launchDir}/tests/data/delete_me/salmon_alevin_data/gencode.vM26.transcripts.fa", checkIfExists: true)
-    gtf                     = file("${launchDir}/tests/data/delete_me/salmon_alevin_data/gencode.vM26.annotation.gtf", checkIfExists: true)
-    salmon_index            = file("${launchDir}/tests/data/delete_me/salmon_alevin_data/salmon_index", checkIfExists: true)
+    transcriptome_fasta     = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+    gtf                     = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+    salmon_index            = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
     protocol                = "chromium"
+    genome_fasta            = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
+
+    SALMON_INDEX ( genome_fasta, transctranscriptome_fastaript_fasta )
 
     GFFREAD( gtf )
     SALMON_ALEVIN ( input, salmon_index, GFFREAD.out.gtf, protocol )
