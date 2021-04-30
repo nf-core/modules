@@ -5,6 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process GRAPHMAP2_ALIGN {
+    tag "$meta.id"
     label 'process_medium'
     tag "$meta.id"
     publishDir "${params.outdir}",
