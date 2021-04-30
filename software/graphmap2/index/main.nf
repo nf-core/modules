@@ -33,7 +33,7 @@ process GRAPHMAP2_INDEX {
         -I \\
         $options.args \\
         -r $fasta
-    
+
     echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//' > ${software}.version.txt
     """
 }

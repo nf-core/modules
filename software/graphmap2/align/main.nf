@@ -39,7 +39,7 @@ process GRAPHMAP2_ALIGN {
         -d $reads \\
         -o ${prefix}.sam \\
         $options.args
-    
+
     echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//' > ${software}.version.txt
     """
 }
