@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process BEDTOOLS_BAMTOBED {
     tag "$meta.id"
@@ -11,24 +11,30 @@ process BEDTOOLS_BAMTOBED {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda     (params.enable_conda ? "bioconda::bedtools=2.29.2" : null)
-    container "quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0"
+    conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
+    } else {
+        container "quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0"
+    }
 
     input:
-    tuple val(meta), path(sizes), path(bam), path(bai)
+    tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path(sizes), path("*.bed12"), emit: bed12
-    path "*.version.txt"                         , emit: version
-
+    tuple val(meta), path("*.bed"), emit: bed
+    path  "*.version.txt"         , emit: version
+    
     script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedtools \\
         bamtobed \\
-        -bed12 \\
-        -cigar \\
-        -i ${bam[0]} \\
-        | bedtools sort > ${meta.id}.bed12
-    bedtools --version | sed -e "s/bedtools v//g" > bedtools.version.txt
+        $options.args \\
+        -i $bam \\
+        | bedtools sort > ${prefix}.bed
+
+    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
 }
