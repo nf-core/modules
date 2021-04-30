@@ -18,19 +18,15 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam}"
-    - sizes:
-        type: file
-        description: File which defines the chromosome lengths for a given genome
-        pattern: "*.{sizes}"
 output:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed12:
+    - bed:
         type: file
-        description: Bed file with 12 columns containing all genomic intervals.
+        description: Bed file containing genomic intervals.
         pattern: "*.{bed}"
     - version:
         type: file
@@ -38,3 +34,4 @@ output:
         pattern: "*.{version.txt}"
 authors:
     - "@yuukiiwa"
+    - "@drpatelh"

@@ -15,10 +15,10 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - input_path:
+    - reads:
         type: file
         description: |
-            Non-demultiplexed Nanopore sequencing sample.
+            Non-demultiplexed fastq files
 
 output:
     - meta:
@@ -26,7 +26,7 @@ output:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - fastq:
+    - reads:
         type: file
         description: Demultiplexed fastq samples
         pattern: "*.fastq.gz"
@@ -36,3 +36,4 @@ output:
         pattern: "*.{version.txt}"
 authors:
     - "@yuukiiwa"
+    - "@drpatelh"

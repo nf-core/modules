@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process QCAT {
     tag "$meta.id"
@@ -11,34 +11,42 @@ process QCAT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda     (params.enable_conda ? "bioconda::qcat=1.1.0" : null)
-    container "quay.io/biocontainers/qcat:1.1.0--py_0"
+    conda (params.enable_conda ? "bioconda::qcat=1.1.0" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/qcat:1.1.0--py_0"
+    } else {
+        container "quay.io/biocontainers/qcat:1.1.0--py_0"
+    }
 
     input:
-    tuple val(meta), path(input_path)
-    val(barcode_kit)
+    tuple val(meta), path(reads)
+    val   barcode_kit
 
     output:
-    tuple val(meta), path("fastq/*.fastq.gz") , emit: fastq
-    path "*.version.txt"                      , emit: version
+    tuple val(meta), path("fastq/*.fastq.gz"), emit: reads
+    path "*.version.txt"                     , emit: version
 
     script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ## Unzip fastq file
-    ## qcat doesnt support zipped files yet
-    FILE=$input_path
+    ## qcat doesn't support zipped files yet
+    FILE=$reads
     if [[ \$FILE == *.gz ]]
     then
-    zcat $input_path > unzipped.fastq
-    FILE=unzipped.fastq
+        zcat $reads > unzipped.fastq
+        FILE=unzipped.fastq
     fi
-    qcat  \\
-    -f \$FILE \\
-    -b ./fastq \\
-    --kit $barcode_kit
 
-    ## Zip fastq files (cannot find pigz command)
+    qcat \\
+        -f \$FILE \\
+        -b ./fastq \\
+        --kit $barcode_kit
+
+    ## Zip fastq files
     gzip fastq/*
-    qcat --version &> qcat.version.txt
+
+    echo \$(qcat --version 2>&1) | sed 's/^.*qcat //; s/ .*\$//' > ${software}.version.txt
     """
 }
