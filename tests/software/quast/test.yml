@@ -2,36 +2,35 @@
   command: nextflow run ./tests/software/quast -entry test_quast_ref -c ./tests/config/nextflow.config
   tags:
     - quast
-    - quast_reference
   files:
     - path: ./output/quast/report.tsv
     - path: ./output/quast/quast/transposed_report.txt
-      md5sum: 73ae4f7cbe0da640819214cb013a79ef
+      md5sum: 5dee51af1e7f916200d0a80f0c66be60
     - path: ./output/quast/quast/transposed_report.tex
-      md5sum: 117ed0d235b8e74b8f7ae8ed7b78c449
+      md5sum: 336ec8d7b403fe1e0519e3a39eadd691
     - path: ./output/quast/quast/icarus.html
     - path: ./output/quast/quast/transposed_report.tsv
-      md5sum: 475bf9987c421b72fe1675b54ae0bcbe
+      md5sum: 0e1b2eff1e8fd91a0bf80165d8f31ae5
     - path: ./output/quast/quast/report.tex
-      md5sum: e4c1d12bfe94d5a10e2264397bb90f83
+      md5sum: a9aac7d2ac2263df7e4599e4431c7393
     - path: ./output/quast/quast/report.txt
-      md5sum: 6295e6d462b1db45b1bb9f3f508275ad
+      md5sum: 2da78350f20819f2625bd467800700ad
     - path: ./output/quast/quast/report.tsv
-      md5sum: b70404d2b4d4e905afcfe3d149a5bd15
+      md5sum: 38fb41afadc09ffcbef62e42fea49f5e
     - path: ./output/quast/quast/report.html
     - path: ./output/quast/quast/report.pdf
     - path: ./output/quast/quast/quast.log
-    - path: ./output/quast/quast/genome_stats/test_transcriptome_genomic_features_any.txt
+    - path: ./output/quast/quast/genome_stats/transcriptome_genomic_features_any.txt
       md5sum: 307b3bb1f42fc2f11a60a2e9846021d7
     - path: ./output/quast/quast/genome_stats/features_cumulative_plot.pdf
     - path: ./output/quast/quast/genome_stats/features_frcurve_plot.pdf
     - path: ./output/quast/quast/genome_stats/genome_info.txt
-      md5sum: a4bb1f2792c175fc8d7fbf37f219e552
-    - path: ./output/quast/quast/genome_stats/test_transcriptome_gaps.txt
+      md5sum: d0193b322079565dc78608291e9c44d1
+    - path: ./output/quast/quast/genome_stats/transcriptome_gaps.txt
       md5sum: c52381f09ea40b6141be5232494727b6
     - path: ./output/quast/quast/basic_stats/cumulative_plot.pdf
     - path: ./output/quast/quast/basic_stats/Nx_plot.pdf
-    - path: ./output/quast/quast/basic_stats/test_transcriptome_GC_content_plot.pdf
+    - path: ./output/quast/quast/basic_stats/transcriptome_GC_content_plot.pdf
     - path: ./output/quast/quast/basic_stats/gc.icarus.txt
       md5sum: b3a770802ff9b2dd4ee8e47bddb2df3e
     - path: ./output/quast/quast/basic_stats/NGx_plot.pdf
@@ -39,45 +38,45 @@
     - path: ./output/quast/quast/aligned_stats/cumulative_plot.pdf
     - path: ./output/quast/quast/aligned_stats/NGAx_plot.pdf
     - path: ./output/quast/quast/aligned_stats/NAx_plot.pdf
-    - path: ./output/quast/quast/contigs_reports/contigs_report_test_transcriptome.mis_contigs.info
+    - path: ./output/quast/quast/contigs_reports/contigs_report_transcriptome.mis_contigs.info
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: ./output/quast/quast/contigs_reports/misassemblies_frcurve_plot.pdf
-    - path: ./output/quast/quast/contigs_reports/contigs_report_test_transcriptome.unaligned.info
+    - path: ./output/quast/quast/contigs_reports/contigs_report_transcriptome.unaligned.info
       md5sum: a8505cf206bf53ca369f7e3073fee587
     - path: ./output/quast/quast/contigs_reports/transposed_report_misassemblies.tex
-      md5sum: 4895cb02a010f1db85fc4992ac3c63b1
+      md5sum: d778f337899736cc62ed837b739b375c
     - path: ./output/quast/quast/contigs_reports/misassemblies_report.txt
-      md5sum: d5c9dd22ce8f382649f74ba1f61d8a84
-    - path: ./output/quast/quast/contigs_reports/contigs_report_test_transcriptome.stdout
-    - path: ./output/quast/quast/contigs_reports/all_alignments_test_transcriptome.tsv
+      md5sum: 8b9a6d675a41bab6bf344dde2a20a939
+    - path: ./output/quast/quast/contigs_reports/contigs_report_transcriptome.stdout
+    - path: ./output/quast/quast/contigs_reports/all_alignments_transcriptome.tsv
       md5sum: c247152eb82b361106492642fd796e2c
     - path: ./output/quast/quast/contigs_reports/misassemblies_report.tex
-      md5sum: 0df52940978f10c0fc9ed5f6770f170e
-    - path: ./output/quast/quast/contigs_reports/test_transcriptome.mis_contigs.fa
+      md5sum: ec1f7a1d1fb4a1b465057cf897b90b51
+    - path: ./output/quast/quast/contigs_reports/transcriptome.mis_contigs.fa
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: ./output/quast/quast/contigs_reports/transposed_report_misassemblies.txt
-      md5sum: d83abdf60e7ef02354a783dff4262d7d
+      md5sum: fdb440c653e2f0306286798cacceaadb
     - path: ./output/quast/quast/contigs_reports/unaligned_report.tsv
-      md5sum: f2adf811a611abdcb9f10bd7801e61e1
+      md5sum: 81d9597314356363a6b4e0d67027345a
     - path: ./output/quast/quast/contigs_reports/transposed_report_misassemblies.tsv
-      md5sum: dd6e08408ea9a6830d47d5c21b84d587
+      md5sum: 3e8f449dd4481d1cfd4ce3ddab97b8e3
     - path: ./output/quast/quast/contigs_reports/unaligned_report.txt
     - path: ./output/quast/quast/contigs_reports/misassemblies_report.tsv
-      md5sum: e77d87bafe0e2c881805f8dfcc5f2351
-    - path: ./output/quast/quast/contigs_reports/contigs_report_test_transcriptome.stderr
+      md5sum: a32a09a0df811d1a75fbfe124081d1ca
+    - path: ./output/quast/quast/contigs_reports/contigs_report_transcriptome.stderr
     - path: ./output/quast/quast/contigs_reports/misassemblies_plot.pdf
     - path: ./output/quast/quast/contigs_reports/unaligned_report.tex
-      md5sum: 6f9bd38e646b0a754b153e0dfe2c57b0
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.coords.filtered
+      md5sum: e8e3bcb86da2cbd8eded980de80fa45c
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.coords.filtered
       md5sum: ec9191d0acb5d5bce56b4842551a8598
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.coords
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.coords
       md5sum: dda3fc0addc41ecc0d5183dee6f95886
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.used_snps.gz
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.used_snps.gz
       md5sum: 7b1db1b433cd95243a949bcb72e7e3a6
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.sf
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.unaligned
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.sf
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.unaligned
       md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: ./output/quast/quast/contigs_reports/minimap_output/test_transcriptome.coords_tmp
+    - path: ./output/quast/quast/contigs_reports/minimap_output/transcriptome.coords_tmp
       md5sum: ce66eaeb99fdc11e4d50efadc1816e04
     - path: ./output/quast/quast/icarus_viewers/alignment_viewer.html
     - path: ./output/quast/quast/icarus_viewers/contig_size_viewer.html
@@ -86,29 +85,28 @@
   command: nextflow run ./tests/software/quast -entry test_quast_noref -c ./tests/config/nextflow.config
   tags:
     - quast
-    - quast_no_reference
   files:
     - path: ./output/quast/report.tsv
-      md5sum: 94e7fd30b8147f1b9df4373ad865c0aa
+      md5sum: 074e239aac0f298cf4cd2a28a9bb5690
     - path: ./output/quast/quast/transposed_report.txt
-      md5sum: 5496230d4bc3846616d7e08d52ffc081
+      md5sum: 8784d7c7349498e1507e09fbf554625d
     - path: ./output/quast/quast/transposed_report.tex
-      md5sum: cf6a3b50575b510a7c42f5e745dd8674
+      md5sum: 4c2a9dd0c1d3cbb80a2ac2577b5d363b
     - path: ./output/quast/quast/icarus.html
-      md5sum: ba0ddcdbcd743191d282e3986cb68735
+      md5sum: ecc0b67f3d4ff54568dfb83d8ac5911b
     - path: ./output/quast/quast/transposed_report.tsv
-      md5sum: 4b128bbf595b07dd2e2d5230bf575d29
+      md5sum: f0b5f65b2050af83b6d170d384c7616b
     - path: ./output/quast/quast/report.tex
-      md5sum: ac22b93fad7cdb6a812e5f670e815647
+      md5sum: 3da038cc5a02ef83e225c5277b87970b
     - path: ./output/quast/quast/report.txt
-      md5sum: 283160faa1d8cd32064c49e3c6d738d5
+      md5sum: bd2faaef244f02aa072d544c0d6d6e71
     - path: ./output/quast/quast/report.tsv
-      md5sum: 94e7fd30b8147f1b9df4373ad865c0aa
+      md5sum: 074e239aac0f298cf4cd2a28a9bb5690
     - path: ./output/quast/quast/report.html
     - path: ./output/quast/quast/report.pdf
     - path: ./output/quast/quast/quast.log
     - path: ./output/quast/quast/basic_stats/cumulative_plot.pdf
     - path: ./output/quast/quast/basic_stats/Nx_plot.pdf
-    - path: ./output/quast/quast/basic_stats/test_genome_GC_content_plot.pdf
+    - path: ./output/quast/quast/basic_stats/genome_GC_content_plot.pdf
     - path: ./output/quast/quast/basic_stats/GC_content_plot.pdf
     - path: ./output/quast/quast/icarus_viewers/contig_size_viewer.html

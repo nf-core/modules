@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv -c tests/config/nextflow.config
   tags:
     - tiddit
-    - tiddit_sv
-    - vcf
+    - tiddit/sv
   files:
     - path: output/tiddit/test.ploidy.tab
       md5sum: 45e050b0e204f0a5a3a99627cc440eaa
@@ -16,8 +15,7 @@
   command: nextflow run ./tests/software/tiddit/sv -entry test_tiddit_sv_no_ref -c tests/config/nextflow.config
   tags:
     - tiddit
-    - tiddit_sv
-    - vcf
+    - tiddit/sv
   files:
     - path: output/tiddit/test.ploidy.tab
       md5sum: 45e050b0e204f0a5a3a99627cc440eaa

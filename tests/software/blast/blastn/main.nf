@@ -6,7 +6,7 @@ include { BLAST_MAKEBLASTDB } from '../../../../software/blast/makeblastdb/main.
 include { BLAST_BLASTN      } from '../../../../software/blast/blastn/main.nf'      addParams( options: [:] )
 
 workflow test_blast_blastn {
-    input = [ file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     BLAST_MAKEBLASTDB ( input )
     BLAST_BLASTN ( [ [id:'test'], input ], BLAST_MAKEBLASTDB.out.db )

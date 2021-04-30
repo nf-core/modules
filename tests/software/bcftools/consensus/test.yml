@@ -1,7 +1,7 @@
 - name: bcftools consensus test_bcftools_consensus
   command: nextflow run tests/software/bcftools/consensus -entry test_bcftools_consensus -c tests/config/nextflow.config
   tags:
-    - bcftools_consensus
+    - bcftools/consensus
     - bcftools
   files:
     - path: output/bcftools/test.fa

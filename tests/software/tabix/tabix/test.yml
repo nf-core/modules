@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_bed -c tests/config/nextflow.config
   tags:
     - tabix
-    - tabix_tabix
-    - bed
+    - tabix/tabix
   files:
     - path: ./output/tabix/test.bed.gz.tbi
       md5sum: 115922d881d24879b15d20c3734495ac
@@ -11,17 +10,15 @@
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_gff -c tests/config/nextflow.config
   tags:
     - tabix
-    - tabix_tabix
-    - gff
+    - tabix/tabix
   files:
-    - path: ./output/tabix/test_genome.gff3.gz.tbi
-      md5sum: 30de27e3f44662272cfe6b3093126ea6
+    - path: ./output/tabix/genome.gff3.gz.tbi
+      md5sum: 4059fe4762568194cf293fc6df7b358b
 - name: tabix tabix vcf
   command: nextflow run ./tests/software/tabix/tabix -entry test_tabix_tabix_vcf -c tests/config/nextflow.config
   tags:
     - tabix
-    - tabix_tabix
-    - vcf
+    - tabix/tabix
   files:
     - path: output/tabix/test.vcf.gz.tbi
       md5sum: bbec39fd53cf2834909d52094980d094

@@ -9,7 +9,7 @@ process BISMARK_REPORT {
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -22,17 +22,13 @@ process BISMARK_REPORT {
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
 
     output:
-    tuple val(meta), path("*{html,txt}"), emit: report
-    path  "*.version.txt"               , emit: version
+    tuple val(meta), path("*report.{html,txt}"), emit: report
+    path  "*.version.txt"                      , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    bismark2report \\
-        --alignment_report $align_report \\
-        --dedup_report $dedup_report \\
-        --splitting_report $splitting_report \\
-        --mbias_report $mbias
+    bismark2report $options.args
 
     echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
     """

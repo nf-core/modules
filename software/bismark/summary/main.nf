@@ -8,7 +8,7 @@ process BISMARK_SUMMARY {
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -25,8 +25,8 @@ process BISMARK_SUMMARY {
     path(mbias)
 
     output:
-    path("*{html,txt}")  , emit: summary
-    path  "*.version.txt", emit: version
+    path  "*report.{html,txt}", emit: summary
+    path  "*.version.txt"     , emit: version
 
     script:
     def software = getSoftwareName(task.process)

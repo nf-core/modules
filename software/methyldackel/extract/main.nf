@@ -9,7 +9,7 @@ process METHYLDACKEL_EXTRACT {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::methyldackel=0.5.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -35,6 +35,6 @@ process METHYLDACKEL_EXTRACT {
         $fasta \\
         $bam
 
-    echo \$(methyldackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
+    echo \$(MethylDackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
     """
 }

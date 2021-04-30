@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_single_end -c tests/config/nextflow.config
   tags:
     - minimap2
-    - minimap2_align
-    - minimap2_align_single_end
+    - minimap2/align
   files:
     - path: ./output/minimap2/test.paf
       md5sum: 5a9648fc67c30a2c83b0ef094171faa0
@@ -12,8 +11,7 @@
   command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
   tags:
     - minimap2
-    - minimap2_align
-    - minimap2_align_paired_end
+    - minimap2/align
   files:
     - path: ./output/minimap2/test.paf
       md5sum: e7b952be872bdbef16bf99d512690df7

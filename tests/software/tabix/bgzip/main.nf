@@ -6,7 +6,7 @@ include { TABIX_BGZIP } from '../../../../software/tabix/bgzip/main.nf' addParam
 
 workflow test_tabix_bgzip {
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
             ]
 
     TABIX_BGZIP ( input )

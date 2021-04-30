@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_single_end -c tests/config/nextflow.config
   tags:
     - bwa
-    - bwa_mem
-    - bwa_mem_single_end
+    - bwa/mem
   files:
     - path: ./output/bwa/test.bam
       md5sum: 9165508bf914baee0e6347711aa7b23a
@@ -22,8 +21,7 @@
   command: nextflow run ./tests/software/bwa/mem -entry test_bwa_mem_paired_end -c tests/config/nextflow.config
   tags:
     - bwa
-    - bwa_mem
-    - bwa_mem_paired_end
+    - bwa/mem
   files:
     - path: ./output/bwa/test.bam
       md5sum: 670a53bddee62d6bd14ed7adaf103e7c

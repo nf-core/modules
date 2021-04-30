@@ -2,57 +2,22 @@
   command: nextflow run ./tests/software/spades -entry test_spades_single_end -c tests/config/nextflow.config
   tags:
     - spades
-    - spades_single_end
   files:
     - path: output/spades/test.assembly.gfa
-      md5sum: f15ad4a198324de37c6010dafb3fe781
+      md5sum: b2616d2beba83ab7d361b54778d1e759
     - path: output/spades/test.contigs.fa
-      md5sum: bc21771042b465c26dfc85beedc33d58
+      md5sum: 2690fefde046bc904e90df09a065257a
     - path: output/spades/test.scaffolds.fa
-      md5sum: bc21771042b465c26dfc85beedc33d58
+      md5sum: 2690fefde046bc904e90df09a065257a
     - path: output/spades/test.spades.log
-    - path: output/spades/warnings.log
 
 - name: spades paired end
   command: nextflow run ./tests/software/spades -entry test_spades_paired_end -c tests/config/nextflow.config
   tags:
     - spades
-    - spades_paired_end
   files:
-      - path: output/spades/test.assembly.gfa
-        md5sum: 5da5b04c6fce549c77a209034a9c1e72
-      - path: output/spades/test.contigs.fa
-        md5sum: 403b612d52edf390f662ab601873f09f
-      - path: output/spades/test.scaffolds.fa
-        md5sum: 49a9cbb29cee4d088e05e62eb4bc77c4
-      - path: output/spades/test.spades.log
-      - path: output/spades/warnings.log
-
-- name: coronaspades single end
-  command: nextflow run ./tests/software/spades -entry test_coronospades_single_end -c tests/config/nextflow.config
-  tags:
-    - spades
-    - coronaspades_single_end
-  files:
-      - path: output/spades/test.assembly.gfa
-        md5sum: 46531ec9b845c1a1cb469627688fecb7
-      - path: output/spades/test.contigs.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.scaffolds.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.spades.log
-
-- name: coronaspades paired end
-  command: nextflow run ./tests/software/spades -entry test_coronospades_single_end -c tests/config/nextflow.config
-  tags:
-    - spades
-    - coronaspades_paired_end
-  files:
-      - path: output/spades/test.assembly.gfa
-        md5sum: 46531ec9b845c1a1cb469627688fecb7
-      - path: output/spades/test.contigs.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.scaffolds.fa
-        md5sum: f2c4a48ebba560aa5c8fde04dbe905fc
-      - path: output/spades/test.spades.log
-
+    - path: output/spades/test.assembly.gfa
+      md5sum: faf76135ee390606b899c0197dc38e04
+    - path: output/spades/test.contigs.fa
+      md5sum: 6148e25b33890c80f176f90f2dd88989
+    - path: output/spades/test.spades.log
