@@ -10,7 +10,6 @@
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator_intervals
   command: nextflow run tests/software/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_intervals -c tests/config/nextflow.config
   tags:
-    - gatk4/baserecalibrator/intervals
     - gatk4/baserecalibrator
     - gatk4
   files:
@@ -20,7 +19,6 @@
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator_multiple_sites
   command: nextflow run tests/software/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_multiple_sites -c tests/config/nextflow.config
   tags:
-    - gatk4_baserecalibrator_multiple_sites
     - gatk4/baserecalibrator
     - gatk4
   files:
