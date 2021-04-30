@@ -6,7 +6,8 @@ include { GATK4_BASERECALIBRATOR } from '../../../../software/gatk4/baserecalibr
 
 workflow test_gatk4_baserecalibrator {
     input     = [ [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
                   ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
@@ -19,7 +20,8 @@ workflow test_gatk4_baserecalibrator {
 
 workflow test_gatk4_baserecalibrator_intervals {
     input     = [ [ id:'test' ], // meta map
-                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
                 ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
@@ -33,7 +35,8 @@ workflow test_gatk4_baserecalibrator_intervals {
 
 workflow test_gatk4_baserecalibrator_multiple_sites {
     input     = [ [ id:'test' ], // meta map
-                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
                 ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)

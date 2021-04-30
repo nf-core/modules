@@ -1,7 +1,6 @@
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_single_end
   command: nextflow run tests/software/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config
   tags:
-    - gatk4_fastqtosam_single_end
     - gatk4/fastqtosam
     - gatk4
   files:
@@ -11,7 +10,6 @@
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_paired_end
   command: nextflow run tests/software/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config
   tags:
-    - gatk4_fastqtosam_paired_end
     - gatk4
     - gatk4/fastqtosam
   files:
