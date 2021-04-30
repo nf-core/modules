@@ -27,7 +27,7 @@ process LAST_LASTDB {
 
     script:
     def software = getSoftwareName(task.process)
-    
+
     """
     mkdir lastdb
     lastdb \\
