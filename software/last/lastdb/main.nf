@@ -9,7 +9,7 @@ process LAST_LASTDB {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::last=1219" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -27,14 +27,14 @@ process LAST_LASTDB {
 
     script:
     def software = getSoftwareName(task.process)
-
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mkdir lastdb
     lastdb \\
-        ${options.args} \\
-        -P ${task.cpus} \\
-        lastdb/${meta.id} \\
-        ${fastx}
+        $options.args \\
+        -P $task.cpus \\
+        lastdb/${prefix} \\
+        $fastx
 
     echo \$(lastdb --version 2>&1) | sed 's/lastdb //' > ${software}.version.txt
     """

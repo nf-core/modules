@@ -2,7 +2,7 @@
   command: nextflow run tests/software/last/lastdb -entry test_last_lastdb -c tests/config/nextflow.config
   tags:
     - last
-    - last_lastdb
+    - last/lastdb
   files:
     - path: output/last/lastdb/test.bck
       md5sum: 5519879b9b6c4d1fc508da7f17f88f2e
@@ -22,7 +22,7 @@
 - name: last lastdb test_last_lastdb_gzipped_input
   command: nextflow run tests/software/last/lastdb -entry test_last_lastdb_gzipped_input -c tests/config/nextflow.config
   tags:
-    - last_lastdb
+    - last/lastdb
     - last_lastdb_gzipped_input
     - last
   files:
