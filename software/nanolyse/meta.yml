@@ -18,10 +18,12 @@ input:
         type: file
         description: |
             Basecalled reads in FASTQ.GZ format
+        pattern: "*.fastq.gz"
     - nanolyse_fasta:
         type: file
         description: |
             A reference fasta file against which to filter.
+        pattern: "*.fasta"
 output:
     - meta:
         type: map
