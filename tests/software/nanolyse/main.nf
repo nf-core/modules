@@ -2,8 +2,17 @@
 
 nextflow.enable.dsl = 2
 
-include { GET_NANOLYSE_FASTA;
-          NANOLYSE           } from '../../../software/nanolyse/main.nf'    addParams( options: [:] )
+include { NANOLYSE } from '../../../software/nanolyse/main.nf'    addParams( options: [:] )
+
+process GET_NANOLYSE_FASTA {
+    output:
+    path "*fasta.gz"  , emit: nanolyse_fasta
+
+    script:
+    """
+    wget https://github.com/wdecoster/nanolyse/raw/master/reference/lambda.fasta.gz
+    """
+}
 
 workflow test_nanolyse {
     input = [ [ id:'test' ], // meta map

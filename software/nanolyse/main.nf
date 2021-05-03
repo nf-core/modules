@@ -34,13 +34,3 @@ process NANOLYSE {
     NanoLyse --version &> nanolyse.version.txt
     """
 }
-
-process GET_NANOLYSE_FASTA {
-    output:
-    path "*fasta.gz"  , emit: nanolyse_fasta
-
-    script:
-    """
-    wget https://github.com/wdecoster/nanolyse/raw/master/reference/lambda.fasta.gz
-    """
-}
