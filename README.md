@@ -27,7 +27,6 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
     - [Guidelines](#guidelines)
 - [Terminology](#terminology)
-- [Nextflow edge releases](#nextflow-edge-releases)
 - [Help](#help)
 - [Citation](#citation)
 
@@ -167,7 +166,7 @@ If the module doesn't exist on `nf-core/modules`:
 We have implemented a number of commands in the `nf-core/tools` package to make it incredibly easy for you to create and contribute your own modules to nf-core/modules.
 
 1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=1.13`)
-2. Install [`nextflow`](https://nf-co.re/usage/installation) (`>=21.04.0`; see [Nextflow edge releases](#nextflow-edge-releases))
+2. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=21.04.0`)
 3. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
 5. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
@@ -489,25 +488,6 @@ The features offered by Nextflow DSL2 can be used in various ways depending on t
 - *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline. For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows although this may change in the future since well-written sub-workflows will be the most powerful aspect of DSL2.
 
 - *Workflow*: What DSL1 users would consider an end-to-end pipeline. For example, from one or more inputs to a series of outputs. This can either be implemented using a large monolithic script as with DSL1, or by using a combination of DSL2 individual modules and sub-workflows.
-
-## Nextflow edge releases
-
-Stable releases will be becoming more infrequent as Nextflow shifts its development model to becoming more dynamic via the usage of plugins. This will allow functionality to be added as an extension to the core codebase with a release cycle that could potentially be independent to that of Nextflow itself. As a result of the reduction in stable releases, some pipelines may be required to use Nextflow `edge` releases in order to be able to exploit cutting "edge" features e.g. version 3.0 of the nf-core/rnaseq pipeline requires Nextflow `>=20.11.0-edge` in order to be able to directly download Singularity containers over `http` (see [nf-core/rnaseq#496](https://github.com/nf-core/rnaseq/issues/496)).
-
-There are a number of ways you can install Nextflow `edge` releases, the main difference with stable releases being that you have to `export` the version you would like to install before issuing the appropriate installation/execution commands as highlighted below.
-
-- If you would like to download and install a Nextflow `edge` release from scratch with minimal fuss:
-
-    ```bash
-    export NXF_VER="20.11.0-edge"
-    wget -qO- get.nextflow.io | bash
-    sudo mv nextflow /usr/local/bin/
-    nextflow run nf-core/rnaseq -profile test,docker -r 3.0
-    ```
-
-    > Note if you don't have `sudo` privileges required for the last command above then you can move the `nextflow` binary to somewhere else and export that directory to `$PATH` instead. One way of doing that on Linux would be to add `export PATH=$PATH:/path/to/nextflow/binary/` to your `~/.bashrc` file so that it is available every time you login to your system.
-
-- Manually download and install Nextflow from the available [assets](https://github.com/nextflow-io/nextflow/releases) on Github. See [Nextflow installation docs](https://www.nextflow.io/docs/latest/getstarted.html#installation).
 
 ## Help
 
