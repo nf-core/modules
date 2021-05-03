@@ -13,9 +13,9 @@ process DSHBIO_SPLITGFF3 {
 
     conda (params.enable_conda ? "bioconda::dsh-bio=2.0.4" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/dsh-bio:2.0.4--0"
+        container "https://depot.galaxyproject.org/singularity/dsh-bio:2.0.4--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/dsh-bio:2.0.4--0"
+        container "quay.io/biocontainers/dsh-bio:2.0.4--hdfd78af_0"
     }
 
     input:
