@@ -12,7 +12,11 @@ process STRINGTIE_MERGE {
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda     (params.enable_conda ? "bioconda::stringtie=2.1.4" : null)
-    container "quay.io/biocontainers/stringtie:2.1.4--h7e0af3c_0"
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/stringtie:2.1.4--h7e0af3c_0"
+    } else {
+        container "quay.io/biocontainers/stringtie:2.1.4--h7e0af3c_0"
+    }
 
     input:
     path  stringtie_gtf

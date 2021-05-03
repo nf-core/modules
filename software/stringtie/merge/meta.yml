@@ -15,14 +15,17 @@ input:
         type: file
         description: |
             Stringtie transcript gtf output(s).
+        pattern: "*.gtf"
     - annotation_gtf:
         type: file
         description: |
             Annotation gtf file.
+        pattern: "*.gtf"
 output:
     - merged_gtf:
         type: map
         description: |
             Merged gtf from annotation and stringtie output gtfs.
+        pattern: "*.gtf"
 authors:
     - "@yuukiiwa"
