@@ -1,9 +1,9 @@
-name: dsh_splitbed
-description: Split features in gzipped BED format
+name: dshbio_splitgff3
+description: Split features in gzipped GFF3 format
 keywords:
-    - bed
+    - gff3
 tools:
-    - dsh:
+    - dshbio:
         description: |
             Reads, features, variants, assemblies, alignments, genomic range trees, pangenome
             graphs, and a bunch of random command line tools for bioinformatics. LGPL version 3
@@ -16,20 +16,20 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - gff3:
         type: file
-        description: Features in gzipped BED format to split
-        pattern: "*.{bed.gz}"
+        description: Features in gzipped GFF3 format to split
+        pattern: "*.{gff3.gz}"
 output:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - gff3:
         type: file
-        description: Features in split gzipped BED formatted files
-        pattern: "*.{bed.gz}"
+        description: Features in split gzipped GFF3 formatted files
+        pattern: "*.{gff3.gz}"
     - version:
         type: file
         description: File containing software version
