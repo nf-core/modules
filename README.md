@@ -350,7 +350,7 @@ As outlined in the [nf-core modules create](#nf-core-modules-create) section we 
 
 Please follow the steps below to run the tests locally:
 
-1. Install [`nextflow`](https://nf-co.re/usage/installation)
+1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=21.04.0`)
 
 2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 
