@@ -11,7 +11,7 @@ process NANOLYSE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda     (params.enable_conda ? "bioconda::nanolyse=1.2.0" : null)
+    conda (params.enable_conda ? "bioconda::nanolyse=1.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0"
     } else {
