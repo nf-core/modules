@@ -20,5 +20,5 @@ workflow test_nanolyse {
             ]
 
     GET_NANOLYSE_FASTA()
-    NANOLYSE ( input, GET_NANOLYSE_FASTA.out.nanolyse_fasta )
+    NANOLYSE ( input, GET_NANOLYSE_FASTA.out.fasta )
 }
