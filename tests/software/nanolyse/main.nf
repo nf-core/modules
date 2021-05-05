@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOLYSE } from '../../../software/nanolyse/main.nf'    addParams( options: [:] )
+include { NANOLYSE } from '../../../software/nanolyse/main.nf' addParams( options: [suffix: 'clean'] )
 
 process GET_NANOLYSE_FASTA {
     output:
