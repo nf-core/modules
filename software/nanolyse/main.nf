@@ -31,7 +31,7 @@ process NANOLYSE {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.clean.fastq.gz
+    gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
     mv NanoLyse.log ${prefix}.nanolyse.log
 
     echo \$(NanoLyse --version 2>&1) | sed -e "s/NanoLyse //g" > ${software}.version.txt
