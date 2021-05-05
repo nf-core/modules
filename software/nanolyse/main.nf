@@ -28,9 +28,12 @@ process NANOLYSE {
     path "*.version.txt"               , emit: version
 
     script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    gunzip -c $fastq | NanoLyse -r $nanolyse_fasta | gzip > ${meta.id}.clean.fastq.gz
-    cp NanoLyse.log ${meta.id}.nanolyse.log
-    NanoLyse --version &> nanolyse.version.txt
+    gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
+    mv NanoLyse.log ${prefix}.nanolyse.log
+
+    echo \$(NanoLyse --version 2>&1) | sed -e "s/NanoLyse //g" > ${software}.version.txt
     """
 }
