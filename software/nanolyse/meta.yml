@@ -34,6 +34,10 @@ output:
         type: file
         description: Reads with contaminants removed in FASTQ format
         pattern: "*.fastq.gz"
+    - log:
+        type: file
+        description: Log of the Nanolyse run.
+        pattern: "*.log"
     - version:
         type: file
         description: File containing software version
