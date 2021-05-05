@@ -6,7 +6,7 @@ include { NANOLYSE } from '../../../software/nanolyse/main.nf'    addParams( opt
 
 process GET_NANOLYSE_FASTA {
     output:
-    path "*fasta.gz"  , emit: nanolyse_fasta
+    path "*fasta.gz", emit: fasta
 
     script:
     """
