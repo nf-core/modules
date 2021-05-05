@@ -23,9 +23,9 @@ process NANOLYSE {
     path nanolyse_fasta
 
     output:
-    tuple val(meta), path("*.fastq.gz")   ,emit: nanolyse_fastq
-    path "*.log"                          ,emit: nanolyse_log
-    path "*.version.txt"                  ,emit: version
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    path "*.log"                       , emit: log
+    path "*.version.txt"               , emit: version
 
     script:
     """
