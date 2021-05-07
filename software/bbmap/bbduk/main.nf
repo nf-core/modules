@@ -34,8 +34,6 @@ process BBMAP_BBDUK {
     def trimmed  = meta.single_end ? "out=${prefix}.trim.fastq.gz" : "out1=${prefix}_1.trim.fastq.gz out2=${prefix}_2.trim.fastq.gz"
     def contaminants_fa = use_contaminants ? "ref=$contaminants" : ''
 
-
- //maxmem=\$(echo \"$task.memory\"| sed 's/ //g' | sed 's/B//g' | sed 's/G/g/g')
     """
     maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g' ) 
 
