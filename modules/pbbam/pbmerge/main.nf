@@ -30,7 +30,7 @@ process PBBAM_PBMERGE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def out_bam  = "${prefix}.ccs.bam"
     """
-    pbmerge -o ${out_bam} *.bam
+    pbmerge -o ${out_bam} $options.args *.bam
     pbindex ${out_bam}
     echo \$(pbmerge --version 2>&1) > ${software}.version.txt
     """
