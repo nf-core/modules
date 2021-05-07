@@ -33,11 +33,12 @@ process ISOSEQ3_REFINE {
     refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
     """
     isoseq3 \\
-      refine \\
-      $bam \\
-      $primers \\
-      $refine_out \\
-      $options.args
+        refine \\
+        -j $task.cpu \\
+        $options.args \\
+        $bam \\
+        $primers \\
+        $refine_out
 
     echo \$(isoseq3 refine --version) | grep -e 'commit' > ${software}.version.txt
     """
