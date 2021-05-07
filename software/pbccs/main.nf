@@ -22,8 +22,8 @@ process PBCCS {
     tuple val(meta), path(bam), path(pbi), val(chunk_num), val(chunk_on)
 
     output:
-    tuple val(meta), path("*.ccs.bam"), emit: bam
-    tuple path("*.ccs.bam.pbi"), path("*.ccs_report.txt"), path ("*.zmw_metrics.json.gz"), emit: reports
+    tuple val(meta), path("*.ccs.bam"), path("*.ccs.bam.pbi"), emit: bam
+    tuple path("*.ccs_report.txt"), path ("*.zmw_metrics.json.gz"), emit: reports
     path "*.version.txt"          , emit: version
 
     script:
