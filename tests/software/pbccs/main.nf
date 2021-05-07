@@ -6,8 +6,13 @@ include { PBCCS } from '../../../software/pbccs/main.nf' addParams( options: [ar
 
 workflow test_pbccs {
 
-    input = [ [ id:'test' ], // meta map
-            file(params.test_data['homo_sapiens']['pacbio']['alz10000'], checkIfExists: true) ]
+    input = [
+        [ id:'test' ], // meta map
+        file(params.test_data['homo_sapiens']['pacbio']['alz1000'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alz1000pbi'], checkIfExists: true),
+        2,
+        3
+    ]
 
     PBCCS ( input )
 }
