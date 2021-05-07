@@ -1,5 +1,4 @@
 name: bbmap_bbduk
-## TODO nf-core: Add a description of the module and list keywords
 description: Adapter and quality trimming of sequencing reads 
 keywords:
   - trimming
@@ -7,7 +6,6 @@ keywords:
   - quality trimming
 tools:
   - bbmap:
-      ## TODO nf-core: Add a description and other details for the software below
       description: BBMap is a short read aligner, as well as various other bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
       documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
@@ -15,7 +13,6 @@ tools:
       doi: ""
       licence: ['UC-LBL license (see package)']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -32,7 +29,6 @@ input:
         description: |
           Reference files containing adapter and/or contaminant sequences for sequence kmer matching 
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map

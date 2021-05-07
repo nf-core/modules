@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_BBDUK } from '../../../../software/bbmap/bbduk/main.nf' addParams( options: [:] )
+include { BBMAP_BBDUK } from '../../../../software/bbmap/bbduk/main.nf' addParams( options: [ 'args' : 'trimq=10 qtrim=r' ] )
 
 workflow test_bbmap_bbduk_single_end {
     
@@ -51,3 +51,5 @@ workflow test_bbmap_bbduk_pe_ref {
 
     BBMAP_BBDUK ( input, contaminants, use_contaminants )
 }
+
+

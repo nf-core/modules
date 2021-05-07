@@ -8,7 +8,7 @@ process BBMAP_BBDUK {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::bbmap=38.90" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -34,8 +34,10 @@ process BBMAP_BBDUK {
     def trimmed  = meta.single_end ? "out=${prefix}.trim.fastq.gz" : "out1=${prefix}_1.trim.fastq.gz out2=${prefix}_2.trim.fastq.gz"
     def contaminants_fa = use_contaminants ? "ref=$contaminants" : ''
 
+
+ //maxmem=\$(echo \"$task.memory\"| sed 's/ //g' | sed 's/B//g' | sed 's/G/g/g')
     """
-    maxmem=\$(echo \"$task.memory\"| sed 's/ //g' | sed 's/B//g' | sed 's/G/g/g') 
+    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g' ) 
 
     bbduk.sh \\
      -Xmx\$maxmem \\
@@ -46,6 +48,5 @@ process BBMAP_BBDUK {
      $contaminants_fa \\
      &> ${prefix}.bbduk.log
     echo \$(bbversion.sh) > ${software}.version.txt
-
     """
 }

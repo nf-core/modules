@@ -1,8 +1,8 @@
 - name: bbmap bbduk test_bbmap_bbduk_single_end
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_single_end -c tests/config/nextflow.config
   tags:
+    - bbmap
     - bbmap/bbduk
-    - bbmap/bbduk_single_end
   files:
     - path: output/bbmap/test.bbduk.log
       contains:  
@@ -13,8 +13,8 @@
 - name: bbmap bbduk test_bbmap_bbduk_paired_end
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_paired_end -c tests/config/nextflow.config
   tags:
+    - bbmap
     - bbmap/bbduk
-    - bbmap/bbduk_paired_end
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
@@ -27,8 +27,8 @@
 - name: bbmap bbduk test_bbmap_bbduk_se_ref
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_se_ref -c tests/config/nextflow.config
   tags:
+    - bbmap
     - bbmap/bbduk
-    - bbmap/bbduk_single_end_ref
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
@@ -39,8 +39,8 @@
 - name: bbmap bbduk test_bbmap_bbduk_pe_ref
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_pe_ref -c tests/config/nextflow.config
   tags:
+    - bbmap
     - bbmap/bbduk
-    - bbmap/bbduk_paired_end_ref
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
