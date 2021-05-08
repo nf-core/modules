@@ -7,6 +7,7 @@
   files:
     - path: output/seqtk/test.sampled.fastq.gz
       md5sum: 875863b402f67403dac63ef59b9c9a8a
+
 - name: seqtk sample paired-end
   command: nextflow run ./tests/software/seqtk/sample -entry test_seqtk_sample_paired_end -c tests/config/nextflow.config
   tags:
