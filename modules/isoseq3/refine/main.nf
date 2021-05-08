@@ -19,8 +19,7 @@ process ISOSEQ3_REFINE {
     }
 
     input:
-    tuple val(meta), path(bam)
-    path primers
+    tuple val(meta), path(bam), path(primers)
 
     output:
     tuple val(meta), path("*.flnc.bam"), path("*.flnc.bam.pbi"), emit: bam
