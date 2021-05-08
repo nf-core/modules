@@ -1,0 +1,20 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml seqtk/sample
+- name: seqtk sample single-end
+  command: nextflow run ./tests/software/seqtk/sample -entry test_seqtk_sample_single_end -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/sample
+    - seqtk/sample_single_end
+  files:
+    - path: output/seqtk/test.sampled.fastq.gz
+     
+- name: seqtk sample paired-end
+  command: nextflow run ./tests/software/seqtk/sample -entry test_seqtk_sample_paired_end -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/sample
+    - seqtk/sample_paired_end
+  files:
+    - path: output/seqtk/test.sampled_1.fastq.gz
+    - path: output/seqtk/test.sampled_2.fastq.gz
