@@ -1,13 +1,13 @@
 - name: isoseq3 refine test_isoseq3_refine
   command: nextflow run tests/software/isoseq3/refine -entry test_isoseq3_refine -c tests/config/nextflow.config
   tags:
-    - isoseq3_refine
     - isoseq3
+    - isoseq3_refine
   files:
     - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.bam
-      md5sum: eaa7c53173dea51e67d3cd9abd29b7e7
+      md5sum: 4e873a1e19708a5839c66551e36b7e3c
     - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.bam.pbi
-      md5sum: 0740cbf4db27a6fc3ce12067cb3a868c
+      md5sum: 36059bb921f27fabb9a0ea857cb87cf2
     - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.consensusreadset.xml
       contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
     - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.filter_summary.json
