@@ -6,10 +6,12 @@ include { LIMA } from '../../../software/lima/main.nf' addParams( options: [args
 
 workflow test_lima {
 
-    input = [ [ id:'test' ], // meta map
-              file(params.test_data['homo_sapiens']['pacbio']['ccs'], checkIfExists: true)
+    input = [
+                [ id:'test' ], // meta map
+                file(params.test_data['homo_sapiens']['pacbio']['ccs'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['pacbio']['ccspbi'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true)
             ]
-    primers = file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true)
 
-    LIMA ( input, primers )
+    LIMA ( input )
 }
