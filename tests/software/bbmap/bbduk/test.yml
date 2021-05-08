@@ -2,7 +2,7 @@
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_single_end -c tests/config/nextflow.config
   tags:
     - bbmap
-    - bbmap/bbduk
+    - bbmap_bbduk
   files:
     - path: output/bbmap/test.bbduk.log
       contains:  
@@ -14,7 +14,7 @@
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_paired_end -c tests/config/nextflow.config
   tags:
     - bbmap
-    - bbmap/bbduk
+    - bbmap_bbduk
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
@@ -28,7 +28,7 @@
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_se_ref -c tests/config/nextflow.config
   tags:
     - bbmap
-    - bbmap/bbduk
+    - bbmap_bbduk
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
@@ -40,7 +40,7 @@
   command: nextflow run tests/software/bbmap/bbduk -entry test_bbmap_bbduk_pe_ref -c tests/config/nextflow.config
   tags:
     - bbmap
-    - bbmap/bbduk
+    - bbmap_bbduk
   files:
     - path: output/bbmap/test.bbduk.log
       contains: 
