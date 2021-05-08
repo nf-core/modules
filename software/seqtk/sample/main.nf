@@ -48,7 +48,7 @@ process SEQTK_SAMPLE {
             $reads[0] \\
             $sample_size \\
             | gzip > ${prefix}_1.fastq.gz \\
-		
+
         seqtk \\
             sample \\
             $options.args \\
