@@ -35,8 +35,7 @@ process BBMAP_BBDUK {
     def contaminants_fa = use_contaminants ? "ref=$contaminants" : ''
 
     """
-    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g' )
-
+    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     bbduk.sh \\
         -Xmx\$maxmem \\
         $raw \\
