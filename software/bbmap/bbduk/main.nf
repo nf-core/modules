@@ -38,13 +38,13 @@ process BBMAP_BBDUK {
     maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g' )
 
     bbduk.sh \\
-     -Xmx\$maxmem \\
-     $raw \\
-     $trimmed \\
-     threads=$task.cpus \\
-     $options.args \\
-     $contaminants_fa \\
-     &> ${prefix}.bbduk.log
+        -Xmx\$maxmem \\
+        $raw \\
+        $trimmed \\
+        threads=$task.cpus \\
+        $options.args \\
+        $contaminants_fa \\
+        &> ${prefix}.bbduk.log
     echo \$(bbversion.sh) > ${software}.version.txt
     """
 }
