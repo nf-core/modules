@@ -1,5 +1,5 @@
 name: bbmap_bbduk
-description: Adapter and quality trimming of sequencing reads 
+description: Adapter and quality trimming of sequencing reads
 keywords:
   - trimming
   - adapter trimming
@@ -27,14 +27,14 @@ input:
   - contaminants:
         type: file
         description: |
-          Reference files containing adapter and/or contaminant sequences for sequence kmer matching 
+          Reference files containing adapter and/or contaminant sequences for sequence kmer matching
 
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]        
+        e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: The trimmed/modified fastq reads
@@ -46,7 +46,7 @@ output:
   - log:
       type: file
       description: Bbduk log file
-      pattern: "*bbduk.log" 
+      pattern: "*bbduk.log"
 
 authors:
   - "@MGordon09"
