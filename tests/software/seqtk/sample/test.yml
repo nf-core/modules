@@ -1,0 +1,19 @@
+- name: seqtk sample single-end
+  command: nextflow run ./tests/software/seqtk/sample -entry test_seqtk_sample_single_end -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/sample
+  files:
+    - path: output/seqtk/test.sampled.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+
+- name: seqtk sample paired-end
+  command: nextflow run ./tests/software/seqtk/sample -entry test_seqtk_sample_paired_end -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/sample
+  files:
+    - path: output/seqtk/test.sampled_1.fastq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/seqtk/test.sampled_2.fastq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
