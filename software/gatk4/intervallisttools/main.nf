@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 process GATK4_INTERVALLISTTOOLS {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
@@ -22,22 +22,20 @@ process GATK4_INTERVALLISTTOOLS {
     tuple val(meta), path(interval_list)
 
     output:
-    tuple val(meta), path("*.split/*/*.interval_list"), emit: interval_list
+    tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
-    def out_dir = ${prefix}.split
     """
 
-    mkdir ${out_dir}
+    mkdir ${prefix}_split
 
     gatk \\
     IntervalListTools \\
     -I ${interval_list} \\
-    -O ${out_dir} \\
+    -O ${prefix}_split \\
     $options.args
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
