@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_BBDUK } from '../../../../software/bbmap/bbduk/main.nf' addParams( options: [ 'args' : 'trimq=10 qtrim=r', 'suffix' : 'trim' ] )
+include { BBMAP_BBDUK } from '../../../../software/bbmap/bbduk/main.nf' addParams( options: [ 'args' : 'trimq=10 qtrim=r', 'suffix' : '.trim' ] )
 
 workflow test_bbmap_bbduk_single_end {
 
