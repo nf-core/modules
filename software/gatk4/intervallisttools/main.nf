@@ -37,12 +37,9 @@ process GATK4_INTERVALLISTTOOLS {
     gatk \\
     --java-options "-Xms1g" \\
     IntervalListTools \\
-    --SCATTER_COUNT 6 \\
-    --SUBDIVISION_MODE BALANCING_WITHOUT_INTERVAL_SUBDIVISION_WITH_OVERFLOW \\
-    --UNIQUE true \\
-    --SORT true \\
-    --INPUT ${interval_list} \\
-    --OUTPUT ${out_dir}
+    -I ${interval_list} \\
+    -O ${out_dir} \\
+    $options.args
 
     gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
     """
