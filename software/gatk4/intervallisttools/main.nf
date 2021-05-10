@@ -35,7 +35,6 @@ process GATK4_INTERVALLISTTOOLS {
     mkdir ${out_dir}
 
     gatk \\
-    --java-options "-Xms1g" \\
     IntervalListTools \\
     -I ${interval_list} \\
     -O ${out_dir} \\
