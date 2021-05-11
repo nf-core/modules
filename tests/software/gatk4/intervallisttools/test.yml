@@ -1,8 +1,7 @@
 - name: gatk4 intervallisttools test_gatk4_intervallisttools_all
   command: nextflow run tests/software/gatk4/intervallisttools -entry test_gatk4_intervallisttools_all -c tests/config/nextflow.config
   tags:
-    - gatk4_intervallisttools_all
-    - gatk4_intervallisttools
+    - gatk4/intervallisttools
     - gatk4
   files:
     - path: output/intervallisttools/test.allparams_split/temp_0001_of_6/1scattered.interval_list
