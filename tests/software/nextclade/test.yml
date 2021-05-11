@@ -1,0 +1,31 @@
+- name: nextclade test_nextclade_json
+  command: nextflow run tests/software/nextclade -entry test_nextclade_json -c tests/config/nextflow.config
+  tags:
+    - nextclade
+  files:
+    - path: output/nextclade/test.json
+      md5sum: cab92830c5cb66076e7d6c054ea98362
+
+- name: nextclade test_nextclade_csv
+  command: nextflow run tests/software/nextclade -entry test_nextclade_csv -c tests/config/nextflow.config
+  tags:
+    - nextclade
+  files:
+    - path: output/nextclade/test.csv
+      md5sum: 4f7096df9be51f99a0d62a38653b29cf
+
+- name: nextclade test_nextclade_tsv
+  command: nextflow run tests/software/nextclade -entry test_nextclade_tsv -c tests/config/nextflow.config
+  tags:
+    - nextclade
+  files:
+    - path: output/nextclade/test.tsv
+      md5sum: fe07dc4ffcd81742ca9bef93f88e8836
+
+- name: nextclade test_nextclade_tree
+  command: nextflow run tests/software/nextclade -entry test_nextclade_tree -c tests/config/nextflow.config
+  tags:
+    - nextclade
+  files:
+    - path: output/nextclade/test.tree.json
+      md5sum: 508a6ea19daf98fd8ae9f2d470f8c3cd
