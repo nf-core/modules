@@ -4,7 +4,9 @@
 
 //
 // Extract name of software tool from process name using $task.process
-// return task_process.tokenize(':')[-1].tokenize('_')[0].toLowerCase()
+//
+def getSoftwareName(task_process) {
+    return task_process.tokenize(':')[-1].tokenize('_')[0].toLowerCase()
 }
 
 //
