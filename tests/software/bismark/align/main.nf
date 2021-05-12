@@ -6,9 +6,9 @@ include { BISMARK_GENOMEPREPARATION         } from '../../../../software/bismark
 include { BISMARK_ALIGN as BISMARK_ALIGN_SE } from '../../../../software/bismark/align/main.nf'             addParams( options: [ publish_dir:'test_single_end' ] )
 include { BISMARK_ALIGN as BISMARK_ALIGN_PE } from '../../../../software/bismark/align/main.nf'             addParams( options: [ publish_dir:'test_paired_end' ] )
 
-/*
- * Test with single-end data
- */
+//
+// Test with single-end data
+//
 workflow test_bismark_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true) ]
@@ -19,9 +19,9 @@ workflow test_bismark_align_single_end {
     BISMARK_ALIGN_SE ( input, BISMARK_GENOMEPREPARATION.out.index )
 }
 
-/*
- * Test with paired-end data
- */
+//
+// Test with paired-end data
+//
 workflow test_bismark_align_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
