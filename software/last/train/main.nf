@@ -30,14 +30,14 @@ process LAST_TRAIN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    INDEX_NAME=`find -L lastdb/ -name "*.bck" | sed 's/.bck//' | sed 's,lastdb/,,'`
     
     last-train \\
         $options.args \\
         -P $task.cpus \\
-        ${index}/\$INDEX \\
+        ${index}/\$INDEX_NAME \\
         ${fastx} \\
-        > ${meta.id}_\$INDEX.par
+        > ${meta.id}_\$INDEX_NAME.par
 
     lastdb --version | sed 's/lastdb //' > ${software}.version.txt
     """
