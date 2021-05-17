@@ -31,7 +31,7 @@ process LAST_TRAIN {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     INDEX_NAME=`find -L lastdb/ -name "*.bck" | sed 's/.bck//' | sed 's,lastdb/,,'`
-    
+
     last-train \\
         $options.args \\
         -P $task.cpus \\
