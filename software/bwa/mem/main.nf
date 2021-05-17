@@ -27,6 +27,7 @@ process BWA_MEM {
     path  "*.version.txt"         , emit: version
 
     script:
+    def split_cpus = Math.floor(task.cpus/2)
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
@@ -36,10 +37,10 @@ process BWA_MEM {
     bwa mem \\
         $options.args \\
         $read_group \\
-        -t $task.cpus \\
+        -t ${split_cpus} \\
         \$INDEX \\
         $reads \\
-        | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ ${split_cpus} -bhS -o ${prefix}.bam -
 
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
     """
