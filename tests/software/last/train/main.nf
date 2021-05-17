@@ -11,7 +11,5 @@ workflow test_last_train {
     input =      [ [ id:'contigs' ], // meta map
                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     UNTAR ( db )
-    // add meta map needed by LAST_TRAIN
-    ch_index = UNTAR.out.untar.map {row -> [ [ id : 'genome' ], row ] }
-    LAST_TRAIN ( ch_index, input )
+    LAST_TRAIN ( input, UNTAR.out.untar )
 }
