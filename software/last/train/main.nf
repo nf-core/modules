@@ -19,8 +19,8 @@ process LAST_TRAIN {
     }
 
     input:
-    tuple val(meta_index), path(index)
-    tuple val(meta),       path(fastx)
+    tuple val(meta), path(fastx)
+    path  index
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
@@ -30,12 +30,14 @@ process LAST_TRAIN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
+    INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+    
     last-train \\
         $options.args \\
         -P $task.cpus \\
-        ${index}/${meta_index.id} \\
+        ${index}/\$INDEX \\
         ${fastx} \\
-        > ${meta.id}__${meta_index.id}.par
+        > ${meta.id}_\$INDEX.par
 
     lastdb --version | sed 's/lastdb //' > ${software}.version.txt
     """
