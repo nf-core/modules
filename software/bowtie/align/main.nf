@@ -29,6 +29,7 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
+    def split_cpus = Math.floor(task.cpus/2)
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
@@ -36,7 +37,7 @@ process BOWTIE_ALIGN {
     """
     INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
     bowtie \\
-        --threads $task.cpus \\
+        --threads ${split_cpus} \\
         --sam \\
         -x \$INDEX \\
         -q \\
@@ -44,7 +45,7 @@ process BOWTIE_ALIGN {
         $options.args \\
         $endedness \\
         2> ${prefix}.out \\
-        | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ ${split_cpus} -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq
