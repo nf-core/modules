@@ -7,7 +7,7 @@ include { LAST_MAFSWAP } from '../../../../software/last/mafswap/main.nf' addPar
 workflow test_last_mafswap {
 
     input = [ [ id:'contigs.genome' ], // meta map
-              file(params.test_data['sarscov2']['genome']['contigs_genome_alignment_maf_gz'], checkIfExists: true) ]
+              file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true) ]
 
     LAST_MAFSWAP ( input )
 }
