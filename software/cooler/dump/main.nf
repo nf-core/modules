@@ -1,13 +1,41 @@
-#!/usr/bin/env nextflow
+// Import generic module functions
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-nextflow.enable.dsl = 2
+params.options = [:]
+options        = initOptions(params.options)
 
-include { COOLER_DUMP } from '../../../../software/cooler/dump/main.nf' addParams( options: [:] )
+process COOLER_DUMP {
+    tag "$meta.id"
+    label 'process_high'
+    publishDir "${params.outdir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-workflow test_cooler_dump {
+    conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0"
+    } else {
+        container "quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0"
+    }
 
-    input = [ [ id:'test', bin:16 ], // meta map
-              file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.asymm.16.cool", checkIfExists: true) ]
+    input:
+    tuple val(meta), path(cool)
 
-    COOLER_DUMP ( input )
+    output:
+    tuple val(meta), path("${meta.id}-${meta.bin}/*"), emit: bedpe
+    path "*.version.txt"                             , emit: version
+
+    script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def outdir   = "${meta.id}-${meta.bin}"
+    """
+    mkdir -p $outdir
+    cooler dump \\
+        $options.args \\
+        -o $outdir/${prefix}.bedpe \\
+        $cool
+
+    echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
+    """
 }

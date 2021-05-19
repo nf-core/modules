@@ -1,12 +1,43 @@
-#!/usr/bin/env nextflow
+// Import generic module functions
+include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-nextflow.enable.dsl = 2
+params.options = [:]
+options        = initOptions(params.options)
 
-include { COOLER_ZOOMIFY } from '../../../../software/cooler/zoomify/main.nf' addParams( options: [:] )
+process COOLER_ZOOMIFY {
+    tag "$meta.id"
+    label 'process_high'
+    publishDir "${params.outdir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-workflow test_cooler_zoomify {
-   input = [ [ id:'test', bin:"2,4,8" ], // meta map
-            file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.asymm.2.cool", checkIfExists: true)]
+    conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
+    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        container "https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0"
+    } else {
+        container "quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0"
+    }
 
-    COOLER_ZOOMIFY ( input )
+    input:
+    tuple val(meta), path(cool)
+
+    output:
+    tuple val(meta), path("*.mcool"), emit: mcool
+    path "*.version.txt"            , emit: version
+
+    script:
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def cool_bin = "${meta.bin}"
+    def res      = options.args2?:""
+    """
+    cooler zoomify \\
+        $options.args \\
+        -r ${cool_bin}$res \\
+        -n $task.cpus \\
+        -o ${prefix}.${cool_bin}.mcool \\
+        ${cool}
+
+    echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
+    """
 }
