@@ -1,0 +1,10 @@
+- name: pairtools select test_pairtools_select
+  command: nextflow run tests/software/pairtools/select -entry test_pairtools_select -c tests/config/nextflow.config
+  tags:
+    - pairtools
+    - pairtools/select
+  files:
+    - path: output/pairtools/test.rest.pairs.gz
+      md5sum: b80dd1ae2411e455085cfc1ba9eebdf1
+    - path: output/pairtools/test.selected.pairs.gz
+      md5sum: f69de9a788bb4d54d1f4573f82abc90e
