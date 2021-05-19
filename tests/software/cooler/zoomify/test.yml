@@ -1,0 +1,8 @@
+- name: cooler zoomify test_cooler_zoomify
+  command: nextflow run tests/software/cooler/zoomify -entry test_cooler_zoomify -c tests/config/nextflow.config
+  tags:
+    - cooler/zoomify
+    - cooler
+  files:
+    - path: output/cooler/test.2,4,8.mcool
+      contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
