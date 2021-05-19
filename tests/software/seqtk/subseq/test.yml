@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml seqtk/subseq
+- name: seqtk subseq
+  command: nextflow run ./tests/software/seqtk/subseq -entry test_seqtk_subseq -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/subseq
+  files:
+    - path: output/seqtk/genome.fasta_filtered.fa.gz
+      md5sum: 488001c0fbedabf24d3e10fe7f96c78a

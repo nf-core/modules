@@ -41,6 +41,9 @@ process SEQTK_SAMPLE {
         echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
         """
     } else {
+        if (!(options.args ==~ /.*-s[0-9]+.*/)) {
+            options.args = options.args + " -s100"
+        }
         """
         seqtk \\
             sample \\
