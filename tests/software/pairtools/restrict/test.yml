@@ -1,0 +1,8 @@
+- name: pairtools restrict test_pairtools_restrict
+  command: nextflow run tests/software/pairtools/restrict -entry test_pairtools_restrict -c tests/config/nextflow.config
+  tags:
+    - pairtools/restrict
+    - pairtools
+  files:
+    - path: output/pairtools/test.restrict.pairs.gz
+      md5sum: 50590f47c219160ae6c63fac5af6b33a
