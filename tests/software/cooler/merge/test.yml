@@ -1,8 +1,7 @@
 - name: cooler merge test_cooler_merge
   command: nextflow run tests/software/cooler/merge -entry test_cooler_merge -c tests/config/nextflow.config
   tags:
-    - cooler
     - cooler/merge
+    - cooler
   files:
     - path: output/cooler/test.merged.2.cool
-      contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
