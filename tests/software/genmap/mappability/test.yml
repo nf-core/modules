@@ -1,0 +1,8 @@
+- name: genmap mappability test_genmap_mappability
+  command: nextflow run tests/software/genmap/mappability -entry test_genmap_mappability -c tests/config/nextflow.config
+  tags:
+    - genmap/mappability
+    - genmap
+  files:
+    - path: output/genmap/genome.genmap.wig
+      md5sum: fd2afb6512ab9e86f9a3b62f8b9d9088
