@@ -27,7 +27,7 @@ process UCSC_WIGTOBIGWIG {
     path "*.version.txt"          , emit: version
 
     script:
-    def software = 'ucsc-wigtobigwig'
+    def software = getSoftwareName(task.process)
 
     """
     wigToBigWig \\
