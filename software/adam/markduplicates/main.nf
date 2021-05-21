@@ -29,8 +29,6 @@ process ADAM_MARKDUPLICATES {
     def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    export SPARK_LOCAL_IP=127.0.0.1
-    export SPARK_PUBLIC_DNS=127.0.0.1
     adam-submit \\
         --master local[${task.cpus}] \\
         --driver-memory ${task.memory.toGiga()}g \\
