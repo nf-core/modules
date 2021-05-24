@@ -31,6 +31,6 @@ process LAST_SPLIT {
     """
     zcat $maf | last-split $options.args | gzip --no-name > ${prefix}.split.maf.gz
 
-    last-split --version | sed 's/last-split //' > ${software}.version.txt
+    echo \$(last-split --version 2>&1) | sed 's/last-split //' > ${software}.version.txt
     """
 }
