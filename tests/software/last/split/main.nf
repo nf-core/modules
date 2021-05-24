@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_SPLIT } from '../../../../software/last/split/main.nf' addParams( options: [:] )
+include { LAST_SPLIT } from '../../../../software/last/split/main.nf' addParams( options: ['suffix':'.split'] )
 
 workflow test_last_split {
     
