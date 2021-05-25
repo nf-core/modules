@@ -28,15 +28,12 @@ process COOLER_ZOOMIFY {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def cool_bin = "${meta.bin}"
-    def res      = options.args2?:""
     """
     cooler zoomify \\
         $options.args \\
-        -r ${cool_bin}$res \\
         -n $task.cpus \\
-        -o ${prefix}.${cool_bin}.mcool \\
-        ${cool}
+        -o ${prefix}.mcool \\
+        $cool
 
     echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
     """
