@@ -22,8 +22,8 @@ process GENMAP_INDEX {
     path fasta
 
     output:
-    path "genmap_index/index.*", emit: index
-    path "*.version.txt"       , emit: version
+    tuple path(fasta), path("genmap_index/index.*"), emit: index
+    path "*.version.txt"                           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

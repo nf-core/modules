@@ -1,8 +1,56 @@
-- name: genmap mappability test_genmap_mappability
-  command: nextflow run tests/software/genmap/mappability -entry test_genmap_mappability -c tests/config/nextflow.config
+- name: genmap mappability test_genmap_map
+  command: nextflow run tests/software/genmap/mappability -entry test_genmap_map -c tests/config/nextflow.config
   tags:
-    - genmap/mappability
     - genmap
+    - genmap/mappability
   files:
-    - path: output/genmap/genome.genmap.wig
+    - path: output/genmap/genmap_index/index.ids.concat
+      md5sum: da6caa25f62c5407ccdfbcce1fa92408
+    - path: output/genmap/genmap_index/index.ids.limits
+      md5sum: f82636c5da188aec131d3a809473eff1
+    - path: output/genmap/genmap_index/index.info.concat
+      md5sum: 8ba5273aa9e58722bf45b9cc39fc6bfe
+    - path: output/genmap/genmap_index/index.info.limits
+      md5sum: 3522f2811f4ddf04598809fc84a1459e
+    - path: output/genmap/genmap_index/index.lf.drp
+      md5sum: dd85d6a23af2c7adf2695658e3056c08
+    - path: output/genmap/genmap_index/index.lf.drp.sbl
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/genmap/genmap_index/index.lf.drs
+      md5sum: 93b885adfe0da089cdf634904fd59f71
+    - path: output/genmap/genmap_index/index.lf.drv
+      md5sum: e06b605496bd91b32afa3c4f56d934ac
+    - path: output/genmap/genmap_index/index.lf.drv.sbl
+      md5sum: 8dd6bb7329a71449b0a1b292b5999164
+    - path: output/genmap/genmap_index/index.lf.pst
+      md5sum: e8daba34298e99e42942435286f9b3f0
+    - path: output/genmap/genmap_index/index.rev.lf.drp
+      md5sum: 5d9107e3aeec0721553dd661d4365fef
+    - path: output/genmap/genmap_index/index.rev.lf.drp.sbl
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/genmap/genmap_index/index.rev.lf.drs
+      md5sum: 93b885adfe0da089cdf634904fd59f71
+    - path: output/genmap/genmap_index/index.rev.lf.drv
+      md5sum: df7e795edc0a034577a9d2599fe8cfeb
+    - path: output/genmap/genmap_index/index.rev.lf.drv.sbl
+      md5sum: 8dd6bb7329a71449b0a1b292b5999164
+    - path: output/genmap/genmap_index/index.rev.lf.pst
+      md5sum: e8daba34298e99e42942435286f9b3f0
+    - path: output/genmap/genmap_index/index.sa.ind
+      md5sum: e21e5c7ce887cc8e3d0fa44ab1019cab
+    - path: output/genmap/genmap_index/index.sa.len
+      md5sum: 5dfc20cfe8ed9892451461a8d402f51c
+    - path: output/genmap/genmap_index/index.sa.val
+      md5sum: 400ee7f2fe93b2000ae3a5da5e509730
+    - path: output/genmap/genmap_index/index.txt.concat
+      md5sum: b4303962e0c176107945f3405370e6ae
+    - path: output/genmap/genmap_index/index.txt.limits
+      md5sum: 4480a068db603e4c9a27bc4fa9ceaf14
+    - path: output/genmap/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
+    - path: output/genmap/mappability.bedgraph
+      md5sum: c4203b84a84331282ef8660279f80b26
+    - path: output/genmap/mappability.txt
+      md5sum: 602d409493457f92b2e5f075f62ebe30
+    - path: output/genmap/mappability.wig
       md5sum: fd2afb6512ab9e86f9a3b62f8b9d9088

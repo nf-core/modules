@@ -22,8 +22,8 @@ process GENMAP_MAPPABILITY {
     tuple path(fasta), path(index, stageAs:"genmap_index/*")
 
     output:
-    path "out/*"        , emit: map
-    path "*.version.txt", emit: version
+    path "mappability.{wig,bedgraph,txt}", emit: map
+    path "*.version.txt"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -31,7 +31,7 @@ process GENMAP_MAPPABILITY {
     genmap map \\
         $options.args \\
         -I genmap_index \\
-        -O out
+        -O mappability
 
     echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
     """
