@@ -1,0 +1,66 @@
+- name: metaphlan3 run test_metaphlan3_single_end
+  command: nextflow run tests/software/metaphlan3/run -entry test_metaphlan3_single_end -c tests/config/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/run
+  files:
+    - path: output/metaphlan3/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan3/test.bowtie2out.txt
+      md5sum: 4538ae3833e6b4241be5e7b6ec942344
+    - path: output/metaphlan3/test.txt
+      md5sum: 9a502f11c763854fbd112e90e874887c
+
+- name: metaphlan3 run test_metaphlan3_paired_end
+  command: nextflow run tests/software/metaphlan3/run -entry test_metaphlan3_paired_end -c tests/config/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/run
+  files:
+    - path: output/metaphlan3/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan3/test.bowtie2out.txt
+      md5sum: 6132f2d2750d4f4d17a42a7463b579d7
+    - path: output/metaphlan3/test.txt
+      md5sum: faca28f14758dcc82f9c8139a2e08800
+
+- name: metaphlan3 run test_metaphlan3_sam
+  command: nextflow run tests/software/metaphlan3/run -entry test_metaphlan3_sam -c tests/config/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/run
+  files:
+    - path: output/metaphlan3/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan3/test.txt
+      md5sum: 73ab4cf4e1221f2084aecb0dc3de87cf
+
+- name: metaphlan3 run test_metaphlan3_fasta
+  command: nextflow run tests/software/metaphlan3/run -entry test_metaphlan3_fasta -c tests/config/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/run
+  files:
+    - path: output/metaphlan3/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan3/test.bowtie2out.txt
+      contains:
+        - 'HWUSI-EAS1568_102539179:1:100'
+    - path: output/metaphlan3/test.txt
+      md5sum: e16bf2228a01777f4813020127a7a93a
+
+- name: metaphlan3 run test_metaphlan3_bowtie2out
+  command: nextflow run tests/software/metaphlan3/run -entry test_metaphlan3_bowtie2out -c tests/config/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/run
+  files:
+    - path: output/metaphlan3/test.biom
+      contains:
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+    - path: output/metaphlan3/test.txt
+      md5sum: 17f655ae9a8e50ae9c04e9e3130fa2e2
