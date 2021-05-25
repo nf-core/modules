@@ -1,8 +1,9 @@
 - name: pairtools sort test_pairtools_sort
   command: nextflow run tests/software/pairtools/sort -entry test_pairtools_sort -c tests/config/nextflow.config
   tags:
-    - pairtools
     - pairtools/sort
+    - pairtools
   files:
+    - path: output/nopg/filtered.file
+      md5sum: b1a63d1fe3cc8c8d3d7fa9e4c9421903
     - path: output/pairtools/test.sorted.pairs.gz
-      md5sum: a0f13d5db6cbe26f1dfe1f13ce676a4f
