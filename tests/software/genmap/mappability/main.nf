@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMAP_INDEX       } from '../../../../software/genmap/index/main.nf' addParams( options: [:] )
+include { GENMAP_INDEX       } from '../../../../software/genmap/index/main.nf'       addParams( options: [:] )
 include { GENMAP_MAPPABILITY } from '../../../../software/genmap/mappability/main.nf' addParams( options: [args : '-K 50 -E 2 -w -t -bg'] )
 
 workflow test_genmap_map {
