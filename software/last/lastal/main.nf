@@ -20,8 +20,8 @@ process LAST_LASTAL {
 
     input:
     tuple val(meta), path(fastx)
-    path(index)
-    path(param_file)
+    path index
+    path param_file
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
@@ -30,7 +30,7 @@ process LAST_LASTAL {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def trained_params = param_file.exists() ? "-p ${param_file}"  : ""
+    def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=`ls lastdb/*bck | xargs basename -s .bck`
     lastal \\
