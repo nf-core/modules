@@ -22,7 +22,7 @@ process GENMAP_INDEX {
     path fasta
 
     output:
-	  path "genmap"       , emit: index
+	path "genmap"       , emit: index
     path "*.version.txt", emit: version
 
     script:
