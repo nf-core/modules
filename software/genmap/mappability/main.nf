@@ -19,16 +19,19 @@ process GENMAP_MAPPABILITY {
     }
 
     input:
-    tuple path(fasta), path(index)
+    path index
 
     output:
-    path "mappability.{wig,bedgraph,txt}", emit: map
-    path "*.version.txt"                 , emit: version
+    path "*.wig"        , optional:true, emit: wig
+    path "*.bedgraph"   , optional:true, emit: bedgraph
+    path "*.txt"        , optional:true, emit: txt
+    path "*.version.txt"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
-    genmap map \\
+    genmap \\
+        map \\
         $options.args \\
         -I . \\
         -O mappability

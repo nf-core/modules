@@ -25,9 +25,18 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - map:
+  - wig:
       type: file
-      description: mappability file
+      description: genmap wig mappability file
+      pattern: "*.wig"
+  - bedgraph:
+      type: file
+      description: genmap bedgraph mappability file
+      pattern: "*.bedgraph"
+  - txt:
+      type: file
+      description: genmap text mappability file
+      pattern: "*.txt"
 
 authors:
   - "@jianhong"
