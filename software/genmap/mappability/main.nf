@@ -19,7 +19,7 @@ process GENMAP_MAPPABILITY {
     }
 
     input:
-    tuple path(fasta), path(index, stageAs:"genmap_index/*")
+    tuple path(fasta), path(index)
 
     output:
     path "mappability.{wig,bedgraph,txt}", emit: map
@@ -30,7 +30,7 @@ process GENMAP_MAPPABILITY {
     """
     genmap map \\
         $options.args \\
-        -I genmap_index \\
+        -I . \\
         -O mappability
 
     echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
