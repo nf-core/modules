@@ -27,13 +27,11 @@ process PAIRIX {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pairix \\
-        -p pairs \\
         $options.args \\
-        ${pair}
+        $pair
 
-    echo \$(samtools --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//' > ${software}.version.txt
+    echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//' > ${software}.version.txt
     """
 }
