@@ -30,12 +30,10 @@ process GENMAP_MAPPABILITY {
     script:
     def software = getSoftwareName(task.process)
     """
-    INDEX=`find -L ./ -name "*.ids.concat" -printf '%h\n'`
-
     genmap \\
         map \\
         $options.args \\
-        -I \$INDEX \\
+        -I $index \\
         -O mappability
 
     echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
