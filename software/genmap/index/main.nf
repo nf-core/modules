@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process GENMAP_MAPPABILITY {
+process GENMAP_INDEX {
     tag '$fasta'
     label 'process_high'
     publishDir "${params.outdir}",
@@ -19,19 +19,19 @@ process GENMAP_MAPPABILITY {
     }
 
     input:
-    tuple path(fasta), path(index, stageAs:"genmap_index/*")
+    path fasta
 
     output:
-    path "out/*"        , emit: map
-    path "*.version.txt", emit: version
+    path "genmap_index/index.*", emit: index
+    path "*.version.txt"       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
+
     """
-    genmap map \\
-        $options.args \\
-        -I genmap_index \\
-        -O out
+    genmap index \\
+        -F $fasta \\
+        -I genmap_index
 
     echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
     """
