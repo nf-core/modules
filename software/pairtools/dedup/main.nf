@@ -22,9 +22,9 @@ process PAIRTOOLS_DEDUP {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.dedup.pairs.gz")  , emit: pairs
-    tuple val(meta), path("*.dedup.pairs.stat"), emit: stat
-    path "*.version.txt"                       , emit: version
+    tuple val(meta), path("*.pairs.gz")  , emit: pairs
+    tuple val(meta), path("*.pairs.stat"), emit: stat
+    path "*.version.txt"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -32,9 +32,9 @@ process PAIRTOOLS_DEDUP {
     """
     pairtools dedup \\
         $options.args \\
-        -o ${prefix}.dedup.pairs.gz \\
-        --output-stats ${prefix}.dedup.pairs.stat \\
-        ${input}
+        -o ${prefix}.pairs.gz \\
+        --output-stats ${prefix}.pairs.stat \\
+        $input
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
     """
