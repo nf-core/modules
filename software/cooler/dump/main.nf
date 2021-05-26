@@ -22,18 +22,16 @@ process COOLER_DUMP {
     tuple val(meta), path(cool)
 
     output:
-    tuple val(meta), path("${meta.id}-${meta.bin}/*"), emit: bedpe
-    path "*.version.txt"                             , emit: version
+    tuple val(meta), path("*.bedpe"), emit: bedpe
+    path "*.version.txt"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def outdir   = "${meta.id}-${meta.bin}"
     """
-    mkdir -p $outdir
     cooler dump \\
         $options.args \\
-        -o $outdir/${prefix}.bedpe \\
+        -o ${prefix}.bedpe \\
         $cool
 
     echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt

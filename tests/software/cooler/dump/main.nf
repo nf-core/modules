@@ -6,7 +6,7 @@ include { COOLER_DUMP } from '../../../../software/cooler/dump/main.nf' addParam
 
 workflow test_cooler_dump {
 
-    input = [ [ id:'test', bin:16 ], // meta map
+    input = [ [ id:'test' ], // meta map
               file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.asymm.16.cool", checkIfExists: true) ]
 
     COOLER_DUMP ( input )
