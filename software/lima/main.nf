@@ -19,7 +19,8 @@ process LIMA {
     }
 
     input:
-    tuple val(meta), path(ccs), path(pbi), path(primers)
+    tuple val(meta), path(ccs), path(pbi)
+    path(primers)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
