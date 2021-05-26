@@ -31,12 +31,13 @@ process PAIRTOOLS_PARSE {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    pairtools parse -c ${chromsizes} \\
-        --assembly ${params.species} \\
+    pairtools \\
+        parse \\
+        -c $chromsizes \\
         $options.args \\
-        --output-stats ${prefix}.raw.pairsam.stat \\
-        -o ${prefix}.raw.pairsam.gz \\
-        ${bam}
+        --output-stats ${prefix}.pairsam.stat \\
+        -o ${prefix}.pairsam.gz \\
+        $bam
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
     """
