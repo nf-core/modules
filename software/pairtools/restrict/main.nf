@@ -23,17 +23,19 @@ process PAIRTOOLS_RESTRICT {
     path frag
 
     output:
-    tuple val(meta), path("*.restrict.pairs.gz"), emit: restrict
-    path "*.version.txt"                        , emit: version
+    tuple val(meta), path("*.pairs.gz"), emit: restrict
+    path "*.version.txt"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    pairtools restrict -f ${frag} \\
+    pairtools \\
+        restrict \\
+        -f $frag \\
         $options.args \\
-        -o ${prefix}.restrict.pairs.gz \\
-        ${pairs}
+        -o ${prefix}.pairs.gz \\
+        $pairs
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
     """
