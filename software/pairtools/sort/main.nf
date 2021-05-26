@@ -22,7 +22,7 @@ process PAIRTOOLS_SORT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.sorted.pairs.gz"), emit: sorted
+    tuple val(meta), path("*.pairs.gz"), emit: sorted
     path "*.version.txt"                      , emit: version
 
     script:
@@ -34,8 +34,8 @@ process PAIRTOOLS_SORT {
         $options.args \\
         --nproc $task.cpus \\
         --memory "$mem" \\
-        -o ${prefix}.sorted.pairs.gz \\
-        ${input}
+        -o ${prefix}.pairs.gz \\
+        $input
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
     """
