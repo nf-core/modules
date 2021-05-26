@@ -30,10 +30,12 @@ process PAIRTOOLS_FLIP {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    pairtools flip -c ${chromsizes} \\
+    pairtools \\
+        flip \\
+        -c $chromsizes \\
         $options.args \\
         -o ${prefix}.flip.gz \\
-        ${sam}
+        $sam
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
     """

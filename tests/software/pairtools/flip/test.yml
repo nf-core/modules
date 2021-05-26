@@ -1,9 +1,7 @@
 - name: pairtools flip test_pairtools_flip
   command: nextflow run tests/software/pairtools/flip -entry test_pairtools_flip -c tests/config/nextflow.config
   tags:
-    - pairtools
     - pairtools/flip
+    - pairtools
   files:
-    - path: output/nopg/filtered.file
-      md5sum: 5a543fe913504b449acd8f08ad1be748
     - path: output/pairtools/test.flip.gz
