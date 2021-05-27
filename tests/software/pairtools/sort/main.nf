@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_SORT } from '../../../../software/pairtools/sort/main.nf' addParams( options: ['suffix':'sorted'] )
+include { PAIRTOOLS_SORT } from '../../../../software/pairtools/sort/main.nf' addParams( options: ['suffix':'.sorted'] )
 
 workflow test_pairtools_sort {
 
