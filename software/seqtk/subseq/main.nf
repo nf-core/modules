@@ -23,7 +23,7 @@ process SEQTK_SUBSEQ {
     path filter_list
 
     output:
-    path "*.gz",          emit: sequences
+    path "*.gz"         , emit: sequences
     path "*.version.txt", emit: version
 
     script:
