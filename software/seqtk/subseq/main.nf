@@ -28,6 +28,7 @@ process SEQTK_SUBSEQ {
 
     script:
     def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ?: ''
     def ext = "fa"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         ext = "fq"
