@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_SUBSEQ } from '../../../../software/seqtk/subseq/main.nf' addParams( options: [:] )
+include { SEQTK_SUBSEQ } from '../../../../software/seqtk/subseq/main.nf' addParams( options: ['suffix':'.filtered'] )
 
 workflow test_seqtk_subseq {
     
