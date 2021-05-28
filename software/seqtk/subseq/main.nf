@@ -39,7 +39,7 @@ process SEQTK_SUBSEQ {
         $options.args \\
         $sequences \\
         $filter_list | \\
-        gzip > ${sequences}${prefix}.${ext}.gz
+        gzip --no-name > ${sequences}${prefix}.${ext}.gz
 
     echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
     """

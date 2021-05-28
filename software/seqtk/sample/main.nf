@@ -36,7 +36,7 @@ process SEQTK_SAMPLE {
             $options.args \\
             $reads \\
             $sample_size \\
-            | gzip > ${prefix}.fastq.gz \\
+            | gzip --no-name > ${prefix}.fastq.gz \\
 
         echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
         """
@@ -50,14 +50,14 @@ process SEQTK_SAMPLE {
             $options.args \\
             $reads[0] \\
             $sample_size \\
-            | gzip > ${prefix}_1.fastq.gz \\
+            | gzip --no-name > ${prefix}_1.fastq.gz \\
 
         seqtk \\
             sample \\
             $options.args \\
             $reads[1] \\
             $sample_size \\
-            | gzip > ${prefix}_2.fastq.gz \\
+            | gzip --no-name > ${prefix}_2.fastq.gz \\
 
         echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
         """
