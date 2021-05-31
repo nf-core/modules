@@ -1,0 +1,32 @@
+name: custom_scrapesoftwareversions
+description: Merges *.software.txt files into a TSV and a multiqc config file
+keywords:
+  - sort
+tools:
+  - custom:
+      ## TODO nf-core: Add a description and other details for the software below
+      description:
+      homepage:
+      documentation:
+      tool_dev_url:
+      doi: ""
+      licence:
+
+input:
+  - bam:
+      type: file
+      description: Text files containing the version numbers of the tools used in the pipeline
+      pattern: "*.software.txt"
+
+output:
+  - version:
+      type: file
+      description: TSV file with software versions for each tool
+      pattern: "software_versions.tsv"
+  - bam:
+      type: file
+      description: MultiQC config file with the software versions
+      pattern: "software_versions_mqc.yaml"
+
+authors:
+  - "@grst"
