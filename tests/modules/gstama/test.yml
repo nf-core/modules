@@ -1,0 +1,9 @@
+- name: gstama test_gstama
+  command: nextflow run tests/software/gstama -entry test_gstama -c tests/config/nextflow.config
+  tags:
+    - gstama
+  files:
+    - path: output/gstama/test.bed
+      md5sum: 3d4f8d043e25d1a40f3bd5145cfbb9a9
+    - path: output/gstama/test_trans_read.bed
+      md5sum: ad8cba4b5b16b977d01a605002175716
