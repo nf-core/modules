@@ -14,7 +14,8 @@ process GSTAMA {
     conda (params.enable_conda ? "bioconda::gs-tama=1.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         //TODO Update singularity image path
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        //container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/gs-tama:1.0--hdfd78af_0"
     } else {
         container "quay.io/biocontainers/gs-tama:1.0--hdfd78af_0"
     }
@@ -35,7 +36,7 @@ process GSTAMA {
         -s $bam \\
         -f $genome \\
         -p $prefix \\
-        $options.args \\
+        $options.args
 
     echo \$(tama_collapse.py -version 2>&1) | grep 'tc_version_date_' > ${software}.version.txt
     """
