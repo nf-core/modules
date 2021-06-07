@@ -19,7 +19,7 @@ process SAMTOOLS_MERGE {
     }
 
     input:
-    tuple val(meta),path(bams)
+    tuple val(meta), path(bams)
 
     output:
     tuple val(meta), path("*merged.bam"), emit: merged_bam
