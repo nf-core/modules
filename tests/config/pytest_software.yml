@@ -10,9 +10,21 @@ allelecounter:
   - software/allelecounter/**
   - tests/software/allelecounter/**
 
+artic/guppyplex:
+  - software/artic/guppyplex/**
+  - tests/software/artic/guppyplex/**
+
+artic/minion:
+  - software/artic/minion/**
+  - tests/software/artic/minion/**
+
 bandage/image:
   - software/bandage/image/**
   - tests/software/bandage/image/**
+
+bbmap/bbduk:
+  - software/bbmap/bbduk/**
+  - tests/software/bbmap/bbduk/**
 
 bcftools/consensus:
   - software/bcftools/consensus/**
@@ -37,6 +49,10 @@ bcftools/mpileup:
 bcftools/stats:
   - software/bcftools/stats/**
   - tests/software/bcftools/stats/**
+
+bedtools/bamtobed:
+  - software/bedtools/bamtobed/**
+  - tests/software/bedtools/bamtobed/**
 
 bedtools/complement:
   - software/bedtools/complement/**
@@ -182,13 +198,21 @@ deeptools/plotprofile:
   - software/deeptools/plotprofile/**
   - tests/software/deeptools/plotprofile/**
 
-dsh/filterbed:
-  - software/dsh/filterbed/**
-  - tests/software/dsh/filterbed/**
+dshbio/filterbed:
+  - software/dshbio/filterbed/**
+  - tests/software/dshbio/filterbed/**
 
-dsh/splitbed:
-  - software/dsh/splitbed/**
-  - tests/software/dsh/splitbed/**
+dshbio/filtergff3:
+  - software/dshbio/filtergff3/**
+  - tests/software/dshbio/filtergff3/**
+
+dshbio/splitbed:
+  - software/dshbio/splitbed/**
+  - tests/software/dshbio/splitbed/**
+
+dshbio/splitgff3:
+  - software/dshbio/splitgff3/**
+  - tests/software/dshbio/splitgff3/**
 
 fastp:
   - software/fastp/**
@@ -238,6 +262,10 @@ gatk4/haplotypecaller:
   - software/gatk4/haplotypecaller/**
   - tests/software/gatk4/haplotypecaller/**
 
+gatk4/intervallisttools:
+  - software/gatk4/intervallisttools/**
+  - tests/software/gatk4/intervallisttools/**
+
 gatk4/markduplicates:
   - software/gatk4/markduplicates/**
   - tests/software/gatk4/markduplicates/**
@@ -266,9 +294,25 @@ gatk4/variantfiltration:
   - software/gatk4/variantfiltration/**
   - tests/software/gatk4/variantfiltration/**
 
+genmap/index:
+  - software/genmap/index/**
+  - tests/software/genmap/index/**
+
+genmap/mappability:
+  - software/genmap/mappability/**
+  - tests/software/genmap/mappability/**
+
 gffread:
   - software/gffread/**
   - tests/software/gffread/**
+
+graphmap2/align:
+  - software/graphmap2/align/**
+  - tests/software/graphmap2/align/**
+
+graphmap2/index:
+  - software/graphmap2/index/**
+  - tests/software/graphmap2/index/**
 
 gubbins:
   - software/gubbins/**
@@ -292,6 +336,10 @@ hisat2/build:
 hisat2/extractsplicesites:
   - software/hisat2/extractsplicesites/**
   - tests/software/hisat2/extractsplicesites/**
+
+hmmer/hmmalign:
+  - software/hmmer/hmmalign/**
+  - tests/software/hmmer/hmmalign/**
 
 homer/annotatepeaks:
   - software/homer/annotatepeaks/**
@@ -317,6 +365,10 @@ kallisto/index:
   - software/kallisto/index/**
   - tests/software/kallisto/index/**
 
+kallistobustools/count:
+  - software/kallistobustools/count/**
+  - tests/software/kallistobustools/count/**
+
 kallistobustools/ref:
   - software/kallistobustools/ref/**
   - tests/software/kallistobustools/ref/**
@@ -325,6 +377,26 @@ kraken2/run:
   - software/kraken2/run/**
   - software/untar/**
   - tests/software/kraken2/run/**
+
+last/lastal:
+  - software/last/lastal/**
+  - tests/software/last/lastal/**
+
+last/lastdb:
+  - software/last/lastdb/**
+  - tests/software/last/lastdb/**
+
+last/mafswap:
+  - software/last/mafswap/**
+  - tests/software/last/mafswap/**
+
+last/split:
+  - software/last/split/**
+  - tests/software/last/split/**
+
+last/train:
+  - software/last/train/**
+  - tests/software/last/train/**
 
 mash/sketch:
   - software/mash/sketch/**
@@ -346,6 +418,10 @@ minimap2/align:
   - software/minimap2/align/**
   - tests/software/minimap2/align/**
 
+minimap2/index:
+  - software/minimap2/index/**
+  - tests/software/minimap2/index/**
+
 mosdepth:
   - software/mosdepth/**
   - tests/software/mosdepth/**
@@ -363,13 +439,37 @@ multiqc:
   - software/multiqc/**
   - tests/software/multiqc/**
 
+nanolyse:
+  - software/nanolyse/**
+  - tests/software/nanolyse/**
+
 nanoplot:
   - software/nanoplot/**
   - tests/software/nanoplot/**
 
+nextclade:
+  - software/nextclade/**
+  - tests/software/nextclade/**
+
 optitype:
   - software/optitype/**
   - tests/software/optitype/**
+
+pairtools/flip:
+  - software/pairtools/flip/**
+  - tests/software/pairtools/flip/**
+
+pairtools/dedup:
+  - software/pairtools/dedup/**
+  - tests/software/pairtools/dedup/**
+
+pairtools/parse:
+  - software/pairtools/parse/**
+  - tests/software/pairtools/parse/**
+
+pairtools/sort:
+  - software/pairtools/sort/**
+  - tests/software/pairtools/sort/**
 
 pangolin:
   - software/pangolin/**
@@ -410,6 +510,10 @@ prokka:
 pycoqc:
   - software/pycoqc/**
   - tests/software/pycoqc/**
+
+qcat:
+  - software/qcat/**
+  - tests/software/qcat/**
 
 qualimap/bamqc:
   - software/qualimap/bamqc/**
@@ -507,6 +611,10 @@ seqkit/split2:
   - software/seqkit/split2/**
   - tests/software/seqkit/split2/**
 
+seqtk/sample:
+  - software/seqtk/sample/**
+  - tests/software/seqtk/sample/**
+
 sequenzautils/bam2seqz:
   - software/sequenzautils/bam2seqz/**
   - tests/software/sequenzautils/bam2seqz/**
@@ -543,9 +651,13 @@ strelka/germline:
   - software/strelka/germline/**
   - tests/software/strelka/germline/**
 
-stringtie:
-  - software/stringtie/**
-  - tests/software/stringtie/**
+stringtie/merge:
+  - software/stringtie/merge/**
+  - tests/software/stringtie/merge/**
+
+stringtie/stringtie:
+  - software/stringtie/stringtie/**
+  - tests/software/stringtie/stringtie/**
 
 subread/featurecounts:
   - software/subread/featurecounts/**
@@ -578,6 +690,14 @@ ucsc/bedclip:
 ucsc/bedgraphtobigwig:
   - software/ucsc/bedgraphtobigwig/**
   - tests/software/ucsc/bedgraphtobigwig/**
+
+ucsc/bigwigaverageoverbed:
+  - software/ucsc/bigwigaverageoverbed/**
+  - tests/software/ucsc/bigwigaverageoverbed/**
+
+ucsc/wigtobigwig:
+  - software/ucsc/wigtobigwig/**
+  - tests/software/ucsc/wigtobigwig/**
 
 unicycler:
   - software/unicycler/**

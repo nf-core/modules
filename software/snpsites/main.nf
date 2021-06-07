@@ -29,8 +29,9 @@ process SNPSITES {
     script:
     def software = getSoftwareName(task.process)
     """
-    snp-sites -c \\
+    snp-sites \\
         $alignment \\
+        $options.args \\
         > filtered_alignment.fas
 
     echo \$(snp-sites -C $alignment) > constant.sites.txt

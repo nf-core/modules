@@ -11,11 +11,11 @@ process PANGOLIN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::pangolin=2.3.8' : null)
+    conda (params.enable_conda ? 'bioconda::pangolin=2.4.2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/pangolin:2.3.8--py_0'
+        container 'https://depot.galaxyproject.org/singularity/pangolin:2.4.2--pyhdfd78af_0'
     } else {
-        container 'quay.io/biocontainers/pangolin:2.3.8--py_0'
+        container 'quay.io/biocontainers/pangolin:2.4.2--pyhdfd78af_0'
     }
 
     input:
