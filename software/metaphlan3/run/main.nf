@@ -32,7 +32,7 @@ process METAPHLAN3_RUN {
     def software    = getSoftwareName(task.process)
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     //contains.() method to handle sam/bam and uncompressed files.. Any better suggestions would be greatly appreciated!!
-    def input_type  = ("$input".contains(".fastq")) ? "--input_type fastq" :  ("$input".contains(".fasta")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : "--input_type sam" // .contains() to accomodate non-compressed input?
+    def input_type  = ("$input".endsWith(".fastq.gz")) ? "--input_type fastq" :  ("$input".contains(".fasta")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : "--input_type sam" // .contains() to accomodate fasta non-compressed input also?
     def input_data  = ("$input_type".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "$input"
     def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt" // no intermediate alignment files produced for sam & bowtie2out input
     """
