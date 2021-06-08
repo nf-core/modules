@@ -1,4 +1,4 @@
-// 
+//
 //  Utility functions used in nf-core DSL2 module files
 //
 
