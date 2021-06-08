@@ -12,7 +12,6 @@ workflow test_metaphlan3_single_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
- //   db    = channel.fromPath('/home/AD/mgordon/PROJECTS/B034_NextFlow_Metagenomics/test-datasets/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
     db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
 
     UNTAR ( db )
@@ -26,7 +25,6 @@ workflow test_metaphlan3_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    //db    = channel.fromPath('/home/AD/mgordon/PROJECTS/B034_NextFlow_Metagenomics/test-datasets/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
     db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
 
 
@@ -40,7 +38,6 @@ workflow test_metaphlan3_sam {
               [ file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true) ]
             ]
 
-   // db    = channel.fromPath('/home/AD/mgordon/PROJECTS/B034_NextFlow_Metagenomics/test-datasets/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
     db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
 
 
@@ -56,7 +53,6 @@ workflow test_metaphlan3_fasta {
             ]
 
     db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
- //   db    = channel.fromPath('/home/AD/mgordon/PROJECTS/B034_NextFlow_Metagenomics/test-datasets/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
 
     UNTAR ( db )
     METAPHLAN3_RUN ( input, UNTAR.out.untar )
