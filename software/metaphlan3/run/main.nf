@@ -20,20 +20,21 @@ process METAPHLAN3_RUN {
     input:
     // As metaphlan 3.0 can handle a variety of input types (fastq, fasta, sam and intermediate bt2 map (bowtie2out)) I have created an input_type function to handle this
     tuple val(meta), path(input)
-    path metaphlan_db // metaphlan database directory path (I think best to make DB required input to avoid Db autodownload attempts)
+    path metaphlan_db
 
     output:
-    tuple val(meta), path("*.txt")           ,                emit: profile
+    tuple val(meta), path("*_profile.txt")   ,                emit: profile
     tuple val(meta), path("*.biom")          ,                emit: biom
     tuple val(meta), path('*.bowtie2out.txt'), optional:true, emit: bt2out
     path "*.version.txt"                     ,                emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def input_type = ("$input".endsWith(".fastq.gz")) ? "--input_type fastq" :  ("$input".endsWith(".fasta.gz")) ? "--input_type fasta" : ("$input".endsWith(".fasta")) ? "--input_type fasta" :  ("$input".endsWith(".fna")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : ("$input".endsWith(".sam")) ? "--input_type sam" : '' //Quite explicit here..mayb contains.() method to handle uncompressed also? Any suggestions would be greatly appreciated!!
-    def input_data = ("$input_type".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "$input"
-    def bowtie2_out= "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
+    def software    = getSoftwareName(task.process)
+    def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    //contains.() method to handle sam/bam and uncompressed files.. Any better suggestions would be greatly appreciated!!
+    def input_type  = ("$input".contains(".fastq")) ? "--input_type fastq" :  ("$input".contains(".fasta")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : "--input_type sam" // .contains() to accomodate non-compressed input?
+    def input_data  = ("$input_type".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "$input"
+    def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt" // no intermediate alignment files produced for sam & bowtie2out input
     """
     metaphlan \\
         --nproc $task.cpus \\
@@ -43,7 +44,7 @@ process METAPHLAN3_RUN {
         $bowtie2_out \\
         --bowtie2db ${metaphlan_db} \\
         --biom ${prefix}.biom \\
-        --output_file ${prefix}.txt
+        --output_file ${prefix}_profile.txt
 
     echo \$(metaphlan --version 2>&1) | awk '{print \$3}' > ${software}.version.txt
     """
