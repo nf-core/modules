@@ -1,0 +1,17 @@
+- name: last dotplot test_last_dotplot
+  command: nextflow run tests/software/last/dotplot -entry test_last_dotplot -c tests/config/nextflow.config
+  tags:
+    - last
+    - last/dotplot
+  files:
+    - path: output/last/test.png
+      md5sum: 6189aaf96f522cdb664869724997bbcd
+
+- name: last dotplot test_last_dotplot_gif
+  command: nextflow run tests/software/last/dotplot -entry test_last_dotplot_gif -c tests/config/nextflow.config
+  tags:
+    - last
+    - last/dotplot
+  files:
+    - path: output/last/test.gif
+      md5sum: 1dd2c85fb5495ca0e85c4ef1dcfce220
