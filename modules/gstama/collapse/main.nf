@@ -24,8 +24,9 @@ process GSTAMA_COLLAPSE {
     path genome
 
     output:
-    tuple val(meta), path("*_tc.bed"), emit: bed
-    path "*.version.txt"             , emit: version
+    tuple val(meta), path("*_tc.bed")               , emit: bed
+    tuple path("*_tc_trans_read.bed"), path("*.txt"), emit: reports
+    path "*.version.txt"                            , emit: version
 
     script:
     def software = getSoftwareName(task.process)
