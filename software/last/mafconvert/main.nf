@@ -20,14 +20,22 @@ process LAST_MAFCONVERT {
 
     input:
     tuple val(meta), path(maf)
+    val(format)
 
     output:
-    tuple val(meta), path("*.{axt,blast,blasttab,chain,gff,html,psl,sam,tab}.gz"), emit: alm
-    path "*.version.txt"                                                         , emit: version
+    tuple val(meta), path("*.axt.gz"),      optional:true, emit: axt_gz
+    tuple val(meta), path("*.blast.gz"),    optional:true, emit: blast_gz
+    tuple val(meta), path("*.blasttab.gz"), optional:true, emit: blasttab_gz
+    tuple val(meta), path("*.chain.gz"),    optional:true, emit: chain_gz
+    tuple val(meta), path("*.gff.gz"),      optional:true, emit: gff_gz
+    tuple val(meta), path("*.html.gz"),     optional:true, emit: html_gz
+    tuple val(meta), path("*.psl.gz"),      optional:true, emit: psl_gz
+    tuple val(meta), path("*.sam.gz"),      optional:true, emit: sam_gz
+    tuple val(meta), path("*.tab.gz"),      optional:true, emit: tab_gz
+    path "*.version.txt"                                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def format   = params.options.format ? params.options.format  : "tab"
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     maf-convert $options.args $format $maf | gzip --no-name \\

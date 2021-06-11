@@ -20,14 +20,15 @@ process LAST_DOTPLOT {
 
     input:
     tuple val(meta), path(maf)
+    val(format)
 
     output:
-    tuple val(meta), path("*.{png,gif}"), emit: plot
-    path "*.version.txt"                , emit: version
+    tuple val(meta), path("*.gif"), optional:true, emit: gif
+    tuple val(meta), path("*.png"), optional:true, emit: png
+    path "*.version.txt"                         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def format   = options.args2  ? options.args2                 : "png"
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     last-dotplot \\
