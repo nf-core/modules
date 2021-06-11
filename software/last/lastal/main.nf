@@ -11,11 +11,11 @@ process LAST_LASTAL {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::last=1219" : null)
+    conda (params.enable_conda ? "bioconda::last=1238" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/last:1219--h2e03b76_0"
+        container "https://depot.galaxyproject.org/singularity/last:1238--h2e03b76_0"
     } else {
-        container "quay.io/biocontainers/last:1219--h2e03b76_0"
+        container "quay.io/biocontainers/last:1238--h2e03b76_0"
     }
 
     input:
