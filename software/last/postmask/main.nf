@@ -30,7 +30,7 @@ process LAST_POSTMASK {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
-    zcat $maf | last-postmask $options.args | gzip --no-name > ${prefix}.maf.gz
+    last-postmask $options.args $maf | gzip --no-name > ${prefix}.maf.gz
 
     # last-postmask does not have a --version option
     echo \$(lastal --version 2>&1) | sed 's/lastal //' > ${software}.version.txt

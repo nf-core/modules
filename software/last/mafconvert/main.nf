@@ -30,7 +30,7 @@ process LAST_MAFCONVERT {
     def format   = params.options.format ? params.options.format  : "tab"
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    zcat $maf | maf-convert $options.args $format | gzip --no-name \\
+    maf-convert $options.args $format $maf | gzip --no-name \\
         > ${prefix}.${format}.gz
 
     # maf-convert has no --version option but lastdb (part of the same package) has.

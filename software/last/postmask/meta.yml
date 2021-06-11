@@ -22,8 +22,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - maf:
       type: file
-      description: Multiple Aligment Format (MAF) file, compressed with gzip
-      pattern: "*.{maf.gz}"
+      description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
+      pattern: "*.{maf.gz,maf}"
 
 output:
   - maf:

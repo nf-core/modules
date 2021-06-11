@@ -29,7 +29,7 @@ process LAST_MAFSWAP {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    zcat $maf | maf-swap $options.args | gzip --no-name > ${prefix}.swapped.maf.gz
+    maf-swap $options.args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
 
     # maf-swap has no --version option but lastdb, part of the same package, has.
     echo \$(lastdb --version 2>&1) | sed 's/lastdb //' > ${software}.version.txt
