@@ -20,8 +20,8 @@ workflow test_msisensor_msi {
     def input      = []
 
     input = Channel.from([ [ id:'test', single_end:false ], // meta map
-               file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam'],     checkIfExists: true),
-               file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam_bai'], checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'],     checkIfExists: true),
+               file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true),
                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'],         checkIfExists: true),
                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'],     checkIfExists: true) ])
     //scan.txt.view()
