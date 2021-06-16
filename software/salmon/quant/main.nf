@@ -24,6 +24,7 @@ process SALMON_QUANT {
     path  gtf
     path  transcript_fasta
     val   alignment_mode
+    val   lib_type
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -40,12 +41,20 @@ process SALMON_QUANT {
         input_reads = "-a $reads"
     }
 
-    def strandedness = meta.single_end ? 'U' : 'IU'
-    if (meta.strandedness == 'forward') {
-        strandedness = meta.single_end ? 'SF' : 'ISF'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = meta.single_end ? 'SR' : 'ISR'
+    def strandedness =  ''
+    if (lib_type) {
+        strandedness = 'A'
     }
+    else {
+        strandedness = meta.single_end ? 'U' : 'IU'
+        if (meta.strandedness == 'forward') {
+            strandedness = meta.single_end ? 'SF' : 'ISF'
+        } else if (meta.strandedness == 'reverse') {
+            strandedness = meta.single_end ? 'SR' : 'ISR'
+        }
+    }
+
+
     """
     salmon quant \\
         --geneMap $gtf \\
