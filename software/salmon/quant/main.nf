@@ -45,7 +45,7 @@ process SALMON_QUANT {
         'A', 'U', 'SF', 'SR',
         'IS', 'IU' , 'ISF', 'ISR',
         'OS', 'OU' , 'OSF', 'OSR',
-        'MS', 'MU' , 'MSF', 'MSR' 
+        'MS', 'MU' , 'MSF', 'MSR'
     ]
     def strandedness =  'A'
     if (strandedness_opts.contains(lib_type)) {
