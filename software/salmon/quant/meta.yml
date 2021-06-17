@@ -36,9 +36,9 @@ input:
     type: boolean
     description: whether to run salmon in alignment mode
   - lib_type:
-    type: boolean
+    type: string
     description: |
-      Whether to enable salmon option to automatically infer the library type
+      Override library type inferred based on strandedness defined in meta object
 
 output:
   - sample_output:
