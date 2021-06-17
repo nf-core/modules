@@ -48,8 +48,12 @@ process SALMON_QUANT {
         'MS', 'MU' , 'MSF', 'MSR'
     ]
     def strandedness =  'A'
-    if (strandedness_opts.contains(lib_type)) {
-        strandedness = "${lib_type}"
+    if (lib_type) {
+        if (strandedness_opts.contains(lib_type)) {
+            strandedness = lib_type
+        } else {
+            log.info "[Salmon Quant] Invalid library type specified '--libType=${lib_type}', defaulting to auto-detection with '--libType=A'."
+        }
     } else {
         strandedness = meta.single_end ? 'U' : 'IU'
         if (meta.strandedness == 'forward') {
@@ -58,7 +62,6 @@ process SALMON_QUANT {
             strandedness = meta.single_end ? 'SR' : 'ISR'
         }
     }
-
     """
     salmon quant \\
         --geneMap $gtf \\
