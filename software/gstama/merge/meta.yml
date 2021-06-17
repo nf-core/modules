@@ -1,0 +1,37 @@
+name: gstama_merge
+description: Merge tama annotations
+keywords:
+  - tama_merge.py
+tools:
+  - gstama:
+      description: Gene-Switch Transcriptome Annotation by Modular Algorithms
+      homepage: https://github.com/sguizard/gs-tama
+      documentation: https://github.com/GenomeRIK/tama/wiki
+      tool_dev_url: https://github.com/sguizard/gs-tama
+      doi: ""
+      licence: ['GPL v3 License']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: bed12 file
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: merge bed file
+      pattern: "*.bed"
+
+authors:
+  - "@sguizard"
