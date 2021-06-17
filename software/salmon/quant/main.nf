@@ -43,7 +43,7 @@ process SALMON_QUANT {
 
     def strandedness =  ''
     if (lib_type) {
-        strandedness = 'A'
+        strandedness = "${lib_type}"
     }
     else {
         strandedness = meta.single_end ? 'U' : 'IU'
