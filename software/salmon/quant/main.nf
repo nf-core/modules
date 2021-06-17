@@ -41,11 +41,16 @@ process SALMON_QUANT {
         input_reads = "-a $reads"
     }
 
-    def strandedness =  ''
-    if (lib_type) {
+    def strandedness_opts = [
+        'A', 'U', 'SF', 'SR',
+        'IS', 'IU' , 'ISF', 'ISR',
+        'OS', 'OU' , 'OSF', 'OSR',
+        'MS', 'MU' , 'MSF', 'MSR' 
+    ]
+    def strandedness =  'A'
+    if (strandedness_opts.contains(lib_type)) {
         strandedness = "${lib_type}"
-    }
-    else {
+    } else {
         strandedness = meta.single_end ? 'U' : 'IU'
         if (meta.strandedness == 'forward') {
             strandedness = meta.single_end ? 'SF' : 'ISF'
@@ -53,7 +58,6 @@ process SALMON_QUANT {
             strandedness = meta.single_end ? 'SR' : 'ISR'
         }
     }
-
 
     """
     salmon quant \\
