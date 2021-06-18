@@ -31,14 +31,14 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - sel:
+  - selected:
       type: file
-      description: Selected pairs file, file name with middle name options.args2
-      pattern: "*.{pairs.gz}"
-  - rest:
+      description: Selected pairs file
+      pattern: "*.{selected.pairs.gz}"
+  - unselected:
       type: file
-      description: Rest pairs file, file name with middle name options.args3
-      pattern: "*.{pairs.gz}"
+      description: Rest pairs file.
+      pattern: "*.{unselected.pairs.gz}"
 
 authors:
   - "@jianhong"
