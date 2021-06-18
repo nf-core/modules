@@ -22,9 +22,9 @@ process PAIRTOOLS_SELECT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.${options.args2}.pairs.gz"), emit: sel
-    tuple val(meta), path("*.${options.args3}.pairs.gz"), emit: rest
-    path "*.version.txt"                                , emit: version
+    tuple val(meta), path("*.selected.pairs.gz")  , emit: selected
+    tuple val(meta), path("*.unselected.pairs.gz"), emit: unselected
+    path "*.version.txt"                          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -32,8 +32,8 @@ process PAIRTOOLS_SELECT {
     """
     pairtools select \\
         "$options.args" \\
-        -o ${prefix}.${options.args2}.pairs.gz \\
-        --output-rest ${prefix}.${options.args3}.pairs.gz \\
+        -o ${prefix}.selected.pairs.gz \\
+        --output-rest ${prefix}.unselected.pairs.gz \\
         ${input}
 
     echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
