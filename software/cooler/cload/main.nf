@@ -30,17 +30,23 @@ process COOLER_CLOAD {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def tool     = options.args2?:"pairix"
-    def nproc    = tool=="pairix"||tool=="tabix"?"--nproc ${task.cpus}":""
-    def assembly = params.species ? "--assembly ${params.species}":""
+    def args     = options.args.tokenize()
+    def tool     = (options.args.contains('hiclib')) ? "hiclib" :
+        (options.args.contains('tabix')) ? 'tabix' :
+        (options.args.contains('pairs')) ? 'pairs' : 'pairix'
+    def nproc    = tool == "pairix" || tool == 'tabix'? "--nproc ${task.cpus}" : ''
+    args.removeIf { it.contains('hiclib') }
+    args.removeIf { it.contains('tabix') }
+    args.removeIf { it.contains('pairs') }
+    args.removeIf { it.contains('pairix') }
+    
     """
     cooler cload $tool \\
-            ${assembly} \\
-            $nproc \\
-            $options.args \\
-            ${chromsizes}:${cool_bin} \\
-            $pairs \\
-            ${prefix}.${cool_bin}.cool
+        ${args.join(' ')} \\
+        $nproc \\
+        ${chromsizes}:${cool_bin} \\
+        $pairs \\
+        ${prefix}.${cool_bin}.cool
 
     echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
     """
