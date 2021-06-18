@@ -13,8 +13,7 @@ process GSTAMA_COLLAPSE {
 
     conda (params.enable_conda ? "bioconda::gs-tama=1.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        // container "https://depot.galaxyproject.org/singularity/gs-tama:1.0--hdfd78af_0"
-        container "quay.io/biocontainers/gs-tama:1.0--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/gs-tama:1.0--hdfd78af_0"
     } else {
         container "quay.io/biocontainers/gs-tama:1.0--hdfd78af_0"
     }
