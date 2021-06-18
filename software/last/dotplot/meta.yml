@@ -25,12 +25,19 @@ input:
       type: file
       description: Multiple Aligment Format (MAF) file, compressed with gzip
       pattern: "*.{maf.gz}"
+  - format:
+      type: value
+      description: Output format (PNG or GIF).
 
 output:
-  - plot:
+  - png:
       type: file
-      description: Pairwise alignment dot plot image, in PNG or other format.
-      pattern: "*.{gif,png}"
+      description: Pairwise alignment dot plot image, in PNG format.
+      pattern: "*.png"
+  - gif:
+      type: file
+      description: Pairwise alignment dot plot image, in GIF format.
+      pattern: "*.gif"
   - version:
       type: file
       description: File containing software version

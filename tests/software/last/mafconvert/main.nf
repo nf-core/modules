@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_MAFCONVERT } from '../../../../software/last/mafconvert/main.nf' addParams( options: ['format':'psl'] )
+include { LAST_MAFCONVERT } from '../../../../software/last/mafconvert/main.nf' addParams( options: [:] )
 
 workflow test_last_mafconvert {
     
     input = [ [ id:'contigs.genome' ], // meta map
               file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true) ]
 
-    LAST_MAFCONVERT ( input )
+    LAST_MAFCONVERT ( input, "psl" )
 }

@@ -22,8 +22,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - maf:
       type: file
-      description: Multiple Aligment Format (MAF) file, compressed with gzip
-      pattern: "*.{maf.gz}"
+      description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
+      pattern: "*.{maf.gz,maf}"
+  - format:
+      type: value
+      description: Output format (one of axt, blast, blasttab, chain, gff, html, psl, sam, or tab)
 
 output:
   - meta:
@@ -35,10 +38,42 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - alm:
+  - axt_gz:
       type: file
-      description: Gzipped pairwise alignmnet in TAB or other formats
-      pattern: "*.{axt,blast,blasttab,chain,gff,html,psl,sam,tab}.gz"
+      description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
+      pattern: "*.axt.gz"
+  - blast_gz:
+      type: file
+      description: Gzipped pairwise alignment in blast format (optional)
+      pattern: "*.blast.gz"
+  - blasttab_gz:
+      type: file
+      description: Gzipped pairwise alignment in blasttab format (optional)
+      pattern: "*.blasttab.gz"
+  - chain_gz:
+      type: file
+      description: Gzipped pairwise alignment in UCSC chain format (optional)
+      pattern: "*.chain.gz"
+  - gff_gz:
+      type: file
+      description: Gzipped pairwise alignment in GFF format (optional)
+      pattern: "*.gff.gz"
+  - html_gz:
+      type: file
+      description: Gzipped pairwise alignment in HTML format (optional)
+      pattern: "*.html.gz"
+  - psl_gz:
+      type: file
+      description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
+      pattern: "*.psl.gz"
+  - SAM:
+      type: file
+      description: Gzipped pairwise alignment in SAM format (optional)
+      pattern: "*.sam.gz"
+  - tab:
+      type: file
+      description: Gzipped pairwise alignment in TAB format (optional)
+      pattern: "*.tab.gz"
 
 authors:
   - "@aleksandrabliznina"

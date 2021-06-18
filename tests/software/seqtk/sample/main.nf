@@ -12,7 +12,7 @@ workflow test_seqtk_sample_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
 
-    SEQTK_SAMPLE ( input, 250000 )
+    SEQTK_SAMPLE ( input, 50 )
 }
 
 //
@@ -25,5 +25,5 @@ workflow test_seqtk_sample_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    SEQTK_SAMPLE ( input, 250000 )
+    SEQTK_SAMPLE ( input, 50 )
 }
