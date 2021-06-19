@@ -30,7 +30,7 @@ process GSTAMA_MERGE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     prefix = "merged_" + prefix
     """
-    for i in *.bed
+    for i in \$(find ./ -not -empty -name "*.bed")
     do
         echo -e "\${i}\tcapped\t1,1,1\t\${i}" >> input.tsv
     done
