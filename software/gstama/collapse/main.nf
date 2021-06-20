@@ -31,10 +31,10 @@ process GSTAMA_COLLAPSE {
     def software = getSoftwareName(task.process)
     def prefix   = bam.toString().replaceAll(/.bam/, "") + "_tc"
     """
-    nlines=\$(samtools view $bam|wc -l)
+    NLINES=\$(samtools view $bam|wc -l)
     mode=""
 
-    if [ \$nlines -gt 1000 ]; then
+    if [ "\$NLINES" -gt 1000 ]; then
 	    mode="-rm low_mem"
     fi
 
