@@ -1,14 +1,14 @@
 - name: gstama merge test_gstama_merge
   command: nextflow run tests/software/gstama/merge -entry test_gstama_merge -c tests/config/nextflow.config
   tags:
-    - gstama_merge
     - gstama
+    - gstama_merge
   files:
     - path: output/gstama/merged_test.bed
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+      md5sum: 45efb7407bbb06521958d84180afdda4
     - path: output/gstama/merged_test_gene_report.txt
-      md5sum: cd0448ce32ac30267e35aee721f43b4d
+      md5sum: 87c021cac3b9fc7a629652ae43b60188
     - path: output/gstama/merged_test_merge.txt
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+      md5sum: 686feaa0312f8c285d7320bd6a3d5519
     - path: output/gstama/merged_test_trans_report.txt
-      md5sum: 59a66a060a9a2cbe51c7f2cb16e09b52
+      md5sum: 84bb5f06030c12c4af391f3c6a9a5bc2

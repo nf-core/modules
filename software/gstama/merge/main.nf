@@ -35,7 +35,7 @@ process GSTAMA_MERGE {
         NLINES=\$(wc -l \${i}|cut -d " " -f 1)
 
         if [ "\$NLINES" -gt 0 ]; then
-            echo -e "\${i}   capped  1,1,1   \${i}" >> input.tsv
+            echo -e "\${i}\\tcapped\\t1,1,1\\t\${i}" >> input.tsv
         fi
     done
 
