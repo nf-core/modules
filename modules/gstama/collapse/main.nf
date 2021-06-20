@@ -31,10 +31,18 @@ process GSTAMA_COLLAPSE {
     def software = getSoftwareName(task.process)
     def prefix   = bam.toString().replaceAll(/.bam/, "") + "_tc"
     """
+    nlines=\$(samtools view $bam|wc -l)
+    mode=""
+
+    if [ \$nlines -gt 1000 ]; then
+	    mode="-rm low_mem"
+    fi
+
     tama_collapse.py \\
         -s $bam \\
         -f $genome \\
         -p $prefix \\
+        \$mode \\
         $options.args
 
     echo \$(tama_collapse.py -version 2>&1) | grep 'tc_version_date_' > ${software}.version.txt
