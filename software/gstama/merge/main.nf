@@ -30,9 +30,13 @@ process GSTAMA_MERGE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     prefix = "merged_" + prefix
     """
-    for i in \$(find ./ -not -empty -name "*.bed")
-    do
-        echo -e "\${i}\tcapped\t1,1,1\t\${i}" >> input.tsv
+    for i in *.bed
+        do
+        NLINES=\$(wc -l \${i}|cut -d " " -f 1)
+
+        if [ "\$NLINES" -gt 0 ]; then
+            echo -e "\${i}   capped  1,1,1   \${i}" >> input.tsv
+        fi
     done
 
     tama_merge.py -f input.tsv -d merge_dup -p $prefix $options.args
