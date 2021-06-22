@@ -21,18 +21,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - input:
       type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-  - sam:
-      type: file
-      description: Bowtie2-produced SAM files containing read alignments to the MetaPHlAn marker database
-  - fasta:
-      type: file
-      description: Input files in FASTA format
-  - bowtie2out:
-      type: file
-      description: Intermediate Bowtie2 output produced from mapping the metagenome against the MetaPHlAn marker database ( not compatible with `bowtie2out` files generated with MetaPhlAn versions below 3 )
+      description: Metaphlan 3.0 can classify the metagenome from a variety of input data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced SAM files (produced from alignments to the MetaPHlAn marker database) and intermediate bowtie2 alignment files (bowtie2out)
+      pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
 
 output:
   - meta:
@@ -52,6 +44,10 @@ output:
       type: file
       description: General-use format for representing biological sample by observation contingency tables
       pattern: "*.{biom}"
+  - bowtie2out:
+      type: file
+      description: Intermediate Bowtie2 output produced from mapping the metagenome against the MetaPHlAn marker database ( not compatible with `bowtie2out` files generated with MetaPhlAn versions below 3 )
+      pattern: "*.{bowtie2out.txt}"
 
 authors:
   - "@MGordon09"
