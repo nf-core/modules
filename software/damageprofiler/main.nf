@@ -13,9 +13,9 @@ process DAMAGEPROFILER {
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_1"
+        container "https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2"
     } else {
-        container "quay.io/biocontainers/damageprofiler:1.1--hdfd78af_1"
+        container "quay.io/biocontainers/damageprofiler:1.1--hdfd78af_2"
     }
 
     input:
