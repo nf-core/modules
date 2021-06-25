@@ -1,63 +1,46 @@
 - name: damageprofiler
-  command: nextflow run ./tests/software/damageprofiler -entry test_damageprofiler -c tests/config/nextflow.config
+  command: nextflow run ./tests/software/damageprofiler -entry test_damageprofiler -c tests/config/nextflow.config -dump-channels
   tags:
     - damageprofiler
   files:
-    - path: output/damageprofiler/test.paired_end/3p_freq_misincorporations.txt
-      md5sum: 37cbc08e075174b3b1203b0b6f2c8478
-    - path: output/damageprofiler/test.paired_end/3pGtoA_freq.txt
-      md5sum: cf193f50b349c3d376d65f5d3b363f35
-    - path: output/damageprofiler/test.paired_end/5pCtoT_freq.txt
-      md5sum: 5ee5bd71e2c45467cdeb6c2327c153ba
-    - path: output/damageprofiler/test.paired_end/5p_freq_misincorporations.txt
-      md5sum: 680c87a4e33361f6a4652b6317de72fc
-    - path: output/damageprofiler/test.paired_end/DamagePlot_five_prime.svg
-      md5sum: b99dc7079c38b830bf036abb93e1ecbd
-    - path: output/damageprofiler/test.paired_end/DamagePlot.pdf
-      md5sum: dabddf18f339d6d8877f9f05f8b354a8
-    - path: output/damageprofiler/test.paired_end/DamagePlot_three_prime.svg
-      md5sum: 3aa1b3cc8b1ae8e0365dcfaf9f6e03de
-    - path: output/damageprofiler/test.paired_end/DamageProfiler.log
-      md5sum: 7432ff4ab7ad061ca4d1c97ac6bc6f50
-    - path: output/damageprofiler/test.paired_end/dmgprof.json
+    - path: output/damageprofiler/test/3p_freq_misincorporations.txt
+      md5sum: da4cac90c78899a7cb6d72d415392b49
+    - path: output/damageprofiler/test/3pGtoA_freq.txt
+      md5sum: 8dab75d51a4b943b501d0995169c767f
+    - path: output/damageprofiler/test/5pCtoT_freq.txt
+      md5sum: fcc48ee5f72edff930d627c8bfdd8a5b
+    - path: output/damageprofiler/test/5p_freq_misincorporations.txt
+      md5sum: 54665474f5ef17dcc268567e5eaa7d86
+    - path: output/damageprofiler/test/DamagePlot_five_prime.svg
+      should_exist: true
+    - path: output/damageprofiler/test/DamagePlot.pdf
+      should_exist: true
+    - path: output/damageprofiler/test/DamagePlot_three_prime.svg
+      should_exist: true
+    - path: output/damageprofiler/test/DamageProfiler.log
+      contains:
+        - "FINISHED SUCCESSFULLY"
+    - path: output/damageprofiler/test/dmgprof.json
       md5sum: 98499024c7e937896e481f2d3cfbdd3e
-    - path: output/damageprofiler/test.paired_end/DNA_comp_genome.txt
-      md5sum: b22e01d1be28e0cf80af3197d83be2c7
-    - path: output/damageprofiler/test.paired_end/DNA_composition_sample.txt
-      md5sum: 46e2fe273af8e9fd7a4b442e5380cc8c
-    - path: output/damageprofiler/test.paired_end/edit_distance.pdf
-      md5sum: ea9d10e710d9c2e16e832adad4b8b0ef
-    - path: output/damageprofiler/test.paired_end/edit_distance.svg
-      md5sum: b61486f31d579191cd88c8cd7615315d
-    - path: output/damageprofiler/test.paired_end/editDistance.txt
-      md5sum: 233b27a7dd4ddef87d4470818c1f79c4
-    - path: output/damageprofiler/test.paired_end/Length_plot_combined_data.svg
-      md5sum: d1e1363be3bd6483076d1113b323a7e5
-    - path: output/damageprofiler/test.paired_end/Length_plot_forward_reverse_separated.svg
-      md5sum: 9157c7145daf88f90289f643c0de7dd1
-    - path: output/damageprofiler/test.paired_end/Length_plot.pdf
-      md5sum: dc89716f5fd82bd028f967cb5ecf8c21
-    - path: output/damageprofiler/test.paired_end/lgdistribution.txt
-      md5sum: d924bc3f73e95a7359c5675d15055713
-    - path: output/damageprofiler/test.paired_end/misincorporation.txt
-      md5sum: 91807be7419430c9fa7611134fc63cb5
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - path: output/damageprofiler/test/DNA_comp_genome.txt
+      md5sum: f91e70760d91a1193a27e360aaddf2fd
+    - path: output/damageprofiler/test/DNA_composition_sample.txt
+      md5sum: 1257eb3eb42484647bfba2151f9ef04f
+    - path: output/damageprofiler/test/edit_distance.pdf
+      should_exist: true
+    - path: output/damageprofiler/test/edit_distance.svg
+      should_exist: true
+    - path: output/damageprofiler/test/editDistance.txt
+      md5sum: af2d2f4a99058ec56eae88ec27779e38
+      #contains:
+      #  - "#Edit distances for file:test.paired_end.sorted.bam"
+    - path: output/damageprofiler/test/Length_plot_combined_data.svg
+      should_exist: true
+    - path: output/damageprofiler/test/Length_plot_forward_reverse_separated.svg
+      should_exist: true
+    - path: output/damageprofiler/test/Length_plot.pdf
+      should_exist: true
+    - path: output/damageprofiler/test/lgdistribution.txt
+      md5sum: c5d029bf3a92b613310ee23f47d94981
+    - path: output/damageprofiler/test/misincorporation.txt
+      md5sum: 3aa6dd749010a492d92a815a83c196a8
