@@ -6,18 +6,18 @@ options = initOptions(params.options)
 params.use_cache = false
 params.vep_tag = ""
 
-process VEP {
+process ENSEMBLVEP {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::vep=104.3" : null)
+    conda (params.enable_conda ? "bioconda::ensembl-vep=104.3" : null)
     if (params.use_cache) {
         if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-            container "https://depot.galaxyproject.org/singularity/vep:104.3--pl5262h4a94de4_0"
+            container "https://depot.galaxyproject.org/singularity/ensembl-vep:104.3--pl5262h4a94de4_0"
         } else {
-            container "quay.io/biocontainers/vep:104.3--pl5262h4a94de4_0"
+            container "quay.io/biocontainers/ensembl-vep:104.3--pl5262h4a94de4_0"
         }
     } else {
         container "nfcore/vep:${params.vep_tag}"
