@@ -35,6 +35,6 @@ process LOFREQ_INDELQUAL {
         -o ${prefix}_indelqual.bam \\
         $bam
 
-    echo \$(lofreq --version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
+    echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
     """
 }
