@@ -10,6 +10,16 @@ tools:
         homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
         documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
 input:
+    - use_cache:
+        type: params
+        description: |
+          boolean to enable the usage of containers with cache
+          Does not work with conda
+    - vep_tag:
+        type: params
+        description: |
+          Specify the tag for the container
+          https://hub.docker.com/r/nfcore/vep/tags
     - meta:
         type: map
         description: |
