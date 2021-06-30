@@ -9,7 +9,7 @@ process BOWTIE2_BUILD {
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', publish_id:'') }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? 'bioconda::bowtie2=2.4.2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {

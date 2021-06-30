@@ -1,0 +1,7 @@
+- name: pairtools flip test_pairtools_flip
+  command: nextflow run tests/software/pairtools/flip -entry test_pairtools_flip -c tests/config/nextflow.config
+  tags:
+    - pairtools/flip
+    - pairtools
+  files:
+    - path: output/pairtools/test.flip.gz

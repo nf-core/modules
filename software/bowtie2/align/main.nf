@@ -9,7 +9,7 @@ process BOWTIE2_ALIGN {
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::bowtie2=2.4.2 bioconda::samtools=1.11 conda-forge::pigz=2.3.4' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -29,8 +29,9 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def split_cpus = Math.floor(task.cpus/2)
+    def software   = getSoftwareName(task.process)
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
         """
@@ -38,11 +39,11 @@ process BOWTIE2_ALIGN {
         bowtie2 \\
             -x \$INDEX \\
             -U $reads \\
-            --threads $task.cpus \\
+            --threads ${split_cpus} \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam -
 
         echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//' > ${software}.version.txt
         """
@@ -54,11 +55,11 @@ process BOWTIE2_ALIGN {
             -x \$INDEX \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            --threads $task.cpus \\
+            --threads ${split_cpus} \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam -
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz

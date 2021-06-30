@@ -1,7 +1,7 @@
 - name: bcftools filter test_bcftools_filter
   command: nextflow run tests/software/bcftools/filter -entry test_bcftools_filter -c tests/config/nextflow.config
   tags:
-    - bcftools_filter
+    - bcftools/filter
     - bcftools
   files:
     - path: output/bcftools/test.vcf.gz

@@ -2,11 +2,9 @@
   command: nextflow run ./tests/software/bwamem2/mem -entry test_bwamem2_mem_single_end -c tests/config/nextflow.config
   tags:
     - bwamem2
-    - bwamem2_mem
-    - bwamem2_mem_single_end
+    - bwamem2/mem
   files:
     - path: ./output/bwamem2/test.bam
-      md5sum: 2133c011119ea11f06f0a9b1621ba05b
     - path: ./output/index/bwamem2/genome.fasta.amb
       md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
     - path: ./output/index/bwamem2/genome.fasta.pac
@@ -22,11 +20,9 @@
   command: nextflow run ./tests/software/bwamem2/mem -entry test_bwamem2_mem_paired_end -c tests/config/nextflow.config
   tags:
     - bwamem2
-    - bwamem2_mem
-    - bwamem2_mem_paired_end
+    - bwamem2/mem
   files:
     - path: ./output/bwamem2/test.bam
-      md5sum: d8fadab5cef04faff1851a8162fc30b5
     - path: ./output/index/bwamem2/genome.fasta.amb
       md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
     - path: ./output/index/bwamem2/genome.fasta.pac

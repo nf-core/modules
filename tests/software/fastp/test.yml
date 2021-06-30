@@ -1,7 +1,6 @@
 - name: fastp test_fastp_single_end
   command: nextflow run tests/software/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
   tags:
-    - fastp_single_end
     - fastp
   files:
     - path: output/fastp/test.fastp.html
@@ -20,7 +19,6 @@
 - name: fastp test_fastp_paired_end
   command: nextflow run tests/software/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
   tags:
-    - fastp_paired_end
     - fastp
   files:
     - path: output/fastp/test.fastp.html

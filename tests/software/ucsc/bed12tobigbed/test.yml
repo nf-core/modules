@@ -1,7 +1,7 @@
 - name: ucsc bed12tobigbed
   command: nextflow run ./tests/software/ucsc/bed12tobigbed -entry test_ucsc_bed12tobigbed -c tests/config/nextflow.config
   tags:
-    - ucsc_bed12tobigbed
+    - ucsc/bed12tobigbed
   files:
     - path: output/ucsc/test.bigBed
       md5sum: 98cf0d0baa3ae5a330c80afbb8bc2b18

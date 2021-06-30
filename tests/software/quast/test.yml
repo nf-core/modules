@@ -2,7 +2,6 @@
   command: nextflow run ./tests/software/quast -entry test_quast_ref -c ./tests/config/nextflow.config
   tags:
     - quast
-    - quast_reference
   files:
     - path: ./output/quast/report.tsv
     - path: ./output/quast/quast/transposed_report.txt
@@ -86,7 +85,6 @@
   command: nextflow run ./tests/software/quast -entry test_quast_noref -c ./tests/config/nextflow.config
   tags:
     - quast
-    - quast_no_reference
   files:
     - path: ./output/quast/report.tsv
       md5sum: 074e239aac0f298cf4cd2a28a9bb5690

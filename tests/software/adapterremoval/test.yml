@@ -1,7 +1,6 @@
 - name: adapterremoval test_adapterremoval_single_end
   command: nextflow run tests/software/adapterremoval -entry test_adapterremoval_single_end -c tests/config/nextflow.config
   tags:
-    - adapterremoval_single_end
     - adapterremoval
   files:
     - path: output/adapterremoval/test.log
@@ -12,7 +11,6 @@
 - name: adapterremoval test_adapterremoval_paired_end
   command: nextflow run tests/software/adapterremoval -entry test_adapterremoval_paired_end -c tests/config/nextflow.config
   tags:
-    - adapterremoval_paired_end
     - adapterremoval
   files:
     - path: output/adapterremoval/test.pair2.trimmed.fastq.gz
@@ -25,7 +23,6 @@
 - name: adapterremoval test_adapterremoval_paired_end_collapse
   command: nextflow run tests/software/adapterremoval -entry test_adapterremoval_paired_end_collapse -c tests/config/nextflow.config
   tags:
-    - adapterremoval_paired_end_collapse
     - adapterremoval
   files:
     - path: output/adapterremoval/test.log

@@ -2,7 +2,6 @@
   command: nextflow run ./tests/software/fastqc/ -entry test_fastqc_single_end -c tests/config/nextflow.config
   tags:
     - fastqc
-    - fastqc_single_end
   files:
     - path: ./output/fastqc/test_fastqc.html
     - path: ./output/fastqc/test_fastqc.zip
@@ -11,7 +10,6 @@
   command: nextflow run ./tests/software/fastqc/ -entry test_fastqc_paired_end -c tests/config/nextflow.config
   tags:
     - fastqc
-    - fastqc_paired_end
   files:
     - path: ./output/fastqc/test_1_fastqc.html
     - path: ./output/fastqc/test_2_fastqc.html
