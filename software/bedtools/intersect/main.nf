@@ -20,11 +20,11 @@ process BEDTOOLS_INTERSECT {
 
     input:
     tuple val(meta), path(feature1), path(feature2)
-    val output_suffix
+    val output_extension
 
     output:
-    tuple val(meta), path("*.${output_suffix}"), emit: intersect_out
-    path  '*.version.txt'                      , emit: version
+    tuple val(meta), path("*.${output_extension}"), emit: intersect_out
+    path  '*.version.txt'                         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,7 +35,7 @@ process BEDTOOLS_INTERSECT {
         -a $feature1 \\
         -b $feature2 \\
         $options.args \\
-        > ${prefix}.${output_suffix}
+        > ${prefix}.${output_extension}
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """

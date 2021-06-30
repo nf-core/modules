@@ -1,47 +1,45 @@
 name: bedtools_subtract
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Finds overlaps between two sets of regions (A and B), removes the overlaps from A and reports the remaining portion of A.
 keywords:
-  - sort
+    - bed
+    - gff
+    - vcf
+    - subtract
 tools:
-  - bedtools:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: A powerful toolset for genome arithmetic
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['GPL v2']
+    - bedtools:
+        description: |
+            A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+        documentation: https://bedtools.readthedocs.io/en/latest/content/tools/subtract.html
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - feature1:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BED/GFF/VCF
+      pattern: "*.{bed|gff|vcf}"
+  - feature2:
+      type: file
+      description: BED/GFF/VCF
+      pattern: "*.{bed|gff|vcf}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: File containing the difference between the two sets of features
+      patters: "*.bed"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@sidorov-si"
