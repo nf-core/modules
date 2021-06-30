@@ -9,6 +9,21 @@ workflow test_bedtools_genomecov {
               file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
             ]
 
-    BEDTOOLS_GENOMECOV ( input )
+    chromosome_sizes = file('dummy_chromosome_sizes')
+
+    output_suffix = 'txt'
+
+    BEDTOOLS_GENOMECOV ( input, chromosome_sizes, output_suffix )
 }
 
+workflow test_bedtools_genomecov_nonbam {
+    input = [ [ id:'test'],
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+            ]
+
+    chromosome_sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+
+    output_suffix = 'txt'
+
+    BEDTOOLS_GENOMECOV ( input, chromosome_sizes, output_suffix )
+}
