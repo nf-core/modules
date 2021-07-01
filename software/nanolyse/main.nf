@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process NANOLYSE {
     tag "$meta.id"
@@ -20,7 +20,7 @@ process NANOLYSE {
 
     input:
     tuple val(meta), path(fastq)
-    path fasta
+    path  fasta
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
@@ -29,7 +29,7 @@ process NANOLYSE {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
     mv NanoLyse.log ${prefix}.nanolyse.log
