@@ -22,19 +22,19 @@ process GATK4_SAMTOFASTQ {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.fastq.gz')     , emit: fastq
-    path  '*.version.txt'                   , emit: version
+    tuple val(meta), path('*.fastq.gz'), emit: fastq
+    path  '*.version.txt'              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
-    def output = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def output   = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
     """
     gatk SamToFastq \\
         I=$bam \\
         $output \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

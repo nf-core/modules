@@ -40,6 +40,6 @@ process GATK4_CREATESEQUENCEDICTIONARY {
         --URI $fasta \\
         $options.args
 
-    echo \$(gatk CreateSequenceDictionary --version 2>&1) | sed 's/^.*(GATK) v//; s/ HTSJDK.*\$//' > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

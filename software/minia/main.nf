@@ -2,7 +2,8 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
+
 process MINIA {
     tag "$meta.id"
     label 'process_high'
@@ -36,6 +37,7 @@ process MINIA {
         -nb-cores $task.cpus \\
         -in input_files.txt \\
         -out $prefix
+
     echo \$(minia --version 2>&1) | sed 's/^.*Minia version //; s/ .*\$//' > ${software}.version.txt
     """
 }
