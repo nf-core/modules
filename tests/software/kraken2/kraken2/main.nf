@@ -2,20 +2,20 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR       } from '../../../../software/untar/main.nf'       addParams( options: [:] )
-include { KRAKEN2_RUN } from '../../../../software/kraken2/run/main.nf' addParams( options: [:] )
+include { UNTAR           } from '../../../../software/untar/main.nf'           addParams( options: [:] )
+include { KRAKEN2_KRAKEN2 } from '../../../../software/kraken2/kraken2/main.nf' addParams( options: [:] )
 
-workflow test_kraken2_run_single_end {
+workflow test_kraken2_kraken2_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
     db    = file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
 
     UNTAR ( db )
-    KRAKEN2_RUN ( input, UNTAR.out.untar )
+    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
 }
 
-workflow test_kraken2_run_paired_end {
+workflow test_kraken2_kraken2_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
@@ -23,5 +23,5 @@ workflow test_kraken2_run_paired_end {
     db    = file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
     
     UNTAR ( db )
-    KRAKEN2_RUN ( input, UNTAR.out.untar )   
+    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )   
 }
