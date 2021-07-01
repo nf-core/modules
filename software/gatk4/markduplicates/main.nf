@@ -39,6 +39,6 @@ process GATK4_MARKDUPLICATES {
         --OUTPUT ${prefix}.bam \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

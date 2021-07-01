@@ -2,9 +2,9 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
-process KRAKEN2_RUN {
+process KRAKEN2_KRAKEN2 {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",

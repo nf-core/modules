@@ -23,19 +23,19 @@ process GATK4_SPLITNCIGARREADS {
     tuple path(fasta), path(fai), path(dict)
 
     output:
-    tuple val(meta), path('*.split_cigar.bam'), emit: bam
-    path  '*.version.txt'                     , emit: version
+    tuple val(meta), path('*.bam'), emit: bam
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gatk SplitNCigarReads \\
         -R $fasta \\
         -I $bam \\
-        -O ${prefix}.split_cigar.bam \\
+        -O ${prefix}.bam \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

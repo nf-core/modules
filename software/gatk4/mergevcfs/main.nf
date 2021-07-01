@@ -20,16 +20,17 @@ process GATK4_MERGEVCFS {
 
     input:
     tuple val(meta), path(vcfs)
-    path(ref_dict)
-    val use_ref_dict
+    path  ref_dict
+    val   use_ref_dict
 
     output:
-    tuple val(meta), path('*.vcf.gz')       , emit: vcf
-    path  '*.version.txt'                   , emit: version
+    tuple val(meta), path('*.vcf.gz'), emit: vcf
+    path  '*.version.txt'            , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
     // Make list of VCFs to merge
     def input = ""
     for (vcf in vcfs) {
@@ -39,10 +40,10 @@ process GATK4_MERGEVCFS {
     """
     gatk MergeVcfs \\
         $input \\
-        O=${prefix}.merged.vcf.gz \\
+        O=${prefix}.vcf.gz \\
         $ref \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }
