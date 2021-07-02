@@ -27,7 +27,7 @@ process PANGOLIN {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pangolin \\
         $fasta\\
@@ -35,6 +35,6 @@ process PANGOLIN {
         --threads $task.cpus \\
         $options.args
 
-    pangolin --version | sed "s/pangolin //g" > ${software}.version.txt
+    echo \$(pangolin --version) | sed "s/pangolin //g" > ${software}.version.txt
     """
 }

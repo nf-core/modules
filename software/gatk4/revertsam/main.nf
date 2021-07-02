@@ -22,18 +22,18 @@ process GATK4_REVERTSAM {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.bam')       , emit: bam
-    path  '*.version.txt'                , emit: version
+    tuple val(meta), path('*.bam'), emit: bam
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gatk RevertSam \\
         I=$bam \\
         O=${prefix}.reverted.bam \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }
