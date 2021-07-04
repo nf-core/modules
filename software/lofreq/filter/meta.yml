@@ -1,32 +1,31 @@
 name: lofreq_filter
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Lofreq subcommand to remove variants with low coverage or strand bias potential
 keywords:
-  - sort
+  - variant calling
+  - low frequency variant calling
+  - filtering
+  - lofreq
+  - lofreq/filter
 tools:
   - lofreq:
       ## TODO nf-core: Add a description and other details for the software below
       description: A fast and sensitive variant-caller for inferring SNVs and indels from next-generation sequencing data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://csb5.github.io/lofreq/
+      documentation: https://csb5.github.io/lofreq/commands/
+      doi: "10.1093/nar/gks918 "
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF input file
+      pattern: "*.{vcf}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +36,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF filtered output file
+      pattern: "*.{vcf}"
 
 authors:
   - "@bjohnnyd"
