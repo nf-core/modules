@@ -32,7 +32,7 @@ process LOFREQ_INDELQUAL {
     lofreq indelqual \\
         --dindel \\
         -f $fasta \\
-        -o ${prefix}_indelqual.bam \\
+        -o ${prefix}.bam \\
         $bam
 
     echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
