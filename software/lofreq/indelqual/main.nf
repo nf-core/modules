@@ -19,7 +19,7 @@ process LOFREQ_INDELQUAL {
 
     input:
     tuple val(meta), path(bam)
-    file fasta
+    path fasta
 
     output:
     tuple val(meta), path("*_indelqual.bam"), emit: bam
