@@ -22,8 +22,8 @@ process LOFREQ_INDELQUAL {
     path fasta
 
     output:
-    tuple val(meta), path("*_indelqual.bam"), emit: bam
-    path "*.version.txt"                    , emit: version
+    tuple val(meta), path("*.bam"), emit: bam
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
