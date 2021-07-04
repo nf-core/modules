@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LOFREQ_INDELQUAL } from '../../../../software/lofreq/indelqual/main.nf' addParams( options: [:] )
+include { LOFREQ_INDELQUAL } from '../../../../software/lofreq/indelqual/main.nf' addParams( options: ['suffix':'.indelqual'] )
 
 workflow test_lofreq_indelqual {
     
