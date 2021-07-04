@@ -19,20 +19,19 @@ process LOFREQ_INDELQUAL {
 
     input:
     tuple val(meta), path(bam)
-    file fasta
+    path fasta
 
     output:
-    tuple val(meta), path("*_indelqual.bam"), emit: bam
-    path "*.version.txt"                    , emit: version
+    tuple val(meta), path("*.bam"), emit: bam
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     lofreq indelqual \\
-        --dindel \\
         -f $fasta \\
-        -o ${prefix}_indelqual.bam \\
+        -o ${prefix}.bam \\
         $bam
 
     echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
