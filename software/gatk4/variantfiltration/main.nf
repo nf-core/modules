@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process GATK4_VARIANTFILTRATION {
     tag "$meta.id"
@@ -20,9 +20,9 @@ process GATK4_VARIANTFILTRATION {
 
     input:
     tuple val(meta), path(vcf)
-    path fasta
-    path fai
-    path dict
+    path  fasta
+    path  fai
+    path  dict
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -39,6 +39,6 @@ process GATK4_VARIANTFILTRATION {
         -O ${prefix}.vcf \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }
