@@ -1,0 +1,42 @@
+name: adam_markduplicates
+description: Mark duplicate alignments in BAM format
+keywords:
+    - alignment
+    - markdup
+    - mark duplicates
+    - bam
+    - spark
+tools:
+    - adam:
+        description: |
+            ADAM is a genomics analysis platform with specialized file formats built using Apache Avro,
+            Apache Spark, and Apache Parquet. Apache 2 licensed.
+        homepage: https://github.com/bigdatagenomics/adam
+        documentation: https://adam.readthedocs.io/en/latest
+        doi: 10.1145/2723372.2742787
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Alignments in BAM format
+        pattern: "*.{bam}"
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Duplicate marked alignments in BAM format
+        pattern: "*.{bam}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@heuermh"
