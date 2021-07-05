@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml lofreq/call
+- name: lofreq call
+  command: nextflow run ./tests/software/lofreq/call -entry test_lofreq_call -c tests/config/nextflow.config
+  tags:
+    - lofreq
+    - lofreq/call
+  files:
+    - path: output/lofreq/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
