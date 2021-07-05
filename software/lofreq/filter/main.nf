@@ -23,7 +23,7 @@ process LOFREQ_FILTER {
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
-    path "*.version.txt"          , emit: version
+    path "*.version.txt"         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
