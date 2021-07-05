@@ -19,10 +19,9 @@ process LOFREQ_CALLPARALLEL {
     }
 
     input:
-    tuple val(meta), path(bam)
-    file bam_index
+    tuple val(meta), path(bam), path(bai)
     file fasta
-    file fasta_index
+    file fai
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -32,7 +31,8 @@ process LOFREQ_CALLPARALLEL {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    lofreq call-parallel \\
+    lofreq \\
+        call-parallel \\
         --pp-threads ${task.cpus} \\
         -f $fasta \\
         -o ${prefix}.vcf \\
