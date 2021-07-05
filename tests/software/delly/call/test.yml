@@ -1,0 +1,40 @@
+- name: delly call test_delly_call
+  command: nextflow run tests/software/delly/call -entry test_delly_call -c tests/config/nextflow.config
+  tags:
+    - delly
+    - delly/call
+  files:
+    - path: output/54/042993568c380e8da847af39676045/.command.begin
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/54/042993568c380e8da847af39676045/.command.err
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/54/042993568c380e8da847af39676045/.command.log
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/54/042993568c380e8da847af39676045/.command.out
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/54/042993568c380e8da847af39676045/.command.run
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/54/042993568c380e8da847af39676045/.command.sh
+      md5sum: 7dde536a77f7c84586781e8cee14d2d8
+    - path: output/54/042993568c380e8da847af39676045/.exitcode
+      md5sum: cfcd208495d565ef66e7dff9f98764da
+    - path: output/54/042993568c380e8da847af39676045/delly.version.txt
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/54/042993568c380e8da847af39676045/genome.fasta
+      md5sum: 1edf453a620de467be3cdbe655661513
+    - path: output/54/042993568c380e8da847af39676045/genome.fasta.fai
+      md5sum: 3c195a3d88791cca067109a65ba3901d
+    - path: output/54/042993568c380e8da847af39676045/test.bcf
+      md5sum: def8c72e8316780327948da1b3993104
+    - path: output/54/042993568c380e8da847af39676045/test.bcf.csi
+      md5sum: 19e0cdf06c415f4942f6d4dbd5fb7271
+    - path: output/54/042993568c380e8da847af39676045/test.paired_end.markduplicates.sorted.bam
+      md5sum: 806dc2e8afa2817885d268e4cad15436
+    - path: output/54/042993568c380e8da847af39676045/test.paired_end.markduplicates.sorted.bam.bai
+      md5sum: 30442eab4695c5a546ad89ee42e1282c
+    - path: output/delly/test.bcf
+      md5sum: def8c72e8316780327948da1b3993104
+    - path: output/stage/ab/8d5165f44ec96f5eb29814678ac66b/test.paired_end.markduplicates.sorted.bam.bai
+      md5sum: 30442eab4695c5a546ad89ee42e1282c
+    - path: output/stage/d8/acab3e2d544085cb95b7efa732fbd7/test.paired_end.markduplicates.sorted.bam
+      md5sum: 806dc2e8afa2817885d268e4cad15436
