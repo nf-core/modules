@@ -1,0 +1,8 @@
+- name: lofreq callparallel
+  command: nextflow run ./tests/software/lofreq/callparallel -entry test_lofreq_callparallel -c tests/config/nextflow.config
+  tags:
+    - lofreq
+    - lofreq/callparallel
+  files:
+    - path: output/lofreq/test.vcf
+      md5sum: 52c02e0465221f9b8207eba277e73fa2
