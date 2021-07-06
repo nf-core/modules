@@ -1,5 +1,5 @@
 - name: minimap2 align single-end
-  command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/minimap2/align -entry test_minimap2_align_single_end -c tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align
@@ -8,7 +8,7 @@
       md5sum: 5a9648fc67c30a2c83b0ef094171faa0
 
 - name: minimap2 align paired-end
-  command: nextflow run ./tests/software/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align

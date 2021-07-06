@@ -1,5 +1,5 @@
 - name: unicycler single-end
-  command: nextflow run ./tests/software/unicycler -entry test_unicycler_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_single_end -c tests/config/nextflow.config
   tags:
     - unicycler
   files:
@@ -10,7 +10,7 @@
         - "Assembly complete"
 
 - name: unicycler paired-end
-  command: nextflow run ./tests/software/unicycler -entry test_unicycler_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_paired_end -c tests/config/nextflow.config
   tags:
     - unicycler
   files:

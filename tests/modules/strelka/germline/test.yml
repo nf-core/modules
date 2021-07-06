@@ -1,5 +1,5 @@
 - name: strelka germline
-  command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/strelka/germline -entry test_strelka_germline -c tests/config/nextflow.config
   tags:
     - strelka
     - strelka/germline
@@ -9,7 +9,7 @@
     - path: output/strelka/test.genome.vcf.gz
     - path: output/strelka/test.genome.vcf.gz.tbi
 - name: strelka germline target bed
-  command: nextflow run ./tests/software/strelka/germline -entry test_strelka_germline_target_bed -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/strelka/germline -entry test_strelka_germline_target_bed -c tests/config/nextflow.config
   tags:
     - strelka
     - strelka/germline

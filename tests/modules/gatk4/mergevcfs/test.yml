@@ -1,5 +1,5 @@
 - name: gatk4 mergevcfs test_gatk4_mergevcfs
-  command: nextflow run tests/software/gatk4/mergevcfs -entry test_gatk4_mergevcfs -c tests/config/nextflow.config
+  command: nextflow run tests/modules/gatk4/mergevcfs -entry test_gatk4_mergevcfs -c tests/config/nextflow.config
   tags:
     - gatk4/mergevcfs
     - gatk4
@@ -8,7 +8,7 @@
       md5sum: ff48f175e26db2d4b2957762f6d1c715
 
 - name: gatk4 mergevcfs test_gatk4_mergevcfs_refdict
-  command: nextflow run tests/software/gatk4/mergevcfs -entry test_gatk4_mergevcfs_refdict -c tests/config/nextflow.config
+  command: nextflow run tests/modules/gatk4/mergevcfs -entry test_gatk4_mergevcfs_refdict -c tests/config/nextflow.config
   tags:
     - gatk4/mergevcfs
     - gatk4

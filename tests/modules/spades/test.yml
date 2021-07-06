@@ -1,5 +1,5 @@
 - name: spades single end
-  command: nextflow run ./tests/software/spades -entry test_spades_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/spades -entry test_spades_single_end -c tests/config/nextflow.config
   tags:
     - spades
   files:
@@ -12,7 +12,7 @@
     - path: output/spades/test.spades.log
 
 - name: spades paired end
-  command: nextflow run ./tests/software/spades -entry test_spades_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/spades -entry test_spades_paired_end -c tests/config/nextflow.config
   tags:
     - spades
   files:

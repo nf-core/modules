@@ -1,5 +1,5 @@
 - name: fastp test_fastp_single_end
-  command: nextflow run tests/software/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
   tags:
     - fastp
   files:
@@ -17,7 +17,7 @@
       md5sum: e0d856ebb3da9e4462c3ce9683efe01d
 
 - name: fastp test_fastp_paired_end
-  command: nextflow run tests/software/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
   tags:
     - fastp
   files:
