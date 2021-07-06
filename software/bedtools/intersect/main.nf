@@ -19,7 +19,7 @@ process BEDTOOLS_INTERSECT {
     }
 
     input:
-    tuple val(meta), path(feature1), path(feature2)
+    tuple val(meta), path(intervals1), path(intervals2)
     val output_extension
 
     output:
