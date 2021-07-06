@@ -33,7 +33,7 @@ process BEDTOOLS_INTERSECT {
     bedtools \\
         intersect \\
         -a $feature1 \\
-        -b $feature2 \\
+        -b $intervals2 \\
         $options.args \\
         > ${prefix}.${output_extension}
 
