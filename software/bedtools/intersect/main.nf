@@ -23,8 +23,8 @@ process BEDTOOLS_INTERSECT {
     val output_extension
 
     output:
-    tuple val(meta), path("*.${output_extension}"), emit: intersect_out
-    path  '*.version.txt'                         , emit: version
+    tuple val(meta), path("*.${extension}"), emit: intersect
+    path  '*.version.txt'                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)
