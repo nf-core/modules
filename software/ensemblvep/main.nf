@@ -25,10 +25,10 @@ process ENSEMBLVEP {
 
     input:
     tuple val(meta), path(vcf)
-    val (vep_genome)
-    val (vep_species)
-    val (vep_cache_version)
-    path (vep_cache)
+    val   genome
+    val   species
+    val   cache_version
+    path  cache
 
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
@@ -37,10 +37,10 @@ process ENSEMBLVEP {
 
     script:
     def software = getSoftwareName(task.process)
-    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    dir_cache    = params.use_cache ? "\${PWD}/${vep_cache}" : "/.vep"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """
-    mkdir ${prefix}
+    mkdir $prefix
 
     vep \\
         -i $vcf \\
@@ -55,7 +55,7 @@ process ENSEMBLVEP {
         --format vcf \\
         --stats_file ${prefix}.summary.html
 
-    rm -rf ${prefix}
+    rm -rf $prefix
 
     echo \$(vep --help 2>&1) > ${software}.version.txt
     """
