@@ -19,9 +19,9 @@ process BEDTOOLS_GENOMECOV {
     }
 
     input:
-    tuple val(meta), path(feature)
-    path(chromosome_sizes)
-    val output_extension
+    tuple val(meta), path(intervals)
+    path  sizes
+    val   extension
 
     output:
     tuple val(meta), path("*.${output_extension}"), emit: genomecov_out
