@@ -45,7 +45,7 @@ process SNPEFF {
     cache        = params.use_cache ? "-dataDir \${PWD}/${snpeff_cache}" : ""
     """
     snpEff -Xmx${avail_mem}g \\
-        $snpeff_db \\
+        $db \\
         $options.args \\
         -csvStats ${prefix}.csv \\
         $cache \\
