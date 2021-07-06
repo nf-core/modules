@@ -35,7 +35,7 @@ process BEDTOOLS_INTERSECT {
         -a $feature1 \\
         -b $intervals2 \\
         $options.args \\
-        > ${prefix}.${output_extension}
+        > ${prefix}.${extension}
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
