@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { QUALIMAP_BAMQC } from '../../../../software/qualimap/bamqc/main.nf' addParams( options: [:] )
+include { QUALIMAP_BAMQC } from '../../../../modules/qualimap/bamqc/main.nf' addParams( options: [:] )
 
 workflow test_qualimap_bamqc {
     input   = [ [ id:'test', single_end:false ], // meta map

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_INTERSECT } from '../../../../software/bedtools/intersect/main.nf' addParams( options: [suffix: '_out'] )
+include { BEDTOOLS_INTERSECT } from '../../../../modules/bedtools/intersect/main.nf' addParams( options: [suffix: '_out'] )
 
 workflow test_bedtools_intersect {
     input = [ [ id:'test' ],

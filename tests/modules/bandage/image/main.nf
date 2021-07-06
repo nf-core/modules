@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BANDAGE_IMAGE } from '../../../../software/bandage/image/main.nf' addParams( options: [:] )
+include { BANDAGE_IMAGE } from '../../../../modules/bandage/image/main.nf' addParams( options: [:] )
 
 workflow test_bandage_image {
     input = [ [ id:'B-3106' ], // meta map

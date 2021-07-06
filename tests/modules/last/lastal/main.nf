@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR       } from '../../../../software/untar/main.nf'      addParams( options: [:] )
-include { LAST_LASTAL } from '../../../../software/last/lastal/main.nf' addParams( options: [:] )
+include { UNTAR       } from '../../../../modules/untar/main.nf'      addParams( options: [:] )
+include { LAST_LASTAL } from '../../../../modules/last/lastal/main.nf' addParams( options: [:] )
 
 workflow test_last_lastal_with_dummy_param_file {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FLASH } from '../../../software/flash/main.nf' addParams( options: [args:'-m 20 -M 100'] )
+include { FLASH } from '../../../modules/flash/main.nf' addParams( options: [args:'-m 20 -M 100'] )
 
 workflow test_flash {
     input = [ [ id:'test', single_end:false ], // meta map

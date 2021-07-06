@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_GENOMEPREPARATION    } from '../../../../software/bismark/genomepreparation/main.nf'    addParams( options: [:] )
-include { BISMARK_ALIGN                } from '../../../../software/bismark/align/main.nf'                addParams( options: [:] )
-include { BISMARK_DEDUPLICATE          } from '../../../../software/bismark/deduplicate/main.nf'          addParams( options: [:] )
-include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../software/bismark/methylationextractor/main.nf' addParams( options: [:] )
-include { BISMARK_REPORT               } from '../../../../software/bismark/report/main.nf'               addParams( options: [:] )
+include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'    addParams( options: [:] )
+include { BISMARK_ALIGN                } from '../../../../modules/bismark/align/main.nf'                addParams( options: [:] )
+include { BISMARK_DEDUPLICATE          } from '../../../../modules/bismark/deduplicate/main.nf'          addParams( options: [:] )
+include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../modules/bismark/methylationextractor/main.nf' addParams( options: [:] )
+include { BISMARK_REPORT               } from '../../../../modules/bismark/report/main.nf'               addParams( options: [:] )
 
 workflow test_bismark_report {
     input = [ [ id:'test', single_end:false ], // meta map

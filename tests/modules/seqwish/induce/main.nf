@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQWISH_INDUCE } from '../../../../software/seqwish/induce/main.nf' addParams( options: [:] )
+include { SEQWISH_INDUCE } from '../../../../modules/seqwish/induce/main.nf' addParams( options: [:] )
 
 workflow test_seqwish_induce {
     input = [ [ id:'test' ], // meta map

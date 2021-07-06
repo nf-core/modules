@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC } from '../../../software/fastqc/main.nf' addParams( options: [:] )
+include { FASTQC } from '../../../modules/fastqc/main.nf' addParams( options: [:] )
 
 //
 // Test with single-end data

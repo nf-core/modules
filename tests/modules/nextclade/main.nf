@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NEXTCLADE } from '../../../software/nextclade/main.nf' addParams( options: [:] )
+include { NEXTCLADE } from '../../../modules/nextclade/main.nf' addParams( options: [:] )
 
 workflow test_nextclade_json {
     input = [ [ id:'test', single_end:false ], // meta map

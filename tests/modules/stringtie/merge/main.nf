@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE as STRINGTIE_FORWARD            } from '../../../../software/stringtie/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_forward' ] )
-include { STRINGTIE as STRINGTIE_REVERSE            } from '../../../../software/stringtie/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_reverse' ] )
-include { STRINGTIE_MERGE as STRINGTIE_FORWARD_MERGE} from '../../../../software/stringtie/merge/main.nf'      addParams( options: [ publish_dir:'test_stringtie_forward_merge'] )
-include { STRINGTIE_MERGE as STRINGTIE_REVERSE_MERGE} from '../../../../software/stringtie/merge/main.nf'      addParams( options: [ publish_dir:'test_stringtie_reverse_merge'] )
+include { STRINGTIE as STRINGTIE_FORWARD            } from '../../../../modules/stringtie/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_forward' ] )
+include { STRINGTIE as STRINGTIE_REVERSE            } from '../../../../modules/stringtie/stringtie/main.nf'  addParams( options: [ publish_dir:'test_stringtie_reverse' ] )
+include { STRINGTIE_MERGE as STRINGTIE_FORWARD_MERGE} from '../../../../modules/stringtie/merge/main.nf'      addParams( options: [ publish_dir:'test_stringtie_forward_merge'] )
+include { STRINGTIE_MERGE as STRINGTIE_REVERSE_MERGE} from '../../../../modules/stringtie/merge/main.nf'      addParams( options: [ publish_dir:'test_stringtie_reverse_merge'] )
 /*
  * Test with forward strandedness
  */

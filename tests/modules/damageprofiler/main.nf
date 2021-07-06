@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DAMAGEPROFILER } from '../../../software/damageprofiler/main.nf' addParams( options: [:] )
+include { DAMAGEPROFILER } from '../../../modules/damageprofiler/main.nf' addParams( options: [:] )
 
 workflow test_damageprofiler {
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include { ALLELECOUNTER } from '../../../software/allelecounter/main.nf' addParams( options: [:] )
+include { ALLELECOUNTER } from '../../../modules/allelecounter/main.nf' addParams( options: [:] )
 
 workflow test_allelecounter {
     input = [ [ id:'test', single_end:false ], // meta map

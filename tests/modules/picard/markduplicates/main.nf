@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_MARKDUPLICATES } from '../../../../software/picard/markduplicates/main.nf' addParams( options: [:] )
+include { PICARD_MARKDUPLICATES } from '../../../../modules/picard/markduplicates/main.nf' addParams( options: [:] )
 
 workflow test_picard_markduplicates_sorted_bam  {
     input = [ [ id:'test', single_end:false ], // meta map

@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { HISAT2_EXTRACTSPLICESITES } from '../../../../software/hisat2/extractsplicesites/main.nf' addParams( options: [:] )
-include { HISAT2_BUILD } from '../../../../software/hisat2/build/main.nf' addParams( options: [:] )
-include { HISAT2_ALIGN } from '../../../../software/hisat2/align/main.nf' addParams( options: [:] )
+include { HISAT2_EXTRACTSPLICESITES } from '../../../../modules/hisat2/extractsplicesites/main.nf' addParams( options: [:] )
+include { HISAT2_BUILD } from '../../../../modules/hisat2/build/main.nf' addParams( options: [:] )
+include { HISAT2_ALIGN } from '../../../../modules/hisat2/align/main.nf' addParams( options: [:] )
 
 workflow test_hisat2_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

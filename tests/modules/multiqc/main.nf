@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC  } from '../../../software/fastqc/main.nf'  addParams( options: [:] )
-include { MULTIQC } from '../../../software/multiqc/main.nf' addParams( options: [:] )
+include { FASTQC  } from '../../../modules/fastqc/main.nf'  addParams( options: [:] )
+include { MULTIQC } from '../../../modules/multiqc/main.nf' addParams( options: [:] )
 
 workflow test_multiqc {
     input = [ [ id: 'test', single_end: false ],

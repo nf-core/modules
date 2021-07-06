@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTP } from '../../../software/fastp/main.nf'  addParams( options: [:] )
+include { FASTP } from '../../../modules/fastp/main.nf'  addParams( options: [:] )
 
 //
 // Test with single-end data

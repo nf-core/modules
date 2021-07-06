@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_PARSE } from '../../../../software/pairtools/parse/main.nf' addParams( options: ['suffix':'.raw'] )
+include { PAIRTOOLS_PARSE } from '../../../../modules/pairtools/parse/main.nf' addParams( options: ['suffix':'.raw'] )
 
 workflow test_pairtools_parse {
 

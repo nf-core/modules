@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTTREE } from '../../../software/fasttree/main.nf' addParams( options: [:] )
+include { FASTTREE } from '../../../modules/fasttree/main.nf' addParams( options: [:] )
 
 workflow test_fasttree {
     

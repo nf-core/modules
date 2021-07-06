@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_STATS } from '../../../../software/bcftools/stats/main.nf' addParams( options: [:] )
+include { BCFTOOLS_STATS } from '../../../../modules/bcftools/stats/main.nf' addParams( options: [:] )
 
 workflow test_bcftools_stats {
     input = [ [ id:'test' ], // meta map

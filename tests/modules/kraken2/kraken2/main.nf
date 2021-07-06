@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../software/untar/main.nf'           addParams( options: [:] )
-include { KRAKEN2_KRAKEN2 } from '../../../../software/kraken2/kraken2/main.nf' addParams( options: [:] )
+include { UNTAR           } from '../../../../modules/untar/main.nf'           addParams( options: [:] )
+include { KRAKEN2_KRAKEN2 } from '../../../../modules/kraken2/kraken2/main.nf' addParams( options: [:] )
 
 workflow test_kraken2_kraken2_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

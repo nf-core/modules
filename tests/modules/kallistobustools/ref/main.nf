@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTOBUSTOOLS_REF } from '../../../../software/kallistobustools/ref/main.nf' addParams( options: [:] )
+include { KALLISTOBUSTOOLS_REF } from '../../../../modules/kallistobustools/ref/main.nf' addParams( options: [:] )
 
 workflow test_kallistobustools_ref_standard {
 

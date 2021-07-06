@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MOSDEPTH } from '../../../software/mosdepth/main.nf' addParams( options: [:] )
+include { MOSDEPTH } from '../../../modules/mosdepth/main.nf' addParams( options: [:] )
 
 workflow test_mosdepth {
     input  = [ [ id:'test', single_end:true ],

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_POSTMASK } from '../../../../software/last/postmask/main.nf' addParams( options: [suffix:'.postmask'] )
+include { LAST_POSTMASK } from '../../../../modules/last/postmask/main.nf' addParams( options: [suffix:'.postmask'] )
 
 workflow test_last_postmask {
 

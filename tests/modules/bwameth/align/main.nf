@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BWAMETH_INDEX                     } from '../../../../software/bwameth/index/main.nf' addParams( options: [:]                               )
-include { BWAMETH_ALIGN as BWAMETH_ALIGN_SE } from '../../../../software/bwameth/align/main.nf' addParams( options: [ publish_dir:'test_single_end' ] )
-include { BWAMETH_ALIGN as BWAMETH_ALIGN_PE } from '../../../../software/bwameth/align/main.nf' addParams( options: [ publish_dir:'test_paired_end' ] )
+include { BWAMETH_INDEX                     } from '../../../../modules/bwameth/index/main.nf' addParams( options: [:]                               )
+include { BWAMETH_ALIGN as BWAMETH_ALIGN_SE } from '../../../../modules/bwameth/align/main.nf' addParams( options: [ publish_dir:'test_single_end' ] )
+include { BWAMETH_ALIGN as BWAMETH_ALIGN_PE } from '../../../../modules/bwameth/align/main.nf' addParams( options: [ publish_dir:'test_paired_end' ] )
 
 //
 // Test with single-end data

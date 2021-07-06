@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_SAMPLE } from '../../../../software/seqtk/sample/main.nf' addParams( options: [ 'args': '-s100', 'suffix':'.sampled' ] )
+include { SEQTK_SAMPLE } from '../../../../modules/seqtk/sample/main.nf' addParams( options: [ 'args': '-s100', 'suffix':'.sampled' ] )
 
 //
 // Test with single-end data

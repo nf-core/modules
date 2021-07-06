@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_GENOMECOV } from '../../../../software/bedtools/genomecov/main.nf' addParams( options: [suffix: '_out'] )
+include { BEDTOOLS_GENOMECOV } from '../../../../modules/bedtools/genomecov/main.nf' addParams( options: [suffix: '_out'] )
 
 workflow test_bedtools_genomecov {
     input = [ [ id:'test'],

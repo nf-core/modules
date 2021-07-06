@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../../software/untar/main.nf'
-include { ARTIC_MINION } from '../../../../software/artic/minion/main.nf' addParams(  fast5_dir: true, sequencing_summary: true, artic_minion_medaka_model:false )
+include { UNTAR } from '../../../../modules/untar/main.nf'
+include { ARTIC_MINION } from '../../../../modules/artic/minion/main.nf' addParams(  fast5_dir: true, sequencing_summary: true, artic_minion_medaka_model:false )
 
 workflow test_artic_minion {
 

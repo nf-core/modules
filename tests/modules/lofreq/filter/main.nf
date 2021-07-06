@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LOFREQ_FILTER } from '../../../../software/lofreq/filter/main.nf' addParams( options: [:] )
+include { LOFREQ_FILTER } from '../../../../modules/lofreq/filter/main.nf' addParams( options: [:] )
 
 workflow test_lofreq_filter {
 

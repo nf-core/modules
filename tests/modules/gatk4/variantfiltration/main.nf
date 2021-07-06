@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 test_options = ['args': '--filter-name "test_filter" --filter-expression "MQ0 > 0"', 'suffix': '.filtered']
-include { GATK4_VARIANTFILTRATION } from '../../../../software/gatk4/variantfiltration/main.nf' addParams( options: test_options )
+include { GATK4_VARIANTFILTRATION } from '../../../../modules/gatk4/variantfiltration/main.nf' addParams( options: test_options )
 
 workflow test_gatk4_variantfiltration {
     input = [ [ id:'test' ], // meta map
