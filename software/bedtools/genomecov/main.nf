@@ -45,7 +45,7 @@ process BEDTOOLS_GENOMECOV {
         bedtools \\
             genomecov \\
             -i $feature \\
-            -g $chromosome_sizes \\
+            -g $sizes \\
             $options.args \\
             > ${prefix}.${output_extension}
 
