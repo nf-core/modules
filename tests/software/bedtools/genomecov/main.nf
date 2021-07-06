@@ -20,9 +20,8 @@ workflow test_bedtools_genomecov_nonbam {
               file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
             ]
 
-    chromosome_sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+    sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+    extension = 'txt'
 
-    output_suffix = 'txt'
-
-    BEDTOOLS_GENOMECOV ( input, chromosome_sizes, output_suffix )
+    BEDTOOLS_GENOMECOV ( input, sizes, extension )
 }
