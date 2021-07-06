@@ -20,25 +20,25 @@ process TIDDIT_SV {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
-    path fai
+    path  fasta
+    path  fai
 
     output:
-    tuple val(meta), path("*.vcf"),         emit: vcf
-    tuple val(meta), path("*.ploidy.tab"),  emit: ploidy
+    tuple val(meta), path("*.vcf")        , emit: vcf
+    tuple val(meta), path("*.ploidy.tab") , emit: ploidy
     tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "*.version.txt",                  emit: version
+    path  "*.version.txt"                 , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def output = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def software  = getSoftwareName(task.process)
+    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     """
     tiddit \\
         --sv $options.args \\
         --bam $bam \\
         $reference \\
-        -o $output
+        -o $prefix
 
     echo \$(tiddit -h 2>&1) | sed 's/^.*Version: //; s/(.*\$//' > ${software}.version.txt
     """

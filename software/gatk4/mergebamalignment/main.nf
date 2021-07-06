@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process GATK4_MERGEBAMALIGNMENT {
     tag "$meta.id"
@@ -20,25 +20,25 @@ process GATK4_MERGEBAMALIGNMENT {
 
     input:
     tuple val(meta), path(aligned)
-    path unmapped
-    path fasta
-    path dict
+    path  unmapped
+    path  fasta
+    path  dict
 
     output:
-    tuple val(meta), path('*.merged.bam'), emit: bam
-    path  '*.version.txt'                , emit: version
+    tuple val(meta), path('*.bam'), emit: bam
+    path  '*.version.txt'         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gatk MergeBamAlignment \\
         ALIGNED=$aligned \\
         UNMAPPED=$unmapped \\
         R=$fasta \\
-        O=${prefix}.merged.bam \\
+        O=${prefix}.bam \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

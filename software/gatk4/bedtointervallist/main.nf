@@ -28,7 +28,7 @@ process GATK4_BEDTOINTERVALLIST {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gatk BedToIntervalList \\
         -I $bed \\
@@ -36,6 +36,6 @@ process GATK4_BEDTOINTERVALLIST {
         -O ${prefix}.interval_list \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

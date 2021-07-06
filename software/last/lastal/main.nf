@@ -19,9 +19,8 @@ process LAST_LASTAL {
     }
 
     input:
-    tuple val(meta), path(fastx)
+    tuple val(meta), path(fastx), path (param_file)
     path index
-    path param_file
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf

@@ -2,13 +2,13 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process STRINGTIE_MERGE {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['']) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda     (params.enable_conda ? "bioconda::stringtie=2.1.4" : null)
@@ -19,11 +19,11 @@ process STRINGTIE_MERGE {
     }
 
     input:
-    path  stringtie_gtf
-    path  annotation_gtf
+    path stringtie_gtf
+    path annotation_gtf
 
     output:
-    path "stringtie.merged.gtf"   , emit: merged_gtf
+    path "stringtie.merged.gtf", emit: gtf
 
     script:
     """
