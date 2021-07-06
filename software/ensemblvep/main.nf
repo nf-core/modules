@@ -46,10 +46,10 @@ process ENSEMBLVEP {
         -i $vcf \\
         -o ${prefix}.ann.vcf \\
         $options.args \\
-        --assembly $vep_genome \\
-        --species $vep_species \\
+        --assembly $genome \\
+        --species $species \\
         --cache \\
-        --cache_version $vep_cache_version \\
+        --cache_version $cache_version \\
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
         --format vcf \\
