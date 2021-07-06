@@ -22,8 +22,8 @@ input:
     - sizes:
         type: file
         description: Tab-delimited table of chromosome names in the first column and chromosome sizes in the second column
-    - output_extension:
-        type: value
+    - extension:
+        type: string
         description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt", ".tab", etc.) It is set arbitrarily by the user and corresponds to the file format which depends on arguments.
 output:
     - meta:
