@@ -28,13 +28,9 @@ input:
   - fasta:
       type: file
       description: The reference fasta file
-  - fastaidx:
+  - fai:
       type: file
       description: Index of reference fasta file to identify split-reads
-  - exclude_regions:
-      type: file
-      description: |
-        A tsv file that excludes the positions of telomeres, centromeres, and unplaced contigs for a faster search (optional).
 
 output:
   - meta:
@@ -48,8 +44,12 @@ output:
       pattern: "*.{version.txt}"
   - bcf:
       type: file
-      description: BCF format with a csi index
+      description: BCF format
       pattern: "*.{bcf}"
+  - csi:
+    type: file
+    description: A generated csi index that matches the bcf output
+    pattern: "*.{bcf.csi}"
 
 authors:
   - "@projectoriented"

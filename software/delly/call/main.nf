@@ -24,7 +24,7 @@ process DELLY_CALL {
     path fai
 
     output:
-    tuple val(meta), path("*.bcf"), emit: bcf
+    tuple val(meta), path("*.bcf"), path("*.bcf.csi"), emit: bcf
     path "*.version.txt"          , emit: version
 
     script:
@@ -38,6 +38,6 @@ process DELLY_CALL {
         -g  $fasta \\
         $bam \\
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    echo \$(delly --version 2>&1) | sed 's/^.*Delly //; s/Using.*\$//' > ${software}.version.txt
     """
 }
