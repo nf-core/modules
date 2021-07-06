@@ -47,7 +47,7 @@ process BEDTOOLS_GENOMECOV {
             -i $feature \\
             -g $sizes \\
             $options.args \\
-            > ${prefix}.${output_extension}
+            > ${prefix}.${extension}
 
         bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
         """
