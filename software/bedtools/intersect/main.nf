@@ -20,7 +20,7 @@ process BEDTOOLS_INTERSECT {
 
     input:
     tuple val(meta), path(intervals1), path(intervals2)
-    val output_extension
+    val extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: intersect
@@ -32,7 +32,7 @@ process BEDTOOLS_INTERSECT {
     """
     bedtools \\
         intersect \\
-        -a $feature1 \\
+        -a $intervals1 \\
         -b $intervals2 \\
         $options.args \\
         > ${prefix}.${extension}

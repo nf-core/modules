@@ -36,7 +36,7 @@ process BEDTOOLS_GENOMECOV {
             genomecov \\
             -ibam $intervals \\
             $options.args \\
-            > ${prefix}.${output_extension}
+            > ${prefix}.${extension}
 
         bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
         """
@@ -44,7 +44,7 @@ process BEDTOOLS_GENOMECOV {
         """
         bedtools \\
             genomecov \\
-            -i $feature \\
+            -i $intervals \\
             -g $sizes \\
             $options.args \\
             > ${prefix}.${extension}

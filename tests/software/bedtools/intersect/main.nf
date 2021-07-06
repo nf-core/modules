@@ -10,7 +10,7 @@ workflow test_bedtools_intersect {
               file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
             ]
     
-    output_suffix = 'bed'
+    extension = 'bed'
 
     BEDTOOLS_INTERSECT ( input, extension )
 }
