@@ -33,10 +33,10 @@ process GATK4_INTERVALLISTTOOLS {
     mkdir ${prefix}_split
 
     gatk \\
-    IntervalListTools \\
-    -I ${interval_list} \\
-    -O ${prefix}_split \\
-    $options.args
+        IntervalListTools \\
+        -I ${interval_list} \\
+        -O ${prefix}_split \\
+        $options.args
 
     python3 <<CODE
     import glob, os
@@ -48,6 +48,6 @@ process GATK4_INTERVALLISTTOOLS {
         os.rename(interval, newName)
     CODE
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

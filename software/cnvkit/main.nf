@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process CNVKIT {
     tag "$meta.id"
@@ -20,8 +20,8 @@ process CNVKIT {
 
     input:
     tuple val(meta), path(tumourbam), path(normalbam)
-    path fasta
-    path targetfile
+    path  fasta
+    path  targetfile
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -32,15 +32,15 @@ process CNVKIT {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    cnvkit.py batch \\
+    cnvkit.py \\
+        batch \\
         $tumourbam \\
         --normal $normalbam\\
         --fasta $fasta \\
         --targets $targetfile \\
         $options.args
 
-    cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
+    echo \$(cnvkit.py version) | sed -e "s/cnvkit v//g" > ${software}.version.txt
     """
 }
