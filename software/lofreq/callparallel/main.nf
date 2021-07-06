@@ -33,7 +33,7 @@ process LOFREQ_CALLPARALLEL {
     """
     lofreq \\
         call-parallel \\
-        --pp-threads ${task.cpus} \\
+        --pp-threads $task.cpus \\
         -f $fasta \\
         -o ${prefix}.vcf \\
         $bam
