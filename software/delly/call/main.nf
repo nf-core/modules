@@ -19,11 +19,9 @@ process DELLY_CALL {
     }
 
     input:
-    tuple val(meta), path(bam)
-    path bai
+    tuple val(meta), path(bam), path(bai)
     path fasta
     path fai
-    // path exclude_regions //optional
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
@@ -32,7 +30,6 @@ process DELLY_CALL {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    // def exclude = exclude_regions == "dummy_file.tsv" ? "-x $exclude_regions" : ""
     """
     delly \\
         call \\
@@ -40,7 +37,6 @@ process DELLY_CALL {
         -o ${prefix}.bcf \\
         -g  $fasta \\
         $bam \\
-
 
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
