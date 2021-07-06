@@ -30,7 +30,7 @@ process BEDTOOLS_GENOMECOV {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (feature.name =~ /\.bam/) {
+    if (intervals.name =~ /\.bam/) {
         """
         bedtools \\
             genomecov \\
