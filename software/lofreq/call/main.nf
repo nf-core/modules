@@ -20,6 +20,7 @@ process LOFREQ_CALL {
 
     input:
     tuple val(meta), path(bam)
+    path fasta
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -32,6 +33,7 @@ process LOFREQ_CALL {
     lofreq \\
         call \\
         $options.args \\
+        -f $fasta \\
         -o ${prefix}.vcf.gz \\
         $bam
 
