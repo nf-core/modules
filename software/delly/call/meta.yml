@@ -21,7 +21,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: BAM file from alignment must be sorted, indexed, and duplicate marked
@@ -35,9 +34,8 @@ input:
   - exclude_regions:
       type: file
       description: |
-        A tsv file that excludes the telomeres, centromeres, and unplaced contigs for a faster search (optional).
+        A tsv file that excludes the positions of telomeres, centromeres, and unplaced contigs for a faster search (optional).
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
