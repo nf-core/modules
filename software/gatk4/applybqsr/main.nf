@@ -9,7 +9,7 @@ process GATK4_APPLYBQSR {
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -19,11 +19,11 @@ process GATK4_APPLYBQSR {
     }
 
     input:
-    tuple val(meta), path(bam), path(bqsr_table)
-    path fasta
-    path fastaidx
-    path dict
-    path intervalsBed
+    tuple val(meta), path(bam), path(bai), path(bqsr_table)
+    path  fasta
+    path  fastaidx
+    path  dict
+    path  intervals
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -32,17 +32,16 @@ process GATK4_APPLYBQSR {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def intervalsCommand = intervalsBed ? "-L ${intervalsBed}" : ""
-
+    def interval = intervals ? "-L ${intervals}" : ""
     """
     gatk ApplyBQSR \\
         -R $fasta \\
         -I $bam \\
         --bqsr-recal-file $bqsr_table \\
-        $intervalsCommand \\
+        $interval \\
         -O ${prefix}.bam \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

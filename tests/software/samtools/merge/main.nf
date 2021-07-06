@@ -6,7 +6,7 @@ include { SAMTOOLS_MERGE } from '../../../../software/samtools/merge/main.nf' ad
 
 workflow test_samtools_merge {
     input = [ [ id: 'test' ], // meta map
-               [ file(params.test_data['sarscov2']['illumina']['test_methylated_paired_end_sorted_bam'], checkIfExists: true),
+               [ file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
                  file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
                  file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)]
                ]

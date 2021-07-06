@@ -2,8 +2,7 @@
   command: nextflow run ./tests/software/star/align -entry test_star_alignment_single_end -c tests/config/nextflow.config
   tags:
     - star
-    - star_align
-    - star_align_single_end
+    - star/align
   files:
     - path: output/star/star/Genome
       md5sum: 323c992bac354f93073ce0fc43f222f8
@@ -40,8 +39,7 @@
   command: nextflow run ./tests/software/star/align -entry test_star_alignment_paired_end -c tests/config/nextflow.config
   tags:
     - star
-    - star_align
-    - star_align_paired_end
+    - star/align
   files:
     - path: output/star/star/Genome
       md5sum: 323c992bac354f93073ce0fc43f222f8

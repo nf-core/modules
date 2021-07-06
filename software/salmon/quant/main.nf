@@ -9,7 +9,7 @@ process SALMON_QUANT {
     label "process_medium"
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::salmon=1.4.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -24,6 +24,7 @@ process SALMON_QUANT {
     path  gtf
     path  transcript_fasta
     val   alignment_mode
+    val   lib_type
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -40,11 +41,26 @@ process SALMON_QUANT {
         input_reads = "-a $reads"
     }
 
-    def strandedness = meta.single_end ? 'U' : 'IU'
-    if (meta.strandedness == 'forward') {
-        strandedness = meta.single_end ? 'SF' : 'ISF'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = meta.single_end ? 'SR' : 'ISR'
+    def strandedness_opts = [
+        'A', 'U', 'SF', 'SR',
+        'IS', 'IU' , 'ISF', 'ISR',
+        'OS', 'OU' , 'OSF', 'OSR',
+        'MS', 'MU' , 'MSF', 'MSR'
+    ]
+    def strandedness =  'A'
+    if (lib_type) {
+        if (strandedness_opts.contains(lib_type)) {
+            strandedness = lib_type
+        } else {
+            log.info "[Salmon Quant] Invalid library type specified '--libType=${lib_type}', defaulting to auto-detection with '--libType=A'."
+        }
+    } else {
+        strandedness = meta.single_end ? 'U' : 'IU'
+        if (meta.strandedness == 'forward') {
+            strandedness = meta.single_end ? 'SF' : 'ISF'
+        } else if (meta.strandedness == 'reverse') {
+            strandedness = meta.single_end ? 'SR' : 'ISR'
+        }
     }
     """
     salmon quant \\

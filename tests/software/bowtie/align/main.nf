@@ -7,9 +7,9 @@ include { BOWTIE_ALIGN } from '../../../../software/bowtie/align/main.nf' addPar
 
 workflow test_bowtie_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     BOWTIE_BUILD ( fasta )
     BOWTIE_ALIGN ( input, BOWTIE_BUILD.out.index )
@@ -17,10 +17,10 @@ workflow test_bowtie_align_single_end {
 
 workflow test_bowtie_align_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
-    fasta = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     BOWTIE_BUILD ( fasta )
     BOWTIE_ALIGN ( input, BOWTIE_BUILD.out.index )

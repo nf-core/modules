@@ -9,7 +9,7 @@ process RSEQC_JUNCTIONANNOTATION {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::rseqc=3.0.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -23,13 +23,13 @@ process RSEQC_JUNCTIONANNOTATION {
     path  bed
 
     output:
-    tuple val(meta), path("*.junction.bed"), emit: bed
-    tuple val(meta), path("*.Interact.bed"), emit: interact_bed
     tuple val(meta), path("*.xls")         , emit: xls
-    tuple val(meta), path("*junction.pdf") , emit: pdf
-    tuple val(meta), path("*events.pdf")   , emit: events_pdf
     tuple val(meta), path("*.r")           , emit: rscript
     tuple val(meta), path("*.log")         , emit: log
+    tuple val(meta), path("*.junction.bed"), optional:true, emit: bed
+    tuple val(meta), path("*.interact.bed"), optional:true, emit: interact_bed
+    tuple val(meta), path("*junction.pdf") , optional:true, emit: pdf
+    tuple val(meta), path("*events.pdf")   , optional:true, emit: events_pdf
     path  "*.version.txt"                  , emit: version
 
     script:

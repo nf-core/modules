@@ -2,14 +2,14 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process GATK4_VARIANTFILTRATION {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -20,9 +20,9 @@ process GATK4_VARIANTFILTRATION {
 
     input:
     tuple val(meta), path(vcf)
-    path fasta
-    path fai
-    path dict
+    path  fasta
+    path  fai
+    path  dict
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -39,6 +39,6 @@ process GATK4_VARIANTFILTRATION {
         -O ${prefix}.vcf \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }

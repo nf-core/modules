@@ -9,7 +9,7 @@ process GATK4_SAMTOFASTQ {
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::gatk4=4.1.9.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -22,19 +22,19 @@ process GATK4_SAMTOFASTQ {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.fastq.gz')     , emit: fastq
-    path  '*.version.txt'                   , emit: version
+    tuple val(meta), path('*.fastq.gz'), emit: fastq
+    path  '*.version.txt'              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
-    def output = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def output   = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
     """
     gatk SamToFastq \\
         I=$bam \\
         $output \\
         $options.args
 
-    gatk --version | grep Picard | sed "s/Picard Version: //g" > ${software}.version.txt
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }
