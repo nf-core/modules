@@ -31,16 +31,16 @@ input:
         type: file
         description: |
             vcf to annotate
-    - snpeff_db:
+    - db:
         type: value
         description: |
             which db to annotate with
-    - snpeff_cache:
+    - cache:
         type: file
         description: |
             path to snpEff cache (optional)
 output:
-    - vcf_ann:
+    - vcf:
         type: file
         description: |
             annotated vcf
