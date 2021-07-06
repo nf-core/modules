@@ -32,8 +32,8 @@ process ENSEMBLVEP {
 
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
-    path "*.summary.html",              emit: report
-    path "*.version.txt",               emit: version
+    path "*.summary.html"             , emit: report
+    path "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)

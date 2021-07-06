@@ -30,24 +30,24 @@ input:
         type: file
         description: |
             vcf to annotate
-    - vep_genome:
+    - genome:
         type: value
         description: |
             which genome to annotate with
-    - vep_species:
+    - species:
         type: value
         description: |
             which species to annotate with
-    - vep_cache_version:
+    - cache_version:
         type: value
         description: |
             which version of the cache to annotate with
-    - vep_cache:
+    - cache:
         type: file
         description: |
             path to VEP cache (optional)
 output:
-    - vcf_ann:
+    - vcf:
         type: file
         description: |
             annotated vcf
