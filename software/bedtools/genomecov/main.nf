@@ -24,8 +24,8 @@ process BEDTOOLS_GENOMECOV {
     val   extension
 
     output:
-    tuple val(meta), path("*.${output_extension}"), emit: genomecov_out
-    path  "*.version.txt"                         , emit: version
+    tuple val(meta), path("*.${extension}"), emit: genomecov
+    path  "*.version.txt"                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)
