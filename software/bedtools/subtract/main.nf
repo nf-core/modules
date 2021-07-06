@@ -31,8 +31,8 @@ process BEDTOOLS_SUBTRACT {
     """
     bedtools \\
         subtract \\
-        -a $feature1 \\
-        -b $feature2 \\
+        -a $intervals1 \\
+        -b $intervals2 \\
         $options.args \\
         > ${prefix}.bed
 
