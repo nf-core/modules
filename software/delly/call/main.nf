@@ -24,7 +24,8 @@ process DELLY_CALL {
     path fai
 
     output:
-    tuple val(meta), path("*.bcf"), path("*.bcf.csi"), emit: bcf
+    tuple val(meta), path("*.bcf"), emit: bcf
+    tuple val(meta), path("*.csi"), emit: csi
     path "*.version.txt"          , emit: version
 
     script:
