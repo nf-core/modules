@@ -2,8 +2,7 @@
   command: nextflow run tests/software/gatk4/samtofastq -entry test_gatk4_samtofastq_single_end -c tests/config/nextflow.config
   tags:
     - gatk4
-    - gatk4_samtofastq
-    - gatk4_samtofastq_single_end
+    - gatk4/samtofastq
   files:
     - path: output/gatk4/test.fastq.gz
       md5sum: 50ace41d4c24467f24f8b929540a7797
@@ -12,8 +11,7 @@
   command: nextflow run tests/software/gatk4/samtofastq -entry test_gatk4_samtofastq_paired_end -c tests/config/nextflow.config
   tags:
     - gatk4
-    - gatk4_samtofastq
-    - gatk4_samtofastq_paired_end
+    - gatk4/samtofastq
   files:
     - path: output/gatk4/test_1.fastq.gz
       md5sum: cfea607c9d75fd9ea9704780ad3a499c

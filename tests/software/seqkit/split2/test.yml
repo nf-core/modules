@@ -2,23 +2,18 @@
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_length -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_single_end
-    - length
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: 6f7d58ba35c254c0817fe9a7c69862e4
     - path: output/seqkit/test.split/test_1.part_002.fastq.gz
       md5sum: cf38c51506e45380fe25abdd1bd5ccc6
 
-
 - name: seqkit split2 single-end size
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_size -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_single_end
-    - size
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: bf835e685d597fc1ab5e5ac7dd689619
@@ -29,9 +24,7 @@
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_single_end_part -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_single_end
-    - part
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: fa25951435471238d5567fd2cae31f55
@@ -44,9 +37,7 @@
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_length -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_paired_end
-    - length
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: 6f7d58ba35c254c0817fe9a7c69862e4
@@ -61,9 +52,7 @@
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_size -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_paired_end
-    - size
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: bf835e685d597fc1ab5e5ac7dd689619
@@ -78,9 +67,7 @@
   command: nextflow run ./tests/software/seqkit/split2 -entry test_seqkit_split2_paired_end_part -c tests/config/nextflow.config
   tags:
     - seqkit
-    - seqkit_split2
-    - seqkit_split2_paired_end
-    - part
+    - seqkit/split2
   files:
     - path: output/seqkit/test.split/test_1.part_001.fastq.gz
       md5sum: fa25951435471238d5567fd2cae31f55

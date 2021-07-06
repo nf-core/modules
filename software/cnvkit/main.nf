@@ -2,14 +2,14 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process CNVKIT {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.8" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -20,8 +20,8 @@ process CNVKIT {
 
     input:
     tuple val(meta), path(tumourbam), path(normalbam)
-    path fasta
-    path targetfile
+    path  fasta
+    path  targetfile
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -32,15 +32,15 @@ process CNVKIT {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}.${options.suffix}" : "${meta.id}"
     """
-    cnvkit.py batch \\
+    cnvkit.py \\
+        batch \\
         $tumourbam \\
         --normal $normalbam\\
         --fasta $fasta \\
         --targets $targetfile \\
         $options.args
 
-    cnvkit.py version | sed -e "s/cnvkit v//g" > ${software}.version.txt
+    echo \$(cnvkit.py version) | sed -e "s/cnvkit v//g" > ${software}.version.txt
     """
 }

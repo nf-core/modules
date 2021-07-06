@@ -5,25 +5,29 @@ nextflow.enable.dsl = 2
 include { STRELKA_GERMLINE } from '../../../../software/strelka/germline/main.nf' addParams( options: [:] )
 
 workflow test_strelka_germline {
-    input   = [ [ id:'test'], // meta map
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam.bai", checkIfExists: true) 
-              ]
-    fasta   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    fai     = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
+    input = [ 
+        [ id:'test'], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+    ]
+    
+    fasta   = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai     = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     targets = []
     
     STRELKA_GERMLINE ( input, fasta, fai, targets )
 }
 
 workflow test_strelka_germline_target_bed {
-    input   = [ [ id:'test'], // meta map
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam", checkIfExists: true),
-                file("${launchDir}/tests/data/genomics/sarscov2/illumina/bam/test_paired_end.sorted.bam.bai", checkIfExists: true) 
-              ]
-    fasta   = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    fai     = file("${launchDir}/tests/data/genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
-    targets = file("${launchDir}/tests/data/genomics/sarscov2/genome/bed/test.bed", checkIfExists: true)
+    input = [ 
+        [ id:'test'], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+    ]
+
+    fasta   = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai     = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    targets = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
     STRELKA_GERMLINE ( input, fasta, fai, targets )
 }

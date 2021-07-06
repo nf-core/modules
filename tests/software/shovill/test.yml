@@ -2,7 +2,6 @@
   command: nextflow run ./tests/software/shovill -entry test_shovill -c tests/config/nextflow.config
   tags:
     - shovill
-    - shovill_spades
   files:
     - path: output/shovill/contigs.gfa
       md5sum: 277af5d8ae8a0d2432db59a316226828
@@ -17,7 +16,6 @@
   command: nextflow run ./tests/software/shovill -entry test_shovill_megahit -c tests/config/nextflow.config
   tags:
     - shovill
-    - shovill_megahit
   files:
     - path: output/shovill/shovill.corrections
       md5sum: d41d8cd98f00b204e9800998ecf8427e
@@ -26,17 +24,16 @@
     - path: output/shovill/contigs.fastg
     - path: output/shovill/megahit.fasta
     - path: output/shovill/shovill.log
-  
+
 - name: shovill with skesa
   command: nextflow run ./tests/software/shovill -entry test_shovill_skesa -c tests/config/nextflow.config
   tags:
     - shovill
-    - shovill_skesa
   files:
     - path: output/shovill/shovill.corrections
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/shovill/skesa.fasta
-      md5sum: c0c2d11b633310eb1437345cb599c33c
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
     # MD5sum not reproducible (timestamp)
     - path: output/shovill/contigs.fa
     - path: output/shovill/shovill.log
@@ -45,7 +42,6 @@
   command: nextflow run ./tests/software/shovill -entry test_shovill_velvet -c tests/config/nextflow.config
   tags:
     - shovill
-    - shovill_velvet
   files:
     # MD5sum not reproducible (timestamp, contig order)
     - path: output/shovill/contigs.fa

@@ -2,13 +2,14 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-def options    = initOptions(params.options)
+options        = initOptions(params.options)
+
 process MINIA {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::minia=3.2.4" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -36,6 +37,7 @@ process MINIA {
         -nb-cores $task.cpus \\
         -in input_files.txt \\
         -out $prefix
+
     echo \$(minia --version 2>&1) | sed 's/^.*Minia version //; s/ .*\$//' > ${software}.version.txt
     """
 }

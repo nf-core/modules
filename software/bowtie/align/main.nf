@@ -9,7 +9,7 @@ process BOWTIE_ALIGN {
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::bowtie=1.3.0 bioconda::samtools=1.11' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -29,6 +29,7 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
+    def split_cpus = Math.floor(task.cpus/2)
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
@@ -36,7 +37,7 @@ process BOWTIE_ALIGN {
     """
     INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
     bowtie \\
-        --threads $task.cpus \\
+        --threads ${split_cpus} \\
         --sam \\
         -x \$INDEX \\
         -q \\
@@ -44,7 +45,7 @@ process BOWTIE_ALIGN {
         $options.args \\
         $endedness \\
         2> ${prefix}.out \\
-        | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ ${split_cpus} -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq

@@ -1,0 +1,29 @@
+name: minimap2_index
+description: Provides fasta index required by minimap2 alignment.
+keywords:
+    - index
+    - fasta
+    - reference
+tools:
+    - minimap2:
+        description: |
+            A versatile pairwise aligner for genomic and spliced nucleotide sequences.
+        homepage: https://github.com/lh3/minimap2
+        documentation: https://github.com/lh3/minimap2#uguide
+input:
+    - fasta:
+        type: file
+        description: |
+            Reference database in FASTA format.
+output:
+    - mmi:
+        type: file
+        description: Minimap2 fasta index.
+        pattern: "*.mmi"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
+authors:
+    - "@yuukiiwa"
+    - "@drpatelh"

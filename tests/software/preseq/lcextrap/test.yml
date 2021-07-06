@@ -2,20 +2,18 @@
   command: nextflow run ./tests/software/preseq/lcextrap -entry test_preseq_single_end -c tests/config/nextflow.config
   tags:
     - preseq
-    - preseq_lcextrap
-    - preseq_lcextrap_single_end
+    - preseq/lcextrap
   files:
     - path: output/preseq/test.ccurve.txt
-      md5sum: 76ae04c8eaf19c94e3210bb69da38498
+      md5sum: 1fa5cdd601079329618f61660bee00de
     - path: output/preseq/test.command.log
 
 - name: preseq lcextrap paired-end
   command: nextflow run ./tests/software/preseq/lcextrap -entry test_preseq_paired_end -c tests/config/nextflow.config
   tags:
     - preseq
-    - preseq_lcextrap
-    - preseq_lcextrap_paired_end
+    - preseq/lcextrap
   files:
     - path: output/preseq/test.ccurve.txt
-      md5sum: 2836d2fabd2213f097fd7063db550276
+      md5sum: 10e5ea860e87fb6f5dc10f4f20c62040
     - path: output/preseq/test.command.log
