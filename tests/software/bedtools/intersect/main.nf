@@ -12,7 +12,7 @@ workflow test_bedtools_intersect {
     
     output_suffix = 'bed'
 
-    BEDTOOLS_INTERSECT ( input, output_suffix )
+    BEDTOOLS_INTERSECT ( input, extension )
 }
 
 workflow test_bedtools_intersect_bam {
