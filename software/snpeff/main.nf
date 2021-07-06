@@ -25,13 +25,13 @@ process SNPEFF {
 
     input:
     tuple val(meta), path(vcf)
-    val (snpeff_db)
-    path (snpeff_cache)
+    val   db
+    path  cache
 
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
-    path "*.csv",                       emit: report
-    path "*.version.txt",               emit: version
+    path "*.csv"                      , emit: report
+    path "*.version.txt"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
