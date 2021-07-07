@@ -11,7 +11,7 @@ workflow test_hifiasm_hifi_only {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/homo_sapiens/fastq/SRR10382244_mapped_to_contig.fastq", 
+              [ file("${launchDir}/tests/data/genomics/homo_sapiens/fastq/SRR10382244_mapped_to_contig.fastq.gz", 
               checkIfExists: true) ] 
             ]
     paternal_kmer_dump = file('dummy_paternal_yak')
@@ -26,7 +26,7 @@ workflow test_hifiasm_with_parental_reads {
 
     def input = []
     input = [ [ id:'test' ], // meta map
-              [ file("${launchDir}/tests/data/genomics/homo_sapiens/fastq/SRR10382244_mapped_to_contig.fastq", 
+              [ file("${launchDir}/tests/data/genomics/homo_sapiens/fastq/SRR10382244_mapped_to_contig.fastq.gz", 
               checkIfExists: true) ] 
             ]
     paternal_kmer_dump = file("${launchDir}/tests/data/genomics/homo_sapiens/yak/hg003_pat.yak")
