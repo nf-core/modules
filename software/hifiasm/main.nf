@@ -20,10 +20,8 @@ process HIFIASM {
 
     input:
     tuple val(meta), path(reads)
-    path hic_reads
     path paternal_kmer_dump
     path maternal_kmer_dump
-    val use_hic_reads
     val use_parental_kmers
 
     output:
@@ -42,21 +40,7 @@ process HIFIASM {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    if (use_hic_reads) {
-        """
-        # Adding soft-links to original FastQs for consistent naming in a workflow
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
-
-        hifiasm $options.args \\
-            -o ${prefix}.asm \\
-            -t $task.cpus \\
-            --h1 ${hic_reads[0]} \\
-            --h2 ${hic_reads[1]} \\
-            ${prefix}.fastq.gz
-
-        hifiasm --version > ${software}.version.txt || exit 0
-        """
-    } else if (use_parental_kmers) {
+    if (use_parental_kmers) {
         """
         # Adding soft-links to original FastQs for consistent naming in a workflow
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
@@ -70,7 +54,7 @@ process HIFIASM {
 
         hifiasm --version > ${software}.version.txt || exit 0
         """
-    } else {
+    } else { // Phasing with Hi-C data is not supported yet
         """
         # Adding soft-links to original FastQs for consistent naming in a workflow
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
