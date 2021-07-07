@@ -15,20 +15,26 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bam:
+    - intervals:
         type: file
-        description: Input BAM file
-        pattern: "*.{bam}"
+        description: BAM/BED/GFF/VCF
+        pattern: "*.{bam|bed|gff|vcf}"
+    - sizes:
+        type: file
+        description: Tab-delimited table of chromosome names in the first column and chromosome sizes in the second column
+    - extension:
+        type: string
+        description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt", ".tab", etc.) It is set arbitrarily by the user and corresponds to the file format which depends on arguments.
 output:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - genomecov:
         type: file
-        description: Computed genomecov bed file
-        pattern: "*.{bed}"
+        description: Computed genome coverage file
+        pattern: "*.${extension}"
     - version:
         type: file
         description: File containing software version
@@ -37,3 +43,4 @@ authors:
     - "@Emiller88"
     - "@sruthipsuresh"
     - "@drpatelh"
+    - "@sidorov-si"

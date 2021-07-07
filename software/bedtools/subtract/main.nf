@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process BEDTOOLS_INTERSECT {
+process BEDTOOLS_SUBTRACT {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
@@ -20,22 +20,21 @@ process BEDTOOLS_INTERSECT {
 
     input:
     tuple val(meta), path(intervals1), path(intervals2)
-    val extension
 
     output:
-    tuple val(meta), path("*.${extension}"), emit: intersect
-    path  '*.version.txt'                  , emit: version
+    tuple val(meta), path("*.bed"), emit: bed
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedtools \\
-        intersect \\
+        subtract \\
         -a $intervals1 \\
         -b $intervals2 \\
         $options.args \\
-        > ${prefix}.${extension}
+        > ${prefix}.bed
 
     bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
