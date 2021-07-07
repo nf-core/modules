@@ -6,12 +6,11 @@ include { HOMER_MAKETAGDIRECTORY } from '../../../../software/homer/maketagdirec
 include { HOMER_FINDPEAKS } from '../../../../software/homer/findpeaks/main.nf' addParams( options: [args: '-style factor'] )
 
 workflow test_homer_findpeaks {
-    def input = []
-    input = [[id: 'test'], // meta map
-             [file("${launchDir}/tests/data/bed/A.bed", checkIfExists: true),
-              file("${launchDir}/tests/data/bed/B.bed", checkIfExists: true)]]
-
-    fasta = file("${launchDir}/tests/data/fasta/E_coli/NC_010473.fa", checkIfExists: true)
+    input = [ [ id:'test'],
+             file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+             file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
+            ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     HOMER_MAKETAGDIRECTORY (input, fasta)
     HOMER_FINDPEAKS ( HOMER_MAKETAGDIRECTORY.out.tagdir )
