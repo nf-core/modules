@@ -1,0 +1,8 @@
+- name: samtools mpileup
+  command: nextflow run ./tests/modules/samtools/mpileup -entry test_samtools_mpileup -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/mpileup
+  files:
+    - path: ./output/samtools/test.mpileup
+      md5sum: 3608af83ffe3efbb1337f0ffb205337d
