@@ -1,8 +1,0 @@
-- name: Run tests for minia - test_minia
-  command: nextflow run tests/software/minia -entry test_minia -c tests/config/nextflow.config
-  tags:
-    - minia
-  files:
-    - path: output/minia/test.h5
-    - path: output/minia/test.contigs.fa
-    - path: output/minia/test.unitigs.fa
