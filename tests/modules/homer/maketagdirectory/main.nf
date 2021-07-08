@@ -17,7 +17,7 @@ workflow test_homer_maketagdirectory {
 
 workflow test_homer_meta_maketagdirectory {
     input = [[[ id:'test1'],
-             file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true),
+              [file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)]],
              [[ id:'test2'],
              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
             ]]
