@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HOMER_MAKETAGDIRECTORY } from '../../../../software/homer/maketagdirectory/main.nf' addParams( options: [:] )
-include { HOMER_FINDPEAKS } from '../../../../software/homer/findpeaks/main.nf' addParams( options: [args: '-style factor'] )
+include { HOMER_MAKETAGDIRECTORY } from '../../../../modules/homer/maketagdirectory/main.nf' addParams( options: [:] )
+include { HOMER_FINDPEAKS } from '../../../../modules/homer/findpeaks/main.nf' addParams( options: [args: '-style factor'] )
 
 workflow test_homer_findpeaks {
     input = [ [ id:'test'],

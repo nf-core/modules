@@ -1,5 +1,5 @@
 - name: homer maketagdirectory
-  command: nextflow run ./tests/software/homer/maketagdirectory -entry test_homer_maketagdirectory -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory -c tests/config/nextflow.config
   tags:
     - homer
     - homer_maketagdirectory
@@ -16,7 +16,7 @@
       md5sum: 054b09ec9e796a91345fa5690012b93d
 
 - name: homer meta maketagdirectory
-  command: nextflow run ./tests/software/homer/maketagdirectory -entry test_homer_meta_maketagdirectory -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_meta_maketagdirectory -c tests/config/nextflow.config
   tags:
     - homer
     - homer_maketagdirectory
