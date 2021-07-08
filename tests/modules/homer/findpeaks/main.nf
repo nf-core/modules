@@ -7,8 +7,8 @@ include { HOMER_FINDPEAKS } from '../../../../modules/homer/findpeaks/main.nf' a
 
 workflow test_homer_findpeaks {
     input = [[id:'test'],
-             [file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true),
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)]]
+             [file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+              file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)]]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     HOMER_MAKETAGDIRECTORY (input, fasta)
