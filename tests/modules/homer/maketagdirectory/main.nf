@@ -27,3 +27,6 @@ workflow test_homer_meta_maketagdirectory {
 
     HOMER_MAKETAGDIRECTORY (meta_input, fasta)
 }
+
+// TODO Make a failing bam test
+// TODO Make a pass bam test that feeds the bam through samtools first
