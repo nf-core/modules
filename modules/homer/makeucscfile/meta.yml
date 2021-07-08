@@ -1,8 +1,9 @@
-name: homer_findpeaks
-description: Find peaks with HOMER suite
+name: homer_makeucscfile
+description: Create a UCSC bed graph with the HOMER suite
 keywords:
-  - annotations
   - peaks
+  - bed
+  - bedGraph
 tools:
   - homer:
       description: |
@@ -25,10 +26,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - peaks:
+  - bedGraph:
       type: file
-      description: The found peaks
-      pattern: "*peaks.txt"
+      description: The UCSC bed graph
+      pattern: "tag_dir/*ucsc.bedGraph.gz"
   - version:
       type: file
       description: File containing software version
