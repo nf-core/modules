@@ -2,7 +2,7 @@
   command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory -c tests/config/nextflow.config
   tags:
     - homer
-    - homer_maketagdirectory
+    - homer/maketagdirectory
   files:
     - path: output/homer/tag_dir/chr1.tags.tsv
       md5sum: e011d951fb4305850d6646a34e65c7a3
@@ -19,7 +19,7 @@
   command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_meta_maketagdirectory -c tests/config/nextflow.config
   tags:
     - homer
-    - homer_maketagdirectory
+    - homer/maketagdirectory
   files:
     - path: output/homer/tag_dir/chr1.tags.tsv
       md5sum: e011d951fb4305850d6646a34e65c7a3
