@@ -14,7 +14,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: 'tests/config/pytest_software.yml'
+          filters: "tests/config/pytest_modules.yml"
 
   test:
     runs-on: ubuntu-20.04
@@ -25,9 +25,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        nxf_version: ['21.04.0']
-        tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
-        profile: ['docker', 'singularity', 'conda']
+        nxf_version: ["21.04.0"]
+        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
+        profile: ["docker", "singularity", "conda"]
     env:
       NXF_ANSI_LOG: false
     steps:

@@ -1,0 +1,10 @@
+- name: tabix bgziptabix
+  command: nextflow run ./tests/modules/tabix/bgziptabix -entry test_tabix_bgziptabix -c tests/config/nextflow.config
+  tags:
+    - tabix
+    - tabix/bgziptabix
+  files:
+    - path: ./output/tabix/test.gz
+      md5sum: 0f1c94af3aa3e7e203d9e034ef6f8f4d
+    - path: ./output/tabix/test.gz.tbi
+      md5sum: bbec39fd53cf2834909d52094980d094
