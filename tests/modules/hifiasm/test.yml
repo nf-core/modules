@@ -1,5 +1,5 @@
 - name: hifiasm test_hifiasm_hifi_only
-  command: nextflow run tests/software/hifiasm -entry test_hifiasm_hifi_only -c tests/config/nextflow.config
+  command: nextflow run tests/modules/hifiasm -entry test_hifiasm_hifi_only -c tests/config/nextflow.config
   tags:
     - hifiasm
   files:
@@ -19,7 +19,7 @@
       should_exist: true
 
 - name: hifiasm test_hifiasm_with_parental_reads
-  command: nextflow run tests/software/hifiasm -entry test_hifiasm_with_parental_reads -c tests/config/nextflow.config
+  command: nextflow run tests/modules/hifiasm -entry test_hifiasm_with_parental_reads -c tests/config/nextflow.config
   tags:
     - hifiasm
   files:
