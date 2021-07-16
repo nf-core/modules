@@ -26,9 +26,9 @@ process UMITOOLS_DEDUP {
     path  "*.version.txt"         , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def paired_end = meta.single_end ? "" : "--paired"
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def paired   = meta.single_end ? "" : "--paired"
     """
     umi_tools dedup \\
         -I $bam \\
