@@ -22,7 +22,7 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path(bams)
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: merged_bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     path  "*.version.txt"                 , emit: version
 
     script:
