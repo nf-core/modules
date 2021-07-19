@@ -2,16 +2,20 @@ name: samtools_ampliconclip
 ## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
+  - amplicon
+  - clipping
+  - ampliconclip
+  - samtools ampliconclip
+  - samtools
 tools:
-  - samtools:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Tools for dealing with SAM, BAM and CRAM files
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['MIT']
+    - samtools:
+        description: |
+            SAMtools is a set of utilities for interacting with and post-processing
+            short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+            These files are generated as output by short read aligners like BWA.
+        homepage: http://www.htslib.org/
+        documentation: hhttp://www.htslib.org/doc/samtools.html
+        doi: 10.1093/bioinformatics/btp352
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -25,6 +29,10 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bed:
+      type: file
+      description: BED file of regions to be removed (e.g. amplicon primers)
+      pattern: "*.{bed}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -37,11 +45,18 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Clipped reads BAM file
+      pattern: "*.{bam}"
+  - stats:
+      type: file
+      description: Clipping statistics text file
+      pattern: "*.{clipstats.txt}"
+  - rejects_bam:
+      type: file
+      description: Filtered reads BAM file
+      pattern: "*.{cliprejects.bam}"
 
 authors:
   - "@bjohnnyd"
