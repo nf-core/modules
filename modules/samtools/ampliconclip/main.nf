@@ -24,8 +24,8 @@ process SAMTOOLS_AMPLICONCLIP {
 
     output:
     tuple val(meta), path("*.bam")             , emit: bam
-    tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
-    tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
+    tuple val(meta), path("*.clipstats.txt")   , optional:true, emit: stats
+    tuple val(meta), path("*.cliprejects.bam") , optional:true, emit: rejects_bam
     path "*.version.txt"                       , emit: version
 
     script:
