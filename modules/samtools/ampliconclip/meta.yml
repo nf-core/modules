@@ -1,5 +1,4 @@
 name: samtools_ampliconclip
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - amplicon
@@ -17,14 +16,12 @@ tools:
         documentation: hhttp://www.htslib.org/doc/samtools.html
         doi: 10.1093/bioinformatics/btp352
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: BAM/CRAM/SAM file
@@ -34,7 +31,6 @@ input:
       description: BED file of regions to be removed (e.g. amplicon primers)
       pattern: "*.{bed}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
