@@ -25,16 +25,16 @@ process SAMTOOLS_AMPLICONCLIP {
     val save_clipstats
 
     output:
-    tuple val(meta), path("*.bam")             , emit: bam
-    tuple val(meta), path("*.clipstats.txt")   , optional:true, emit: stats
-    tuple val(meta), path("*.cliprejects.bam") , optional:true, emit: rejects_bam
-    path "*.version.txt"                       , emit: version
+    tuple val(meta), path("*.bam")            , emit: bam
+    tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
+    tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
+    path "*.version.txt"                      , emit: version
 
     script:
-    def software    = getSoftwareName(task.process)
-    def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def rejects     = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
-    def stats       = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
+    def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
     """
     samtools \\
         ampliconclip \\
