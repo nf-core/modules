@@ -53,7 +53,7 @@ process HIFIASM {
             -2 $maternal_kmer_dump \\
             ${prefix}.fastq.gz
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo $(hifiasm --version 2>&1) > ${software}.version.txt
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
