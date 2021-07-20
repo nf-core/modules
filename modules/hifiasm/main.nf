@@ -13,7 +13,7 @@ process HIFIASM {
 
     conda (params.enable_conda ? "bioconda::hifiasm=0.15.4" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0"
+        container "https://depot.galaxyproject.org/singularity/https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0"
     } else {
         container "quay.io/biocontainers/hifiasm:0.15.4--h2e03b76_0"
     }
@@ -39,34 +39,27 @@ process HIFIASM {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     if (use_parental_kmers) {
         """
-        # Adding soft-links to original FastQs for consistent naming in a workflow
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
-
         hifiasm \\
             $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
-            ${prefix}.fastq.gz
+            ${reads}
 
-        echo $(hifiasm --version 2>&1) > ${software}.version.txt
+        hifiasm --version > ${software}.version.txt || exit 0
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
-        # Adding soft-links to original FastQs for consistent naming in a workflow
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
-
         hifiasm \\
             $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
-            ${prefix}.fastq.gz
+            ${reads}
 
-        echo $(hifiasm --version 2>&1) > ${software}.version.txt
+        hifiasm --version > ${software}.version.txt || exit 0
         """
     }
 }
