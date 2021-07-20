@@ -14,9 +14,8 @@ workflow test_hifiasm_hifi_only {
               [ file(params.test_data['homo_sapiens']['pacbio']['test_hifi_fastq_gz'], 
               checkIfExists: true) ] 
             ]
-    paternal_kmer_dump = file('dummy_paternal_yak')
-    maternal_kmer_dump = file('dummy_maternal_yak')
-    HIFIASM ( input, paternal_kmer_dump, maternal_kmer_dump, false )
+
+    HIFIASM ( input, [], [], false )
 }
 
 /* 

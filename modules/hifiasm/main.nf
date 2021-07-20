@@ -25,16 +25,16 @@ process HIFIASM {
     val use_parental_kmers
 
     output:
-    tuple val(meta), path("*.r_utg.gfa")        , emit: raw_unitigs
-    tuple val(meta), path("*.p_utg.gfa")        , emit: processed_unitigs, optional: true
-    tuple val(meta), path("*.asm.p_ctg.gfa")    , emit: primary_contigs, optional: true
-    tuple val(meta), path("*.asm.a_ctg.gfa")    , emit: alternate_contigs, optional: true
-    tuple val(meta), path("*.hap1.p_ctg.gfa")   , emit: paternal_contigs, optional: true
-    tuple val(meta), path("*.hap2.p_ctg.gfa")   , emit: maternal_contigs, optional: true
-    tuple val(meta), path("*.ec.bin")           , emit: corrected_reads
-    tuple val(meta), path("*.ovlp.source.bin")  , emit: source_overlaps
-    tuple val(meta), path("*.ovlp.reverse.bin") , emit: reverse_overlaps
-    path  "*.version.txt"                       , emit: version
+    tuple val(meta), path("*.r_utg.gfa")       , emit: raw_unitigs
+    tuple val(meta), path("*.ec.bin")          , emit: corrected_reads
+    tuple val(meta), path("*.ovlp.source.bin") , emit: source_overlaps
+    tuple val(meta), path("*.ovlp.reverse.bin"), emit: reverse_overlaps
+    tuple val(meta), path("*.p_utg.gfa")       , emit: processed_unitigs, optional: true
+    tuple val(meta), path("*.asm.p_ctg.gfa")   , emit: primary_contigs  , optional: true
+    tuple val(meta), path("*.asm.a_ctg.gfa")   , emit: alternate_contigs, optional: true
+    tuple val(meta), path("*.hap1.p_ctg.gfa")  , emit: paternal_contigs , optional: true
+    tuple val(meta), path("*.hap2.p_ctg.gfa")  , emit: maternal_contigs , optional: true
+    path  "*.version.txt"                      , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -45,26 +45,28 @@ process HIFIASM {
         # Adding soft-links to original FastQs for consistent naming in a workflow
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
 
-        hifiasm $options.args \\
+        hifiasm \\
+            $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
             ${prefix}.fastq.gz
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo $(hifiasm --version 2>&1) > ${software}.version.txt
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
         # Adding soft-links to original FastQs for consistent naming in a workflow
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
 
-        hifiasm $options.args \\
+        hifiasm \\
+            $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             ${prefix}.fastq.gz
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo $(hifiasm --version 2>&1) > ${software}.version.txt
         """
     }
 }
