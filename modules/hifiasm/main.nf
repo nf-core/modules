@@ -45,7 +45,8 @@ process HIFIASM {
         # Adding soft-links to original FastQs for consistent naming in a workflow
         [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
 
-        hifiasm $options.args \\
+        hifiasm \\
+            $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
