@@ -12,11 +12,8 @@
     - path: output/hifiasm/test.asm.bp.r_utg.gfa
       md5sum: 97446fb95de214835c36b10a90838486
     - path: output/hifiasm/test.asm.ec.bin
-      should_exist: true
     - path: output/hifiasm/test.asm.ovlp.reverse.bin
-      should_exist: true
     - path: output/hifiasm/test.asm.ovlp.source.bin
-      should_exist: true
 
 - name: hifiasm test_hifiasm_with_parental_reads
   command: nextflow run tests/modules/hifiasm -entry test_hifiasm_with_parental_reads -c tests/config/nextflow.config
@@ -32,8 +29,5 @@
     - path: output/hifiasm/test.asm.dip.r_utg.gfa
       md5sum: 97446fb95de214835c36b10a90838486
     - path: output/hifiasm/test.asm.ec.bin
-      should_exist: true
     - path: output/hifiasm/test.asm.ovlp.reverse.bin
-      should_exist: true
     - path: output/hifiasm/test.asm.ovlp.source.bin
-      should_exist: true

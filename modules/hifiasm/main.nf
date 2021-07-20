@@ -20,9 +20,9 @@ process HIFIASM {
 
     input:
     tuple val(meta), path(reads)
-    path paternal_kmer_dump
-    path maternal_kmer_dump
-    val use_parental_kmers
+    path  paternal_kmer_dump
+    path  maternal_kmer_dump
+    val   use_parental_kmers
 
     output:
     tuple val(meta), path("*.r_utg.gfa")       , emit: raw_unitigs
@@ -47,9 +47,9 @@ process HIFIASM {
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
-            ${reads}
+            $reads
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo \$(hifiasm --version 2>&1) > ${software}.version.txt
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
@@ -57,9 +57,9 @@ process HIFIASM {
             $options.args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
-            ${reads}
+            $reads
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo \$(hifiasm --version 2>&1) > ${software}.version.txt
         """
     }
 }
