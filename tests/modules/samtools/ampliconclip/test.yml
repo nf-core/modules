@@ -10,7 +10,7 @@
       md5sum: 1c705ebe39f68f1dac164733ae99c9d2
 
 - name: samtools ampliconclip no stats with rejects
-  command: nextflow run ./tests/modules/samtools/ampliconclip -entry test_samtools_ampliconclip_no_stats_with_rejects -c tests/config/nextflow.config --save_cliprejects
+  command: nextflow run ./tests/modules/samtools/ampliconclip -entry test_samtools_ampliconclip_no_stats_with_rejects -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/ampliconclip
@@ -21,7 +21,7 @@
       md5sum: 8e2eea2c0005b4d4e77c0eb549599133
 
 - name: samtools ampliconclip with stats with rejects
-  command: nextflow run ./tests/modules/samtools/ampliconclip -entry test_samtools_ampliconclip_with_stats_with_rejects -c tests/config/nextflow.config --save_cliprejects --save_clipstats
+  command: nextflow run ./tests/modules/samtools/ampliconclip -entry test_samtools_ampliconclip_with_stats_with_rejects -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/ampliconclip

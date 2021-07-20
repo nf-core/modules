@@ -30,6 +30,12 @@ input:
       type: file
       description: BED file of regions to be removed (e.g. amplicon primers)
       pattern: "*.{bed}"
+  - save_cliprejects:
+      type: value
+      description: Save  filtered reads to a file
+  - save_clistats:
+      type: value
+      description: Save clipping stats to a file
 
 output:
   - meta:
