@@ -66,7 +66,7 @@ process HIFIASM {
             -t $task.cpus \\
             ${prefix}.fastq.gz
 
-        hifiasm --version > ${software}.version.txt || exit 0
+        echo $(hifiasm --version 2>&1) > ${software}.version.txt
         """
     }
 }
