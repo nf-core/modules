@@ -20,6 +20,7 @@ process FASTP {
 
     input:
     tuple val(meta), path(reads)
+    val save_trimmed_fail
 
     output:
     tuple val(meta), path('*.trim.fastq.gz'), emit: reads
@@ -34,7 +35,7 @@ process FASTP {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
-        def fail_fastq = params.save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
+        def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
         fastp \\
@@ -49,7 +50,7 @@ process FASTP {
         echo \$(fastp --version 2>&1) | sed -e "s/fastp //g" > ${software}.version.txt
         """
     } else {
-        def fail_fastq = params.save_trimmed_fail ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
+        def fail_fastq = save_trimmed_fail ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
         """
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
