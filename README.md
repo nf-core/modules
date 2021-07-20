@@ -433,7 +433,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
 
-- All `params` within the module MUST be initialised and used in the local context of the module. In other words, named `params` defined in the parent workflow MUST NOT be passed to the module to keep them as generic as possible and to allow developers to call their parameters whatever they want. In general, it may be more suitable to use additional `input` modules to cater for such scenarios.
+- All `params` within the module MUST be initialised and used in the local context of the module. In other words, named `params` defined in the parent workflow MUST NOT be passed to the module to keep them as generic as possible and to allow developers to call their parameters whatever they want. In general, it may be more suitable to use additional `input` values to cater for such scenarios.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
