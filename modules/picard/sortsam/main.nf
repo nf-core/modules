@@ -24,7 +24,7 @@ process PICARD_SORTSAM {
     val sort_order
 
     output:
-    tuple val(meta), path("*.sorted.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "*.version.txt"                 , emit: version
 
     script:
