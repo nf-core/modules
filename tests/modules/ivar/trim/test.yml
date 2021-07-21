@@ -1,0 +1,8 @@
+- name: ivar trim
+  command: nextflow run ./tests/modules/ivar/trim -entry test_ivar_trim -c tests/config/nextflow.config
+  tags:
+    - ivar
+    - ivar/trim
+  files:
+    - path: output/ivar/test.bam
+      md5sum: 8705d032b28a1c3dbfe78fa762a2132f
