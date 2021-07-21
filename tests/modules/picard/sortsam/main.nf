@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { PICARD_SORTSAM } from '../../../../modules/picard/sortsam/main.nf'  addParams( options: [suffix:'.sorted'] )
+
 workflow test_picard_sortsam {
 
     input = [ [ id:'test', single_end:false ], // meta map
