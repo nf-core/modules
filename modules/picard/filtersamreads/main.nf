@@ -37,8 +37,8 @@ process PICARD_FILTERSAMREADS {
         avail_mem = task.memory.giga
     }
     if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
-    """
-    picard \\
+        """
+        picard \\
         FilterSamReads \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
@@ -46,20 +46,20 @@ process PICARD_FILTERSAMREADS {
         --FILTER $filter \\
         $options.args
 
-    echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
-    """
+        echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
+        """
     } else if ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
-    """
-    picard \\
-        FilterSamReads \\
-        -Xmx${avail_mem}g \\
-        --INPUT $bam \\
-        --OUTPUT ${prefix}.bam \\
-        --FILTER $filter \\
-        --READ_LIST_FILE $readlist \\
-        $options.args
+        """
+        picard \\
+            FilterSamReads \\
+            -Xmx${avail_mem}g \\
+            --INPUT $bam \\
+            --OUTPUT ${prefix}.bam \\
+            --FILTER $filter \\
+            --READ_LIST_FILE $readlist \\
+            $options.args
 
-    echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
-    """
+            echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
+        """
     }
 }
