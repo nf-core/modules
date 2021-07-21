@@ -20,7 +20,7 @@ process FASTP {
 
     input:
     tuple val(meta), path(reads)
-    val save_trimmed_fail
+    val   save_trimmed_fail
 
     output:
     tuple val(meta), path('*.trim.fastq.gz'), emit: reads
