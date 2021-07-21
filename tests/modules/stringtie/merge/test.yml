@@ -5,7 +5,10 @@
     - stringtie/merge
   files:
     - path: ./output/test_stringtie_forward_merge/stringtie.merged.gtf
-      md5sum: 676aa20a2d7a3db18136cdc7ba183099
+      contains:
+      - 'stringtie'
+      - 'merge'
+      - 'chr22'
 
 - name: stringtie reverse-strand merge
   command: nextflow run ./tests/modules/stringtie/merge/ -entry test_stringtie_reverse_merge -c tests/config/nextflow.config
@@ -14,4 +17,7 @@
     - stringtie/merge
   files:
     - path: ./output/test_stringtie_reverse_merge/stringtie.merged.gtf
-      md5sum: 67e5102722ecaeea1fb44d1ec0953474      
+      contains:
+      - 'stringtie'
+      - 'merge'
+      - 'chr22'
