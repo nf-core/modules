@@ -33,6 +33,6 @@ process STRINGTIE_MERGE {
         -G $annotation_gtf \\
         -o stringtie.merged.gtf
 
-    stringtie --version > ${software}.version.txt
+    echo \$(stringtie --version 2>&1) > ${software}.version.txt
     """
 }

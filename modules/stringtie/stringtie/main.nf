@@ -51,6 +51,6 @@ process STRINGTIE {
         -p $task.cpus \\
         $options.args
 
-    stringtie --version > ${software}.version.txt
+    echo \$(stringtie --version 2>&1) > ${software}.version.txt
     """
 }
