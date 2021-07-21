@@ -22,7 +22,7 @@ input:
             e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
-        description: List of BAM files
+        description: List of BAM files. If filtering without read list must be sorted by queryname with picard sortsam
         pattern: "*.{bam}"
     - filter:
         type: value

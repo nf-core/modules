@@ -38,16 +38,10 @@ process PICARD_FILTERSAMREADS {
     }
     if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
     """
-    picard SortSam \\
-            -Xmx${avail_mem}g \\
-            --INPUT $bam \\
-            --OUTPUT ${prefix}.sorted.bam \\
-            --SORT_ORDER queryname
-
     picard \\
         FilterSamReads \\
         -Xmx${avail_mem}g \\
-        --INPUT ${prefix}.sorted.bam \\
+        --INPUT $bam \\
         --OUTPUT ${prefix}.filtered.bam \\
         --FILTER $filter \\
         $options.args
