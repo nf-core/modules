@@ -1,47 +1,44 @@
 name: picard_filtersamreads
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Filters SAM/BAM files to include/exclude either aligned/unaligned reads or based on a read list
 keywords:
-  - sort
+  - bam
+  - filter
 tools:
   - picard:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Java tools for working with NGS data in the BAM format
-      homepage: None
-      documentation: None
+      description: |
+          A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+          data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: https://github.com/broadinstitute/picard
       doi: ""
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: List of BAM files
+        pattern: "*.{bam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Filtered BAM file
+        pattern: "*.filtered.{bam}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
 
 authors:
   - "@jfy133"

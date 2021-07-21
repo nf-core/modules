@@ -1,10 +1,18 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml picard/filtersamreads
 - name: picard filtersamreads
   command: nextflow run ./tests/modules/picard/filtersamreads -entry test_picard_filtersamreads -c tests/config/nextflow.config
   tags:
     - picard
     - picard/filtersamreads
   files:
-    - path: output/picard/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/picard/test.filtered.bam
+      md5sum: b44a6ca04811a9470c7813c3c9465fd5
+
+
+- name: picard filtersamreads_readlist
+  command: nextflow run ./tests/modules/picard/filtersamreads -entry test_picard_filtersamreads_readlist -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard/filtersamreads
+  files:
+    - path: output/picard/test.filtered.bam
+      md5sum: 1e86b738b56f2c2b09f4cab52baf05c7
