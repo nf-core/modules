@@ -22,6 +22,10 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,sam}"
+  - sort_order:
+      type: value
+      description: Picard sort order type
+      pattern: "unsorted|queryname|coordinate|duplicate|unknown"
 
 output:
   - meta:
@@ -37,10 +41,7 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*sorted.{bam}"
-  - sort_order:
-      type: value
-      description: Picard sort order type
-      pattern: "unsorted|queryname|coordinate|duplicate|unknown"
+
 
 authors:
   - "@jfy133"
