@@ -24,7 +24,7 @@ process STRINGTIE_MERGE {
 
     output:
     path "stringtie.merged.gtf", emit: gtf
-    path  "*.version.txt"                     , emit: version
+    path  "*.version.txt"      , emit: version
 
     script:
     """
