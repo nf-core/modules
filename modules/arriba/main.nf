@@ -30,16 +30,28 @@ process ARRIBA {
     tuple val(meta), path(bam)
     path fasta
     path gtf
+    path blacklist
 
     output:
-    tuple val(meta), path("*_fusions.tsv"), emit: tsv
+    tuple val(meta), path("*_fusions.tsv")       , emit: tsv
     path "*.version.txt"                         , emit: version
 
     script:
     def software        = getSoftwareName(task.process)
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def backlist_option = params.arriba_blacklist ? "-b $params.arriba_blacklist" : '-f blacklist'
-    def known_fusions   = params.arriba_known_fusions ? "-k $params.arriba_known_fusions -t $params.arriba_known_fusions" : '-f known_fusions'
+    def backlist_option = blacklist ? "-b ${blacklist}" : '-f blacklist'
+    //def known_fusions   = params.arriba_known_fusions ? "-k $params.arriba_known_fusions -t $params.arriba_known_fusions" : '-f known_fusions'
+    //def protein_domains = params.protein_domains ? "-p $params.protein_domains" : ""
+
+    //if(!params.arriba_blacklist && !params.arriba_known_fusions){
+    //    backlist_option = "-f blacklist,known_fusions"
+    //    known_fusions   = ""
+    //}
+
+    //$backlist_option \\
+    //$known_fusions \\
+    //$protein_domains \\
+
 
     """
     arriba \\
@@ -49,7 +61,6 @@ process ARRIBA {
         -o ${prefix}_fusions.tsv \\
         -O ${prefix}_discarded_arriba.tsv \\
         $backlist_option \\
-        $known_fusions \\
         $options.args
 
     echo \$(arriba -h | grep 'Version:' 2>&1) |  sed 's/Version:\s//' > ${software}.version.txt

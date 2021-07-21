@@ -15,8 +15,9 @@ workflow test_arriba {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    blacklist = Channel.value(false)
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf )
-    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
+    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf, blacklist )
 }
