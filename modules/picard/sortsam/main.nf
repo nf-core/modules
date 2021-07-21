@@ -32,7 +32,7 @@ process PICARD_SORTSAM {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[Picard SortSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
