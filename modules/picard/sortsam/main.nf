@@ -41,7 +41,7 @@ process PICARD_SORTSAM {
         SortSam \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.sorted.bam \\
+        --OUTPUT ${prefix}.bam \\
         --SORT_ORDER $sort_order
 
     echo \$(picard SortSam --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
