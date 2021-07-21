@@ -48,6 +48,7 @@ process STRINGTIE {
         -A ${prefix}.gene.abundance.txt \\
         -C ${prefix}.coverage.gtf \\
         -b ${prefix}.ballgown \\
+        -p $task.cpus \\
         $options.args
 
     stringtie --version > ${software}.version.txt
