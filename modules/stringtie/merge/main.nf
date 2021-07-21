@@ -11,11 +11,11 @@ process STRINGTIE_MERGE {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
-    conda     (params.enable_conda ? "bioconda::stringtie=2.1.4" : null)
+    conda     (params.enable_conda ? "bioconda::stringtie=2.1.7" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/stringtie:2.1.4--h7e0af3c_0"
+        container "https://depot.galaxyproject.org/singularity/stringtie:2.1.7--h978d192_0"
     } else {
-        container "quay.io/biocontainers/stringtie:2.1.4--h7e0af3c_0"
+        container "quay.io/biocontainers/stringtie:2.1.7--h978d192_0"
     }
 
     input:
@@ -24,12 +24,16 @@ process STRINGTIE_MERGE {
 
     output:
     path "stringtie.merged.gtf", emit: gtf
+    path  "*.version.txt"      , emit: version
 
     script:
+    def software = getSoftwareName(task.process)
     """
     stringtie \\
         --merge $stringtie_gtf \\
         -G $annotation_gtf \\
         -o stringtie.merged.gtf
+
+    echo \$(stringtie --version 2>&1) > ${software}.version.txt
     """
 }
