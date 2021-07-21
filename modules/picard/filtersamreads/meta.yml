@@ -24,6 +24,13 @@ input:
         type: file
         description: List of BAM files
         pattern: "*.{bam}"
+    - filter:
+        type: value
+        description: Picard filter type
+        pattern: "includeAligned|excludeAligned|includeReadList|excludeReadList"
+    - readlist:
+        type: file
+        description: Optional text file containing reads IDs to include or exclude
 
 output:
     - meta:
