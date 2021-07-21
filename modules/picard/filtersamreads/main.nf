@@ -36,14 +36,13 @@ process PICARD_FILTERSAMREADS {
     } else {
         avail_mem = task.memory.giga
     }
-    println(readlist)
     if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
     """
     picard SortSam \\
             -Xmx${avail_mem}g \\
             --INPUT $bam \\
             --OUTPUT ${prefix}.sorted.bam \\
-            --SORT_ORDER queryname \\
+            --SORT_ORDER queryname
 
     picard \\
         FilterSamReads \\
