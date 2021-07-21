@@ -24,7 +24,7 @@ process PICARD_SORTSAM {
     val sort_order
 
     output:
-    tuple val(meta), path("*.sorted.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "*.version.txt"                 , emit: version
 
     script:
@@ -41,7 +41,7 @@ process PICARD_SORTSAM {
         SortSam \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.sorted.bam \\
+        --OUTPUT ${prefix}.bam \\
         --SORT_ORDER $sort_order
 
     echo \$(picard SortSam --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
