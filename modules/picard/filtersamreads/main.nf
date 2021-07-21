@@ -45,18 +45,20 @@ process PICARD_FILTERSAMREADS {
             --OUTPUT ${prefix}.sorted.bam \\
             --SORT_ORDER queryname \\
 
-    picard FilterSamReads \\
-            -Xmx${avail_mem}g \\
-            --INPUT ${prefix}.sorted.bam \\
-            --OUTPUT ${prefix}.filtered.bam \\
-            --FILTER $filter \\
-            $options.args
+    picard \\
+        FilterSamReads \\
+        -Xmx${avail_mem}g \\
+        --INPUT ${prefix}.sorted.bam \\
+        --OUTPUT ${prefix}.filtered.bam \\
+        --FILTER $filter \\
+        $options.args
 
     echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
     """
-    } else ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
+    } else if ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
     """
-    picard FilterSamReads \\
+    picard \\
+        FilterSamReads \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.filtered.bam \\
