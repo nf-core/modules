@@ -24,6 +24,7 @@ process STRINGTIE_MERGE {
 
     output:
     path "stringtie.merged.gtf", emit: gtf
+    path  "*.version.txt"                     , emit: version
 
     script:
     """
@@ -31,5 +32,7 @@ process STRINGTIE_MERGE {
         --merge $stringtie_gtf \\
         -G $annotation_gtf \\
         -o stringtie.merged.gtf
+
+    stringtie --version > ${software}.version.txt
     """
 }
