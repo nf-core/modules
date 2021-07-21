@@ -441,7 +441,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
 
-- Optional inputs are not currently supported by Nextflow. However, using an empty list (`[]`) instead of a file can be used to work around this issue when combined with conditional staging of the file when necessary (i.e., using a condition around the `script:` block, with one condition containing the command without the optional file, and the other condition containing the command with the optinal file).
+- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 
 #### Resource requirements
 
