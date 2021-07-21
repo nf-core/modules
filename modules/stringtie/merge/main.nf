@@ -27,6 +27,7 @@ process STRINGTIE_MERGE {
     path  "*.version.txt"      , emit: version
 
     script:
+    def software = getSoftwareName(task.process)
     """
     stringtie \\
         --merge $stringtie_gtf \\
