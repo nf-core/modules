@@ -39,12 +39,12 @@ process PICARD_FILTERSAMREADS {
     if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
         """
         picard \\
-        FilterSamReads \\
-        -Xmx${avail_mem}g \\
-        --INPUT $bam \\
-        --OUTPUT ${prefix}.bam \\
-        --FILTER $filter \\
-        $options.args
+            FilterSamReads \\
+            -Xmx${avail_mem}g \\
+            --INPUT $bam \\
+            --OUTPUT ${prefix}.bam \\
+            --FILTER $filter \\
+            $options.args
 
         echo \$(picard FilterSamReads --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
         """
