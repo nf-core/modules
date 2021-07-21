@@ -24,8 +24,8 @@ process PICARD_FILTERSAMREADS {
     path readlist
 
     output:
-    tuple val(meta), path("*.filtered.bam"), emit: bam
-    path "*.version.txt"                   , emit: version
+    tuple val(meta), path("*.bam"), emit: bam
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -42,7 +42,7 @@ process PICARD_FILTERSAMREADS {
         FilterSamReads \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.filtered.bam \\
+        --OUTPUT ${prefix}.bam \\
         --FILTER $filter \\
         $options.args
 
@@ -54,7 +54,7 @@ process PICARD_FILTERSAMREADS {
         FilterSamReads \\
         -Xmx${avail_mem}g \\
         --INPUT $bam \\
-        --OUTPUT ${prefix}.filtered.bam \\
+        --OUTPUT ${prefix}.bam \\
         --FILTER $filter \\
         --READ_LIST_FILE $readlist \\
         $options.args
