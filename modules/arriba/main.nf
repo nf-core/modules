@@ -24,8 +24,9 @@ process ARRIBA {
     path gtf
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.fusions.tsv")              , emit: fusions
+    tuple val(meta), path("*.fusions.discarded.tsv")    , emit: fusions_fail
+    path "*.version.txt"                                , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
@@ -38,6 +39,7 @@ process ARRIBA {
         -a $fasta \\
         -g $gtf \\
         -o ${prefix}.fusions.tsv \\
+        -O ${prefix}.fusions.discarded.tsv \\
         $blacklist \\
         $options.args
 

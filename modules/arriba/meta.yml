@@ -41,10 +41,14 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - tsv:
+  - fusions:
       type: file
-      description: Fusions detected by the algorithm
+      description: File contains fusions which pass all of Arriba's filters.
       pattern: "*.{fusions.tsv}"
+  - fusions_fail:
+      type: file
+      description: File contains fusions that Arriba classified as an artifact or that are also observed in healthy tissue.
+      pattern: "*.{fusions.discarded.tsv}"
 
 authors:
   - "@praveenraj2018"

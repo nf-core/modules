@@ -1,9 +1,11 @@
-- name: arriba test_arriba_se
-  command: nextflow run tests/modules/arriba -entry test_arriba_se -c tests/config/nextflow.config
+- name: arriba test_arriba_single_end
+  command: nextflow run tests/modules/arriba -entry test_arriba_single_end -c tests/config/nextflow.config
   tags:
     - arriba
   files:
-    - path: output/arriba/test_fusions.tsv
+    - path: output/arriba/test.fusions.discarded.tsv
+      md5sum: cad8c215b938d1e45b747a5b7898a4c2
+    - path: output/arriba/test.fusions.tsv
       md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -43,12 +45,14 @@
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
 
-- name: arriba test_arriba_pe
-  command: nextflow run tests/modules/arriba -entry test_arriba_pe -c tests/config/nextflow.config
+- name: arriba test_arriba_paired_end
+  command: nextflow run tests/modules/arriba -entry test_arriba_paired_end -c tests/config/nextflow.config
   tags:
     - arriba
   files:
-    - path: output/arriba/test_fusions.tsv
+    - path: output/arriba/test.fusions.discarded.tsv
+      md5sum: 85e36c887464e4deaa65f45174d3b8fd
+    - path: output/arriba/test.fusions.tsv
       md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
