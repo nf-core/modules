@@ -19,9 +19,8 @@ process PICARD_FILTERSAMREADS {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(readlist)
     val filter
-    path readlist
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
