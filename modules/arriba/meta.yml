@@ -6,10 +6,10 @@ keywords:
 tools:
   - arriba:
       description: Fast and accurate gene fusion detection from RNA-Seq data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/suhrig/arriba
+      documentation: https://arriba.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/suhrig/arriba
+      doi: "10.1101/gr.257246.119"
       licence: ['MIT']
 
 input:
@@ -22,10 +22,6 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: bai file
-      pattern: "*.{bai}"
   - fasta:
       type: file
       description: Assembly FASTA file
