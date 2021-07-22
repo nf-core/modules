@@ -1,14 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-// TOOL DESCRIPTION:
-// Arriba is a command-line tool for the detection of gene fusions from RNA-Seq data. It was developed for the use in a clinical research setting.
-// Apart from gene fusions, Arriba can detect other structural rearrangements with potential clinical relevance, such as viral integration sites,
-// internal tandem duplications, whole exon duplications, truncations of genes (i.e., breakpoints in introns and intergenic regions).
-// Source: https://github.com/suhrig/arriba
-// Article: Sebastian Uhrig, Julia Ellermann, Tatjana Walther, Pauline Burkhardt, Martina Fröhlich, Barbara Hutter, Umut H. Toprak, Olaf Neumann, Albrecht Stenzinger, Claudia Scholl, Stefan Fröhling and Benedikt Brors: Accurate and efficient detection of gene fusions from RNA sequencing data. Genome Research.
-// DOI: 10.1101/gr.257246.119
-
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -32,21 +24,21 @@ process ARRIBA {
     path gtf
 
     output:
-    tuple val(meta), path("*_fusions.tsv")       , emit: tsv
-    path "*.version.txt"                         , emit: version
+    tuple val(meta), path("*.tsv"), emit: tsv
+    path "*.version.txt"          , emit: version
 
     script:
-    def software            = getSoftwareName(task.process)
-    def prefix              = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def blacklist_option    = (options.args.contains('-b')) ? '' : '-f blacklist'
+    def software  = getSoftwareName(task.process)
+    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def blacklist = (options.args.contains('-b')) ? '' : '-f blacklist'
 
     """
     arriba \\
         -x $bam \\
         -a $fasta \\
         -g $gtf \\
-        -o ${prefix}_fusions.tsv \\
-        $blacklist_option \\
+        -o ${prefix}.fusions.tsv \\
+        $blacklist \\
         $options.args
 
     echo \$(arriba -h | grep 'Version:' 2>&1) |  sed 's/Version:\s//' > ${software}.version.txt
