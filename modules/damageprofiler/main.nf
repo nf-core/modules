@@ -30,15 +30,25 @@ process DAMAGEPROFILER {
     script:
     def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    println("Myfasta " + fasta)
+    if ( fasta ) {
+        """
+        damageprofiler \\
+            -i $bam \\
+            -r $fasta \\
+            -o $prefix/ \\
+            $options.args
 
-    """
-    damageprofiler \\
-        -i $bam \\
-        -r $fasta \\
-        -o $prefix/ \\
-        $options.args
+        echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
+        """
+    } else {
+        """
+        damageprofiler \\
+            -i $bam \\
+            -o $prefix/ \\
+            $options.args
 
-
-    echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
-    """
+        echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
+        """
+    }
 }
