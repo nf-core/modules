@@ -13,15 +13,20 @@ workflow test_picard_filtersamreads {
     filter = 'includeAligned'
 
     PICARD_SORTSAM ( input, sort_order )
-    PICARD_FILTERSAMREADS ( PICARD_SORTSAM.out.bam, filter, [] )
+    PICARD_SORTSAM.out.bam
+        .map {
+            [ it[0], it[1], [] ]
+        }
+        .set{ ch_sorted_for_filtersamreads }
+    PICARD_FILTERSAMREADS ( ch_sorted_for_filtersamreads, filter )
 }
 
 workflow test_picard_filtersamreads_readlist {
 
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true) ]
+              file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
+              file(params.test_data['sarscov2']['illumina']['test_single_end_bam_readlist_txt'], checkIfExists: true) ]
     filter = 'includeReadList'
-    readlist = file(params.test_data['sarscov2']['illumina']['test_single_end_bam_readlist_txt'], checkIfExists: true)
 
-    PICARD_FILTERSAMREADS ( input, filter, readlist )
+    PICARD_FILTERSAMREADS ( input, filter )
 }
