@@ -30,7 +30,6 @@ process DAMAGEPROFILER {
     script:
     def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    println("Myfasta " + fasta)
     if ( fasta ) {
         """
         damageprofiler \\
