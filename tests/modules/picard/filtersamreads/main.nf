@@ -28,5 +28,5 @@ workflow test_picard_filtersamreads_readlist {
               file(params.test_data['sarscov2']['illumina']['test_single_end_bam_readlist_txt'], checkIfExists: true) ]
     filter = 'includeReadList'
 
-    PICARD_FILTERSAMREADS ( input, readlist )
+    PICARD_FILTERSAMREADS ( input, filter )
 }
