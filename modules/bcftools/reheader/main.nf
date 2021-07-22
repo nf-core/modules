@@ -31,11 +31,12 @@ process BCFTOOLS_REHEADER {
     def software         = getSoftwareName(task.process)
     def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def update_sequences = fai ? "-f $fai" : ""
-    def update_header    = header ? "-h $header" : ""
+    def new_header       = header ? "-h $header" : ""
     """
     bcftools \\
         reheader \\
         $update_sequences \\
+        $new_header \\
         $options.args \\
         --threads $task.cpus \\
         -o ${prefix}.vcf.gz \\
