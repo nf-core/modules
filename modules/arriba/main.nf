@@ -24,15 +24,14 @@ process ARRIBA {
     path gtf
 
     output:
-    tuple val(meta), path("*.fusions.tsv")              , emit: fusions
-    tuple val(meta), path("*.fusions.discarded.tsv")    , emit: fusions_fail
-    path "*.version.txt"                                , emit: version
+    tuple val(meta), path("*.fusions.tsv")          , emit: fusions
+    tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
+    path "*.version.txt"                            , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def blacklist = (options.args.contains('-b')) ? '' : '-f blacklist'
-
     """
     arriba \\
         -x $bam \\
