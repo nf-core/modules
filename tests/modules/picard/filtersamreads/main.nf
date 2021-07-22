@@ -25,7 +25,7 @@ workflow test_picard_filtersamreads_readlist {
 
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
-              file(params.test_data['sarscov2']['illumina']['test_single_end_bam_readlist_txt'], checkIfExists: true]
+              file(params.test_data['sarscov2']['illumina']['test_single_end_bam_readlist_txt'], checkIfExists: true) ]
     filter = 'includeReadList'
 
     PICARD_FILTERSAMREADS ( input, readlist )
