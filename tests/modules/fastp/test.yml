@@ -91,9 +91,15 @@
       contains:
         - "<div id='After_filtering__merged__quality'>"
     - path: output/fastp/test.fastp.json
-      md5sum: dca6cd91e274e103efb8fa5819dcd406
+      contains:
+        - '"merged_and_filtered": {'
+        - '"total_reads": 75'
+        - '"total_bases": 13683'
     - path: output/fastp/test.fastp.log
-      md5sum: 0215cf22033757bfd5a3927266a57fa9
+      contains:
+        - "Merged and filtered:"
+        - "total reads: 75"
+        - "total bases: 13683"
     - path: output/fastp/test.merged.fastq.gz
       md5sum: ce88539076ced5aff11f866836ea1f40
     - path: output/fastp/test_1.trim.fastq.gz
