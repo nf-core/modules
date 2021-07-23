@@ -22,32 +22,27 @@ process DAMAGEPROFILER {
     tuple val(meta), path(bam)
     path fasta
     path fai
+    path specieslist
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
     path  "*.version.txt"             , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
-    prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if ( fasta ) {
-        """
-        damageprofiler \\
-            -i $bam \\
-            -r $fasta \\
-            -o $prefix/ \\
-            $options.args
+    def software     = getSoftwareName(task.process)
+    prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def reference    = fasta ? "-r $fasta" : ""
+    def species_list = specieslist ? "-sf $specieslist" : ""
 
-        echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
-        """
-    } else {
-        """
-        damageprofiler \\
-            -i $bam \\
-            -o $prefix/ \\
-            $options.args
+    """
+    damageprofiler \\
+    -i $bam \\
+    -o $prefix/ \\
+    $options.args \\
+    $reference \\
+    $species_list
 
-        echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
-        """
-    }
+    echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
+    """
+
 }
