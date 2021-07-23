@@ -12,7 +12,6 @@ workflow test_bcftools_reheader_update_sequences {
     ]
     fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
     header = []
-
     BCFTOOLS_REHEADER ( input, fai, header )
 }
 
