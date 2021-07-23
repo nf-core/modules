@@ -81,3 +81,28 @@
       md5sum: e62ff0123a74adfc6903d59a449cbdb0
     - path: output/fastp/test_2.fail.fastq.gz
       md5sum: f52309b35a7c15cbd56a9c3906ef98a5
+
+- name: fastp test_fastp_paired_end_merged
+  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end_merged -c tests/config/nextflow.config
+  tags:
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "<div id='After_filtering__merged__quality'>"
+    - path: output/fastp/test.fastp.json
+      contains:
+        - '"merged_and_filtered": {'
+        - '"total_reads": 75'
+        - '"total_bases": 13683'
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "Merged and filtered:"
+        - "total reads: 75"
+        - "total bases: 13683"
+    - path: output/fastp/test.merged.fastq.gz
+      md5sum: ce88539076ced5aff11f866836ea1f40
+    - path: output/fastp/test_1.trim.fastq.gz
+      md5sum: 65d75c13abbfbfd993914e1379634100
+    - path: output/fastp/test_2.trim.fastq.gz
+      md5sum: 0d87ce4d8ef29fb35f337eb0f6c9fcb4
