@@ -20,12 +20,12 @@ process LOFREQ_CALLPARALLEL {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    file fasta
-    file fai
+    path fasta
+    path fai
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "*.version.txt"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -34,10 +34,11 @@ process LOFREQ_CALLPARALLEL {
     lofreq \\
         call-parallel \\
         --pp-threads $task.cpus \\
+        $options.args \\
         -f $fasta \\
-        -o ${prefix}.vcf \\
+        -o ${prefix}.vcf.gz \\
         $bam
 
-    echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
+    echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//' > ${software}.version.txt
     """
 }

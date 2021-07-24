@@ -395,6 +395,8 @@ The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as descri
 
 #### General
 
+- All non-mandatory command-line tool options MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided via the Nextflow `addParams` option when including the module via `include` in the parent workflow.
+
 - Software that can be piped together SHOULD be added to separate module files
 unless there is a run-time, storage advantage in implementing in this way. For example,
 using a combination of `bwa` and `samtools` to output a BAM file instead of a SAM file:
@@ -431,7 +433,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
 
-- All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided via the Nextflow `addParams` option when including the module via `include` in the parent workflow.
+- All `params` within the module MUST be initialised and used in the local context of the module. In other words, named `params` defined in the parent workflow MUST NOT be assumed to be passed to the module to allow developers to call their parameters whatever they want. In general, it may be more suitable to use additional `input` value channels to cater for such scenarios.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
@@ -441,7 +443,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
 
-- Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
+- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 
 #### Resource requirements
 

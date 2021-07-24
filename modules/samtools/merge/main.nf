@@ -22,14 +22,14 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path(bams)
 
     output:
-    tuple val(meta), path("*merged.bam"), emit: merged_bam
-    path  "*.version.txt"              , emit: version
+    tuple val(meta), path("${prefix}.bam"), emit: bam
+    path  "*.version.txt"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    samtools merge ${prefix}_merged.bam $bams
+    samtools merge ${prefix}.bam $bams
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
 }
