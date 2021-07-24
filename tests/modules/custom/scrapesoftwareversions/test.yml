@@ -1,11 +1,13 @@
 - name: custom scrapesoftwareversions test_scrapesoftwareversions
   command: nextflow run tests/modules/custom/scrapesoftwareversions -entry test_scrapesoftwareversions -c tests/config/nextflow.config
   tags:
-    - custom_scrapesoftwareversions
-    - scrapesoftwareversions
     - custom
+    - custom/scrapesoftwareversions
   files:
     - path: output/custom/software_versions.tsv
-      md5sum: dbbffdd8a345e75f046eb012a1f5f4e9
+      md5sum: 7925eb462943f531fe90fd68c1e22458
     - path: output/custom/software_versions_mqc.yaml
-      md5sum: 63aba90a3d247a07c1e796fdd6d84801
+      md5sum: 215c13147449fb9dbca584d4304e6015
+    - path: output/fastqc/test_fastqc.html
+      md5sum: cd53e949e8a1b22897b7dfbb96dd7273
+    - path: output/fastqc/test_fastqc.zip
