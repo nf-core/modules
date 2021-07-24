@@ -38,9 +38,14 @@ process RMARKDOWN {
     """
     mkdir artifacts
 
-    # export BLAS variables
+    # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
+    export MKL_NUM_THREADS="${task.cpus}"
+    export OPENBLAS_NUM_THREADS="${task.cpus}"
+    export OMP_NUM_THREADS="${task.cpus}"
+    export NUMBA_NUM_THREADS="${task.cpus}"
 
     # dump parameters to yaml
+    # TODO
 
     # work around  https://github.com/rstudio/rmarkdown/issues/1508
     mv "${notebook}" "${notebook}.orig"
