@@ -16,7 +16,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: 'tests/config/pytest_software.yml'
+          filters: "tests/config/pytest_modules.yml"
 
   lint:
     runs-on: ubuntu-20.04
@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tags: ['${{ fromJson(needs.changes.outputs.modules) }}']
+        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
     steps:
       - uses: actions/checkout@v2
 
@@ -65,7 +65,7 @@ jobs:
           sudo mv nextflow /usr/local/bin/
 
       - name: Lint ${{ matrix.tags }}
-        run: nf-core modules lint . -t ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
 
       - uses: actions/cache@v2
         with:

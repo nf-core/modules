@@ -34,9 +34,9 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 The module files hosted in this repository define a set of processes for software tools such as `fastqc`, `bwa`, `samtools` etc. This allows you to share and add common functionality across multiple pipelines in a modular fashion.
 
-We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the [`software/`](software/) directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
+We have written a helper command in the `nf-core/tools` package that uses the GitHub API to obtain the relevant information for the module files present in the [`modules/`](modules/) directory of this repository. This includes using `git` commit hashes to track changes for reproducibility purposes, and to download and install all of the relevant module files.
 
-1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=1.13`)
+1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=2.0`)
 2. List the available modules:
 
     ```console
@@ -48,7 +48,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Modules available from nf-core/modules (master):                       pipeline_modules.py:164
 
@@ -73,10 +73,10 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Installing fastqc                                                      pipeline_modules.py:213
-    INFO     Downloaded 3 files to ./modules/nf-core/software/fastqc                pipeline_modules.py:236
+    INFO     Downloaded 3 files to ./modules/nf-core/modules/fastqc                 pipeline_modules.py:236
     ```
 
 4. Import the module in your Nextflow script:
@@ -86,7 +86,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
     nextflow.enable.dsl = 2
 
-    include { FASTQC } from './modules/nf-core/software/fastqc/main' addParams( options: [:] )
+    include { FASTQC } from './modules/nf-core/modules/fastqc/main' addParams( options: [:] )
     ```
 
 5. Remove the module from the pipeline repository if required:
@@ -100,7 +100,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Removing fastqc                                                        pipeline_modules.py:271
     INFO     Successfully removed fastqc                                            pipeline_modules.py:285
@@ -117,7 +117,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Linting pipeline: .                                                    lint.py:104
     INFO     Linting module: fastqc                                                 lint.py:106
@@ -128,7 +128,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     ╭──────────────┬───────────────────────────────┬──────────────────────────────────╮
     │ Module name  │ Test message                  │ File path                        │
     ├──────────────┼───────────────────────────────┼──────────────────────────────────┤
-    │ fastqc       │ Local copy of module outdated │ modules/nf-core/software/fastqc/ │
+    │ fastqc       │ Local copy of module outdated │ modules/nf-core/modules/fastqc/  │
     ╰──────────────┴────────────────────────────── ┴──────────────────────────────────╯
     ╭──────────────────────╮
     │ LINT RESULTS SUMMARY │
@@ -146,12 +146,12 @@ We have plans to add other utility commands to help developers install and maint
 If you decide to upload a module to `nf-core/modules` then this will
 ensure that it will become available to all nf-core pipelines,
 and to everyone within the Nextflow community! See
-[`software/`](software)
+[`modules/`](modules)
 for examples.
 
 ### Checklist
 
-Please check that the module you wish to add isn't already on [`nf-core/modules`](https://github.com/nf-core/modules/tree/master/software):
+Please check that the module you wish to add isn't already on [`nf-core/modules`](https://github.com/nf-core/modules/tree/master/modules):
 - Use the [`nf-core modules list`](https://github.com/nf-core/tools#list-modules) command
 - Check [open pull requests](https://github.com/nf-core/modules/pulls)
 - Search [open issues](https://github.com/nf-core/modules/issues)
@@ -165,7 +165,7 @@ If the module doesn't exist on `nf-core/modules`:
 
 We have implemented a number of commands in the `nf-core/tools` package to make it incredibly easy for you to create and contribute your own modules to nf-core/modules.
 
-1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=1.13`)
+1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=2.0`)
 2. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=21.04.0`)
 3. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) or [`Conda`](https://conda.io/miniconda.html)
 4. [Fork and clone this repo locally](#uploading-to-nf-coremodules)
@@ -181,7 +181,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
    git checkout -b fastqc
    ```
 
-6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/software/main.nf):
+6. Create a module using the [nf-core DSL2 module template](https://github.com/nf-core/tools/blob/master/nf_core/module-template/modules/main.nf):
 
     ```console
     $ nf-core modules create . --tool fastqc --author @joebloggs --label process_low --meta
@@ -192,36 +192,36 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Using Bioconda package: 'bioconda::fastqc=0.11.9'                      create.py:130
     INFO     Using Docker / Singularity container with tag: 'fastqc:0.11.9--0'      create.py:140
     INFO     Created / edited following files:                                      create.py:218
-                ./software/fastqc/functions.nf
-                ./software/fastqc/main.nf
-                ./software/fastqc/meta.yml
-                ./tests/software/fastqc/main.nf
-                ./tests/software/fastqc/test.yml
-                ./tests/config/pytest_software.yml
+                ./modules/fastqc/functions.nf
+                ./modules/fastqc/main.nf
+                ./modules/fastqc/meta.yml
+                ./tests/modules/fastqc/main.nf
+                ./tests/modules/fastqc/test.yml
+                ./tests/config/pytest_modules.yml
     ```
 
     All of the files required to add the module to `nf-core/modules` will be created/edited in the appropriate places. The 4 files you will need to change are:
 
-    1. [`./software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/software/fastqc/main.nf)
+    1. [`./modules/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/modules/fastqc/main.nf)
 
         This is the main script containing the `process` definition for the module. You will see an extensive number of `TODO` statements to help guide you to fill in the appropriate sections and to ensure that you adhere to the guidelines we have set for module submissions.
 
-    2. [`./software/fastqc/meta.yml`](https://github.com/nf-core/modules/blob/master/software/fastqc/meta.yml)
+    2. [`./modules/fastqc/meta.yml`](https://github.com/nf-core/modules/blob/master/modules/fastqc/meta.yml)
 
         This file will be used to store general information about the module and author details - the majority of which will already be auto-filled. However, you will need to add a brief description of the files defined in the `input` and `output` section of the main script since these will be unique to each module.
 
-    3. [`./tests/software/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/main.nf)
+    3. [`./tests/modules/fastqc/main.nf`](https://github.com/nf-core/modules/blob/master/tests/modules/fastqc/main.nf)
 
         Every module MUST have a test workflow. This file will define one or more Nextflow `workflow` definitions that will be used to unit test the output files created by the module. By default, one `workflow` definition will be added but please feel free to add as many as possible so we can ensure that the module works on different data types / parameters e.g. separate `workflow` for single-end and paired-end data.
 
         Minimal test data required for your module may already exist within this repository, in which case you may just have to change a couple of paths in this file - see the [Test data](#test-data) section for more info and guidelines for adding new standardised data if required.
 
-    4. [`./tests/software/fastqc/test.yml`](https://github.com/nf-core/modules/blob/master/tests/software/fastqc/test.yml)
+    4. [`./tests/modules/fastqc/test.yml`](https://github.com/nf-core/modules/blob/master/tests/modules/fastqc/test.yml)
 
         This file will contain all of the details required to unit test the main script in the point above using [pytest-workflow](https://pytest-workflow.readthedocs.io/). If possible, any outputs produced by the test workflow(s) MUST be included and listed in this file along with an appropriate check e.g. md5sum. The different test options are listed in the [pytest-workflow docs](https://pytest-workflow.readthedocs.io/en/stable/#test-options).
 
@@ -240,24 +240,24 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
 
     INFO     Press enter to use default values (shown in brackets) or type your own responses                                             test_yml_builder.py:51
     ? Tool name: fastqc
-    Test YAML output path (- for stdout) (tests/software/fastqc/test.yml):
-    INFO     Looking for test workflow entry points: 'tests/software/fastqc/main.nf'                                                      test_yml_builder.py:116
+    Test YAML output path (- for stdout) (tests/modules/fastqc/test.yml):
+    INFO     Looking for test workflow entry points: 'tests/modules/fastqc/main.nf'                                                      test_yml_builder.py:116
     INFO     Building test meta for entry point 'test_fastqc_single_end'                                                                  test_yml_builder.py:150
     Test name (fastqc test_fastqc_single_end):
-    Test command (nextflow run tests/software/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config):
+    Test command (nextflow run tests/modules/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config):
     Test tags (comma separated) (fastqc,fastqc_single_end):
     Test output folder with results (leave blank to run test):
     ? Choose software profile Singularity
     INFO     Setting env var '$PROFILE' to 'singularity'                                                                                  test_yml_builder.py:258
     INFO     Running 'fastqc' test with command:                                                                                          test_yml_builder.py:263
-             nextflow run tests/software/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config --outdir /tmp/tmpgbneftf5
+             nextflow run tests/modules/fastqc -entry test_fastqc_single_end -c tests/config/nextflow.config --outdir /tmp/tmpgbneftf5
     INFO     Test workflow finished!                                                                                                      test_yml_builder.py:276
-    INFO     Writing to 'tests/software/fastqc/test.yml'                                                                                  test_yml_builder.py:293
+    INFO     Writing to 'tests/modules/fastqc/test.yml'                                                                                  test_yml_builder.py:293
     ```
 
     > NB: See docs for [running tests manually](#running-tests-manually) if you would like to run the tests manually.
@@ -273,7 +273,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     | \| |       \__, \__/ |  \ |___     \`-._,-`-,
                                           `._,._,'
 
-    nf-core/tools version 1.13
+    nf-core/tools version 2.0
 
     INFO     Linting modules repo: .                                                lint.py:102
     INFO     Linting module: fastqc                                                 lint.py:106
@@ -284,9 +284,9 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     ╭──────────────┬──────────────────────────────────────────────────────────────┬──────────────────────────────────╮
     │ Module name  │ Test message                                                 │ File path                        │
     ├──────────────┼──────────────────────────────────────────────────────────────┼──────────────────────────────────┤
-    │ fastqc       │ TODO string in meta.yml: #Add a description of the module... │ modules/nf-core/software/fastqc/ │
-    │ fastqc       │ TODO string in meta.yml: #Add a description and other det... │ modules/nf-core/software/fastqc/ │
-    │ fastqc       │ TODO string in meta.yml: #Add a description of all of the... │ modules/nf-core/software/fastqc/ │
+    │ fastqc       │ TODO string in meta.yml: #Add a description of the module... │ modules/nf-core/modules/fastqc/  │
+    │ fastqc       │ TODO string in meta.yml: #Add a description and other det... │ modules/nf-core/modules/fastqc/  │
+    │ fastqc       │ TODO string in meta.yml: #Add a description of all of the... │ modules/nf-core/modules/fastqc/  │
     ╰──────────────┴──────────────────────────────────────────────────────────────┴──────────────────────────────────╯
     ╭────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
     │ [!] 1 Test Failed                                                                                              │
@@ -294,7 +294,7 @@ We have implemented a number of commands in the `nf-core/tools` package to make 
     ╭──────────────┬──────────────────────────────────────────────────────────────┬──────────────────────────────────╮
     │ Module name  │ Test message                                                 │ File path                        │
     ├──────────────┼──────────────────────────────────────────────────────────────┼──────────────────────────────────┤
-    │ fastqc       │ 'meta' map not emitted in output channel(s)                  │ modules/nf-core/software/fastqc/ │
+    │ fastqc       │ 'meta' map not emitted in output channel(s)                  │ modules/nf-core/modules/fastqc/  │
     ╰──────────────┴──────────────────────────────────────────────────────────────┴──────────────────────────────────╯
     ╭──────────────────────╮
     │ LINT RESULTS SUMMARY │
@@ -356,7 +356,7 @@ Please follow the steps below to run the tests locally:
 
 3. Install [`pytest-workflow`](https://pytest-workflow.readthedocs.io/en/stable/#installation)
 
-4. Start running your own tests using the appropriate [`tag`](https://github.com/nf-core/modules/blob/3d720a24fd3c766ba56edf3d4e108a1c45d353b2/tests/software/fastqc/test.yml#L3-L5) defined in the `test.yml`:
+4. Start running your own tests using the appropriate [`tag`](https://github.com/nf-core/modules/blob/3d720a24fd3c766ba56edf3d4e108a1c45d353b2/tests/modules/fastqc/test.yml#L3-L5) defined in the `test.yml`:
 
     - Typical command with Docker:
 
@@ -383,7 +383,7 @@ Please follow the steps below to run the tests locally:
 
 ### Uploading to `nf-core/modules`
 
-[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`software/`](software) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
+[Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`modules/`](modules) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
 
 Commit and push these changes to your local clone on GitHub, and then [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) on the `nf-core/modules` GitHub repo with the appropriate information.
 
@@ -394,6 +394,8 @@ We will be notified automatically when you have created your pull request, and p
 The key words "MUST", "MUST NOT", "SHOULD", etc. are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 #### General
+
+- All non-mandatory command-line tool options MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided via the Nextflow `addParams` option when including the module via `include` in the parent workflow.
 
 - Software that can be piped together SHOULD be added to separate module files
 unless there is a run-time, storage advantage in implementing in this way. For example,
@@ -413,13 +415,13 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
     ```
 
-    If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf).
+    If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/modules/homer/annotatepeaks/main.nf).
 
 - The process definition MUST NOT contain a `when` statement.
 
 #### Naming conventions
 
-- The directory structure for the module name must be all lowercase e.g. [`software/bwa/mem/`](software/bwa/mem/). The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
+- The directory structure for the module name must be all lowercase e.g. [`modules/bwa/mem/`](modules/bwa/mem/). The name of the software (i.e. `bwa`) and tool (i.e. `mem`) MUST be all one word.
 
 - The process name in the module file MUST be all uppercase e.g. `process BWA_MEM {`. The name of the software (i.e. `BWA`) and tool (i.e. `MEM`) MUST be all one word separated by an underscore.
 
@@ -431,7 +433,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
 
-- All other parameters MUST be provided as a string i.e. `options.args` where `options` is a Groovy Map that MUST be provided via the Nextflow `addParams` option when including the module via `include` in the parent workflow.
+- All `params` within the module MUST be initialised and used in the local context of the module. In other words, named `params` defined in the parent workflow MUST NOT be assumed to be passed to the module to allow developers to call their parameters whatever they want. In general, it may be more suitable to use additional `input` value channels to cater for such scenarios.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
@@ -441,7 +443,7 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
 
-- Optional inputs are not currently supported by Nextflow. However, "fake files" MAY be used to work around this issue.
+- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 
 #### Resource requirements
 
@@ -514,7 +516,7 @@ publishDir "${params.outdir}",
     saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:meta.id) }
 ```
 
-The `saveFiles` function can be found in the [`functions.nf`](software/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
+The `saveFiles` function can be found in the [`functions.nf`](modules/fastqc/functions.nf) file of utility functions that will be copied into all module directories. It uses the various publishing `options` specified as input to the module to construct and append the relevant output path to `params.outdir`.
 
 We also use a standardised parameter called `params.publish_dir_mode` that can be used to alter the file publishing method (default: `copy`).
 
@@ -522,7 +524,7 @@ We also use a standardised parameter called `params.publish_dir_mode` that can b
 
 The features offered by Nextflow DSL2 can be used in various ways depending on the granularity with which you would like to write pipelines. Please see the listing below for the hierarchy and associated terminology we have decided to use when referring to DSL2 components:
 
-- *Module*: A `process` that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. At present, this repository has been created to only host atomic module files that should be added to the [`software/`](software/) directory along with the required documentation and tests.
+- *Module*: A `process` that can be used within different pipelines and is as atomic as possible i.e. cannot be split into another module. An example of this would be a module file containing the process definition for a single tool such as `FastQC`. At present, this repository has been created to only host atomic module files that should be added to the [`modules/`](modules/) directory along with the required documentation and tests.
 
 - *Sub-workflow*: A chain of multiple modules that offer a higher-level of functionality within the context of a pipeline. For example, a sub-workflow to run multiple QC tools with FastQ files as input. Sub-workflows should be shipped with the pipeline implementation and if required they should be shared amongst different pipelines directly from there. As it stands, this repository will not host sub-workflows although this may change in the future since well-written sub-workflows will be the most powerful aspect of DSL2.
 
