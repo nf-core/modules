@@ -30,16 +30,21 @@ process RMARKDOWN {
     tuple val(parameters), path(input_files)
     val(parametrize)
     val(implicit_params)
+    val(meta_params)
 
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    path("artifacts/*"), emit: artifacts
-    path "*.version.txt"          , emit: version
+    path("artifacts/*"), emit: artifacts, optional: true
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
+    def parametrize = params.parametrize ?: true
+    def implicit_params = params.implicit_params ?: true
+    def meta_params = params.meta_params ?: true
 
     def params_cmd = ""
     def render_cmd = ""
@@ -50,7 +55,9 @@ process RMARKDOWN {
             nb_params["artifact_dir"] = "artifacts"
             nb_params["input_dir"] = "."
         }
-        nb_params += meta
+        if (meta_params) {
+            nb_params["meta"] = meta
+        }
         nb_params += parameters
         params_cmd = dump_params_yml(nb_params)
         render_cmd = (
