@@ -28,10 +28,6 @@ process RMARKDOWN {
     input:
     tuple val(meta), path(notebook)
     tuple val(parameters), path(input_files)
-    val(parametrize)
-    val(implicit_params)
-    val(meta_params)
-
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -46,6 +42,10 @@ process RMARKDOWN {
     def implicit_params = params.implicit_params ?: true
     def meta_params = params.meta_params ?: true
 
+    // Dump parameters to yaml file.
+    // Using a yaml file over using the CLI params because
+    //  * no issue with escaping
+    //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
     if (parametrize) {
