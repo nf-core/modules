@@ -33,9 +33,9 @@ process VARIANTBAM {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "bioconda::variantbam=1.4.4a" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5"
+        container "https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5"
     } else {
-        container "quay.io/biocontainers/quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5"
+        container "quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5"
     }
 
     input:
