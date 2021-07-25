@@ -1,32 +1,32 @@
 name: variantbam
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Filtering, downsampling and profiling alignments in BAM/CRAM formats
 keywords:
-  - sort
+  - filter
+  - bam
+  - subsample
+  - downsample
+  - downsample bam
+  - subsample bam
 tools:
   - variantbam:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Filtering and profiling of next-generational sequencing data using region-specific rules
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['GPL v3']
+      homepage: https://github.com/walaj/VariantBam
+      documentation: https://github.com/walaj/VariantBam#table-of-contents
+      tool_dev_url: https://github.com/walaj/VariantBam
+      doi: 10.1093/bioinformatics/btw111
+      licence: ['Apache2']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +37,14 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Filtered or downsampled BAM file
+      pattern: "*.{bam}"
+  - qcreport:
+      type: file
+      description: Read alignment statistics
+      pattern: "*.{qcreport.txt}"
 
 authors:
   - "@bjohnnyd"
