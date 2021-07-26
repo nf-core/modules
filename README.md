@@ -18,27 +18,17 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-
-- [!nf-core/modules](#img-srcdocsimagesnfcore-modules_logopng-altnf-coremodules)
-    - [Table of contents](#table-of-contents)
-    - [Using existing modules](#using-existing-modules)
-    - [Adding a new module file](#adding-a-new-module-file)
-        - [Checklist](#checklist)
-        - [nf-core modules create](#nf-core-modules-create)
-        - [Test data](#test-data)
-        - [Running tests manually](#running-tests-manually)
-        - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
-        - [Guidelines](#guidelines)
-            - [General](#general)
-            - [Naming conventions](#naming-conventions)
-            - [Module parameters](#module-parameters)
-            - [Input/output options](#inputoutput-options)
-            - [Resource requirements](#resource-requirements)
-            - [Software requirements](#software-requirements)
-            - [Publishing results](#publishing-results)
-    - [Terminology](#terminology)
-    - [Help](#help)
-    - [Citation](#citation)
+- [Using existing modules](#using-existing-modules)
+- [Adding a new module file](#adding-a-new-module-file)
+    - [Checklist](#checklist)
+    - [nf-core modules create](#nf-core-modules-create)
+    - [Test data](#test-data)
+    - [Running tests manually](#running-tests-manually)
+    - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
+    - [Guidelines](#guidelines)
+- [Terminology](#terminology)
+- [Help](#help)
+- [Citation](#citation)
 
 ## Using existing modules
 
@@ -439,24 +429,24 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - All function names MUST follow the `camelCase` convention.
 
+#### Input/output options
+
+- All possible input files MUST have a defined input channel declaration for dealing with optional input files
+    - Directly associated auxiliary files to an input file MAY be defined within the same input channel alongside the main input channel  (e.g. [BAM and BAI](https://github.com/nf-core/modules/blob/e937c7950af70930d1f34bb961403d9d2aa81c7d/modules/samtools/flagstat/main.nf#L22)).
+    - Other generic auxiliary files used across different input files (e.g. common reference sequences) MAY be defined using a dedicated input channel (e.g. [reference files](https://github.com/nf-core/modules/blob/3cabc95d0ed8a5a4e07b8f9b1d1f7ff9a70f61e1/modules/bwa/mem/main.nf#L21-L23))
+
+- Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
+
+- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 #### Module parameters
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
-    - All possible input files MUST have a defined input channel declaration (see [Input/output options](#input-output-options) for dealing with optional input files)
-    - Directly associated auxiliary files to an input file CAN be defined within the same input channel alongside the main input channel  (e.g. [BAM and BAI](https://github.com/nf-core/modules/blob/e937c7950af70930d1f34bb961403d9d2aa81c7d/modules/samtools/flagstat/main.nf#L22)).
-    - Other generic auxiliary files used across different input files (e.g. common reference sequences) CAN be defined using a dedicated input channel (e.g. [reference files](https://github.com/nf-core/modules/blob/3cabc95d0ed8a5a4e07b8f9b1d1f7ff9a70f61e1/modules/bwa/mem/main.nf#L21-L23))
 
 - All `params` within the module MUST be initialised and used in the local context of the module. In other words, named `params` defined in the parent workflow MUST NOT be assumed to be passed to the module to allow developers to call their parameters whatever they want. In general, it may be more suitable to use additional `input` value channels to cater for such scenarios.
 
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
 - Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
-
-#### Input/output options
-
-- Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
-
-- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 
 #### Resource requirements
 
