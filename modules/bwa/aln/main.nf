@@ -13,9 +13,9 @@ process BWA_ALN {
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bwa:0.7.16--pl5.22.0_0"
+        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8"
     } else {
-        container "quay.io/biocontainers/bwa:v0.7.17_cv1"
+        container "quay.io/biocontainers/bwa:0.7.17--h5bf99c6_8"
     }
 
     input:
