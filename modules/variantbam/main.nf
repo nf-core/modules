@@ -25,7 +25,6 @@ process VARIANTBAM {
 
     output:
     tuple val(meta), path("*.bam")         , emit: bam
-    tuple val(meta), path("*.qcreport.txt"), optional: true, emit: qcreport
     path "*.version.txt"                   , emit: version
 
     script:
