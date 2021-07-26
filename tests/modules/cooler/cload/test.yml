@@ -1,0 +1,8 @@
+- name: cooler cload test_cooler_cload
+  command: nextflow run tests/modules/cooler/cload -entry test_cooler_cload -c tests/config/nextflow.config
+  tags:
+    - cooler
+    - cooler/cload
+  files:
+    - path: output/cooler/test.2000000.cool
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
