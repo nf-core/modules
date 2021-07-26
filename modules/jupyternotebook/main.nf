@@ -1,8 +1,12 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { dump_params_yml } from "./parametrize"
 
 params.options = [:]
 options        = initOptions(params.options)
+params.parametrize = true
+params.implicit_params = true
+params.meta_params = true
 
 process JUPYTERNOTEBOOK {
     tag "$meta.id"
@@ -25,8 +29,6 @@ process JUPYTERNOTEBOOK {
     input:
     tuple val(meta), path(notebook)
     tuple val(parameters), path(input_files)
-    val(parametrize)
-    val(implicit_params)
 
 
     output:
@@ -40,26 +42,25 @@ process JUPYTERNOTEBOOK {
 
     def params_cmd = ""
     def render_cmd = ""
-    if (parametrize) {
+    if (params.parametrize) {
         nb_params = [:]
-        if (implicit_params) {
+        if (params.implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
             nb_params["input_dir"] = "."
         }
-        nb_params += meta
+        if (params.meta_params) {
+            nb_params["meta"] = meta
+        }
         nb_params += parameters
         params_cmd = dump_params_yml(nb_params)
-        render_cmd = (
-            "params = yaml::read_yaml('.params.yml')\n" +
-            "rmarkdown::render('${notebook}', params=params)"
-        )
+        render_cmd = "papermill -f .params.yml"
     } else {
-        render_cmd = "rmarkdown::render('${notebook}')"
+        render_cmd = "papermill"
     }
 
     """
-     # Create output directory
+    # Create output directory
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
@@ -72,9 +73,9 @@ process JUPYTERNOTEBOOK {
     ${params_cmd}
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
-    jupytext --to ipynb --set-kernel ${notebook} - \
-        | papermill -f .params.yml \
-        | jupyter nbconvert --stdin --output ${notebook.baseName}.html
+    jupytext --to notebook --output - --set-kernel - ${notebook}  \\
+        | ${render_cmd} \\
+        | jupyter nbconvert --stdin --to html --output ${notebook.baseName}.html
 
     # TODO: show to output versions of multiple tools?
     echo \$(jupytext --version) > ${software}.version.txt

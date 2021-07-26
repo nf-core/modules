@@ -3,44 +3,6 @@
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.DumperOptions
 
-// /**
-//  * recursivly convert a groovy map to strings. Maps and Lists are descended into,
-//  * all other objects are converted to string.
-//  */
-// def mapToString(map) {
-//     return map.collectEntries {
-//         key, val -> {
-//             if (val instanceof Map) {
-//                 [key, mapToString(val)]
-//             } else if (val instanceof List) {
-//                 [key, listToString(val)]
-//             } else {
-//                 [key, val.toString()]
-//             }
-//         }
-//     }
-// }
-
-
-// /**
-//  * recursivly convert a groovy list to strings. Maps and Lists are descended into,
-//  * all other objects are converted to string.
-//  */
-// def listToString(list) {
-//     return list.collect {
-//         val -> {
-//             if (val instanceof Map) {
-//                 mapToString(val)
-//             } else if (val instanceof List) {
-//                 listToString(val)
-//             } else {
-//                 val.toString()
-//             }
-//         }
-//     }
-// }
-
-
 /**
  * Create a config YAML file from a groovy map
  *

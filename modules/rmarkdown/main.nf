@@ -68,7 +68,6 @@ process RMARKDOWN {
         render_cmd = "rmarkdown::render('${notebook}')"
     }
 
-
     """
     # Create output directory
     mkdir artifacts
