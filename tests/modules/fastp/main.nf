@@ -27,6 +27,7 @@ workflow test_fastp_paired_end {
     save_trimmed_fail = false
 
     FASTP ( input, save_trimmed_fail )
+
 }
 
 //
@@ -37,8 +38,8 @@ workflow test_fastp_single_end_trim_fail {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
     save_trimmed_fail = true
-
     FASTP ( input, save_trimmed_fail )
+
 }
 
 //

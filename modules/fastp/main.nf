@@ -30,7 +30,7 @@ process FASTP {
     path '*.version.txt'                    , emit: version
     tuple val(meta), path('*.fail.fastq.gz'), optional:true, emit: reads_fail
 
-    script:
+script:
     // Added soft-links to original fastqs for consistent naming in MultiQC
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
