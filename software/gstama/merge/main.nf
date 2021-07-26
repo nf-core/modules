@@ -22,8 +22,9 @@ process GSTAMA_MERGE {
     tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path("merged_*.bed")              , emit: bed
-    tuple path("merged_*.txt"), emit: reports
+    tuple val(meta), path("merged_*.bed"), emit: bed
+    path("merged_*.txt")                 , emit: reports
+    path "*.version.txt"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -40,5 +41,7 @@ process GSTAMA_MERGE {
     done
 
     tama_merge.py -f input.tsv -d merge_dup -p $prefix $options.args
+
+    echo "1.0" > ${software}.version.txt
     """
 }
