@@ -40,9 +40,7 @@
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
-      md5sum: b2bd061d6cbaaf3d6d3b1fed547f69b8
     - path: output/star/test.SJ.out.tab
-      md5sum: 75a516ab950fb958f40b29996474949c
 
 - name: star align test_star_alignment_paired_end
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end -c tests/config/nextflow.config
@@ -86,9 +84,7 @@
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
-      md5sum: b2bd061d6cbaaf3d6d3b1fed547f69b8
     - path: output/star/test.SJ.out.tab
-      md5sum: 844af19ab0fc8cd9a3f75228445aca0d
 
 - name: star align test_star_alignment_paired_end_for_fusion
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end_for_fusion -c tests/config/nextflow.config
@@ -133,7 +129,6 @@
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
-      md5sum: 5155c9fd1f787ad6d7d80987fb06219c
 
 - name: star align test_star_alignment_paired_end_for_starfusion
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end_for_starfusion -c tests/config/nextflow.config
@@ -180,4 +175,3 @@
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
-      md5sum: 19c3faa1bfa9a0cc5e4c45f17065b53a
