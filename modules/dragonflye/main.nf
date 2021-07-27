@@ -13,9 +13,9 @@ process DRAGONFLYE {
 
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/dragonflye:1.0.2--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/dragonflye:1.0.3--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/dragonflye:1.0.2--hdfd78af_0"
+        container "quay.io/biocontainers/dragonflye:1.0.3--hdfd78af_0"
     }
 
     input:
@@ -34,7 +34,7 @@ process DRAGONFLYE {
     def memory = task.memory.toGiga()
     """
     dragonflye \\
-        --READS ${reads[0]} \\
+        --reads ${reads[0]} \\
         $options.args \\
         --cpus $task.cpus \\
         --ram $memory \\
