@@ -1,0 +1,45 @@
+- name: dragonflye with flye
+  command: nextflow run ./tests/modules/dragonflye -entry test_dragonflye -c tests/config/nextflow.config
+  tags:
+    - dragonflye
+  files:
+    - path: output/dragonflye/flye.fasta
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/flye-info.txt
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    # MD5sum not reproducible (timestamp, contig order)
+    - path: output/dragonflye/contigs.fa
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/dragonflye.log
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+
+- name: dragonflye with miniasm
+  command: nextflow run ./tests/modules/dragonflye -entry test_dragonflye_miniasm -c tests/config/nextflow.config
+  tags:
+    - dragonflye
+  files:
+    - path: output/dragonflye/miniasm.fasta
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    # MD5sum not reproducible (timestamp, contig order)
+    - path: output/dragonflye/contigs.fa
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/miniasm-unpolished.gfa
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/dragonflye.log
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+
+- name: dragonflye with raven
+  command: nextflow run ./tests/modules/dragonflye -entry test_dragonflye_raven -c tests/config/nextflow.config
+  tags:
+    - dragonflye
+  files:
+    - path: output/dragonflye/raven.fasta
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    # MD5sum not reproducible (timestamp, contig order)
+    - path: output/dragonflye/contigs.fa
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/raven-unpolished.gfa
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+    - path: output/dragonflye/dragonflye.log
+      md5sum: 8157837dbe8315922f588dafa7af5ef8
+
