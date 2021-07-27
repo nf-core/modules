@@ -11,11 +11,11 @@ process BLAST_BLASTN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::blast=2.10.1' : null)
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/blast:2.10.1--pl526he19e7b1_3'
+        container 'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0'
     } else {
-        container 'quay.io/biocontainers/blast:2.10.1--pl526he19e7b1_3'
+        container 'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0'
     }
 
     input:

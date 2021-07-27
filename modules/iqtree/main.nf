@@ -11,11 +11,11 @@ process IQTREE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::iqtree=2.1.2" : null)
+    conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/iqtree:2.1.2--h56fc30b_0"
+        container "https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0"
     } else {
-        container "quay.io/biocontainers/iqtree:2.1.2--h56fc30b_0"
+        container "quay.io/biocontainers/iqtree:2.1.4_beta--hdcc8f71_0"
     }
 
     input:

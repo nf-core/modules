@@ -11,11 +11,11 @@ process NANOPLOT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::nanoplot=1.36.1" : null)
+    conda (params.enable_conda ? 'bioconda::nanoplot=1.38.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/nanoplot:1.36.1--pyhdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/nanoplot:1.38.0--pyhdfd78af_0"
     } else {
-        container "quay.io/biocontainers/nanoplot:1.36.1--pyhdfd78af_0"
+        container "quay.io/biocontainers/nanoplot:1.38.0--pyhdfd78af_0"
     }
 
     input:
