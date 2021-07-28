@@ -20,31 +20,54 @@ process STAR_FUSION {
 
     input:
     tuple val(meta), path(junction)
-    path genome_lib
+    path genome_resource_lib
 
     output:
-    tuple val(meta), path("*.fusion_predictions.tsv")   , emit: fusions
+    tuple val(meta), path("*.fusion_predictions.tsv")   , optional:true, emit: fusions
     path "*.version.txt"                                , emit: version
 
     script:
-    def software    = getSoftwareName(task.process)
-    def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def lib_exist   = ("$genome_lib".exists()) ? true : false
+    def software            = getSoftwareName(task.process)
+    def prefix              = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def genome_resource     = genome_resource_lib ? (genome_resource_lib.exists() && file("${genome_resource_lib}/AnnotFilterRule.pm").exists()) ? "found" : "not_found" : ""
 
-    """
-    if(!${lib_exist}){
-        wget https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/__genome_libs_StarFv1.10/GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz .
-        tar -zxf GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz -C $genome_lib
-        rm GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz
+    if (genome_resource == "found") {
+
+        """
+        STAR-Fusion --genome_lib_dir $genome_resource_lib \\
+            -J $junction \\
+            --CPU $task.cpus
+            --examine_coding_effect \\
+            --output_dir . \\
+            $options.args
+
+        echo \$(STAR-Fusion --version 2>&1) | grep -i 'version' | sed 's/STAR-Fusion version: //' > ${software}.version.txt
+        """
     }
+    else if (genome_resource == "not_found") {
 
-    STAR-Fusion --genome_lib_dir $genome_lib \\
-        -J $junction \\
-        --CPU $task.cpus
-        --examine_coding_effect \\
-        --output_dir . \\
-        $options.args
+        """
+        wget https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/__genome_libs_StarFv1.10/GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz .
+        mkdir -p $genome_resource_lib
+        tar -zxf GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz --strip-components=2 -C $genome_resource_lib
+        rm GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz
 
-    echo \$(STAR-Fusion --version 2>&1) | grep -i 'version' | sed 's/STAR-Fusion version: //' > ${software}.version.txt
-    """
+        STAR-Fusion --genome_lib_dir $genome_resource_lib \\
+            -J $junction \\
+            --CPU $task.cpus
+            --examine_coding_effect \\
+            --output_dir . \\
+            $options.args
+
+        echo \$(STAR-Fusion --version 2>&1) | grep -i 'version' | sed 's/STAR-Fusion version: //' > ${software}.version.txt
+
+        """
+    }
+    else{
+
+        """
+        echo \$(STAR-Fusion --version 2>&1) | grep -i 'version' | sed 's/STAR-Fusion version: //' > ${software}.version.txt
+        """
+
+    }
 }
