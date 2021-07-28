@@ -1,0 +1,8 @@
+- name: samtools sort
+  command: nextflow run tests/modules/samtools/sort -entry test_samtools_sort -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/sort
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 3997667dee6b45d682865c6bf82d0378
