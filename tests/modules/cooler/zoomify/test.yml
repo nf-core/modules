@@ -1,7 +1,7 @@
 - name: cooler zoomify test_cooler_zoomify
-  command: nextflow run tests/software/cooler/zoomify -entry test_cooler_zoomify -c tests/config/nextflow.config
+  command: nextflow run tests/modules/cooler/zoomify -entry test_cooler_zoomify -c tests/config/nextflow.config
   tags:
-    - cooler/zoomify
     - cooler
+    - cooler/zoomify
   files:
     - path: output/cooler/test.mcool
