@@ -11,11 +11,11 @@ process BOWTIE2_BUILD {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? 'bioconda::bowtie2=2.4.2' : null)
+    conda (params.enable_conda ? 'bioconda::bowtie2=2.4.4' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/bowtie2:2.4.2--py38h1c8e9b9_1'
+        container 'https://depot.galaxyproject.org/singularity/bowtie2:2.4.4--py39hbb4e92a_0'
     } else {
-        container 'quay.io/biocontainers/bowtie2:2.4.2--py38h1c8e9b9_1'
+        container 'quay.io/biocontainers/bowtie2:2.4.4--py36hd4290be_0'
     }
 
     input:

@@ -12,12 +12,12 @@ process SEQWISH_INDUCE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::seqwish=0.4.1" : null)
+    conda (params.enable_conda ? 'bioconda::seqwish=0.7.1' : null)
 
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/seqwish:0.4.1--h8b12597_0"
+        container "https://depot.galaxyproject.org/singularity/seqwish:0.7.1--h2e03b76_0"
     } else {
-        container "quay.io/biocontainers/seqwish:0.4.1--h8b12597_0"
+        container "quay.io/biocontainers/seqwish:0.7.1--h2e03b76_0"
     }
 
     input:

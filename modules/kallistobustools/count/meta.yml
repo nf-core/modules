@@ -18,14 +18,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fastq1:
-      type: file
-      description: Read 1 fastq file
-      pattern: "*.{fastq,fastq.gz}"
-  - fastq2:
-      type: file
-      description: Read 2 fastq file
-      pattern: "*.{fastq,fastq.gz}"
+  - reads:
+    type: file
+    description: |
+      List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+      respectively.
   - index:
       type: file
       description: kb-ref index file (.idx)
@@ -38,17 +35,11 @@ input:
       type: file
       description: kb ref's c1 spliced_t2c file
       pattern: "*.{cdna_t2c.txt}"
-  - use_t1c:
-      type: boolean
-      description: Whether to use the c1 txt file for RNA velocity and nucleus workflows
   - t2c:
       type: file
       description: kb ref's c2 unspliced_t2c file
       pattern: "*.{introns_t2c.txt}"
-  - use_t2c:
-      type: boolean
-      description: Whether to use the c2 txt file for RNA velocity  and nucleus workflows
-  - kb_workflow:
+  - workflow:
       type: value
       description: String value defining worfklow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus,kite}"
@@ -57,17 +48,16 @@ input:
       description: String value defining the sequencing technology used.
       pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
 
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - kallistobustools_count:
+  - count:
       type: file
       description: kb count output folder
-      pattern: "*_{kallistobustools_count}"
+      pattern: "*.{count}"
   - version:
       type: file
       description: File containing software version
