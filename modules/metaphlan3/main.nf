@@ -11,11 +11,11 @@ process METAPHLAN3 {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::metaphlan=3.0.10" : null)
+    conda (params.enable_conda ? 'bioconda::metaphlan=3.0.12' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/metaphlan:3.0.10--pyhb7b1952_0"
+        container "https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0"
     } else {
-        container "quay.io/biocontainers/metaphlan:3.0.10--pyhb7b1952_0"
+        container "quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0"
     }
 
     input:
