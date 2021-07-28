@@ -7,7 +7,7 @@ include { COOLER_MERGE } from '../../../../modules/cooler/merge/main.nf' addPara
 workflow test_cooler_merge {
 
     input = [ [ id:'test' ], // meta map
-              [ file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.symm.upper.2.cool", checkIfExists: true) ] ]
+              [ file(params.test_data['homo_sapiens']['cooler']['test_merge_cool'], checkIfExists: true) ] ]
 
     COOLER_MERGE ( input )
 }
