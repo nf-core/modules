@@ -6,7 +6,10 @@ include { MALT_BUILD } from '../../../../modules/malt/build/main.nf' addParams( 
 
 workflow test_malt_build {
 
-    input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+    fasta = file(params.test_data['sarscov2']['illumina']['genome_fasta'], checkIfExists: true)
+    map_type = "g"
+    map_db = file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true)
 
-    MALT_BUILD ( fastas, map )
+    UNZIP ( map_db )
+    MALT_BUILD ( fastas, map_type, UNZIP.out.result )
 }

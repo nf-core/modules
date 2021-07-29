@@ -4,6 +4,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
+def class_type_list []
+
 process MALT_BUILD {
 
     label 'process_high_memory'
@@ -20,7 +22,9 @@ process MALT_BUILD {
 
     input:
     path fastas
-    path map
+    val map_type
+    val map_db
+    path map_file
 
     output:
     path "malt_index/", emit: index
@@ -35,6 +39,27 @@ process MALT_BUILD {
         avail_mem = task.memory.giga
     }
 
+    switch ( map_type ) {
+        case 'g': def maptype = "-g2"; break;
+        case 'a': def maptype = "-a2"; break;
+        case 's': def maptype = "-s2"; break;
+        case 'r': def maptype = "-r2"; break;
+        default: exit 1, "[MALT_BUILD] Unknown --map_type of ${map_type}. Options: g, a, s, r" ; break;
+    }
+
+        switch ( map_db ) {
+        case 'taxonomy': break
+        case 'interpro2go': break
+        case 'seed': break
+        case 'eggnog': break
+        case 'kegg': break
+        default: exit 1, "[MALT_BUILD] Unknown --map_db of ${map_db}. Options: taxonomy, interpro2go, seed, eggnog, kegg" ; break;
+    }
+
+
+
+    def mapflag = maptype + map_db
+
     """
     malt-build \\
         -J-Xmx${avail_mem}g \\
@@ -43,8 +68,11 @@ process MALT_BUILD {
         -d 'malt_index/' \\
         $options.args \\
         -t $task.cpus \\
-        --inFile ${fastqs.join(' ')} \\
-        --index $index |&tee malt.log
-    malt-run --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2 > ${software}.version.txt
+        -c $class_type \\
+        $mapflag ${map_file} \\
+        --input ${fastas.join(' ')} \\
+        --  |&tee malt.log
+
+    malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2 > ${software}.version.txt
     """
 }
