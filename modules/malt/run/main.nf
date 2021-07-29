@@ -32,7 +32,7 @@ process MALT_RUN {
     def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
-        log.info '[MALT] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
+        log.info '[MALT_RUN] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
@@ -44,7 +44,7 @@ process MALT_RUN {
         -v \\
         -o . \\
         $options.args \\
-        -Xmx $task.cpus \\
+        -t $task.cpus \\
         --inFile ${fastqs.join(' ')} \\
         --index $index |&tee malt.log
 
