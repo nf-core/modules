@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_CONCAT } from '../../../../modules/bcftools/concat/main.nf' addParams( options: [:] )
+include { BCFTOOLS_CONCAT } from '../../../../modules/bcftools/concat/main.nf' addParams( options: ['args': '--force-samples --no-version'] )
 
 workflow test_bcftools_concat {
     
