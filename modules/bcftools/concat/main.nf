@@ -19,7 +19,7 @@ process BCFTOOLS_CONCAT {
     }
 
     input:
-    tuple val(meta), path(vcfs), path(tbis)
+    tuple val(meta), path(vcfs)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
@@ -29,7 +29,7 @@ process BCFTOOLS_CONCAT {
     def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bcftools concat -Oz \\
+    bcftools concat \\
         --output ${prefix}.vcf.gz \\
         $options.args \\
         *.vcf.gz
