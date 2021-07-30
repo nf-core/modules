@@ -1,37 +1,51 @@
 name: malt_build
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and analysis tool designed for processing high-throughput sequencing data, especially in the context of metagenomics.
 keywords:
-  - sort
+  - malt
+  - alignment
+  - metagenomics
+  - ancient DNA
+  - aDNA
+  - palaeogenomics
+  - archaeogenomics
+  - microbiome
+  - database
 tools:
   - malt:
-      ## TODO nf-core: Add a description and other details for the software below
       description: A tool for mapping metagenomic data
-      homepage: None
-      documentation: None
+      homepage: https://www.wsi.uni-tuebingen.de/lehrstuehle/algorithms-in-bioinformatics/software/malt/
+      documentation: https://software-ab.informatik.uni-tuebingen.de/download/malt/manual.pdf
       tool_dev_url: None
-      doi: ""
+      doi: "10.1038/s41559-017-0446-6"
       licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
   - bam:
-      type: file
-      description: BAM/CRAM/SAM file
+      type: fastas
+      description: FASTA reference files for indexing
       pattern: "*.{bam,cram,sam}"
+  - map_type:
+      type: string
+      description: Classification type to use (GI, accession [taxonomy], refseq, synonym)
+      pattern: 'g|a|s|r'
+  - map_db:
+      type: string
+      description: Which classification database to use
+      pattern: 'taxonomy|interpro2go|seed|eggnog|kegg'
+  - map_file:
+      type: file
+      description: MEGAN .db file from https://software-ab.informatik.uni-tuebingen.de/download/megan6/welcome.html
+      pattern:
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - index:
+      type: directory
+      description: Directory containing MALT database index directory
+      pattern: "malt_index/"
 
 authors:
   - "@jfy133"
