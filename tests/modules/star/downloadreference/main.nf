@@ -6,7 +6,7 @@ include { STAR_DOWNLOADREFERENCE } from '../../../../modules/star/downloadrefere
 
 workflow test_star_downloadreference {
 
-    params.genome = "GRCh38"
+    params.genome = ""
     genome = params.genome
 
     STAR_DOWNLOADREFERENCE ( genome )

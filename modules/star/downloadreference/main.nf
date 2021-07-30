@@ -48,7 +48,7 @@ process STAR_DOWNLOADREFERENCE {
     else{
 
     """
-    echo \$(STAR-Fusion --version 2>&1) | grep -i 'version' | sed 's/STAR-Fusion version: //' > ${software}.version.txt
+    echo \$genome_build > ${software}.version.txt
     cp ${software}.version.txt star-fusion-genome/
     """
 
