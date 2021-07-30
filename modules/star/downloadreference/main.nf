@@ -16,7 +16,6 @@ process STAR_DOWNLOADREFERENCE {
 
     output:
     path "star-fusion-genome"       , emit: reference
-    path "*.version.txt"            , emit: version
 
     script:
     def software        = getSoftwareName(task.process)
@@ -28,8 +27,6 @@ process STAR_DOWNLOADREFERENCE {
     mkdir -p star-fusion-genome
     tar -zxf GRCh37_gencode_v19_CTAT_lib_Mar012021.plug-n-play.tar.gz --strip-components=2 -C star-fusion-genome/
     rm GRCh37_gencode_v19_CTAT_lib_Mar012021.plug-n-play.tar.gz
-
-    echo 'GRCh37_gencode_v19_CTAT_lib_Mar012021' > ${software}.version.txt
     """
 
     }
@@ -40,17 +37,15 @@ process STAR_DOWNLOADREFERENCE {
     mkdir -p star-fusion-genome
     tar -zxf GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz --strip-components=2 -C star-fusion-genome/
     rm GRCh38_gencode_v37_CTAT_lib_Mar012021.plug-n-play.tar.gz
-
-    echo 'GRCh38_gencode_v37_CTAT_lib_Mar012021' > ${software}.version.txt
     """
 
     }
     else{
 
     """
-    echo \$genome_build > ${software}.version.txt
     mkdir -p star-fusion-genome
-    cp ${software}.version.txt star-fusion-genome/
+    echo "Unsupported genome build" > error.log
+    mv error.log star-fusion-genome/
     """
 
     }

@@ -17,12 +17,7 @@ input:
       description: Genome version - either GRCh37 or GRCh38
       pattern: "GRCh3*"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
   - reference:
       type: file
       description: Genome resource path

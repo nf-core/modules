@@ -1,8 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml star/downloadreference
-- name: downloadreference
-  command: nextflow run ./tests/modules/star/downloadreference -entry test_star_downloadreference -c tests/config/nextflow.config
+- name: star downloadreference test_star_downloadreference
+  command: nextflow run tests/modules/star/downloadreference -entry test_star_downloadreference -c tests/config/nextflow.config
   tags:
+    - star
     - star/downloadreference
   files:
-    - path: output/resources/star-fusion-genome/downloadreference.version.txt
+    - path: output/resources/star-fusion-genome/error.log
+      md5sum: f6b667a240c9c17c09c98ef7b29cd354
