@@ -1,37 +1,28 @@
 name: unzip
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Unzip ZIP archive files
 keywords:
-  - sort
+  - unzip
+  - decompression
 tools:
   - unzip:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: 
-      homepage: 
-      documentation: 
-      tool_dev_url: 
+      description:
+      homepage:
+      documentation:
+      tool_dev_url:
       doi: ""
-      licence: 
+      licence:
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - archive:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: ZIP file
+      pattern: "*.zip"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
-      description: File containing software version
+      description: File or directory of decompressed archive
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@jfy133"
