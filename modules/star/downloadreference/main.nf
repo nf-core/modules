@@ -49,6 +49,7 @@ process STAR_DOWNLOADREFERENCE {
 
     """
     echo \$genome_build > ${software}.version.txt
+    mkdir -p star-fusion-genome
     cp ${software}.version.txt star-fusion-genome/
     """
 
