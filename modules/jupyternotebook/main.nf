@@ -15,10 +15,10 @@ process JUPYTERNOTEBOOK {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
+    //NB: You likely want to override this with a container containing all required
+    //dependencies for you analysis. The container at least needs to contain the
+    //yaml and rmarkdown R packages.
+    //TODO: what container to use as default image?
     conda (params.enable_conda ? "ipykernel jupytext nbconvert papermill" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
@@ -28,8 +28,8 @@ process JUPYTERNOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    tuple val(parameters), path(input_files)
-
+    val(parameters)
+    path(input_files)
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -40,6 +40,10 @@ process JUPYTERNOTEBOOK {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
+    // Dump parameters to yaml file.
+    // Using a yaml file over using the CLI params because
+    //  * no issue with escaping
+    //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
     if (params.parametrize) {
@@ -77,7 +81,7 @@ process JUPYTERNOTEBOOK {
         | ${render_cmd} \\
         | jupyter nbconvert --stdin --to html --output ${notebook.baseName}.html
 
-    # TODO: show to output versions of multiple tools?
+    # TODO how to output versions of multiple tools?
     echo \$(jupytext --version) > ${software}.version.txt
     """
 }

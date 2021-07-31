@@ -2,11 +2,11 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 include { dump_params_yml } from "./parametrize"
 
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 params.options = [:]
 options        = initOptions(params.options)
+params.parametrize = true
+params.implicit_params = true
+params.meta_params = true
 
 process RMARKDOWN {
     tag "$meta.id"
@@ -27,7 +27,8 @@ process RMARKDOWN {
 
     input:
     tuple val(meta), path(notebook)
-    tuple val(parameters), path(input_files)
+    val(parameters)
+    path(input_files)
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -38,24 +39,20 @@ process RMARKDOWN {
     def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    def parametrize = params.parametrize ?: true
-    def implicit_params = params.implicit_params ?: true
-    def meta_params = params.meta_params ?: true
-
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
     //  * no issue with escaping
     //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
-    if (parametrize) {
+    if (params.parametrize) {
         nb_params = [:]
-        if (implicit_params) {
+        if (params.implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
             nb_params["input_dir"] = "."
         }
-        if (meta_params) {
+        if (params.meta_params) {
             nb_params["meta"] = meta
         }
         nb_params += parameters
@@ -85,7 +82,6 @@ process RMARKDOWN {
     cp -L "${notebook}.orig" "${notebook}"
 
     # Render notebook
-
     Rscript <<EOF
     ${render_cmd}
     EOF
