@@ -24,6 +24,10 @@ input:
       type: file
       description: Directory of, or FASTA reference files for indexing
       pattern: "*/|*.fasta"
+  - seq_type:
+      type: string
+      description: Type of input data
+      pattern: "DNA|Protein"
   - gff:
       type: file
       description: Directory of, or GFF3 files of input FASTA files
