@@ -18,13 +18,19 @@ tools:
       doi: "10.1038/s41559-017-0446-6"
       licence: ['GPL v3']
 
-
 input:
   - fastqs:
       type: file
       description: Input FASTQ files
       pattern: "*.{fastq.gz,fq.gz"
-
+  - mode:
+      type: string
+      description: Program mode
+      pattern: 'Unknown|BlastN|BlastP|BlastX|Classifier'
+  - index:
+      type: directory
+      description: Index/database directory from malt-build
+      pattern: '*/'
 output:
   - version:
       type: file
@@ -32,16 +38,16 @@ output:
       pattern: "*.{version.txt}"
   - rma6:
       type: file
-      description: Sorted BAM/CRAM/SAM file
+      description: MEGAN6 RMA6 file
       pattern: "*.rma6"
   - sam:
       type: file
-      description: A MEGAN compatible SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Alignment files in Tab, Text or MEGAN-compatible SAM format
+      pattern: "*.{tab,txt,sam}"
   - log:
       type: file
       description: Log of verbose MALT stdout
-      pattern: "*.log"
+      pattern: "malt-run.log"
 
 authors:
   - "@jfy133"

@@ -6,17 +6,13 @@ include { MALT_RUN } from '../../../../modules/malt/run/main.nf' addParams( opti
 
 workflow test_malt_run {
 
+    fastas = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    seq_type = "DNA"
+    map_db = file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true)
     input = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-    fasta = file(params.test_data['sarscov2']['illumina']['genome_fasta'], checkIfExists: true)
+    mode = "BlastN"
 
-    MALT_BUILD( fastas )
-    MALT_RUN ( input, MALT_BUILD.out.index )
-}
-
-workflow test_malt_run {
-
-    input = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-    fasta = file(params.test_data['sarscov2']['illumina']['genome_fasta'], checkIfExists: true)
-
-    MALT_RUN ( input, MALT_BUILD.out.index )
+    UNZIP ( map_db )
+    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.result )
+    MALT_RUN ( input, mode, MALT_BUILD.out.index )
 }

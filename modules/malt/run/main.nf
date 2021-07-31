@@ -20,13 +20,14 @@ process MALT_RUN {
 
     input:
     path fastqs
+    val mode
     path index
 
     output:
-    path "*.rma6",                 emit: bam
-    path "*.sam",  optional:true,  emit: sam
-    path "*.log",                  emit: log
-    path "*.version.txt"         , emit: version
+    path "*.rma6"                          , emit: rma6
+    path "*.{tab,text,sam}",  optional:true, emit: alignments
+    path "*.log"                           , emit: log
+    path "*.version.txt"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -44,10 +45,10 @@ process MALT_RUN {
         -v \\
         -o . \\
         $options.args \\
-        -t $task.cpus \\
         --inFile ${fastqs.join(' ')} \\
-        --index $index |&tee malt.log
+        -m $mode \\
+        --index $index/ |&tee malt-run.log
 
-    malt-run --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2 > ${software}.version.txt
+    echo \$(malt-run --help  2>&1) | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ' > ${software}.version.txt
     """
 }

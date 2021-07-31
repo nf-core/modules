@@ -6,13 +6,6 @@
     - malt
     - malt/run
   files:
-    - path: output/malt/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-- name: malt run SAM output
-  command: nextflow run ./tests/modules/malt/run -entry test_malt_run_sam -c tests/config/nextflow.config
-  tags:
-    - malt
-    - malt/run
-  files:
-    - path: output/malt/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/malt/test_1.rma6
+    - path: output/malt/malt-run.log
+
