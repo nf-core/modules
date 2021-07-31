@@ -25,8 +25,9 @@ process MALT_BUILD {
     path map_db
 
     output:
-    path "malt_index/", emit: index
-    path "*.version.txt"         , emit: version
+    path "malt_index/"   , emit: index
+    path "*.version.txt" , emit: version
+    path "malt.log"
 
     script:
     def software = getSoftwareName(task.process)
