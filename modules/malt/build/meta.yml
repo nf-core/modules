@@ -46,6 +46,10 @@ output:
       type: directory
       description: Directory containing MALT database index directory
       pattern: "malt_index/"
+  - log:
+      type: file
+      description: Log file from STD out of malt-build
+      pattern: "malt.log"
 
 authors:
   - "@jfy133"
