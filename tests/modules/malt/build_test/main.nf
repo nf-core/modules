@@ -12,7 +12,6 @@ workflow test_malt_build {
 
     UNZIP ( map_db )
     MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.result )
-    MALT_BUILD ( fastas, seq_type, gff, map_db )
 }
 
 workflow test_malt_build_gff {
@@ -23,5 +22,4 @@ workflow test_malt_build_gff {
 
     UNZIP ( map_db )
     MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.result )
-    MALT_BUILD ( fastas, seq_type, gff, map_db )
 }
