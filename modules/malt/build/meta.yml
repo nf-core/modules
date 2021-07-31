@@ -20,19 +20,15 @@ tools:
       licence: ['GPL v3']
 
 input:
-  - bam:
-      type: fastas
-      description: FASTA reference files for indexing
-      pattern: "*.{bam,cram,sam}"
-  - map_type:
-      type: string
-      description: Classification type to use (GI, accession [taxonomy], refseq, synonym)
-      pattern: 'g|a|s|r'
+  - fastas:
+      type: file
+      description: Directory of, or FASTA reference files for indexing
+      pattern: "*/|*.fasta"
+  - gff:
+      type: file
+      description: Directory of, or GFF3 files of input FASTA files
+      pattern: "*/|*.gff|*.gff3"
   - map_db:
-      type: string
-      description: Which classification database to use
-      pattern: 'taxonomy|interpro2go|seed|eggnog|kegg'
-  - map_file:
       type: file
       description: MEGAN .db file from https://software-ab.informatik.uni-tuebingen.de/download/megan6/welcome.html
       pattern:
