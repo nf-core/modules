@@ -51,7 +51,7 @@ process JUPYTERNOTEBOOK {
         if (params.implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "."
+            nb_params["input_dir"] = "./"
         }
         if (params.meta_params) {
             nb_params["meta"] = meta

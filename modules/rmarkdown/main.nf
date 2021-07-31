@@ -50,7 +50,7 @@ process RMARKDOWN {
         if (params.implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "."
+            nb_params["input_dir"] = "./"
         }
         if (params.meta_params) {
             nb_params["meta"] = meta
@@ -59,7 +59,7 @@ process RMARKDOWN {
         params_cmd = dump_params_yml(nb_params)
         render_cmd = (
             "params = yaml::read_yaml('.params.yml')\n" +
-            "rmarkdown::render('${notebook}', params=params)"
+            "rmarkdown::render('${notebook}', params=params, envir=new.env())"
         )
     } else {
         render_cmd = "rmarkdown::render('${notebook}')"
@@ -82,9 +82,9 @@ process RMARKDOWN {
     cp -L "${notebook}.orig" "${notebook}"
 
     # Render notebook
-    Rscript <<EOF
+    Rscript - <<EOF
     ${render_cmd}
-    EOF
+    \nEOF
 
     echo \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))") > ${software}.version.txt
     """
