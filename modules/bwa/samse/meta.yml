@@ -10,6 +10,7 @@ keywords:
   - map
   - sam
   - bam
+
 tools:
     - bwa:
         description: |
@@ -35,9 +36,9 @@ input:
       description: SAI file
       pattern: "*.sai"
   - index:
-        type: file
-        description: BWA genome index files
-        pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+        type: directory
+        description: Directory containing BWA index files (amb,ann,bwt,pac,sa) from BWA_INDEX
+        pattern: "bwa/"
 
 output:
   - meta:
@@ -51,8 +52,8 @@ output:
       pattern: "*.{version.txt}"
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file
+      pattern: "*.bam"
 
 authors:
   - "@jfy133"
