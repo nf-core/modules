@@ -23,8 +23,8 @@ process UNZIP {
     path archive
 
     output:
-    path "*"             , emit: result
-    path "*.version.txt" , emit: version
+    path "unzipped_archive/" , emit: unzipped_archive
+    path "*.version.txt"     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -32,9 +32,10 @@ process UNZIP {
     """
     7za \\
         e \\
+        -ounzipped_archive/ \\
         $options.args \\
         $archive
 
-    7za --help | grep Version | sed 's/p7zip Version //; s/(.*//' 1> ${software}.version.txt
+    echo \$(7za --help) | grep Version | sed 's/.*p7zip Version//; s/(.*//' 1> ${software}.version.txt
     """
 }
