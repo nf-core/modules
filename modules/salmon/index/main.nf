@@ -11,11 +11,11 @@ process SALMON_INDEX {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::salmon=1.4.0" : null)
+    conda (params.enable_conda ? 'bioconda::salmon=1.5.2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/salmon:1.4.0--hf69c8f4_0"
+        container "https://depot.galaxyproject.org/singularity/salmon:1.5.2--h84f40af_0"
     } else {
-        container "quay.io/biocontainers/salmon:1.4.0--hf69c8f4_0"
+        container "quay.io/biocontainers/salmon:1.5.2--h84f40af_0"
     }
 
     input:
