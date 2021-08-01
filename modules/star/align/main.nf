@@ -36,6 +36,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*Aligned.unsort.out.bam') , optional:true, emit: bam_unsorted
     tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
+    tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
 
     script:
     def software   = getSoftwareName(task.process)
