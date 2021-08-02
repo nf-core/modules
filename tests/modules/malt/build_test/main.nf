@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { UNZIP } from '../../../../modules/unzip/main.nf' addParams( options: [:] )
 include { MALT_BUILD } from '../../../../modules/malt/build/main.nf' addParams( options: [:] )
 
 workflow test_malt_build {
