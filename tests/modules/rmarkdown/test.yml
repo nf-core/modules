@@ -1,9 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml rmarkdown
 - name: rmarkdown
   command: nextflow run ./tests/modules/rmarkdown -entry test_rmarkdown -c tests/config/nextflow.config
   tags:
     - rmarkdown
   files:
-    - path: output/rmarkdown/test.bam
+    - path: output/rmarkdown/test_rmd.html
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+
+- name: rmarkdown
+  command: nextflow run ./tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
+  tags:
+    - rmarkdown
+  files:
+    - path: output/rmarkdown/test_rmd.html
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
