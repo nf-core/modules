@@ -23,16 +23,18 @@ process UNZIP {
     path archive
 
     output:
-    path "unzipped_archive/" , emit: unzipped_archive
+    path "${archive.baseName}/" , emit: unzipped_archive
     path "*.version.txt"     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
 
+    if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
+
     """
     7za \\
         e \\
-        -ounzipped_archive/ \\
+        -o"${archive.baseName}"/ \\
         $options.args \\
         $archive
 
