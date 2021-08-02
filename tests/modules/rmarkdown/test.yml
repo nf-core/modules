@@ -1,15 +1,17 @@
-- name: rmarkdown
-  command: nextflow run ./tests/modules/rmarkdown -entry test_rmarkdown -c tests/config/nextflow.config
+- name: rmarkdown test_rmarkdown
+  command: nextflow run tests/modules/rmarkdown -entry test_rmarkdown -c tests/config/nextflow.config
   tags:
     - rmarkdown
   files:
     - path: output/rmarkdown/test_rmd.html
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      md5sum: 14d65025460fc482f5e6d2e2d30d3d3e
 
-- name: rmarkdown_parametrize
-  command: nextflow run ./tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
+- name: rmarkdown test_rmarkdown_parametrize
+  command: nextflow run tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
   tags:
     - rmarkdown
   files:
+    - path: output/rmarkdown/artifacts/artifact.txt
+      md5sum: b10a8db164e0754105b7a99be72e3fe5
     - path: output/rmarkdown/test_rmd.html
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      md5sum: 66936f4bd8f959ce581eebc4960db8ec
