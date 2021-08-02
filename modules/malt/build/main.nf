@@ -49,7 +49,7 @@ process MALT_BUILD {
         -d 'malt_index/' \\
         -t ${task.cpus} \\
         $options.args \\
-        -mdb ${map_db} |&tee malt-build.log
+        -mdb ${map_db}/*.db |&tee malt-build.log
 
     malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2 > ${software}.version.txt
     """
