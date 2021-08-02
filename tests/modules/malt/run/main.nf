@@ -15,6 +15,6 @@ workflow test_malt_run {
     mode = "BlastN"
 
     UNZIP ( map_db )
-    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.result )
+    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.unzipped_archive )
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
 }
