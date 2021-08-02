@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 process MALT_BUILD {
 
-    label 'process_high_memory'
+    label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
@@ -27,7 +27,7 @@ process MALT_BUILD {
     output:
     path "malt_index/"   , emit: index
     path "*.version.txt" , emit: version
-    path "malt-build.log"
+    path "malt-build.log", emit: log
 
     script:
     def software = getSoftwareName(task.process)
