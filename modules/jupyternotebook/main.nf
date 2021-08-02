@@ -19,7 +19,7 @@ process JUPYTERNOTEBOOK {
     //dependencies for you analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     //TODO: what container to use as default image?
-    conda (params.enable_conda ? "ipykernel jupytext nbconvert papermill" : null)
+    conda (params.enable_conda ? "ipykernel jupytext nbconvert papermill matplotlib" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
     } else {
@@ -33,7 +33,7 @@ process JUPYTERNOTEBOOK {
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    path("artifacts/*"), emit: artifacts
+    path("artifacts/*"), emit: artifacts, optional: true
     path "*.version.txt"          , emit: version
 
     script:
@@ -79,7 +79,7 @@ process JUPYTERNOTEBOOK {
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel - ${notebook}  \\
         | ${render_cmd} \\
-        | jupyter nbconvert --stdin --to html --output ${notebook.baseName}.html
+        | jupyter nbconvert --stdin --to html --output ${prefix}.html
 
     # TODO how to output versions of multiple tools?
     echo \$(jupytext --version) > ${software}.version.txt

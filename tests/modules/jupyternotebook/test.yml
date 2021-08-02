@@ -1,9 +1,30 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml jupyternotebook
-- name: jupyternotebook
-  command: nextflow run ./tests/modules/jupyternotebook -entry test_jupyternotebook -c tests/config/nextflow.config
+- name: jupyternotebook test_jupyternotebook
+  command: nextflow run tests/modules/jupyternotebook -entry test_jupyternotebook -c tests/config/nextflow.config
   tags:
     - jupyternotebook
   files:
-    - path: output/jupyternotebook/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/jupyternotebook/test_jupyter.html
+      contains:
+        - "n_iter = 10"
+
+- name: jupyternotebook test_jupyternotebook_parametrize
+  command: nextflow run tests/modules/jupyternotebook -entry test_jupyternotebook_parametrize -c tests/config/nextflow.config
+  tags:
+    - jupyternotebook
+  files:
+    - path: output/jupyternotebook/artifacts/artifact.txt
+      md5sum: 8ddd8be4b179a529afa5f2ffae4b9858
+    - path: output/jupyternotebook/test_jupyter.html
+      contains:
+        - "n_iter = 12"
+
+- name: jupyternotebook test_jupyternotebook_parametrize_ipynb
+  command: nextflow run tests/modules/jupyternotebook -entry test_jupyternotebook_parametrize_ipynb -c tests/config/nextflow.config
+  tags:
+    - jupyternotebook
+  files:
+    - path: output/jupyternotebook/artifacts/artifact.txt
+      md5sum: 8ddd8be4b179a529afa5f2ffae4b9858
+    - path: output/jupyternotebook/test_jupyter.html
+      contains:
+        - "n_iter = 12"
