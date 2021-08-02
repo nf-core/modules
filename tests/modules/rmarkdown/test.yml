@@ -4,7 +4,8 @@
     - rmarkdown
   files:
     - path: output/rmarkdown/test_rmd.html
-      md5sum: 14d65025460fc482f5e6d2e2d30d3d3e
+      contains:
+        - "n_iter = 10"
 
 - name: rmarkdown test_rmarkdown_parametrize
   command: nextflow run tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
@@ -14,4 +15,5 @@
     - path: output/rmarkdown/artifacts/artifact.txt
       md5sum: b10a8db164e0754105b7a99be72e3fe5
     - path: output/rmarkdown/test_rmd.html
-      md5sum: 66936f4bd8f959ce581eebc4960db8ec
+      contains:
+        - "n_iter = 12"
