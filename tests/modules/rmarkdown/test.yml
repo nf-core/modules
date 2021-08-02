@@ -6,7 +6,7 @@
     - path: output/rmarkdown/test_rmd.html
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
 
-- name: rmarkdown
+- name: rmarkdown_parametrize
   command: nextflow run ./tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
   tags:
     - rmarkdown

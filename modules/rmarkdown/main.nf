@@ -9,7 +9,7 @@ params.implicit_params = true
 params.meta_params = true
 
 process RMARKDOWN {
-    tag "$meta.id"
+    // tag { meta.id }
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -59,10 +59,10 @@ process RMARKDOWN {
         params_cmd = dump_params_yml(nb_params)
         render_cmd = (
             "params = yaml::read_yaml('.params.yml')\n" +
-            "rmarkdown::render('${notebook}', params=params, envir=new.env())"
+            "rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())"
         )
     } else {
-        render_cmd = "rmarkdown::render('${notebook}')"
+        render_cmd = "rmarkdown::render('${prefix}.Rmd')"
     }
 
     """
@@ -77,9 +77,11 @@ process RMARKDOWN {
     # dump parameters to yaml
     ${params_cmd}
 
-    # work around  https://github.com/rstudio/rmarkdown/issues/1508
+    # Work around  https://github.com/rstudio/rmarkdown/issues/1508
+    # If the symbolic link is not replaced by a physical file
+    # output- and temporary files will be written to the original directory.
     mv "${notebook}" "${notebook}.orig"
-    cp -L "${notebook}.orig" "${notebook}"
+    cp -L "${notebook}.orig" "${prefix}.Rmd"
 
     # Render notebook
     Rscript - <<EOF
