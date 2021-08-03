@@ -1,0 +1,7 @@
+- name: fusioncatcher fusioncatcher test_fusioncatcher
+  command: nextflow run tests/modules/fusioncatcher/fusioncatcher -entry test_fusioncatcher -c tests/config/nextflow.config
+  tags:
+    - fusioncatcher/fusioncatcher
+    - fusioncatcher
+  files:
+    - path: output/fusioncatcher/test.fusioncatcher.log

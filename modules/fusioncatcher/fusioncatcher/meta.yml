@@ -1,0 +1,46 @@
+name: fusioncatcher
+description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+keywords:
+  - fusioncatcher
+  - fusion
+tools:
+  - fusioncatcher:
+      description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+      homepage: https://github.com/ndaniel/fusioncatcher
+      documentation: https://github.com/ndaniel/fusioncatcher/wiki
+      tool_dev_url: https://github.com/ndaniel/fusioncatcher
+      doi: "10.1101/011650v1"
+      licence: ['GPL v3']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTQ file
+      pattern: "*.{fastq}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - fusions:
+      type: file
+      description: Final list of candidate fusion genes
+      pattern: "*.{fusioncatcher.txt}"
+  - bam:
+      type: file
+      description: Summary of fusion results
+      pattern: "*.{fusioncatcher_summary.txt}"
+
+authors:
+  - "@praveenraj2018"
