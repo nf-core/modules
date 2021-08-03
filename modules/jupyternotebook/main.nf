@@ -34,7 +34,7 @@ process JUPYTERNOTEBOOK {
     output:
     tuple val(meta), path("*.html"), emit: report
     path("artifacts/*"), emit: artifacts, optional: true
-    path "*.version.txt"          , emit: version
+    path "versions.yml"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
