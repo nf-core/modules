@@ -18,8 +18,9 @@ process RMARKDOWN {
     //NB: You likely want to override this with a container containing all required
     //dependencies for you analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
-    conda (params.enable_conda ? "r-tidyverse=1.2.1" : null)
+    conda (params.enable_conda ? "r-rmarkdown r-yaml" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+        // TODO replace with biocontainer
         container "https://depot.galaxyproject.org/singularity/r-tidyverse:1.2.1"
     } else {
         container "quay.io/biocontainers/r-tidyverse:1.2.1"

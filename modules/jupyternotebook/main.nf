@@ -19,7 +19,7 @@ process JUPYTERNOTEBOOK {
     //dependencies for you analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     //TODO: what container to use as default image?
-    conda (params.enable_conda ? "ipykernel jupytext nbconvert papermill matplotlib" : null)
+    conda (params.enable_conda ? "ipykernel=6.0.3 jupytext=1.11.4 nbconvert=6.1.0 papermill=2.3.3 matplotlib=3.4.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
     } else {

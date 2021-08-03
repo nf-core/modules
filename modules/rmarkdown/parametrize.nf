@@ -1,5 +1,3 @@
-// @Grab(group='org.yaml', module='snakeyaml', version='1.28')
-
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.DumperOptions
 
