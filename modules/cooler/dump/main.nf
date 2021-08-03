@@ -20,6 +20,7 @@ process COOLER_DUMP {
 
     input:
     tuple val(meta), path(cool)
+    val resolution
 
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
@@ -28,11 +29,12 @@ process COOLER_DUMP {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def postfix  = resolution?"::$resolution":""
     """
     cooler dump \\
         $options.args \\
         -o ${prefix}.bedpe \\
-        $cool
+        $cool$postfix
 
     echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
     """
