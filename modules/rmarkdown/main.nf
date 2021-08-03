@@ -58,14 +58,15 @@ process RMARKDOWN {
         }
         nb_params += parameters
         params_cmd = dump_params_yml(nb_params)
-        render_cmd = (
-            "params = yaml::read_yaml('.params.yml')\n" +
-            "rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())"
-        )
+        render_cmd = """
+            params = yaml::read_yaml('.params.yml')
+            rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
+        """
     } else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd')"
     }
 
+    params_cmd +
     """
     # Create output directory
     mkdir artifacts
@@ -74,9 +75,6 @@ process RMARKDOWN {
     export MKL_NUM_THREADS="${task.cpus}"
     export OPENBLAS_NUM_THREADS="${task.cpus}"
     export OMP_NUM_THREADS="${task.cpus}"
-
-    # dump parameters to yaml
-    ${params_cmd}
 
     # Work around  https://github.com/rstudio/rmarkdown/issues/1508
     # If the symbolic link is not replaced by a physical file
@@ -87,8 +85,8 @@ process RMARKDOWN {
     # Render notebook
     Rscript - <<EOF
     ${render_cmd}
-    \nEOF
+    EOF
 
     echo \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))") > ${software}.version.txt
-    """
+    """.stripIndent()
 }
