@@ -63,6 +63,7 @@ process JUPYTERNOTEBOOK {
         render_cmd = "papermill"
     }
 
+    params_cmd +
     """
     # Create output directory
     mkdir artifacts
@@ -72,9 +73,6 @@ process JUPYTERNOTEBOOK {
     export OPENBLAS_NUM_THREADS="${task.cpus}"
     export OMP_NUM_THREADS="${task.cpus}"
     export NUMBA_NUM_THREADS="${task.cpus}"
-
-    # dump parameters to yaml
-    ${params_cmd}
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel - ${notebook}  \\
@@ -94,5 +92,5 @@ process JUPYTERNOTEBOOK {
         - nbconvert: \$(jupyter nbconvert --version)
         - papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
-    """
+    """.stripIndent()
 }
