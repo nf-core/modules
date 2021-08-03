@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_MERGE } from '../../../../modules/samtools/merge/main.nf' addParams( options: [:] )
+include { SAMTOOLS_MERGE } from '../../../../modules/samtools/merge/main.nf' addParams( options: [suffix:'_merged'] )
 
 workflow test_samtools_merge {
     input = [ [ id: 'test' ], // meta map

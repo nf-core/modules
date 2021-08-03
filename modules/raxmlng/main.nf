@@ -10,11 +10,11 @@ process RAXMLNG {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::raxml-ng=1.0.2" : null)
+    conda (params.enable_conda ? 'bioconda::raxml-ng=1.0.3' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/raxml-ng:1.0.2--h7447c1b_0"
+        container "https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0"
     } else {
-        container "quay.io/biocontainers/raxml-ng:1.0.2--h7447c1b_0"
+        container "quay.io/biocontainers/raxml-ng:1.0.3--h32fcf60_0"
     }
 
     input:

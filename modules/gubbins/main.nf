@@ -10,11 +10,11 @@ process GUBBINS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::gubbins=2.4.1" : null)
+    conda (params.enable_conda ? 'bioconda::gubbins=3.0.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gubbins:2.4.1--py38h197edbe_1"
+        container "https://depot.galaxyproject.org/singularity/gubbins:3.0.0--py39h5bf99c6_0"
     } else {
-        container "quay.io/biocontainers/gubbins:2.4.1--py38h197edbe_1"
+        container "quay.io/biocontainers/gubbins:3.0.0--py39h5bf99c6_0"
     }
 
     input:
