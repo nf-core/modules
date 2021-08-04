@@ -39,11 +39,12 @@ process STAR_ALIGN {
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
 
     script:
-    def software   = getSoftwareName(task.process)
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def ignore_gtf = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
-    def seq_center = params.seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$params.seq_center' 'SM:$prefix'" : "--outSAMattrRGline ID:$prefix 'SM:$prefix'"
-    def out_sam_type = (options.args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
+    def software        = getSoftwareName(task.process)
+    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def ignore_gtf      = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
+    def seq_platform    = params.seq_platform ? "'PL:$params.seq_platform'" : ""
+    def seq_center      = params.seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$params.seq_center' 'SM:$prefix' $seq_platform " : "--outSAMattrRGline ID:$prefix 'SM:$prefix' $seq_platform "
+    def out_sam_type    = (options.args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     def mv_unsorted_bam = (options.args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
     """
     STAR \\
