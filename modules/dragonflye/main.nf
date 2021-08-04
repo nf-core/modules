@@ -11,11 +11,11 @@ process DRAGONFLYE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::dragonflye=1.0.2" : null)
+    conda (params.enable_conda ? "bioconda::dragonflye=1.0.4" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/dragonflye:1.0.3--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/dragonflye:1.0.4--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/dragonflye:1.0.3--hdfd78af_0"
+        container "quay.io/biocontainers/dragonflye:1.0.4--hdfd78af_0"
     }
 
     input:
