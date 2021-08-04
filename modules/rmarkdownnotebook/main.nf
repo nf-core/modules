@@ -20,10 +20,9 @@ process RMARKDOWNNOTEBOOK {
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "r-base=4.1.0 r-rmarkdown=2.9 r-yaml=2.2.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        // TODO replace with biocontainer
-        container "https://depot.galaxyproject.org/singularity/TODO"
+        container "https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5%3A0e852a1e4063fdcbe3f254ac2c7469747a60e361-0"
     } else {
-        container "quay.io/biocontainers/TODO"
+        container "quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0"
     }
 
     input:
