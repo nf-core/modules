@@ -1,7 +1,8 @@
 - name: fusioncatcher fusioncatcher test_fusioncatcher
   command: nextflow run tests/modules/fusioncatcher/fusioncatcher -entry test_fusioncatcher -c tests/config/nextflow.config
   tags:
-    - fusioncatcher/fusioncatcher
     - fusioncatcher
+    - fusioncatcher/fusioncatcher
   files:
     - path: output/fusioncatcher/test.fusioncatcher.log
+      md5sum: 5dafefd5e7d8267e90654805f12d8e02

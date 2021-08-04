@@ -31,8 +31,8 @@ process FUSIONCATCHER {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def fastq    = reads.size() == 2 ? "${reads[0]},${reads[1]}" : "${reads[0]}"
-    def valid    = (resource.exists() && file("${resource}/organism.txt").exists()) ? true : false
+    def fastq    = meta.single_end ? "${reads[0]}" : "${reads[0]},${reads[1]}"
+    def valid    = resource.exists() && file("${resource}/organism.txt").exists()
 
     if (valid) {
 
@@ -42,8 +42,6 @@ process FUSIONCATCHER {
             -i $fastq \\
             -p $task.cpus \\
             -o . \\
-            --aligners=star
-            --skip-blat \\
             $options.args
 
         mv final-list_candidate-fusion-genes.txt ${prefix}.fusioncatcher-fusion-genes.txt

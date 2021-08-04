@@ -6,7 +6,7 @@ include { FUSIONCATCHER } from '../../../../modules/fusioncatcher/fusioncatcher/
 
 workflow test_fusioncatcher {
 
-    input = [ [ id:'test', single_end:true ], // meta map
+    input = [ [ id:'test', single_end:false ], // meta map
                 [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true) ]
             ]
