@@ -5,7 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process COOLER_DIGEST {
-    tag '$fasta'
+    tag "$fasta"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -32,7 +32,7 @@ process COOLER_DIGEST {
     """
     cooler digest \\
         $options.args \\
-        -o "${fasta.baseName}_${enzyme.replaceAll(/[^0-9a-zA-Z]+/, "_")}.bed" \\
+        -o "${fasta.baseName}_${enzyme.replaceAll(/[^0-9a-zA-Z]+/, '_')}.bed" \\
         $chromsizes \\
         $fasta \\
         $enzyme
