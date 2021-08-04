@@ -8,7 +8,7 @@ params.parametrize = true
 params.implicit_params = true
 params.meta_params = true
 
-process RMARKDOWN {
+process RMARKDOWNNOTEBOOK {
     // tag { meta.id }
     label 'process_low'
     publishDir "${params.outdir}",
