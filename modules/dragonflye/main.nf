@@ -34,7 +34,7 @@ process DRAGONFLYE {
     def memory = task.memory.toGiga()
     """
     dragonflye \\
-        --reads ${reads[0]} \\
+        --reads ${reads} \\
         $options.args \\
         --cpus $task.cpus \\
         --ram $memory \\
