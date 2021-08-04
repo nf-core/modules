@@ -1,19 +1,19 @@
-- name: rmarkdown test_rmarkdown
+- name: rmarkdownnotebook test_rmarkdownnotebook
   command: nextflow run tests/modules/rmarkdown -entry test_rmarkdown -c tests/config/nextflow.config
   tags:
-    - rmarkdown
+    - rmarkdownnotebook
   files:
-    - path: output/rmarkdown/test_rmd.html
+    - path: output/rmarkdownnotebook/test_rmd.html
       contains:
         - "n_iter = 10"
 
-- name: rmarkdown test_rmarkdown_parametrize
+- name: rmarkdownnotebook test_rmarkdownnotebook_parametrize
   command: nextflow run tests/modules/rmarkdown -entry test_rmarkdown_parametrize -c tests/config/nextflow.config
   tags:
-    - rmarkdown
+    - rmarkdownnotebook
   files:
     - path: output/rmarkdown/artifacts/artifact.txt
       md5sum: b10a8db164e0754105b7a99be72e3fe5
-    - path: output/rmarkdown/test_rmd.html
+    - path: output/rmarkdownnotebook/test_rmd.html
       contains:
         - "n_iter = 12"
