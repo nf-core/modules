@@ -32,7 +32,7 @@ process BCFTOOLS_CONCAT {
     bcftools concat \\
         --output ${prefix}.vcf.gz \\
         $options.args \\
-        *.vcf.gz
+        ${vcfs}
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
