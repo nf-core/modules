@@ -1,6 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
-include { dump_params_yml } from "./parametrize"
+include { dump_params_yml; indent_code_block } from "./parametrize"
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -58,17 +58,18 @@ process RMARKDOWNNOTEBOOK {
         }
         nb_params += parameters
         params_cmd = dump_params_yml(nb_params)
-        render_cmd = """
+        render_cmd = """\
             params = yaml::read_yaml('.params.yml')
             rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
-            writeLines(capture.output(sessionInfo()), "session_info.log")
         """
     } else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd')"
     }
 
-    params_cmd +
     """
+    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
+    ${indent_code_block(params_cmd, 4)}
+
     # Create output directory
     mkdir artifacts
 
@@ -85,9 +86,10 @@ process RMARKDOWNNOTEBOOK {
 
     # Render notebook
     Rscript - <<EOF
-    ${render_cmd}
+        ${indent_code_block(render_cmd, 8)}
+        writeLines(capture.output(sessionInfo()), "session_info.log")
     EOF
 
     echo \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))") > ${software}.version.txt
-    """.stripIndent()
+    """
 }
