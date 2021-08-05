@@ -11,11 +11,11 @@ process PICARD_MARKDUPLICATES {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::picard=2.23.9" : null)
+    conda (params.enable_conda ? 'bioconda::picard=2.25.7' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/picard:2.23.9--0"
+        container "https://depot.galaxyproject.org/singularity/picard:2.25.7--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/picard:2.23.9--0"
+        container "quay.io/biocontainers/picard:2.25.7--hdfd78af_0"
     }
 
     input:
