@@ -1,6 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
-include { dump_params_yml } from "./parametrize"
+include { dump_params_yml; indent_code_block } from "./parametrize"
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -18,7 +18,6 @@ process JUPYTERNOTEBOOK {
     //NB: You likely want to override this with a container containing all required
     //dependencies for you analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
-    //TODO: what container to use as default image?
     conda (params.enable_conda ? "ipykernel=6.0.3 jupytext=1.11.4 nbconvert=6.1.0 papermill=2.3.3 matplotlib=3.4.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
@@ -63,8 +62,10 @@ process JUPYTERNOTEBOOK {
         render_cmd = "papermill"
     }
 
-    params_cmd +
     """
+    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
+    ${indent_code_block(params_cmd, 4)}
+
     # Create output directory
     mkdir artifacts
 
@@ -92,5 +93,5 @@ process JUPYTERNOTEBOOK {
         - nbconvert: \$(jupyter nbconvert --version)
         - papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
-    """.stripIndent()
+    """
 }
