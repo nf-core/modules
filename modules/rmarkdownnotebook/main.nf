@@ -34,6 +34,7 @@ process RMARKDOWNNOTEBOOK {
     tuple val(meta), path("*.html"), emit: report
     path("artifacts/*"), emit: artifacts, optional: true
     path "*.version.txt", emit: version
+    path "session_info.log", emit: session_info
 
     script:
     def software = getSoftwareName(task.process)
@@ -60,6 +61,7 @@ process RMARKDOWNNOTEBOOK {
         render_cmd = """
             params = yaml::read_yaml('.params.yml')
             rmarkdown::render('${prefix}.Rmd', params=params, envir=new.env())
+            writeLines(capture.output(sessionInfo()), "session_info.log")
         """
     } else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd')"
