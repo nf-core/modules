@@ -1,47 +1,66 @@
 name: jupyternotebook
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+  Render jupyter (or jupytext) notebooks to HTML reports. Supports parametrization
+  through papermill.
 keywords:
-  - sort
+  - Python
+  - Jupyter
+  - jupytext
+  - papermill
+  - notebook
+  - reports
 tools:
-  - jupyternotebook:
-      ## TODO nf-core: Add a description and other details for the software below
-      description:
-      homepage:
-      documentation:
-      tool_dev_url:
-      doi: ""
-      licence:
+  - jupytext:
+      description: Jupyter notebooks as plain text scripts or markdown documents
+      homepage: https://github.com/mwouts/jupytext/
+      documentation: https://jupyter.org/documentation
+      tool_dev_url: https://github.com/mwouts/jupytext/
+      licence: "MIT"
+  - papermill:
+      description: Parameterize, execute, and analyze notebooks
+      homepage: https://github.com/nteract/papermill
+      documentation: http://papermill.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/nteract/papermill
+      licence: "BSD 3-clause"
+  - nbconvert:
+      description: Parameterize, execute, and analyze notebooks
+      homepage: https://nbconvert.readthedocs.io/en/latest/
+      documentation: https://nbconvert.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/jupyter/nbconvert
+      licence: "BSD 3-clause"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - notebook:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Jupyter notebook or jupytext representation thereof
+      pattern: "*.{ipynb,py,md,Rmd,myst}"
+  - parameters:
+      type: map
+      description: Groovy map containing notebook parameters
+  - input_files:
+      type: path
+      description: One or multiple files serving as input data for the notebook.
+      pattern: "*"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: HTML report generated from Jupyter notebook
+      pattern: "*.html"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@grst"

@@ -58,6 +58,10 @@ output:
       type: file
       description: HTML report generated from Rmarkdown
       pattern: "*.html"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
   - version:
       type: file
       description: File containing software version
