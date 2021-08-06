@@ -21,8 +21,10 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = 0.1 // No version information printed
+
 process CHROMAP_INDEX {
-    tag '$bam'
+    tag '$fasta'
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -46,17 +48,17 @@ process CHROMAP_INDEX {
     //               https://github.com/nf-core/modules/blob/master/software/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path bam
+    path fasta
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    path "*.bam", emit: bam
+    path "*.index", emit: index
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    
+
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
@@ -65,13 +67,12 @@ process CHROMAP_INDEX {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+    def prefix = fasta.baseName
     """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        $bam
-
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    chromap -i $options.args \\
+        -t ${task.cpus} \\
+        -r $fasta \\
+        -o ${prefix}.index
+    echo "$VERSION" > ${software}.version.txt
     """
 }
