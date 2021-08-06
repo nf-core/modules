@@ -1,47 +1,41 @@
 name: bcftools_norm
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Normalize VCF file
 keywords:
-  - sort
+  - normalize
+  - norm
+  - variant calling
+  - VCF
 tools:
-  - bcftools:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['GPL']
-
-## TODO nf-core: Add a description of all of the variables used as input
+    - norm:
+        description: |
+          normalize VCF files.
+        homepage: http://samtools.github.io/bcftools/bcftools.html
+        documentation: http://www.htslib.org/doc/bcftools.html
+        doi: 10.1093/bioinformatics/btp352
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcfs:
+        type: files
+        description: |
+          List containing 2 or more vcf files
+          e.g. [ 'file1.vcf', 'file2.vcf' ]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF normalized output file
+        pattern: "*.{vcf.gz}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "*.{version.txt}"
 authors:
-  - "@abhi18av"
+    - "@abhi18av"
