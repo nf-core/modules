@@ -21,6 +21,8 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = 0.1 // No version information printed
+
 process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
@@ -46,17 +48,31 @@ process CHROMAP_CHROMAP {
     //               https://github.com/nf-core/modules/blob/master/software/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
+    path fasta
+    path index
+    path barcodes
+    path whitelist
+    path chr_order
+    path pairs_chr_order
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bed")     , optional:true, emit: bed
+    tuple val(meta), path("*.sam")     , optional:true, emit: sam
+    tuple val(meta), path("*.tagAlign"), optional:true, emit: tagAlign
+    tuple val(meta), path("*.pairs")   , optional:true, emit: pairs
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = options.args.tokenize()
+
+    def file_extension = options.args.contains("--SAM")? 'sam' :
+                         options.args.contains("--TagAlign")? 'tagAlign' :
+                         options.args.contains("--pairs")? 'pairs' : 'bed'
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
@@ -65,15 +81,38 @@ process CHROMAP_CHROMAP {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
-    """
+    if (barcodes) {
+        args << "-b ${barcodes.join(',')}"
+        if (whitelist) {
+            args << "--barcode-whitelist $whitelist"
+        }
+    }
+    if (chr_order) {
+        args << "--chr-order $chr_order"
+    }
+    if (pairs_chr_order){
+        args << "--pairs-natural-chr-order $pairs_chr_order"
+    }
+    if (meta.single_end) {
+        """
+        chromap ${args.join(' ')} \\
+            -t ${task.cpus} \\
+            -x $index \\
+            -r $fasta \\
+            -1 ${reads.join(',')} \\
+            -o ${prefix}.${file_extension}
+        echo "$VERSION" > ${software}.version.txt
+        """
+    } else {
+        """
+        chromap ${args.join(' ')} \\
+            -t ${task.cpus} \\
+            -x $index \\
+            -r $fasta \\
+            -1 reads[0] \\
+            -2 reads[1] \\
+            -o ${prefix}.${file_extension}
+        echo "$VERSION" > ${software}.version.txt
+        """
+    }
 }
