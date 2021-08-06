@@ -21,7 +21,7 @@ process BEDTOOLS_MAKEWINDOWS {
     input:
     tuple val(meta), path(regions)
     val(use_bed)
-    
+
     output:
     tuple val(meta), path("*.tab"), emit: tab
     path "*.version.txt"          , emit: version
@@ -29,7 +29,7 @@ process BEDTOOLS_MAKEWINDOWS {
     script:
     def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def arg_input = use_bed ? "-b $regions" : "-g $regions" 
+    def arg_input = use_bed ? "-b $regions" : "-g $regions"
     """
     bedtools \\
         makewindows \\
