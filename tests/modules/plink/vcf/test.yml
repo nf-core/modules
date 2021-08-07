@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml plink/vcf
+- name: plink vcf
+  command: nextflow run ./tests/modules/plink/vcf -entry test_plink_vcf -c tests/config/nextflow.config
+  tags:
+    - plink
+    - plink/vcf
+  files:
+    - path: output/plink/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
