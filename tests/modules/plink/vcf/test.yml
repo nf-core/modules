@@ -1,10 +1,12 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml plink/vcf
-- name: plink vcf
-  command: nextflow run ./tests/modules/plink/vcf -entry test_plink_vcf -c tests/config/nextflow.config
+- name: plink vcf test_plink_vcf
+  command: nextflow run tests/modules/plink/vcf -entry test_plink_vcf -c tests/config/nextflow.config
   tags:
     - plink
     - plink/vcf
   files:
-    - path: output/plink/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/plink/test.bed
+      md5sum: 55c3ab2636212911b5f952ef6f5d855c
+    - path: output/plink/test.bim
+      md5sum: 54164b6f103e152de05712c6bb317db8
+    - path: output/plink/test.fam
+      md5sum: 22d32d7daa3ae6b819a24895e82b2a70

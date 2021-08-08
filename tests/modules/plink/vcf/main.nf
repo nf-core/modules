@@ -2,10 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-def testargs = "--make-bed --biallelic-only strict --vcf-half-call missing --double-id --recode ped --id-delim \'_\' "
-include { PLINK_VCF } from '../../../../modules/plink/vcf/main.nf' addParams( options: ['args': testargs])
-
-
+include { PLINK_VCF } from '../../../../modules/plink/vcf/main.nf' addParams( options: ['args':" --make-bed --biallelic-only strict --vcf-half-call missing --double-id --recode ped --id-delim \'=\' --allow-extra-chr"])
 
 workflow test_plink_vcf {
 
