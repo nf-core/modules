@@ -58,11 +58,11 @@ process CHROMAP_CHROMAP {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args = options.args.tokenize()
+    def args     = options.args.tokenize()
 
     def file_extension = options.args.contains("--SAM")? 'sam' :
-                         options.args.contains("--TagAlign")? 'tagAlign' :
-                         options.args.contains("--pairs")? 'pairs' : 'bed'
+                        options.args.contains("--TagAlign")? 'tagAlign' :
+                        options.args.contains("--pairs")? 'pairs' : 'bed'
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
@@ -87,13 +87,13 @@ process CHROMAP_CHROMAP {
     gzip ${prefix}.${file_extension}
     """
     if (options.args.contains("--SAM")) {
-       compression_cmds = """
-       samtools view $options.args2 -@ ${task.cpus} -bh \\
-           -o ${prefix}.bam ${prefix}.${file_extension}
-       rm ${prefix}.${file_extension}
+        compression_cmds = """
+        samtools view $options.args2 -@ ${task.cpus} -bh \\
+            -o ${prefix}.bam ${prefix}.${file_extension}
+        rm ${prefix}.${file_extension}
 
-       samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
-       """
+        samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+        """
     }
     if (meta.single_end) {
         """
