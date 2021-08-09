@@ -32,7 +32,7 @@ process PBCCS {
     def ccs         = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs.bam'
     def report_txt  = bam.toString().replaceAll(/bam$/, '') + 'ccs.ccs_report.txt'
     def report_json = bam.toString().replaceAll(/bam$/, '') + 'ccs.ccs_report.json'
-    def zmw_metrics = bam.toString().replaceAll(/bam$/, '') + 'ccs.zmw_metrics.json'
+    def zmw_metrics = bam.toString().replaceAll(/bam$/, '') + 'ccs.zmw_metrics.json.gz'
     """
     ccs \\
         $bam \\
