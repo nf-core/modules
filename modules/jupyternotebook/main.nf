@@ -20,9 +20,9 @@ process JUPYTERNOTEBOOK {
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "ipykernel=6.0.3 jupytext=1.11.4 nbconvert=6.1.0 papermill=2.3.3 matplotlib=3.4.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963%3A879972fc8bdc81ee92f2bce3b4805d89a772bf84-0"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0"
     }
 
     input:
@@ -63,6 +63,8 @@ process JUPYTERNOTEBOOK {
     }
 
     """
+    set -o pipefail
+
     # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
     ${indent_code_block(params_cmd, 4)}
 
