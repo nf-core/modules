@@ -36,6 +36,7 @@ process PLINK_VCF {
     plink \\
         --vcf ${vcf} \\
         $options.args \\
+        --threads $task.cpus \\
         --out ${prefix}
 
     echo \$(plink --version 2>&1) | sed 's/^PLINK //' | sed 's/..-bit.*//'> ${software}.version.txt
