@@ -32,6 +32,7 @@ process BCFTOOLS_NORM {
     bcftools norm \\
         --output ${prefix}.vcf.gz \\
         $options.args \\
+        --threads $task.cpus \\
         *.vcf.gz
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
