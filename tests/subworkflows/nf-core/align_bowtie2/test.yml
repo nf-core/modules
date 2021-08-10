@@ -2,6 +2,18 @@
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2 -c tests/config/nextflow.config
   tags:
     - subworkflows/align_bowtie2
+    - subworkflows/align_bowtie2
+    - subworkflows/bam_sort_samtools
+    - subworkflows/bam_stats_samtools
+    # Modules
+    - bowtie2
+    - bowtie2/align
+    - samtools
+    - samtools/index
+    - samtools/sort
+    - samtools/stats
+    - samtools/idxstats
+    - samtools/flagstat
   files:
     - path: ./output/index/bowtie2/genome.3.bt2
       md5sum: 4ed93abba181d8dfab2e303e33114777
