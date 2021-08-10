@@ -1,0 +1,36 @@
+- name: damageprofiler
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler -c tests/config/nextflow.config -dump-channels
+  tags:
+    - damageprofiler
+  files:
+    - path: output/damageprofiler/test/3p_freq_misincorporations.txt
+      md5sum: da4cac90c78899a7cb6d72d415392b49
+    - path: output/damageprofiler/test/3pGtoA_freq.txt
+      md5sum: 8dab75d51a4b943b501d0995169c767f
+    - path: output/damageprofiler/test/5pCtoT_freq.txt
+      md5sum: fcc48ee5f72edff930d627c8bfdd8a5b
+    - path: output/damageprofiler/test/5p_freq_misincorporations.txt
+      md5sum: 54665474f5ef17dcc268567e5eaa7d86
+    - path: output/damageprofiler/test/DamagePlot_five_prime.svg
+    - path: output/damageprofiler/test/DamagePlot.pdf
+    - path: output/damageprofiler/test/DamagePlot_three_prime.svg
+    - path: output/damageprofiler/test/DamageProfiler.log
+      contains:
+        - "FINISHED SUCCESSFULLY"
+    - path: output/damageprofiler/test/dmgprof.json
+      md5sum: 98499024c7e937896e481f2d3cfbdd3e
+    - path: output/damageprofiler/test/DNA_comp_genome.txt
+      md5sum: f91e70760d91a1193a27e360aaddf2fd
+    - path: output/damageprofiler/test/DNA_composition_sample.txt
+      md5sum: 1257eb3eb42484647bfba2151f9ef04f
+    - path: output/damageprofiler/test/edit_distance.pdf
+    - path: output/damageprofiler/test/edit_distance.svg
+    - path: output/damageprofiler/test/editDistance.txt
+      md5sum: af2d2f4a99058ec56eae88ec27779e38
+    - path: output/damageprofiler/test/Length_plot_combined_data.svg
+    - path: output/damageprofiler/test/Length_plot_forward_reverse_separated.svg
+    - path: output/damageprofiler/test/Length_plot.pdf
+    - path: output/damageprofiler/test/lgdistribution.txt
+      md5sum: c5d029bf3a92b613310ee23f47d94981
+    - path: output/damageprofiler/test/misincorporation.txt
+      md5sum: 3aa6dd749010a492d92a815a83c196a8
