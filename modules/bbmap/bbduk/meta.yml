@@ -1,0 +1,52 @@
+name: bbmap_bbduk
+description: Adapter and quality trimming of sequencing reads
+keywords:
+  - trimming
+  - adapter trimming
+  - quality trimming
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      tool_dev_url: None
+      doi: ""
+      licence: ['UC-LBL license (see package)']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - contaminants:
+        type: file
+        description: |
+          Reference files containing adapter and/or contaminant sequences for sequence kmer matching
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*fastq.gz"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - log:
+      type: file
+      description: Bbduk log file
+      pattern: "*bbduk.log"
+
+authors:
+  - "@MGordon09"
