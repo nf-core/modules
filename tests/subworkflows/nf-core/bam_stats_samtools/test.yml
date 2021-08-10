@@ -1,0 +1,23 @@
+- name: bam stats samtools single-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_single_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows/bam_stats_samtools
+    # Modules
+    - samtools
+    - samtools/stats
+    - samtools/idxstats
+    - samtools/flagstat
+  # TODO
+  # files:
+
+- name: bam stats samtools paired-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_paired_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows/bam_stats_samtools
+    # Modules
+    - samtools
+    - samtools/stats
+    - samtools/idxstats
+    - samtools/flagstat
+  # TODO
+  # files:
