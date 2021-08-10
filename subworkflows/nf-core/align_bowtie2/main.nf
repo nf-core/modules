@@ -6,7 +6,7 @@ params.align_options    = [:]
 params.samtools_options = [:]
 
 include { BOWTIE2_ALIGN     } from '../../modules/nf-core/software/bowtie2/align/main' addParams( options: params.align_options    )
-include { BAM_SORT_SAMTOOLS } from './bam_sort_samtools'                      addParams( options: params.samtools_options )
+include { BAM_SORT_SAMTOOLS } from '../bam_sort_samtools/main'                         addParams( options: params.samtools_options )
 
 workflow ALIGN_BOWTIE2 {
     take:
