@@ -1,9 +1,0 @@
-- name: Run bismark deduplicate test workflow
-  command: nextflow run ./tests/software/bismark/deduplicate -entry test_bismark_deduplicate -c tests/config/nextflow.config
-  tags:
-    - bismark
-    - bismark/deduplicate
-  files:
-    - path: output/bismark/test_methylated_paired_end.deduplicated.bam
-    - path: output/bismark/test_methylated_paired_end.deduplication_report.txt
-      md5sum: 3876d694f10c58f47e380ba8476a356b
