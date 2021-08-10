@@ -1,0 +1,8 @@
+- name: picard mergesamfiles
+  command: nextflow run ./tests/modules/picard/mergesamfiles -entry test_picard_mergesamfiles -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard/mergesamfiles
+  files:
+    - path: ./output/picard/test.bam
+      md5sum: 82bb91735aff82eae4f0b631114e9e15
