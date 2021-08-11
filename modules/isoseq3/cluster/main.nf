@@ -22,8 +22,10 @@ process ISOSEQ3_CLUSTER {
     tuple val(meta), path(bam), path(pbi)
 
     output:
-    tuple val(meta), path("*.clustered.bam"), emit: bam
-    path("*.{clustered.bam.pbi,clustered.cluster,clustered.cluster_report.csv,clustered.hq.bam,clustered.hq.bam.pbi,clustered.hq.bam,clustered.lq.bam.pbi,clustered.transcriptset.xml}"), emit: reports
+    tuple val(meta), path("*.clustered.bam"),     path("*.clustered.singletons.bam"),       emit: bam
+    tuple val(meta), path("*.clustered.bam.pbi"), path("*.clustered.singletons.bam.pbi"),   emit: bam_index
+    path("*.{clustered.cluster,clustered.cluster_report.csv,clustered.transcriptset.xml}"), emit: reports
+    path("*.{clustered.bam.pbi,clustered.hq.bam,clustered.hq.bam.pbi,clustered.lq.bam,clustered.lq.bam.pbi}"), emit: other_bams
     path "*.version.txt", emit: version
 
     script:
@@ -32,10 +34,11 @@ process ISOSEQ3_CLUSTER {
     cluster_out = bam.toString().replaceAll(/.bam$/, '.clustered.bam')
     """
     isoseq3 \\
-      cluster \\
-      $bam \\
-      $cluster_out \\
-      $options.args
+        cluster \\
+        $bam \\
+        $cluster_out \\
+        --singletons \\
+        $options.args
 
     echo \$(isoseq3 --version 2>&1) | grep -e 'commit' > ${software}.version.txt
     """
