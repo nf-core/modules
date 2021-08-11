@@ -1,8 +1,8 @@
 - name: star align test_star_alignment_single_end
   command: nextflow run tests/modules/star/align -entry test_star_alignment_single_end -c tests/config/nextflow.config
   tags:
-    - star
     - star/align
+    - star
   files:
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -36,7 +36,7 @@
     - path: output/index/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 509d7f1fba3350913c8ea13f01917085
+      md5sum: b9f5e2f6a624b64c300fe25dc3ac801f
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -45,8 +45,8 @@
 - name: star align test_star_alignment_paired_end
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end -c tests/config/nextflow.config
   tags:
-    - star
     - star/align
+    - star
   files:
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -80,8 +80,7 @@
     - path: output/index/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 64b408fb1d61e2de8ff51c847cd5bc52
-    - path: output/star/test.Log.final.out
+      md5sum: 38d08f0b944a2a1b981a250d675aa0d9
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
@@ -89,8 +88,8 @@
 - name: star align test_star_alignment_paired_end_for_fusion
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end_for_fusion -c tests/config/nextflow.config
   tags:
-    - star
     - star/align
+    - star
   files:
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
@@ -124,7 +123,7 @@
     - path: output/index/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: d724ca90a102347b9c5052a33ea4d308
+      md5sum: c740d5177067c1fcc48ab7a16cd639d7
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
@@ -133,8 +132,8 @@
 - name: star align test_star_alignment_paired_end_for_starfusion
   command: nextflow run tests/modules/star/align -entry test_star_alignment_paired_end_for_starfusion -c tests/config/nextflow.config
   tags:
-    - star
     - star/align
+    - star
   files:
     - path: output/index/star/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da
