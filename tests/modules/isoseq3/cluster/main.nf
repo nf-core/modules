@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ISOSEQ3_CLUSTER } from '../../../../software/isoseq3/cluster/main.nf' addParams( options: [args: '--use-qvs --verbose'] )
+include { ISOSEQ3_CLUSTER } from '../../../../modules/isoseq3/cluster/main.nf' addParams( options: [args: '--singletons --use-qvs --verbose'] )
 
 workflow test_isoseq3_cluster {
 
