@@ -1,8 +1,8 @@
 - name: isoseq3 cluster test_isoseq3_cluster
   command: nextflow run tests/modules/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
   tags:
-    - isoseq3
     - isoseq3/cluster
+    - isoseq3
   files:
     - path: output/isoseq3/alz.flnc.1000.clustered.bam
       md5sum: 8104c22dc09d5b1b82acab82a4c1d0c0
