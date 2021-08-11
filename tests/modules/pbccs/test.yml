@@ -1,13 +1,15 @@
 - name: pbccs test_pbccs
-  command: nextflow run tests/software/pbccs -entry test_pbccs -c tests/config/nextflow.config
+  command: nextflow run tests/modules/pbccs -entry test_pbccs -c tests/config/nextflow.config
   tags:
     - pbccs
   files:
     - path: output/pbccs/alz.1perc.subreads.1000.2.ccs.bam
-      md5sum: 0c4b71bb8ed7094332cddf0c3bebe20c
+      md5sum: 3a910b7b9fdac052efefda9b96c2d70e
     - path: output/pbccs/alz.1perc.subreads.1000.2.ccs.bam.pbi
-      md5sum: 5d53b8cf155cb98bf40a0a401e3187d3
-    - path: output/pbccs/alz.1perc.subreads.1000.2.ccs.ccs_report.txt
+      md5sum: b9a83eaace100730df24a197aed4a05e
+    - path: output/pbccs/alz.1perc.subreads.1000.2.ccs_report.json
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/pbccs/alz.1perc.subreads.1000.2.ccs_report.txt
       md5sum: db379e9299295679f4ca7eeb37011f08
-    - path: output/pbccs/alz.1perc.subreads.1000.2.ccs.zmw_metrics.json.gz
-      contains: '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead'
+    - path: output/pbccs/alz.1perc.subreads.1000.2.zmw_metrics.json.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
