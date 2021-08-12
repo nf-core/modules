@@ -6,7 +6,7 @@ include { EXPANSIONHUNTER } from '../../../modules/expansionhunter/main.nf' addP
 
 workflow test_expansionhunter {
 
-    input = [ [ id:'test', sex:'male' ], // meta map
+    input = [ [ id:'test', gender:'male' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
             ]

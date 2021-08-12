@@ -30,7 +30,7 @@ process EXPANSIONHUNTER {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def sex = (meta.sex == 'male' || meta.sex == 1 || meta.sex == 'XY') ? "male" : "female"
+    def gender = (meta.gender == 'male' || meta.gender == 1 || meta.gender == 'XY') ? "male" : "female"
     """
     ExpansionHunter \\
         $options.args \\
@@ -38,7 +38,7 @@ process EXPANSIONHUNTER {
         --output-prefix $prefix \\
         --reference $fasta \\
         --variant-catalog $variant_catalog \\
-        --sex $sex
+        --sex $gender
 
     echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter //' > ${software}.version.txt
     """
