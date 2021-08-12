@@ -20,6 +20,7 @@ process BCFTOOLS_NORM {
 
     input:
     tuple val(meta), path(vcf)
+    path(fasta)
 
     output:
     tuple val(meta), path("*.gz") , emit: vcf
@@ -30,10 +31,11 @@ process BCFTOOLS_NORM {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools norm \\
+        --fasta-ref ${fasta} \\
         --output ${prefix}.vcf.gz \\
         $options.args \\
         --threads $task.cpus \\
-        *.vcf.gz
+        ${vcf}
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
     """
