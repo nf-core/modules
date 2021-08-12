@@ -24,11 +24,11 @@ process CHROMAP_CHROMAP {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda (params.enable_conda ? "bioconda::chromap=0.1" : null)
+    conda (params.enable_conda ? "bioconda::chromap=0.1 bioconda::samtools=1.13" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/chromap:0.1--h9a82719_0"
+        container "https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0"
     } else {
-        container "quay.io/biocontainers/chromap:0.1--h9a82719_0"
+        container "quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0"
     }
 
     input:
