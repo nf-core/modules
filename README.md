@@ -18,26 +18,17 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-- [!nf-core/modules](#)
-  - [Table of contents](#table-of-contents)
-  - [Using existing modules](#using-existing-modules)
-  - [Adding a new module file](#adding-a-new-module-file)
+- [Using existing modules](#using-existing-modules)
+- [Adding a new module file](#adding-a-new-module-file)
     - [Checklist](#checklist)
     - [nf-core modules create](#nf-core-modules-create)
     - [Test data](#test-data)
     - [Running tests manually](#running-tests-manually)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
     - [Guidelines](#guidelines)
-      - [General](#general)
-      - [Naming conventions](#naming-conventions)
-      - [Module parameters](#module-parameters)
-      - [Input/output options](#inputoutput-options)
-      - [Resource requirements](#resource-requirements)
-      - [Software requirements](#software-requirements)
-      - [Publishing results](#publishing-results)
-  - [Terminology](#terminology)
-  - [Help](#help)
-  - [Citation](#citation)
+- [Terminology](#terminology)
+- [Help](#help)
+- [Citation](#citation)
 
 ## Using existing modules
 
