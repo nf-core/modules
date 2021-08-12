@@ -381,6 +381,8 @@ Please follow the steps below to run the tests locally:
 
     - See [docs on running pytest-workflow](https://pytest-workflow.readthedocs.io/en/stable/#running-pytest-workflow) for more info.
 
+> :warning: if you have a module named `build` this can conflict with some pytest internal behaviour. This results in no tests being run (i.e. recieving a message of `collected 0 items`). In this case rename the `tests/<module>/build` directry to `tests/<module>/build_test`, and update the corresponding `test.yml` accordingly. An example can be seen with the [`bowtie2/build` module tests](https://github.com/nf-core/modules/tree/master/tests/modules/bowtie2/build_test).
+
 ### Uploading to `nf-core/modules`
 
 [Fork](https://help.github.com/articles/fork-a-repo/) the `nf-core/modules` repository to your own GitHub account. Within the local clone of your fork add the module file to the [`modules/`](modules) directory. Please try and keep PRs as atomic as possible to aid the reviewing process - ideally, one module addition/update per PR.
@@ -441,6 +443,16 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 
 - All function names MUST follow the `camelCase` convention.
 
+#### Input/output options
+
+- Input channel declarations MUST be defined for all _possible_ input files (i.e. both required and optional files).
+    - Directly associated auxiliary files to an input file MAY be defined within the same input channel alongside the main input channel  (e.g. [BAM and BAI](https://github.com/nf-core/modules/blob/e937c7950af70930d1f34bb961403d9d2aa81c7d/modules/samtools/flagstat/main.nf#L22)).
+    - Other generic auxiliary files used across different input files (e.g. common reference sequences) MAY be defined using a dedicated input channel (e.g. [reference files](https://github.com/nf-core/modules/blob/3cabc95d0ed8a5a4e07b8f9b1d1f7ff9a70f61e1/modules/bwa/mem/main.nf#L21-L23)).
+
+- Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
+
+- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
+
 #### Module parameters
 
 - A module file SHOULD only define input and output files as command-line parameters to be executed within the process.
@@ -450,12 +462,6 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
 - If the tool supports multi-threading then you MUST provide the appropriate parameter using the Nextflow `task` variable e.g. `--threads $task.cpus`.
 
 - Any parameters that need to be evaluated in the context of a particular sample e.g. single-end/paired-end data MUST also be defined within the process.
-
-#### Input/output options
-
-- Named file extensions MUST be emitted for ALL output channels e.g. `path "*.txt", emit: txt`.
-
-- Optional inputs are not currently supported by Nextflow. However, passing an empty list (`[]`) instead of a file as a module parameter can be used to work around this issue.
 
 #### Resource requirements
 
