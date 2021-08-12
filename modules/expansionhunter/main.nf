@@ -13,7 +13,7 @@ process EXPANSIONHUNTER {
 
     conda (params.enable_conda ? "bioconda::expansionhunter=4.0.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2"
+        container "https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2--he785bd8_0"
     } else {
         container "quay.io/biocontainers/expansionhunter:4.0.2--he785bd8_0"
     }
