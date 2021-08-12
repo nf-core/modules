@@ -13,9 +13,9 @@ process LIMA {
 
     conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/lima:2.2.0--0"
+        container "https://depot.galaxyproject.org/singularity/lima:2.2.0--h9ee0642_0"
     } else {
-        container "quay.io/biocontainers/lima:2.2.0--0"
+        container "quay.io/biocontainers/lima:2.2.0--h9ee0642_0"
     }
 
     input:
