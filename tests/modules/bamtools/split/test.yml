@@ -1,7 +1,8 @@
 - name: bamtools split test_bamtools_split
-  command: nextflow run tests/software/bamtools/split -entry test_bamtools_split -c tests/config/nextflow.config
+  command: nextflow run tests/modules/bamtools/split -entry test_bamtools_split -c tests/config/nextflow.config
   tags:
+    - bamtools/split
     - bamtools
   files:
-    - path: output/bamtools/alz.1perc.subreads.10000.REF_unmapped.bam
-      md5sum: 3e8debcdb8bea3bbc38e592534b99ff9
+    - path: output/bamtools/alz.1perc.subreads.1000.REF_unmapped.bam
+      md5sum: d91265bb9bf46e4c43dc6c0ef374dd68
