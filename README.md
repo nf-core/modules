@@ -18,17 +18,26 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-- [Using existing modules](#using-existing-modules)
-- [Adding a new module file](#adding-a-new-module-file)
+- [!nf-core/modules](#)
+  - [Table of contents](#table-of-contents)
+  - [Using existing modules](#using-existing-modules)
+  - [Adding a new module file](#adding-a-new-module-file)
     - [Checklist](#checklist)
     - [nf-core modules create](#nf-core-modules-create)
     - [Test data](#test-data)
     - [Running tests manually](#running-tests-manually)
     - [Uploading to `nf-core/modules`](#uploading-to-nf-coremodules)
     - [Guidelines](#guidelines)
-- [Terminology](#terminology)
-- [Help](#help)
-- [Citation](#citation)
+      - [General](#general)
+      - [Naming conventions](#naming-conventions)
+      - [Module parameters](#module-parameters)
+      - [Input/output options](#inputoutput-options)
+      - [Resource requirements](#resource-requirements)
+      - [Software requirements](#software-requirements)
+      - [Publishing results](#publishing-results)
+  - [Terminology](#terminology)
+  - [Help](#help)
+  - [Citation](#citation)
 
 ## Using existing modules
 
@@ -409,10 +418,22 @@ using a combination of `bwa` and `samtools` to output a BAM file instead of a SA
     - `*.fastq.gz` and NOT `*.fastq`
     - `*.bam` and NOT `*.sam`
 
-- Where applicable, each module command MUST emit a file `<SOFTWARE>.version.txt` containing a single line with the software's version in the format `<VERSION_NUMBER>` or `0.7.17` e.g.
+- Where applicable, each module command MUST emit a file `versions.yml` emitting the version number for each tool executed by the module, e.g.
 
     ```bash
-    echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
+        samtools: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$// )
+    END_VERSION
+    ```
+
+    resulting in, for instance,
+
+    ```yaml
+    FASTQC:
+        fastqc: 0.11.9
+        samtools: 1.12
     ```
 
     If the software is unable to output a version number on the command-line then a variable called `VERSION` can be manually specified to create this file e.g. [homer/annotatepeaks module](https://github.com/nf-core/modules/blob/master/modules/homer/annotatepeaks/main.nf).
