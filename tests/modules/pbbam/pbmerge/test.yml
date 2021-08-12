@@ -1,7 +1,8 @@
 - name: pbbam pbmerge test_pbbam_pbmerge
-  command: nextflow run tests/software/pbbam/pbmerge -entry test_pbbam_pbmerge -c tests/config/nextflow.config
+  command: nextflow run tests/modules/pbbam/pbmerge -entry test_pbbam_pbmerge -c tests/config/nextflow.config
   tags:
     - pbbam
+    - pbbam/pbmerge
   files:
     - path: output/pbbam/test.ccs.bam
       md5sum: 761b28323d8581ed7063f94ba865f87e
