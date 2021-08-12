@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_NORM } from '../../../../modules/bcftools/norm/main.nf' addParams( options: ['args': '-a'] )
+include { BCFTOOLS_NORM } from '../../../../modules/bcftools/norm/main.nf' addParams( options: ['args': '-m -any --no-version'] )
 
 workflow test_bcftools_norm {
     
