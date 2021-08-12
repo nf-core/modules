@@ -3,10 +3,10 @@
 //
 
 //
-// Extract name of software tool from process name using $task.process
+// Extract name of module from process name using $task.process
 //
-def getSoftwareName(task_process) {
-    return task_process.tokenize(':')[-1].tokenize('_')[0].toLowerCase()
+def getProcessName(task_process) {
+    return task_process.tokenize(':')[-1]
 }
 
 //
@@ -37,7 +37,7 @@ def getPathFromList(path_list) {
 // Function to save/publish module results
 //
 def saveFiles(Map args) {
-    if (!args.filename.endsWith('.version.txt')) {
+    if (!args.filename.equals('versions.yml')) {
         def ioptions  = initOptions(args.options)
         def path_list = [ ioptions.publish_dir ?: args.publish_dir ]
         if (ioptions.publish_by_meta) {
