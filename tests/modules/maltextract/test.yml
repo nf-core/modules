@@ -1,0 +1,9 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml maltextract
+- name: maltextract
+  command: nextflow run ./tests/modules/maltextract -entry test_maltextract -c tests/config/nextflow.config
+  tags:
+    - maltextract
+  files:
+    - path: output/maltextract/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
