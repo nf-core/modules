@@ -44,7 +44,9 @@ def getPathFromList(path_list) {
 // Function to save/publish module results
 //
 def saveFiles(Map args) {
-    if (!args.filename.equals('versions.yml')) {
+    // TODO better way to detect that we are in a test and want to emit `versions.yml`
+    // or a least use a dedicated, unique environment variable.
+    if (!args.filename.equals('versions.yml') || System.getenv("PROFILE")) {
         def ioptions  = initOptions(args.options)
         def path_list = [ ioptions.publish_dir ?: args.publish_dir ]
         if (ioptions.publish_by_meta) {
