@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml bcftools/view
+- name: bcftools view
+  command: nextflow run ./tests/modules/bcftools/view -entry test_bcftools_view -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/view
+  files:
+    - path: output/bcftools/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
