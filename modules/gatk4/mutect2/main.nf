@@ -20,7 +20,7 @@ process GATK4_MUTECT2 {
 
     input:
     tuple val(meta), path(bam), path(bai), val(which_norm)
-    val(mutect2_mode)
+    val(mutect2_mode) meep
     path fasta
     path fastaidx
     path dict
