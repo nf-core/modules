@@ -11,11 +11,11 @@ process METHYLDACKEL_EXTRACT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::methyldackel=0.5.2" : null)
+    conda (params.enable_conda ? 'bioconda::methyldackel=0.6.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/methyldackel:0.5.2--h7435645_0"
+        container "https://depot.galaxyproject.org/singularity/methyldackel:0.6.0--h22771d5_0"
     } else {
-        container "quay.io/biocontainers/methyldackel:0.5.2--h7435645_0"
+        container "quay.io/biocontainers/methyldackel:0.6.0--h22771d5_0"
     }
 
     input:
