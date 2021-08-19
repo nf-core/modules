@@ -32,7 +32,6 @@ process BCFTOOLS_QUERY {
     bcftools query \\
         --output ${prefix}.vcf.gz \\
         $options.args \\
-        --threads $task.cpus \\
         ${vcf}
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
