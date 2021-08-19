@@ -1,0 +1,7 @@
+- name: ultra test_ultra
+  command: nextflow run tests/modules/ultra -entry test_ultra -c tests/config/nextflow.config
+  tags:
+    - ultra
+  files:
+    - path: output/ultra/outfolder/test.sam
+      md5sum: a37a1f9594a3099522dc1f6a903b2b12
