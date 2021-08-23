@@ -19,8 +19,7 @@ process GATK4_MUTECT2 {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai), val(which_norm)
-    val(mutect2_mode)
+    tuple val(meta) , val (run_pon) , val (run_single) , val(which_norm) , path(bam) , path(bai) 
     path fasta
     path fastaidx
     path dict
@@ -38,11 +37,11 @@ process GATK4_MUTECT2 {
     def panelsCommand = ''
     def finalCommand = ''
 
-    if(mutect2_mode.build_pon) {
+    if(run_pon) {
       inputsCommand = "-I $bam"
       panelsCommand = ''
 
-    } else if(mutect2_mode.single_call) {
+    } else if(run_single) {
       inputsCommand = "-I $bam"
       panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals"
 
