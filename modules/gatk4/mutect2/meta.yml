@@ -28,7 +28,7 @@ input:
       pattern: "*.bam.bai"
   - which_norm:
       type: list
-      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)    
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
   - run_single:
       type: boolean
       description: Specify whether or not to run in tumor_single mode instead of tumor_normal_pair mode (will be ignored if run_pon is also true)
