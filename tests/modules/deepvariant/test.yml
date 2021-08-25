@@ -1,9 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml deepvariant
 - name: deepvariant
   command: nextflow run ./tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
   tags:
     - deepvariant
   files:
-    - path: output/deepvariant/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/deepvariant/test.vcf.gz
+      md5sum: 64be30c1ab53325cae87d486ecced8ff
+    - path: output/deepvariant/test.g.vcf.gz
+      md5sum: 8d7424deb521deb60ee5283e9475fa7d
