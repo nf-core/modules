@@ -20,6 +20,8 @@ process GATK4_MUTECT2 {
 
     input:
     tuple val(meta) , path(bam) , path(bai) , val(which_norm)
+    val run_single
+    val run_pon
     path fasta
     path fastaidx
     path dict
@@ -37,25 +39,37 @@ process GATK4_MUTECT2 {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def inputsList = []
+    def normalsList = []
     def inputsCommand = ''
     def panelsCommand = ''
+    def normalsCommand = ''
 
-    if(meta.run_pon) {
-      inputsCommand = "-I $bam"
-      panelsCommand = ''
+    bam.each() {a -> inputsList.add(" -I " + a ) }
+    inputsCommand = inputsList.join( ' ')
 
-    } else if(meta.run_single) {
-      inputsCommand = "-I $bam"
-      panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals"
+    if(run_pon) {
+        panelsCommand = ''
+        normalsCommand = ''
+
+    } else if(run_single) {
+        panelsCommand = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals"
+        normalsCommand = ''
 
     } else {
-      inputsCommand = "-I ${bam[0]} -I ${bam[1]} -normal ${which_norm[0]}"
-      panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz ${prefix}.f1r2.tar.gz"
+        panelsCommand = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz ${prefix}.f1r2.tar.gz"
+        which_norm.each() {a -> normalsList.add(" -normal " + a ) }
+        normalsCommand = normalsList.join( ' ')
     }
 
-
     """
-    gatk Mutect2 -R $fasta $inputsCommand $panelsCommand -O ${prefix}.vcf.gz $options.args
+    gatk Mutect2 \\
+        -R ${fasta} \\
+        ${inputsCommand} \\
+        ${normalsCommand} \\
+        ${panelsCommand} \\
+        -O ${prefix}.vcf.gz \\
+        $options.args
 
     echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """

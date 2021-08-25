@@ -1,47 +1,86 @@
 name: gatk4_mutect2
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description:  Call somatic SNVs and indels via local assembly of haplotypes.
 keywords:
   - sort
 tools:
   - gatk4:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Genome Analysis Toolkit (GATK4)
-      homepage: None
-      documentation: None
-      tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: ""
-      licence: ['BSD-3-clause']
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
+        e.g. [ id:'test']
   - bam:
+      type: list
+      description: list of BAM files
+      pattern: "*.bam"
+  - bai:
+      type: list
+      description: list of BAM file indexes
+      pattern: "*.bam.bai"
+  - which_norm:
+      type: list
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)    
+  - run_single:
+      type: boolean
+      description: Specify whether or not to run in tumor_single mode instead of tumor_normal_pair mode (will be ignored if run_pon is also true)
+  - run_pon:
+      type: boolean
+      description: Specify whether or not to run in panel_of_normal mode instead of tumor_normal_pair mode
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fastaidx:
+      type: file
+      description: Index of reference fasta file
+      pattern: "fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
+  - germline_resource:
+      type: file
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
+      pattern: "*.vcf.gz"
+  - germline_resource_idx:
+      type: file
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
+      pattern: "*.vcf.gz_tbi"
+  - panel_of_normals:
+      type: file
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
+      pattern: "*.vcf.gz"
+  - panel_of_normals_idx:
+      type: file
+      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
+      pattern: "*.vcf.gz_tbi"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: compressed vcf file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of vcf file
+      pattern: "*vcf.gz.tbi"
+  - f1r2:
+      type: file
+      description: file containing information to be passed to LearnReadOrientationModel (only outputted when tumor_normal_pair mode is run)
+      pattern: "*.f1r2.tar.gz"
   - version:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      pattern: "*.version.txt"
 
 authors:
   - "@GCJMackenzie"
