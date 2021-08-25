@@ -11,23 +11,27 @@ process GATK4_MUTECT2 {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.1.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.2.0--0"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.0.0--0"
+        container "quay.io/biocontainers/gatk4:4.2.2.0--0"
     }
 
     input:
-    tuple val(meta) , val (run_pon) , val (run_single) , val(which_norm) , path(bam) , path(bai) 
+    tuple val(meta) , path(bam) , path(bai) , val(which_norm)
     path fasta
     path fastaidx
     path dict
     path germline_resource
+    path germline_resource_idx
     path panel_of_normals
+    path panel_of_normals_idx
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
+    tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
     path "*.version.txt"          , emit: version
 
     script:
@@ -35,30 +39,24 @@ process GATK4_MUTECT2 {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputsCommand = ''
     def panelsCommand = ''
-    def finalCommand = ''
 
-    if(run_pon) {
+    if(meta.run_pon) {
       inputsCommand = "-I $bam"
       panelsCommand = ''
 
-    } else if(run_single) {
+    } else if(meta.run_single) {
       inputsCommand = "-I $bam"
       panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals"
 
     } else {
-      inputsCommand = "-I ${bam[0]} -I ${bam[1]} -normal $which_norm"
-      panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz"
+      inputsCommand = "-I ${bam[0]} -I ${bam[1]} -normal ${which_norm[0]}"
+      panelsCommand = "--germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz ${prefix}.f1r2.tar.gz"
     }
 
-    finalCommand = "gatk Mutect2 -R $fasta $inputsCommand $panelsCommand -O ${prefix}.vcf.gz options.args"
 
     """
-    echo $meta >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    echo $bam >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    echo $bai >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    echo $which_norm >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    echo $finalCommand >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    echo "" >> /home/AD/gmackenz/mutect2_testing/alt_log.txt
-    gatk Mutect2 -R $fasta $inputsCommand $panelsCommand -O ${prefix}.vcf.gz
+    gatk Mutect2 -R $fasta $inputsCommand $panelsCommand -O ${prefix}.vcf.gz $options.args
+
+    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
 }
