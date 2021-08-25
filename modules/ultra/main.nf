@@ -18,7 +18,9 @@ process ULTRA {
     }
 
     input:
-    tuple val(meta), path(genome), path(gtf), path(reads)
+    tuple val(meta), path(reads)
+    path(genome)
+    path(gtf)
 
     output:
     tuple val(meta), path("outfolder/*.sam"), emit: sam

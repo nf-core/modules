@@ -23,10 +23,11 @@ workflow test_ultra {
     input =
         [
             [ id:'test', single_end:false ], // meta map
-            file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true),
-            file(workflow.workDir + "/genome_sort.gtf"                     , checkIfExists: true),
-            file(workflow.workDir + "/test_hifi.fastq"                     , checkIfExists: true),
+            file(workflow.workDir + "/test_hifi.fastq", checkIfExists: true)
         ]
 
-    ULTRA ( input )
+    gtf    = file(workflow.workDir + "/genome_sort.gtf",                      checkIfExists: true)
+    genome = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    ULTRA ( input, genome, gtf )
 }
