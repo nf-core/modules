@@ -3,7 +3,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '0.4.1'
+def VERSION = '0.7.1'
 
 process SEQWISH_INDUCE {
     tag "$meta.id"
