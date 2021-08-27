@@ -6,24 +6,26 @@ include { BCFTOOLS_VIEW } from '../../../../modules/bcftools/view/main.nf' addPa
 
 workflow test_bcftools_view {
 
-    bed = []
+    regions = []
     targets = []
     samples = []
 
-    input = [[ id:'test2', single_end:false ], // meta map
-             [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)]]
+    input = [[ id:'out', single_end:false ], // meta map
+             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+             file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
 
-    BCFTOOLS_VIEW ( input, bed, targets, samples )
+    BCFTOOLS_VIEW ( input, regions, targets, samples )
 }
 
 workflow test_bcftools_view_with_optional_files {
 
-    bed = []
+    regions = file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true)
     targets = []
     samples = []
 
-    input = [[ id:'test2', single_end:false ], // meta map
-             [ file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)]]
+    input = [[ id:'out', single_end:false ], // meta map
+             file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
+             file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
 
-    BCFTOOLS_VIEW ( input, bed, targets, samples )
+    BCFTOOLS_VIEW ( input, regions, targets, samples )
 }

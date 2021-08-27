@@ -19,8 +19,8 @@ process BCFTOOLS_VIEW {
     }
 
     input:
-    tuple val(meta), path(vcf)
-    path(bed)
+    tuple val(meta), path(vcf), path(index)
+    path(regions)
     path(targets)
     path(samples)
 
@@ -31,7 +31,7 @@ process BCFTOOLS_VIEW {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def bed_file  = bed ? "--regions-file ${bed}" : ""
+    def regions_file  = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${target}" : ""
     def samples_file =  samples ? "--samples-file ${samples}" : ""
 
@@ -39,7 +39,7 @@ process BCFTOOLS_VIEW {
     """
     bcftools view \\
         --output ${prefix}.vcf.gz \\
-        ${bed_file} \\
+        ${regions_file} \\
         ${targets_file} \\
         ${samples_file} \\
         $options.args \\
