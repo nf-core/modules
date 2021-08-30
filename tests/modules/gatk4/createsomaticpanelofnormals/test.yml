@@ -1,10 +1,20 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml gatk4/createsomaticpanelofnormals
-- name: gatk4 createsomaticpanelofnormals
-  command: nextflow run ./tests/modules/gatk4/createsomaticpanelofnormals -entry test_gatk4_createsomaticpanelofnormals -c tests/config/nextflow.config
+- name: gatk4 createsomaticpanelofnormals test_gatk4_createsomaticpanelofnormals
+  command: nextflow run tests/modules/gatk4/createsomaticpanelofnormals -entry test_gatk4_createsomaticpanelofnormals -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4/createsomaticpanelofnormals
   files:
-    - path: output/gatk4/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/pon/test.vcf.gz
+      md5sum: 257fa76995e150d5914d29b7e6aa9796
+    - path: output/pon/test.vcf.gz.tbi
+      md5sum: a52586da38904ec49713ccd5c7074327
+    - path: output/tumor_normal/test.f1r2.tar.gz
+      md5sum: 69912a1d3dff79f351cefed84346dbb6
+    - path: output/tumor_normal/test.vcf.gz
+      md5sum: 6f4793e5bceaa1d7895b5b93714ddfe8
+    - path: output/tumor_normal/test.vcf.gz.tbi
+      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
+    - path: output/tumor_only/test.vcf.gz
+      md5sum: 602fb95c1c17a905284fb833db9f4255
+    - path: output/tumor_only/test.vcf.gz.tbi
+      md5sum: e5ff5c70d0236988dcc15ca9c0096ad3

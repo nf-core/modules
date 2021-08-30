@@ -5,9 +5,11 @@ nextflow.enable.dsl = 2
 include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../../modules/gatk4/createsomaticpanelofnormals/main.nf' addParams( options: [:] )
 
 workflow test_gatk4_createsomaticpanelofnormals {
-    
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 
-    GATK4_CREATESOMATICPANELOFNORMALS ( input )
+    input = [ [ id:'test' ], // meta map
+              [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) , file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz'], checkIfExists: true)] ]
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    GATK4_CREATESOMATICPANELOFNORMALS ( input , fasta)
 }
