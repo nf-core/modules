@@ -19,7 +19,7 @@ process ISOSEQ3_CLUSTER {
     }
 
     input:
-    tuple val(meta), path(bam), path(pbi)
+    tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.clustered.bam"),     path("*.clustered.singletons.bam"),       emit: bam

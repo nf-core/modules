@@ -9,7 +9,6 @@ workflow test_isoseq3_cluster {
     input = [
             [ id:'test' ], // meta map
             file(params.test_data['homo_sapiens']['pacbio']['refine'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['pacbio']['refinepbi'], checkIfExists: true)
         ]
 
     ISOSEQ3_CLUSTER ( input )
