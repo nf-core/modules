@@ -8,8 +8,8 @@ workflow test_pbccs {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['pacbio']['alz1000'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['pacbio']['alz1000pbi'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alz'],    checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true),
         2,
         3
     ]
