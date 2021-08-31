@@ -19,7 +19,7 @@ process LIMA {
     }
 
     input:
-    tuple val(meta), path(ccs), path(pbi)
+    tuple val(meta), path(ccs)
     path(primers)
 
     output:
