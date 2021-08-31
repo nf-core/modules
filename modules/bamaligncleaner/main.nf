@@ -17,9 +17,9 @@ process BAMALIGNCLEANER {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "bioconda::bamaligncleaner=0.2.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.1--pyhdfd78af_0"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/bamaligncleaner:0.2.1--pyhdfd78af_0"
     }
 
     input:
