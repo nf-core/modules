@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml bbmap/bbmapindex
+- name: bbmap bbmapindex
+  command: nextflow run ./tests/modules/bbmap/bbmapindex -entry test_bbmap_bbmapindex -c tests/config/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/bbmapindex
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
