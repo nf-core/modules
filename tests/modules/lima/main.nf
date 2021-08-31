@@ -9,7 +9,6 @@ workflow test_lima {
     input = [
                 [ id:'test' ], // meta map
                 file(params.test_data['homo_sapiens']['pacbio']['ccs'],     checkIfExists: true),
-                file(params.test_data['homo_sapiens']['pacbio']['ccspbi'],  checkIfExists: true)
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
 
