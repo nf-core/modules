@@ -1,16 +1,16 @@
 - name: isoseq3 refine test_isoseq3_refine
   command: nextflow run tests/modules/isoseq3/refine -entry test_isoseq3_refine -c tests/config/nextflow.config
   tags:
-    - isoseq3
     - isoseq3/refine
+    - isoseq3
   files:
-    - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.bam
-      md5sum: 4e873a1e19708a5839c66551e36b7e3c
-    - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.bam.pbi
-      md5sum: 36059bb921f27fabb9a0ea857cb87cf2
-    - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.consensusreadset.xml
+    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam
+      md5sum: af021501241064d8ad97c85c5e647968
+    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam.pbi
+      md5sum: da82d7ca9f3ec1f0877614fba698d9d2
+    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.consensusreadset.xml
       contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.filter_summary.json
-      md5sum: 4ba440bdee5ceb376281fd08865d4326
-    - path: output/isoseq3/alz.fl.1000.NEB_5p--NEB_Clontech_3p.flnc.report.csv
-      md5sum: 34b2bc83724111e4f58e4be88a946eb0
+    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.filter_summary.json
+      md5sum: 87f8bdd5c60741f47b8a991e002f7ef3
+    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.report.csv
+      md5sum: d42a139e5d9b08396bdb087c01243ea9
