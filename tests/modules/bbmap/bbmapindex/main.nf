@@ -6,8 +6,8 @@ include { BBMAP_BBMAPINDEX } from '../../../../modules/bbmap/bbmapindex/main.nf'
 
 workflow test_bbmap_bbmapindex {
     
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+    input = [ [ id:'test' ], // meta map
+              file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
 
     BBMAP_BBMAPINDEX ( input )
 }

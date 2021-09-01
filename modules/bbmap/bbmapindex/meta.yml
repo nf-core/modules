@@ -1,11 +1,11 @@
 name: bbmap_bbmapindex
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: This module calls bbmap.sh to create an index from a fasta file, ready to be used by bbmap.sh in mapping mode.
 keywords:
-  - sort
+  - mapping
+  - index
+  - fasta
 tools:
   - bbmap:
-      ## TODO nf-core: Add a description and other details for the software below
       description: BBMap is a short read aligner, as well as various other bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
       documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
@@ -13,20 +13,17 @@ tools:
       doi: ""
       licence: ['UC-LBL license (see package)']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing optional parameters to bbmap.sh
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - fasta:
+      type: fasta
+      description: fasta formatted file with nucleotide sequences
+      pattern: "*.{fna,fa,fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +34,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - db:
+      type: directory
+      description: Directory with index files
+      pattern: "ref"
 
 authors:
-  - "@erikrikarddaniel"
+  - "@daniellundin"
