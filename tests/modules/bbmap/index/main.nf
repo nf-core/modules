@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_BBMAPINDEX } from '../../../../modules/bbmap/bbmapindex/main.nf' addParams( options: [:] )
+include { BBMAP_INDEX } from '../../../../modules/bbmap/index/main.nf' addParams( options: [:] )
 
-workflow test_bbmap_bbmapindex {
+workflow test_bbmap_index {
     
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
 
-    BBMAP_BBMAPINDEX ( input )
+    BBMAP_INDEX ( input )
 }

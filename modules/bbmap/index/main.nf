@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 def VERSION = '38.92'       // There seems to be no way to get the version out of the bbmap.sh script, only a line with "Last modified" and a date
 
-process BBMAP_BBMAPINDEX {
+process BBMAP_INDEX {
     tag "$fasta"
     label 'process_long'
     publishDir "${params.outdir}",
