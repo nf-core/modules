@@ -22,7 +22,7 @@ process BBMAP_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('ref')  , emit: db
+    tuple val(meta), path('ref')  , emit: index
     path "*.version.txt"          , emit: version
 
     script:
