@@ -9,8 +9,8 @@ workflow test_pbbam_pbmerge {
     input = [
                 [ id:'test' ], // meta map
                 [
-                    file(params.test_data['homo_sapiens']['pacbio']['alz1000'],   checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['pacbio']['alz100000'], checkIfExists: true)
+                    file(params.test_data['homo_sapiens']['pacbio']['cluster'],    checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['pacbio']['singletons'], checkIfExists: true)
                 ]
             ]
 
