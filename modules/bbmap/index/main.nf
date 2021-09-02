@@ -4,8 +4,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '38.92'       // There seems to be no way to get the version out of the bbmap.sh script, only a line with "Last modified" and a date
-
 process BBMAP_INDEX {
     tag "$fasta"
     label 'process_long'
@@ -36,6 +34,6 @@ process BBMAP_INDEX {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
-    echo ${VERSION} > ${software}.version.txt
+    echo \$(bbversion.sh) > ${software}.version.txt
     """
 }
