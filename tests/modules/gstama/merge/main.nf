@@ -9,8 +9,8 @@ workflow test_gstama_merge {
     input = [
         [ id:'test', single_end:false ], // meta map
         [
-            file(params.test_data['galgal6']['bed']['chr30'], checkIfExists: true),
-            file(params.test_data['galgal6']['bed']['chr31'], checkIfExists: true)
+            file(params.test_data['homo_sapiens']['pacbio']['genemodel1'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['pacbio']['genemodel2'], checkIfExists: true)
         ]
     ]
 
