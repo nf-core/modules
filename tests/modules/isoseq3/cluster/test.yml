@@ -1,8 +1,8 @@
 - name: isoseq3 cluster test_isoseq3_cluster
   command: nextflow run tests/modules/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
   tags:
-    - isoseq3/cluster
     - isoseq3
+    - isoseq3/cluster
   files:
     - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam
       md5sum: e7e8427f1b05a452588ced90c86bab72
@@ -25,4 +25,4 @@
     - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam.pbi
       md5sum: bb87bcb15ad0a8790d575b4dca7b184f
     - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.transcriptset.xml
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains: [ 'pbds:TranscriptSet' ]
