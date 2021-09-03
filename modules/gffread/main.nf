@@ -28,7 +28,7 @@ process GFFREAD {
     script:
     def software = getSoftwareName(task.process)
     """
-    gffread $gff $options.args -o ${gff.baseName}.gtf
+    gffread $gff $options.args -o ${gff.baseName}.out.gtf
     echo \$(gffread --version 2>&1) > ${software}.version.txt
     """
 }
