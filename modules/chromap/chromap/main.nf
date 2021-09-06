@@ -53,7 +53,7 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
     // TODO nf-core: List additional required output channels/values here
-    path "*.version.txt"          , emit: version
+    path "*.version.txt"                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)
