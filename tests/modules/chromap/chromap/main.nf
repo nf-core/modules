@@ -18,7 +18,7 @@ workflow test_chromap_chromap_single_end {
     CHROMAP_INDEX( fasta )
     CHROMAP_CHROMAP_BASE (
         input,                      // meta + read data
-        fasta,                      // reference file
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
@@ -43,7 +43,7 @@ workflow test_chromap_chromap_paired_end {
     CHROMAP_INDEX( fasta )
     CHROMAP_CHROMAP_BASE (
         input,                      // meta + read data
-        fasta,                      // reference file
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
@@ -68,7 +68,7 @@ workflow test_chromap_chromap_paired_bam {
     CHROMAP_INDEX( fasta )
     CHROMAP_CHROMAP_SAM (
         input,                      // meta + read data
-        fasta,                      // reference file
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
