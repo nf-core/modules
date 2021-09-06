@@ -15,7 +15,6 @@ process DEEPVARIANT {
         container "docker://google/deepvariant:1.2.0"
     } else {
         container "google/deepvariant:1.2.0"
-        // container "quay.io/biocontainers/deepvariant:1.2.0--py36hf3e76ba_0"
     }
 
     input:

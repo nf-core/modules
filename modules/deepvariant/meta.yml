@@ -1,47 +1,58 @@
 name: deepvariant
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
 keywords:
-  - sort
+  - variant calling
+  - machine learning
 tools:
   - deepvariant:
-      ## TODO nf-core: Add a description and other details for the software below
       description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['MIT']
+      homepage: https://github.com/google/deepvariant
+      documentation: https://github.com/google/deepvariant
+      tool_dev_url: https://github.com/google/deepvariant
+      doi: "https://doi.org/10.1038/nbt.4235"
+      licence: ['BSD-3-clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: Index of BAM file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+  - gvcf:
+      type: file
+      description: Compressed GVCF file
+      pattern: "*.g.vcf.gz"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@abhi18av"
