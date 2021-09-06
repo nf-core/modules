@@ -22,8 +22,6 @@ tools:
       tool_dev_url: https://github.com/haowenz/chromap
       doi: ""
       licence: ['GPL v3']
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -55,8 +53,6 @@ input:
       type: file
       description: |
         Natural chromosome order for pairs flipping
-
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -67,7 +63,6 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
   - bed:
       type: file
       description: BED file
