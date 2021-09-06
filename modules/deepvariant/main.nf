@@ -12,7 +12,7 @@ process DEEPVARIANT {
 
     conda (params.enable_conda ? "bioconda::deepvariant=1.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/1.2.0--py36hf3e76ba_0"
+        container "docker://google/deepvariant:1.2.0"
     } else {
         container "google/deepvariant:1.2.0"
         // container "quay.io/biocontainers/deepvariant:1.2.0--py36hf3e76ba_0"
