@@ -20,7 +20,7 @@ workflow test_bcftools_view {
 workflow test_bcftools_view_with_optional_files {
 
     regions = file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true)
-    targets = file(params.test_data['sarscov2']['illumina']['test2_targets_vcf_gz'], checkIfExists: true)
+    targets = file(params.test_data['sarscov2']['illumina']['test2_vcf_targets_tsv_gz'], checkIfExists: true)
     samples = []
 
     input = [[ id:'out', single_end:false ], // meta map

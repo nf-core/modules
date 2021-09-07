@@ -32,7 +32,7 @@ process BCFTOOLS_VIEW {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def regions_file  = regions ? "--regions-file ${regions}" : ""
-    def targets_file = targets ? "--targets-file ${target}" : ""
+    def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file =  samples ? "--samples-file ${samples}" : ""
 
 
