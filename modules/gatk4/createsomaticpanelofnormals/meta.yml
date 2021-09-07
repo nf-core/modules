@@ -20,17 +20,24 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - vcf:
-      type: list
-      description: list of vcf files to be used for the panel of normals. Can also be a list containing a single file of paths to the vcf files or a genomicsDB workspace
-      pattern: "*.{vcf.gz,args,list,genomicsDBworkspace}"
+  - genoomicsdb:
+      type: directory
+      description: genomicsDB workspace that contains the samples to create the somatic panel of normals with.
+      pattern: "*_genomicsDBworkspace"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fastaidx:
+      type: file
+      description: Index of reference fasta file
+      pattern: "fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
   - vcf:
       type: file
       description: panel of normal as compressed vcf file

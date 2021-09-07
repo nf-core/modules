@@ -19,9 +19,10 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     }
 
     input:
-    tuple val(meta), path(vcf)
-
+    tuple val(meta), path(genomicsdb)
     path fasta
+    path fastaidx
+    path dict
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -31,16 +32,12 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def inputsList = []
-    def inputsCommand = ''
-    vcf.each() {a -> inputsList.add(" -V " + a ) }
-    inputsCommand = inputsList.join(' ')
 
     """
     gatk CreateSomaticPanelOfNormals\\
-        -R $fasta
-        ${inputsCommand} \\
-        -O ${prefix}.vcf.gz \\
+        -R $fasta \\
+        -V gendb://$genomicsdb \\
+        -O ${prefix}.pon.vcf.gz \\
         $options.args
 
     echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
