@@ -84,8 +84,8 @@ process CHROMAP_CHROMAP {
             -t ${task.cpus} \\
             -x $index \\
             -r $fasta \\
-            -1 reads[0] \\
-            -2 reads[1] \\
+            -1 ${reads[0]} \\
+            -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
         echo "$VERSION" > ${software}.version.txt
         """ + compression_cmds
