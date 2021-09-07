@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { CHROMAP_INDEX                           } from '../../../../modules/chromap/index/main.nf'   addParams( options: [:] )
 include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_BASE } from '../../../../modules/chromap/chromap/main.nf' addParams( options: [:] )
 include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_SAM  } from '../../../../modules/chromap/chromap/main.nf' addParams( options: ['args': '--SAM'] )
 
