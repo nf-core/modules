@@ -1,37 +1,33 @@
 name: chromap_index
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Indexes a fasta reference genome ready for chromatin profiling.
 keywords:
-  - sort
+    - index
+    - fasta
+    - genome
+    - reference
 tools:
   - chromap:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Fast alignment and preprocessing of chromatin profiles
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://github.com/haowenz/chromap
+      documentation: https://github.com/haowenz/chromap
+      tool_dev_url: https://github.com/haowenz/chromap
       doi: ""
       licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Fasta reference file.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - index:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Index file of the reference genome
+      pattern: "*.{index}"
 
 authors:
   - "@mahesh-panchal"
