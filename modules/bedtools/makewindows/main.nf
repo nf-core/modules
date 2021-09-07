@@ -37,6 +37,6 @@ process BEDTOOLS_MAKEWINDOWS {
         $options.args \\
         > ${prefix}.tab
 
-    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    echo \$(bedtools --version) | sed -e "s/bedtools v//g" > ${software}.version.txt
     """
 }
