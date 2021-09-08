@@ -18,7 +18,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-- [Adding new modules]
+- [Adding new modules](#adding-new-modules)
 - [Using existing modules](#using-existing-modules)
 - [Help](#help)
 - [Citation](#citation)
