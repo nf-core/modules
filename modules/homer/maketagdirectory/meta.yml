@@ -1,7 +1,6 @@
-name: homer_annotatepeaks
-description: Annotate peaks with HOMER suite
+name: homer_maketagdirectory
+description: Create a tag directory with the HOMER suite
 keywords:
-  - annotations
   - peaks
   - bed
 tools:
@@ -16,7 +15,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - peaks:
+  - bed:
       type: file
       description: The peak files in bed format
       pattern: "*.bed"
@@ -24,24 +23,19 @@ input:
       type: file
       description: Fasta file of reference genome
       pattern: "*.fasta"
-  - gtf:
-      type: file
-      description: GTF file of reference genome
-      pattern: "*.gtf"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - annotated_peaks:
-      type: file
-      description: The annotated peaks
-      pattern: "*annotatePeaks.txt"
+  - tag_dir:
+      type: directory
+      description: The "Tag Directory"
+      pattern: "tag_dir"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
 authors:
-  - "@drpatelh"
-  - "@kevinmenden"
+  - "@EMiller88"
