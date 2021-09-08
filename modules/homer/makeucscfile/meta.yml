@@ -1,9 +1,9 @@
-name: homer_annotatepeaks
-description: Annotate peaks with HOMER suite
+name: homer_makeucscfile
+description: Create a UCSC bed graph with the HOMER suite
 keywords:
-  - annotations
   - peaks
   - bed
+  - bedGraph
 tools:
   - homer:
       description: |
@@ -16,32 +16,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - peaks:
-      type: file
-      description: The peak files in bed format
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: Fasta file of reference genome
-      pattern: "*.fasta"
-  - gtf:
-      type: file
-      description: GTF file of reference genome
-      pattern: "*.gtf"
+  - tagDir:
+      type: directory
+      description: "The 'Tag Directory'"
+      pattern: "tagDir"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - annotated_peaks:
+  - bedGraph:
       type: file
-      description: The annotated peaks
-      pattern: "*annotatePeaks.txt"
+      description: The UCSC bed graph
+      pattern: "tag_dir/*ucsc.bedGraph.gz"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
 authors:
-  - "@drpatelh"
-  - "@kevinmenden"
+  - "@EMiller88"
