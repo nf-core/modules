@@ -1,10 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml gatk4/calculatecontamination
-- name: gatk4 calculatecontamination
-  command: nextflow run ./tests/modules/gatk4/calculatecontamination -entry test_gatk4_calculatecontamination -c tests/config/nextflow.config
+- name: gatk4 calculatecontamination test_gatk4_calculatecontamination_tumor_only
+  command: nextflow run tests/modules/gatk4/calculatecontamination -entry test_gatk4_calculatecontamination_tumor_only -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4/calculatecontamination
   files:
-    - path: output/gatk4/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/gatk4/test.contamination.table
+      md5sum: ff348a26dd09404239a7ed0da7d98874
+
+- name: gatk4 calculatecontamination test_gatk4_calculatecontamination_matched_pair
+  command: nextflow run tests/modules/gatk4/calculatecontamination -entry test_gatk4_calculatecontamination_matched_pair -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/calculatecontamination
+  files:
+    - path: output/gatk4/test.contamination.table
+      md5sum: ff348a26dd09404239a7ed0da7d98874
