@@ -1,9 +1,8 @@
-name: homer_annotatepeaks
-description: Annotate peaks with HOMER suite
+name: homer_findpeaks
+description: Find peaks with HOMER suite
 keywords:
   - annotations
   - peaks
-  - bed
 tools:
   - homer:
       description: |
@@ -16,32 +15,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - peaks:
-      type: file
-      description: The peak files in bed format
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: Fasta file of reference genome
-      pattern: "*.fasta"
-  - gtf:
-      type: file
-      description: GTF file of reference genome
-      pattern: "*.gtf"
+  - tagDir:
+      type: directory
+      description: "The 'Tag Directory'"
+      pattern: "tagDir"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - annotated_peaks:
+  - peaks:
       type: file
-      description: The annotated peaks
-      pattern: "*annotatePeaks.txt"
+      description: The found peaks
+      pattern: "*peaks.txt"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
 authors:
-  - "@drpatelh"
-  - "@kevinmenden"
+  - "@EMiller88"
