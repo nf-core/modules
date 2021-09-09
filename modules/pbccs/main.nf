@@ -22,9 +22,12 @@ process PBCCS {
     tuple val(meta), path(bam), path(pbi), val(chunk_num), val(chunk_on)
 
     output:
-    tuple val(meta), path("*.ccs.bam"), path("*.ccs.bam.pbi"), emit: bam
-    tuple path("*.ccs_report.txt"), path("*.ccs_report.json"), path ("*.zmw_metrics.json.gz"), emit: reports
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.ccs.bam")            , emit: bam
+    tuple val(meta), path("*.ccs.bam.pbi")        , emit: pbi
+    tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
+    tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
+    tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
+    tuple val(meta), path("*.version.txt" )       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
