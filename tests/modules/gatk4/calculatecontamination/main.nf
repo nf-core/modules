@@ -10,7 +10,9 @@ workflow test_gatk4_calculatecontamination_tumor_only {
               file("/home/AD/gmackenz/test_data/pileupsummaries/test2.pileups.table", checkIfExists: true),
               [] ]
 
-    GATK4_CALCULATECONTAMINATION ( input )
+    segmentout = false
+
+    GATK4_CALCULATECONTAMINATION ( input , segmentout )
 }
 
 workflow test_gatk4_calculatecontamination_matched_pair {
@@ -19,5 +21,18 @@ workflow test_gatk4_calculatecontamination_matched_pair {
               file("/home/AD/gmackenz/test_data/pileupsummaries/test2.pileups.table", checkIfExists: true),
               file("/home/AD/gmackenz/test_data/pileupsummaries/test.pileups.table", checkIfExists: true) ]
 
-    GATK4_CALCULATECONTAMINATION ( input )
+    segmentout = false
+
+    GATK4_CALCULATECONTAMINATION ( input , segmentout )
+}
+
+workflow test_gatk4_calculatecontamination_segmentation {
+
+    input = [ [ id:'test' ], // meta map
+              file("/home/AD/gmackenz/test_data/pileupsummaries/test2.pileups.table", checkIfExists: true),
+              file("/home/AD/gmackenz/test_data/pileupsummaries/test.pileups.table", checkIfExists: true) ]
+
+    segmentout = true
+
+    GATK4_CALCULATECONTAMINATION ( input , segmentout )
 }

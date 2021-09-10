@@ -21,22 +21,33 @@ process GATK4_CALCULATECONTAMINATION {
     input:
     tuple val(meta), path(pileup), path(matched)
 
+    val segmentout
+
     output:
-    tuple val(meta), path('*.contamination.table'), emit: table
+    tuple val(meta), path('*.contamination.table'), emit: contamination
+    tuple val(meta), path('*.segmentation.table'), optional:true, emit: segmentation
     path '*.version.txt'          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def matchedCommand = ''
+    def segmentCommand = ''
 
     matchedCommand = matched ? " -matched ${matched} " : ''
+
+    if(segmentout){
+        segmentCommand = " -segments ${prefix}.segmentation.table"
+    } else {
+        segmentCommand = ''
+    }
 
     """
     gatk CalculateContamination \\
         -I $pileup \\
-        $matchedCommand \\
+        ${matchedCommand} \\
         -O ${prefix}.contamination.table \\
+        ${segmentCommand} \\
         $options.args
     echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
     """
