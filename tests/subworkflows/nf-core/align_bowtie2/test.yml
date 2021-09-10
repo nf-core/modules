@@ -31,16 +31,16 @@
       md5sum: e3b4ef343dea4dd571642010a7d09597
       # samtools sort
     - path: ./output/samtools/test.sorted.bam
-      md5sum: e4c77897d6824ce4df486d1b100618af
+      md5sum: de6501dc022fcc6a66cc721aaa764ad7
     - path: ./output/samtools/test.sorted.bam.bai
-      md5sum: a70940ce9ba2e700ec2984e0a6526099
+      md5sum: 515170919ddbf39474be3504dfb39f9d
       # samtools stats
     - path: ./output/samtools/test.single_end.sorted.bam.flagstat
-      md5sum: 2191911d72575a2358b08b1df64ccb53
+      md5sum: e9ce9093133116bc54fd335cfe698372
     - path: ./output/samtools/test.single_end.sorted.bam.idxstats
-      md5sum: 613e048487662c694aa4a2f73ca96a20
+      md5sum: e16eb632f7f462514b0873c7ac8ac905
     - path: ./output/samtools/test.single_end.sorted.bam.stats
-      md5sum: 8ead076560abbc1c59c6a3f72f02a752
+      md5sum: 2d837cd72432cd856fca70d33f02ffb5
 
 - name: align bowtie2 paired-end
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_paired_end -c tests/config/nextflow.config
