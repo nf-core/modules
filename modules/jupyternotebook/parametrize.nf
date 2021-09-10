@@ -1,4 +1,5 @@
 import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.representer.Representer
 import org.yaml.snakeyaml.DumperOptions
 
 
@@ -20,7 +21,14 @@ def indent_code_block(code, n_spaces) {
 def dump_params_yml(params) {
     DumperOptions options = new DumperOptions();
     options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-    def yaml = new Yaml(options)
+
+    // Properly handle Groovy GStrings
+    // see https://stackoverflow.com/a/35108062/2340703
+    def representer = new Representer() {{
+        this.multiRepresenters.put(GString, this.representers.get(String))
+    }}
+
+    def yaml = new Yaml(representer, options)
     def yaml_str = yaml.dump(params)
 
     // Writing the .params.yml file directly as follows does not work.
