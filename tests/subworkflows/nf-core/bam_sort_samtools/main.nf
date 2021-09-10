@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_SORT_SAMTOOLS } from '../../../../subworkflows/nf-core/bam_sort_samtools/main' addParams( options: [:] )
+include { BAM_SORT_SAMTOOLS } from '../../../../subworkflows/nf-core/bam_sort_samtools/main' addParams( options: ['suffix': '.sorted']  )
 
 workflow test_bam_sort_samtools_single_end {
     input = [ [ id:'test', single_end:false ], // meta map
