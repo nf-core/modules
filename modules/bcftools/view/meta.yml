@@ -23,7 +23,27 @@ input:
         type: file
         description: |
           The vcf file to be inspected.
-          e.g. 'file1.vcf'
+          e.g. 'file.vcf'
+    - index:
+        type: file
+        description: |
+          The tab index for the VCF file to be inspected.
+          e.g. 'file.tbi'
+    - regions:
+        type: file
+        description: |
+          Optionally, restrict the operation to regions listed in this file.
+          e.g. 'file.vcf'
+    - targets:
+        type: file
+        description: |
+          Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+          e.g. 'file.vcf'
+    - samples:
+        type: file
+        description: |
+          Optional, file of sample names to be included or excluded.
+          e.g. 'file.tsv'
 output:
     - meta:
         type: map
