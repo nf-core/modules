@@ -20,6 +20,9 @@ process BCFTOOLS_QUERY {
 
     input:
     tuple val(meta), path(vcf)
+    path(regions)
+    path(targets)
+    path(samples)
 
     output:
     tuple val(meta), path("*.gz") , emit: vcf
@@ -28,10 +31,18 @@ process BCFTOOLS_QUERY {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def regions_file  = regions ? "--regions-file ${regions}" : ""
+    def targets_file = targets ? "--targets-file ${targets}" : ""
+    def samples_file =  samples ? "--samples-file ${samples}" : ""
+
     """
     bcftools query \\
         --output ${prefix}.vcf.gz \\
+        ${regions_file} \\
+        ${targets_file} \\
+        ${samples_file} \\
         $options.args \\
+        --threads $task.cpus \\
         ${vcf}
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
