@@ -39,7 +39,7 @@ process FASTANI {
     fastANI \\
     ${query_arg} \\
     ${reference_arg} \\
-    -o ${prefix}.out.txt
+    -o ${prefix}.ani.txt
 
     echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
     """
