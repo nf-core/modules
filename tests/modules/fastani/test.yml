@@ -1,9 +1,7 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml fastani
 - name: fastani
   command: nextflow run ./tests/modules/fastani -entry test_fastani -c tests/config/nextflow.config
   tags:
     - fastani
   files:
-    - path: output/fastani/test.bam
+    - path: output/fastani/test.ani.txt
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
