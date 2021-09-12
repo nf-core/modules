@@ -10,7 +10,6 @@ workflow test_bcftools_query {
     targets = []
     samples = []
 
-   
     input = [ [ id:'out' ], // meta map
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
