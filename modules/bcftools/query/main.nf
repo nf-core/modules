@@ -19,7 +19,7 @@ process BCFTOOLS_QUERY {
     }
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(index)
     path(regions)
     path(targets)
     path(samples)
@@ -42,7 +42,6 @@ process BCFTOOLS_QUERY {
         ${targets_file} \\
         ${samples_file} \\
         $options.args \\
-        --threads $task.cpus \\
         ${vcf}
 
     echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
