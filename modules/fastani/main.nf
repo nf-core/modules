@@ -20,6 +20,10 @@ process FASTANI {
 
     input:
     tuple val(meta), path(bam)
+    path(query_list)
+    path(reference_list)
+    path(query)
+    path(reference)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -28,14 +32,14 @@ process FASTANI {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def query_arg =
+    def reference_arg =
+
     """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    fastANI \\
+    -q data/Shigella_flexneri_2a_01.fna \\
+    -r data/Escherichia_coli_str_K12_MG1655.fna \\
+    -o ${prefix}.out.txt
 
     echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
