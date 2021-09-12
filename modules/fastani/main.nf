@@ -5,8 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process FASTANI {
-    tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
@@ -19,28 +18,27 @@ process FASTANI {
     }
 
     input:
-    tuple val(meta), path(bam)
-    path(query_list)
-    path(reference_list)
     path(query)
     path(reference)
+    path(query_list)
+    path(reference_list)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    path("*.ani.txt")             , emit: ani
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def query_arg =
-    def reference_arg =
+    def query_arg = query_list ? "-ql ${query_list}" : "-q ${query}"
+    def reference_arg = = reference_list ? "-rl ${reference_list}" : "-r ${reference}"
 
     """
     fastANI \\
-    -q data/Shigella_flexneri_2a_01.fna \\
-    -r data/Escherichia_coli_str_K12_MG1655.fna \\
-    -o ${prefix}.out.txt
+    ${query_arg} \\
+    ${reference_arg} \\
+    -o ${prefix}.ani.txt
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
     """
 }
