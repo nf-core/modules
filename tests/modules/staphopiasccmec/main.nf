@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { STAPHOPIASCCMEC } from '../../../modules/staphopiasccmec/main.nf' addParams( options: [:] )
+include { STAPHOPIASCCMEC as STAPHOPIASCCMEC_HAMMING } from '../../../modules/staphopiasccmec/main.nf' addParams( options: [args: '--hamming'] )
 
 workflow test_staphopiasccmec {
     
@@ -10,4 +11,12 @@ workflow test_staphopiasccmec {
               file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
     STAPHOPIASCCMEC ( input )
+}
+
+workflow test_staphopiasccmec_hamming {
+    
+    input = [ [ id:'test' ],
+              file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+
+    STAPHOPIASCCMEC_HAMMING ( input )
 }
