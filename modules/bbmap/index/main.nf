@@ -9,7 +9,7 @@ process BBMAP_INDEX {
     label 'process_long'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -19,10 +19,10 @@ process BBMAP_INDEX {
     }
 
     input:
-    tuple val(meta), path(fasta)
+    path fasta 
 
     output:
-    tuple val(meta), path('ref')  , emit: index
+    path 'ref'                    , emit: index
     path "*.version.txt"          , emit: version
 
     script:
