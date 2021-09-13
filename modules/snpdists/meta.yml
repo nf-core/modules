@@ -1,47 +1,41 @@
 name: snpdists
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Pairwise SNP distance matrix from a FASTA sequence alignment
 keywords:
-  - sort
+  - snp-dists
+  - distance-matrix
 tools:
   - snpdists:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Convert a FASTA alignment to SNP distance matrix
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://github.com/tseemann/snp-dists
+      documentation: https://github.com/tseemann/snp-dists
+      tool_dev_url: https://github.com/tseemann/snp-dists
       doi: ""
       licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - alignment:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The input FASTA sequence alignment file
+      pattern: "*.{fasta,fasta.gz}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - tsv:
+      type: file
+      description: The output TSV file containing SNP distance matrix
+      pattern: "*.tsv"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
 authors:
   - "@abhi18av"
