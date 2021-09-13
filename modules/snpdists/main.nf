@@ -22,7 +22,7 @@ process SNPDISTS {
     tuple val(meta), path(alignment)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.tsv"), emit: tsv
     path "*.version.txt"          , emit: version
 
     script:
