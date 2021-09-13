@@ -1,47 +1,51 @@
 name: fastani
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
+  - fastani
 tools:
   - fastani:
-      ## TODO nf-core: Add a description and other details for the software below
       description: FastANI is developed for fast alignment-free computation of whole-genome Average Nucleotide Identity (ANI).
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/ParBLiSS/FastANI
+      documentation: https://github.com/ParBLiSS/FastANI
+      tool_dev_url: https://github.com/ParBLiSS/FastANI
+      doi: 10.1038/s41467-018-07641-9
       licence: ['Apache-2.0']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - query:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: Fasta file(s) to be queried
+      pattern: "*.fasta"
+  - reference:
+      type: file
+      description: Fasta file(s) to be used as reference for the query
+      pattern: "*.fasta"
+  - query_list:
+      type: file
+      description: List of fasta file(s) to be queried
+      pattern: "*.txt"
+  - reference_list:
+      type: file
+      description: List of fasta file(s) to be used as reference for the query
+      pattern: "*.txt"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - ani:
+      type: file
+      description: Results of the query
+      pattern: "*.ani.txt"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
 authors:
   - "@abhi18av"
