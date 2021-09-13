@@ -1,0 +1,7 @@
+- name: staphopiasccmec test_staphopiasccmec
+  command: nextflow run tests/modules/staphopiasccmec -entry test_staphopiasccmec -c tests/config/nextflow.config
+  tags:
+    - staphopiasccmec
+  files:
+    - path: output/staphopiasccmec/test-sccmec.tsv
+      md5sum: e6460d4164f3af5b290c5ccdb11343bf
