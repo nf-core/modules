@@ -29,7 +29,9 @@ process SNPDISTS {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    snp-dists ${alignment} > ${prefix}.tsv
+    snp-dists \\
+        $options.args \\
+        ${alignment} > ${prefix}.tsv
 
     echo \$(snp-dists -v 2>&1) | sed 's/snp-dists //;' > ${software}.version.txt
     """
