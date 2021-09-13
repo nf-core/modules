@@ -29,7 +29,7 @@ process STAPHOPIASCCMEC {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    staphopia-sccmec --assembly $fasta $options.args > $prefix.tsv
+    staphopia-sccmec --assembly $fasta $options.args > ${prefix}.tsv
 
     echo \$(staphopia-sccmec --version 2>&1) | sed 's/^.*staphopia-sccmec //' > ${software}.version.txt
     """
