@@ -33,7 +33,7 @@ process FASTANI {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def query_arg = query_list ? "-ql ${query_list}" : "-q ${query}"
-    def reference_arg = = reference_list ? "-rl ${reference_list}" : "-r ${reference}"
+    def reference_arg = reference_list ? "-rl ${reference_list}" : "-r ${reference}"
 
     """
     fastANI \\
