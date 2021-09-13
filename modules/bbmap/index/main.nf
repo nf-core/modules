@@ -19,7 +19,7 @@ process BBMAP_INDEX {
     }
 
     input:
-    path fasta 
+    path fasta
 
     output:
     path 'ref'                    , emit: index
