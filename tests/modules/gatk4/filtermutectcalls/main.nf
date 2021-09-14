@@ -5,9 +5,14 @@ nextflow.enable.dsl = 2
 include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/gatk4/filtermutectcalls/main.nf' addParams( options: [:] )
 
 workflow test_gatk4_filtermutectcalls {
-    
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 
-    GATK4_FILTERMUTECTCALLS ( input )
+    input = [ [ id:'test'], // meta map
+              file("/home/AD/gmackenz/test_data/test_tumor_normal_call.vcf.gz", checkIfExists: true),
+              file("/home/AD/gmackenz/test_data/test_tumor_normal_call.vcf.gz.tbi", checkIfExists: true)]
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+
+    GATK4_FILTERMUTECTCALLS ( input , fasta , fastaidx , dict )
 }
