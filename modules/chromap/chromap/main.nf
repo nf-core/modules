@@ -71,7 +71,7 @@ process CHROMAP_CHROMAP {
     if (meta.single_end) {
         """
         chromap ${args.join(' ')} \\
-            -t ${task.cpus} \\
+            -t $task.cpus \\
             -x $index \\
             -r $fasta \\
             -1 ${reads.join(',')} \\
