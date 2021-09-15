@@ -24,8 +24,8 @@ process CHROMAP_INDEX {
     path fasta
 
     output:
-    path "*.index"       , emit: index
-    path "*.version.txt" , emit: version
+    path "*.index"      , emit: index
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
