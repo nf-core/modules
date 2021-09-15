@@ -19,8 +19,7 @@ process PBCCS {
     }
 
     input:
-    tuple val(meta), path(bam)
-    path pbi
+    tuple val(meta), path(bam), path(pbi)
     val chunk_num
     val chunk_on
 
