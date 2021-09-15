@@ -1,0 +1,8 @@
+- name: bbmap align
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align -c tests/config/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 72aeb1dff1860b55fa82e840c23ac6af
