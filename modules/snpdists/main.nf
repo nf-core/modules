@@ -31,7 +31,7 @@ process SNPDISTS {
     """
     snp-dists \\
         $options.args \\
-        ${alignment} > ${prefix}.tsv
+        $alignment > ${prefix}.tsv
 
     echo \$(snp-dists -v 2>&1) | sed 's/snp-dists //;' > ${software}.version.txt
     """
