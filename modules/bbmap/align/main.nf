@@ -50,10 +50,10 @@ process BBMAP_ALIGN {
     bbmap.sh \\
         $db \\
         $input \\
-        out=stdout.sam \\
+        out=${prefix}.bam \\
         $options.args \\
         threads=$split_cpus \\
-        -Xmx${task.memory.toGiga()}g | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam
+        -Xmx${task.memory.toGiga()}g
 
     echo \$(bbversion.sh) > ${software}.version.txt
     """

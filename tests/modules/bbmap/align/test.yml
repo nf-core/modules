@@ -5,7 +5,7 @@
     - bbmap/align
   files:
     - path: output/bbmap/test.bam
-      md5sum: 72aeb1dff1860b55fa82e840c23ac6af
+      md5sum: 4663e1bdd071660a2a469c3178439ac1
 
 - name: bbmap align paired end index ref
   command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref -c tests/config/nextflow.config
@@ -14,7 +14,7 @@
     - bbmap/align
   files:
     - path: output/bbmap/test.bam
-      md5sum: 4d477ad47e375c9dec2744fcb3a7aac8
+      md5sum: 3480ce7a08c2a6558db60691ed547209
 
 - name: bbmap align single end index ref
   command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_single_end_index_ref -c tests/config/nextflow.config
@@ -23,4 +23,4 @@
     - bbmap/align
   files:
     - path: output/bbmap/test.bam
-      md5sum: 85a29e7639798b1e755716cec76e7e6b
+      md5sum: d3bdddb8e85225c5488120b5b5e288ba
