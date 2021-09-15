@@ -66,7 +66,7 @@ workflow test_chromap_chromap_paired_bam {
         ]
     ]
 
-    CHROMAP_INDEX( fasta )
+    CHROMAP_INDEX ( fasta )
     CHROMAP_CHROMAP_SAM (
         input,                      // meta + read data
         fasta,                      // reference genome
