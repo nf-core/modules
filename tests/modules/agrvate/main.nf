@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { AGRVATE } from '../../../modules/agrvate/main.nf' addParams( options: [:] )
+include { AGRVATE } from '../../../modules/agrvate/main.nf' addParams( options: ["args": "--mummer"] )
 
 workflow test_agrvate {
     
