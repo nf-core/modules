@@ -1,44 +1,44 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
+
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '0.7.1'
-
-process SEQWISH_INDUCE {
+process PLINK_VCF {
     tag "$meta.id"
     label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::seqwish=0.7.1' : null)
-
+    conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/seqwish:0.7.1--h2e03b76_0"
+        container "https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1"
     } else {
-        container "quay.io/biocontainers/seqwish:0.7.1--h2e03b76_0"
+        container "quay.io/biocontainers/plink:1.90b6.21--h779adbc_1"
     }
 
     input:
-    tuple val(meta), path(paf), path(fasta)
+    tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.gfa"), emit: gfa
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.bed"), emit: bed, optional: true
+    tuple val(meta), path("*.bim"), emit: bim, optional: true
+    tuple val(meta), path("*.fam"), emit: fam, optional: true
 
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    """
-    seqwish \\
-        --threads $task.cpus \\
-        --paf-alns=$paf \\
-        --seqs=$fasta \\
-        --gfa=${prefix}.gfa \\
-        $options.args
 
-    echo $VERSION > ${software}.version.txt
+    """
+    plink \\
+        --vcf ${vcf} \\
+        $options.args \\
+        --threads $task.cpus \\
+        --out ${prefix}
+
+    echo \$(plink --version 2>&1) | sed 's/^PLINK //' | sed 's/..-bit.*//'> ${software}.version.txt
     """
 }
