@@ -27,8 +27,12 @@ process GFFREAD {
 
     script:
     def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${gff.baseName}${options.suffix}" : "${gff.baseName}"
     """
-    gffread $gff $options.args -o ${gff.baseName}.out.gtf
+    gffread \\
+        $gff \\
+        $options.args \\
+        -o ${prefix}.gtf
     echo \$(gffread --version 2>&1) > ${software}.version.txt
     """
 }
