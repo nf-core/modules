@@ -45,7 +45,7 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        echo \$(kb 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//' > ${software}.version.txt
         """
     } else {
         """
@@ -61,7 +61,7 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        echo \$(kb 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//' > ${software}.version.txt
         """
     }
 }
