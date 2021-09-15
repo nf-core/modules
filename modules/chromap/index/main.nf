@@ -29,7 +29,7 @@ process CHROMAP_INDEX {
 
     script:
     def software = getSoftwareName(task.process)
-    def prefix = fasta.baseName
+    def prefix   = fasta.baseName
     """
     chromap -i $options.args \\
         -t ${task.cpus} \\
