@@ -6,8 +6,7 @@ include { BBMAP_INDEX } from '../../../../modules/bbmap/index/main.nf' addParams
 
 workflow test_bbmap_index {
     
-    input = [ [ id:'test' ], // meta map
-              file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    input = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
     BBMAP_INDEX ( input )
 }
