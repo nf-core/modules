@@ -81,7 +81,7 @@ process CHROMAP_CHROMAP {
     } else {
         """
         chromap ${args.join(' ')} \\
-            -t ${task.cpus} \\
+            -t $task.cpus \\
             -x $index \\
             -r $fasta \\
             -1 ${reads[0]} \\
