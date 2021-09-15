@@ -16,7 +16,7 @@ workflow test_chromap_chromap_single_end {
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
 
-    CHROMAP_INDEX( fasta )
+    CHROMAP_INDEX ( fasta )
     CHROMAP_CHROMAP_BASE (
         input,                      // meta + read data
         fasta,                      // reference genome
