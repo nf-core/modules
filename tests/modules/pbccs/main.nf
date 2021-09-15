@@ -8,12 +8,12 @@ workflow test_pbccs {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['pacbio']['alz'],    checkIfExists: true)
+        file(params.test_data['homo_sapiens']['pacbio']['alz'],    checkIfExists: true),
+        file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true)
     ]
 
-    index     = file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true)
     chunk_num = 2
     chunk_on  = 3
 
-    PBCCS ( input, index, chunk_num, chunk_on )
+    PBCCS ( input, chunk_num, chunk_on )
 }
