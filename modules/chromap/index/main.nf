@@ -32,7 +32,7 @@ process CHROMAP_INDEX {
     def prefix   = fasta.baseName
     """
     chromap -i $options.args \\
-        -t ${task.cpus} \\
+        -t $task.cpus \\
         -r $fasta \\
         -o ${prefix}.index
     echo "$VERSION" > ${software}.version.txt
