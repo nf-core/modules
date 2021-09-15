@@ -1,8 +1,26 @@
-- name: bbmap align
-  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align -c tests/config/nextflow.config
+- name: bbmap align paired end fasta ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_fasta_ref -c tests/config/nextflow.config
   tags:
     - bbmap
     - bbmap/align
   files:
     - path: output/bbmap/test.bam
       md5sum: 72aeb1dff1860b55fa82e840c23ac6af
+
+- name: bbmap align paired end index ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref -c tests/config/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 4d477ad47e375c9dec2744fcb3a7aac8
+
+- name: bbmap align single end index ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_single_end_index_ref -c tests/config/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 85a29e7639798b1e755716cec76e7e6b
