@@ -19,7 +19,7 @@ process GATK4_FILTERMUTECTCALLS {
         }
 
     input:
-    tuple val(meta) , path(vcf) , path(tbi)
+    tuple val(meta) , path(vcf) , path(tbi) , path(stats) , path(orientationbias) , path(segmentation) , path(contaminationfile) , val(contaminationest)
 
     path fasta
     path fastaidx
@@ -28,16 +28,42 @@ process GATK4_FILTERMUTECTCALLS {
     output:
     tuple val(meta), path("*.filtered.vcf.gz"), emit: filteredvcf
     tuple val(meta), path("*.filtered.vcf.gz.tbi"), emit: filteredtbi
+    tuple val(meta), path("*.filteringStats.tsv"), emit: filteringstats
     path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def biasCommand = ''
+    def segementationCommand = ''
+    def contaminationCommand = ''
+    def biasList = []
+    def segmentationList = []
+    def contaminationList = []
+    def useconfile = false
+
+    useconfile = contaminationfile ? true : false
+
+    orientationbias.each() {a -> biasList.add(" --orientation-bias-artifact-priors " + a)}
+    biasCommand = biasList.join(' ')
+
+    segmentation.each() {a -> segmentationList.add(" --tumor-segmentation " + a)}
+    segementationCommand = segmentationList.join(' ')
+
+    if(useconfile){
+        contaminationfile.each() {a -> contaminationList.add(" --contamination-table " + a)}
+        contaminationCommand = contaminationList.join(' ')
+    } else {
+        contaminationCommand = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
+    }
 
     """
     gatk FilterMutectCalls \\
         -R $fasta \\
         -V $vcf \\
+        ${biasCommand} \\
+        ${segementationCommand} \\
+        ${contaminationCommand} \\
         -O ${prefix}.filtered.vcf.gz \\
         $options.args
 
