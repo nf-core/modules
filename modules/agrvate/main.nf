@@ -32,7 +32,7 @@ process AGRVATE {
     """
     agrvate \\
         $options.args \\
-        -i ${fasta}
+        -i $fasta
 
     echo \$(agrvate -v 2>&1) | sed 's/agrvate //;' > ${software}.version.txt
     """
