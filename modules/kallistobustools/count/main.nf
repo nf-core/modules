@@ -51,6 +51,6 @@ process KALLISTOBUSTOOLS_COUNT {
         ${reads[0]} \\
         ${reads[1]}
 
-    echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+    echo \$(kb 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//' > ${software}.version.txt
     """
 }
