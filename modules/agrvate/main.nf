@@ -22,8 +22,9 @@ process AGRVATE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${fasta.baseName}-results"), emit: results_dir
-    path "*.version.txt"                              , emit: version
+    tuple val(meta), path("${fasta.baseName}-results/${fasta.baseName}-summary.tab"), emit: summary
+    path "${fasta.baseName}-results"                                                , emit: results_dir
+    path "*.version.txt"                                                            , emit: version
 
     script:
     def software = getSoftwareName(task.process)
