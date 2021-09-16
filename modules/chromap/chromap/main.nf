@@ -74,6 +74,7 @@ process CHROMAP_CHROMAP {
             -r $fasta \\
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
+
         echo "$VERSION" > ${software}.version.txt
         """ + compression_cmds
     } else {
@@ -85,6 +86,7 @@ process CHROMAP_CHROMAP {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
+        
         echo "$VERSION" > ${software}.version.txt
         """ + compression_cmds
     }
