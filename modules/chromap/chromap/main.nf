@@ -64,8 +64,6 @@ process CHROMAP_CHROMAP {
         samtools view $options.args2 -@ ${task.cpus} -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
-
-        samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
         """
     }
     if (meta.single_end) {
