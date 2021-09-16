@@ -1,7 +1,8 @@
-- name: pydamage test_pydamage
-  command: nextflow run tests/modules/pydamage -entry test_pydamage -c tests/config/nextflow.config
+- name: test_pydamage_filter
+  command: nextflow run tests/modules/pydamage/filter -entry test_pydamage -c tests/config/nextflow.config
   tags:
     - pydamage
+    - pydamage/filter
   files:
     - path: output/pydamage/pydamage_results/pydamage_filtered_results.csv
       md5sum: 9f297233cf4932d7d7e52cc72d4727dc

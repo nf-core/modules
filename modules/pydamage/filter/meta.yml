@@ -1,0 +1,43 @@
+name: pydamage
+description: Damage parameter estimation for ancient DNA
+keywords:
+  - ancient DNA
+  - de novo assembly
+  - filtering
+tools:
+  - pydamage:
+      description: Damage parameter estimation for ancient DNA
+      homepage: https://github.com/maxibor/pydamage
+      documentation: https://pydamage.readthedocs.io/
+      tool_dev_url: https://github.com/maxibor/pydamage
+      licence: ['GPL v3']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: csv file from pydamage analyze
+      pattern: "*.csv"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  ## TODO nf-core: Delete / customise this example output
+  - csv:
+      type: file
+      description: PyDamage filtered results as csv file
+      pattern: "*.csv"
+
+authors:
+  - "@maxibor"

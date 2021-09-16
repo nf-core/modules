@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { PYDAMAGE } from '../../../modules/pydamage/main.nf' addParams( options: [:] )
+include { PYDAMAGE_ANALYZE } from '../../../../modules/pydamage/analyze/main.nf' addParams( options: [:] )
+include {PYDAMAGE_FILTER} from '../../../../modules/pydamage/filter/main.nf' addParams( options: [:] )
 
 workflow test_pydamage {
 
@@ -10,5 +11,6 @@ workflow test_pydamage {
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
 
-    PYDAMAGE ( input )
+    PYDAMAGE_ANALYZE ( input )
+    PYDAMAGE_FILTER (PYDAMAGE_ANALYZE.out.csv)
 }
