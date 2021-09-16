@@ -36,6 +36,6 @@ process PYDAMAGE_FILTER {
         $options.args \\
         $csv
 
-    pydamage --version | sed -e 's/pydamage, version //g' > ${software}.version.txt
+    echo \$(pydamage --version 2>&1)  | sed -e 's/pydamage, version //g' > ${software}.version.txt
     """
 }
