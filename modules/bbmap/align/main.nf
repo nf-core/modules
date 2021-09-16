@@ -30,7 +30,6 @@ process BBMAP_ALIGN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    split_cpus = Math.floor(task.cpus/2)
     input = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
 
     // Set the db variable to reflect the three possible types of reference input: 1) directory
@@ -52,7 +51,7 @@ process BBMAP_ALIGN {
         $input \\
         out=${prefix}.bam \\
         $options.args \\
-        threads=$split_cpus \\
+        threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
     echo \$(bbversion.sh) > ${software}.version.txt
