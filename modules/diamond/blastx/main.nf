@@ -15,9 +15,9 @@ process DIAMOND_BLASTX {
     // singularity version higher than this at the current time.
     conda (params.enable_conda ? "bioconda::diamond=2.0.9" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-          container 'https://depot.galaxyproject.org/singularity/diamond:2.0.9--hdcc8f71_0'
+        container 'https://depot.galaxyproject.org/singularity/diamond:2.0.9--hdcc8f71_0'
     } else {
-          container "quay.io/biocontainers/diamond:2.0.9--hdcc8f71_0"
+        container "quay.io/biocontainers/diamond:2.0.9--hdcc8f71_0"
     }
 
     input:
