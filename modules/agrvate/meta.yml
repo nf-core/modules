@@ -1,7 +1,9 @@
 name: agrvate
 description: Rapid identification of Staphylococcus aureus agr locus type and agr operon variants
 keywords:
-  - sort
+  - fasta
+  - virulence
+  - Staphylococcus aureus
 tools:
   - agrvate:
       description: Rapid identification of Staphylococcus aureus agr locus type and agr operon variants.
@@ -28,6 +30,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+   - summary:
+      type: file
+      description: A summary of the agrvate assessement
+      pattern: "*-summary.tab"
   - results_dir:
       type: directory
       description: Results of the agrvate assessement
