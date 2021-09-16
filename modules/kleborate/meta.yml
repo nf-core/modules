@@ -1,32 +1,28 @@
 name: kleborate
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Kleborate is a tool to screen genome assemblies of Klebsiella pneumoniae and the Klebsiella pneumoniae species complex (KpSC).
 keywords:
-  - sort
+  - screening assemblies
+  - Klebsiella pneumoniae
 tools:
   - kleborate:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Screening Klebsiella genome assemblies for MLST, sub-species, and other Klebsiella related genes of interest
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/katholt/Kleborate
+      documentation: https://github.com/katholt/Kleborate/wiki
+      tool_dev_url: https://github.com/katholt/Kleborate
+      doi: 10.1038/s41467-021-24448-3
       licence: ['GPL v3 or later (GPL v3+)']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - fastas:
+      type: files
+      description: Klebsiella genome assemblies to be screened
+      pattern: "*.fasta"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +33,10 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - txt:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Result file generated after screening
+      pattern: "*.txt"
 
 authors:
   - "@abhi18av"
