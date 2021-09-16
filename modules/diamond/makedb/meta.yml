@@ -22,9 +22,9 @@ input:
 
 output:
   - db:
-      type: directory
-      description: Output directory containing blast database files
-      pattern: "*"
+      type: file
+      description: File of the indexed DIAMOND database
+      pattern: "*.{dmnd}"
   - version:
       type: file
       description: File containing software version
