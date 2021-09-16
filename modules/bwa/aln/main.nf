@@ -23,7 +23,7 @@ process BWA_ALN {
     path index
 
     output:
-    tuple val(meta), path(reads), path("*.sai"), emit: sai
+    tuple val(meta), path("*.sai"), emit: sai
     path "*.version.txt"                       , emit: version
 
     script:
