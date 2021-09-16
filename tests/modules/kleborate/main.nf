@@ -7,7 +7,9 @@ include { KLEBORATE } from '../../../modules/kleborate/main.nf' addParams( optio
 workflow test_kleborate {
     
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+             [file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+              file(params.test_data['sarscov2']['genome']['contigs_fasta'], checkIfExists: true),
+              file(params.test_data['sarscov2']['genome']['scaffolds_fasta'], checkIfExists: true)]]
 
     KLEBORATE ( input )
 }
