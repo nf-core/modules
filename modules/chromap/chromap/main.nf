@@ -64,8 +64,6 @@ process CHROMAP_CHROMAP {
         samtools view $options.args2 -@ ${task.cpus} -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
-
-        samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
         """
     }
     if (meta.single_end) {
@@ -76,6 +74,7 @@ process CHROMAP_CHROMAP {
             -r $fasta \\
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
+
         echo "$VERSION" > ${software}.version.txt
         """ + compression_cmds
     } else {
@@ -87,6 +86,7 @@ process CHROMAP_CHROMAP {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
+
         echo "$VERSION" > ${software}.version.txt
         """ + compression_cmds
     }
