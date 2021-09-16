@@ -19,7 +19,7 @@ process KLEBORATE {
     }
 
     input:
-    tuple val(meta), path(fastas)
+    tuple val(meta), path("*")
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
@@ -31,7 +31,7 @@ process KLEBORATE {
     """
     kleborate \\
         $options.args \\
-        --outfile ${prefix}.txt \\
+        --outfile ${prefix}.results.txt \\
         --assemblies  *.fasta
 
     echo \$(kleborate -v 2>&1) | sed 's/kleborate //;' > ${software}.version.txt
