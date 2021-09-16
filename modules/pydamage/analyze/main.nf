@@ -36,6 +36,6 @@ process PYDAMAGE_ANALYZE {
         -p $task.cpus \\
         $bam
 
-    pydamage --version | sed -e 's/pydamage, version //g' > ${software}.version.txt
+    echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g' > ${software}.version.txt
     """
 }
