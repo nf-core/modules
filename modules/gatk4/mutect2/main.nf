@@ -33,6 +33,7 @@ process GATK4_MUTECT2 {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
+    tuple val(meta), path("*.stats")   , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
     path "*.version.txt"          , emit: version
 
