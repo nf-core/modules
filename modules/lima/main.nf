@@ -36,7 +36,6 @@ process LIMA {
 
     script:
     def software = getSoftwareName(task.process)
-    // def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def lima_out = ccs.toString().replaceAll(/bam$/, 'fl.bam')
     """
     lima \\
