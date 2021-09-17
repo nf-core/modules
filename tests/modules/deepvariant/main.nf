@@ -5,13 +5,13 @@ nextflow.enable.dsl = 2
 include { DEEPVARIANT } from '../../../modules/deepvariant/main.nf' addParams( options: ["args": "--regions=\"chr20:10,000,000-10,010,000\" --model_type=WGS"] )
 
 workflow test_deepvariant {
-    
+
     bam_tuple_ch = Channel.of([[ id:'test', single_end:false ], // meta map
-                               "https://storage.googleapis.com/deepvariant/quickstart-testdata/NA12878_S1.chr20.10_10p1mb.bam",
-                               "https://storage.googleapis.com/deepvariant/quickstart-testdata/NA12878_S1.chr20.10_10p1mb.bam.bai"])
+                               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_bam'], checkIfExists: true)])
 
-    fasta_tuple_ch = Channel.of(["https://storage.googleapis.com/deepvariant/quickstart-testdata/ucsc.hg19.chr20.unittest.fasta",
-                                 "https://storage.googleapis.com/deepvariant/quickstart-testdata/ucsc.hg19.chr20.unittest.fasta.fai"])
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    DEEPVARIANT ( bam_tuple_ch, fasta_tuple_ch )
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    DEEPVARIANT ( bam_tuple_ch, fasta, fai)
 }
