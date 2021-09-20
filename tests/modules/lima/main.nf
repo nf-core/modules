@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LIMA } from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess'] )
+include { LIMA } from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl"] )
 
 workflow test_lima {
 
