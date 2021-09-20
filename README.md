@@ -17,16 +17,10 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Table of contents
 
-- [Adding new modules](#adding-new-modules)
 - [Using existing modules](#using-existing-modules)
+- [Adding new modules](#adding-new-modules)
 - [Help](#help)
 - [Citation](#citation)
-
-## Adding new modules
-
-If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
-
-> Please be kind to our code reveiwers and submit one pull request per module :)
 
 ## Using existing modules
 
@@ -137,6 +131,11 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     ╰──────────────────────╯
     ```
 
+## Adding new modules
+
+If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
+
+> Please be kind to our code reveiwers and submit one pull request per module :)
 
 ## Help
 
