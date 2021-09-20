@@ -12,7 +12,6 @@
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
 > THIS REPOSITORY IS UNDER ACTIVE DEVELOPMENT. SYNTAX, ORGANISATION AND LAYOUT MAY CHANGE WITHOUT NOTICE!
-> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) module files containing tool-specific process definitions and their associated documentation.
 
@@ -26,6 +25,8 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 ## Adding new modules
 
 If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
+
+> PLEASE BE KIND TO OUR CODE REVIEWERS AND SUBMIT ONE PULL REQUEST PER MODULE :)
 
 ## Using existing modules
 
