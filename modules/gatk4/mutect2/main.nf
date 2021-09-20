@@ -31,10 +31,11 @@ process GATK4_MUTECT2 {
     path panel_of_normals_idx
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
+    tuple val(meta), path("*.vcf.gz")     , emit: vcf
+    tuple val(meta), path("*.tbi")        , emit: tbi
+    tuple val(meta), path("*.stats")      , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
-    path "*.version.txt"          , emit: version
+    path "*.version.txt"                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)
