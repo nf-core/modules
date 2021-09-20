@@ -135,7 +135,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
 If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
 
-> Please be kind to our code reveiwers and submit one pull request per module :)
+> Please be kind to our code reviewers and submit one pull request per module :)
 
 ## Help
 
