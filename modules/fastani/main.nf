@@ -34,8 +34,8 @@ process FASTANI {
     if (meta.batch_input) {
     """
     fastANI \\
-        "-ql $query" \\
-        "-rl $reference" \\
+        -ql $query \\
+        -rl $reference \\
         -o ${prefix}.ani.txt
 
     echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
@@ -43,8 +43,8 @@ process FASTANI {
     } else {
     """
     fastANI \\
-        "-q $query" \\
-        "-r $reference" \\
+        -q $query \\
+        -r $reference \\
         -o ${prefix}.ani.txt
 
     echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
