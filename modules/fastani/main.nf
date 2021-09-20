@@ -19,8 +19,7 @@ process FASTANI {
     }
 
     input:
-    val meta
-    path query
+    tuple val(meta), path(query)
     path reference
 
     output:
