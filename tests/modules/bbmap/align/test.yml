@@ -24,3 +24,12 @@
   files:
     - path: output/bbmap/test.bam
       md5sum: 95f690636581ce9b27cf8568c715ae4d
+
+- name: bbmap align paired end index ref pigz
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref_pigz -c tests/config/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 441c4f196b9a82c7b224903538064308

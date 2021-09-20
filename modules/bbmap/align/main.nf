@@ -11,11 +11,11 @@ process BBMAP_ALIGN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.13" : null)
+    conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.13 pigz=2.6" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-f423f44972692ad764209668b09b84ec158bffe4:9d4ba1051c1742e6dfb8fb2ba5e474da86bba324-0"
+        container "https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0"
     } else {
-        container "quay.io/biocontainers/mulled-v2-f423f44972692ad764209668b09b84ec158bffe4:9d4ba1051c1742e6dfb8fb2ba5e474da86bba324-0"
+        container "quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0"
     }
 
     input:
