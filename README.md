@@ -37,7 +37,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 2. List the available modules:
 
     ```console
-    $ nf-core modules list
+    $ nf-core modules list remote
 
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
@@ -62,7 +62,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 3. Install the module in your pipeline directory:
 
     ```console
-    $ nf-core modules install . --tool fastqc
+    $ nf-core modules install fastqc
 
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
@@ -89,7 +89,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 5. Remove the module from the pipeline repository if required:
 
     ```console
-    $ nf-core modules remove . --tool fastqc
+    $ nf-core modules remove fastqc
 
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
@@ -106,7 +106,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 6. Check that a locally installed nf-core module is up-to-date compared to the one hosted in this repo:
 
     ```console
-    $ nf-core modules lint . --tool fastqc
+    $ nf-core modules lint fastqc
 
                                           ,--./,-.
           ___     __   __   __   ___     /,-._.--~\
