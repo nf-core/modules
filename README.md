@@ -136,7 +136,6 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
     ╰──────────────────────╯
     ```
 
-We have plans to add other utility commands to help developers install and maintain modules downloaded from this repository so watch this space e.g. `nf-core modules update` command to automatically check and update modules installed within the pipeline.
 
 ## Help
 
