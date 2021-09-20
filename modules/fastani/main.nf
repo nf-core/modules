@@ -19,11 +19,11 @@ process FASTANI {
     }
 
     input:
-    val(meta)
-    path(query)
-    path(reference)
-    path(query_list)
-    path(reference_list)
+    val meta
+    path query
+    path reference
+    path query_list
+    path reference_list
 
     output:
     tuple val(meta), path("*.ani.txt"), emit: ani
