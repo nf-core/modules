@@ -33,14 +33,30 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: Set of complete reads (with polyA tail), where the polyA has been trimmed
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: Pacbio index file from polyA trimmed reads
+      pattern: "*.pbi"
+  - consensusreadset:
+      type: file
+      description: Metadata about read library
+      pattern: "*.xml"
+  - summary:
+      type: file
+      description: json file describing number of full length reads, full length non chimeric reads and full length non chimeric polyA reads
+      pattern: "*.json"
+  - report:
+      type: file
+      description: Metadata about primer and polyA detection (primers/polyA/insert length, strand, primer name)
+      pattern: "*.csv"
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  - bam:
-      type: file
-      description: A bam file of trimmed consensus sequences
-      pattern: "*.bam"
 
 authors:
   - "@sguizard"

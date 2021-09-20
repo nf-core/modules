@@ -23,14 +23,16 @@ process ISOSEQ3_REFINE {
     path(primers)
 
     output:
-    tuple val(meta), path("*.flnc.bam"), path("*.flnc.bam.pbi"), emit: bam
-    tuple path("*{.consensusreadset.xml,filter_summary.json,.report.csv}"), emit: reports
-    path "*.version.txt", emit: version
+    tuple val(meta), path("*.flnc.bam"),     emit: bam
+    tuple val(meta), path("*.flnc.bam.pbi"), emit: pbi
+    path "*.consensusreadset.xml",           emit: consensusreadset
+    path "*.filter_summary.json",            emit: summary
+    path "*.report.csv",                     emit: report
+    path "*.version.txt",                    emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    // def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
+    def refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
     """
     isoseq3 \\
         refine \\
