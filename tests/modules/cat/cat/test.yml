@@ -7,15 +7,6 @@
     - path: output/cat/file.out
       md5sum: f44b33a0e441ad58b2d3700270e2dbe2
 
-- name: cat ungzipped filter
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_ungzipped_filter -c tests/config/nextflow.config
-  tags:
-    - cat
-    - cat/cat
-  files:
-    - path: output/cat/file.out
-      md5sum: 5014ed798e48eef07df4e0a3ea121bcf
-
 - name: cat gzipped
   command: nextflow run ./tests/modules/cat/cat -entry test_cat_gzipped -c tests/config/nextflow.config
   tags:

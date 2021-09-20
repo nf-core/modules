@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { CAT_CAT } from '../../../../modules/cat/cat/main.nf' addParams( options: [:] )
-include { CAT_CAT as CAT_CAT_FILTER } from '../../../../modules/cat/cat/main.nf' addParams( options: [args2: "| grep '>'"] )
 include { CAT_CAT as CAT_CAT_SUFFIX } from '../../../../modules/cat/cat/main.nf' addParams( options: [suffix: ".fna"] )
 
 workflow test_cat_ungzipped {
@@ -14,16 +13,6 @@ workflow test_cat_ungzipped {
     ]
 
     CAT_CAT ( input )
-}
-
-workflow test_cat_ungzipped_filter {
-    
-    input = [
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
-        file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
-    ]
-
-    CAT_CAT_FILTER ( input )
 }
 
 workflow test_cat_gzipped {

@@ -27,17 +27,13 @@ process CAT_CAT {
     script:
     def software = getSoftwareName(task.process)
     cpus = Math.floor(task.cpus/2).toInteger()
-    suffix = options.suffix ? "${options.suffix}" : ".out"
 
-    if ( files[0].name =~ /\.gz$/ ) {
-        """
-        unpigz ${options.args} -c -p $cpus $files ${options.args2} | pigz -c -p $cpus > file${suffix}.gz
-        pigz --version | sed 's/^.*pigz //' > ${software}.version.txt
-        """
-    } else {
-        """
-        cat ${options.args} $files ${options.args2} > file${suffix}
-        cat --version | grep 'GNU coreutils' | sed 's/cat (GNU coreutils) //' > ${software}.version.txt
-        """
-    }
+    // Use options.suffix if specified, otherwise .out; add .gz if first input file has it
+    suffix  = options.suffix ? "${options.suffix}" : ".out"
+    suffix += files[0].name =~ /\.gz/ ? '.gz' : ''
+
+    """
+    cat ${options.args} $files ${options.args2} > file${suffix}
+    cat --version | grep 'GNU coreutils' | sed 's/cat (GNU coreutils) //' > ${software}.version.txt
+    """
 }
