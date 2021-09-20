@@ -22,8 +22,6 @@ process FASTANI {
     val meta
     path query
     path reference
-    path query_list
-    path reference_list
 
     output:
     tuple val(meta), path("*.ani.txt"), emit: ani
@@ -32,15 +30,26 @@ process FASTANI {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def query_arg = query_list ? "-ql ${query_list}" : "-q ${query}"
-    def reference_arg = reference_list ? "-rl ${reference_list}" : "-r ${reference}"
 
+    if (meta.batch_input) {
     """
     fastANI \\
-        $query_arg \\
-        $reference_arg \\
+        "-ql $query" \\
+        "-rl $reference" \\
         -o ${prefix}.ani.txt
 
     echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
     """
+    } else {
+    """
+    fastANI \\
+        "-q $query" \\
+        "-r $reference" \\
+        -o ${prefix}.ani.txt
+
+    echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
+    """
+    }
+
+
 }
