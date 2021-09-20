@@ -1,0 +1,33 @@
+- name: cat ungzipped
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_ungzipped -c tests/config/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/file.out
+      md5sum: f44b33a0e441ad58b2d3700270e2dbe2
+
+- name: cat gzipped
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_gzipped -c tests/config/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/file.out.gz
+
+- name: cat ungzipped suffix
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_ungzipped_fna -c tests/config/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/file.fna
+      md5sum: f44b33a0e441ad58b2d3700270e2dbe2
+
+- name: cat gzipped suffix
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_gzipped_fna -c tests/config/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/file.fna.gz

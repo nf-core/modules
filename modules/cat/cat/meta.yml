@@ -1,0 +1,33 @@
+name: cat_cat
+description: A module for concatenation of gzipped or uncompressed files, optionally filtering the output
+keywords:
+  - concatenate
+  - gzip
+  - filter
+tools:
+  - cat:
+      description: Just concatenation
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ""
+
+input:
+  - files:
+      type: file
+      description: Gzipped or not files
+      pattern: "*"
+
+output:
+  - version:
+      type: file
+      description: File containing version of the pigz software
+      pattern: "*.{version.txt}"
+  - bam:
+      type: file
+      description: Concatenated, optionally filtered, file, gzipped if input was, otherwise not
+      pattern: "file*"
+
+authors:
+  - "@erikrikarddaniel"
