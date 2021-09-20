@@ -25,7 +25,7 @@ A repository for hosting [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl
 
 ## Adding new modules
 
-Ify you wish to contribute a new module, please see the documentation on the [nf-co.re website](https://nf-co.re/developers/adding_modules).
+If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
 
 ## Using existing modules
 
