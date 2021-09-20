@@ -45,6 +45,6 @@ process LIMA {
         -j $task.cpus \\
         $options.args
 
-    lima --version | grep -e 'commit' > ${software}.version.txt
+    lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' > ${software}.version.txt
     """
 }
