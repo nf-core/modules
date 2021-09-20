@@ -1,8 +1,8 @@
 - name: isoseq3 refine test_isoseq3_refine
   command: nextflow run tests/modules/isoseq3/refine -entry test_isoseq3_refine -c tests/config/nextflow.config
   tags:
-    - isoseq3/refine
     - isoseq3
+    - isoseq3/refine
   files:
     - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam
       md5sum: af021501241064d8ad97c85c5e647968
