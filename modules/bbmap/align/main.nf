@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 process BBMAP_ALIGN {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
@@ -19,7 +19,7 @@ process BBMAP_ALIGN {
     }
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(fastq)
     path ref
 
     output:
@@ -30,7 +30,7 @@ process BBMAP_ALIGN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    input = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
+    input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
 
     // Set the db variable to reflect the three possible types of reference input: 1) directory
     // named 'ref', 2) directory named something else (containg a 'ref' subdir) or 3) a sequence
