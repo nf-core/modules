@@ -33,7 +33,9 @@ process DIAMOND_BLASTP {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
-    diamond blastp \\
+
+    diamond \\
+        blastp \\
         --threads $task.cpus \\
         --db \$DB \\
         --query $fasta \\
