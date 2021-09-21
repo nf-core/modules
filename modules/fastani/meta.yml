@@ -25,14 +25,6 @@ input:
       type: file
       description: Fasta file(s) to be used as reference for the query
       pattern: "*.fasta"
-  - query_list:
-      type: file
-      description: List of fasta file(s) to be queried
-      pattern: "*.txt"
-  - reference_list:
-      type: file
-      description: List of fasta file(s) to be used as reference for the query
-      pattern: "*.txt"
 output:
   - meta:
       type: map

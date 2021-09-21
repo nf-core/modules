@@ -31,24 +31,22 @@ process FASTANI {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     if (meta.batch_input) {
-    """
-    fastANI \\
-        -ql $query \\
-        -rl $reference \\
-        -o ${prefix}.ani.txt
+		"""
+		fastANI \\
+			-ql $query \\
+			-rl $reference \\
+			-o ${prefix}.ani.txt
 
-    echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
-    """
+		echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
+		"""
     } else {
-    """
-    fastANI \\
-        -q $query \\
-        -r $reference \\
-        -o ${prefix}.ani.txt
+		"""
+		fastANI \\
+			-q $query \\
+			-r $reference \\
+			-o ${prefix}.ani.txt
 
-    echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
-    """
+		echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
+		"""
     }
-
-
 }
