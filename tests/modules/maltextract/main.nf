@@ -2,9 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../modules/unzip/main.nf' addParams( options: [:] )
+include { UNZIP as UNZIP_MALT } from '../../../modules/unzip/main.nf' addParams( options: [:] )
+include { UNZIP as UNZIP_MALTEXTRACT }  from '../../../modules/unzip/main.nf' addParams( options: [:] )
 include { MALT_BUILD } from  '../../../modules/malt/build/main.nf' addParams( options: [:] )
 include { MALT_RUN } from '../../../modules/malt/run/main.nf' addParams( options: [:] )
+include { MALTEXTRACT } from '../../../modules/maltextract/main.nf' addParams( options: [:] )
 
 workflow test_maltextract {
 
@@ -14,11 +16,12 @@ workflow test_maltextract {
     map_db = file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true)
     input = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     mode = "BlastN"
-    //taxon_list = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-    //ncbi_dir =
+    taxon_list = file(params.test_data['sarscov2']['genome']['maltextract_taxon_list'], checkIfExists: true)
+    ncbi_dir = file(params.test_data['sarscov2']['genome']['maltextract_ncbi_taxmap'], checkIfExists: true)
 
-    UNZIP ( map_db )
-    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.unzipped_archive )
+    UNZIP_MALT ( map_db )
+    UNZIP_MALTEXTRACT ( ncbi_dir )
+    MALT_BUILD ( fastas, seq_type, gff, UNZIP_MALT.out.unzipped_archive )
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
-    //MALT_EXTRACT ( MALT_RUN.out.rma6, taxon_list, ncbi_dir)
+    MALTEXTRACT ( MALT_RUN.out.rma6, taxon_list, UNZIP_MALTEXTRACT.out.unzipped_archive)
 }
