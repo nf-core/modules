@@ -1,0 +1,8 @@
+- name: test_pydamage_analyze
+  command: nextflow run tests/modules/pydamage/analyze -entry test_pydamage -c tests/config/nextflow.config
+  tags:
+    - pydamage
+    - pydamage/analyze
+  files:
+    - path: output/pydamage/pydamage_results/pydamage_results.csv
+      md5sum: 6847e0d5aa6dba85bbd2dd509772b7a0
