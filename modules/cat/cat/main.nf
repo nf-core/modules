@@ -18,22 +18,36 @@ process CAT_CAT {
     }
 
     input:
-    path files
+    path files_in
+    val  file_out
 
     output:
-    path "file*"        , emit: file
+    path "${file_out}*" , emit: file_out
     path "*.version.txt", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    cpus = Math.floor(task.cpus/2).toInteger()
+    def file_list = files_in.collect { it.toString() }
+    if (file_list.size > 1) {
 
-    // Use options.suffix if specified, otherwise .out; add .gz if first input file has it
-    suffix  = options.suffix ? "${options.suffix}" : ".out"
-    suffix += files[0].name =~ /\.gz/ ? '.gz' : ''
+        // | input     | output     | command1 | command2 |
+        // |-----------|------------|----------|----------|
+        // | gzipped   | gzipped    | cat      |          |
+        // | ungzipped | ungzipped  | cat      |          |
+        // | gzipped   | ungzipped  | zcat     |          |
+        // | ungzipped | gzipped    | cat      | pigz     |
 
-    """
-    cat ${options.args} $files ${options.args2} > file${suffix}
-    cat --version | grep 'GNU coreutils' | sed 's/cat (GNU coreutils) //' > ${software}.version.txt
-    """
+        def in_zip   = file_list[0].endsWith('.gz')
+        def out_zip  = file_out.endsWith('.gz')
+        def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
+        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $options.args2" : ''
+        """
+        $command1 \\
+            $options.args \\
+            ${file_list.join(' ')} \\
+            $command2 \\
+            > $file_out
+
+        echo \$(pigz --version 2>&1) | sed 's/pigz //g' > pigz.version.txt
+        """
+    }
 }
