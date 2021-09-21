@@ -16,8 +16,8 @@ workflow test_maltextract {
     map_db = file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true)
     input = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     mode = "BlastN"
-    taxon_list = file(params.test_data['sarscov2']['genome']['maltextract_taxon_list'], checkIfExists: true)
-    ncbi_dir = file(params.test_data['sarscov2']['genome']['maltextract_ncbi_taxmap'], checkIfExists: true)
+    taxon_list = file(params.test_data['sarscov2']['genome']['taxon_list_txt'], checkIfExists: true)
+    ncbi_dir = file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
 
     UNZIP_MALT ( map_db )
     UNZIP_MALTEXTRACT ( ncbi_dir )
