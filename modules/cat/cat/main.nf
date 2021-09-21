@@ -29,12 +29,12 @@ process CAT_CAT {
     def file_list = files_in.collect { it.toString() }
     if (file_list.size > 1) {
 
-        // | input    | output   | command1 | command2 |
-        // |----------|----------|-------- -|----------|
-        // | zipped   | zipped   | cat      |          |
-        // | unzipped | unzipped | cat      |          |
-        // | zipped   | unzipped | zcat     |          |
-        // | unzipped | zipped   | cat      | pigz     |
+        // | input     | output     | command1 | command2 |
+        // |-----------|------------|----------|----------|
+        // | gzipped   | gzipped    | cat      |          |
+        // | ungzipped | ungzipped  | cat      |          |
+        // | gzipped   | ungzipped  | zcat     |          |
+        // | ungzipped | gzipped    | cat      | pigz     |
 
         def in_zip   = file_list[0].endsWith('.gz')
         def out_zip  = file_out.endsWith('.gz')
