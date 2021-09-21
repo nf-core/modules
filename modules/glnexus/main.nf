@@ -33,7 +33,7 @@ process GLNEXUS {
     def input = ""
     for (gvcf in gvcfs) {
         input += " ${gvcf}"
-    }    
+    }
     """
     echo $gvcfs
     mem=\$(echo \"$task.memory\"| sed 's/ GB/GB/g')
