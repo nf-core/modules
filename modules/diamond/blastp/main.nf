@@ -40,7 +40,8 @@ process DIAMOND_BLASTP {
         --db \$DB \\
         --query $fasta \\
         $options.args \\
-        --out ${prefix}.diamond_blastp.txt
+        --out ${prefix}.txt
+
     echo \$(diamond --version 2>&1) | tail -n 1 | sed 's/^diamond version //' > ${software}.version.txt
     """
 }
