@@ -36,6 +36,7 @@ process DIAMOND_MAKEDB {
         --in  $fasta \\
         -d $fasta \\
         $options.args
+
     echo \$(diamond --version 2>&1) | tail -n 1 | sed 's/^diamond version //' > ${software}.version.txt
     """
 }
