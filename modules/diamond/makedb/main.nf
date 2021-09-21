@@ -30,7 +30,8 @@ process DIAMOND_MAKEDB {
     script:
     def software = getSoftwareName(task.process)
     """
-    diamond makedb \\
+    diamond \\
+        makedb \\
         --threads $task.cpus \\
         --in  $fasta \\
         -d $fasta \\
