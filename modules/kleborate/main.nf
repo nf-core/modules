@@ -13,9 +13,9 @@ process KLEBORATE {
 
     conda (params.enable_conda ? "bioconda::kleborate=2.1.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1"
     } else {
-        container "quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_0"
+        container "quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_1"
     }
 
     input:
