@@ -1,0 +1,15 @@
+- name: pbccs test_pbccs
+  command: nextflow run tests/modules/pbccs -entry test_pbccs -c tests/config/nextflow.config
+  tags:
+    - pbccs
+  files:
+    - path: output/pbccs/alz.2.ccs.bam
+      md5sum: b9c8093b362a07b575d52592b19fc909
+    - path: output/pbccs/alz.2.ccs.bam.pbi
+      md5sum: 78d015230a8c957a24338581efda4e55
+    - path: output/pbccs/alz.2.ccs_report.json
+      contains: ['Created by pbcopper v1.8.0']
+    - path: output/pbccs/alz.2.ccs_report.txt
+      md5sum: db379e9299295679f4ca7eeb37011f08
+    - path: output/pbccs/alz.2.zmw_metrics.json.gz
+      contains: ['zmws']
