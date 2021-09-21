@@ -1,33 +1,34 @@
 name: cat_cat
-description: A module for concatenation of gzipped or uncompressed files, optionally filtering the output
+description: A module for concatenation of gzipped or uncompressed files
 keywords:
   - concatenate
   - gzip
-  - filter
+  - cat
 tools:
   - cat:
       description: Just concatenation
       homepage: None
-      documentation: None
+      documentation: https://man7.org/linux/man-pages/man1/cat.1.html
       tool_dev_url: None
-      doi: ""
-      licence: ""
 
 input:
-  - files:
+  - files_in:
       type: file
-      description: Gzipped or not files
+      description: List of compressed / uncompressed files
       pattern: "*"
+  - file_out:
+      type: value
+      description: Full name of output file with or without .gz extension
 
 output:
   - version:
       type: file
       description: File containing version of the pigz software
       pattern: "*.{version.txt}"
-  - bam:
+  - file_out:
       type: file
-      description: Concatenated, optionally filtered, file, gzipped if input was, otherwise not
-      pattern: "file*"
+      description: Concatenated file. Will be gzipped if file_out ends with ".gz"
+      pattern: "${file_out}"
 
 authors:
   - "@erikrikarddaniel"

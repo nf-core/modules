@@ -24,18 +24,18 @@ process MALTEXTRACT {
     path ncbi_dir
 
     output:
-    path "results/"         , emit: results
-    path "*.version.txt"    , emit: version
+    path "results"      , emit: results
+    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\
-        -p ${task.cpus} \\
+        -p $task.cpus \\
         -i ${rma6.join(' ')} \\
-        -t ${taxon_list} \\
-        -r ${ncbi_dir} \\
+        -t $taxon_list \\
+        -r $ncbi_dir \\
         -o results/ \\
         $options.args
 
