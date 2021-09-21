@@ -28,13 +28,13 @@ process CAT_FASTQ {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def readList = reads.collect{ it.toString() }
     if (meta.single_end) {
-        if (readList.size > 1) {
+        if (readList.size >= 1) {
             """
             cat ${readList.sort().join(' ')} > ${prefix}.merged.fastq.gz
             """
         }
     } else {
-        if (readList.size > 2) {
+        if (readList.size >= 2) {
             def read1 = []
             def read2 = []
             readList.eachWithIndex{ v, ix -> ( ix & 1 ? read2 : read1 ) << v }
