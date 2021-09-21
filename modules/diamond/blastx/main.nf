@@ -2,7 +2,7 @@
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
-options    = initOptions(params.options)
+options        = initOptions(params.options)
 
 process DIAMOND_BLASTX {
     tag "$meta.id"
