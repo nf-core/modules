@@ -31,7 +31,6 @@ process DIAMOND_BLASTP {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
     diamond blastp \\
