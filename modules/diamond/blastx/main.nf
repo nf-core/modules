@@ -25,8 +25,8 @@ process DIAMOND_BLASTX {
     path  db
 
     output:
-    tuple val(meta), path('*.diamond_blastx.txt'), emit: txt
-    path '*.version.txt', emit: version
+    tuple val(meta), path('*.txt'), emit: txt
+    path '*.version.txt'          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
