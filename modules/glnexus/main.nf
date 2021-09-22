@@ -13,9 +13,9 @@ process GLNEXUS {
 
     conda (params.enable_conda ? "bioconda::glnexus=1.4.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "docker://clinicalgenomics/glnexus:v1.4.1"
+        container "https://depot.galaxyproject.org/singularity/glnexus:1.4.1--h40d77a6_0"
     } else {
-        container "clinicalgenomics/glnexus:v1.4.1"
+        container "quay.io/biocontainers/glnexus:1.4.1--h40d77a6_0"
     }
 
     input:
@@ -31,16 +31,16 @@ process GLNEXUS {
 
     // Make list of GVCFs to merge
     def input = gvcfs.collect { it.toString() }
+    def avail_mem = 3
     if (!task.memory) {
         log.info '[Glnexus] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        mem = task.memory.giga
+        avail_mem = task.memory.giga
     }
     """
-    echo $gvcfs
     glnexus_cli \\
         --threads $task.cpus \\
-        --mem-gbytes ${mem} \\
+        --mem-gbytes $avail_mem \\
         $options.args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
