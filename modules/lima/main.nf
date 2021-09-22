@@ -37,12 +37,12 @@ process LIMA {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def lima_out = prefix + ".bam"
+
     """
     lima \\
         $ccs \\
         $primers \\
-        $lima_out \\
+        $prefix \\
         -j $task.cpus \\
         $options.args
 
