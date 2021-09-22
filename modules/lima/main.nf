@@ -23,16 +23,21 @@ process LIMA {
     path primers
 
     output:
-    tuple val(meta), path("*.bam")    , emit: bam
-    tuple val(meta), path("*.bam.pbi"), emit: pbi
-    tuple val(meta), path("*.xml")    , emit: xml
-    tuple val(meta), path("*.json")   , emit: json
     tuple val(meta), path("*.clips")  , emit: clips
     tuple val(meta), path("*.counts") , emit: counts
     tuple val(meta), path("*.guess")  , emit: guess
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
     path("*.version.txt")             , emit: version
+
+    tuple val(meta), path("*.bam")              , optional: true, emit: bam
+    tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
+    tuple val(meta), path("*.{fa, fasta}")      , optional: true, emit: fasta
+    tuple val(meta), path("*.{fa.gz, fasta.gz}"), optional: true, emit: fastagz
+    tuple val(meta), path("*.fastq")            , optional: true, emit: fastq
+    tuple val(meta), path("*.fastq.gz")         , optional: true, emit: fastqgz
+    tuple val(meta), path("*.xml")              , optional: true, emit: xml
+    tuple val(meta), path("*.json")             , optional: true, emit: json
 
     script:
     def software = getSoftwareName(task.process)
