@@ -11,13 +11,11 @@ process MALT_BUILD {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    // Do not **auto-bump** due to problem with change of version numbering between 0.4.1 and 0.5.2
-    // (originally 0.4.1 was listed as 0.41, so is always selected as 'latest' even though it is not!)
-    conda (params.enable_conda ? "bioconda::malt=0.5.2" : null)
+    conda (params.enable_conda ? "bioconda::malt=0.53" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/malt:0.5.2--0"
+        container "https://depot.galaxyproject.org/singularity/malt:0.53--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/malt:0.5.2--0"
+        container "quay.io/biocontainers/malt:0.53--hdfd78af_0"
     }
 
     input:
