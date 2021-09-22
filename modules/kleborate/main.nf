@@ -4,36 +4,36 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process AGRVATE {
+process KLEBORATE {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::agrvate=1.0.1" : null)
+    conda (params.enable_conda ? "bioconda::kleborate=2.1.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/agrvate:1.0.1--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1"
     } else {
-        container "quay.io/biocontainers/agrvate:1.0.1--hdfd78af_0"
+        container "quay.io/biocontainers/kleborate:2.1.0--pyhdfd78af_1"
     }
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fastas)
 
     output:
-    tuple val(meta), path("${fasta.baseName}-results/${fasta.baseName}-summary.tab"), emit: summary
-    path "${fasta.baseName}-results"                                                , emit: results_dir
-    path "*.version.txt"                                                            , emit: version
+    tuple val(meta), path("*.txt"), emit: txt
+    path "*.version.txt"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    agrvate \\
+    kleborate \\
         $options.args \\
-        -i $fasta
+        --outfile ${prefix}.results.txt \\
+        --assemblies *.fasta
 
-    echo \$(agrvate -v 2>&1) | sed 's/agrvate //;' > ${software}.version.txt
+    echo \$(kleborate -v 2>&1) | sed 's/kleborate //;' > ${software}.version.txt
     """
 }
