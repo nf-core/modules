@@ -30,19 +30,20 @@ process GLNEXUS {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Make list of GVCFs to merge
-    def input = ""
-    for (gvcf in gvcfs) {
-        input += " ${gvcf}"
+    def input = gvcfs.collect { it.toString() }
+    if (!task.memory) {
+        log.info '[Glnexus] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        mem = task.memory.giga
     }
     """
     echo $gvcfs
-    mem=\$(echo \"$task.memory\"| sed 's/ GB/GB/g')
     glnexus_cli \\
-        --threads $task.cpus --mem-gbytes \$mem $options.args \\
-        $input \\
+        --threads $task.cpus \\
+        --mem-gbytes ${mem} \\
+        $options.args \\
+        ${input.join(' ')} \\
         > ${prefix}.bcf
-
     echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release //; s/ .*\$//' > ${software}.version.txt
     """
-
 }
