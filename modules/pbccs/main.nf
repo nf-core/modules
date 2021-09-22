@@ -32,19 +32,15 @@ process PBCCS {
     tuple val(meta), path("*.version.txt" )       , emit: version
 
     script:
-    def software    = getSoftwareName(task.process)
-    // def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def ccs         = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs.bam'
-    def report_txt  = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.txt'
-    def report_json = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.json'
-    def zmw_metrics = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.zmw_metrics.json.gz'
+    def software = getSoftwareName(task.process)
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ccs \\
         $bam \\
-        $ccs \\
-        --report-file $report_txt \\
-        --report-json $report_json \\
-        --metrics-json $zmw_metrics \\
+        ${prefix}.ccs.bam \\
+        --report-file ${prefix}.${chunk_num}.ccs_report.txt \\
+        --report-json ${prefix}.${chunk_num}.ccs_report.json \\
+        --metrics-json ${prefix}.${chunk_num}.zmw_metrics.json.gz \\
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
         $options.args
