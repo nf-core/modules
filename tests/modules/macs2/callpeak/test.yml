@@ -1,0 +1,33 @@
+- name: macs2 callpeak test_macs2_callpeak
+  command: nextflow run tests/modules/macs2/callpeak -entry test_macs2_callpeak -c tests/config/nextflow.config
+  tags:
+    - macs2
+    - macs2/callpeak
+  files:
+    - path: output/macs2/test_control_lambda.bdg
+      md5sum: 5f21c726709f223435572b08e22d9181
+    - path: output/macs2/test_peaks.narrowPeak
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/macs2/test_peaks.xls
+      md5sum: ee59a8079fecbfc7f6c14cc497ef71c0
+    - path: output/macs2/test_summits.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/macs2/test_treat_pileup.bdg
+      md5sum: 57c46b5c6e1d57efa30bdcdbd56ba112
+
+- name: macs2 callpeak test_macs2_callpeak_broad
+  command: nextflow run tests/modules/macs2/callpeak -entry test_macs2_callpeak_broad -c tests/config/nextflow.config
+  tags:
+    - macs2
+    - macs2/callpeak
+  files:
+    - path: output/macs2/test_control_lambda.bdg
+      md5sum: 5f21c726709f223435572b08e22d9181
+    - path: output/macs2/test_peaks.broadPeak
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/macs2/test_peaks.gappedPeak
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/macs2/test_peaks.xls
+      md5sum: d51ba34e7f559089dc51243cd3049b02
+    - path: output/macs2/test_treat_pileup.bdg
+      md5sum: 57c46b5c6e1d57efa30bdcdbd56ba112
