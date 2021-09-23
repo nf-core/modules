@@ -1,11 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml bedtools/genomecovscale
 - name: bedtools genomecovscale test_bedtools_genomecovscale
   command: nextflow run ./tests/modules/bedtools/genomecovscale -entry test_bedtools_genomecovscale -c tests/config/nextflow.config
   tags:
     - bedtools
     - bedtools/genomecovscale
-    - bedtools/genomecovscale/bam
   files:
     - path: output/bedtools/test_out.bedGraph
       md5sum: 6003eb2c8ba8de8f06e912ea8fe24f90
@@ -15,7 +12,6 @@
   tags:
     - bedtools
     - bedtools/genomecovscale
-    - bedtools/genomecovscale/nonbam
   files:
     - path: output/bedtools/test_out.bedGraph
       md5sum: dd6f03969cd5095207c4a01544217ace
