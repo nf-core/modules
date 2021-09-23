@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml seacr/callpeaknoctrl
+- name: seacr callpeaknoctrl
+  command: nextflow run ./tests/modules/seacr/callpeaknoctrl -entry test_seacr_callpeaknoctrl -c tests/config/nextflow.config
+  tags:
+    - seacr
+    - seacr/callpeaknoctrl
+  files:
+    - path: output/seacr/test_1.stringent.bed
+      md5sum: 1d23015c7087f7b48cc3139d53fd3463
