@@ -46,7 +46,7 @@ def getPathFromList(path_list) {
 def saveFiles(Map args) {
     def ioptions  = initOptions(args.options)
     def path_list = [ ioptions.publish_dir ?: args.publish_dir ]
-    
+
     // Do not publish versions.yml unless running from pytest workflow
     if (args.filename.equals('versions.yml') && !System.getenv("NF_CORE_MODULES_TEST")) {
         return null
