@@ -34,7 +34,7 @@ process PAIRIX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
+        - ${getSoftwareName(task.process)}: \$(pairix --help 2>&1 | sed 's/^.*Version: //; s/Usage.*\$//')
     END_VERSIONS
     """
 }

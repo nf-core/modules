@@ -46,7 +46,7 @@ process PICARD_COLLECTWGSMETRICS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(picard CollectWgsMetrics --version 2>&1) | grep -o 'Version.*' | cut -f2- -d:)
+        - ${getSoftwareName(task.process)}: \$(picard CollectWgsMetrics --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }

@@ -40,7 +40,7 @@ process MINIA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(minia --version 2>&1) | sed 's/^.*Minia version //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(minia --version 2>&1 | sed 's/^.*Minia version //; s/ .*\$//')
     END_VERSIONS
     """
 }

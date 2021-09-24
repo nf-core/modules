@@ -53,7 +53,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(kb 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        - ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
     END_VERSIONS
     """
 }

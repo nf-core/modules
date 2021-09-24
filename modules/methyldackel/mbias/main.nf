@@ -41,7 +41,7 @@ process METHYLDACKEL_MBIAS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(MethylDackel --version 2>&1) | cut -f1 -d" ")
+        - ${getSoftwareName(task.process)}: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """
 }

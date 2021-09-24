@@ -45,7 +45,7 @@ process NEXTCLADE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(nextclade --version 2>&1))
+        - ${getSoftwareName(task.process)}: \$(nextclade --version 2>&1)
     END_VERSIONS
     """
 }

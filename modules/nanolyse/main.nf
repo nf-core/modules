@@ -36,7 +36,7 @@ process NANOLYSE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(NanoLyse --version 2>&1) | sed -e "s/NanoLyse //g")
+        - ${getSoftwareName(task.process)}: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
     END_VERSIONS
     """
 }

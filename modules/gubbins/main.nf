@@ -41,7 +41,7 @@ process GUBBINS {
         $alignment
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(run_gubbins.py --version 2>&1))
+        - ${getSoftwareName(task.process)}: \$(run_gubbins.py --version 2>&1)
     END_VERSIONS
     """
 }

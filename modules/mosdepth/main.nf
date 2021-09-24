@@ -45,7 +45,7 @@ process MOSDEPTH {
         $bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(mosdepth --version 2>&1) | sed 's/^.*mosdepth //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
     END_VERSIONS
     """
 }

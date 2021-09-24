@@ -42,7 +42,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(sequenzautils --version 2>&1) | sed 's/^.*sequenzautils //; s/Using.*\$//')
+        - ${getSoftwareName(task.process)}: \$(sequenzautils --version 2>&1 | sed 's/^.*sequenzautils //; s/Using.*\$//')
     END_VERSIONS
     """
 }

@@ -44,7 +44,7 @@ process IVAR_CONSENSUS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(ivar version 2>&1 | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """
 }

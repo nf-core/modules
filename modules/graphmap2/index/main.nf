@@ -36,7 +36,7 @@ process GRAPHMAP2_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(graphmap2 align 2>&1 | sed 's/^.*Version: v//; s/ .*\$//')
     END_VERSIONS
     """
 }

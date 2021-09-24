@@ -32,7 +32,7 @@ process BWAMETH_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
+        - ${getSoftwareName(task.process)}: \$(bwameth.py --version 2>&1 | cut -f2 -d" ")
     END_VERSIONS
     """
 }

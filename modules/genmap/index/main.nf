@@ -35,7 +35,7 @@ process GENMAP_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//')
+        - ${getSoftwareName(task.process)}: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """
 }

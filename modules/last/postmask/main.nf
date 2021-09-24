@@ -35,7 +35,7 @@ process LAST_POSTMASK {
     # last-postmask does not have a --version option
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(lastal --version 2>&1) | sed 's/lastal //')
+        - ${getSoftwareName(task.process)}: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """
 }

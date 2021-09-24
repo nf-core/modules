@@ -37,7 +37,7 @@ process PYDAMAGE_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
+        - ${getSoftwareName(task.process)}: \$(pydamage --version 2>&1 | sed -e 's/pydamage, version //g')
     END_VERSIONS
     """
 }

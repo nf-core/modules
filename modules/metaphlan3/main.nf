@@ -47,7 +47,7 @@ process METAPHLAN3 {
         --output_file ${prefix}_profile.txt
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(metaphlan --version 2>&1) | awk '{print \$3}')
+        - ${getSoftwareName(task.process)}: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """
 }

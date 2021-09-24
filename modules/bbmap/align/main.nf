@@ -56,7 +56,7 @@ process BBMAP_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bbversion.sh))
+        - ${getSoftwareName(task.process)}: \$(bbversion.sh)
     END_VERSIONS
     """
 }

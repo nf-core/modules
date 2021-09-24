@@ -40,7 +40,7 @@ process SNPSITES {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(snp-sites -V 2>&1) | sed 's/snp-sites //')
+        - ${getSoftwareName(task.process)}: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """
 }

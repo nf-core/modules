@@ -33,7 +33,7 @@ process STAPHOPIASCCMEC {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(staphopia-sccmec --version 2>&1) | sed 's/^.*staphopia-sccmec //')
+        - ${getSoftwareName(task.process)}: \$(staphopia-sccmec --version 2>&1 | sed 's/^.*staphopia-sccmec //')
     END_VERSIONS
     """
 }

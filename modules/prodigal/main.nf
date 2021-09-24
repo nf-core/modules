@@ -43,7 +43,7 @@ process PRODIGAL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(prodigal -v 2>&1) | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
+        - ${getSoftwareName(task.process)}: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
     END_VERSIONS
     """
 }

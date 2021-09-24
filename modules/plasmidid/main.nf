@@ -47,7 +47,7 @@ process PLASMIDID {
     mv NO_GROUP/$prefix ./$prefix
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(plasmidID --version 2>&1))
+        - ${getSoftwareName(task.process)}: \$(plasmidID --version 2>&1)
     END_VERSIONS
     """
 }

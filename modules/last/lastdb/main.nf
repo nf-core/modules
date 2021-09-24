@@ -38,7 +38,7 @@ process LAST_LASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(lastdb --version 2>&1) | sed 's/lastdb //')
+        - ${getSoftwareName(task.process)}: \$(lastdb --version 2>&1 | sed 's/lastdb //')
     END_VERSIONS
     """
 }

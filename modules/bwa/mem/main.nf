@@ -44,7 +44,7 @@ process BWA_MEM {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        - ${getSoftwareName(task.process)}: \$(bwa 2>&1 | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
 }

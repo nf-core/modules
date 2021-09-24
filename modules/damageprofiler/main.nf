@@ -41,7 +41,7 @@ process DAMAGEPROFILER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//')
+        - ${getSoftwareName(task.process)}: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
     END_VERSIONS
     """
 }

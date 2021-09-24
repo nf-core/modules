@@ -35,7 +35,7 @@ process BCFTOOLS_CONSENSUS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
 }

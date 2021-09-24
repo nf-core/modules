@@ -32,7 +32,7 @@ process BWAMEM2_INDEX {
     bwa-mem2 index $options.args $fasta -p bwamem2/${fasta}
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bwa-mem2 version 2>&1))
+        - ${getSoftwareName(task.process)}: \$(bwa-mem2 version 2>&1)
     END_VERSIONS
     """
 }

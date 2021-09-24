@@ -35,7 +35,7 @@ process BANDAGE_IMAGE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(Bandage --version 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

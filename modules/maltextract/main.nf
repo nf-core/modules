@@ -41,7 +41,7 @@ process MALTEXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(MaltExtract --help | head -n 2 | tail -n 1) | sed 's/MaltExtract version//')
+        - ${getSoftwareName(task.process)}: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """
 }

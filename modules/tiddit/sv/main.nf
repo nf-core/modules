@@ -42,7 +42,7 @@ process TIDDIT_SV {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(tiddit -h 2>&1) | sed 's/^.*Version: //; s/(.*\$//')
+        - ${getSoftwareName(task.process)}: \$(tiddit -h 2>&1 | sed 's/^.*Version: //; s/(.*\$//')
     END_VERSIONS
     """
 }

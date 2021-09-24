@@ -39,7 +39,7 @@ process COOLER_DIGEST {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(cooler --version 2>&1) | sed 's/cooler, version //')
+        - ${getSoftwareName(task.process)}: \$(cooler --version 2>&1 | sed 's/cooler, version //')
     END_VERSIONS
     """
 }

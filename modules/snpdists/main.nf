@@ -35,7 +35,7 @@ process SNPDISTS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(snp-dists -v 2>&1) | sed 's/snp-dists //;')
+        - ${getSoftwareName(task.process)}: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
     END_VERSIONS
     """
 }

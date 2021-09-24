@@ -57,7 +57,7 @@ process BOWTIE_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+        - ${getSoftwareName(task.process)}: \$(bowtie --version 2>&1 | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
 }

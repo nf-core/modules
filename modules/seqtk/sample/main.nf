@@ -40,7 +40,7 @@ process SEQTK_SAMPLE {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+            - ${getSoftwareName(task.process)}: \$(seqtk 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
     } else {
@@ -64,7 +64,7 @@ process SEQTK_SAMPLE {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+            - ${getSoftwareName(task.process)}: \$(seqtk 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
     }
