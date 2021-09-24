@@ -77,7 +77,7 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
         END_VERSIONS
         """ + compression_cmds
     } else {
@@ -92,7 +92,7 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
         END_VERSIONS
         """ + compression_cmds
     }

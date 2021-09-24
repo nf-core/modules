@@ -44,7 +44,7 @@ process LAST_LASTAL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(lastal --version 2>&1 | sed 's/lastal //')
+        ${getSoftwareName(task.process)}: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """
 }

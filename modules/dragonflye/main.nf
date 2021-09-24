@@ -42,7 +42,7 @@ process DRAGONFLYE {
         --force
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
+        ${getSoftwareName(task.process)}: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
     END_VERSIONS
     """
 }

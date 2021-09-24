@@ -37,7 +37,7 @@ process FLASH {
         $input_reads
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(flash --version)
+        ${getSoftwareName(task.process)}: \$(flash --version)
     END_VERSIONS
     """
 }

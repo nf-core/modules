@@ -37,7 +37,7 @@ process MASH_SKETCH {
         2> ${prefix}.mash_stats
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(mash --version 2>&1)
+        ${getSoftwareName(task.process)}: \$(mash --version 2>&1)
     END_VERSIONS
     """
 }

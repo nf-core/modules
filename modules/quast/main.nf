@@ -45,7 +45,7 @@ process QUAST {
     ln -s ${prefix}/report.tsv
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')
     END_VERSIONS
     """
 }

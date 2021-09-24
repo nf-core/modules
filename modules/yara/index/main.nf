@@ -36,7 +36,7 @@ process YARA_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(yara_indexer --help  2>&1 | grep -e "yara_indexer version:" | sed 's/yara_indexer version: //g')
+        ${getSoftwareName(task.process)}: \$(yara_indexer --help  2>&1 | grep -e "yara_indexer version:" | sed 's/yara_indexer version: //g')
     END_VERSIONS
     """
 }

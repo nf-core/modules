@@ -33,7 +33,7 @@ process LAST_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(last-split --version 2>&1 | sed 's/last-split //')
+        ${getSoftwareName(task.process)}: \$(last-split --version 2>&1 | sed 's/last-split //')
     END_VERSIONS
     """
 }

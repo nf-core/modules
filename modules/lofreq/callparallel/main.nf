@@ -41,7 +41,7 @@ process LOFREQ_CALLPARALLEL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(lofreq version 2>&1 | sed 's/^version: //; s/ *commit.*\$//')
+        ${getSoftwareName(task.process)}: \$(lofreq version 2>&1 | sed 's/^version: //; s/ *commit.*\$//')
     END_VERSIONS
     """
 }

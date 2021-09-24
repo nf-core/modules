@@ -51,7 +51,7 @@ process FASTP {
             2> ${prefix}.fastp.log
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     } else {
@@ -76,7 +76,7 @@ process FASTP {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     }

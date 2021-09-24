@@ -35,7 +35,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(bigWigAverageOverBed 2>&1 | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//')
+        ${getSoftwareName(task.process)}: \$(bigWigAverageOverBed 2>&1 | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//')
     END_VERSIONS
     """
 }

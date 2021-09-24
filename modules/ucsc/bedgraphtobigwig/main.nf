@@ -35,7 +35,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
     bedGraphToBigWig $bedgraph $sizes ${prefix}.bigWig
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
     END_VERSIONS
     """
 }

@@ -40,7 +40,7 @@ process MINIMAP2_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(minimap2 --version 2>&1)
+        ${getSoftwareName(task.process)}: \$(minimap2 --version 2>&1)
     END_VERSIONS
     """
 }

@@ -32,7 +32,7 @@ process BOWTIE2_BUILD {
     bowtie2-build $options.args --threads $task.cpus $fasta bowtie2/${fasta.baseName}
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
 }

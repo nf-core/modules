@@ -38,7 +38,7 @@ process ALLELECOUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(alleleCounter --version)
+        ${getSoftwareName(task.process)}: \$(alleleCounter --version)
     END_VERSIONS
     """
 }

@@ -36,7 +36,7 @@ process YARA_MAPPER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(yara_mapper --help  2>&1)
+        ${getSoftwareName(task.process)}: \$(yara_mapper --help  2>&1)
     END_VERSIONS
     """
     } else {
@@ -46,7 +46,7 @@ process YARA_MAPPER {
     samtools view -@ ${task.cpus} -hF 4 -f 0x80 -b output.bam > ${prefix}_2.mapped.bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(yara_mapper --version  2>&1 | grep -e "yara_mapper version:" | sed 's/yara_mapper version: //g')
+        ${getSoftwareName(task.process)}: \$(yara_mapper --version  2>&1 | grep -e "yara_mapper version:" | sed 's/yara_mapper version: //g')
     END_VERSIONS
     """
     }

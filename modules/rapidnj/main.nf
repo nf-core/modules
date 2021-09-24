@@ -41,7 +41,7 @@ process RAPIDNJ {
     # Doesn't appear to be a way of getting the version number
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo 2.3.2)
+        ${getSoftwareName(task.process)}: \$(echo 2.3.2)
     END_VERSIONS
     """
 }

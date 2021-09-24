@@ -44,7 +44,7 @@ process ARRIBA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        ${getSoftwareName(task.process)}: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """
 }

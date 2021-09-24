@@ -54,7 +54,7 @@ process SNPEFF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(snpEff -version 2>&1)
+        ${getSoftwareName(task.process)}: \$(snpEff -version 2>&1)
     END_VERSIONS
     """
 }

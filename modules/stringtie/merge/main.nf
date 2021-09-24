@@ -36,7 +36,7 @@ process STRINGTIE_MERGE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(stringtie --version 2>&1)
+        ${getSoftwareName(task.process)}: \$(stringtie --version 2>&1)
     END_VERSIONS
     """
 }

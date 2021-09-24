@@ -43,7 +43,7 @@ process SEQTK_SUBSEQ {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(seqtk 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(seqtk 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

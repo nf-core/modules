@@ -39,7 +39,7 @@ process CUTADAPT {
         > ${prefix}.cutadapt.log
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(cutadapt --version)
+        ${getSoftwareName(task.process)}: \$(cutadapt --version)
     END_VERSIONS
     """
 }

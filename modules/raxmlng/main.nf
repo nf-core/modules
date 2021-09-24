@@ -36,7 +36,7 @@ process RAXMLNG {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(raxml-ng --version 2>&1 | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
+        ${getSoftwareName(task.process)}: \$(raxml-ng --version 2>&1 | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
     END_VERSIONS
     """
 }

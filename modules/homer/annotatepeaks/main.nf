@@ -43,7 +43,7 @@ process HOMER_ANNOTATEPEAKS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
     END_VERSIONS
     """
 }

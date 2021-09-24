@@ -37,7 +37,7 @@ process PANGOLIN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
+        ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
     END_VERSIONS
     """
 }

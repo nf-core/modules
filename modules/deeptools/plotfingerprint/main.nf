@@ -43,7 +43,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
+        ${getSoftwareName(task.process)}: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
     END_VERSIONS
     """
 }

@@ -74,7 +74,7 @@ process SALMON_QUANT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(salmon --version | sed -e "s/salmon //g")
+        ${getSoftwareName(task.process)}: \$(salmon --version | sed -e "s/salmon //g")
     END_VERSIONS
     """
 }

@@ -41,7 +41,7 @@ process LAST_TRAIN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
+        ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
     END_VERSIONS
     """
 }

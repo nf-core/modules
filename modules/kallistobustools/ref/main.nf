@@ -47,7 +47,7 @@ process KALLISTOBUSTOOLS_REF {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+            ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """
     } else {
@@ -66,7 +66,7 @@ process KALLISTOBUSTOOLS_REF {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            - ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+            ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """
     }

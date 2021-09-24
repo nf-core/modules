@@ -38,7 +38,7 @@ process BEDTOOLS_MASKFASTA {
         -fo ${prefix}.fa
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
     END_VERSIONS
     """
 }

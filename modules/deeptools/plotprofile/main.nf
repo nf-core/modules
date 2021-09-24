@@ -38,7 +38,7 @@ process DEEPTOOLS_PLOTPROFILE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(plotProfile --version | sed -e "s/plotProfile //g")
+        ${getSoftwareName(task.process)}: \$(plotProfile --version | sed -e "s/plotProfile //g")
     END_VERSIONS
     """
 }

@@ -44,7 +44,7 @@ process BWAMEM2_MEM {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(bwa-mem2 version 2>&1)
+        ${getSoftwareName(task.process)}: \$(bwa-mem2 version 2>&1)
     END_VERSIONS
     """
 }

@@ -44,7 +44,7 @@ process UNICYCLER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(unicycler --version 2>&1 | sed 's/^.*Unicycler v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(unicycler --version 2>&1 | sed 's/^.*Unicycler v//; s/ .*\$//')
     END_VERSIONS
     """
 }

@@ -35,7 +35,7 @@ process FGBIO_SORTBAM {
         -o ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(fgbio --version | sed -e "s/fgbio v//g")
+        ${getSoftwareName(task.process)}: \$(fgbio --version | sed -e "s/fgbio v//g")
     END_VERSIONS
     """
 }

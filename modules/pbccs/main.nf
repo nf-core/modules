@@ -51,7 +51,7 @@ process PBCCS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(ccs --version 2>&1 | grep -e 'commit')
+        ${getSoftwareName(task.process)}: \$(ccs --version 2>&1 | grep -e 'commit')
     END_VERSIONS
     """
 }

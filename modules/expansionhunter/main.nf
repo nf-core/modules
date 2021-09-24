@@ -42,7 +42,7 @@ process EXPANSIONHUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(ExpansionHunter --version 2>&1 | sed 's/^.*ExpansionHunter //')
+        ${getSoftwareName(task.process)}: \$(ExpansionHunter --version 2>&1 | sed 's/^.*ExpansionHunter //')
     END_VERSIONS
     """
 }

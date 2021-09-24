@@ -38,7 +38,7 @@ process UCSC_WIGTOBIGWIG {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(wigToBigWig 2>&1 | sed 's/wigToBigWig v //; s/ - Convert.*\$//')
+        ${getSoftwareName(task.process)}: \$(wigToBigWig 2>&1 | sed 's/wigToBigWig v //; s/ - Convert.*\$//')
     END_VERSIONS
     """
 }

@@ -38,7 +38,7 @@ process DEEPTOOLS_PLOTHEATMAP {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - ${getSoftwareName(task.process)}: \$(plotHeatmap --version | sed -e "s/plotHeatmap //g")
+        ${getSoftwareName(task.process)}: \$(plotHeatmap --version | sed -e "s/plotHeatmap //g")
     END_VERSIONS
     """
 }
