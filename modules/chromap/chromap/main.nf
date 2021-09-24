@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -34,7 +34,7 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.bam")        , optional:true, emit: bam
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
-    path "*.version.txt"                                 , emit: version
+    path "versions.yml"                                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -75,7 +75,10 @@ process CHROMAP_CHROMAP {
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
 
-        echo "$VERSION" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
         """ + compression_cmds
     } else {
         """
@@ -87,7 +90,10 @@ process CHROMAP_CHROMAP {
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
 
-        echo "$VERSION" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
         """ + compression_cmds
     }
 }

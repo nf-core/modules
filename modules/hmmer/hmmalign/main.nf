@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,7 +24,7 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sthlm.gz"), emit: sthlm
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,6 +37,9 @@ process HMMER_HMMALIGN {
         $hmm \\
         - | gzip -c > ${meta.id}.sthlm.gz
 
-    echo \$(hmmalign -h | grep -o '^# HMMER [0-9.]*') | sed 's/^# HMMER *//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
+    END_VERSIONS
     """
 }

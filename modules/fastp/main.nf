@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -28,7 +28,7 @@ process FASTP {
     tuple val(meta), path('*.json')           , emit: json
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
-    path '*.version.txt'                      , emit: version
+    path "versions.yml"                       , emit: version
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
 
@@ -49,7 +49,10 @@ process FASTP {
             $fail_fastq \\
             $options.args \\
             2> ${prefix}.fastp.log
-        echo \$(fastp --version 2>&1) | sed -e "s/fastp //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+        END_VERSIONS
         """
     } else {
         def fail_fastq  = save_trimmed_fail ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
@@ -71,7 +74,10 @@ process FASTP {
             $options.args \\
             2> ${prefix}.fastp.log
 
-        echo \$(fastp --version 2>&1) | sed -e "s/fastp //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+        END_VERSIONS
         """
     }
 }

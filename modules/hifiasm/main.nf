@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -34,7 +34,7 @@ process HIFIASM {
     tuple val(meta), path("*.asm.a_ctg.gfa")   , emit: alternate_contigs, optional: true
     tuple val(meta), path("*.hap1.p_ctg.gfa")  , emit: paternal_contigs , optional: true
     tuple val(meta), path("*.hap2.p_ctg.gfa")  , emit: maternal_contigs , optional: true
-    path  "*.version.txt"                      , emit: version
+    path  "versions.yml"                       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -49,7 +49,10 @@ process HIFIASM {
             -2 $maternal_kmer_dump \\
             $reads
 
-        echo \$(hifiasm --version 2>&1) > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+        END_VERSIONS
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
@@ -59,7 +62,10 @@ process HIFIASM {
             -t $task.cpus \\
             $reads
 
-        echo \$(hifiasm --version 2>&1) > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+        END_VERSIONS
         """
     }
 }

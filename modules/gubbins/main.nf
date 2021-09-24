@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -30,7 +30,7 @@ process GUBBINS {
     path "*.branch_base_reconstruction.embl", emit: embl_branch
     path "*.final_tree.tre"                 , emit: tree
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
-    path "*.version.txt"                    , emit: version
+    path "versions.yml"                     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,9 @@ process GUBBINS {
         --threads $task.cpus \\
         $options.args \\
         $alignment
-    echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(run_gubbins.py --version 2>&1)
+    END_VERSIONS
     """
 }

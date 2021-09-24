@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,7 +26,7 @@ process GRAPHMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -41,6 +41,9 @@ process GRAPHMAP2_ALIGN {
         -o ${prefix}.sam \\
         $options.args
 
-    echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(graphmap2 align 2>&1 | sed 's/^.*Version: v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

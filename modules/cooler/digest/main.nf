@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process COOLER_DIGEST {
 
     output:
     path "*.bed"                  , emit: bed
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,6 +37,9 @@ process COOLER_DIGEST {
         $fasta \\
         $enzyme
 
-    echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
     """
 }
