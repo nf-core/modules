@@ -39,6 +39,9 @@ process PLINK_VCF {
         --threads $task.cpus \\
         --out ${prefix}
 
-    echo \$(plink --version 2>&1) | sed 's/^PLINK //' | sed 's/..-bit.*//'> ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        plink: \$( plink --version 2>&1 | sed 's/^PLINK //' | sed 's/..-bit.*//' )
+    END_VERSIONS
     """
 }

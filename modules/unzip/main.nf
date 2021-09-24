@@ -38,6 +38,9 @@ process UNZIP {
         $options.args \\
         $archive
 
-    echo \$(7za --help) | grep Version | sed 's/.*p7zip Version//; s/(.*//' 1> ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        7za: \$( 7za --help) grep Version | sed 's/.*p7zip Version//; s/(.*//' )
+    END_VERSIONS
     """
 }

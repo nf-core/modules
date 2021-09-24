@@ -47,7 +47,10 @@ process CAT_CAT {
             $command2 \\
             > $file_out
 
-        echo \$(pigz --version 2>&1) | sed 's/pigz //g' > pigz.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+        END_VERSIONS
         """
     }
 }

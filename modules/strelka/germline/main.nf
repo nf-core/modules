@@ -49,6 +49,9 @@ process STRELKA_GERMLINE {
     mv strelka/results/variants/variants.vcf.gz     ${prefix}.variants.vcf.gz
     mv strelka/results/variants/variants.vcf.gz.tbi ${prefix}.variants.vcf.gz.tbi
 
-    echo configureStrelkaGermlineWorkflow.py --version &> ${software}.version.txt #2>&1
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        strelka: \$( configureStrelkaGermlineWorkflow.py --version )
+    END_VERSIONS
     """
 }
