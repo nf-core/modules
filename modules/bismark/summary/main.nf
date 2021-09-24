@@ -26,7 +26,7 @@ process BISMARK_SUMMARY {
 
     output:
     path  "*report.{html,txt}", emit: summary
-    path  "*.version.txt"     , emit: version
+    path  "versions.yml"      , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -23,7 +23,7 @@ process PYDAMAGE_ANALYZE {
 
     output:
     tuple val(meta), path("pydamage_results/pydamage_results.csv"), emit: csv
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -23,7 +23,7 @@ process GATK4_INTERVALLISTTOOLS {
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

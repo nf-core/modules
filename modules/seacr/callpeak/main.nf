@@ -25,7 +25,7 @@ process SEACR_CALLPEAK {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

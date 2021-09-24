@@ -23,7 +23,7 @@ process MSISENSOR_SCAN {
 
     output:
     tuple (val(meta), path("*.tab"), emit: txt)
-    path ("*.version.txt"          , emit: version)
+    path ("versions.yml"           , emit: version)
 
     script:
     def software = getSoftwareName(task.process)

@@ -24,7 +24,7 @@ process ALLELECOUNTER {
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "*.version.txt"                  , emit: version
+    path "versions.yml"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)

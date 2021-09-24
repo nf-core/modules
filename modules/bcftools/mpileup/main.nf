@@ -26,7 +26,7 @@ process BCFTOOLS_MPILEUP {
     tuple val(meta), path("*.gz")      , emit: vcf
     tuple val(meta), path("*.tbi")     , emit: tbi
     tuple val(meta), path("*stats.txt"), emit: stats
-    path  "*.version.txt"              , emit: version
+    path  "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)

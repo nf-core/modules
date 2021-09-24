@@ -25,7 +25,7 @@ process SEQKIT_SPLIT2 {
 
     output:
     tuple val(meta), path("*.split/*.gz"), emit: reads
-    path("*.version.txt")                      , emit: version
+    path("versions.yml")                       , emit: version
 
 
     script:

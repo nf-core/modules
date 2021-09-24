@@ -23,7 +23,7 @@ process BWAMEM2_INDEX {
 
     output:
     path "bwamem2"      , emit: index
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

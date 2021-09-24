@@ -24,7 +24,7 @@ process BCFTOOLS_NORM {
 
     output:
     tuple val(meta), path("*.gz") , emit: vcf
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

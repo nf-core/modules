@@ -25,7 +25,7 @@ process HOMER_MAKEUCSCFILE {
 
     output:
     tuple val(meta), path("tag_dir/*ucsc.bedGraph.gz"), emit: bedGraph
-    path  "*.version.txt"                             , emit: version
+    path  "versions.yml"                              , emit: version
 
     script:
     def software = getSoftwareName(task.process)

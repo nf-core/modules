@@ -25,7 +25,7 @@ process MACS2_CALLPEAK {
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    path  "*.version.txt"                            , emit: version
+    path  "versions.yml"                             , emit: version
 
     tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
     tuple val(meta), path("*.bed")       , optional:true, emit: bed

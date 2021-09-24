@@ -29,7 +29,7 @@ process GATK4_BASERECALIBRATOR {
 
     output:
     tuple val(meta), path("*.table"), emit: table
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

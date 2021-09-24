@@ -28,7 +28,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tuple val(meta), path("*.cov.gz")              , emit: coverage
     tuple val(meta), path("*_splitting_report.txt"), emit: report
     tuple val(meta), path("*.M-bias.txt")          , emit: mbias
-    path "*.version.txt"                           , emit: version
+    path "versions.yml"                            , emit: version
 
     script:
     def seqtype  = meta.single_end ? '-s' : '-p'

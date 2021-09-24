@@ -26,7 +26,7 @@ process PLINK_VCF {
     tuple val(meta), path("*.bim"), emit: bim, optional: true
     tuple val(meta), path("*.fam"), emit: fam, optional: true
 
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

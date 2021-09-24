@@ -25,7 +25,7 @@ process SEQWISH_INDUCE {
 
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
 
     script:

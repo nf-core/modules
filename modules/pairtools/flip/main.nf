@@ -24,7 +24,7 @@ process PAIRTOOLS_FLIP {
 
     output:
     tuple val(meta), path("*.flip.gz"), emit: flip
-    path "*.version.txt"              , emit: version
+    path "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)

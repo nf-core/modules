@@ -24,7 +24,7 @@ process SEQTK_SUBSEQ {
 
     output:
     path "*.gz"         , emit: sequences
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

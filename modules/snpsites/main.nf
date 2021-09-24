@@ -23,7 +23,7 @@ process SNPSITES {
     output:
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:

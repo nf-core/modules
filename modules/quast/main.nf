@@ -27,7 +27,7 @@ process QUAST {
     output:
     path "${prefix}"    , emit: results
     path '*.tsv'        , emit: tsv
-    path '*.version.txt', emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software  = getSoftwareName(task.process)

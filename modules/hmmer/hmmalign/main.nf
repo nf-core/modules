@@ -24,7 +24,7 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sthlm.gz"), emit: sthlm
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: version
 
     script:
     def software = getSoftwareName(task.process)

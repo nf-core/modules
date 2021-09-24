@@ -24,7 +24,7 @@ process PYCOQC {
     output:
     path "*.html"        , emit: html
     path "*.json"        , emit: json
-    path  "*.version.txt", emit: version
+    path  "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

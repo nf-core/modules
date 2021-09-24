@@ -25,7 +25,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
     output:
     tuple val(meta), path("*.mat.gz") , emit: matrix
     tuple val(meta), path("*.mat.tab"), emit: table
-    path  "*.version.txt"             , emit: version
+    path  "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)

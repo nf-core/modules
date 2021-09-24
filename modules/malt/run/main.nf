@@ -27,7 +27,7 @@ process MALT_RUN {
     path "*.rma6"                          , emit: rma6
     path "*.{tab,text,sam}",  optional:true, emit: alignments
     path "*.log"                           , emit: log
-    path "*.version.txt"                   , emit: version
+    path "versions.yml"                    , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -24,7 +24,7 @@ process UCSC_WIGTOBIGWIG {
 
     output:
     path "*.bw"                   , emit: bw
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

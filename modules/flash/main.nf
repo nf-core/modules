@@ -22,7 +22,7 @@ process FLASH {
 
     output:
     tuple val(meta), path("*.merged.*.fastq.gz"), emit: reads
-    path "*.version.txt"                      , emit: version
+    path "versions.yml"                       , emit: version
 
     script:
     def software = getSoftwareName(task.process)

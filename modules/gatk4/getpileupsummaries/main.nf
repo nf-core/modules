@@ -26,7 +26,7 @@ process GATK4_GETPILEUPSUMMARIES {
 
     output:
     tuple val(meta), path('*.pileups.table'), emit: table
-    path '*.version.txt'          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -26,7 +26,7 @@ process DELLY_CALL {
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
     tuple val(meta), path("*.csi"), emit: csi
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

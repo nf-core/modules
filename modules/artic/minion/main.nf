@@ -40,7 +40,7 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json"), optional:true                    , emit: json
-    path  "*.version.txt"                                             , emit: version
+    path  "versions.yml"                                              , emit: version
 
     script:
     def software = getSoftwareName(task.process)

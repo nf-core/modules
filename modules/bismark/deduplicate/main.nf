@@ -24,7 +24,7 @@ process BISMARK_DEDUPLICATE {
     output:
     tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "*.version.txt"                              , emit: version
+    path  "versions.yml"                               , emit: version
 
     script:
     def software   = getSoftwareName(task.process)

@@ -26,7 +26,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , optional:true, emit: unmapped
-    path "*.version.txt"                , emit: version
+    path "versions.yml"                 , emit: version
 
     script:
     def software   = getSoftwareName(task.process)

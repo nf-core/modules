@@ -25,7 +25,7 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.bam")        , emit: bam
     tuple val(meta), path("*.bai")        , optional:true, emit: bai
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path  "*.version.txt"                 , emit: version
+    path  "versions.yml"                  , emit: version
 
     script:
     def software  = getSoftwareName(task.process)

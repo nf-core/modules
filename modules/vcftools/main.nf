@@ -28,7 +28,7 @@ process VCFTOOLS {
     path(diff_variant_file)
 
     output:
-    path("*.version.txt"), emit: version
+    path("versions.yml") , emit: version
 
     tuple val(meta), path("*.vcf"), optional:true, emit: vcf
     tuple val(meta), path("*.bcf"), optional:true, emit: bcf

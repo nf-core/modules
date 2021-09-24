@@ -23,7 +23,7 @@ process BOWTIE_BUILD {
 
     output:
     path 'bowtie'       , emit: index
-    path '*.version.txt', emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -27,7 +27,7 @@ process DRAGONFLYE {
     tuple val(meta), path("{flye,miniasm,raven}.fasta")                        , emit: raw_contigs
     tuple val(meta), path("{miniasm,raven}-unpolished.gfa"), optional:true     , emit: gfa
     tuple val(meta), path("flye-info.txt"), optional:true                      , emit: txt
-    path "*.version.txt"                                                       , emit: version
+    path "versions.yml"                                                        , emit: version
 
     script:
     def software = getSoftwareName(task.process)

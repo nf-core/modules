@@ -24,7 +24,7 @@ process FASTANI {
 
     output:
     tuple val(meta), path("*.ani.txt"), emit: ani
-    path "*.version.txt"              , emit: version
+    path "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)

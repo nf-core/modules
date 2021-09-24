@@ -25,7 +25,7 @@ process MINIA {
     tuple val(meta), path('*.contigs.fa'), emit: contigs
     tuple val(meta), path('*.unitigs.fa'), emit: unitigs
     tuple val(meta), path('*.h5')        , emit: h5
-    path  '*.version.txt'                , emit: version
+    path  "versions.yml"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -29,7 +29,7 @@ process SPADES {
     tuple val(meta), path('*.gene_clusters.fa'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa')    , optional:true, emit: gfa
     tuple val(meta), path('*.log')             , emit: log
-    path  '*.version.txt'                      , emit: version
+    path  "versions.yml"                       , emit: version
 
     script:
     def software    = getSoftwareName(task.process)

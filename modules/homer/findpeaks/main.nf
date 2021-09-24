@@ -25,7 +25,7 @@ process HOMER_FINDPEAKS {
 
     output:
     tuple val(meta), path("*peaks.txt"), emit: txt
-    path  "*.version.txt"              , emit: version
+    path  "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)

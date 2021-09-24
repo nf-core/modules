@@ -25,7 +25,7 @@ process GENMAP_MAPPABILITY {
     path "*.wig"        , optional:true, emit: wig
     path "*.bedgraph"   , optional:true, emit: bedgraph
     path "*.txt"        , optional:true, emit: txt
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: version
 
     script:
     def software = getSoftwareName(task.process)

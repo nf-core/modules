@@ -24,7 +24,7 @@ process GATK4_BEDTOINTERVALLIST {
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
-    path  '*.version.txt'                   , emit: version
+    path  "versions.yml"                    , emit: version
 
     script:
     def software = getSoftwareName(task.process)

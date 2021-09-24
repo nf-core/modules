@@ -26,7 +26,7 @@ process METAPHLAN3 {
     tuple val(meta), path("*_profile.txt")   ,                emit: profile
     tuple val(meta), path("*.biom")          ,                emit: biom
     tuple val(meta), path('*.bowtie2out.txt'), optional:true, emit: bt2out
-    path "*.version.txt"                     ,                emit: version
+    path "versions.yml"                      ,                emit: version
 
     script:
     def software    = getSoftwareName(task.process)

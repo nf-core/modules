@@ -25,7 +25,7 @@ process LAST_DOTPLOT {
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
     tuple val(meta), path("*.png"), optional:true, emit: png
-    path "*.version.txt"                         , emit: version
+    path "versions.yml"                          , emit: version
 
     script:
     def software = getSoftwareName(task.process)

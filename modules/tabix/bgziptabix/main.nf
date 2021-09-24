@@ -23,7 +23,7 @@ process TABIX_BGZIPTABIX {
 
     output:
     tuple val(meta), path("*.gz"), path("*.tbi"), emit: tbi
-    path  "*.version.txt",                        emit: version
+    path  "versions.yml" ,                        emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -22,7 +22,7 @@ process MASH_SKETCH {
     output:
     tuple val(meta), path("*.msh")        , emit: mash
     tuple val(meta), path("*.mash_stats") , emit: stats
-    path "*.version.txt"                  , emit: version
+    path "versions.yml"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)

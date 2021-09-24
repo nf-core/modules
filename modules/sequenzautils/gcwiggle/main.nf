@@ -23,7 +23,7 @@ process SEQUENZAUTILS_GCWIGGLE {
 
     output:
     tuple val(meta), path("*.wig.gz"), emit: wig
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

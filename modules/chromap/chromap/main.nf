@@ -34,7 +34,7 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.bam")        , optional:true, emit: bam
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
-    path "*.version.txt"                                 , emit: version
+    path "versions.yml"                                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)

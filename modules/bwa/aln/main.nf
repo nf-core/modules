@@ -24,7 +24,7 @@ process BWA_ALN {
 
     output:
     tuple val(meta), path("*.sai"), emit: sai
-    path "*.version.txt"                       , emit: version
+    path "versions.yml"                        , emit: version
 
     script:
     def software = getSoftwareName(task.process)

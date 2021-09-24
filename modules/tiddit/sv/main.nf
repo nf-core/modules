@@ -27,7 +27,7 @@ process TIDDIT_SV {
     tuple val(meta), path("*.vcf")        , emit: vcf
     tuple val(meta), path("*.ploidy.tab") , emit: ploidy
     tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "*.version.txt"                 , emit: version
+    path  "versions.yml"                  , emit: version
 
     script:
     def software  = getSoftwareName(task.process)

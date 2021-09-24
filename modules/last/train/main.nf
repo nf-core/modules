@@ -24,7 +24,7 @@ process LAST_TRAIN {
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

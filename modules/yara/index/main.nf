@@ -23,7 +23,7 @@ process YARA_INDEX {
 
     output:
     path "yara", emit: index
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

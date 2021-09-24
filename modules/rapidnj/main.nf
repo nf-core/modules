@@ -23,7 +23,7 @@ process RAPIDNJ {
     output:
     path "*.sth"        , emit: stockholm_alignment
     path "*.tre"        , emit: phylogeny
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

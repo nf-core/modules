@@ -24,7 +24,7 @@ process BANDAGE_IMAGE {
     output:
     tuple val(meta), path('*.png'), emit: png
     tuple val(meta), path('*.svg'), emit: svg
-    path  '*.version.txt'         , emit: version
+    path  "versions.yml"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)

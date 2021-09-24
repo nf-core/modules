@@ -28,7 +28,7 @@ process FASTP {
     tuple val(meta), path('*.json')           , emit: json
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
-    path '*.version.txt'                      , emit: version
+    path "versions.yml"                       , emit: version
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
 

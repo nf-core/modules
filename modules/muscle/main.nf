@@ -30,7 +30,7 @@ process MUSCLE {
     tuple val(meta), path("*.msf") , optional: true, emit: msf
     tuple val(meta), path("*.tree"), optional: true, emit: tree
     path "*.log"                                   , emit: log
-    path "*.version.txt"                           , emit: version
+    path "versions.yml"                            , emit: version
 
     script:
     def software    = getSoftwareName(task.process)

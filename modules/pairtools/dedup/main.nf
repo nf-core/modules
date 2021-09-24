@@ -24,7 +24,7 @@ process PAIRTOOLS_DEDUP {
     output:
     tuple val(meta), path("*.pairs.gz")  , emit: pairs
     tuple val(meta), path("*.pairs.stat"), emit: stat
-    path "*.version.txt"                 , emit: version
+    path "versions.yml"                  , emit: version
 
     script:
     def software = getSoftwareName(task.process)

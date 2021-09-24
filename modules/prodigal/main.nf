@@ -27,7 +27,7 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}.fna"), emit: nucleotide_fasta
     tuple val(meta), path("${prefix}.faa"), emit: amino_acid_fasta
     tuple val(meta), path("${prefix}_all.txt"), emit: all_gene_annotations
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

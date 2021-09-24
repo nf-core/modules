@@ -25,7 +25,7 @@ process PAIRTOOLS_PARSE {
     output:
     tuple val(meta), path("*.pairsam.gz")  , emit: pairsam
     tuple val(meta), path("*.pairsam.stat"), emit: stat
-    path "*.version.txt"                   , emit: version
+    path "versions.yml"                    , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -31,7 +31,7 @@ process SNPEFF {
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
     path "*.csv"                      , emit: report
-    path "*.version.txt"              , emit: version
+    path "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -31,7 +31,7 @@ process PLASMIDID {
     tuple val(meta), path("${prefix}/database/")          , emit: database
     tuple val(meta), path("${prefix}/fasta_files/")       , emit: fasta_files
     tuple val(meta), path("${prefix}/kmer/")              , emit: kmer
-    path '*.version.txt'                                  , emit: version
+    path "versions.yml"                                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -22,7 +22,7 @@ process GRAPHMAP2_INDEX {
 
     output:
     path "*.gmidx"      , emit: index
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -24,7 +24,7 @@ process DEEPTOOLS_PLOTPROFILE {
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: table
-    path  "*.version.txt"         , emit: version
+    path  "versions.yml"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)

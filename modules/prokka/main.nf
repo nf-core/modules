@@ -35,7 +35,7 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.log"), emit: log
     tuple val(meta), path("${prefix}/*.txt"), emit: txt
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)

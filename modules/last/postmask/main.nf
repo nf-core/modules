@@ -23,7 +23,7 @@ process LAST_POSTMASK {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "*.version.txt"             , emit: version
+    path "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)

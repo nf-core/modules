@@ -24,7 +24,7 @@ process BWAMEM2_MEM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "*.version.txt"         , emit: version
+    path  "versions.yml"          , emit: version
 
     script:
     def split_cpus = Math.floor(task.cpus/2)

@@ -26,7 +26,7 @@ process ARRIBA {
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions
     tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
-    path "*.version.txt"                            , emit: version
+    path "versions.yml"                             , emit: version
 
     script:
     def software  = getSoftwareName(task.process)

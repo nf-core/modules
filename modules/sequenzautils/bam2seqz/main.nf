@@ -25,7 +25,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
 
     output:
     tuple val(meta), path("*.seqz.gz"), emit: seqz
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

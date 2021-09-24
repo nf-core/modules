@@ -27,7 +27,7 @@ process NEXTCLADE {
     tuple val(meta), path("${prefix}.tree.json") , emit: json_tree
     tuple val(meta), path("${prefix}.tsv")       , emit: tsv
     tuple val(meta), path("${prefix}.clades.tsv"), optional:true, emit: tsv_clades
-    path "*.version.txt"                         , emit: version
+    path "versions.yml"                          , emit: version
 
     script:
     def software = getSoftwareName(task.process)

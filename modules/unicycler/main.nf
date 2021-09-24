@@ -25,7 +25,7 @@ process UNICYCLER {
     tuple val(meta), path('*.scaffolds.fa'), emit: scaffolds
     tuple val(meta), path('*.assembly.gfa'), emit: gfa
     tuple val(meta), path('*.log')         , emit: log
-    path  '*.version.txt'                  , emit: version
+    path  "versions.yml"                   , emit: version
 
     script:
     def software    = getSoftwareName(task.process)
