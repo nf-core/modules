@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -33,6 +33,9 @@ process BCFTOOLS_ISEC {
         $options.args \\
         -p $prefix \\
         *.vcf.gz
-    echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
     """
 }

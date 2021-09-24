@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -37,6 +37,9 @@ process LAST_DOTPLOT {
         $prefix.$format
 
     # last-dotplot has no --version option so let's use lastal from the same suite
-    lastal --version | sed 's/lastal //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(lastal --version | sed 's/lastal //')
+    END_VERSIONS
     """
 }

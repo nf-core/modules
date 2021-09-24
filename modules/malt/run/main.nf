@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -49,6 +49,9 @@ process MALT_RUN {
         -m $mode \\
         --index $index/ |&tee malt-run.log
 
-    echo \$(malt-run --help  2>&1) | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(malt-run --help  2>&1) | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
+    END_VERSIONS
     """
 }

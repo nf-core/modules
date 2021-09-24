@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -55,6 +55,9 @@ process MUSCLE {
         $html_out \\
         $tree_out \\
         -loga muscle_msa.log
-    muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
+    END_VERSIONS
     """
 }

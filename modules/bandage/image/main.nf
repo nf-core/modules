@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -33,6 +33,9 @@ process BANDAGE_IMAGE {
     Bandage image $gfa ${prefix}.png $options.args
     Bandage image $gfa ${prefix}.svg $options.args
 
-    echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
     """
 }

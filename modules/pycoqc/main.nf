@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,6 +35,9 @@ process PYCOQC {
         -o pycoqc.html \\
         -j pycoqc.json
 
-    echo \$(pycoQC --version 2>&1) | sed 's/^.*pycoQC v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(pycoQC --version 2>&1) | sed 's/^.*pycoQC v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

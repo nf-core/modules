@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -38,7 +38,10 @@ process UMITOOLS_EXTRACT {
             $options.args \\
             > ${prefix}.umi_extract.log
 
-        echo \$(umi_tools --version 2>&1) | sed 's/^.*UMI-tools version://; s/ *\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo \$(umi_tools --version 2>&1) | sed 's/^.*UMI-tools version://; s/ *\$//')
+        END_VERSIONS
         """
     }  else {
         """
@@ -51,7 +54,10 @@ process UMITOOLS_EXTRACT {
             $options.args \\
             > ${prefix}.umi_extract.log
 
-        echo \$(umi_tools --version 2>&1) | sed 's/^.*UMI-tools version://; s/ *\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo \$(umi_tools --version 2>&1) | sed 's/^.*UMI-tools version://; s/ *\$//')
+        END_VERSIONS
         """
     }
 }

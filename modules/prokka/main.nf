@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -51,6 +51,9 @@ process PROKKA {
         $prodigal_tf \\
         $fasta
 
-    echo \$(prokka --version 2>&1) | sed 's/^.*prokka //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
+    END_VERSIONS
     """
 }

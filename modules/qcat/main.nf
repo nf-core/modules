@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -47,6 +47,9 @@ process QCAT {
     ## Zip fastq files
     gzip fastq/*
 
-    echo \$(qcat --version 2>&1) | sed 's/^.*qcat //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(qcat --version 2>&1) | sed 's/^.*qcat //; s/ .*\$//')
+    END_VERSIONS
     """
 }

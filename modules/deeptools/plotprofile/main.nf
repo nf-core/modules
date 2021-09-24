@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -36,6 +36,9 @@ process DEEPTOOLS_PLOTPROFILE {
         --outFileName ${prefix}.plotProfile.pdf \\
         --outFileNameData ${prefix}.plotProfile.tab
 
-    plotProfile --version | sed -e "s/plotProfile //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(plotProfile --version | sed -e "s/plotProfile //g")
+    END_VERSIONS
     """
 }

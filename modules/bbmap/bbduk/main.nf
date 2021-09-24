@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -42,6 +42,9 @@ process BBMAP_BBDUK {
         $options.args \\
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(bbversion.sh))
+    END_VERSIONS
     """
 }

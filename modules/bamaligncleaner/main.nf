@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,6 +35,9 @@ process BAMALIGNCLEANER {
         -o ${prefix}.bam \\
         ${bam}
 
-    echo \$(bamAlignCleaner --version) | sed 's/.*version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(bamAlignCleaner --version) | sed 's/.*version //')
+    END_VERSIONS
     """
 }

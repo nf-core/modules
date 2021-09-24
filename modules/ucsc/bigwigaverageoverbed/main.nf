@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -33,6 +33,9 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.
     bigWigAverageOverBed ${options.args} $bigwig $bed ${bed.getSimpleName()}.tab
 
-    echo \$(bigWigAverageOverBed 2>&1) | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(bigWigAverageOverBed 2>&1) | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//')
+    END_VERSIONS
     """
 }

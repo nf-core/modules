@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -41,6 +41,9 @@ process PRODIGAL {
         -a "${prefix}.faa" \\
         -s "${prefix}_all.txt"
 
-    echo \$(prodigal -v 2>&1) | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(prodigal -v 2>&1) | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
+    END_VERSIONS
     """
 }

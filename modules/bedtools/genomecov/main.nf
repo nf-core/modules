@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -38,7 +38,10 @@ process BEDTOOLS_GENOMECOV {
             $options.args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     } else {
         """
@@ -49,7 +52,10 @@ process BEDTOOLS_GENOMECOV {
             $options.args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     }
 }

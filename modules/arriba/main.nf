@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -42,6 +42,9 @@ process ARRIBA {
         $blacklist \\
         $options.args
 
-    echo \$(arriba -h | grep 'Version:' 2>&1) |  sed 's/Version:\s//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(arriba -h | grep 'Version:' 2>&1) |  sed 's/Version:\s//')
+    END_VERSIONS
     """
 }

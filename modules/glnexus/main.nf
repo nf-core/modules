@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -44,6 +44,9 @@ process GLNEXUS {
         $options.args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
-    echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release //; s/ .*\$//')
+    END_VERSIONS
     """
 }

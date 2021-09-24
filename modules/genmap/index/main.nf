@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -33,6 +33,9 @@ process GENMAP_INDEX {
         -F $fasta \\
         -I genmap
 
-    echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//')
+    END_VERSIONS
     """
 }

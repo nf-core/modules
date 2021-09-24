@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process DELLY_CALL {
         -g  $fasta \\
         $bam \\
 
-    echo \$(delly --version 2>&1) | sed 's/^.*Delly //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(delly --version 2>&1) | sed 's/^.*Delly //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

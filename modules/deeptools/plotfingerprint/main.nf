@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -41,6 +41,9 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         --outQualityMetrics ${prefix}.plotFingerprint.qcmetrics.txt \\
         --numberOfProcessors $task.cpus
 
-    plotFingerprint --version | sed -e "s/plotFingerprint //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -43,11 +43,17 @@ process RSEQC_INNERDISTANCE {
             > stdout.txt
         head -n 2 stdout.txt > ${prefix}.inner_distance_mean.txt
 
-        inner_distance.py --version | sed -e "s/inner_distance.py //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(inner_distance.py --version | sed -e "s/inner_distance.py //g")
+        END_VERSIONS
         """
     } else {
         """
-        inner_distance.py --version | sed -e "s/inner_distance.py //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(inner_distance.py --version | sed -e "s/inner_distance.py //g")
+        END_VERSIONS
         """
     }
 }

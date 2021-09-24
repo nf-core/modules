@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -33,6 +33,9 @@ process UCSC_BEDGRAPHTOBIGWIG {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedGraphToBigWig $bedgraph $sizes ${prefix}.bigWig
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }

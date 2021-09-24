@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -37,6 +37,9 @@ process CUTADAPT {
         $trimmed \\
         $reads \\
         > ${prefix}.cutadapt.log
-    echo \$(cutadapt --version) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(cutadapt --version))
+    END_VERSIONS
     """
 }

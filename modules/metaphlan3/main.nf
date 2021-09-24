@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -45,6 +45,9 @@ process METAPHLAN3 {
         --bowtie2db ${metaphlan_db} \\
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
-    echo \$(metaphlan --version 2>&1) | awk '{print \$3}' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(metaphlan --version 2>&1) | awk '{print \$3}')
+    END_VERSIONS
     """
 }

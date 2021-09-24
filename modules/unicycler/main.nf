@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -42,6 +42,9 @@ process UNICYCLER {
     mv assembly.gfa ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
 
-    echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

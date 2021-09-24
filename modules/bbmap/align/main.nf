@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -54,6 +54,9 @@ process BBMAP_ALIGN {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(bbversion.sh))
+    END_VERSIONS
     """
 }

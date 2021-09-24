@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process RAPIDNJ {
         -x rapidnj_phylogeny.tre
 
     # Doesn't appear to be a way of getting the version number
-    echo 2.3.2 > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo 2.3.2)
+    END_VERSIONS
     """
 }

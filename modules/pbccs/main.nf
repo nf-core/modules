@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -49,6 +49,9 @@ process PBCCS {
         -j $task.cpus \\
         $options.args
 
-    echo \$(ccs --version 2>&1) | grep -e 'commit' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(ccs --version 2>&1) | grep -e 'commit')
+    END_VERSIONS
     """
 }

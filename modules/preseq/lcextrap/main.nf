@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -40,6 +40,9 @@ process PRESEQ_LCEXTRAP {
         $bam
     cp .command.err ${prefix}.command.log
 
-    echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
+    END_VERSIONS
     """
 }

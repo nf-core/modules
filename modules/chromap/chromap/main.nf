@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -75,7 +75,10 @@ process CHROMAP_CHROMAP {
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
 
-        echo "$VERSION" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
         """ + compression_cmds
     } else {
         """
@@ -87,7 +90,10 @@ process CHROMAP_CHROMAP {
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
 
-        echo "$VERSION" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            - ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
         """ + compression_cmds
     }
 }

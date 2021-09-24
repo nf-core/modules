@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -37,6 +37,9 @@ process RASUSA {
         --genome-size $genome_size \\
         --input $reads \\
         $output
-    echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(rasusa --version 2>&1) | sed -e "s/rasusa //g")
+    END_VERSIONS
     """
 }

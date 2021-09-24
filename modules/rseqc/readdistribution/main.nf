@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,6 +35,9 @@ process RSEQC_READDISTRIBUTION {
         -r $bed \\
         > ${prefix}.read_distribution.txt
 
-    read_distribution.py --version | sed -e "s/read_distribution.py //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(read_distribution.py --version | sed -e "s/read_distribution.py //g")
+    END_VERSIONS
     """
 }

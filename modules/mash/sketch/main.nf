@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,6 +35,9 @@ process MASH_SKETCH {
         -o ${prefix} \\
         -r $reads \\
         2> ${prefix}.mash_stats
-    echo \$(mash --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(mash --version 2>&1))
+    END_VERSIONS
     """
 }

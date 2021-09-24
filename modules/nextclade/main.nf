@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -43,6 +43,9 @@ process NEXTCLADE {
         --output-tsv-clades-only ${prefix}.clades.tsv \\
         --output-tree ${prefix}.tree.json
 
-    echo \$(nextclade --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(nextclade --version 2>&1))
+    END_VERSIONS
     """
 }

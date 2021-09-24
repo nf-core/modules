@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process DEEPTOOLS_COMPUTEMATRIX {
         --outFileNameMatrix ${prefix}.computeMatrix.vals.mat.tab \\
         --numberOfProcessors $task.cpus
 
-    computeMatrix --version | sed -e "s/computeMatrix //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(computeMatrix --version | sed -e "s/computeMatrix //g")
+    END_VERSIONS
     """
 }

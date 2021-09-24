@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -43,6 +43,9 @@ process RSEQC_JUNCTIONANNOTATION {
         $options.args \\
         2> ${prefix}.junction_annotation.log
 
-    junction_annotation.py --version | sed -e "s/junction_annotation.py //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(junction_annotation.py --version | sed -e "s/junction_annotation.py //g")
+    END_VERSIONS
     """
 }

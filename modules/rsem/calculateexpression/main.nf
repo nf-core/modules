@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -56,6 +56,9 @@ process RSEM_CALCULATEEXPRESSION {
         \$INDEX \\
         $prefix
 
-    rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
+    END_VERSIONS
     """
 }

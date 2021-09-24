@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process DAMAGEPROFILER {
         $options.args
 
 
-    echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//')
+    END_VERSIONS
     """
 }

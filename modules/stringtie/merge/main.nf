@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -34,6 +34,9 @@ process STRINGTIE_MERGE {
         -G $annotation_gtf \\
         -o stringtie.merged.gtf
 
-    echo \$(stringtie --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(stringtie --version 2>&1))
+    END_VERSIONS
     """
 }

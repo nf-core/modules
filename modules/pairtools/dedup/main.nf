@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -36,6 +36,9 @@ process PAIRTOOLS_DEDUP {
         --output-stats ${prefix}.pairs.stat \\
         $input
 
-    echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //')
+    END_VERSIONS
     """
 }

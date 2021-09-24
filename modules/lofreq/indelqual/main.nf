@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,6 +35,9 @@ process LOFREQ_INDELQUAL {
         -o ${prefix}.bam \\
         $bam
 
-    echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(lofreq version 2>&1) | sed 's/^.*lofreq //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

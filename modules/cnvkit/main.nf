@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -41,6 +41,9 @@ process CNVKIT {
         --targets $targetfile \\
         $options.args
 
-    echo \$(cnvkit.py version) | sed -e "s/cnvkit v//g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(cnvkit.py version) | sed -e "s/cnvkit v//g")
+    END_VERSIONS
     """
 }

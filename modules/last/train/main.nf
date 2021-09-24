@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process LAST_TRAIN {
         $fastx \\
         > ${prefix}.\$INDEX_NAME.par
 
-    lastdb --version | sed 's/lastdb //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
+    END_VERSIONS
     """
 }

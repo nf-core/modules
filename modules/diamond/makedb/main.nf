@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -37,6 +37,9 @@ process DIAMOND_MAKEDB {
         -d $fasta \\
         $options.args
 
-    echo \$(diamond --version 2>&1) | tail -n 1 | sed 's/^diamond version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(diamond --version 2>&1) | tail -n 1 | sed 's/^diamond version //')
+    END_VERSIONS
     """
 }

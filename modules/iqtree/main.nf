@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -39,6 +39,9 @@ process IQTREE {
         -ntmax $task.cpus \\
         -mem $memory \\
 
-    echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version \\([0-9\\.]*\\) .*\$/\\1/' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - ${getSoftwareName(task.process)}: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version \\([0-9\\.]*\\) .*\$/\\1/')
+    END_VERSIONS
     """
 }
