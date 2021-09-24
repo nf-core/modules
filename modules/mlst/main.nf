@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,33 +23,21 @@ process MLST {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mlst \\
       --threads $task.cpus \\
       $fasta \\
-      > ${fasta}.mlst.tsv
+      > ${fasta}.tsv
 
-    mlst --version > ${software}.version.txt
-
-    echo "MLST" > versions.yml
-    echo "  mlst: \$(mlst --version | grep -o '[0-9.]*')" >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+        mlst: \$( mlst --version | grep -o '[0-9.]*' )
+    END_VERSIONS
 
     """
-    //echo "${getProcessName(task.process)}:" > versions.yml
-
-    //samtools \\
-    //    sort \\
-    //    $options.args \\
-    //    -@ $task.cpus \\
-    //    -o ${prefix}.bam \\
-    //    -T $prefix \\
-    //    $bam
-
-    //echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
 
 }
