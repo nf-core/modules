@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -28,7 +28,7 @@ process LIMA {
     tuple val(meta), path("*.guess")  , emit: guess
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
-    path("*.version.txt")             , emit: version
+    path "versions.yml"               , emit: version
 
     tuple val(meta), path("*.bam")              , optional: true, emit: bam
     tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
@@ -40,7 +40,6 @@ process LIMA {
     tuple val(meta), path("*.json")             , optional: true, emit: json
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
@@ -54,6 +53,6 @@ process LIMA {
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
-    END_VERSION
+    END_VERSIONS
     """
 }
