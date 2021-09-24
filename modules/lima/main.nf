@@ -51,6 +51,9 @@ process LIMA {
         -j $task.cpus \\
         $options.args
 
-    lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+    END_VERSION
     """
 }
