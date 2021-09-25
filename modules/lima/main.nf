@@ -40,13 +40,30 @@ process LIMA {
     tuple val(meta), path("*.json")             , optional: true, emit: json
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
+    OUT_EXT=""
+
+    if [[ $ccs =~ bam\$ ]]; then
+        OUT_EXT="bam"
+    elif [[ $ccs =~ fasta\$ ]]; then
+        OUT_EXT="fasta"
+    elif [[ $ccs =~ fasta.gz\$ ]]; then
+        OUT_EXT="fasta.gz"
+    elif [[ $ccs =~ fastq\$ ]]; then
+        OUT_EXT="fastq"
+    elif [[ $ccs =~ fastq.gz\$ ]]; then
+        OUT_EXT="fastq.gz"
+    else
+        echo fuck
+    fi
+
+    echo \$OUT_EXT
     lima \\
         $ccs \\
         $primers \\
-        $prefix \\
+        $prefix.\$OUT_EXT \\
         -j $task.cpus \\
         $options.args
 

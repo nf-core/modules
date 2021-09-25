@@ -2,11 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LIMA as LIMA_BAM }   from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl.bam"] )
-include { LIMA as LIMA_FA }    from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl.fa"] )
-include { LIMA as LIMA_FA_GZ } from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl.fa.gz"] )
-include { LIMA as LIMA_FQ }    from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl.fq"] )
-include { LIMA as LIMA_FQ_GZ } from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl.fq.gz"] )
+include { LIMA } from '../../../modules/lima/main.nf' addParams( options: [args: '--isoseq --peek-guess', suffix: ".fl"] )
 
 workflow test_lima_bam {
 
@@ -16,7 +12,7 @@ workflow test_lima_bam {
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
 
-    LIMA_BAM ( input, primers )
+    LIMA ( input, primers )
 }
 
 workflow test_lima_fa {
@@ -27,7 +23,7 @@ workflow test_lima_fa {
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
 
-    LIMA_FA ( input, primers )
+    LIMA ( input, primers )
 }
 
 workflow test_lima_fa_gz {
@@ -38,7 +34,7 @@ workflow test_lima_fa_gz {
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'],   checkIfExists: true) ]
 
-    LIMA_FA_GZ ( input, primers )
+    LIMA ( input, primers )
 }
 
 workflow test_lima_fq {
@@ -49,7 +45,7 @@ workflow test_lima_fq {
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'], checkIfExists: true) ]
 
-    LIMA_FQ ( input, primers )
+    LIMA ( input, primers )
 }
 
 workflow test_lima_fq_gz {
@@ -60,5 +56,5 @@ workflow test_lima_fq_gz {
             ]
     primers = [ file(params.test_data['homo_sapiens']['pacbio']['primers'],   checkIfExists: true) ]
 
-    LIMA_FQ_GZ ( input, primers )
+    LIMA ( input, primers )
 }
