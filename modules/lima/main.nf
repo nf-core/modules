@@ -55,8 +55,6 @@ process LIMA {
         OUT_EXT="fastq"
     elif [[ $ccs =~ fastq.gz\$ ]]; then
         OUT_EXT="fastq.gz"
-    else
-        echo fuck
     fi
 
     echo \$OUT_EXT
