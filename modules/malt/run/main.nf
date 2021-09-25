@@ -11,11 +11,11 @@ process MALT_RUN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::malt=0.5.2" : null)
+    conda (params.enable_conda ? "bioconda::malt=0.53" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/malt:0.5.2--0"
+        container "https://depot.galaxyproject.org/singularity/malt:0.53--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/malt:0.5.2--0"
+        container "quay.io/biocontainers/malt:0.53--hdfd78af_0"
     }
 
     input:
