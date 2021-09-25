@@ -25,14 +25,12 @@ def test_ensure_valid_version_yml(workflow_dir):
 
     assert (
         "END_VERSIONS" not in versions_yml
-    ), "END_VERSIONS detected in versions.yml. END_VERSIONS being in the text is a sign of an ill-formatted HEREDOC"
+    ), "END_VERSIONS detected in versions.yml. This is a sign of an ill-formatted HEREDOC"
 
     # Raises an exception if yaml is not valid
     versions = yaml.safe_load(versions_yml)
-    try:
-        software_versions = versions[software_name.upper()]
-    except KeyError:
-        raise AssertionError("There is no entry `<SOFTWARE>` in versions.yml. ")
+    assert len(versions) == 1, "The top-level of versions.yml must contain exactely one entry: the process name as dict key"
+    software_versions = next(iter(versions.values()))
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
         assert re.match(
