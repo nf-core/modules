@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,16 +23,16 @@ process ISOSEQ3_REFINE {
     path(primers)
 
     output:
-    tuple val(meta), path("*.flnc.bam"),     emit: bam
-    tuple val(meta), path("*.flnc.bam.pbi"), emit: pbi
-    path "*.consensusreadset.xml",           emit: consensusreadset
-    path "*.filter_summary.json",            emit: summary
-    path "*.report.csv",                     emit: report
-    path "*.version.txt",                    emit: version
+    tuple val(meta), path("*.flnc.bam")            , emit: bam
+    tuple val(meta), path("*.flnc.bam.pbi")        , emit: pbi
+    tuple val(meta), path("*.consensusreadset.xml"), emit: consensusreadset
+    tuple val(meta), path("*.filter_summary.json") , emit: summary
+    tuple val(meta), path("*.report.csv")          , emit: report
+    path  "versions.yml"                           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
-    def refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     isoseq3 \\
         refine \\
@@ -40,8 +40,11 @@ process ISOSEQ3_REFINE {
         $options.args \\
         $bam \\
         $primers \\
-        $refine_out
+        ${prefix}.flnc.bam
 
-    echo \$(isoseq3 refine --version) | grep -e 'commit' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        isoseq3 refine: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\+//' )
+    END_VERSIONS
     """
 }
