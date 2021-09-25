@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -22,16 +22,18 @@ process PBBAM_PBMERGE {
     tuple val(meta), path("*.bam")
 
     output:
-    tuple val(meta), path("${meta.id}.ccs.bam"), path("*.bam.pbi"), emit: bam
-    path "*.version.txt"                             , emit: version
+    tuple val(meta), path "*.ccs.bam", emit: bam
+    tuple val(meta), path "*.bam.pbi", emit: pbi
+    path "versions.yml"              , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def out_bam  = "${prefix}.ccs.bam"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    pbmerge -o ${out_bam} $options.args *.bam
-    pbindex ${out_bam}
-    echo \$(pbmerge --version 2>&1) > ${software}.version.txt
+    pbmerge -o ${prefix}.ccs.bam $options.args *.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        pbbam/pbmerge: \$( pbmerge --version|sed 's/pbmerge //' )
+    END_VERSIONS
     """
 }

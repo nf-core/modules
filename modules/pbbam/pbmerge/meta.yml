@@ -20,7 +20,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM file
+      description: BAM files to merge
       pattern: "*.bam"
 
 output:
@@ -32,11 +32,11 @@ output:
   - version:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The merged bam file
+      pattern: "*.bam"
   - pbi:
       type: file
       description: BAM Pacbio index file
