@@ -75,11 +75,13 @@ process CHROMAP_CHROMAP {
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
 
+        $compression_cmds
+
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo "$VERSION")
         END_VERSIONS
-        """ + compression_cmds
+        """
     } else {
         """
         chromap ${args.join(' ')} \\
@@ -90,10 +92,12 @@ process CHROMAP_CHROMAP {
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
 
+        $compression_cmds
+
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo "$VERSION")
         END_VERSIONS
-        """ + compression_cmds
+        """
     }
 }
