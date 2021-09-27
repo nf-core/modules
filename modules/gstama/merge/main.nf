@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -22,14 +22,14 @@ process GSTAMA_MERGE {
     tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path("merged_*.bed"), emit: bed
-    path("merged_*.txt")                 , emit: reports
-    path "*.version.txt"                 , emit: version
+    tuple val(meta), path("*_merged.bed")             , emit: bed
+    tuple val(meta), path("*_merged_gene_report.txt") , emit: gene_report
+    tuple val(meta), path("*_merged_merge.txt")       , emit: merge
+    tuple val(meta), path("*_merged_trans_report.txt"), emit: trans_report
+    path "versions.yml"                               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    prefix = "merged_" + prefix
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     for i in *.bed
         do
@@ -40,8 +40,15 @@ process GSTAMA_MERGE {
         fi
     done
 
-    tama_merge.py -f input.tsv -d merge_dup -p $prefix $options.args
+    tama_merge.py \\
+        -f input.tsv \\
+        -d merge_dup \\
+        -p ${prefix}_merged \\
+        $options.args
 
-    echo "1.0" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        tama merge: NA
+    END_VERSIONS
     """
 }
