@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,28 +23,35 @@ process GSTAMA_COLLAPSE {
     path genome
 
     output:
-    tuple val(meta), path("*_tc.bed")               , emit: bed
-    tuple path("*_tc_trans_read.bed"), path("*.txt"), emit: reports
-    path "*.version.txt"                            , emit: version
+    tuple val(meta), path("*_tc.bed")                    , emit: bed
+    tuple val(meta), path("*_tc_trans_read.bed")         , emit: bed_trans_reads
+    tuple val(meta), path("*_tc_local_density_error.txt"), emit: local_density_error
+    tuple val(meta), path("*_tc_polya.txt")              , emit: tc_polya
+    tuple val(meta), path("*_tc_read.txt")               , emit: tc_read
+    tuple val(meta), path("*_tc_strand_check.txt")       , emit: tc_strand_check
+    tuple val(meta), path("*_tc_trans_report.txt")       , emit: tc_trans_report
+    path "versions.yml"                                  , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = bam.toString().replaceAll(/.bam/, "") + "_tc"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     NLINES=\$(samtools view $bam|wc -l)
-    mode=""
+    MODE=""
 
     if [ "\$NLINES" -gt 1000 ]; then
-	    mode="-rm low_mem"
+        MODE="-rm low_mem"
     fi
 
     tama_collapse.py \\
         -s $bam \\
         -f $genome \\
-        -p $prefix \\
-        \$mode \\
+        -p ${prefix}_tc \\
+        \$MODE \\
         $options.args
 
-    echo \$(tama_collapse.py -version 2>&1) | grep 'tc_version_date_' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        tama collapse: \$( tama_collapse.py -version | grep 'tc_version_date_'|sed 's/tc_version_date_//g' )
+    END_VERSIONS
     """
 }
