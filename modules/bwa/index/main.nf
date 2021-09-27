@@ -22,17 +22,22 @@ process BWA_INDEX {
     path fasta
 
     output:
-    path "bwa"          , emit: index
-    path "versions.yml" , emit: version
+    path "bwa"         , emit: index
+    path "versions.yml", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
     mkdir bwa
-    bwa index $options.args $fasta -p bwa/${fasta.baseName}
+    bwa \\
+        index \\
+        $options.args \\
+        $fasta \\
+        -p bwa/${fasta.baseName}
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bwa 2>&1 | sed 's/^.*Version: //; s/Contact:.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
 }

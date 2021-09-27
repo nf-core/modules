@@ -34,17 +34,18 @@ process BWAMEM2_MEM {
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
-    bwa-mem2 mem \\
+    bwa-mem2 \\
+        mem \\
         $options.args \\
         $read_group \\
-        -t ${split_cpus} \\
+        -t $split_cpus \\
         \$INDEX \\
         $reads \\
         | samtools view $options.args2 -@ ${split_cpus} -bhS -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bwa-mem2 version 2>&1)
+        ${getSoftwareName(task.process)}: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
     END_VERSIONS
     """
 }

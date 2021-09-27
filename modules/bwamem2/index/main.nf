@@ -29,10 +29,14 @@ process BWAMEM2_INDEX {
     def software = getSoftwareName(task.process)
     """
     mkdir bwamem2
-    bwa-mem2 index $options.args $fasta -p bwamem2/${fasta}
+    bwa-mem2 \\
+        index \\
+        $options.args \\
+        $fasta -p bwamem2/${fasta}
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bwa-mem2 version 2>&1)
+        ${getSoftwareName(task.process)}: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
     END_VERSIONS
     """
 }
