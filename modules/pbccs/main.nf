@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -29,11 +29,10 @@ process PBCCS {
     tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
     tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
     tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
-    tuple val(meta), path("*.version.txt" )       , emit: version
+    path "versions.yml"                           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ccs \\
         $bam \\
@@ -45,6 +44,9 @@ process PBCCS {
         -j $task.cpus \\
         $options.args
 
-    echo \$(ccs --version 2>&1) | grep -e 'commit' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ccs: \$( ccs --version|head -n 1|sed 's/ccs //'|sed 's/ (.*//' )
+    END_VERSIONS
     """
 }
