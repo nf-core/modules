@@ -26,11 +26,14 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_tc.bed")                    , emit: bed
     tuple val(meta), path("*_tc_trans_read.bed")         , emit: bed_trans_reads
     tuple val(meta), path("*_tc_local_density_error.txt"), emit: local_density_error
-    tuple val(meta), path("*_tc_polya.txt")              , emit: tc_polya
-    tuple val(meta), path("*_tc_read.txt")               , emit: tc_read
-    tuple val(meta), path("*_tc_strand_check.txt")       , emit: tc_strand_check
-    tuple val(meta), path("*_tc_trans_report.txt")       , emit: tc_trans_report
+    tuple val(meta), path("*_tc_polya.txt")              , emit: polya
+    tuple val(meta), path("*_tc_read.txt")               , emit: read
+    tuple val(meta), path("*_tc_strand_check.txt")       , emit: strand_check
+    tuple val(meta), path("*_tc_trans_report.txt")       , emit: trans_report
     path "versions.yml"                                  , emit: version
+
+    tuple val(meta), path("*_tc_varcov.txt.txt")         , optional: true, emit: varcov
+    tuple val(meta), path("*_tc_variants.txt")           , optional: true, emit: variants
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
