@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,7 +27,7 @@ process PHANTOMPEAKQUALTOOLS {
     tuple val(meta), path("*.out")  , emit: spp
     tuple val(meta), path("*.pdf")  , emit: pdf
     tuple val(meta), path("*.Rdata"), emit: rdata
-    path  "*.version.txt"           , emit: version
+    path  "versions.yml"            , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process PHANTOMPEAKQUALTOOLS {
     """
     RUN_SPP=`which run_spp.R`
     Rscript -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" -p=$task.cpus
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -31,7 +31,7 @@ process PLASMIDID {
     tuple val(meta), path("${prefix}/database/")          , emit: database
     tuple val(meta), path("${prefix}/fasta_files/")       , emit: fasta_files
     tuple val(meta), path("${prefix}/kmer/")              , emit: kmer
-    path '*.version.txt'                                  , emit: version
+    path "versions.yml"                                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -45,6 +45,9 @@ process PLASMIDID {
         -o .
 
     mv NO_GROUP/$prefix ./$prefix
-    echo \$(plasmidID --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(plasmidID --version 2>&1)
+    END_VERSIONS
     """
 }

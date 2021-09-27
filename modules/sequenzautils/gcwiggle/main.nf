@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process SEQUENZAUTILS_GCWIGGLE {
 
     output:
     tuple val(meta), path("*.wig.gz"), emit: wig
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process SEQUENZAUTILS_GCWIGGLE {
         --fasta $fasta \\
         -o ${prefix}.wig.gz
 
-    echo \$(sequenzautils --version 2>&1) | sed 's/^.*sequenzautils //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(sequenzautils --version 2>&1 | sed 's/^.*sequenzautils //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

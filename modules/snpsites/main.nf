@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process SNPSITES {
     output:
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
@@ -38,6 +38,9 @@ process SNPSITES {
 
     CONSTANT_SITES=\$(cat constant.sites.txt)
 
-    echo \$(snp-sites -V 2>&1) | sed 's/snp-sites //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
+    END_VERSIONS
     """
 }
