@@ -22,8 +22,8 @@ process PBBAM_PBMERGE {
     tuple val(meta), path("*.bam")
 
     output:
-    tuple val(meta), path "*.ccs.bam", emit: bam
-    tuple val(meta), path "*.bam.pbi", emit: pbi
+    tuple val(meta), path("*.ccs.bam"), emit: bam
+    tuple val(meta), path("*.bam.pbi"), emit: pbi
     path "versions.yml"              , emit: version
 
     script:
