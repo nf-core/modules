@@ -62,7 +62,8 @@ process TRIMGALORE {
             ${prefix}.fastq.gz
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(trim_galore --version 2>&1 | sed 's/^.*version //; s/Last.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
+            cutadapt: \$(cutadapt --version)
         END_VERSIONS
         """
     } else {
@@ -82,7 +83,8 @@ process TRIMGALORE {
             ${prefix}_2.fastq.gz
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(trim_galore --version 2>&1 | sed 's/^.*version //; s/Last.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
+            cutadapt: \$(cutadapt --version)
         END_VERSIONS
         """
     }

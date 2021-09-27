@@ -42,7 +42,7 @@ process ABACAS {
     mv unused_contigs.out ${prefix}.abacas.unused.contigs.out
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(abacas.pl -v 2>&1 | sed 's/^.*ABACAS.//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
     END_VERSIONS
     """
 }
