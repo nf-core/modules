@@ -36,7 +36,7 @@ process AGRVATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate //;')
+        ${getSoftwareName(task.process)}: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
     END_VERSIONS
     """
 }
