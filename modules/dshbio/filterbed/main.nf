@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process DSHBIO_FILTERBED {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "*.version.txt"             , emit: version
+    path "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process DSHBIO_FILTERBED {
         -i $bed \\
         -o ${prefix}.bed.gz
 
-    echo \$(dsh-bio --version 2>&1) | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
+    END_VERSIONS
     """
 }

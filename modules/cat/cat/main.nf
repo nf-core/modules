@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process CAT_CAT {
 
     output:
     path "${file_out}*" , emit: file_out
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def file_list = files_in.collect { it.toString() }
@@ -47,7 +47,10 @@ process CAT_CAT {
             $command2 \\
             > $file_out
 
-        echo \$(pigz --version 2>&1) | sed 's/pigz //g' > pigz.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+        END_VERSIONS
         """
     }
 }
