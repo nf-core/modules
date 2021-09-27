@@ -31,8 +31,7 @@ process ISOSEQ3_REFINE {
     path "*.version.txt",                    emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-    def refine_out = bam.toString().replaceAll(/.bam$/, '.flnc.bam')
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     isoseq3 \\
         refine \\
