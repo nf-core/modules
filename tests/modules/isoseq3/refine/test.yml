@@ -1,15 +1,15 @@
 - name: isoseq3 refine test_isoseq3_refine
   command: nextflow run tests/modules/isoseq3/refine -entry test_isoseq3_refine -c tests/config/nextflow.config
   tags:
-    - isoseq3/refine
     - isoseq3
+    - isoseq3/refine
   files:
     - path: output/isoseq3/test.flnc.bam
       md5sum: af2ac62a28727743ff18f8b1eb7c4269
     - path: output/isoseq3/test.flnc.bam.pbi
       md5sum: 8097cad9e472f2f79de6de5fe3dcc822
     - path: output/isoseq3/test.flnc.consensusreadset.xml
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains: [ 'pbds:ConsensusReadSet' ]
     - path: output/isoseq3/test.flnc.filter_summary.json
       md5sum: 87f8bdd5c60741f47b8a991e002f7ef3
     - path: output/isoseq3/test.flnc.report.csv
