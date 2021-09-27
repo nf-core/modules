@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process BOWTIE2_ALIGN {
     output:
     tuple val(meta), path('*.bam'), emit: bam
     tuple val(meta), path('*.log'), emit: log
-    path  '*.version.txt'         , emit: version
+    path  "versions.yml"          , emit: version
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
@@ -45,7 +45,10 @@ process BOWTIE2_ALIGN {
             2> ${prefix}.bowtie2.log \\
             | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam -
 
-        echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+        END_VERSIONS
         """
     } else {
         def unaligned = params.save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
@@ -67,7 +70,10 @@ process BOWTIE2_ALIGN {
         if [ -f ${prefix}.unmapped.fastq.2.gz ]; then
             mv ${prefix}.unmapped.fastq.2.gz ${prefix}.unmapped_2.fastq.gz
         fi
-        echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+        END_VERSIONS
         """
     }
 }

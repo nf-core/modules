@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process SEQKIT_SPLIT2 {
 
     output:
     tuple val(meta), path("*.split/*.gz"), emit: reads
-    path("*.version.txt")                      , emit: version
+    path("versions.yml")                       , emit: version
 
 
     script:
@@ -41,7 +41,10 @@ process SEQKIT_SPLIT2 {
         -1 ${reads} \
         --out-dir ${prefix}.split
 
-    echo \$(seqkit --version 2>&1) | sed 's/^.*seqkit //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(seqkit --version 2>&1 | sed 's/^.*seqkit //; s/Using.*\$//')
+    END_VERSIONS
     """
     } else {
     """
@@ -53,7 +56,10 @@ process SEQKIT_SPLIT2 {
         -2 ${reads[1]} \
         --out-dir ${prefix}.split
 
-    echo \$(seqkit --version 2>&1) | sed 's/^.*seqkit //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(seqkit --version 2>&1 | sed 's/^.*seqkit //; s/Using.*\$//')
+    END_VERSIONS
     """
     }
 }

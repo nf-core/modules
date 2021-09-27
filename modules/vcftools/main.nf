@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -28,7 +28,7 @@ process VCFTOOLS {
     path(diff_variant_file)
 
     output:
-    path("*.version.txt"), emit: version
+    path("versions.yml") , emit: version
 
     tuple val(meta), path("*.vcf"), optional:true, emit: vcf
     tuple val(meta), path("*.bcf"), optional:true, emit: bcf
@@ -124,6 +124,9 @@ process VCFTOOLS {
         $bed_arg \\
         $diff_variant_arg \\
 
-    echo \$(vcftools --version 2>&1) | sed 's/^.*vcftools //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(vcftools --version 2>&1 | sed 's/^.*vcftools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }
