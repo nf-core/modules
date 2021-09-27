@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,7 +24,7 @@ process BISMARK_DEDUPLICATE {
     output:
     tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "*.version.txt"                              , emit: version
+    path  "versions.yml"                               , emit: version
 
     script:
     def software   = getSoftwareName(task.process)
@@ -36,6 +36,9 @@ process BISMARK_DEDUPLICATE {
         $seqtype \\
         --bam $bam
 
-    echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bismark -v 2>&1 | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+    END_VERSIONS
     """
 }

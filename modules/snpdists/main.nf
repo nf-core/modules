@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process SNPDISTS {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,6 +33,9 @@ process SNPDISTS {
         $options.args \\
         $alignment > ${prefix}.tsv
 
-    echo \$(snp-dists -v 2>&1) | sed 's/snp-dists //;' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
+    END_VERSIONS
     """
 }
