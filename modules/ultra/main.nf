@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -19,16 +19,15 @@ process ULTRA {
 
     input:
     tuple val(meta), path(reads)
-    path(genome)
-    path(gtf)
+    path genome
+    path gtf
 
     output:
     tuple val(meta), path("outfolder/*.sam"), emit: sam
-    path "*.version.txt"                    , emit: version
+    path "versions.yml"                     , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
     uLTRA pipeline \\
@@ -40,6 +39,10 @@ process ULTRA {
         \$(pwd)/$reads \\
         outfolder/
 
-    echo \$(uLTRA --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        uLTRA: \$( uLTRA --version|sed 's/uLTRA //g' )
+    END_VERSIONS
+
     """
 }

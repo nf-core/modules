@@ -20,15 +20,15 @@ input:
         e.g. [ id:'test', single_end:false ]
   - genome:
       type: file
-      description: fasta file
+      description: fasta file of reference genome
       pattern: "*.fasta"
   - gtf:
       type: file
-      description: gtf file
+      description: A annotation of use the genome
       pattern: "*.gtf"
   - reads:
       type: file
-      description: fasta/fastq file
+      description: A fasta or fastq file of reads to align
       pattern: "*.{fasta,fastq}"
 
 output:
@@ -39,12 +39,12 @@ output:
         e.g. [ id:'test', single_end:false ]
   - sam:
       type: file
-      description: the aligned reads
+      description: The aligned reads in sam format
       pattern: "*.sam"
   - version:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
 
 authors:
   - "@sguizard"

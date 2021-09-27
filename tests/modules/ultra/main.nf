@@ -8,17 +8,12 @@ workflow test_ultra {
     def wget1        = "wget -O " + workflow.workDir + "/genome.gtf "         + params.test_data['homo_sapiens']['genome']['genome_gtf']
     def wget2        = "wget -O " + workflow.workDir + "/test_hifi.fastq.gz " + params.test_data['homo_sapiens']['pacbio']['test_hifi_fastq_gz']
     def sort_gtf     = "sort -n -k 1,1 -k4,4 -k5,5 -o " + workflow.workDir + "/genome_sort.gtf " + workflow.workDir + "/genome.gtf"
-    def gzip         = "gunzip " + workflow.workDir + "/test_hifi.fastq.gz"
+    def gunzip       = "gunzip " + workflow.workDir + "/test_hifi.fastq.gz"
 
     wget1.execute().waitFor()
     wget2.execute().waitFor()
     sort_gtf.execute().waitFor()
-    gzip.execute().waitFor()
-
-    // def outputStream = new StringBuffer();
-    // def proc = gzip.execute()
-    // proc.waitForProcessOutput(outputStream, System.err);
-    // println(outputStream.toString());
+    gunzip.execute().waitFor()
 
     input =
         [
