@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,7 +27,7 @@ process HOMER_ANNOTATEPEAKS {
 
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
-    path  "*.version.txt"                      , emit: version
+    path  "versions.yml"                       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -41,6 +41,9 @@ process HOMER_ANNOTATEPEAKS {
         -cpu $task.cpus \\
         > ${prefix}.annotatePeaks.txt
 
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }
