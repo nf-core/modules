@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -22,24 +22,32 @@ process ISOSEQ3_CLUSTER {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.clustered.bam"),     path("*.clustered.singletons.bam"),       emit: bam
-    tuple val(meta), path("*.clustered.bam.pbi"), path("*.clustered.singletons.bam.pbi"),   emit: bam_index
-    path("*.{clustered.cluster,clustered.cluster_report.csv,clustered.transcriptset.xml}"), emit: reports
-    path("*.{clustered.bam.pbi,clustered.hq.bam,clustered.hq.bam.pbi,clustered.lq.bam,clustered.lq.bam.pbi}"), emit: other_bams
-    path "*.version.txt", emit: version
+    tuple val(meta), path("*.clustered.bam")               , emit: bam
+    tuple val(meta), path("*.clustered.bam.pbi")           , emit: pbi
+    tuple val(meta), path("*.clustered.cluster")           , emit: cluster
+    tuple val(meta), path("*.clustered.cluster_report.csv"), emit: cluster_report
+    tuple val(meta), path("*.clustered.transcriptset.xml") , emit: transcriptset
+    tuple val(meta), path("*.clustered.hq.bam")            , emit: hq_bam
+    tuple val(meta), path("*.clustered.hq.bam.pbi")        , emit: hq_pbi
+    tuple val(meta), path("*.clustered.lq.bam")            , emit: lq_bam
+    tuple val(meta), path("*.clustered.lq.bam.pbi")        , emit: lq_pbi
+    path  "versions.yml"                                   , emit: version
+
+    tuple val(meta), path("*.clustered.singletons.bam")    , optional: true, emit: singletons_bam
+    tuple val(meta), path("*.clustered.singletons.bam.pbi"), optional: true, emit: singletons_pbi
 
     script:
-    def software = getSoftwareName(task.process)
-    // def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    cluster_out = bam.toString().replaceAll(/.bam$/, '.clustered.bam')
+    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     isoseq3 \\
         cluster \\
         $bam \\
-        $cluster_out \\
-        --singletons \\
+        ${prefix}.clustered.bam \\
         $options.args
 
-    echo \$(isoseq3 --version 2>&1) | grep -e 'commit' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        isoseq3 cluster: \$( isoseq3 cluster --version|sed 's/isoseq cluster //g'|sed 's/ (.*//g' )
+    END_VERSIONS
     """
 }

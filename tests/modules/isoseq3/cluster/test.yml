@@ -1,28 +1,28 @@
 - name: isoseq3 cluster test_isoseq3_cluster
   command: nextflow run tests/modules/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
   tags:
-    - isoseq3
     - isoseq3/cluster
+    - isoseq3
   files:
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam
-      md5sum: e7e8427f1b05a452588ced90c86bab72
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam.pbi
-      md5sum: 6ad52a8186b6a373a11893645e5086ba
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.cluster
+    - path: output/isoseq3/test.clustered.bam
+      md5sum: c8f952a0faa99a75fd13dabe72669857
+    - path: output/isoseq3/test.clustered.bam.pbi
+      md5sum: dfe88530e8bce97543642a41879b77f8
+    - path: output/isoseq3/test.clustered.cluster
       md5sum: d5059d856763fc5591332980bfc0d57b
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.cluster_report.csv
+    - path: output/isoseq3/test.clustered.cluster_report.csv
       md5sum: 342d97dc10aedf80a45977edcb491c62
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.hq.bam
-      md5sum: 805635eb23124cbc425f5f01748598f8
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.hq.bam.pbi
-      md5sum: 259e90b1ddf7b73548b4e2ecf891b1ed
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.lq.bam
-      md5sum: 4f4c40ef805a12ee7255b30605364e7a
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.lq.bam.pbi
-      md5sum: 1d68d531bbccbf777c747c2d3ba062dd
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam
-      md5sum: 5a872fd47c2ffbab9d399d8b60097d46
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam.pbi
-      md5sum: bb87bcb15ad0a8790d575b4dca7b184f
-    - path: output/isoseq3/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.transcriptset.xml
+    - path: output/isoseq3/test.clustered.hq.bam
+      md5sum: d81b00185a762a63e3cfc075f673eda3
+    - path: output/isoseq3/test.clustered.hq.bam.pbi
+      md5sum: b036da12379bb18b301c165352c8c0e2
+    - path: output/isoseq3/test.clustered.lq.bam
+      md5sum: e1423827fff1c4846814c8c530261ebd
+    - path: output/isoseq3/test.clustered.lq.bam.pbi
+      md5sum: cd1541387bb60a510191e3f313bddf8e
+    - path: output/isoseq3/test.clustered.singletons.bam
+      md5sum: 481c333baeb5e416b525283243199642
+    - path: output/isoseq3/test.clustered.singletons.bam.pbi
+      md5sum: 31332b44b911cbbe382262245cfda3df
+    - path: output/isoseq3/test.clustered.transcriptset.xml
       contains: [ 'pbds:TranscriptSet' ]
