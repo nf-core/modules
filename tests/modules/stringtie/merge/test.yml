@@ -1,4 +1,4 @@
-- name: stringtie forward-strand merge
+- name: stringtie merge forward-strand
   command: nextflow run ./tests/modules/stringtie/merge/ -entry test_stringtie_forward_merge -c tests/config/nextflow.config
   tags:
     - stringtie
@@ -10,7 +10,7 @@
       - 'merge'
       - 'chr22'
 
-- name: stringtie reverse-strand merge
+- name: stringtie merge reverse-strand
   command: nextflow run ./tests/modules/stringtie/merge/ -entry test_stringtie_reverse_merge -c tests/config/nextflow.config
   tags:
     - stringtie

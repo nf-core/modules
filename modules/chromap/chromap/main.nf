@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = 0.1 // No version information printed
+def VERSION = '0.1' // No version information printed
 
 process CHROMAP_CHROMAP {
     tag "$meta.id"
