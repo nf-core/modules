@@ -41,9 +41,7 @@ process CHROMAP_CHROMAP {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
 
-    def file_extension = options.args.contains("--SAM")? 'sam' :
-                        options.args.contains("--TagAlign")? 'tagAlign' :
-                        options.args.contains("--pairs")? 'pairs' : 'bed'
+    def file_extension = options.args.contains("--SAM") ? 'sam' : options.args.contains("--TagAlign")? 'tagAlign' : options.args.contains("--pairs")? 'pairs' : 'bed'
     if (barcodes) {
         args << "-b ${barcodes.join(',')}"
         if (whitelist) {
@@ -56,9 +54,8 @@ process CHROMAP_CHROMAP {
     if (pairs_chr_order){
         args << "--pairs-natural-chr-order $pairs_chr_order"
     }
-    def compression_cmds = """
-    gzip ${prefix}.${file_extension}
-    """
+    def final_args = args.join(' ')
+    def compression_cmds = "gzip ${prefix}.${file_extension}"
     if (options.args.contains("--SAM")) {
         compression_cmds = """
         samtools view $options.args2 -@ ${task.cpus} -bh \\
@@ -68,7 +65,7 @@ process CHROMAP_CHROMAP {
     }
     if (meta.single_end) {
         """
-        chromap ${args.join(' ')} \\
+        chromap ${final_args} \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
@@ -84,7 +81,7 @@ process CHROMAP_CHROMAP {
         """
     } else {
         """
-        chromap ${args.join(' ')} \\
+        chromap ${final_args} \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\

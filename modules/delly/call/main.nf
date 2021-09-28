@@ -41,7 +41,7 @@ process DELLY_CALL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(delly --version 2>&1 | sed 's/^.*Delly //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
     END_VERSIONS
     """
 }
