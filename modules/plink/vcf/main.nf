@@ -41,7 +41,7 @@ process PLINK_VCF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        plink: \$( plink --version 2>&1 | sed 's/^PLINK //' | sed 's/..-bit.*//' )
+        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK //' | sed 's/..-bit.*//' )
     END_VERSIONS
     """
 }
