@@ -2,6 +2,7 @@ from pathlib import Path
 import pytest
 import yaml
 import re
+from textwrap import dedent
 
 
 def _get_workflow_names():
@@ -21,7 +22,22 @@ def _get_workflow_names():
 def test_ensure_valid_version_yml(workflow_dir):
     workflow_dir = Path(workflow_dir)
     software_name = workflow_dir.name.split("_")[0].lower()
-    versions_yml = (workflow_dir / f"output/{software_name}/versions.yml").read_text()
+    try:
+        versions_yml_file = workflow_dir / f"output/{software_name}/versions.yml"
+        versions_yml = versions_yml_file.read_text()
+    except FileNotFoundError:
+        raise AssertionError(
+            dedent(
+                """\
+                `versions.yml` not found in the output directory.
+                Expected path: `{versions_yml_file}`
+
+                This can have multiple reasons:
+                * The test-workflow failed before a `versions.yml` could be generated.
+                * The workflow name in `test.yml` does not start with the tool name.
+                """
+            )
+        )
 
     assert (
         "END_VERSIONS" not in versions_yml
@@ -29,7 +45,9 @@ def test_ensure_valid_version_yml(workflow_dir):
 
     # Raises an exception if yaml is not valid
     versions = yaml.safe_load(versions_yml)
-    assert len(versions) == 1, "The top-level of versions.yml must contain exactely one entry: the process name as dict key"
+    assert (
+        len(versions) == 1
+    ), "The top-level of versions.yml must contain exactely one entry: the process name as dict key"
     software_versions = next(iter(versions.values()))
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
