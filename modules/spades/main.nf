@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -29,7 +29,7 @@ process SPADES {
     tuple val(meta), path('*.gene_clusters.fa'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa')    , optional:true, emit: gfa
     tuple val(meta), path('*.log')             , emit: log
-    path  '*.version.txt'                      , emit: version
+    path  "versions.yml"                       , emit: version
 
     script:
     def software    = getSoftwareName(task.process)
@@ -62,6 +62,9 @@ process SPADES {
         mv gene_clusters.fasta ${prefix}.gene_clusters.fa
     fi
 
-    echo \$(spades.py --version 2>&1) | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(spades.py --version 2>&1 | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

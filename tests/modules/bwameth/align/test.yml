@@ -1,4 +1,4 @@
-- name: Run bwameth single-end test workflow
+- name: bwameth align single-end test workflow
   command: nextflow run ./tests/modules/bwameth/align -entry test_bwameth_align_single_end -c tests/config/nextflow.config
   tags:
     - bwameth
@@ -6,7 +6,7 @@
   files:
     - path: output/test_single_end/test.bam
 
-- name: Run bwameth paired-end test workflow
+- name: bwameth align paired-end test workflow
   command: nextflow run ./tests/modules/bwameth/align -entry test_bwameth_align_paired_end -c tests/config/nextflow.config
   tags:
     - bwameth
