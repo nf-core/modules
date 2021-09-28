@@ -29,10 +29,14 @@ process GUNZIP {
     def software = getSoftwareName(task.process)
     gunzip       = archive.toString() - '.gz'
     """
-    gunzip -f $options.args $archive
+    gunzip \\
+        -f \\
+        $options.args \\
+        $archive
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(gunzip --version 2>&1 | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
     END_VERSIONS
     """
 }
