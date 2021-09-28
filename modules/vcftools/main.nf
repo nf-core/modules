@@ -126,7 +126,7 @@ process VCFTOOLS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(vcftools --version 2>&1 | sed 's/^.*vcftools //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
     END_VERSIONS
     """
 }

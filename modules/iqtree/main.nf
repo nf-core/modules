@@ -41,7 +41,7 @@ process IQTREE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(iqtree -version 2>&1 | sed 's/^IQ-TREE multicore version \\([0-9\\.]*\\) .*\$/\\1/')
+        ${getSoftwareName(task.process)}: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
     END_VERSIONS
     """
 }

@@ -35,14 +35,15 @@ process TIDDIT_SV {
     def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     """
     tiddit \\
-        --sv $options.args \\
+        --sv \\
+        $options.args \\
         --bam $bam \\
         $reference \\
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(tiddit -h 2>&1 | sed 's/^.*Version: //; s/(.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
     END_VERSIONS
     """
 }

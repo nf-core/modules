@@ -23,7 +23,7 @@ process SEQUENZAUTILS_GCWIGGLE {
 
     output:
     tuple val(meta), path("*.wig.gz"), emit: wig
-    path "versions.yml"           , emit: version
+    path "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,7 +37,7 @@ process SEQUENZAUTILS_GCWIGGLE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(sequenzautils --version 2>&1 | sed 's/^.*sequenzautils //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """
 }
