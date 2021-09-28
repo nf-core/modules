@@ -47,7 +47,7 @@ def test_ensure_valid_version_yml(workflow_dir):
     versions = yaml.safe_load(versions_yml)
     assert (
         len(versions) == 1
-    ), "The top-level of versions.yml must contain exactely one entry: the process name as dict key"
+    ), "The top-level of versions.yml must contain exactly one entry: the process name as dict key"
     software_versions = next(iter(versions.values()))
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
