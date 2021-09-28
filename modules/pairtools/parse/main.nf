@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process PAIRTOOLS_PARSE {
     output:
     tuple val(meta), path("*.pairsam.gz")  , emit: pairsam
     tuple val(meta), path("*.pairsam.stat"), emit: stat
-    path "*.version.txt"                   , emit: version
+    path "versions.yml"                    , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,9 @@ process PAIRTOOLS_PARSE {
         -o ${prefix}.pairsam.gz \\
         $bam
 
-    echo \$(pairtools --version 2>&1) | sed 's/pairtools.*version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
+    END_VERSIONS
     """
 }

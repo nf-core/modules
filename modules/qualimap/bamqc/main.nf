@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process QUALIMAP_BAMQC {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "*.version.txt"             , emit: version
+    path  "versions.yml"              , emit: version
 
     script:
     def software   = getSoftwareName(task.process)
@@ -56,6 +56,9 @@ process QUALIMAP_BAMQC {
         -outdir $prefix \\
         -nt $task.cpus
 
-    echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
+    END_VERSIONS
     """
 }

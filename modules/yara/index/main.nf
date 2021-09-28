@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process YARA_INDEX {
 
     output:
     path "yara", emit: index
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -34,6 +34,9 @@ process YARA_INDEX {
     mv *.{lf,rid,sa,txt}.* yara
     cp $fasta yara/yara.fasta
 
-    echo \$(yara_indexer --help  2>&1) | grep -e "yara_indexer version:" | sed 's/yara_indexer version: //g' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(yara_indexer --help  2>&1 | grep -e "yara_indexer version:" | sed 's/yara_indexer version: //g')
+    END_VERSIONS
     """
 }
