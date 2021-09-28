@@ -35,6 +35,7 @@ process CHROMAP_INDEX {
         -t $task.cpus \\
         -r $fasta \\
         -o ${prefix}.index
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo "$VERSION")

@@ -37,14 +37,14 @@ process BWA_MEM {
     bwa mem \\
         $options.args \\
         $read_group \\
-        -t ${split_cpus} \\
+        -t $split_cpus \\
         \$INDEX \\
         $reads \\
         | samtools view $options.args2 -@ ${split_cpus} -bhS -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bwa 2>&1 | sed 's/^.*Version: //; s/Contact:.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """
 }

@@ -39,7 +39,7 @@ process BOWTIE2_ALIGN {
         bowtie2 \\
             -x \$INDEX \\
             -U $reads \\
-            --threads ${split_cpus} \\
+            --threads $split_cpus \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
@@ -47,7 +47,7 @@ process BOWTIE2_ALIGN {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
         END_VERSIONS
         """
     } else {
@@ -58,7 +58,7 @@ process BOWTIE2_ALIGN {
             -x \$INDEX \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            --threads ${split_cpus} \\
+            --threads $split_cpus \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
@@ -72,7 +72,7 @@ process BOWTIE2_ALIGN {
         fi
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(bowtie2 --version 2>&1 | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
         END_VERSIONS
         """
     }
