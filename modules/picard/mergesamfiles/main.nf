@@ -45,7 +45,7 @@ process PICARD_MERGESAMFILES {
             OUTPUT=${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(picard MergeSamFiles --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            ${getSoftwareName(task.process)}: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     } else {
@@ -53,7 +53,7 @@ process PICARD_MERGESAMFILES {
         ln -s ${bam_files[0]} ${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(picard MergeSamFiles --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            ${getSoftwareName(task.process)}: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     }
