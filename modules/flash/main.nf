@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -22,7 +22,7 @@ process FLASH {
 
     output:
     tuple val(meta), path("*.merged.*.fastq.gz"), emit: reads
-    path "*.version.txt"                      , emit: version
+    path "versions.yml"                       , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process FLASH {
         $merged \\
         -z \\
         $input_reads
-    echo \$(flash --version) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(flash --version)
+    END_VERSIONS
     """
 }

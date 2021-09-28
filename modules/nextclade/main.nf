@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,7 +27,7 @@ process NEXTCLADE {
     tuple val(meta), path("${prefix}.tree.json") , emit: json_tree
     tuple val(meta), path("${prefix}.tsv")       , emit: tsv
     tuple val(meta), path("${prefix}.clades.tsv"), optional:true, emit: tsv_clades
-    path "*.version.txt"                         , emit: version
+    path "versions.yml"                          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -43,6 +43,9 @@ process NEXTCLADE {
         --output-tsv-clades-only ${prefix}.clades.tsv \\
         --output-tree ${prefix}.tree.json
 
-    echo \$(nextclade --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(nextclade --version 2>&1)
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process LOFREQ_CALLPARALLEL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "*.version.txt"             , emit: version
+    path "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,9 @@ process LOFREQ_CALLPARALLEL {
         -o ${prefix}.vcf.gz \\
         $bam
 
-    echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lofreq version 2>&1 | sed 's/^version: //; s/ *commit.*\$//')
+    END_VERSIONS
     """
 }

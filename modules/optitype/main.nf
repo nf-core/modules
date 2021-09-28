@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process OPTITYPE {
 
     output:
     tuple val(meta), path("${prefix}"), emit: output
-    path "*.version.txt"              , emit: version
+    path "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -48,6 +48,9 @@ process OPTITYPE {
     OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --prefix $prefix --outdir $prefix
 
     #Couldn't find a nicer way of doing this
-    cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
+    END_VERSIONS
     """
 }
