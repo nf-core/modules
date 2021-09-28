@@ -36,7 +36,7 @@ process KLEBORATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(kleborate --version 2>&1 | sed 's/Kleborate v//;'))
+        ${getSoftwareName(task.process)}: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """
 }
