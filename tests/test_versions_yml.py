@@ -28,7 +28,7 @@ def test_ensure_valid_version_yml(workflow_dir):
     except FileNotFoundError:
         raise AssertionError(
             dedent(
-                """\
+                f"""\
                 `versions.yml` not found in the output directory.
                 Expected path: `{versions_yml_file}`
 
