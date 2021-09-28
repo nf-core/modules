@@ -22,14 +22,14 @@ process PBBAM_PBMERGE {
     tuple val(meta), path("*.bam")
 
     output:
-    tuple val(meta), path("*.ccs.bam"), emit: bam
+    tuple val(meta), path("*.m.bam")  , emit: bam
     tuple val(meta), path("*.bam.pbi"), emit: pbi
-    path "versions.yml"              , emit: version
+    path "versions.yml"               , emit: version
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    pbmerge -o ${prefix}.ccs.bam $options.args *.bam
+    pbmerge -o ${prefix}.m.bam $options.args *.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
