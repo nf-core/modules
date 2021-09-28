@@ -36,7 +36,7 @@ process KALLISTO_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(kallisto 2>&1 | sed 's/^kallisto //; s/Usage.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
     END_VERSIONS
     """
 }
