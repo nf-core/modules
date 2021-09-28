@@ -43,7 +43,7 @@ process SHOVILL {
         --force
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}
+    ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
     END_VERSIONS
     """
