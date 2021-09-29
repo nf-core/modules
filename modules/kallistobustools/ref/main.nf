@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process KALLISTOBUSTOOLS_REF {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::kb-python=0.26.0" : null)
+    conda (params.enable_conda ? 'bioconda::kb-python=0.26.3' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/kb-python:0.26.0--pyhdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/kb-python:0.26.3--pyhdfd78af_0"
     } else {
-        container "quay.io/biocontainers/kb-python:0.26.0--pyhdfd78af_0"
+        container "quay.io/biocontainers/kb-python:0.26.3--pyhdfd78af_0"
     }
 
     input:
@@ -24,7 +24,7 @@ process KALLISTOBUSTOOLS_REF {
     val  workflow
 
     output:
-    path "*.version.txt"  , emit: version
+    path "versions.yml"   , emit: version
     path "kb_ref_out.idx" , emit: index
     path "t2g.txt"        , emit: t2g
     path "cdna.fa"        , emit: cdna
@@ -45,7 +45,10 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        END_VERSIONS
         """
     } else {
         """
@@ -61,7 +64,10 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        END_VERSIONS
         """
     }
 }

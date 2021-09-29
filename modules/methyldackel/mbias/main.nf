@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process METHYLDACKEL_MBIAS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::methyldackel=0.5.2" : null)
+    conda (params.enable_conda ? 'bioconda::methyldackel=0.6.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/methyldackel:0.5.2--h7435645_0"
+        container "https://depot.galaxyproject.org/singularity/methyldackel:0.6.0--h22771d5_0"
     } else {
-        container "quay.io/biocontainers/methyldackel:0.5.2--h7435645_0"
+        container "quay.io/biocontainers/methyldackel:0.6.0--h22771d5_0"
     }
 
     input:
@@ -25,7 +25,7 @@ process METHYLDACKEL_MBIAS {
 
     output:
     tuple val(meta), path("*.mbias.txt"), emit: txt
-    path  "*.version.txt"               , emit: version
+    path  "versions.yml"                , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,9 @@ process METHYLDACKEL_MBIAS {
         --txt \\
         > ${prefix}.mbias.txt
 
-    echo \$(MethylDackel --version 2>&1) | cut -f1 -d" " > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
+    END_VERSIONS
     """
 }

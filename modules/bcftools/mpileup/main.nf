@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process BCFTOOLS_MPILEUP {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.11" : null)
+    conda (params.enable_conda ? 'bioconda::bcftools=1.13' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bcftools:1.11--h7c999a4_0"
+        container "https://depot.galaxyproject.org/singularity/bcftools:1.13--h3a49de5_0"
     } else {
-        container "quay.io/biocontainers/bcftools:1.11--h7c999a4_0"
+        container "quay.io/biocontainers/bcftools:1.13--h3a49de5_0"
     }
 
     input:
@@ -26,7 +26,7 @@ process BCFTOOLS_MPILEUP {
     tuple val(meta), path("*.gz")      , emit: vcf
     tuple val(meta), path("*.tbi")     , emit: tbi
     tuple val(meta), path("*stats.txt"), emit: stats
-    path  "*.version.txt"              , emit: version
+    path  "versions.yml"               , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -42,6 +42,9 @@ process BCFTOOLS_MPILEUP {
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z $options.args3
     tabix -p vcf -f ${prefix}.vcf.gz
     bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
-    echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
     """
 }

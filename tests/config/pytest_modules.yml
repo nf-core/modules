@@ -6,6 +6,10 @@ adapterremoval:
   - modules/adapterremoval/**
   - tests/modules/adapterremoval/**
 
+agrvate:
+  - modules/agrvate/**
+  - tests/modules/agrvate/**
+
 allelecounter:
   - modules/allelecounter/**
   - tests/modules/allelecounter/**
@@ -22,13 +26,29 @@ artic/minion:
   - modules/artic/minion/**
   - tests/modules/artic/minion/**
 
+bamaligncleaner:
+  - modules/bamaligncleaner/**
+  - tests/modules/bamaligncleaner/**
+
 bandage/image:
   - modules/bandage/image/**
   - tests/modules/bandage/image/**
 
+bbmap/align:
+  - modules/bbmap/align/**
+  - tests/modules/bbmap/align/**
+
 bbmap/bbduk:
   - modules/bbmap/bbduk/**
   - tests/modules/bbmap/bbduk/**
+
+bbmap/index:
+  - modules/bbmap/index/**
+  - tests/modules/bbmap/index/**
+
+bcftools/concat:
+  - modules/bcftools/concat/**
+  - tests/modules/bcftools/concat/**
 
 bcftools/consensus:
   - modules/bcftools/consensus/**
@@ -50,6 +70,14 @@ bcftools/mpileup:
   - modules/bcftools/mpileup/**
   - tests/modules/bcftools/mpileup/**
 
+bcftools/norm:
+  - modules/bcftools/norm/**
+  - tests/modules/bcftools/norm/**
+
+bcftools/query:
+  - modules/bcftools/query/**
+  - tests/modules/bcftools/query/**
+
 bcftools/reheader:
   - modules/bcftools/reheader/**
   - tests/modules/bcftools/reheader/**
@@ -57,6 +85,10 @@ bcftools/reheader:
 bcftools/stats:
   - modules/bcftools/stats/**
   - tests/modules/bcftools/stats/**
+
+bcftools/view:
+  - modules/bcftools/view/**
+  - tests/modules/bcftools/view/**
 
 bedtools/bamtobed:
   - modules/bedtools/bamtobed/**
@@ -77,6 +109,10 @@ bedtools/getfasta:
 bedtools/intersect:
   - modules/bedtools/intersect/**
   - tests/modules/bedtools/intersect/**
+
+bedtools/makewindows:
+  - modules/bedtools/makewindows/**
+  - tests/modules/bedtools/makewindows/**
 
 bedtools/maskfasta:
   - modules/bedtools/maskfasta/**
@@ -158,6 +194,10 @@ bowtie2/build:
   - modules/bowtie2/build/**
   - tests/modules/bowtie2/build_test/**
 
+bwa/aln:
+  - modules/bwa/aln/**
+  - tests/modules/bwa/aln/**
+
 bwa/index:
   - modules/bwa/index/**
   - tests/modules/bwa/index/**
@@ -165,6 +205,14 @@ bwa/index:
 bwa/mem:
   - modules/bwa/mem/**
   - tests/modules/bwa/mem/**
+
+bwa/sampe:
+  - modules/bwa/sampe/**
+  - tests/modules/bwa/sampe/**
+
+bwa/samse:
+  - modules/bwa/samse/**
+  - tests/modules/bwa/samse/**
 
 bwamem2/index:
   - modules/bwamem2/index/**
@@ -182,9 +230,21 @@ bwameth/index:
   - modules/bwameth/index/**
   - tests/modules/bwameth/index/**
 
+cat/cat:
+  - modules/cat/cat/**
+  - tests/modules/cat/cat/**
+
 cat/fastq:
   - modules/cat/fastq/**
   - tests/modules/cat/fastq/**
+
+chromap/chromap:
+  - modules/chromap/chromap/**
+  - tests/modules/chromap/chromap/**
+
+chromap/index:
+  - modules/chromap/index/**
+  - tests/modules/chromap/index/**
 
 cnvkit:
   - modules/cnvkit/**
@@ -226,6 +286,26 @@ delly/call:
   - modules/delly/call/**
   - tests/modules/delly/call/**
 
+diamond/blastx:
+  - modules/diamond/blastx/**
+  - tests/modules/diamond/blastx/**
+
+diamond/blastp:
+  - modules/diamond/blastp/**
+  - tests/modules/diamond/blastp/**
+
+diamond/makedb:
+  - modules/diamond/makedb/**
+  - tests/modules/diamond/makedb/**
+
+dragonflye:
+  - modules/dragonflye/**
+  - tests/modules/dragonflye/**
+
+dshbio/exportsegments:
+  - modules/dshbio/exportsegments/**
+  - tests/modules/dshbio/exportsegments/**
+
 dshbio/filterbed:
   - modules/dshbio/filterbed/**
   - tests/modules/dshbio/filterbed/**
@@ -245,6 +325,14 @@ dshbio/splitgff3:
 ensemblvep:
   - modules/ensemblvep/**
   - tests/modules/ensemblvep/**
+
+expansionhunter:
+  - modules/expansionhunter/**
+  - tests/modules/expansionhunter/**
+
+fastani:
+  - modules/fastani/**
+  - tests/modules/fastani/**
 
 fastp:
   - modules/fastp/**
@@ -290,6 +378,10 @@ gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
 
+gatk4/getpileupsummaries:
+  - modules/gatk4/getpileupsummaries/**
+  - tests/modules/gatk4/getpileupsummaries/**
+
 gatk4/haplotypecaller:
   - modules/gatk4/haplotypecaller/**
   - tests/modules/gatk4/haplotypecaller/**
@@ -309,6 +401,10 @@ gatk4/mergebamalignment:
 gatk4/mergevcfs:
   - modules/gatk4/mergevcfs/**
   - tests/modules/gatk4/mergevcfs/**
+
+gatk4/mutect2:
+  - modules/gatk4/mutect2/**
+  - tests/modules/gatk4/mutect2/**
 
 gatk4/revertsam:
   - modules/gatk4/revertsam/**
@@ -337,6 +433,10 @@ genmap/mappability:
 gffread:
   - modules/gffread/**
   - tests/modules/gffread/**
+
+glnexus:
+  - modules/glnexus/**
+  - tests/modules/glnexus/**
 
 graphmap2/align:
   - modules/graphmap2/align/**
@@ -381,6 +481,18 @@ homer/annotatepeaks:
   - modules/homer/annotatepeaks/**
   - tests/modules/homer/annotatepeaks/**
 
+homer/findpeaks:
+  - modules/homer/findpeaks/**
+  - tests/modules/homer/findpeaks/**
+
+homer/maketagdirectory:
+  - modules/homer/maketagdirectory/**
+  - tests/modules/homer/maketagdirectory/**
+
+homer/makeucscfile:
+  - modules/homer/makeucscfile/**
+  - tests/modules/homer/makeucscfile/**
+
 iqtree:
   - modules/iqtree/**
   - tests/modules/iqtree/**
@@ -412,6 +524,10 @@ kallistobustools/count:
 kallistobustools/ref:
   - modules/kallistobustools/ref/**
   - tests/modules/kallistobustools/ref/**
+
+kleborate:
+  - modules/kleborate/**
+  - tests/modules/kleborate/**
 
 kraken2/kraken2:
   - modules/kraken2/kraken2/**
@@ -450,6 +566,10 @@ last/train:
   - modules/last/train/**
   - tests/modules/last/train/**
 
+lima:
+  - modules/lima/**
+  - tests/modules/lima/**
+
 lofreq/call:
   - modules/lofreq/call/**
   - tests/modules/lofreq/call/**
@@ -465,6 +585,18 @@ lofreq/filter:
 lofreq/indelqual:
   - modules/lofreq/indelqual/**
   - tests/modules/lofreq/indelqual/**
+
+malt/build:
+  - modules/malt/build/**
+  - tests/modules/malt/build_test/**
+
+malt/run:
+  - modules/malt/run/**
+  - tests/modules/malt/run/**
+
+maltextract:
+  - modules/maltextract/**
+  - tests/modules/maltextract/**
 
 mash/sketch:
   - modules/mash/sketch/**
@@ -563,6 +695,10 @@ pangolin:
   - modules/pangolin/**
   - tests/modules/pangolin/**
 
+pbccs:
+  - modules/pbccs/**
+  - tests/modules/pbccs/**
+
 picard/collectmultiplemetrics:
   - modules/picard/collectmultiplemetrics/**
   - tests/modules/picard/collectmultiplemetrics/**
@@ -591,6 +727,10 @@ plasmidid:
   - modules/plasmidid/**
   - tests/modules/plasmidid/**
 
+plink/vcf:
+  - modules/plink/vcf/**
+  - tests/modules/plink/vcf/**
+
 preseq/lcextrap:
   - modules/preseq/lcextrap/**
   - tests/modules/preseq/lcextrap/**
@@ -606,6 +746,14 @@ prokka:
 pycoqc:
   - modules/pycoqc/**
   - tests/modules/pycoqc/**
+
+pydamage/analyze:
+  - modules/pydamage/analyze/**
+  - tests/modules/pydamage/analyze/**
+
+pydamage/filter:
+  - modules/pydamage/filter/**
+  - tests/modules/pydamage/filter/**
 
 qcat:
   - modules/qcat/**
@@ -755,6 +903,10 @@ shovill:
   - modules/shovill/**
   - tests/modules/shovill/**
 
+snpdists:
+  - modules/snpdists/**
+  - tests/modules/snpdists/**
+
 snpeff:
   - modules/snpeff/**
   - tests/modules/snpeff/**
@@ -766,6 +918,10 @@ snpsites:
 spades:
   - modules/spades/**
   - tests/modules/spades/**
+
+staphopiasccmec:
+  - modules/staphopiasccmec/**
+  - tests/modules/staphopiasccmec/**
 
 star/align:
   - modules/star/align/**
@@ -838,6 +994,14 @@ unicycler:
 untar:
   - modules/untar/**
   - tests/modules/untar/**
+
+unzip:
+  - modules/unzip/**
+  - tests/modules/unzip/**
+
+variantbam:
+  - modules/variantbam/**
+  - tests/modules/variantbam/**
 
 vcftools:
   - modules/vcftools/**

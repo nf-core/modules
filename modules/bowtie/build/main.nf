@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,13 +23,16 @@ process BOWTIE_BUILD {
 
     output:
     path 'bowtie'       , emit: index
-    path '*.version.txt', emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     """
     mkdir bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
-    echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+    END_VERSIONS
     """
 }

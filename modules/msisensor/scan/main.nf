@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process MSISENSOR_SCAN {
 
     output:
     tuple (val(meta), path("*.tab"), emit: txt)
-    path ("*.version.txt"          , emit: version)
+    path ("versions.yml"           , emit: version)
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process MSISENSOR_SCAN {
         -o ${prefix}.msisensor_scan.tab \\
         $options.args
 
-    echo \$(msisensor 2>&1) | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
+    END_VERSIONS
     """
 }

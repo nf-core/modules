@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::deeptools=3.5.0" : null)
+    conda (params.enable_conda ? 'bioconda::deeptools=3.5.1' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/deeptools:3.5.0--py_0"
+        container "https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0"
     } else {
-        container "quay.io/biocontainers/deeptools:3.5.0--py_0"
+        container "quay.io/biocontainers/deeptools:3.5.1--py_0"
     }
 
     input:
@@ -25,7 +25,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     tuple val(meta), path("*.pdf")          , emit: pdf
     tuple val(meta), path("*.raw.txt")      , emit: matrix
     tuple val(meta), path("*.qcmetrics.txt"), emit: metrics
-    path  "*.version.txt"                   , emit: version
+    path  "versions.yml"                    , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -41,6 +41,9 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         --outQualityMetrics ${prefix}.plotFingerprint.qcmetrics.txt \\
         --numberOfProcessors $task.cpus
 
-    plotFingerprint --version | sed -e "s/plotFingerprint //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
+    END_VERSIONS
     """
 }

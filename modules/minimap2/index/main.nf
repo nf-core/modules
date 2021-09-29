@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -10,11 +10,11 @@ process MINIMAP2_INDEX {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:['']) }
 
-    conda (params.enable_conda ? "bioconda::minimap2=2.17" : null)
+    conda (params.enable_conda ? 'bioconda::minimap2=2.21' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/minimap2:2.17--hed695b0_3"
+        container "https://depot.galaxyproject.org/singularity/minimap2:2.21--h5bf99c6_0"
     } else {
-        container "quay.io/biocontainers/minimap2:2.17--hed695b0_3"
+        container "quay.io/biocontainers/minimap2:2.21--h5bf99c6_0"
     }
 
     input:
@@ -22,7 +22,7 @@ process MINIMAP2_INDEX {
 
     output:
     path "*.mmi"        , emit: index
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,6 +33,9 @@ process MINIMAP2_INDEX {
         $options.args \\
         $fasta
 
-    echo \$(minimap2 --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(minimap2 --version 2>&1)
+    END_VERSIONS
     """
 }

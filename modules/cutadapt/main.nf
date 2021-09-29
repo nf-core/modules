@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process CUTADAPT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::cutadapt=3.2' : null)
+    conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/cutadapt:3.2--py38h0213d0e_0'
+        container 'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1'
     } else {
-        container 'quay.io/biocontainers/cutadapt:3.2--py38h0213d0e_0'
+        container 'quay.io/biocontainers/cutadapt:3.4--py37h73a75cf_1'
     }
 
     input:
@@ -24,7 +24,7 @@ process CUTADAPT {
     output:
     tuple val(meta), path('*.trim.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')          , emit: log
-    path '*.version.txt'                    , emit: version
+    path "versions.yml"                     , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,6 +37,9 @@ process CUTADAPT {
         $trimmed \\
         $reads \\
         > ${prefix}.cutadapt.log
-    echo \$(cutadapt --version) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(cutadapt --version)
+    END_VERSIONS
     """
 }
