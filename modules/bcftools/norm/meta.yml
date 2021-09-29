@@ -1,0 +1,45 @@
+name: bcftools_norm
+description: Normalize VCF file
+keywords:
+  - normalize
+  - norm
+  - variant calling
+  - VCF
+tools:
+    - norm:
+        description: |
+          Normalize VCF files.
+        homepage: http://samtools.github.io/bcftools/bcftools.html
+        documentation: http://www.htslib.org/doc/bcftools.html
+        doi: 10.1093/bioinformatics/btp352
+input:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: |
+          The vcf file to be normalized
+          e.g. 'file1.vcf'
+    - fasta:
+        type: file
+        description: FASTA reference file
+        pattern: "*.{fasta,fa}"
+output:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF normalized output file
+        pattern: "*.{vcf.gz}"
+    - version:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+authors:
+    - "@abhi18av"

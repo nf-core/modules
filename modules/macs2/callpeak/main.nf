@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process MACS2_CALLPEAK {
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    path  "*.version.txt"                            , emit: version
+    path  "versions.yml"                             , emit: version
 
     tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
     tuple val(meta), path("*.bed")       , optional:true, emit: bed
@@ -46,6 +46,9 @@ process MACS2_CALLPEAK {
         --treatment $ipbam \\
         $control
 
-    macs2 --version | sed -e "s/macs2 //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(macs2 --version | sed -e "s/macs2 //g")
+    END_VERSIONS
     """
 }

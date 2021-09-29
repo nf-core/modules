@@ -1,9 +1,9 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '0.4.1'
+def VERSION = '0.7.1'
 
 process SEQWISH_INDUCE {
     tag "$meta.id"
@@ -25,7 +25,7 @@ process SEQWISH_INDUCE {
 
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
 
     script:
@@ -39,6 +39,9 @@ process SEQWISH_INDUCE {
         --gfa=${prefix}.gfa \\
         $options.args
 
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }
