@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,8 +23,9 @@ process PICARD_MARKDUPLICATES {
 
     output:
     tuple val(meta), path("*.bam")        , emit: bam
+    tuple val(meta), path("*.bai")        , optional:true, emit: bai
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path  "*.version.txt"                 , emit: version
+    path  "versions.yml"                  , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
@@ -40,10 +41,13 @@ process PICARD_MARKDUPLICATES {
         -Xmx${avail_mem}g \\
         MarkDuplicates \\
         $options.args \\
-        INPUT=$bam \\
-        OUTPUT=${prefix}.bam \\
-        METRICS_FILE=${prefix}.MarkDuplicates.metrics.txt
+        -I $bam \\
+        -O ${prefix}.bam \\
+        -M ${prefix}.MarkDuplicates.metrics.txt
 
-    echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d: > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
     """
 }
