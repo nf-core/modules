@@ -24,7 +24,7 @@ process MASHTREE {
     output:
     tuple val(meta), path("*.dnd"), emit: tree
     tuple val(meta), path("*.tsv"), emit: matrix
-    path "versions.yml"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
