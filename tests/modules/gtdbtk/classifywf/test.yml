@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml gtdbtk/classifywf
+- name: gtdbtk classifywf
+  command: nextflow run ./tests/modules/gtdbtk/classifywf -entry test_gtdbtk_classifywf -c tests/config/nextflow.config
+  tags:
+    - gtdbtk
+    - gtdbtk/classifywf
+  files:
+    - path: output/gtdbtk/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
