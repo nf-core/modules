@@ -1,9 +1,11 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml amps
 - name: amps
   command: nextflow run ./tests/modules/amps -entry test_amps -c tests/config/nextflow.config
   tags:
     - amps
   files:
-    - path: results
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/amps/results/heatmap_overview_Wevid.json
+      md5sum: 82f484d02a9e3d0cc3d5bcdcc2965e44
+    - path: output/amps/results/heatmap_overview_Wevid.pdf
+    - path: output/amps/results/heatmap_overview_Wevid.tsv
+      md5sum: 1a7d565a37ef4d6054f7ade63fbadc2f
+    - path: output/amps/results/pdf_candidate_profiles/Severe_acute_respiratory_syndrome_coronavirus_2/stp1_test_1.rma6_Severe_acute_respiratory_syndrome_coronavirus_2_summary.pdf

@@ -5,7 +5,6 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process AMPS {
-    tag '$bam'
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -21,33 +20,29 @@ process AMPS {
     input:
     path maltextract_results
     path taxon_list
+    val filter
 
     output:
-    path "*.bam", emit: bam // TODO, consider GZIP?
-    path "versions.yml"          , emit: version
+    path "results/heatmap_overview_Wevid.json" , emit: json
+    path "results/heatmap_overview_Wevid.pdf"  , emit: summary_pdf
+    path "results/heatmap_overview_Wevid.tsv"  , emit: tsv
+    path "results/pdf_candidate_profiles/"     , emit: candidate_pdfs
+
+    path "versions.yml"                 , emit: version
 
     script:
-
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/software/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "$options.args" variable
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     postprocessing.AMPS.r \\
-        -r results/ \\
-        -n ${taxon_list} \\
-        -t ${task.cpus} \\
+        -r $maltextract_results \\
+        -n $taxon_list \\
+        -m $filter \\
+        -t $task.cpus \\
         -j \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        amps: \$( echo \$(hops --version 2>&1) | sed 's/HOPS version//' )
+        amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
     END_VERSIONS
     """
 }

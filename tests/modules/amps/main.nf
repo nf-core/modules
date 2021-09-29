@@ -6,7 +6,7 @@ include { UNZIP as UNZIP_MALT        } from '../../../modules/unzip/main.nf' add
 include { UNZIP as UNZIP_MALTEXTRACT }  from '../../../modules/unzip/main.nf' addParams( options: [:] )
 include { MALT_BUILD  } from  '../../../modules/malt/build/main.nf' addParams( options: [:] )
 include { MALT_RUN    } from '../../../modules/malt/run/main.nf' addParams( options: [:] )
-include { MALTEXTRACT } from '../../../modules/maltextract/main.nf' addParams( options: [:] )
+include { MALTEXTRACT } from '../../../modules/maltextract/main.nf' addParams( options: [args: "-f def_anc"] )
 include { AMPS } from '../../../modules/amps/main.nf' addParams( options: [:] )
 
 
@@ -20,6 +20,7 @@ workflow test_amps {
     mode = "BlastN"
     taxon_list = file(params.test_data['sarscov2']['genome']['taxon_list_txt'], checkIfExists: true)
     ncbi_dir = file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
+    filter = "def_anc"
 
     UNZIP_MALT ( map_db )
     UNZIP_MALTEXTRACT ( ncbi_dir )
@@ -27,5 +28,5 @@ workflow test_amps {
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
     MALTEXTRACT ( MALT_RUN.out.rma6, taxon_list, UNZIP_MALTEXTRACT.out.unzipped_archive)
 
-    AMPS ( MALTEXTRACT.out.results, taxon_list )
+    AMPS ( MALTEXTRACT.out.results, taxon_list, filter )
 }
