@@ -1,0 +1,47 @@
+name: gatk4_variantrecalibrator
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - sort
+tools:
+  - gatk4:
+      ## TODO nf-core: Add a description and other details for the software below
+      description: Genome Analysis Toolkit (GATK4)
+      homepage: None
+      documentation: None
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: ""
+      licence: ['BSD-3-clause']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@GCJMackenzie"
