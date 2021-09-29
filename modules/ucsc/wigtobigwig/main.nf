@@ -4,6 +4,8 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = '377' // No version information printed
+
 process UCSC_WIGTOBIGWIG {
     tag '$wig'
     label 'process_medium'
@@ -38,7 +40,7 @@ process UCSC_WIGTOBIGWIG {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(wigToBigWig 2>&1 | sed 's/wigToBigWig v //; s/ - Convert.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
     END_VERSIONS
     """
 }

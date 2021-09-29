@@ -59,7 +59,7 @@ process ENSEMBLVEP {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(vep --help 2>&1)
+        ${getSoftwareName(task.process)}: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
     END_VERSIONS
     """
 }

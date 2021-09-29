@@ -40,6 +40,8 @@ process SEACR_CALLPEAK {
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
     END_VERSIONS
     """
 }

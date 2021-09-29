@@ -4,7 +4,7 @@
     - bwameth
     - bwameth/align
   files:
-    - path: output/test_single_end/test.bam
+    - path: output/bwameth/test.bam
 
 - name: bwameth align paired-end test workflow
   command: nextflow run ./tests/modules/bwameth/align -entry test_bwameth_align_paired_end -c tests/config/nextflow.config
@@ -12,5 +12,5 @@
     - bwameth
     - bwameth/align
   files:
-    - path: output/test_paired_end/test.bam
+    - path: output/bwameth/test.bam
 
