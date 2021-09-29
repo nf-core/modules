@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process PANGOLIN {
 
     output:
     tuple val(meta), path('*.csv'), emit: report
-    path  '*.version.txt'         , emit: version
+    path  "versions.yml"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process PANGOLIN {
         --threads $task.cpus \\
         $options.args
 
-    echo \$(pangolin --version) | sed "s/pangolin //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
+    END_VERSIONS
     """
 }

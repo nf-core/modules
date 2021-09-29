@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMAP_INDEX } from '../../../../modules/genmap/index/main.nf' addParams( options: [:] )
+include { GENMAP_INDEX } from '../../../../modules/genmap/index/main.nf' addParams( options: [publish_dir:'genmap'] )
 
 workflow test_genmap_index {
 
