@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process ADAPTERREMOVAL {
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')     , emit: log
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -41,7 +41,10 @@ process ADAPTERREMOVAL {
             --seed 42 \\
             --gzip \\
 
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     } else if (!meta.single_end && !meta.collapse) {
         """
@@ -57,7 +60,10 @@ process ADAPTERREMOVAL {
             --seed 42 \\
             --gzip \\
 
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     } else {
         """
@@ -73,7 +79,10 @@ process ADAPTERREMOVAL {
             --gzip \\
 
         cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     }
 

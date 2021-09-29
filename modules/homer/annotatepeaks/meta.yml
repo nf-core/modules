@@ -1,11 +1,11 @@
 name: homer_annotatepeaks
-description: Annotate peaks with homer
+description: Annotate peaks with HOMER suite
 keywords:
   - annotations
   - peaks
   - bed
 tools:
-  - cuatadapt:
+  - homer:
       description: |
         HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
       documentation: http://homer.ucsd.edu/homer/
@@ -41,7 +41,7 @@ output:
   - version:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@kevinmenden"

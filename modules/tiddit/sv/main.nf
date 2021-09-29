@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,7 +27,7 @@ process TIDDIT_SV {
     tuple val(meta), path("*.vcf")        , emit: vcf
     tuple val(meta), path("*.ploidy.tab") , emit: ploidy
     tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "*.version.txt"                 , emit: version
+    path  "versions.yml"                  , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
@@ -35,11 +35,15 @@ process TIDDIT_SV {
     def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     """
     tiddit \\
-        --sv $options.args \\
+        --sv \\
+        $options.args \\
         --bam $bam \\
         $reference \\
         -o $prefix
 
-    echo \$(tiddit -h 2>&1) | sed 's/^.*Version: //; s/(.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,8 +23,8 @@ process BWA_ALN {
     path index
 
     output:
-    tuple val(meta), path(reads), path("*.sai"), emit: sai
-    path "*.version.txt"                       , emit: version
+    tuple val(meta), path("*.sai"), emit: sai
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -41,7 +41,10 @@ process BWA_ALN {
             \$INDEX \\
             ${reads}
 
-        echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
         """
     } else {
         """
@@ -61,7 +64,10 @@ process BWA_ALN {
             \$INDEX \\
             ${reads[1]}
 
-        echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
         """
     }
 }
