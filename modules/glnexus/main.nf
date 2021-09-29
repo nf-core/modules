@@ -44,9 +44,10 @@ process GLNEXUS {
         $options.args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(glnexus_cli 2>&1 | head -n 1 | sed 's/^.*release //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
     END_VERSIONS
     """
 }

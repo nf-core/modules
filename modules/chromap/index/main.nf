@@ -24,14 +24,16 @@ process CHROMAP_INDEX {
     path fasta
 
     output:
-    path "*.index"      , emit: index
-    path "versions.yml" , emit: version
+    path "*.index"     , emit: index
+    path "versions.yml", emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = fasta.baseName
     """
-    chromap -i $options.args \\
+    chromap \\
+        -i \\
+        $options.args \\
         -t $task.cpus \\
         -r $fasta \\
         -o ${prefix}.index
@@ -39,6 +41,7 @@ process CHROMAP_INDEX {
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

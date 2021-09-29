@@ -62,6 +62,7 @@ process HISAT2_ALIGN {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     } else {
@@ -93,6 +94,7 @@ process HISAT2_ALIGN {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     }

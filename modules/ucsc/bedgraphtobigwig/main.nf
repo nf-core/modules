@@ -32,7 +32,11 @@ process UCSC_BEDGRAPHTOBIGWIG {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bedGraphToBigWig $bedgraph $sizes ${prefix}.bigWig
+    bedGraphToBigWig \\
+        $bedgraph \\
+        $sizes \\
+        ${prefix}.bigWig
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)

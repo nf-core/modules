@@ -22,8 +22,8 @@ process SAMTOOLS_FAIDX {
     path fasta
 
     output:
-    path "*.fai"        , emit: fai
-    path "versions.yml" , emit: version
+    path "*.fai"       , emit: fai
+    path "versions.yml", emit: version
 
     script:
     def software = getSoftwareName(task.process)
