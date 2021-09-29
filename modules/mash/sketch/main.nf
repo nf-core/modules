@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -22,7 +22,7 @@ process MASH_SKETCH {
     output:
     tuple val(meta), path("*.msh")        , emit: mash
     tuple val(meta), path("*.mash_stats") , emit: stats
-    path "*.version.txt"                  , emit: version
+    path "versions.yml"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -35,6 +35,9 @@ process MASH_SKETCH {
         -o ${prefix} \\
         -r $reads \\
         2> ${prefix}.mash_stats
-    echo \$(mash --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(mash --version 2>&1)
+    END_VERSIONS
     """
 }
