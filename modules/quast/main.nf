@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,7 +27,7 @@ process QUAST {
     output:
     path "${prefix}"    , emit: results
     path '*.tsv'        , emit: tsv
-    path '*.version.txt', emit: version
+    path "versions.yml" , emit: version
 
     script:
     def software  = getSoftwareName(task.process)
@@ -43,6 +43,9 @@ process QUAST {
         $options.args \\
         ${consensus.join(' ')}
     ln -s ${prefix}/report.tsv
-    echo \$(quast.py --version 2>&1) | sed 's/^.*QUAST v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

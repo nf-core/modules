@@ -1,8 +1,10 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
+
+def VERSION = '377' // No version information printed
 
 process UCSC_WIGTOBIGWIG {
     tag '$wig'
@@ -24,7 +26,7 @@ process UCSC_WIGTOBIGWIG {
 
     output:
     path "*.bw"                   , emit: bw
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -36,6 +38,9 @@ process UCSC_WIGTOBIGWIG {
         $chromsizes \\
         ${wig.getSimpleName()}.bw
 
-    echo \$(wigToBigWig 2>&1) | sed 's/wigToBigWig v //; s/ - Convert.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+    END_VERSIONS
     """
 }
