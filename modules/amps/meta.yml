@@ -1,0 +1,51 @@
+name: amps
+## TODO nf-core: Add a description of the module and list keywords
+description: Post-processing script of the MaltExtract component of the HOPS package
+keywords:
+  - malt
+  - MaltExtract
+  - HOPS
+  - amps
+  - alignment
+  - metagenomics
+  - ancient DNA
+  - aDNA
+  - palaeogenomics
+  - archaeogenomics
+  - microbiome
+  - authentication
+  - damage
+  - edit distance
+tools:
+  - amps:
+      description: Post-processing script of the MaltExtract tool for ancient metagenomics
+      homepage: "https://github.com/rhuebler/HOPS"
+      documentation: "https://github.com/keyfm/amps"
+      tool_dev_url: "https://github.com/keyfm/amps"
+      doi: ""
+      licence: ['GPL >=3']
+
+input:
+  - maltextract_results:
+      type: directory
+      description: MaltExtract output directory
+      pattern: "results/"
+  - taxon_list:
+      type: file
+      description: List of target taxa to evaluate used in MaltExtract
+      pattern: "*.txt"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@jfy133"
