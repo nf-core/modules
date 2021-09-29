@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -31,7 +31,7 @@ process MOSDEPTH {
     tuple val(meta), path('*.per-base.bed.gz.csi'), emit: per_base_csi
     tuple val(meta), path('*.regions.bed.gz')     , emit: regions_bed
     tuple val(meta), path('*.regions.bed.gz.csi') , emit: regions_csi
-    path  '*.version.txt'                         , emit: version
+    path  "versions.yml"                          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -43,6 +43,9 @@ process MOSDEPTH {
         $options.args \\
         $prefix \\
         $bam
-    echo \$(mosdepth --version 2>&1) | sed 's/^.*mosdepth //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
+    END_VERSIONS
     """
 }

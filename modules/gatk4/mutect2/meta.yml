@@ -76,6 +76,10 @@ output:
       type: file
       description: Index of vcf file
       pattern: "*vcf.gz.tbi"
+  - stats:
+      type: file
+      description: Stats file that pairs with output vcf file
+      pattern: "*vcf.gz.stats"
   - f1r2:
       type: file
       description: file containing information to be passed to LearnReadOrientationModel (only outputted when tumor_normal_pair mode is run)
@@ -83,7 +87,7 @@ output:
   - version:
       type: file
       description: File containing software version
-      pattern: "*.version.txt"
+      pattern: "versions.yml"
 
 authors:
   - "@GCJMackenzie"

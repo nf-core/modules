@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,8 +24,8 @@ process SEQUENZAUTILS_BAM2SEQZ {
     path wigfile
 
     output:
-    tuple val(meta), path("*.seqz.gz"), emit: seqz
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path("*.gz"), emit: seqz
+    path "versions.yml"          , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -38,8 +38,11 @@ process SEQUENZAUTILS_BAM2SEQZ {
         -t $tumourbam \\
         --fasta $fasta \\
         -gc $wigfile \\
-        -o ${prefix}.seqz.gz
+        -o ${prefix}.gz
 
-    echo \$(sequenzautils --version 2>&1) | sed 's/^.*sequenzautils //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
+    END_VERSIONS
     """
 }
