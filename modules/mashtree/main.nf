@@ -38,7 +38,7 @@ process MASHTREE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
+        ${getSoftwareName(task.process)}: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
     END_VERSIONS
     """
 }
