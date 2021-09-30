@@ -72,10 +72,16 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
         html.append("</table>")
         return "\\n".join(html)
 
-    with open("$versions") as f:
-        versions = yaml.safe_load(f)
+    module_versions = {}
+    module_versions["${getProcessName(task.process)}"] = {
+        'python': platform.python_version(),
+        'yaml': yaml.__version__
+    }
 
-    versions["Workflow"] = {
+    with open("$versions") as f:
+        workflow_versions = yaml.safe_load(f) | module_versions
+
+    workflow_versions["Workflow"] = {
         "Nextflow": "$workflow.nextflow.version",
         "$workflow.manifest.name": "$workflow.manifest.version"
     }
@@ -86,20 +92,15 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
         'section_href': 'https://github.com/${workflow.manifest.name}',
         'plot_type': 'html',
         'description': 'are collected at run time from the software output.',
-        'data': _make_versions_html(versions)
+        'data': _make_versions_html(workflow_versions)
     }
 
     with open("software_versions.yml", 'w') as f:
-        yaml.dump(versions, f, default_flow_style=False)
+        yaml.dump(workflow_versions, f, default_flow_style=False)
     with open("software_versions_mqc.yml", 'w') as f:
         yaml.dump(versions_mqc, f, default_flow_style=False)
 
-    yaml_version = {}
-    yaml_version["${getProcessName(task.process)}"] = {
-        'python': platform.python_version(),
-        'yaml': yaml.__version__
-    }
     with open('versions.yml', 'w') as f:
-        yaml.dump(yaml_version, f, default_flow_style=False)
+        yaml.dump(module_versions, f, default_flow_style=False)
     """
 }
