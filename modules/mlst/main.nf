@@ -31,7 +31,7 @@ process MLST {
     mlst \\
       --threads $task.cpus \\
       $fasta \\
-      > ${fasta}.tsv
+      > ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
