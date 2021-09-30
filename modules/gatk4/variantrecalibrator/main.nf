@@ -26,22 +26,50 @@ process GATK4_VARIANTRECALIBRATOR {
     path dict
     val allelespecific
     path resource
+    path resourcetbi
+    val annotation
+    val mode
+    val rscript
 
     output:
     tuple val(meta), path("*.recal")   , emit: recal
     tuple val(meta), path("*.tranches"), emit: tranches
     tuple val(meta), path("*plots.R")  , optional:true, emit: plots
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    -R \\
-    -V \\
-    --use-alle-specific-annotations \\
-    --resource \\
-    --use-annotation \\
-    --mode \\
+    def refCommand = ''
+    def vcfCommand = ''
+    def alleleSpecificCommand = ''
+    def resourceCommand = ''
+    def annotationCommand = ''
+    def modeCommand = ''
+    def rscriptCommand = ''
+
+    def vcfList = []
+    def resourceList = []
+    def annotationList = []
+
+    refCommand = fasta ? " -R ${fasta} " : ''
+    vcf.each() {a -> vcfList.add(" -V " + a ) }
+    vcfCommand = vcfList.join( ' ')
+    if(alleleSpecific){
+        alleleSpecificCommand = " --use-alle-specific-annotations"
+    } else {
+        alleleSpecificCommand = ''
+    }
+    resource.each() {a -> resourceList.add(" --resource " + a ) }
+    resourceCommand = resourceList.join( ' ')
+    annotation.each() {a -> annotationList.add(" -an " + a ) }
+    annotationCommand = annotationList.join( ' ')
+    modeCommand = mode ? " --mode ${mode} " : ''
+    if(rscript){
+        rscriptCommand = " --rscript-file ${prefix}.plots.R"
+    } else {
+        rscriptCommand = ''
+    }
     """
     gatk VariantRecalibrator \\
         ${refCommand} \\
@@ -52,9 +80,12 @@ process GATK4_VARIANTRECALIBRATOR {
         ${modeCommand} \\
         -O ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
-        --rscript-file ${prefix}.plots.R \\
+        ${rscriptCommand}\\
         $options.args
 
-    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

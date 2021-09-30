@@ -1,17 +1,19 @@
 name: gatk4_variantrecalibrator
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+  Build a recalibration model to score variant quality for filtering purposes.
 keywords:
-  - sort
+  - VariantRecalibrator
+  - gatk4
+  - recalibration_model
 tools:
   - gatk4:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Genome Analysis Toolkit (GATK4)
-      homepage: None
-      documentation: None
-      tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: ""
-      licence: ['BSD-3-clause']
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -19,29 +21,67 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
+      type: list
+      description: input vcf file(s) containing the variants to be recalibrated
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: list
+      description: tbi file(s) matching with -vcf
+      pattern: "*.vcf.gz.tbi"
+  - fasta:
       type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fastaidx:
+      type: file
+      description: Index of reference fasta file
+      pattern: "fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
+  - allelespecific:
+      type: boolean
+      description: specify whether to use allele specific annotations
+      pattern: "{true,false}"
+  - resource:
+      type: list
+      description: resource files to be used as truth, training and known sites resources,
+      pattern: "*.{bam,cram,sam}"
+  - resourcetbi:
+      type: list
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+  - annotation:
+      type: list
+      description: specify which annotations should be used for calculations.
+  - mode:
+      type: string
+      description: specifies which recalibration mode to employ (SNP is default, BOTH is intended for testing only)
+      pattern: "{SNP,INDEL,BOTH}"
+  - rscript:
+      type: boolean
+      description: specify whether to generate rscript.plot output file
+      pattern: "{true,false}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - recal:
+      type: file
+      description: Output recal file used by ApplyVQSR
+      pattern: "*.recal"
+  - tranches:
+      type: file
+      description: Output tranches file used by ApplyVQSR
+      pattern: "*.tranches"
+  - plots:
+      type: file
+      description: Optional output rscript file to aid in visualization of the input data and learned model.
+      pattern: "*plots.R"
   - version:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      pattern: "*.versions.yml"
 authors:
   - "@GCJMackenzie"
