@@ -27,8 +27,7 @@ process AMPS {
     path "results/heatmap_overview_Wevid.pdf"  , emit: summary_pdf
     path "results/heatmap_overview_Wevid.tsv"  , emit: tsv
     path "results/pdf_candidate_profiles/"     , emit: candidate_pdfs
-
-    path "versions.yml"                 , emit: version
+    path "versions.yml"                        , emit: version
 
     script:
     """
