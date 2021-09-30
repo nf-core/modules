@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,24 +24,28 @@ process BWAMEM2_MEM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "*.version.txt"         , emit: version
+    path  "versions.yml"          , emit: version
 
     script:
-    def split_cpus = Math.floor(task.cpus/2)
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
-    bwa-mem2 mem \\
+    bwa-mem2 \\
+        mem \\
         $options.args \\
         $read_group \\
-        -t ${split_cpus} \\
+        -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | samtools view $options.args2 -@ ${split_cpus} -bhS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
-    echo \$(bwa-mem2 version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,7 +23,7 @@ process LAST_POSTMASK {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "*.version.txt"             , emit: version
+    path "versions.yml"              , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,6 +33,9 @@ process LAST_POSTMASK {
     last-postmask $options.args $maf | gzip --no-name > ${prefix}.maf.gz
 
     # last-postmask does not have a --version option
-    echo \$(lastal --version 2>&1) | sed 's/lastal //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastal --version 2>&1 | sed 's/lastal //')
+    END_VERSIONS
     """
 }

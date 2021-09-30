@@ -1,8 +1,10 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
+
+def VERSION = '2.3.2' // No version information printed
 
 process RAPIDNJ {
     label 'process_medium'
@@ -21,9 +23,9 @@ process RAPIDNJ {
     path alignment
 
     output:
-    path "*.sth"        , emit: stockholm_alignment
-    path "*.tre"        , emit: phylogeny
-    path "*.version.txt", emit: version
+    path "*.sth"       , emit: stockholm_alignment
+    path "*.tre"       , emit: phylogeny
+    path "versions.yml", emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -38,7 +40,10 @@ process RAPIDNJ {
         -c $task.cpus \\
         -x rapidnj_phylogeny.tre
 
-    # Doesn't appear to be a way of getting the version number
-    echo 2.3.2 > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        biopython: \$(python -c "import Bio; print(Bio.__version__)")
+    END_VERSIONS
     """
 }

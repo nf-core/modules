@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,7 +25,7 @@ process UNICYCLER {
     tuple val(meta), path('*.scaffolds.fa'), emit: scaffolds
     tuple val(meta), path('*.assembly.gfa'), emit: gfa
     tuple val(meta), path('*.log')         , emit: log
-    path  '*.version.txt'                  , emit: version
+    path  "versions.yml"                   , emit: version
 
     script:
     def software    = getSoftwareName(task.process)
@@ -42,6 +42,9 @@ process UNICYCLER {
     mv assembly.gfa ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
 
-    echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
+    END_VERSIONS
     """
 }
