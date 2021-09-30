@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -9,7 +9,7 @@ process BBMAP_INDEX {
     label 'process_long'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -19,11 +19,11 @@ process BBMAP_INDEX {
     }
 
     input:
-    tuple val(meta), path(fasta)
+    path fasta
 
     output:
-    tuple val(meta), path('ref')  , emit: index
-    path "*.version.txt"          , emit: version
+    path 'ref'                    , emit: index
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -34,6 +34,9 @@ process BBMAP_INDEX {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bbversion.sh)
+    END_VERSIONS
     """
 }
