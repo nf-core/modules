@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEM_PREPAREREFERENCE }   from '../../../../modules/rsem/preparereference/main.nf'   addParams(options: [:])
+include { RSEM_PREPAREREFERENCE }   from '../../../../modules/rsem/preparereference/main.nf'   addParams(options: [publish_dir:'rsem'])
 
 workflow test_rsem_preparereference {
 

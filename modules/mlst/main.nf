@@ -29,15 +29,14 @@ process MLST {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mlst \\
-      --threads $task.cpus \\
-      $fasta \\
-      > ${prefix}
+        --threads $task.cpus \\
+        $fasta \\
+        > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-        mlst: \$( mlst --version | grep -o '[0-9.]*' )
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
     END_VERSIONS
-
     """
 
 }
