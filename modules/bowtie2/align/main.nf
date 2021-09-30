@@ -29,7 +29,6 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
-    def split_cpus = Math.floor(task.cpus/2)
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
@@ -39,11 +38,11 @@ process BOWTIE2_ALIGN {
         bowtie2 \\
             -x \$INDEX \\
             -U $reads \\
-            --threads $split_cpus \\
+            --threads $task.cpus \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -60,11 +59,11 @@ process BOWTIE2_ALIGN {
             -x \$INDEX \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            --threads $split_cpus \\
+            --threads $task.cpus \\
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ ${split_cpus} $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
