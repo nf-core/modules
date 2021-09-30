@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,19 +25,23 @@ process MINIA {
     tuple val(meta), path('*.contigs.fa'), emit: contigs
     tuple val(meta), path('*.unitigs.fa'), emit: unitigs
     tuple val(meta), path('*.h5')        , emit: h5
-    path  '*.version.txt'                , emit: version
+    path  "versions.yml"                 , emit: version
 
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def read_list = reads.join(",")
     """
-    echo "${reads.join("\n")}" > input_files.txt
+    echo "${read_list}" | sed 's/,/\\n/g' > input_files.txt
     minia \\
         $options.args \\
         -nb-cores $task.cpus \\
         -in input_files.txt \\
         -out $prefix
 
-    echo \$(minia --version 2>&1) | sed 's/^.*Minia version //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
+    END_VERSIONS
     """
 }

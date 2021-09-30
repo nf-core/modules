@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 def options    = initOptions(params.options)
@@ -26,7 +26,7 @@ process HOMER_MAKETAGDIRECTORY {
 
     output:
     tuple val(meta), path("tag_dir"), emit: tagdir
-    path  "*.version.txt"            , emit: version
+    path  "versions.yml"             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -38,6 +38,9 @@ process HOMER_MAKETAGDIRECTORY {
         $bed \\
         -genome $fasta
 
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }
