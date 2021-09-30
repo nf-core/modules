@@ -23,6 +23,14 @@ input:
       type: file
       description: FASTA formatted assembly file
       pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+  - database_dir:
+      type: directory
+      description: Optional - Directory containing locus database
+      pattern: "*/*"
+  - database_dir:
+      type: directory
+      description: Optional - Prodigal model to use for gene prediction
+      pattern: "*.{bin}"
 
 output:
   - meta:
