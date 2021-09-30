@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,7 +26,7 @@ process IVAR_CONSENSUS {
     tuple val(meta), path("*.fa")      , emit: fasta
     tuple val(meta), path("*.qual.txt"), emit: qual
     tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: version
 
     script:
     def software     = getSoftwareName(task.process)
@@ -42,6 +42,9 @@ process IVAR_CONSENSUS {
             $options.args \\
             -p $prefix
 
-    echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+    END_VERSIONS
     """
 }
