@@ -29,9 +29,9 @@ process MLST {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mlst \\
-      --threads $task.cpus \\
-      $fasta \\
-      > ${fasta}.tsv
+        --threads $task.cpus \\
+        $fasta \\
+        > ${fasta}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
