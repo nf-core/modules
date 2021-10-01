@@ -26,10 +26,9 @@ process ARRIBA {
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions
     tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
-    path "versions.yml"                             , emit: version
+    path "versions.yml"                             , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def blacklist = (options.args.contains('-b')) ? '' : '-f blacklist'
     """

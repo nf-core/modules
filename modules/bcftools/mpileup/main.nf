@@ -26,10 +26,9 @@ process BCFTOOLS_MPILEUP {
     tuple val(meta), path("*.gz")      , emit: vcf
     tuple val(meta), path("*.tbi")     , emit: tbi
     tuple val(meta), path("*stats.txt"), emit: stats
-    path  "versions.yml"               , emit: version
+    path  "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     echo "${meta.id}" > sample_name.list

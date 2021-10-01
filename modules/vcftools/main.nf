@@ -24,11 +24,11 @@ process VCFTOOLS {
     // Other optional input files can be utilised in a similar way to below but we do not exhaustively itterate through all
     // possible options. Instead we leave that to the user.
     tuple val(meta), path(variant_file)
-    path(bed)
-    path(diff_variant_file)
+    path  bed)
+    path diff_variant_file
 
     output:
-    path("versions.yml") , emit: version
+    path "versions.yml", emit: versions
 
     tuple val(meta), path("*.vcf"), optional:true, emit: vcf
     tuple val(meta), path("*.bcf"), optional:true, emit: bcf
@@ -94,7 +94,6 @@ process VCFTOOLS {
     tuple val(meta), path("*.diff.switch"), optional:true, emit: diff_switch_error
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
 

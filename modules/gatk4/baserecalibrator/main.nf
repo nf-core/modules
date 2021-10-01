@@ -29,10 +29,9 @@ process GATK4_BASERECALIBRATOR {
 
     output:
     tuple val(meta), path("*.table"), emit: table
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def intervalsCommand = intervalsBed ? "-L ${intervalsBed}" : ""
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')

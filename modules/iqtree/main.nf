@@ -24,10 +24,9 @@ process IQTREE {
 
     output:
     path "*.treefile",    emit: phylogeny
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
     """
