@@ -1,4 +1,4 @@
-name: roary
+ name: roary
 description: Calculate pan-genome from annotated bacterial assemblies in GFF3 format
 keywords:
   - gff
@@ -21,8 +21,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - gff:
       type: file
-      description: A set of GFF formatted files created by Prokka
-      pattern: "*.{gff,gff3}"
+      description: A set of GFF3 formatted files created by Prokka
+      pattern: "*.{gff}"
 
 output:
   - meta:
