@@ -28,7 +28,6 @@ process DIAMOND_MAKEDB {
     path "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     diamond \\
         makedb \\

@@ -33,7 +33,6 @@ process HISAT2_ALIGN {
     tuple val(meta), path("*fastq.gz"), optional:true, emit: fastq
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def strandedness = ''

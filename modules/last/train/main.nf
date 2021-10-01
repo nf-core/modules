@@ -27,7 +27,6 @@ process LAST_TRAIN {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

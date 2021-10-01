@@ -25,7 +25,6 @@ process MINIMAP2_INDEX {
     path "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     minimap2 \\
         -t $task.cpus \\

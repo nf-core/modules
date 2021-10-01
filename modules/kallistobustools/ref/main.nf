@@ -33,7 +33,6 @@ process KALLISTOBUSTOOLS_REF {
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
-    def software = getSoftwareName(task.process)
     if (workflow == "standard") {
         """
         kb \\

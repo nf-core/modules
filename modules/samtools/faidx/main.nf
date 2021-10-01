@@ -26,7 +26,6 @@ process SAMTOOLS_FAIDX {
     path "versions.yml", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools faidx $fasta
     cat <<-END_VERSIONS > versions.yml

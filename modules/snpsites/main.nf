@@ -27,7 +27,6 @@ process SNPSITES {
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
-    def software = getSoftwareName(task.process)
     """
     snp-sites \\
         $alignment \\

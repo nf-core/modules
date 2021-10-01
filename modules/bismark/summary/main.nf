@@ -29,7 +29,6 @@ process BISMARK_SUMMARY {
     path  "versions.yml"      , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bismark2summary
 

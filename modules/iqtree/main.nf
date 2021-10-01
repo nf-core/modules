@@ -27,7 +27,6 @@ process IQTREE {
     path "versions.yml" , emit: version
 
     script:
-    def software    = getSoftwareName(task.process)
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
     """

@@ -26,7 +26,6 @@ process BCFTOOLS_MERGE {
     path  "versions.yml"         , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools merge -Oz \\

@@ -94,7 +94,6 @@ process VCFTOOLS {
     tuple val(meta), path("*.diff.switch"), optional:true, emit: diff_switch_error
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
 

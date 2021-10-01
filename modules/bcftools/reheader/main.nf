@@ -28,7 +28,6 @@ process BCFTOOLS_REHEADER {
     path "versions.yml"              , emit: version
 
     script:
-    def software         = getSoftwareName(task.process)
     def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def update_sequences = fai ? "-f $fai" : ""
     def new_header       = header ? "-h $header" : ""

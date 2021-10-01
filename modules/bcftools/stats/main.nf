@@ -26,7 +26,6 @@ process BCFTOOLS_STATS {
     path  "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools stats $options.args $vcf > ${prefix}.bcftools_stats.txt

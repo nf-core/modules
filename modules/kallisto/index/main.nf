@@ -26,7 +26,6 @@ process KALLISTO_INDEX {
     path "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     kallisto \\
         index \\

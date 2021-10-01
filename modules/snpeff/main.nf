@@ -34,7 +34,6 @@ process SNPEFF {
     path "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
         log.info '[snpEff] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'

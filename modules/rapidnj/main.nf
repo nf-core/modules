@@ -28,7 +28,6 @@ process RAPIDNJ {
     path "versions.yml", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'

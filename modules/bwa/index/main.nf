@@ -26,7 +26,6 @@ process BWA_INDEX {
     path "versions.yml", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     mkdir bwa
     bwa \\

@@ -26,7 +26,6 @@ process BISMARK_REPORT {
     path  "versions.yml"                       , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bismark2report $options.args
 

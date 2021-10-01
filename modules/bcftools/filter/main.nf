@@ -26,7 +26,6 @@ process BCFTOOLS_FILTER {
     path  "versions.yml"         , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools filter \\

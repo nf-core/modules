@@ -27,7 +27,6 @@ process BEDTOOLS_MAKEWINDOWS {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def arg_input = use_bed ? "-b $regions" : "-g $regions"
     """

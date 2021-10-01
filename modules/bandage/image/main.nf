@@ -27,7 +27,6 @@ process BANDAGE_IMAGE {
     path  "versions.yml"          , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     Bandage image $gfa ${prefix}.png $options.args

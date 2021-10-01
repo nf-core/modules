@@ -26,7 +26,6 @@ process SAMTOOLS_IDXSTATS {
     path  "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools idxstats $bam > ${bam}.idxstats
     cat <<-END_VERSIONS > versions.yml

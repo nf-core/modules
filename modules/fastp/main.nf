@@ -34,7 +34,6 @@ process FASTP {
 
     script:
     // Added soft-links to original fastqs for consistent naming in MultiQC
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''

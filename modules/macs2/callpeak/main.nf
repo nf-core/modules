@@ -32,7 +32,6 @@ process MACS2_CALLPEAK {
     tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def format   = meta.single_end ? 'BAM' : 'BAMPE'
     def control  = controlbam ? "--control $controlbam" : ''

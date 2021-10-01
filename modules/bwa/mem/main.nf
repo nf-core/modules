@@ -27,7 +27,6 @@ process BWA_MEM {
     path  "versions.yml"          , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """

@@ -43,7 +43,6 @@ process ARTIC_MINION {
     path  "versions.yml"                                              , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
     def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""

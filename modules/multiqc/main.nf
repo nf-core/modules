@@ -27,7 +27,6 @@ process MULTIQC {
     path "versions.yml"        , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     multiqc -f $options.args .
 

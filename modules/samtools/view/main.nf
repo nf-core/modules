@@ -26,7 +26,6 @@ process SAMTOOLS_VIEW {
     path  "versions.yml"          , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     samtools view $options.args $bam > ${prefix}.bam

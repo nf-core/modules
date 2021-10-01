@@ -30,7 +30,6 @@ process PRODIGAL {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     prodigal -i "${genome}" \\

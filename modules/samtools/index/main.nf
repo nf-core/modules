@@ -27,7 +27,6 @@ process SAMTOOLS_INDEX {
     path  "versions.yml"          , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools index $options.args $bam
     cat <<-END_VERSIONS > versions.yml

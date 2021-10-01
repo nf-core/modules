@@ -25,7 +25,6 @@ process FASTTREE {
     path "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     fasttree \\
         $options.args \\

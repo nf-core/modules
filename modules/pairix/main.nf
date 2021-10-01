@@ -26,7 +26,6 @@ process PAIRIX {
     path "versions.yml"                       , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     pairix \\
         $options.args \\

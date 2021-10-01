@@ -36,7 +36,6 @@ process ENSEMBLVEP {
     path "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """

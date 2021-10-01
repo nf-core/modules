@@ -27,7 +27,6 @@ process PYCOQC {
     path  "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     pycoQC \\
         $options.args \\

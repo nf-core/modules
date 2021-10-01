@@ -32,7 +32,6 @@ process STRELKA_GERMLINE {
     path  "versions.yml"                         , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def regions  = params.target_bed ? "--exome --callRegions ${target_bed}" : ""
     """

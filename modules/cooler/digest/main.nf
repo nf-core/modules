@@ -28,7 +28,6 @@ process COOLER_DIGEST {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     cooler digest \\
         $options.args \\

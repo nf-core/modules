@@ -27,7 +27,6 @@ process UNZIP {
     path "versions.yml"      , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
 
     if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
 

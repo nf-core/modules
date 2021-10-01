@@ -27,7 +27,6 @@ process RSEQC_READDISTRIBUTION {
     path  "versions.yml"                            , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     read_distribution.py \\

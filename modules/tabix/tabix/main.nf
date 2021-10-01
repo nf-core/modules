@@ -26,7 +26,6 @@ process TABIX_TABIX {
     path  "versions.yml"          , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     tabix $options.args $tab
 

@@ -26,7 +26,6 @@ process RAXMLNG {
     path "versions.yml"    , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     raxml-ng \\
         $options.args \\

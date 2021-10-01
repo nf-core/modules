@@ -29,7 +29,6 @@ process SEQWISH_INDUCE {
 
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     seqwish \\

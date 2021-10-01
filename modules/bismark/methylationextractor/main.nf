@@ -32,7 +32,6 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     script:
     def seqtype  = meta.single_end ? '-s' : '-p'
-    def software = getSoftwareName(task.process)
     """
     bismark_methylation_extractor \\
         --bedGraph \\

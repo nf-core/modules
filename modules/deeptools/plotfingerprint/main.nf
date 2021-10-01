@@ -28,7 +28,6 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     path  "versions.yml"                    , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def extend   = (meta.single_end && params.fragment_size > 0) ? "--extendReads ${params.fragment_size}" : ''
     """

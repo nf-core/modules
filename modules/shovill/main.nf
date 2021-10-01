@@ -30,7 +30,6 @@ process SHOVILL {
     path "versions.yml"                                         , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def memory = task.memory.toGiga()
     """
     shovill \\

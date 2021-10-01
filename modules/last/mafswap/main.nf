@@ -26,7 +26,6 @@ process LAST_MAFSWAP {
     path "versions.yml"              , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     maf-swap $options.args $maf | gzip --no-name > ${prefix}.swapped.maf.gz

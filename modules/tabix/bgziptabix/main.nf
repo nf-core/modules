@@ -26,7 +26,6 @@ process TABIX_BGZIPTABIX {
     path  "versions.yml" ,                        emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bgzip -c $options.args $input > ${prefix}.gz

@@ -26,7 +26,6 @@ process SAMTOOLS_STATS {
     path  "versions.yml"            , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools stats $bam > ${bam}.stats
     cat <<-END_VERSIONS > versions.yml

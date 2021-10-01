@@ -31,7 +31,6 @@ process CNVKIT {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     cnvkit.py \\
         batch \\

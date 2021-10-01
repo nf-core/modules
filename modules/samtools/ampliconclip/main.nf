@@ -31,7 +31,6 @@ process SAMTOOLS_AMPLICONCLIP {
     path "versions.yml"                       , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
     def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""

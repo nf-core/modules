@@ -28,7 +28,6 @@ process METHYLDACKEL_EXTRACT {
     path  "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     """
     MethylDackel extract \\
         $options.args \\

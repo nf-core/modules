@@ -53,7 +53,6 @@ process HISAT2_BUILD {
         log.info "[HISAT2 index build] Use --hisat2_build_memory [small number] to skip this check."
     }
 
-    def software = getSoftwareName(task.process)
     """
     mkdir hisat2
     $extract_exons

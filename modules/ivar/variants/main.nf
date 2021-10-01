@@ -29,7 +29,6 @@ process IVAR_VARIANTS {
     path "versions.yml"               , emit: version
 
     script:
-    def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     def features     = params.gff ? "-g $gff" : ""

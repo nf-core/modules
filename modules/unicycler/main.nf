@@ -28,7 +28,6 @@ process UNICYCLER {
     path  "versions.yml"                   , emit: version
 
     script:
-    def software    = getSoftwareName(task.process)
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "-s $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """

@@ -26,7 +26,6 @@ process BISMARK_GENOMEPREPARATION {
     path "versions.yml" , emit: version
 
     script:
-    def software   = getSoftwareName(task.process)
     """
     bismark_genome_preparation \\
         $options.args \\

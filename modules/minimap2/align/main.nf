@@ -27,7 +27,6 @@ process MINIMAP2_ALIGN {
     path "versions.yml" , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """

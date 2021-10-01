@@ -29,7 +29,6 @@ process UCSC_WIGTOBIGWIG {
     path "versions.yml"           , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
 
     """
     wigToBigWig \\
