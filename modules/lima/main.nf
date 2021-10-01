@@ -28,7 +28,7 @@ process LIMA {
     tuple val(meta), path("*.guess")  , emit: guess
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     tuple val(meta), path("*.bam")              , optional: true, emit: bam
     tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
@@ -41,7 +41,6 @@ process LIMA {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     OUT_EXT=""
 
@@ -67,7 +66,7 @@ process LIMA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+        ${getSoftwareName(task.process)}: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
 }

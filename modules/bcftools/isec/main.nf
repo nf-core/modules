@@ -23,10 +23,9 @@ process BCFTOOLS_ISEC {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools isec  \\
