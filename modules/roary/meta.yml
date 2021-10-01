@@ -34,14 +34,14 @@ output:
       type: file
       description: File containing software version
       pattern: "versions.yml"
-  - aln:
-      type: file
-      description: Core-genome alignment produced by Roary
-      pattern: "*.{fa}"
   - results:
       type: directory
       description: Directory containing Roary result files
       pattern: "*/*"
+  - aln:
+      type: file
+      description: Core-genome alignment produced by Roary (Optional)
+      pattern: "*.{aln}"
 
 authors:
   - "@rpetit3"
