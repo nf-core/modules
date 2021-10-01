@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process UNZIP {
 
     output:
     path "${archive.baseName}/" , emit: unzipped_archive
-    path "*.version.txt"     , emit: version
+    path "versions.yml"      , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
 
     if ( archive instanceof List && archive.name.size > 1 ) { exit 1, "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
 
@@ -38,6 +37,9 @@ process UNZIP {
         $options.args \\
         $archive
 
-    echo \$(7za --help) | grep Version | sed 's/.*p7zip Version//; s/(.*//' 1> ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
+    END_VERSIONS
     """
 }

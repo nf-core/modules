@@ -1,8 +1,10 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
+
+def VERSION = '377'
 
 process UCSC_BIGWIGAVERAGEOVERBED {
     tag "$meta.id"
@@ -23,16 +25,22 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     path bigwig
 
     output:
-    tuple val(meta), path("*.tab")           , emit: tab
-    path "*.version.txt"                     , emit: version
+    tuple val(meta), path("*.tab"), emit: tab
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.
-    bigWigAverageOverBed ${options.args} $bigwig $bed ${bed.getSimpleName()}.tab
+    bigWigAverageOverBed \\
+        $options.args \\
+        $bigwig \\
+        $bed \\
+        ${prefix}.tab
 
-    echo \$(bigWigAverageOverBed 2>&1) | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }

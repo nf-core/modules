@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,11 +26,10 @@ process MALT_BUILD {
 
     output:
     path "malt_index/"   , emit: index
-    path "*.version.txt" , emit: version
+    path "versions.yml"  , emit: versions
     path "malt-build.log", emit: log
 
     script:
-    def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
         log.info '[MALT_BUILD] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
@@ -51,6 +50,9 @@ process MALT_BUILD {
         $options.args \\
         -mdb ${map_db}/*.db |&tee malt-build.log
 
-    malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2 > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2)
+    END_VERSIONS
     """
 }

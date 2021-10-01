@@ -1,10 +1,10 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = 0.1 // No version information printed
+def VERSION = '0.1' // No version information printed
 
 process CHROMAP_CHROMAP {
     tag "$meta.id"
@@ -34,16 +34,13 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.bam")        , optional:true, emit: bam
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
-    path "*.version.txt"                                 , emit: version
+    path "versions.yml"                                  , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
 
-    def file_extension = options.args.contains("--SAM")? 'sam' :
-                        options.args.contains("--TagAlign")? 'tagAlign' :
-                        options.args.contains("--pairs")? 'pairs' : 'bed'
+    def file_extension = options.args.contains("--SAM") ? 'sam' : options.args.contains("--TagAlign")? 'tagAlign' : options.args.contains("--pairs")? 'pairs' : 'bed'
     if (barcodes) {
         args << "-b ${barcodes.join(',')}"
         if (whitelist) {
@@ -56,38 +53,47 @@ process CHROMAP_CHROMAP {
     if (pairs_chr_order){
         args << "--pairs-natural-chr-order $pairs_chr_order"
     }
-    def compression_cmds = """
-    gzip ${prefix}.${file_extension}
-    """
+    def final_args = args.join(' ')
+    def compression_cmds = "gzip ${prefix}.${file_extension}"
     if (options.args.contains("--SAM")) {
         compression_cmds = """
         samtools view $options.args2 -@ ${task.cpus} -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
-
-        samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
         """
     }
     if (meta.single_end) {
         """
-        chromap ${args.join(' ')} \\
+        chromap ${final_args} \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
             -1 ${reads.join(',')} \\
             -o ${prefix}.${file_extension}
-        echo "$VERSION" > ${software}.version.txt
-        """ + compression_cmds
+
+        $compression_cmds
+
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
+        """
     } else {
         """
-        chromap ${args.join(' ')} \\
+        chromap ${final_args} \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -o ${prefix}.${file_extension}
-        echo "$VERSION" > ${software}.version.txt
-        """ + compression_cmds
+
+        $compression_cmds
+
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        END_VERSIONS
+        """
     }
 }
