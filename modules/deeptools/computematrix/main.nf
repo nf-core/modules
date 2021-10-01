@@ -25,7 +25,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
     output:
     tuple val(meta), path("*.mat.gz") , emit: matrix
     tuple val(meta), path("*.mat.tab"), emit: table
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

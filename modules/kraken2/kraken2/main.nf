@@ -26,7 +26,7 @@ process KRAKEN2_KRAKEN2 {
     tuple val(meta), path('*classified*')  , emit: classified
     tuple val(meta), path('*unclassified*'), emit: unclassified
     tuple val(meta), path('*report.txt')   , emit: txt
-    path "versions.yml"                    , emit: version
+    path "versions.yml"                    , emit: versions
 
     script:
     def prefix       = options.suffix  ? "${meta.id}${options.suffix}"  : "${meta.id}"

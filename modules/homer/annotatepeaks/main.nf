@@ -27,7 +27,7 @@ process HOMER_ANNOTATEPEAKS {
 
     output:
     tuple val(meta), path("*annotatePeaks.txt"), emit: txt
-    path  "versions.yml"                       , emit: version
+    path  "versions.yml"                       , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

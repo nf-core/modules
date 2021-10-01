@@ -23,7 +23,7 @@ process SEQKIT_SPLIT2 {
 
     output:
     tuple val(meta), path("*${prefix}/*.gz"), emit: reads
-    path "versions.yml"                     , emit: version
+    path "versions.yml"                     , emit: versions
 
     script:
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

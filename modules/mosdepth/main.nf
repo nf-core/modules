@@ -31,7 +31,7 @@ process MOSDEPTH {
     tuple val(meta), path('*.per-base.bed.gz.csi'), emit: per_base_csi
     tuple val(meta), path('*.regions.bed.gz')     , emit: regions_bed
     tuple val(meta), path('*.regions.bed.gz.csi') , emit: regions_csi
-    path  "versions.yml"                          , emit: version
+    path  "versions.yml"                          , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

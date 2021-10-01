@@ -25,7 +25,7 @@ process UNICYCLER {
     tuple val(meta), path('*.scaffolds.fa'), emit: scaffolds
     tuple val(meta), path('*.assembly.gfa'), emit: gfa
     tuple val(meta), path('*.log')         , emit: log
-    path  "versions.yml"                   , emit: version
+    path  "versions.yml"                   , emit: versions
 
     script:
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

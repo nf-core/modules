@@ -23,7 +23,7 @@ process GUNZIP {
 
     output:
     path "$gunzip",       emit: gunzip
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     gunzip       = archive.toString() - '.gz'

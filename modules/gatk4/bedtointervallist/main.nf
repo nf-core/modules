@@ -24,7 +24,7 @@ process GATK4_BEDTOINTERVALLIST {
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
-    path  "versions.yml"                    , emit: version
+    path  "versions.yml"                    , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

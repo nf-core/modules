@@ -23,7 +23,7 @@ process YARA_INDEX {
 
     output:
     path "yara"        , emit: index
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
 

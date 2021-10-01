@@ -23,7 +23,7 @@ process CAT_CAT {
 
     output:
     path "${file_out}*" , emit: file_out
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     def file_list = files_in.collect { it.toString() }

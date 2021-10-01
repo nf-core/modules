@@ -25,7 +25,7 @@ process METHYLDACKEL_EXTRACT {
 
     output:
     tuple val(meta), path("*.bedGraph"), emit: bedgraph
-    path  "versions.yml"               , emit: version
+    path  "versions.yml"               , emit: versions
 
     script:
     """

@@ -24,7 +24,7 @@ process LAST_TRAIN {
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

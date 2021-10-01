@@ -25,7 +25,7 @@ process CHROMAP_INDEX {
 
     output:
     path "*.index"     , emit: index
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
     def prefix   = fasta.baseName

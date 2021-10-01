@@ -35,7 +35,7 @@ process GATK4_MUTECT2 {
     tuple val(meta), path("*.tbi")        , emit: tbi
     tuple val(meta), path("*.stats")      , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
-    path "versions.yml"                   , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

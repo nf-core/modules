@@ -22,7 +22,7 @@ process FASTTREE {
 
     output:
     path "*.tre",         emit: phylogeny
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

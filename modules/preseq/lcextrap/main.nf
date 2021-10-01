@@ -25,7 +25,7 @@ process PRESEQ_LCEXTRAP {
     output:
     tuple val(meta), path("*.ccurve.txt"), emit: ccurve
     tuple val(meta), path("*.log")       , emit: log
-    path  "versions.yml"                 , emit: version
+    path  "versions.yml"                 , emit: versions
 
     script:
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

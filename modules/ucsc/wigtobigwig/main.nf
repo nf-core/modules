@@ -26,7 +26,7 @@ process UCSC_WIGTOBIGWIG {
 
     output:
     path "*.bw"                   , emit: bw
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
 

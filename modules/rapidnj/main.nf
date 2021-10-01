@@ -25,7 +25,7 @@ process RAPIDNJ {
     output:
     path "*.sth"       , emit: stockholm_alignment
     path "*.tre"       , emit: phylogeny
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
     """

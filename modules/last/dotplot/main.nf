@@ -25,7 +25,7 @@ process LAST_DOTPLOT {
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
     tuple val(meta), path("*.png"), optional:true, emit: png
-    path "versions.yml"                          , emit: version
+    path "versions.yml"                          , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

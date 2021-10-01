@@ -28,7 +28,7 @@ process LIMA {
     tuple val(meta), path("*.guess")  , emit: guess
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     tuple val(meta), path("*.bam")              , optional: true, emit: bam
     tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi

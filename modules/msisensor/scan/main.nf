@@ -23,7 +23,7 @@ process MSISENSOR_SCAN {
 
     output:
     tuple (val(meta), path("*.tab"), emit: txt)
-    path ("versions.yml"           , emit: version)
+    path "versions.yml"            , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

@@ -25,7 +25,7 @@ process PICARD_SORTSAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"                  , emit: version
+    path "versions.yml"                  , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

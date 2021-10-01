@@ -25,7 +25,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     output:
     tuple val(meta), path("*_metrics"), emit: metrics
     tuple val(meta), path("*.pdf")    , emit: pdf
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

@@ -23,7 +23,7 @@ process PAIRIX {
 
     output:
     tuple val(meta), path(pair), path("*.px2"), emit: index
-    path "versions.yml"                       , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
     """

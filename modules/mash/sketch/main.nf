@@ -22,7 +22,7 @@ process MASH_SKETCH {
     output:
     tuple val(meta), path("*.msh")        , emit: mash
     tuple val(meta), path("*.mash_stats") , emit: stats
-    path "versions.yml"                   , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

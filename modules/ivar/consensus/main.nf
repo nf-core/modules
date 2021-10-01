@@ -26,7 +26,7 @@ process IVAR_CONSENSUS {
     tuple val(meta), path("*.fa")      , emit: fasta
     tuple val(meta), path("*.qual.txt"), emit: qual
     tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

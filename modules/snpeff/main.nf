@@ -31,7 +31,7 @@ process SNPEFF {
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
     path "*.csv"                      , emit: report
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
     def avail_mem = 6

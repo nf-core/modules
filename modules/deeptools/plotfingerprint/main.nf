@@ -25,7 +25,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     tuple val(meta), path("*.pdf")          , emit: pdf
     tuple val(meta), path("*.raw.txt")      , emit: matrix
     tuple val(meta), path("*.qcmetrics.txt"), emit: metrics
-    path  "versions.yml"                    , emit: version
+    path  "versions.yml"                    , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

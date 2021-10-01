@@ -23,7 +23,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
 
     output:
     path "*.dict"        , emit: dict
-    path "versions.yml"  , emit: version
+    path "versions.yml"  , emit: versions
 
     script:
     def avail_mem = 6

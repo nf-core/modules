@@ -23,7 +23,7 @@ process TABIX_BGZIPTABIX {
 
     output:
     tuple val(meta), path("*.gz"), path("*.tbi"), emit: tbi
-    path  "versions.yml" ,                        emit: version
+    path  "versions.yml" ,                        emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

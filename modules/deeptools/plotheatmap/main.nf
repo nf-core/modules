@@ -24,7 +24,7 @@ process DEEPTOOLS_PLOTHEATMAP {
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: table
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

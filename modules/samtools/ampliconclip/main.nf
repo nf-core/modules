@@ -28,7 +28,7 @@ process SAMTOOLS_AMPLICONCLIP {
     tuple val(meta), path("*.bam")            , emit: bam
     tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
     tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
-    path "versions.yml"                       , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

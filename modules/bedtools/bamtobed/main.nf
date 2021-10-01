@@ -23,7 +23,7 @@ process BEDTOOLS_BAMTOBED {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

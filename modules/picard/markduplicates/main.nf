@@ -25,7 +25,7 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.bam")        , emit: bam
     tuple val(meta), path("*.bai")        , optional:true, emit: bai
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path  "versions.yml"                  , emit: version
+    path  "versions.yml"                  , emit: versions
 
     script:
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

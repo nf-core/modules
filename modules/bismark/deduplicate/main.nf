@@ -24,7 +24,7 @@ process BISMARK_DEDUPLICATE {
     output:
     tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "versions.yml"                               , emit: version
+    path  "versions.yml"                               , emit: versions
 
     script:
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

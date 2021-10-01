@@ -24,7 +24,7 @@ process SAMTOOLS_MPILEUP {
 
     output:
     tuple val(meta), path("*.mpileup"), emit: mpileup
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

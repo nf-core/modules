@@ -40,7 +40,7 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json"), optional:true                    , emit: json
-    path  "versions.yml"                                              , emit: version
+    path  "versions.yml"                                              , emit: versions
 
     script:
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

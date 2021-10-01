@@ -24,7 +24,7 @@ process PAIRTOOLS_RESTRICT {
 
     output:
     tuple val(meta), path("*.pairs.gz"), emit: restrict
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

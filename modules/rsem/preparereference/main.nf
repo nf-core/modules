@@ -25,7 +25,7 @@ process RSEM_PREPAREREFERENCE {
     output:
     path "rsem"                , emit: index
     path "rsem/*transcripts.fa", emit: transcript_fasta
-    path "versions.yml"        , emit: version
+    path "versions.yml"        , emit: versions
 
     script:
     def args     = options.args.tokenize()

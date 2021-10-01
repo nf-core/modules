@@ -24,7 +24,7 @@ process KALLISTOBUSTOOLS_REF {
     val  workflow
 
     output:
-    path "versions.yml"   , emit: version
+    path "versions.yml"   , emit: versions
     path "kb_ref_out.idx" , emit: index
     path "t2g.txt"        , emit: t2g
     path "cdna.fa"        , emit: cdna

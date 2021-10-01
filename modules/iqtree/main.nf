@@ -24,7 +24,7 @@ process IQTREE {
 
     output:
     path "*.treefile",    emit: phylogeny
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''

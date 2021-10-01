@@ -23,7 +23,7 @@ process GENMAP_INDEX {
 
     output:
     path "genmap"       , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

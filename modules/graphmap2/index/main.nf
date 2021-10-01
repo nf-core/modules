@@ -22,7 +22,7 @@ process GRAPHMAP2_INDEX {
 
     output:
     path "*.gmidx"      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

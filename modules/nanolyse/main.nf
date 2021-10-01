@@ -25,7 +25,7 @@ process NANOLYSE {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     path "*.log"                       , emit: log
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

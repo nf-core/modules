@@ -23,7 +23,7 @@ process SAMTOOLS_FAIDX {
 
     output:
     path "*.fai"       , emit: fai
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
     """

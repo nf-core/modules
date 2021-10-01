@@ -25,7 +25,7 @@ process MINIA {
     tuple val(meta), path('*.contigs.fa'), emit: contigs
     tuple val(meta), path('*.unitigs.fa'), emit: unitigs
     tuple val(meta), path('*.h5')        , emit: h5
-    path  "versions.yml"                 , emit: version
+    path  "versions.yml"                 , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

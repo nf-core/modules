@@ -26,7 +26,7 @@ process IVAR_VARIANTS {
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

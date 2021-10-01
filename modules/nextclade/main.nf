@@ -27,7 +27,7 @@ process NEXTCLADE {
     tuple val(meta), path("${prefix}.tree.json") , emit: json_tree
     tuple val(meta), path("${prefix}.tsv")       , emit: tsv
     tuple val(meta), path("${prefix}.clades.tsv"), optional:true, emit: tsv_clades
-    path "versions.yml"                          , emit: version
+    path "versions.yml"                          , emit: versions
 
     script:
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

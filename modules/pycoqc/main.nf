@@ -24,7 +24,7 @@ process PYCOQC {
     output:
     path "*.html"        , emit: html
     path "*.json"        , emit: json
-    path  "versions.yml" , emit: version
+    path  "versions.yml" , emit: versions
 
     script:
     """

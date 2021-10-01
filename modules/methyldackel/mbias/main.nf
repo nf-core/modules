@@ -25,7 +25,7 @@ process METHYLDACKEL_MBIAS {
 
     output:
     tuple val(meta), path("*.mbias.txt"), emit: txt
-    path  "versions.yml"                , emit: version
+    path  "versions.yml"                , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

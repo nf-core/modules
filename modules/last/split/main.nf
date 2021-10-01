@@ -23,7 +23,7 @@ process LAST_SPLIT {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

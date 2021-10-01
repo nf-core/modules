@@ -23,7 +23,7 @@ process BWAMETH_INDEX {
 
     output:
     path "bwameth"      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

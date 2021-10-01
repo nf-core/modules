@@ -26,7 +26,7 @@ process MALT_BUILD {
 
     output:
     path "malt_index/"   , emit: index
-    path "versions.yml"  , emit: version
+    path "versions.yml"  , emit: versions
     path "malt-build.log", emit: log
 
     script:

@@ -24,7 +24,7 @@ process SEQTK_SUBSEQ {
 
     output:
     path "*.gz"         , emit: sequences
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     def prefix   = options.suffix ?: ''

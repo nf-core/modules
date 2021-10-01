@@ -34,7 +34,7 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.bam")        , optional:true, emit: bam
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
-    path "versions.yml"                                  , emit: version
+    path "versions.yml"                                  , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

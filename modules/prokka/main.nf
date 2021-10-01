@@ -35,7 +35,7 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.log"), emit: log
     tuple val(meta), path("${prefix}/*.txt"), emit: txt
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

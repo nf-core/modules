@@ -23,7 +23,7 @@ process BOWTIE2_BUILD {
 
     output:
     path 'bowtie2'      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

@@ -27,7 +27,7 @@ process QUAST {
     output:
     path "${prefix}"    , emit: results
     path '*.tsv'        , emit: tsv
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     prefix        = options.suffix ?: software

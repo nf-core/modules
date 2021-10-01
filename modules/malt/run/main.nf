@@ -27,7 +27,7 @@ process MALT_RUN {
     path "*.rma6"                          , emit: rma6
     path "*.{tab,text,sam}",  optional:true, emit: alignments
     path "*.log"                           , emit: log
-    path "versions.yml"                    , emit: version
+    path "versions.yml"                    , emit: versions
 
     script:
     def avail_mem = 6

@@ -23,7 +23,7 @@ process BCFTOOLS_CONCAT {
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
-    path  "versions.yml"         , emit: version
+    path  "versions.yml"         , emit: versions
 
     script:
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

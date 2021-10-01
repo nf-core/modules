@@ -26,7 +26,7 @@ process NANOPLOT {
     tuple val(meta), path("*.png") , emit: png
     tuple val(meta), path("*.txt") , emit: txt
     tuple val(meta), path("*.log") , emit: log
-    path  "versions.yml"           , emit: version
+    path  "versions.yml"           , emit: versions
 
     script:
     def input_file = ("$ontfile".endsWith(".fastq.gz")) ? "--fastq ${ontfile}" :

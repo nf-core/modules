@@ -26,7 +26,7 @@ process BISMARK_SUMMARY {
 
     output:
     path  "*report.{html,txt}", emit: summary
-    path  "versions.yml"      , emit: version
+    path  "versions.yml"      , emit: versions
 
     script:
     """

@@ -23,7 +23,7 @@ process BWAMEM2_INDEX {
 
     output:
     path "bwamem2"      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

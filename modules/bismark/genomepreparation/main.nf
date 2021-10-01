@@ -23,7 +23,7 @@ process BISMARK_GENOMEPREPARATION {
 
     output:
     path "BismarkIndex" , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
     """

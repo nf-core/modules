@@ -25,7 +25,7 @@ process COOLER_DIGEST {
 
     output:
     path "*.bed"                  , emit: bed
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
     """

@@ -23,7 +23,7 @@ process BWA_INDEX {
 
     output:
     path "bwa"         , emit: index
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
     """

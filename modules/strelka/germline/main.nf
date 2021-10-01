@@ -29,7 +29,7 @@ process STRELKA_GERMLINE {
     tuple val(meta), path("*variants.vcf.gz.tbi"), emit: vcf_tbi
     tuple val(meta), path("*genome.vcf.gz")      , emit: genome_vcf
     tuple val(meta), path("*genome.vcf.gz.tbi")  , emit: genome_vcf_tbi
-    path  "versions.yml"                         , emit: version
+    path  "versions.yml"                         , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

@@ -24,7 +24,7 @@ process UNZIP {
 
     output:
     path "${archive.baseName}/" , emit: unzipped_archive
-    path "versions.yml"      , emit: version
+    path "versions.yml"      , emit: versions
 
     script:
 
