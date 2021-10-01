@@ -26,10 +26,9 @@ process IVAR_VARIANTS {
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     def features     = params.gff ? "-g $gff" : ""

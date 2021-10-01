@@ -24,10 +24,9 @@ process BANDAGE_IMAGE {
     output:
     tuple val(meta), path('*.png'), emit: png
     tuple val(meta), path('*.svg'), emit: svg
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     Bandage image $gfa ${prefix}.png $options.args

@@ -23,10 +23,9 @@ process BWAMETH_INDEX {
 
     output:
     path "bwameth"      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bwameth.py index $fasta
 

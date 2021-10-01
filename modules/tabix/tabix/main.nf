@@ -23,10 +23,9 @@ process TABIX_TABIX {
 
     output:
     tuple val(meta), path("*.tbi"), emit: tbi
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     tabix $options.args $tab
 
