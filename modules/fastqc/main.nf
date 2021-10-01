@@ -28,7 +28,7 @@ process FASTQC {
 
     script:
     // Add soft-links to original FastQs for consistent naming in pipeline
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
@@ -36,7 +36,7 @@ process FASTQC {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
+            ${getSoftwareName(task.process)}: \$( fastqc --version | sed -e "s/FastQC v//g" )
         END_VERSIONS
         """
     } else {
@@ -47,7 +47,7 @@ process FASTQC {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
+            ${getSoftwareName(task.process)}: \$( fastqc --version | sed -e "s/FastQC v//g" )
         END_VERSIONS
         """
     }

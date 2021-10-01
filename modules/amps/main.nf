@@ -41,7 +41,7 @@ process AMPS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
+        ${getSoftwareName(task.process)}: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
     END_VERSIONS
     """
 }

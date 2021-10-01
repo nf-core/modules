@@ -22,11 +22,11 @@ process MSISENSOR_SCAN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple (val(meta), path("*.tab"), emit: txt)
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.tab"), emit: txt
+    path "versions.yml"           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     msisensor \\
         scan \\

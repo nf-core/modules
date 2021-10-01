@@ -32,7 +32,7 @@ process MULTIQC {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
+        ${getSoftwareName(task.process)}: \$( multiqc --version | sed -e "s/multiqc, version //g" )
     END_VERSIONS
     """
 }

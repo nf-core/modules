@@ -41,7 +41,6 @@ process LIMA {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     OUT_EXT=""
 
@@ -67,7 +66,7 @@ process LIMA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+        ${getSoftwareName(task.process)}: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
 }
