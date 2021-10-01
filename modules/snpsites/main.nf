@@ -23,11 +23,10 @@ process SNPSITES {
     output:
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
-    def software = getSoftwareName(task.process)
     """
     snp-sites \\
         $alignment \\
