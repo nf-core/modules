@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTOBUSTOOLS_COUNT } from '../../../../modules/kallistobustools/count/main.nf' addParams( options: [args:"--cellranger"] )
+include { KALLISTOBUSTOOLS_COUNT } from '../../../../modules/kallistobustools/count/main.nf' addParams( options: [args:"--cellranger -m 1"] )
 
 workflow test_kallistobustools_count {
 

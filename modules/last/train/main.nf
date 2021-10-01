@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,7 +24,7 @@ process LAST_TRAIN {
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -39,6 +39,9 @@ process LAST_TRAIN {
         $fastx \\
         > ${prefix}.\$INDEX_NAME.par
 
-    lastdb --version | sed 's/lastdb //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
+    END_VERSIONS
     """
 }
