@@ -24,7 +24,7 @@ process ROARY {
     output:
     tuple val(meta), path("results/*"), emit: results
     tuple val(meta), path("results/core_gene_alignment.aln"), emit: aln, optional: true
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
