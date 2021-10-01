@@ -27,10 +27,9 @@ process MALT_RUN {
     path "*.rma6"                          , emit: rma6
     path "*.{tab,text,sam}",  optional:true, emit: alignments
     path "*.log"                           , emit: log
-    path "versions.yml"                    , emit: version
+    path "versions.yml"                    , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
         log.info '[MALT_RUN] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'

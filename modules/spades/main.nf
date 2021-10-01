@@ -29,10 +29,9 @@ process SPADES {
     tuple val(meta), path('*.gene_clusters.fa'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa')    , optional:true, emit: gfa
     tuple val(meta), path('*.log')             , emit: log
-    path  "versions.yml"                       , emit: version
+    path  "versions.yml"                       , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "-s $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     def custom_hmms = params.spades_hmm ? "--custom-hmms $hmm" : ""

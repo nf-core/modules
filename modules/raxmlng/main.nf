@@ -23,10 +23,9 @@ process RAXMLNG {
     output:
     path "*.raxml.bestTree", emit: phylogeny
     path "*.raxml.support" , optional:true, emit: phylogeny_bootstrapped
-    path "versions.yml"    , emit: version
+    path "versions.yml"    , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     raxml-ng \\
         $options.args \\
