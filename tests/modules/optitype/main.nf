@@ -6,8 +6,8 @@ include { OPTITYPE } from '../../../modules/optitype/main.nf' addParams( options
 
 workflow test_optitype {
     input = [ [ id:'test', seq_type:'dna' ], // meta map
-              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_bam'], checkIfExists: true) 
+              file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
             ]
-            
+
     OPTITYPE ( input )
 }
