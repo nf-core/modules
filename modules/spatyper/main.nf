@@ -36,7 +36,7 @@ process SPATYPER {
         $options.args \\
         $input_args \\
         --fasta $fasta \\
-        --output ${prefix}.tsv 
+        --output ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
