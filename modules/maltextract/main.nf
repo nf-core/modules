@@ -25,10 +25,9 @@ process MALTEXTRACT {
 
     output:
     path "results"      , emit: results
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\

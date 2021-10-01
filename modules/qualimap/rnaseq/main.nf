@@ -24,10 +24,9 @@ process QUALIMAP_RNASEQ {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     def memory     = task.memory.toGiga() + "G"

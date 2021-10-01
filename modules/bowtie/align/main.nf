@@ -25,11 +25,10 @@ process BOWTIE_ALIGN {
     output:
     tuple val(meta), path('*.bam'), emit: bam
     tuple val(meta), path('*.out'), emit: log
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"

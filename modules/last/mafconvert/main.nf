@@ -32,10 +32,9 @@ process LAST_MAFCONVERT {
     tuple val(meta), path("*.psl.gz"),      optional:true, emit: psl_gz
     tuple val(meta), path("*.sam.gz"),      optional:true, emit: sam_gz
     tuple val(meta), path("*.tab.gz"),      optional:true, emit: tab_gz
-    path "versions.yml"                                  , emit: version
+    path "versions.yml"                                  , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     maf-convert $options.args $format $maf | gzip --no-name \\

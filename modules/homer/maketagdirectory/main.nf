@@ -26,10 +26,9 @@ process HOMER_MAKETAGDIRECTORY {
 
     output:
     tuple val(meta), path("tag_dir"), emit: tagdir
-    path  "versions.yml"             , emit: version
+    path  "versions.yml"             , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     makeTagDirectory \\
