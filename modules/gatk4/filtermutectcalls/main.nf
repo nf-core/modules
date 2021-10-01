@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -29,7 +29,7 @@ process GATK4_FILTERMUTECTCALLS {
     tuple val(meta), path("*.filtered.vcf.gz"), emit: filteredvcf
     tuple val(meta), path("*.filtered.vcf.gz.tbi"), emit: filteredtbi
     tuple val(meta), path("*.filteringStats.tsv"), emit: filteringstats
-    path "*.version.txt"          , emit: version
+    path "versions.yml"                   , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -67,6 +67,9 @@ process GATK4_FILTERMUTECTCALLS {
         -O ${prefix}.filtered.vcf.gz \\
         $options.args
 
-    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
     """
 }
