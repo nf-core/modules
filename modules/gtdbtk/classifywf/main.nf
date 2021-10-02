@@ -61,15 +61,15 @@ process GTDBTK_CLASSIFYWF {
     stub:
 
     """
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.summary.tsv
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.classify.tree.gz
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.markers_summary.tsv
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.msa.fasta.gz
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.user_msa.fasta
-    touch gtdbtk.${meta.assembler}-${meta.id}.*.filtered.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.summary.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.classify.tree.gz
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.markers_summary.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.msa.fasta.gz
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.user_msa.fasta
+    touch gtdbtk.${meta.assembler}-${meta.id}.stub.filtered.tsv
     touch gtdbtk.${meta.assembler}-${meta.id}.log
     touch gtdbtk.${meta.assembler}-${meta.id}.warnings.log
     touch gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv
-    touch version.txt
+    touch gtdbtk.version.txt
     """
 }
