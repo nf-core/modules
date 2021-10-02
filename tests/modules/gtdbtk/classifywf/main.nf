@@ -6,13 +6,12 @@ include { GTDBTK_CLASSIFYWF } from '../../../../modules/gtdbtk/classifywf/main.n
 
 process STUB_GTDBTK {
     output:
-    path("bins/*")                                                   , emit: bins
+    path("*fa")                                                   , emit: bins
     tuple val("gtdbtk_r202_data"), path("database/*")             , emit: database
 
     stub:
     """
-    mkdir bins/
-    touch bins/1.fa bins/2.fa bins/3.fa
+    touch 1.fa 2.fa 3.fa
 
     mkdir database
     touch database/gtdbtk_r202_data
