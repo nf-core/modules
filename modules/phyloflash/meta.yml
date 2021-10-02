@@ -1,34 +1,25 @@
 name: phyloflash
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore phylogenetic composition of an illumina (meta)genomic dataset.
 keywords:
   - sort
 tools:
   - phyloflash:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore
-phylogenetic composition of an illumina (meta)genomic dataset.
+      description: phyloFlash is a pipeline to rapidly reconstruct the SSU rRNAs and explore phylogenetic composition of an illumina (meta)genomic dataset.
 
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://hrgv.github.io/phyloFlash/
+      documentation: https://hrgv.github.io/phyloFlash/usage.html
+      tool_dev_url: https://github.com/HRGV/phyloFlash
+      doi: "10.1128/mSystems.00920-20"
       licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
+//TODO
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+//TODO
 output:
   - meta:
       type: map
@@ -39,11 +30,6 @@ output:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@abhi18av"

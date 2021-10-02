@@ -20,6 +20,7 @@ process PHYLOFLASH {
 
     input:
     tuple val(meta), path(reads)
+    path(database)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -28,10 +29,14 @@ process PHYLOFLASH {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
+    //TODO Accomodate interleaved
     """
     phyloFlash.pl \\
         $options.args \\
-        -CPUs $task.cpus \\
+        -read1 $reads[0] \\
+        -read2 $reads[1] \\
+        -CPUs $task.cpus
 
     echo \$(phyloFlash.pl -version 2>&1) | sed 's/^.*phyloFlash //' > ${software}.version.txt
     """
