@@ -19,11 +19,11 @@ process stub_gtdbtk {
 }
 
 workflow test_gtdbtk_classifywf {
+
+    stub_gtdbtk()
     
-    input = [ [[ id:'test', single_end:false, assembler:'SPADES' ], // meta map
-               stub_gtdbtk.out.bins.groupTuple()],
+    input = [[ id:'test', single_end:false, assembler:'SPADES' ], // meta map
+             stub_gtdbtk.out.bins.groupTuple()],
 
-              stub_gtdbtk.out.database]
-
-    GTDBTK_CLASSIFYWF ( input )
+    GTDBTK_CLASSIFYWF ( input, stub_gtdbtk.out.database )
 }
