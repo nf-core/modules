@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { GTDBTK_CLASSIFYWF } from '../../../../modules/gtdbtk/classifywf/main.nf' addParams( options: [:] )
 
-process stub_gtdbtk {
+process STUB_GTDBTK {
     output:
     path("*fa")                                                   , emit: bins
     tuple val("gtdbtk_r202_data"), path("database/*")             , emit: database
@@ -20,10 +20,10 @@ process stub_gtdbtk {
 
 workflow test_gtdbtk_classifywf {
 
-    stub_gtdbtk()
+    STUB_GTDBTK()
     
     input = [[ id:'test', single_end:false, assembler:'SPADES' ], // meta map
-             stub_gtdbtk.out.bins.groupTuple()],
+             STUB_GTDBTK.out.bins.groupTuple()]
 
-    GTDBTK_CLASSIFYWF ( input, stub_gtdbtk.out.database )
+    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK.out.database )
 }
