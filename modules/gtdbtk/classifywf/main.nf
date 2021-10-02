@@ -3,7 +3,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options    = initOptions(params.options)
 
-process GTDBTK_CLASSIFY {
+process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
 
     publishDir "${params.outdir}",
