@@ -57,4 +57,19 @@ process GTDBTK_CLASSIFY {
     mv gtdbtk.warnings.log "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"
     gtdbtk --version | sed "s/gtdbtk: version //; s/ Copyright.*//" > ${software}.version.txt
     """
+
+    stub:
+
+    """
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.summary.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.classify.tree.gz
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.markers_summary.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.msa.fasta.gz
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.user_msa.fasta
+    touch gtdbtk.${meta.assembler}-${meta.id}.*.filtered.tsv
+    touch gtdbtk.${meta.assembler}-${meta.id}.log
+    touch gtdbtk.${meta.assembler}-${meta.id}.warnings.log
+    touch gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv
+    touch version.txt
+    """
 }
