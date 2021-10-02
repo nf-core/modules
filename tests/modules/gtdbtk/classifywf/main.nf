@@ -4,26 +4,29 @@ nextflow.enable.dsl = 2
 
 include { GTDBTK_CLASSIFYWF } from '../../../../modules/gtdbtk/classifywf/main.nf' addParams( options: [:] )
 
-process STUB_GTDBTK {
+process STUB_GTDBTK_DATABASE {
     output:
-    path("*fa")                                                   , emit: bins
     tuple val("gtdbtk_r202_data"), path("database/*")             , emit: database
 
     stub:
     """
-    touch 1.fa 2.fa 3.fa
 
     mkdir database
     touch database/gtdbtk_r202_data
     """
 }
 
+
 workflow test_gtdbtk_classifywf {
 
-    STUB_GTDBTK()
-    
-    input = [[ id:'test', single_end:false, assembler:'SPADES' ], // meta map
-             STUB_GTDBTK.out.bins]
+    STUB_GTDBTK_DATABASE()
 
-    GTDBTK_CLASSIFYWF ( input, STUB_GTDBTK.out.database )
+    input = [ [ id:'test', single_end:false, assembler:'SPADES' ],
+              [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+          	file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)]]
+
+
+
+    GTDBTK_CLASSIFYWF( input, STUB_GTDBTK_DATABASE.out.database )
 }
