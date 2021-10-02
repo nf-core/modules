@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options    = initOptions(params.options)
@@ -31,7 +31,7 @@ process GTDBTK_CLASSIFYWF {
     path "gtdbtk.${meta.assembler}-${meta.id}.log"                  , emit: log
     path "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"         , emit: warnings
     path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
-    path '*.version.txt'                                            , emit: version
+    path "versions.yml"                                             , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -55,7 +55,11 @@ process GTDBTK_CLASSIFYWF {
     gzip "gtdbtk.${meta.assembler}-${meta.id}".*.classify.tree "gtdbtk.${meta.assembler}-${meta.id}".*.msa.fasta
     mv gtdbtk.log "gtdbtk.${meta.assembler}-${meta.id}.log"
     mv gtdbtk.warnings.log "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"
-    gtdbtk --version | sed "s/gtdbtk: version //; s/ Copyright.*//" > ${software}.version.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+    END_VERSIONS
     """
 
     stub:
@@ -70,6 +74,10 @@ process GTDBTK_CLASSIFYWF {
     touch gtdbtk.${meta.assembler}-${meta.id}.log
     touch gtdbtk.${meta.assembler}-${meta.id}.warnings.log
     touch gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv
-    touch gtdbtk.version.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+    END_VERSIONS
     """
 }
