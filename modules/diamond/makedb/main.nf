@@ -25,10 +25,9 @@ process DIAMOND_MAKEDB {
 
     output:
     path "${fasta}.dmnd", emit: db
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     diamond \\
         makedb \\

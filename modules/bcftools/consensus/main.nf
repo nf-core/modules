@@ -23,10 +23,9 @@ process BCFTOOLS_CONSENSUS {
 
     output:
     tuple val(meta), path('*.fa'), emit: fasta
-    path  "versions.yml"         , emit: version
+    path  "versions.yml"         , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     cat $fasta | bcftools consensus $vcf $options.args > ${prefix}.fa
