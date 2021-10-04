@@ -34,7 +34,7 @@ process GTDBTK_CLASSIFYWF {
     path "gtdbtk.${meta.assembler}-${meta.id}.log"                  , emit: log
     path "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"         , emit: warnings
     path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
-    path "versions.yml"                                             , emit: version
+    path "versions.yml"                                             , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
