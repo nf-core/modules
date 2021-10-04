@@ -76,4 +76,3 @@ def saveFiles(Map args) {
         return "${getPathFromList(path_list)}/$args.filename"
     }
 }
-
