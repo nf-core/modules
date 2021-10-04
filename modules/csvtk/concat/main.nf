@@ -27,7 +27,6 @@ process CSVTK_CONCAT {
     path "versions.yml"                     , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : ","
     def out_delimiter = out_format == "tsv" ? "\t" : ","
