@@ -3,6 +3,9 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options    = initOptions(params.options)
 
+
+def VERSION = '1.5.0' // When using stubs for the GTDB database, the version info isn't printed.
+
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
 
@@ -77,7 +80,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
     END_VERSIONS
     """
 }
