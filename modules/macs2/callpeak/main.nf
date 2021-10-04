@@ -25,14 +25,13 @@ process MACS2_CALLPEAK {
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    path  "versions.yml"                             , emit: version
+    path  "versions.yml"                             , emit: versions
 
     tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
     tuple val(meta), path("*.bed")       , optional:true, emit: bed
     tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def format   = meta.single_end ? 'BAM' : 'BAMPE'
     def control  = controlbam ? "--control $controlbam" : ''

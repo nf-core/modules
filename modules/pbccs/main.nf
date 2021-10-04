@@ -29,11 +29,9 @@ process PBCCS {
     tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
     tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
     tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
-    tuple val(meta), path("versions.yml" )        , emit: version
+    path  "versions.yml"                          , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
-    // def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def ccs         = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs.bam'
     def report_txt  = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.txt'
     def report_json = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.json'

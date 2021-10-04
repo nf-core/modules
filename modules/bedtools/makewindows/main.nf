@@ -24,10 +24,9 @@ process BEDTOOLS_MAKEWINDOWS {
 
     output:
     tuple val(meta), path("*.tab"), emit: tab
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def arg_input = use_bed ? "-b $regions" : "-g $regions"
     """

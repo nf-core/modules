@@ -29,10 +29,9 @@ process KALLISTOBUSTOOLS_COUNT {
 
     output:
     tuple val(meta), path ("*.count"), emit: count
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def cdna     = t1c ? "-c1 $t1c" : ''
     def introns  = t2c ? "-c2 $t2c" : ''
