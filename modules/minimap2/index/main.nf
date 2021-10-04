@@ -22,10 +22,9 @@ process MINIMAP2_INDEX {
 
     output:
     path "*.mmi"        , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     minimap2 \\
         -t $task.cpus \\

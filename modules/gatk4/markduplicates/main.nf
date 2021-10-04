@@ -24,10 +24,9 @@ process GATK4_MARKDUPLICATES {
     output:
     tuple val(meta), path("*.bam")    , emit: bam
     tuple val(meta), path("*.metrics"), emit: metrics
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     gatk MarkDuplicates \\
