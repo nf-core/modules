@@ -28,8 +28,8 @@ process CSVTK_CONCAT {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def delimiter = in_format == "tsv" ? "\t" : ","
-    def out_delimiter = out_format == "tsv" ? "\t" : ","
+    def delimiter = in_format == "tsv" ? "\t" : in_format == "csv" ? "," : in_format
+    def out_delimiter = out_format == "tsv" ? "\t" : in_format == "csv" ? "," : in_format
     """
     csvtk \\
         concat \\
