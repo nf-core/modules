@@ -18,14 +18,14 @@ input:
       pattern: "*.zip"
 
 output:
-  - version:
-      type: file
-      description: File or directory of decompressed archive
-      pattern: "versions.yml"
   - unzipped_archive:
       type: directory
       description: Directory contents of the unzipped archive
       pattern: '${archive.baseName}/'
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@jfy133"

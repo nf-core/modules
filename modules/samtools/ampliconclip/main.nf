@@ -28,10 +28,9 @@ process SAMTOOLS_AMPLICONCLIP {
     tuple val(meta), path("*.bam")            , emit: bam
     tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
     tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
-    path "versions.yml"                       , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
     def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""

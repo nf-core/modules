@@ -24,16 +24,15 @@ process MULTIQC {
     path "*multiqc_report.html", emit: report
     path "*_data"              , emit: data
     path "*_plots"             , optional:true, emit: plots
-    path "versions.yml"        , emit: version
+    path "versions.yml"        , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     multiqc -f $options.args .
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
+        ${getSoftwareName(task.process)}: \$( multiqc --version | sed -e "s/multiqc, version //g" )
     END_VERSIONS
     """
 }
