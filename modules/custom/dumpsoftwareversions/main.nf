@@ -24,7 +24,7 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     output:
     path "software_versions.yml"    , emit: yml
     path "software_versions_mqc.yml", emit: mqc_yml
-    path "versions.yml"             , emit: versions
+    path "versions.out.yml"         , emit: versions
 
     script:
     """
@@ -79,7 +79,7 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     }
 
     with open("$versions") as f:
-        workflow_versions = yaml.safe_load(f) | module_versions
+        workflow_versions =  yaml.load(f, Loader=yaml.BaseLoader) | module_versions
 
     workflow_versions["Workflow"] = {
         "Nextflow": "$workflow.nextflow.version",
@@ -100,7 +100,7 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     with open("software_versions_mqc.yml", 'w') as f:
         yaml.dump(versions_mqc, f, default_flow_style=False)
 
-    with open('versions.yml', 'w') as f:
+    with open('versions.out.yml', 'w') as f:
         yaml.dump(module_versions, f, default_flow_style=False)
     """
 }
