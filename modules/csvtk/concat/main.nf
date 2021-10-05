@@ -27,7 +27,7 @@ process CSVTK_CONCAT {
     path "versions.yml"                     , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
     """
