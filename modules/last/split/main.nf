@@ -23,10 +23,9 @@ process LAST_SPLIT {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     zcat < $maf | last-split $options.args | gzip --no-name > ${prefix}.maf.gz

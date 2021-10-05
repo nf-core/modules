@@ -24,10 +24,9 @@ process MINIMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """

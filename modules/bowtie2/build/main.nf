@@ -23,10 +23,9 @@ process BOWTIE2_BUILD {
 
     output:
     path 'bowtie2'      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     """
     mkdir bowtie2
     bowtie2-build $options.args --threads $task.cpus $fasta bowtie2/${fasta.baseName}
