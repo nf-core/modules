@@ -38,7 +38,7 @@ process CSVTK_CONCAT {
         --delimiter "${delimiter}" \\
         --out-delimiter "${out_delimiter}" \\
         --out-file ${prefix}.${out_format} \\
-        ${csv}
+        $csv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
