@@ -26,10 +26,9 @@ process PLINK_VCF {
     tuple val(meta), path("*.bim"), emit: bim, optional: true
     tuple val(meta), path("*.fam"), emit: fam, optional: true
 
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
@@ -41,7 +40,7 @@ process PLINK_VCF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
+        ${getSoftwareName(task.process)}: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
     END_VERSIONS
     """
 }

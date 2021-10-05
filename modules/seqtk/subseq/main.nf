@@ -24,10 +24,9 @@ process SEQTK_SUBSEQ {
 
     output:
     path "*.gz"         , emit: sequences
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ?: ''
     def ext = "fa"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
