@@ -19,8 +19,8 @@ process CSVTK_CONCAT {
 
     input:
     tuple val(meta), path(csv)
-    val(in_format)
-    val(out_format)
+    val in_format
+    val out_format
 
     output:
     tuple val(meta), path("*.${out_format}"), emit: table
