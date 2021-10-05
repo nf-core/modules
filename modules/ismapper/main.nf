@@ -1,5 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
+
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -25,7 +26,7 @@ process ISMAPPER {
     path "versions.yml"               , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ismap \\
         $options.args \\
