@@ -7,32 +7,32 @@ include { GATK4_CALCULATECONTAMINATION } from '../../../../modules/gatk4/calcula
 workflow test_gatk4_calculatecontamination_tumor_only {
 
     input = [ [ id:'test' ], // meta map
-              file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/gatk/test2.pileups.table", checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_pileups_table'], checkIfExists: true),
               [] ]
 
     segmentout = false
 
-    GATK4_CALCULATECONTAMINATION ( input , segmentout )
+    GATK4_CALCULATECONTAMINATION ( input, segmentout )
 }
 
 workflow test_gatk4_calculatecontamination_matched_pair {
 
     input = [ [ id:'test' ], // meta map
-              file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/gatk/test2.pileups.table", checkIfExists: true),
-              file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/gatk/test.pileups.table", checkIfExists: true) ]
+              file(params.test_data['homo_sapiens']['illumina']['test2_pileups_table'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test_pileups_table'], checkIfExists: true) ]
 
     segmentout = false
 
-    GATK4_CALCULATECONTAMINATION ( input , segmentout )
+    GATK4_CALCULATECONTAMINATION ( input, segmentout )
 }
 
 workflow test_gatk4_calculatecontamination_segmentation {
 
     input = [ [ id:'test' ], // meta map
-              file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/gatk/test2.pileups.table", checkIfExists: true),
-              file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/gatk/test.pileups.table", checkIfExists: true) ]
+              file(params.test_data['homo_sapiens']['illumina']['test2_pileups_table'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test_pileups_table'], checkIfExists: true) ]
 
     segmentout = true
 
-    GATK4_CALCULATECONTAMINATION ( input , segmentout )
+    GATK4_CALCULATECONTAMINATION ( input, segmentout )
 }

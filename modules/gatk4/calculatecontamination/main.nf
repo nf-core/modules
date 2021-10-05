@@ -20,33 +20,23 @@ process GATK4_CALCULATECONTAMINATION {
 
     input:
     tuple val(meta), path(pileup), path(matched)
-
     val segmentout
 
     output:
-    tuple val(meta), path('*.contamination.table'), emit: contamination
+    tuple val(meta), path('*.contamination.table')               , emit: contamination
     tuple val(meta), path('*.segmentation.table') , optional:true, emit: segmentation
-    path "versions.yml"                           , emit: versions
+    path "versions.yml"                                          , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def matchedCommand = ''
-    def segmentCommand = ''
-
-    matchedCommand = matched ? " -matched ${matched} " : ''
-
-    if(segmentout){
-        segmentCommand = " -segments ${prefix}.segmentation.table"
-    } else {
-        segmentCommand = ''
-    }
-
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def matchedCommand = matched ? " -matched ${matched} " : ''
+    def segmentCommand = segmentout ? " -segments ${prefix}.segmentation.table" : ''
     """
     gatk CalculateContamination \\
         -I $pileup \\
-        ${matchedCommand} \\
+        $matchedCommand \\
         -O ${prefix}.contamination.table \\
-        ${segmentCommand} \\
+        $segmentCommand \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
