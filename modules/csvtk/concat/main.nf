@@ -39,7 +39,7 @@ process CSVTK_CONCAT {
         --num-cpus $task.cpus \\
         --delimiter "${delimiter}" \\
         --out-delimiter "${out_delimiter}" \\
-        --out-file ${prefix}.${out_format} \\
+        --out-file ${prefix}.${out_extension} \\
         $csv
 
     cat <<-END_VERSIONS > versions.yml
