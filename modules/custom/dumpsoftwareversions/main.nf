@@ -100,7 +100,5 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     with open("software_versions_mqc.yml", 'w') as f:
         yaml.dump(versions_mqc, f, default_flow_style=False)
 
-    with open('versions.out.yml', 'w') as f:
-        yaml.dump(module_versions, f, default_flow_style=False)
     """
 }
