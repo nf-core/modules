@@ -1,14 +1,12 @@
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
-options    = initOptions(params.options)
-
+options        = initOptions(params.options)
 
 def VERSION = '1.5.0' // When using stubs for the GTDB database, the version info isn't printed.
 
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
-
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
@@ -37,7 +35,6 @@ process GTDBTK_CLASSIFYWF {
     path "versions.yml"                                             , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
     """
     export GTDBTK_DATA_PATH="\${PWD}/database"
@@ -45,15 +42,16 @@ process GTDBTK_CLASSIFYWF {
         mkdir pplacer_tmp
     fi
 
-    gtdbtk classify_wf $options.args \
-                    --genome_dir bins \
-                    --prefix "gtdbtk.${meta.assembler}-${meta.id}" \
-                    --out_dir "\${PWD}" \
-                    --cpus ${task.cpus} \
-                    --pplacer_cpus ${params.gtdbtk_pplacer_cpus} \
-                    ${pplacer_scratch} \
-                    --min_perc_aa ${params.gtdbtk_min_perc_aa} \
-                    --min_af ${params.gtdbtk_min_af}
+    gtdbtk classify_wf \\
+		  $options.args \\
+		  --genome_dir bins \\
+		  --prefix "gtdbtk.${meta.assembler}-${meta.id}" \\
+		  --out_dir "\${PWD}" \\
+		  --cpus ${task.cpus} \\
+		  --pplacer_cpus $params.gtdbtk_pplacer_cpus \\
+		  $pplacer_scratch \\
+		  --min_perc_aa $params.gtdbtk_min_perc_aa \\
+		  --min_af $params.gtdbtk_min_af
 
     gzip "gtdbtk.${meta.assembler}-${meta.id}".*.classify.tree "gtdbtk.${meta.assembler}-${meta.id}".*.msa.fasta
     mv gtdbtk.log "gtdbtk.${meta.assembler}-${meta.id}.log"
@@ -66,7 +64,6 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
-
     """
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.summary.tsv
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.classify.tree.gz
