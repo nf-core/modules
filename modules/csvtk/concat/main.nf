@@ -24,14 +24,14 @@ process CSVTK_CONCAT {
     val out_format
 
     output:
-    tuple val(meta), path("${prefix}.{tsv,csv}"), emit: csv
+    tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
     path "versions.yml"                         , emit: versions
 
     script:
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
-    def out_extension = out_format == "tsv" ? 'tsv' : 'csv'
+    out_extension = out_format == "tsv" ? 'tsv' : 'csv'
     """
     csvtk \\
         concat \\
