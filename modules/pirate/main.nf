@@ -22,12 +22,12 @@ process PIRATE {
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("results/*"), emit: results
-    tuple val(meta), path("results/core_alignment.fasta"), emit: aln, optional: true
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("results/*")                                   , emit: results
+    tuple val(meta), path("results/core_alignment.fasta"), optional: true, emit: aln
+    path "versions.yml"                                                  , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     PIRATE \\
         $options.args \\
