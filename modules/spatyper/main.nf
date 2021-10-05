@@ -20,15 +20,15 @@ process SPATYPER {
 
     input:
     tuple val(meta), path(fasta)
-    path(repeats)
-    path(repeat_order)
+    path repeats
+    path repeat_order
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
     script:
-    def prefix  = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """
     env
