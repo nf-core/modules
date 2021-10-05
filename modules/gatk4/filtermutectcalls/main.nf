@@ -26,13 +26,12 @@ process GATK4_FILTERMUTECTCALLS {
     path dict
 
     output:
-    tuple val(meta), path("*.filtered.vcf.gz"), emit: filteredvcf
+    tuple val(meta), path("*.filtered.vcf.gz")    , emit: filteredvcf
     tuple val(meta), path("*.filtered.vcf.gz.tbi"), emit: filteredtbi
-    tuple val(meta), path("*.filteringStats.tsv"), emit: filteringstats
-    path "versions.yml"                   , emit: version
+    tuple val(meta), path("*.filteringStats.tsv") , emit: filteringstats
+    path "versions.yml"                           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def biasCommand = ''
     def segementationCommand = ''
