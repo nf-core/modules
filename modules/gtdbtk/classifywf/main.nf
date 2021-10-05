@@ -43,15 +43,15 @@ process GTDBTK_CLASSIFYWF {
     fi
 
     gtdbtk classify_wf \\
-		  $options.args \\
-		  --genome_dir bins \\
-		  --prefix "gtdbtk.${meta.assembler}-${meta.id}" \\
-		  --out_dir "\${PWD}" \\
-		  --cpus ${task.cpus} \\
-		  --pplacer_cpus $params.gtdbtk_pplacer_cpus \\
-		  $pplacer_scratch \\
-		  --min_perc_aa $params.gtdbtk_min_perc_aa \\
-		  --min_af $params.gtdbtk_min_af
+        $options.args \\
+		--genome_dir bins \\
+		--prefix "gtdbtk.${meta.assembler}-${meta.id}" \\
+		--out_dir "\${PWD}" \\
+		--cpus $task.cpus \\
+		--pplacer_cpus $params.gtdbtk_pplacer_cpus \\
+		$pplacer_scratch \\
+		--min_perc_aa $params.gtdbtk_min_perc_aa \\
+		--min_af $params.gtdbtk_min_af
 
     gzip "gtdbtk.${meta.assembler}-${meta.id}".*.classify.tree "gtdbtk.${meta.assembler}-${meta.id}".*.msa.fasta
     mv gtdbtk.log "gtdbtk.${meta.assembler}-${meta.id}.log"
