@@ -24,8 +24,8 @@ process CSVTK_CONCAT {
     val out_format
 
     output:
-    tuple val(meta), path("*.${out_extension}"), emit: csv
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.${tsv,csv}"), emit: csv
+    path "versions.yml"                  , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
