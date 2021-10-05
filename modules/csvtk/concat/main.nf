@@ -23,7 +23,7 @@ process CSVTK_CONCAT {
     val out_format
 
     output:
-    tuple val(meta), path("*.${out_format}"), emit: table
+    tuple val(meta), path("*.${out_format}"), emit: csv
     path "versions.yml"                     , emit: versions
 
     script:
