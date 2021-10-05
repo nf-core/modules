@@ -27,10 +27,9 @@ process GATK4_HAPLOTYPECALLER {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {

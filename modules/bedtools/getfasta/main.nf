@@ -24,10 +24,9 @@ process BEDTOOLS_GETFASTA {
 
     output:
     path "*.fa"         , emit: fasta
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${bed.baseName}${options.suffix}" : "${bed.baseName}"
     """
     bedtools \\

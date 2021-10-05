@@ -23,10 +23,9 @@ process DSHBIO_SPLITGFF3 {
 
     output:
     tuple val(meta), path("*.gff3.gz"), emit: gff3
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     dsh-bio \\

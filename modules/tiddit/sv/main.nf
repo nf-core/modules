@@ -27,10 +27,9 @@ process TIDDIT_SV {
     tuple val(meta), path("*.vcf")        , emit: vcf
     tuple val(meta), path("*.ploidy.tab") , emit: ploidy
     tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "versions.yml"                  , emit: version
+    path  "versions.yml"                  , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     """

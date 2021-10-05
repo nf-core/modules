@@ -24,10 +24,9 @@ process PAIRTOOLS_SELECT {
     output:
     tuple val(meta), path("*.selected.pairs.gz")  , emit: selected
     tuple val(meta), path("*.unselected.pairs.gz"), emit: unselected
-    path "versions.yml"                           , emit: version
+    path "versions.yml"                           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pairtools select \\
