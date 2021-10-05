@@ -20,8 +20,8 @@ process HICAP {
 
     input:
     tuple val(meta), path(fasta)
-    path(database_dir)
-    path(model_fp)
+    path database_dir
+    path model_fp
 
     output:
     tuple val(meta), path("*.gbk"), emit: gbk
