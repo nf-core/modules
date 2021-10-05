@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PBBAM_PBMERGE } from '../../../../modules/pbbam/pbmerge/main.nf' addParams( options: [suffix: 'merged'] )
+include { PBBAM_PBMERGE } from '../../../../modules/pbbam/pbmerge/main.nf' addParams( options: [suffix: '.merged'] )
 
 workflow test_pbbam_pbmerge {
 
