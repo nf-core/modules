@@ -23,7 +23,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
 
     output:
     tuple val(meta), path("*.artifact-prior.tar.gz"), emit: artifactprior
-    path "versions.yml"                   , emit: versions
+    path "versions.yml"                             , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
