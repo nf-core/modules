@@ -25,8 +25,8 @@ process GATK4_CALCULATECONTAMINATION {
 
     output:
     tuple val(meta), path('*.contamination.table'), emit: contamination
-    tuple val(meta), path('*.segmentation.table'), optional:true, emit: segmentation
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path('*.segmentation.table') , optional:true, emit: segmentation
+    path "versions.yml"                           , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
