@@ -22,12 +22,12 @@ process ROARY {
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("results/*"), emit: results
-    tuple val(meta), path("results/core_gene_alignment.aln"), emit: aln, optional: true
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("results/*")                    , emit: results
+    tuple val(meta), path("results/*.aln"), optional: true, emit: aln
+    path "versions.yml"                                   , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     roary \\
         $options.args \\
