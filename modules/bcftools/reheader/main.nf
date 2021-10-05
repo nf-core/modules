@@ -25,10 +25,9 @@ process BCFTOOLS_REHEADER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software         = getSoftwareName(task.process)
     def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def update_sequences = fai ? "-f $fai" : ""
     def new_header       = header ? "-h $header" : ""

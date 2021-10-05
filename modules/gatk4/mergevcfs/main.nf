@@ -25,10 +25,9 @@ process GATK4_MERGEVCFS {
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
-    path  "versions.yml"             , emit: version
+    path  "versions.yml"             , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Make list of VCFs to merge

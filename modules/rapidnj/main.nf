@@ -25,10 +25,9 @@ process RAPIDNJ {
     output:
     path "*.sth"       , emit: stockholm_alignment
     path "*.tre"       , emit: phylogeny
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'

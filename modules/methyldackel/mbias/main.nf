@@ -25,10 +25,9 @@ process METHYLDACKEL_MBIAS {
 
     output:
     tuple val(meta), path("*.mbias.txt"), emit: txt
-    path  "versions.yml"                , emit: version
+    path  "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     MethylDackel mbias \\

@@ -27,10 +27,9 @@ process QUAST {
     output:
     path "${prefix}"    , emit: results
     path '*.tsv'        , emit: tsv
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     prefix        = options.suffix ?: software
     def features  = use_gff ? "--features $gff" : ''
     def reference = use_fasta ? "-r $fasta" : ''
