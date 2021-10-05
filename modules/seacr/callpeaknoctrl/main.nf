@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,10 +26,9 @@ process SEACR_CALLPEAKNOCTRL {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     SEACR_1.3.sh \\
@@ -38,6 +37,11 @@ process SEACR_CALLPEAKNOCTRL {
         $options.args \\
         $prefix
 
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+    END_VERSIONS
     """
 }
