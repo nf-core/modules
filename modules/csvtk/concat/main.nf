@@ -24,11 +24,11 @@ process CSVTK_CONCAT {
     val out_format
 
     output:
-    tuple val(meta), path("*.{tsv,csv}"), emit: csv
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}.{tsv,csv}"), emit: csv
+    path "versions.yml"                         , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
     def out_extension = out_format == "tsv" ? 'tsv' : 'csv'
