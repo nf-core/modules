@@ -27,10 +27,9 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}.fna"), emit: nucleotide_fasta
     tuple val(meta), path("${prefix}.faa"), emit: amino_acid_fasta
     tuple val(meta), path("${prefix}_all.txt"), emit: all_gene_annotations
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     prodigal -i "${genome}" \\

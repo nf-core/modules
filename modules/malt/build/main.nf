@@ -26,11 +26,10 @@ process MALT_BUILD {
 
     output:
     path "malt_index/"   , emit: index
-    path "versions.yml"  , emit: version
+    path "versions.yml"  , emit: versions
     path "malt-build.log", emit: log
 
     script:
-    def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
         log.info '[MALT_BUILD] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
