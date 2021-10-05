@@ -29,14 +29,14 @@ process GATK4_CALCULATECONTAMINATION {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def matchedCommand = matched ? " -matched ${matched} " : ''
-    def segmentCommand = segmentout ? " -segments ${prefix}.segmentation.table" : ''
+    def matched_command = matched ? " -matched ${matched} " : ''
+    def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''
     """
     gatk CalculateContamination \\
         -I $pileup \\
-        $matchedCommand \\
+        $matched_command \\
         -O ${prefix}.contamination.table \\
-        $segmentCommand \\
+        $segment_command \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
