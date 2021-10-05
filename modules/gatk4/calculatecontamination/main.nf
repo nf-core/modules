@@ -26,7 +26,7 @@ process GATK4_CALCULATECONTAMINATION {
     output:
     tuple val(meta), path('*.contamination.table'), emit: contamination
     tuple val(meta), path('*.segmentation.table'), optional:true, emit: segmentation
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
