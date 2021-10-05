@@ -23,10 +23,9 @@ process GATK4_SAMTOFASTQ {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: fastq
-    path  "versions.yml"               , emit: version
+    path  "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def output   = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
     """

@@ -30,10 +30,9 @@ process GUBBINS {
     path "*.branch_base_reconstruction.embl", emit: embl_branch
     path "*.final_tree.tre"                 , emit: tree
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
-    path "versions.yml"                     , emit: version
+    path "versions.yml"                     , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     run_gubbins.py \\
         --threads $task.cpus \\

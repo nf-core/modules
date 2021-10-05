@@ -24,10 +24,9 @@ process LAST_TRAIN {
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

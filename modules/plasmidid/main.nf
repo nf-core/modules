@@ -31,10 +31,9 @@ process PLASMIDID {
     tuple val(meta), path("${prefix}/database/")          , emit: database
     tuple val(meta), path("${prefix}/fasta_files/")       , emit: fasta_files
     tuple val(meta), path("${prefix}/kmer/")              , emit: kmer
-    path "versions.yml"                                   , emit: version
+    path "versions.yml"                                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     plasmidID \\
