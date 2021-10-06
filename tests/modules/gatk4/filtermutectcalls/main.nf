@@ -29,8 +29,8 @@ workflow test_gatk4_filtermutectcalls_with_files {
               file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_tbi'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_stats'], checkIfExists: true),
               [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_priors'], checkIfExists: true)],
-              [file(file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_segmentation_table'], checkIfExists: true)],
-              [file(file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_contamination_table'], checkIfExists: true)],
+              [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_segmentation_table'], checkIfExists: true)],
+              [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_contamination_table'], checkIfExists: true)],
               []]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -47,7 +47,7 @@ workflow test_gatk4_filtermutectcalls_use_val {
               file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_tbi'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_stats'], checkIfExists: true),
               [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_priors'], checkIfExists: true)],
-              [file(file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_segmentation_table'], checkIfExists: true)],
+              [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_segmentation_table'], checkIfExists: true)],
               [],
               '20.0']
 
