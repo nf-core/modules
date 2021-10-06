@@ -33,7 +33,7 @@ process GATK4_FILTERMUTECTCALLS {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bias_command = ''
-    def segementation_command = ''
+    def segmentation_command = ''
     def contamination_command = ''
     def bias_list = []
     def segmentation_list = []
@@ -44,7 +44,7 @@ process GATK4_FILTERMUTECTCALLS {
     orientationbias.each() {a -> bias_list.add(" --orientation-bias-artifact-priors " + a)}
     bias_command = bias_list.join(' ')
     segmentation.each() {a -> segmentation_list.add(" --tumor-segmentation " + a)}
-    segementation_command = segmentation_list.join(' ')
+    segmentation_command = segmentation_list.join(' ')
     if(useconfile){
         contaminationfile.each() {a -> contamination_list.add(" --contamination-table " + a)}
         contamination_command = contamination_list.join(' ')
