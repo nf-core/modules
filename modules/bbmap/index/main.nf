@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,10 +23,9 @@ process BBMAP_INDEX {
 
     output:
     path 'ref'                    , emit: index
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bbmap.sh \\
         ref=${fasta} \\
@@ -34,6 +33,9 @@ process BBMAP_INDEX {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bbversion.sh)
+    END_VERSIONS
     """
 }

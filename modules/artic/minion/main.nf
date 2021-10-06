@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -40,10 +40,9 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json"), optional:true                    , emit: json
-    path  "*.version.txt"                                             , emit: version
+    path  "versions.yml"                                              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
     def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""
@@ -68,6 +67,9 @@ process ARTIC_MINION {
         $scheme \\
         $prefix
 
-    echo \$(artic --version 2>&1) | sed 's/^.*artic //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+    END_VERSIONS
     """
 }

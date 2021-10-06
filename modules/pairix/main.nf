@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,15 +23,17 @@ process PAIRIX {
 
     output:
     tuple val(meta), path(pair), path("*.px2"), emit: index
-    path "*.version.txt"                      , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     pairix \\
         $options.args \\
         $pair
 
-    echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
+    END_VERSIONS
     """
 }

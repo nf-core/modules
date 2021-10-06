@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -32,16 +32,18 @@ process LAST_MAFCONVERT {
     tuple val(meta), path("*.psl.gz"),      optional:true, emit: psl_gz
     tuple val(meta), path("*.sam.gz"),      optional:true, emit: sam_gz
     tuple val(meta), path("*.tab.gz"),      optional:true, emit: tab_gz
-    path "*.version.txt"                                 , emit: version
+    path "versions.yml"                                  , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     maf-convert $options.args $format $maf | gzip --no-name \\
         > ${prefix}.${format}.gz
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
-    echo \$(lastdb --version 2>&1) | sed 's/lastdb //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+    END_VERSIONS
     """
 }
