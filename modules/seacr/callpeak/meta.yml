@@ -30,6 +30,10 @@ input:
         type: file
         description: |
             Control (IgG) data bedgraph file to generate an empirical threshold for peak calling.
+    - threshold:
+        type: value
+        description: |
+            Threshold value used to call peaks if the ctrlbedgraph input is set to []. Set to 1 if using a contorl bedgraph
 output:
     - meta:
         type: map

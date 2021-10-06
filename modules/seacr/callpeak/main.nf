@@ -22,17 +22,19 @@ process SEACR_CALLPEAK {
 
     input:
     tuple val(meta), path(bedgraph), path(ctrlbedgraph)
+    val (threshold)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
     path "versions.yml"           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def function_switch = ctrlbedgraph ? "$ctrlbedgraph" : "$threshold"
     """
     SEACR_1.3.sh \\
         $bedgraph \\
-        $ctrlbedgraph \\
+        $function_switch \\
         $options.args \\
         $prefix
 
