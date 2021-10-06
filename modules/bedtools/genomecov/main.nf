@@ -19,7 +19,7 @@ process BEDTOOLS_GENOMECOV {
     }
 
     input:
-    tuple val(meta), path(intervals)
+    tuple val(meta), path(intervals), val(scale)
     path  sizes
     val   extension
 
@@ -35,6 +35,7 @@ process BEDTOOLS_GENOMECOV {
         bedtools \\
             genomecov \\
             -ibam $intervals \\
+            -scale $scale \\
             $options.args \\
             > ${prefix}.${extension}
 
@@ -46,6 +47,7 @@ process BEDTOOLS_GENOMECOV {
             genomecov \\
             -i $intervals \\
             -g $sizes \\
+            -scale $scale \\
             $options.args \\
             > ${prefix}.${extension}
 
