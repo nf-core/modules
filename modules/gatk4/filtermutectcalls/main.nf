@@ -57,7 +57,7 @@ process GATK4_FILTERMUTECTCALLS {
         -R $fasta \\
         -V $vcf \\
         $bias_command \\
-        $segementation_command \\
+        $segmentation_command \\
         $contamination_command \\
         -O ${prefix}.filtered.vcf.gz \\
         $options.args
