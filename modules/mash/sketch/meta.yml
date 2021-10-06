@@ -27,7 +27,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - mash:
       type: file
       description: Sketch output
       pattern: "*.{mash}"
@@ -35,6 +35,10 @@ output:
       type: file
       description: Sketch statistics
       pattern: "*.{mash_stats}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@thanhleviet"

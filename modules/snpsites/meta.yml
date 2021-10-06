@@ -15,10 +15,10 @@ input:
       description: fasta alignment file
       pattern: "*.{fasta,fas,fa,aln}"
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - fasta:
       type: file
       description: Variant fasta file

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,10 +27,9 @@ process SHOVILL {
     tuple val(meta), path("shovill.log")                        , emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
     tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
-    path "*.version.txt"                                        , emit: version
+    path "versions.yml"                                         , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def memory = task.memory.toGiga()
     """
     shovill \\
@@ -42,6 +41,9 @@ process SHOVILL {
         --outdir ./ \\
         --force
 
-    echo \$(shovill --version 2>&1) | sed 's/^.*shovill //'  > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,19 +25,17 @@ process BOWTIE_ALIGN {
     output:
     tuple val(meta), path('*.bam'), emit: bam
     tuple val(meta), path('*.out'), emit: log
-    path  '*.version.txt'         , emit: version
+    path  "versions.yml"          , emit: versions
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
-    def split_cpus = Math.floor(task.cpus/2)
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/.3.ebwt//'`
     bowtie \\
-        --threads ${split_cpus} \\
+        --threads $task.cpus \\
         --sam \\
         -x \$INDEX \\
         -q \\
@@ -45,7 +43,7 @@ process BOWTIE_ALIGN {
         $options.args \\
         $endedness \\
         2> ${prefix}.out \\
-        | samtools view $options.args2 -@ ${split_cpus} -bS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq
@@ -55,6 +53,10 @@ process BOWTIE_ALIGN {
         gzip ${prefix}.unmapped_2.fastq
     fi
 
-    echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

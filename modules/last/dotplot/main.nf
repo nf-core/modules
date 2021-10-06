@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,10 +25,9 @@ process LAST_DOTPLOT {
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
     tuple val(meta), path("*.png"), optional:true, emit: png
-    path "*.version.txt"                         , emit: version
+    path "versions.yml"                          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     last-dotplot \\
@@ -37,6 +36,9 @@ process LAST_DOTPLOT {
         $prefix.$format
 
     # last-dotplot has no --version option so let's use lastal from the same suite
-    lastal --version | sed 's/lastal //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastal --version | sed 's/lastal //')
+    END_VERSIONS
     """
 }

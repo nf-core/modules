@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,10 +25,9 @@ process STAR_GENOMEGENERATE {
 
     output:
     path "star"         , emit: index
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def memory   = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
     def args     = options.args.tokenize()
     if (args.contains('--genomeSAindexNbases')) {
@@ -43,7 +42,12 @@ process STAR_GENOMEGENERATE {
             $memory \\
             $options.args
 
-        STAR --version | sed -e "s/STAR_//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+        END_VERSIONS
         """
     } else {
         """
@@ -61,7 +65,12 @@ process STAR_GENOMEGENERATE {
             $memory \\
             $options.args
 
-        STAR --version | sed -e "s/STAR_//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+        END_VERSIONS
         """
     }
 }
