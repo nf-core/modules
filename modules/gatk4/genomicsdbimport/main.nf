@@ -26,12 +26,11 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("*_genomicsdb"), optional:true, emit: genomicsdb
+    tuple val(meta), path("*_genomicsdb"), optional:true   , emit: genomicsdb
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
-    path "versions.yml"          , emit: versions
+    path "versions.yml"                                    , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputsList = []
     def inputsCommand = ''
@@ -68,7 +67,7 @@ process GATK4_GENOMICSDBIMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }
