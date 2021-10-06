@@ -26,16 +26,16 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     path "versions.yml"                             , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def inputsList = []
-    def inputsCommand = ''
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def inputs_list = []
+    def inputs_command = ''
 
-    f1r2.each() {a -> inputsList.add(" -I " + a ) }
-    inputsCommand = inputsList.join( ' ' )
+    f1r2.each() {a -> inputs_list.add(" -I " + a ) }
+    inputs_command = inputs_list.join( ' ' )
 
     """
     gatk LearnReadOrientationModel \\
-        ${inputsCommand} \\
+        $inputs_command \\
         -O ${prefix}.artifact-prior.tar.gz \\
         $options.args
 
