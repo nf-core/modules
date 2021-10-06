@@ -20,7 +20,6 @@ process GATK4_FILTERMUTECTCALLS {
 
     input:
     tuple val(meta) , path(vcf) , path(tbi) , path(stats) , path(orientationbias) , path(segmentation) , path(contaminationfile) , val(contaminationest)
-
     path fasta
     path fastaidx
     path dict
@@ -33,36 +32,33 @@ process GATK4_FILTERMUTECTCALLS {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def biasCommand = ''
-    def segementationCommand = ''
-    def contaminationCommand = ''
-    def biasList = []
-    def segmentationList = []
-    def contaminationList = []
+    def bias_command = ''
+    def segementation_command = ''
+    def contamination_command = ''
+    def bias_list = []
+    def segmentation_list = []
+    def contamination_list = []
     def useconfile = false
 
     useconfile = contaminationfile ? true : false
-
-    orientationbias.each() {a -> biasList.add(" --orientation-bias-artifact-priors " + a)}
-    biasCommand = biasList.join(' ')
-
-    segmentation.each() {a -> segmentationList.add(" --tumor-segmentation " + a)}
-    segementationCommand = segmentationList.join(' ')
-
+    orientationbias.each() {a -> bias_list.add(" --orientation-bias-artifact-priors " + a)}
+    bias_command = bias_list.join(' ')
+    segmentation.each() {a -> segmentation_list.add(" --tumor-segmentation " + a)}
+    segementation_command = segmentation_list.join(' ')
     if(useconfile){
-        contaminationfile.each() {a -> contaminationList.add(" --contamination-table " + a)}
-        contaminationCommand = contaminationList.join(' ')
+        contaminationfile.each() {a -> contamination_list.add(" --contamination-table " + a)}
+        contamination_command = contamination_list.join(' ')
     } else {
-        contaminationCommand = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
+        contamination_command = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
     }
 
     """
     gatk FilterMutectCalls \\
         -R $fasta \\
         -V $vcf \\
-        ${biasCommand} \\
-        ${segementationCommand} \\
-        ${contaminationCommand} \\
+        $bias_command \\
+        $segementation_command \\
+        $contamination_command \\
         -O ${prefix}.filtered.vcf.gz \\
         $options.args
 
