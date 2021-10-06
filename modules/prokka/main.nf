@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -35,10 +35,9 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.log"), emit: log
     tuple val(meta), path("${prefix}/*.txt"), emit: txt
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
@@ -51,6 +50,9 @@ process PROKKA {
         $prodigal_tf \\
         $fasta
 
-    echo \$(prokka --version 2>&1) | sed 's/^.*prokka //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
+    END_VERSIONS
     """
 }

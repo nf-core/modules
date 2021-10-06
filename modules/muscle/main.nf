@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -30,10 +30,9 @@ process MUSCLE {
     tuple val(meta), path("*.msf") , optional: true, emit: msf
     tuple val(meta), path("*.tree"), optional: true, emit: tree
     path "*.log"                                   , emit: log
-    path "*.version.txt"                           , emit: version
+    path "versions.yml"                            , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_out   = options.args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
     def clw_out     = options.args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''
@@ -55,6 +54,9 @@ process MUSCLE {
         $html_out \\
         $tree_out \\
         -loga muscle_msa.log
-    muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
+    END_VERSIONS
     """
 }

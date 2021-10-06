@@ -24,10 +24,10 @@ input:
       pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bcf:
       type: file
       description: merged BCF file

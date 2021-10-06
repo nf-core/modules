@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,16 +24,18 @@ process AGRVATE {
     output:
     tuple val(meta), path("${fasta.baseName}-results/${fasta.baseName}-summary.tab"), emit: summary
     path "${fasta.baseName}-results"                                                , emit: results_dir
-    path "*.version.txt"                                                            , emit: version
+    path "versions.yml"                                                             , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     agrvate \\
         $options.args \\
         -i $fasta
 
-    echo \$(agrvate -v 2>&1) | sed 's/agrvate //;' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
+    END_VERSIONS
     """
 }

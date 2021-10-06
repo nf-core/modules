@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,10 +26,9 @@ process ARRIBA {
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions
     tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
-    path "*.version.txt"                            , emit: version
+    path "versions.yml"                             , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def blacklist = (options.args.contains('-b')) ? '' : '-f blacklist'
     """
@@ -42,6 +41,9 @@ process ARRIBA {
         $blacklist \\
         $options.args
 
-    echo \$(arriba -h | grep 'Version:' 2>&1) |  sed 's/Version:\s//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+    END_VERSIONS
     """
 }

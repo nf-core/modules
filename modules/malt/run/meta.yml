@@ -32,10 +32,10 @@ input:
       description: Index/database directory from malt-build
       pattern: '*/'
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - rma6:
       type: file
       description: MEGAN6 RMA6 file

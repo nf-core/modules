@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process FASTANI {
 
     output:
     tuple val(meta), path("*.ani.txt"), emit: ani
-    path "*.version.txt"              , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     if (meta.batch_input) {
@@ -37,7 +36,10 @@ process FASTANI {
             -rl $reference \\
             -o ${prefix}.ani.txt
 
-        echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(fastANI --version 2>&1 | sed 's/version//;')
+        END_VERSIONS
         """
     } else {
         """
@@ -46,7 +48,10 @@ process FASTANI {
             -r $reference \\
             -o ${prefix}.ani.txt
 
-        echo \$(fastANI --version 2>&1) | sed 's/version//;' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(fastANI --version 2>&1 | sed 's/version//;')
+        END_VERSIONS
         """
     }
 }

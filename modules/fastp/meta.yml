@@ -44,10 +44,10 @@ output:
       type: file
       description: fastq log file
       pattern: "*.log"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - reads_fail:
       type: file
       description: Reads the failed the preprocessing

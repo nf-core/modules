@@ -21,10 +21,10 @@ input:
       description: Full name of output file with or without .gz extension
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing version of the pigz software
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - file_out:
       type: file
       description: Concatenated file. Will be gzipped if file_out ends with ".gz"

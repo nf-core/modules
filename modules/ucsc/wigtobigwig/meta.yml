@@ -24,10 +24,10 @@ input:
       description: chromosome sizes file
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bw:
       type: file
       description: bigwig file

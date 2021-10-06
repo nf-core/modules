@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,10 +25,9 @@ process BEDTOOLS_GENOMECOV {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: genomecov
-    path  "*.version.txt"                  , emit: version
+    path  "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
@@ -39,7 +38,10 @@ process BEDTOOLS_GENOMECOV {
             $options.args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     } else {
         """
@@ -51,7 +53,10 @@ process BEDTOOLS_GENOMECOV {
             $options.args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     }
 }
