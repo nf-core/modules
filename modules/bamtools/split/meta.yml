@@ -20,8 +20,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: A BAM file to split
+      pattern: "*.bam"
 
 output:
   - meta:
@@ -29,14 +29,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted Bam file
+      pattern: "*.bam"
 
 authors:
   - "@sguizard"

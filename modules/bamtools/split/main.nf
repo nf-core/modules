@@ -23,10 +23,10 @@ process BAMTOOLS_SPLIT {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bamtools \\
         split \\
@@ -35,7 +35,7 @@ process BAMTOOLS_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        samtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
     END_VERSIONS
     """
 }
