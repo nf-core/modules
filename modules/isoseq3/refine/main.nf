@@ -20,18 +20,18 @@ process ISOSEQ3_REFINE {
 
     input:
     tuple val(meta), path(bam)
-    path(primers)
+    path primers
 
     output:
-    tuple val(meta), path("*.flnc.bam")            , emit: bam
-    tuple val(meta), path("*.flnc.bam.pbi")        , emit: pbi
+    tuple val(meta), path("*.bam")                 , emit: bam
+    tuple val(meta), path("*.bam.pbi")             , emit: pbi
     tuple val(meta), path("*.consensusreadset.xml"), emit: consensusreadset
     tuple val(meta), path("*.filter_summary.json") , emit: summary
     tuple val(meta), path("*.report.csv")          , emit: report
-    path  "versions.yml"                           , emit: version
+    path  "versions.yml"                           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     isoseq3 \\
         refine \\
@@ -39,11 +39,11 @@ process ISOSEQ3_REFINE {
         $options.args \\
         $bam \\
         $primers \\
-        ${prefix}.flnc.bam
+        ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        isoseq3 refine: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\\+//' )
+        ${getSoftwareName(task.process)}: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\\+//' )
     END_VERSIONS
     """
 }
