@@ -19,7 +19,7 @@ workflow test_gatk4_filtermutectcalls_base {
     fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input , fasta , fastaidx , dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
 }
 
 workflow test_gatk4_filtermutectcalls_with_files {
@@ -37,7 +37,7 @@ workflow test_gatk4_filtermutectcalls_with_files {
     fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input , fasta , fastaidx , dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
 }
 
 workflow test_gatk4_filtermutectcalls_use_val {
@@ -55,5 +55,5 @@ workflow test_gatk4_filtermutectcalls_use_val {
     fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input , fasta , fastaidx , dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
 }
