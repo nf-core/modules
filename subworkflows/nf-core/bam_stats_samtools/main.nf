@@ -21,5 +21,5 @@ workflow BAM_STATS_SAMTOOLS {
     stats    = SAMTOOLS_STATS.out.stats       // channel: [ val(meta), [ stats ] ]
     flagstat = SAMTOOLS_FLAGSTAT.out.flagstat // channel: [ val(meta), [ flagstat ] ]
     idxstats = SAMTOOLS_IDXSTATS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
-    version  = SAMTOOLS_STATS.out.versions    //    path: versions.yml
+    versions = SAMTOOLS_STATS.out.versions    //    path: versions.yml
 }
