@@ -28,7 +28,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputs_list = []
-    f1r2.each() { it -> inputs_list.add(" -I " + it) }
+    f1r2.each() { a -> inputs_list.add(" -I " + a) }
     """
     gatk \\
         LearnReadOrientationModel \\
