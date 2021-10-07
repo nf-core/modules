@@ -2,7 +2,6 @@
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_single_end -c tests/config/nextflow.config
   tags:
     - subworkflows/align_bowtie2
-    - subworkflows/align_bowtie2
     - subworkflows/bam_sort_samtools
     - subworkflows/bam_stats_samtools
     # Modules
@@ -43,7 +42,6 @@
 - name: align bowtie2 paired-end
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_paired_end -c tests/config/nextflow.config
   tags:
-    - subworkflows/align_bowtie2
     - subworkflows/align_bowtie2
     - subworkflows/bam_sort_samtools
     - subworkflows/bam_stats_samtools
