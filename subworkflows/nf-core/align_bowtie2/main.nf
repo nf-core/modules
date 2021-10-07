@@ -29,12 +29,12 @@ workflow ALIGN_BOWTIE2 {
     bam_orig         = BOWTIE2_ALIGN.out.bam          // channel: [ val(meta), bam   ]
     log_out          = BOWTIE2_ALIGN.out.log          // channel: [ val(meta), log   ]
     fastq            = BOWTIE2_ALIGN.out.fastq        // channel: [ val(meta), fastq ]
-    bowtie2_version  = BOWTIE2_ALIGN.out.version      //    path: *.version.txt
+    bowtie2_version  = BOWTIE2_ALIGN.out.versions     //    path: versions.yml
 
     bam              = BAM_SORT_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
     bai              = BAM_SORT_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
     stats            = BAM_SORT_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
     flagstat         = BAM_SORT_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
     idxstats         = BAM_SORT_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
-    samtools_version = BAM_SORT_SAMTOOLS.out.version  //    path: *.version.txt
+    samtools_version = BAM_SORT_SAMTOOLS.out.versions //    path: versions.yml
 }
