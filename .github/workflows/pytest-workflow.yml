@@ -9,6 +9,11 @@ jobs:
   changes:
     name: Check for changes
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        filter:
+          ["tests/config/pytest_modules.yml", "tests/config/pytest_subworkflows.yml"]
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -18,7 +23,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/pytest_modules.yml"
+          filters: ${{ matrix.filter }}
 
   test:
     runs-on: ubuntu-20.04
