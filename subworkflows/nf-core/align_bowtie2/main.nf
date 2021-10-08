@@ -2,7 +2,7 @@
 // Alignment with Bowtie2
 //
 
-params.align_options    = [:]
+params.align_options          = [:]
 params.samtools_sort_options  = [:]
 params.samtools_index_options = [:]
 params.samtools_stats_options = [:]
