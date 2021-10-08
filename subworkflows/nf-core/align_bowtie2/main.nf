@@ -23,7 +23,6 @@ workflow ALIGN_BOWTIE2 {
     // Map reads with Bowtie2
     //
     BOWTIE2_ALIGN ( reads, index )
-    BOWTIE2_ALIGN ( reads, index, splicesites )
     ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions.first())
 
     //
