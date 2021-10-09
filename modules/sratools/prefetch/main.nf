@@ -44,7 +44,7 @@ process SRATOOLS_PREFETCH {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( prefetch --version 2>&1 | sed 's/^.*version //; s/.*\$//' )
+        ${getSoftwareName(task.process)}: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """
 }
