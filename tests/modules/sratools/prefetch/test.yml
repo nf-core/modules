@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml sratools/prefetch
+- name: sratools prefetch
+  command: nextflow run ./tests/modules/sratools/prefetch -entry test_sratools_prefetch -c tests/config/nextflow.config
+  tags:
+    - sratools
+    - sratools/prefetch
+  files:
+    - path: output/sratools/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
