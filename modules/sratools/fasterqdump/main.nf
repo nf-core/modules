@@ -28,7 +28,14 @@ process SRATOOLS_FASTERQDUMP {
     path "versions.yml"             , emit: versions
 
     script:
-    def sra_id = sra.name
+    /***************************************************************************
+     * N.B.: `fasterq-dump` works fastest when using a memory-mapped directory
+     * as temporary workspace. `/tmp` is typically such a directory which is why
+     * we explicitly choose it here. You may want to configure `docker.temp` and
+     * set it to a memory mapped directory available on the host system.
+     **************************************************************************/
+    //
+
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
@@ -39,7 +46,7 @@ process SRATOOLS_FASTERQDUMP {
     fasterq-dump \\
         --threads ${task.cpus} \\
         --temp /tmp \\
-        ${sra_id}
+        ${sra_id.name}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
