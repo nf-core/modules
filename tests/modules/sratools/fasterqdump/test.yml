@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml sratools/fasterqdump
-- name: sratools fasterqdump
-  command: nextflow run ./tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump -c tests/config/nextflow.config
+- name: sratools fasterqdump test_sratools_fasterqdump
+  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump -c tests/config/nextflow.config
   tags:
-    - sratools
     - sratools/fasterqdump
+    - sratools
   files:
-    - path: output/sratools/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/sratools/ERR2815334_1.fastq
+      md5sum: f8b9072ded26bb3564aba9e96cdb8c81
+    - path: output/sratools/ERR2815334_2.fastq
+      md5sum: 2b10f319fa71278cc4dc5b3117789372
