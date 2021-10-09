@@ -1,47 +1,43 @@
 name: sratools_prefetch
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Download sequencing data from the NCBI Sequence Read Archive (SRA).
 keywords:
-  - sort
+  - sequencing
+  - fastq
+  - prefetch
 tools:
   - sratools:
-      ## TODO nf-core: Add a description and other details for the software below
       description: SRA Toolkit and SDK from NCBI
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/ncbi/sra-tools
+      documentation: https://github.com/ncbi/sra-tools/wiki
+      tool_dev_url: https://github.com/ncbi/sra-tools
       licence: ['Public Domain']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
-      description: |
+      description: >
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - id:
+      type: val
+      description: >
+        A string denoting an SRA id.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
-      description: |
+      description: >
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - sra:
+      type: directory
+      description: >
+        Directory containing the ETL data for the given SRA id.
+      pattern: "id/id.sra"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@Midnighter"
