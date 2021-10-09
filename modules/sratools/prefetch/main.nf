@@ -30,10 +30,10 @@ process SRATOOLS_PREFETCH {
     script:
     def software = getSoftwareName(task.process)
     """
-    ncbi_settings=\$(vdb-config -o n NCBI_SETTINGS)
-    if [[ ! -f "\${ncbi_settings}" ]]; then
-        mkdir -p "\${ncbi_settings}"
-        echo "${options.vdb_config}" > "\${ncbi_settings}"
+    export \$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')
+    if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
+        mkdir -p "\$(dirname "\${NCBI_SETTINGS}")"
+        printf '${options.vdb_config}' > "\${NCBI_SETTINGS}"
     fi
 
     prefetch \\
