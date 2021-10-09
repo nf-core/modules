@@ -28,7 +28,6 @@ def initOptions(Map args) {
     options.publish_dir     = args.publish_dir ?: ''
     options.publish_files   = args.publish_files
     options.suffix          = args.suffix ?: ''
-    options.vdb_config      = args.vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\n/libs/cloud/report_instance_identity = \"true\"\n"
     return options
 }
 

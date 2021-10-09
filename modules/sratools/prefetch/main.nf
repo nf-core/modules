@@ -1,8 +1,9 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
-params.options = [:]
-options        = initOptions(params.options)
+params.options            = [:]
+options                   = initOptions(params.options)
+options.vdb_config = params.options.vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\n/libs/cloud/report_instance_identity = \"true\"\n"
 
 process SRATOOLS_PREFETCH {
     tag "$id"
