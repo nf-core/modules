@@ -46,7 +46,7 @@ process SRATOOLS_FASTERQDUMP {
     fasterq-dump \\
         --threads ${task.cpus} \\
         --temp /tmp \\
-        ${sra_id.name}
+        ${sra.name}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
