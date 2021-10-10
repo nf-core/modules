@@ -41,6 +41,8 @@ process SRATOOLS_PREFETCH {
         --progress \\
         $id
 
+    vdb-validate $id
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
