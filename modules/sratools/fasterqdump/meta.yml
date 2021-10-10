@@ -22,6 +22,10 @@ input:
       type: directory
       description: Directory containing ETL data for the given SRA.
       pattern: "*/*.sra"
+  - vdb_config:
+      type: val
+      description: >
+        An optional string that contains the settings to be written to NCBI's vdb-config.
 
 output:
   - meta:

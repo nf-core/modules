@@ -3,12 +3,10 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 
 params.options = [:]
 options        = initOptions(params.options)
-options.vdb_config = params.options.vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
 
 process SRATOOLS_FASTERQDUMP {
     tag "$meta.id"
     label 'process_medium'
-
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
@@ -22,20 +20,14 @@ process SRATOOLS_FASTERQDUMP {
 
     input:
     tuple val(meta), path(sra)
+    val vdb_config
 
     output:
     tuple val(meta), path("*.fastq"), emit: reads
     path "versions.yml"             , emit: versions
 
     script:
-    /***************************************************************************
-     * N.B.: `fasterq-dump` works fastest when using a memory-mapped directory
-     * as temporary workspace. `/tmp` is typically such a directory which is why
-     * we explicitly choose it here. You may want to configure `docker.temp` and
-     * set it to a memory mapped directory available on the host system.
-     **************************************************************************/
-    //
-
+    def config = vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
@@ -44,8 +36,8 @@ process SRATOOLS_FASTERQDUMP {
     fi
 
     fasterq-dump \\
-        --threads ${task.cpus} \\
-        --temp /tmp \\
+        ${options.args} \\
+        --threads $task.cpus \\
         ${sra.name}
 
     cat <<-END_VERSIONS > versions.yml
