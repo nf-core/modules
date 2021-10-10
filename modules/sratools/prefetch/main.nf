@@ -3,7 +3,6 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 
 params.options            = [:]
 options                   = initOptions(params.options)
-options.vdb_config = params.options.vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
 
 process SRATOOLS_PREFETCH {
     tag "$id"
@@ -23,17 +22,19 @@ process SRATOOLS_PREFETCH {
 
     input:
     tuple val(meta), val(id)
+    val vdb_config
 
     output:
     tuple val(meta), path("$id"), emit: sra
     path "versions.yml"         , emit: versions
 
     script:
+    def config = vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
         mkdir -p "\$(dirname "\${NCBI_SETTINGS}")"
-        printf '${options.vdb_config}' > "\${NCBI_SETTINGS}"
+        printf '${config}' > "\${NCBI_SETTINGS}"
     fi
 
     prefetch \\

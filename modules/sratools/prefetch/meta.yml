@@ -22,6 +22,10 @@ input:
       type: val
       description: >
         A string denoting an SRA id.
+  - vdb_config:
+      type: val
+      description: >
+        An optional string that contains the settings to be written to NCBI's vdb-config.
 
 output:
   - meta:
@@ -33,7 +37,7 @@ output:
       type: directory
       description: >
         Directory containing the ETL data for the given SRA id.
-      pattern: "id/id.sra"
+      pattern: "*/*.sra"
   - versions:
       type: file
       description: File containing software versions

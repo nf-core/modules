@@ -11,5 +11,5 @@ workflow test_sratools_prefetch {
         'ERR2815334'
     ]
 
-    SRATOOLS_PREFETCH ( input )
+    SRATOOLS_PREFETCH ( input, [null] )
 }
