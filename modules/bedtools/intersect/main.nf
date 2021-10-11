@@ -24,10 +24,9 @@ process BEDTOOLS_INTERSECT {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: intersect
-    path  "versions.yml"                   , emit: version
+    path  "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedtools \\

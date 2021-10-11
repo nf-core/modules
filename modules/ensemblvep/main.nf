@@ -33,10 +33,9 @@ process ENSEMBLVEP {
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
     path "*.summary.html"             , emit: report
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """
