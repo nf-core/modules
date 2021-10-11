@@ -22,27 +22,26 @@ process MEGAHIT {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("megahit_out/*.contigs.fa")                               , emit: contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.contigs.fa")         , emit: kcontigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.addi.fa")            , emit: addi_contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.local.fa")           , emit: localcontigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.final.contigs.fa")   , emit: kfinalcontigs
-    path "versions.yml"                                                             , emit: version
+    tuple val(meta), path("megahit_out/*.contigs.fa")                            , emit: contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.contigs.fa")      , emit: k_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.addi.fa")         , emit: addi_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.local.fa")        , emit: local_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.final.contigs.fa"), emit: kfinal_contigs
+    path "versions.yml"                                                          , emit: version
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
         megahit \\
             -r ${reads[0]} \\
             -t $task.cpus \\
             $options.args \\
-            --out-prefix ${prefix}
+            --out-prefix $prefix
 
         cat <<-END_VERSIONS > versions.yml
-            ${getProcessName(task.process)}:
-                ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """
     } else {
@@ -52,11 +51,11 @@ process MEGAHIT {
             -2 ${reads[1]} \\
             -t $task.cpus \\
             $options.args \\
-            --out-prefix ${prefix}
+            --out-prefix $prefix
 
         cat <<-END_VERSIONS > versions.yml
-            ${getProcessName(task.process)}:
-                ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """
     }
