@@ -26,7 +26,7 @@ process GSTAMA_MERGE {
     tuple val(meta), path("*_merged_gene_report.txt") , emit: gene_report
     tuple val(meta), path("*_merged_merge.txt")       , emit: merge
     tuple val(meta), path("*_merged_trans_report.txt"), emit: trans_report
-    path "versions.yml"                               , emit: version
+    path "versions.yml"                               , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
