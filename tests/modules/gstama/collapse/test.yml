@@ -1,8 +1,8 @@
 - name: gstama collapse test_gstama_collapse
   command: nextflow run tests/modules/gstama/collapse -entry test_gstama_collapse -c tests/config/nextflow.config
   tags:
-    - gstama/collapse
     - gstama
+    - gstama/collapse
   files:
     - path: output/gstama/test_tc.bed
       md5sum: e5105198ed970a33ae0ecaa7bff421d9
@@ -18,3 +18,5 @@
       md5sum: 0ca1a32f33ef05242d897d913802554b
     - path: output/gstama/test_tc_trans_report.txt
       md5sum: 33a86c15ca2acce36b2a5962f4c1adc4
+    - path: output/gstama/test_tc_variants.txt
+      md5sum: 5b1165e9f33faba4f7207013fc27257e

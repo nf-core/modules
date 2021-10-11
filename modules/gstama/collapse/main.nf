@@ -38,18 +38,10 @@ process GSTAMA_COLLAPSE {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    NLINES=\$(samtools view $bam|wc -l)
-    MODE=""
-
-    if [ "\$NLINES" -gt 1000 ]; then
-        MODE="-rm low_mem"
-    fi
-
     tama_collapse.py \\
         -s $bam \\
         -f $genome \\
         -p ${prefix}_tc \\
-        \$MODE \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
