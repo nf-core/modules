@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,11 +24,9 @@ process BWAMETH_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "*.version.txt"         , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def split_cpus = Math.floor(task.cpus/2)
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
@@ -37,11 +35,14 @@ process BWAMETH_ALIGN {
     bwameth.py \\
         $options.args \\
         $read_group \\
-        -t ${split_cpus} \\
+        -t $task.cpus \\
         --reference \$INDEX \\
         $reads \\
-        | samtools view $options.args2 -@ ${split_cpus} -bhS -o ${prefix}.bam -
+        | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
-    echo \$(bwameth.py --version 2>&1) | cut -f2 -d" " > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
+    END_VERSIONS
     """
 }

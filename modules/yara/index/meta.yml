@@ -21,10 +21,10 @@ input:
       description: Input genome fasta file
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - index:
       type: file
       description: YARA genome index files
