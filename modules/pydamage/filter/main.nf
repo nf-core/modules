@@ -1,9 +1,5 @@
 // Import generic module functions
-<<<<<<< HEAD
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-=======
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
->>>>>>> c19671dca974354978c9bc1711fca6fe681bdb0b
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,16 +23,9 @@ process PYDAMAGE_FILTER {
 
     output:
     tuple val(meta), path("pydamage_results/pydamage_filtered_results.csv"), emit: csv
-<<<<<<< HEAD
-    path "*.version.txt"          , emit: version
-
-    script:
-    def software = getSoftwareName(task.process)
-=======
     path "versions.yml"           , emit: versions
 
     script:
->>>>>>> c19671dca974354978c9bc1711fca6fe681bdb0b
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
 
@@ -45,13 +34,9 @@ process PYDAMAGE_FILTER {
         $options.args \\
         $csv
 
-<<<<<<< HEAD
-    echo \$(pydamage --version 2>&1)  | sed -e 's/pydamage, version //g' > ${software}.version.txt
-=======
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
     END_VERSIONS
->>>>>>> c19671dca974354978c9bc1711fca6fe681bdb0b
     """
 }
