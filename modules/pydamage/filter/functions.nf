@@ -10,8 +10,6 @@ def getSoftwareName(task_process) {
 }
 
 //
-<<<<<<< HEAD
-=======
 // Extract name of module from process name using $task.process
 //
 def getProcessName(task_process) {
@@ -19,7 +17,6 @@ def getProcessName(task_process) {
 }
 
 //
->>>>>>> c19671dca974354978c9bc1711fca6fe681bdb0b
 // Function to initialise default values and to generate a Groovy Map of available options for nf-core modules
 //
 def initOptions(Map args) {
@@ -47,35 +44,6 @@ def getPathFromList(path_list) {
 // Function to save/publish module results
 //
 def saveFiles(Map args) {
-<<<<<<< HEAD
-    if (!args.filename.endsWith('.version.txt')) {
-        def ioptions  = initOptions(args.options)
-        def path_list = [ ioptions.publish_dir ?: args.publish_dir ]
-        if (ioptions.publish_by_meta) {
-            def key_list = ioptions.publish_by_meta instanceof List ? ioptions.publish_by_meta : args.publish_by_meta
-            for (key in key_list) {
-                if (args.meta && key instanceof String) {
-                    def path = key
-                    if (args.meta.containsKey(key)) {
-                        path = args.meta[key] instanceof Boolean ? "${key}_${args.meta[key]}".toString() : args.meta[key]
-                    }
-                    path = path instanceof String ? path : ''
-                    path_list.add(path)
-                }
-            }
-        }
-        if (ioptions.publish_files instanceof Map) {
-            for (ext in ioptions.publish_files) {
-                if (args.filename.endsWith(ext.key)) {
-                    def ext_list = path_list.collect()
-                    ext_list.add(ext.value)
-                    return "${getPathFromList(ext_list)}/$args.filename"
-                }
-            }
-        } else if (ioptions.publish_files == null) {
-            return "${getPathFromList(path_list)}/$args.filename"
-        }
-=======
     def ioptions  = initOptions(args.options)
     def path_list = [ ioptions.publish_dir ?: args.publish_dir ]
 
@@ -106,6 +74,5 @@ def saveFiles(Map args) {
         }
     } else if (ioptions.publish_files == null) {
         return "${getPathFromList(path_list)}/$args.filename"
->>>>>>> c19671dca974354978c9bc1711fca6fe681bdb0b
     }
 }
