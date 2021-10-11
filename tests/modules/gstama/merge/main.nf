@@ -13,6 +13,7 @@ workflow test_gstama_merge {
             file(params.test_data['homo_sapiens']['pacbio']['genemodel2'], checkIfExists: true)
         ]
     ]
+    filelist = file(params.test_data['homo_sapiens']['pacbio']['filelist'], checkIfExists: true)
 
-    GSTAMA_MERGE ( input )
+    GSTAMA_MERGE ( input, filelist )
 }

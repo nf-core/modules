@@ -20,6 +20,7 @@ process GSTAMA_MERGE {
 
     input:
     tuple val(meta), path(bed)
+    path filelist
 
     output:
     tuple val(meta), path("*_merged.bed")             , emit: bed
@@ -31,17 +32,8 @@ process GSTAMA_MERGE {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    for i in *.bed
-        do
-        NLINES=\$(wc -l \${i}|cut -d " " -f 1)
-
-        if [ "\$NLINES" -gt 0 ]; then
-            echo -e "\${i}\\tcapped\\t1,1,1\\t\${i}" >> input.tsv
-        fi
-    done
-
     tama_merge.py \\
-        -f input.tsv \\
+        -f $filelist \\
         -d merge_dup \\
         -p ${prefix}_merged \\
         $options.args
