@@ -22,11 +22,15 @@ process SRATOOLS_FASTERQDUMP {
     tuple val(meta), path(sra)
 
     output:
-    tuple val(meta), path("*.fastq"), emit: reads
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path(output), emit: reads
+    path "versions.yml"          , emit: versions
 
     script:
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
+    // Paired-end data extracted by fasterq-dump (--split-3 the default) always creates
+    // *_1.fastq *_2.fastq files but sometimes also an additional *.fastq file
+    // for unpaired reads which we ignore here.
+    output = meta.single_end ? '*.fastq' : '*{1,2}.fastq'
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
