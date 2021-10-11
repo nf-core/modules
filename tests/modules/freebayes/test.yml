@@ -1,0 +1,7 @@
+- name: freebayes test_freebayes
+  command: nextflow run tests/modules/freebayes -entry test_freebayes -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 51960467273207eb6bad5759840e0684
