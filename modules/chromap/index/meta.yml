@@ -20,10 +20,10 @@ input:
       description: Fasta reference file.
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - index:
       type: file
       description: Index file of the reference genome

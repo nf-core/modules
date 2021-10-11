@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,10 +25,9 @@ process GENMAP_MAPPABILITY {
     path "*.wig"        , optional:true, emit: wig
     path "*.bedgraph"   , optional:true, emit: bedgraph
     path "*.txt"        , optional:true, emit: txt
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     genmap \\
         map \\
@@ -36,6 +35,9 @@ process GENMAP_MAPPABILITY {
         -I $index \\
         -O mappability
 
-    echo \$(genmap --version 2>&1) | sed 's/GenMap version: //; s/SeqAn.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+    END_VERSIONS
     """
 }

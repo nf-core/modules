@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -28,10 +28,9 @@ process SAMTOOLS_AMPLICONCLIP {
     tuple val(meta), path("*.bam")            , emit: bam
     tuple val(meta), path("*.clipstats.txt")  , optional:true, emit: stats
     tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
-    path "*.version.txt"                      , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
     def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
@@ -46,6 +45,9 @@ process SAMTOOLS_AMPLICONCLIP {
         -o ${prefix}.bam \\
         $bam
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

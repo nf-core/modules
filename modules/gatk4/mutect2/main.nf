@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -31,13 +31,13 @@ process GATK4_MUTECT2 {
     path panel_of_normals_idx
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
+    tuple val(meta), path("*.vcf.gz")     , emit: vcf
+    tuple val(meta), path("*.tbi")        , emit: tbi
+    tuple val(meta), path("*.stats")      , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
-    path "*.version.txt"          , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputsList = []
     def normalsList = []
@@ -71,6 +71,9 @@ process GATK4_MUTECT2 {
         -O ${prefix}.vcf.gz \\
         $options.args
 
-    echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
     """
 }
