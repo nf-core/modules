@@ -20,19 +20,18 @@ process SRATOOLS_FASTERQDUMP {
 
     input:
     tuple val(meta), path(sra)
-    val vdb_config
 
     output:
     tuple val(meta), path("*.fastq"), emit: reads
     path "versions.yml"             , emit: versions
 
     script:
-    def config = vdb_config ?: "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
+    def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
         mkdir -p "\$(dirname "\${NCBI_SETTINGS}")"
-        printf '${options.vdb_config}' > "\${NCBI_SETTINGS}"
+        printf '${config}' > "\${NCBI_SETTINGS}"
     fi
 
     fasterq-dump \\
