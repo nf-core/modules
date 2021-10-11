@@ -1,10 +1,25 @@
-- name: sratools fasterqdump test_sratools_fasterqdump
-  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump -c tests/config/nextflow.config
+- name: sratools fasterqdump test_sratools_fasterqdump_single_end
+  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_single_end -c tests/config/nextflow.config
   tags:
-    - sratools/fasterqdump
     - sratools
+    - sratools/fasterqdump
   files:
-    - path: output/sratools/ERR2815334_1.fastq
-      md5sum: f8b9072ded26bb3564aba9e96cdb8c81
-    - path: output/sratools/ERR2815334_2.fastq
-      md5sum: 2b10f319fa71278cc4dc5b3117789372
+    - path: output/sratools/SRR13255544.fastq
+      md5sum: 674d78c1cc3c1308d6d39d6369a42887
+    - path: output/untar/SRR13255544/SRR13255544.sra
+      md5sum: 466d05dafb2eec672150754168010b4d
+
+- name: sratools fasterqdump test_sratools_fasterqdump_paired_end
+  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c tests/config/nextflow.config
+  tags:
+    - sratools
+    - sratools/fasterqdump
+  files:
+    - path: output/sratools/SRR11140744.fastq
+      md5sum: 96a821b351f3a450889a38e7099f7b95
+    - path: output/sratools/SRR11140744_1.fastq
+      md5sum: 8573015c91d099b6e30789f8bab2f43c
+    - path: output/sratools/SRR11140744_2.fastq
+      md5sum: 37e6f719a022dc3c9994c80fbc20c311
+    - path: output/untar/SRR11140744/SRR11140744.sra
+      md5sum: 065666caf5b2d5dfb0cb25d5f3abe659
