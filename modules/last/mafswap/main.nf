@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,15 +23,17 @@ process LAST_MAFSWAP {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "*.version.txt"             , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     maf-swap $options.args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
 
     # maf-swap has no --version option but lastdb, part of the same package, has.
-    echo \$(lastdb --version 2>&1) | sed 's/lastdb //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+    END_VERSIONS
     """
 }

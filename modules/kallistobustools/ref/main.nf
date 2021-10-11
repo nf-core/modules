@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,7 +24,7 @@ process KALLISTOBUSTOOLS_REF {
     val  workflow
 
     output:
-    path "*.version.txt"  , emit: version
+    path "versions.yml"   , emit: versions
     path "kb_ref_out.idx" , emit: index
     path "t2g.txt"        , emit: t2g
     path "cdna.fa"        , emit: cdna
@@ -33,7 +33,6 @@ process KALLISTOBUSTOOLS_REF {
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
-    def software = getSoftwareName(task.process)
     if (workflow == "standard") {
         """
         kb \\
@@ -45,7 +44,10 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        END_VERSIONS
         """
     } else {
         """
@@ -61,7 +63,10 @@ process KALLISTOBUSTOOLS_REF {
             $fasta \\
             $gtf
 
-        echo \$(kb 2>&1) | sed 's/^kb_python //; s/Usage.*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        END_VERSIONS
         """
     }
 }

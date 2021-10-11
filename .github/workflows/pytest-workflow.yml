@@ -1,10 +1,19 @@
 name: Pytest-workflow
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   changes:
     name: Check for changes
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        filter:
+          ["tests/config/pytest_modules.yml", "tests/config/pytest_subworkflows.yml"]
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
@@ -14,7 +23,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/pytest_modules.yml"
+          filters: ${{ matrix.filter }}
 
   test:
     runs-on: ubuntu-20.04
@@ -89,13 +98,13 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof
+        run: NF_CORE_MODULES_TEST=1 TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof
 
       - name: Upload logs on failure
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.tags }}-${{ matrix.profile }}-${{ matrix.nxf_version }}
+          name: logs-${{ matrix.profile }}-${{ matrix.nxf_version }}
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out

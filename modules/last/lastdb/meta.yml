@@ -28,10 +28,10 @@ input:
       pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - index:
       type: directory
       description: directory containing the files of the LAST index

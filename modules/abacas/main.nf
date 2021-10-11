@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process ABACAS {
 
     output:
     tuple val(meta), path('*.abacas*'), emit: results
-    path '*.version.txt'              , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     abacas.pl \\
@@ -40,6 +39,9 @@ process ABACAS {
     mv nucmer.filtered.delta ${prefix}.abacas.nucmer.filtered.delta
     mv nucmer.tiling ${prefix}.abacas.nucmer.tiling
     mv unused_contigs.out ${prefix}.abacas.unused.contigs.out
-    echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
+    END_VERSIONS
     """
 }

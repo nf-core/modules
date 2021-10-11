@@ -14,26 +14,16 @@ tools:
       licence: ['UC-LBL license (see package)']
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing optional parameters to bbmap.sh
-        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: fasta
       description: fasta formatted file with nucleotide sequences
       pattern: "*.{fna,fa,fasta}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - db:
       type: directory
       description: Directory with index files
