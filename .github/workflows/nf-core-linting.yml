@@ -71,6 +71,8 @@ jobs:
 
       - name: Lint ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
+        # HACK
+        if: startsWith( matrix.tags, 'subworkflow' ) != true
 
       - uses: actions/cache@v2
         with:
