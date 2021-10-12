@@ -39,6 +39,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Print required output
+        run: echo "${{ needs.module_changes.outputs.modules }}"
+
+      - name: Try JSON parsing
+        if: success() && (needs.subworkflow_changes.outputs.subworkflows != '[]')
+        run: echo "${{ fromJSON(needs.module_changes.outputs.modules) }}"
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
