@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getProcessName; getSoftwareName } from './functions'
 include { dump_params_yml; indent_code_block } from "./parametrize"
 
 params.options = [:]
@@ -37,7 +37,6 @@ process RMARKDOWNNOTEBOOK {
     path "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Dump parameters to yaml file.
