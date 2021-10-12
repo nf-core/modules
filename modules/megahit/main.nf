@@ -11,22 +11,22 @@ process MEGAHIT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::megahit=1.2.9" : null)
+    conda (params.enable_conda ? "bioconda::megahit=1.2.9 bioconda::pigz=2.6" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/megahit:1.2.9--h2e03b76_1"
+        container "https://depot.galaxyproject.org/singularity/mulled-v2-0f92c152b180c7cd39d9b0e6822f8c89ccb59c99:8ec213d21e5d03f9db54898a2baeaf8ec729b447-0"
     } else {
-        container "quay.io/biocontainers/megahit:1.2.9--h2e03b76_1"
+        container "quay.io/biocontainers/mulled-v2-0f92c152b180c7cd39d9b0e6822f8c89ccb59c99:8ec213d21e5d03f9db54898a2baeaf8ec729b447-0"
     }
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("megahit_out/*.contigs.fa")                            , emit: contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.contigs.fa")      , emit: k_contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.addi.fa")         , emit: addi_contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.local.fa")        , emit: local_contigs
-    tuple val(meta), path("megahit_out/intermediate_contigs/k*.final.contigs.fa"), emit: kfinal_contigs
+    tuple val(meta), path("megahit_out/*.contigs.fa.gz")                            , emit: contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.contigs.fa.gz")      , emit: k_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.addi.fa.gz")         , emit: addi_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.local.fa.gz")        , emit: local_contigs
+    tuple val(meta), path("megahit_out/intermediate_contigs/k*.final.contigs.fa.gz"), emit: kfinal_contigs
     path "versions.yml"                                                          , emit: version
 
     script:
@@ -38,6 +38,8 @@ process MEGAHIT {
             -t $task.cpus \\
             $options.args \\
             --out-prefix $prefix
+
+        pigz -p $options.args megahit_out/*.fa megahit_out/intermediate_contigs/*.fa
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -52,6 +54,8 @@ process MEGAHIT {
             -t $task.cpus \\
             $options.args \\
             --out-prefix $prefix
+
+        pigz -p $task.cpus megahit_out/*.fa megahit_out/intermediate_contigs/*.fa
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:

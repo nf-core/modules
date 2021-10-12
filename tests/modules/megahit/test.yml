@@ -1,27 +1,18 @@
 - name: megahit
-  command: nextflow run ./tests/modules/megahit -entry test_megahit -c tests/config/nextflow.config -process.cpus 1 
+  command: nextflow run ./tests/modules/megahit -entry test_megahit -c tests/config/nextflow.config -process.cpus 1
   tags:
     - megahit
   files:
-    - path: output/megahit/megahit_out/test.contigs.fa
-    - path: output/megahit/megahit_out/intermediate_contigs/k21.addi.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k21.contigs.fa
-    - path: output/megahit/megahit_out/intermediate_contigs/k21.final.contigs.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k21.local.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k29.addi.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k29.contigs.fa
-    - path: output/megahit/megahit_out/intermediate_contigs/k29.final.contigs.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k29.local.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k39.addi.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k39.contigs.fa
-    - path: output/megahit/megahit_out/intermediate_contigs/k39.final.contigs.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/megahit/megahit_out/intermediate_contigs/k39.local.fa
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/megahit/megahit_out/test.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.addi.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.final.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.local.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.addi.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.final.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.local.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.addi.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.final.contigs.fa.gz
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.local.fa.gz
