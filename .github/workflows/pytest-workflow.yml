@@ -26,7 +26,7 @@ jobs:
   module_test:
     runs-on: ubuntu-20.04
 
-    name: "Test modules: ${{ matrix.profile }} ${{ matrix.nxf_version }}"
+    name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: module_changes
     if: needs.module_changes.outputs.modules != '[]'
     strategy:
@@ -39,13 +39,6 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
-
-      - name: Print required output
-        run: echo "${{ needs.module_changes.outputs.modules }}"
-
-      - name: Try JSON parsing
-        if: success() && (needs.subworkflow_changes.outputs.subworkflows != '[]')
-        run: echo "${{ fromJSON(needs.module_changes.outputs.modules) }}"
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -136,7 +129,7 @@ jobs:
   subworkflow_test:
     runs-on: ubuntu-20.04
 
-    name: "Test subworkflows: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}"
+    name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
     needs: subworkflow_changes
     if: needs.subworkflow_changes.outputs.subworkflows != '[]'
     strategy:
