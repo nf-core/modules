@@ -38,7 +38,7 @@ process FREEBAYES {
 
         gzip ${prefix}.vcf
 
-       cat <<-END_VERSIONS > versions.yml
+        cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
