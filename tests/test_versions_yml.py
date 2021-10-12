@@ -11,9 +11,10 @@ def _get_workflow_names():
     To do so, recursively finds all test.yml files and parses their content.
     """
     here = Path(__file__).parent.resolve()
-    pytest_workflow_files = here.glob("**/test.yml")
+    pytest_workflow_files = here.glob("modules/**/test.yml")
     for f in pytest_workflow_files:
-        test_config = yaml.safe_load(f.read_text())
+        # test_config = yaml.safe_load(f.read_text())
+        test_config = yaml.load(f.read_text(), Loader=yaml.BaseLoader)
         for workflow in test_config:
             yield workflow["name"]
 

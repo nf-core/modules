@@ -23,10 +23,9 @@ process BLAST_MAKEBLASTDB {
 
     output:
     path 'blast_db'     , emit: db
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     makeblastdb \\
         -in $fasta \\

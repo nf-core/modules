@@ -25,10 +25,9 @@ process CHROMAP_INDEX {
 
     output:
     path "*.index"     , emit: index
-    path "versions.yml", emit: version
+    path "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = fasta.baseName
     """
     chromap \\

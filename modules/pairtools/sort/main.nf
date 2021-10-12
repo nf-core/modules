@@ -23,10 +23,9 @@ process PAIRTOOLS_SORT {
 
     output:
     tuple val(meta), path("*.pairs.gz"), emit: sorted
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def mem      = task.memory.toString().replaceAll(/(\s|\.|B)+/, '')
     """
