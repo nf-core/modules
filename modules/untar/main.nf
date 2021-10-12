@@ -22,8 +22,8 @@ process UNTAR {
     path archive
 
     output:
-    path "$untar"      , emit: untar
-    path "versions.yml", emit: versions
+    path "$untar"      ,   emit: untar
+    path "versions.yml",   emit: versions
 
     script:
     untar        = archive.toString() - '.tar.gz'

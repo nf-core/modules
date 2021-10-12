@@ -26,7 +26,7 @@ jobs:
   module_test:
     runs-on: ubuntu-20.04
 
-    name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
+    name: "Test modules: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}"
     needs: module_changes
     if: needs.module_changes.outputs.modules != '[]'
     strategy:
@@ -129,7 +129,7 @@ jobs:
   subworkflow_test:
     runs-on: ubuntu-20.04
 
-    name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
+    name: "Test subworkflows: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}"
     needs: subworkflow_changes
     if: needs.subworkflow_changes.outputs.subworkflows != '[]'
     strategy:
