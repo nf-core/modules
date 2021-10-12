@@ -1,47 +1,50 @@
 name: tiddit_cov
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Computes the coverage of different regions from the bam file.
 keywords:
-  - sort
+  - coverage
+  - bam
 tools:
   - tiddit:
-      ## TODO nf-core: Add a description and other details for the software below
       description: TIDDIT - structural variant calling.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['GPL v3']
+      homepage: https://github.com/SciLifeLab/TIDDIT
+      documentation: https://github.com/SciLifeLab/TIDDIT/blob/master/README.md
+      doi: "10.12688/f1000research.11168.1"
+      licence: ["GPL v3"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - fasta:
+      type: file
+      description: |
+        Reference genome file. Only needed when passing in CRAM instead of BAM.
+        If not using CRAM, please pass an empty file instead.
+      pattern: "*.fasta"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - cov:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+      description: The coverage of different regions. Optional.
+      pattern: "*_tcov.tab"
+  - wig:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: The coverage of different regions in WIG format. Optional.
+      pattern: "*_tcov.wig"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@projectoriented"

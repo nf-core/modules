@@ -1,10 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml tiddit/cov
-- name: tiddit cov
-  command: nextflow run ./tests/modules/tiddit/cov -entry test_tiddit_cov -c tests/config/nextflow.config
+- name: tiddit cov test_tiddit_cov
+  command: nextflow run tests/modules/tiddit/cov -entry test_tiddit_cov -c tests/config/nextflow.config
   tags:
     - tiddit
     - tiddit/cov
   files:
-    - path: output/tiddit/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/tiddit/test.tab
+      md5sum: f7974948f809f94879d8a60b726194f5
+
+- name: tiddit cov test_tiddit_cov_no_ref
+  command: nextflow run tests/modules/tiddit/cov -entry test_tiddit_cov_no_ref -c tests/config/nextflow.config
+  tags:
+    - tiddit
+    - tiddit/cov
+  files:
+    - path: output/tiddit/test.tab
+      md5sum: f7974948f809f94879d8a60b726194f5
