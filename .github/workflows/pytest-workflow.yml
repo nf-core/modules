@@ -34,6 +34,7 @@ jobs:
       matrix:
         nxf_version: ["21.04.0"]
         profile: ["docker", "singularity", "conda"]
+        tags: ${{ fromJSON(needs.module_changes.outputs.modules) }}
     env:
       NXF_ANSI_LOG: false
     steps:
