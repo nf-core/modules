@@ -60,7 +60,11 @@ process MEGAHIT {
             $options.args \\
             --out-prefix $prefix
 
-        pigz --no-name -p $task.cpus $options.args2 megahit_out/*.fa megahit_out/intermediate_contigs/*.fa
+        pigz \\
+            --no-name \\
+            -p $task.cpus $options.args2 \\
+            megahit_out/*.fa \\
+            megahit_out/intermediate_contigs/*.fa
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
