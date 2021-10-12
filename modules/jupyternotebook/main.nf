@@ -83,10 +83,10 @@ process JUPYTERNOTEBOOK {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - jupytext: \$(jupytext --version)
-        - samtools: \$(python -c "import ipykernel; print(ipykernel.__version__)")
-        - nbconvert: \$(jupyter nbconvert --version)
-        - papermill: \$(papermill --version | cut -f1 -d' ')
+       jupytext: \$(jupytext --version)
+       samtools: \$(python -c "import ipykernel; print(ipykernel.__version__)")
+       nbconvert: \$(jupyter nbconvert --version)
+       papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
     """
 }

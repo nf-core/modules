@@ -91,7 +91,7 @@ process RMARKDOWNNOTEBOOK {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        - rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
+       rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
     END_VERSIONS
     """
 }
