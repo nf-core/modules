@@ -37,9 +37,10 @@ process FREEBAYES {
             $bam  > ${prefix}.vcf
 
         gzip ${prefix}.vcf
-        cat <<-END_VERSIONS > versions.yml
+
+       cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
+            ${getSoftwareName(task.process)}: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
 
@@ -54,7 +55,7 @@ process FREEBAYES {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
+            ${getSoftwareName(task.process)}: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
     }
