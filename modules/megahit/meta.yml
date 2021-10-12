@@ -21,6 +21,11 @@ input:
       description: |
         Groovy Map containing sample information and input single, or paired-end FASTA/FASTQ files (optionally decompressed)
         e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively in gzipped or uncompressed FASTQ or FASTA format.
 
 output:
   - meta:
