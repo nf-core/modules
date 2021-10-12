@@ -143,7 +143,7 @@ jobs:
       fail-fast: false
       matrix:
         nxf_version: ["21.04.0"]
-        tags: ["${{ fromJson(needs.subworkflow_changes.outputs.subworkflows) }}"]
+        tags: ${{ fromJson(needs.subworkflow_changes.outputs.subworkflows) }}
         profile: ["docker", "singularity", "conda"]
     env:
       NXF_ANSI_LOG: false
