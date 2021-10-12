@@ -26,14 +26,13 @@ jobs:
   module_test:
     runs-on: ubuntu-20.04
 
-    name: "Test modules: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}"
+    name: "Test modules: ${{ matrix.profile }} ${{ matrix.nxf_version }}"
     needs: module_changes
     if: needs.module_changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
         nxf_version: ["21.04.0"]
-        tags: ["${{ fromJson(needs.modules_changes.outputs.modules) }}"]
         profile: ["docker", "singularity", "conda"]
     env:
       NXF_ANSI_LOG: false
