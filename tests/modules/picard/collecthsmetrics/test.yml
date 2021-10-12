@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml picard/collecthsmetrics
+- name: picard collecthsmetrics
+  command: nextflow run ./tests/modules/picard/collecthsmetrics -entry test_picard_collecthsmetrics -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard/collecthsmetrics
+  files:
+    - path: output/picard/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
