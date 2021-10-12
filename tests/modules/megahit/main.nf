@@ -12,3 +12,12 @@ workflow test_megahit {
 
     MEGAHIT ( input )
 }
+
+workflow test_megahit_single {
+
+    input = [ [ id:'test', single_end:true ], // meta map
+              file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+              ]
+
+    MEGAHIT ( input )
+}
