@@ -33,8 +33,8 @@ process RMARKDOWNNOTEBOOK {
     output:
     tuple val(meta), path("*.html"), emit: report
     path("artifacts/*"), emit: artifacts, optional: true
-    path "*.version.txt", emit: version
     path "session_info.log", emit: session_info
+    path "versions.yml", emit: versions
 
     script:
     def software = getSoftwareName(task.process)
@@ -90,6 +90,9 @@ process RMARKDOWNNOTEBOOK {
         writeLines(capture.output(sessionInfo()), "session_info.log")
     EOF
 
-    echo \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))") > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        - rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
+    END_VERSIONS
     """
 }

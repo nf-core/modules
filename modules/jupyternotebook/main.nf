@@ -33,7 +33,7 @@ process JUPYTERNOTEBOOK {
     output:
     tuple val(meta), path("*.html"), emit: report
     path("artifacts/*"), emit: artifacts, optional: true
-    path "versions.yml"          , emit: version
+    path "versions.yml", emit: versions
 
     script:
     def software = getSoftwareName(task.process)
@@ -82,16 +82,10 @@ process JUPYTERNOTEBOOK {
         | ${render_cmd} \\
         | jupyter nbconvert --stdin --to html --output ${prefix}.html
 
-    # TODO how to output versions of multiple tools?
-    echo ${software},jupytext,\$(jupytext --version) > versions.csv
-    echo ${software},ipykernel,\$(python -c "import ipykernel; print(ipykernel.__version__)") >> versions.csv
-    echo ${software},nbconvert,\$(jupyter nbconvert --version) >> versions.csv
-    echo ${software},papermill,\$(papermill --version | cut -f1 -d' ') >> versions.csv
-
     cat <<-END_VERSIONS > versions.yml
-    ${software}:
-        - jupytext: \$( jupytext --version )
-        - samtools: \$( python -c "import ipykernel; print(ipykernel.__version__)" )
+    ${getProcessName(task.process)}:
+        - jupytext: \$(jupytext --version)
+        - samtools: \$(python -c "import ipykernel; print(ipykernel.__version__)")
         - nbconvert: \$(jupyter nbconvert --version)
         - papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
