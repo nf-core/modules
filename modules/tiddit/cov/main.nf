@@ -32,7 +32,7 @@ process TIDDIT_COV {
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
+    def reference = fasta ? "--ref $fasta" : ""
     """
     tiddit \\
         --cov \\
