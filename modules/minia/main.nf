@@ -25,13 +25,13 @@ process MINIA {
     tuple val(meta), path('*.contigs.fa'), emit: contigs
     tuple val(meta), path('*.unitigs.fa'), emit: unitigs
     tuple val(meta), path('*.h5')        , emit: h5
-    path  "versions.yml"                 , emit: version
+    path  "versions.yml"                 , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def read_list = reads.join(",")
     """
-    echo "${reads.join("\n")}" > input_files.txt
+    echo "${read_list}" | sed 's/,/\\n/g' > input_files.txt
     minia \\
         $options.args \\
         -nb-cores $task.cpus \\
@@ -40,7 +40,7 @@ process MINIA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(minia --version 2>&1 | sed 's/^.*Minia version //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
     END_VERSIONS
     """
 }

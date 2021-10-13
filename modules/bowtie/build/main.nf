@@ -23,16 +23,15 @@ process BOWTIE_BUILD {
 
     output:
     path 'bowtie'       , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     mkdir bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bowtie --version 2>&1 | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
 }

@@ -26,10 +26,9 @@ process NANOPLOT {
     tuple val(meta), path("*.png") , emit: png
     tuple val(meta), path("*.txt") , emit: txt
     tuple val(meta), path("*.log") , emit: log
-    path  "versions.yml"           , emit: version
+    path  "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def input_file = ("$ontfile".endsWith(".fastq.gz")) ? "--fastq ${ontfile}" :
         ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """
@@ -39,7 +38,7 @@ process NANOPLOT {
         $input_file
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(NanoPlot --version 2>&1 | sed 's/^.*NanoPlot //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(NanoPlot --version 2>&1) | sed 's/^.*NanoPlot //; s/ .*\$//')
     END_VERSIONS
     """
 }

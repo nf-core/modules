@@ -26,10 +26,9 @@ process DELLY_CALL {
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
     tuple val(meta), path("*.csi"), emit: csi
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     delly \\
@@ -41,7 +40,7 @@ process DELLY_CALL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(delly --version 2>&1 | sed 's/^.*Delly //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
     END_VERSIONS
     """
 }

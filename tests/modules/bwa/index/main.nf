@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf' addParams( options: [:] )
+include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf' addParams( options: [publish_dir:'bwa'] )
 
 workflow test_bwa_index {
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

@@ -25,10 +25,9 @@ process STAR_GENOMEGENERATE {
 
     output:
     path "star"         , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def memory   = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
     def args     = options.args.tokenize()
     if (args.contains('--genomeSAindexNbases')) {
@@ -46,6 +45,8 @@ process STAR_GENOMEGENERATE {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
     } else {
@@ -67,6 +68,8 @@ process STAR_GENOMEGENERATE {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
     }

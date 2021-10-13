@@ -23,10 +23,9 @@ process LOFREQ_FILTER {
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
-    path "versions.yml"          , emit: version
+    path "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     lofreq \\
@@ -37,7 +36,7 @@ process LOFREQ_FILTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(lofreq version 2>&1 | sed 's/^version: //; s/ *commit.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
     END_VERSIONS
     """
 }

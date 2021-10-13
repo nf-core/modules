@@ -26,10 +26,9 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , optional:true, emit: unmapped
-    path "versions.yml"                 , emit: version
+    path "versions.yml"                 , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """
@@ -41,7 +40,7 @@ process BISMARK_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bismark -v 2>&1 | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
     END_VERSIONS
     """
 }

@@ -35,10 +35,9 @@ process GATK4_MUTECT2 {
     tuple val(meta), path("*.tbi")        , emit: tbi
     tuple val(meta), path("*.stats")      , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
-    path "versions.yml"                   , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputsList = []
     def normalsList = []
@@ -74,7 +73,7 @@ process GATK4_MUTECT2 {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(gatk --version 2>&1 | sed 's/^.*(GATK) v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }

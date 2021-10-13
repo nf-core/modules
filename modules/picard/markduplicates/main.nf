@@ -25,10 +25,9 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.bam")        , emit: bam
     tuple val(meta), path("*.bai")        , optional:true, emit: bai
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path  "versions.yml"                  , emit: version
+    path  "versions.yml"                  , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
@@ -47,7 +46,7 @@ process PICARD_MARKDUPLICATES {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(picard MarkDuplicates --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+        ${getSoftwareName(task.process)}: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }

@@ -27,15 +27,14 @@ process RSEM_CALCULATEEXPRESSION {
     tuple val(meta), path("*.isoforms.results"), emit: counts_transcript
     tuple val(meta), path("*.stat")            , emit: stat
     tuple val(meta), path("*.log")             , emit: logs
-    path  "versions.yml"                       , emit: version
+    path  "versions.yml"                       , emit: versions
 
     tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
     tuple val(meta), path("${prefix}.genome.bam")    , optional:true, emit: bam_genome
     tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
 
     script:
-    def software   = getSoftwareName(task.process)
-    prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -59,6 +58,7 @@ process RSEM_CALCULATEEXPRESSION {
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
+        star: \$(STAR --version | sed -e "s/STAR_//g")
     END_VERSIONS
     """
 }

@@ -23,16 +23,15 @@ process BWAMETH_INDEX {
 
     output:
     path "bwameth"      , emit: index
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bwameth.py index $fasta
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bwameth.py --version 2>&1 | cut -f2 -d" ")
+        ${getSoftwareName(task.process)}: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
     END_VERSIONS
     """
 }

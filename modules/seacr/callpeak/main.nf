@@ -25,10 +25,9 @@ process SEACR_CALLPEAK {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     SEACR_1.3.sh \\
@@ -40,6 +39,8 @@ process SEACR_CALLPEAK {
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
     END_VERSIONS
     """
 }

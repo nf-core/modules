@@ -25,10 +25,9 @@ process IVAR_TRIM {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path('*.log'), emit: log
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ivar trim \\
@@ -40,7 +39,7 @@ process IVAR_TRIM {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(ivar version 2>&1 | sed 's/^.*iVar version //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """
 }

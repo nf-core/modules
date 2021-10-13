@@ -23,15 +23,14 @@ process SAMTOOLS_STATS {
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
-    path  "versions.yml"            , emit: version
+    path  "versions.yml"            , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools stats $bam > ${bam}.stats
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

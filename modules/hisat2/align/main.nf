@@ -28,12 +28,11 @@ process HISAT2_ALIGN {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.log"), emit: summary
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     tuple val(meta), path("*fastq.gz"), optional:true, emit: fastq
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def strandedness = ''
@@ -62,6 +61,7 @@ process HISAT2_ALIGN {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     } else {
@@ -93,6 +93,7 @@ process HISAT2_ALIGN {
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     }

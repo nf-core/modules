@@ -23,10 +23,9 @@ process LOFREQ_INDELQUAL {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     lofreq indelqual \\
@@ -37,7 +36,7 @@ process LOFREQ_INDELQUAL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(lofreq version 2>&1 | sed 's/^.*lofreq //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
     END_VERSIONS
     """
 }

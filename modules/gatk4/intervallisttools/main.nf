@@ -23,10 +23,9 @@ process GATK4_INTERVALLISTTOOLS {
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
 
@@ -50,7 +49,7 @@ process GATK4_INTERVALLISTTOOLS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(gatk --version 2>&1 | sed 's/^.*(GATK) v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }

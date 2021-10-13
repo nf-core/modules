@@ -25,10 +25,9 @@ process QUALIMAP_BAMQC {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
@@ -58,7 +57,7 @@ process QUALIMAP_BAMQC {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(qualimap 2>&1 | sed 's/^.*QualiMap v.//; s/Built.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
     END_VERSIONS
     """
 }

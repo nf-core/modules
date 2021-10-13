@@ -26,10 +26,9 @@ process GRAPHMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     graphmap2 \\
@@ -43,7 +42,7 @@ process GRAPHMAP2_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(graphmap2 align 2>&1 | sed 's/^.*Version: v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//')
     END_VERSIONS
     """
 }

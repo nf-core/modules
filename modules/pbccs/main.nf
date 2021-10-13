@@ -29,7 +29,7 @@ process PBCCS {
     tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
     tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
     tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
-    path "versions.yml"                           , emit: version
+    path  "versions.yml"                          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -46,7 +46,7 @@ process PBCCS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ccs: \$( ccs --version|head -n 1|sed 's/ccs //'|sed 's/ (.*//' )
+        ${getSoftwareName(task.process)}: \$(echo \$(ccs --version 2>&1) | grep 'ccs' | sed 's/^.*ccs //; s/ .*\$//')
     END_VERSIONS
     """
 }

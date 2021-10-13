@@ -23,10 +23,9 @@ process PAIRIX {
 
     output:
     tuple val(meta), path(pair), path("*.px2"), emit: index
-    path "versions.yml"                       , emit: version
+    path "versions.yml"                       , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     pairix \\
         $options.args \\
@@ -34,7 +33,7 @@ process PAIRIX {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(pairix --help 2>&1 | sed 's/^.*Version: //; s/Usage.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
     END_VERSIONS
     """
 }

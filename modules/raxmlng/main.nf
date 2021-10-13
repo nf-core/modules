@@ -23,10 +23,9 @@ process RAXMLNG {
     output:
     path "*.raxml.bestTree", emit: phylogeny
     path "*.raxml.support" , optional:true, emit: phylogeny_bootstrapped
-    path "versions.yml"    , emit: version
+    path "versions.yml"    , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     raxml-ng \\
         $options.args \\
@@ -36,7 +35,7 @@ process RAXMLNG {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(raxml-ng --version 2>&1 | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
     END_VERSIONS
     """
 }

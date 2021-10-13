@@ -21,23 +21,22 @@ process FLASH {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.merged.*.fastq.gz"), emit: reads
-    path "versions.yml"                       , emit: version
+    tuple val(meta), path("*.fastq.gz"), emit: reads
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def merged   = "-o ${prefix}.merged"
-    def input_reads = "${reads[0]} ${reads[1]}"
     """
     flash \\
         $options.args \\
-        $merged \\
+        -o ${prefix} \\
         -z \\
-        $input_reads
+        ${reads[0]} \\
+        ${reads[1]}
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(flash --version)
+        ${getSoftwareName(task.process)}: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
     END_VERSIONS
     """
 }

@@ -26,16 +26,15 @@ process BISMARK_SUMMARY {
 
     output:
     path  "*report.{html,txt}", emit: summary
-    path  "versions.yml"      , emit: version
+    path  "versions.yml"      , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bismark2summary
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bismark -v 2>&1 | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
     END_VERSIONS
     """
 }

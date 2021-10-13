@@ -23,10 +23,9 @@ process KLEBORATE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     kleborate \\
@@ -36,7 +35,7 @@ process KLEBORATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(kleborate -v 2>&1 | sed 's/kleborate //;')
+        ${getSoftwareName(task.process)}: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """
 }

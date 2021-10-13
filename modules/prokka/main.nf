@@ -35,10 +35,9 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.log"), emit: log
     tuple val(meta), path("${prefix}/*.txt"), emit: txt
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
@@ -53,7 +52,7 @@ process PROKKA {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(prokka --version 2>&1 | sed 's/^.*prokka //')
+        ${getSoftwareName(task.process)}: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
     END_VERSIONS
     """
 }

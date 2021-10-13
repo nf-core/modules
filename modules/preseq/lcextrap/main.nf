@@ -25,10 +25,9 @@ process PRESEQ_LCEXTRAP {
     output:
     tuple val(meta), path("*.ccurve.txt"), emit: ccurve
     tuple val(meta), path("*.log")       , emit: log
-    path  "versions.yml"                 , emit: version
+    path  "versions.yml"                 , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     """
@@ -42,7 +41,7 @@ process PRESEQ_LCEXTRAP {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(preseq 2>&1 | sed 's/^.*Version: //; s/Usage:.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
     END_VERSIONS
     """
 }

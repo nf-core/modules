@@ -22,10 +22,9 @@ process FGBIO_SORTBAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     fgbio \\
@@ -35,7 +34,7 @@ process FGBIO_SORTBAM {
         -o ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(fgbio --version | sed -e "s/fgbio v//g")
+        ${getSoftwareName(task.process)}: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
     END_VERSIONS
     """
 }

@@ -24,11 +24,10 @@ process SEQUENZAUTILS_BAM2SEQZ {
     path wigfile
 
     output:
-    tuple val(meta), path("*.seqz.gz"), emit: seqz
-    path "versions.yml"           , emit: version
+    tuple val(meta), path("*.gz"), emit: seqz
+    path "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     sequenza-utils \\
@@ -38,11 +37,11 @@ process SEQUENZAUTILS_BAM2SEQZ {
         -t $tumourbam \\
         --fasta $fasta \\
         -gc $wigfile \\
-        -o ${prefix}.seqz.gz
+        -o ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(sequenzautils --version 2>&1 | sed 's/^.*sequenzautils //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """
 }

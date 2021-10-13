@@ -1,7 +1,7 @@
 name: kallisto_index
-description: write your description here
+description: Create kallisto index
 keywords:
-  - sort
+  - index
 tools:
   - kallisto:
       description: Quantifying abundances of transcripts from bulk and single-cell RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads.
@@ -18,9 +18,9 @@ input:
       pattern: "*.{fasta}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - idx:
       type: index

@@ -27,22 +27,22 @@ process TIDDIT_SV {
     tuple val(meta), path("*.vcf")        , emit: vcf
     tuple val(meta), path("*.ploidy.tab") , emit: ploidy
     tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "versions.yml"                  , emit: version
+    path  "versions.yml"                  , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference = fasta == "dummy_file.txt" ? "--ref $fasta" : ""
     """
     tiddit \\
-        --sv $options.args \\
+        --sv \\
+        $options.args \\
         --bam $bam \\
         $reference \\
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(tiddit -h 2>&1 | sed 's/^.*Version: //; s/(.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
     END_VERSIONS
     """
 }

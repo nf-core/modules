@@ -33,10 +33,9 @@ process ENSEMBLVEP {
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
     path "*.summary.html"             , emit: report
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """
@@ -59,7 +58,7 @@ process ENSEMBLVEP {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(vep --help 2>&1)
+        ${getSoftwareName(task.process)}: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
     END_VERSIONS
     """
 }

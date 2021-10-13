@@ -23,10 +23,9 @@ process PICARD_MERGESAMFILES {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bam_files = bams.sort()
     def avail_mem = 3
@@ -45,7 +44,7 @@ process PICARD_MERGESAMFILES {
             OUTPUT=${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(picard MergeSamFiles --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            ${getSoftwareName(task.process)}: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     } else {
@@ -53,7 +52,7 @@ process PICARD_MERGESAMFILES {
         ln -s ${bam_files[0]} ${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(picard MergeSamFiles --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            ${getSoftwareName(task.process)}: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     }

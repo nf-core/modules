@@ -29,10 +29,9 @@ process KALLISTOBUSTOOLS_COUNT {
 
     output:
     tuple val(meta), path ("*.count"), emit: count
-    path "versions.yml"              , emit: version
+    path "versions.yml"              , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def cdna     = t1c ? "-c1 $t1c" : ''
     def introns  = t2c ? "-c2 $t2c" : ''
@@ -53,7 +52,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
     END_VERSIONS
     """
 }

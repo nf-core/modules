@@ -23,17 +23,16 @@ process TABIX_BGZIP {
 
     output:
     tuple val(meta), path("*.gz"), emit: gz
-    path  "versions.yml"         , emit: version
+    path  "versions.yml"         , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bgzip -c $options.args $input > ${prefix}.${input.getExtension()}.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(tabix -h 2>&1 | sed 's/^.*Version: //; s/(.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

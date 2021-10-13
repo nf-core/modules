@@ -24,10 +24,9 @@ process BWA_ALN {
 
     output:
     tuple val(meta), path("*.sai"), emit: sai
-    path "versions.yml"                        , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     if (meta.single_end) {
@@ -43,7 +42,7 @@ process BWA_ALN {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(bwa 2>&1 | sed 's/^.*Version: //; s/Contact:.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
         END_VERSIONS
         """
     } else {
@@ -66,7 +65,7 @@ process BWA_ALN {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(bwa 2>&1 | sed 's/^.*Version: //; s/Contact:.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
         END_VERSIONS
         """
     }

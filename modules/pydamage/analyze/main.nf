@@ -23,10 +23,9 @@ process PYDAMAGE_ANALYZE {
 
     output:
     tuple val(meta), path("pydamage_results/pydamage_results.csv"), emit: csv
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pydamage \\
@@ -37,7 +36,7 @@ process PYDAMAGE_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(pydamage --version 2>&1 | sed -e 's/pydamage, version //g')
+        ${getSoftwareName(task.process)}: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
     END_VERSIONS
     """
 }

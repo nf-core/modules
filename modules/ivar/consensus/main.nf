@@ -26,10 +26,9 @@ process IVAR_CONSENSUS {
     tuple val(meta), path("*.fa")      , emit: fasta
     tuple val(meta), path("*.qual.txt"), emit: qual
     tuple val(meta), path("*.mpileup") , optional:true, emit: mpileup
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software     = getSoftwareName(task.process)
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
@@ -44,7 +43,7 @@ process IVAR_CONSENSUS {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(ivar version 2>&1 | sed 's/^.*iVar version //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """
 }

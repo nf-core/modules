@@ -24,10 +24,9 @@ process ABACAS {
 
     output:
     tuple val(meta), path('*.abacas*'), emit: results
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     abacas.pl \\
@@ -42,7 +41,7 @@ process ABACAS {
     mv unused_contigs.out ${prefix}.abacas.unused.contigs.out
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(abacas.pl -v 2>&1 | sed 's/^.*ABACAS.//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
     END_VERSIONS
     """
 }

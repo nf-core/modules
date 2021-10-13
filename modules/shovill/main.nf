@@ -27,10 +27,9 @@ process SHOVILL {
     tuple val(meta), path("shovill.log")                        , emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
     tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
-    path "versions.yml"                                         , emit: version
+    path "versions.yml"                                         , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def memory = task.memory.toGiga()
     """
     shovill \\
@@ -44,7 +43,7 @@ process SHOVILL {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(shovill --version 2>&1 | sed 's/^.*shovill //' )
+        ${getSoftwareName(task.process)}: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
     END_VERSIONS
     """
 }

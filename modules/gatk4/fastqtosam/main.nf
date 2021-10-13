@@ -23,10 +23,9 @@ process GATK4_FASTQTOSAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
     """
@@ -38,7 +37,7 @@ process GATK4_FASTQTOSAM {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(gatk --version 2>&1 | sed 's/^.*(GATK) v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }

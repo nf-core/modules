@@ -22,17 +22,20 @@ process UNTAR {
     path archive
 
     output:
-    path "$untar"       , emit: untar
-    path "versions.yml" , emit: version
+    path "$untar"      , emit: untar
+    path "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     untar        = archive.toString() - '.tar.gz'
     """
-    tar -xzvf $options.args $archive
+    tar \\
+        -xzvf \\
+        $options.args \\
+        $archive
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(tar --version 2>&1 | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//')
     END_VERSIONS
     """
 }

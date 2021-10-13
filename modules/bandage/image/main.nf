@@ -24,10 +24,9 @@ process BANDAGE_IMAGE {
     output:
     tuple val(meta), path('*.png'), emit: png
     tuple val(meta), path('*.svg'), emit: svg
-    path  "versions.yml"          , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     Bandage image $gfa ${prefix}.png $options.args
@@ -35,7 +34,7 @@ process BANDAGE_IMAGE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(Bandage --version 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

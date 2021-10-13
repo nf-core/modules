@@ -24,7 +24,7 @@ process KALLISTOBUSTOOLS_REF {
     val  workflow
 
     output:
-    path "versions.yml"   , emit: version
+    path "versions.yml"   , emit: versions
     path "kb_ref_out.idx" , emit: index
     path "t2g.txt"        , emit: t2g
     path "cdna.fa"        , emit: cdna
@@ -33,7 +33,6 @@ process KALLISTOBUSTOOLS_REF {
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
-    def software = getSoftwareName(task.process)
     if (workflow == "standard") {
         """
         kb \\
@@ -47,7 +46,7 @@ process KALLISTOBUSTOOLS_REF {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """
     } else {
@@ -66,7 +65,7 @@ process KALLISTOBUSTOOLS_REF {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(kb 2>&1 | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+            ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """
     }

@@ -31,10 +31,9 @@ process SNPEFF {
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
     path "*.csv"                      , emit: report
-    path "versions.yml"               , emit: version
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def avail_mem = 6
     if (!task.memory) {
         log.info '[snpEff] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
@@ -54,7 +53,7 @@ process SNPEFF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(snpEff -version 2>&1)
+        ${getSoftwareName(task.process)}: \$(echo \$(snpEff -version 2>&1) | cut -f 2 -d ' ')
     END_VERSIONS
     """
 }

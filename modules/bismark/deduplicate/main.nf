@@ -24,10 +24,9 @@ process BISMARK_DEDUPLICATE {
     output:
     tuple val(meta), path("*.deduplicated.bam")        , emit: bam
     tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "versions.yml"                               , emit: version
+    path  "versions.yml"                               , emit: versions
 
     script:
-    def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def seqtype    = meta.single_end ? '-s' : '-p'
     """
@@ -38,7 +37,7 @@ process BISMARK_DEDUPLICATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bismark -v 2>&1 | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
     END_VERSIONS
     """
 }

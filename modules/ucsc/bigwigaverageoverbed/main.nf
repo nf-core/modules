@@ -4,6 +4,8 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = '377'
+
 process UCSC_BIGWIGAVERAGEOVERBED {
     tag "$meta.id"
     label 'process_medium'
@@ -23,19 +25,22 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     path bigwig
 
     output:
-    tuple val(meta), path("*.tab")           , emit: tab
-    path "versions.yml"                      , emit: version
+    tuple val(meta), path("*.tab"), emit: tab
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.
-    bigWigAverageOverBed ${options.args} $bigwig $bed ${bed.getSimpleName()}.tab
+    bigWigAverageOverBed \\
+        $options.args \\
+        $bigwig \\
+        $bed \\
+        ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bigWigAverageOverBed 2>&1 | sed 's/bigWigAverageOverBed v//; s/ - Compute.*\$//')
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
     END_VERSIONS
     """
 }

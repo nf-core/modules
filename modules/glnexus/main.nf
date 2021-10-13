@@ -23,10 +23,9 @@ process GLNEXUS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Make list of GVCFs to merge
@@ -44,9 +43,10 @@ process GLNEXUS {
         $options.args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(glnexus_cli 2>&1 | head -n 1 | sed 's/^.*release //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
     END_VERSIONS
     """
 }

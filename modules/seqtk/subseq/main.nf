@@ -24,10 +24,9 @@ process SEQTK_SUBSEQ {
 
     output:
     path "*.gz"         , emit: sequences
-    path "versions.yml" , emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ?: ''
     def ext = "fa"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
@@ -43,7 +42,7 @@ process SEQTK_SUBSEQ {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(seqtk 2>&1 | sed 's/^.*Version: //; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

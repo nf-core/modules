@@ -4,6 +4,8 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = '2.3.2' // No version information printed
+
 process RAPIDNJ {
     label 'process_medium'
     publishDir "${params.outdir}",
@@ -21,12 +23,11 @@ process RAPIDNJ {
     path alignment
 
     output:
-    path "*.sth"        , emit: stockholm_alignment
-    path "*.tre"        , emit: phylogeny
-    path "versions.yml" , emit: version
+    path "*.sth"       , emit: stockholm_alignment
+    path "*.tre"       , emit: phylogeny
+    path "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'
@@ -38,10 +39,10 @@ process RAPIDNJ {
         -c $task.cpus \\
         -x rapidnj_phylogeny.tre
 
-    # Doesn't appear to be a way of getting the version number
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo 2.3.2)
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS
     """
 }
