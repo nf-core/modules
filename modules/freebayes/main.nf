@@ -28,7 +28,7 @@ process FREEBAYES {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (task.cpus > 0) {
+    if (task.cpus > 1) {
         """
         freebayes-parallel \\
             <(fasta_generate_regions.py ${fasta}.fai 10000) ${task.cpus} \
