@@ -32,8 +32,8 @@ process JUPYTERNOTEBOOK {
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    path("artifacts/*"), emit: artifacts, optional: true
-    path "versions.yml", emit: versions
+    path("artifacts/*")            , emit: artifacts, optional: true
+    path "versions.yml"            , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
