@@ -2,11 +2,11 @@
 include { initOptions; saveFiles; getProcessName; getSoftwareName } from './functions'
 include { dump_params_yml; indent_code_block }                      from "./parametrize"
 
-params.options = [:]
-options        = initOptions(params.options)
-params.parametrize = true
+params.options         = [:]
+options                = initOptions(params.options)
+params.parametrize     = true
 params.implicit_params = true
-params.meta_params = true
+params.meta_params     = true
 
 process RMARKDOWNNOTEBOOK {
     // tag { meta.id }
@@ -32,9 +32,9 @@ process RMARKDOWNNOTEBOOK {
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    path("artifacts/*"), emit: artifacts, optional: true
-    path "session_info.log", emit: session_info
-    path "versions.yml", emit: versions
+    path ("artifacts/*"),            emit: artifacts, optional: true
+    path  "session_info.log",        emit: session_info
+    path  "versions.yml",            emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

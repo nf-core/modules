@@ -2,11 +2,11 @@
 include { initOptions; saveFiles; getProcessName; getSoftwareName } from './functions'
 include { dump_params_yml; indent_code_block } from "./parametrize"
 
-params.options = [:]
-options        = initOptions(params.options)
-params.parametrize = true
+params.options         = [:]
+options                = initOptions(params.options)
+params.parametrize     = true
 params.implicit_params = true
-params.meta_params = true
+params.meta_params     = true
 
 process JUPYTERNOTEBOOK {
     tag "$meta.id"
