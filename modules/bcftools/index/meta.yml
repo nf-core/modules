@@ -38,11 +38,11 @@ output:
       pattern: "versions.yml"
   - csi:
       type: file
-      description: Indexed VCF file
+      description: Default VCF file index file
       pattern: "*.csi"
   - tbi:
       type: file
-      description: Indexed VCF file
+      description: VCF file index file for larger files (activated with -t parameter)
       pattern: "*.tbi"
 
 authors:
