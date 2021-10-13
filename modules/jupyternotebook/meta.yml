@@ -41,7 +41,9 @@ input:
       pattern: "*.{ipynb,py,md,Rmd,myst}"
   - parameters:
       type: map
-      description: Groovy map containing notebook parameters
+      description: |
+        Groovy map with notebook parameters which will be passed
+        to papermill in order to create parametrized reports.
   - input_files:
       type: path
       description: One or multiple files serving as input data for the notebook.
