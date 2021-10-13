@@ -32,14 +32,16 @@ process PBCCS {
     path  "versions.yml"                          , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    meta.former_id = meta.id
+    meta.id        = "${meta.id}.${chunk_num}"
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ccs \\
         $bam \\
         ${prefix}.ccs.bam \\
-        --report-file ${prefix}.${chunk_num}.ccs_report.txt \\
-        --report-json ${prefix}.${chunk_num}.ccs_report.json \\
-        --metrics-json ${prefix}.${chunk_num}.zmw_metrics.json.gz \\
+        --report-file ${prefix}.ccs_report.txt \\
+        --report-json ${prefix}.ccs_report.json \\
+        --metrics-json ${prefix}.zmw_metrics.json.gz \\
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
         $options.args
