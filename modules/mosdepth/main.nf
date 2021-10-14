@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process MOSDEPTH {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::mosdepth=0.3.1' : null)
+    conda (params.enable_conda ? 'bioconda::mosdepth=0.3.2' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mosdepth:0.3.1--ha7ba039_0"
+        container "https://depot.galaxyproject.org/singularity/mosdepth:0.3.2--h01d7912_0"
     } else {
-        container "quay.io/biocontainers/mosdepth:0.3.1--ha7ba039_0"
+        container "quay.io/biocontainers/mosdepth:0.3.2--h01d7912_0"
     }
 
     input:
@@ -31,10 +31,9 @@ process MOSDEPTH {
     tuple val(meta), path('*.per-base.bed.gz.csi'), emit: per_base_csi
     tuple val(meta), path('*.regions.bed.gz')     , emit: regions_bed
     tuple val(meta), path('*.regions.bed.gz.csi') , emit: regions_csi
-    path  '*.version.txt'                         , emit: version
+    path  "versions.yml"                          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval = window_size ? "--by ${window_size}" : "--by ${bed}"
     """
@@ -43,6 +42,9 @@ process MOSDEPTH {
         $options.args \\
         $prefix \\
         $bam
-    echo \$(mosdepth --version 2>&1) | sed 's/^.*mosdepth //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
+    END_VERSIONS
     """
 }

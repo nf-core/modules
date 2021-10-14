@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,10 +26,9 @@ process DELLY_CALL {
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
     tuple val(meta), path("*.csi"), emit: csi
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     delly \\
@@ -39,6 +38,9 @@ process DELLY_CALL {
         -g  $fasta \\
         $bam \\
 
-    echo \$(delly --version 2>&1) | sed 's/^.*Delly //; s/Using.*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
+    END_VERSIONS
     """
 }

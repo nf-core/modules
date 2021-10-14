@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,7 +26,7 @@ process DAMAGEPROFILER {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "*.version.txt"             , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
     def software     = getSoftwareName(task.process)
@@ -42,7 +42,10 @@ process DAMAGEPROFILER {
     $reference \\
     $species_list
 
-    echo \$(damageprofiler -v) | sed 's/^DamageProfiler v//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
+    END_VERSIONS
     """
 
 }

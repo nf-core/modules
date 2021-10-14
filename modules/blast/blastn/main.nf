@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process BLAST_BLASTN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::blast=2.10.1' : null)
+    conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/blast:2.10.1--pl526he19e7b1_3'
+        container 'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0'
     } else {
-        container 'quay.io/biocontainers/blast:2.10.1--pl526he19e7b1_3'
+        container 'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0'
     }
 
     input:
@@ -24,10 +24,9 @@ process BLAST_BLASTN {
 
     output:
     tuple val(meta), path('*.blastn.txt'), emit: txt
-    path '*.version.txt'                 , emit: version
+    path "versions.yml"                  , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     DB=`find -L ./ -name "*.ndb" | sed 's/.ndb//'`
@@ -37,6 +36,9 @@ process BLAST_BLASTN {
         -query $fasta \\
         $options.args \\
         -out ${prefix}.blastn.txt
-    echo \$(blastn -version 2>&1) | sed 's/^.*blastn: //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+    END_VERSIONS
     """
 }

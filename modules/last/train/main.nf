@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process LAST_TRAIN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::last=1238" : null)
+    conda (params.enable_conda ? 'bioconda::last=1250' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/last:1238--h2e03b76_0"
+        container "https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0"
     } else {
-        container "quay.io/biocontainers/last:1238--h2e03b76_0"
+        container "quay.io/biocontainers/last:1250--h2e03b76_0"
     }
 
     input:
@@ -24,10 +24,9 @@ process LAST_TRAIN {
 
     output:
     tuple val(meta), path("*.par"), emit: param_file
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
@@ -39,6 +38,9 @@ process LAST_TRAIN {
         $fastx \\
         > ${prefix}.\$INDEX_NAME.par
 
-    lastdb --version | sed 's/lastdb //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
+    END_VERSIONS
     """
 }

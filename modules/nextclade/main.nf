@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -20,36 +20,31 @@ process NEXTCLADE {
 
     input:
     tuple val(meta), path(fasta)
-    val   output_format
 
     output:
-    tuple val(meta), path("${prefix}.csv")       , optional:true, emit: csv
-    tuple val(meta), path("${prefix}.json")      , optional:true, emit: json
-    tuple val(meta), path("${prefix}.tree.json") , optional:true, emit: json_tree
-    tuple val(meta), path("${prefix}.tsv")       , optional:true, emit: tsv
+    tuple val(meta), path("${prefix}.csv")       , emit: csv
+    tuple val(meta), path("${prefix}.json")      , emit: json
+    tuple val(meta), path("${prefix}.tree.json") , emit: json_tree
+    tuple val(meta), path("${prefix}.tsv")       , emit: tsv
     tuple val(meta), path("${prefix}.clades.tsv"), optional:true, emit: tsv_clades
-    path "*.version.txt"                         , emit: version
+    path "versions.yml"                          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def format   = output_format
-    if (!(format in ['json', 'csv', 'tsv', 'tree', 'tsv-clades-only'])) {
-        format = 'json'
-    }
-    def extension = format
-    if (format in ['tsv-clades-only']) {
-        extension = '.clades.tsv'
-    } else if (format in ['tree']) {
-        extension = 'tree.json'
-    }
     """
     nextclade \\
         $options.args \\
         --jobs $task.cpus \\
         --input-fasta $fasta \\
-        --output-${format} ${prefix}.${extension}
+        --output-json ${prefix}.json \\
+        --output-csv ${prefix}.csv \\
+        --output-tsv ${prefix}.tsv \\
+        --output-tsv-clades-only ${prefix}.clades.tsv \\
+        --output-tree ${prefix}.tree.json
 
-    echo \$(nextclade --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(nextclade --version 2>&1)
+    END_VERSIONS
     """
 }

@@ -30,3 +30,4 @@ workflow test_kallistobustools_ref_nucleus {
 
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
+

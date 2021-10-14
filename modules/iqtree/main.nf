@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process IQTREE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::iqtree=2.1.2" : null)
+    conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/iqtree:2.1.2--h56fc30b_0"
+        container "https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0"
     } else {
-        container "quay.io/biocontainers/iqtree:2.1.2--h56fc30b_0"
+        container "quay.io/biocontainers/iqtree:2.1.4_beta--hdcc8f71_0"
     }
 
     input:
@@ -24,10 +24,9 @@ process IQTREE {
 
     output:
     path "*.treefile",    emit: phylogeny
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
     """
@@ -39,6 +38,9 @@ process IQTREE {
         -ntmax $task.cpus \\
         -mem $memory \\
 
-    echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version \\([0-9\\.]*\\) .*\$/\\1/' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(iqtree -version 2>&1) | sed 's/^IQ-TREE multicore version //;s/ .*//')
+    END_VERSIONS
     """
 }

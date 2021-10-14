@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,10 +27,9 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}.fna"), emit: nucleotide_fasta
     tuple val(meta), path("${prefix}.faa"), emit: amino_acid_fasta
     tuple val(meta), path("${prefix}_all.txt"), emit: all_gene_annotations
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     prodigal -i "${genome}" \\
@@ -41,6 +40,9 @@ process PRODIGAL {
         -a "${prefix}.faa" \\
         -s "${prefix}_all.txt"
 
-    echo \$(prodigal -v 2>&1) | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
+    END_VERSIONS
     """
 }

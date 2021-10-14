@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process SEQTK_SAMPLE {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
@@ -38,7 +37,10 @@ process SEQTK_SAMPLE {
             $sample_size \\
             | gzip --no-name > ${prefix}.fastq.gz \\
 
-        echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        END_VERSIONS
         """
     } else {
         if (!(options.args ==~ /.*-s[0-9]+.*/)) {
@@ -59,7 +61,10 @@ process SEQTK_SAMPLE {
             $sample_size \\
             | gzip --no-name > ${prefix}_2.fastq.gz \\
 
-        echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//' > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        END_VERSIONS
         """
     }
 }

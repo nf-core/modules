@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -10,11 +10,11 @@ process GUBBINS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::gubbins=2.4.1" : null)
+    conda (params.enable_conda ? 'bioconda::gubbins=3.0.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gubbins:2.4.1--py38h197edbe_1"
+        container "https://depot.galaxyproject.org/singularity/gubbins:3.0.0--py39h5bf99c6_0"
     } else {
-        container "quay.io/biocontainers/gubbins:2.4.1--py38h197edbe_1"
+        container "quay.io/biocontainers/gubbins:3.0.0--py39h5bf99c6_0"
     }
 
     input:
@@ -30,15 +30,17 @@ process GUBBINS {
     path "*.branch_base_reconstruction.embl", emit: embl_branch
     path "*.final_tree.tre"                 , emit: tree
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
-    path "*.version.txt"                    , emit: version
+    path "versions.yml"                     , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     run_gubbins.py \\
         --threads $task.cpus \\
         $options.args \\
         $alignment
-    echo \$(run_gubbins.py --version 2>&1) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(run_gubbins.py --version 2>&1)
+    END_VERSIONS
     """
 }
