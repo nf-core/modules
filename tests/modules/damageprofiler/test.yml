@@ -4,13 +4,13 @@
     - damageprofiler
   files:
     - path: output/damageprofiler/test/3p_freq_misincorporations.txt
-      md5sum: da4cac90c78899a7cb6d72d415392b49
+      md5sum: 8c7f5b15af36ef0638bdc1cbdfccb9df
     - path: output/damageprofiler/test/3pGtoA_freq.txt
-      md5sum: 8dab75d51a4b943b501d0995169c767f
+      md5sum: a5a0cc27b892842533a4be7eb26087cc
     - path: output/damageprofiler/test/5pCtoT_freq.txt
-      md5sum: fcc48ee5f72edff930d627c8bfdd8a5b
+      md5sum: e7657ae8a8a4e3b732efc4faaad9ef65
     - path: output/damageprofiler/test/5p_freq_misincorporations.txt
-      md5sum: 54665474f5ef17dcc268567e5eaa7d86
+      md5sum: d65637783178606c6a75b1ee5c0b6dfa
     - path: output/damageprofiler/test/DamagePlot_five_prime.svg
     - path: output/damageprofiler/test/DamagePlot.pdf
     - path: output/damageprofiler/test/DamagePlot_three_prime.svg
@@ -18,19 +18,93 @@
       contains:
         - "FINISHED SUCCESSFULLY"
     - path: output/damageprofiler/test/dmgprof.json
-      md5sum: 98499024c7e937896e481f2d3cfbdd3e
+      md5sum: 1f7e3b22d9f4ff0ca1957c86b9b5926e
     - path: output/damageprofiler/test/DNA_comp_genome.txt
-      md5sum: f91e70760d91a1193a27e360aaddf2fd
+      md5sum: 15a6bd985c14d9c500b8ec48e2202c8f
     - path: output/damageprofiler/test/DNA_composition_sample.txt
-      md5sum: 1257eb3eb42484647bfba2151f9ef04f
+      md5sum: 9adb06d056e05c22488eab485aca81c3
     - path: output/damageprofiler/test/edit_distance.pdf
     - path: output/damageprofiler/test/edit_distance.svg
     - path: output/damageprofiler/test/editDistance.txt
-      md5sum: af2d2f4a99058ec56eae88ec27779e38
+      md5sum: b9b7ad2553b9694ea890e8873decdbf8
     - path: output/damageprofiler/test/Length_plot_combined_data.svg
     - path: output/damageprofiler/test/Length_plot_forward_reverse_separated.svg
     - path: output/damageprofiler/test/Length_plot.pdf
     - path: output/damageprofiler/test/lgdistribution.txt
-      md5sum: c5d029bf3a92b613310ee23f47d94981
+      md5sum: e6ff4d1577949c6d696e1c1d5b9e41d8
     - path: output/damageprofiler/test/misincorporation.txt
-      md5sum: 3aa6dd749010a492d92a815a83c196a8
+      md5sum: 7f46e8239e31ddba58758e82b9b77c39
+
+- name: damageprofiler_reference
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_reference -c tests/config/nextflow.config -dump-channels
+  tags:
+    - damageprofiler
+  files:
+    - path: output/damageprofiler/test/3p_freq_misincorporations.txt
+      md5sum: 8c7f5b15af36ef0638bdc1cbdfccb9df
+    - path: output/damageprofiler/test/3pGtoA_freq.txt
+      md5sum: a5a0cc27b892842533a4be7eb26087cc
+    - path: output/damageprofiler/test/5pCtoT_freq.txt
+      md5sum: e7657ae8a8a4e3b732efc4faaad9ef65
+    - path: output/damageprofiler/test/5p_freq_misincorporations.txt
+      md5sum: d65637783178606c6a75b1ee5c0b6dfa
+    - path: output/damageprofiler/test/DamagePlot_five_prime.svg
+    - path: output/damageprofiler/test/DamagePlot.pdf
+    - path: output/damageprofiler/test/DamagePlot_three_prime.svg
+    - path: output/damageprofiler/test/DamageProfiler.log
+      contains:
+        - "FINISHED SUCCESSFULLY"
+    - path: output/damageprofiler/test/dmgprof.json
+      md5sum: 1f7e3b22d9f4ff0ca1957c86b9b5926e
+    - path: output/damageprofiler/test/DNA_comp_genome.txt
+      md5sum: 15a6bd985c14d9c500b8ec48e2202c8f
+    - path: output/damageprofiler/test/DNA_composition_sample.txt
+      md5sum: 9adb06d056e05c22488eab485aca81c3
+    - path: output/damageprofiler/test/edit_distance.pdf
+    - path: output/damageprofiler/test/edit_distance.svg
+    - path: output/damageprofiler/test/editDistance.txt
+      md5sum: b9b7ad2553b9694ea890e8873decdbf8
+    - path: output/damageprofiler/test/Length_plot_combined_data.svg
+    - path: output/damageprofiler/test/Length_plot_forward_reverse_separated.svg
+    - path: output/damageprofiler/test/Length_plot.pdf
+    - path: output/damageprofiler/test/lgdistribution.txt
+      md5sum: e6ff4d1577949c6d696e1c1d5b9e41d8
+    - path: output/damageprofiler/test/misincorporation.txt
+      md5sum: 7f46e8239e31ddba58758e82b9b77c39
+
+- name: damageprofiler_specieslist
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_specieslist -c tests/config/nextflow.config -dump-channels
+  tags:
+    - damageprofiler
+  files:
+    - path: output/damageprofiler/test/chr22:16570000-16610000/3p_freq_misincorporations.txt
+      md5sum: 8c7f5b15af36ef0638bdc1cbdfccb9df
+    - path: output/damageprofiler/test/chr22:16570000-16610000/3pGtoA_freq.txt
+      md5sum: a5a0cc27b892842533a4be7eb26087cc
+    - path: output/damageprofiler/test/chr22:16570000-16610000/5pCtoT_freq.txt
+      md5sum: e7657ae8a8a4e3b732efc4faaad9ef65
+    - path: output/damageprofiler/test/chr22:16570000-16610000/5p_freq_misincorporations.txt
+      md5sum: d65637783178606c6a75b1ee5c0b6dfa
+    - path: output/damageprofiler/test/chr22:16570000-16610000/DamagePlot_five_prime.svg
+    - path: output/damageprofiler/test/chr22:16570000-16610000/DamagePlot.pdf
+    - path: output/damageprofiler/test/chr22:16570000-16610000/DamagePlot_three_prime.svg
+    - path: output/damageprofiler/test/DamageProfiler.log
+      contains:
+        - "FINISHED SUCCESSFULLY"
+    - path: output/damageprofiler/test/chr22:16570000-16610000/dmgprof.json
+      md5sum: 1f7e3b22d9f4ff0ca1957c86b9b5926e
+    - path: output/damageprofiler/test/chr22:16570000-16610000/DNA_comp_genome.txt
+      md5sum: 15a6bd985c14d9c500b8ec48e2202c8f
+    - path: output/damageprofiler/test/chr22:16570000-16610000/DNA_composition_sample.txt
+      md5sum: 9adb06d056e05c22488eab485aca81c3
+    - path: output/damageprofiler/test/chr22:16570000-16610000/edit_distance.pdf
+    - path: output/damageprofiler/test/chr22:16570000-16610000/edit_distance.svg
+    - path: output/damageprofiler/test/chr22:16570000-16610000/editDistance.txt
+      md5sum: b9b7ad2553b9694ea890e8873decdbf8
+    - path: output/damageprofiler/test/chr22:16570000-16610000/Length_plot_combined_data.svg
+    - path: output/damageprofiler/test/chr22:16570000-16610000/Length_plot_forward_reverse_separated.svg
+    - path: output/damageprofiler/test/chr22:16570000-16610000/Length_plot.pdf
+    - path: output/damageprofiler/test/chr22:16570000-16610000/lgdistribution.txt
+      md5sum: e6ff4d1577949c6d696e1c1d5b9e41d8
+    - path: output/damageprofiler/test/chr22:16570000-16610000/misincorporation.txt
+      md5sum: 7f46e8239e31ddba58758e82b9b77c39
