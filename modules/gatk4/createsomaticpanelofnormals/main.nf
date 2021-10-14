@@ -25,12 +25,11 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     path dict
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"                   , emit: version
+    tuple val(meta), path("*.vcf.gz") , emit: vcf
+    tuple val(meta), path("*.tbi")    , emit: tbi
+    path "versions.yml"               , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
