@@ -36,6 +36,7 @@ process ISOSEQ3_CLUSTER {
     tuple val(meta), path("*.transcripts.singletons.bam")    , optional: true, emit: singletons_bam
     tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
 
+
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
