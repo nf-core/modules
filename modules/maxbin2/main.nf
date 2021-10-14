@@ -47,7 +47,7 @@ process MAXBIN2 {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        samtools: \$( \$(echo \$(run_MaxBin.pl -v) | head -n 1 | sed 's/MaxBin //' )
+        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
     END_VERSIONS
     """
 }
