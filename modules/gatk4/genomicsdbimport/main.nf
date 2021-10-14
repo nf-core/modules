@@ -19,7 +19,6 @@ process GATK4_GENOMICSDBIMPORT {
     }
 
     input:
-
     tuple val(meta) , path(vcf) , path(tbi) , path(wspace) , path(intervalfile) , val(intervalval)
     val run_intlist
     val run_updatewspace
@@ -32,37 +31,37 @@ process GATK4_GENOMICSDBIMPORT {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def inputsList = []
-    def inputsCommand = ''
-    def dirsCommand = ''
-    def intervalsCommand = ''
+    def inputs_list = []
+    def inputs_command = ''
+    def dir_command = ''
+    def intervals_command = ''
 
     if(run_intlist){
-        inputsCommand = ''
-        dirCommand = "--genomicsdb-update-workspace-path ${wspace}"
-        intervalsCommand = "--output-interval-list-to-file ${prefix}.interval_list"
+        inputs_command = ''
+        dir_command = "--genomicsdb-update-workspace-path ${wspace}"
+        intervals_command = "--output-interval-list-to-file ${prefix}.interval_list"
     } else {
         if(input_map){
-            inputsCommand = "--sample-name-map ${vcf[0]}"
+            inputs_command = "--sample-name-map ${vcf[0]}"
         } else {
-            vcf.each() {a -> inputsList.add(" -V " + a)}
-            inputsCommand = inputsList.join(' ')
+            vcf.each() {a -> inputs_list.add(" -V " + a)}
+            inputs_command = inputs_list.join(' ')
         }
 
         if(run_updatewspace){
-            dirCommand = "--genomicsdb-update-workspace-path ${wspace}"
-            intervalsCommand = ''
+            dir_command = "--genomicsdb-update-workspace-path ${wspace}"
+            intervals_command = ''
         } else {
-            dirCommand = "--genomicsdb-workspace-path ${prefix}_genomicsdb"
-            intervalsCommand = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
+            dir_command = "--genomicsdb-workspace-path ${prefix}_genomicsdb"
+            intervals_command = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
         }
     }
 
     """
     gatk GenomicsDBImport \\
-        ${inputsCommand} \\
-        ${dirCommand} \\
-        ${intervalsCommand} \\
+        $inputs_command \\
+        $dir_command \\
+        $intervals_command \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
