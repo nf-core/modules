@@ -1,32 +1,48 @@
 name: picard_collecthsmetrics
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Collects hybrid-selection (HS) metrics for a SAM or BAM file.
 keywords:
-  - sort
+  - alignment
+  - metrics
+  - statistics
+  - insert
+  - hybrid-selection
+  - quality
+  - bam
 tools:
   - picard:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Java tools for working with NGS data in the BAM format
-      homepage: None
-      documentation: None
-      tool_dev_url: https://github.com/broadinstitute/picard
-      doi: ""
-      licence: ['MIT']
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      tool_dev_url: https://github.com/broadinstitute/picard/
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: An aligned BAM/SAM file
+      pattern: "*.{bam,sam}"
+  - fasta:
+      type: file
+      description: |
+        A reference file to calculate dropout metrics measuring reduced representation of reads.
+        Optional input.
+      pattern: "*.fasta"
+  - bait_intervals:
+      type: file
+      description: An interval list file that contains the locations of the baits used.
+      pattern: "*.interval_list"
+  - target_intervals:
+      type: file
+      description: An interval list file that contains the locations of the targets.
+      pattern: "*.interval_list"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +53,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The metrics file.
+      pattern: "*.collecthsmetrics.txt"
 
 authors:
   - "@projectoriented"
