@@ -31,9 +31,9 @@ workflow test_damageprofiler_specieslist {
 
     input        = [ [ id:'test', single_end:false ], // meta map
                    [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true) ] ]
-    fasta        =
+    fasta        = []
     fai          = []
-    species_list = file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_referencesn_txt'], checkIfExists: true)
+    species_list = file(params.test_data['homo_sapiens']['genome']['genome_header'], checkIfExists: true)
 
     DAMAGEPROFILER ( input, fasta, fai, species_list )
 }
