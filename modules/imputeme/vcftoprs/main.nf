@@ -54,6 +54,10 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: List additional required output channels/values here
     path "*.version.txt"          , emit: version
 
+
+
+    containerOptions "-v :/home/ubuntu/configuration,:/home/ubuntu/logs,:/home/ubuntu/srv"
+
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -67,9 +71,10 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
+    #source("/home/ubuntu/srv/impute-me/functions.R")
     #prepare_individual_genome('$vcf')
     library(jsonlite)
-    list(test="test")->d
+    list(test0=list.files("/home/ubuntu/test/ubuntu"),home=list.files("/home/ubuntu"),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("/srv"),test4=list.files("~/configuration"))->d
     filename<-"test.json"
     JSON<-toJSON(d,digits=NA)
     f1<-file(filename,"w")
