@@ -56,8 +56,8 @@ process IMPUTEME_VCFTOPRS {
 
 
     containerOptions "\
-        --mount 'type=volume,source=,target=/home/ubuntu/logs' \
-        --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/misc_files' \
         --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
         --mount 'type=volume,source=,target=/home/ubuntu/data' \
         --mount 'type=volume,source=,target=/home/ubuntu/programs' \
