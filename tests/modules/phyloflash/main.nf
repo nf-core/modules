@@ -2,16 +2,16 @@
 
 nextflow.enable.dsl = 2
 
-include { PHYLOFLASH } from '../../../modules/phyloflash/main.nf' addParams( options: ['args': '-m -any --no-version'] )
+include { PHYLOFLASH } from '../../../modules/phyloflash/main.nf' addParams( options: ['args': ''] )
 
 process STUB_PHYLOFLASH_DATABASE {
     output:
-    path("*.silva_trunc.fasta.gz"), emit: silva_database
+    path("ref")                   , emit: silva_database
     path("UniVec")                , emit: univec_database
 
     stub:
     """
-    touch SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta.gz
+    mkdir ref
     touch UniVec
     """
 }

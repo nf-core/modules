@@ -24,6 +24,7 @@ process PHYLOFLASH {
     path(univec_database)
 
     output:
+    //FIXME
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
@@ -37,6 +38,7 @@ process PHYLOFLASH {
         ${options.args} \\
         -read1 ${reads[0]} \\
         -interleaved \\
+        -dbhome . \\
         -CPUs ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -50,6 +52,7 @@ process PHYLOFLASH {
         ${options.args} \\
         -read1 ${reads[0]} \\
         -read2 ${reads[1]} \\
+        -dbhome . \\
         -CPUs ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -58,4 +61,9 @@ process PHYLOFLASH {
     END_VERSIONS
     """
     }
+
+    stub:
+    """
+    touch FIXME
+    """
 }
