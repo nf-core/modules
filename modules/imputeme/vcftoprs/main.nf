@@ -34,7 +34,7 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "quay.io/lassefolkersen/imputeme:v1.0.6"
     } else {
         container "quay.io/lassefolkersen/imputeme:v1.0.6"
     }
