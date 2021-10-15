@@ -56,7 +56,8 @@ process IMPUTEME_VCFTOPRS {
 
 
 
-    containerOptions "--mount 'type=volume,source=,target=/home/ubuntu/configuration'"
+    containerOptions "--mount 'type=volume,source=,target=/home/ubuntu/configuration' --mount 'type=volume,source=,target=/home/ubuntu/srv'"
+   
 
     script:
     def software = getSoftwareName(task.process)
@@ -74,7 +75,7 @@ process IMPUTEME_VCFTOPRS {
     #source("/home/ubuntu/srv/impute-me/functions.R")
     #prepare_individual_genome('$vcf')
     library(jsonlite)
-    list(test0=list.files("/home/ubuntu/test/ubuntu"),home=list.files("/home/ubuntu"),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("/srv"),test4=list.files("~/configuration"))->d
+    list(test0=list.files("/home/ubuntu/test/ubuntu"),home=list.files("/home/ubuntu"),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
     filename<-"test.json"
     JSON<-toJSON(d,digits=NA)
     f1<-file(filename,"w")
