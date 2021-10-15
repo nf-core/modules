@@ -66,8 +66,21 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    R -e "prepare_individual_genome('$vcf')"
+    #!/usr/bin/env Rscript
+    #prepare_individual_genome('$vcf')
+    library(jsonlite)
+    list(test="test")->d
+    filename<-"test.json"
+    JSON<-toJSON(d,digits=NA)
+    f1<-file(filename,"w")
+    writeLines(JSON,f1)
+    close(f1)
 
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+
+    version_file_path="${software}.version.txt"
+    f2<-file(version_file_path,"w")
+    writeLines("v1.0.6",f2)
+    close(f2)
+    #echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
     """
 }
