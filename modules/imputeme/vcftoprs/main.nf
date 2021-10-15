@@ -80,7 +80,7 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
-    dir.create("logs/submission")
+    dir.create("~/logs/submission")
     source("/home/ubuntu/srv/impute-me/functions.R")
     prepare_individual_genome('$vcf')
     library(jsonlite)
