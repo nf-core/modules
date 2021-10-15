@@ -1,0 +1,58 @@
+name: strelka_somatic
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - sort
+tools:
+  - strelka:
+      ## TODO nf-core: Add a description and other details for the software below
+      description: Strelka calls somatic and germline small variants from mapped sequencing reads
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ['GPL v3']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - cram_normal:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - crai_normal:
+      type: file
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai,sai}"
+  - cram_tumor:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - crai_tumor:
+      type: file
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai,sai}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - vcf_indels:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@drpatelh"
