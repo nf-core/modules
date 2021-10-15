@@ -59,7 +59,7 @@ process IMPUTEME_VCFTOPRS {
         --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
         --mount 'type=tmpfs,source=,target=/home/ubuntu/misc_files' \
         --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
-        --mount 'type=volume,source=,target=/home/ubuntu/data' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
         --mount 'type=volume,source=,target=/home/ubuntu/programs' \
         --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
         --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
@@ -80,6 +80,7 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
+    dir.create("logs/submission")
     source("/home/ubuntu/srv/impute-me/functions.R")
     prepare_individual_genome('$vcf')
     library(jsonlite)
