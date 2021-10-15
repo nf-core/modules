@@ -56,7 +56,7 @@ process IMPUTEME_VCFTOPRS {
 
 
 
-    containerOptions "-v :/home/ubuntu/configuration,:/home/ubuntu/logs,:/home/ubuntu/srv"
+    containerOptions "--mount 'type=volume,source=,target=/home/ubuntu/configuration'"
 
     script:
     def software = getSoftwareName(task.process)
