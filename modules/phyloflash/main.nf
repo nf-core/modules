@@ -20,7 +20,8 @@ process PHYLOFLASH {
 
     input:
     tuple val(meta), path(reads)
-    path(database)
+    path(silva_database)
+    path(univec_database)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -30,7 +31,20 @@ process PHYLOFLASH {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    //TODO Accomodate interleaved
+    if (meta.single_end) {
+    """
+    phyloFlash.pl \\
+        ${options.args} \\
+        -read1 ${reads[0]} \\
+        -interleaved \\
+        -CPUs ${task.cpus}
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+    END_VERSIONS
+    """
+    } else {
     """
     phyloFlash.pl \\
         ${options.args} \\
@@ -43,4 +57,5 @@ process PHYLOFLASH {
         ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
     END_VERSIONS
     """
+    }
 }

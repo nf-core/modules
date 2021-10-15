@@ -1,7 +1,13 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml phyloflash
 - name: phyloflash
-  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash_single_end -c tests/config/nextflow.config -stub-run
+  tags:
+    - phyloflash
+  files:
+    - path: output/phyloflash/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+
+- name: phyloflash
+  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash -c tests/config/nextflow.config -stub-run
   tags:
     - phyloflash
   files:
