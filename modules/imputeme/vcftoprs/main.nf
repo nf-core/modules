@@ -62,8 +62,8 @@ process IMPUTEME_VCFTOPRS {
         --mount 'type=volume,source=,target=/home/ubuntu/data' \
         --mount 'type=volume,source=,target=/home/ubuntu/programs' \
         --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
-        --mount 'type=volume,source=,target=/home/ubuntu/imputations' \
-        --mount 'type=volume,source=,target=/home/ubuntu/vcfs' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
         --mount 'type=volume,source=,target=/home/ubuntu/srv'"
 
 
