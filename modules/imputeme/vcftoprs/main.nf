@@ -56,7 +56,9 @@ process IMPUTEME_VCFTOPRS {
 
 
 
-    containerOptions "--mount 'type=volume,source=,target=/home/ubuntu/configuration' --mount 'type=volume,source=,target=/home/ubuntu/srv'"
+    containerOptions "\
+        --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
+        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
    
 
     script:
