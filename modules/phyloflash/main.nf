@@ -24,7 +24,7 @@ process PHYLOFLASH {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,11 +33,14 @@ process PHYLOFLASH {
     //TODO Accomodate interleaved
     """
     phyloFlash.pl \\
-        $options.args \\
-        -read1 $reads[0] \\
-        -read2 $reads[1] \\
-        -CPUs $task.cpus
+        ${options.args} \\
+        -read1 ${reads[0]} \\
+        -read2 ${reads[1]} \\
+        -CPUs ${task.cpus}
 
-    echo \$(phyloFlash.pl -version 2>&1) | sed 's/^.*phyloFlash //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+    END_VERSIONS
     """
 }
