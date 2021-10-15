@@ -34,6 +34,10 @@ input:
         A reference file to calculate dropout metrics measuring reduced representation of reads.
         Optional input.
       pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of FASTA file. Only needed when fasta is supplied.
+      pattern: "*.fai"
   - bait_intervals:
       type: file
       description: An interval list file that contains the locations of the baits used.

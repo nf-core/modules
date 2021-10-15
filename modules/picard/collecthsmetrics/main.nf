@@ -21,6 +21,7 @@ process PICARD_COLLECTHSMETRICS {
     input:
     tuple val(meta), path(bam)
     path fasta
+    path fai
     path bait_intervals
     path target_intervals
 
