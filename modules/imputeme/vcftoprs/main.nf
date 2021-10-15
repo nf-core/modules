@@ -55,7 +55,6 @@ process IMPUTEME_VCFTOPRS {
     path "*.version.txt"          , emit: version
 
 
-
     containerOptions "\
         --mount 'type=volume,source=,target=/home/ubuntu/logs' \
         --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
@@ -66,7 +65,7 @@ process IMPUTEME_VCFTOPRS {
         --mount 'type=volume,source=,target=/home/ubuntu/imputations' \
         --mount 'type=volume,source=,target=/home/ubuntu/vcfs' \
         --mount 'type=volume,source=,target=/home/ubuntu/srv'"
-   
+
 
     script:
     def software = getSoftwareName(task.process)
@@ -81,8 +80,8 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
-    #source("/home/ubuntu/srv/impute-me/functions.R")
-    #prepare_individual_genome('$vcf')
+    source("/home/ubuntu/srv/impute-me/functions.R")
+    prepare_individual_genome('$vcf')
     library(jsonlite)
     list(test0=list.files("/home/ubuntu/test/ubuntu"),home=list.files("/home/ubuntu"),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
     filename<-"test.json"
