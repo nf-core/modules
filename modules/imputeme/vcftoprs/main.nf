@@ -58,7 +58,7 @@ process IMPUTEME_VCFTOPRS {
 
     containerOptions "\
         --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/misc_files' \
+        --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
         --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
         --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
         --mount 'type=volume,source=,target=/home/ubuntu/programs' \
@@ -82,20 +82,32 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
+    #hacking test file to conform to expected test-results
     to_insert<-"##fileformat=VCFv4.2"
     file.copy("$vcf","original.vcf.gz")
     system(paste0("zcat original.vcf.gz | sed '1i ",to_insert,"' | gzip -c > $vcf"))
-
     dir.create("~/logs/submission")
     source("/home/ubuntu/srv/impute-me/functions.R")
-    prepare_individual_genome('$vcf',overrule_vcf_checks=T)
-    library(jsonlite)
-    list(test0=list.files(getwd()),home=getwd(),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
-    filename<-"test.json"
-    JSON<-toJSON(d,digits=NA)
-    f1<-file(filename,"w")
-    writeLines(JSON,f1)
-    close(f1)
+
+
+    #set more verbose
+    system("echo 'verbose <- 10' >> /home/ubuntu/configuration/configuration.R")
+
+
+    #Main run
+    prepare_individual_genome('$vcf',overrule_vcf_checks=T,predefined_uniqueID="id_111111111")
+    convert_vcfs_to_simple_format(uniqueID="id_111111111")
+    crawl_for_snps_to_analyze(uniqueIDs="id_111111111")
+    run_export_script(uniqueIDs="id_111111111")
+    file.copy("data/id_111111111/id_111111111_data.json","output.json")
+
+#    library(jsonlite)
+#    list(test0=list.files(getwd()),home=getwd(),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
+#    filename<-"test.json"
+#    JSON<-toJSON(d,digits=NA)
+#    f1<-file(filename,"w")
+#    writeLines(JSON,f1)
+#    close(f1)
 
 
     version_file_path="${software}.version.txt"
