@@ -81,9 +81,13 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
+
+    to_insert<-"##fileformat=VCFv4.2"
+    file.copy("$vcf","original.vcf.gz")
+    system(paste0("zcat original.vcf.gz | sed '1i ",to_insert,"' | gzip -c > $vcf"))
+
     dir.create("~/logs/submission")
     source("/home/ubuntu/srv/impute-me/functions.R")
-    #system("sed -i '1 i\##fileformat=VCFv4.2' $vcf)
     prepare_individual_genome('$vcf',overrule_vcf_checks=T)
     library(jsonlite)
     list(test0=list.files(getwd()),home=getwd(),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
