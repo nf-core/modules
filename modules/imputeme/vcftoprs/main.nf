@@ -55,18 +55,17 @@ process IMPUTEME_VCFTOPRS {
     path "*.version.txt"          , emit: version
 
 
-//    containerOptions "--user root --workdir /home/root"
 
-//    containerOptions "\
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/misc_files' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/programs' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
+    containerOptions "\
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/misc_files' \
+        --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
+        --mount 'type=volume,source=,target=/home/ubuntu/programs' \
+        --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
+        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
+        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
 
 
     script:
@@ -82,9 +81,10 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     #!/usr/bin/env Rscript
-    #dir.create("~/logs/submission")
-    #source("/home/ubuntu/srv/impute-me/functions.R")
-    #prepare_individual_genome('$vcf',overrule_vcf_checks=T)
+    dir.create("~/logs/submission")
+    source("/home/ubuntu/srv/impute-me/functions.R")
+    #system("sed -i '1 i\##fileformat=VCFv4.2' $vcf)
+    prepare_individual_genome('$vcf',overrule_vcf_checks=T)
     library(jsonlite)
     list(test0=list.files(getwd()),home=getwd(),root=list.files("/"),test=list.files("test"),test2=list.files("/home/ubuntu/test"),test3=list.files("~/srv"),test4=list.files("~/configuration"))->d
     filename<-"test.json"
