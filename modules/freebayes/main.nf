@@ -51,7 +51,7 @@ process FREEBAYES {
             $options.args \\
             $bam > ${prefix}.vcf
 
-        gzip ${prefix}.vcf
+        gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
