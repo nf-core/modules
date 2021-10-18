@@ -10,7 +10,7 @@ include { HIFIASM } from '../../../modules/hifiasm/main.nf' addParams( options: 
 workflow test_hifiasm_hifi_only {
     input = [
         [ id:'test' ], // meta map
-        [ file(params.test_data['homo_sapiens']['pacbio']['test_hifi_fastq_gz'], checkIfExists: true) ]
+        [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
     ]
 
     HIFIASM ( input, [], [], false )
@@ -22,7 +22,7 @@ workflow test_hifiasm_hifi_only {
 workflow test_hifiasm_with_parental_reads {
     input = [
         [ id:'test' ], // meta map
-        [ file(params.test_data['homo_sapiens']['pacbio']['test_hifi_fastq_gz'], checkIfExists: true) ]
+        [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
     ]
     paternal_kmer_dump = file(params.test_data['homo_sapiens']['illumina']['test_yak'], checkIfExists: true)
     maternal_kmer_dump = file(params.test_data['homo_sapiens']['illumina']['test2_yak'], checkIfExists: true)
