@@ -11,6 +11,10 @@ workflow test_freebayes {
               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)]
     reference = [file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
                  file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
+    targets = []
+    samples = []
+    populations = []
+    cnv = []
 
-    FREEBAYES ( input, reference )
+    FREEBAYES ( input, reference, targets, samples, populations, cnv)
 }

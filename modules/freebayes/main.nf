@@ -21,6 +21,11 @@ process FREEBAYES {
     input:
     tuple val(meta), path(bam), path(bai)
     tuple path(fasta), path(fai)
+    path(targets)
+    path(samples)
+    path(populations)
+    path(cnv)
+
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -28,15 +33,23 @@ process FREEBAYES {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def targets_file = targets ? "--target ${targets}" : ""
+    def samples_file = samples ? "--samples ${samples}" : ""
+    def populations_file = populations ? "--populations ${populations}" : ""
+    def cnv_file = cnv ? "--cnv-map ${cnv}" : ""
     if (task.cpus > 1) {
         """
         freebayes-parallel \\
-            <(fasta_generate_regions.py ${fasta}.fai 10000) ${task.cpus} \
+            <(fasta_generate_regions.py ${fasta}.fai 10000) ${task.cpus} \\
             -f $fasta \\
+            $targets_file \\
+            $samples_file \\
+            $populations_file \\
+            $cnv_file \\
             $options.args \\
             $bam  > ${prefix}.vcf
 
-        gzip ${prefix}.vcf
+        gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -48,6 +61,10 @@ process FREEBAYES {
         """
         freebayes \\
             -f $fasta \\
+            $targets_file \\
+            $samples_file \\
+            $populations_file \\
+            $cnv_file \\
             $options.args \\
             $bam > ${prefix}.vcf
 

@@ -36,7 +36,29 @@ input:
   - fai:
       type: file
       description: reference fasta file index
-      pattern: ".{fai}"
+      pattern: "*.fai"
+  - targets:
+      type: file
+      description: Optional - Limit analysis to targets listed in this BED-format FILE.
+      pattern: "*.bed"
+  - samples:
+      type: file
+      description: Optional - Limit analysis to samples listed (one per line) in the FILE.
+      pattern: "*.txt"
+  - populations:
+      type: file
+      description: Optional - Each line of FILE should list a sample and a population which it is part of.
+      pattern: "*.txt"
+  - cnv:
+      type: file
+      description: |
+          A copy number map BED file, which has
+          either a sample-level ploidy:
+          sample_name copy_number
+          or a region-specific format:
+          seq_name start end sample_name copy_number
+      pattern: "*.bed"
+
 
 output:
   - meta:
