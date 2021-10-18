@@ -20,13 +20,13 @@ process PHYLOFLASH {
 
     input:
     tuple val(meta), path(reads)
+    val(lib_name)
     path(silva_database)
     path(univec_database)
 
     output:
-    //FIXME
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${lib_name}_results")  , emit: results_folder
+    path "versions.yml"                           , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
@@ -37,9 +37,13 @@ process PHYLOFLASH {
     phyloFlash.pl \\
         ${options.args} \\
         -read1 ${reads[0]} \\
+        -lib ${lib_name}
         -interleaved \\
         -dbhome . \\
         -CPUs ${task.cpus}
+
+    mkdir ${lib_name}_results
+    mv ${lib_name}*  ${lib_name}_results
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
@@ -52,8 +56,12 @@ process PHYLOFLASH {
         ${options.args} \\
         -read1 ${reads[0]} \\
         -read2 ${reads[1]} \\
+        -lib ${lib_name} \\
         -dbhome . \\
         -CPUs ${task.cpus}
+
+    mkdir ${lib_name}_results
+    mv ${lib_name}.*  ${lib_name}_results
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
@@ -64,6 +72,8 @@ process PHYLOFLASH {
 
     stub:
     """
-    touch FIXME
+    mkdir ${lib_name}_results
+    touch ${lib_name}_results/${lib_name}.SSU.collection.fasta
+    touch ${lib_name}_results/${lib_name}.phyloFlash
     """
 }

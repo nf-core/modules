@@ -24,7 +24,7 @@ workflow test_phyloflash_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]]
 
-    PHYLOFLASH ( input, STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
+    PHYLOFLASH ( input, 'testLib', STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
 }
 
 
@@ -38,5 +38,5 @@ workflow test_phyloflash {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    PHYLOFLASH ( input, STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
+    PHYLOFLASH ( input, 'testLib', STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
 }
