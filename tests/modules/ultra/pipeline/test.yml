@@ -1,30 +1,50 @@
 - name: ultra pipeline test_ultra_pipeline
   command: nextflow run tests/modules/ultra/pipeline -entry test_ultra_pipeline -c tests/config/nextflow.config
   tags:
-    - ultra/pipeline
     - ultra
+    - ultra/pipeline
   files:
     - path: output/ultra/outfolder/all_splice_pairs_annotations.pickle
+      md5sum: 1506ce2cfffb6036136603247f32a411
     - path: output/ultra/outfolder/all_splice_sites_annotations.pickle
+      md5sum: a2e7da85e582741223424e981e908b8e
     - path: output/ultra/outfolder/chr_to_id.pickle
+      md5sum: b8aa0a986ec685f5f7e8fad651ff1b90
     - path: output/ultra/outfolder/database.db
       md5sum: 912c6dc74ddfd70268e2eec82ae87caf
     - path: output/ultra/outfolder/exon_choordinates_to_id.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/flank_choordinates.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/gene_to_small_segments.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/id_to_chr.pickle
+      md5sum: 020263c6d9f399670871ca187c1d203f
     - path: output/ultra/outfolder/max_intron_chr.pickle
+      md5sum: f568beb2f859d8e9b1f2993048e4fcd2
     - path: output/ultra/outfolder/parts_to_segments.pickle
+      md5sum: 665c20486d296636e8e3d42e3bc21390
     - path: output/ultra/outfolder/ref_exon_sequences.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/ref_flank_sequences.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/ref_part_sequences.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/ref_segment_sequences.pickle
+      md5sum: fe89d6588433b848a2055395765032a6
     - path: output/ultra/outfolder/refs_id_lengths.pickle
+      md5sum: 102873a7c330dc1ca562a699dec2d5f2
     - path: output/ultra/outfolder/refs_lengths.pickle
+      md5sum: 93012591af522a2f6a6c1620f23aa065
     - path: output/ultra/outfolder/segment_id_to_choordinates.pickle
+      md5sum: 59689a3f3e8bebb1938d576932f266f8
     - path: output/ultra/outfolder/segment_to_gene.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/segment_to_ref.pickle
+      md5sum: 628eb8bd24cda6f7dd6a2de7f591ffda
     - path: output/ultra/outfolder/splices_to_transcripts.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/ultra/outfolder/test.sam
       md5sum: a37a1f9594a3099522dc1f6a903b2b12
     - path: output/ultra/outfolder/transcripts_to_splices.pickle
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
