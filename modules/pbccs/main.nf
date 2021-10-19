@@ -39,9 +39,9 @@ process PBCCS {
     ccs \\
         $bam \\
         ${prefix}.ccs.bam \\
-        --report-file ${prefix}.ccs_report.txt \\
-        --report-json ${prefix}.ccs_report.json \\
-        --metrics-json ${prefix}.zmw_metrics.json.gz \\
+        --report-file ${prefix}.report.txt \\
+        --report-json ${prefix}.report.json \\
+        --metrics-json ${prefix}.metrics.json.gz \\
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
         $options.args
