@@ -24,17 +24,15 @@ process PBCCS {
     val chunk_on
 
     output:
-    tuple val(meta), path("*.ccs.bam")            , emit: bam
-    tuple val(meta), path("*.ccs.bam.pbi")        , emit: pbi
-    tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
-    tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
-    tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
-    path  "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.ccs.bam")        , emit: bam
+    tuple val(meta), path("*.ccs.bam.pbi")    , emit: pbi
+    tuple val(meta), path("*.report.txt" )    , emit: ccs_report_txt
+    tuple val(meta), path("*.report.json" )   , emit: ccs_report_json
+    tuple val(meta), path("*.metrics.json.gz"), emit: zmw_metrics
+    path  "versions.yml"                      , emit: versions
 
     script:
-    meta.former_id = meta.id
-    meta.id        = "${meta.id}.${chunk_num}"
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ccs \\
         $bam \\
