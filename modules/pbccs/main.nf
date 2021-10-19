@@ -24,11 +24,11 @@ process PBCCS {
     val chunk_on
 
     output:
-    tuple val(meta), path("*.ccs.bam")        , emit: bam
-    tuple val(meta), path("*.ccs.bam.pbi")    , emit: pbi
-    tuple val(meta), path("*.report.txt" )    , emit: ccs_report_txt
-    tuple val(meta), path("*.report.json" )   , emit: ccs_report_json
-    tuple val(meta), path("*.metrics.json.gz"), emit: zmw_metrics
+    tuple val(meta), path("*.chunk*.bam")     , emit: bam
+    tuple val(meta), path("*.chunk*.bam.pbi") , emit: pbi
+    tuple val(meta), path("*.report.txt" )    , emit: report_txt
+    tuple val(meta), path("*.report.json" )   , emit: report_json
+    tuple val(meta), path("*.metrics.json.gz"), emit: metrics
     path  "versions.yml"                      , emit: versions
 
     script:
@@ -36,7 +36,7 @@ process PBCCS {
     """
     ccs \\
         $bam \\
-        ${prefix}.ccs.bam \\
+        ${prefix}.chunk${chunk_num}.bam \\
         --report-file ${prefix}.report.txt \\
         --report-json ${prefix}.report.json \\
         --metrics-json ${prefix}.metrics.json.gz \\
