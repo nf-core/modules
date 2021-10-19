@@ -18,11 +18,13 @@ input:
     - bam:
         type: file
         description: |
-            List of input BAM files whose reads will be deduplicated via UMIs. 
+            List of input BAM files whose reads will be deduplicated via UMIs.
+        pattern: "*.{bam}"
     - bai:
         type: list
         description: |
-            List of BAM index files corresponding to each BAM input. 
+            List of BAM index files corresponding to each BAM input.
+        pattern: "*.{bai}"
 output:
     - meta:
         type: map
