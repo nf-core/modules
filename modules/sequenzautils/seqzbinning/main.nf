@@ -23,7 +23,7 @@ process SEQUENZAUTILS_SEQZBINNING {
 
     output:
     tuple val(meta), path("*.binned.gz"), emit: seqz_binned
-    path "*.version.txt"          , emit: version
+    path "versions.yml"          , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
@@ -36,8 +36,7 @@ process SEQUENZAUTILS_SEQZBINNING {
         -o ${prefix}.binned.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
+    \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """
 }
