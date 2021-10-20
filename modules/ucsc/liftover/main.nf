@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = 'v377'
+def VERSION = '377'
 
 process UCSC_LIFTOVER {
     tag "$meta.id"
