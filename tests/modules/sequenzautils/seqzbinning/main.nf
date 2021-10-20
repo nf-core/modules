@@ -6,8 +6,17 @@ include { SEQUENZAUTILS_SEQZBINNING } from '../../../../modules/sequenzautils/se
 
 workflow test_sequenzautils_seqzbinning {
     
-    input = [ [ id:'test' ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_seqz'], checkIfExists: true) ]
+    tumourbam = file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+    normalbam = file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)
 
-    SEQUENZAUTILS_SEQZBINNING ( input )
+    input = [ [ id:'test' ], // meta map
+              tumourbam,
+              normalbam
+            ]
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    wig   = file(params.test_data['sarscov2']['illumina']['test_wig_gz'], checkIfExists: true)
+
+    SEQUENZAUTILS_BAM2SEQZ ( input, fasta, wig )
+
+    SEQUENZAUTILS_SEQZBINNING ( SEQUENZAUTILS_BAM2SEQZ.out[0] )
 }
