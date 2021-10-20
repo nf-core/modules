@@ -11,6 +11,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
+
 process IMPUTEME_VCFTOPRS {
     tag "$meta.id"
     label 'process_low'
@@ -26,9 +27,9 @@ process IMPUTEME_VCFTOPRS {
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         // container "quay.io/lassefolkersen/imputeme:v1.0.6"
         // TODO not fixed yet
-    } else {a
+    } else {
         // TODO - change to the biocontainer-based location
-        container "quay.io/lassefolkersen/imputeme:v1.0.6"
+        container "quay.io/lassefolkersen/imputeme:latest"
     }
 
     input:
@@ -46,16 +47,16 @@ process IMPUTEME_VCFTOPRS {
     // For now, the most minimal solution seemed to be export of all required folders as volumes or tmpfs. In next
     // version of impute.me it's possible that the /home/ubuntu prefix will be made configurable, so many of these
     // exports can be avoided.
-    containerOptions "\
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
-        --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/configuration' \
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
-        --mount 'type=volume,source=,target=/home/ubuntu/programs' \
-        --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
-        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
-        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
+//    containerOptions "\
+//        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
+//        --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
+//        --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
+//        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
+//        --mount 'type=volume,source=,target=/home/ubuntu/programs' \
+//        --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
+//        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
+//        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
+//        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
 
 
     script:
@@ -75,13 +76,13 @@ process IMPUTEME_VCFTOPRS {
 
     #set more verbose - this block re-writes the default configuration file to be more verbose
     #it's not really needed, other than for debugging, so this block can also be removed.
-    system("echo 'verbose <- 10' > /home/ubuntu/configuration/configuration.R")
-    system("echo 'running_as_docker <- TRUE' >> /home/ubuntu/configuration/configuration.R")
-    system("echo 'block_double_uploads_by_md5sum <- FALSE' >> /home/ubuntu/configuration/configuration.R")
+    system("echo 'verbose <- 10' > configuration.R")
+    system("echo 'running_as_docker <- FALSE' >> configuration.R")
+    system("echo 'block_double_uploads_by_md5sum <- FALSE' >> configuration.R")
 
     #setup minimal environment for vcf-processing
-    dir.create("~/logs/submission")
-    source("/home/ubuntu/srv/impute-me/functions.R")
+    #dir.create("~/logs/submission")
+    source("/imputeme/code/impute-me/functions.R")
 
     #main run
     prepare_individual_genome('$vcf',overrule_vcf_checks=T,predefined_uniqueID="id_111111111")
