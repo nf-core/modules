@@ -25,10 +25,10 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        // container "quay.io/lassefolkersen/imputeme:v1.0.6"
-        // TODO not fixed yet
+        
+        // TODO not fixed yet - biocontainers only carry the docker image
     } else {
-        // TODO - change to the biocontainer-based location
+        // TODO - change to the biocontainer-based location (after code-changes to imputeme are done and up there)
         container "quay.io/lassefolkersen/imputeme:latest"
     }
 
@@ -58,7 +58,7 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID="id_111111111")
     crawl_for_snps_to_analyze(uniqueIDs="id_111111111")
     run_export_script(uniqueIDs="id_111111111")
-    file.copy("data/id_111111111/id_111111111_data.json","output.json")
+    file.copy("~/data/id_111111111/id_111111111_data.json","output.json")
 
     #version export.
     version_file_path="${software}.version.txt"
