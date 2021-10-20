@@ -40,24 +40,6 @@ process IMPUTEME_VCFTOPRS {
     path "*.version.txt"          , emit: version
 
 
-    // The impute.me docker runs as user ubuntu, in /home/ubuntu. This works on direct AWS-implementations and on
-    // handheld docker. However, when running in the nf-core setup (and also singularity fwiw) the home folder
-    // is overwritten. The obvious fix, of using root or another user is a bit problematic because that strongly
-    // affects the shiny-server setup which needs (read and write) access and complains about running as root.
-    // For now, the most minimal solution seemed to be export of all required folders as volumes or tmpfs. In next
-    // version of impute.me it's possible that the /home/ubuntu prefix will be made configurable, so many of these
-    // exports can be avoided.
-//    containerOptions "\
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/logs' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/misc_files' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/configuration' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/data' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/programs' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/prs_dir' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/imputations' \
-//        --mount 'type=tmpfs,source=,target=/home/ubuntu/vcfs' \
-//        --mount 'type=volume,source=,target=/home/ubuntu/srv'"
-
 
     script:
     def software = getSoftwareName(task.process)
@@ -76,12 +58,11 @@ process IMPUTEME_VCFTOPRS {
 
     #set more verbose - this block re-writes the default configuration file to be more verbose
     #it's not really needed, other than for debugging, so this block can also be removed.
-    system("echo 'verbose <- 10' > configuration.R")
-    system("echo 'running_as_docker <- FALSE' >> configuration.R")
-    system("echo 'block_double_uploads_by_md5sum <- FALSE' >> configuration.R")
+    #system("echo 'verbose <- 10' > configuration.R")
+    #system("echo 'running_as_docker <- FALSE' >> configuration.R")
+    #system("echo 'block_double_uploads_by_md5sum <- FALSE' >> configuration.R")
 
     #setup minimal environment for vcf-processing
-    #dir.create("~/logs/submission")
     source("/imputeme/code/impute-me/functions.R")
 
     #main run
@@ -91,10 +72,10 @@ process IMPUTEME_VCFTOPRS {
     run_export_script(uniqueIDs="id_111111111")
     file.copy("data/id_111111111/id_111111111_data.json","output.json")
 
-    #version export. Next impute-me software version has this as an internal function
+    #version export.
     version_file_path="${software}.version.txt"
     f2<-file(version_file_path,"w")
-    writeLines("v1.0.6",f2)
+    writeLines(get_conf("version"),f2)
     close(f2)
     """
 }
