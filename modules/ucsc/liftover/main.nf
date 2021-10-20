@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '377'
+def VERSION = 'v377'
 
 process UCSC_LIFTOVER {
     tag "$meta.id"
@@ -23,7 +23,7 @@ process UCSC_LIFTOVER {
     input:
     tuple val(meta), path(bed)
     path(chain)
-    
+
     output:
     tuple val(meta), path("*.lifted.bed")  , emit: lifted
     tuple val(meta), path("*.unlifted.bed"), emit: unlifted
@@ -41,9 +41,9 @@ process UCSC_LIFTOVER {
         ${prefix}.lifted.bed \\
         ${prefix}.unlifted.bed
 
-    cat <<-END_VERSIONS > versions.yml 
+    cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
     END_VERSIONS
     """
 }
