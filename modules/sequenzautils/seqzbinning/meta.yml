@@ -1,0 +1,39 @@
+name: sequenzautils_seqzbinning
+description: Sequenza-utils seqzbinning postprocess a seqz file into a smaller binned seqz file.
+keywords:
+  - sort
+tools:
+  - sequenzautils:
+      description: Sequenza-utils provides 3 main command line programs to transform common NGS file format - such as FASTA, BAM - to input files for the Sequenza R package. The program - seqzbinning - postprocess a seqz file to obtain a smaller binned seqz file.
+      homepage: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      documentation: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      doi: 10.1093/annonc/mdu479
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - seqz:
+      type: file
+      description: Seqz file
+      pattern: "*.{seqz.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - seqz:
+      type: file
+      description: Seqz file
+      pattern: "*.{seqz.gz}"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+
+authors:
+  - "@priesgo"

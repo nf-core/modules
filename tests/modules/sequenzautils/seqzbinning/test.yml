@@ -1,0 +1,8 @@
+- name: sequenzautils seqzbinning
+  command: nextflow run ./tests/modules/sequenzautils/seqzbinning -entry test_sequenzautils_seqzbinning -c tests/config/nextflow.config
+  tags:
+    - sequenzautils
+    - sequenzautils/seqzbinning
+  files:
+    - path: output/sequenzautils/test.gz
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
