@@ -1,8 +1,12 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml maxbin2
 - name: maxbin2
   command: nextflow run ./tests/modules/maxbin2 -entry test_maxbin2 -c tests/config/nextflow.config
   tags:
     - maxbin2
   files:
-    - path: output/maxbin2/test1.fasta.gz
+    - path: output/maxbin2/test1.001.fasta.gz
+    - path: output/maxbin2/test1.002.fasta.gz
+    - path: output/maxbin2/test1.log.gz
+    - path: output/maxbin2/test1.marker.gz
+    - path: output/maxbin2/test1.marker_of_each_bin.tar.gz
+    - path: output/maxbin2/test1.noclass.gz
+    - path: output/maxbin2/test1.tooshort.gz
