@@ -22,25 +22,30 @@ process DAMAGEPROFILER {
     tuple val(meta), path(bam)
     path fasta
     path fai
+    path specieslist
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
     path  "versions.yml"              , emit: versions
 
     script:
-    prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def software     = getSoftwareName(task.process)
+    prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def reference    = fasta ? "-r $fasta" : ""
+    def species_list = specieslist ? "-sf $specieslist" : ""
 
     """
     damageprofiler \\
-        -i $bam \\
-        -r $fasta \\
-        -o $prefix/ \\
-        $options.args
-
+    -i $bam \\
+    -o $prefix/ \\
+    $options.args \\
+    $reference \\
+    $species_list
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
     END_VERSIONS
     """
+
 }
