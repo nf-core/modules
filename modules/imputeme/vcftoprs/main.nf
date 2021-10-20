@@ -49,20 +49,8 @@ process IMPUTEME_VCFTOPRS {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
-
-    #hacking test file to conform to expected test-results (shouldn't effect production running, and needed for short nf-core vcf files)
-    #can be deleted if differently formed test-data is obtained
-    to_insert<-"##fileformat=VCFv4.2"
-    file.copy("$vcf","original.vcf.gz")
-    system(paste0("zcat original.vcf.gz | sed '1i ",to_insert,"' | gzip -c > $vcf"))
-
-    #set more verbose - this block re-writes the default configuration file to be more verbose
-    #it's not really needed, other than for debugging, so this block can also be removed.
-    #system("echo 'verbose <- 10' > configuration.R")
-    #system("echo 'running_as_docker <- FALSE' >> configuration.R")
-    #system("echo 'block_double_uploads_by_md5sum <- FALSE' >> configuration.R")
-
-    #setup minimal environment for vcf-processing
+    
+    #load functions
     source("/imputeme/code/impute-me/functions.R")
 
     #main run
