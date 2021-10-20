@@ -33,7 +33,7 @@ process METABAT2_METABAT2 {
         -a $depth \\
         -t ${task.cpus} \\
         -o metabat2/${prefix}_bin
-    
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
