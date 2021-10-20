@@ -5,6 +5,7 @@ keywords:
   - depth
   - bam
   - coverage
+  - de novo assembly
 tools:
   - metabat2:
       description: Metagenome binning
@@ -32,7 +33,6 @@ input:
       pattern: "*.depth.txt"
 
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -43,7 +43,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - fasta:
       type: file
       description: Bins created from assembled contigs in fasta file
