@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process GENRICH_GENRICH {
+process GENRICH {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
