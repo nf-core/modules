@@ -22,19 +22,20 @@ process ISOSEQ3_CLUSTER {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.bam")               , emit: bam
-    tuple val(meta), path("*.bam.pbi")           , emit: pbi
-    tuple val(meta), path("*.cluster")           , emit: cluster
-    tuple val(meta), path("*.cluster_report.csv"), emit: cluster_report
-    tuple val(meta), path("*.transcriptset.xml") , emit: transcriptset
-    tuple val(meta), path("*.hq.bam")            , emit: hq_bam
-    tuple val(meta), path("*.hq.bam.pbi")        , emit: hq_pbi
-    tuple val(meta), path("*.lq.bam")            , emit: lq_bam
-    tuple val(meta), path("*.lq.bam.pbi")        , emit: lq_pbi
-    path  "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.transcripts.bam")               , emit: bam
+    tuple val(meta), path("*.transcripts.bam.pbi")           , emit: pbi
+    tuple val(meta), path("*.transcripts.cluster")           , emit: cluster
+    tuple val(meta), path("*.transcripts.cluster_report.csv"), emit: cluster_report
+    tuple val(meta), path("*.transcripts.transcriptset.xml") , emit: transcriptset
+    path  "versions.yml"                                     , emit: versions
 
-    tuple val(meta), path("*.singletons.bam")    , optional: true, emit: singletons_bam
-    tuple val(meta), path("*.singletons.bam.pbi"), optional: true, emit: singletons_pbi
+    tuple val(meta), path("*.transcripts.hq.bam")            , optional: true, emit: hq_bam
+    tuple val(meta), path("*.transcripts.hq.bam.pbi")        , optional: true, emit: hq_pbi
+    tuple val(meta), path("*.transcripts.lq.bam")            , optional: true, emit: lq_bam
+    tuple val(meta), path("*.transcripts.lq.bam.pbi")        , optional: true, emit: lq_pbi
+    tuple val(meta), path("*.transcripts.singletons.bam")    , optional: true, emit: singletons_bam
+    tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
+
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -42,7 +43,7 @@ process ISOSEQ3_CLUSTER {
     isoseq3 \\
         cluster \\
         $bam \\
-        ${prefix}.bam \\
+        ${prefix}.transcripts.bam \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
