@@ -45,7 +45,6 @@ process IMPUTEME_VCFTOPRS {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "$options.args" variable
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
@@ -58,7 +57,7 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID="id_111111111")
     crawl_for_snps_to_analyze(uniqueIDs="id_111111111")
     run_export_script(uniqueIDs="id_111111111")
-    file.copy("~/data/id_111111111/id_111111111_data.json","output.json")
+    file.copy("/home/ubuntu/data/id_111111111/id_111111111_data.json","output.json")
 
     #version export.
     version_file_path="${software}.version.txt"
