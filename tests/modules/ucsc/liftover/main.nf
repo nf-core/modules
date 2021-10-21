@@ -8,7 +8,7 @@ workflow test_ucsc_liftover {
     
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)]
-    chain =  file("http://hgdownload.cse.ucsc.edu/goldenPath/hg18/liftOver/hg18ToHg19.over.chain.gz")
+chain =  file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
 
     UCSC_LIFTOVER ( input, chain )
 }
