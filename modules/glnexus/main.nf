@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,10 +23,9 @@ process GLNEXUS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Make list of GVCFs to merge
@@ -44,6 +43,10 @@ process GLNEXUS {
         $options.args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
-    echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release //; s/ .*\$//' > ${software}.version.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
+    END_VERSIONS
     """
 }

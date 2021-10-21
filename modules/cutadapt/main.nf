@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process CUTADAPT {
     output:
     tuple val(meta), path('*.trim.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')          , emit: log
-    path '*.version.txt'                    , emit: version
+    path "versions.yml"                     , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def trimmed  = meta.single_end ? "-o ${prefix}.trim.fastq.gz" : "-o ${prefix}_1.trim.fastq.gz -p ${prefix}_2.trim.fastq.gz"
     """
@@ -37,6 +36,9 @@ process CUTADAPT {
         $trimmed \\
         $reads \\
         > ${prefix}.cutadapt.log
-    echo \$(cutadapt --version) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(cutadapt --version)
+    END_VERSIONS
     """
 }

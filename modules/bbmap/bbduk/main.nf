@@ -1,4 +1,4 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process BBMAP_BBDUK {
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')     , emit: log
-    path '*.version.txt'               , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def raw      = meta.single_end ? "in=${reads[0]}" : "in1=${reads[0]} in2=${reads[1]}"
     def trimmed  = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"
@@ -42,6 +41,9 @@ process BBMAP_BBDUK {
         $options.args \\
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bbversion.sh)
+    END_VERSIONS
     """
 }

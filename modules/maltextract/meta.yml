@@ -38,10 +38,10 @@ input:
       pattern: "${ncbi_dir}/"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - results:
       type: directory
       description: Directory containing MaltExtract text results files
