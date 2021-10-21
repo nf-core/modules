@@ -2,9 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-params.prefetch_options    = [:]
-params.fasterqdump_options = [:]
-
 include { GENRICH } from '../../../modules/genrich/main.nf' addParams( control_bam: false, pvalues: false, pileup:false, bed:false, blacklist_bed:false, options: ["args": "-p 0.1"] )
 include { GENRICH as GENRICH_BLACKLIST   } from '../../../modules/genrich/main.nf' addParams( control_bam: false, pvalues: false, pileup:false, bed:false, blacklist_bed:true, options: ["args": "-p 0.1"] )
 include { GENRICH as GENRICH_ALL_OUTPUTS } from '../../../modules/genrich/main.nf' addParams( control_bam: false, pvalues: true, pileup:true, bed:true, blacklist_bed:false, options: ["args": "-r -p 0.1"] )
