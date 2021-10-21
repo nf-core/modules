@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -27,10 +27,9 @@ process DRAGONFLYE {
     tuple val(meta), path("{flye,miniasm,raven}.fasta")                        , emit: raw_contigs
     tuple val(meta), path("{miniasm,raven}-unpolished.gfa"), optional:true     , emit: gfa
     tuple val(meta), path("flye-info.txt"), optional:true                      , emit: txt
-    path "*.version.txt"                                                       , emit: version
+    path "versions.yml"                                                        , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def memory = task.memory.toGiga()
     """
     dragonflye \\
@@ -40,6 +39,9 @@ process DRAGONFLYE {
         --ram $memory \\
         --outdir ./ \\
         --force
-    echo \$(dragonflye --version 2>&1) | sed 's/^.*dragonflye //'  > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
+    END_VERSIONS
     """
 }

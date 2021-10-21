@@ -21,10 +21,10 @@ input:
       description: index file
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - wig:
       type: file
       description: genmap wig mappability file

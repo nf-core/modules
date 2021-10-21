@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process BBMAP_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "*.version.txt"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
@@ -54,6 +53,11 @@ process BBMAP_ALIGN {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 
-    echo \$(bbversion.sh) > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bbversion.sh)
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+    END_VERSIONS
     """
 }

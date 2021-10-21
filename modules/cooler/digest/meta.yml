@@ -26,10 +26,10 @@ input:
       documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bed:
       type: file
       description: A genome segmentation of restriction fragments as a BED file.

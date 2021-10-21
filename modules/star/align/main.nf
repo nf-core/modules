@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -29,7 +29,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*Log.final.out')   , emit: log_final
     tuple val(meta), path('*Log.out')         , emit: log_out
     tuple val(meta), path('*Log.progress.out'), emit: log_progress
-    path  '*.version.txt'                     , emit: version
+    path  "versions.yml"                      , emit: versions
 
     tuple val(meta), path('*sortedByCoord.out.bam')  , optional:true, emit: bam_sorted
     tuple val(meta), path('*toTranscriptome.out.bam'), optional:true, emit: bam_transcript
@@ -39,7 +39,6 @@ process STAR_ALIGN {
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
 
     script:
-    def software        = getSoftwareName(task.process)
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def ignore_gtf      = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
     def seq_platform    = params.seq_platform ? "'PL:$params.seq_platform'" : ""
@@ -68,6 +67,9 @@ process STAR_ALIGN {
         gzip ${prefix}.unmapped_2.fastq
     fi
 
-    STAR --version | sed -e "s/STAR_//g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+    END_VERSIONS
     """
 }

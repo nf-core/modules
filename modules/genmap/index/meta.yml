@@ -18,10 +18,10 @@ input:
       pattern: "*.{fasta,fa}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - index:
       type: index
       description: Genmap index file
