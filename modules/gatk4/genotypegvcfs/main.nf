@@ -35,6 +35,7 @@ process GATK4_GENOTYPEGVCFS {
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def dbsnpOption     = dbsnp ? "-D ${dbsnp}" : ""
     def intervalsOption = intervalsBed ? "-L ${intervalsBed}" : ""
+    def gvcfOption      = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
     """
     gatk \\
         GenotypeGVCFs \\
@@ -42,7 +43,7 @@ process GATK4_GENOTYPEGVCFS {
         $intervalsOption \\
         $dbsnpOption \\
         -R $fasta \\
-        -V $gvcf \\
+        -V $gvcfOption \\
         -O ${prefix}.genotyped.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
