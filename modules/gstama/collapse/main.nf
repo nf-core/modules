@@ -30,7 +30,7 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_tc_read.txt")               , emit: read
     tuple val(meta), path("*_tc_strand_check.txt")       , emit: strand_check
     tuple val(meta), path("*_tc_trans_report.txt")       , emit: trans_report
-    path "versions.yml"                                  , emit: version
+    path "versions.yml"                                  , emit: versions
 
     tuple val(meta), path("*_tc_varcov.txt.txt")         , optional: true, emit: varcov
     tuple val(meta), path("*_tc_variants.txt")           , optional: true, emit: variants
