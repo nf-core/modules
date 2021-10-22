@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -26,7 +26,6 @@ process SEQUENZAUTILS_SEQZBINNING {
     path "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     sequenza-utils \\
@@ -36,7 +35,8 @@ process SEQUENZAUTILS_SEQZBINNING {
         -o ${prefix}.binned.gz
 
     cat <<-END_VERSIONS > versions.yml
-    \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """
 }
