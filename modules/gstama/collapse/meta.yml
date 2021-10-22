@@ -27,6 +27,10 @@ input:
       type: file
       description: A sorted BAM or sam file of aligned reads
       pattern: "*.{bam,sam}"
+  - fasta:
+      type: file
+      description: A fasta file of the genome used for the mapping
+      pattern: "*.{fasta,fa}"
 
 output:
   - meta:
