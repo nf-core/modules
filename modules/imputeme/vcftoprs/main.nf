@@ -25,7 +25,7 @@ process IMPUTEME_VCFTOPRS {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        
+
         // TODO not fixed yet - biocontainers only carry the docker image
     } else {
         // TODO - change to the biocontainer-based location (after code-changes to imputeme are done and up there)
@@ -48,7 +48,7 @@ process IMPUTEME_VCFTOPRS {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
-    
+
     #load functions
     source("/imputeme/code/impute-me/functions.R")
 
