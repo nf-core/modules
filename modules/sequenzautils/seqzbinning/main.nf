@@ -13,9 +13,9 @@ process SEQUENZAUTILS_SEQZBINNING {
 
     conda (params.enable_conda ? "bioconda::sequenza-utils=3.0.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py39h8f06ca0_4"
+        container "https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2"
     } else {
-        container "quay.io/biocontainers/sequenza-utils:3.0.0--py27h304d29a_4"
+        container "quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2"
     }
 
     input:
