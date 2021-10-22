@@ -20,7 +20,7 @@ process GSTAMA_COLLAPSE {
 
     input:
     tuple val(meta), path(bam)
-    path genome
+    path fasta
 
     output:
     tuple val(meta), path("*_tc.bed")                    , emit: bed
@@ -40,13 +40,13 @@ process GSTAMA_COLLAPSE {
     """
     tama_collapse.py \\
         -s $bam \\
-        -f $genome \\
+        -f $fasta \\
         -p ${prefix}_tc \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        tama collapse: \$( tama_collapse.py -version | grep 'tc_version_date_'|sed 's/tc_version_date_//g' )
+        ${getSoftwareName(task.process)}: \$( tama_collapse.py -version | grep 'tc_version_date_'|sed 's/tc_version_date_//g' )
     END_VERSIONS
     """
 }
