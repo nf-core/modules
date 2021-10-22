@@ -63,7 +63,7 @@ process ULTRA_PIPELINE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        uLTRA: \$( uLTRA --version|sed 's/uLTRA //g' )
+        ${getSoftwareName(task.process)}: \$( uLTRA --version|sed 's/uLTRA //g' )
     END_VERSIONS
     """
 }
