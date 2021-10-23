@@ -19,7 +19,7 @@ process GATK4_INDEXFEATUREFILE {
     }
 
     input:
-    tuple val(meta), path(featureFile)
+    tuple val(meta), path(feature_file)
 
     output:
     tuple val(meta), path("*.{tbi,idx}"), emit: index
@@ -30,7 +30,7 @@ process GATK4_INDEXFEATUREFILE {
     gatk \\
         IndexFeatureFile \\
         $options.args \\
-        -I $featureFile
+        -I $feature_file
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
