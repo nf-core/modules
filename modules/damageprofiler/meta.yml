@@ -32,12 +32,16 @@ input:
       pattern: "*.{bam,cram,sam}"
   - fasta:
       type: file
-      description: FASTA reference file
+      description: OPTIONAL FASTA reference file
       pattern: "*.{fasta,fna,fa}"
   - fai:
       type: file
-      description: FASTA index file from samtools faidx
+      description: OPTIONAL FASTA index file from samtools faidx
       pattern: "*.{fai}"
+  - specieslist:
+      type: file
+      description: OPTIONAL text file with list of target reference headers
+      pattern: "*.{txt}"
 
 output:
   - versions:
