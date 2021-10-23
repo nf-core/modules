@@ -23,11 +23,11 @@ process GSTAMA_MERGE {
     path filelist
 
     output:
-    tuple val(meta), path("*_merged.bed")             , emit: bed
-    tuple val(meta), path("*_merged_gene_report.txt") , emit: gene_report
-    tuple val(meta), path("*_merged_merge.txt")       , emit: merge
-    tuple val(meta), path("*_merged_trans_report.txt"), emit: trans_report
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.bed")             , emit: bed
+    tuple val(meta), path("*_gene_report.txt") , emit: gene_report
+    tuple val(meta), path("*_merge.txt")       , emit: merge
+    tuple val(meta), path("*_trans_report.txt"), emit: trans_report
+    path "versions.yml"                        , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -35,7 +35,7 @@ process GSTAMA_MERGE {
     tama_merge.py \\
         -f $filelist \\
         -d merge_dup \\
-        -p ${prefix}_merged \\
+        -p ${prefix} \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
