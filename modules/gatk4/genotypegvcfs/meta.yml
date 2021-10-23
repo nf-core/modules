@@ -29,11 +29,11 @@ input:
       type: file
       description: Reference fasta file
       pattern: "*.fasta"
-  - fastaIndex:
+  - fasta_index:
       type: file
       description: Reference fasta index file
       pattern: "*.fai"
-  - fastaDict:
+  - fasta_dict:
       type: file
       description: Reference fasta sequence dict file
       pattern: "*.dict"
@@ -41,11 +41,11 @@ input:
       type: file
       description: dbSNP VCF file
       pattern: "*.vcf.gz"
-  - dbsnpIndex:
+  - dbsnp_index:
       type: tuple of files
       description: dbSNP VCF index file
       pattern: "*.tbi"
-  - intervalsBed:
+  - intervals_bed:
       type: file
       description: An intevals BED file
       pattern: "*.bed"
