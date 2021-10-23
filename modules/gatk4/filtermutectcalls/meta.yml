@@ -63,15 +63,15 @@ input:
       pattern: "*.dict"
 
 output:
-  - filteredvcf:
+  - vcf:
       type: file
       description: file containing filtered mutect2 calls.
-      pattern: "*.filtered.vcf.gz"
-  - filteredtbi:
+      pattern: "*.vcf.gz"
+  - tbi:
       type: file
-      description: tbi file that pairs with filteredvcf.
-      pattern: "*.filtered.vcf.gz.tbi"
-  - filteringstats:
+      description: tbi file that pairs with vcf.
+      pattern: "*.vcf.gz.tbi"
+  - stats:
       type: file
       description: file containing statistics of the filtermutectcalls run.
       pattern: "*.filteringStats.tsv"

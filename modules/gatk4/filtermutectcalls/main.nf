@@ -25,9 +25,9 @@ process GATK4_FILTERMUTECTCALLS {
     path dict
 
     output:
-    tuple val(meta), path("*.filtered.vcf.gz")    , emit: filteredvcf
-    tuple val(meta), path("*.filtered.vcf.gz.tbi"), emit: filteredtbi
-    tuple val(meta), path("*.filteringStats.tsv") , emit: filteringstats
+    tuple val(meta), path("*.vcf.gz")            , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")        , emit: tbi
+    tuple val(meta), path("*.filteringStats.tsv"), emit: stats
     path "versions.yml"                           , emit: versions
 
     script:
