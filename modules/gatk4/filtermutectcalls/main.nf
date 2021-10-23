@@ -32,16 +32,27 @@ process GATK4_FILTERMUTECTCALLS {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
+    def orientationbias_options = ''
+    if (orientationbias) {
+        orientationbias_options = '--orientation-bias-artifact-priors ' + orientationbias.join(' --orientation-bias-artifact-priors ')
+    }
+
+    def segmentation_options = ''
+    if (segmentation) {
+        segmentation_options = '--tumor-segmentation ' + segmentation.join(' --tumor-segmentation ')
+    }
+
     def contamination_options = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
     if (contaminationfile) {
-	    contamination_options = "${'-contamination-table ' + contaminationfile.join(' -contamination-table '}"
+	    contamination_options = '--contamination-table ' + contaminationfile.join(' --contamination-table ')
     }
     """
     gatk FilterMutectCalls \\
         -R $fasta \\
         -V $vcf \\
-        ${'--orientation-bias-artifact-priors ' + orientationbias.join(' --orientation-bias-artifact-priors ')} \\
-        ${'--tumor-segmentation ' + segmentation.join(' --tumor-segmentation ')} \\
+        $orientationbias_options \\
+        $segmentation_options \\
         $contamination_options \\
         -O ${prefix}.vcf.gz \\
         $options.args
