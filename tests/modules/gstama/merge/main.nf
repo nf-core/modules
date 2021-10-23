@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GSTAMA_MERGE } from '../../../../modules/gstama/merge/main' addParams( options: [:] )
+include { GSTAMA_MERGE } from '../../../../modules/gstama/merge/main' addParams( options: [suffix:'_merged'] )
 
 workflow test_gstama_merge {
 
