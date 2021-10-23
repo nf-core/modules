@@ -49,26 +49,25 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    #load functions
     source("/imputeme/code/impute-me/functions.R")
 
-
     #Set configurations
-    set_conf("cron_logs_path",$TMPDIR)
-    set_conf("submission_logs_path",$TMPDIR)
-    set_conf("misc_files_path",$TMPDIR)
-    set_conf("data_path",$TMPDIR)
-    set_conf("vcfs_path",$TMPDIR)
-    set_conf("verbose",10)
+    set_conf("defaults")
+    set_conf("submission_logs_path","$TMPDIR/")
+    set_conf("misc_files_path","$TMPDIR/")
+    set_conf("data_path","$TMPDIR/")
+    set_conf("vcfs_path","$TMPDIR/")
+    #set_conf("verbose",10)
     set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
 
 
     #main run
-    prepare_individual_genome('$vcf',overrule_vcf_checks=T,predefined_uniqueID="id_111111111")
-    convert_vcfs_to_simple_format(uniqueID="id_111111111")
-    crawl_for_snps_to_analyze(uniqueIDs="id_111111111")
-    run_export_script(uniqueIDs="id_111111111")
-    file.copy("/home/ubuntu/data/id_111111111/id_111111111_data.json","output.json")
+    d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
+    uniqueID<-sub(' </b>.+\$','',sub('^.+this run is .b. ','',d))
+    convert_vcfs_to_simple_format(uniqueID=uniqueID)
+    crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
+    run_export_script(uniqueIDs=uniqueID)
+    file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
     version_file_path="${software}.version.txt"
