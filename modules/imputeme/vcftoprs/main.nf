@@ -52,6 +52,17 @@ process IMPUTEME_VCFTOPRS {
     #load functions
     source("/imputeme/code/impute-me/functions.R")
 
+
+    #Set configurations
+    set_conf("cron_logs_path",$TMPDIR)
+    set_conf("submission_logs_path",$TMPDIR)
+    set_conf("misc_files_path",$TMPDIR)
+    set_conf("data_path",$TMPDIR)
+    set_conf("vcfs_path",$TMPDIR)
+    set_conf("verbose",10)
+    set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
+
+
     #main run
     prepare_individual_genome('$vcf',overrule_vcf_checks=T,predefined_uniqueID="id_111111111")
     convert_vcfs_to_simple_format(uniqueID="id_111111111")
