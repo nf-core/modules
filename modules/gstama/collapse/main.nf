@@ -33,7 +33,7 @@ process GSTAMA_COLLAPSE {
     path "versions.yml"                               , emit: versions
 
     tuple val(meta), path("*_varcov.txt")             , emit: varcov  , optional: true
-    tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true 
+    tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
