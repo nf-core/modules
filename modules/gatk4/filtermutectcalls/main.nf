@@ -28,13 +28,13 @@ process GATK4_FILTERMUTECTCALLS {
     tuple val(meta), path("*.vcf.gz")            , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")        , emit: tbi
     tuple val(meta), path("*.filteringStats.tsv"), emit: stats
-    path "versions.yml"                           , emit: versions
+    path "versions.yml"                          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def contamination_options = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
     if (contaminationfile) {
-	    contamination_options = "${'-contamination-table ' + contaminationfile.join(' -contamination-table '}"
+	      contamination_options = "${'-contamination-table ' + contaminationfile.join(' -contamination-table '}"
     }
     """
     gatk FilterMutectCalls \\
