@@ -23,17 +23,17 @@ process GSTAMA_COLLAPSE {
     path fasta
 
     output:
-    tuple val(meta), path("*_tc.bed")                    , emit: bed
-    tuple val(meta), path("*_tc_trans_read.bed")         , emit: bed_trans_reads
-    tuple val(meta), path("*_tc_local_density_error.txt"), emit: local_density_error
-    tuple val(meta), path("*_tc_polya.txt")              , emit: polya
-    tuple val(meta), path("*_tc_read.txt")               , emit: read
-    tuple val(meta), path("*_tc_strand_check.txt")       , emit: strand_check
-    tuple val(meta), path("*_tc_trans_report.txt")       , emit: trans_report
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("*.bed")                    , emit: bed
+    tuple val(meta), path("*_trans_read.bed")         , emit: bed_trans_reads
+    tuple val(meta), path("*_local_density_error.txt"), emit: local_density_error
+    tuple val(meta), path("*_polya.txt")              , emit: polya
+    tuple val(meta), path("*_read.txt")               , emit: read
+    tuple val(meta), path("*_strand_check.txt")       , emit: strand_check
+    tuple val(meta), path("*_trans_report.txt")       , emit: trans_report
+    path "versions.yml"                               , emit: versions
 
-    tuple val(meta), path("*_tc_varcov.txt.txt")         , optional: true, emit: varcov
-    tuple val(meta), path("*_tc_variants.txt")           , optional: true, emit: variants
+    tuple val(meta), path("*_varcov.txt")             , emit: varcov  , optional: true
+    tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true 
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -41,7 +41,7 @@ process GSTAMA_COLLAPSE {
     tama_collapse.py \\
         -s $bam \\
         -f $fasta \\
-        -p ${prefix}_tc \\
+        -p ${prefix} \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
