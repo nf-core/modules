@@ -19,32 +19,32 @@ process GATK4_GENOTYPEGVCFS {
     }
 
     input:
-    tuple val(meta), path(gvcf), path(gvcfIndex)
+    tuple val(meta), path(gvcf), path(gvcf_index)
     path  fasta
-    path  fastaIndex
-    path  fastaDict
+    path  fasta_index
+    path  fasta_dict
     path  dbsnp
-    path  dbsnpIndex
-    path  intervalsBed
+    path  dbsnp_index
+    path  intervals_bed
 
     output:
-    tuple val(meta), path("*.genotyped.vcf.gz"), emit: vcf
-    path  "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path  "versions.yml"             , emit: versions
 
     script:
-    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def dbsnpOption     = dbsnp ? "-D ${dbsnp}" : ""
-    def intervalsOption = intervalsBed ? "-L ${intervalsBed}" : ""
-    def gvcfOption      = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
+    def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def dbsnp_options    = dbsnp ? "-D ${dbsnp}" : ""
+    def interval_options = intervals_bed ? "-L ${intervals_bed}" : ""
+    def gvcf_options     = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
     """
     gatk \\
         GenotypeGVCFs \\
         $options.args \\
-        $intervalsOption \\
-        $dbsnpOption \\
+        $interval_options \\
+        $dbsnp_options \\
         -R $fasta \\
-        -V $gvcfOption \\
-        -O ${prefix}.genotyped.vcf.gz
+        -V $gvcf_options \\
+        -O ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
