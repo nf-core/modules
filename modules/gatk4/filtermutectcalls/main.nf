@@ -45,7 +45,7 @@ process GATK4_FILTERMUTECTCALLS {
 
     def contamination_options = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
     if (contaminationfile) {
-	    contamination_options = '--contamination-table ' + contaminationfile.join(' --contamination-table ')
+        contamination_options = '--contamination-table ' + contaminationfile.join(' --contamination-table ')
     }
     """
     gatk FilterMutectCalls \\
