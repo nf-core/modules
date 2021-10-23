@@ -11,15 +11,15 @@ process GATK4_FILTERMUTECTCALLS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-        conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
-        if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-            container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
-        } else {
-            container "quay.io/biocontainers/gatk4:4.2.0.0--0"
-        }
+	  conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
+	  if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
+	  	  container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
+	  } else {
+		  container "quay.io/biocontainers/gatk4:4.2.0.0--0"
+	  }
 
     input:
-    tuple val(meta) , path(vcf) , path(tbi) , path(stats) , path(orientationbias) , path(segmentation) , path(contaminationfile) , val(contaminationest)
+    tuple val(meta), path(vcf), path(tbi), path(stats), path(orientationbias), path(segmentation), path(contaminationfile), val(contaminationest)
     path fasta
     path fastaidx
     path dict
@@ -31,29 +31,19 @@ process GATK4_FILTERMUTECTCALLS {
     path "versions.yml"                           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def contamination_command = ''
-    def bias_list = []
-    def segmentation_list = []
-    def contamination_list = []
-    def useconfile = false
-    orientationbias.each() {a -> bias_list.add(" --orientation-bias-artifact-priors " + a)}
-    segmentation.each() {a -> segmentation_list.add(" --tumor-segmentation " + a)}
-    useconfile = contaminationfile ? true : false
-    if(useconfile){
-        contaminationfile.each() {a -> contamination_list.add(" --contamination-table " + a)}
-        contamination_command = contamination_list.join(' ')
-    } else {
-        contamination_command = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def contamination_options = contaminationest ? " --contamination-estimate ${contaminationest} " : ''
+    if (contaminationfile) {
+	    contamination_options = "${'-contamination-table ' + contaminationfile.join(' -contamination-table '}"
     }
     """
     gatk FilterMutectCalls \\
         -R $fasta \\
         -V $vcf \\
-        ${bias_list.join(' ')} \\
-        ${segmentation_list.join(' ')} \\
-        $contamination_command \\
-        -O ${prefix}.filtered.vcf.gz \\
+		  ${'--orientation-bias-artifact-priors ' + orientationbias.join(' --orientation-bias-artifact-priors ')} \\
+        ${'--tumor-segmentation ' + segmentation.join(' --tumor-segmentation ')} \\
+        $contamination_options \\
+        -O ${prefix}.vcf.gz \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
