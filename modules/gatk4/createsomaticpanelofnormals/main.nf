@@ -25,18 +25,19 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     path dict
 
     output:
-    tuple val(meta), path("*.vcf.gz") , emit: vcf
-    tuple val(meta), path("*.tbi")    , emit: tbi
-    path "versions.yml"               , emit: version
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
+    path "versions.yml"              , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
-    gatk CreateSomaticPanelOfNormals\\
+    gatk \\
+        CreateSomaticPanelOfNormals \\
         -R $fasta \\
         -V gendb://$genomicsdb \\
-        -O ${prefix}.pon.vcf.gz \\
+        -O ${prefix}.vcf.gz \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
