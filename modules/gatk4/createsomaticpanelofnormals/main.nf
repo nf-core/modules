@@ -31,7 +31,6 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     gatk \\
         CreateSomaticPanelOfNormals \\
