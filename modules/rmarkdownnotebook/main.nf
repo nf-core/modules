@@ -9,14 +9,14 @@ params.implicit_params = true
 params.meta_params     = true
 
 process RMARKDOWNNOTEBOOK {
-    // tag { meta.id }
+    tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     //NB: You likely want to override this with a container containing all required
-    //dependencies for you analysis. The container at least needs to contain the
+    //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "r-base=4.1.0 r-rmarkdown=2.9 r-yaml=2.2.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -27,14 +27,14 @@ process RMARKDOWNNOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    val(parameters)
-    path(input_files)
+    val parameters
+    path input_files
 
     output:
-    tuple val(meta), path("*.html"), emit: report
-    path ("artifacts/*"),            emit: artifacts, optional: true
-    path  "session_info.log",        emit: session_info
-    path  "versions.yml",            emit: versions
+    tuple val(meta), path("*.html")           , emit: report
+    tuple val(meta), path ("artifacts/*")     , emit: artifacts, optional: true
+    tuple val(meta), path ("session_info.log"), emit: session_info
+    path  "versions.yml"                      , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"

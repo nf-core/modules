@@ -16,7 +16,7 @@ process JUPYTERNOTEBOOK {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     //NB: You likely want to override this with a container containing all required
-    //dependencies for you analysis. The container at least needs to contain the
+    //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "ipykernel=6.0.3 jupytext=1.11.4 nbconvert=6.1.0 papermill=2.3.3 matplotlib=3.4.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -27,16 +27,16 @@ process JUPYTERNOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    val(parameters)
-    path(input_files)
+    val parameters
+    path input_files
 
     output:
     tuple val(meta), path("*.html"), emit: report
-    path("artifacts/*")            , emit: artifacts, optional: true
+    tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
     path "versions.yml"            , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
