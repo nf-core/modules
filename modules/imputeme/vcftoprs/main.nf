@@ -56,6 +56,7 @@ process IMPUTEME_VCFTOPRS {
     set_conf("submission_logs_path","$TMPDIR/")
     set_conf("misc_files_path","$TMPDIR/")
     set_conf("data_path","$TMPDIR/")
+    set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("vcfs_path","$TMPDIR/")
     #set_conf("verbose",10)
     set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
