@@ -61,7 +61,6 @@ process IMPUTEME_VCFTOPRS {
     #set_conf("verbose",10)
     set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
 
-
     #main run
     d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
     uniqueID<-sub(' </b>.+\$','',sub('^.+this run is .b. ','',d))
