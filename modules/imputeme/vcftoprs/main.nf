@@ -37,9 +37,7 @@ process IMPUTEME_VCFTOPRS {
 
     output:
     tuple val(meta), path("*.json"), emit: json
-    path "*.version.txt"          , emit: version
-
-
+    path "versions.yml"            , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
