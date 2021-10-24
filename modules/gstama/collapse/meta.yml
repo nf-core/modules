@@ -1,0 +1,83 @@
+name: GSTAMA_COLLAPSE
+description: Collapse redundant transcript models in Iso-Seq data.
+keywords:
+  - tama_collapse.py
+  - isoseq
+  - nanopore
+  - long-read
+  - transcriptome
+  - gene model
+  - TAMA
+tools:
+  - tama_collapse.py:
+      description: Collapse similar gene model
+      homepage: https://github.com/sguizard/gs-tama
+      documentation: https://github.com/GenomeRIK/tama/wiki
+      tool_dev_url: https://github.com/sguizard/gs-tama
+      doi: 10.1186/s12864-020-07123-7
+      licence: GNU GPL3
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: A sorted BAM or sam file of aligned reads
+      pattern: "*.{bam,sam}"
+  - fasta:
+      type: file
+      description: A fasta file of the genome used for the mapping
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: a bed12 format file containing the final collapsed version of your transcriptome
+      pattern: "*.bed"
+  - bed_trans_reads:
+      type: file
+      description: This file uses bed12 format to show the transcript model for each read based on the mapping prior to collapsing. This only contains the reads which were accepted according to the defined thresholds. You can use this file to see if there were any strange occurrences during collapsing. It also contains the relationships between reads and collapsed transcript models. The 1st subfield in the 4th column shows the final transcript ID and the 2nd subfield in the 4th column shows the read ID. If you used no_cap mode for collapsing there may be multiple lines for a single read. This happens when a 5' degraded read can match to multiple 5' longer transcript models.
+      pattern: "*_trans_read.bed"
+  - local_density_error:
+      type: file
+      description: This file contains the log of filtering for local density error around the splice junctions ("-lde")
+      pattern: "*_local_density_error.txt"
+  - polya:
+      type: file
+      description: This file contains the reads with potential poly A truncation.
+      pattern: "*_polya.txt"
+  - read:
+      type: file
+      description: This file contains information for all mapped reads from the input SAM/BAM file. It shows both accepted and discarded reads and should match the number of mapped reads in your SAM/BAM file
+      pattern: "*_read.txt"
+  - strand_check:
+      type: file
+      description: This file shows instances where the sam flag strand information contrasted the GMAP strand information.
+      pattern: "*_strand_check.txt"
+  - trans_report:
+      type: file
+      description: This file contains collapsing information for each transcript.
+      pattern: "*_trans_report.txt"
+  - varcov:
+      type: file
+      description: This file contains the coverage information for each variant detected.
+      pattern: "*_varcov.txt"
+  - variants:
+      type: file
+      description: This file contains the variants called. Variants are only called if 5 or more reads show the variant at a specific locus. If you would like to change the threshold, please make an issue about this in the Github repo.
+      pattern: "*_variants.txt"
+
+authors:
+  - "@sguizard"
