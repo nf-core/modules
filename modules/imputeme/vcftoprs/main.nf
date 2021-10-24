@@ -53,7 +53,7 @@ process IMPUTEME_VCFTOPRS {
 
     #Set configurations
     set_conf("defaults")
-    set_conf("submission_logs_path","$TMPDIR/")
+    set_conf("submission_logs_path","./")
     set_conf("misc_files_path","$TMPDIR/")
     set_conf("data_path","$TMPDIR/")
     set_conf("minimum_required_variant_in_vcf_count",1000)
