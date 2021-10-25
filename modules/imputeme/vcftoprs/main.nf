@@ -59,11 +59,11 @@ process IMPUTEME_VCFTOPRS {
 
     #Set configurations
     set_conf("defaults")
+    set_conf("data_path","./")
+    set_conf("vcfs_path","./")
     set_conf("autostart_supercronic",FALSE)
-    set_conf("data_path","$TMPDIR/")
     set_conf("minimum_required_variant_in_vcf_count",1000)
-    set_conf("vcfs_path","$TMPDIR/")
-    set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
+    set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
 
     #main run
     d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
@@ -71,10 +71,15 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
+    print(getwd())
+    print(list.files())
+    setwd(a)
+    print(getwd())
+    print(list.files("."))
+    file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
-    version_file_path="${software}.version.txt"
+    version_file_path="${software}.version.yml"
     f2<-file(version_file_path,"w")
     writeLines(get_conf("version"),f2)
     close(f2)
