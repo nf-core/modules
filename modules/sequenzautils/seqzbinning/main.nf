@@ -30,7 +30,7 @@ process SEQUENZAUTILS_SEQZBINNING {
     """
     sequenza-utils \\
         seqz_binning \\
-        --seqz ${seqz} \\
+        --seqz $seqz \\
         $options.args \\
         -o ${prefix}.binned.gz
 
