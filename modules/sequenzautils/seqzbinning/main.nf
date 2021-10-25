@@ -26,7 +26,7 @@ process SEQUENZAUTILS_SEQZBINNING {
     path "versions.yml"          , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     sequenza-utils \\
         seqz_binning \\
