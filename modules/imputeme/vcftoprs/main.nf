@@ -74,15 +74,15 @@ process IMPUTEME_VCFTOPRS {
     setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
-    #version export.a
+    #version export. Have to hardcode process name and software name because
+    #won't run inside an R-block
     version_file_path="versions.yml"
     f<-file(version_file_path,"w")
     writeLines("IMPUTEME_VCFTOPRS:", f)
-    writeLines(paste0(" imputeme: ", get_conf("version")),f)
+    writeLines(paste0(" imputeme: ", sub("^v","",get_conf("version"))),f)
     close(f)
 
 
     """
-
 
 }
