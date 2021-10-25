@@ -32,7 +32,7 @@ process SEQUENZAUTILS_SEQZBINNING {
         seqz_binning \\
         --seqz $seqz \\
         $options.args \\
-        -o ${prefix}.binned.gz
+        -o ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
