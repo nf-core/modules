@@ -71,17 +71,13 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    print(getwd())
-    print(list.files())
-    setwd(a)
-    print(getwd())
-    print(list.files("."))
+    setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
     version_file_path="${software}.version.yml"
-    f2<-file(version_file_path,"w")
-    writeLines(get_conf("version"),f2)
-    close(f2)
+    f<-file(version_file_path,"w")
+    writeLines(get_conf("version"),f)
+    close(f)
     """
 }
