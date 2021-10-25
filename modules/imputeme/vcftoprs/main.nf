@@ -75,14 +75,14 @@ process IMPUTEME_VCFTOPRS {
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
-    version_file_path="versions.yml"
-    f<-file(version_file_path,"w")
-    writeLines(
+    #version_file_path="versions.yml"
+    #f<-file(version_file_path,"w")
+    write(
         sprintf(
             "${getProcessName(task.process)}:\n ${getSoftwareName(task.process)}: %s", get_conf("version")
-        ),f
+        ),"versions.yml"
     )
-    close(f)
+    #close(f)
 
 
 
