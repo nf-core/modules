@@ -13,7 +13,7 @@ workflow test_sequenzautils_seqzbinning {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
     input_gcwiggle = [ [ id:'test' ], fasta ]
-    SEQUENZAUTILS_GCWIGGLE(input_gcwiggle)
+    SEQUENZAUTILS_GCWIGGLE ( input_gcwiggle )
 
     input_bam2seqz = [ [ id:'test' ], tumourbam, normalbam ]
     SEQUENZAUTILS_BAM2SEQZ ( input_bam2seqz, fasta, SEQUENZAUTILS_GCWIGGLE.out.wig.map { it[1] } )
