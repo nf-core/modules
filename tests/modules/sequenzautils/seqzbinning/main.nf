@@ -18,5 +18,5 @@ workflow test_sequenzautils_seqzbinning {
     input_bam2seqz = [ [ id:'test' ], tumourbam, normalbam ]
     SEQUENZAUTILS_BAM2SEQZ ( input_bam2seqz, fasta, SEQUENZAUTILS_GCWIGGLE.out.wig.map { it[1] } )
 
-    SEQUENZAUTILS_SEQZBINNING ( SEQUENZAUTILS_BAM2SEQZ.out[0] )
+    SEQUENZAUTILS_SEQZBINNING ( SEQUENZAUTILS_BAM2SEQZ.out.seqz )
 }
