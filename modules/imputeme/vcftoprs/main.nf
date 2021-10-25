@@ -47,21 +47,27 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
+    #Set temp configurations (these are for development, and will disappear)
+    #set_conf("submission_logs_path","./")
+    #set_conf("verbose",10)
+    getwd()->a
+    setwd("/imputeme/code/impute-me/")
+    system("git pull")
+    setwd(a)
     source("/imputeme/code/impute-me/functions.R")
+
 
     #Set configurations
     set_conf("defaults")
-    set_conf("submission_logs_path","./")
-    set_conf("misc_files_path","$TMPDIR/")
+    set_conf("autostart_supercronic",FALSE)
     set_conf("data_path","$TMPDIR/")
     set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("vcfs_path","$TMPDIR/")
-    #set_conf("verbose",10)
     set_conf("modules_to_compute","ethnicity") #remember to add AllDiseases and prs
 
     #main run
     d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
-    uniqueID<-sub(' </b>.+\$','',sub('^.+this run is .b. ','',d))
+    uniqueID<-sub(' </b>.+\$','',sub('^.+this run is <b> ','',d))
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
