@@ -59,8 +59,8 @@ process IMPUTEME_VCFTOPRS {
 
     #Set configurations
     set_conf("defaults")
-    set_conf("data_path","./")
-    set_conf("vcfs_path","./")
+    set_conf("data_path","$TMPDIR/")
+    set_conf("vcfs_path","$TMPDIR/")
     set_conf("autostart_supercronic",FALSE)
     set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
@@ -72,10 +72,10 @@ process IMPUTEME_VCFTOPRS {
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
     setwd(a) #odd why this is needed, but seems like it is
-    file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
+    file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
-    version_file_path="output/${software}/versions.yml"
+    version_file_path="versions.yml"
     f<-file(version_file_path,"w")
     writeLines(get_conf("version"),f)
     close(f)
