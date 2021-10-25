@@ -74,16 +74,12 @@ process IMPUTEME_VCFTOPRS {
     setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
-    #version export.
-    #version_file_path="versions.yml"
-    #f<-file(version_file_path,"w")
-    write(
-        sprintf(
-            "${getProcessName(task.process)}:\n ${getSoftwareName(task.process)}: %s", get_conf("version")
-        ),"versions.yml"
-    )
-    #close(f)
-
+    #version export.a
+    version_file_path="versions.yml"
+    f<-file(version_file_path,"w")
+    writeLines("IMPUTEME_VCFTOPRS:", f)
+    writeLines(paste0(" imputeme: ", get_conf("version")),f)
+    close(f)
 
 
     """
