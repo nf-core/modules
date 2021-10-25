@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQUENZAUTILS_SEQZBINNING } from '../../../../modules/sequenzautils/seqzbinning/main.nf' addParams( options: [:] )
-include { SEQUENZAUTILS_BAM2SEQZ } from '../../../../modules/sequenzautils/bam2seqz/main.nf' addParams( options: [:] )
-include { SEQUENZAUTILS_GCWIGGLE } from '../../../../modules/sequenzautils/gcwiggle/main.nf' addParams( options: [:] )
+include { SEQUENZAUTILS_SEQZBINNING } from '../../../../modules/sequenzautils/seqzbinning/main.nf' addParams( options: [suffix:'.binned'] )
+include { SEQUENZAUTILS_BAM2SEQZ    } from '../../../../modules/sequenzautils/bam2seqz/main.nf'    addParams( options: [:] )
+include { SEQUENZAUTILS_GCWIGGLE    } from '../../../../modules/sequenzautils/gcwiggle/main.nf'    addParams( options: [:] )
 
 workflow test_sequenzautils_seqzbinning {
     
