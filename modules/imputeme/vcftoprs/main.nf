@@ -77,9 +77,15 @@ process IMPUTEME_VCFTOPRS {
     #version export.
     version_file_path="versions.yml"
     f<-file(version_file_path,"w")
-    writeLines("IMPUTEME_VCFTOPRS:")
-    writeLines(paste0(" imputeme: ", get_conf("version")),f)
+    writeLines(
+        sprintf(
+            "${getProcessName(task.process)}:\n ${getSoftwareName(task.process)}: %s", get_conf("version")
+        ),f
+    )
     close(f)
+
+
+
     """
 
 
