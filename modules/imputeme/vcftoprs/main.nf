@@ -46,6 +46,7 @@ process IMPUTEME_VCFTOPRS {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
+
     #Set temp configurations (these are for development (instant-git-pull), and will disappear)
     #set_conf("submission_logs_path","./")
     #set_conf("verbose",10)
@@ -54,6 +55,8 @@ process IMPUTEME_VCFTOPRS {
     system("git pull")
     setwd(a)
     source("/imputeme/code/impute-me/functions.R")
+
+
     #Set configurations
     set_conf("defaults")
     set_conf("data_path","$TMPDIR/")
@@ -61,6 +64,7 @@ process IMPUTEME_VCFTOPRS {
     set_conf("autostart_supercronic",FALSE)
     set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
+
     #main run
     d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
     uniqueID<-sub(' </b>.+\$','',sub('^.+this run is <b> ','',d))
@@ -69,6 +73,7 @@ process IMPUTEME_VCFTOPRS {
     run_export_script(uniqueIDs=uniqueID)
     setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
+
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
     version_file_path="versions.yml"
@@ -76,6 +81,8 @@ process IMPUTEME_VCFTOPRS {
     writeLines("IMPUTEME_VCFTOPRS:", f)
     writeLines(paste0(" imputeme: ", sub("^v","",get_conf("version"))),f)
     close(f)
+
+
     """
 
 }
