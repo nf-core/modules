@@ -75,7 +75,7 @@ process IMPUTEME_VCFTOPRS {
     file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export.
-    version_file_path="${software}/versions.yml"
+    version_file_path="output/${software}/versions.yml"
     f<-file(version_file_path,"w")
     writeLines(get_conf("version"),f)
     close(f)
