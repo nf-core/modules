@@ -22,7 +22,7 @@ process SEQUENZAUTILS_SEQZBINNING {
     tuple val(meta), path(seqz)
 
     output:
-    tuple val(meta), path("*.binned.gz"), emit: seqz_binned
+    tuple val(meta), path("*.gz"), emit: seqz
     path "versions.yml"          , emit: versions
 
     script:
