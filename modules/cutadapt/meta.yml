@@ -1,0 +1,46 @@
+name: cutadapt
+description: Perform adapter/quality trimming on sequencing reads
+keywords:
+  - trimming
+  - adapter trimming
+  - adapters
+  - quality trimming
+tools:
+  - cuatadapt:
+      description: |
+        Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.
+      documentation: https://cutadapt.readthedocs.io/en/stable/index.html
+      doi: DOI:10.14806/ej.17.1.200
+      licence: ['MIT']
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*fastq.gz"
+  - log:
+      type: file
+      description: cuatadapt log file
+      pattern: "*cutadapt.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@drpatelh"
+  - "@kevinmenden"

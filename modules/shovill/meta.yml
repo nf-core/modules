@@ -1,0 +1,57 @@
+name: shovill
+description: Assemble bacterial isolate genomes from Illumina paired-end reads
+keywords:
+  - bacterial
+  - assembly
+  - illumina
+
+tools:
+  - shovill:
+      description: Microbial assembly pipeline for Illumina paired-end reads
+      homepage: https://github.com/tseemann/shovill
+      documentation: https://github.com/tseemann/shovill/blob/master/README.md
+      licence: ["GPL v2"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input paired-end FastQ files
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - contigs:
+      type: file
+      description: The final assembly produced by Shovill
+      pattern: "contigs.fa"
+  - corrections:
+      type: file
+      description: List of post-assembly corrections made by Shovill
+      pattern: "shovill.corrections"
+  - log:
+      type: file
+      description: Full log file for bug reporting
+      pattern: "shovill.log"
+  - raw_contigs:
+      type: file
+      description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT, or Velvet)
+      pattern: "{skesa,spades,megahit,velvet}.fasta"
+  - gfa:
+      type: file
+      description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
+      pattern: "contigs.{fastg,gfa,LastGraph}"
+
+authors:
+  - "@rpetit3"

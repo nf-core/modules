@@ -1,0 +1,47 @@
+name: minimap2_align
+description: A versatile pairwise aligner for genomic and spliced nucleotide sequences
+keywords:
+    - align
+    - fasta
+    - fastq
+    - genome
+    - paf
+    - reference
+tools:
+    - minimap2:
+        description: |
+            A versatile pairwise aligner for genomic and spliced nucleotide sequences.
+        homepage: https://github.com/lh3/minimap2
+        documentation: https://github.com/lh3/minimap2#uguide
+        licence: ['MIT']
+input:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+            List of input FASTA or FASTQ files of size 1 and 2 for single-end
+            and paired-end data, respectively.
+    - reference:
+        type: file
+        description: |
+            Reference database in FASTA format.
+output:
+    - meta:
+        type: map
+        description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+    - paf:
+        type: file
+        description: Alignment in PAF format
+        pattern: "*.paf"
+    - versions:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+    - "@heuermh"

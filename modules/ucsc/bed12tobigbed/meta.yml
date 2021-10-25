@@ -1,0 +1,46 @@
+name: ucsc_bed12tobigbed
+description: Convert file from bed12 to bigBed format
+keywords:
+  - bed12
+  - bigbed
+tools:
+  - ucsc:
+      description: Convert file from bed12 to bigBed format
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ["varies; see http://genome.ucsc.edu/license"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: bed12 file
+      pattern: "*.{bed,bed12}"
+  - sizes:
+      type: file
+      description: chromosome sizes file
+      pattern: "*.{sizes}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bigbed:
+      type: file
+      description: bigBed file
+      pattern: "*.{bigBed}"
+
+authors:
+  - "@drpatelh"
