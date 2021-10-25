@@ -47,7 +47,7 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    #Set temp configurations (these are for development, and will disappear)
+    #Set temp configurations (these are for development (instant-git-pull), and will disappear)
     #set_conf("submission_logs_path","./")
     #set_conf("verbose",10)
     getwd()->a
@@ -77,7 +77,10 @@ process IMPUTEME_VCFTOPRS {
     #version export.
     version_file_path="versions.yml"
     f<-file(version_file_path,"w")
-    writeLines(get_conf("version"),f)
+    writeLines("IMPUTEME_VCFTOPRS")
+    writeLines(paste0(" imputeme: ", get_conf("version")),f)
     close(f)
     """
+
+
 }
