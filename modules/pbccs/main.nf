@@ -11,11 +11,11 @@ process PBCCS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::pbccs=6.0.0" : null)
+    conda (params.enable_conda ? "bioconda::pbccs=6.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/pbccs:6.0.0--h9ee0642_2"
+        container "https://depot.galaxyproject.org/singularity/pbccs:6.2.0--h9ee0642_0"
     } else {
-        container "quay.io/biocontainers/pbccs:6.0.0--h9ee0642_2"
+        container "quay.io/biocontainers/pbccs:6.2.0--h9ee0642_0"
     }
 
     input:
@@ -24,25 +24,22 @@ process PBCCS {
     val chunk_on
 
     output:
-    tuple val(meta), path("*.ccs.bam")            , emit: bam
-    tuple val(meta), path("*.ccs.bam.pbi")        , emit: pbi
-    tuple val(meta), path("*.ccs_report.txt" )    , emit: ccs_report_txt
-    tuple val(meta), path("*.ccs_report.json" )   , emit: ccs_report_json
-    tuple val(meta), path("*.zmw_metrics.json.gz"), emit: zmw_metrics
-    path  "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.chunk*.bam")     , emit: bam
+    tuple val(meta), path("*.chunk*.bam.pbi") , emit: pbi
+    tuple val(meta), path("*.report.txt" )    , emit: report_txt
+    tuple val(meta), path("*.report.json" )   , emit: report_json
+    tuple val(meta), path("*.metrics.json.gz"), emit: metrics
+    path  "versions.yml"                      , emit: versions
 
     script:
-    def ccs         = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs.bam'
-    def report_txt  = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.txt'
-    def report_json = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.ccs_report.json'
-    def zmw_metrics = bam.toString().replaceAll(/bam$/, '') + chunk_num + '.zmw_metrics.json.gz'
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ccs \\
         $bam \\
-        $ccs \\
-        --report-file $report_txt \\
-        --report-json $report_json \\
-        --metrics-json $zmw_metrics \\
+        ${prefix}.chunk${chunk_num}.bam \\
+        --report-file ${prefix}.report.txt \\
+        --report-json ${prefix}.report.json \\
+        --metrics-json ${prefix}.metrics.json.gz \\
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
         $options.args
