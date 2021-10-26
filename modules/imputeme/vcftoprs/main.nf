@@ -40,10 +40,7 @@ process IMPUTEME_VCFTOPRS {
     path "versions.yml"            , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "$options.args" variable
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     #!/usr/bin/env Rscript
 

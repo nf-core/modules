@@ -6,8 +6,10 @@ include { IMPUTEME_VCFTOPRS } from '../../../../modules/imputeme/vcftoprs/main.n
 
 workflow test_imputeme_vcftoprs {
     
-    input = [ [ id:'test'], // meta map
-              file(params.test_data['homo_sapiens']['genome']['synthetic_short_vcf_gz'], checkIfExists: true) ]
+    input = [ 
+        [ id:'test' ], // meta map
+        file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true) 
+    ]
 
     IMPUTEME_VCFTOPRS ( input )
 }
