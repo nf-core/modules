@@ -47,17 +47,11 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    #Set temp configurations (these are for development (instant-git-pull), and will disappear)
-    #set_conf("submission_logs_path","./")
-    #set_conf("verbose",10)
-    getwd()->a
-    setwd("/imputeme/code/impute-me/")
-    system("git pull")
-    setwd(a)
-    source("/imputeme/code/impute-me/functions.R")
+    a<-getwd()  #should be removed soon? (test in next run)
 
 
     #Set configurations
+    source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
     set_conf("data_path","$TMPDIR/")
     set_conf("vcfs_path","$TMPDIR/")
