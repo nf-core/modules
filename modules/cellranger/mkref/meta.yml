@@ -28,10 +28,10 @@ input:
       pattern: str
 
 output:
-  - version:
+  - versions:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
   - reference:
       type: folder
       description: Folder containing all the reference indices needed by Cell Ranger

@@ -27,16 +27,18 @@ process CELLRANGER_MKREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "*.version.txt"          , emit: version
+    path "versions.yml"     , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-
     """
     cellranger mkref \\
         --genome=${reference_name} \\
         --fasta=${fasta} \\
         --genes=${gtf}
-    cellranger --version | grep -o "[0-9\\. ]\\+" > ${software}.version.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$( cellranger --version | grep -o "[0-9\\. ]\\+")
+    END_VERSIONS
     """
 }
