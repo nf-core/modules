@@ -47,9 +47,6 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    #a<-getwd()  #should be removed soon? (test in next run)
-
-
     #Set configurations
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
@@ -59,13 +56,13 @@ process IMPUTEME_VCFTOPRS {
     set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
 
+
     #main run
     d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
     uniqueID<-sub(' </b>.+\$','',sub('^.+this run is <b> ','',d))
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    #setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export. Have to hardcode process name and software name because
