@@ -22,19 +22,18 @@ process MAXBIN2 {
     tuple val(meta), path(contigs), path(reads), path(abund)
 
     output:
-    tuple val(meta), path("*.fasta.gz")                                   , emit: binned_fastas
-    tuple val(meta), path("*.summary")                                    , emit: summary
-    tuple val(meta), path("*.log.gz")                                     , emit: log
-    tuple val(meta), path("*.marker.gz")                                  , emit: marker_counts
-    tuple val(meta), path("*.noclass.gz")                                 , emit: unbinned_fasta
-    tuple val(meta), path("*.tooshort.gz")                                , emit: tooshort_fasta
-    tuple val(meta), path("*.marker_of_each_bin.tar.gz") , optional: true, emit: marker_bins
-    tuple val(meta), path("*.marker_of_each_gene.tar.gz"), optional: true, emit: marker_genes
-
-    path "versions.yml"                                   , emit: version
+    tuple val(meta), path("*.fasta.gz")   , emit: binned_fastas
+    tuple val(meta), path("*.summary")    , emit: summary
+    tuple val(meta), path("*.log.gz")     , emit: log
+    tuple val(meta), path("*.marker.gz")  , emit: marker_counts
+    tuple val(meta), path("*.noclass.gz") , emit: unbinned_fasta
+    tuple val(meta), path("*.tooshort.gz"), emit: tooshort_fasta
+    tuple val(meta), path("*_bin.tar.gz") , emit: marker_bins , optional: true
+    tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
+    path "versions.yml"                   , emit: version
 
     script:
-    def prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def associate_files = reads ? "-reads $reads" : "-abund $abund"
     """
     run_MaxBin.pl \\
