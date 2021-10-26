@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -38,7 +38,7 @@ process CELLRANGER_MKREF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( cellranger --version | grep -o "[0-9\\. ]\\+")
+        ${getSoftwareName(task.process)}: \$( cellranger --version | grep -o '[0-9\\. ]\\+')
     END_VERSIONS
     """
 }
