@@ -30,7 +30,7 @@ process MAXBIN2 {
     tuple val(meta), path("*.tooshort.gz"), emit: tooshort_fasta
     tuple val(meta), path("*_bin.tar.gz") , emit: marker_bins , optional: true
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
-    path "versions.yml"                   , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
