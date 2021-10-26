@@ -44,7 +44,7 @@ process MAXBIN2 {
         $options.args \\
         -out $prefix
 
-    gzip --no-name *.fasta *.noclass *.tooshort *log *.marker
+    gzip *.fasta *.noclass *.tooshort *log *.marker
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
