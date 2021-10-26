@@ -46,6 +46,10 @@ process IMPUTEME_VCFTOPRS {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
+
+
+    #these next 6 lines will get deleted - they're just in now
+    #to avoid having to wait for a full docker build on any small code update
     a<-getwd()
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
@@ -53,7 +57,7 @@ process IMPUTEME_VCFTOPRS {
     system("git pull")
     setwd(a)
 
-    #Set configurations
+    #Set configurations (can also provide configuration file with set_conf("set_from_file",<path_to_file>)
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
     set_conf("data_path","$TMPDIR/")
@@ -64,8 +68,8 @@ process IMPUTEME_VCFTOPRS {
 
 
     #main run
-    d<-prepare_individual_genome('$vcf',overrule_vcf_checks=T)
-    uniqueID<-sub(' </b>.+\$','',sub('^.+this run is <b> ','',d))
+    return_message <- prepare_individual_genome('$vcf',overrule_vcf_checks=T)
+    uniqueID <- sub(' </b>.+\$','',sub('^.+this run is <b> ','',return_message))
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
@@ -74,7 +78,7 @@ process IMPUTEME_VCFTOPRS {
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
     version_file_path="versions.yml"
-    f<-file(version_file_path,"w")
+    f <- file(version_file_path,"w")
     writeLines("IMPUTEME_VCFTOPRS:", f)
     writeLines(paste0(" imputeme: ", sub("^v","",get_conf("version"))),f)
     close(f)
