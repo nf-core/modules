@@ -20,12 +20,12 @@ process CHECKM_LINEAGEWF {
 
     input:
     tuple val(meta), path(fasta)
-    val(fasta_ext)
+    val fasta_ext
 
     output:
-    tuple val(meta), path("${prefix}/")    , emit: checkm_output
+    tuple val(meta), path("${prefix}")    , emit: checkm_output
     tuple val(meta), path("${prefix}.tsv"), emit: checkm_tsv
-    path "versions.yml"          , emit: versions
+    path "versions.yml"                   , emit: versions
 
     script:
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -39,7 +39,7 @@ process CHECKM_LINEAGEWF {
         -x $fasta_ext \\
         $options.args \\
         . \\
-        ${prefix}/
+        $prefix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
