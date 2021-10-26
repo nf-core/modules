@@ -21,14 +21,17 @@ process METABAT2_METABAT2 {
     tuple val(meta), path(fasta), path(depth)
 
     output:
-    tuple val(meta), path("metabat2/*.fa")   , optional:true , emit: fasta
-    tuple val(meta), path("metabat2/$prefix"), optional:true , emit: membership
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("bins/*.fa.gz")       , optional:true , emit: fasta
+    tuple val(meta), path("*.membership.tsv.gz"), optional:true , emit: membership
+    path "versions.yml"                                         , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def depth_file = depth.size() == 0 ? "" : "-a $depth"
+    def decompress_depth = depth ? "gunzip $depth" : ""
+    def depth_file = depth ? "-a ${depth.baseName}" : ""
     """
+    $decompress_depth
+
     metabat2 \\
         $options.args \\
         -i $fasta \\
@@ -36,6 +39,11 @@ process METABAT2_METABAT2 {
         -t $task.cpus \\
         --saveCls \\
         -o metabat2/${prefix}
+
+    mv metabat2/${prefix} ${prefix}.membership.tsv
+    mv metabat2 bins
+    gzip -n ${prefix}.membership.tsv
+    gzip -n bins/*.fa
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

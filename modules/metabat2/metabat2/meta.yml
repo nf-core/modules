@@ -45,11 +45,11 @@ output:
   - fasta:
       type: file
       description: Bins created from assembled contigs in fasta file
-      pattern: "*.fa"
+      pattern: "*.fa.gz"
   - membership:
       type: file
-      description: cluster memberships as a matrix format. Optional output if `saveCls` flag is used
-      pattern: ""
+      description: cluster memberships as a matrix format.
+      pattern: "*.membership.tsv.gz"
 
 
 authors:

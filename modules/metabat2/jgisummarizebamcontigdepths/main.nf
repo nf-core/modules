@@ -21,8 +21,8 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("*.depth.txt"), emit: depth
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.depth.txt.gz"), emit: depth
+    path "versions.yml"                    , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -33,6 +33,8 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
         --outputDepth ${prefix}.depth.txt \\
         $options.args \\
         $bam
+
+    gzip -n ${prefix}.depth.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
