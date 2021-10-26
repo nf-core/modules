@@ -27,12 +27,12 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    OMP_NUM_THREADS=${task.cpus}
+    OMP_NUM_THREADS=$task.cpus
 
     jgi_summarize_bam_contig_depths \\
         --outputDepth ${prefix}.depth.txt \\
         $options.args \\
-        ${bam}
+        $bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

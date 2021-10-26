@@ -32,7 +32,6 @@ input:
           by metabat2_jgisummarizebamcontigdepths
       pattern: "*.depth.txt"
 
-
 output:
   - meta:
       type: map
@@ -47,6 +46,11 @@ output:
       type: file
       description: Bins created from assembled contigs in fasta file
       pattern: "*.fa"
+  - membership:
+      type: file
+      description: cluster memberships as a matrix format. Optional output if `saveCls` flag is used 
+      pattern: ""
+
 
 authors:
   - "@maxibor"
