@@ -27,7 +27,7 @@ process CELLRANGER_MKREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: version
+    path "versions.yml"     , emit: versions
 
     script:
     """
