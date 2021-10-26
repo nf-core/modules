@@ -46,6 +46,12 @@ process IMPUTEME_VCFTOPRS {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     """
     #!/usr/bin/env Rscript
+    a<-getwd()
+    source("/imputeme/code/impute-me/functions.R")
+    set_conf("defaults")
+    setwd(get_conf("code_path"))
+    system("git pull")
+    setwd(a)
 
     #Set configurations
     source("/imputeme/code/impute-me/functions.R")
