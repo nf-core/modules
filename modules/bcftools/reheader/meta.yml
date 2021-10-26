@@ -11,7 +11,7 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
-      licence: ['GPL']
+      licence: ['MIT']
 
 input:
   - meta:
@@ -38,9 +38,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - vcf:
       type: file

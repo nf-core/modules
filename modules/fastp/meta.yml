@@ -10,6 +10,7 @@ tools:
         A tool designed to provide fast all-in-one preprocessing for FastQ files. This tool is developed in C++ with multithreading supported to afford high performance.
       documentation: https://github.com/OpenGene/fastp
       doi: https://doi.org/10.1093/bioinformatics/bty560
+      licence: ['MIT']
 input:
   - meta:
       type: map
@@ -44,9 +45,9 @@ output:
       type: file
       description: fastq log file
       pattern: "*.log"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - reads_fail:
       type: file

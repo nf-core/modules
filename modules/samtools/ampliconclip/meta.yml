@@ -15,6 +15,7 @@ tools:
         homepage: http://www.htslib.org/
         documentation: hhttp://www.htslib.org/doc/samtools.html
         doi: 10.1093/bioinformatics/btp352
+        licence: ['MIT']
 
 input:
   - meta:
@@ -43,9 +44,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - bam:
       type: file

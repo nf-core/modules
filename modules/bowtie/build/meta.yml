@@ -13,6 +13,7 @@ tools:
           homepage: http://bowtie-bio.sourceforge.net/index.shtml
           documentation: http://bowtie-bio.sourceforge.net/manual.shtml
           arxiv: arXiv:1303.3997
+          licence: ['Artistic-2.0']
 input:
     - fasta:
           type: file
@@ -22,9 +23,9 @@ output:
           type: file
           description: Bowtie genome index files
           pattern: "*.ebwt"
-    - version:
+    - versions:
           type: file
-          description: File containing software version
+          description: File containing software versions
           pattern: "versions.yml"
 authors:
     - "@kevinmenden"

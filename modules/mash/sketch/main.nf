@@ -22,10 +22,9 @@ process MASH_SKETCH {
     output:
     tuple val(meta), path("*.msh")        , emit: mash
     tuple val(meta), path("*.mash_stats") , emit: stats
-    path "versions.yml"                   , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mash \\
@@ -35,6 +34,7 @@ process MASH_SKETCH {
         -o ${prefix} \\
         -r $reads \\
         2> ${prefix}.mash_stats
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(mash --version 2>&1)

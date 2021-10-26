@@ -23,10 +23,9 @@ process BBMAP_INDEX {
 
     output:
     path 'ref'                    , emit: index
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     bbmap.sh \\
         ref=${fasta} \\

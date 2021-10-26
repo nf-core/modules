@@ -28,10 +28,9 @@ process CNVKIT {
     tuple val(meta), path("*.cnn"), emit: cnn
     tuple val(meta), path("*.cnr"), emit: cnr
     tuple val(meta), path("*.cns"), emit: cns
-    path "versions.yml"           , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     cnvkit.py \\
         batch \\

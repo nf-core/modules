@@ -13,6 +13,7 @@ tools:
             sequences to a variation graph encoding the sequences and their alignments.
         homepage: https://github.com/ekg/seqwish
         documentation: https://github.com/ekg/seqwish
+        licence: ['MIT']
 input:
     - meta:
         type: map
@@ -38,9 +39,9 @@ output:
         type: file
         description: Variation graph in GFA 1.0 format
         pattern: "*.{gfa}"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
+        description: File containing software versions
         pattern: "versions.yml"
 authors:
     - "@heuermh"

@@ -34,6 +34,10 @@ bamaligncleaner:
   - modules/bamaligncleaner/**
   - tests/modules/bamaligncleaner/**
 
+bamtools/split:
+  - modules/bamtools/split/**
+  - tests/modules/bamtools/split/**
+
 bandage/image:
   - modules/bandage/image/**
   - tests/modules/bandage/image/**
@@ -65,6 +69,10 @@ bcftools/consensus:
 bcftools/filter:
   - modules/bcftools/filter/**
   - tests/modules/bcftools/filter/**
+
+bcftools/index:
+  - modules/bcftools/index/**
+  - tests/modules/bcftools/index**
 
 bcftools/isec:
   - modules/bcftools/isec/**
@@ -266,6 +274,10 @@ cooler/dump:
   - modules/cooler/dump/**
   - tests/modules/cooler/dump/**
 
+csvtk/concat:
+  - modules/csvtk/concat/**
+  - tests/modules/csvtk/concat/**
+
 custom/dumpsoftwareversions:
   - modules/custom/dumpsoftwareversions/**
   - tests/modules/custom/dumpsoftwareversions/**
@@ -374,6 +386,10 @@ flash:
   - modules/flash/**
   - tests/modules/flash/**
 
+freebayes:
+  - modules/freebayes/**
+  - tests/modules/freebayes/**
+
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
@@ -386,13 +402,25 @@ gatk4/bedtointervallist:
   - modules/gatk4/bedtointervallist/**
   - tests/modules/gatk4/bedtointervallist/**
 
+gatk4/calculatecontamination:
+  - modules/gatk4/calculatecontamination/**
+  - tests/modules/gatk4/calculatecontamination/**
+
 gatk4/createsequencedictionary:
   - modules/gatk4/createsequencedictionary/**
   - tests/modules/gatk4/createsequencedictionary/**
 
+gatk4/createsomaticpanelofnormals:
+  - modules/gatk4/createsomaticpanelofnormals/**
+  - tests/modules/gatk4/createsomaticpanelofnormals/**
+
 gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
+
+gatk4/filtermutectcalls:
+  - modules/gatk4/filtermutectcalls/**
+  - tests/modules/gatk4/filtermutectcalls/**
 
 gatk4/getpileupsummaries:
   - modules/gatk4/getpileupsummaries/**
@@ -405,6 +433,10 @@ gatk4/haplotypecaller:
 gatk4/intervallisttools:
   - modules/gatk4/intervallisttools/**
   - tests/modules/gatk4/intervallisttools/**
+
+gatk4/learnreadorientationmodel:
+  - modules/gatk4/learnreadorientationmodel/**
+  - tests/modules/gatk4/learnreadorientationmodel/**
 
 gatk4/markduplicates:
   - modules/gatk4/markduplicates/**
@@ -446,6 +478,10 @@ genmap/mappability:
   - modules/genmap/mappability/**
   - tests/modules/genmap/mappability/**
 
+genrich:
+  - modules/genrich/**
+  - tests/modules/genrich/**
+
 gffread:
   - modules/gffread/**
   - tests/modules/gffread/**
@@ -462,6 +498,18 @@ graphmap2/index:
   - modules/graphmap2/index/**
   - tests/modules/graphmap2/index/**
 
+gstama/collapse:
+  - modules/gstama/collapse/**
+  - tests/modules/gstama/collapse/**
+
+gstama/merge:
+  - modules/gstama/merge/**
+  - tests/modules/gstama/merge/**
+
+gtdbtk/classifywf:
+  - modules/gtdbtk/classifywf/**
+  - tests/modules/gtdbtk/classifywf/**
+
 gubbins:
   - modules/gubbins/**
   - tests/modules/gubbins/**
@@ -469,6 +517,10 @@ gubbins:
 gunzip:
   - modules/gunzip/**
   - tests/modules/gunzip/**
+
+hicap:
+  - modules/hicap/**
+  - tests/modules/hicap/**
 
 hifiasm:
   - modules/hifiasm/**
@@ -513,6 +565,18 @@ iqtree:
   - modules/iqtree/**
   - tests/modules/iqtree/**
 
+ismapper:
+  - modules/ismapper/**
+  - tests/modules/ismapper/**
+
+isoseq3/cluster:
+  - modules/isoseq3/cluster/**
+  - tests/modules/isoseq3/cluster/**
+
+isoseq3/refine:
+  - modules/isoseq3/refine/**
+  - tests/modules/isoseq3/refine/**
+
 ivar/consensus:
   - modules/ivar/consensus/**
   - tests/modules/ivar/consensus/**
@@ -524,6 +588,10 @@ ivar/trim:
 ivar/variants:
   - modules/ivar/variants/**
   - tests/modules/ivar/variants/**
+
+jupyternotebook:
+  - modules/jupyternotebook/**
+  - tests/modules/jupyternotebook/**
 
 kallisto/index:
   - modules/kallisto/index/**
@@ -614,6 +682,14 @@ mash/sketch:
   - modules/mash/sketch/**
   - tests/modules/mash/sketch/**
 
+mashtree:
+  - modules/mashtree/**
+  - tests/modules/mashtree/**
+
+megahit:
+  - modules/megahit/**
+  - tests/modules/megahit/**
+
 metaphlan3:
   - modules/metaphlan3/**
   - tests/modules/metaphlan3/**
@@ -637,6 +713,10 @@ minimap2/align:
 minimap2/index:
   - modules/minimap2/index/**
   - tests/modules/minimap2/index/**
+
+mlst:
+  - modules/mlst/**
+  - tests/modules/mlst/**
 
 mosdepth:
   - modules/mosdepth/**
@@ -707,6 +787,10 @@ pangolin:
   - modules/pangolin/**
   - tests/modules/pangolin/**
 
+pbbam/pbmerge:
+  - modules/pbbam/pbmerge/**
+  - tests/modules/pbbam/pbmerge/**
+
 pbccs:
   - modules/pbccs/**
   - tests/modules/pbccs/**
@@ -734,6 +818,10 @@ picard/mergesamfiles:
 picard/sortsam:
   - modules/picard/sortsam/**
   - tests/modules/picard/sortsam/**
+
+pirate:
+  - modules/pirate/**
+  - tests/modules/pirate/**
 
 plasmidid:
   - modules/plasmidid/**
@@ -790,6 +878,14 @@ rasusa:
 raxmlng:
   - modules/raxmlng/**
   - tests/modules/raxmlng/**
+
+rmarkdownnotebook:
+  - modules/rmarkdownnotebook/**
+  - tests/modules/rmarkdownnotebook/**
+
+roary:
+  - modules/roary/**
+  - tests/modules/roary/**
 
 rsem/calculateexpression:
   - modules/rsem/calculateexpression/**
@@ -927,6 +1023,18 @@ spades:
   - modules/spades/**
   - tests/modules/spades/**
 
+spatyper:
+  - modules/spatyper/**
+  - tests/modules/spatyper/**
+
+sratools/fasterqdump:
+  - modules/sratools/fasterqdump/**
+  - tests/modules/sratools/fasterqdump/**
+
+sratools/prefetch:
+  - modules/sratools/prefetch/**
+  - tests/modules/sratools/prefetch/**
+
 staphopiasccmec:
   - modules/staphopiasccmec/**
   - tests/modules/staphopiasccmec/**
@@ -942,6 +1050,10 @@ star/genomegenerate:
 strelka/germline:
   - modules/strelka/germline/**
   - tests/modules/strelka/germline/**
+
+strelka/somatic:
+  - modules/strelka/somatic/**
+  - tests/modules/strelka/somatic/**
 
 stringtie/merge:
   - modules/stringtie/merge/**
@@ -967,6 +1079,10 @@ tabix/tabix:
   - modules/tabix/tabix/**
   - tests/modules/tabix/tabix/**
 
+tiddit/cov:
+  - modules/tiddit/cov/**
+  - tests/modules/tiddit/cov/**
+
 tiddit/sv:
   - modules/tiddit/sv/**
   - tests/modules/tiddit/sv/**
@@ -991,6 +1107,10 @@ ucsc/bigwigaverageoverbed:
   - modules/ucsc/bigwigaverageoverbed/**
   - tests/modules/ucsc/bigwigaverageoverbed/**
 
+ucsc/liftover:
+  - modules/ucsc/liftover/**
+  - tests/modules/ucsc/liftover/**
+  
 ucsc/wigtobigwig:
   - modules/ucsc/wigtobigwig/**
   - tests/modules/ucsc/wigtobigwig/**
