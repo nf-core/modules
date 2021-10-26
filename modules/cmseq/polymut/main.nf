@@ -3,7 +3,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process CMSEQ_POLYMORPHIC {
+process CMSEQ_POLYMUT {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
@@ -37,6 +37,7 @@ process CMSEQ_POLYMORPHIC {
     //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+    def fasta_refid = refid ? "-c $refid" : ""
     """
     samtools \\
         sort \\

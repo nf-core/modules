@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml cmseq/polymut
+- name: cmseq polymut
+  command: nextflow run ./tests/modules/cmseq/polymut -entry test_cmseq_polymut -c tests/config/nextflow.config
+  tags:
+    - cmseq
+    - cmseq/polymut
+  files:
+    - path: output/cmseq/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc

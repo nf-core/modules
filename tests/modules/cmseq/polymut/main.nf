@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { CMSEQ_POLYMORPHIC } from '../../../../modules/cmseq/polymorphic/main.nf' addParams( options: [:] )
+include { CMSEQ_POLYMUT } from '../../../../modules/cmseq/polymut/main.nf' addParams( options: [:] )
 
-workflow test_cmseq_polymorphic {
+workflow test_cmseq_polymut{
     
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 
-    CMSEQ_POLYMORPHIC ( input )
+    CMSEQ_POLYMUT( input )
 }
