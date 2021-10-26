@@ -47,7 +47,7 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    a<-getwd()  #should be removed soon? (test in next run)
+    #a<-getwd()  #should be removed soon? (test in next run)
 
 
     #Set configurations
@@ -65,7 +65,7 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    setwd(a) #odd why this is needed, but seems like it is
+    #setwd(a) #odd why this is needed, but seems like it is
     file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export. Have to hardcode process name and software name because
