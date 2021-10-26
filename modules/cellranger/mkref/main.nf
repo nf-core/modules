@@ -11,7 +11,9 @@ process CELLRANGER_MKREF {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ?: null)
+    if (params.enable_conda) {
+        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+    }
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "nfcore/cellranger:6.0.2"
     } else {
