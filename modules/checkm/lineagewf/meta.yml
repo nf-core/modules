@@ -29,7 +29,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: One or a list of multiple FASTA files of each bin
+      description: One or a list of multiple FASTA files of each bin, with extension defined with the fasta_ext value
       pattern: "*.{$fasta_ext}"
   - fasta_ext:
       type: value
