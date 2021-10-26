@@ -1,37 +1,42 @@
 name: cellranger_mkref
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkref command.
 keywords:
-  - sort
+  - reference
+  - mkref
+  - index
 tools:
   - cellranger:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: 
-      homepage: 
-      documentation: 
-      tool_dev_url: 
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       doi: ""
-      licence: 
+      licence:
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fasta genome file
+      pattern: "*.{fasta,fa}"
+  - gtf:
+      type: file
+      description: gtf transcriptome file
+      pattern: "*.gtf"
+  - reference_name:
+      type: val
+      description: name to give the reference folder
+      pattern: str
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - version:
       type: file
       description: File containing software version
       pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - reference:
+      type: folder
+      description: Folder containing all the reference indices needed by Cell Ranger
+      pattern: """
 
 authors:
   - "@ggabernet"
