@@ -56,8 +56,8 @@ process IMPUTEME_VCFTOPRS {
     #Set configurations
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
-    set_conf("data_path","./")
-    set_conf("vcfs_path","./")
+    set_conf("data_path","$TMPDIR/")
+    set_conf("vcfs_path","$TMPDIR/")
     set_conf("autostart_supercronic",FALSE)
     set_conf("minimum_required_variant_in_vcf_count",1000)
     set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
@@ -69,7 +69,7 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
+    file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
