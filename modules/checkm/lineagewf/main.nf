@@ -44,7 +44,7 @@ process CHECKM_LINEAGEWF {
     path "versions.yml"          , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     checkm \\
         lineage_wf \\
@@ -57,7 +57,7 @@ process CHECKM_LINEAGEWF {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$( checkm 2>&1 \) | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
+        ${getSoftwareName(task.process)}: \$( checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
     END_VERSIONS
     """
 }
