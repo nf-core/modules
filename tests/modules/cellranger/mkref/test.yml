@@ -1,8 +1,8 @@
 - name: cellranger mkref test_cellranger_mkref
   command: nextflow run tests/modules/cellranger/mkref -entry test_cellranger_mkref -c tests/config/nextflow.config
   tags:
-    - cellranger/mkref
     - cellranger
+    - cellranger/mkref
   files:
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
