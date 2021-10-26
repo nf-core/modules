@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { METABAT2_METABAT2 as MTB2_1 ; METABAT2_METABAT2 as MTB2_2 } from '../../../../modules/metabat2/metabat2/main.nf' addParams( options: [args: '--minContig 1500 --minCV 0.1 --minCVSum 0.1 --minClsSize 10 --minS 2'] )
+include { METABAT2_METABAT2 as METABAT2_NO_DEPTH ; METABAT2_METABAT2 as METABAT2_DEPTH } from '../../../../modules/metabat2/metabat2/main.nf' addParams( options: [args: '--minContig 1500 --minCV 0.1 --minCVSum 0.1 --minClsSize 10 --minS 2'] )
 include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf' addParams( options: [:] )
 
 workflow test_metabat2_metabat2 {
@@ -29,6 +29,6 @@ workflow test_metabat2_metabat2 {
     
     
 
-    MTB2_1 ( input_fasta )
-    MTB2_2 ( input_fasta_depth )
+    METABAT2_NO_DEPTH ( input_fasta )
+    METABAT2_DEPTH ( input_fasta_depth )
 }
