@@ -50,12 +50,12 @@ process IMPUTEME_VCFTOPRS {
 
     #these next 6 lines will get deleted - they're just in now
     #to avoid having to wait for a full docker build on any small code update
-    a<-getwd()
-    source("/imputeme/code/impute-me/functions.R")
-    set_conf("defaults")
-    setwd(get_conf("code_path"))
-    system("git pull")
-    setwd(a)
+    #a<-getwd()
+    #source("/imputeme/code/impute-me/functions.R")
+    #set_conf("defaults")
+    #setwd(get_conf("code_path"))
+    #system("git pull")
+    #setwd(a)
 
     #Set configurations (can also provide configuration file with set_conf("set_from_file",<path_to_file>)
     source("/imputeme/code/impute-me/functions.R")
