@@ -40,7 +40,8 @@ process CHECKM_LINEAGEWF {
     val(fasta_ext)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: checkm
+    tuple val(meta), path("${prefix}/")    , emit: checkm_output
+    tuple val(meta), path("${prefix}.tsv"), emit: checkm_tsv
     path "versions.yml"          , emit: versions
 
     script:
@@ -49,6 +50,8 @@ process CHECKM_LINEAGEWF {
     checkm \\
         lineage_wf \\
         -t $task.cpus \\
+        -f ${prefix}.tsv \\
+        --tab_table \\
         --pplacer_threads $task.cpus \\
         -x $fasta_ext \\
         $options.args \\

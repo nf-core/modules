@@ -29,7 +29,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: FASTA files of each bin
+      description: One or a list of multiple FASTA files of each bin
       pattern: "*.{fasta}"
 
 output:
@@ -42,10 +42,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - checkm:
+  - checkm_output:
       type: directory
       description: CheckM output directory
       pattern: "*/"
+  - checkm_tsv:
+      type: file
+      description: CheckM summary completeness statistics table
+      pattern: "*.tsv"
 
 authors:
   - "@jfy133"

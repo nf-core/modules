@@ -1,13 +1,35 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml checkm/lineagewf
 - name: checkm lineagewf
   command: nextflow run ./tests/modules/checkm/lineagewf -entry test_checkm_lineagewf -c tests/config/nextflow.config
   tags:
     - checkm
     - checkm/lineagewf
   files:
+    - path: output/checkm/test.tsv
+      md5sum: d5559764f563c4b55223e4e4a3dc1ec9
     - path: output/checkm/test/checkm.log
-      string: "INFO: Parsing HMM hits to marker genes:"
+      contains:
+        - "INFO: Parsing HMM hits to marker genes:"
     - path: output/checkm/test/lineage.ms
-      md5sum: 7801f2fed02c161543aa48d479d444e5
+      contains:
+        - "# [Lineage Marker File]"
+        - "contigs"
+        - "UID1"
+
+- name: checkm lineagewf_multi
+  command: nextflow run ./tests/modules/checkm/lineagewf -entry test_checkm_lineagewf_multi -c tests/config/nextflow.config
+  tags:
+    - checkm
+    - checkm/lineagewf
+  files:
+    - path: output/checkm/test.tsv
+      md5sum: 7e0fa177dcf151b84b7751813fbde3d1
+    - path: output/checkm/test/checkm.log
+      contains:
+        - "INFO: Parsing HMM hits to marker genes:"
+    - path: output/checkm/test/lineage.ms
+      contains:
+        - "# [Lineage Marker File]"
+        - "contigs"
+        - "UID1"
+        - "genome"
 
