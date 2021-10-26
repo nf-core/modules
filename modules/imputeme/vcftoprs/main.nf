@@ -45,23 +45,15 @@ process IMPUTEME_VCFTOPRS {
     #!/usr/bin/env Rscript
 
 
-    #these next 6 lines will get deleted - they're just in now
-    #to avoid having to wait for a full docker build on any small code update
-    #a<-getwd()
-    #source("/imputeme/code/impute-me/functions.R")
-    #set_conf("defaults")
-    #setwd(get_conf("code_path"))
-    #system("git pull")
-    #setwd(a)
-
-    #Set configurations (can also provide configuration file with set_conf("set_from_file",<path_to_file>)
+    #Set configurations (
+    #can also provide configuration file with set_conf("set_from_file","<path>")
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
     set_conf("data_path","$TMPDIR/")
     set_conf("vcfs_path","$TMPDIR/")
     set_conf("autostart_supercronic",FALSE)
     set_conf("minimum_required_variant_in_vcf_count",1000)
-    set_conf("modules_to_compute","ethnicity,AllDiseases") #remember to add AllDiseases and prs
+    set_conf("modules_to_compute","ethnicity,AllDiseases") 
 
 
     #main run
