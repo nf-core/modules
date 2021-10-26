@@ -30,7 +30,10 @@ input:
   - fasta:
       type: file
       description: One or a list of multiple FASTA files of each bin
-      pattern: "*.{fasta}"
+      pattern: "*.{$fasta_ext}"
+  - fasta_ext:
+      type: value
+      description: The file-type extension suffix of the input FASTA files (e.g., fasta, fna, fa, fas)  
 
 output:
   - meta:
