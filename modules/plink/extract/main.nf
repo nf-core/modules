@@ -43,7 +43,7 @@ process PLINK_EXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(plink --version) | sed 's/^PLINK //;s/64.*//')
+        ${getSoftwareName(task.process)}: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
     END_VERSIONS
     """
 }
