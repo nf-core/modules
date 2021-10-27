@@ -1,0 +1,34 @@
+name: kronatools_ktimporttaxonomy
+description: KronaTools Import Taxonomy imports taxonomy classifications and produces a zoomable pie chart to summarise the data.
+keywords:
+  - plot
+  - taxonomy
+tools:
+  - kronatools:
+      description: Krona Tools is a set of scripts to create Krona charts from several Bioinformatics tools as well as from text and XML files.
+      homepage: https://github.com/marbl/Krona/wiki/KronaTools
+      documentation: http://manpages.ubuntu.com/manpages/impish/man1/ktImportTaxonomy.1.html
+      tool_dev_url:
+      doi: https://doi.org/10.1186/1471-2105-12-385
+      licence:
+
+input:
+  - report: A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.
+            Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.
+            Lines beginning with \# will be ignored.
+      type: file
+      description: A TSV file
+      pattern: "*.{tsv}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - html:
+      type: file
+      description: A html file containing a zoomable krona plot.
+      pattern: "*.{html}"
+
+authors:
+  - "@mjakobs"
