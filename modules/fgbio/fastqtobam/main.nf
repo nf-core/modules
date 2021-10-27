@@ -24,7 +24,7 @@ process FGBIO_FASTQTOBAM {
 
     output:
     tuple val(meta), path("*_umi_converted.bam"), emit: umibam
-    path "*.version.yml"                        , emit: version
+    path "versions.yml"                         , emit: version
 
     script:
     def software = getSoftwareName(task.process)
@@ -33,13 +33,15 @@ process FGBIO_FASTQTOBAM {
     """
     mkdir tmpFolder
 
-    fgbio --tmp-dir=${PWD}/tmpFolder \\
-    FastqToBam \\
-    -i ${reads} \\
-    -o "${prefix}_umi_converted.bam" \\
-    --read-structures $read_structure \\
-    --sample ${meta.id} \\
-    --library ${meta.id} ${options.args}
+    fgbio \\
+        --tmp-dir=${PWD}/tmpFolder \\
+        FastqToBam \\
+        -i $reads \\
+        -o "${prefix}_umi_converted.bam" \\
+        --read-structures $read_structure \\
+        --sample $meta.id \\
+        --library $meta.id \\
+        $options.args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
