@@ -9,14 +9,14 @@ tools:
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
       doi: ""
-      licence: ['BSD-3-clause-Clear']
+      licence: ['BSD-3-Clause-Clear']
 
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        id: id of the split file
   - bam:
       type: file
       description: Raw subreads bam
