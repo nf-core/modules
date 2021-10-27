@@ -1,13 +1,19 @@
 name: manta_germline
-description: Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads
+description: Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads. It is optimized for analysis of germline variation in small sets of individuals and somatic variation in tumor/normal sample pairs.
 keywords:
-  - sort
+  - somatic
+  - wgs
+  - wxs
+  - panel
+  - vcf
+  - structural variants
+  - small indels
 tools:
   - manta:
       description: Structural variant and indel caller for mapped sequencing data
       homepage: https://github.com/Illumina/manta
-      documentation: https://github.com/Illumina/manta/blob/master/docs/userGuide/README.md
-      tool_dev_url: None
+      documentation: https://github.com/Illumina/manta/blob/v1.6.0/docs/userGuide/README.md
+      tool_dev_url: https://github.com/Illumina/manta
       doi: "10.1093/bioinformatics/btv710"
       licence: ['GPL v3']
 
@@ -17,14 +23,30 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - cram:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
+  - crai:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"
+  - fasta:
+      type: file
+      description: Genome reference FASTA file
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: Genome reference FASTA index file
+      pattern: "*.{fa.fai,fasta.fai}"
+  - target_bed:
+      type: file
+      description: BED file containing target regions for variant calling
+      pattern: "*.{bed}"
+  - target_bed_tbi:
+      type: file
+      description: Index for BED file containing target regions for variant calling
+      pattern: "*.{bed.tbi}"
 
 output:
   - meta:
@@ -32,30 +54,30 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - vcf:
+  - candidate_small_indels_vcf:
       type: file
-      description: gzipped candidate structural variant file
+      description: Gzipped VCF file containing variants
       pattern: "*.{vcf.gz}"
-  - vcf_tbi:
+  - candidate_small_indels_vcf_tbi:
       type: file
-      description: index file for the vcf file
-      pattern: "*.vcf.gz.tbi"
-  - csi_vcf:
+      description: Index for gzipped VCF file containing variants
+      pattern: "*.{vcf.gz.tbi}"
+  - candidate_sv_vcf:
       type: file
-      description: gzipped candidate small indels file
+      description: Gzipped VCF file containing variants
       pattern: "*.{vcf.gz}"
-  - csi_vcf_tbi:
+  - candidate_sv_vcf_tbi:
       type: file
-      description: index file for the vcf file
-      pattern: "*.vcf.gz.tbi"
+      description: Index for gzipped VCF file containing variants
+      pattern: "*.{vcf.gz.tbi}"
   - diploid_sv_vcf:
       type: file
-      description: gzipped diploid structural variant file
+      description: Gzipped VCF file containing variants
       pattern: "*.{vcf.gz}"
   - diploid_sv_vcf_tbi:
       type: file
-      description: index file for the vcf file
-      pattern: "*.vcf.gz.tbi"
+      description: Index for gzipped VCF file containing variants
+      pattern: "*.{vcf.gz.tbi}"
   - versions:
       type: file
       description: File containing software versions

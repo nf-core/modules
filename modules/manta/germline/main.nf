@@ -19,27 +19,27 @@ process MANTA_GERMLINE {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(cram), path(crai)
     path fasta
     path fai
     path target_bed
     path target_bed_tbi
 
     output:
-    tuple val(meta), path("*candidateSV.vcf.gz")             , emit: vcf
-    tuple val(meta), path("*candidateSV.vcf.gz.tbi")         , emit: vcf_tbi
-    tuple val(meta), path("*candidateSmallIndels.vcf.gz")    , emit: csi_vcf
-    tuple val(meta), path("*candidateSmallIndels.vcf.gz.tbi"), emit: csi_vcf_tbi
-    tuple val(meta), path("*diploidSV.vcf.gz")               , emit: diploid_sv_vcf
-    tuple val(meta), path("*diploidSV.vcf.gz.tbi")           , emit: diploid_sv_vcf_tbi
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
+    tuple val(meta), path("*candidate_small_indels.vcf.gz.tbi"), emit: candidate_small_indels_vcf_tbi
+    tuple val(meta), path("*candidate_sv.vcf.gz")              , emit: candidate_sv_vcf
+    tuple val(meta), path("*candidate_sv.vcf.gz.tbi")          , emit: candidate_sv_vcf_tbi
+    tuple val(meta), path("*diploid_sv.vcf.gz")                , emit: diploid_sv_vcf
+    tuple val(meta), path("*diploid_sv.vcf.gz.tbi")            , emit: diploid_sv_vcf_tbi
+    path "versions.yml"                                        , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --bam $bam \
+        --bam $cram \
         --reference $fasta \
         $options_manta \
         --runDir manta
@@ -47,17 +47,17 @@ process MANTA_GERMLINE {
     python manta/runWorkflow.py -m local -j $task.cpus
 
     mv manta/results/variants/candidateSmallIndels.vcf.gz \
-        ${prefix}.candidateSmallIndels.vcf.gz
+        ${prefix}.candidate_small_indels.vcf.gz
     mv manta/results/variants/candidateSmallIndels.vcf.gz.tbi \
-        ${prefix}.candidateSmallIndels.vcf.gz.tbi
+        ${prefix}.candidate_small_indels.vcf.gz.tbi
     mv manta/results/variants/candidateSV.vcf.gz \
-        ${prefix}.candidateSV.vcf.gz
+        ${prefix}.candidate_sv.vcf.gz
     mv manta/results/variants/candidateSV.vcf.gz.tbi \
-        ${prefix}.candidateSV.vcf.gz.tbi
+        ${prefix}.candidate_sv.vcf.gz.tbi
     mv manta/results/variants/diploidSV.vcf.gz \
-        ${prefix}.diploidSV.vcf.gz
+        ${prefix}.diploid_sv.vcf.gz
     mv manta/results/variants/diploidSV.vcf.gz.tbi \
-        ${prefix}.diploidSV.vcf.gz.tbi
+        ${prefix}.diploid_sv.vcf.gz.tbi
 
 
     cat <<-END_VERSIONS > versions.yml

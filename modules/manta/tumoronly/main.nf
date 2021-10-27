@@ -19,27 +19,27 @@ process MANTA_TUMORONLY {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(cram), path(crai)
     path fasta
     path fai
     path target_bed
     path target_bed_tbi
 
     output:
-    tuple val(meta), path("*candidateSV.vcf.gz")             , emit: vcf
-    tuple val(meta), path("*candidateSV.vcf.gz.tbi")         , emit: vcf_tbi
-    tuple val(meta), path("*candidateSmallIndels.vcf.gz")    , emit: csi_vcf
-    tuple val(meta), path("*candidateSmallIndels.vcf.gz.tbi"), emit: csi_vcf_tbi
-    tuple val(meta), path("*tumorSV.vcf.gz")                 , emit: tumor_sv_vcf
-    tuple val(meta), path("*tumorSV.vcf.gz.tbi")             , emit: tumor_sv_vcf_tbi
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
+    tuple val(meta), path("*candidate_small_indels.vcf.gz.tbi"), emit: candidate_small_indels_vcf_tbi
+    tuple val(meta), path("*candidate_sv.vcf.gz")              , emit: candidate_sv_vcf
+    tuple val(meta), path("*candidate_sv.vcf.gz.tbi")          , emit: candidate_sv_vcf_tbi
+    tuple val(meta), path("*tumor_sv.vcf.gz")                  , emit: tumor_sv_vcf
+    tuple val(meta), path("*tumor_sv.vcf.gz.tbi")              , emit: tumor_sv_vcf_tbi
+    path "versions.yml"                                        , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --tumorBam $bam \
+        --tumorBam $cram \
         --reference $fasta \
         $options_manta \
         --runDir manta
@@ -47,17 +47,17 @@ process MANTA_TUMORONLY {
     python manta/runWorkflow.py -m local -j $task.cpus
 
     mv manta/results/variants/candidateSmallIndels.vcf.gz \
-        ${prefix}.candidateSmallIndels.vcf.gz
+        ${prefix}.candidate_small_indels.vcf.gz
     mv manta/results/variants/candidateSmallIndels.vcf.gz.tbi \
-        ${prefix}.candidateSmallIndels.vcf.gz.tbi
+        ${prefix}.candidate_small_indels.vcf.gz.tbi
     mv manta/results/variants/candidateSV.vcf.gz \
-        ${prefix}.candidateSV.vcf.gz
+        ${prefix}.candidate_sv.vcf.gz
     mv manta/results/variants/candidateSV.vcf.gz.tbi \
-        ${prefix}.candidateSV.vcf.gz.tbi
+        ${prefix}.candidate_sv.vcf.gz.tbi
     mv manta/results/variants/tumorSV.vcf.gz \
-        ${prefix}.tumorSV.vcf.gz
+        ${prefix}.tumor_sv.vcf.gz
     mv manta/results/variants/tumorSV.vcf.gz.tbi \
-        ${prefix}.tumorSV.vcf.gz.tbi
+        ${prefix}.tumor_sv.vcf.gz.tbi
 
 
     cat <<-END_VERSIONS > versions.yml

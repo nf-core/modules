@@ -7,8 +7,8 @@ include { MANTA_TUMORONLY } from '../../../../modules/manta/tumoronly/main.nf' a
 workflow test_manta_tumoronly {
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
     ]
 
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -22,8 +22,8 @@ workflow test_manta_tumoronly {
 workflow test_manta_tumoronly_target_bed {
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
     ]
 
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
