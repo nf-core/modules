@@ -5,7 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process IDR {
-    tag '$bam'
+    tag "$prefix"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -30,11 +30,12 @@ process IDR {
     path "versions.yml"  , emit: versions
 
     script:
-    // TODO: Check if number of peaks is 1 and generate error or fail if so
-        // https://github.com/nf-core/modules/blob/f47c27edfbc6181779699ff6b919d773d578aed7/modules/picard/mergesamfiles/main.nf#L37
+    if (peaks.toList().size < 2) {
+        log.error "[ERROR] idr needs at least two replicates only one provided."
+    }
     def peak_types = ['narrowPeak', 'broadPeak', 'bed']
     if (!peak_types.contains(peak_type)) {
-        log.error "[IDR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
+        log.error "[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
     }
     def idr_vals = prefix ? "${prefix}.idrValues.txt" : "idrValues.txt"
     def log_file = prefix ? "${prefix}.log.txt" : "log.txt"
