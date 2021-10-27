@@ -29,7 +29,8 @@ process IMPUTEME_VCFTOPRS {
         // TODO not fixed yet - biocontainers only carry the docker image
     } else {
         // TODO - change to the biocontainer-based location (after code-changes to imputeme are done and up there)
-        container "quay.io/lassefolkersen/imputeme:latest"
+        // container "quay.io/lassefolkersen/imputeme:latest"
+        container "lassefolkersen/impute-me:latest"
     }
 
     input:
@@ -43,17 +44,15 @@ process IMPUTEME_VCFTOPRS {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     #!/usr/bin/env Rscript
-
-
-    #Set configurations (
+    
     #can also provide configuration file with set_conf("set_from_file","<path>")
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
-    set_conf("data_path","$TMPDIR/")
-    set_conf("vcfs_path","$TMPDIR/")
+    set_conf("data_path","./")
+    set_conf("vcfs_path","./")
     set_conf("autostart_supercronic",FALSE)
     set_conf("minimum_required_variant_in_vcf_count",1000)
-    set_conf("modules_to_compute","ethnicity,AllDiseases") 
+    set_conf("modules_to_compute","ethnicity,AllDiseases")
 
 
     #main run
@@ -62,7 +61,7 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    file.copy(paste0("$TMPDIR/",uniqueID,"/",uniqueID,"_data.json"),"output.json")
+    file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
