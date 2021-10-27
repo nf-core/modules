@@ -52,7 +52,8 @@ process ULTRA_PIPELINE {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
-    uLTRA pipeline \\
+    uLTRA \\
+        pipeline \\
         --t $task.cpus \\
         --prefix $prefix \\
         $options.args \\
