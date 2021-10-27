@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml dedup
+- name: dedup
+  command: nextflow run ./tests/modules/dedup -entry test_dedup -c tests/config/nextflow.config
+  tags:
+    - dedup
+  files:
+    - path: output/dedup/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+
