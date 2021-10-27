@@ -1,32 +1,42 @@
 name: cmseq_polymut
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Calculates polymorphic site rates over protein coding genes
 keywords:
-  - sort
+  - polymut
+  - polymorphic
+  - mags
+  - assembly
 tools:
   - cmseq:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Set of utilities on sequences and BAM files
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/SegataLab/cmseq
+      documentation: https://github.com/SegataLab/cmseq
+      tool_dev_url: https://github.com/SegataLab/cmseq
       licence: ['MIT License']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - gff:
+      type: file
+      description: GFF file used to extract protein-coding genes
+      pattern: "*.gff"
+  - fasta:
+      type: file
+      description: Optional fasta file to on a subset of references in the BAM file.
+      pattern: .{fa,fasta,fas}
 
-## TODO nf-core: Add a description of all of the variables used as output
+
 output:
   - meta:
       type: map
@@ -37,11 +47,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - polymut:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Polymut report in `.txt` format.
+      pattern: "*.txt"
 
 authors:
   - "@maxibor"
