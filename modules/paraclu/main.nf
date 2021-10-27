@@ -20,6 +20,7 @@ process PARACLU {
 
     input:
     tuple val(meta), path(bed)
+    val(min_cluster)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -32,7 +33,7 @@ process PARACLU {
 
     awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P
     sort -k1,1 -k3n ${bed}_4P > ${bed}_4Ps
-    paraclu $options.args ${bed}_4Ps > ${prefix}.clustered
+    paraclu $min_cluster ${bed}_4Ps > ${prefix}.clustered
     paraclu-cut  ${prefix}.clustered >  ${prefix}.clustered.simplified
     awk -F '\t' '{print \$1"\t"\$3"\t"\$4"\t"\$1":"\$3".."\$4","\$2"\t"\$6"\t"\$2}' ${prefix}.clustered.simplified >  ${prefix}.clustered.simplified.bed
 

@@ -2,12 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-include { PARACLU } from '../../../modules/paraclu/main.nf' addParams( options: [args:30] )
+include { PARACLU } from '../../../modules/paraclu/main.nf' addParams( options: [:] )
 
 workflow test_paraclu {
 
-    input = [ [ id:'test' ], // meta map
-              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) ]
+    input = [[  id:'test' ], // meta map
+                file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+    min_cluster = 30
 
-    PARACLU ( input )
+    PARACLU ( input, min_cluster )
 }
