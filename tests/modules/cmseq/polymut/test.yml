@@ -1,8 +1,8 @@
 - name: cmseq polymut test_cmseq_polymut
   command: nextflow run tests/modules/cmseq/polymut -entry test_cmseq_polymut -c tests/config/nextflow.config
   tags:
-    - cmseq
     - cmseq/polymut
+    - cmseq
   files:
     - path: output/cmseq/test.polymut.txt
       md5sum: fd325c1724ee23d132a9115c64494efc
