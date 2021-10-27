@@ -1,10 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml seqtk/mergepe
-- name: seqtk mergepe
-  command: nextflow run ./tests/modules/seqtk/mergepe -entry test_seqtk_mergepe -c tests/config/nextflow.config
+- name: seqtk mergepe test_seqtk_mergepe_single_end
+  command: nextflow run tests/modules/seqtk/mergepe -entry test_seqtk_mergepe_single_end -c tests/config/nextflow.config
   tags:
-    - seqtk
     - seqtk/mergepe
+    - seqtk
   files:
-    - path: output/seqtk/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/seqtk/test_processed.fastq.gz
+      md5sum: e325ef7deb4023447a1f074e285761af
+
+- name: seqtk mergepe test_seqtk_mergepe_paired_end
+  command: nextflow run tests/modules/seqtk/mergepe -entry test_seqtk_mergepe_paired_end -c tests/config/nextflow.config
+  tags:
+    - seqtk/mergepe
+    - seqtk
+  files:
+    - path: output/seqtk/test_processed.fastq.gz
+      md5sum: 3f094ef62d9bfe06aa25174a06bc7d04
