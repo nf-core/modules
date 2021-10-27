@@ -1251,11 +1251,11 @@ spatyper:
   - modules/spatyper/**
   - tests/modules/spatyper/**
 
-sratools/fasterqdump:
+sratools/fasterqdump: &sratools/fasterqdump
   - modules/sratools/fasterqdump/**
   - tests/modules/sratools/fasterqdump/**
 
-sratools/prefetch:
+sratools/prefetch: &sratools/prefetch
   - modules/sratools/prefetch/**
   - tests/modules/sratools/prefetch/**
 
@@ -1394,6 +1394,8 @@ subworkflows/align_bowtie2:
 subworkflows/sra_fastq:
   - subworkflows/nf-core/sra_fastq/**
   - tests/subworkflows/nf-core/sra_fastq/**
+  - *sratools/fasterqdump
+  - *sratools/prefetch
 
 subworkflows/gatk_create_som_pon:
   - subworkflows/nf-core/gatk_create_som_pon/**
