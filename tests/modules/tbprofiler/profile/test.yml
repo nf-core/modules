@@ -1,0 +1,23 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml tbprofiler/profile
+- name: tbprofiler profile illumina
+  command: nextflow run ./tests/modules/tbprofiler/profile -entry test_tbprofiler_profile_illumina -c tests/config/nextflow.config
+  tags:
+    - tbprofiler
+    - tbprofiler/profile
+  files:
+    - path: output/tbprofiler/bam/test.bam
+    - path: output/tbprofiler/results/test.results.json
+      contains: ['genome_positions', 'locus_tag', 'tbprofiler_version']
+    - path: output/tbprofiler/vcf/test.targets.csq.vcf.gz
+
+- name: tbprofiler profile nanopore
+  command: nextflow run ./tests/modules/tbprofiler/profile -entry test_tbprofiler_profile_nanopore -c tests/config/nextflow.config
+  tags:
+    - tbprofiler
+    - tbprofiler/profile
+  files:
+    - path: output/tbprofiler/bam/test.bam
+    - path: output/tbprofiler/results/test.results.json
+      contains: ['genome_positions', 'locus_tag', 'tbprofiler_version']
+    - path: output/tbprofiler/vcf/test.targets.csq.vcf.gz
