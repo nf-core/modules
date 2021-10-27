@@ -25,12 +25,12 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("*_genomicsdb"), optional:true   , emit: genomicsdb
+    tuple val(meta), path("*_genomicsdb")   , optional:true, emit: genomicsdb
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
     path "versions.yml"                                    , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputs_list = []
     def inputs_command = ''
     def dir_command = ''
