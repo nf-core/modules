@@ -27,9 +27,9 @@ process FASTQSCAN {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def cat_cmd = fastq.getName().endsWith(".gz") ? 'zcat' : 'cat'
     """
-    $cat_cmd $reads | fastq-scan \\
+    zcat $reads | \\
+        fastq-scan \\
         $options.args > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
