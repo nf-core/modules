@@ -38,7 +38,7 @@ process MANTA_SOMATIC {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
+    def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
 
     """
     configManta.py \
