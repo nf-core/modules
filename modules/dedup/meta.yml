@@ -40,7 +40,21 @@ output:
   - bam:
       type: file
       description: Deduplicated BAM file
-      pattern: "*.bam"
+      pattern: "*_rmdup.bam"
+  - json:
+      type: file
+      description: JSON file for MultiQC
+      pattern: "*.json"
+  - hist:
+      type: file
+      description: Histogram data of amount of deduplication
+      pattern: "*.hist"
+  - log:
+      type: file
+      description: Dedup log information
+      pattern: "*log"
+
+
 
 authors:
   - "@jfy133"
