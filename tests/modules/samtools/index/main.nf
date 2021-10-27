@@ -10,7 +10,7 @@ workflow test_samtools_index_bai {
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
             ]
 
-    SAMTOOLS_INDEX_BAI ( input )
+    SAMTOOLS_INDEX_BAI ( input, 'test' )
 }
 
 workflow test_samtools_index_csi {
@@ -18,5 +18,5 @@ workflow test_samtools_index_csi {
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
             ]
 
-    SAMTOOLS_INDEX_CSI ( input )
+    SAMTOOLS_INDEX_CSI ( input, 'test' )
 }
