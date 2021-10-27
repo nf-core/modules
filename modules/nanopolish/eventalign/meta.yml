@@ -1,64 +1,68 @@
 name: nanopolish eventalign
 description: Aligning signal events from nanopore sequencing to reference sequence
 keywords:
-    - nanopore
-    - segmentation
+  - nanopore
+  - segmentation
 
 tools:
-    - nanopolish:
-        description: |
-            Aligning signal events from nanopore sequencing to reference sequence
-        homepage: https://github.com/jts/nanopolish
-        documentation: https://nanopolish.readthedocs.io/en/latest/
-        licence: ['MIT']
+  - nanopolish:
+      description: |
+        Aligning signal events from nanopore sequencing to reference sequence
+      homepage: https://github.com/jts/nanopolish
+      documentation: https://nanopolish.readthedocs.io/en/latest/
+      licence: ["MIT"]
 input:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-    - bam:
-        type: file
-        description: |
-            Aligned bam.
-    - bai:
-        type: file
-        description: |
-            Index of aligned bam.
-    - fasta:
-        type: file
-        description: |
-            Reference sequence.
-    - gtf:
-        type: file
-        description: |
-            Annotation gtf file.
-    - fast5:
-        type: file
-        description: |
-            Fast5 directory with nanopore signals.
-    - fastq:
-        type: file
-        description: |
-            Fastq file with basecalled sequences from fast5 file.
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: |
+        Aligned bam.
+  - bai:
+      type: file
+      description: |
+        Index of aligned bam.
+  - fasta:
+      type: file
+      description: |
+        Reference sequence.
+  - gtf:
+      type: file
+      description: |
+        Annotation gtf file.
+  - fast5:
+      type: file
+      description: |
+        Fast5 directory with nanopore signals.
+  - fastq:
+      type: file
+      description: |
+        Fastq file with basecalled sequences from fast5 file.
 
 output:
-    - meta:
-        type: map
-        description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test']
-    - eventalign:
-        type: file
-        description: eventalign txt file
-        pattern: "*_{eventalign.txt}"
-    - summary:
-        type: file
-        description: eventalign summary file
-        pattern: "*_{coverage.txt}"
-    - versions:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - eventalign:
+      type: file
+      description: eventalign txt file
+      pattern: "*_{eventalign.txt}"
+  - summary:
+      type: file
+      description: eventalign summary file
+      pattern: "*_{coverage.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
-    - "@AntoniaSchuster","@ChristinaVasil","@MatthiasZepper","@projectoriented","@yuukiiwa"
+  - "@AntoniaSchuster"
+  - "@ChristinaVasil"
+  - "@MatthiasZepper"
+  - "@projectoriented"
+  - "@yuukiiwa"
