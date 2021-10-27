@@ -20,6 +20,7 @@ process SAMTOOLS_INDEX {
 
     input:
     tuple val(meta), path(bam)
+    val testing
 
     output:
     tuple val(meta), path("*.bai"), optional:true, emit: bai
