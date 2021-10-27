@@ -19,8 +19,7 @@ process STRELKA_SOMATIC {
     }
 
     input:
-    tuple val(meta), path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)
-    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor)
+    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)
     path  fasta
     path  fai
     path  target_bed
