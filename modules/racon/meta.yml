@@ -1,32 +1,38 @@
 name: racon
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Consensus module for raw de novo DNA assembly of long uncorrected reads
 keywords:
-  - sort
+  - assembly
+  - pacbio
+  - nanopore
+  - polish
 tools:
   - racon:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Ultrafast consensus module for raw de novo genome assembly of long uncorrected reads.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/lbcb-sci/racon
+      documentation: https://github.com/lbcb-sci/racon
+      tool_dev_url: https://github.com/lbcb-sci/racon
+      doi: https://doi.org/10.1101/gr.214270.116
       licence: ['MIT']
-
-## TODO nf-core: Add a description of all of the variables used as input
+      
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: List of input FastQ files. Racon expects single end
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - assembly:
+      type: file
+      description: Genome assembly to be improved
+      pattern: "*.{fasta,fa}"
+  - paf:
+      type: file
+      description: Alignment in PAF format
+      pattern: "*.paf"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +43,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - improved_assembly:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Improved genome assembly
+      pattern: "*_assembly_consensus.fasta"
 
 authors:
   - "@avantonder"
