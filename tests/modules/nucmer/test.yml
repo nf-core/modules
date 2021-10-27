@@ -1,0 +1,9 @@
+- name: nucmer test_nucmer
+  command: nextflow run tests/modules/nucmer -entry test_nucmer -c tests/config/nextflow.config
+  tags:
+    - nucmer
+  files:
+    - path: output/nucmer/test.coords
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/nucmer/test.delta
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
