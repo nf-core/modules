@@ -33,7 +33,7 @@ process STRELKA_GERMLINE {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def regions  = params.target_bed ? "--exome --callRegions ${target_bed}" : ""
+    def regions  = target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaGermlineWorkflow.py \\
         --bam $bam \\
