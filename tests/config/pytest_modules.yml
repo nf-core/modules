@@ -1374,3 +1374,23 @@ yara/index:
 yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
+
+subworkflows/align_bowtie2:
+  - subworkflows/nf-core/align_bowtie2/**
+  - tests/subworkflows/nf-core/align_bowtie2/**
+
+subworkflows/bam_stats_samtools: &subworkflows/bam_stats_samtools
+  - subworkflows/nf-core/bam_stats_samtools/**
+  - tests/subworkflows/nf-core/bam_stats_samtools/**
+
+subworkflows/bam_sort_samtools:
+  - subworkflows/nf-core/bam_sort_samtools/**
+  - tests/subworkflows/nf-core/bam_sort_samtools/**
+
+subworkflows/sra_fastq:
+  - subworkflows/nf-core/sra_fastq/**
+  - tests/subworkflows/nf-core/sra_fastq/**
+
+subworkflows/gatk_create_som_pon:
+  - subworkflows/nf-core/gatk_create_som_pon/**
+  - tests/subworkflows/nf-core/gatk_create_som_pon/**
