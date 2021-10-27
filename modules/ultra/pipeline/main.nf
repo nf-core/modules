@@ -50,7 +50,6 @@ process ULTRA_PIPELINE {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     uLTRA \\
         pipeline \\
