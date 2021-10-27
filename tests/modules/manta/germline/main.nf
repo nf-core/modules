@@ -23,7 +23,7 @@ workflow test_manta_germline_target_bed {
     input = [
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_crai'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
     ]
 
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
