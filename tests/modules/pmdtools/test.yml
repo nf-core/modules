@@ -1,0 +1,9 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml pmdtools
+- name: pmdtools
+  command: nextflow run ./tests/modules/pmdtools -entry test_pmdtools -c tests/config/nextflow.config
+  tags:
+    - pmdtools
+  files:
+    - path: output/pmdtools/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
