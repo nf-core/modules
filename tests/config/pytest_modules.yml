@@ -1375,11 +1375,6 @@ yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
 
-subworkflows/align_bowtie2:
-  - subworkflows/nf-core/align_bowtie2/**
-  - tests/subworkflows/nf-core/align_bowtie2/**
-  - *subworkflows/bam_sort_samtools
-
 subworkflows/bam_stats_samtools: &subworkflows/bam_stats_samtools
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
@@ -1390,6 +1385,11 @@ subworkflows/bam_sort_samtools: &subworkflows/bam_sort_samtools
   - *samtools/sort
   - *samtools/index
   - *subworkflows/bam_stats_samtools
+
+subworkflows/align_bowtie2:
+  - subworkflows/nf-core/align_bowtie2/**
+  - tests/subworkflows/nf-core/align_bowtie2/**
+  - *subworkflows/bam_sort_samtools
 
 subworkflows/sra_fastq:
   - subworkflows/nf-core/sra_fastq/**
