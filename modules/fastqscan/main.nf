@@ -19,7 +19,7 @@ process FASTQSCAN {
     }
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.json"), emit: json
@@ -29,7 +29,7 @@ process FASTQSCAN {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def cat_cmd = fastq.getName().endsWith(".gz") ? 'zcat' : 'cat'
     """
-    $cat_cmd $fastq | fastq-scan \\
+    $cat_cmd $reads | fastq-scan \\
         $options.args > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
