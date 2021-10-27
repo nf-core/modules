@@ -19,14 +19,14 @@ process NANOPOLISH_EVENTALIGN {
     path fasta
     path gtf
     val threads
-    
+
     output:
     tuple val(meta), path("*eventalign.txt"), path("*summary.txt"), emit: nanopolish_outputs
     path "*.version.txt"     ,emit: version
 
     script:
     sample_summary = "$meta.id" +"_summary.txt"
-    sample_eventalign = "$meta.id" +"_eventalign.txt" 
+    sample_eventalign = "$meta.id" +"_eventalign.txt"
     """
     nanopolish index -d $fast5 $fastq
     nanopolish eventalign  --reads $fastq --bam $bam --genome $fasta --scale-events --signal-index --summary $sample_summary --threads $threads > $sample_eventalign
