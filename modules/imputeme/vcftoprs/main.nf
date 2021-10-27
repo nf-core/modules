@@ -43,7 +43,7 @@ process IMPUTEME_VCFTOPRS {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     #!/usr/bin/env Rscript
-    
+
     #can also provide configuration file with set_conf("set_from_file","<path>")
     source("/imputeme/code/impute-me/functions.R")
     set_conf("defaults")
