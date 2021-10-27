@@ -2,11 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { BUSCO } from '../../../modules/busco/main.nf' addParams( options: [:] )
+include { BUSCO } from '../../../modules/busco/main.nf' addParams( options: [args: '--mode genome --auto-lineage'] )
 
 workflow test_busco {
     
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    input = [ [ id:'test', single_end:false ], // meta map
+              file('/lustre/scratch123/tol/teams/team308/users/ps22/modules/genome.fa', checkIfExists: true) ]
 
-    BUSCO ( fasta )
+    BUSCO ( input,
+            [] )
 }

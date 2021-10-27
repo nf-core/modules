@@ -1,8 +1,10 @@
 name: busco
-description: Benchmarking Universal Single Copy Orthologs for Genomes
+description: Benchmarking Universal Single Copy Orthologs
 keywords:
   - quality control
   - genome
+  - transcriptome
+  - proteome
 tools:
   - busco:
       description: BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
@@ -25,9 +27,6 @@ input:
   - augustus_config:
       type: directory
       description: AUGUSTUS config directory
-  - lineage:
-      type: string
-      description: Name of a BUSCO lineage dataset
 
 output:
   - meta:

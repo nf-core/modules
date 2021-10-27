@@ -21,7 +21,6 @@ process BUSCO {
     input:
     tuple val(meta), path(fasta)
     path(augustus_config)
-    val(lineage)
 
     output:
     tuple val(meta), path("${meta_id}/run_*/full_table.tsv"), emit: tsv
@@ -30,7 +29,6 @@ process BUSCO {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (lineage) options.args += " --lineage_dataset $lineage"
     """
     # Copy the image's AUGUSTUS config directory if it was not provided to the module
     [ ! -e augustus_config ] && cp -a /usr/local/config augustus_config
@@ -38,7 +36,6 @@ process BUSCO {
     busco \\
         $options.args \\
         --augustus \\
-        --mode genome \\
         --cpu $task.cpus \\
         --in  $fasta \\
         --out $meta.id
