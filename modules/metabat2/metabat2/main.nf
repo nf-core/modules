@@ -27,7 +27,7 @@ process METABAT2_METABAT2 {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def decompress_depth = depth ? "gunzip $depth" : ""
+    def decompress_depth = depth ? "gzip -d -f $depth" : ""
     def depth_file = depth ? "-a ${depth.baseName}" : ""
     """
     $decompress_depth
