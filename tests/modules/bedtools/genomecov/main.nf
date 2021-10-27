@@ -11,7 +11,7 @@ workflow test_bedtools_genomecov_noscale {
         1
     ]
 
-    sizes = file('dummy_chromosome_sizes')
+    sizes = []
     extension = 'txt'
 
     BEDTOOLS_GENOMECOV ( input, sizes, extension )
