@@ -28,13 +28,13 @@ process MANTA_SOMATIC {
     output:
     tuple val(meta), path("*.candidate_small_indels.vcf.gz")     , emit: candidate_small_indels_vcf
     tuple val(meta), path("*.candidate_small_indels.vcf.gz.tbi") , emit: candidate_small_indels_vcf_tbi
-    tuple val(meta), path("*.candidate_sv.vcf.gz")              , emit: candidate_sv_vcf
-    tuple val(meta), path("*.candidate_sv.vcf.gz.tbi")          , emit: candidate_sv_vcf_tbi
-    tuple val(meta), path("*.diploid_sv.vcf.gz")                , emit: diploid_sv_vcf
-    tuple val(meta), path("*.diploid_sv.vcf.gz.tbi")            , emit: diploid_sv_vcf_tbi
-    tuple val(meta), path("*.somatic_sv.vcf.gz")                , emit: somatic_sv_vcf
-    tuple val(meta), path("*.somatic_sv.vcf.gz.tbi")            , emit: somatic_sv_vcf_tbi
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("*.candidate_sv.vcf.gz")               , emit: candidate_sv_vcf
+    tuple val(meta), path("*.candidate_sv.vcf.gz.tbi")           , emit: candidate_sv_vcf_tbi
+    tuple val(meta), path("*.diploid_sv.vcf.gz")                 , emit: diploid_sv_vcf
+    tuple val(meta), path("*.diploid_sv.vcf.gz.tbi")             , emit: diploid_sv_vcf_tbi
+    tuple val(meta), path("*.somatic_sv.vcf.gz")                 , emit: somatic_sv_vcf
+    tuple val(meta), path("*.somatic_sv.vcf.gz.tbi")             , emit: somatic_sv_vcf_tbi
+    path "versions.yml"                                          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
