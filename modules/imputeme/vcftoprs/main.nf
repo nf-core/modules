@@ -11,7 +11,6 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-
 process IMPUTEME_VCFTOPRS {
     tag "$meta.id"
     label 'process_low'
