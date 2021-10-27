@@ -1163,7 +1163,7 @@ samtools/idxstats:
   - modules/samtools/idxstats/**
   - tests/modules/samtools/idxstats/**
 
-samtools/index:
+samtools/index: &samtools/index
   - modules/samtools/index/**
   - tests/modules/samtools/index/**
 
@@ -1175,7 +1175,7 @@ samtools/mpileup:
   - modules/samtools/mpileup/**
   - tests/modules/samtools/mpileup/**
 
-samtools/sort:
+samtools/sort: &samtools/sort
   - modules/samtools/sort/**
   - tests/modules/samtools/sort/**
 
@@ -1386,6 +1386,9 @@ subworkflows/bam_stats_samtools: &subworkflows/bam_stats_samtools
 subworkflows/bam_sort_samtools:
   - subworkflows/nf-core/bam_sort_samtools/**
   - tests/subworkflows/nf-core/bam_sort_samtools/**
+  - *samtools/sort
+  - *samtools/index
+  - *subworkflows/bam_stats_samtools
 
 subworkflows/sra_fastq:
   - subworkflows/nf-core/sra_fastq/**
