@@ -31,7 +31,7 @@ process BEDTOOLS_GENOMECOV {
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args_token = options.args.tokenize()
     def args       = options.args
-    args += scale != 1 ? " -scale $scale" : ""
+    args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
 
     if (!args_token.contains('-bg') && scale != 1) {
         args += " -bg"
