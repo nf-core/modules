@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_MERGEPE } from '../../../../modules/seqtk/mergepe/main.nf' addParams( options: [:] )
+include { SEQTK_MERGEPE } from '../../../../modules/seqtk/mergepe/main.nf' addParams( options: [ 'suffix':'.processed' ] )
 
 //
 // Test with single-end data

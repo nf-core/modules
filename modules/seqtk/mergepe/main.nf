@@ -22,14 +22,14 @@ process SEQTK_MERGEPE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_processed.fastq.gz"), emit: reads
+    tuple val(meta), path("*.fastq.gz"), emit: reads
     path "versions.yml"          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
-        cp ${reads} ${prefix}_processed.fastq.gz
+        cp ${reads} ${prefix}.fastq.gz
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
             ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
@@ -41,7 +41,7 @@ process SEQTK_MERGEPE {
             mergepe \\
             $options.args \\
             ${reads} \\
-            | gzip >> ${prefix}_processed.fastq.gz
+            | gzip >> ${prefix}.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
