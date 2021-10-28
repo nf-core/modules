@@ -19,21 +19,28 @@ process GATK4_MARKDUPLICATES {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bams)
 
     output:
     tuple val(meta), path("*.bam")    , emit: bam
+    tuple val(meta), path("*.bai")    , emit: bai
     tuple val(meta), path("*.metrics"), emit: metrics
     path "versions.yml"               , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def bam_list = bams.collect(){ x -> "--INPUT ".concat(x.toString()) }.join(" ")
+    def avail_mem       = 3
+    if (!task.memory) {
+        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     gatk MarkDuplicates \\
-        --INPUT $bam \\
+        $bam_list \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
-        --ASSUME_SORT_ORDER coordinate \\
         --CREATE_INDEX true \\
         --OUTPUT ${prefix}.bam \\
         $options.args
