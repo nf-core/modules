@@ -1,6 +1,7 @@
 FROM continuumio/miniconda3:4.8.2
-LABEL authors="Gisela Gabernet" \
+LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>" \
     description="Docker image containing Cell Ranger"
+# Disclaimer: this container is not provided nor supported by 10x Genomics.
 
 # Install procps and clean apt cache
 RUN apt-get update \

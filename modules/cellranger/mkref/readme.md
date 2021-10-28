@@ -1,7 +1,6 @@
-## Updating the docker container and making a new module release
+# Updating the docker container and making a new module release
 
-Cell Ranger is a commercial tool and cannot be distributed. Updating the Cell Ranger version in the container and pushing the update to Dockerhub needs
-needs to be done manually.
+Cell Ranger is a commercial tool by 10X Genomics. The container provided for the cellranger nf-core module is not provided nor supported by 10x Genomics. Updating the Cell Ranger version in the container and pushing the update to Dockerhub needs to be done manually.
 
 1. Navigate to the [Cell Ranger download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest) and download the tar ball of the desired Cell Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
 
