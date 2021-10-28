@@ -1,0 +1,8 @@
+- name: bustools sort
+  command: nextflow run ./tests/modules/bustools/sort -entry test_bustools_sort -c tests/config/nextflow.config
+  tags:
+    - bustools
+    - bustools/sort
+  files:
+    - path: output/bustools/test.sorted.bus
+      md5sum: d8ffd0278af7de1c4e1ecafab18cc4d6
