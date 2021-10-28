@@ -20,15 +20,19 @@ process SAMTOOLS_VIEW {
 
     input:
     tuple val(meta), path(bam)
+    path fasta
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path("*.bam") , optional: true, emit: bam
+    tuple val(meta), path("*.cram"), optional: true, emit: cram
+    path  "versions.yml"                           , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def reference = fasta ? "--reference ${fasta} -C" : ""
+    def file_type = bam.getExtension()
     """
-    samtools view $options.args $bam > ${prefix}.bam
+    samtools view ${reference} $options.args $bam > ${prefix}.${file_type}
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
