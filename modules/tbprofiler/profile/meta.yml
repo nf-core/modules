@@ -1,5 +1,5 @@
 name: tbprofiler_profile
-description: A tool to detect reistance and lineages of M. tuberculosis genomes
+description: A tool to detect resistance and lineages of M. tuberculosis genomes
 keywords:
   - Mycobacterium tuberculosis
   - resistance
@@ -34,11 +34,26 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file with alignment details
+      pattern: "*.bam"
+  - csv:
+      type: file
+      description: Optional CSV formated result file of resistance and strain type
+      pattern: "*.csv"
+  - json:
+      type: file
+      description: JSON formated result file of resistance and strain type
+      pattern: "*.json"
+  - txt:
+      type: file
+      description: Optional text file of resistance and strain type
+      pattern: "*.txt"
+  - vcf:
+      type: file
+      description: VCF with variant info again refernce genomes
+      pattern: "*.vcf"
 
 authors:
   - "@rpetit3"
