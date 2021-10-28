@@ -14,11 +14,7 @@ process CELLRANGER_MKREF {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "nfcore/cellranger:6.0.2"
-    } else {
-        container "nfcore/cellranger:6.0.2"
-    }
+    container "nfcore/cellranger:6.0.2"
 
     input:
     path fasta
