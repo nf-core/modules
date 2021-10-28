@@ -19,7 +19,7 @@ process GATK4_GENOMICSDBIMPORT {
     }
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(wspace), path(intervalfile), val(intervalval)
+    tuple val(meta), path(vcf), path(tbi), path(intervalfile), val(intervalval), path(wspace)
     val run_intlist
     val run_updatewspace
     val input_map

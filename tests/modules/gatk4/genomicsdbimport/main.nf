@@ -10,8 +10,8 @@ workflow test_gatk4_genomicsdbimport_create_genomicsdb {
     input = [ [ id:'test'], // meta map
               file( params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'] , checkIfExists: true) ,
               file( params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'] , checkIfExists: true) ,
-              [] ,
               file( params.test_data['homo_sapiens']['genome']['genome_interval_list'] , checkIfExists: true) ,
+              [] ,
               [] ]
 
     run_intlist = false
@@ -26,12 +26,12 @@ workflow test_gatk4_genomicsdbimport_get_intervalslist {
 
     UNTAR ( db )
 
-    input = [ [ id:'test'], // meta map
+    def input = Channel.of([ [ id:'test'], // meta map
               [] ,
               [] ,
-              UNTAR.out.untar ,
               [] ,
-              [] ]
+              [] ])
+              .combine(UNTAR.out.untar)
 
     run_intlist = true
     run_updatewspace = false
@@ -45,12 +45,13 @@ workflow test_gatk4_genomicsdbimport_update_genomicsdb {
 
     UNTAR ( db )
 
-    input = [ [ id:'test'], // meta map
+    def input = Channel.of([ [ id:'test'], // meta map
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'] , checkIfExists: true) ,
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'] , checkIfExists: true) ,
-              UNTAR.out.untar ,
               [] ,
-              [] ]
+              [] ])
+              .combine(UNTAR.out.untar)
+
     run_intlist = false
     run_updatewspace = true
     input_map = false
