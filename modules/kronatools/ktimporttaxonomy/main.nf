@@ -27,7 +27,7 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
     path "versions.yml"          , emit: versions
 
     script:
-    def VERSION='2.7.1'
+    def VERSION='2.8'
     """
     ktImportTaxonomy "$report" -tax taxonomy
 
