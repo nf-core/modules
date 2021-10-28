@@ -40,7 +40,7 @@ process ECTYPER {
         $options.args \\
         --cores $task.cpus \\
         --output ./ \\
-        --input $fasta_name 
+        --input $fasta_name
     mv output.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
