@@ -1,0 +1,101 @@
+- name: flye test_flye_pacbio_raw
+  command: nextflow run tests/modules/flye -entry test_flye_pacbio_raw -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: 6f71c1083c4f992b5b4228036e2ff3c0
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: 4deb890fc3bf59a9dc3fdcd750dcbd5d
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: 0aa137b7bced1574f44196a297bbd1a1
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 68eaa8e0cdf6c4c4ac855c510db8c71f
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_pacbio_corr
+  command: nextflow run tests/modules/flye -entry test_flye_pacbio_corr -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: 819d6fb836fa673ddf7a467e5a848b6f
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: ec582080d03db6c171a76db36eb26f10
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: 73399f4bce4c48ceda120a845dbb3c8c
+    - path: output/flye/test.assembly_info.txt
+      md5sum: a1695c9054cdff5f7a32f9a5294f2ffb
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_pacbio_hifi
+  command: nextflow run tests/modules/flye -entry test_flye_pacbio_hifi -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: a43006081eef11e5f8d0ccf23683364d
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: be04a4a6c55199cbd523b3acdd63ce50
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: 22e124521d4eb601ebe799735701f2d2
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 506742757032551329626327b332cec8
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_raw
+  command: nextflow run tests/modules/flye -entry test_flye_nano_raw -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: 423606b50dfdf41e59308ba795e7db71
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: 302ac6264e67925a22d3653d38ccb9eb
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: b18bd15f95607500d325ea23cf23ab50
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 8123dbbfaeb840821302d620831ee489
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_corr
+  command: nextflow run tests/modules/flye -entry test_flye_nano_corr -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: eaad569928775fee0025903670f2084d
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: ab7c0897ab4adcaef345c6d5bf560053
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: cbf5dfb40b25ba19faf64c315c23dbc1
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 9791a3af96936b69910dc043dbb3ac27
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_hq
+  command: nextflow run tests/modules/flye -entry test_flye_nano_hq -c tests/config/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta
+      md5sum: 069936228fd00330b689c6638fc68fc2
+    - path: output/flye/test.assembly_graph.gfa
+      md5sum: 56e3a79f08303d2aea3533c0c11b8398
+    - path: output/flye/test.assembly_graph.gv
+      md5sum: 4dff1ebda5884cf369a6ae902029c52b
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 26f699b25ab84ef7b1bf48c89e04e353
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
