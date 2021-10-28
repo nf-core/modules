@@ -2,12 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_BAM2FQ } from '../../../../modules/samtools/bam2fq/main.nf' addParams( options: [:] )
+include { SAMTOOLS_BAM2FQ } from '../../../../modules/samtools/bam2fq/main.nf' addParams( options: [args: "-T RX"] )
 
 workflow test_samtools_bam2fq {
-    
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 
-    SAMTOOLS_BAM2FQ ( input )
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_converted_bam'], checkIfExists: true) ]
+    split = false
+
+    SAMTOOLS_BAM2FQ ( input, split )
 }

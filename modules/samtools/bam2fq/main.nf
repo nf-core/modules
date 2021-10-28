@@ -13,9 +13,9 @@ process SAMTOOLS_BAM2FQ {
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/samtools:1.14--hb421002_0"
     }
 
     input:
@@ -23,25 +23,42 @@ process SAMTOOLS_BAM2FQ {
     val(split)
 
     output:
-    tuple val(meta), path("*.fq"), emit: reads
+    tuple val(meta), path("*.fq.gz"), emit: reads
     path "versions.yml"          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
+    if (split){
+        """
+        samtools \\
+            bam2fq \\
+            $options.args \\
+            -@ $task.cpus \\
+            -1 ${prefix}_1.fq.gz \\
+            -2 ${prefix}_2.fq.gz \\
+            -0 ${prefix}_other.fq.gz \\
+            -s ${prefix}_singleton.fq.gz \\
+            $inputbam
 
-    """
-    samtools \\
-        sort \\
-        $options.args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
+        END_VERSIONS
+        """
+    } else {
+        """
+        samtools \\
+            bam2fq \\
+            $options.args \\
+            -@ $task.cpus \\
+            $bam >${prefix}_interleaved.fq.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
+        END_VERSIONS
+        """
+    }
+
 }
