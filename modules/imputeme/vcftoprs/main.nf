@@ -43,15 +43,23 @@ process IMPUTEME_VCFTOPRS {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     #!/usr/bin/env Rscript
-
-    #can also provide configuration file with set_conf("set_from_file","<path>")
     source("/imputeme/code/impute-me/functions.R")
-    set_conf("defaults")
-    set_conf("data_path","./")
-    set_conf("vcfs_path","./")
-    set_conf("autostart_supercronic",FALSE)
-    set_conf("minimum_required_variant_in_vcf_count",1000)
-    set_conf("modules_to_compute","ethnicity,AllDiseases")
+    #set_conf("defaults")
+    if(file.exists('$options.args')){
+        set_conf("set_from_file",'$options.args')
+    }else{
+        #Suggestion: link this to a configuration file. Only problem is, how to make the process access that file?
+        #set_conf("set_from_file", "../modules/imputeme/vcftoprs/configuration.R")
+
+        #For now just use this temporary block (but that's what above line would replace)
+        set_conf("defaults")
+        set_conf("data_path","./")
+        set_conf("vcfs_path","./")
+        set_conf("autostart_supercronic",FALSE)
+        set_conf("minimum_required_variant_in_vcf_count",1000)
+        set_conf("modules_to_compute","ethnicity,AllDiseases")
+    }
+
 
 
     #main run
