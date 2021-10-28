@@ -17,12 +17,10 @@ tools:
       licence:
 
 input:
-  - report: A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.
-            Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.
-            Lines beginning with \# will be ignored.
-      type: file
-      description: A TSV file
-      pattern: "*.{tsv}"
+  - report: "A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.  Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.  Lines beginning with # will be ignored."
+    type: file
+    description: A TSV file
+    pattern: "*.{tsv}"
 
 output:
   - versions:
