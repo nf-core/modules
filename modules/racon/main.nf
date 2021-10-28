@@ -19,9 +19,7 @@ process RACON {
     }
 
     input:
-    tuple val(meta), path(reads)
-    path assembly
-    path paf
+    tuple val(meta), path(reads), path assembly, path paf
 
     output:
     tuple val(meta), path('*_assembly_consensus.fasta') , emit: improved_assembly
@@ -29,10 +27,9 @@ process RACON {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """
     racon -t "${task.cpus}" \\
-        "${input_reads}" \\
+        "${reads}" \\
         "${paf}" \\
         $options.args \\
         "${assembly}" > \\
