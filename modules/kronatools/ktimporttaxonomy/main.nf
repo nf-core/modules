@@ -23,7 +23,7 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
     path  "taxonomy/taxonomy.tab"
 
     output:
-    tuple val(meta), path "*.html", emit: html
+    tuple val(meta), path ('*.html'), emit: html
     path "versions.yml"          , emit: versions
 
     script:
