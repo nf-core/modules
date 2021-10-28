@@ -20,14 +20,16 @@ process SAMTOOLS_STATS {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    path fasta
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
     path  "versions.yml"            , emit: versions
 
     script:
+    def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools stats $bam > ${bam}.stats
+    samtools stats ${reference} ${bam} > ${bam}.stats
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
