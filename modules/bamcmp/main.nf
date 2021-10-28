@@ -1,12 +1,9 @@
-// params.options = [:]
-// options        = initOptions(params.options)
-
 process BAMCMP {
     tag '$bam'
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
+        saveAs: { filename -> saveFiles(filename:filename, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     // TODO nf-core: List required Conda package(s).
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
@@ -20,7 +17,7 @@ process BAMCMP {
     }
 
     input:
-    tuple val(meta),path(bam)
+    tuple val(meta), path(bam)
 
     output:
     path "*.bam", emit: bam
