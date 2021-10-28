@@ -35,8 +35,8 @@ process SAMBLASTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        samtools: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
-        samblaster: \$( samblaster -h 2>&1 | head -n 1 | sed 's/^samblaster: Version //' )
+        ${getSoftwareName(task.process)}: \$( samblaster -h 2>&1 | head -n 1 | sed 's/^samblaster: Version //' )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
