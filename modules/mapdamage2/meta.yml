@@ -52,6 +52,14 @@ output:
       type: file
       description: contains a table with occurrences for each type of mutations and relative positions from the reads ends.
       pattern: "*.{txt}"
+    - 5pCtoT_freq:
+      type: file
+      description: contains frequencies of Cytosine to Thymine mutations per position from the 5'-ends.
+      pattern: "*.{txt}"
+    - 3pGtoA_freq:
+      type: file
+      description: contains frequencies of Guanine to Adenine mutations per position from the 3'-ends.
+      pattern: "*.{txt}"
     - dnacomp:
       type: file
       description:  contains a table of the reference genome base composition per position, inside reads and adjacent regions.
@@ -76,7 +84,7 @@ output:
       type: file
       description: summary statistics for the damage parameters estimated posterior distributions.
       pattern: "*.{csv}"                 
-    - Stats_out_post_pred:
+    - Stats_out_MCMC_post_pred:
       type: file
       description: empirical misincorporation frequency and posterior predictive intervals from the fitted model.
       pattern: "*.{pdf}"         
@@ -87,7 +95,7 @@ output:
     - dnacomp_genome:
       type: file
       description: contains the global reference genome base composition (computed by seqtk).
-      pattern: "*.{txt}"          
+      pattern: "*.{csv}"          
     - rescaled:
       type: file
       description: Rescaled BAM file, where likely post-mortem damaged bases have downscaled quality scores.

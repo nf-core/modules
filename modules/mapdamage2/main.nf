@@ -1,4 +1,5 @@
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
+
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -21,24 +22,25 @@ process MAPDAMAGE2 {
     path(fasta)
 
     output:
-    tuple val(meta), path("*.Runtime_log.txt"), emit: Runtime_log
-    tuple val(meta), path("*.Fragmisincorporation_plot.pdf"), emit: Fragmisincorporation_plot
-    tuple val(meta), path("*.Length_plot.pdf"), emit: Length_plot
-    tuple val(meta), path("*.misincorporation.txt"), emit: misincorporation
-    tuple val(meta), path("*.5pCtoT_freq.txt"), emit: 5pCtoT_freq
-    tuple val(meta), path("*.3pGtoA_freq.txt"), emit: 3pGtoA_freq
-    tuple val(meta), path("*.dnacomp.txt"), emit: dnacomp
-    tuple val(meta), path("*.lgdistribution.txt"), emit: lgdistribution
-    tuple val(meta), path("*.Stats_out_MCMC_hist.pdf"), emit: Stats_out_MCMC_hist
-    tuple val(meta), path("*.Stats_out_MCMC_iter.csv"), emit: Stats_out_MCMC_iter
-    tuple val(meta), path("*.Stats_out_MCMC_trace.pdf"), emit: Stats_out_MCMC_trace
-    tuple val(meta), path("*.Stats_out_MCMC_iter_summ_stat.csv"), emit: Stats_out_MCMC_iter_summ_stat
-    tuple val(meta), path("*.Stats_out_post_pred.pdf"), emit: Stats_out_post_pred
-    tuple val(meta), path("*.Stats_out_MCMC_correct_prob.csv"), emit: Stats_out_MCMC_correct_prob
-    tuple val(meta), path("*.dnacomp_genome.txt"), emit: dnacomp_genome
-    tuple val(meta), path("*.rescaled.bam"), emit: rescaled
-    tuple val(meta), path("*.fasta"), optional: true, emit: fasta
-    tuple val(meta), path("*/"), optional: true, emit: path
+    tuple val(meta), path("results_*/Runtime_log.txt")                    ,emit: runtime_log
+    tuple val(meta), path("results_*/Fragmisincorporation_plot.pdf")      ,emit: fragmisincorporation_plot
+    tuple val(meta), path("results_*/Length_plot.pdf"), optional: true    ,emit: length_plot
+    tuple val(meta), path("results_*/misincorporation.txt")               ,emit: misincorporation
+    tuple val(meta), path("results_*/lgdistribution.txt")                 ,emit: lgdistribution
+    tuple val(meta), path("results_*/dnacomp.txt")                        ,emit: dnacomp
+    tuple val(meta), path("results_*/Stats_out_MCMC_hist.pdf")            ,emit: stats_out_mcmc_hist
+    tuple val(meta), path("results_*/Stats_out_MCMC_iter.csv")            ,emit: stats_out_mcmc_iter
+    tuple val(meta), path("results_*/Stats_out_MCMC_trace.pdf")           ,emit: stats_out_mcmc_trace
+    tuple val(meta), path("results_*/Stats_out_MCMC_iter_summ_stat.csv")  ,emit: stats_out_mcmc_iter_summ_stat
+    tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf")       ,emit: stats_out_mcmc_post_pred
+    tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv")    ,emit: stats_out_mcmc_correct_prob
+    tuple val(meta), path("results_*/dnacomp_genome.csv")                 ,emit: dnacomp_genome
+    tuple val(meta), path("results_*/rescaled.bam"), optional: true       ,emit: rescaled
+    tuple val(meta), path("results_*/5pCtoT_freq.txt")                    ,emit: pctot_freq
+    tuple val(meta), path("results_*/3pGtoA_freq.txt")                    ,emit: pgtoa_freq
+    tuple val(meta), path("results_*/*.fasta"), optional: true            ,emit: fasta
+    tuple val(meta), path("results_*/*/"), optional: true                 ,emit: path
+    
     path "versions.yml",emit: versions
 
     script:
@@ -50,7 +52,7 @@ process MAPDAMAGE2 {
        -r $fasta  
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(mapDamage --version)
+        ${getSoftwareName(task.process)}: \$(echo \$(mapDamage --version))
     END_VERSIONS
     """
 }
