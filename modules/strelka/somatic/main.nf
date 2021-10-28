@@ -34,7 +34,7 @@ process STRELKA_SOMATIC {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def options_strelka = params.target_bed ? "--exome --callRegions ${target_bed}" : ""
+    def options_strelka = target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaSomaticWorkflow.py \\
         --tumor $cram_tumor \\
