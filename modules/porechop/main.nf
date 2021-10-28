@@ -22,8 +22,8 @@ process PORECHOP {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${meta.id}_porechop.fastq.gz")  , emit: reads
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("${prefix}_porechop.fastq.gz")  , emit: reads
+    path "versions.yml"                          , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
