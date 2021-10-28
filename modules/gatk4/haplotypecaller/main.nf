@@ -23,6 +23,9 @@ process GATK4_HAPLOTYPECALLER {
     path fasta
     path fai
     path dict
+    path dbsnp
+    path dbsnp_tbi
+    path interval
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -30,8 +33,10 @@ process GATK4_HAPLOTYPECALLER {
     path "versions.yml"              , emit: versions
 
     script:
-    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def avail_mem = 3
+    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def interval_option = interval ? "-L ${interval}" : ""
+    def dbsnp_option    = dbsnp ? "-D ${dbsnp}" : ""
+    def avail_mem       = 3
     if (!task.memory) {
         log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
@@ -43,8 +48,11 @@ process GATK4_HAPLOTYPECALLER {
         HaplotypeCaller \\
         -R $fasta \\
         -I $bam \\
+        ${dbsnp_option} \\
+        ${interval_option} \\
         -O ${prefix}.vcf.gz \\
-        $options.args
+        $options.args \\
+        --tmp-dir .
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
