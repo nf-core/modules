@@ -23,7 +23,7 @@ process BUSCO {
     path(augustus_config)
 
     output:
-    tuple val(meta), path("${meta_id}/run_*/full_table.tsv"), emit: tsv
+    tuple val(meta), path("${meta.id}/run_*/full_table.tsv"), emit: tsv
     tuple val(meta), path("${meta.id}/run_*/short_summary.txt"), emit: txt
     path "versions.yml", emit: versions
 
