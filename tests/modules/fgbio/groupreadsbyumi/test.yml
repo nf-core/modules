@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml fgbio/groupreadsbyumi
+- name: fgbio groupreadsbyumi
+  command: nextflow run ./tests/modules/fgbio/groupreadsbyumi -entry test_fgbio_groupreadsbyumi -c tests/config/nextflow.config
+  tags:
+    - fgbio
+    - fgbio/groupreadsbyumi
+  files:
+    - path: output/fgbio/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
