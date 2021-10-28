@@ -33,7 +33,7 @@ process BEDTOOLS_GENOMECOV {
     def args       = options.args
     args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
 
-    if (!args_token.contains('-bg') && scale != 1) {
+    if (!args_token.contains('-bg') && (scale > 0 && scale != 1)) {
         args += " -bg"
     }
 
