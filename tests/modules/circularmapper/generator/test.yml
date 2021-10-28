@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml circularmapper/generator
+- name: circularmapper generator
+  command: nextflow run ./tests/modules/circularmapper/generator -entry test_circularmapper_generator -c tests/config/nextflow.config
+  tags:
+    - circularmapper
+    - circularmapper/generator
+  files:
+    - path: output/circularmapper/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
