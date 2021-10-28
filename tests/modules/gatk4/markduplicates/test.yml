@@ -9,7 +9,6 @@
     - path: output/gatk4/test.bam
       md5sum: bda9a7bf5057f2288ed70be3eb8a753f
     - path: output/gatk4/test.metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
   command: nextflow run tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c tests/config/nextflow.config
@@ -22,4 +21,3 @@
     - path: output/gatk4/test.bam
       md5sum: dcd6f584006b04141fb787001a8ecacc
     - path: output/gatk4/test.metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
