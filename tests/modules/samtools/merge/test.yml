@@ -1,7 +1,17 @@
-- name: samtools merge
-  command: nextflow run ./tests/modules/samtools/merge -entry test_samtools_merge -c tests/config/nextflow.config
+- name: samtools merge test_samtools_merge
+  command: nextflow run tests/modules/samtools/merge -entry test_samtools_merge -c tests/config/nextflow.config
   tags:
-    - samtools
     - samtools/merge
+    - samtools
   files:
     - path: output/samtools/test_merged.bam
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+
+- name: samtools merge test_samtools_merge_cram
+  command: nextflow run tests/modules/samtools/merge -entry test_samtools_merge_cram -c tests/config/nextflow.config
+  tags:
+    - samtools/merge
+    - samtools
+  files:
+    - path: output/samtools/test_merged.cram
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
