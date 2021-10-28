@@ -20,8 +20,10 @@ process GATK4_MUTECT2 {
 
     input:
     tuple val(meta) , path(bam) , path(bai) , val(which_norm)
-    val run_single
-    val run_pon
+    val  run_single
+    val  run_pon
+    val  run_mito
+    val  interval_label
     path fasta
     path fastaidx
     path dict
@@ -39,35 +41,34 @@ process GATK4_MUTECT2 {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def inputsList = []
-    def normalsList = []
-    def inputsCommand = ''
-    def panelsCommand = ''
-    def normalsCommand = ''
+    def panels_command = ''
+    def normals_command = ''
 
-    bam.each() {a -> inputsList.add(" -I " + a ) }
-    inputsCommand = inputsList.join( ' ')
+    def inputs_command = '-I ' + bam.join( ' -I ')
 
     if(run_pon) {
-        panelsCommand = ''
-        normalsCommand = ''
+        panels_command = ''
+        normals_command = ''
 
     } else if(run_single) {
-        panelsCommand = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals"
-        normalsCommand = ''
+        panels_command = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals"
+        normals_command = ''
+
+    } else if(run_mito){
+        panels_command = "-L ${interval_label} --mitochondria-mode"
+        normals_command = ''
 
     } else {
-        panelsCommand = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz ${prefix}.f1r2.tar.gz"
-        which_norm.each() {a -> normalsList.add(" -normal " + a ) }
-        normalsCommand = normalsList.join( ' ')
+        panels_command = " --germline-resource $germline_resource --panel-of-normals $panel_of_normals --f1r2-tar-gz ${prefix}.f1r2.tar.gz"
+        normals_command = '-normal ' + which_norm.join( ' -normal ')
     }
 
     """
     gatk Mutect2 \\
         -R ${fasta} \\
-        ${inputsCommand} \\
-        ${normalsCommand} \\
-        ${panelsCommand} \\
+        ${inputs_command} \\
+        ${normals_command} \\
+        ${panels_command} \\
         -O ${prefix}.vcf.gz \\
         $options.args
 
