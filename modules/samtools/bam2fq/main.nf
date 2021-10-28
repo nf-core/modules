@@ -52,7 +52,7 @@ process SAMTOOLS_BAM2FQ {
             bam2fq \\
             $options.args \\
             -@ $task.cpus \\
-            $bam >${prefix}_interleaved.fq.gz
+            $inputbam >${prefix}_interleaved.fq.gz
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
