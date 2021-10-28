@@ -35,7 +35,7 @@ process BAMTOOLS_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+        ${getSoftwareName(task.process)}: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
     END_VERSIONS
     """
 }
