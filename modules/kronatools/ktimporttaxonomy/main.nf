@@ -32,6 +32,9 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
 
     """
     ktImportTaxonomy "$report" -tax taxonomy
-    echo \$(ktImportTaxonomy 2>&1) | sed 's/^.*KronaTools //; s/ - ktImportTaxonomy.*//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(ktImportTaxonomy 2>&1) | sed 's/^.*KronaTools //; s/ - ktImportTaxonomy.*//')
+    END_VERSIONS
     """
 }
