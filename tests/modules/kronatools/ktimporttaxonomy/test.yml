@@ -1,9 +1,8 @@
-- name: kronatools ktimporttaxonomy test_kronatools_ktimporttaxonomy
-  command: nextflow run tests/modules/kronatools/ktimporttaxonomy -entry test_kronatools_ktimporttaxonomy -c tests/config/nextflow.config
+- name: kronatools ktimporttaxonomy test_kronatools_ktimporttaxonomy2
+  command: nextflow run tests/modules/kronatools/ktimporttaxonomy -entry test_kronatools_ktimporttaxonomy2 -c tests/config/nextflow.config
   tags:
     - kronatools/ktimporttaxonomy
     - kronatools
   files:
-    - path: output/kronatools/kronatools.version.txt
-      md5sum: 470e0633426990242b10cffa44f1763c
     - path: output/kronatools/taxonomy.krona.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
