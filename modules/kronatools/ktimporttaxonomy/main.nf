@@ -28,8 +28,6 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
     path "*.version.txt", emit: version
 
     script:
-    def software = getSoftwareName(task.process)
-
     """
     ktImportTaxonomy "$report" -tax taxonomy
     cat <<-END_VERSIONS > versions.yml
