@@ -40,16 +40,16 @@ process MAPDAMAGE2 {
     tuple val(meta), path("results_*/3pGtoA_freq.txt")                    ,emit: pgtoa_freq
     tuple val(meta), path("results_*/*.fasta"), optional: true            ,emit: fasta
     tuple val(meta), path("results_*/*/"), optional: true                 ,emit: path
-    
     path "versions.yml",emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mapDamage \\
-       $options.args \\
-       -i $bam \\
-       -r $fasta  
+        $options.args \\
+        -i $bam \\
+        -r $fasta
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(mapDamage --version))
