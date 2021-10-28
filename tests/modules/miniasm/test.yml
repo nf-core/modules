@@ -1,0 +1,9 @@
+- name: miniasm test_miniasm
+  command: nextflow run tests/modules/miniasm -entry test_miniasm -c tests/config/nextflow.config
+  tags:
+    - miniasm
+  files:
+    - path: output/miniasm/test.gfa
+      md5sum: 60e8b0c635905d20bc5296710749abde
+    - path: output/miniasm/test_assembly.fasta
+      md5sum: 3c0c2f48e6e366b43f7a12c43f7cb9e8
