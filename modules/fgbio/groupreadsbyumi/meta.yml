@@ -30,6 +30,11 @@ input:
       description: |
         BAM file. Note: the MQ tag is required on reads with mapped mates (!)
       pattern: "*.bam"
+  - strategy:
+      type: value
+      description: |
+        Reguired argument: defines the UMI assignment strategy.
+        Must be chosen among: Identity, Edit, Adjacency, Paired.
 
 output:
   - meta:

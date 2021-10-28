@@ -20,6 +20,7 @@ process FGBIO_GROUPREADSBYUMI {
 
     input:
     tuple val(meta), path(taggedbam)
+    val(strategy)
 
     output:
     tuple val(meta), path("*_umi-grouped.bam"), emit: bam
@@ -35,6 +36,7 @@ process FGBIO_GROUPREADSBYUMI {
     fgbio \\
         --tmp-dir=${PWD}/tmp \\
         GroupReadsByUmi \\
+        -s $strategy \\
         ${options.args} \\
         -i $taggedbam \\
         -o ${prefix}_umi-grouped.bam \\
