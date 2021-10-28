@@ -46,9 +46,9 @@ process MAPDAMAGE2 {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mapDamage \\
-        $options.args \\
-        -i $bam \\
-        -r $fasta
+            $options.args \\
+            -i $bam \\
+            -r $fasta
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
