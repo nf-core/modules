@@ -1,7 +1,6 @@
 // Import generic module functions
 include { initOptions; saveFiles; getSoftwareName } from './functions'
 
-
 params.options = [:]
 options        = initOptions(params.options)
 
@@ -24,15 +23,17 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
     path  "taxonomy/taxonomy.tab"
 
     output:
-    path("*.html")      , emit: html
-    path "*.version.txt", emit: version
+    path "*.html"      , emit: html
+    path "versions.yml", emit: version
 
     script:
+    def VERSION='2.7.1'
     """
     ktImportTaxonomy "$report" -tax taxonomy
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(ktImportTaxonomy 2>&1) | sed 's/^.*KronaTools //; s/ - ktImportTaxonomy.*//')
+        ${getSoftwareName(task.process)}: $VERSION
     END_VERSIONS
     """
 }
