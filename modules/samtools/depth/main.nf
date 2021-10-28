@@ -13,9 +13,9 @@ process SAMTOOLS_DEPTH {
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/samtools:1.14--hb421002_0"
     }
 
     input:
@@ -27,7 +27,7 @@ process SAMTOOLS_DEPTH {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    
+
     """
     samtools \\
         depth \\
