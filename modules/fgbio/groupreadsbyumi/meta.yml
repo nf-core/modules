@@ -1,32 +1,36 @@
 name: fgbio_groupreadsbyumi
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+      Groups reads together that appear to have come from the same original molecule.
+      Reads are grouped by template, and then templates are sorted by the 5’ mapping positions
+      of the reads from the template, used from earliest mapping position to latest.
+      Reads that have the same end positions are then sub-grouped by UMI sequence.
+      (!) Note: the MQ tag is required on reads with mapped mates (!)
+      This can be added using samblaster with the optional argument --addMateTags.
 keywords:
-  - sort
+  - UMI
+  - groupreads
+  - fgbio
 tools:
   - fgbio:
-      ## TODO nf-core: Add a description and other details for the software below
       description: A set of tools for working with genomic and high throughput sequencing data, including UMIs
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: http://fulcrumgenomics.github.io/fgbio/
+      documentation: http://fulcrumgenomics.github.io/fgbio/tools/latest/
+      tool_dev_url: https://github.com/fulcrumgenomics/fgbio
       doi: ""
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        BAM file. Note: the MQ tag is required on reads with mapped mates (!)
+      pattern: "*.bam"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +41,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: UMI-grouped BAM
+      pattern: "*.bam"
+  - histogram:
+      type: file
+      description: A text file containing the tag family size counts
+      pattern: "*.txt"
 
 authors:
   - "@lescai"
