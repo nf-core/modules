@@ -19,7 +19,7 @@ process STRELKA_SOMATIC {
     }
 
     input:
-    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor)
+    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)
     path  fasta
     path  fai
     path  target_bed
@@ -34,13 +34,15 @@ process STRELKA_SOMATIC {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def options_strelka = target_bed ? "--exome --callRegions ${target_bed}" : ""
+    def options_target_bed = target_bed ? "--exome --callRegions ${target_bed}" : ""
+    def options_manta = manta_candidate_small_indels ? "--indelCandidates ${manta_candidate_small_indels}" : ""
     """
     configureStrelkaSomaticWorkflow.py \\
         --tumor $cram_tumor \\
         --normal $cram_normal \\
         --referenceFasta $fasta \\
-        $options_strelka \\
+        $options_target_bed \\
+        $options_manta \\
         $options.args \\
         --runDir strelka
 
