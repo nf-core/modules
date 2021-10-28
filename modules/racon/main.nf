@@ -19,8 +19,8 @@ process RACON {
     }
 
     input:
-    tuple val(meta), path(reads) 
-    path assembly 
+    tuple val(meta), path(reads)
+    path assembly
     path paf
 
     output:
