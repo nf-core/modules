@@ -52,7 +52,7 @@ process STRELKA_GERMLINE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( configureStrelkaSomaticWorkflow.py --version )
+        ${getSoftwareName(task.process)}: \$( configureStrelkaGermlineWorkflow.py --version )
     END_VERSIONS
     """
 }
