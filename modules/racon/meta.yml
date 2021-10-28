@@ -13,7 +13,7 @@ tools:
       tool_dev_url: https://github.com/lbcb-sci/racon
       doi: https://doi.org/10.1101/gr.214270.116
       licence: ['MIT']
-      
+
 input:
   - meta:
       type: map
@@ -22,7 +22,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: List of input FastQ files. Racon expects single end
+      description: List of input FastQ files. Racon expects single end reads
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
   - assembly:
       type: file

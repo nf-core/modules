@@ -1,9 +1,7 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml racon
-- name: racon
-  command: nextflow run ./tests/modules/racon -entry test_racon -c tests/config/nextflow.config
+- name: racon test_racon
+  command: nextflow run tests/modules/racon -entry test_racon -c tests/config/nextflow.config
   tags:
     - racon
   files:
     - path: output/racon/test_assembly_consensus.fasta
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      md5sum: 26a85c2fe037721e3a3ad3f3de1f0f07
