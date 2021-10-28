@@ -5,11 +5,19 @@ nextflow.enable.dsl = 2
 include { SEACR_CALLPEAK } from '../../../../modules/seacr/callpeak/main.nf' addParams( options: [ args:'norm stringent' ] )
 
 workflow test_seacr_callpeak {
-    input = [
-        [ id:'test_1'],
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/bedgraph/K27me3_1_to_chr20.bedgraph", checkIfExists: true),
-        file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/bedgraph/IgG_1_to_chr20.bedgraph", checkIfExists: true)
-    ]
+    input = [ [ id:'test_1'],
+              file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_1'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_2'], checkIfExists: true) 
+            ]
 
-    SEACR_CALLPEAK ( input )
+    SEACR_CALLPEAK ( input, 0.05 )
+}
+
+workflow test_seacr_callpeak_threshold {
+    input = [ [ id:'test_1'],
+              file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_1'], checkIfExists: true),
+              []
+            ]
+
+    SEACR_CALLPEAK ( input, 0.05 )
 }

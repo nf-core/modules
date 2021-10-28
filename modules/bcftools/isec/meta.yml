@@ -13,6 +13,7 @@ tools:
         homepage: http://samtools.github.io/bcftools/bcftools.html
         documentation: http://www.htslib.org/doc/bcftools.html
         doi: 10.1093/bioinformatics/btp352
+        licence: ['MIT']
 input:
     - meta:
         type: map
@@ -39,9 +40,9 @@ output:
         type: directory
         description: Folder containing the set operations results perform on the vcf files
         pattern: "${prefix}"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
+        description: File containing software versions
         pattern: "versions.yml"
 authors:
     - "@joseespinosa"

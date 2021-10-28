@@ -17,8 +17,8 @@ workflow test_custom_dumpsoftwareversions {
     MULTIQC ( FASTQC.out.zip.collect { it[1] } )
 
     ch_software_versions = Channel.empty()
-    ch_software_versions = ch_software_versions.mix(FASTQC.out.version)
-    ch_software_versions = ch_software_versions.mix(MULTIQC.out.version)
+    ch_software_versions = ch_software_versions.mix(FASTQC.out.versions)
+    ch_software_versions = ch_software_versions.mix(MULTIQC.out.versions)
 
     CUSTOM_DUMPSOFTWAREVERSIONS ( ch_software_versions.collectFile() )
 }

@@ -10,7 +10,7 @@ tools:
       homepage: None
       documentation: https://man7.org/linux/man-pages/man1/cat.1.html
       tool_dev_url: None
-
+      licence: ['GPL-3.0-or-later']
 input:
   - files_in:
       type: file
@@ -21,9 +21,9 @@ input:
       description: Full name of output file with or without .gz extension
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing version of the pigz software
+      description: File containing software versions
       pattern: "versions.yml"
   - file_out:
       type: file

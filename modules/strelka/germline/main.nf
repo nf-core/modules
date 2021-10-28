@@ -23,18 +23,19 @@ process STRELKA_GERMLINE {
     path  fasta
     path  fai
     path  target_bed
+    path  target_bed_tbi
+
 
     output:
     tuple val(meta), path("*variants.vcf.gz")    , emit: vcf
     tuple val(meta), path("*variants.vcf.gz.tbi"), emit: vcf_tbi
     tuple val(meta), path("*genome.vcf.gz")      , emit: genome_vcf
     tuple val(meta), path("*genome.vcf.gz.tbi")  , emit: genome_vcf_tbi
-    path  "versions.yml"                         , emit: version
+    path "versions.yml"                          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def regions  = params.target_bed ? "--exome --callRegions ${target_bed}" : ""
+    def regions  = target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaGermlineWorkflow.py \\
         --bam $bam \\
@@ -51,7 +52,7 @@ process STRELKA_GERMLINE {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        strelka: \$( configureStrelkaGermlineWorkflow.py --version )
+        ${getSoftwareName(task.process)}: \$( configureStrelkaGermlineWorkflow.py --version )
     END_VERSIONS
     """
 }
