@@ -54,7 +54,7 @@ process PMDTOOLS_FILTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( pmdtools --version | cut -f2 -d ' ' )
+        ${getSoftwareName(task.process)}: \$( pmdtools --version | cut -f2 -d ' ' | sed 's/v//')
     END_VERSIONS
     """
 }
