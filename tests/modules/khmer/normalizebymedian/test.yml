@@ -32,3 +32,11 @@
     - khmer/normalizebymedian
   files:
     - path: output/khmer/multiple_pe.fastq.gz
+
+- name: khmer normalizebymedian args
+  command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian_args -c tests/config/nextflow.config
+  tags:
+    - khmer
+    - khmer/normalizebymedian
+  files:
+    - path: output/khmer/args.fastq.gz
