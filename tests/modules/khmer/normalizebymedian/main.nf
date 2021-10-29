@@ -22,10 +22,26 @@ workflow test_khmer_normalizebymedian_only_pe {
 
 workflow test_khmer_normalizebymedian_only_se {
     
-    reads = [
+    se_reads = [
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
     ]
 
-    KHMER_NORMALIZEBYMEDIAN ( [], reads, 'only_se' )
+    KHMER_NORMALIZEBYMEDIAN ( [], se_reads, 'only_se' )
+}
+
+workflow test_khmer_normalizebymedian_mixed {
+    
+    pe_reads = [
+        [ id:'khmer_test', single_end:false ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+        ]
+    ]
+    se_reads = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+
+    SEQTK_MERGEPE(pe_reads)
+
+    KHMER_NORMALIZEBYMEDIAN ( SEQTK_MERGEPE.out.reads.map { it[1] }, se_reads, 'mixed' )
 }
