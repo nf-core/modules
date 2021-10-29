@@ -10,11 +10,11 @@ process KRONATOOLS_KRONADB {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::krona=2.8" : null)
+    conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/krona:2.8--pl5262hdfd78af_2"
+        container "https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5"
     } else {
-        container "quay.io/biocontainers/krona:2.8--pl5262hdfd78af_2"
+        container "quay.io/biocontainers/krona:2.7.1--pl526_5"
     }
 
     input:
@@ -24,7 +24,7 @@ process KRONATOOLS_KRONADB {
     path "versions.yml"         , emit: versions
 
     script:
-    def VERSION='2.8'
+    def VERSION='2.7.1'
     """
     ktUpdateTaxonomy.sh taxonomy
 
