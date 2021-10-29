@@ -19,7 +19,7 @@ process MANTA_GERMLINE {
     }
 
     input:
-    tuple val(meta), path(cram), path(crai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
     path fai
     path target_bed
@@ -39,7 +39,7 @@ process MANTA_GERMLINE {
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --bam $cram \
+        --bam $input \
         --reference $fasta \
         $options_manta \
         --runDir manta
