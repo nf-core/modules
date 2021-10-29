@@ -5,28 +5,24 @@ keywords:
   - sort
 tools:
   - admixture:
-      ## TODO nf-core: Add a description and other details for the software below
       description: ADMIXTURE is a software tool for maximum likelihood estimation of individual ancestries from multilocus SNP genotype datasets.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: http://dalexander.github.io/admixture/
+      documentation: http://dalexander.github.io/admixture/admixture-manual.pdf
+      tool_dev_url: http://dalexander.github.io
+      doi: "10.1101/gr.094052.109"
       licence: ['Free for Academic Use']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - bed:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Bed file
+      pattern: "*.{bed,ped}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -44,4 +40,5 @@ output:
       pattern: "*.{bam,cram,sam}"
 
 authors:
+  - "@abhi18av"
   - "@Mxrcon"
