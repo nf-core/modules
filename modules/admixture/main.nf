@@ -46,7 +46,8 @@ process ADMIXTURE {
     //               https://github.com/nf-core/modules/blob/master/modules/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(ped), path(fam)
+    tuple val(meta), path(bed)
+    tuple val(meta), path(fam)
     output:
     tuple val(meta), path("${prefix}*.Q"), emit: Q
     tuple val(meta), path("${prefix}*.P"), emit: P
