@@ -1,8 +1,8 @@
 - name: rsem calculateexpression test_rsem_calculateexpression
   command: nextflow run tests/modules/rsem/calculateexpression -entry test_rsem_calculateexpression -c tests/config/nextflow.config
   tags:
-    - rsem/calculateexpression
     - rsem
+    - rsem/calculateexpression
   files:
     - path: output/index/rsem/Genome
       md5sum: a654229fbca6071dcb6b01ce7df704da

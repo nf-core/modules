@@ -1,0 +1,17 @@
+- name: freebayes somatic test_freebayes
+  command: nextflow run tests/modules/freebayes/somatic -entry test_freebayes -c tests/config/nextflow.config
+  tags:
+    - freebayes/somatic
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 1c47d02f27ec5918558c8688ce6e7780
+
+- name: freebayes somatic test_freebayes_intervals
+  command: nextflow run tests/modules/freebayes/somatic -entry test_freebayes_intervals -c tests/config/nextflow.config
+  tags:
+    - freebayes/somatic
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 5b8a12666bde63746dcec7afcd3ef789
