@@ -19,7 +19,7 @@ process SAMBLASTER {
     }
 
     input:
-    tuple val(meta), path(inputbam)
+    tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*_processed.bam"), emit: bam
