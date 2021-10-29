@@ -33,7 +33,9 @@ process MEDAKA {
         $options.args \\
         -i ${reads} \\
         -d ${assembly} \\
-        -o ${prefix}_polished_genome.fa
+        -o ./
+
+    mv consensus.fasta ${prefix}_polished_genome.fa
 
     gzip -n ${prefix}_polished_genome.fa
 

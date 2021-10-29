@@ -7,8 +7,8 @@ include { MEDAKA } from '../../../modules/medaka/main.nf' addParams( options: [:
 workflow test_medaka {
     
     input = [ [ id:'test', single_end:true ], // meta map
-              file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true),
-              file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+              file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true),
+              fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
             ]
     
     MEDAKA ( input )
