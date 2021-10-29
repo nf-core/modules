@@ -20,10 +20,11 @@ process BEDTOOLS_SORT {
 
     input:
     tuple val(meta), path(bed)
+    val   extension 
 
     output:
-    tuple val(meta), path('*.bed'), emit: bed
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path("*.${extension}"), emit: bed
+    path  "versions.yml"                   , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -32,7 +33,7 @@ process BEDTOOLS_SORT {
         sort \\
         -i $bed \\
         $options.args \\
-        > ${prefix}.bed
+        > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
