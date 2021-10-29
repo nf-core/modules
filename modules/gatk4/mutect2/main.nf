@@ -19,7 +19,7 @@ process GATK4_MUTECT2 {
     }
 
     input:
-    tuple val(meta) , path(bam) , path(bai) , val(which_norm)
+    tuple val(meta) , path(input) , path(input_index) , val(which_norm)
     val  run_single
     val  run_pon
     val  run_mito
@@ -44,7 +44,7 @@ process GATK4_MUTECT2 {
     def panels_command = ''
     def normals_command = ''
 
-    def inputs_command = '-I ' + bam.join( ' -I ')
+    def inputs_command = '-I ' + input.join( ' -I ')
 
     if(run_pon) {
         panels_command = ''

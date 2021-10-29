@@ -22,11 +22,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - bam:
+  - input:
       type: list
       description: list of BAM files, also able to take CRAM as an input
       pattern: "*.{bam/cram}"
-  - bai:
+  - input_index:
       type: list
       description: list of BAM file indexes, also able to take CRAM indexes as an input
       pattern: "*.{bam.bai/cram.crai}"
