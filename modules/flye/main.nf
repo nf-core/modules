@@ -41,12 +41,12 @@ process FLYE {
         --threads $task.cpus \\
         --out-dir ./
 
-    gzip -n assembly.fasta ${prefix}.assembly.fasta.gz
-    gzip -n assembly_graph.gfa ${prefix}.assembly_graph.gfa.gz
-    gzip -n assembly_graph.gv ${prefix}.assembly_graph.gv.gz
-    gzip -n assembly_info.txt ${prefix}.assembly_info.txt.gz
-    gzip -n flye.log ${prefix}.flye.log.gz
-    gzip -n params.json ${prefix}.params.json.gz
+    gzip -c assembly.fasta > ${prefix}.assembly.fasta.gz
+    gzip -c assembly_graph.gfa > ${prefix}.assembly_graph.gfa.gz
+    gzip -c assembly_graph.gv > ${prefix}.assembly_graph.gv.gz
+    gzip -c assembly_info.txt > ${prefix}.assembly_info.txt.gz
+    gzip -c flye.log > ${prefix}.flye.log.gz
+    gzip -c params.json > ${prefix}.params.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
