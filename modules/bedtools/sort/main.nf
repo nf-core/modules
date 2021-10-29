@@ -19,11 +19,11 @@ process BEDTOOLS_SORT {
     }
 
     input:
-    tuple val(meta), path(bed)
+    tuple val(meta), path(intervals)
     val   extension
 
     output:
-    tuple val(meta), path("*.${extension}"), emit: bed
+    tuple val(meta), path("*.${extension}"), emit: sorted
     path  "versions.yml"                   , emit: versions
 
     script:
@@ -31,7 +31,7 @@ process BEDTOOLS_SORT {
     """
     bedtools \\
         sort \\
-        -i $bed \\
+        -i $intervals \\
         $options.args \\
         > ${prefix}.${extension}
 
