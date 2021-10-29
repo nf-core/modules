@@ -19,7 +19,7 @@ process GATK4_APPLYBQSR {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai), path(bqsr_table)
+    tuple val(meta), path(input), path(input_index), path(bqsr_table)
     path  fasta
     path  fastaidx
     path  dict
@@ -40,7 +40,7 @@ process GATK4_APPLYBQSR {
     """
     gatk ApplyBQSR \\
         -R $fasta \\
-        -I $bam \\
+        -I $input \\
         --bqsr-recal-file $bqsr_table \\
         $interval \\
         --tmp-dir . \\

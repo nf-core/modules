@@ -19,7 +19,7 @@ process SAMTOOLS_MERGE {
     }
 
     input:
-    tuple val(meta), path(bams)
+    tuple val(meta), path(input_files)
     path fasta
 
     output:
@@ -32,7 +32,7 @@ process SAMTOOLS_MERGE {
     def file_type = bams[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools merge ${reference} ${prefix}.${file_type} $bams
+    samtools merge ${reference} ${prefix}.${file_type} $input_files
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')

@@ -19,7 +19,7 @@ process GATK4_HAPLOTYPECALLER {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
     path fai
     path dict
@@ -47,7 +47,7 @@ process GATK4_HAPLOTYPECALLER {
         --java-options "-Xmx${avail_mem}g" \\
         HaplotypeCaller \\
         -R $fasta \\
-        -I $bam \\
+        -I $input \\
         ${dbsnp_option} \\
         ${interval_option} \\
         -O ${prefix}.vcf.gz \\

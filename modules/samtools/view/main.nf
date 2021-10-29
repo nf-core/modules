@@ -19,7 +19,7 @@ process SAMTOOLS_VIEW {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input)
     path fasta
 
     output:
@@ -32,7 +32,7 @@ process SAMTOOLS_VIEW {
     def reference = fasta ? "--reference ${fasta} -C" : ""
     def file_type = bam.getExtension()
     """
-    samtools view ${reference} $options.args $bam > ${prefix}.${file_type}
+    samtools view ${reference} $options.args $input > ${prefix}.${file_type}
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
