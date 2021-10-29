@@ -35,7 +35,7 @@ process ECTYPER {
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
-    
+
     ectyper \\
         $options.args \\
         --cores $task.cpus \\
