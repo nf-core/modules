@@ -19,7 +19,7 @@ process STRELKA_SOMATIC {
     }
 
     input:
-    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)
+    tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)
     path  fasta
     path  fai
     path  target_bed
@@ -38,8 +38,8 @@ process STRELKA_SOMATIC {
     def options_manta = manta_candidate_small_indels ? "--indelCandidates ${manta_candidate_small_indels}" : ""
     """
     configureStrelkaSomaticWorkflow.py \\
-        --tumor $cram_tumor \\
-        --normal $cram_normal \\
+        --tumor $input_tumor \\
+        --normal $input_normal \\
         --referenceFasta $fasta \\
         $options_target_bed \\
         $options_manta \\
