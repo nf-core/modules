@@ -20,7 +20,7 @@ process BEDTOOLS_SORT {
 
     input:
     tuple val(meta), path(bed)
-    val   extension 
+    val   extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: bed
