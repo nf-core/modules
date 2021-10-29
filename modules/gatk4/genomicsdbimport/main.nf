@@ -26,35 +26,30 @@ process GATK4_GENOMICSDBIMPORT {
 
     output:
     tuple val(meta), path("*_genomicsdb")   , optional:true, emit: genomicsdb
+    tuple val(meta), path("$updated_db")    , optional:true, emit: updatedb
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
     path "versions.yml"                                    , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def inputs_list = []
-    def inputs_command = ''
-    def dir_command = ''
-    def intervals_command = ''
 
+    // settings for running default create gendb mode
+    def inputs_command = input_map ? "--sample-name-map ${vcf[0]}" : "${'-V ' + vcf.join(' -V')}"
+    def dir_command = "--genomicsdb-workspace-path ${prefix}_genomicsdb"
+    def intervals_command = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
+
+    // settings changed for running get intervals list mode if run_intlist is true
     if(run_intlist){
         inputs_command = ''
         dir_command = "--genomicsdb-update-workspace-path ${wspace}"
         intervals_command = "--output-interval-list-to-file ${prefix}.interval_list"
-    } else {
-        if(input_map){
-            inputs_command = "--sample-name-map ${vcf[0]}"
-        } else {
-            vcf.each() {a -> inputs_list.add(" -V " + a)}
-            inputs_command = inputs_list.join(' ')
-        }
+    }
 
-        if(run_updatewspace){
-            dir_command = "--genomicsdb-update-workspace-path ${wspace}"
-            intervals_command = ''
-        } else {
-            dir_command = "--genomicsdb-workspace-path ${prefix}_genomicsdb"
-            intervals_command = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
-        }
+    // settings changed for running update gendb mode. inputs_command same as default, update_db forces module to emit the updated gendb
+    if(run_updatewspace){
+        dir_command = "--genomicsdb-update-workspace-path ${wspace}"
+        intervals_command = ''
+        updated_db       = wspace.toString()
     }
 
     """

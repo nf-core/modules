@@ -8,10 +8,10 @@ include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimp
 workflow test_gatk4_genomicsdbimport_create_genomicsdb {
 
     input = [ [ id:'test'], // meta map
-              file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true) ,
-              file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz_tbi'], checkIfExists: true) ,
+              file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) ,
+              file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ,
+              file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true) ,
               [] ,
-              '22' ,
               [] ]
 
     run_intlist = false
