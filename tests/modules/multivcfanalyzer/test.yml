@@ -1,0 +1,27 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml multivcfanalyzer
+- name: multivcfanalyzer
+  command: nextflow run ./tests/modules/multivcfanalyzer -entry test_multivcfanalyzer -c tests/config/nextflow.config
+  tags:
+    - multivcfanalyzer
+  files:
+    - path: output/multivcfanalyzer/results/fullAlignment.fasta
+      md5sum: 
+    - path: output/multivcfanalyzer/results/info.txt
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpAlignment.fasta
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpAlignmentIncludingRefGenome.fasta
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpStatistics.tsv
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpTableForSnpeEff.tsv
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpTable.tsv
+      md5sum: 
+    - path: output/multivcfanalyzer/results/snpTableWithUncertaintyCalls.tsv
+      md5sum: 
+    - path: output/multivcfanalyzer/results/structureGenoypes_noMissingData-Columns.tsv
+      md5sum: 
+    - path: output/multivcfanalyzer/results/structureGenotypes.tsv
+      md5sum: 

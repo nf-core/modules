@@ -1,0 +1,111 @@
+name: multivcfanalyzer
+description: MultiVCFAnalyzer is a VCF file post-processing tool tailored for aDNA. License on Github repository. WARNING, supply vcf files as unzipped within pipelines, too wonky to do within module
+keywords:
+  - vcf analysis
+  - aDNA
+  - post-processing
+  - snp table
+  - structure
+tools:
+  - multivcfanalyzer:
+      description: MultiVCFAnalyzer is a VCF file post-processing tool tailored for aDNA. License on Github repository.
+      homepage: https://github.com/alexherbig/MultiVCFAnalyzer
+      documentation: https://github.com/alexherbig/MultiVCFAnalyzer
+      tool_dev_url: https://github.com/alexherbig/MultiVCFAnalyzer
+      doi: "10.1038/nature13591"
+      licence: ['GPL >=3']
+
+input:
+  - vcfs:
+      type: file
+      description: (vcf) outputs from GATK unified genotyper to analyze
+      pattern: "*.vcf"
+  - reference:
+      type: file
+      description: (fasta) the same reference as used for VCF construction
+      pattern: "*.fasta"
+  - allele_freq:
+      type: string
+      description: ('T' or 'F') - whether to include the percentage of reads a given
+      allele is present in in the SNP table
+      pattern: "T|F"
+  - min_qual:
+      type: string
+      description: (GATK) - a threshold of which a SNP call falling under is 'discarded'
+      pattern: "[0-9]+"
+  - min_cov:
+      type: string
+      description: the minimum number of a reads that a position must be covered by to be reported
+      pattern: "[0-9]+"
+  - min_freq_homo:
+      type: string
+      description: the fraction of reads a base must have to be called 'homozygous'
+      pattern: "0\\.[0-9]+"
+  - min_freq_hetero:
+      type: string
+      description: a fraction of which whereby if a call falls above this value, 
+      and lower than the homozygous threshold, a base will be called 'heterozygous' 
+      and reported with a IUPAC uncertainity code
+      pattern: "0\\.[0-9]+"
+  - snp_eff_optional:
+      type: file
+      description: vcf outputs from GATK unified genotyper to analyze
+      pattern: "*.txt"
+  - reference_gff_optional:
+      type: file
+      description: vcf outputs from GATK unified genotyper to analyze
+      pattern: "*.gff[2-3]*"
+  - pos_to_ignore_optional:
+      type: file
+      description: a file listing positions that will be 'filtered' (i.e. ignored)
+      pattern: "*.gff[2-3]*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fullalignment:
+      type: file
+      description: a fasta file of all positions contained in the VCF files i.e. including ref calls
+      pattern: "fullAlignment.fasta"
+  - info:
+      type: file
+      description: information about the run
+      pattern: "info.txt"
+  - snpalignment:
+      type: file
+      description: a fasta file of just SNP positions with samples only
+      pattern: "snpAlignment.fasta"
+  - snpalignmentref:
+      type: file
+      description: a fasta file of just SNP positions with reference genome
+      pattern: "snpAlignmentIncludingRefGenome.fasta"
+  - snpstatistics:
+      type: file
+      description: some basic statistics about the SNP calls of each sample
+      pattern: "snpStatistics.tsv"
+  - snptableforsnpeff:
+      type: file
+      description: input file for SnpEff
+      pattern: "snpTableForSnpeEff.tsv"
+  - snptable:
+      type: file
+      description: basic SNP table of combined positions taken from each VCF file
+      pattern: "snpTable.tsv"
+  - snptablewithuncertaintycalls:
+      type: file
+      description: same as above, but with lower case characters indicating uncertain calls
+      pattern: "snpTableWithUncertaintyCalls.tsv"
+  - structuregenotypesnomissing:
+      type: file
+      description: alternate input file for STRUCTURE
+      pattern: "structureGenoypes_noMissingData-Columns.tsv"
+  - structuregenotypes:
+      type: file
+      description: input file for STRUCTURE
+      pattern: "structureGenotypes.tsv"
+
+
+authors:
+  - "@alexherbig"
