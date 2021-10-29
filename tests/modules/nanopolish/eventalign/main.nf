@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP } from '../../../../modules/gunzip/main.nf' addParams( options: [:] )
+include { GUNZIP                } from '../../../../modules/gunzip/main.nf'                addParams( options: [:] )
 include { NANOPOLISH_EVENTALIGN } from '../../../../modules/nanopolish/eventalign/main.nf' addParams( options: [:] )
-include { UNTAR } from '../../../../modules/untar/main.nf' addParams( options: [:] )
+include { UNTAR                 } from '../../../../modules/untar/main.nf'                 addParams( options: [:] )
 
 workflow test_nanopolish_eventalign {
 
