@@ -23,9 +23,9 @@ process FGBIO_GROUPREADSBYUMI {
     val(strategy)
 
     output:
-    tuple val(meta), path("*_umi-grouped.bam"), emit: bam
-    path "*_umi_histogram.txt"                , emit: histogram
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*_umi-grouped.bam")  , emit: bam
+    tuple val(meta), path("*_umi_histogram.txt"), emit: histogram
+    path "versions.yml"                         , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
