@@ -7,7 +7,7 @@ include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimp
 
 workflow test_gatk4_genomicsdbimport_create_genomicsdb {
 
-    input = [ [ id:'test'], // meta map
+    input = [ [ id:'test_genomicsdb'], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) ,
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ,
               file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true) ,
@@ -26,7 +26,7 @@ workflow test_gatk4_genomicsdbimport_get_intervalslist {
 
     UNTAR ( db )
 
-    def input = Channel.of([ [ id:'test'], // meta map
+    def input = Channel.of([ [ id:'test_genomicsdb'], // meta map
               [] ,
               [] ,
               [] ,
@@ -45,7 +45,7 @@ workflow test_gatk4_genomicsdbimport_update_genomicsdb {
 
     UNTAR ( db )
 
-    def input = Channel.of([ [ id:'test'], // meta map
+    def input = Channel.of([ [ id:'test_genomicsdb'], // meta map
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'] , checkIfExists: true) ,
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'] , checkIfExists: true) ,
               [] ,
