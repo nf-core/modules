@@ -30,6 +30,10 @@ artic/minion:
   - modules/artic/minion/**
   - tests/modules/artic/minion/**
 
+assemblyscan:
+  - modules/assemblyscan/**
+  - tests/modules/assemblyscan/**
+
 bamaligncleaner:
   - modules/bamaligncleaner/**
   - tests/modules/bamaligncleaner/**
@@ -390,6 +394,10 @@ fgbio/fastqtobam:
   - modules/fgbio/fastqtobam/**
   - tests/modules/fgbio/fastqtobam/**
 
+fgbio/groupreadsbyumi:
+  - modules/fgbio/groupreadsbyumi/**
+  - tests/modules/fgbio/groupreadsbyumi/**
+
 fgbio/sortbam:
   - modules/fgbio/sortbam/**
   - tests/modules/fgbio/sortbam/**
@@ -402,9 +410,13 @@ flash:
   - modules/flash/**
   - tests/modules/flash/**
 
-freebayes:
-  - modules/freebayes/**
-  - tests/modules/freebayes/**
+freebayes/germline:
+  - modules/freebayes/germline/**
+  - tests/modules/freebayes/germline/**
+
+freebayes/somatic:
+  - modules/freebayes/somatic/**
+  - tests/modules/freebayes/somatic/**
 
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
@@ -437,6 +449,10 @@ gatk4/estimatelibrarycomplexity:
 gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
+
+gatk4/genomicsdbimport:
+  - modules/gatk4/genomicsdbimport/**
+  - tests/modules/gatk4/genomicsdbimport/**
 
 gatk4/filtermutectcalls:
   - modules/gatk4/filtermutectcalls/**
@@ -625,6 +641,10 @@ kallistobustools/ref:
   - modules/kallistobustools/ref/**
   - tests/modules/kallistobustools/ref/**
 
+khmer/normalizebymedian:
+  - modules/khmer/normalizebymedian/**
+  - tests/modules/khmer/normalizebymedian/**
+
 kleborate:
   - modules/kleborate/**
   - tests/modules/kleborate/**
@@ -765,6 +785,10 @@ msisensor/msi:
 msisensor/scan:
   - modules/msisensor/scan/**
   - tests/modules/msisensor/scan/**
+
+mtnucratio:
+  - modules/mtnucratio/**
+  - tests/modules/mtnucratio/**
 
 multiqc:
   - modules/fastqc/**
@@ -911,6 +935,10 @@ quast:
   - modules/quast/**
   - tests/modules/quast/**
 
+racon:
+  - modules/racon/**
+  - tests/modules/racon/**
+
 rapidnj:
   - modules/rapidnj/**
   - tests/modules/rapidnj/**
@@ -979,6 +1007,10 @@ samtools/ampliconclip:
   - modules/samtools/ampliconclip/**
   - tests/modules/samtools/ampliconclip/**
 
+samtools/bam2fq:
+  - modules/samtools/bam2fq/**
+  - tests/modules/samtools/bam2fq/**
+
 samtools/depth:
   - modules/samtools/depth/**
   - tests/modules/samtools/depth/**
@@ -1027,13 +1059,13 @@ seacr/callpeak:
   - modules/seacr/callpeak/**
   - tests/modules/seacr/callpeak/**
 
-seqtk/mergepe:
-  - modules/seqtk/mergepe/**
-  - tests/modules/seqtk/mergepe/**
-
 seqkit/split2:
   - modules/seqkit/split2/**
   - tests/modules/seqkit/split2/**
+
+seqtk/mergepe:
+  - modules/seqtk/mergepe/**
+  - tests/modules/seqtk/mergepe/**
 
 seqtk/sample:
   - modules/seqtk/sample/**
