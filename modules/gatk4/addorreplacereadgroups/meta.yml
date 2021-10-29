@@ -1,0 +1,49 @@
+name: gatk4_addorreplacereadgroups
+description:  This feature of gatk assigns all the reads in a file to a single new read-group
+keywords:
+- gatk
+- bam
+- read groups
+
+tools:
+  - gatk4:
+      description: Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+            with a primary focus on variant discovery and genotyping. Its powerful processing engine
+            and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ['Apache-2.0']
+
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - bam:
+      type: file
+      description: BAM file with modified read groups
+      pattern: "*.{bam}"
+
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.yml}"
+
+authors:
+  - "@simeonhebrew"
