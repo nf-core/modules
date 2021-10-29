@@ -31,6 +31,7 @@ process PMDTOOLS_FILTER {
     path "versions.yml"          , emit: versions
 
     script:
+    def split_cpus = Math.floor(task.cpus/2)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     //threshold and header flags activate filtering function of pmdtools
     """
@@ -39,7 +40,7 @@ process PMDTOOLS_FILTER {
         $bam \\
         $reference \\
         $options.args \\
-        -@ $task.cpus \\
+        -@ ${split_cpus} \\
     | pmdtools \\
         --threshold $threshold \\
         --header \\
@@ -49,7 +50,7 @@ process PMDTOOLS_FILTER {
         $options.args3 \\
         -Sb \\
         - \\
-        -@ $task.cpus \\
+        -@ ${split_cpus} \\
         -o ${prefix}.pmd.bam
 
     cat <<-END_VERSIONS > versions.yml
