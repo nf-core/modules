@@ -1,0 +1,50 @@
+name: porechop
+description: Adapter removal and demultiplexing of Oxford Nanopore reads
+keywords:
+  - adapter
+  - nanopore
+  - demultiplexing
+tools:
+  - porechop:
+      description: Adapter removal and demultiplexing of Oxford Nanopore reads
+      homepage: "https://github.com/rrwick/Porechop"
+      documentation: "https://github.com/rrwick/Porechop"
+      tool_dev_url: "https://github.com/rrwick/Porechop"
+      doi: "10.1099/mgen.0.000132"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: fastq/fastq.gz file
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Demultiplexed and/or adapter-trimmed fastq.gz file
+      pattern: "*.{fastq.gz}"
+
+authors:
+  - "@ggabernet"
+  - "@jasmezz"
+  - "@d4straub"
+  - "@LaurenceKuhl"
+  - "@SusiJo"
+  - "@jonasscheid"
+  - "@jonoave"
+  - "@GokceOGUZ"
