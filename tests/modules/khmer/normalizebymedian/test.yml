@@ -24,3 +24,11 @@
     - khmer/normalizebymedian
   files:
     - path: output/khmer/mixed.fastq.gz
+
+- name: khmer normalizebymedian multiple pe reads
+  command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian_multiple_pe -c tests/config/nextflow.config
+  tags:
+    - khmer
+    - khmer/normalizebymedian
+  files:
+    - path: output/khmer/multiple_pe.fastq.gz
