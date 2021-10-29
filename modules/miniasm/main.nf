@@ -19,12 +19,11 @@ process MINIASM {
     }
 
     input:
-    tuple val(meta), path(reads)
-    path paf
+    tuple val(meta), path(reads), path(paf)
 
     output:
-    tuple val(meta), path("*.gfa"), emit: gfa
-    tuple val(meta), path("*_assembly.fasta"), emit: assembly
+    tuple val(meta), path("*.gfa.gz"), emit: gfa
+    tuple val(meta), path("*_assembly.fasta.gz"), emit: assembly
     path "versions.yml"          , emit: versions
 
     script:
@@ -37,6 +36,9 @@ process MINIASM {
         ${prefix}.gfa
 
     awk '/^S/{print ">"\$2"\\n"\$3}' "${prefix}.gfa" | fold > ${prefix}_assembly.fasta
+
+    gzip -n ${prefix}.gfa
+    gzip -n ${prefix}_assembly.fasta
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
