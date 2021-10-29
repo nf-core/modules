@@ -20,7 +20,8 @@ process NANOPOLISH_EVENTALIGN {
     path gtf
 
     output:
-    tuple val(meta), path("*eventalign.txt"), path("*summary.txt"), emit: nanopolish_outputs
+    tuple val(meta), path("*eventalign.txt"), emit: evenalign_txt
+    path("*summary.txt"),   emit: summary_txt
     path "*.version.txt"     ,emit: version
 
     script:
