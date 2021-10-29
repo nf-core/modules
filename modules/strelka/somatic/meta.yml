@@ -21,19 +21,19 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - cram_normal:
+  - input_normal:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - crai_normal:
+  - input_index_normal:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"
-  - cram_tumor:
+  - input_tumor:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - crai_tumor:
+  - input_index_tumor:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"

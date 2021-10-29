@@ -19,7 +19,7 @@ process MANTA_TUMORONLY {
     }
 
     input:
-    tuple val(meta), path(cram), path(crai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
     path fai
     path target_bed
@@ -39,7 +39,7 @@ process MANTA_TUMORONLY {
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --tumorBam $cram \
+        --tumorBam $input \
         --reference $fasta \
         $options_manta \
         --runDir manta
