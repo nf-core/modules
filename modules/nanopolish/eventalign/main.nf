@@ -28,7 +28,15 @@ process NANOPOLISH_EVENTALIGN {
     sample_eventalign = "$meta.id" +"_eventalign.txt"
     """
     nanopolish index -d $fast5 $fastq
-    nanopolish eventalign  --reads $fastq --bam $bam --genome $fasta --scale-events --signal-index --summary $sample_summary --threads $threads > $sample_eventalign
+    nanopolish eventalign  \\
+        --reads $fastq \\
+        --bam $bam \\
+        --genome $fasta \\
+        --scale-events \\
+        --signal-index \\
+        --summary $sample_summary \\
+        --threads $task.cpus \\
+        > $sample_eventalign
     nanopolish --version | sed -e "s/nanopolish version //g" | head -n 1 > nanopolish.version.txt
     """
 }
