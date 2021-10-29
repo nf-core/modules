@@ -19,10 +19,10 @@ process MTNUCRATIO {
 
     input:
     tuple val(meta), path(bam)
-    val mt_id
+    val(mt_id)
 
     output:
-    tuple val(meta), path("*.mtnucratio"), emit: txt
+    tuple val(meta), path("*.mtnucratio"), emit: mtnucratio
     tuple val(meta), path("*.json"), emit: json
     path "versions.yml"          , emit: versions
 
@@ -31,6 +31,7 @@ process MTNUCRATIO {
 
     """
     mtnucratio \\
+        $options.args \\
         $bam \\
         $mt_id
 
