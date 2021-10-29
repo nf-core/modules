@@ -49,12 +49,12 @@ input:
 
   - run_intlist:
       type: boolean
-      description: Specify whether to run get interval list mode, this option takes priority over run_updatewspace.
+      description: Specify whether to run get interval list mode, this option cannot be specified at the same time as run_updatewspace.
       pattern: "true/false"
 
   - run_updatewspace:
       type: boolean
-      description: Specify whether to run update genomicsdb mode, this option cannot be specified at the same time as run_intlist.
+      description: Specify whether to run update genomicsdb mode, this option takes priority over run_intlist.
       pattern: "true/false"
 
   - input_map:
