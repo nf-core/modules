@@ -19,7 +19,7 @@ process MANTA_SOMATIC {
     }
 
     input:
-    tuple val(meta), path(cram_normal), path(crai_normal), path(cram_tumor), path(crai_tumor)
+    tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor)
     path fasta
     path fai
     path target_bed
@@ -42,8 +42,8 @@ process MANTA_SOMATIC {
 
     """
     configManta.py \
-        --tumorBam $cram_tumor \
-        --normalBam $cram_normal \
+        --tumorBam $input_tumor \
+        --normalBam $input_normal \
         --reference $fasta \
         $options_manta \
         --runDir manta
