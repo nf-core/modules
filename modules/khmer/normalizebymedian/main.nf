@@ -31,7 +31,7 @@ process KHMER_NORMALIZEBYMEDIAN {
     pe_args = pe_reads ? "--paired" : ""
     se_args = se_reads ? "--unpaired-reads ${se_reads}" : ""
     files   = pe_reads ? pe_reads : se_reads
-    
+
     """
     normalize-by-median.py -M ${task.memory.toGiga()}e9 --gzip ${options.args} -o ${name}.fastq.gz ${pe_args} ${se_args} ${files}
 
