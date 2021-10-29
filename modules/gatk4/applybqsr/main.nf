@@ -19,7 +19,7 @@ process GATK4_APPLYBQSR {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai), path(bqsr_table)
+    tuple val(meta), path(input), path(input_index), path(bqsr_table)
     path  fasta
     path  fastaidx
     path  dict
@@ -32,12 +32,18 @@ process GATK4_APPLYBQSR {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval = intervals ? "-L ${intervals}" : ""
+    if (!task.memory) {
+        log.info '[GATK ApplyBQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     gatk ApplyBQSR \\
         -R $fasta \\
-        -I $bam \\
+        -I $input \\
         --bqsr-recal-file $bqsr_table \\
         $interval \\
+        --tmp-dir . \\
         -O ${prefix}.bam \\
         $options.args
 
