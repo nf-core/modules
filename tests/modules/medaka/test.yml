@@ -1,0 +1,7 @@
+- name: medaka
+  command: nextflow run ./tests/modules/medaka -entry test_medaka -c tests/config/nextflow.config
+  tags:
+    - medaka
+  files:
+    - path: output/medaka/test_polished_genome.fa.gz
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
