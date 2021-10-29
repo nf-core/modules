@@ -6,7 +6,6 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: f79023aae5ea7ef93f1ad328f598841b
 
 - name: gatk4 haplotypecaller test_gatk4_haplotypecaller_cram
   command: nextflow run tests/modules/gatk4/haplotypecaller -entry test_gatk4_haplotypecaller_cram -c tests/config/nextflow.config
