@@ -18,7 +18,6 @@ process NANOPOLISH_EVENTALIGN {
     path fastq
     path fasta
     path gtf
-    val threads
 
     output:
     tuple val(meta), path("*eventalign.txt"), path("*summary.txt"), emit: nanopolish_outputs
