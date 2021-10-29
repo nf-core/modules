@@ -1,3 +1,9 @@
+// Import generic module functions
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
+
+params.options = [:]
+options        = initOptions(params.options)
+
 process BAMCMP {
     tag '$bam'
     label 'process_low'
@@ -5,10 +11,6 @@ process BAMCMP {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "bamcmp" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "docker://crukmi/bamcmp:2.0.0"
@@ -17,23 +19,28 @@ process BAMCMP {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(sample_bam), path(contaminant_bam)
 
     output:
     path "*.bam", emit: bam
     path "versions.yml"          , emit: versions
 
     script:
-
+    
+  //  def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    
     """
-    bamcmp -s "as" ${bam} \\
-    -1 ${bam[0]} \\
-    -2 ${bam[1]} \\
-    -A ${meta.id}_contaminationFiltered.bam
+    bamcmp -s "as" \\
+    -1 $sample_bam \\ 
+    -2 $contaminant_bam \\
+    -A firstbetter.bam 
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$( samtools --version 2>&1 | sed 's/^.*samtools //; s/Using.*\$//' )
     END_VERSIONS
     """
+    
+    // bamcmp takes two bam files aligned to different genomes (containing the same reads) and splits the reads by which genome they align to "better". We strongly suggest using the "as" mode, not the "mapq" mode. If both bam files contain exactly the same reads, only need the -A output bam file, but if they have been filtered previously then also need to join the -a bam with the -A bam file.
+    
 }
