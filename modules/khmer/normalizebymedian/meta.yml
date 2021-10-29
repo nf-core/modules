@@ -16,11 +16,11 @@ input:
   - pe_reads:
       type: files
       description: Paired-end interleaved fastq files
-      pattern: "*.pe.{fq,fastq}.gz"
+      pattern: "*.{fq,fastq}.gz"
   - se_reads:
       type: files
-      description: Single-end interleaved fastq files
-      pattern: "*.se.{fq,fastq}.gz"
+      description: Single-end fastq files
+      pattern: "*.{fq,fastq}.gz"
   - name:
       type: string
       description: filename for output file(s); ".fastq.gz" will be appended
