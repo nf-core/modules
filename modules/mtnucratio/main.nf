@@ -23,8 +23,8 @@ process MTNUCRATIO {
 
     output:
     tuple val(meta), path("*.mtnucratio"), emit: mtnucratio
-    tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*.json")      , emit: json
+    path "versions.yml"                  , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
