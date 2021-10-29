@@ -19,7 +19,7 @@ process STRELKA_GERMLINE {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path  fasta
     path  fai
     path  target_bed
@@ -38,7 +38,7 @@ process STRELKA_GERMLINE {
     def regions  = target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaGermlineWorkflow.py \\
-        --bam $bam \\
+        --bam $input \\
         --referenceFasta $fasta \\
         $regions \\
         $options.args \\
