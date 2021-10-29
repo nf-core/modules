@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml khmer/normalizebymedian
-- name: khmer normalizebymedian
-  command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian -c tests/config/nextflow.config
+- name: khmer normalizebymedian only pe reads
+  command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian_only_pe -c tests/config/nextflow.config
   tags:
     - khmer
     - khmer/normalizebymedian
   files:
-    - path: output/khmer/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/khmer/only_pe.pe.intl.fastq.gz
+      # md5sum not stable even locally with docker (gzip done by tool)
+      #md5sum: 75e05f2e80cf4bd0b534d4b73f7c059c

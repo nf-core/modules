@@ -2,11 +2,20 @@
 
 nextflow.enable.dsl = 2
 
+include { SEQTK_MERGEPE           } from '../../../../modules/seqtk/mergepe/main.nf'           addParams( options: [:] )
 include { KHMER_NORMALIZEBYMEDIAN } from '../../../../modules/khmer/normalizebymedian/main.nf' addParams( options: [:] )
 
-workflow test_khmer_normalizebymedian {
+workflow test_khmer_normalizebymedian_only_pe {
     
-    input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+    pe_reads = [
+        [ id:'khmer_test', single_end:false ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+        ]
+    ]
 
-    KHMER_NORMALIZEBYMEDIAN ( input )
+    SEQTK_MERGEPE(pe_reads)
+
+    KHMER_NORMALIZEBYMEDIAN ( SEQTK_MERGEPE.out.reads.map { it[1] }, [], 'only_pe' )
 }

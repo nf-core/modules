@@ -1,37 +1,39 @@
 name: khmer_normalizebymedian
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
+  - digital normalization
+  - khmer
 tools:
   - khmer:
-      ## TODO nf-core: Add a description and other details for the software below
       description: khmer k-mer counting library
-      homepage: None
-      documentation: None
+      homepage: https://github.com/dib-lab/khmer
+      documentation: https://khmer.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/dib-lab/khmer
-      doi: ""
+      doi: "https://doi.org/10.12688/f1000research.6924.1"
       licence: ['BSD License']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - pe_reads:
+      type: files
+      description: Paired-end interleaved fastq files
+      pattern: "*.pe.{fq,fastq}.gz"
+  - se_reads:
+      type: files
+      description: Single-end interleaved fastq files
+      pattern: "*.se.{fq,fastq}.gz"
+  - name:
+      type: string
+      description: filename for output file(s); ".fastq.gz" will be appended
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - reads:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Interleaved fastq files
+      pattern: "*.{fq,fastq}.gz"
 
 authors:
   - "@erikrikarddaniel"
