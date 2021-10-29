@@ -24,12 +24,12 @@ input:
         e.g. [ id:'test']
   - bam:
       type: list
-      description: list of BAM files
-      pattern: "*.bam"
+      description: list of BAM files, also able to take CRAM as an input
+      pattern: "*.{bam/cram}"
   - bai:
       type: list
-      description: list of BAM file indexes
-      pattern: "*.bam.bai"
+      description: list of BAM file indexes, also able to take CRAM indexes as an input
+      pattern: "*.{bam.bai/cram.crai}"
   - which_norm:
       type: list
       description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
