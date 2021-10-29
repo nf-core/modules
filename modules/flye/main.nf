@@ -20,6 +20,7 @@ process FLYE {
 
     input:
     tuple val(meta), path(reads)
+    val mode
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
@@ -32,10 +33,9 @@ process FLYE {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def mode = meta.mode
     """
     flye \\
-        --$mode \\
+        $mode \\
         $reads \\
         $options.args \\
         --threads $task.cpus \\

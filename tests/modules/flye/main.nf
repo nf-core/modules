@@ -5,49 +5,61 @@ nextflow.enable.dsl = 2
 include { FLYE } from '../../../modules/flye/main.nf' addParams( options: [:] )
 
 workflow test_flye_pacbio_raw {
-    input = [ [ id:'test', mode:'pacbio-raw' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--pacbio-raw"
+
+    FLYE ( input, mode )
 }
 
 workflow test_flye_pacbio_corr {
-    input = [ [ id:'test', mode:'pacbio-corr' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--pacbio-corr"
+
+    FLYE ( input, mode )
 }
 
 workflow test_flye_pacbio_hifi {
-    input = [ [ id:'test', mode:'pacbio-hifi' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--pacbio-hifi"
+
+    FLYE ( input, mode )
 }
 
 workflow test_flye_nano_raw {
-    input = [ [ id:'test', mode:'nano-raw' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--nano-raw"
+
+    FLYE ( input, mode )
 }
 
 workflow test_flye_nano_corr {
-    input = [ [ id:'test', mode:'nano-corr' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--nano-corr"
+
+    FLYE ( input, mode )
 }
 
 workflow test_flye_nano_hq {
-    input = [ [ id:'test', mode:'nano-hq' ], // meta map
+    input = [ [ id:'test' ], // meta map
               [ file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true) ]
             ]
 
-    FLYE ( input )
+    mode = "--nano-hq"
+
+    FLYE ( input, mode )
 }
