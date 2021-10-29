@@ -7,7 +7,7 @@ include { BUSCO } from '../../../modules/busco/main.nf' addParams( options: [arg
 
 workflow test_busco {
     
-	compressed_genome_file = file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+	compressed_genome_file = file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
 	GUNZIP ( compressed_genome_file )
 	input = GUNZIP.out.gunzip.map { row -> [ [ id:'test' ], row] }
 
