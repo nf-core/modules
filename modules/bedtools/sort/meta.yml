@@ -15,20 +15,26 @@ input:
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+    - intervals:
         type: file
-        description: Input BED file
-        pattern: "*.{bed}"
+        description: BED/BEDGRAPH
+        pattern: "*.{bed|bedGraph}"
+
+    - extension:
+        type: string
+        description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt", ".tab", etc.) It is set arbitrarily by the user and corresponds to the file format which depends on arguments.
 output:
     - meta:
         type: map
         description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - bed:
+
+    - sorted:
         type: file
-        description: Sorted BED file
-        pattern: "*.{bed}"
+        description: Sorted output file
+        pattern: "*.${extension}"
+
     - versions:
         type: file
         description: File containing software versions
@@ -37,3 +43,4 @@ authors:
     - "@Emiller88"
     - "@sruthipsuresh"
     - "@drpatelh"
+    - "@chris-cheshire"
