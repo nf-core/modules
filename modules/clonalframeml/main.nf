@@ -19,7 +19,7 @@ process CLONALFRAMEML {
     }
 
     input:
-    tuple val(meta), path(newick), path(fasta)
+    tuple val(meta), path(newick), path(msa)
 
     output:
     tuple val(meta), path("*.emsim.txt")                   , emit: emsim, optional: true
@@ -32,16 +32,16 @@ process CLONALFRAMEML {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name = fasta.getName().replace(".gz", "")
+    def is_compressed = msa.getName().endsWith(".gz") ? true : false
+    def msa_name = msa.getName().replace(".gz", "")
     """
     if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+        gzip -c -d $msa > $msa_name
     fi
 
     ClonalFrameML \\
         $newick \\
-        $fasta_name \\
+        $msa_name \\
         $prefix \\
         $options.args
 
