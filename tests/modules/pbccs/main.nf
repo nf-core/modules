@@ -7,7 +7,7 @@ include { PBCCS } from '../../../modules/pbccs/main.nf' addParams( options: [arg
 workflow test_pbccs {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'alz' ], // meta map
         file(params.test_data['homo_sapiens']['pacbio']['alz'],    checkIfExists: true),
         file(params.test_data['homo_sapiens']['pacbio']['alzpbi'], checkIfExists: true)
     ]
