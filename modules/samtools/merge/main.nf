@@ -29,7 +29,7 @@ process SAMTOOLS_MERGE {
 
     script:
     prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def file_type = bams[0].getExtension()
+    def file_type = input_files[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
     samtools merge ${reference} ${prefix}.${file_type} $input_files

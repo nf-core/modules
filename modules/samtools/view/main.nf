@@ -30,7 +30,7 @@ process SAMTOOLS_VIEW {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference = fasta ? "--reference ${fasta} -C" : ""
-    def file_type = bam.getExtension()
+    def file_type = input.getExtension()
     """
     samtools view ${reference} $options.args $input > ${prefix}.${file_type}
     cat <<-END_VERSIONS > versions.yml
