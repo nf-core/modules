@@ -33,7 +33,13 @@ process KHMER_NORMALIZEBYMEDIAN {
     files   = pe_reads ? pe_reads : se_reads
 
     """
-    normalize-by-median.py -M ${task.memory.toGiga()}e9 --gzip ${options.args} -o ${name}.fastq.gz ${pe_args} ${se_args} ${files}
+    normalize-by-median.py \\
+        -M ${task.memory.toGiga()}e9 \\
+        --gzip ${options.args} \\
+        -o ${name}.fastq.gz \\
+        ${pe_args} \\
+        ${se_args} \\
+        ${files}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
