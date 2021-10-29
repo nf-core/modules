@@ -19,3 +19,13 @@ workflow test_khmer_normalizebymedian_only_pe {
 
     KHMER_NORMALIZEBYMEDIAN ( SEQTK_MERGEPE.out.reads.map { it[1] }, [], 'only_pe' )
 }
+
+workflow test_khmer_normalizebymedian_only_se {
+    
+    reads = [
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) 
+    ]
+
+    KHMER_NORMALIZEBYMEDIAN ( [], reads, 'only_se' )
+}
