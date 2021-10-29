@@ -10,7 +10,7 @@ workflow test_gatk4_createsomaticpanelofnormals {
 
     UNTAR ( db )
 
-    def input = Channel.of([ id:'test'])
+    input = Channel.of([ id:'test'])
               .combine(UNTAR.out.untar)
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
