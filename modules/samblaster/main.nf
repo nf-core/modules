@@ -31,7 +31,7 @@ process SAMBLASTER {
     """
     samtools view -h $options.args2 $inputbam | \\
     samblaster $options.args | \\
-    samtools view $options.args3 -Sb - >${prefix}_processed.bam
+    samtools view $options.args3 -Sb - >${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
