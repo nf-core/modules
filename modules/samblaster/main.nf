@@ -22,7 +22,7 @@ process SAMBLASTER {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*_processed.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"                     , emit: versions
 
     script:
