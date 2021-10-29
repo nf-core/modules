@@ -28,7 +28,7 @@ process MTNUCRATIO {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    
+
     """
     mtnucratio \\
         $bam \\
