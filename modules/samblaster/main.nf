@@ -27,7 +27,7 @@ process SAMBLASTER {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
     samtools view -h $options.args2 $inputbam | \\
     samblaster $options.args | \\
