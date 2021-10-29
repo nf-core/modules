@@ -22,24 +22,24 @@ process MAPDAMAGE2 {
     path(fasta)
 
     output:
-    tuple val(meta), path("results_*/Runtime_log.txt")                    ,emit: runtime_log
-    tuple val(meta), path("results_*/Fragmisincorporation_plot.pdf")      ,emit: fragmisincorporation_plot
-    tuple val(meta), path("results_*/Length_plot.pdf"), optional: true    ,emit: length_plot
-    tuple val(meta), path("results_*/misincorporation.txt")               ,emit: misincorporation
-    tuple val(meta), path("results_*/lgdistribution.txt")                 ,emit: lgdistribution
-    tuple val(meta), path("results_*/dnacomp.txt")                        ,emit: dnacomp
-    tuple val(meta), path("results_*/Stats_out_MCMC_hist.pdf")            ,emit: stats_out_mcmc_hist
-    tuple val(meta), path("results_*/Stats_out_MCMC_iter.csv")            ,emit: stats_out_mcmc_iter
-    tuple val(meta), path("results_*/Stats_out_MCMC_trace.pdf")           ,emit: stats_out_mcmc_trace
-    tuple val(meta), path("results_*/Stats_out_MCMC_iter_summ_stat.csv")  ,emit: stats_out_mcmc_iter_summ_stat
-    tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf")       ,emit: stats_out_mcmc_post_pred
-    tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv")    ,emit: stats_out_mcmc_correct_prob
-    tuple val(meta), path("results_*/dnacomp_genome.csv")                 ,emit: dnacomp_genome
-    tuple val(meta), path("results_*/rescaled.bam"), optional: true       ,emit: rescaled
-    tuple val(meta), path("results_*/5pCtoT_freq.txt")                    ,emit: pctot_freq
-    tuple val(meta), path("results_*/3pGtoA_freq.txt")                    ,emit: pgtoa_freq
-    tuple val(meta), path("results_*/*.fasta"), optional: true            ,emit: fasta
-    tuple val(meta), path("results_*/*/"), optional: true                 ,emit: path
+    tuple val(meta), path("results_*/Runtime_log.txt")                                    ,emit: runtime_log
+    tuple val(meta), path("results_*/Fragmisincorporation_plot.pdf"), optional: true      ,emit: fragmisincorporation_plot
+    tuple val(meta), path("results_*/Length_plot.pdf"), optional: true                    ,emit: length_plot
+    tuple val(meta), path("results_*/misincorporation.txt"), optional: true               ,emit: misincorporation
+    tuple val(meta), path("results_*/lgdistribution.txt"), optional: true                 ,emit: lgdistribution
+    tuple val(meta), path("results_*/dnacomp.txt"), optional: true                        ,emit: dnacomp
+    tuple val(meta), path("results_*/Stats_out_MCMC_hist.pdf"), optional: true            ,emit: stats_out_mcmc_hist
+    tuple val(meta), path("results_*/Stats_out_MCMC_iter.csv"), optional: true            ,emit: stats_out_mcmc_iter
+    tuple val(meta), path("results_*/Stats_out_MCMC_trace.pdf"), optional: true           ,emit: stats_out_mcmc_trace
+    tuple val(meta), path("results_*/Stats_out_MCMC_iter_summ_stat.csv"), optional: true  ,emit: stats_out_mcmc_iter_summ_stat
+    tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf"), optional: true       ,emit: stats_out_mcmc_post_pred
+    tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv"), optional: true    ,emit: stats_out_mcmc_correct_prob
+    tuple val(meta), path("results_*/dnacomp_genome.csv"), optional: true                 ,emit: dnacomp_genome
+    tuple val(meta), path("results_*/rescaled.bam"), optional: true                       ,emit: rescaled
+    tuple val(meta), path("results_*/5pCtoT_freq.txt"), optional: true                    ,emit: pctot_freq
+    tuple val(meta), path("results_*/3pGtoA_freq.txt"), optional: true                    ,emit: pgtoa_freq
+    tuple val(meta), path("results_*/*.fasta"), optional: true                            ,emit: fasta
+    tuple val(meta), path("*/"), optional: true                                           ,emit: folder
     path "versions.yml",emit: versions
 
     script:

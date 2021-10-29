@@ -37,70 +37,78 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-    - Runtime_log:
+    - runtime_log:
       type: file
       description: Log file with a summary of command lines used and timestamps.
-      pattern: "*.{txt}"
-    - Fragmisincorporation_plot:
+      pattern: "Runtime_log.txt"
+    - fragmisincorporation_plot:
       type: file
       description: a pdf file that displays both fragmentation and misincorporation patterns.
-      pattern: "*.{pdf}"
-    - Length_plot:
+      pattern: "Fragmisincorporation_plot.pdf"
+    - length_plot:
       type: file
       description: a pdf file that displays length distribution of singleton reads per strand and cumulative frequencies of C->T at 5'-end and G->A at 3'-end are also displayed per strand.
-      pattern: "*.{pdf}"
+      pattern: "Length_plot.pdf"
     - misincorporation:
       type: file
       description: contains a table with occurrences for each type of mutations and relative positions from the reads ends.
-      pattern: "*.{txt}"
-    - 5pCtoT_freq:
+      pattern: "misincorporation.txt"
+    - pctot_freq:
       type: file
       description: contains frequencies of Cytosine to Thymine mutations per position from the 5'-ends.
-      pattern: "*.{txt}"
-    - 3pGtoA_freq:
+      pattern: "5pCtoT_freq.txt"
+    - pgtoa_freq:
       type: file
       description: contains frequencies of Guanine to Adenine mutations per position from the 3'-ends.
-      pattern: "*.{txt}"
+      pattern: "3pGtoA_freq.txt"
     - dnacomp:
       type: file
       description:  contains a table of the reference genome base composition per position, inside reads and adjacent regions.
-      pattern: "*.{txt}"
+      pattern: "dnacomp.txt"
     - lgdistribution:
       type: file
       description: contains a table with read length distributions per strand.
-      pattern: "*.{txt}"
-    - Stats_out_MCMC_hist:
+      pattern: "lgdistribution.txt"
+    - stats_out_mcmc_hist:
       type: file
       description: MCMC histogram for the damage parameters and log likelihood.
-      pattern: "*.{pdf}"
-    - Stats_out_MCMC_iter:
+      pattern: "Stats_out_MCMC_hist.pdf"
+    - stats_out_mcmc_iter:
       type: file
-      description: values for the damage parameters and log likelihood in each MCMC iteration.
-      pattern: "*.{csv}"
-    - Stats_out_MCMC_trace:
+      description: values for the damzzzzzzage parameters and log likelihood in each MCMC iteration.
+      pattern: "Stats_out_MCMC_iter.csv"
+    - stats_out_mcmc_trace:
       type: file
       description: a MCMC trace plot for the damage parameters and log likelihood.
-      pattern: "*.{pdf}"
-    - Stats_out_MCMC_iter_summ_stat:
+      pattern: "Stats_out_MCMC_trace.pdf"
+    - stats_out_mcmc_iter_summ_stat:
       type: file
       description: summary statistics for the damage parameters estimated posterior distributions.
-      pattern: "*.{csv}"
-    - Stats_out_MCMC_post_pred:
+      pattern: "Stats_out_MCMC_iter_summ_stat.csv"
+    - stats_out_mcmc_post_pred:
       type: file
       description: empirical misincorporation frequency and posterior predictive intervals from the fitted model.
-      pattern: "*.{pdf}"
-    - Stats_out_MCMC_correct_prob:
+      pattern: "Stats_out_MCMC_post_pred.pdf"
+    - stats_out_mcmc_correct_prob:
       type: file
       description: position specific probability of a C->T and G->A misincorporation is due to damage.
-      pattern: "*.{csv}"
+      pattern: "Stats_out_MCMC_correct_prob.csv"
     - dnacomp_genome:
       type: file
       description: contains the global reference genome base composition (computed by seqtk).
-      pattern: "*.{csv}"
+      pattern: "dnacomp_genome.csv"
     - rescaled:
       type: file
       description: Rescaled BAM file, where likely post-mortem damaged bases have downscaled quality scores.
       pattern: "*.{bam}"
+    - fasta:
+      type: file
+      description: Allignments in a FASTA file, only if flagged by -d.
+      pattern: "*.{fasta}"
+    - folder:
+      type: folder
+      description: Folder created when --plot-only, --rescale and --stats-only flags are passed.
+      pattern: "*/"
 
 authors:
 - "@darcy220606"
