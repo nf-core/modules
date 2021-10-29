@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { CELLRANGER_MKGTF } from '../../../../modules/cellranger/mkgtf/main.nf' addParams( options: [:] )
 include { CELLRANGER_MKREF } from '../../../../modules/cellranger/mkref/main.nf' addParams( options: [:] )
 include { CELLRANGER_COUNT } from '../../../../modules/cellranger/count/main.nf' addParams( options: [ args: '--chemistry SC3Pv3'] )
 
@@ -17,9 +18,11 @@ workflow test_cellranger_count {
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
     reference_name = "homo_sapiens_chr22_reference"
 
+    CELLRANGER_MKGTF ( gtf )
+
     CELLRANGER_MKREF (
         fasta,
-        gtf,
+        CELLRANGER_MKGTF.out.gtf,
         reference_name
     )
 
