@@ -25,24 +25,11 @@ process CELLRANGER_MKGTF {
 
     script:
     """
-    cellranger mkgtf $gtf ${gtf.baseName}.filtered.gtf \
-                    --attribute=gene_biotype:protein_coding \
-                    --attribute=gene_biotype:lincRNA \
-                    --attribute=gene_biotype:antisense \
-                    --attribute=gene_biotype:IG_LV_gene \
-                    --attribute=gene_biotype:IG_V_gene \
-                    --attribute=gene_biotype:IG_V_pseudogene \
-                    --attribute=gene_biotype:IG_D_gene \
-                    --attribute=gene_biotype:IG_J_gene \
-                    --attribute=gene_biotype:IG_J_pseudogene \
-                    --attribute=gene_biotype:IG_C_gene \
-                    --attribute=gene_biotype:IG_C_pseudogene \
-                    --attribute=gene_biotype:TR_V_gene \
-                    --attribute=gene_biotype:TR_V_pseudogene \
-                    --attribute=gene_biotype:TR_D_gene \
-                    --attribute=gene_biotype:TR_J_gene \
-                    --attribute=gene_biotype:TR_J_pseudogene \
-                    --attribute=gene_biotype:TR_C_gene
+    cellranger mkgtf \
+        $gtf \
+        ${gtf.baseName}.filtered.gtf \
+        $options.args \
+        $options.args2
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
