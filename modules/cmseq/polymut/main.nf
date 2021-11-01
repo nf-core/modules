@@ -27,9 +27,11 @@ process CMSEQ_POLYMUT {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
+    def sortindex = bai ? "" : "--sortindex"
     """
     polymut.py \\
         $options.args \\
+        $sortindex \\
         $fasta_refid \\
         --gff_file $gff \\
         $bam > ${prefix}.polymut.txt
