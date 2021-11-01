@@ -30,10 +30,10 @@ process DASTOOL_SCAFFOLDS2BIN {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def binning_software = binner ? binner : "generic"
     def file_extension = extension ? extension : "fasta"
-    
+
     """
     gunzip -f *.${file_extension}.gz
-    
+
     Fasta_to_Scaffolds2Bin.sh \\
         $options.args \\
         -e $file_extension \\

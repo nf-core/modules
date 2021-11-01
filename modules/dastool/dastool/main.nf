@@ -38,7 +38,7 @@ process DASTOOL_DASTOOL {
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
     def clean_contigs = contigs.toString() - ".gz"
     def proteins_pred = proteins ? "--proteins $proteins" : ""
-    
+
     """
     gunzip -f $contigs
 
