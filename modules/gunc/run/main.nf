@@ -11,11 +11,11 @@ process GUNC_RUN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gunc=1.0.4" : null)
+    conda (params.enable_conda ? "bioconda::gunc=1.0.5" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gunc:1.0.4--pyhdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0"
     } else {
-        container "quay.io/biocontainers/gunc:1.0.4--pyhdfd78af_0"
+        container "quay.io/biocontainers/gunc:1.0.5--pyhdfd78af_0"
     }
 
     input:
