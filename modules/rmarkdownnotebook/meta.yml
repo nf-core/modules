@@ -1,0 +1,73 @@
+name: rmarkdownnotebook
+description: Render an rmarkdown notebook. Supports parametrization.
+keywords:
+  - R
+  - notebook
+  - reports
+tools:
+  - rmarkdown:
+      description: Dynamic Documents for R
+      homepage: https://rmarkdown.rstudio.com/
+      documentation: https://rmarkdown.rstudio.com/lesson-1.html
+      tool_dev_url: https://github.com/rstudio/rmarkdown
+      doi: ""
+      licence: GPL-3
+
+params:
+  - parametrize:
+      type: boolean
+      description: If true, parametrize the notebook
+  - implicit_params:
+      type: boolean
+      description: |
+        If true (default), include the implicit params
+          * `input_dir`, which points to the directory containing the files added via `input_files`,
+          * `artifact_dir`, which points to the directory where the notebook should place output files, and
+          * `cpus`, which contains the value of ${task.cpus}
+  - meta_params:
+      type: boolean
+      description: |
+        If true, include a parameter `meta` which contains the information specified
+        via the `meta` input channel.
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - notebook:
+      type: file
+      description: Rmarkdown file
+      pattern: "*.{Rmd}"
+  - parameters:
+      type: map
+      description: |
+        Groovy map with notebook parameters which will be passed to
+        rmarkdown to generate parametrized reports.
+  - input_files:
+      type: path
+      description: One or multiple files serving as input data for the notebook.
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: HTML report generated from Rmarkdown
+      pattern: "*.html"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@grst"
