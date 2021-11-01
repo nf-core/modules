@@ -27,8 +27,6 @@ workflow test_metabat2_metabat2 {
         .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
         .set { input_fasta_depth }
     
-    
-
     METABAT2_NO_DEPTH ( input_fasta )
     METABAT2_DEPTH ( input_fasta_depth )
 }
