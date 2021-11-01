@@ -23,8 +23,8 @@ process HMMCOPY_GCCOUNTER {
     path fasta
 
     output:
-    path "*.gc.wig"          , emit: wig
-    path "versions.yml" , emit: versions
+    path "*.gc.wig"    , emit: wig
+    path "versions.yml", emit: versions
 
     script:
     """
