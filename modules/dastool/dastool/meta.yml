@@ -1,0 +1,81 @@
+name: dastool_dastool
+description: DAS Tool binning step.
+keywords:
+  - binning
+  - das tool
+  - table
+  - de novo
+  - bins
+  - contigs
+  - assembly
+tools:
+  - dastool:
+      description: DAS Tool is an automated method that integrates the results
+of a flexible number of binning algorithms to calculate an optimized, non-redundant 
+set of bins from a single assembly.
+
+      homepage: https://github.com/cmks/DAS_Tool
+      documentation: https://github.com/cmks/DAS_Tool
+      tool_dev_url: https://github.com/cmks/DAS_Tool
+      doi: "10.1038/s41564-018-0171-1"
+      licence: ['BSD']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - contigs:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fas,fasta}"
+  - bins:
+      type: file
+      description: "Scaffolds2bin tabular file generated with dastool/scaffolds2bin"
+      pattern: "*.scaffolds2bin.tsv"
+  - proteins:
+      type: file
+      description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
+      pattern: "*.{fa,fas,fasta}"
+  - methods:
+      type: val
+      description: Comma separated list of binning prediction methods names.
+  - search_engine:
+      type: val
+      description: Engine used for single copy gene identification [blast/diamond/usearch]
+
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - summary:
+      type: file
+      description: DAS Tool summary result file
+      pattern: "*_summary.txt"
+  - scaffolds2bin:
+      type: file
+      description: scaffolds2bin table for all contigs/bins/binners
+      pattern: "*_DASTool_scaffolds2bin.txt"
+  - eval:
+      type: file
+      description: Bin evaluation tabular file, optional
+      pattern: "*.eval"
+  - log:
+      type: file
+      description: DAS Tool log file
+      pattern: "*.log"
+  - bins:
+      type: file
+      description: Bins passing the DAS Tool filtering criteria
+      pattern: "*.fa"
+
+authors:
+  - "@maxibor"

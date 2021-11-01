@@ -32,6 +32,8 @@ process DASTOOL_SCAFFOLDS2BIN {
     def file_extension = extension ? extension : "fasta"
     
     """
+    gunzip -f *.${file_extension}.gz
+    
     Fasta_to_Scaffolds2Bin.sh \\
         $options.args \\
         -e $file_extension \\
