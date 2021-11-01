@@ -35,6 +35,7 @@ process CMSEQ_POLYMUT {
         $fasta_refid \\
         --gff_file $gff \\
         $bam > ${prefix}.polymut.txt
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$( echo "1.0.4" )

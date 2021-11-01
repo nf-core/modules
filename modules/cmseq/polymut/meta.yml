@@ -5,6 +5,12 @@ keywords:
   - polymorphic
   - mags
   - assembly
+  - polymorphic sites
+  - estimation
+  - protein coding genes
+  - cmseq
+  - bam
+  - coverage
 tools:
   - cmseq:
       description: Set of utilities on sequences and BAM files
@@ -34,8 +40,7 @@ input:
   - fasta:
       type: file
       description: Optional fasta file to run on a subset of references in the BAM file.
-      pattern: .{fa,fasta,fas}
-
+      pattern: .{fa,fasta,fas,fna}
 
 output:
   - meta:
