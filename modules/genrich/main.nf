@@ -22,6 +22,10 @@ process GENRICH {
     tuple val(meta), path(treatment_bam)
     path  control_bam
     path  blacklist_bed
+    val   save_pvalues
+    val   save_pileup
+    val   save_bed
+    val   save_duplicates
 
     output:
     tuple val(meta), path("*narrowPeak")                     , emit: peaks
@@ -32,14 +36,14 @@ process GENRICH {
     path "versions.yml"                                      , emit: versions
 
     script:
-    def prefix     = options.suffix              ? "${meta.id}${options.suffix}"   : "${meta.id}"
-    def control    = params.control_bam          ? "-c $control_bam"               : ''
-    def pvalues    = params.pvalues              ? "-f ${prefix}.pvalues.bedGraph" : ""
-    def pileup     = params.pileup               ? "-k ${prefix}.pileup.bedGraph"  : ""
-    def bed        = params.bed                  ? "-b ${prefix}.intervals.bed"    : ""
-    def blacklist  = params.blacklist_bed        ? "-E $blacklist_bed"             : ""
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}"   : "${meta.id}"
+    def control    = control_bam    ? "-c $control_bam"               : ''
+    def blacklist  = blacklist_bed  ? "-E $blacklist_bed"             : ""
+    def pvalues    = save_pvalues   ? "-f ${prefix}.pvalues.bedGraph" : ""
+    def pileup     = save_pileup    ? "-k ${prefix}.pileup.bedGraph"  : ""
+    def bed        = save_bed       ? "-b ${prefix}.intervals.bed"    : ""
     def duplicates = ""
-    if (params.save_duplicates) {
+    if (save_duplicates) {
         if (options.args.contains('-r')) {
             duplicates = "-R ${prefix}.duplicates.txt"
         } else {
@@ -58,7 +62,6 @@ process GENRICH {
         $pileup \\
         $bed \\
         $duplicates \\
-        $blacklist \\
         $control
 
     cat <<-END_VERSIONS > versions.yml

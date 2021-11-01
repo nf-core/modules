@@ -410,9 +410,13 @@ flash:
   - modules/flash/**
   - tests/modules/flash/**
 
-freebayes:
-  - modules/freebayes/**
-  - tests/modules/freebayes/**
+freebayes/germline:
+  - modules/freebayes/germline/**
+  - tests/modules/freebayes/germline/**
+
+freebayes/somatic:
+  - modules/freebayes/somatic/**
+  - tests/modules/freebayes/somatic/**
 
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
@@ -445,6 +449,10 @@ gatk4/estimatelibrarycomplexity:
 gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
+
+gatk4/genomicsdbimport:
+  - modules/gatk4/genomicsdbimport/**
+  - tests/modules/gatk4/genomicsdbimport/**
 
 gatk4/filtermutectcalls:
   - modules/gatk4/filtermutectcalls/**
@@ -592,6 +600,10 @@ homer/maketagdirectory:
 homer/makeucscfile:
   - modules/homer/makeucscfile/**
   - tests/modules/homer/makeucscfile/**
+
+idr:
+  - modules/idr/**
+  - tests/modules/idr/**
 
 iqtree:
   - modules/iqtree/**
