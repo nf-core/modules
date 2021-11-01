@@ -15,7 +15,6 @@ workflow test_metabat2_metabat2 {
 
     METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS ( input_depth )
 
-
     Channel.fromPath(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
         .map { it -> [[ id:'test', single_end:false ], it] }
         .set { input_fasta_alone }
