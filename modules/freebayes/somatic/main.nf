@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getProcessName; getSoftwareName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process FREEBAYES {
+process FREEBAYES_SOMATIC {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
@@ -19,24 +19,21 @@ process FREEBAYES {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    tuple path(fasta), path(fai)
-    path(targets)
-    path(samples)
-    path(populations)
-    path(cnv)
-
+    tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor)
+    path fasta
+    path fai
+    path targets
+    path samples
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
     path  "versions.yml"                , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def targets_file = targets ? "--target ${targets}" : ""
-    def samples_file = samples ? "--samples ${samples}" : ""
-    def populations_file = populations ? "--populations ${populations}" : ""
-    def cnv_file = cnv ? "--cnv-map ${cnv}" : ""
+    def prefix           = options.suffix ? "${meta.id}${options.suffix}"  : "${meta.id}"
+    def targets_file     = targets        ? "--target ${targets}"          : ""
+    def samples_file     = samples        ? "--samples ${samples}"         : ""
+
     if (task.cpus > 1) {
         """
         freebayes-parallel \\
@@ -44,10 +41,9 @@ process FREEBAYES {
             -f $fasta \\
             $targets_file \\
             $samples_file \\
-            $populations_file \\
-            $cnv_file \\
             $options.args \\
-            $bam  > ${prefix}.vcf
+            $input_tumor \\
+            $input_normal  > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 
@@ -63,10 +59,9 @@ process FREEBAYES {
             -f $fasta \\
             $targets_file \\
             $samples_file \\
-            $populations_file \\
-            $cnv_file \\
             $options.args \\
-            $bam > ${prefix}.vcf
+            $input_tumor \\
+            $input_normal  > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 
