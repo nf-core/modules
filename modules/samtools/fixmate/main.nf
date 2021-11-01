@@ -27,6 +27,7 @@ process SAMTOOLS_FIXMATE {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use the suffix option to disambiguate!"
 
     """
     samtools \\
