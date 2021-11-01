@@ -27,7 +27,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    OMP_NUM_THREADS=$task.cpus
+    export OMP_NUM_THREADS=$task.cpus
 
     jgi_summarize_bam_contig_depths \\
         --outputDepth ${prefix}.depth.txt \\
