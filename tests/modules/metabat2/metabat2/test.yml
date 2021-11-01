@@ -1,8 +1,18 @@
-- name: metabat2 metabat2 test_metabat2_metabat2
-  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_metabat2 -c tests/config/nextflow.config
+- name: metabat2 metabat2 test_metabat2_no_depth
+  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_no_depth -c tests/config/nextflow.config
   tags:
-    - metabat2/metabat2
     - metabat2
+    - metabat2/metabat2
+  files:
+    - path: output/metabat2/bins/test.1.fa.gz
+    - path: output/metabat2/test.depth.txt.gz
+    - path: output/metabat2/test.membership.tsv.gz
+
+- name: metabat2 metabat2 test_metabat2_depth
+  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_depth -c tests/config/nextflow.config
+  tags:
+    - metabat2
+    - metabat2/metabat2
   files:
     - path: output/metabat2/bins/test.1.fa.gz
     - path: output/metabat2/test.depth.txt.gz
