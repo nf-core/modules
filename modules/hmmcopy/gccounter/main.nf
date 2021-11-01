@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION = '0.99.0'
+def VERSION = '0.1.1'
 
 process HMMCOPY_GCCOUNTER {
     label 'process_low'
