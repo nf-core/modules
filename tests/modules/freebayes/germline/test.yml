@@ -1,0 +1,26 @@
+- name: freebayes germline test_freebayes
+  command: nextflow run tests/modules/freebayes/germline -entry test_freebayes -c tests/config/nextflow.config
+  tags:
+    - freebayes
+    - freebayes/germline
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 1ec210ad27514c7a4140c924dc66d979
+
+- name: freebayes germline test_freebayes_bed
+  command: nextflow run tests/modules/freebayes/germline -entry test_freebayes_bed -c tests/config/nextflow.config
+  tags:
+    - freebayes
+    - freebayes/germline
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: e8923cccd5dac196f72d3d3997a60706
+
+- name: freebayes germline test_freebayes_cram
+  command: nextflow run tests/modules/freebayes/germline -entry test_freebayes_cram -c tests/config/nextflow.config
+  tags:
+    - freebayes
+    - freebayes/germline
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: cb57a3ed154618e3aa4a5272fcfb7521
