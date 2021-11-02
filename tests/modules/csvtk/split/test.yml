@@ -1,105 +1,25 @@
 - name: csvtk split test_csvtk_split_tsv_tsv
   command: nextflow run tests/modules/csvtk/split -entry test_csvtk_split_tsv_tsv -c tests/config/nextflow.config
   tags:
-    - csvtk
     - csvtk/split
+    - csvtk
   files:
-    - path: output/csvtk/variants-chr1.tsv
-      md5sum: 0b98a5c2bd659256a2b965c956b0c954
-    - path: output/csvtk/variants-chr10.tsv
-      md5sum: 6bc09012a02cadf5d2328015eeddf421
-    - path: output/csvtk/variants-chr11.tsv
-      md5sum: 2f4fb88f02306a5ec46306771f4e5a85
-    - path: output/csvtk/variants-chr12.tsv
-      md5sum: 9c8cadf6d0446df35695a04484f6c13c
-    - path: output/csvtk/variants-chr13.tsv
-      md5sum: 91dfe42691a3943502907d8bf3a26618
-    - path: output/csvtk/variants-chr14.tsv
-      md5sum: 3862973dcb35748b9fe3bad7a6116a4f
-    - path: output/csvtk/variants-chr15.tsv
-      md5sum: 48a19e7c5f5ec63f000f1c7d91737c1d
-    - path: output/csvtk/variants-chr16.tsv
-      md5sum: 38d2b19f3ba6df7c2ed8d8ad78364e56
-    - path: output/csvtk/variants-chr17.tsv
-      md5sum: 0e5dc00cef493a81da44a5ea40fff520
-    - path: output/csvtk/variants-chr18.tsv
-      md5sum: a5f7fdd6338585458b2a3e067ac6a331
-    - path: output/csvtk/variants-chr19.tsv
-      md5sum: 15ff2861aabb661d11f7c5442e489573
-    - path: output/csvtk/variants-chr2.tsv
-      md5sum: dee6d3994cdfa608113f80d267613459
-    - path: output/csvtk/variants-chr20.tsv
-      md5sum: 96c270600c812773a64e4a2a7c27396f
-    - path: output/csvtk/variants-chr21.tsv
-      md5sum: f5ff7aa2959cc10daae31d5b9a832fc9
-    - path: output/csvtk/variants-chr22.tsv
-      md5sum: 6fc2dc17ebbd8fc356a51ab470c8fdc3
-    - path: output/csvtk/variants-chr3.tsv
-      md5sum: e5c3ee7df5e781a79d1ac4d5d85fdd5c
-    - path: output/csvtk/variants-chr4.tsv
-      md5sum: 8d7879757cf3d4b2bd97ad714af84b33
-    - path: output/csvtk/variants-chr5.tsv
-      md5sum: 9e05747fd8b9a663a8bb8412ed0b84fd
-    - path: output/csvtk/variants-chr6.tsv
-      md5sum: 7479f75ef4b0d6556e456bfb37159bf1
-    - path: output/csvtk/variants-chr7.tsv
-      md5sum: 0e85de7b6d89c2c1b096e9ae8c9e72f2
-    - path: output/csvtk/variants-chr8.tsv
-      md5sum: 82a0889906af942549f04ad767ee65c8
-    - path: output/csvtk/variants-chr9.tsv
-      md5sum: 7f76f2e89bf33b0c1cf3d7b8c9966440
-    - path: output/csvtk/variants-chrX.tsv
-      md5sum: 0ce2acea532d65201601b5e791b849c6
+    - path: output/csvtk/test-Ken.tsv
+      md5sum: 589a2add7f0b8e998d4959e5d883e7d5
+    - path: output/csvtk/test-Rob.tsv
+      md5sum: 6c5555d689c4e685d35d6e394ad6e1e6
+    - path: output/csvtk/test-Robert.tsv
+      md5sum: 45ae6da8111096746d1736d34220a3ec
 
 - name: csvtk split test_csvtk_split_csv_csv
   command: nextflow run tests/modules/csvtk/split -entry test_csvtk_split_csv_csv -c tests/config/nextflow.config
   tags:
-    - csvtk
     - csvtk/split
+    - csvtk
   files:
-    - path: output/csvtk/variants-chr1.csv
-      md5sum: c21aab6516e6f05cc599bf887f791eb8
-    - path: output/csvtk/variants-chr10.csv
-      md5sum: 43f055545b17de8b43ba87ecb06a1340
-    - path: output/csvtk/variants-chr11.csv
-      md5sum: 7a13d8c4fd2336dcdf913eec4410840a
-    - path: output/csvtk/variants-chr12.csv
-      md5sum: 1e1c6d7b2e52caf351f3f113be24cc70
-    - path: output/csvtk/variants-chr13.csv
-      md5sum: 6973cacd8e3c97af5565662f2db200a8
-    - path: output/csvtk/variants-chr14.csv
-      md5sum: b47ead72a65d64b53bfd5dfe5e60c639
-    - path: output/csvtk/variants-chr15.csv
-      md5sum: b0c0c7cd516a966099101a8eb1edcb3f
-    - path: output/csvtk/variants-chr16.csv
-      md5sum: fb0ab6f6fe6a0d1c9137dcf7852621ab
-    - path: output/csvtk/variants-chr17.csv
-      md5sum: 2d900e0011a51fd0c0898f821fb5a747
-    - path: output/csvtk/variants-chr18.csv
-      md5sum: 6c818f882e8e012fe6bf931178463704
-    - path: output/csvtk/variants-chr19.csv
-      md5sum: ef34827342d46b02a94c3a6ea9e41ea7
-    - path: output/csvtk/variants-chr2.csv
-      md5sum: df61a586b5e9834a58293dff152a1761
-    - path: output/csvtk/variants-chr20.csv
-      md5sum: a42c6916eb2c25a931679b7b1dbcfa29
-    - path: output/csvtk/variants-chr21.csv
-      md5sum: dd940f56c7035621fbfda2dd6ff7d3db
-    - path: output/csvtk/variants-chr22.csv
-      md5sum: 6584a31ccf3c8a0ec290696223ee3924
-    - path: output/csvtk/variants-chr3.csv
-      md5sum: 8d8d987e92c63f529801f6e3645d4061
-    - path: output/csvtk/variants-chr4.csv
-      md5sum: b56aad9f0b31c2be2093f91810095c62
-    - path: output/csvtk/variants-chr5.csv
-      md5sum: d38c308197058d4a49dcccd6b97c561a
-    - path: output/csvtk/variants-chr6.csv
-      md5sum: c79d811f504e04a3529cd940bf86cffb
-    - path: output/csvtk/variants-chr7.csv
-      md5sum: 954980a1afcd94f998d54cd266212103
-    - path: output/csvtk/variants-chr8.csv
-      md5sum: 5ccacac9fa041f0213485e7ee417c1c2
-    - path: output/csvtk/variants-chr9.csv
-      md5sum: 2df73327ba6a6ec83f3a092ab8975037
-    - path: output/csvtk/variants-chrX.csv
-      md5sum: 807d77804d703986990f3e0c00e1be9a
+    - path: output/csvtk/test-Ken.csv
+      md5sum: 71a931dae6f15f5ddb0318c7d4afe81e
+    - path: output/csvtk/test-Rob.csv
+      md5sum: efc4bc507021043a3bf2fb0724c4a216
+    - path: output/csvtk/test-Robert.csv
+      md5sum: 8de2f076e64252c2abed69b9c2a3a386

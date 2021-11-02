@@ -2,14 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-include { CSVTK_SPLIT as CSVTK_SPLIT_TSV_TSV } from '../../../../modules/csvtk/split/main.nf' addParams( options: [args: "-C '&' --fields '#chr' "])
-include { CSVTK_SPLIT as CSVTK_SPLIT_CSV_CSV } from '../../../../modules/csvtk/split/main.nf' addParams( options: [args: "-C '&' --fields '#chr' "])
+include { CSVTK_SPLIT as CSVTK_SPLIT_TSV_TSV } from '../../../../modules/csvtk/split/main.nf' addParams( options: [args: "-C '&' --fields 'first_name' "])
+include { CSVTK_SPLIT as CSVTK_SPLIT_CSV_CSV } from '../../../../modules/csvtk/split/main.nf' addParams( options: [args: "-C '&' --fields 'first_name' "])
 
 workflow test_csvtk_split_tsv_tsv {
 
     input = [
         [ id:'test' ], // meta map
-        [ file("https://raw.githubusercontent.com/nf-core/test-datasets/epitopeprediction/testdata/variants/variants.tsv", checkIfExists: true) ]
+        [ file("https://raw.githubusercontent.com/SusiJo/test-datasets/modules/data/generic/tsv/test.tsv", checkIfExists: true) ]
     ]
     in_format = "tsv"
     out_format = "tsv"
@@ -20,7 +20,7 @@ workflow test_csvtk_split_csv_csv {
 
     input = [
         [ id:'test' ], // meta map
-        [ file("https://raw.githubusercontent.com/SusiJo/test-datasets/modules/data/generic/csv/variants.csv", checkIfExists: true) ]
+        [ file("https://raw.githubusercontent.com/SusiJo/test-datasets/modules/data/generic/csv/test.csv", checkIfExists: true) ]
     ]
     in_format = "csv"
     out_format = "csv"
