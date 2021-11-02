@@ -45,6 +45,91 @@ output:
       type: file
       description: File containing software version
       pattern: "versions.yml"
+  - database:
+      type: file
+      description: Database built alignment during analysis
+      pattern: "database.db"
+  - all_splice_pairs_annotations:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "all_splice_pairs_annotations.pickle"
+  - all_splice_sites_annotations:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "all_splice_sites_annotations.pickle"
+  - chr_to_id:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "chr_to_id.pickle"
+  - exon_choordinates_to_id:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "exon_choordinates_to_id.pickle"
+  - flank_choordinates:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "flank_choordinates.pickle"
+  - gene_to_small_segments:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "gene_to_small_segments.pickle"
+  - id_to_chr:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "id_to_chr.pickle"
+  - max_intron_chr:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "max_intron_chr.pickle"
+  - parts_to_segments:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "parts_to_segments.pickle"
+  - ref_exon_sequences:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "ref_exon_sequences.pickle"
+  - ref_flank_sequences:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "ref_flank_sequences.pickle"
+  - ref_part_sequences:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "ref_part_sequences.pickle"
+  - ref_segment_sequences:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "ref_segment_sequences.pickle"
+  - refs_id_lengths:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "refs_id_lengths.pickle"
+  - refs_lengths:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "refs_lengths.pickle"
+  - segment_id_to_choordinates:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "segment_id_to_choordinates.pickle"
+  - segment_to_gene:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "segment_to_gene.pickle"
+  - segment_to_ref:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "segment_to_ref.pickle"
+  - splices_to_transcripts:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "splices_to_transcripts.pickle"
+  - transcripts_to_splices:
+      type: file
+      description: Python pickle file, storing a data structure built by uLTRA.
+      pattern: "transcripts_to_splices.pickle"
+
 
 authors:
   - "@sguizard"
