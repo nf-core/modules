@@ -25,12 +25,10 @@ process GUNC_RUN {
     output:
     tuple val(meta), path("*maxCSS_level.tsv")                  , emit: maxcss_level_tsv
     tuple val(meta), path("*all_levels.tsv")    , optional: true, emit: all_levels_tsv
-
     path "versions.yml"                                         , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     gunc \\
         run \\
