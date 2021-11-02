@@ -5,6 +5,8 @@ keywords:
   - SNP
   - genotyping
   - somatic variant calling
+  - germline variant calling
+  - bacterial variant calling
   - bayesian
 
 tools:
@@ -46,6 +48,19 @@ input:
       type: file
       description: Optional - Limit analysis to samples listed (one per line) in the FILE.
       pattern: "*.txt"
+  - populations:
+      type: file
+      description: Optional - Each line of FILE should list a sample and a population which it is part of.
+      pattern: "*.txt"
+  - cnv:
+      type: file
+      description: |
+          A copy number map BED file, which has
+          either a sample-level ploidy:
+          sample_name copy_number
+          or a region-specific format:
+          seq_name start end sample_name copy_number
+      pattern: "*.bed"
 
 output:
   - meta:
@@ -63,4 +78,6 @@ output:
       pattern: "*.vcf.gz"
 
 authors:
+  - "@maxibor"
   - "@FriederikeHanssen"
+  - "@maxulysse"
