@@ -1,0 +1,41 @@
+name: gatk3_unifiedgenotyper
+description: UnifiedGenotyper from GATK 3.5, replaced by haplotyper caller. only use if needed for multivcfanalyzer
+keywords:
+  - gatk
+  - unifiedgenotyper
+  - vcf
+  - multivcfanalyzer
+tools:
+  - gatk3:
+      description: 
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size. Release 3.5
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://sites.google.com/a/broadinstitute.org/legacy-gatk-forum-discussions/tutorials/2804-howto-Call-variants-with-the-UnifiedGenotyper
+      tool_dev_url: https://gatk.broadinstitute.org/hc/en-us
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ['Apache-2.0']
+      
+input:
+  - bam:
+      type: file
+      description: BAM file for input
+      pattern: "*.{bam}"
+  - ref:
+      type: file
+      description: reference file used for mapping
+      pattern: "*.fa"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: unfiltered variant call format file
+      pattern: "*.{vcf}"
+
+authors:
+  - "@yocra3"

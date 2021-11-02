@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml gatk3/unifiedgenotyper
+- name: gatk3 unifiedgenotyper
+  command: nextflow run ./tests/modules/gatk3/unifiedgenotyper -entry test_gatk3_unifiedgenotyper -c tests/config/nextflow.config
+  tags:
+    - gatk3
+    - gatk3/unifiedgenotyper
+  files:
+    - path: output/gatk3/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
