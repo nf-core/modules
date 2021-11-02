@@ -22,8 +22,8 @@ process GUNC_DOWNLOADDB {
     val db_name
 
     output:
-    path "*.dmnd", emit: db
-    path "versions.yml"          , emit: versions
+    path "*.dmnd"       , emit: db
+    path "versions.yml" , emit: versions
 
     script:
     """
