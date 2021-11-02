@@ -35,7 +35,7 @@ process ALLELECOUNTER {
     alleleCounter \\
         $options.args \\
         -l $loci \\
-        -b $bam \\
+        -b $input \\
         $reference_options \\
         -o ${prefix}.alleleCount
 
