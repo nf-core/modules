@@ -19,7 +19,7 @@ process GATK4_BASERECALIBRATOR {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
     path fastaidx
     path dict
@@ -35,12 +35,19 @@ process GATK4_BASERECALIBRATOR {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def intervalsCommand = intervalsBed ? "-L ${intervalsBed}" : ""
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')
+
+    if (!task.memory) {
+        log.info '[GATK BaseRecalibrator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     gatk BaseRecalibrator  \
         -R $fasta \
-        -I $bam \
+        -I $input \
         $sitesCommand \
         $intervalsCommand \
+        --tmp-dir . \
         $options.args \
         -O ${prefix}.table
 
