@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getProcessName; getSoftwareName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process FREEBAYES_FREEBAYES {
+process FREEBAYES {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",

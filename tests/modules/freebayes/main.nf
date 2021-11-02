@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FREEBAYES_FREEBAYES } from '../../../../modules/freebayes/freebayes/main.nf' addParams( options: [:] )
+include { FREEBAYES } from '../../../../modules/freebayes/main.nf' addParams( options: [:] )
 
 workflow test_freebayes {
 
@@ -19,7 +19,7 @@ workflow test_freebayes {
     populations = []
     cnv         = []
 
-    FREEBAYES_FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
+    FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
 }
 
 workflow test_freebayes_bed {
@@ -37,7 +37,7 @@ workflow test_freebayes_bed {
     populations = []
     cnv         = []
 
-    FREEBAYES_FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
+    FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
 }
 
 workflow test_freebayes_cram {
@@ -55,7 +55,7 @@ workflow test_freebayes_cram {
     populations = []
     cnv         = []
 
-    FREEBAYES_FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
+    FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
 }
 
 workflow test_freebayes_somatic {
@@ -73,7 +73,7 @@ workflow test_freebayes_somatic {
     populations = []
     cnv         = []
 
-    FREEBAYES_FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
+    FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
 }
 
 workflow test_freebayes_somatic_cram_intervals {
@@ -91,5 +91,5 @@ workflow test_freebayes_somatic_cram_intervals {
     populations = []
     cnv         = []
 
-    FREEBAYES_FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
+    FREEBAYES (input, fasta, fai, targets, samples, populations, cnv)
 }
