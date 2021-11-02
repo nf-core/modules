@@ -43,7 +43,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - csv:
+  - split_csv:
       type: file
       description: Split CSV/TSV file
       pattern: "*.{csv,tsv}"

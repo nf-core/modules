@@ -1,8 +1,8 @@
 - name: csvtk split test_csvtk_split_tsv_tsv
   command: nextflow run tests/modules/csvtk/split -entry test_csvtk_split_tsv_tsv -c tests/config/nextflow.config
   tags:
-    - csvtk/split
     - csvtk
+    - csvtk/split
   files:
     - path: output/csvtk/variants-chr1.tsv
       md5sum: 0b98a5c2bd659256a2b965c956b0c954
@@ -54,8 +54,8 @@
 - name: csvtk split test_csvtk_split_csv_csv
   command: nextflow run tests/modules/csvtk/split -entry test_csvtk_split_csv_csv -c tests/config/nextflow.config
   tags:
-    - csvtk/split
     - csvtk
+    - csvtk/split
   files:
     - path: output/csvtk/variants-chr1.csv
       md5sum: c21aab6516e6f05cc599bf887f791eb8

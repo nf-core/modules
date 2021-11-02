@@ -19,7 +19,7 @@ process CSVTK_SPLIT {
     }
 
     input:
-    tuple val(meta), path(variants)
+    tuple val(meta), path(csv)
     val in_format
     val out_format
 
@@ -34,14 +34,14 @@ process CSVTK_SPLIT {
     out_extension = out_format == "tsv" ? 'tsv' : 'csv'
 
     """
-    sed -i.bak '/^##/d' $variants
+    sed -i.bak '/^##/d' $csv
     csvtk \\
         split \\
         $options.args \\
         --num-cpus $task.cpus \\
         ${delimiter} \\
         ${out_delimiter} \\
-        $variants
+        $csv
 
 
     cat <<-END_VERSIONS > versions.yml

@@ -20,7 +20,7 @@ workflow test_csvtk_split_csv_csv {
 
     input = [
         [ id:'test' ], // meta map
-        [ file("https://raw.githubusercontent.com/SusiJo/test-datasets/modules/data/generic/txt/variants.csv", checkIfExists: true) ]
+        [ file("https://raw.githubusercontent.com/SusiJo/test-datasets/modules/data/generic/csv/variants.csv", checkIfExists: true) ]
     ]
     in_format = "csv"
     out_format = "csv"
