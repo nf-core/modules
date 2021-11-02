@@ -19,7 +19,7 @@ process ALLELECOUNTER {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path loci
     path fasta
 
