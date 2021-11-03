@@ -21,14 +21,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - bam:
+  - input:
       type: file
-      description: BAM file
-      pattern: "*.{bam}"
-  - bai:
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - input_index:
       type: file
-      description: BAM index file
-      pattern: "*.{bai}"
+      description: BAM/CRAI index file
+      pattern: "*.{bai,crai}"
   - target_bed:
       type: file
       description: An optional bed file
