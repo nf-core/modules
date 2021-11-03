@@ -1,0 +1,42 @@
+name: snpsift
+description: Splits a VCF file into chromosomes
+keywords:
+  - split
+  - vcf
+tools:
+  - snpsift:
+      description: npSift is a toolbox that allows you to filter and manipulate annotated files
+      homepage: https://pcingola.github.io/SnpEff/ss_introduction/
+      documentation: https://pcingola.github.io/SnpEff/ss_introduction/
+      tool_dev_url: https://github.com/pcingola/SnpEff
+      doi: "10.3389/fgene.2012.00035"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.vcf"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - split_vcfs:
+      type: file
+      description: Split VCF files
+      pattern: "*.vcf"
+
+authors:
+  - "@SusiJo"
