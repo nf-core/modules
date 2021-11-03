@@ -32,7 +32,7 @@ process SEQSERO2 {
     """
     SeqSero2_package.py \\
         $options.args \\
-        -d ./ \\
+        -d results/ \\
         -n $prefix \\
         -p $task.cpus \\
         -i $seqs
