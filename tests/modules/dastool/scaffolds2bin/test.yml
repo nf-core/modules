@@ -1,10 +1,10 @@
 - name: dastool scaffolds2bin test_dastool_scaffolds2bin
   command: nextflow run tests/modules/dastool/scaffolds2bin -entry test_dastool_scaffolds2bin -c tests/config/nextflow.config
   tags:
-    - dastool
     - dastool/scaffolds2bin
+    - dastool
   files:
-    - path: output/dastool/test1_binning_software_name.scaffolds2bin.tsv
+    - path: output/dastool/test1.scaffolds2bin.tsv
       md5sum: 38cfb1c84d43aff1b1eb07769168fc36
     - path: output/maxbin2/test1.001.fasta.gz
     - path: output/maxbin2/test1.002.fasta.gz

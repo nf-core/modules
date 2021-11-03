@@ -18,7 +18,8 @@ process DASTOOL_DASTOOL {
     }
 
     input:
-    tuple val(meta), path(contigs), path(bins), path(proteins)
+    tuple val(meta), path(contigs), path(bins)
+    path(proteins)
     val(methods)
     val(search_engine)
 
@@ -37,9 +38,16 @@ process DASTOOL_DASTOOL {
     def method_list = methods ? "-l $methods" : ""
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
     def clean_contigs = contigs.toString() - ".gz"
-    def proteins_pred = proteins ? "--proteins $proteins" : ""
+    def decompress_proteins = proteins ? "gunzip -f $proteins" : ""
+    def clean_proteins = proteins ? proteins.toString() - ".gz" : ""
+    def proteins_pred = proteins ? "--proteins $clean_proteins" : ""
+
+    if (! search_engine) {
+        log.info('[DAS_Tool] Default search engine (USEARCH) is proprietary software and not available in bioconda. Using DIAMOND as alternative.')
+    }
 
     """
+    $decompress_proteins
     gunzip -f $contigs
 
     DAS_Tool \\

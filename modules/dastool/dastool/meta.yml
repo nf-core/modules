@@ -8,6 +8,7 @@ keywords:
   - bins
   - contigs
   - assembly
+  - das_tool
 tools:
   - dastool:
       description: |
@@ -30,7 +31,7 @@ input:
   - contigs:
       type: file
       description: fasta file
-      pattern: "*.{fa,fas,fasta}"
+      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
   - bins:
       type: file
       description: "Scaffolds2bin tabular file generated with dastool/scaffolds2bin"
@@ -38,7 +39,7 @@ input:
   - proteins:
       type: file
       description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
-      pattern: "*.{fa,fas,fasta}"
+      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
   - methods:
       type: val
       description: Comma separated list of binning prediction methods names.

@@ -13,19 +13,13 @@ workflow test_dastool_dastool {
                      []
                    ]
     MAXBIN2 ( input_maxbin )
-    DASTOOL_SCAFFOLDS2BIN ( MAXBIN2.out.binned_fastas.collect(), "binning_software_name", "fasta")
+    DASTOOL_SCAFFOLDS2BIN ( MAXBIN2.out.binned_fastas.collect(), "fasta")
 
-
-    def input_dastool = Channel.of([ [ id:'test', single_end:false ], // meta map
+    Channel.of([ [ id:'test', single_end:false ], // meta map
                       file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)])
-    def proteins_empty = Channel.of([ [ id:'test', single_end:false ], [] ])
-
-    input_dastool
         .join(DASTOOL_SCAFFOLDS2BIN.out.scaffolds2bin)
-        .join(proteins_empty)
-        .view()
-        .set {input_dastool_full}
+        .set {input_dastool}
     
 
-    DASTOOL_DASTOOL ( input_dastool_full, "binning_software_name", [] )
+    DASTOOL_DASTOOL ( input_dastool, [], [], [] )
 }

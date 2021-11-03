@@ -13,5 +13,5 @@ workflow test_dastool_scaffolds2bin {
                      []
                    ]
     MAXBIN2 ( input_maxbin )
-    DASTOOL_SCAFFOLDS2BIN ( MAXBIN2.out.binned_fastas.collect(), "binning_software_name", "fasta")
+    DASTOOL_SCAFFOLDS2BIN ( MAXBIN2.out.binned_fastas.collect(), "fasta")
 }

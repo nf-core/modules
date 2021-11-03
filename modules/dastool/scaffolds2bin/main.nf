@@ -19,7 +19,6 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     input:
     tuple val(meta), path(fasta)
-    val(binner)
     val(extension)
 
     output:
@@ -28,7 +27,6 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def binning_software = binner ? binner : "generic"
     def file_extension = extension ? extension : "fasta"
 
     """
@@ -36,8 +34,9 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     Fasta_to_Scaffolds2Bin.sh \\
         $options.args \\
+        -i . \\
         -e $file_extension \\
-        > ${prefix}_${binner}.scaffolds2bin.tsv
+        > ${prefix}.scaffolds2bin.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
