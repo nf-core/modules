@@ -12,18 +12,12 @@ process IMPUTEME_VCFTOPRS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
+    // Not on conda, but available as docker and singularity from biocontainers
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-
-        // TODO not fixed yet - biocontainers only carry the docker image
+        container "https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1"
     } else {
-        // TODO - change to the biocontainer-based location (after code-changes to imputeme are done and up there)
-        // container "quay.io/lassefolkersen/imputeme:latest"
-        container "lassefolkersen/impute-me:latest"
+        container "biocontainers/imputeme:vv1.0.7_cv1"
     }
 
     input:
