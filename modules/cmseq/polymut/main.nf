@@ -21,24 +21,25 @@ process CMSEQ_POLYMUT {
     tuple val(meta), path(bam), path(bai), path(gff), path(fasta)
 
     output:
-    tuple val(meta), path("*.polymut.txt"), emit: polymut
+    tuple val(meta), path("*.txt"), emit: polymut
     path "versions.yml"                   , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
     def sortindex = bai ? "" : "--sortindex"
+    def version = '1.0.4'
     """
     polymut.py \\
         $options.args \\
         $sortindex \\
         $fasta_refid \\
         --gff_file $gff \\
-        $bam > ${prefix}.polymut.txt
+        $bam > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo "1.0.4" )
+        ${getSoftwareName(task.process)}: \$( echo $version )
     END_VERSIONS
     """
 }
