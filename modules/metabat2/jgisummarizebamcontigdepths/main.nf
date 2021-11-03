@@ -30,7 +30,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     export OMP_NUM_THREADS=$task.cpus
 
     jgi_summarize_bam_contig_depths \\
-        --outputDepth ${prefix}.depth.txt \\
+        --outputDepth ${prefix}.txt \\
         $options.args \\
         $bam
 
