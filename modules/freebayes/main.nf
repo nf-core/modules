@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getProcessName; getSoftwareName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process FREEBAYES_SOMATIC {
+process FREEBAYES {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
@@ -19,11 +19,13 @@ process FREEBAYES_SOMATIC {
     }
 
     input:
-    tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor)
+    tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index)
     path fasta
     path fai
     path targets
     path samples
+    path populations
+    path cnv
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
@@ -31,8 +33,11 @@ process FREEBAYES_SOMATIC {
 
     script:
     def prefix           = options.suffix ? "${meta.id}${options.suffix}"  : "${meta.id}"
+    def input            = input_2        ? "${input_1} ${input_2}"        : "${input_1}"
     def targets_file     = targets        ? "--target ${targets}"          : ""
     def samples_file     = samples        ? "--samples ${samples}"         : ""
+    def populations_file = populations    ? "--populations ${populations}" : ""
+    def cnv_file         = cnv            ? "--cnv-map ${cnv}"             : ""
 
     if (task.cpus > 1) {
         """
@@ -41,9 +46,10 @@ process FREEBAYES_SOMATIC {
             -f $fasta \\
             $targets_file \\
             $samples_file \\
+            $populations_file \\
+            $cnv_file \\
             $options.args \\
-            $input_tumor \\
-            $input_normal  > ${prefix}.vcf
+            $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 
@@ -59,9 +65,10 @@ process FREEBAYES_SOMATIC {
             -f $fasta \\
             $targets_file \\
             $samples_file \\
+            $populations_file \\
+            $cnv_file \\
             $options.args \\
-            $input_tumor \\
-            $input_normal  > ${prefix}.vcf
+            $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 

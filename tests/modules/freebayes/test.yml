@@ -1,0 +1,39 @@
+- name: freebayes test_freebayes
+  command: nextflow run tests/modules/freebayes -entry test_freebayes -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 04d60a7135768777e0c764daec6519db
+
+- name: freebayes test_freebayes_bed
+  command: nextflow run tests/modules/freebayes -entry test_freebayes_bed -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: fc6e228c8ac5508bd83da45eafc2e7b2
+
+- name: freebayes test_freebayes_cram
+  command: nextflow run tests/modules/freebayes -entry test_freebayes_cram -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 91b8caaa0e396e1ba4f264a83bb67254
+
+- name: freebayes test_freebayes_somatic
+  command: nextflow run tests/modules/freebayes -entry test_freebayes_somatic -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 40da977199f16d9888e0e0e07e8bebee
+
+- name: freebayes test_freebayes_somatic_cram_intervals
+  command: nextflow run tests/modules/freebayes -entry test_freebayes_somatic_cram_intervals -c tests/config/nextflow.config
+  tags:
+    - freebayes
+  files:
+    - path: output/freebayes/test.vcf.gz
+      md5sum: dd976880365287d9ad31a606eb4d091f
