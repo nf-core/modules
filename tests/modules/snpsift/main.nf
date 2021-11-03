@@ -16,7 +16,7 @@ workflow test_snpsift_base {
 
 workflow test_snpsift_mult {
 
-    input = [ [ id:'test', single_end:false ], // meta map
+    input = [ [ id:'test' ], // meta map
             file("https://raw.githubusercontent.com/nf-core/test-datasets/epitopeprediction/testdata/variants/variants.vcf", checkIfExists: true) ]
 
     SNPSIFT_MULT ( input )
@@ -25,7 +25,7 @@ workflow test_snpsift_mult {
 
 workflow test_snpsift_gz {
 
-    input = [ [ id:'test', single_end:false ], // meta map
+    input = [ [ id:'test' ], // meta map
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true) ]
 
     SNPSIFT_GZ ( input )
