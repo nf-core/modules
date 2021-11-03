@@ -1,0 +1,68 @@
+name: jupyternotebook
+description: |
+  Render jupyter (or jupytext) notebooks to HTML reports. Supports parametrization
+  through papermill.
+keywords:
+  - Python
+  - Jupyter
+  - jupytext
+  - papermill
+  - notebook
+  - reports
+tools:
+  - jupytext:
+      description: Jupyter notebooks as plain text scripts or markdown documents
+      homepage: https://github.com/mwouts/jupytext/
+      documentation: https://jupyter.org/documentation
+      tool_dev_url: https://github.com/mwouts/jupytext/
+      licence: "MIT"
+  - papermill:
+      description: Parameterize, execute, and analyze notebooks
+      homepage: https://github.com/nteract/papermill
+      documentation: http://papermill.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/nteract/papermill
+      licence: "BSD 3-clause"
+  - nbconvert:
+      description: Parameterize, execute, and analyze notebooks
+      homepage: https://nbconvert.readthedocs.io/en/latest/
+      documentation: https://nbconvert.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/jupyter/nbconvert
+      licence: "BSD 3-clause"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - notebook:
+      type: file
+      description: Jupyter notebook or jupytext representation thereof
+      pattern: "*.{ipynb,py,md,Rmd,myst}"
+  - parameters:
+      type: map
+      description: |
+        Groovy map with notebook parameters which will be passed
+        to papermill in order to create parametrized reports.
+  - input_files:
+      type: path
+      description: One or multiple files serving as input data for the notebook.
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: HTML report generated from Jupyter notebook
+      pattern: "*.html"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@grst"
