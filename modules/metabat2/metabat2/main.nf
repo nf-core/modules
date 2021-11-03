@@ -40,7 +40,7 @@ process METABAT2_METABAT2 {
         --saveCls \\
         -o metabat2/${prefix}
 
-    mv metabat2/${prefix} ${prefix}.membership.tsv
+    mv metabat2/${prefix} ${prefix}.tsv
     mv metabat2 bins
     gzip -n ${prefix}.membership.tsv
     gzip -n bins/*.fa
