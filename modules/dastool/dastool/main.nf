@@ -25,11 +25,16 @@ process DASTOOL_DASTOOL {
 
 
     output:
-    tuple val(meta), path("*_summary.txt")              , emit: summary
-    tuple val(meta), path("*_DASTool_scaffolds2bin.txt"), emit: scaffolds2bin
-    tuple val(meta), path("*.eval")                     , emit: eval, optional: true
-    tuple val(meta), path("*.log")                      , emit: log
-    tuple val(meta), path("*_DASTool_bins/*.fa")        , emit: bins, optional: true
+    tuple val(meta), path("*.log")                                      , emit: log
+    tuple val(meta), path("*_summary.txt")                              , emit: summary
+    tuple val(meta), path("*_DASTool_scaffolds2bin.txt")                , emit: scaffolds2bin
+    tuple val(meta), path("*.eval")                     , optional: true, emit: eval
+    tuple val(meta), path("*_DASTool_bins/*.fa")        , optional: true, emit: bins
+    tuple val(meta), path("*.pdf")                      , optional: true, emit: pdfs
+    tuple val(meta), path("*.proteins.faa")             , optional: true, emit: fasta_proteins
+    tuple val(meta), path("*.archaea.scg")              , optional: true, emit: fasta_archaea_scg
+    tuple val(meta), path("*.bacteria.scg")             , optional: true, emit: fasta_bacteria_scg
+    tuple val(meta), path("*.seqlength")                , optional: true, emit: seqlength
     path "versions.yml"                                 , emit: versions
 
     script:

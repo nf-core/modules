@@ -45,7 +45,7 @@ input:
       description: Comma separated list of binning prediction methods names.
   - search_engine:
       type: val
-      description: Engine used for single copy gene identification [blast/diamond/usearch]
+      description: Engine used for single copy gene identification. USEARCH is not supported due to it being proprietary [blast/diamond]
 
 
 output:
@@ -54,30 +54,47 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - versions:
+  - version:
       type: file
-      description: File containing software versions
+      description: File containing software version
       pattern: "versions.yml"
-  - summary:
-      type: file
-      description: DAS Tool summary result file
-      pattern: "*_summary.txt"
-  - scaffolds2bin:
-      type: file
-      description: scaffolds2bin table for all contigs/bins/binners
-      pattern: "*_DASTool_scaffolds2bin.txt"
-  - eval:
-      type: file
-      description: Bin evaluation tabular file, optional
-      pattern: "*.eval"
   - log:
       type: file
-      description: DAS Tool log file
+      description: Log file of the run
       pattern: "*.log"
-  - bins:
+  - summary:
       type: file
-      description: Bins passing the DAS Tool filtering criteria
-      pattern: "*.fa"
+      description: Summary of output bins including quality and completeness estimates
+      pattern: "*summary.txt"
+  - scaffolds2bin:
+      type: file
+      description: Scaffolds to bin file of output bins
+      pattern: "*.scaffolds2bin.txt"
+  - eval:
+      type: file
+      description: Quality and completeness estimates of input bin sets
+      pattern: "*.eval"
+  - pdfs:
+      type: file
+      description: Plots showing the amount of high quality bins and score distribution of bins per method
+      pattern: "*.pdf"
+  - fasta_proteins:
+      type: file
+      description: Output from prodigal if not already supplied
+      pattern: "*.proteins.faa"
+  - fasta_archaea_scg:
+      type: file
+      description:  Results of archaeal single-copy-gene prediction
+      pattern: "*.archaea.scg"
+  - fasta_bacteria_scg:
+      type: file
+      description: Results of bacterial single-copy-gene prediction
+      pattern: "*.bacteria.scg"
+  - seqlength:
+      type: file
+      description: Summary of contig lengths
+      pattern: "*.seqlength"
 
 authors:
   - "@maxibor"
+  - "@jfy133"
