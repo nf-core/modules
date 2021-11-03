@@ -1,0 +1,12 @@
+- name: eggnog download
+  command: nextflow run ./tests/modules/eggnog/download -entry test_eggnog_download -c tests/config/nextflow.config -stub-run
+  tags:
+    - eggnog
+    - eggnog/download
+  files:
+    - path: output/eggnog/eggnog.db
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/eggnog/eggnog.taxa.db
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/eggnog/eggnog.taxa.db.traverse.pkl
+      md5sum: d41d8cd98f00b204e9800998ecf8427e

@@ -1,0 +1,12 @@
+- name: eggnog mapper
+  command: nextflow run ./tests/modules/eggnog/mapper -entry test_eggnog_mapper -c tests/config/nextflow.config -stub-run
+  tags:
+    - eggnog
+    - eggnog/mapper
+  files:
+    - path: output/eggnog/test.emapper.annotations
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/eggnog/test.emapper.hits
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/eggnog/test.emapper.seed_orthologs
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
