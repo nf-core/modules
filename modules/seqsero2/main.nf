@@ -38,7 +38,7 @@ process SEQSERO2 {
         -i $seqs
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}: 
+    ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$( echo \$( SeqSero2_package.py --version 2>&1) | sed 's/^.*SeqSero2_package.py //' )
     END_VERSIONS
     """
