@@ -21,7 +21,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("*.depth.txt.gz"), emit: depth
+    tuple val(meta), path("*.txt.gz"), emit: depth
     path "versions.yml"                    , emit: versions
 
     script:
@@ -34,7 +34,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
         $options.args \\
         $bam
 
-    gzip -n ${prefix}.depth.txt
+    bgzip --threads $task.cpus ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

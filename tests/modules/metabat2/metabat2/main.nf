@@ -11,17 +11,11 @@ workflow test_metabat2_no_depth {
               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
               file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
 
-    METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS ( input_depth )
-
     Channel.fromPath(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-        .map { it -> [[ id:'test', single_end:false ], it] }
-        .set { input_fasta_alone }
-
-    input_fasta_alone
-        .map { it -> [it[0], it[1], []] }
-        .set { input_fasta }
+        .map { it -> [[ id:'test', single_end:false ], it, []] }
+        .set { input_metabat2 }
     
-    METABAT2_METABAT2 ( input_fasta )
+    METABAT2_METABAT2 ( input_metabat2 )
 }
 
 workflow test_metabat2_depth {
@@ -34,11 +28,8 @@ workflow test_metabat2_depth {
 
     Channel.fromPath(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
         .map { it -> [[ id:'test', single_end:false ], it] }
-        .set { input_fasta_alone }
-
-    input_fasta_alone
         .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
-        .set { input_fasta_depth }
+        .set { input_metabat2 }
 
-        METABAT2_METABAT2 ( input_fasta_depth )
+        METABAT2_METABAT2 ( input_metabat2 )
 }

@@ -22,7 +22,7 @@ process METABAT2_METABAT2 {
 
     output:
     tuple val(meta), path("bins/*.fa.gz")       , optional:true , emit: fasta
-    tuple val(meta), path("*.membership.tsv.gz"), optional:true , emit: membership
+    tuple val(meta), path("*.tsv.gz"), optional:true , emit: membership
     path "versions.yml"                                         , emit: versions
 
     script:
@@ -42,8 +42,8 @@ process METABAT2_METABAT2 {
 
     mv metabat2/${prefix} ${prefix}.tsv
     mv metabat2 bins
-    gzip -n ${prefix}.membership.tsv
-    gzip -n bins/*.fa
+    bgzip --threads $task.cpus ${prefix}.tsv
+    bgzip --threads $task.cpus bins/*.fa
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
