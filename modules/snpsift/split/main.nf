@@ -30,6 +30,7 @@ process SNPSIFT_SPLIT {
     """
     SnpSift \\
         split \\
+        $options.args \\
         $vcf
 
     cat <<-END_VERSIONS > versions.yml
