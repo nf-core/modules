@@ -25,7 +25,7 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("${prefix}")   , optional:true, emit: genomicsdb
+    tuple val(meta), path("${prefix}")      , optional:true, emit: genomicsdb
     tuple val(meta), path("$updated_db")    , optional:true, emit: updatedb
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
     path "versions.yml"                                    , emit: versions
