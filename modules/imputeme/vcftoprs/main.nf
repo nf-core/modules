@@ -15,7 +15,7 @@ process IMPUTEME_VCFTOPRS {
     // Not on conda, but available as docker and singularity from biocontainers 
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1"
+        container "https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img"
     } else {
         container "biocontainers/imputeme:vv1.0.7_cv1"
     }
