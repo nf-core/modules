@@ -41,11 +41,11 @@ input:
   - bait_intervals:
       type: file
       description: An interval list file that contains the locations of the baits used.
-      pattern: "*.interval_list"
+      pattern: "baits.interval_list"
   - target_intervals:
       type: file
       description: An interval list file that contains the locations of the targets.
-      pattern: "*.interval_list"
+      pattern: "targets.interval_list"
 
 output:
   - meta:
@@ -60,7 +60,7 @@ output:
   - bam:
       type: file
       description: The metrics file.
-      pattern: "*.collecthsmetrics.txt"
+      pattern: "*_collecthsmetrics.txt"
 
 authors:
   - "@projectoriented"
