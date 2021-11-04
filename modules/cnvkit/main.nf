@@ -31,13 +31,23 @@ process CNVKIT {
     path "versions.yml"           , emit: versions
 
     script:
+    def target_args = ""
+
+    if (options.args.contains("--method wgs") || options.args.contains("-m wgs")) {
+        target_args = targetfile ? "--targets $targetfile" : ""
+    }
+    else {
+        target_args = "--targets $targetfile"
+    }
+
     """
     cnvkit.py \\
         batch \\
         $tumourbam \\
         --normal $normalbam\\
         --fasta $fasta \\
-        --targets $targetfile \\
+        $target_args \\
+        --processes ${task.cpus} \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
