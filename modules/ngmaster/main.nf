@@ -13,9 +13,9 @@ process NGMASTER {
 
     conda (params.enable_conda ? "bioconda::ngmaster=0.5.8" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1"
     }
 
     input:
