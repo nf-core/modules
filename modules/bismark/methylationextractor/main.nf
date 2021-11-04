@@ -31,6 +31,23 @@ process BISMARK_METHYLATIONEXTRACTOR {
     path "versions.yml"                            , emit: versions
 
     script:
+    multicore = ''
+    if( task.cpus ){
+        // Numbers based on Bismark docs
+        ccore = ((task.cpus as int) / 3) as int
+        if( ccore > 1 ){
+            multicore = "--multicore $ccore"
+        }
+    }
+    buffer = ''
+    if( task.memory ){
+        mbuffer = (task.memory as nextflow.util.MemoryUnit) - 2.GB
+        // only set if we have more than 6GB available
+        if( mbuffer.compareTo(4.GB) == 1 ){
+            buffer = "--buffer_size ${mbuffer.toGiga()}G"
+        }
+    }
+
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
@@ -40,7 +57,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
         --report \\
         $seqtype \\
         $options.args \\
-        $bam
+        $bam \\
+        $multicore \\
+        $buffer
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
