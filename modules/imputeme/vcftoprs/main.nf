@@ -12,7 +12,7 @@ process IMPUTEME_VCFTOPRS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    // Not on conda, but available as docker and singularity from biocontainers
+    // Not on conda, but available as docker and singularity from biocontainers 
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1"
