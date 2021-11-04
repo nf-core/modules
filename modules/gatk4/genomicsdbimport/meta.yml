@@ -67,7 +67,7 @@ output:
       type: directory
       description: Directory containing the files that compose the genomicsdb workspace, this is only output for create mode, as update changes an existing db
       pattern: "*/$prefix"
-    - updatedb:
+  - updatedb:
       type: directory
       description: Directory containing the files that compose the updated genomicsdb workspace, this is only output for update mode, and should be the same path as the input wspace.
       pattern: "same/path/as/wspace"
