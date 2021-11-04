@@ -410,13 +410,9 @@ flash:
   - modules/flash/**
   - tests/modules/flash/**
 
-freebayes/germline:
-  - modules/freebayes/germline/**
-  - tests/modules/freebayes/germline/**
-
-freebayes/somatic:
-  - modules/freebayes/somatic/**
-  - tests/modules/freebayes/somatic/**
+freebayes:
+  - modules/freebayes/**
+  - tests/modules/freebayes/**
 
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
@@ -457,6 +453,10 @@ gatk4/genomicsdbimport:
 gatk4/filtermutectcalls:
   - modules/gatk4/filtermutectcalls/**
   - tests/modules/gatk4/filtermutectcalls/**
+
+gatk4/genomicsdbimport:
+  - modules/gatk4/genomicsdbimport/**
+  - tests/modules/gatk4/genomicsdbimport/**
 
 gatk4/getpileupsummaries:
   - modules/gatk4/getpileupsummaries/**
@@ -550,6 +550,14 @@ gubbins:
   - modules/gubbins/**
   - tests/modules/gubbins/**
 
+gunc/downloaddb:
+  - modules/gunc/downloaddb/**
+  - tests/modules/gunc/downloaddb/**
+
+gunc/run:
+  - modules/gunc/run/**
+  - tests/modules/gunc/run/**
+
 gunzip:
   - modules/gunzip/**
   - tests/modules/gunzip/**
@@ -577,6 +585,14 @@ hisat2/extractsplicesites:
   - modules/hisat2/extractsplicesites/**
   - tests/modules/hisat2/extractsplicesites/**
 
+hmmcopy/gccounter:
+  - modules/hmmcopy/gccounter/**
+  - tests/modules/hmmcopy/gccounter/**
+
+hmmcopy/readcounter:
+  - modules/hmmcopy/readcounter/**
+  - tests/modules/hmmcopy/readcounter/**
+
 hmmer/hmmalign:
   - modules/hmmer/hmmalign/**
   - tests/modules/hmmer/hmmalign/**
@@ -596,6 +612,10 @@ homer/maketagdirectory:
 homer/makeucscfile:
   - modules/homer/makeucscfile/**
   - tests/modules/homer/makeucscfile/**
+
+idr:
+  - modules/idr/**
+  - tests/modules/idr/**
 
 iqtree:
   - modules/iqtree/**
@@ -1023,6 +1043,10 @@ samtools/fastq:
   - modules/samtools/fastq/**
   - tests/modules/samtools/fastq/**
 
+samtools/fixmate:
+  - modules/samtools/fixmate/**
+  - tests/modules/samtools/fixmate/**
+
 samtools/flagstat:
   - modules/samtools/flagstat/**
   - tests/modules/samtools/flagstat/**
@@ -1062,6 +1086,10 @@ seacr/callpeak:
 seqkit/split2:
   - modules/seqkit/split2/**
   - tests/modules/seqkit/split2/**
+
+seqsero2:
+  - modules/seqsero2/**
+  - tests/modules/seqsero2/**
 
 seqtk/mergepe:
   - modules/seqtk/mergepe/**
