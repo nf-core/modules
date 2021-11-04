@@ -4,15 +4,18 @@ keywords:
   - variant caller
   - SNP
   - genotyping
-  - variant calling
+  - somatic variant calling
+  - germline variant calling
+  - bacterial variant calling
   - bayesian
+
 tools:
   - freebayes:
       description: Bayesian haplotype-based polymorphism discovery and genotyping
       homepage: https://github.com/freebayes/freebayes
       documentation: https://github.com/freebayes/freebayes
       tool_dev_url: https://github.com/freebayes/freebayes
-      doi: ""
+      doi: "arXiv:1207.3907"
       licence: ['MIT']
 
 input:
@@ -21,11 +24,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
+  - input_index:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.bam.bai"
@@ -59,7 +62,6 @@ input:
           seq_name start end sample_name copy_number
       pattern: "*.bed"
 
-
 output:
   - meta:
       type: map
@@ -74,5 +76,8 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
+
 authors:
   - "@maxibor"
+  - "@FriederikeHanssen"
+  - "@maxulysse"
