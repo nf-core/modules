@@ -11,8 +11,8 @@ workflow test_picard_collecthsmetrics {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    bait_intervals = file("../test-datasets/data/genomics/sarscov2/genome/baits.interval_list")
-    target_intervals = file("../test-datasets/data/genomics/sarscov2/genome/targets.interval_list")
+    bait_intervals = file(params.test_data['sarscov2']['genome']['picard']['baits_interval_list'], checkIfExists: true)
+    target_intervals = file(params.test_data['sarscov2']['genome']['picard']['targets_interval_list'], checkIfExists: true)
 
     PICARD_COLLECTHSMETRICS ( input, fasta, fai, bait_intervals, target_intervals )
 }
