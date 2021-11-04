@@ -1,0 +1,7 @@
+- name: lissero test_lissero
+  command: nextflow run tests/modules/lissero -entry test_lissero -c tests/config/nextflow.config
+  tags:
+    - lissero
+  files:
+    - path: output/lissero/test.tsv
+      md5sum: 8ec10b4990fb42094ae551e65e4db571
