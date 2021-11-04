@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml samtools/getchromsizes
+- name: samtools getchromsizes
+  command: nextflow run ./tests/modules/samtools/getchromsizes -entry test_samtools_getchromsizes -c tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/getchromsizes
+  files:
+    - path: output/samtools/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
