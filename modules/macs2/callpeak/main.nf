@@ -33,12 +33,15 @@ process MACS2_CALLPEAK {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def format   = meta.single_end ? 'BAM' : 'BAMPE'
+    def args     = options.args.tokenize()
+    def format   = (args.contains('format')) ? args.format :
+        meta.single_end ? 'BAM' : 'BAMPE'
     def control  = controlbam ? "--control $controlbam" : ''
+    args.removeIf{ it.contains('format') }
     """
     macs2 \\
         callpeak \\
-        $options.args \\
+        ${args.join(' ')} \\
         --gsize $macs2_gsize \\
         --format $format \\
         --name $prefix \\
