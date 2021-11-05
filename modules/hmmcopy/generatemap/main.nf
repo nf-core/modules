@@ -15,7 +15,7 @@ process HMMCOPY_GENERATEMAP {
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "/lmod/apps/hmmcopyutils/0.99.0_container/hmmcopyutils.sif"
     } else {
         container "quay.io/biocontainers/YOUR-TOOL-HERE"
     }
@@ -30,6 +30,10 @@ process HMMCOPY_GENERATEMAP {
     script:
 
     """
+    generateMap.pl -b \\
+        $options.args \\
+        $fasta
+
     generateMap.pl \\
         $options.args \\
         $fasta
