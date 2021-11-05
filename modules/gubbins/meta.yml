@@ -2,6 +2,7 @@ name: gubbins
 description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences) is an algorithm that iteratively identifies
             loci containing elevated densities of base substitutions while concurrently constructing a phylogeny based on the
             putative point mutations outside of these regions.
+licence: ['GPL-2.0-only']
 keywords:
   - recombination
   - alignment
@@ -16,9 +17,9 @@ input:
       description: fasta alignment file
       pattern: "*.{fasta,fas,fa,aln}"
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - fasta:
       type: file

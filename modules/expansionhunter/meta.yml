@@ -10,7 +10,7 @@ tools:
       documentation: https://github.com/Illumina/ExpansionHunter/blob/master/docs/01_Introduction.md
       tool_dev_url: None
       doi: "10.1093/bioinformatics/btz431"
-      licence: ['Apache v2.0']
+      licence: ['Apache-2.0']
 
 input:
   - meta:
@@ -37,9 +37,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', gender:'female' ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - vcf:
       type: file

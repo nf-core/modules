@@ -24,10 +24,9 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sthlm.gz"), emit: sthlm
-    path "versions.yml"                , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fastacmd = fasta.getExtension() == 'gz' ? "gunzip -c $fasta" : "cat $fasta"
     """

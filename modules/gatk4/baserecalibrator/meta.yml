@@ -11,6 +11,7 @@ tools:
     homepage: https://gatk.broadinstitute.org/hc/en-us
     documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
     doi: 10.1158/1538-7445.AM2017-3590
+    licence: ['Apache-2.0']
 
 
 input:
@@ -19,10 +20,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
-      description: BAM file from alignment
-      pattern: "*.{bam}"
+      description: BAM/CRAM file from alignment
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: BAI/CRAI file from alignment
+      pattern: "*.{bai,crai}"
   - fasta:
       type: file
       description: The reference fasta file
@@ -45,9 +50,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "versions.yml"
   - table:
       type: file
@@ -56,3 +61,4 @@ output:
 
 authors:
   - "@yocra3"
+  - "@FriederikeHanssen"

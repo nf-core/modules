@@ -12,6 +12,7 @@ tools:
             or later.
         homepage: https://github.com/heuermh/dishevelled-bio
         documentation: https://github.com/heuermh/dishevelled-bio
+        licence: ['LGPL-3.0-or-later']
 input:
     - meta:
         type: map
@@ -32,9 +33,9 @@ output:
         type: file
         description: Assembly segment sequences in FASTA format
         pattern: "*.{fa}"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
+        description: File containing software versions
         pattern: "versions.yml"
 authors:
     - "@heuermh"
