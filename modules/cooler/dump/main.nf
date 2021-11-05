@@ -28,12 +28,12 @@ process COOLER_DUMP {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def postfix  = resolution?"::$resolution":""
+    def suffix   = resolution?"::$resolution":""
     """
     cooler dump \\
         $options.args \\
         -o ${prefix}.bedpe \\
-        $cool$postfix
+        $cool$suffix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
