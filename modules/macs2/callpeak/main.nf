@@ -34,10 +34,14 @@ process MACS2_CALLPEAK {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
-    def format   = (args.contains('format')) ? args.format :
-        meta.single_end ? 'BAM' : 'BAMPE'
+    def format   = meta.single_end ? 'BAM' : 'BAMPE'
     def control  = controlbam ? "--control $controlbam" : ''
-    args.removeIf{ it.contains('format') }
+    if(args.contains('--format')){
+        def id = args.findIndexOf{it=='--format'}
+        format = args[id+1]
+        args.remove(id+1)
+        args.remove(id)
+    }
     """
     macs2 \\
         callpeak \\
