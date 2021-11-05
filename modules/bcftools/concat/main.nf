@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -23,10 +23,9 @@ process BCFTOOLS_CONCAT {
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
-    path  "*.version.txt"        , emit: version
+    path  "versions.yml"         , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools concat \\
@@ -35,6 +34,9 @@ process BCFTOOLS_CONCAT {
         --threads $task.cpus \\
         ${vcfs}
 
-    echo \$(bcftools --version 2>&1) | sed 's/^.*bcftools //; s/ .*\$//' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
     """
 }

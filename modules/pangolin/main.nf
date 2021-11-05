@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -11,11 +11,11 @@ process PANGOLIN {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::pangolin=3.1.7' : null)
+    conda (params.enable_conda ? 'bioconda::pangolin=3.1.11' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/pangolin:3.1.7--pyhdfd78af_0'
+        container 'https://depot.galaxyproject.org/singularity/pangolin:3.1.11--pyhdfd78af_1'
     } else {
-        container 'quay.io/biocontainers/pangolin:3.1.7--pyhdfd78af_0'
+        container 'quay.io/biocontainers/pangolin:3.1.11--pyhdfd78af_1'
     }
 
     input:
@@ -23,10 +23,9 @@ process PANGOLIN {
 
     output:
     tuple val(meta), path('*.csv'), emit: report
-    path  '*.version.txt'         , emit: version
+    path  "versions.yml"          , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pangolin \\
@@ -35,6 +34,9 @@ process PANGOLIN {
         --threads $task.cpus \\
         $options.args
 
-    echo \$(pangolin --version) | sed "s/pangolin //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
+    END_VERSIONS
     """
 }

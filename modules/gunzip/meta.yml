@@ -8,6 +8,7 @@ tools:
         description: |
             gzip is a file format and a software application used for file compression and decompression.
         documentation: https://www.gnu.org/software/gzip/manual/gzip.html
+        licence: ['GPL-3.0-or-later']
 input:
     - archive:
         type: file
@@ -18,10 +19,10 @@ output:
         type: file
         description: Compressed/uncompressed file
         pattern: "*.*"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
-        pattern: "*.{version.txt}"
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
     - "@joseespinosa"
     - "@drpatelh"

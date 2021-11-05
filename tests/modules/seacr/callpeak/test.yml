@@ -5,4 +5,13 @@
     - seacr/callpeak
   files:
     - path: output/seacr/test_1.stringent.bed
-      md5sum: 3ac70475669eb6a7b8ca89e19a08a28e
+      md5sum: a3cb0c7c4ffa895788da3f0d6371b7df
+
+- name: seacr callpeak threshold
+  command: nextflow run ./tests/modules/seacr/callpeak -entry test_seacr_callpeak_threshold -c tests/config/nextflow.config
+  tags:
+    - seacr
+    - seacr/callpeak
+  files:
+    - path: output/seacr/test_1.stringent.bed
+      md5sum: 1d23015c7087f7b48cc3139d53fd3463

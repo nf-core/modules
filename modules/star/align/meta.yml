@@ -13,6 +13,7 @@ tools:
       homepage: https://github.com/alexdobin/STAR
       manual: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
       doi: 10.1093/bioinformatics/bts635
+      licence: ['MIT']
 input:
   - meta:
       type: map
@@ -45,10 +46,10 @@ output:
       type: file
       description: STAR log progress file
       pattern: "*Log.progress.out"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bam_sorted:
       type: file
       description: Sorted BAM file of read alignments (optional)

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -19,16 +19,20 @@ process SAMTOOLS_STATS {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
+    path fasta
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
-    path  "*.version.txt"           , emit: version
+    path  "versions.yml"            , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
+    def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools stats $bam > ${bam}.stats
-    echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' > ${software}.version.txt
+    samtools stats ${reference} ${input} > ${input}.stats
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

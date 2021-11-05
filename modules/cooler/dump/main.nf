@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,10 +24,9 @@ process COOLER_DUMP {
 
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
-    path "*.version.txt"                 , emit: version
+    path "versions.yml"                  , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def postfix  = resolution?"::$resolution":""
     """
@@ -36,6 +35,9 @@ process COOLER_DUMP {
         -o ${prefix}.bedpe \\
         $cool$postfix
 
-    echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
     """
 }

@@ -17,7 +17,7 @@ tools:
         homepage: http://bio-bwa.sourceforge.net/
         documentation: http://bio-bwa.sourceforge.net/
         doi: "10.1093/bioinformatics/btp324"
-      licence: ['GPL v3']
+        licence: ['GPL-3.0-or-later']
 
 input:
     - meta:
@@ -41,13 +41,13 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - sai:
       type: file
-      description: SA coordinate file
+      description: Single or paired SA coordinate files
       pattern: "*.sai"
 
 authors:

@@ -27,10 +27,10 @@ input:
       pattern: "{standard,lamanno,nucleus}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - kb_ref_idx:
       type: file
       description: Index file from kb ref.

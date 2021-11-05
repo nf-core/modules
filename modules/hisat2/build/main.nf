@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -28,7 +28,7 @@ process HISAT2_BUILD {
 
     output:
     path "hisat2"       , emit: index
-    path "*.version.txt", emit: version
+    path "versions.yml" , emit: versions
 
     script:
     def avail_mem = 0
@@ -53,7 +53,6 @@ process HISAT2_BUILD {
         log.info "[HISAT2 index build] Use --hisat2_build_memory [small number] to skip this check."
     }
 
-    def software = getSoftwareName(task.process)
     """
     mkdir hisat2
     $extract_exons
@@ -65,6 +64,9 @@ process HISAT2_BUILD {
         $fasta \\
         hisat2/${fasta.baseName}
 
-    echo $VERSION > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    END_VERSIONS
     """
 }

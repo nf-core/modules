@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -19,22 +19,25 @@ process BEDTOOLS_SORT {
     }
 
     input:
-    tuple val(meta), path(bed)
+    tuple val(meta), path(intervals)
+    val   extension
 
     output:
-    tuple val(meta), path('*.bed'), emit: bed
-    path  '*.version.txt'         , emit: version
+    tuple val(meta), path("*.${extension}"), emit: sorted
+    path  "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedtools \\
         sort \\
-        -i $bed \\
+        -i $intervals \\
         $options.args \\
-        > ${prefix}.bed
+        > ${prefix}.${extension}
 
-    bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+    END_VERSIONS
     """
 }

@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -19,23 +19,29 @@ process ALLELECOUNTER {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path loci
+    path fasta
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "*.version.txt"                  , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def reference_options = fasta ? "-r $fasta": ""
+
     """
     alleleCounter \\
         $options.args \\
         -l $loci \\
-        -b $bam \\
+        -b $input \\
+        $reference_options \\
         -o ${prefix}.alleleCount
 
-    alleleCounter --version > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(alleleCounter --version)
+    END_VERSIONS
     """
 }

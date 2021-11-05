@@ -11,6 +11,7 @@ tools:
             data and formats such as SAM/BAM/CRAM and VCF.
         homepage: https://broadinstitute.github.io/picard/
         documentation: https://broadinstitute.github.io/picard/
+        licence: ['MIT']
 
 input:
   - meta:
@@ -33,10 +34,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file

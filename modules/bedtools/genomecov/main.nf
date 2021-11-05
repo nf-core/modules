@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -19,26 +19,36 @@ process BEDTOOLS_GENOMECOV {
     }
 
     input:
-    tuple val(meta), path(intervals)
+    tuple val(meta), path(intervals), val(scale)
     path  sizes
     val   extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: genomecov
-    path  "*.version.txt"                  , emit: version
+    path  "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args_token = options.args.tokenize()
+    def args       = options.args
+    args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
+
+    if (!args_token.contains('-bg') && (scale > 0 && scale != 1)) {
+        args += " -bg"
+    }
+
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\
             genomecov \\
             -ibam $intervals \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     } else {
         """
@@ -46,10 +56,13 @@ process BEDTOOLS_GENOMECOV {
             genomecov \\
             -i $intervals \\
             -g $sizes \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     }
 }
