@@ -25,10 +25,9 @@ process COOLER_CLOAD {
 
     output:
     tuple val(meta), val(cool_bin), path("*.cool"), emit: cool
-    path "*.version.txt"                          , emit: version
+    path "version.yml"                            , emit: version
 
     script:
-    def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
     def tool     = (options.args.contains('hiclib')) ? "hiclib" :
@@ -48,6 +47,9 @@ process COOLER_CLOAD {
         $pairs \\
         ${prefix}.${cool_bin}.cool
 
-    echo \$(cooler --version 2>&1) | sed 's/cooler, version //' > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
     """
 }
