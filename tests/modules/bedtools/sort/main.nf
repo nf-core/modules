@@ -9,5 +9,5 @@ workflow test_bedtools_sort {
               file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
 
-    BEDTOOLS_SORT ( input )
+    BEDTOOLS_SORT ( input, "testext" )
 }

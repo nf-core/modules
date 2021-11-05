@@ -19,7 +19,7 @@ process BEDTOOLS_GENOMECOV {
     }
 
     input:
-    tuple val(meta), path(intervals)
+    tuple val(meta), path(intervals), val(scale)
     path  sizes
     val   extension
 
@@ -28,13 +28,21 @@ process BEDTOOLS_GENOMECOV {
     path  "versions.yml"                   , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args_token = options.args.tokenize()
+    def args       = options.args
+    args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
+
+    if (!args_token.contains('-bg') && (scale > 0 && scale != 1)) {
+        args += " -bg"
+    }
+
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\
             genomecov \\
             -ibam $intervals \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
@@ -48,7 +56,7 @@ process BEDTOOLS_GENOMECOV {
             genomecov \\
             -i $intervals \\
             -g $sizes \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
