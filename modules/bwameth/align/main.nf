@@ -32,6 +32,10 @@ process BWAMETH_ALIGN {
     """
     INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/.bwameth.c2t//'`
 
+    # Modify the timestamps so that bwameth doesn't complain about building the index
+    # See https://github.com/nf-core/methylseq/pull/217
+    touch -c -- *
+
     bwameth.py \\
         $options.args \\
         $read_group \\
