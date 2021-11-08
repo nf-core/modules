@@ -32,16 +32,10 @@ process CLONALFRAMEML {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def is_compressed = msa.getName().endsWith(".gz") ? true : false
-    def msa_name = msa.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $msa > $msa_name
-    fi
-
     ClonalFrameML \\
         $newick \\
-        $msa_name \\
+        <zcat -f $msa) \\
         $prefix \\
         $options.args
 
