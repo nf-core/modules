@@ -37,7 +37,7 @@ process SPADES {
     def illumina_reads = illumina ? ( meta.single_end ? "-s $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
     def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
-    def custom_hmms = params.spades_hmm ? "--custom-hmms $hmm" : ""
+    def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
     """
     spades.py \\
         $options.args \\
