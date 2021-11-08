@@ -19,24 +19,26 @@ process FREEBAYES {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    tuple path(fasta), path(fai)
-    path(targets)
-    path(samples)
-    path(populations)
-    path(cnv)
-
+    tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index)
+    path fasta
+    path fai
+    path targets
+    path samples
+    path populations
+    path cnv
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
     path  "versions.yml"                , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def targets_file = targets ? "--target ${targets}" : ""
-    def samples_file = samples ? "--samples ${samples}" : ""
-    def populations_file = populations ? "--populations ${populations}" : ""
-    def cnv_file = cnv ? "--cnv-map ${cnv}" : ""
+    def prefix           = options.suffix ? "${meta.id}${options.suffix}"  : "${meta.id}"
+    def input            = input_2        ? "${input_1} ${input_2}"        : "${input_1}"
+    def targets_file     = targets        ? "--target ${targets}"          : ""
+    def samples_file     = samples        ? "--samples ${samples}"         : ""
+    def populations_file = populations    ? "--populations ${populations}" : ""
+    def cnv_file         = cnv            ? "--cnv-map ${cnv}"             : ""
+
     if (task.cpus > 1) {
         """
         freebayes-parallel \\
@@ -47,7 +49,7 @@ process FREEBAYES {
             $populations_file \\
             $cnv_file \\
             $options.args \\
-            $bam  > ${prefix}.vcf
+            $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 
@@ -66,7 +68,7 @@ process FREEBAYES {
             $populations_file \\
             $cnv_file \\
             $options.args \\
-            $bam > ${prefix}.vcf
+            $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
 
