@@ -11,11 +11,11 @@ process PICARD_COLLECTHSMETRICS {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::picard=2.26.4" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.26.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/picard:2.26.4--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/picard:2.26.2--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/picard:2.26.4--hdfd78af_0"
+        container "quay.io/biocontainers/picard:2.26.2--hdfd78af_0"
     }
 
     input:
@@ -35,7 +35,7 @@ process PICARD_COLLECTHSMETRICS {
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[Picard CollectWgsMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[Picard CollectHsMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
