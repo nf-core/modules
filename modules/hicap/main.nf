@@ -33,15 +33,9 @@ process HICAP {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def database_args = database_dir ? "--database_dir ${database_dir}" : ""
     def model_args = model_fp ? "--model_fp ${model_fp}" : ""
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
-    fi
-
     hicap \\
-        --query_fp $fasta_name \\
+        --query_fp <(zcat $fasta) \\
         $database_args \\
         $model_args \\
         $options.args \\
