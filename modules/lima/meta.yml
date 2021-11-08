@@ -9,7 +9,7 @@ tools:
       documentation: https://lima.how/
       tool_dev_url: https://github.com/pacificbiosciences/barcoding/
       doi: ""
-      licence: ['BSD-3-clause-Clear']
+      licence: ['BSD-3-Clause-Clear']
 
 input:
   - meta:
@@ -68,10 +68,10 @@ output:
       type: file
       description: This file shows how many ZMWs have been filtered, how ZMWs many are same/different, and how many reads have been filtered.
       pattern: "*.summary"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@sguizard"

@@ -13,6 +13,7 @@ tools:
             A versatile pairwise aligner for genomic and spliced nucleotide sequences.
         homepage: https://github.com/lh3/minimap2
         documentation: https://github.com/lh3/minimap2#uguide
+        licence: ['MIT']
 input:
     - meta:
         type: map
@@ -38,9 +39,9 @@ output:
         type: file
         description: Alignment in PAF format
         pattern: "*.paf"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
+        description: File containing software versions
         pattern: "versions.yml"
 authors:
     - "@heuermh"
