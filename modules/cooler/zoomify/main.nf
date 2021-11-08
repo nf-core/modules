@@ -23,7 +23,7 @@ process COOLER_ZOOMIFY {
 
     output:
     tuple val(meta), path("*.mcool"), emit: mcool
-    path "*.version.yml"            , emit: version
+    path "versions.yml"             , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
