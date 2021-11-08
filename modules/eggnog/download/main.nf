@@ -18,9 +18,6 @@ process EGGNOG_DOWNLOAD {
         container "quay.io/biocontainers/eggnog-mapper:2.1.6--pyhdfd78af_0"
     }
 
-    input:
-    val(meta)
-
     output:
     path("*.db*")      , emit: db
     path("*.dmnd")     , emit: proteins, optional: true
