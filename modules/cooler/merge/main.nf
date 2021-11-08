@@ -23,7 +23,7 @@ process COOLER_MERGE {
 
     output:
     tuple val(meta), path("*.cool"), emit: cool
-    path "version.yml"           , emit: version
+    path "versions.yml"            , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
