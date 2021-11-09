@@ -34,12 +34,13 @@ process PLINK_EXTRACT {
     def prefix  = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if( "$bed" == "${prefix}.bed" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
-    plink --bfile ${meta.id} \\
+    plink \\
+        --bfile ${meta.id} \\
         $options.args \\
-        --extract ${variants} \\
+        --extract $variants \\
         --threads $task.cpus \\
         --make-bed \\
-        --out ${prefix}
+        --out $prefix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
