@@ -19,11 +19,6 @@ workflow GATK_CREATE_SOM_PON {
     pon_name            // channel: name for panel of normals
     interval_file       // channel: /path/to/interval/file
 
-    // tuple val(meta), path(vcf), path(tbi), path(intervalfile), [], []
-
-
-    // tuple val(meta), path(genomicsdb)
-
     main:
     ch_versions      = Channel.empty()
     input = channel.from(ch_mutect2_in)
@@ -38,7 +33,6 @@ workflow GATK_CREATE_SOM_PON {
     //
     ch_vcf = GATK4_MUTECT2.out.vcf.collect{it[1]}.toList()
     ch_index = GATK4_MUTECT2.out.tbi.collect{it[1]}.toList()
-    // ch_mutect2_out = ch_vcf.combine([ch_index])
     gendb_input = Channel.of([[ id:pon_name ]]).combine(ch_vcf).combine(ch_index).combine([interval_file]).combine(['']).combine([dict])
     GATK4_GENOMICSDBIMPORT ( gendb_input, false, false, false )
     ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions.first())
@@ -55,10 +49,10 @@ workflow GATK_CREATE_SOM_PON {
     mutect2_index    = GATK4_MUTECT2.out.tbi.collect()                     // channel: [ val(meta), [ tbi ] ]
     mutect2_stats    = GATK4_MUTECT2.out.stats.collect()                   // channel: [ val(meta), [ stats ] ]
 
-    genomicsdb       = GATK4_GENOMICSDBIMPORT.out.genomicsdb     // channel: [ val(meta), [ genomicsdb ] ]
+    genomicsdb       = GATK4_GENOMICSDBIMPORT.out.genomicsdb               // channel: [ val(meta), [ genomicsdb ] ]
 
-    pon_vcf          = GATK4_CREATESOMATICPANELOFNORMALS.out.vcf // channel: [ val(meta), [ vcf.gz ] ]
-    pon_index        = GATK4_CREATESOMATICPANELOFNORMALS.out.tbi // channel: [ val(meta), [ tbi ] ]
+    pon_vcf          = GATK4_CREATESOMATICPANELOFNORMALS.out.vcf           // channel: [ val(meta), [ vcf.gz ] ]
+    pon_index        = GATK4_CREATESOMATICPANELOFNORMALS.out.tbi           // channel: [ val(meta), [ tbi ] ]
 
-    versions         = ch_versions                               // channel: [ versions.yml ]
+    versions         = ch_versions                                         // channel: [ versions.yml ]
 }
