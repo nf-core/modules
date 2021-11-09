@@ -19,10 +19,7 @@ process PLINK_EXTRACT {
     }
 
     input:
-    tuple val(meta), path(bed)
-    tuple val(meta), path(bim)
-    tuple val(meta), path(fam)
-    tuple val(meta), path(variants)
+    tuple val(meta), path(bed), path(bim), path(fam), path(variants)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
