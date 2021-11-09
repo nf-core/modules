@@ -1,21 +1,32 @@
-- name: unicycler single-end
-  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_single_end -c tests/config/nextflow.config
+- name: unicycler test_unicycler_single_end
+  command: nextflow run tests/modules/unicycler -entry test_unicycler_single_end -c tests/config/nextflow.config
   tags:
     - unicycler
   files:
-    - path: output/unicycler/test.scaffolds.fa
-    - path: output/unicycler/test.assembly.gfa
+    - path: output/unicycler/test.assembly.gfa.gz
+      md5sum: bbdb976d577105864b2ac02b1be02755
+    - path: output/unicycler/test.scaffolds.fa.gz
+      md5sum: 634d7d5a9a78da4084a840628fa4dd58
     - path: output/unicycler/test.unicycler.log
-      contains:
-        - "Assembly complete"
 
-- name: unicycler paired-end
-  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_paired_end -c tests/config/nextflow.config
+- name: unicycler test_unicycler_paired_end
+  command: nextflow run tests/modules/unicycler -entry test_unicycler_paired_end -c tests/config/nextflow.config
   tags:
     - unicycler
   files:
-    - path: output/unicycler/test.scaffolds.fa
-    - path: output/unicycler/test.assembly.gfa
+    - path: output/unicycler/test.assembly.gfa.gz
+      md5sum: 1fe4c220a87992de05abe0846070cb14
+    - path: output/unicycler/test.scaffolds.fa.gz
+      md5sum: 6edbc86492fadc628aa4df3b694806ba
     - path: output/unicycler/test.unicycler.log
-      contains:
-        - "Assembly complete"
+
+- name: unicycler test_unicycler_shortreads_longreads
+  command: nextflow run tests/modules/unicycler -entry test_unicycler_shortreads_longreads -c tests/config/nextflow.config
+  tags:
+    - unicycler
+  files:
+    - path: output/unicycler/test.assembly.gfa.gz
+      md5sum: f6258aae5042fa45fd49233446b66b2c
+    - path: output/unicycler/test.scaffolds.fa.gz
+      md5sum: 182f3e95c4fa78786ad8f95451d7fddc
+    - path: output/unicycler/test.unicycler.log
