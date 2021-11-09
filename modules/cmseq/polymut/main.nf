@@ -3,6 +3,8 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
+def VERSION = '1.0.4'
+
 process CMSEQ_POLYMUT {
     tag "$meta.id"
     label 'process_low'
@@ -28,7 +30,6 @@ process CMSEQ_POLYMUT {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
     def sortindex = bai ? "" : "--sortindex"
-    def version = '1.0.4'
     """
     polymut.py \\
         $options.args \\
@@ -39,7 +40,7 @@ process CMSEQ_POLYMUT {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo $version )
+        ${getSoftwareName(task.process)}: \$( echo $VERSION )
     END_VERSIONS
     """
 }
