@@ -19,8 +19,9 @@ process ALLELECOUNTER {
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path loci
+    path fasta
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
@@ -28,11 +29,14 @@ process ALLELECOUNTER {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def reference_options = fasta ? "-r $fasta": ""
+
     """
     alleleCounter \\
         $options.args \\
         -l $loci \\
-        -b $bam \\
+        -b $input \\
+        $reference_options \\
         -o ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml
