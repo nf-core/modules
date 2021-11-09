@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { ULTRA_PIPELINE } from '../../../../modules/ultra/pipeline/main.nf' addParams( options: [:] )
 include { GUNZIP }         from '../../../../modules/gunzip/main.nf'         addParams( options: [:] )
-include { GFFREAD }        from '../../../../modules/gffread/main.nf'        addParams( options: [suffix: "_sorted"] )
+include { GFFREAD }        from '../../../../modules/gffread/main.nf'        addParams( options: [args: "--sort-alpha --keep-genes -T", suffix: "_sorted"] )
 
 workflow test_ultra_pipeline {
 
@@ -15,8 +15,9 @@ workflow test_ultra_pipeline {
     GUNZIP(fastq)
     GFFREAD(gtf)
 
-    ULTRA_PIPELINE (
-        [ [ id:'test', single_end:false ], GUNZIP.out.gunzip ],
-        genome,
-        GFFREAD.out.gtf )
+    GUNZIP.out.gunzip
+    .map { [ [ id:'test', single_end:false ], it ] }
+    .set { input }
+
+    ULTRA_PIPELINE (input, genome, GFFREAD.out.gtf)
 }
