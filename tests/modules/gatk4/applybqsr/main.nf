@@ -30,3 +30,17 @@ workflow test_gatk4_applybqsr_intervals {
 
   GATK4_APPLYBQSR ( input, fasta, fai, dict, intervals )
 }
+
+workflow test_gatk4_applybqsr_cram {
+    input = [ [ id:'test' ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test_baserecalibrator_table'], checkIfExists: true)
+              ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+
+  GATK4_APPLYBQSR ( input, fasta, fai, dict, intervals )
+}
