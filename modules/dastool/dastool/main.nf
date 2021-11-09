@@ -43,6 +43,7 @@ process DASTOOL_DASTOOL {
     def method_list = methods ? "-l $methods" : ""
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
     def clean_contigs = contigs.toString() - ".gz"
+    def decompress_contigs = contigs.toString() == clean_contigs ? "" : "gunzip -q -f $contigs"
     def decompress_proteins = proteins ? "gunzip -f $proteins" : ""
     def clean_proteins = proteins ? proteins.toString() - ".gz" : ""
     def proteins_pred = proteins ? "--proteins $clean_proteins" : ""
@@ -53,7 +54,7 @@ process DASTOOL_DASTOOL {
 
     """
     $decompress_proteins
-    gunzip -f $contigs
+    $decompress_contigs
 
     DAS_Tool \\
         $options.args \\
