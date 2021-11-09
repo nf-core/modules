@@ -34,8 +34,10 @@ process HICAP {
     def database_args = database_dir ? "--database_dir ${database_dir}" : ""
     def model_args = model_fp ? "--model_fp ${model_fp}" : ""
     """
+    mkfifo fasta_uncompressed
+    gzip -cdf $fasta > fasta_uncompressed &
     hicap \\
-        --query_fp <(zcat $fasta) \\
+        --query_fp fasta_uncompressed \\
         $database_args \\
         $model_args \\
         $options.args \\
