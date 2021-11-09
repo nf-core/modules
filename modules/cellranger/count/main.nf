@@ -46,6 +46,9 @@ process CELLRANGER_COUNT {
     """
     mkdir -p "sample-${meta.gem}/outs/"
     touch sample-${meta.gem}/outs/fake_file.txt
-    cellranger --version | grep -o "[0-9\\. ]\\+" > cellranger.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
     """
 }
