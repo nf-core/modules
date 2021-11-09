@@ -1,16 +1,18 @@
 //
-// Run GATK mutect2, genomicsdbimport and createsomaticpanelofnormals
+// Run GATK mutect2 in tumour only mode, getepileupsummaries, calculatecontamination and filtermutectcalls
 //
 
-params.mutect2_options      = [args: '--max-mnp-distance 0']
-params.gendbimport_options  = [:]
-params.createsompon_options = [:]
+params.mutect2_options     = [:]
+params.getpileup_options   = [:]
+params.calccontam_options  = [:]
+params.filtercalls_options = [:]
 
-include { GATK4_MUTECT2                     } from '../../../modules/gatk4/mutect2/main'                     addParams( options: params.mutect2_options )
-include { GATK4_GENOMICSDBIMPORT            } from '../../../modules/gatk4/genomicsdbimport/main'            addParams( options: params.gendbimport_options )
-include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/gatk4/createsomaticpanelofnormals/main' addParams( options: params.createsompon_options )
+include { GATK4_MUTECT2                     } from '../../../modules/gatk4/mutect2/main'                addParams( options: params.mutect2_options )
+include { GATK4_GETPILEUPSUMMARIES          } from '../../../modules/gatk4/getepileupsummaries/main'    addParams( options: params.getpileup_options )
+include { GATK4_CALCULATECONTAMINATION      } from '../../../modules/gatk4/calculatecontamination/main' addParams( options: params.calccontam_options )
+include { GATK4_FILTERMUTECTCALLS           } from '../../../modules/gatk4/filtermutectcalls/main'      addParams( options: params.filtercalls_options )
 
-workflow GATK_CREATE_SOM_PON {
+workflow GATK_TUMOUR_ONLY_SOMATIC_VARIANT_CALLING {
     take:
     ch_mutect2_in       // channel: [ val(meta), [ input ], [ input_index ], [] ]
     fasta               // channel: /path/to/reference/fasta
