@@ -35,7 +35,7 @@ process CLONALFRAMEML {
     """
     ClonalFrameML \\
         $newick \\
-        <zcat -f $msa) \\
+        <(gzip -cdf $msa) \\
         $prefix \\
         $options.args
 
