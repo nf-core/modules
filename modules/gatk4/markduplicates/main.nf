@@ -31,7 +31,7 @@ process GATK4_MARKDUPLICATES {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bam_list = bams.collect(){ bam -> "--INPUT ".concat(bam.toString()) }.join(" ")
-    def metrics  = use_metrics ? "M=${prefix}.metrics" :''
+    def metrics  = use_metrics ? "--METRICS_FILE ${prefix}.metrics" :''
     def avail_mem       = 3
     if (!task.memory) {
         log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
