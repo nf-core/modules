@@ -7,9 +7,9 @@ include { PEDDY } from '../../../modules/peddy/main.nf' addParams( options: [:] 
 workflow test_peddy {
 
     input = [ [ id:'test', single_end:false ],
-            file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)] // meta map
-    vcf = file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true)
-    tbi = file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz_tbi'], checkIfExists: true)
+            file('https://raw.githubusercontent.com/nf-core/test-datasets/raredisease/data/genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)] // meta map
+    vcf = file('https://raw.githubusercontent.com/nf-core/test-datasets/raredisease/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true)
+    tbi = file('https://raw.githubusercontent.com/nf-core/test-datasets/raredisease/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true)
 
     PEDDY ( input , vcf , tbi )
 }
