@@ -9,12 +9,12 @@ include { DASTOOL_SCAFFOLDS2BIN } from '../../../../modules/dastool/scaffolds2bi
 workflow test_dastool_scaffolds2bin {
 
     input_depth = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
+              file(params.test_data['bacteroides_fragilis']['illumina']['test1_paired_end_sorted_bam'], checkIfExists: true),
+              file(params.test_data['bacteroides_fragilis']['illumina']['test1_paired_end_sorted_bam_bai'], checkIfExists: true) ]
 
     METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS ( input_depth )
 
-    Channel.fromPath(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    Channel.fromPath(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
         .map { it -> [[ id:'test', single_end:false ], it] }
         .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
         .set { input_metabat2 }
