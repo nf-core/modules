@@ -13,7 +13,7 @@ process HMMCOPY_GENERATEMAP {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
-    conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
+    // using a container generated from the hmmcopyutils github, but with a working copy of generateMap.pl, including the bowtie dependency and fastaToRead script.
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "docker://crukmi/hmmcopyutils"
     } else {
