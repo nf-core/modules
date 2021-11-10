@@ -15,9 +15,9 @@ process HMMCOPY_GENERATEMAP {
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "/lmod/apps/hmmcopyutils/0.99.0_container/hmmcopyutils.sif"
+        container "docker://crukmi/hmmcopyutils"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "docker://crukmi/hmmcopyutils"
     }
 
     input:
@@ -30,10 +30,12 @@ process HMMCOPY_GENERATEMAP {
     script:
 
     """
+    # build required indexes
     generateMap.pl -b \\
         $options.args \\
         $fasta
 
+    # run
     generateMap.pl \\
         $options.args \\
         $fasta
