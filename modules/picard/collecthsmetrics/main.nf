@@ -27,7 +27,7 @@ process PICARD_COLLECTHSMETRICS {
 
     output:
     tuple val(meta), path("*collecthsmetrics.txt"), emit: hs_metrics
-    path "versions.yml"                     , emit: versions
+    path "versions.yml"                           , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
