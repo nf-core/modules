@@ -4,35 +4,38 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process SAMTOOLS_INDEX {
+process EMMTYPER {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::samtools=1.13' : null)
+    conda (params.enable_conda ? "bioconda::emmtyper=0.2.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/samtools:1.13--h8c37831_0"
+        container "https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0"
     } else {
-        container "quay.io/biocontainers/samtools:1.13--h8c37831_0"
+        container "quay.io/biocontainers/emmtyper:0.2.0--py_0"
     }
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.bai") , optional:true, emit: bai
-    tuple val(meta), path("*.crai"), optional:true, emit: crai
-    tuple val(meta), path("*.csi") , optional:true, emit: csi
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv
+    path "versions.yml"           , emit: versions
 
     script:
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    samtools index $options.args $input
+    emmtyper \\
+        $options.args \\
+        $fasta \\
+        > ${prefix}.tsv
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(emmtyper --version 2>&1) | sed 's/^.*emmtyper v//' )
     END_VERSIONS
     """
 }
