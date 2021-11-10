@@ -45,14 +45,14 @@ process ANTISMASH {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
+    # Specifically don't include annotations (--genefinding-tool none) as this should be run as a separate module for versioning purposes
     antismash \\
         $sequence_input \\
         $options.args \\
         -c $task.cpus \\
         --output-dir $prefix \\
         --genefinding-tool none \\
-        --logfile $prefix/${prefix}.log \\
-        --cb-knownclusters --cb-general
+        --logfile $prefix/${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

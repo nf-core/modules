@@ -6,8 +6,7 @@ include { ANTISMASH } from '../../../modules/antismash/main.nf' addParams( optio
 
 workflow test_antismash {
 
-    input = [ [ id:'test', single_end:false ], // meta map
-              file("https://figshare.com/ndownloader/files/31181863?private_link=51005a12828ca4390de1", checkIfExists: true) ]
-
+    input = [ [ id:'test' ], // meta map
+            file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true) ]
     ANTISMASH ( input )
 }
