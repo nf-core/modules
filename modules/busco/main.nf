@@ -38,7 +38,7 @@ process BUSCO {
         --augustus \\
         --cpu $task.cpus \\
         --in  $fasta \\
-        --out $prefix
+        --out $meta.id
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
