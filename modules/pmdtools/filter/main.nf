@@ -19,7 +19,6 @@ process PMDTOOLS_FILTER {
     }
 
     input:
-
     tuple val(meta), path(bam), path (bai)
     val(threshold)
     path(reference)
