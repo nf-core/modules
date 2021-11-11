@@ -1,7 +1,7 @@
-- name: gatk_create_som_pon
-  command: nextflow run ./tests/subworkflows/nf-core/gatk_create_som_pon -entry test_gatk_create_som_pon -c tests/config/nextflow.config
+- name: gatk_tumour_only_somatic_variant_calling
+  command: nextflow run ./tests/subworkflows/nf-core/gatk_tumour_only_somatic_variant_calling -entry test_gatk_tumour_only_somatic_variant_calling -c tests/config/nextflow.config
   tags:
-    - subworkflows/gatk_create_som_pon
+    - subworkflows/gatk_tumour_only_somatic_variant_calling
     # Modules
     - gatk4
     - gatk4
