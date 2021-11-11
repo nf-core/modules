@@ -25,7 +25,7 @@ process GATK3_UNIFIEDGENOTYPER {
     path dict
 
     output:
-    path tuple val(meta), path("*.vcf.gz"),        emit: vcf
+    tuple val(meta), path("*.vcf.gz"),        emit: vcf
     path "versions.yml", emit: versions
 
     script:
