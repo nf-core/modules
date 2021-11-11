@@ -4,40 +4,38 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process GATK4_FASTQTOSAM {
+process NGMASTER {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::ngmaster=0.5.8" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
+        container "quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1"
     }
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
     script:
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    gatk FastqToSam \\
-        $read_files \\
-        -O ${prefix}.bam \\
-        -SM $prefix \\
-        $options.args
+    ngmaster \\
+        $options.args \\
+        $fasta \\
+        > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$(ngmaster --version 2>&1) | sed 's/^.*ngmaster //' )
     END_VERSIONS
     """
 }
