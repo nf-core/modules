@@ -3,36 +3,26 @@
   tags:
     - subworkflows/gatk_tumour_only_somatic_variant_calling
     # Modules
-    - gatk4
-    - gatk4
-    - gatk4/genomicsdbimport
-    - gatk4/createsomaticpanelofnormals
+    - gatk4/mutect2
+    - gatk4/getpileupsummaries
+    - gatk4/calculatecontamination
+    - gatk4/filtermutectcalls
   files:
       # gatk4 mutect2
-    - path: output/gatk4/test1.vcf.gz
-    - path: output/gatk4/test1.vcf.gz.stats
-      md5sum: 4f77301a125913170b8e9e7828b4ca3f
-    - path: output/gatk4/test1.vcf.gz.tbi
-    - path: output/gatk4/test2.vcf.gz
-    - path: output/gatk4/test2.vcf.gz.stats
+    - path: ./output/mutect2/test.vcf.gz
+    - path: ./output/mutect2/test.vcf.gz.stats
       md5sum: 106c5828b02b906c97922618b6072169
-    - path: output/gatk4/test2.vcf.gz.tbi
-      # gatk4 genomicsdbimport
-    - path: output/gatk4/test_panel/__tiledb_workspace.tdb
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/callset.json
-      md5sum: 2ab411773b7267de61f8c04939de2a99
-    - path: output/gatk4/test_panel/chr22$1$40001/.__consolidation_lock
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/chr22$1$40001/__array_schema.tdb
-    - path: output/gatk4/test_panel/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
-      md5sum: 2502f79658bc000578ebcfddfc1194c0
-    - path: output/gatk4/test_panel/vcfheader.vcf
-      contains:
-        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
-    - path: output/gatk4/test_panel/vidmap.json
-      md5sum: ee4f6815c433caa8ab101ec45ff328a6
-      # gatk4 createsomaticpanelofnormals
-    - path: output/gatk4/test_panel.vcf.gz
-    - path: output/gatk4/test_panel.vcf.gz.tbi
-      md5sum: 722940c7ca4ed63aacb3d0a74d6effd9
+    - path: ./output/mutect2/test.vcf.gz.tbi
+      # gatk4 getpileupsummaries
+    - path: ./output/getpileupsummaries/test.pileups.table
+      md5sum: 8b1b4c8ab831eca50ee9e940463a741f
+      # gatk4 calculatecontamination
+    - path: ./output/calculatecontamination/test.contamination.table
+      md5sum: ff348a26dd09404239a7ed0da7d98874
+    - path: ./output/calculatecontamination/test.segmentation.table
+      md5sum: 91f28bfe4727a3256810927fc5eba92f
+      # gatk4 filtermutectcalls
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz.filteringStats.tsv
+      md5sum: 023c77fc9d3de9772b9b642bf1b8301e
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz.tbi

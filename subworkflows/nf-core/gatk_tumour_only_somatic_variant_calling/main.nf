@@ -7,10 +7,10 @@ params.getpileup_options   = [:]
 params.calccontam_options  = [:]
 params.filtercalls_options = [suffix: '_filtered']
 
-include { GATK4_MUTECT2                     } from '../../../modules/gatk4/mutect2/main'                addParams( options: params.mutect2_options )
-include { GATK4_GETPILEUPSUMMARIES          } from '../../../modules/gatk4/getpileupsummaries/main'    addParams( options: params.getpileup_options )
-include { GATK4_CALCULATECONTAMINATION      } from '../../../modules/gatk4/calculatecontamination/main' addParams( options: params.calccontam_options )
-include { GATK4_FILTERMUTECTCALLS           } from '../../../modules/gatk4/filtermutectcalls/main'      addParams( options: params.filtercalls_options )
+include { GATK4_MUTECT2                as MUTECT2 }                  from '../../../modules/gatk4/mutect2/main'                addParams( options: params.mutect2_options )
+include { GATK4_GETPILEUPSUMMARIES     as GETPILEUPSUMMARIES }       from '../../../modules/gatk4/getpileupsummaries/main'     addParams( options: params.getpileup_options )
+include { GATK4_CALCULATECONTAMINATION as CALCULATECONTAMINATION }   from '../../../modules/gatk4/calculatecontamination/main' addParams( options: params.calccontam_options )
+include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../../../modules/gatk4/filtermutectcalls/main'      addParams( options: params.filtercalls_options )
 
 workflow GATK_TUMOUR_ONLY_SOMATIC_VARIANT_CALLING {
     take:
@@ -26,13 +26,14 @@ workflow GATK_TUMOUR_ONLY_SOMATIC_VARIANT_CALLING {
 
 
     main:
-    ch_versions      = Channel.empty()
+    ch_versions = Channel.empty()
     input = channel.from(ch_mutect2_in)
+
     //
     //Perform variant calling using mutect2 module in tumour single mode.
     //
-    GATK4_MUTECT2 ( input , true , false , false , [] , fasta , fastaidx , dict , germline_resource , germline_resource_idx , panel_of_normals , panel_of_normals_idx )
-    ch_versions = ch_versions.mix(GATK4_MUTECT2.out.versions)
+    MUTECT2 ( input , true , false , false , [] , fasta , fastaidx , dict , germline_resource , germline_resource_idx , panel_of_normals , panel_of_normals_idx )
+    ch_versions = ch_versions.mix(MUTECT2.out.versions)
 
     //
     //Generate pileup summary table using getepileupsummaries.
@@ -42,44 +43,44 @@ workflow GATK_TUMOUR_ONLY_SOMATIC_VARIANT_CALLING {
         meta, input_file, input_index, which_norm ->
         [meta, input_file[0], input_index[0]]
     }
-    GATK4_GETPILEUPSUMMARIES ( pileup_input , germline_resource , germline_resource_idx , interval_file )
-    ch_versions = ch_versions.mix(GATK4_GETPILEUPSUMMARIES.out.versions)
+    GETPILEUPSUMMARIES ( pileup_input , germline_resource , germline_resource_idx , interval_file )
+    ch_versions = ch_versions.mix(GETPILEUPSUMMARIES.out.versions)
 
     //
     //Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
     //
-    ch_pileup = GATK4_GETPILEUPSUMMARIES.out.table.collect()
+    ch_pileup = GETPILEUPSUMMARIES.out.table.collect()
     ch_pileup.add([])
-    GATK4_CALCULATECONTAMINATION ( ch_pileup, true )
-    ch_versions = ch_versions.mix(GATK4_CALCULATECONTAMINATION.out.versions)
+    CALCULATECONTAMINATION ( ch_pileup, true )
+    ch_versions = ch_versions.mix(CALCULATECONTAMINATION.out.versions)
 
     //
     //Mutect2 calls filtered by filtermutectcalls using the contamination and segmentation tables.
     //
-    ch_vcf = GATK4_MUTECT2.out.vcf.collect()
-    ch_tbi = GATK4_MUTECT2.out.tbi.collect()
-    ch_stats = GATK4_MUTECT2.out.stats.collect()
+    ch_vcf = MUTECT2.out.vcf.collect()
+    ch_tbi = MUTECT2.out.tbi.collect()
+    ch_stats = MUTECT2.out.stats.collect()
     ch_stats.add([])
-    ch_segment = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
-    ch_contamination = GATK4_CALCULATECONTAMINATION.out.contamination.collect()
+    ch_segment = CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_contamination = CALCULATECONTAMINATION.out.contamination.collect()
     ch_contamination.add([])
     ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
-    GATK4_FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fastaidx, dict )
-    ch_versions = ch_versions.mix(GATK4_FILTERMUTECTCALLS.out.versions)
+    FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fastaidx, dict )
+    ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
 
     emit:
-    mutect2_vcf            = GATK4_MUTECT2.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
-    mutect2_index          = GATK4_MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
-    mutect2_stats          = GATK4_MUTECT2.out.stats.collect()                           // channel: [ val(meta), [ stats ] ]
+    mutect2_vcf            = MUTECT2.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
+    mutect2_index          = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
+    mutect2_stats          = MUTECT2.out.stats.collect()                           // channel: [ val(meta), [ stats ] ]
 
-    pileup_table           = GATK4_GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), [ table ] ]
+    pileup_table           = GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), [ table ] ]
 
-    contamination_table    = GATK4_CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
-    segmentation_table     = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
+    contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
+    segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
 
-    filtered_vcf           = GATK4_FILTERMUTECTCALLS.out.vcf.collect()                  // channel: [ val(meta), [ vcf ] ]
-    filtered_index         = GATK4_FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
-    filtered_stats         = GATK4_FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
+    filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), [ vcf ] ]
+    filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
+    filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
 
-    versions               = ch_versions                                                 // channel: [ versions.yml ]
+    versions               = ch_versions                                           // channel: [ versions.yml ]
 }
