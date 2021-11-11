@@ -48,7 +48,7 @@ process PMDTOOLS_FILTER {
         -Sb \\
         - \\
         -@ ${split_cpus} \\
-        -o ${prefix}.pmd.bam
+        -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
