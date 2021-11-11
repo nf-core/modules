@@ -1,47 +1,38 @@
 name: samtools_getchromsizes
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Generates a FASTA file of chromosome sizes and a fasta index file
 keywords:
-  - sort
+  - fasta
+  - chromosome
+  - indexing
 tools:
   - samtools:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Tools for dealing with SAM, BAM and CRAM files
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html 
+      tool_dev_url: https://github.com/samtools/samtools
+      doi: 10.1093/bioinformatics/btp352
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: FASTA file
+      pattern: "*.{fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
+  - sizes:
+      type: file
+      description: File containing chromosome lengths 
+      pattern: "*.{sizes}"
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.{fai}"
+  - versions:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      pattern: "versions.yml"
+  
 
 authors:
   - "@tamara-hodgetts"
