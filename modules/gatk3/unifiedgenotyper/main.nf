@@ -25,8 +25,8 @@ process GATK3_UNIFIEDGENOTYPER {
     path dict
 
     output:
-    tuple val(meta), path("*.vcf.gz"),        emit: vcf
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.vcf.gz") , emit: vcf
+    path "versions.yml"               , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
