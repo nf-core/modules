@@ -24,7 +24,6 @@ process GSTAMA_COLLAPSE {
     path fasta
 
     output:
-
     tuple val(meta), path("*_collapsed.bed")          , emit: bed
     tuple val(meta), path("*_trans_read.bed")         , emit: bed_trans_reads
     tuple val(meta), path("*_local_density_error.txt"), emit: local_density_error
