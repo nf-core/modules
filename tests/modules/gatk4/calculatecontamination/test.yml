@@ -5,7 +5,7 @@
     - gatk4
   files:
     - path: output/gatk4/test.contamination.table
-      md5sum: ff348a26dd09404239a7ed0da7d98874
+      md5sum: 5fdcf1728cf98985ce31c038eb24e05c
 
 - name: gatk4 calculatecontamination test_gatk4_calculatecontamination_matched_pair
   command: nextflow run tests/modules/gatk4/calculatecontamination -entry test_gatk4_calculatecontamination_matched_pair -c tests/config/nextflow.config
@@ -14,7 +14,7 @@
     - gatk4
   files:
     - path: output/gatk4/test.contamination.table
-      md5sum: ff348a26dd09404239a7ed0da7d98874
+      md5sum: 5fdcf1728cf98985ce31c038eb24e05c
 
 - name: gatk4 calculatecontamination test_gatk4_calculatecontamination_segmentation
   command: nextflow run tests/modules/gatk4/calculatecontamination -entry test_gatk4_calculatecontamination_segmentation -c tests/config/nextflow.config
@@ -23,6 +23,6 @@
     - gatk4
   files:
     - path: output/gatk4/test.contamination.table
-      md5sum: ff348a26dd09404239a7ed0da7d98874
+      md5sum: 5fdcf1728cf98985ce31c038eb24e05c
     - path: output/gatk4/test.segmentation.table
-      md5sum: 478cb4f69ec001944b9cd0e7e4de01ef
+      md5sum: 91f28bfe4727a3256810927fc5eba92f
