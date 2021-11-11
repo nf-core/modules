@@ -13,9 +13,9 @@ process PMDTOOLS_FILTER {
 
     conda (params.enable_conda ? "bioconda::pmdtools=0.60" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/pmdtools:0.60--hdfd78af_4"
+        container "https://depot.galaxyproject.org/singularity/pmdtools:0.60--hdfd78af_5"
     } else {
-        container "quay.io/biocontainers/pmdtools:0.60--hdfd78af_4"
+        container "quay.io/biocontainers/pmdtools:0.60--hdfd78af_5"
     }
 
     input:
