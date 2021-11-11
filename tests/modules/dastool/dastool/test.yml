@@ -9,7 +9,8 @@
     - path: output/dastool/test.seqlength
       md5sum: b815a5811008c36808a59b1d0dcfab24
     - path: output/dastool/test_DASTool.log
-      contains: 'DAS Tool run on'
+      contains: 
+        - 'DAS Tool run on'
     - path: output/dastool/test_DASTool_scaffolds2bin.txt
       md5sum: 6e46c0be14dded7cb13af38f54feea47
     - path: output/dastool/test_DASTool_summary.txt
