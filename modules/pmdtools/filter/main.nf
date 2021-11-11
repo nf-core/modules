@@ -25,8 +25,7 @@ process PMDTOOLS_FILTER {
 
     output:
     tuple val(meta), path("*.pmd.bam"), emit: bam
-
-    path "versions.yml"          , emit: versions
+    path "versions.yml"               , emit: versions
 
     script:
     def split_cpus = Math.floor(task.cpus/2)
