@@ -17,6 +17,9 @@ tools:
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ['Apache-2.0']
 input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
   - bam:
       type: file
       description: BAM file for input
@@ -27,6 +30,9 @@ input:
       pattern: "*.fa"
 
 output:
+   - meta:
+      type: map
+      description: Groovy Map containing sample information
   - versions:
       type: file
       description: File containing software versions
