@@ -32,6 +32,14 @@ input:
       type: file
       description: reference file used for mapping
       pattern: "*.fa"
+  - fai:
+      type: file
+      description: fai used for reference mapping
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: dict used for reference mapping
+      pattern: "*.dict"
 
 output:
   - meta:
@@ -47,4 +55,4 @@ output:
       pattern: "*.{vcf.gz}"
 
 authors:
-  - "@yocra3"
+  - "@ilight1542"
