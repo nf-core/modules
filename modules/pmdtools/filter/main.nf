@@ -24,7 +24,7 @@ process PMDTOOLS_FILTER {
     path(reference)
 
     output:
-    tuple val(meta), path("*.pmd.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"               , emit: versions
 
     script:
