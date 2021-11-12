@@ -53,7 +53,8 @@ process PMDTOOLS_FILTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( pmdtools --version | cut -f2 -d ' ' | sed 's/v//')
+        pmdtools: \$( pmdtools --version | cut -f2 -d ' ' | sed 's/v//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
