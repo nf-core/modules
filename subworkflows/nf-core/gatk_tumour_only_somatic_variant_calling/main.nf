@@ -57,11 +57,11 @@ workflow GATK_TUMOUR_ONLY_SOMATIC_VARIANT_CALLING {
     //
     //Mutect2 calls filtered by filtermutectcalls using the contamination and segmentation tables.
     //
-    ch_vcf = MUTECT2.out.vcf.collect()
-    ch_tbi = MUTECT2.out.tbi.collect()
-    ch_stats = MUTECT2.out.stats.collect()
+    ch_vcf =           MUTECT2.out.vcf.collect()
+    ch_tbi =           MUTECT2.out.tbi.collect()
+    ch_stats =         MUTECT2.out.stats.collect()
     ch_stats.add([])
-    ch_segment = CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_segment =       CALCULATECONTAMINATION.out.segmentation.collect()
     ch_contamination = CALCULATECONTAMINATION.out.contamination.collect()
     ch_contamination.add([])
     ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
