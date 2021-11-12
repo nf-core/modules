@@ -44,7 +44,7 @@ process FARGENE {
 
     script:
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    
+
     """
     gzip \\
         -cdf $input \\
