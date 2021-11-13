@@ -21,9 +21,9 @@ process RAVEN {
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.gfa")  , emit: gfa
-    tuple val(meta), path("*.log")  , emit: log
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.gfa")     , emit: gfa
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
