@@ -35,8 +35,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def ccore = task.cpus ? ((task.cpus as int) / 3) as int : 1
     def multicore = (ccore > 1) ? "--multicore ${ccore}" : ""
     // Only set buffer_size when there are more than 6.GB of memory available
-    def mbuffer = task.memory ? (task.memory as nextflow.util.MemoryUnit) - 2.GB : (4.GB).toBytes()
-    def buffer = (mbuffer.compareTo(4.GB) == 1) ? "--buffer_size ${mbuffer.toGiga()}G" : ""
+    def buffer = (task.memory?.giga > 6) ? "--buffer_size ${task.memory.giga - 2}G" : ""
 
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
