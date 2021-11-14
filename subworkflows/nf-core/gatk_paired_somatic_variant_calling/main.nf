@@ -1,64 +1,110 @@
 //
-// Run GATK mutect2, genomicsdbimport and createsomaticpanelofnormals
+// Run GATK mutect2 in tumour paired mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
 //
 
-params.mutect2_options      = [args: '--max-mnp-distance 0']
-params.gendbimport_options  = [:]
-params.createsompon_options = [:]
+params.mutect2_options          = [:]
+params.learnorientation_options = [:]
+params.getpileup_options        = [suffix: '_tumour']
+params.getpileupnorm_options    = [suffix: '_normal']
+params.calccontam_options       = [:]
+params.filtercalls_options      = [suffix: '_filtered']
 
-include { GATK4_MUTECT2                     } from '../../../modules/gatk4/mutect2/main'                     addParams( options: params.mutect2_options )
-include { GATK4_GENOMICSDBIMPORT            } from '../../../modules/gatk4/genomicsdbimport/main'            addParams( options: params.gendbimport_options )
-include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/gatk4/createsomaticpanelofnormals/main' addParams( options: params.createsompon_options )
+include { GATK4_MUTECT2                   as MUTECT2 }                   from '../../../modules/gatk4/mutect2/main'                   addParams( options: params.mutect2_options )
+include { GATK4_LEARNREADORIENTATIONMODEL as LEARNREADORIENTATIONMODEL } from '../../../modules/gatk4/learnreadorientationmodel/main' addParams( options: params.learnorientation_options )
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES }        from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileup_options )
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileupnorm_options )
+include { GATK4_CALCULATECONTAMINATION    as CALCULATECONTAMINATION }    from '../../../modules/gatk4/calculatecontamination/main'    addParams( options: params.calccontam_options )
+include { GATK4_FILTERMUTECTCALLS         as FILTERMUTECTCALLS }         from '../../../modules/gatk4/filtermutectcalls/main'         addParams( options: params.filtercalls_options )
 
-workflow GATK_CREATE_SOM_PON {
+workflow GATK_PAIRED_SOMATIC_VARIANT_CALLING {
     take:
-    ch_mutect2_in       // channel: [ val(meta), [ input ], [ input_index ], [] ]
-    fasta               // channel: /path/to/reference/fasta
-    fastaidx            // channel: /path/to/reference/fasta/index
-    dict                // channel: /path/to/reference/fasta/dictionary
-    pon_name            // channel: name for panel of normals
-    interval_file       // channel: /path/to/interval/file
+    ch_mutect2_in             // channel: [ val(meta), [ input ], [ input_index ], [which_norm] ]
+    fasta                     // channel: /path/to/reference/fasta
+    fastaidx                  // channel: /path/to/reference/fasta/index
+    dict                      // channel: /path/to/reference/fasta/dictionary
+    germline_resource         // channel: /path/to/germline/resource
+    germline_resource_idx     // channel: /path/to/germline/index
+    panel_of_normals          // channel: /path/to/panel/of/normals
+    panel_of_normals_idx      // channel: /path/to/panel/of/normals/index
+    interval_file             // channel: /path/to/interval/file
 
-    // tuple val(meta), path(vcf), path(tbi), path(intervalfile), [], []
-
-
-    // tuple val(meta), path(genomicsdb)
 
     main:
-    ch_versions      = Channel.empty()
+    ch_versions = Channel.empty()
     input = channel.from(ch_mutect2_in)
-    //
-    //Perform variant calling for each sample using mutect2 module in panel of normals mode.
-    //
-    GATK4_MUTECT2 ( input , false , true, false , [] , fasta , fastaidx , dict , [], [] , [] , [] )
-    ch_versions = ch_versions.mix(GATK4_MUTECT2.out.versions.first())
 
     //
-    //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
+    //Perform variant calling using mutect2 module in tumour single mode.
     //
-    ch_vcf = GATK4_MUTECT2.out.vcf.collect{it[1]}.toList()
-    ch_index = GATK4_MUTECT2.out.tbi.collect{it[1]}.toList()
-    // ch_mutect2_out = ch_vcf.combine([ch_index])
-    gendb_input = Channel.of([[ id:pon_name ]]).combine(ch_vcf).combine(ch_index).combine([interval_file]).combine(['']).combine([dict])
-    GATK4_GENOMICSDBIMPORT ( gendb_input, false, false, false )
-    ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions.first())
+    MUTECT2 ( input , false , false , false , [] , fasta , fastaidx , dict , germline_resource , germline_resource_idx , panel_of_normals , panel_of_normals_idx )
+    ch_versions = ch_versions.mix(MUTECT2.out.versions)
 
     //
-    //Panel of normals made from genomicsdb workspace using createsomaticpanelofnormals.
+    //Generate artifactpriors using learnreadorientationmodel on the f1r2 output of mutect2.
     //
-    GATK4_GENOMICSDBIMPORT.out.genomicsdb.view()
-    GATK4_CREATESOMATICPANELOFNORMALS ( GATK4_GENOMICSDBIMPORT.out.genomicsdb, fasta, fastaidx, dict )
-    ch_versions = ch_versions.mix(GATK4_CREATESOMATICPANELOFNORMALS.out.versions.first())
+    ch_learnread_in = MUTECT2.out.f1r2.collect()
+    LEARNREADORIENTATIONMODEL (ch_learnread_in)
+    ch_versions = ch_versions.mix(LEARNREADORIENTATIONMODEL.out.versions)
+
+    //
+    //Generate pileup summary tables using getepileupsummaries. Tumour sample should always be passed in as the first input and input list entries of ch_mutect2_in,
+    //to ensure correct file order for calculatecontamination.
+    //
+    pileup_tumour_input = channel.from(ch_mutect2_in)
+    pileup_tumour_input = pileup_tumour_input.map {
+        meta, input_file, input_index, which_norm ->
+        [meta, input_file[0], input_index[0]]
+    }
+
+    pileup_normal_input = channel.from(ch_mutect2_in)
+    pileup_normal_input = pileup_normal_input.map {
+        meta, input_file, input_index, which_norm ->
+        [meta, input_file[1], input_index[1]]
+    }
+    GETPILEUPSUMMARIES ( pileup_tumour_input, germline_resource, germline_resource_idx, interval_file )
+    GETPILEUPSUMMARIES_NORMAL ( pileup_normal_input, germline_resource, germline_resource_idx, interval_file )
+    ch_versions = ch_versions.mix(GETPILEUPSUMMARIES.out.versions)
+
+    //
+    //Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
+    //
+    ch_pileup = GETPILEUPSUMMARIES.out.table.collect()
+    ch_pileup2 = GETPILEUPSUMMARIES_NORMAL.out.table.collect()
+    ch_calccon_in = ch_pileup.combine(ch_pileup2, by: 0)
+    CALCULATECONTAMINATION ( ch_calccon_in, true )
+    ch_versions = ch_versions.mix(CALCULATECONTAMINATION.out.versions)
+
+    //
+    //Mutect2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables.
+    //
+    ch_vcf =           MUTECT2.out.vcf.collect()
+    ch_tbi =           MUTECT2.out.tbi.collect()
+    ch_stats =         MUTECT2.out.stats.collect()
+    ch_orientation =   LEARNREADORIENTATIONMODEL.out.artifactprior.collect()
+    ch_segment =       CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_contamination = CALCULATECONTAMINATION.out.contamination.collect()
+    ch_contamination.add([])
+    ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_orientation, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
+    FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fastaidx, dict )
+    ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
 
     emit:
-    mutect2_vcf      = GATK4_MUTECT2.out.vcf.collect()                     // channel: [ val(meta), [ vcf ] ]
-    mutect2_index    = GATK4_MUTECT2.out.tbi.collect()                     // channel: [ val(meta), [ tbi ] ]
-    mutect2_stats    = GATK4_MUTECT2.out.stats.collect()                   // channel: [ val(meta), [ stats ] ]
+    mutect2_vcf            = MUTECT2.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
+    mutect2_index          = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
+    mutect2_stats          = MUTECT2.out.stats.collect()                           // channel: [ val(meta), [ stats ] ]
+    mutect2_f1r2           = MUTECT2.out.f1r2.collect()                            // channel: [ val(meta), [ f1r2 ] ]
 
-    genomicsdb       = GATK4_GENOMICSDBIMPORT.out.genomicsdb     // channel: [ val(meta), [ genomicsdb ] ]
+    artifact_priors        = LEARNREADORIENTATIONMODEL.out.artifactprior.collect() // channel: [ val(meta), [ artifactprior ] ]
 
-    pon_vcf          = GATK4_CREATESOMATICPANELOFNORMALS.out.vcf // channel: [ val(meta), [ vcf.gz ] ]
-    pon_index        = GATK4_CREATESOMATICPANELOFNORMALS.out.tbi // channel: [ val(meta), [ tbi ] ]
+    pileup_table_tumour    = GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), [ table_tumour ] ]
+    pileup_table_normal    = GETPILEUPSUMMARIES_NORMAL.out.table.collect()         // channel: [ val(meta), [ table_normal ] ]
 
-    versions         = ch_versions                               // channel: [ versions.yml ]
+    contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
+    segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
+
+    filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), [ vcf ] ]
+    filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
+    filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
+
+    versions               = ch_versions                                           // channel: [ versions.yml ]
 }
