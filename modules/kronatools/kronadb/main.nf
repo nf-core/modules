@@ -16,6 +16,7 @@ process KRONATOOLS_KRONADB {
     } else {
         container "quay.io/biocontainers/krona:2.7.1--pl526_5"
     }
+    input:
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db
