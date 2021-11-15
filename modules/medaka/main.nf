@@ -22,22 +22,22 @@ process MEDAKA {
     tuple val(meta), path(reads), path(assembly)
 
     output:
-    tuple val(meta), path("*_polished_genome.fa.gz") , emit: polished_assembly
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("*_polished_genome.fa.gz"), emit: assembly
+    path "versions.yml"                             , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     medaka_consensus \\
-        -t ${task.cpus} \\
+        -t $task.cpus \\
         $options.args \\
-        -i ${reads} \\
-        -d ${assembly} \\
+        -i $reads \\
+        -d $assembly \\
         -o ./
 
-    mv consensus.fasta ${prefix}_polished_genome.fa
+    mv consensus.fasta ${prefix}.polished.genome.fa
 
-    gzip -n ${prefix}_polished_genome.fa
+    gzip -n ${prefix}.polished.genome.fa
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
