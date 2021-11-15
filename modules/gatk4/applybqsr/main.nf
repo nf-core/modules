@@ -21,7 +21,7 @@ process GATK4_APPLYBQSR {
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table)
     path  fasta
-    path  fastaidx
+    path  fai
     path  dict
     path  intervals
 
