@@ -466,7 +466,7 @@ gatk4/createsequencedictionary:
   - modules/gatk4/createsequencedictionary/**
   - tests/modules/gatk4/createsequencedictionary/**
 
-gatk4/createsomaticpanelofnormals:
+gatk4/createsomaticpanelofnormals: &gatk4/createsomaticpanelofnormals
   - modules/gatk4/createsomaticpanelofnormals/**
   - tests/modules/gatk4/createsomaticpanelofnormals/**
 
@@ -482,7 +482,7 @@ gatk4/filtermutectcalls:
   - modules/gatk4/filtermutectcalls/**
   - tests/modules/gatk4/filtermutectcalls/**
 
-gatk4/genomicsdbimport:
+gatk4/genomicsdbimport: &gatk4/genomicsdbimport
   - modules/gatk4/genomicsdbimport/**
   - tests/modules/gatk4/genomicsdbimport/**
 
@@ -1400,3 +1400,5 @@ subworkflows/sra_fastq:
 subworkflows/gatk_create_som_pon:
   - subworkflows/nf-core/gatk_create_som_pon/**
   - tests/subworkflows/nf-core/gatk_create_som_pon/**
+  - *gatk4/genomicsdbimport
+  - *gatk4/createsomaticpanelofnormals
