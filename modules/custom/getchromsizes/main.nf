@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process SAMTOOLS_GETCHROMSIZES {
+process CUSTOM_GETCHROMSIZES {
     tag "$fasta"
     label 'process_low'
     publishDir "${params.outdir}",
