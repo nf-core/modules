@@ -21,7 +21,6 @@ process PEDDY {
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
     path ped
-    
 
     output:
     tuple val(meta), path("*.html").     , emit: html
