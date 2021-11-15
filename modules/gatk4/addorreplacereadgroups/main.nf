@@ -15,7 +15,6 @@ process GATK4_ADDORREPLACEREADGROUPS {
     } else {
         container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
     }
-    }
 
     input:
     tuple val(meta), path(bam)
