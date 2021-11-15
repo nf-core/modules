@@ -22,23 +22,23 @@ process MINIASM {
     tuple val(meta), path(reads), path(paf)
 
     output:
-    tuple val(meta), path("*.gfa.gz")           , emit: gfa
-    tuple val(meta), path("*_assembly.fasta.gz"), emit: assembly
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.gfa.gz")  , emit: gfa
+    tuple val(meta), path("*.fasta.gz"), emit: assembly
+    path "versions.yml"                , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     miniasm \\
         $options.args \\
-        -f ${reads}\\
-        ${paf} > \\
+        -f $reads \\
+        $paf > \\
         ${prefix}.gfa
 
-    awk '/^S/{print ">"\$2"\\n"\$3}' "${prefix}.gfa" | fold > ${prefix}_assembly.fasta
+    awk '/^S/{print ">"\$2"\\n"\$3}' "${prefix}.gfa" | fold > ${prefix}.fasta
 
     gzip -n ${prefix}.gfa
-    gzip -n ${prefix}_assembly.fasta
+    gzip -n ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
