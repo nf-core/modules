@@ -19,11 +19,15 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - shortreads:
           type: file
           description: |
-              List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+              List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
               respectively.
+  - longreads:
+          type: file
+          description: |
+              List of input FastQ files of size 1, PacBio or Nanopore long reads.
 output:
   - meta:
       type: map
@@ -37,11 +41,11 @@ output:
   - scaffolds:
       type: file
       description: Fasta file containing scaffolds
-      pattern: "*.{scaffolds.fa}"
+      pattern: "*.{scaffolds.fa.gz}"
   - gfa:
       type: file
       description: gfa file containing assembly
-      pattern: "*.{assembly.gfa}"
+      pattern: "*.{assembly.gfa.gz}"
   - log:
       type: file
       description: unicycler log file
@@ -53,3 +57,4 @@ output:
 authors:
   - "@JoseEspinosa"
   - "@drpatelh"
+  - "@d4straub"
