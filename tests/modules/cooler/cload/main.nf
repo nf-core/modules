@@ -18,7 +18,8 @@ workflow test_cooler_cload_pairix {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP
+    COOLER_CLOAD ( input, bin_size, sizes )
+    COOLER_DUMP(COOLER_CLOAD.out.cool.map{[it[0], it[2]]}, [])
 
 }
 
@@ -31,7 +32,8 @@ workflow test_cooler_cload_pairs {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD_PAIRS ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP_PAIRS
+    COOLER_CLOAD_PAIRS ( input, bin_size, sizes )
+    COOLER_DUMP_PAIRS(COOLER_CLOAD_PAIRS.out.cool.map{[it[0], it[2]]}, [])
 
 }
 
@@ -44,6 +46,7 @@ workflow test_cooler_cload_tabix {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD_TABIX ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP_TABIX
+    COOLER_CLOAD_TABIX ( input, bin_size, sizes )
+    COOLER_DUMP_TABIX(COOLER_CLOAD_TABIX.out.cool.map{[it[0], it[2]]}, [])
 
 }
