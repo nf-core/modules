@@ -25,16 +25,16 @@ process ATAQV_ATAQV {
     path autosom_ref_file
 
     output:
-    tuple val(meta), path("*.ataqv.json")                   , emit: json
-    tuple val(meta), path("*.problems")  , optional: true   , emit: problems
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*.ataqv.json"), emit: json
+    tuple val(meta), path("*.problems")  , emit: problems, optional: true
+    path "versions.yml"                  , emit: versions
 
     script:
-    def prefix          = options.suffix        ? "${meta.id}${options.suffix}"                     : "${meta.id}"
-    def peak            = peak_file             ? "--peak-file $peak_file"                          : ''
-    def tss             = tss_file              ? "--tss-file $tss_file"                            : ''
-    def excl_regs       = excl_regs_file        ? "--excluded-region-file $excl_regs_file"          : ''
-    def autosom_ref     = autosom_ref_file      ? "--autosomal-reference-file $autosom_ref_file"    : ''
+    def prefix      = options.suffix   ? "${meta.id}${options.suffix}"                  : "${meta.id}"
+    def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
+    def tss         = tss_file         ? "--tss-file $tss_file"                         : ''
+    def excl_regs   = excl_regs_file   ? "--excluded-region-file $excl_regs_file"       : ''
+    def autosom_ref = autosom_ref_file ? "--autosomal-reference-file $autosom_ref_file" : ''
     """
     ataqv \\
         $options.args \\
