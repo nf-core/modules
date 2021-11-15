@@ -18,22 +18,25 @@ process CELLRANGER_COUNT {
 
     input:
     tuple val(meta), path(reads)
-    path(reference)
+    path reference
 
     output:
-    path "versions.yml"               , emit: versions
-    path("sample-${meta.gem}/outs/*") , emit: outs
+    path("sample-${meta.gem}/outs/*"), emit: outs
+    path "versions.yml"              , emit: versions
+
 
     script:
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
-    cellranger count --id='sample-${meta.gem}' \
-        --fastqs=. \
-        --transcriptome=${reference_name} \
-        --sample=${sample_arg} \
-        --localcores=${task.cpus} \
-        --localmem=${task.memory.toGiga()} \
+    cellranger \\
+        count \\
+        --id='sample-${meta.gem}' \\
+        --fastqs=. \\
+        --transcriptome=$reference_name \\
+        --sample=$sample_arg \\
+        --localcores=$task.cpus \\
+        --localmem=${task.memory.toGiga()} \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml

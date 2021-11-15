@@ -20,15 +20,17 @@ process CELLRANGER_MKGTF {
     path gtf
 
     output:
-    path "versions.yml"   , emit: versions
-    path "*.filtered.gtf" , emit: gtf
+    path "*.filtered.gtf", emit: gtf
+    path "versions.yml"  , emit: versions
+
 
     script:
     """
-    cellranger mkgtf \
-        $gtf \
-        ${gtf.baseName}.filtered.gtf \
-        $options.args \
+    cellranger \\
+        mkgtf \\
+        $gtf \\
+        ${gtf.baseName}.filtered.gtf \\
+        $options.args \\
         $options.args2
 
     cat <<-END_VERSIONS > versions.yml
