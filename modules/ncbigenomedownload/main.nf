@@ -19,8 +19,8 @@ process NCBIGENOMEDOWNLOAD {
     }
 
     input:
-    val(meta)
-    path(accessions)
+    val meta
+    path accessions
 
     output:
     tuple val(meta), path("*_genomic.gbff.gz")        , emit: gbk     , optional: true
