@@ -20,60 +20,57 @@ process PHYLOFLASH {
 
     input:
     tuple val(meta), path(reads)
-    val(lib_name)
-    path(silva_database)
-    path(univec_database)
+    path  silva_db
+    path  univec_db
 
     output:
-    tuple val(meta), path("${lib_name}_results")  , emit: results_folder
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("${prefix}"), emit: results
+    path "versions.yml"               , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
-    """
-    phyloFlash.pl \\
-        ${options.args} \\
-        -read1 ${reads[0]} \\
-        -lib ${lib_name}
-        -interleaved \\
-        -dbhome . \\
-        -CPUs ${task.cpus}
+        """
+        phyloFlash.pl \\
+            $options.args \\
+            -read1 ${reads[0]} \\
+            -lib $prefix \\
+            -interleaved \\
+            -dbhome . \\
+            -CPUs $task.cpus
 
-    mkdir ${lib_name}_results
-    mv ${lib_name}*  ${lib_name}_results
+        mkdir $prefix
+        mv ${prefix}.* $prefix
 
-    cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+        END_VERSIONS
+        """
     } else {
-    """
-    phyloFlash.pl \\
-        ${options.args} \\
-        -read1 ${reads[0]} \\
-        -read2 ${reads[1]} \\
-        -lib ${lib_name} \\
-        -dbhome . \\
-        -CPUs ${task.cpus}
+        """
+        phyloFlash.pl \\
+            $options.args \\
+            -read1 ${reads[0]} \\
+            -read2 ${reads[1]} \\
+            -lib $prefix \\
+            -dbhome . \\
+            -CPUs $task.cpus
 
-    mkdir ${lib_name}_results
-    mv ${lib_name}.*  ${lib_name}_results
+        mkdir $prefix
+        mv ${prefix}.* $prefix
 
-    cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+        END_VERSIONS
+        """
     }
 
     stub:
     """
-    mkdir ${lib_name}_results
-    touch ${lib_name}_results/${lib_name}.SSU.collection.fasta
-    touch ${lib_name}_results/${lib_name}.phyloFlash
+    mkdir ${prefix}
+    touch ${prefix}/${prefix}.SSU.collection.fasta
+    touch ${prefix}/${prefix}.phyloFlash
     """
 }
