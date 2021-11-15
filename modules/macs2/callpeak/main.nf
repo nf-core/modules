@@ -11,7 +11,7 @@ process MACS2_CALLPEAK {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
+    conda (params.enable_conda ? "bioconda::macs2=2.2.7.1 python=3.8" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3"
     } else {
