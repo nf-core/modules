@@ -4,44 +4,41 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process GATK4_CREATESOMATICPANELOFNORMALS {
+process BAMUTIL_TRIMBAM {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::bamutil=1.0.15" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
+        container "quay.io/biocontainers/bamutil:1.0.15--h2e03b76_1"
     }
 
     input:
-    tuple val(meta), path(genomicsdb)
-    path fasta
-    path fai
-    path dict
+    tuple val(meta), path(bam), val(trim_left), val(trim_right)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.bam"), emit: bam
+    path "versions.yml"           , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    gatk \\
-        CreateSomaticPanelOfNormals \\
-        -R $fasta \\
-        -V gendb://$genomicsdb \\
-        -O ${prefix}.vcf.gz \\
-        $options.args
+    bam \\
+        trimBam \\
+        $bam \\
+        ${prefix}.bam \\
+        $options.args \\
+        -L $trim_left \\
+        -R $trim_right
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+        ${getSoftwareName(task.process)}: \$( echo \$( bam trimBam 2>&1 ) | sed 's/^Version: //;s/;.*//' )
     END_VERSIONS
     """
 }
