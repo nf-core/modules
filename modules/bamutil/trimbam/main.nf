@@ -30,7 +30,7 @@ process BAMUTIL_TRIMBAM {
     """
     bam \\
         trimBam \\
-        $inbam \\
+        $bam \\
         ${prefix}.bam \\
         $options.args \\
         -L $trim_left \\
