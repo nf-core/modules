@@ -24,7 +24,7 @@ process COOLER_DUMP {
 
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
-    path "versions.yml"                  , emit: versions
+    path "versions.yml"             , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
