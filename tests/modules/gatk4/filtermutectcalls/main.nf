@@ -6,7 +6,7 @@ include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/gatk4/filtermutect
 
 workflow test_gatk4_filtermutectcalls_base {
 
-    input = [ 
+    input = [
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz_tbi'], checkIfExists: true),
@@ -18,15 +18,15 @@ workflow test_gatk4_filtermutectcalls_base {
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_filtermutectcalls_with_files {
 
-    input = [ 
+    input = [
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz_tbi'], checkIfExists: true),
@@ -38,15 +38,15 @@ workflow test_gatk4_filtermutectcalls_with_files {
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_filtermutectcalls_use_val {
 
-    input = [ 
+    input = [
         [ id:'test'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz_tbi'], checkIfExists: true),
@@ -58,8 +58,8 @@ workflow test_gatk4_filtermutectcalls_use_val {
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_FILTERMUTECTCALLS ( input, fasta, fastaidx, dict )
+    GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }

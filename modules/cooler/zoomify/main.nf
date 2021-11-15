@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process COOLER_DUMP {
+process COOLER_ZOOMIFY {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
@@ -20,20 +20,19 @@ process COOLER_DUMP {
 
     input:
     tuple val(meta), path(cool)
-    val resolution
 
     output:
-    tuple val(meta), path("*.bedpe"), emit: bedpe
+    tuple val(meta), path("*.mcool"), emit: mcool
     path "versions.yml"             , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def suffix   = resolution     ? "::$resolution"               : ""
     """
-    cooler dump \\
+    cooler zoomify \\
         $options.args \\
-        -o ${prefix}.bedpe \\
-        $cool$suffix
+        -n $task.cpus \\
+        -o ${prefix}.mcool \\
+        $cool
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
