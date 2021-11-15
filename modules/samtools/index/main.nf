@@ -19,16 +19,17 @@ process SAMTOOLS_INDEX {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bai"), optional:true, emit: bai
-    tuple val(meta), path("*.csi"), optional:true, emit: csi
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path("*.bai") , optional:true, emit: bai
+    tuple val(meta), path("*.crai"), optional:true, emit: crai
+    tuple val(meta), path("*.csi") , optional:true, emit: csi
+    path  "versions.yml"           , emit: versions
 
     script:
     """
-    samtools index $options.args $bam
+    samtools index $options.args $input
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
