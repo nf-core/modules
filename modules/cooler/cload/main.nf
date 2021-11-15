@@ -28,20 +28,12 @@ process COOLER_CLOAD {
     path "versions.yml"                           , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args     = options.args.tokenize()
-    def tool     = (options.args.contains('hiclib')) ? "hiclib" :
-        (options.args.contains('tabix')) ? 'tabix' :
-        (options.args.contains('pairs')) ? 'pairs' : 'pairix'
-    def nproc    = tool == "pairix" || tool == 'tabix'? "--nproc ${task.cpus}" : ''
-    args.removeIf { it.contains('hiclib') }
-    args.removeIf { it.contains('tabix') }
-    args.removeIf { it.contains('pairs') }
-    args.removeIf { it.contains('pairix') }
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def nproc  = options.args.contains('pairix') || options.args.contains('tabix')? "--nproc ${task.cpus}" : ''
 
     """
-    cooler cload $tool \\
-        ${args.join(' ')} \\
+    cooler cload \\
+        $options.args \\
         $nproc \\
         ${chromsizes}:${cool_bin} \\
         $pairs \\
