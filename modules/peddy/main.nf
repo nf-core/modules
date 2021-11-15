@@ -32,7 +32,7 @@ process PEDDY {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    peddy\\
+    peddy \\
         $options.args \\
         --plot \\
         -p $task.cpus \\
