@@ -27,7 +27,6 @@ process CUSTOM_GETCHROMSIZES {
     path  "versions.yml", emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
     """
     samtools faidx $fasta
     cut -f 1,2 ${fasta}.fai > ${fasta}.sizes
