@@ -45,5 +45,3 @@ workflow test_cooler_cload_tabix {
     COOLER_CLOAD_TABIX ( input, bin_size, sizes )
 
 }
-
-}
