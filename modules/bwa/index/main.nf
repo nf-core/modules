@@ -31,8 +31,8 @@ process BWA_INDEX {
     bwa \\
         index \\
         $options.args \\
-        $fasta \\
-        -p bwa/${fasta.baseName}
+        -p bwa/${fasta.baseName} \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
