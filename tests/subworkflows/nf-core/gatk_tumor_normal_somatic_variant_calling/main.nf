@@ -21,5 +21,5 @@ workflow test_gatk_tumor_normal_somatic_variant_calling {
     panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
     interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'],                    checkIfExists: true)
 
-    GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( ch_mutect2_in, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
+    GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
 }
