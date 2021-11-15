@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { PHYLOFLASH } from '../../../modules/phyloflash/main.nf' addParams( options: ['args': ''] )
+include { PHYLOFLASH } from '../../../modules/phyloflash/main.nf' addParams( options: [:] )
 
 process STUB_PHYLOFLASH_DATABASE {
     output:
-    path("ref")                   , emit: silva_database
-    path("UniVec")                , emit: univec_database
+    path "ref"    , emit: silva_db
+    path "UniVec" , emit: univec_db
 
     stub:
     """
@@ -16,27 +16,29 @@ process STUB_PHYLOFLASH_DATABASE {
     """
 }
 
-
 workflow test_phyloflash_single_end {
 
-    STUB_PHYLOFLASH_DATABASE()
+    STUB_PHYLOFLASH_DATABASE ()
     
-    input = [ [ id:'test', single_end:true ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]]
+    input = [ 
+        [ id:'test', single_end:true ], // meta map
+        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+    ]
 
-    PHYLOFLASH ( input, 'testLib', STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
+    PHYLOFLASH ( input, STUB_PHYLOFLASH_DATABASE.out.silva_db,  STUB_PHYLOFLASH_DATABASE.out.univec_db )
 }
 
+workflow test_phyloflash_paired_end {
 
+    STUB_PHYLOFLASH_DATABASE ()
 
-workflow test_phyloflash {
+    input = [ 
+        [ id:'test', single_end:false ], // meta map
+        [ 
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
+    ]
 
-    STUB_PHYLOFLASH_DATABASE()
-
-    input = [ [ id:'test', single_end:false ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-            ]
-
-    PHYLOFLASH ( input, 'testLib', STUB_PHYLOFLASH_DATABASE.out.silva_database,  STUB_PHYLOFLASH_DATABASE.out.univec_database)
+    PHYLOFLASH ( input, STUB_PHYLOFLASH_DATABASE.out.silva_db,  STUB_PHYLOFLASH_DATABASE.out.univec_db )
 }
