@@ -27,5 +27,5 @@ workflow test_macs2_callpeak_ctrl {
                   [ file( params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true) ],
                   [ file( params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true) ]]
 
-    MACS2_CALLPEAK_CTRL ( input, 4000 )
+    MACS2_CALLPEAK_CTRL ( input, 40000 )
 }
