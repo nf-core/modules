@@ -25,6 +25,12 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
+  - trim_left
+      type: integer
+      description: Number of bases to trim off the right-hand side of a read. Reverse strands are reversed before trimming.
+  - trim_right
+      type: integer
+      description: Number of bases to trim off the right-hand side of a read. Reverse strands are reversed before trimming.
 
 output:
   - meta:
