@@ -35,7 +35,7 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     //
     //Perform variant calling using mutect2 module in tumor single mode.
     //
-    mutect2_input = channel_from(input)
+    mutect2_input = channel.from(input)
     MUTECT2 ( mutect2_input, false, false, false, [], fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
     ch_versions = ch_versions.mix(MUTECT2.out.versions)
 
@@ -50,12 +50,12 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     //Generate pileup summary tables using getepileupsummaries. tumor sample should always be passed in as the first input and input list entries of ch_mutect2_in,
     //to ensure correct file order for calculatecontamination.
     //
-    pileup_tumor_input = channel_from(input).map {
+    pileup_tumor_input = channel.from(input).map {
         meta, input_file, input_index, which_norm ->
         [meta, input_file[0], input_index[0]]
     }
 
-    pileup_normal_input = channel_from(input).map {
+    pileup_normal_input = channel.from(input).map {
         meta, input_file, input_index, which_norm ->
         [meta, input_file[1], input_index[1]]
     }
