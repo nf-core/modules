@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-def VERSION="1.12.15"
+def VERSION="1.2.15"
 
 process LEEHOM {
     tag "$meta.id"
