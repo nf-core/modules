@@ -29,7 +29,8 @@ process SAMTOOLS_INDEX {
 
     script:
     """
-    samtools index $options.args $input
+    samtools index --threads ${task.cpus} $options.args $input
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')

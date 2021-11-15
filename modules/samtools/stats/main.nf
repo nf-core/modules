@@ -29,7 +29,7 @@ process SAMTOOLS_STATS {
     script:
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools stats ${reference} ${input} > ${input}.stats
+    samtools stats --threads ${task.cpus} ${reference} ${input} > ${input}.stats
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
