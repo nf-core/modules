@@ -42,10 +42,26 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - css:
+  - bam:
       type: file
-      description: Consensus sequences
-      pattern: "*.ccs.bam"
+      description: CCS sequences in bam format
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: PacBio Index of CCS sequences
+      pattern: "*.pbi"
+  - report_txt:
+      type: file
+      description: Summary of CCS in txt format
+      pattern: ".txt"
+  - report_json:
+      type: file
+      description: Summary of CCS in txt json
+      pattern: ".json"
+  - metrics:
+      type: file
+      description: Metrics about zmws
+      pattern: "*.json.gz"
 
 authors:
   - "@sguizard"
