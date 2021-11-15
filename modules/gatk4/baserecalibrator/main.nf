@@ -21,7 +21,7 @@ process GATK4_BASERECALIBRATOR {
     input:
     tuple val(meta), path(input), path(input_index)
     path fasta
-    path fastaidx
+    path fai
     path dict
     path intervalsBed
     path knownSites
