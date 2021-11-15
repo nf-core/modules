@@ -6,8 +6,8 @@
     - path: output/phyloflash/test.bam
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
 
-- name: phyloflash
-  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash -c tests/config/nextflow.config -stub-run
+- name: phyloflash paired-end
+  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash_paired_end -c tests/config/nextflow.config -stub-run
   tags:
     - phyloflash
   files:
