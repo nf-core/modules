@@ -5,7 +5,9 @@ nextflow.enable.dsl = 2
 include { COOLER_CLOAD }                       from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'pairix'] )
 include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'pairs --chrom1 1 --pos1 2 --chrom2 4 --pos2 5 -N'] )
 include { COOLER_CLOAD as COOLER_CLOAD_TABIX } from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'tabix'] )
-
+include { COOLER_DUMP }                        from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
+include { COOLER_DUMP as COOLER_DUMP_PAIRS}    from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
+include { COOLER_DUMP as COOLER_DUMP_TABIX}    from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
 
 workflow test_cooler_cload_pairix {
 
@@ -16,7 +18,7 @@ workflow test_cooler_cload_pairix {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD ( input, bin_size, sizes )
+    COOLER_CLOAD ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP
 
 }
 
@@ -29,7 +31,7 @@ workflow test_cooler_cload_pairs {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD_PAIRS ( input, bin_size, sizes )
+    COOLER_CLOAD_PAIRS ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP_PAIRS
 
 }
 
@@ -42,8 +44,6 @@ workflow test_cooler_cload_tabix {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-    COOLER_CLOAD_TABIX ( input, bin_size, sizes )
-
-}
+    COOLER_CLOAD_TABIX ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP_TABIX
 
 }
