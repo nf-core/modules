@@ -28,9 +28,9 @@ process GATK4_MUTECT2 {
     path fastaidx
     path dict
     path germline_resource
-    path germline_resource_idx
+    path germline_resource_tbi
     path panel_of_normals
-    path panel_of_normals_idx
+    path panel_of_normals_tbi
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf
