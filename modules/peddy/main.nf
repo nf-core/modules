@@ -19,8 +19,7 @@ process PEDDY {
     }
 
     input:
-    tuple val(meta), path(vcf)
-    tuple val(meta), path(vcf_tbi)
+    tuple val(meta), path(vcf), path(vcf_tbi)
     path(ped)
     
 
