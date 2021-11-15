@@ -20,12 +20,12 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     take:
     ch_mutect2_in             // channel: [ val(meta), [ input ], [ input_index ], [which_norm] ]
     fasta                     // channel: /path/to/reference/fasta
-    fastaidx                  // channel: /path/to/reference/fasta/index
+    fai                       // channel: /path/to/reference/fasta/index
     dict                      // channel: /path/to/reference/fasta/dictionary
     germline_resource         // channel: /path/to/germline/resource
-    germline_resource_idx     // channel: /path/to/germline/index
+    germline_resource_tbi     // channel: /path/to/germline/index
     panel_of_normals          // channel: /path/to/panel/of/normals
-    panel_of_normals_idx      // channel: /path/to/panel/of/normals/index
+    panel_of_normals_tbi      // channel: /path/to/panel/of/normals/index
     interval_file             // channel: /path/to/interval/file
 
 
@@ -36,7 +36,7 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     //
     //Perform variant calling using mutect2 module in tumor single mode.
     //
-    MUTECT2 ( input, false, false, false, [], fasta, fastaidx, dict, germline_resource, germline_resource_idx, panel_of_normals, panel_of_normals_idx )
+    MUTECT2 ( input, false, false, false, [], fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
     ch_versions = ch_versions.mix(MUTECT2.out.versions)
 
     //
@@ -61,8 +61,8 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
         meta, input_file, input_index, which_norm ->
         [meta, input_file[1], input_index[1]]
     }
-    GETPILEUPSUMMARIES_TUMOR ( pileup_tumor_input, germline_resource, germline_resource_idx, interval_file )
-    GETPILEUPSUMMARIES_NORMAL ( pileup_normal_input, germline_resource, germline_resource_idx, interval_file )
+    GETPILEUPSUMMARIES_TUMOR ( pileup_tumor_input, germline_resource, germline_resource_tbi, interval_file )
+    GETPILEUPSUMMARIES_NORMAL ( pileup_normal_input, germline_resource, germline_resource_tbi, interval_file )
     ch_versions = ch_versions.mix(GETPILEUPSUMMARIES_NORMAL.out.versions)
 
     //
@@ -86,12 +86,12 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     //[] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
     ch_contamination.add([])
     ch_filtermutect_in       = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_orientation, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
-    FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fastaidx, dict )
+    FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fai, dict )
     ch_versions              = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
 
     emit:
     mutect2_vcf            = MUTECT2.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
-    mutect2_index          = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
+    mutect2_tbi            = MUTECT2.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
     mutect2_stats          = MUTECT2.out.stats.collect()                           // channel: [ val(meta), [ stats ] ]
     mutect2_f1r2           = MUTECT2.out.f1r2.collect()                            // channel: [ val(meta), [ f1r2 ] ]
 
@@ -104,7 +104,7 @@ workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
 
     filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), [ vcf ] ]
-    filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
+    filtered_tbi           = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
     filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
 
     versions               = ch_versions                                           // channel: [ versions.yml ]

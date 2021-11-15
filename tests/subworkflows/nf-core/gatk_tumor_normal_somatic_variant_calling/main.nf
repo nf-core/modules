@@ -13,13 +13,13 @@ workflow test_gatk_tumor_normal_somatic_variant_calling {
                     ]
                     ]
     fasta                 = file(params.test_data['homo_sapiens']['genome']['genome_fasta'],                            checkIfExists: true)
-    fastaidx              = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'],                        checkIfExists: true)
+    fai                   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'],                        checkIfExists: true)
     dict                  = file(params.test_data['homo_sapiens']['genome']['genome_dict'],                             checkIfExists: true)
     germline_resource     = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'],                    checkIfExists: true)
-    germline_resource_idx = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'],                checkIfExists: true)
+    germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'],                checkIfExists: true)
     panel_of_normals      = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz'],           checkIfExists: true)
-    panel_of_normals_idx  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
+    panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
     interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'],                    checkIfExists: true)
 
-    GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( ch_mutect2_in, fasta, fastaidx, dict, germline_resource, germline_resource_idx, panel_of_normals, panel_of_normals_idx, interval_file )
+    GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( ch_mutect2_in, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
 }
