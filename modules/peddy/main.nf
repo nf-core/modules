@@ -20,9 +20,9 @@ process PEDDY {
     }
 
     input:
-    tuple val(meta), path(ped)
-    path(vcf)
-    path(tbi)
+    tuple val(meta), path(vcf)
+    path(ped)
+    tuple val(meta), path(tbi)
 
     output:
     tuple val(meta), path("*.html"), emit: html
