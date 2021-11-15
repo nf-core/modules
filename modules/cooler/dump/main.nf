@@ -28,7 +28,7 @@ process COOLER_DUMP {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def postfix  = resolution?"::$resolution":""
+    def suffix   = resolution     ? "::$resolution"               : ""
     """
     cooler dump \\
         $options.args \\
