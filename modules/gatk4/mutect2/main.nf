@@ -25,7 +25,7 @@ process GATK4_MUTECT2 {
     val  run_mito
     val  interval_label
     path fasta
-    path fastaidx
+    path fai
     path dict
     path germline_resource
     path germline_resource_tbi
