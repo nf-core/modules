@@ -22,9 +22,9 @@ process MINIASM {
     tuple val(meta), path(reads), path(paf)
 
     output:
-    tuple val(meta), path("*.gfa.gz"), emit: gfa
+    tuple val(meta), path("*.gfa.gz")           , emit: gfa
     tuple val(meta), path("*_assembly.fasta.gz"), emit: assembly
-    path "versions.yml"          , emit: versions
+    path "versions.yml"                         , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
