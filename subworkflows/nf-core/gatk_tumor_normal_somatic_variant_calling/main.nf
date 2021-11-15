@@ -1,5 +1,5 @@
 //
-// Run GATK mutect2 in tumor paired mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
+// Run GATK mutect2 in tumor normal mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
 //
 
 params.mutect2_options          = [:]
@@ -16,7 +16,7 @@ include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from '.
 include { GATK4_CALCULATECONTAMINATION    as CALCULATECONTAMINATION }    from '../../../modules/gatk4/calculatecontamination/main'    addParams( options: params.calccontam_options )
 include { GATK4_FILTERMUTECTCALLS         as FILTERMUTECTCALLS }         from '../../../modules/gatk4/filtermutectcalls/main'         addParams( options: params.filtercalls_options )
 
-workflow GATK_PAIRED_SOMATIC_VARIANT_CALLING {
+workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     take:
     ch_mutect2_in             // channel: [ val(meta), [ input ], [ input_index ], [which_norm] ]
     fasta                     // channel: /path/to/reference/fasta
@@ -83,6 +83,7 @@ workflow GATK_PAIRED_SOMATIC_VARIANT_CALLING {
     ch_orientation           = LEARNREADORIENTATIONMODEL.out.artifactprior.collect()
     ch_segment               = CALCULATECONTAMINATION.out.segmentation.collect()
     ch_contamination         = CALCULATECONTAMINATION.out.contamination.collect()
+    //[] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
     ch_contamination.add([])
     ch_filtermutect_in       = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_orientation, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
     FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fastaidx, dict )
@@ -96,7 +97,7 @@ workflow GATK_PAIRED_SOMATIC_VARIANT_CALLING {
 
     artifact_priors        = LEARNREADORIENTATIONMODEL.out.artifactprior.collect() // channel: [ val(meta), [ artifactprior ] ]
 
-    pileup_table_tumor     = GETPILEUPSUMMARIES_TUMOR.out.table.collect()                // channel: [ val(meta), [ table_tumor ] ]
+    pileup_table_tumor     = GETPILEUPSUMMARIES_TUMOR.out.table.collect()          // channel: [ val(meta), [ table_tumor ] ]
     pileup_table_normal    = GETPILEUPSUMMARIES_NORMAL.out.table.collect()         // channel: [ val(meta), [ table_normal ] ]
 
     contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]

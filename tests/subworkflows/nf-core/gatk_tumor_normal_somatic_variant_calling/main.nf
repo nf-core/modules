@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_PAIRED_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_paired_somatic_variant_calling/main' addParams( [:]  )
+include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main' addParams( [:]  )
 
-workflow test_gatk_paired_somatic_variant_calling {
+workflow test_gatk_tumor_normal_somatic_variant_calling {
     ch_mutect2_in = [
                     [ [ id:'test'], // meta map
                     [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
@@ -21,5 +21,5 @@ workflow test_gatk_paired_somatic_variant_calling {
     panel_of_normals_idx  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
     interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'],                    checkIfExists: true)
 
-    GATK_PAIRED_SOMATIC_VARIANT_CALLING ( ch_mutect2_in, fasta, fastaidx, dict, germline_resource, germline_resource_idx, panel_of_normals, panel_of_normals_idx, interval_file )
+    GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( ch_mutect2_in, fasta, fastaidx, dict, germline_resource, germline_resource_idx, panel_of_normals, panel_of_normals_idx, interval_file )
 }

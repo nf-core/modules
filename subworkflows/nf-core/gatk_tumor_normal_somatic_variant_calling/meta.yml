@@ -1,6 +1,6 @@
-name: gatk_paired_somatic_variant_calling
+name: gatk_tumor_normal_somatic_variant_calling
 description: |
-  Perform variant calling on a paired tumor normal set of samples using mutect2 paired mode.
+  Perform variant calling on a paired tumor normal set of samples using mutect2 tumor normal mode.
   f1r2 output of mutect2 is run through learnreadorientationmodel to get the artifact priors.
   Run the input bam files through getpileupsummarries and then calculatecontamination to get the contamination and segmentation tables.
   Filter the mutect2 output vcf using filtermutectcalls, artifact priors and the contamination & segmentation tables for additional filtering.
