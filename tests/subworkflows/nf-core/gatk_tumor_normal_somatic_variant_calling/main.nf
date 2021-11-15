@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main' addParams( [:]  )
 
 workflow test_gatk_tumor_normal_somatic_variant_calling {
-    ch_mutect2_in = [
+    input =         [
                     [ [ id:'test'], // meta map
                     [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
                     [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true) , file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
