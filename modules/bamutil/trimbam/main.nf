@@ -19,7 +19,7 @@ process BAMUTIL_TRIMBAM {
     }
 
     input:
-    tuple val(meta), path(inbam), val(trim_left), val(trim_right)
+    tuple val(meta), path(bam), val(trim_left), val(trim_right)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
