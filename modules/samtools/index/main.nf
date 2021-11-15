@@ -29,7 +29,7 @@ process SAMTOOLS_INDEX {
 
     script:
     """
-    samtools index --threads ${task.cpus} $options.args $input
+    samtools index -@ ${task.cpus} $options.args $input
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
