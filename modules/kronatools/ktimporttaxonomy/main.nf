@@ -24,7 +24,7 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
 
     output:
     tuple val(meta), path ('*.html'), emit: html
-    path "versions.yml"          , emit: versions
+    path "versions.yml"             , emit: versions
 
     script:
     def VERSION='2.8'
