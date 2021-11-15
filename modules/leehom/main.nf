@@ -54,7 +54,6 @@ process LEEHOM {
             """
     } else if ( meta.single_end ) {
             """
-            echo "SE FQ"
             leeHom \\
                 $options.args \\
                 -t $task.cpus \\
