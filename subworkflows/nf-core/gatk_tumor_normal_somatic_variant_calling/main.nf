@@ -4,8 +4,8 @@
 
 params.mutect2_options          = [:]
 params.learnorientation_options = [:]
-params.getpileup_tumor_options        = [suffix: '_tumor']
-params.getpileup_normal_options    = [suffix: '_normal']
+params.getpileup_tumor_options  = [suffix: '_tumor']
+params.getpileup_normal_options = [suffix: '_normal']
 params.calccontam_options       = [:]
 params.filtercalls_options      = [suffix: '_filtered']
 
