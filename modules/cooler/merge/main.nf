@@ -26,7 +26,7 @@ process COOLER_MERGE {
     path "versions.yml"            , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     cooler merge \\
         $options.args \\
