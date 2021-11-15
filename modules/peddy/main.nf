@@ -23,11 +23,11 @@ process PEDDY {
     path ped
 
     output:
-    tuple val(meta), path("*.html").     , emit: html
-    tuple val(meta), path("*.csv")       , emit: csv
-    tuple val(meta), path("*.peddy.ped") , emit: ped
-    tuple val(meta), path("*.png")       , emit: png
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.html").    , emit: html
+    tuple val(meta), path("*.csv")      , emit: csv
+    tuple val(meta), path("*.peddy.ped"), emit: ped
+    tuple val(meta), path("*.png")      , emit: png
+    path "versions.yml"                 , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
