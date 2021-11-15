@@ -24,6 +24,7 @@ process BBMAP_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.log"), emit: log
     path "versions.yml"           , emit: versions
 
     script:
@@ -51,7 +52,8 @@ process BBMAP_ALIGN {
         out=${prefix}.bam \\
         $options.args \\
         threads=$task.cpus \\
-        -Xmx${task.memory.toGiga()}g
+        -Xmx${task.memory.toGiga()}g \\
+        &> ${prefix}.bbmap.log
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
