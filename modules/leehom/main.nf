@@ -68,7 +68,6 @@ process LEEHOM {
             """
     } else {
             """
-            echo "PE FQ"
             leeHom \\
                 $options.args \\
                 -t $task.cpus \\
