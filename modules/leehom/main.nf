@@ -40,7 +40,6 @@ process LEEHOM {
 
     if ( reads.toString().endsWith('.bam') ) {
             """
-            echo "BAM"
             leeHom \\
                 $options.args \\
                 -t $task.cpus \\
