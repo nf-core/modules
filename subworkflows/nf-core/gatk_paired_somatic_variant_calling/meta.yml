@@ -1,6 +1,6 @@
-name: gatk_tumour_only_somatic_variant_calling
+name: gatk_paired_somatic_variant_calling
 description: |
-  Perform variant calling on a paired tumour normal set of samples using mutect2 paired mode.
+  Perform variant calling on a paired tumor normal set of samples using mutect2 paired mode.
   f1r2 output of mutect2 is run through learnreadorientationmodel to get the artifact priors.
   Run the input bam files through getpileupsummarries and then calculatecontamination to get the contamination and segmentation tables.
   Filter the mutect2 output vcf using filtermutectcalls, artifact priors and the contamination & segmentation tables for additional filtering.
@@ -12,7 +12,7 @@ keywords:
   - calculatecontamination
   - filtermutectcalls
   - variant_calling
-  - tumour_only
+  - tumor_only
   - filtered_vcf
 modules:
   - gatk4/mutect2
@@ -28,11 +28,11 @@ input:
         e.g. [ id:'test' ]
   - input:
       type: list
-      description: list containing the tumour and normal BAM files, in that order, also able to take CRAM as an input
+      description: list containing the tumor and normal BAM files, in that order, also able to take CRAM as an input
       pattern: "[ *.{bam/cram} ]"
   - input_index:
       type: list
-      description: list containing the tumour and normal BAM file indexes, in that order, also able to take CRAM index as an input
+      description: list containing the tumor and normal BAM file indexes, in that order, also able to take CRAM index as an input
       pattern: "[ *.{bam.bai/cram.crai} ]"
   - which_norm:
       type: list
@@ -95,10 +95,10 @@ output:
       type: file
       description: file containing artifact-priors to be used by filtermutectcalls.
       pattern: "*.tar.gz"
-  - pileup_table_tumour:
+  - pileup_table_tumor:
       type: file
-      description: File containing the tumour pileup summary table, kept separate as calculatecontamination needs them individually specified.
-      pattern: "*_tumour.pileups.table"
+      description: File containing the tumor pileup summary table, kept separate as calculatecontamination needs them individually specified.
+      pattern: "*_tumor.pileups.table"
   - pileup_table_normal:
       type: file
       description: File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified.
