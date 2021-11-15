@@ -25,7 +25,7 @@ process ECTYPER {
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"              , emit: versions
+    path "versions.yml"           , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
