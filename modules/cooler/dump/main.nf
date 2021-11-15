@@ -33,7 +33,7 @@ process COOLER_DUMP {
     cooler dump \\
         $options.args \\
         -o ${prefix}.bedpe \\
-        $cool$postfix
+        $cool$suffix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
