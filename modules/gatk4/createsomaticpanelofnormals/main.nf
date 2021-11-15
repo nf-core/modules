@@ -21,7 +21,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     input:
     tuple val(meta), path(genomicsdb)
     path fasta
-    path fastaidx
+    path fai
     path dict
 
     output:
