@@ -11,11 +11,12 @@ process GSTAMA_COLLAPSE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gs-tama=1.0.2" : null)
+    conda (params.enable_conda ? "bioconda::gs-tama=1.0.3" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gs-tama:1.0.2--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/gs-tama:1.0.2--hdfd78af_0"
+        container "quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0"
+
     }
 
     input:
@@ -23,7 +24,7 @@ process GSTAMA_COLLAPSE {
     path fasta
 
     output:
-    tuple val(meta), path("*.bed")                    , emit: bed
+    tuple val(meta), path("*_collapsed.bed")          , emit: bed
     tuple val(meta), path("*_trans_read.bed")         , emit: bed_trans_reads
     tuple val(meta), path("*_local_density_error.txt"), emit: local_density_error
     tuple val(meta), path("*_polya.txt")              , emit: polya
