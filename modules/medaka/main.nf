@@ -22,8 +22,8 @@ process MEDAKA {
     tuple val(meta), path(reads), path(assembly)
 
     output:
-    tuple val(meta), path("*_polished_genome.fa.gz"), emit: polished_assembly
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*_polished_genome.fa.gz") , emit: polished_assembly
+    path "versions.yml"                              , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
