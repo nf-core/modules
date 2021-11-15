@@ -1,0 +1,66 @@
+name: picard_collecthsmetrics
+description: Collects hybrid-selection (HS) metrics for a SAM or BAM file.
+keywords:
+  - alignment
+  - metrics
+  - statistics
+  - insert
+  - hybrid-selection
+  - quality
+  - bam
+tools:
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      tool_dev_url: https://github.com/broadinstitute/picard/
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: An aligned BAM/SAM file
+      pattern: "*.{bam,sam}"
+  - fasta:
+      type: file
+      description: |
+        A reference file to calculate dropout metrics measuring reduced representation of reads.
+        Optional input.
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of FASTA file. Only needed when fasta is supplied.
+      pattern: "*.fai"
+  - bait_intervals:
+      type: file
+      description: An interval list file that contains the locations of the baits used.
+      pattern: "baits.interval_list"
+  - target_intervals:
+      type: file
+      description: An interval list file that contains the locations of the targets.
+      pattern: "targets.interval_list"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hs_metrics:
+      type: file
+      description: The metrics file.
+      pattern: "*_collecthsmetrics.txt"
+
+authors:
+  - "@projectoriented"
