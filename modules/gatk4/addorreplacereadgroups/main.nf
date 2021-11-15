@@ -13,11 +13,12 @@ process GATK4_ADDORREPLACEREADGROUPS {
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
 
-    conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/YOUR-TOOL-HERE"
+        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
+    }
     }
 
     input:
