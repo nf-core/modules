@@ -22,7 +22,7 @@ process FARGENE {
 
     input:
     // input may be fasta (for genomes or longer contigs) or paired-end fastq (for metagenome), the latter in addition with --meta flag
-    tuple val(meta), path(input) 
+    tuple val(meta), path(input)
     val hmm_model
 
     output:
