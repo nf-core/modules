@@ -4,42 +4,40 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process SPATYPER {
+process PLINK2_VCF {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::spatyper=0.3.3" : null)
+    conda (params.enable_conda ? "bioconda::plink2=2.00a2.3" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/spatyper%3A0.3.3--pyhdfd78af_3"
+        container "https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1"
     } else {
-        container "quay.io/biocontainers/spatyper:0.3.3--pyhdfd78af_3"
+        container "quay.io/biocontainers/plink2:2.00a2.3--h712d239_1"
     }
 
     input:
-    tuple val(meta), path(fasta)
-    path repeats
-    path repeat_order
+    tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.pgen"), emit: pgen
+    tuple val(meta), path("*.psam"), emit: psam
+    tuple val(meta), path("*.pvar"), emit: pvar
+    path "versions.yml"            , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """
-    spaTyper \\
+    plink2 \\
         $options.args \\
-        $input_args \\
-        --fasta $fasta \\
-        --output ${prefix}.tsv
+        --vcf $vcf \\
+        --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
+        ${getSoftwareName(task.process)}: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
     END_VERSIONS
     """
 }
