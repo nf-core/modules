@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process COOLER_DUMP {
+process COOLER_MERGE {
     tag "$meta.id"
     label 'process_high'
     publishDir "${params.outdir}",
@@ -20,20 +20,18 @@ process COOLER_DUMP {
 
     input:
     tuple val(meta), path(cool)
-    val resolution
 
     output:
-    tuple val(meta), path("*.bedpe"), emit: bedpe
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.cool"), emit: cool
+    path "versions.yml"            , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def suffix   = resolution     ? "::$resolution"               : ""
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    cooler dump \\
+    cooler merge \\
         $options.args \\
-        -o ${prefix}.bedpe \\
-        $cool$suffix
+        ${prefix}.cool \\
+        ${cool}
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
