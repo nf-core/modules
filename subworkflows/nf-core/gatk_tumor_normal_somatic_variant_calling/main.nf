@@ -4,15 +4,15 @@
 
 params.mutect2_options          = [:]
 params.learnorientation_options = [:]
-params.getpileup_options        = [suffix: '_tumor']
-params.getpileupnorm_options    = [suffix: '_normal']
+params.getpileup_tumor_options        = [suffix: '_tumor']
+params.getpileup_normal_options    = [suffix: '_normal']
 params.calccontam_options       = [:]
 params.filtercalls_options      = [suffix: '_filtered']
 
 include { GATK4_MUTECT2                   as MUTECT2 }                   from '../../../modules/gatk4/mutect2/main'                   addParams( options: params.mutect2_options )
 include { GATK4_LEARNREADORIENTATIONMODEL as LEARNREADORIENTATIONMODEL } from '../../../modules/gatk4/learnreadorientationmodel/main' addParams( options: params.learnorientation_options )
-include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_TUMOR }  from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileup_options )
-include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileupnorm_options )
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_TUMOR }  from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileup_tumor_options )
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from '../../../modules/gatk4/getpileupsummaries/main'        addParams( options: params.getpileup_normal_options )
 include { GATK4_CALCULATECONTAMINATION    as CALCULATECONTAMINATION }    from '../../../modules/gatk4/calculatecontamination/main'    addParams( options: params.calccontam_options )
 include { GATK4_FILTERMUTECTCALLS         as FILTERMUTECTCALLS }         from '../../../modules/gatk4/filtermutectcalls/main'         addParams( options: params.filtercalls_options )
 
