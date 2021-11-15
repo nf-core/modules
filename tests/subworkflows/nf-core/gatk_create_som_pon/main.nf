@@ -16,11 +16,10 @@ workflow test_gatk_create_som_pon {
                     [] ]
                     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fastaidx = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
     pon_name = "test_panel"
     interval_file = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
 
-    GATK_CREATE_SOM_PON ( ch_mutect2_in, fasta, fastaidx, dict, pon_name, interval_file )
-
+    GATK_CREATE_SOM_PON ( ch_mutect2_in, fasta, fai, dict, pon_name, interval_file )
 }
