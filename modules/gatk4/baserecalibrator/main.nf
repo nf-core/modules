@@ -11,17 +11,17 @@ process GATK4_BASERECALIBRATOR {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.0.0--0"
+        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
     }
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
-    path fastaidx
+    path fai
     path dict
     path intervalsBed
     path knownSites
@@ -35,12 +35,19 @@ process GATK4_BASERECALIBRATOR {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def intervalsCommand = intervalsBed ? "-L ${intervalsBed}" : ""
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')
+
+    if (!task.memory) {
+        log.info '[GATK BaseRecalibrator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     gatk BaseRecalibrator  \
         -R $fasta \
-        -I $bam \
+        -I $input \
         $sitesCommand \
         $intervalsCommand \
+        --tmp-dir . \
         $options.args \
         -O ${prefix}.table
 
