@@ -11,11 +11,11 @@ process GATK4_MUTECT2 {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.0.0--0"
+        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
     }
 
     input:
@@ -25,12 +25,12 @@ process GATK4_MUTECT2 {
     val  run_mito
     val  interval_label
     path fasta
-    path fastaidx
+    path fai
     path dict
     path germline_resource
-    path germline_resource_idx
+    path germline_resource_tbi
     path panel_of_normals
-    path panel_of_normals_idx
+    path panel_of_normals_tbi
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf

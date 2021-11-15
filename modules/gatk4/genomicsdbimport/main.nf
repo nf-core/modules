@@ -11,11 +11,11 @@ process GATK4_GENOMICSDBIMPORT {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.0.0--0"
+        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
     }
 
     input:
@@ -25,18 +25,18 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("*_genomicsdb")   , optional:true, emit: genomicsdb
+    tuple val(meta), path("${prefix}")      , optional:true, emit: genomicsdb
     tuple val(meta), path("$updated_db")    , optional:true, emit: updatedb
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
     path "versions.yml"                                    , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // settings for running default create gendb mode
-    def inputs_command = input_map ? "--sample-name-map ${vcf[0]}" : "${'-V ' + vcf.join(' -V')}"
-    def dir_command = "--genomicsdb-workspace-path ${prefix}"
-    def intervals_command = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
+    inputs_command = input_map ? "--sample-name-map ${vcf[0]}" : "${'-V ' + vcf.join(' -V ')}"
+    dir_command = "--genomicsdb-workspace-path ${prefix}"
+    intervals_command = intervalfile ? " -L ${intervalfile} " : " -L ${intervalval} "
 
     // settings changed for running get intervals list mode if run_intlist is true
     if (run_intlist) {

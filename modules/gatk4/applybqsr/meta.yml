@@ -34,12 +34,15 @@ input:
   - fasta:
       type: file
       description: The reference fasta file
-  - fastaidx:
+      pattern: "*.fasta"
+  - fai:
       type: file
       description: Index of reference fasta file
+      pattern: "*.fasta.fai"
   - dict:
       type: file
       description: GATK sequence dictionary
+      pattern: "*.dict"
   - intervalsBed:
       type: file
       description: Bed file with the genomic regions included in the library (optional)
