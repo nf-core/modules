@@ -20,18 +20,20 @@ process COOLER_DUMP {
 
     input:
     tuple val(meta), path(cool)
+    val resolution
 
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
-    path "versions.yml"                  , emit: versions
+    path "versions.yml"             , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def suffix   = resolution     ? "::$resolution"               : ""
     """
     cooler dump \\
         $options.args \\
         -o ${prefix}.bedpe \\
-        $cool
+        $cool$suffix
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
