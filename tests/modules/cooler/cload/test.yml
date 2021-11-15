@@ -5,39 +5,24 @@
     - cooler
   files:
     - path: output/cooler/test_pairix.2000000.cool
-<<<<<<< HEAD
     - path: output/cooler/test_pairix.bedpe
       md5sum: 0cd85311089669688ec17468eae02111
-=======
->>>>>>> a9aaf2f45fb6525c035851b027ef91e774c0e474
 
 - name: cooler cload test_cooler_cload_pairs
   command: nextflow run tests/modules/cooler/cload -entry test_cooler_cload_pairs -c tests/config/nextflow.config
   tags:
-<<<<<<< HEAD
     - cooler
     - cooler/cload
   files:
     - path: output/cooler/test_pairs.2000000.cool
     - path: output/cooler/test_pairs.bedpe
       md5sum: 7f832733fc7853ebb1937b33e4c1e0de
-=======
-    - cooler/cload
-    - cooler
-  files:
-    - path: output/cooler/test_pairs.2000000.cool
->>>>>>> a9aaf2f45fb6525c035851b027ef91e774c0e474
 
 - name: cooler cload test_cooler_cload_tabix
   command: nextflow run tests/modules/cooler/cload -entry test_cooler_cload_tabix -c tests/config/nextflow.config
   tags:
-<<<<<<< HEAD
     - cooler
     - cooler/cload
-=======
-    - cooler/cload
-    - cooler
->>>>>>> a9aaf2f45fb6525c035851b027ef91e774c0e474
   files:
     - path: output/cooler/test_tabix.2000000.cool
     - path: output/cooler/test_tabix.bedpe

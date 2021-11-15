@@ -44,10 +44,6 @@ workflow test_cooler_cload_tabix {
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
     bin_size = 2000000
 
-<<<<<<< HEAD
     COOLER_CLOAD_TABIX ( input, bin_size, sizes ).cool.map{[it[0], it[2]]} | COOLER_DUMP_TABIX
-=======
-    COOLER_CLOAD_TABIX ( input, bin_size, sizes )
->>>>>>> a9aaf2f45fb6525c035851b027ef91e774c0e474
 
 }
