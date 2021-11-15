@@ -21,7 +21,7 @@ process GATK4_FILTERMUTECTCALLS {
     input:
     tuple val(meta), path(vcf), path(tbi), path(stats), path(orientationbias), path(segmentation), path(contaminationfile), val(contaminationest)
     path fasta
-    path fastaidx
+    path fai
     path dict
 
     output:
