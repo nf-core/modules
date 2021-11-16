@@ -23,7 +23,6 @@ process CELLRANGER_MKGTF {
     path "*.filtered.gtf", emit: gtf
     path "versions.yml"  , emit: versions
 
-
     script:
     """
     cellranger \\
