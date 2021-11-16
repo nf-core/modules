@@ -13,9 +13,9 @@ process MACS2_CALLPEAK {
 
     conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h0213d0e_1"
+        container "https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3"
     } else {
-        container "quay.io/biocontainers/macs2:2.2.7.1--py38h0213d0e_1"
+        container "quay.io/biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3"
     }
 
     input:
@@ -33,12 +33,19 @@ process MACS2_CALLPEAK {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args     = options.args.tokenize()
     def format   = meta.single_end ? 'BAM' : 'BAMPE'
     def control  = controlbam ? "--control $controlbam" : ''
+    if(args.contains('--format')){
+        def id = args.findIndexOf{it=='--format'}
+        format = args[id+1]
+        args.remove(id+1)
+        args.remove(id)
+    }
     """
     macs2 \\
         callpeak \\
-        $options.args \\
+        ${args.join(' ')} \\
         --gsize $macs2_gsize \\
         --format $format \\
         --name $prefix \\
