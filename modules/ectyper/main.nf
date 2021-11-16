@@ -30,11 +30,13 @@ process ECTYPER {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
+    mkfifo fasta_uncompressed
+    gzip -cdf $fasta > fasta_uncompressed & 
     ectyper \\
         $options.args \\
         --cores $task.cpus \\
         --output ./ \\
-        --input <(gzip -cdf $fasta)
+        --input fasta_uncompressed
     mv output.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
