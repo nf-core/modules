@@ -39,7 +39,6 @@ process GATK4_ADDORREPLACEREADGROUPS {
         -SM=20 \\
         $options.args
 
-
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
