@@ -19,14 +19,14 @@ process GATK4_VARIANTFILTRATION {
     }
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(vcf_index)
     path  fasta
     path  fai
     path  dict
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz")	, emit: vcf
+    path "versions.yml"           	, emit: versions
 
 
     script:
@@ -35,7 +35,7 @@ process GATK4_VARIANTFILTRATION {
     gatk VariantFiltration \\
         -R $fasta \\
         -V $vcf \\
-        -O ${prefix}.vcf \\
+        -O ${prefix}.vcf.gz \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
