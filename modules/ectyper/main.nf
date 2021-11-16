@@ -31,7 +31,7 @@ process ECTYPER {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mkfifo fasta_uncompressed
-    gzip -cdf $fasta > fasta_uncompressed & 
+    gzip -cdf $fasta > fasta_uncompressed &
     ectyper \\
         $options.args \\
         --cores $task.cpus \\
