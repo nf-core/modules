@@ -27,7 +27,6 @@ process GATK4_ADDORREPLACEREADGROUPS {
     script:
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
     """
     gatk AddOrReplaceReadGroups" \\
         -I $bam \\
