@@ -31,7 +31,6 @@ process SPATYPER {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """
-    env
     spaTyper \\
         $options.args \\
         $input_args \\
