@@ -1,13 +1,13 @@
 - name: dastool dastool test_dastool_dastool
   command: nextflow run tests/modules/dastool/dastool -entry test_dastool_dastool -c tests/config/nextflow.config
   tags:
-    - dastool/dastool
     - dastool
+    - dastool/dastool
   files:
-    - path: output/dastool/test.scaffolds2bin.tsv
-      md5sum: 6e46c0be14dded7cb13af38f54feea47
     - path: output/dastool/test.seqlength
       md5sum: b815a5811008c36808a59b1d0dcfab24
+    - path: output/dastool/test.tsv
+      md5sum: 6e46c0be14dded7cb13af38f54feea47
     - path: output/dastool/test_DASTool.log
       contains: 
         - 'DAS Tool run on'
@@ -19,7 +19,7 @@
       md5sum: e79d82eecee25821d1658ea4f082601d
     - path: output/dastool/test_proteins.faa.bacteria.scg
       md5sum: 8132cfb17cf398d41c036ead55c96ffe
-    - path: output/dastool/test_test.scaffolds2bin.tsv.eval
+    - path: output/dastool/test_test.tsv.eval
       md5sum: a3efa8717b30dfada78dc5ae9a3dc396
     - path: output/metabat2/bins/test.1.fa.gz
       md5sum: 2b297bf557cc3831b800348859331268

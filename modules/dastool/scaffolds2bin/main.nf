@@ -22,7 +22,7 @@ process DASTOOL_SCAFFOLDS2BIN {
     val(extension)
 
     output:
-    tuple val(meta), path("*.scaffolds2bin.tsv"), emit: scaffolds2bin
+    tuple val(meta), path("*.tsv"), emit: scaffolds2bin
     path "versions.yml"                         , emit: versions
 
     script:
@@ -36,7 +36,7 @@ process DASTOOL_SCAFFOLDS2BIN {
         $options.args \\
         -i . \\
         -e $file_extension \\
-        > ${prefix}.scaffolds2bin.tsv
+        > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

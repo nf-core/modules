@@ -19,7 +19,7 @@ workflow test_dastool_dastool {
         .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
         .set { input_metabat2 }
 
-        METABAT2_METABAT2 ( input_metabat2 )
+    METABAT2_METABAT2 ( input_metabat2 )
 
     DASTOOL_SCAFFOLDS2BIN ( METABAT2_METABAT2.out.fasta.collect(), "fa")
 

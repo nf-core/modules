@@ -20,9 +20,8 @@ process DASTOOL_DASTOOL {
     input:
     tuple val(meta), path(contigs), path(bins)
     path(proteins)
-    val(methods)
+    path(db_directory)
     val(search_engine)
-
 
     output:
     tuple val(meta), path("*.log")                                      , emit: log
@@ -40,8 +39,8 @@ process DASTOOL_DASTOOL {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bin_list = bins instanceof List ? bins.join(",") : "$bins"
-    def method_list = methods ? "-l $methods" : ""
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
+    def db_dir = db_directory ? "--db_directory $db_directory" : ""
     def clean_contigs = contigs.toString() - ".gz"
     def decompress_contigs = contigs.toString() == clean_contigs ? "" : "gunzip -q -f $contigs"
     def decompress_proteins = proteins ? "gunzip -f $proteins" : ""
@@ -59,10 +58,10 @@ process DASTOOL_DASTOOL {
     DAS_Tool \\
         $options.args \\
         $proteins_pred \\
+        $db_dir \\
         $engine \\
         -t $task.cpus \\
         --bins $bin_list \\
-        $method_list \\
         -c $clean_contigs \\
         -o $prefix
 
