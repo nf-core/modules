@@ -22,7 +22,7 @@ process GATK4_ADDORREPLACEREADGROUPS {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "version.yml",             emit: versions
+    path "versions.yml"           , emit: versions
 
     script:
     def software = getSoftwareName(task.process)
