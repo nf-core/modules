@@ -19,26 +19,30 @@ process UNICYCLER {
     }
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(shortreads), path(longreads)
 
     output:
-    tuple val(meta), path('*.scaffolds.fa'), emit: scaffolds
-    tuple val(meta), path('*.assembly.gfa'), emit: gfa
-    tuple val(meta), path('*.log')         , emit: log
-    path  "versions.yml"                   , emit: versions
+    tuple val(meta), path('*.scaffolds.fa.gz'), emit: scaffolds
+    tuple val(meta), path('*.assembly.gfa.gz'), emit: gfa
+    tuple val(meta), path('*.log')            , emit: log
+    path  "versions.yml"                      , emit: versions
 
     script:
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def input_reads = meta.single_end ? "-s $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def short_reads = shortreads ? ( meta.single_end ? "-s $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}" ) : ""
+    def long_reads  = longreads ? "-l $longreads" : ""
     """
     unicycler \\
         --threads $task.cpus \\
         $options.args \\
-        $input_reads \\
+        $short_reads \\
+        $long_reads \\
         --out ./
 
     mv assembly.fasta ${prefix}.scaffolds.fa
+    gzip -n ${prefix}.scaffolds.fa
     mv assembly.gfa ${prefix}.assembly.gfa
+    gzip -n ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
 
     cat <<-END_VERSIONS > versions.yml
