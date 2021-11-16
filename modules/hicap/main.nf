@@ -24,9 +24,9 @@ process HICAP {
     path model_fp
 
     output:
-    tuple val(meta), path("*.gbk"), emit: gbk
-    tuple val(meta), path("*.svg"), emit: svg
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.gbk"), emit: gbk, optional: true
+    tuple val(meta), path("*.svg"), emit: svg, optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     path "versions.yml"           , emit: versions
 
     script:
@@ -39,7 +39,6 @@ process HICAP {
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
-
     hicap \\
         --query_fp $fasta_name \\
         $database_args \\
