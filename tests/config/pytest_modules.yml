@@ -270,9 +270,19 @@ cat/fastq:
   - modules/cat/fastq/**
   - tests/modules/cat/fastq/**
 
-cellranger/mkref:
+cellranger/gtf: &cellranger/gtf
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/mkref: &cellranger/mkref
   - modules/cellranger/mkref/**
   - tests/modules/cellranger/mkref/**
+  - *cellranger/gtf
+
+cellranger/count:
+  - modules/cellranger/count/**
+  - tests/modules/cellranger/count/**
+  - *cellranger/mkref
 
 checkm/lineagewf:
   - modules/checkm/lineagewf/**
