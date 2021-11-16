@@ -29,14 +29,18 @@ process ECTYPER {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
+    def fasta_name = fasta.getName().replace(".gz", "")
     """
-    mkfifo fasta_uncompressed
-    gzip -cdf $fasta > fasta_uncompressed &
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $fasta > $fasta_name
+    fi
+    
     ectyper \\
         $options.args \\
         --cores $task.cpus \\
         --output ./ \\
-        --input fasta_uncompressed
+        --input $fasta_name
     mv output.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
