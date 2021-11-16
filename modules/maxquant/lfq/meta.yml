@@ -1,0 +1,47 @@
+name: maxquant_lfq
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - sort
+tools:
+  - maxquant:
+      ## TODO nf-core: Add a description and other details for the software below
+      description: MaxQuant is a quantitative proteomics software package designed for analyzing large mass-spectrometric data sets. License restricted.
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ['http://www.coxdocs.org/lib/exe/fetch.php?media=license_agreement.pdf']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  ## TODO nf-core: Delete / customise this example input
+  - parfile:
+      type: file
+      description: MaxQuant parameter file (XML)
+      pattern: "*.{xml}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  ## TODO nf-core: Delete / customise this example output
+  - maxquant_txt:
+      type: file
+      description: tables with peptides and protein information
+      pattern: "*.{txt}"
+
+authors:
+  - "@veitveit"
