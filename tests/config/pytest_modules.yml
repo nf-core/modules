@@ -474,7 +474,7 @@ gatk4/bedtointervallist:
   - modules/gatk4/bedtointervallist/**
   - tests/modules/gatk4/bedtointervallist/**
 
-gatk4/calculatecontamination:
+gatk4/calculatecontamination: &gatk4/calculatecontamination
   - modules/gatk4/calculatecontamination/**
   - tests/modules/gatk4/calculatecontamination/**
 
@@ -494,7 +494,7 @@ gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
 
-gatk4/filtermutectcalls:
+gatk4/filtermutectcalls: &gatk4/filtermutectcalls
   - modules/gatk4/filtermutectcalls/**
   - tests/modules/gatk4/filtermutectcalls/**
 
@@ -506,7 +506,7 @@ gatk4/genotypegvcfs:
   - modules/gatk4/genotypegvcfs/**
   - tests/modules/gatk4/genotypegvcfs/**
 
-gatk4/getpileupsummaries:
+gatk4/getpileupsummaries: &gatk4/getpileupsummaries
   - modules/gatk4/getpileupsummaries/**
   - tests/modules/gatk4/getpileupsummaries/**
 
@@ -522,7 +522,7 @@ gatk4/intervallisttools:
   - modules/gatk4/intervallisttools/**
   - tests/modules/gatk4/intervallisttools/**
 
-gatk4/learnreadorientationmodel:
+gatk4/learnreadorientationmodel: &gatk4/learnreadorientationmodel
   - modules/gatk4/learnreadorientationmodel/**
   - tests/modules/gatk4/learnreadorientationmodel/**
 
@@ -538,7 +538,7 @@ gatk4/mergevcfs:
   - modules/gatk4/mergevcfs/**
   - tests/modules/gatk4/mergevcfs/**
 
-gatk4/mutect2:
+gatk4/mutect2: &gatk4/mutect2 
   - modules/gatk4/mutect2/**
   - tests/modules/gatk4/mutect2/**
 
