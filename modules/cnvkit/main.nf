@@ -39,9 +39,6 @@ process CNVKIT {
     else {
         target_args = "--targets $targetfile"
     }
-    normal_args = normalbam ? "--normal $normalbam" : ""
-
-    fasta_args = fasta ? "--fasta $fasta" : ""
 
     normal_args = normalbam ? "--normal $normalbam" : ""
 
