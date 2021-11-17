@@ -19,11 +19,11 @@ process GUNZIP {
     }
 
     input:
-    path archive
+    tuple val(meta), path(archive)
 
     output:
-    path "$gunzip",       emit: gunzip
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("$gunzip"), emit: gunzip
+    path "versions.yml"             , emit: versions
 
     script:
     gunzip       = archive.toString() - '.gz'
