@@ -1,0 +1,52 @@
+name: tiddit_cov
+description: Computes the coverage of different regions from the bam file.
+keywords:
+  - coverage
+  - bam
+  - statistics
+  - chromosomal rearrangements
+tools:
+  - tiddit:
+      description: TIDDIT - structural variant calling.
+      homepage: https://github.com/SciLifeLab/TIDDIT
+      documentation: https://github.com/SciLifeLab/TIDDIT/blob/master/README.md
+      doi: "10.12688/f1000research.11168.1"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - fasta:
+      type: file
+      description: |
+        Reference genome file. Only needed when passing in CRAM instead of BAM.
+        If not using CRAM, please pass an empty file instead.
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - cov:
+      type: file
+      description: The coverage of different regions. Optional.
+      pattern: "*.tab"
+  - wig:
+      type: file
+      description: The coverage of different regions in WIG format. Optional.
+      pattern: "*.wig"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@projectoriented"

@@ -9,14 +9,14 @@ tools:
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
       doi: ""
-      licence: ['BSD-3-clause-Clear']
+      licence: ['BSD-3-Clause-Clear']
 
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        id: id of the split file
   - bam:
       type: file
       description: Raw subreads bam
@@ -42,10 +42,26 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - css:
+  - bam:
       type: file
-      description: Consensus sequences
-      pattern: "*.ccs.bam"
+      description: CCS sequences in bam format
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: PacBio Index of CCS sequences
+      pattern: "*.pbi"
+  - report_txt:
+      type: file
+      description: Summary of CCS in txt format
+      pattern: ".txt"
+  - report_json:
+      type: file
+      description: Summary of CCS in txt json
+      pattern: ".json"
+  - metrics:
+      type: file
+      description: Metrics about zmws
+      pattern: "*.json.gz"
 
 authors:
   - "@sguizard"
