@@ -25,9 +25,9 @@ process CNVKIT {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    tuple val(meta), path("*.cnn"), emit: cnn
-    tuple val(meta), path("*.cnr"), emit: cnr
-    tuple val(meta), path("*.cns"), emit: cns
+    tuple val(meta), path("*.cnn"), emit: cnn, optional: true
+    tuple val(meta), path("*.cnr"), emit: cnr, optional: true
+    tuple val(meta), path("*.cns"), emit: cns, optional: true
     path "versions.yml"           , emit: versions
 
     script:
@@ -43,6 +43,9 @@ process CNVKIT {
 
     fasta_args = fasta ? "--fasta $fasta" : ""
 
+    normal_args = normalbam ? "--normal $normalbam" : ""
+
+    fasta_args = fasta ? "--fasta $fasta" : ""
     """
     cnvkit.py \\
         batch \\
