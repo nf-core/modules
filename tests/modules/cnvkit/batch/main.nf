@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT }               from '../../../modules/cnvkit/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn' ] )
-include { CNVKIT as CNVKIT_WGS } from '../../../modules/cnvkit/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn --method wgs' ] )
+include { CNVKIT }               from '../../../../modules/cnvkit/batch/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn' ] )
+include { CNVKIT as CNVKIT_WGS } from '../../../../modules/cnvkit/batch/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn --method wgs' ] )
 
 workflow test_cnvkit_hybrid {
     tumorbam = file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)

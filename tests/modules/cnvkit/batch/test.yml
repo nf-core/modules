@@ -1,6 +1,7 @@
-- name: cnvkit test_cnvkit_hybrid
-  command: nextflow run tests/modules/cnvkit -entry test_cnvkit_hybrid -c tests/config/nextflow.config
+- name: cnvkit batch test_cnvkit_hybrid
+  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_hybrid -c tests/config/nextflow.config
   tags:
+    - cnvkit/batch
     - cnvkit
   files:
     - path: output/cnvkit/baits.antitarget.bed
@@ -26,9 +27,10 @@
     - path: output/cnvkit/test.single_end.sorted.targetcoverage.cnn
       md5sum: aa8a018b1d4d1e688c9f9f6ae01bf4d7
 
-- name: cnvkit test_cnvkit_wgs
-  command: nextflow run tests/modules/cnvkit -entry test_cnvkit_wgs -c tests/config/nextflow.config
+- name: cnvkit batch test_cnvkit_wgs
+  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_wgs -c tests/config/nextflow.config
   tags:
+    - cnvkit/batch
     - cnvkit
   files:
     - path: output/cnvkit/genome.antitarget.bed
@@ -56,9 +58,10 @@
     - path: output/cnvkit/test2.paired_end.sorted.targetcoverage.cnn
       md5sum: 6ae6b3fce7299eedca6133d911c38fe1
 
-- name: cnvkit test_cnvkit_cram
-  command: nextflow run tests/modules/cnvkit -entry test_cnvkit_cram -c tests/config/nextflow.config
+- name: cnvkit batch test_cnvkit_cram
+  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_cram -c tests/config/nextflow.config
   tags:
+    - cnvkit/batch
     - cnvkit
   files:
     - path: output/cnvkit/genome.antitarget.bed
