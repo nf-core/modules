@@ -23,7 +23,7 @@ process SAMTOOLS_FASTQ {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path  "versions.yml"          , emit: versions
+    path  "versions.yml"               , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -32,7 +32,7 @@ process SAMTOOLS_FASTQ {
     """
     samtools fastq \\
         $options.args \\
-        -@ $task.cpus \\
+        --threads ${task.cpus}-1 \\
         $endedness \\
         $bam
     cat <<-END_VERSIONS > versions.yml
