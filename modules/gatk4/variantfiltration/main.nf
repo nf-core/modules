@@ -19,14 +19,15 @@ process GATK4_VARIANTFILTRATION {
     }
 
     input:
-    tuple val(meta), path(vcf), path(vcf_index)
+    tuple val(meta), path(vcf), path(vcf_tbi)
     path  fasta
     path  fai
     path  dict
 
     output:
-    tuple val(meta), path("*.vcf.gz")	, emit: vcf
-    path "versions.yml"           	, emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
+    path "versions.yml"		     , emit: versions
 
 
     script:

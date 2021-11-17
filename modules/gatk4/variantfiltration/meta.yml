@@ -20,9 +20,13 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test']
   - vcf:
-      type: tuple of files
-      description: Tuple of VCF(.gz) file (first) and its index (second)
-      pattern: ["*.{vcf,vcf.gz}", "*.{idx,tbi}"]
+      type: list
+      description: List of VCF(.gz) files
+      pattern: "*.{vcf,vcf.gz}"
+  - vcf_tbi:
+      type: list
+      description: List of VCF file indexes
+      pattern: "*.{idx,tbi}"  
   - fasta:
       type: file
       description: Fasta file of reference genome
@@ -38,8 +42,12 @@ input:
 output:
   - vcf:
       type: file
-      description: filtered VCF file in gzipped format
-      pattern: "*.filtered.{vcf.gz}"
+      description: Compressed VCF file 
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of VCF file
+      pattern: "*.vcf.gz.tbi"
   - versions:
       type: file
       description: File containing software versions
