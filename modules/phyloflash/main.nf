@@ -24,11 +24,12 @@ process PHYLOFLASH {
     path  univec_db
 
     output:
-    tuple val(meta), path("${prefix}"), emit: results
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("${meta.id}*/*"), emit: results
+    path "versions.yml"                   , emit: versions
 
     script:
-    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
     if (meta.single_end) {
         """
         phyloFlash.pl \\
@@ -44,7 +45,7 @@ process PHYLOFLASH {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash //")
         END_VERSIONS
         """
     } else {
@@ -62,12 +63,15 @@ process PHYLOFLASH {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+            ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash //")
         END_VERSIONS
         """
     }
 
     stub:
+
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+
     """
     mkdir ${prefix}
     touch ${prefix}/${prefix}.SSU.collection.fasta
@@ -75,7 +79,7 @@ process PHYLOFLASH {
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "s/^.*phyloFlash //")
     END_VERSIONS
     """
 }
