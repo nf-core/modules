@@ -4,12 +4,12 @@
     - subworkflows/bam_sort_samtools
     - subworkflows/bam_stats_samtools
     # Modules
-    # - samtools
-    # - samtools/index
-    # - samtools/sort
-    # - samtools/stats
-    # - samtools/idxstats
-    # - samtools/flagstat
+    - samtools
+    - samtools/index
+    - samtools/sort
+    - samtools/stats
+    - samtools/idxstats
+    - samtools/flagstat
   files:
     - path: ./output/samtools/test.sorted.bam
       md5sum: 8b56bb7d26ced04112f712250d915aaa
