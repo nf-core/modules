@@ -29,7 +29,7 @@ process SAMTOOLS_STATS {
     script:
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools stats --threads ${task.cpus} ${reference} ${input} > ${input}.stats
+    samtools stats --threads ${task.cpus}-1 ${reference} ${input} > ${input}.stats
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

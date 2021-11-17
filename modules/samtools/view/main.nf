@@ -23,9 +23,9 @@ process SAMTOOLS_VIEW {
     path fasta
 
     output:
-    tuple val(meta), path("*.bam") , optional: true, emit: bam
-    tuple val(meta), path("*.cram"), optional: true, emit: cram
-    path  "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.bam") , emit: bam , optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    path  "versions.yml"           , emit: versions
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -33,6 +33,7 @@ process SAMTOOLS_VIEW {
     def file_type = input.getExtension()
     """
     samtools view --threads ${task.cpus} ${reference} $options.args $input > ${prefix}.${file_type}
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
