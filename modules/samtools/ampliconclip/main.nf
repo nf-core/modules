@@ -38,7 +38,6 @@ process SAMTOOLS_AMPLICONCLIP {
     samtools \\
         ampliconclip \\
         $options.args \\
-        -@ $task.cpus \\
         $rejects \\
         $stats \\
         -b $bed \\
