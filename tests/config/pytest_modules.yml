@@ -522,7 +522,7 @@ gatk4/intervallisttools:
   - modules/gatk4/intervallisttools/**
   - tests/modules/gatk4/intervallisttools/**
 
-gatk4/learnreadorientationmodel:
+gatk4/learnreadorientationmodel: &gatk4/learnreadorientationmodel
   - modules/gatk4/learnreadorientationmodel/**
   - tests/modules/gatk4/learnreadorientationmodel/**
 
@@ -1427,6 +1427,15 @@ subworkflows/gatk_create_som_pon:
   - *gatk4/genomicsdbimport
   - *gatk4/createsomaticpanelofnormals
 
+subworkflows/gatk_tumor_normal_somatic_variant_calling:
+  - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+  - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+  - *gatk4/mutect2
+  - *gatk4/learnreadorientationmodel
+  - *gatk4/getpileupsummaries
+  - *gatk4/calculatecontamination
+  - *gatk4/filtermutectcalls
+  
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
   - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
