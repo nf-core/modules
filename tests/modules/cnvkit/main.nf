@@ -6,11 +6,11 @@ include { CNVKIT }               from '../../../modules/cnvkit/main.nf' addParam
 include { CNVKIT as CNVKIT_WGS } from '../../../modules/cnvkit/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn --method wgs' ] )
 
 workflow test_cnvkit_hybrid {
-    tumourbam = file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+    tumorbam = file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     normalbam = file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam'], checkIfExists: true)
 
     input = [ [ id:'test' ], // meta map
-              tumourbam,
+              tumorbam,
               normalbam
             ]
     fasta   = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

@@ -19,7 +19,7 @@ process CNVKIT {
     }
 
     input:
-    tuple val(meta), path(tumourbam), path(normalbam)
+    tuple val(meta), path(tumorbam), path(normalbam)
     path  fasta
     path  targetfile
 
@@ -39,14 +39,17 @@ process CNVKIT {
     else {
         target_args = "--targets $targetfile"
     }
+    normal_args = normalbam ? "--normal $normalbam" : ""
+
+    fasta_args = fasta ? "--fasta $fasta" : ""
 
     """
     cnvkit.py \\
         batch \\
-        $tumourbam \\
-        --normal $normalbam\\
-        --fasta $fasta \\
+        $tumorbam \\
+        $normal_args \\
         $target_args \\
+        $fasta_args \\
         --processes ${task.cpus} \\
         $options.args
 
