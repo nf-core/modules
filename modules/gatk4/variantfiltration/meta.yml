@@ -26,7 +26,7 @@ input:
   - vcf_tbi:
       type: list
       description: List of VCF file indexes
-      pattern: "*.{idx,tbi}"  
+      pattern: "*.{idx,tbi}"
   - fasta:
       type: file
       description: Fasta file of reference genome
@@ -42,7 +42,7 @@ input:
 output:
   - vcf:
       type: file
-      description: Compressed VCF file 
+      description: Compressed VCF file
       pattern: "*.vcf.gz"
   - tbi:
       type: file
