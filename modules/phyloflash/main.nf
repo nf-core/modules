@@ -72,5 +72,10 @@ process PHYLOFLASH {
     mkdir ${prefix}
     touch ${prefix}/${prefix}.SSU.collection.fasta
     touch ${prefix}/${prefix}.phyloFlash
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(echo \$(phyloFlash.pl -version 2>&1) | sed "sed 's/^.*phyloFlash //")
+    END_VERSIONS
     """
 }
