@@ -538,7 +538,7 @@ gatk4/mergevcfs:
   - modules/gatk4/mergevcfs/**
   - tests/modules/gatk4/mergevcfs/**
 
-gatk4/mutect2: &gatk4/mutect2 
+gatk4/mutect2: &gatk4/mutect2
   - modules/gatk4/mutect2/**
   - tests/modules/gatk4/mutect2/**
 
@@ -1436,3 +1436,10 @@ subworkflows/gatk_tumor_normal_somatic_variant_calling:
   - *gatk4/calculatecontamination
   - *gatk4/filtermutectcalls
   
+subworkflows/gatk_tumor_only_somatic_variant_calling:
+  - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
+  - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
+  - *gatk4/mutect2
+  - *gatk4/getpileupsummaries
+  - *gatk4/calculatecontamination
+  - *gatk4/filtermutectcalls
