@@ -14,9 +14,9 @@ workflow test_samtools_stats {
 }
 
 workflow test_samtools_stats_cram {
-   input = [ [ id: 'test' ], // meta map
-               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
-               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
+   input = [ [ id: 'test', single_end:true ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
             ]
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
