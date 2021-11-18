@@ -54,10 +54,10 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-  - fastaidx:
+  - fai:
       type: file
       description: Index of reference fasta file
-      pattern: "fasta.fai"
+      pattern: "*.fasta.fai"
   - dict:
       type: file
       description: GATK sequence dictionary
@@ -66,18 +66,18 @@ input:
       type: file
       description: Population vcf of germline sequencing, containing allele fractions.
       pattern: "*.vcf.gz"
-  - germline_resource_idx:
+  - germline_resource_tbi:
       type: file
       description: Index file for the germline resource.
-      pattern: "*.vcf.gz_tbi"
+      pattern: "*.vcf.gz.tbi"
   - panel_of_normals:
       type: file
       description: vcf file to be used as a panel of normals.
       pattern: "*.vcf.gz"
-  - panel_of_normals_idx:
+  - panel_of_normals_tbi:
       type: file
       description: Index for the panel of normals.
-      pattern: "*.vcf.gz_tbi"
+      pattern: "*.vcf.gz.tbi"
 
 output:
   - vcf:
