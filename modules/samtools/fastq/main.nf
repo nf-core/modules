@@ -32,7 +32,7 @@ process SAMTOOLS_FASTQ {
     """
     samtools fastq \\
         $options.args \\
-        --threads ${task.cpus}-1 \\
+        --threads ${task.cpus-1} \\
         $endedness \\
         $bam
     cat <<-END_VERSIONS > versions.yml
