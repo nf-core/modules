@@ -21,7 +21,7 @@ process GATK4_GETPILEUPSUMMARIES {
     input:
     tuple val(meta), path(bam), path(bai)
     path variants
-    path variants_idx
+    path variants_tbi
     path sites
 
     output:
