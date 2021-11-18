@@ -37,7 +37,10 @@ process GATK3_UNIFIEDGENOTYPER {
         -o ${prefix}.vcf \\
         $options.args
 
-    bgzip -@ ${task.cpus} ${prefix}.vcf
+    bgzip \\
+        $options.args2 \\
+        -@ ${task.cpus} \\
+        ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
