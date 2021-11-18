@@ -4,15 +4,15 @@
     - subworkflows/bam_sort_samtools
     - subworkflows/bam_stats_samtools
     # Modules
-    # - samtools
-    # - samtools/index
-    # - samtools/sort
-    # - samtools/stats
-    # - samtools/idxstats
-    # - samtools/flagstat
+    - samtools
+    - samtools/index
+    - samtools/sort
+    - samtools/stats
+    - samtools/idxstats
+    - samtools/flagstat
   files:
     - path: ./output/samtools/test.sorted.bam
-      md5sum: e4c77897d6824ce4df486d1b100618af
+      md5sum: 8b56bb7d26ced04112f712250d915aaa
     - path: ./output/samtools/test.sorted.bam.bai
       md5sum: a70940ce9ba2e700ec2984e0a6526099
       # samtools stats
@@ -36,7 +36,7 @@
     # - samtools/flagstat
   files:
     - path: ./output/samtools/test.sorted.bam
-      md5sum: bbb2db225f140e69a4ac577f74ccc90f
+      md5sum: 4adc495469724a375d5e1a9f3485e38d
     - path: ./output/samtools/test.sorted.bam.bai
       md5sum: 20c91e3a0fd4661d7cb967f40d2486ba
       # samtools stats
