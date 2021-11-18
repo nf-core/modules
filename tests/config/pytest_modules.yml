@@ -34,6 +34,10 @@ assemblyscan:
   - modules/assemblyscan/**
   - tests/modules/assemblyscan/**
 
+ataqv/ataqv:
+  - modules/ataqv/ataqv/**
+  - tests/modules/ataqv/ataqv/**
+
 bamaligncleaner:
   - modules/bamaligncleaner/**
   - tests/modules/bamaligncleaner/**
@@ -41,6 +45,10 @@ bamaligncleaner:
 bamtools/split:
   - modules/bamtools/split/**
   - tests/modules/bamtools/split/**
+
+bamutil/trimbam:
+  - modules/bamutil/trimbam/**
+  - tests/modules/bamutil/trimbam/**
 
 bandage/image:
   - modules/bandage/image/**
@@ -274,6 +282,14 @@ chromap/index:
   - modules/chromap/index/**
   - tests/modules/chromap/index/**
 
+clonalframeml:
+  - modules/clonalframeml/**
+  - tests/modules/clonalframeml/**
+
+cmseq/polymut:
+  - modules/cmseq/polymut/**
+  - tests/modules/cmseq/polymut/**
+
 cnvkit:
   - modules/cnvkit/**
   - tests/modules/cnvkit/**
@@ -282,17 +298,37 @@ cooler/digest:
   - modules/cooler/digest/**
   - tests/modules/cooler/digest/**
 
+cooler/cload:
+  - modules/cooler/cload/**
+  - tests/modules/cooler/cload/**
+  
 cooler/dump:
   - modules/cooler/dump/**
   - tests/modules/cooler/dump/**
+
+cooler/zoomify:
+  - modules/cooler/zoomify/**
+  - tests/software/cooler/zoomify/**
+
+cooler/merge:
+  - modules/cooler/merge/**
+  - tests/modules/cooler/merge/**
 
 csvtk/concat:
   - modules/csvtk/concat/**
   - tests/modules/csvtk/concat/**
 
+csvtk/split:
+  - modules/csvtk/split/**
+  - tests/modules/csvtk/split/**
+
 custom/dumpsoftwareversions:
   - modules/custom/dumpsoftwareversions/**
   - tests/modules/custom/dumpsoftwareversions/**
+
+custom/getchromsizes:
+  - modules/custom/getchromsizes/**
+  - tests/modules/custom/getchromsizes/**
 
 cutadapt:
   - modules/cutadapt/**
@@ -362,6 +398,10 @@ dshbio/splitgff3:
   - modules/dshbio/splitgff3/**
   - tests/modules/dshbio/splitgff3/**
 
+emmtyper:
+  - modules/emmtyper/**
+  - tests/modules/emmtyper/**
+
 ensemblvep:
   - modules/ensemblvep/**
   - tests/modules/ensemblvep/**
@@ -369,6 +409,10 @@ ensemblvep:
 expansionhunter:
   - modules/expansionhunter/**
   - tests/modules/expansionhunter/**
+
+fargene:
+  - modules/fargene/**
+  - tests/modules/fargene/**
 
 fastani:
   - modules/fastani/**
@@ -381,6 +425,10 @@ fastp:
 fastqc:
   - modules/fastqc/**
   - tests/modules/fastqc/**
+
+fastqscan:
+  - modules/fastqscan/**
+  - tests/modules/fastqscan/**
 
 fasttree:
   - modules/fasttree/**
@@ -426,7 +474,7 @@ gatk4/bedtointervallist:
   - modules/gatk4/bedtointervallist/**
   - tests/modules/gatk4/bedtointervallist/**
 
-gatk4/calculatecontamination:
+gatk4/calculatecontamination: &gatk4_calculatecontamination
   - modules/gatk4/calculatecontamination/**
   - tests/modules/gatk4/calculatecontamination/**
 
@@ -434,7 +482,7 @@ gatk4/createsequencedictionary:
   - modules/gatk4/createsequencedictionary/**
   - tests/modules/gatk4/createsequencedictionary/**
 
-gatk4/createsomaticpanelofnormals:
+gatk4/createsomaticpanelofnormals: &gatk4_createsomaticpanelofnormals
   - modules/gatk4/createsomaticpanelofnormals/**
   - tests/modules/gatk4/createsomaticpanelofnormals/**
 
@@ -446,11 +494,19 @@ gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
 
-gatk4/filtermutectcalls:
+gatk4/filtermutectcalls: &gatk4_filtermutectcalls
   - modules/gatk4/filtermutectcalls/**
   - tests/modules/gatk4/filtermutectcalls/**
 
-gatk4/getpileupsummaries:
+gatk4/genomicsdbimport: &gatk4_genomicsdbimport
+  - modules/gatk4/genomicsdbimport/**
+  - tests/modules/gatk4/genomicsdbimport/**
+
+gatk4/genotypegvcfs:
+  - modules/gatk4/genotypegvcfs/**
+  - tests/modules/gatk4/genotypegvcfs/**
+
+gatk4/getpileupsummaries: &gatk4_getpileupsummaries
   - modules/gatk4/getpileupsummaries/**
   - tests/modules/gatk4/getpileupsummaries/**
 
@@ -458,11 +514,15 @@ gatk4/haplotypecaller:
   - modules/gatk4/haplotypecaller/**
   - tests/modules/gatk4/haplotypecaller/**
 
+gatk4/indexfeaturefile:
+  - modules/gatk4/indexfeaturefile/**
+  - tests/modules/gatk4/indexfeaturefile/**
+
 gatk4/intervallisttools:
   - modules/gatk4/intervallisttools/**
   - tests/modules/gatk4/intervallisttools/**
 
-gatk4/learnreadorientationmodel:
+gatk4/learnreadorientationmodel: &gatk4_learnreadorientationmodel
   - modules/gatk4/learnreadorientationmodel/**
   - tests/modules/gatk4/learnreadorientationmodel/**
 
@@ -478,7 +538,7 @@ gatk4/mergevcfs:
   - modules/gatk4/mergevcfs/**
   - tests/modules/gatk4/mergevcfs/**
 
-gatk4/mutect2:
+gatk4/mutect2: &gatk4_mutect2
   - modules/gatk4/mutect2/**
   - tests/modules/gatk4/mutect2/**
 
@@ -542,6 +602,14 @@ gubbins:
   - modules/gubbins/**
   - tests/modules/gubbins/**
 
+gunc/downloaddb:
+  - modules/gunc/downloaddb/**
+  - tests/modules/gunc/downloaddb/**
+
+gunc/run:
+  - modules/gunc/run/**
+  - tests/modules/gunc/run/**
+
 gunzip:
   - modules/gunzip/**
   - tests/modules/gunzip/**
@@ -569,6 +637,14 @@ hisat2/extractsplicesites:
   - modules/hisat2/extractsplicesites/**
   - tests/modules/hisat2/extractsplicesites/**
 
+hmmcopy/gccounter:
+  - modules/hmmcopy/gccounter/**
+  - tests/modules/hmmcopy/gccounter/**
+
+hmmcopy/readcounter:
+  - modules/hmmcopy/readcounter/**
+  - tests/modules/hmmcopy/readcounter/**
+
 hmmer/hmmalign:
   - modules/hmmer/hmmalign/**
   - tests/modules/hmmer/hmmalign/**
@@ -588,6 +664,14 @@ homer/maketagdirectory:
 homer/makeucscfile:
   - modules/homer/makeucscfile/**
   - tests/modules/homer/makeucscfile/**
+
+idr:
+  - modules/idr/**
+  - tests/modules/idr/**
+
+imputeme/vcftoprs:
+  - modules/imputeme/vcftoprs/**
+  - tests/modules/imputeme/vcftoprs/**
 
 iqtree:
   - modules/iqtree/**
@@ -646,6 +730,14 @@ kraken2/kraken2:
   - modules/untar/**
   - tests/modules/kraken2/kraken2/**
 
+kronatools/kronadb:
+  - modules/kronatools/kronadb/**
+  - tests/modules/kronatools/kronadb/**
+
+kronatools/ktimporttaxonomy:
+  - modules/kronatools/ktimporttaxonomy/**
+  - tests/modules/kronatools/ktimporttaxonomy/**
+
 last/dotplot:
   - modules/last/dotplot/**
   - tests/modules/last/dotplot/**
@@ -678,9 +770,17 @@ last/train:
   - modules/last/train/**
   - tests/modules/last/train/**
 
+leehom:
+  - modules/leehom/**
+  - tests/modules/leehom/**
+
 lima:
   - modules/lima/**
   - tests/modules/lima/**
+
+lissero:
+  - modules/lissero/**
+  - tests/modules/lissero/**
 
 lofreq/call:
   - modules/lofreq/call/**
@@ -697,6 +797,10 @@ lofreq/filter:
 lofreq/indelqual:
   - modules/lofreq/indelqual/**
   - tests/modules/lofreq/indelqual/**
+
+macs2/callpeak:
+  - modules/macs2/callpeak/**
+  - tests/modules/macs2/callpeak/**
 
 malt/build:
   - modules/malt/build/**
@@ -722,6 +826,10 @@ manta/tumoronly:
   - modules/manta/tumoronly/**
   - tests/modules/manta/tumoronly/**
 
+mapdamage2:
+  - modules/mapdamage2/**
+  - tests/modules/mapdamage2/**
+
 mash/sketch:
   - modules/mash/sketch/**
   - tests/modules/mash/sketch/**
@@ -734,9 +842,25 @@ maxbin2:
   - modules/maxbin2/**
   - tests/modules/maxbin2/**
 
+medaka:
+  - modules/medaka/**
+  - tests/modules/medaka/**
+
 megahit:
   - modules/megahit/**
   - tests/modules/megahit/**
+
+meningotype:
+  - modules/meningotype/**
+  - tests/modules/meningotype/**
+
+metabat2/jgisummarizebamcontigdepths:
+  - modules/metabat2/jgisummarizebamcontigdepths/**
+  - tests/modules/metabat2/jgisummarizebamcontigdepths/**
+
+metabat2/metabat2:
+  - modules/metabat2/metabat2/**
+  - tests/modules/metabat2/metabat2/**
 
 metaphlan3:
   - modules/metaphlan3/**
@@ -753,6 +877,10 @@ methyldackel/mbias:
 minia:
   - modules/minia/**
   - tests/modules/minia/**
+
+miniasm:
+  - modules/miniasm/**
+  - tests/modules/miniasm/**
 
 minimap2/align:
   - modules/minimap2/align/**
@@ -787,6 +915,10 @@ multiqc:
   - modules/multiqc/**
   - tests/modules/multiqc/**
 
+mummer:
+  - modules/mummer/**
+  - tests/modules/mummer/**
+
 muscle:
   - modules/muscle/**
   - tests/modules/muscle/**
@@ -799,9 +931,21 @@ nanoplot:
   - modules/nanoplot/**
   - tests/modules/nanoplot/**
 
+ncbigenomedownload:
+  - modules/ncbigenomedownload/**
+  - tests/modules/ncbigenomedownload/**
+
 nextclade:
   - modules/nextclade/**
   - tests/modules/nextclade/**
+
+ngmaster:
+  - modules/ngmaster/**
+  - tests/modules/ngmaster/**
+
+nucmer:
+  - modules/nucmer/**
+  - tests/modules/nucmer/**
 
 optitype:
   - modules/optitype/**
@@ -851,6 +995,10 @@ pbccs:
   - modules/pbccs/**
   - tests/modules/pbccs/**
 
+picard/collecthsmetrics:
+  - modules/picard/collecthsmetrics/**
+  - tests/modules/picard/collecthsmetrics/**
+
 picard/collectmultiplemetrics:
   - modules/picard/collectmultiplemetrics/**
   - tests/modules/picard/collectmultiplemetrics/**
@@ -883,9 +1031,17 @@ plasmidid:
   - modules/plasmidid/**
   - tests/modules/plasmidid/**
 
+plink/extract:
+  - modules/plink/extract/**
+  - tests/modules/plink/extract/**
+
 plink/vcf:
   - modules/plink/vcf/**
   - tests/modules/plink/vcf/**
+
+pmdtools/filter:
+  - modules/pmdtools/filter/**
+  - tests/modules/pmdtools/filter/**
 
 porechop:
   - modules/porechop/**
@@ -995,6 +1151,10 @@ salmon/quant:
   - modules/salmon/quant/**
   - tests/modules/salmon/quant/**
 
+samblaster:
+  - modules/samblaster/**
+  - tests/modules/samblaster/**
+
 samtools/ampliconclip:
   - modules/samtools/ampliconclip/**
   - tests/modules/samtools/ampliconclip/**
@@ -1015,6 +1175,10 @@ samtools/fastq:
   - modules/samtools/fastq/**
   - tests/modules/samtools/fastq/**
 
+samtools/fixmate:
+  - modules/samtools/fixmate/**
+  - tests/modules/samtools/fixmate/**
+
 samtools/flagstat:
   - modules/samtools/flagstat/**
   - tests/modules/samtools/flagstat/**
@@ -1023,7 +1187,7 @@ samtools/idxstats:
   - modules/samtools/idxstats/**
   - tests/modules/samtools/idxstats/**
 
-samtools/index:
+samtools/index: &samtools_index
   - modules/samtools/index/**
   - tests/modules/samtools/index/**
 
@@ -1035,7 +1199,7 @@ samtools/mpileup:
   - modules/samtools/mpileup/**
   - tests/modules/samtools/mpileup/**
 
-samtools/sort:
+samtools/sort: &samtools_sort
   - modules/samtools/sort/**
   - tests/modules/samtools/sort/**
 
@@ -1047,6 +1211,10 @@ samtools/view:
   - modules/samtools/view/**
   - tests/modules/samtools/view/**
 
+scoary:
+  - modules/scoary/**
+  - tests/modules/scoary/**
+
 seacr/callpeak:
   - modules/seacr/callpeak/**
   - tests/modules/seacr/callpeak/**
@@ -1054,6 +1222,10 @@ seacr/callpeak:
 seqkit/split2:
   - modules/seqkit/split2/**
   - tests/modules/seqkit/split2/**
+ 
+seqsero2:
+  - modules/seqsero2/**
+  - tests/modules/seqsero2/**
 
 seqtk/mergepe:
   - modules/seqtk/mergepe/**
@@ -1103,11 +1275,11 @@ spatyper:
   - modules/spatyper/**
   - tests/modules/spatyper/**
 
-sratools/fasterqdump:
+sratools/fasterqdump: &sratools_fasterqdump
   - modules/sratools/fasterqdump/**
   - tests/modules/sratools/fasterqdump/**
 
-sratools/prefetch:
+sratools/prefetch: &sratools_prefetch
   - modules/sratools/prefetch/**
   - tests/modules/sratools/prefetch/**
 
@@ -1155,6 +1327,10 @@ tabix/tabix:
   - modules/tabix/tabix/**
   - tests/modules/tabix/tabix/**
 
+tbprofiler/profile:
+  - modules/tbprofiler/profile/**
+  - tests/modules/tbprofiler/profile/**
+
 tiddit/cov:
   - modules/tiddit/cov/**
   - tests/modules/tiddit/cov/**
@@ -1191,6 +1367,10 @@ ucsc/wigtobigwig:
   - modules/ucsc/wigtobigwig/**
   - tests/modules/ucsc/wigtobigwig/**
 
+ultra/pipeline:
+  - modules/ultra/pipeline/**
+  - tests/modules/ultra/pipeline/**
+
 unicycler:
   - modules/unicycler/**
   - tests/modules/unicycler/**
@@ -1218,3 +1398,48 @@ yara/index:
 yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
+
+subworkflows/bam_stats_samtools: &subworkflows_bam_stats_samtools
+  - subworkflows/nf-core/bam_stats_samtools/**
+  - tests/subworkflows/nf-core/bam_stats_samtools/**
+
+subworkflows/bam_sort_samtools: &subworkflows_bam_sort_samtools
+  - subworkflows/nf-core/bam_sort_samtools/**
+  - tests/subworkflows/nf-core/bam_sort_samtools/**
+  - *samtools_sort
+  - *samtools_index
+  - *subworkflows_bam_stats_samtools
+
+subworkflows/align_bowtie2:
+  - subworkflows/nf-core/align_bowtie2/**
+  - tests/subworkflows/nf-core/align_bowtie2/**
+  - *subworkflows_bam_sort_samtools
+
+subworkflows/sra_fastq:
+  - subworkflows/nf-core/sra_fastq/**
+  - tests/subworkflows/nf-core/sra_fastq/**
+  - *sratools_fasterqdump
+  - *sratools_prefetch
+
+subworkflows/gatk_create_som_pon:
+  - subworkflows/nf-core/gatk_create_som_pon/**
+  - tests/subworkflows/nf-core/gatk_create_som_pon/**
+  - *gatk4_genomicsdbimport
+  - *gatk4_createsomaticpanelofnormals
+
+subworkflows/gatk_tumor_normal_somatic_variant_calling:
+  - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+  - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
+  - *gatk4_mutect2
+  - *gatk4_learnreadorientationmodel
+  - *gatk4_getpileupsummaries
+  - *gatk4_calculatecontamination
+  - *gatk4_filtermutectcalls
+  
+subworkflows/gatk_tumor_only_somatic_variant_calling:
+  - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
+  - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
+  - *gatk4_mutect2
+  - *gatk4_getpileupsummaries
+  - *gatk4_calculatecontamination
+  - *gatk4_filtermutectcalls
