@@ -36,7 +36,7 @@ process GATK4_VARIANTFILTRATION {
         log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.toGiga()
-    } 
+    }
     """
     gatk --java-options "-Xmx${avail_mem}G" VariantFiltration \\
         -R $fasta \\
