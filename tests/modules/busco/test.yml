@@ -1,9 +1,9 @@
-- name: busco
-  command: nextflow run ./tests/modules/busco -entry test_busco -c tests/config/nextflow.config
+- name: busco test_busco
+  command: nextflow run tests/modules/busco -entry test_busco -c tests/config/nextflow.config
   tags:
     - busco
   files:
-    - path: work/*/*/test/run_bacteria_odb10/full_table.tsv
-      md5sum: e02aff5ce681637afaec99dbb845b1dc
-    - path: work/*/*/test/short_summary*.txt
+    - path: output/busco/test/run_bacteroidales_odb10/full_table.tsv
+      md5sum: 8d7b401d875ecd9291b01bf4485bf080
+    - path: output/busco/test/run_bacteroidales_odb10/short_summary.txt
       contains: ['Complete BUSCOs (C)']
