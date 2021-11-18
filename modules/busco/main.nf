@@ -21,6 +21,7 @@ process BUSCO {
     input:
     tuple val(meta), path(fasta)
     path(augustus_config)
+    val(lineage)
 
     output:
     tuple val(meta), path("${meta.id}/run_*/full_table.tsv"), emit: tsv
