@@ -32,7 +32,7 @@ process SAMTOOLS_MERGE {
     def file_type = input_files[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools merge --threads ${task.cpus}-1 $options.args ${reference} ${prefix}.${file_type} $input_files
+    samtools merge --threads ${task.cpus-1} $options.args ${reference} ${prefix}.${file_type} $input_files
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
