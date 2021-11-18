@@ -27,7 +27,7 @@ process GATK4_VARIANTFILTRATION {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"		     , emit: versions
+    path "versions.yml"		         , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
