@@ -1,7 +1,6 @@
 //
 // Run GATK mutect2, genomicsdbimport and createsomaticpanelofnormals
 //
-
 params.mutect2_options      = [args: '--max-mnp-distance 0']
 params.gendbimport_options  = [:]
 params.createsompon_options = [:]
