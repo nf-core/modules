@@ -1,17 +1,17 @@
 - name: samtools stats test_samtools_stats
   command: nextflow run tests/modules/samtools/stats -entry test_samtools_stats -c tests/config/nextflow.config
   tags:
-    - samtools
     - samtools/stats
+    - samtools
   files:
     - path: output/samtools/test.paired_end.sorted.bam.stats
-      md5sum: a7f36cf11fd3bf97e0a0ae29c0627296
+      md5sum: 09146eeecfcae2a84fb8615c86cd8d64
 
 - name: samtools stats test_samtools_stats_cram
   command: nextflow run tests/modules/samtools/stats -entry test_samtools_stats_cram -c tests/config/nextflow.config
   tags:
-    - samtools
     - samtools/stats
+    - samtools
   files:
     - path: output/samtools/test.paired_end.recalibrated.sorted.cram.stats
-      md5sum: bd55a1da30028403f4b66dacf7a2a20e
+      md5sum: 62377b29c3f6253e37308a28d13a496d
