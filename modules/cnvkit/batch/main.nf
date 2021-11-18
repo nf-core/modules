@@ -22,6 +22,7 @@ process CNVKIT {
     tuple val(meta), path(tumorbam), path(normalbam)
     path  fasta
     path  targetfile
+    path reference
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -31,8 +32,13 @@ process CNVKIT {
     path "versions.yml"           , emit: versions
 
     script:
-    def target_args = ""
+    normal_args = normalbam ? "--normal $normalbam" : ""
 
+    fasta_args = fasta ? "--fasta $fasta" : ""
+
+    reference_args = reference ? "--reference $reference" : ""
+
+    def target_args = ""
     if (options.args.contains("--method wgs") || options.args.contains("-m wgs")) {
         target_args = targetfile ? "--targets $targetfile" : ""
     }
@@ -40,16 +46,14 @@ process CNVKIT {
         target_args = "--targets $targetfile"
     }
 
-    normal_args = normalbam ? "--normal $normalbam" : ""
-
-    fasta_args = fasta ? "--fasta $fasta" : ""
     """
     cnvkit.py \\
         batch \\
         $tumorbam \\
         $normal_args \\
-        $target_args \\
         $fasta_args \\
+        $reference_args \\
+        $target_args \\
         --processes ${task.cpus} \\
         $options.args
 
