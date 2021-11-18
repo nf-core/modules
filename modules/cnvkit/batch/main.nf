@@ -22,7 +22,7 @@ process CNVKIT {
     tuple val(meta), path(tumorbam), path(normalbam)
     path  fasta
     path  targetfile
-    path reference
+    path  reference
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
