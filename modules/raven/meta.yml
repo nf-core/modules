@@ -36,6 +36,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', suffix:'bacteria' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
   - fasta:
       type: file
       description: Assembled FASTA file
