@@ -1,5 +1,4 @@
 name: raven
-## TODO nf-core: Add a description of the module and list keywords
 description: De novo genome assembler for long uncorrected reads.
 keywords:
   - de novo
@@ -9,15 +8,12 @@ keywords:
   - long uncorrected reads
 tools:
   - raven:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Raven is a de novo genome assembler for long uncorrected reads.
       homepage: https://github.com/lbcb-sci/raven
       documentation: https://github.com/lbcb-sci/raven#usage
       tool_dev_url: https://github.com/lbcb-sci/raven
       doi: doi.org/10.1038/s43588-021-00073-4
       licence: ['MIT']
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -28,8 +24,6 @@ input:
       type: file
       description: Input file in FASTA/FASTQ format.
       pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
-
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
