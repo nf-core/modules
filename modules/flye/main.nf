@@ -13,7 +13,7 @@ process FLYE {
 
     conda (params.enable_conda ? "bioconda::flye==2.9" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/flye:2.9--py39h39abbe0_0"
+        container "https://depot.galaxyproject.org/singularity/flye:2.9--py38h69e0bdc_0"
     } else {
         container "quay.io/biocontainers/flye:2.9--py38h69e0bdc_0"
     }
