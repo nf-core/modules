@@ -33,7 +33,7 @@ process RAVEN {
         --graphical-fragment-assembly ${prefix}.gfa \\
         $options.args \\
         $reads | \\
-        gzip -c > ${prefix}.fasta.gz   
+        gzip -c > ${prefix}.fasta.gz
     gzip -c ${prefix}.gfa > ${prefix}.gfa.gz
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
