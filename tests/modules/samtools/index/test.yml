@@ -1,4 +1,4 @@
-- name: samtools index bai
+- name: samtools index test_samtools_index_bai
   command: nextflow run tests/modules/samtools/index -entry test_samtools_index_bai -c tests/config/nextflow.config
   tags:
     - samtools
@@ -7,7 +7,7 @@
     - path: output/samtools/test.paired_end.sorted.bam.bai
       md5sum: 704c10dd1326482448ca3073fdebc2f4
 
-- name: samtools index crai
+- name: samtools index test_samtools_index_crai
   command: nextflow run tests/modules/samtools/index -entry test_samtools_index_crai -c tests/config/nextflow.config
   tags:
     - samtools
@@ -16,7 +16,7 @@
     - path: output/samtools/test.paired_end.recalibrated.sorted.cram.crai
       md5sum: 537e3d8c937bcc4e34e1cf47cd71d484
 
-- name: samtools index csi
+- name: samtools index test_samtools_index_csi
   command: nextflow run tests/modules/samtools/index -entry test_samtools_index_csi -c tests/config/nextflow.config
   tags:
     - samtools
