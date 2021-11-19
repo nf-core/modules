@@ -1,9 +1,19 @@
-- name: gatk4 variantfiltration test_gatk4_variantfiltration
-  command: nextflow run tests/modules/gatk4/variantfiltration -entry test_gatk4_variantfiltration -c tests/config/nextflow.config
+- name: gatk4 variantfiltration test_gatk4_variantfiltration_vcf_input
+  command: nextflow run tests/modules/gatk4/variantfiltration -entry test_gatk4_variantfiltration_vcf_input -c tests/config/nextflow.config
   tags:
     - gatk4/variantfiltration
     - gatk4
   files:
-    - path: output/gatk4/test.filtered.vcf
-      contains:
-        - "AC=2;AN=2;DP=1;DP4=0,0,1,0;MQ=60;MQ0F=0;SGB=-0.379885"
+    - path: output/gatk4/test.filtered.vcf.gz
+      contains: ['BaseQRankSum=-1.318;DP=17;ExcessHet=3.0103;MLEAC=1,0,0;MLEAF=0.500,0.00,0.00;MQRankSum=0.000;RAW_MQandDP=61200,17;ReadPosRankSum=2.365']
+    - path: output/gatk4/test.filtered.vcf.gz.tbi
+
+- name: gatk4 variantfiltration test_gatk4_variantfiltration_gz_input
+  command: nextflow run tests/modules/gatk4/variantfiltration -entry test_gatk4_variantfiltration_gz_input -c tests/config/nextflow.config
+  tags:
+    - gatk4/variantfiltration
+    - gatk4
+  files:
+    - path: output/gatk4/test.filtered.vcf.gz
+      contains: ['BaseQRankSum=-1.318;DP=17;ExcessHet=3.0103;MLEAC=1,0,0;MLEAF=0.500,0.00,0.00;MQRankSum=0.000;RAW_MQandDP=61200,17;ReadPosRankSum=2.365']
+    - path: output/gatk4/test.filtered.vcf.gz.tbi
