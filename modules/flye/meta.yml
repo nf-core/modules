@@ -20,21 +20,18 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', mode:'pacbio-raw' ]
+        e.g. [ id:'test' ]
   - reads:
       type: file
       description: Input file in FASTA/FASTQ format.
       pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
-  - mode:
-      type: val
-      description: flye mode ( --pacbio-raw | --pacbio-corr | --pacbio-hifi | --nano-raw | --nano-corr | --nano-hq )
 
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', mode:pacbio-raw ]
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
