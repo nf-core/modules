@@ -1,4 +1,4 @@
-name: cnvkit
+name: cnvkit_batch
 description: Copy number variant detection from high-throughput sequencing data
 keywords:
   - bam
@@ -38,14 +38,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - tumourbam:
+  - tumour:
       type: file
       description: |
-        Input tumour sample bam file
-  - normalbam:
+        Input tumour sample bam file (or cram)
+  - normal:
       type: file
       description: |
-        Input normal sample bam file
+        Input normal sample bam file (or cram)
   - fasta:
       type: file
       description: |

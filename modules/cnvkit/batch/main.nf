@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process CNVKIT {
+process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
@@ -19,9 +19,9 @@ process CNVKIT {
     }
 
     input:
-    tuple val(meta), path(tumorbam), path(normalbam)
+    tuple val(meta), path(tumor), path(normal)
     path  fasta
-    path  targetfile
+    path  targets
     path  reference
 
     output:
@@ -32,24 +32,22 @@ process CNVKIT {
     path "versions.yml"           , emit: versions
 
     script:
-    normal_args = normalbam ? "--normal $normalbam" : ""
-
+    normal_args = normal ? "--normal $normal" : ""
     fasta_args = fasta ? "--fasta $fasta" : ""
-
     reference_args = reference ? "--reference $reference" : ""
 
     def target_args = ""
     if (options.args.contains("--method wgs") || options.args.contains("-m wgs")) {
-        target_args = targetfile ? "--targets $targetfile" : ""
+        target_args = targets ? "--targets $targets" : ""
     }
     else {
-        target_args = "--targets $targetfile"
+        target_args = "--targets $targets"
     }
 
     """
     cnvkit.py \\
         batch \\
-        $tumorbam \\
+        $tumor \\
         $normal_args \\
         $fasta_args \\
         $reference_args \\
