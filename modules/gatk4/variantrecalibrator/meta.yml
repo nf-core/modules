@@ -35,7 +35,7 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-  - fastaidx:
+  - fai:
       type: file
       description: Index of reference fasta file
       pattern: "fasta.fai"
@@ -47,17 +47,22 @@ input:
       type: boolean
       description: specify whether to use allele specific annotations
       pattern: "{true,false}"
-  - resource:
+  - resource_vcfs:
       type: list
-      description: resource files to be used as truth, training and known sites resources,
-      pattern: "*.{bam,cram,sam}"
-  - resourcetbi:
+      description: resource files to be used as truth, training and known sites resources, this imports the files into the module, file names are specified again in the resource_labels to be called via the command.
+      pattern: '*/hapmap_3.3.hg38_chr21.vcf.gz'
+  - resource_tbis:
       type: list
       description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      pattern: '*/hapmap_3.3.hg38_chr21.vcf.gz.tbi'
+  - resource_labels:
+      type: list
+      description: labels for the resource files to be used as truth, training and known sites resources, label should include an identifier,which kind of resource(s) it is, prior value and name of the file.
+      pattern: example: 'hapmap,known=false,training=true,truth=true,prior=15.0 hapmap_3.3.hg38_chr21.vcf.gz'
   - annotation:
       type: list
       description: specify which annotations should be used for calculations.
+      pattern: ['QD', 'MQ', 'FS', 'SOR']
   - mode:
       type: string
       description: specifies which recalibration mode to employ (SNP is default, BOTH is intended for testing only)
@@ -81,7 +86,7 @@ output:
       pattern: "*plots.R"
   - version:
       type: file
-      description: File containing software version
+      description: File containing software versions
       pattern: "*.versions.yml"
 authors:
   - "@GCJMackenzie"

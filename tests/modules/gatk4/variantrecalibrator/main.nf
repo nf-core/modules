@@ -6,30 +6,66 @@ include { GATK4_VARIANTRECALIBRATOR } from '../../../../modules/gatk4/variantrec
 
 workflow test_gatk4_variantrecalibrator {
 
-    input = [ [ id:'test', single_end:false ], // meta map
-              file('/home/AD/gmackenz/test_storage/output/pytest_workflow_wuk87pig/gatk_tumor_only_somatic_variant_calling/output/mutect2/test.vcf', checkIfExists: true),
-              file('/home/AD/gmackenz/test_storage/output/pytest_workflow_wuk87pig/gatk_tumor_only_somatic_variant_calling/output/mutect2/test.vcf.gz.tbi', checkIfExists: true)
+    input = [ [ id:'test' ], // meta map
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz', checkIfExists: true),
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz.tbi', checkIfExists: true)
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta', checkIfExists: true)
+    fai = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta.fai', checkIfExists: true)
+    dict = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.dict', checkIfExists: true)
     allelespecific = false
-    resource_vcfs =   [ file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
+    resource_vcfs =   [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/hapmap_3.3.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_omni2.5.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/dbsnp_138.hg38_chr21.vcf.gz', checkIfExists: true)
                       ]
-    resource_tbis =   [ file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
+    resource_tbis =   [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/hapmap_3.3.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_omni2.5.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/dbsnp_138.hg38_chr21.vcf.gz.tbi', checkIfExists: true)
                       ]
-    resource_labels = [ 'gnomAD,known=false,training=false,truth=true,prior=15.0 gnomAD.r2.1.1.vcf.gz',
-                        '1000G,known=false,training=true,truth=false,prior=12.0 mills_and_1000G.indels.vcf.gz',
-                        'dbsnp,known=true,training=false,truth=false,prior=10.0 dbsnp_146.hg38.vcf.gz'
+    resource_labels = [ 'hapmap,known=false,training=true,truth=true,prior=15.0 hapmap_3.3.hg38_chr21.vcf.gz',
+                        'omni,known=false,training=true,truth=false,prior=12.0 1000G_omni2.5.hg38_chr21.vcf.gz',
+                        '1000G,known=false,training=true,truth=false,prior=10.0 1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz',
+                        'dbsnp,known=true,training=false,truth=false,prior=2.0 dbsnp_138.hg38_chr21.vcf.gz'
                       ]
-    annotation = ['DP']
+    annotation = ['QD', 'MQ', 'FS', 'SOR']
     mode = 'SNP'
-    create_rscript = true
+    create_rscript = false
+
+    GATK4_VARIANTRECALIBRATOR ( input, fasta, fai, dict, allelespecific, resource_vcfs, resource_tbis, resource_labels, annotation, mode, create_rscript)
+}
+
+workflow test_gatk4_variantrecalibrator_allele_specific {
+
+    input = [ [ id:'test' ], // meta map
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz', checkIfExists: true),
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz.tbi', checkIfExists: true)
+            ]
+
+    fasta = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta', checkIfExists: true)
+    fai = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta.fai', checkIfExists: true)
+    dict = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.dict', checkIfExists: true)
+    allelespecific = true
+    resource_vcfs =   [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/hapmap_3.3.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_omni2.5.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/dbsnp_138.hg38_chr21.vcf.gz', checkIfExists: true)
+                      ]
+    resource_tbis =   [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/hapmap_3.3.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_omni2.5.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz.tbi', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/gatkbundle/dbsnp_138.hg38_chr21.vcf.gz.tbi', checkIfExists: true)
+                      ]
+    resource_labels = [ 'hapmap,known=false,training=true,truth=true,prior=15.0 hapmap_3.3.hg38_chr21.vcf.gz',
+                        'omni,known=false,training=true,truth=false,prior=12.0 1000G_omni2.5.hg38_chr21.vcf.gz',
+                        '1000G,known=false,training=true,truth=false,prior=10.0 1000G_phase1.snps.high_confidence.hg38_chr21.vcf.gz',
+                        'dbsnp,known=true,training=false,truth=false,prior=2.0 dbsnp_138.hg38_chr21.vcf.gz'
+                      ]
+    annotation = ['QD', 'MQ', 'FS']
+    mode = 'SNP'
+    create_rscript = false
 
     GATK4_VARIANTRECALIBRATOR ( input, fasta, fai, dict, allelespecific, resource_vcfs, resource_tbis, resource_labels, annotation, mode, create_rscript)
 }
