@@ -1,15 +1,15 @@
 - name: samtools merge test_samtools_merge
   command: nextflow run tests/modules/samtools/merge -entry test_samtools_merge -c tests/config/nextflow.config
   tags:
-    - samtools/merge
     - samtools
+    - samtools/merge
   files:
     - path: output/samtools/test_merged.bam
 
 - name: samtools merge test_samtools_merge_cram
   command: nextflow run tests/modules/samtools/merge -entry test_samtools_merge_cram -c tests/config/nextflow.config
   tags:
-    - samtools/merge
     - samtools
+    - samtools/merge
   files:
     - path: output/samtools/test_merged.cram

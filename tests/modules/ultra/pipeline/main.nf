@@ -8,18 +8,15 @@ include { GFFREAD        } from '../../../../modules/gffread/main.nf'        add
 
 workflow test_ultra_pipeline {
 
-    fastq  = file(params.test_data['homo_sapiens']['pacbio']['hifi']        , checkIfExists: true)
+    input = [
+        [ id:'test', single_end:false ],
+        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+    ]
+    GUNZIP ( input )
+
     gtf    = file(params.test_data['homo_sapiens']['genome']['genome_gtf']  , checkIfExists: true)
     genome = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-
-    GUNZIP ( fastq )
     GFFREAD ( gtf )
 
-    GUNZIP
-        .out
-        .gunzip
-        .map { [ [ id:'test', single_end:false ], it ] }
-        .set { input }
-
-    ULTRA_PIPELINE ( input, genome, GFFREAD.out.gtf )
+    ULTRA_PIPELINE ( GUNZIP.out.gunzip, genome, GFFREAD.out.gtf )
 }
