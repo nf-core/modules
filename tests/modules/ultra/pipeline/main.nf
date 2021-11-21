@@ -12,7 +12,7 @@ workflow test_ultra_pipeline {
     gtf    = file(params.test_data['homo_sapiens']['genome']['genome_gtf']  , checkIfExists: true)
     genome = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    GUNZIP ( fastq )
+    GUNZIP ( [], fastq )
     GFFREAD ( gtf )
 
     GUNZIP
