@@ -1,0 +1,11 @@
+- name: ectyper test_ectyper
+  command: nextflow run tests/modules/ectyper -entry test_ectyper -c tests/config/nextflow.config
+  tags:
+    - ectyper
+  files:
+    - path: output/ectyper/blast_output_alleles.txt
+      md5sum: 27f3f5e84f7da451b2948d61589cdb06
+    - path: output/ectyper/ectyper.log
+      contains: ['Serotype', 'RefSeq', 'O-type', 'finished']
+    - path: output/ectyper/test.tsv
+      md5sum: ba923d7c7ee7d1047466aafc9a9df208
