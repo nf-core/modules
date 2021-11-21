@@ -11,11 +11,11 @@ process ULTRA_PIPELINE {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4" : null)
+    conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4.1" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4--pyh5e36f6f_1"
+        container "https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0"
     } else {
-        container "quay.io/biocontainers/ultra_bioinformatics:0.0.4--pyh5e36f6f_1"
+        container "quay.io/biocontainers/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0"
     }
 
     input:
@@ -35,9 +35,9 @@ process ULTRA_PIPELINE {
         --t $task.cpus \\
         --prefix $prefix \\
         $options.args \\
-        \$(pwd)/$genome \\
-        \$(pwd)/$gtf \\
-        \$(pwd)/$reads \\
+        $genome \\
+        $gtf \\
+        $reads \\
         ./
 
     cat <<-END_VERSIONS > versions.yml

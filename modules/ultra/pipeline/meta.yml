@@ -18,6 +18,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: A fasta or fastq file of reads to align
+      pattern: "*.{fasta,fastq}"
   - genome:
       type: file
       description: fasta file of reference genome
@@ -26,10 +30,6 @@ input:
       type: file
       description: A annotation of use the genome
       pattern: "*.gtf"
-  - reads:
-      type: file
-      description: A fasta or fastq file of reads to align
-      pattern: "*.{fasta,fastq}"
 
 output:
   - meta:
@@ -48,3 +48,5 @@ output:
 
 authors:
   - "@sguizard"
+  - "@lassefolkersen"
+  - "@ksahlin"
