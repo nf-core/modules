@@ -1,0 +1,25 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml bakta
+- name: bakta
+  command: nextflow run ./tests/modules/bakta -entry test_bakta -c tests/config/nextflow.config -stub-run
+  tags:
+    - bakta
+  files:
+    - path: output/bakta/test.embl
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.faa
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.ffn
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.fna
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.gbff
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.gff3
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.hypotheticals.tsv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.hypotheticals.faa
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/bakta/test.tsv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
