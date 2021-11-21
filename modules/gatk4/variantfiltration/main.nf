@@ -19,23 +19,29 @@ process GATK4_VARIANTFILTRATION {
     }
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(vcf_tbi)
     path  fasta
     path  fai
     path  dict
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
-
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
+    path "versions.yml"		         , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.toGiga()
+    }
     """
-    gatk VariantFiltration \\
+    gatk --java-options "-Xmx${avail_mem}G" VariantFiltration \\
         -R $fasta \\
         -V $vcf \\
-        -O ${prefix}.vcf \\
+        -O ${prefix}.vcf.gz \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,8 +1,8 @@
 - name: ultra pipeline test_ultra_pipeline
   command: nextflow run tests/modules/ultra/pipeline -entry test_ultra_pipeline -c tests/config/nextflow.config
   tags:
-    - ultra/pipeline
     - ultra
+    - ultra/pipeline
   files:
     - path: output/gffread/genome_sorted.gtf
       md5sum: c0b034860c679a354cd093109ed90437
