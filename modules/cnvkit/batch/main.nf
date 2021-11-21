@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName; getProcessName } from './func
 params.options = [:]
 options        = initOptions(params.options)
 
-process CNVKIT {
+process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
     publishDir "${params.outdir}",
@@ -19,25 +19,40 @@ process CNVKIT {
     }
 
     input:
-    tuple val(meta), path(tumourbam), path(normalbam)
+    tuple val(meta), path(tumor), path(normal)
     path  fasta
-    path  targetfile
+    path  targets
+    path  reference
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    tuple val(meta), path("*.cnn"), emit: cnn
-    tuple val(meta), path("*.cnr"), emit: cnr
-    tuple val(meta), path("*.cns"), emit: cns
+    tuple val(meta), path("*.cnn"), emit: cnn, optional: true
+    tuple val(meta), path("*.cnr"), emit: cnr, optional: true
+    tuple val(meta), path("*.cns"), emit: cns, optional: true
     path "versions.yml"           , emit: versions
 
     script:
+    normal_args = normal ? "--normal $normal" : ""
+    fasta_args = fasta ? "--fasta $fasta" : ""
+    reference_args = reference ? "--reference $reference" : ""
+
+    def target_args = ""
+    if (options.args.contains("--method wgs") || options.args.contains("-m wgs")) {
+        target_args = targets ? "--targets $targets" : ""
+    }
+    else {
+        target_args = "--targets $targets"
+    }
+
     """
     cnvkit.py \\
         batch \\
-        $tumourbam \\
-        --normal $normalbam\\
-        --fasta $fasta \\
-        --targets $targetfile \\
+        $tumor \\
+        $normal_args \\
+        $fasta_args \\
+        $reference_args \\
+        $target_args \\
+        --processes ${task.cpus} \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
