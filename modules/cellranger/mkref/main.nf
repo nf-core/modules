@@ -17,6 +17,7 @@ process CELLRANGER_MKREF {
     path "${reference_name}", emit: reference
 
     script:
+    def args = task.ext.args ?: ''
     """
     cellranger mkref \\
         --genome=${reference_name} \\

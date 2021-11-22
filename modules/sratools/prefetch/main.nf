@@ -18,6 +18,7 @@ process SRATOOLS_PREFETCH {
     path "versions.yml"         , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"

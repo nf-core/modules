@@ -18,6 +18,7 @@ process STRINGTIE_MERGE {
     path  "versions.yml"       , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     stringtie \\
         --merge $stringtie_gtf \\

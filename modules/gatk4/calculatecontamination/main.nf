@@ -19,6 +19,7 @@ process GATK4_CALCULATECONTAMINATION {
     path "versions.yml"                                          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def matched_command = matched ? " -matched ${matched} " : ''
     def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''

@@ -19,6 +19,7 @@ process BBMAP_ALIGN {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"

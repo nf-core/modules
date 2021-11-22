@@ -20,6 +20,7 @@ process NANOPLOT {
     path  "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def input_file = ("$ontfile".endsWith(".fastq.gz")) ? "--fastq ${ontfile}" :
         ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """

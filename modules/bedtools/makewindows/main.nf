@@ -18,6 +18,7 @@ process BEDTOOLS_MAKEWINDOWS {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def arg_input = use_bed ? "-b $regions" : "-g $regions"
     """

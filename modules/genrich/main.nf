@@ -27,6 +27,7 @@ process GENRICH {
     path "versions.yml"                                      , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}"   : "${meta.id}"
     def control    = control_bam    ? "-c $control_bam"               : ''
     def blacklist  = blacklist_bed  ? "-E $blacklist_bed"             : ""

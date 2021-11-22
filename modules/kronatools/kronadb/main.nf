@@ -14,6 +14,7 @@ process KRONATOOLS_KRONADB {
     path "versions.yml"         , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def VERSION='2.7.1'
     """
     ktUpdateTaxonomy.sh taxonomy

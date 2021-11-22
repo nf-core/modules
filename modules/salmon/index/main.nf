@@ -18,6 +18,7 @@ process SALMON_INDEX {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
     def gentrome      = "gentrome.fa"
     if (genome_fasta.endsWith('.gz')) {

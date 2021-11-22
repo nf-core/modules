@@ -19,6 +19,7 @@ process COOLER_DIGEST {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     cooler digest \\
         $args \\

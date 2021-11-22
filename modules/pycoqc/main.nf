@@ -18,6 +18,7 @@ process PYCOQC {
     path  "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     pycoQC \\
         $args \\

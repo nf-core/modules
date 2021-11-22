@@ -17,6 +17,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputs_list = []
     f1r2.each() { a -> inputs_list.add(" -I " + a) }

@@ -22,6 +22,7 @@ process SAMTOOLS_AMPLICONCLIP {
     path "versions.yml"                       , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
     def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""

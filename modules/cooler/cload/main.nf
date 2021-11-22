@@ -19,6 +19,7 @@ process COOLER_CLOAD {
     path "versions.yml"                           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def nproc  = options.args.contains('pairix') || options.args.contains('tabix')? "--nproc $task.cpus" : ''
 

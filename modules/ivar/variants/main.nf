@@ -20,6 +20,7 @@ process IVAR_VARIANTS {
     path "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     def features     = params.gff ? "-g $gff" : ""

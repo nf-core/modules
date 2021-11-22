@@ -17,6 +17,7 @@ process CAT_CAT {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def file_list = files_in.collect { it.toString() }
     if (file_list.size > 1) {
 

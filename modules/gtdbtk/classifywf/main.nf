@@ -27,6 +27,7 @@ process GTDBTK_CLASSIFYWF {
     path "versions.yml"                                             , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
     """
     export GTDBTK_DATA_PATH="\${PWD}/database"

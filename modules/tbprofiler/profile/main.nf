@@ -21,6 +21,7 @@ process TBPROFILER_PROFILE {
     path "versions.yml"                    , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_reads = meta.single_end ? "--read1 $reads" : "--read1 ${reads[0]} --read2 ${reads[1]}"
     """

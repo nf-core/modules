@@ -19,6 +19,7 @@ process BEDTOOLS_GENOMECOV {
     path  "versions.yml"                   , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args_token = options.args.tokenize()
     def args       = options.args

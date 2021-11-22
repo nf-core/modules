@@ -20,6 +20,7 @@ process BISMARK_SUMMARY {
     path  "versions.yml"      , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     bismark2summary
 

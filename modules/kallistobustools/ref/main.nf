@@ -24,6 +24,7 @@ process KALLISTOBUSTOOLS_REF {
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
     script:
+    def args = task.ext.args ?: ''
     if (workflow == "standard") {
         """
         kb \\

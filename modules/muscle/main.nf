@@ -24,6 +24,7 @@ process MUSCLE {
     path "versions.yml"                            , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_out   = options.args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
     def clw_out     = options.args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''

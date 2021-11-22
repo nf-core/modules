@@ -20,6 +20,7 @@ process BISMARK_ALIGN {
     path "versions.yml"                 , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """

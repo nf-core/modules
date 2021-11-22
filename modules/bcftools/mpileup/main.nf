@@ -20,6 +20,7 @@ process BCFTOOLS_MPILEUP {
     path  "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     echo "${meta.id}" > sample_name.list

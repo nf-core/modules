@@ -20,6 +20,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedGraphToBigWig \\

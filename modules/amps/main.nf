@@ -21,6 +21,7 @@ process AMPS {
     path "versions.yml"                        , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     postprocessing.AMPS.r \\
         -r $maltextract_results \\

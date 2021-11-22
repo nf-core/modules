@@ -24,6 +24,7 @@ process FASTP {
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
 
     script:
+    def args = task.ext.args ?: ''
     // Added soft-links to original fastqs for consistent naming in MultiQC
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {

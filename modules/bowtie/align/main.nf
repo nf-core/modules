@@ -20,6 +20,7 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
+    def args = task.ext.args ?: ''
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"

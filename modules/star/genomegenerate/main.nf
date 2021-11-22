@@ -19,6 +19,7 @@ process STAR_GENOMEGENERATE {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def memory   = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
     def args     = options.args.tokenize()
     if (args.contains('--genomeSAindexNbases')) {

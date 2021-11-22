@@ -20,6 +20,7 @@ process KRAKEN2_KRAKEN2 {
     path "versions.yml"                    , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix       = options.suffix  ? "${meta.id}${options.suffix}"  : "${meta.id}"
     def paired       = meta.single_end ? "" : "--paired"
     def classified   = meta.single_end ? "${prefix}.classified.fastq"   : "${prefix}.classified#.fastq"

@@ -23,6 +23,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def cdna     = t1c ? "-c1 $t1c" : ''
     def introns  = t2c ? "-c2 $t2c" : ''

@@ -29,6 +29,7 @@ process ISOSEQ3_CLUSTER {
 
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     isoseq3 \\

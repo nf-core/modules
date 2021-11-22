@@ -16,6 +16,7 @@ process GRAPHMAP2_INDEX {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     graphmap2 \\
         align \\

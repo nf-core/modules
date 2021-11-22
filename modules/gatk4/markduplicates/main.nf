@@ -19,6 +19,7 @@ process GATK4_MARKDUPLICATES {
     path "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bam_list = bams.collect(){ bam -> "--INPUT ".concat(bam.toString()) }.join(" ")
     def avail_mem       = 3

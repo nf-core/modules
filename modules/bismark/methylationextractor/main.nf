@@ -22,6 +22,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     path "versions.yml"                            , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\

@@ -17,6 +17,7 @@ process SAMTOOLS_FLAGSTAT {
     path  "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     samtools flagstat --threads ${task.cpus-1} $bam > ${bam}.flagstat
     cat <<-END_VERSIONS > versions.yml

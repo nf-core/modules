@@ -19,6 +19,7 @@ process CHROMAP_INDEX {
     path "versions.yml", emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = fasta.baseName
     """
     chromap \\

@@ -18,6 +18,7 @@ process SEQTK_SUBSEQ {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ?: ''
     def ext = "fa"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {

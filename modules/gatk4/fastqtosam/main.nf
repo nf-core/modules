@@ -17,6 +17,7 @@ process GATK4_FASTQTOSAM {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
     """

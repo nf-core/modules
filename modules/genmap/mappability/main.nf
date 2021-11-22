@@ -19,6 +19,7 @@ process GENMAP_MAPPABILITY {
     path "versions.yml"                , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     genmap \\
         map \\

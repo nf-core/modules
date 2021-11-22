@@ -17,6 +17,7 @@ process RAXMLNG {
     path "versions.yml"    , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     raxml-ng \\
         $args \\

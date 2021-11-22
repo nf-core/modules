@@ -16,6 +16,7 @@ process MINIMAP2_INDEX {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     minimap2 \\
         -t $task.cpus \\

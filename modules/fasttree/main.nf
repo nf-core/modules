@@ -16,6 +16,7 @@ process FASTTREE {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     fasttree \\
         $args \\

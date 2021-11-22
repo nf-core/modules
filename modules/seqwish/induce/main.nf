@@ -21,6 +21,7 @@ process SEQWISH_INDUCE {
 
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     seqwish \\

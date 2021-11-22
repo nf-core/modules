@@ -23,6 +23,7 @@ process MACS2_CALLPEAK {
     tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args     = options.args.tokenize()
     def format   = meta.single_end ? 'BAM' : 'BAMPE'

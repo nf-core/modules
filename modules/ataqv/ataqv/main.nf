@@ -22,6 +22,7 @@ process ATAQV_ATAQV {
     path "versions.yml"                  , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix      = options.suffix   ? "${meta.id}${options.suffix}"                  : "${meta.id}"
     def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
     def tss         = tss_file         ? "--tss-file $tss_file"                         : ''

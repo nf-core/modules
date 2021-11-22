@@ -17,6 +17,7 @@ process GUNC_DOWNLOADDB {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     gunc download_db . -db $db_name $args
 

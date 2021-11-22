@@ -17,6 +17,7 @@ process LAST_SPLIT {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz

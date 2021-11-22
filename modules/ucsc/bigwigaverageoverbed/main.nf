@@ -20,6 +20,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.

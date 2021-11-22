@@ -25,6 +25,7 @@ process PLASMIDID {
     path "versions.yml"                                   , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     plasmidID \\

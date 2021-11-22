@@ -23,6 +23,7 @@ process FREEBAYES {
     path  "versions.yml"                , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix           = options.suffix ? "${meta.id}${options.suffix}"  : "${meta.id}"
     def input            = input_2        ? "${input_1} ${input_2}"        : "${input_1}"
     def targets_file     = targets        ? "--target ${targets}"          : ""

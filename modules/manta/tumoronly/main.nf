@@ -26,6 +26,7 @@ process MANTA_TUMORONLY {
     path "versions.yml"                                        , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """

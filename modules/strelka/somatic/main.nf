@@ -24,6 +24,7 @@ process STRELKA_SOMATIC {
     path "versions.yml"                                 , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def options_target_bed = target_bed ? "--exome --callRegions ${target_bed}" : ""
     def options_manta = manta_candidate_small_indels ? "--indelCandidates ${manta_candidate_small_indels}" : ""

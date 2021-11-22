@@ -19,6 +19,7 @@ process KHMER_NORMALIZEBYMEDIAN {
     path "versions.yml"    , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     pe_args = pe_reads ? "--paired" : ""
     se_args = se_reads ? "--unpaired-reads ${se_reads}" : ""
     files   = pe_reads ? pe_reads : se_reads

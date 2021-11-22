@@ -17,6 +17,7 @@ process BISMARK_REPORT {
     path  "versions.yml"                       , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     bismark2report $args
 

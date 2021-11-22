@@ -19,6 +19,7 @@ process MALTEXTRACT {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\

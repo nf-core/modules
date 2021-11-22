@@ -17,6 +17,7 @@ process PAIRIX {
     path "versions.yml"                       , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     pairix \\
         $args \\

@@ -17,6 +17,7 @@ process UNTAR {
     path "versions.yml", emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     untar        = archive.toString() - '.tar.gz'
     """
     tar \\

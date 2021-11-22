@@ -20,6 +20,7 @@ process SEACR_CALLPEAK {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def function_switch = ctrlbedgraph ? "$ctrlbedgraph" : "$threshold"
     """

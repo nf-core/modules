@@ -17,6 +17,7 @@ process TABIX_TABIX {
     path  "versions.yml"          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     tabix $args $tab
 

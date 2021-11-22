@@ -19,6 +19,7 @@ process GATK4_MERGEVCFS {
     path  "versions.yml"             , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     // Make list of VCFs to merge

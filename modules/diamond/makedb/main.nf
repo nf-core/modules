@@ -19,6 +19,7 @@ process DIAMOND_MAKEDB {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     diamond \\
         makedb \\

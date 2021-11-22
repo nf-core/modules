@@ -17,6 +17,7 @@ process SAMTOOLS_SORT {
     path  "versions.yml"          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     samtools sort $args -@ $task.cpus -o ${prefix}.bam -T $prefix $bam

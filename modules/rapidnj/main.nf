@@ -19,6 +19,7 @@ process RAPIDNJ {
     path "versions.yml", emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     python \\
         -c 'from Bio import SeqIO; SeqIO.convert("$alignment", "fasta", "alignment.sth", "stockholm")'

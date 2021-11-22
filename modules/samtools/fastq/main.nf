@@ -17,6 +17,7 @@ process SAMTOOLS_FASTQ {
     path  "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def endedness = meta.single_end ? "-0 ${prefix}.fastq.gz" : "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz"
 

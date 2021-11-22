@@ -23,6 +23,7 @@ process GATK4_GENOTYPEGVCFS {
     path  "versions.yml"             , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def dbsnp_options    = dbsnp ? "-D ${dbsnp}" : ""
     def interval_options = intervals_bed ? "-L ${intervals_bed}" : ""

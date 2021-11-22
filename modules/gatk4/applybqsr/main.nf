@@ -21,6 +21,7 @@ process GATK4_APPLYBQSR {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval = intervals ? "-L ${intervals}" : ""
     if (!task.memory) {

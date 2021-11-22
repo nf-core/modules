@@ -18,6 +18,7 @@ process HMMCOPY_GCCOUNTER {
     path "versions.yml", emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     gcCounter \\
         $args \\

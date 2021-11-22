@@ -19,6 +19,7 @@ process RSEM_PREPAREREFERENCE {
     path "versions.yml"        , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def args     = options.args.tokenize()
     if (args.contains('--star')) {
         args.removeIf { it.contains('--star') }

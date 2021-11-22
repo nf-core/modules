@@ -17,6 +17,7 @@ process PAIRTOOLS_SORT {
     path "versions.yml"                , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def mem      = task.memory.toString().replaceAll(/(\s|\.|B)+/, '')
     """

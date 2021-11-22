@@ -19,6 +19,7 @@ process CMSEQ_POLYMUT {
     path "versions.yml"                   , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
     def sortindex = bai ? "" : "--sortindex"

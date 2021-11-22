@@ -18,6 +18,7 @@ process BCFTOOLS_INDEX {
     path "versions.yml"          , emit: version
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """

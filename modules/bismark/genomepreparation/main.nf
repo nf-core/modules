@@ -17,6 +17,7 @@ process BISMARK_GENOMEPREPARATION {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     bismark_genome_preparation \\
         $args \\

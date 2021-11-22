@@ -19,6 +19,7 @@ process METHYLDACKEL_EXTRACT {
     path  "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     MethylDackel extract \\
         $args \\

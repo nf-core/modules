@@ -18,6 +18,7 @@ process BLAST_BLASTN {
     path "versions.yml"                  , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     DB=`find -L ./ -name "*.ndb" | sed 's/.ndb//'`

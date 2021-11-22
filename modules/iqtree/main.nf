@@ -18,6 +18,7 @@ process IQTREE {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
     def memory      = task.memory.toString().replaceAll(' ', '')
     """

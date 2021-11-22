@@ -20,6 +20,7 @@ process DAMAGEPROFILER {
     path  "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def software     = getSoftwareName(task.process)
     prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference    = fasta ? "-r $fasta" : ""

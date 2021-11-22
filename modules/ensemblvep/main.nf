@@ -28,6 +28,7 @@ process ENSEMBLVEP {
     path "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """

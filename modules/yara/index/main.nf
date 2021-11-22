@@ -17,6 +17,7 @@ process YARA_INDEX {
     path "versions.yml", emit: versions
 
     script:
+    def args = task.ext.args ?: ''
 
     """
     mkdir yara

@@ -29,6 +29,7 @@ process DASTOOL_DASTOOL {
     path "versions.yml"                                 , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def bin_list = bins instanceof List ? bins.join(",") : "$bins"
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"

@@ -19,6 +19,7 @@ process HISAT2_EXTRACTSPLICESITES {
     path "versions.yml"      , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     hisat2_extract_splice_sites.py $gtf > ${gtf.baseName}.splice_sites.txt
     cat <<-END_VERSIONS > versions.yml

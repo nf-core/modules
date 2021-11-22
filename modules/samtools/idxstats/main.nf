@@ -17,6 +17,7 @@ process SAMTOOLS_IDXSTATS {
     path  "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     samtools idxstats $bam > ${bam}.idxstats
     cat <<-END_VERSIONS > versions.yml

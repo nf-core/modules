@@ -21,6 +21,7 @@ process DRAGONFLYE {
     path "versions.yml"                                                        , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def memory = task.memory.toGiga()
     """
     dragonflye \\

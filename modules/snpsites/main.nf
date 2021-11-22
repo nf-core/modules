@@ -18,6 +18,7 @@ process SNPSITES {
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
+    def args = task.ext.args ?: ''
     """
     snp-sites \\
         $alignment \\

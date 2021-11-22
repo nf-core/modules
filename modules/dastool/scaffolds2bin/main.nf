@@ -18,6 +18,7 @@ process DASTOOL_SCAFFOLDS2BIN {
     path "versions.yml"                         , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def file_extension = extension ? extension : "fasta"
 

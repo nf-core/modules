@@ -30,6 +30,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
 
     script:
+    def args = task.ext.args ?: ''
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def ignore_gtf      = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
     def seq_platform    = params.seq_platform ? "'PL:$params.seq_platform'" : ""

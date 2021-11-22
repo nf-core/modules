@@ -20,6 +20,7 @@ process TIDDIT_COV {
     path  "versions.yml"          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def software  = getSoftwareName(task.process)
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 

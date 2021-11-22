@@ -21,6 +21,7 @@ process IDR {
     path "versions.yml"  , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     if (peaks.toList().size < 2) {
         log.error "[ERROR] idr needs at least two replicates only one provided."
     }

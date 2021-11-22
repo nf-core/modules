@@ -18,6 +18,7 @@ process BWA_SAMPE {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-r ${meta.read_group}" : ""
 

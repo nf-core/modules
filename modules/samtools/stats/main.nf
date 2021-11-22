@@ -18,6 +18,7 @@ process SAMTOOLS_STATS {
     path  "versions.yml"            , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ""
     """
     samtools stats --threads ${task.cpus-1} ${reference} ${input} > ${input}.stats

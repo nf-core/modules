@@ -17,6 +17,7 @@ process GATK4_INDEXFEATUREFILE {
     path  "versions.yml"                , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     gatk \\
         IndexFeatureFile \\

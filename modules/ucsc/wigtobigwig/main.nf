@@ -20,6 +20,7 @@ process UCSC_WIGTOBIGWIG {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
 
     """
     wigToBigWig \\

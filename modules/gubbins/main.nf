@@ -24,6 +24,7 @@ process GUBBINS {
     path "versions.yml"                     , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     run_gubbins.py \\
         --threads $task.cpus \\

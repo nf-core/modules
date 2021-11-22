@@ -19,6 +19,7 @@ process QUALIMAP_BAMQC {
     path  "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'

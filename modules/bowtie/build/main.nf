@@ -17,6 +17,7 @@ process BOWTIE_BUILD {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     mkdir bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}

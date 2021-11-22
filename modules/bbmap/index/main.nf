@@ -17,6 +17,7 @@ process BBMAP_INDEX {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     bbmap.sh \\
         ref=${fasta} \\

@@ -18,6 +18,7 @@ process FGBIO_FASTQTOBAM {
     path "versions.yml"                         , emit: version
 
     script:
+    def args = task.ext.args ?: ''
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 

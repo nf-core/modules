@@ -25,6 +25,7 @@ process MOSDEPTH {
     path  "versions.yml"                          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval = window_size ? "--by ${window_size}" : "--by ${bed}"
     """

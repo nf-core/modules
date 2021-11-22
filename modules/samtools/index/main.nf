@@ -19,6 +19,7 @@ process SAMTOOLS_INDEX {
     path  "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     samtools index -@ ${task.cpus-1} $args $input
 

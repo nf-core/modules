@@ -17,6 +17,7 @@ process GUNZIP {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     gunzip       = archive.toString() - '.gz'
     """
     gunzip \\

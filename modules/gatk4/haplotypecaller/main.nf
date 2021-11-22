@@ -24,6 +24,7 @@ process GATK4_HAPLOTYPECALLER {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval_option = interval ? "-L ${interval}" : ""
     def dbsnp_option    = dbsnp ? "-D ${dbsnp}" : ""

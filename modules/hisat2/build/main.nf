@@ -22,6 +22,7 @@ process HISAT2_BUILD {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def avail_mem = 0
     if (!task.memory) {
         log.info "[HISAT2 index build] Available memory not known - defaulting to 0. Specify process memory requirements to change this."

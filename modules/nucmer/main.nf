@@ -18,6 +18,7 @@ process NUCMER {
     path "versions.yml"              , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def is_compressed_ref   = ref.getName().endsWith(".gz")   ? true : false
     def is_compressed_query = query.getName().endsWith(".gz") ? true : false

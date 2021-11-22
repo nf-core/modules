@@ -18,6 +18,7 @@ process LAST_TRAIN {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

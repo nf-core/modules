@@ -17,6 +17,7 @@ process BLAST_MAKEBLASTDB {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     makeblastdb \\
         -in $fasta \\

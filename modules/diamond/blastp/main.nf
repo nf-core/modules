@@ -20,6 +20,7 @@ process DIAMOND_BLASTP {
     path "versions.yml"           , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`

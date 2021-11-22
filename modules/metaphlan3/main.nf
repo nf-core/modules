@@ -20,6 +20,7 @@ process METAPHLAN3 {
     path "versions.yml"                      ,                emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def input_type  = ("$input".endsWith(".fastq.gz")) ? "--input_type fastq" :  ("$input".contains(".fasta")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : "--input_type sam"
     def input_data  = ("$input_type".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "$input"

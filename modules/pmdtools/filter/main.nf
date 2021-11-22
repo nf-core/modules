@@ -19,6 +19,7 @@ process PMDTOOLS_FILTER {
     path "versions.yml"               , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def split_cpus = Math.floor(task.cpus/2)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use the suffix option to disambiguate!"

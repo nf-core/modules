@@ -28,6 +28,7 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     tama_collapse.py \\

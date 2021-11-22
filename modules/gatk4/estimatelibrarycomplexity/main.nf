@@ -20,6 +20,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     path "versions.yml"                  , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def crams = cram.collect(){ x -> "-I ".concat(x.toString()) }.join(" ")
 
