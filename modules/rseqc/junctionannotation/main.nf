@@ -33,7 +33,7 @@ process RSEQC_JUNCTIONANNOTATION {
         2> ${prefix}.junction_annotation.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(junction_annotation.py --version | sed -e "s/junction_annotation.py //g")
     END_VERSIONS
     """

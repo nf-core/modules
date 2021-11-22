@@ -82,7 +82,7 @@ process RMARKDOWNNOTEBOOK {
     EOF
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
     END_VERSIONS
     """

@@ -22,7 +22,7 @@ process PAIRIX {
         $pair
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
     END_VERSIONS
     """

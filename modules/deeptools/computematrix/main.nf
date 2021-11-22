@@ -29,7 +29,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
         --numberOfProcessors $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(computeMatrix --version | sed -e "s/computeMatrix //g")
     END_VERSIONS
     """

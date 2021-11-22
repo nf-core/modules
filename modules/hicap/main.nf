@@ -38,7 +38,7 @@ process HICAP {
         -o ./
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
     END_VERSIONS
     """

@@ -22,7 +22,7 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
     ktImportTaxonomy "$report" -tax taxonomy
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: $VERSION
     END_VERSIONS
     """

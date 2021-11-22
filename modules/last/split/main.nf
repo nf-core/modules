@@ -21,7 +21,7 @@ process LAST_SPLIT {
     zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(last-split --version 2>&1 | sed 's/last-split //')
     END_VERSIONS
     """

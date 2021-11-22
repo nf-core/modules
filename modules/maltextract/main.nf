@@ -29,7 +29,7 @@ process MALTEXTRACT {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """

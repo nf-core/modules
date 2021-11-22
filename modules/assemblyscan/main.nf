@@ -21,7 +21,7 @@ process ASSEMBLYSCAN {
     assembly-scan $assembly > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\$//' )
     END_VERSIONS
     """

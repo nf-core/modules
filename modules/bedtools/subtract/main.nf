@@ -26,7 +26,7 @@ process BEDTOOLS_SUBTRACT {
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
     END_VERSIONS
     """

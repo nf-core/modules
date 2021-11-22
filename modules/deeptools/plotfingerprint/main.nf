@@ -31,7 +31,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         --numberOfProcessors $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
     END_VERSIONS
     """

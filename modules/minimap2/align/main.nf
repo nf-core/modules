@@ -28,7 +28,7 @@ process MINIMAP2_ALIGN {
         > ${prefix}.paf
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(minimap2 --version 2>&1)
     END_VERSIONS
     """

@@ -44,7 +44,7 @@ process STRELKA_SOMATIC {
     mv strelka/results/variants/somatic.snvs.vcf.gz.tbi   ${prefix}.somatic_snvs.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( configureStrelkaSomaticWorkflow.py --version )
     END_VERSIONS
     """

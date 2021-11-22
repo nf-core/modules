@@ -28,7 +28,7 @@ process YARA_MAPPER {
             $reads | samtools view -@ $task.cpus -hb -F4 > ${prefix}.mapped.bam
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
@@ -47,7 +47,7 @@ process YARA_MAPPER {
         samtools view -@ $task.cpus -hF 4 -f 0x80 -b output.bam > ${prefix}_2.mapped.bam
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS

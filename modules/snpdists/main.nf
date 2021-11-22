@@ -23,7 +23,7 @@ process SNPDISTS {
         $alignment > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
     END_VERSIONS
     """

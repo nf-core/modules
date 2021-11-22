@@ -31,7 +31,7 @@ process MINIASM {
     gzip -n ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( miniasm -V 2>&1 )
     END_VERSIONS
     """

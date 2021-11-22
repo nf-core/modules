@@ -30,7 +30,7 @@ process ABACAS {
     mv nucmer.tiling ${prefix}.abacas.nucmer.tiling
     mv unused_contigs.out ${prefix}.abacas.unused.contigs.out
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
     END_VERSIONS
     """

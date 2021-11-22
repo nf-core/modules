@@ -25,7 +25,7 @@ process SAMTOOLS_VIEW {
     samtools view --threads ${task.cpus-1} ${reference} $args $input > ${prefix}.${file_type}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """

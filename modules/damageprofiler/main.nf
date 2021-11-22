@@ -33,7 +33,7 @@ process DAMAGEPROFILER {
     $species_list
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
     END_VERSIONS
     """

@@ -27,7 +27,7 @@ process BAMUTIL_TRIMBAM {
         -R $trim_right
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( echo \$( bam trimBam 2>&1 ) | sed 's/^Version: //;s/;.*//' )
     END_VERSIONS
     """

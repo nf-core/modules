@@ -41,7 +41,7 @@ process MALT_BUILD {
         -mdb ${map_db}/*.db |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(malt-build --help |& tail -n 3 | head -n 1 | cut -f 2 -d'(' | cut -f 1 -d ',' | cut -d ' ' -f 2)
     END_VERSIONS
     """

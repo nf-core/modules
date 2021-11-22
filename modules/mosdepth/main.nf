@@ -33,7 +33,7 @@ process MOSDEPTH {
         $prefix \\
         $bam
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
     END_VERSIONS
     """

@@ -30,7 +30,7 @@ process RAPIDNJ {
         -x rapidnj_phylogeny.tre
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
         biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS

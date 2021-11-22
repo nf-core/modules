@@ -46,7 +46,7 @@ process QUALIMAP_BAMQC {
         -nt $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
     END_VERSIONS
     """

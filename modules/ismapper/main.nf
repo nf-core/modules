@@ -27,7 +27,7 @@ process ISMAPPER {
         --reads $reads
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( echo \$( ismap --version 2>&1 ) | sed 's/^.*ismap //' )
     END_VERSIONS
     """

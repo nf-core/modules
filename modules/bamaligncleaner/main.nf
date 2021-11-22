@@ -25,7 +25,7 @@ process BAMALIGNCLEANER {
         ${bam}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(bamAlignCleaner --version | sed 's/.*version //')
     END_VERSIONS
     """

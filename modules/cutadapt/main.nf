@@ -27,7 +27,7 @@ process CUTADAPT {
         $reads \\
         > ${prefix}.cutadapt.log
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(cutadapt --version)
     END_VERSIONS
     """

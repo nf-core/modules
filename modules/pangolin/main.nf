@@ -25,7 +25,7 @@ process PANGOLIN {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
     END_VERSIONS
     """

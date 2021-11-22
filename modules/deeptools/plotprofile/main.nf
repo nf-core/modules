@@ -26,7 +26,7 @@ process DEEPTOOLS_PLOTPROFILE {
         --outFileNameData ${prefix}.plotProfile.tab
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(plotProfile --version | sed -e "s/plotProfile //g")
     END_VERSIONS
     """

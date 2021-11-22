@@ -35,7 +35,7 @@ process METAPHLAN3 {
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """

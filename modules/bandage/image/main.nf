@@ -23,7 +23,7 @@ process BANDAGE_IMAGE {
     Bandage image $gfa ${prefix}.svg $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """

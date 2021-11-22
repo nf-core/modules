@@ -33,7 +33,7 @@ process BBMAP_BBDUK {
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(bbversion.sh)
     END_VERSIONS
     """

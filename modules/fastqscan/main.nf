@@ -23,7 +23,7 @@ process FASTQSCAN {
         $args > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
     END_VERSIONS
     """

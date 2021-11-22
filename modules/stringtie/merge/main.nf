@@ -24,7 +24,7 @@ process STRINGTIE_MERGE {
         -o stringtie.merged.gtf
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(stringtie --version 2>&1)
     END_VERSIONS
     """

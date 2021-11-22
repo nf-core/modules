@@ -26,7 +26,7 @@ process PAIRTOOLS_DEDUP {
         $input
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
     END_VERSIONS
     """

@@ -30,7 +30,7 @@ process PLINK_EXTRACT {
         --out $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
     END_VERSIONS
     """

@@ -55,7 +55,7 @@ process LIMA {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """

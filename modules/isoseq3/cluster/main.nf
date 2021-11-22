@@ -37,7 +37,7 @@ process ISOSEQ3_CLUSTER {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         isoseq3 cluster: \$( isoseq3 cluster --version|sed 's/isoseq cluster //g'|sed 's/ (.*//g' )
     END_VERSIONS
     """

@@ -35,7 +35,7 @@ process PICARD_FILTERSAMREADS {
             $args
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
@@ -51,7 +51,7 @@ process PICARD_FILTERSAMREADS {
             $args
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """

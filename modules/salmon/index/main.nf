@@ -36,7 +36,7 @@ process SALMON_INDEX {
         $args \\
         -i salmon
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(salmon --version) | sed -e "s/salmon //g")
     END_VERSIONS
     """

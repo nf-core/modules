@@ -24,7 +24,7 @@ process KLEBORATE {
         --assemblies *.fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """

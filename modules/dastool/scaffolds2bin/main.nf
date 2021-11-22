@@ -30,7 +30,7 @@ process DASTOOL_SCAFFOLDS2BIN {
         > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( DAS_Tool --version 2>&1 | grep "DAS Tool" | sed 's/DAS Tool version //' )
     END_VERSIONS
     """

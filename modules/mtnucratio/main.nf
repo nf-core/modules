@@ -27,7 +27,7 @@ process MTNUCRATIO {
         $mt_id
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
     END_VERSIONS
     """

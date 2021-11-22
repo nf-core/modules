@@ -51,7 +51,7 @@ process MANTA_GERMLINE {
 
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( configManta.py --version )
     END_VERSIONS
     """

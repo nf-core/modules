@@ -26,7 +26,7 @@ process VARIANTBAM {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
     END_VERSIONS
     """

@@ -28,7 +28,7 @@ process SEQTK_SAMPLE {
             | gzip --no-name > ${prefix}.fastq.gz \\
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
@@ -52,7 +52,7 @@ process SEQTK_SAMPLE {
             | gzip --no-name > ${prefix}_2.fastq.gz \\
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """

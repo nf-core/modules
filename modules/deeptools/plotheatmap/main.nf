@@ -26,7 +26,7 @@ process DEEPTOOLS_PLOTHEATMAP {
         --outFileNameMatrix ${prefix}.plotHeatmap.mat.tab
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(plotHeatmap --version | sed -e "s/plotHeatmap //g")
     END_VERSIONS
     """

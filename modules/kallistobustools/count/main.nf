@@ -41,7 +41,7 @@ process KALLISTOBUSTOOLS_COUNT {
         ${reads[1]}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
     END_VERSIONS
     """

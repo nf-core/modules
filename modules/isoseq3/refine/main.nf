@@ -32,7 +32,7 @@ process ISOSEQ3_REFINE {
         ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\\+//' )
     END_VERSIONS
     """

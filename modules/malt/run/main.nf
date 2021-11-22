@@ -39,7 +39,7 @@ process MALT_RUN {
         --index $index/ |&tee malt-run.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(malt-run --help  2>&1 | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
     END_VERSIONS
     """

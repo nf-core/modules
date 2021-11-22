@@ -26,7 +26,7 @@ process FILTLONG {
         | gzip -n > ${prefix}_lr_filtlong.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( filtlong --version | sed -e "s/Filtlong v//g" )
     END_VERSIONS
     """

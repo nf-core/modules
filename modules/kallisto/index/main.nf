@@ -24,7 +24,7 @@ process KALLISTO_INDEX {
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
     END_VERSIONS
     """

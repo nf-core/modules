@@ -33,7 +33,7 @@ process CSVTK_CONCAT {
         $csv
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         csvtk: \$(echo \$( csvtk version | sed -e "s/csvtk v//g" ))
     END_VERSIONS
     """

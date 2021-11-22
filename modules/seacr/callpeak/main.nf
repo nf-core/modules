@@ -28,7 +28,7 @@ process SEACR_CALLPEAK {
         $args \\
         $prefix
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
         r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')

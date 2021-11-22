@@ -27,7 +27,7 @@ process HMMER_HMMALIGN {
         - | gzip -c > ${meta.id}.sthlm.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
     END_VERSIONS
     """

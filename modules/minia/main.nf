@@ -29,7 +29,7 @@ process MINIA {
         -out $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
     END_VERSIONS
     """

@@ -33,7 +33,7 @@ process NEXTCLADE {
         --output-tree ${prefix}.tree.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(nextclade --version 2>&1)
     END_VERSIONS
     """

@@ -42,7 +42,7 @@ process MAPDAMAGE2 {
             -r $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(mapDamage --version))
     END_VERSIONS
     """

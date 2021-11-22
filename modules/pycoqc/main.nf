@@ -25,7 +25,7 @@ process PYCOQC {
         -j pycoqc.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(pycoQC --version 2>&1 | sed 's/^.*pycoQC v//; s/ .*\$//')
     END_VERSIONS
     """

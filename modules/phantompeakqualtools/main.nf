@@ -25,7 +25,7 @@ process PHANTOMPEAKQUALTOOLS {
     RUN_SPP=`which run_spp.R`
     Rscript -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" -p=$task.cpus
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo $VERSION)
     END_VERSIONS
     """

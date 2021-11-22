@@ -25,7 +25,7 @@ process SAMTOOLS_MERGE {
     samtools merge --threads ${task.cpus-1} $args ${reference} ${prefix}.${file_type} $input_files
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """

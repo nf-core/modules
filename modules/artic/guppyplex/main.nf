@@ -26,7 +26,7 @@ process ARTIC_GUPPYPLEX {
 
     pigz -p $task.cpus *.fastq
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """

@@ -35,7 +35,7 @@ process PLASMIDID {
 
     mv NO_GROUP/$prefix ./$prefix
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(plasmidID --version 2>&1))
     END_VERSIONS
     """

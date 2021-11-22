@@ -25,7 +25,7 @@ process PORECHOP {
         -o ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( porechop --version )
     END_VERSIONS
     """

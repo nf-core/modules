@@ -28,7 +28,7 @@ process SCOARY {
         --genes $genes
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$( scoary --version 2>&1 )
     END_VERSIONS
     """

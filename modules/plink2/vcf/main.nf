@@ -26,7 +26,7 @@ process PLINK2_VCF {
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
     END_VERSIONS
     """

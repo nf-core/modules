@@ -20,7 +20,7 @@ process SAMTOOLS_SORT {
     """
     samtools sort $args -@ $task.cpus -o ${prefix}.bam -T $prefix $bam
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """

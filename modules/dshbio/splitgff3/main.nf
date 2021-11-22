@@ -26,7 +26,7 @@ process DSHBIO_SPLITGFF3 {
         -i $gff3
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
     END_VERSIONS
     """

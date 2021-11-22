@@ -32,7 +32,7 @@ process ADAPTERREMOVAL {
             --gzip \\
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
@@ -51,7 +51,7 @@ process ADAPTERREMOVAL {
             --gzip \\
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
@@ -70,7 +70,7 @@ process ADAPTERREMOVAL {
 
         cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        ${task.process.tokenize(':').last()}:
             ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """

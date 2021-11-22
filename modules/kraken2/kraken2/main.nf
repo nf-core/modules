@@ -38,7 +38,7 @@ process KRAKEN2_KRAKEN2 {
     pigz -p $task.cpus *.fastq
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    ${task.process.tokenize(':').last()}:
         ${getSoftwareName(task.process)}: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
