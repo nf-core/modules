@@ -1,0 +1,15 @@
+- name: phyloflash single-end
+  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash_single_end -c tests/config/nextflow.config -stub-run
+  tags:
+    - phyloflash
+  files:
+    - path: output/phyloflash/test/test.SSU.collection.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+
+- name: phyloflash paired-end
+  command: nextflow run ./tests/modules/phyloflash -entry test_phyloflash_paired_end -c tests/config/nextflow.config -stub-run
+  tags:
+    - phyloflash
+  files:
+    - path: output/phyloflash/test/test.SSU.collection.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
