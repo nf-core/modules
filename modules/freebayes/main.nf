@@ -33,7 +33,7 @@ process FREEBAYES {
     if (task.cpus > 1) {
         """
         freebayes-parallel \\
-            <(fasta_generate_regions.py ${fasta}.fai 10000) ${task.cpus} \\
+            <(fasta_generate_regions.py ${fasta}.fai 10000) $task.cpus \\
             -f $fasta \\
             $targets_file \\
             $samples_file \\

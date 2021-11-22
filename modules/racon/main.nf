@@ -19,7 +19,7 @@ process RACON {
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    racon -t "${task.cpus}" \\
+    racon -t "$task.cpus" \\
         "${reads}" \\
         "${paf}" \\
         $options.args \\

@@ -64,10 +64,10 @@ process JUPYTERNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="${task.cpus}"
-    export OPENBLAS_NUM_THREADS="${task.cpus}"
-    export OMP_NUM_THREADS="${task.cpus}"
-    export NUMBA_NUM_THREADS="${task.cpus}"
+    export MKL_NUM_THREADS="$task.cpus"
+    export OPENBLAS_NUM_THREADS="$task.cpus"
+    export OMP_NUM_THREADS="$task.cpus"
+    export NUMBA_NUM_THREADS="$task.cpus"
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel - ${notebook}  \\

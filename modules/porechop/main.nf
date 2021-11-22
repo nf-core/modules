@@ -21,7 +21,7 @@ process PORECHOP {
     """
     porechop \\
         -i ${reads} \\
-        -t ${task.cpus} \\
+        -t $task.cpus \\
         ${options.args} \\
         -o ${prefix}.fastq.gz
 

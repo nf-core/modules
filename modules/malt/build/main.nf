@@ -37,7 +37,7 @@ process MALT_BUILD {
         -s $seq_type \\
         $igff \\
         -d 'malt_index/' \\
-        -t ${task.cpus} \\
+        -t $task.cpus \\
         $options.args \\
         -mdb ${map_db}/*.db |&tee malt-build.log
 

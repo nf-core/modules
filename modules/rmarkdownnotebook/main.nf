@@ -66,9 +66,9 @@ process RMARKDOWNNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="${task.cpus}"
-    export OPENBLAS_NUM_THREADS="${task.cpus}"
-    export OMP_NUM_THREADS="${task.cpus}"
+    export MKL_NUM_THREADS="$task.cpus"
+    export OPENBLAS_NUM_THREADS="$task.cpus"
+    export OMP_NUM_THREADS="$task.cpus"
 
     # Work around  https://github.com/rstudio/rmarkdown/issues/1508
     # If the symbolic link is not replaced by a physical file

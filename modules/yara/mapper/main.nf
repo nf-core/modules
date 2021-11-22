@@ -38,7 +38,7 @@ process YARA_MAPPER {
         """
         yara_mapper \\
             $options.args \\
-            -t ${task.cpus} \\
+            -t $task.cpus \\
             -f bam \\
             ${index}/yara \\
             ${reads[0]} \\
