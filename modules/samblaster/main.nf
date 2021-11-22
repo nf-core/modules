@@ -18,12 +18,14 @@ process SAMBLASTER {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
-    samtools view -h $task.ext.args2 $bam | \\
+    samtools view -h $args2 $bam | \\
     samblaster $args | \\
-    samtools view $task.ext.args3 -Sb - >${prefix}.bam
+    samtools view $args3 -Sb - >${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -21,6 +21,7 @@ process BOWTIE2_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
@@ -33,7 +34,7 @@ process BOWTIE2_ALIGN {
             $unaligned \\
             $args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -54,7 +55,7 @@ process BOWTIE2_ALIGN {
             $unaligned \\
             $args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz

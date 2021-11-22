@@ -21,18 +21,24 @@ process BCFTOOLS_MPILEUP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     echo "${meta.id}" > sample_name.list
+
     bcftools mpileup \\
         --fasta-ref $fasta \\
         $args \\
         $bam \\
-        | bcftools call --output-type v $task.ext.args2 \\
+        | bcftools call --output-type v $args2 \\
         | bcftools reheader --samples sample_name.list \\
-        | bcftools view --output-file ${prefix}.vcf.gz --output-type z $task.ext.args3
+        | bcftools view --output-file ${prefix}.vcf.gz --output-type z $args3
+
     tabix -p vcf -f ${prefix}.vcf.gz
+
     bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
+
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')

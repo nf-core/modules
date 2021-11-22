@@ -18,6 +18,7 @@ process OPTITYPE {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     """
@@ -28,7 +29,7 @@ process OPTITYPE {
     echo "razers3=razers3" >> config.ini
     echo "threads=$task.cpus" >> config.ini
     echo "[ilp]" >> config.ini
-    echo "$task.ext.args2" >> config.ini
+    echo "$args2" >> config.ini
     echo "threads=1" >> config.ini
     echo "[behavior]" >> config.ini
     echo "deletebam=true" >> config.ini

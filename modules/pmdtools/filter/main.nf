@@ -20,6 +20,8 @@ process PMDTOOLS_FILTER {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def split_cpus = Math.floor(task.cpus/2)
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use the suffix option to disambiguate!"
@@ -34,10 +36,10 @@ process PMDTOOLS_FILTER {
     | pmdtools \\
         --threshold $threshold \\
         --header \\
-        $task.ext.args2 \\
+        $args2 \\
     | samtools \\
         view \\
-        $task.ext.args3 \\
+        $args3 \\
         -Sb \\
         - \\
         -@ ${split_cpus} \\

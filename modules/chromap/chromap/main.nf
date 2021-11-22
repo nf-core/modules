@@ -29,6 +29,7 @@ process CHROMAP_CHROMAP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def args_list = args.tokenize()
 
@@ -49,7 +50,7 @@ process CHROMAP_CHROMAP {
     def compression_cmds = "gzip ${prefix}.${file_extension}"
     if (args.contains("--SAM")) {
         compression_cmds = """
-        samtools view $task.ext.args2 -@ $task.cpus -bh \\
+        samtools view $args2 -@ $task.cpus -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
         """

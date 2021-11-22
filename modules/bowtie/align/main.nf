@@ -21,6 +21,7 @@ process BOWTIE_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
@@ -35,7 +36,7 @@ process BOWTIE_ALIGN {
         $args \\
         $endedness \\
         2> ${prefix}.out \\
-        | samtools view $task.ext.args2 -@ $task.cpus -bS -o ${prefix}.bam -
+        | samtools view $args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq

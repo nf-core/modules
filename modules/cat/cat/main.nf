@@ -18,6 +18,7 @@ process CAT_CAT {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
     if (file_list.size > 1) {
 
@@ -31,7 +32,7 @@ process CAT_CAT {
         def in_zip   = file_list[0].endsWith('.gz')
         def out_zip  = file_out.endsWith('.gz')
         def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
-        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $task.ext.args2" : ''
+        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
         """
         $command1 \\
             $args \\

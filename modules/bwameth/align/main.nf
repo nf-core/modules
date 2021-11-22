@@ -19,6 +19,7 @@ process BWAMETH_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
@@ -34,7 +35,7 @@ process BWAMETH_ALIGN {
         -t $task.cpus \\
         --reference \$INDEX \\
         $reads \\
-        | samtools view $task.ext.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
+        | samtools view $args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

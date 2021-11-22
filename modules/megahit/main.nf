@@ -22,6 +22,7 @@ process MEGAHIT {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
@@ -34,7 +35,7 @@ process MEGAHIT {
         pigz \\
             --no-name \\
             -p $task.cpus \\
-            $task.ext.args2 \\
+            $args2 \\
             megahit_out/*.fa \\
             megahit_out/intermediate_contigs/*.fa
 
@@ -55,7 +56,7 @@ process MEGAHIT {
         pigz \\
             --no-name \\
             -p $task.cpus \\
-            $task.ext.args2 \\
+            $args2 \\
             megahit_out/*.fa \\
             megahit_out/intermediate_contigs/*.fa
 

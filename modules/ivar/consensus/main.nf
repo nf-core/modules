@@ -21,12 +21,13 @@ process IVAR_CONSENSUS {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
         --reference $fasta \\
-        $task.ext.args2 \\
+        $args2 \\
         $bam | \\
         $save_mpileup \\
         ivar consensus \\

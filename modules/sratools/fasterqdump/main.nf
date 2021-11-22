@@ -18,6 +18,7 @@ process SRATOOLS_FASTERQDUMP {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     // Paired-end data extracted by fasterq-dump (--split-3 the default) always creates
     // *_1.fastq *_2.fastq files but sometimes also an additional *.fastq file
@@ -36,7 +37,7 @@ process SRATOOLS_FASTERQDUMP {
         ${sra.name}
 
     pigz \\
-        $task.ext.args2 \\
+        $args2 \\
         --no-name \\
         --processes $task.cpus \\
         *.fastq
