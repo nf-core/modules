@@ -1,9 +1,5 @@
-// Import generic module functions
-include { initOptions; saveFiles; getProcessName; getSoftwareName } from './functions'
 include { dump_params_yml; indent_code_block }                      from "./parametrize"
 
-params.options = [:]
-options                = initOptions(params.options)
 params.parametrize     = true
 params.implicit_params = true
 params.meta_params     = true
@@ -11,9 +7,6 @@ params.meta_params     = true
 process RMARKDOWNNOTEBOOK {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the

@@ -1,14 +1,5 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process STRINGTIE_MERGE {
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda     (params.enable_conda ? "bioconda::stringtie=2.1.7" : null)
