@@ -25,7 +25,7 @@ process IVAR_VARIANTS {
     def features     = params.gff ? "-g $gff" : ""
     """
     samtools mpileup \\
-        $options.args2 \\
+        $task.ext.args2 \\
         --reference $fasta \\
         $bam | \\
         $save_mpileup  \\

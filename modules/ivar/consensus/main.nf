@@ -25,7 +25,7 @@ process IVAR_CONSENSUS {
     """
     samtools mpileup \\
         --reference $fasta \\
-        $options.args2 \\
+        $task.ext.args2 \\
         $bam | \\
         $save_mpileup \\
         ivar consensus \\

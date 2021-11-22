@@ -33,7 +33,7 @@ process PMDTOOLS_FILTER {
     | pmdtools \\
         --threshold $threshold \\
         --header \\
-        $options.args2 \\
+        $task.ext.args2 \\
     | samtools \\
         view \\
         $task.ext.args3 \\

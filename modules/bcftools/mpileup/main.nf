@@ -27,7 +27,7 @@ process BCFTOOLS_MPILEUP {
         --fasta-ref $fasta \\
         $options.args \\
         $bam \\
-        | bcftools call --output-type v $options.args2 \\
+        | bcftools call --output-type v $task.ext.args2 \\
         | bcftools reheader --samples sample_name.list \\
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z $task.ext.args3
     tabix -p vcf -f ${prefix}.vcf.gz

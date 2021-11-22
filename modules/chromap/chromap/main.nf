@@ -48,7 +48,7 @@ process CHROMAP_CHROMAP {
     def compression_cmds = "gzip ${prefix}.${file_extension}"
     if (options.args.contains("--SAM")) {
         compression_cmds = """
-        samtools view $options.args2 -@ ${task.cpus} -bh \\
+        samtools view $task.ext.args2 -@ ${task.cpus} -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
         """

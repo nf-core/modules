@@ -29,7 +29,7 @@ process BWA_MEM {
         -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | samtools view $options.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
+        | samtools view $task.ext.args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

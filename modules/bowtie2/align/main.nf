@@ -32,7 +32,7 @@ process BOWTIE2_ALIGN {
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -53,7 +53,7 @@ process BOWTIE2_ALIGN {
             $unaligned \\
             $options.args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz

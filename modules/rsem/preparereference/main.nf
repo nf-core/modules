@@ -31,7 +31,7 @@ process RSEM_PREPAREREFERENCE {
             --sjdbGTFfile $gtf \\
             --runThreadN $task.cpus \\
             $memory \\
-            $options.args2
+            $task.ext.args2
 
         rsem-prepare-reference \\
             --gtf $gtf \\

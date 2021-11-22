@@ -30,7 +30,7 @@ process CAT_CAT {
         def in_zip   = file_list[0].endsWith('.gz')
         def out_zip  = file_out.endsWith('.gz')
         def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
-        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $options.args2" : ''
+        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $task.ext.args2" : ''
         """
         $command1 \\
             $options.args \\

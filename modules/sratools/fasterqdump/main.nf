@@ -30,12 +30,12 @@ process SRATOOLS_FASTERQDUMP {
     fi
 
     fasterq-dump \\
-        ${options.args} \\
+        $options.args \\
         --threads $task.cpus \\
         ${sra.name}
 
     pigz \\
-        ${options.args2} \\
+        $task.ext.args2 \\
         --no-name \\
         --processes $task.cpus \\
         *.fastq
