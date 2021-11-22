@@ -36,7 +36,7 @@ process PMDTOOLS_FILTER {
         $options.args2 \\
     | samtools \\
         view \\
-        $options.args3 \\
+        $task.ext.args3 \\
         -Sb \\
         - \\
         -@ ${split_cpus} \\

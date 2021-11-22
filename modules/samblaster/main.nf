@@ -22,7 +22,7 @@ process SAMBLASTER {
     """
     samtools view -h $options.args2 $bam | \\
     samblaster $options.args | \\
-    samtools view $options.args3 -Sb - >${prefix}.bam
+    samtools view $task.ext.args3 -Sb - >${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
