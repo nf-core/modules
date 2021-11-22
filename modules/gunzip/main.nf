@@ -9,7 +9,7 @@ process GUNZIP {
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -19,14 +19,14 @@ process GUNZIP {
     }
 
     input:
-    path archive
+    tuple val(meta), path(archive)
 
     output:
-    path "$gunzip",       emit: gunzip
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("$gunzip"), emit: gunzip
+    path "versions.yml"             , emit: versions
 
     script:
-    gunzip       = archive.toString() - '.gz'
+    gunzip = archive.toString() - '.gz'
     """
     gunzip \\
         -f \\
