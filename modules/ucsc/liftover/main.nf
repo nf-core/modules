@@ -25,7 +25,7 @@ process UCSC_LIFTOVER {
 
     """
     liftOver \\
-        $options.args \
+        $args \
         $bed \\
         $chain \\
         ${prefix}.lifted.bed \\

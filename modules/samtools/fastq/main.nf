@@ -22,7 +22,7 @@ process SAMTOOLS_FASTQ {
 
     """
     samtools fastq \\
-        $options.args \\
+        $args \\
         --threads ${task.cpus-1} \\
         $endedness \\
         $bam

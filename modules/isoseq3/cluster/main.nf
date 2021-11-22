@@ -35,7 +35,7 @@ process ISOSEQ3_CLUSTER {
         cluster \\
         $bam \\
         ${prefix}.transcripts.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

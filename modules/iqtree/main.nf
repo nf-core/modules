@@ -23,7 +23,7 @@ process IQTREE {
     """
     iqtree \\
         $fconst_args \\
-        $options.args \\
+        $args \\
         -s $alignment \\
         -nt AUTO \\
         -ntmax $task.cpus \\

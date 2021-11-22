@@ -19,7 +19,7 @@ process PAIRIX {
     script:
     """
     pairix \\
-        $options.args \\
+        $args \\
         $pair
 
     cat <<-END_VERSIONS > versions.yml

@@ -22,7 +22,7 @@ process PBBAM_PBMERGE {
     """
     pbmerge \\
         -o ${prefix}.bam \\
-        $options.args \\
+        $args \\
         *.bam
 
     cat <<-END_VERSIONS > versions.yml

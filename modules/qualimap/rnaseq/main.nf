@@ -35,7 +35,7 @@ process QUALIMAP_RNASEQ {
     qualimap \\
         --java-mem-size=$memory \\
         rnaseq \\
-        $options.args \\
+        $args \\
         -bam $bam \\
         -gtf $gtf \\
         -p $strandedness \\

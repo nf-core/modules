@@ -39,7 +39,7 @@ process STRINGTIE {
         -C ${prefix}.coverage.gtf \\
         -b ${prefix}.ballgown \\
         -p $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

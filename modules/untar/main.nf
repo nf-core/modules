@@ -21,7 +21,7 @@ process UNTAR {
     """
     tar \\
         -xzvf \\
-        $options.args \\
+        $args \\
         $archive
 
     cat <<-END_VERSIONS > versions.yml

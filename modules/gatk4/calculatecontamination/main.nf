@@ -28,7 +28,7 @@ process GATK4_CALCULATECONTAMINATION {
         $matched_command \\
         -O ${prefix}.contamination.table \\
         $segment_command \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

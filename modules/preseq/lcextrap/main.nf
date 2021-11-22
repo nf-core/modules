@@ -24,7 +24,7 @@ process PRESEQ_LCEXTRAP {
     """
     preseq \\
         lc_extrap \\
-        $options.args \\
+        $args \\
         $paired_end \\
         -output ${prefix}.ccurve.txt \\
         $bam

@@ -21,7 +21,7 @@ process DEEPTOOLS_PLOTHEATMAP {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     plotHeatmap \\
-        $options.args \\
+        $args \\
         --matrixFile $matrix \\
         --outFileName ${prefix}.plotHeatmap.pdf \\
         --outFileNameMatrix ${prefix}.plotHeatmap.mat.tab

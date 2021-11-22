@@ -25,7 +25,7 @@ process PLINK_VCF {
     """
     plink \\
         --vcf ${vcf} \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --out ${prefix}
 

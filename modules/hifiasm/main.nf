@@ -32,7 +32,7 @@ process HIFIASM {
     if (use_parental_kmers) {
         """
         hifiasm \\
-            $options.args \\
+            $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
@@ -47,7 +47,7 @@ process HIFIASM {
     } else { // Phasing with Hi-C data is not supported yet
         """
         hifiasm \\
-            $options.args \\
+            $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             $reads

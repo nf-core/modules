@@ -22,7 +22,7 @@ process PLINK2_VCF {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     plink2 \\
-        $options.args \\
+        $args \\
         --vcf $vcf \\
         --out ${prefix}
 

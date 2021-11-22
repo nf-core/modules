@@ -21,7 +21,7 @@ process BAMALIGNCLEANER {
 
     """
     bamAlignCleaner \\
-        $options.args \\
+        $args \\
         -o ${prefix}.bam \\
         ${bam}
 

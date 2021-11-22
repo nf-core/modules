@@ -39,7 +39,7 @@ process GATK4_BASERECALIBRATOR {
         $sitesCommand \
         $intervalsCommand \
         --tmp-dir . \
-        $options.args \
+        $args \
         -O ${prefix}.table
 
     cat <<-END_VERSIONS > versions.yml

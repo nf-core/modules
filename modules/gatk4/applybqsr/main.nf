@@ -36,7 +36,7 @@ process GATK4_APPLYBQSR {
         $interval \\
         --tmp-dir . \\
         -O ${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

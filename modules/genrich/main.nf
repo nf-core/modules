@@ -45,7 +45,7 @@ process GENRICH {
     """
     Genrich \\
         -t $treatment_bam \\
-        $options.args \\
+        $args \\
         $control \\
         $blacklist \\
         -o ${prefix}.narrowPeak \\

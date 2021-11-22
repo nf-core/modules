@@ -31,7 +31,7 @@ process SEQTK_MERGEPE {
         """
         seqtk \\
             mergepe \\
-            $options.args \\
+            $args \\
             ${reads} \\
             | gzip -n >> ${prefix}.fastq.gz
 

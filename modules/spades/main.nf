@@ -31,7 +31,7 @@ process SPADES {
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
     """
     spades.py \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --memory $maxmem \\
         $custom_hmms \\

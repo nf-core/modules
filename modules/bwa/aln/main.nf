@@ -25,7 +25,7 @@ process BWA_ALN {
         INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
         bwa aln \\
-            $options.args \\
+            $args \\
             -t $task.cpus \\
             -f ${prefix}.sai \\
             \$INDEX \\
@@ -41,14 +41,14 @@ process BWA_ALN {
         INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
         bwa aln \\
-            $options.args \\
+            $args \\
             -t $task.cpus \\
             -f ${prefix}.1.sai \\
             \$INDEX \\
             ${reads[0]}
 
         bwa aln \\
-            $options.args \\
+            $args \\
             -t $task.cpus \\
             -f ${prefix}.2.sai \\
             \$INDEX \\

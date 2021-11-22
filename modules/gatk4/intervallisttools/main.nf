@@ -26,7 +26,7 @@ process GATK4_INTERVALLISTTOOLS {
         IntervalListTools \\
         -I ${interval_list} \\
         -O ${prefix}_split \\
-        $options.args
+        $args
 
     python3 <<CODE
     import glob, os

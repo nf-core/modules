@@ -30,7 +30,7 @@ process IVAR_VARIANTS {
         $bam | \\
         $save_mpileup  \\
         ivar variants \\
-            $options.args \\
+            $args \\
             $features \\
             -r $fasta \\
             -p $prefix

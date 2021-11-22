@@ -23,7 +23,7 @@ process CHROMAP_INDEX {
     """
     chromap \\
         -i \\
-        $options.args \\
+        $args \\
         -t $task.cpus \\
         -r $fasta \\
         -o ${prefix}.index

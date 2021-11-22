@@ -20,7 +20,7 @@ process EMMTYPER {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     emmtyper \\
-        $options.args \\
+        $args \\
         $fasta \\
         > ${prefix}.tsv
 

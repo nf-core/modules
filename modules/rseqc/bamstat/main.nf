@@ -21,7 +21,7 @@ process RSEQC_BAMSTAT {
     """
     bam_stat.py \\
         -i $bam \\
-        $options.args \\
+        $args \\
         > ${prefix}.bam_stat.txt
 
     cat <<-END_VERSIONS > versions.yml

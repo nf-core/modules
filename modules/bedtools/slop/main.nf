@@ -24,7 +24,7 @@ process BEDTOOLS_SLOP {
         slop \\
         -i $bed \\
         -g $sizes \\
-        $options.args \\
+        $args \\
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml

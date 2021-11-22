@@ -24,7 +24,7 @@ process BEDTOOLS_MAKEWINDOWS {
     bedtools \\
         makewindows \\
         ${arg_input} \\
-        $options.args \\
+        $args \\
         > ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml

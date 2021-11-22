@@ -22,7 +22,7 @@ process YARA_MAPPER {
     if (meta.single_end) {
         """
         yara_mapper \\
-            $options.args \\
+            $args \\
             -t $task.cpus \\
             -f bam \\
             ${index}/yara \\
@@ -37,7 +37,7 @@ process YARA_MAPPER {
     } else {
         """
         yara_mapper \\
-            $options.args \\
+            $args \\
             -t $task.cpus \\
             -f bam \\
             ${index}/yara \\

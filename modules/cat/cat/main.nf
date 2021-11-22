@@ -33,7 +33,7 @@ process CAT_CAT {
         def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $task.ext.args2" : ''
         """
         $command1 \\
-            $options.args \\
+            $args \\
             ${file_list.join(' ')} \\
             $command2 \\
             > $file_out

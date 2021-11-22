@@ -20,7 +20,7 @@ process MINIMAP2_INDEX {
     minimap2 \\
         -t $task.cpus \\
         -d ${fasta.baseName}.mmi \\
-        $options.args \\
+        $args \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml

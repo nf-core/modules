@@ -31,7 +31,7 @@ process GLNEXUS {
     glnexus_cli \\
         --threads $task.cpus \\
         --mem-gbytes $avail_mem \\
-        $options.args \\
+        $args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
 

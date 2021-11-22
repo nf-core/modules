@@ -19,7 +19,7 @@ process TABIX_BGZIPTABIX {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bgzip -c $options.args $input > ${prefix}.gz
+    bgzip -c $args $input > ${prefix}.gz
     tabix $task.ext.args2 ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml

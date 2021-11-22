@@ -22,7 +22,7 @@ process LOFREQ_CALL {
     """
     lofreq \\
         call \\
-        $options.args \\
+        $args \\
         -f $fasta \\
         -o ${prefix}.vcf.gz \\
         $bam

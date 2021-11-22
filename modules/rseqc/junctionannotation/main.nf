@@ -30,7 +30,7 @@ process RSEQC_JUNCTIONANNOTATION {
         -i $bam \\
         -r $bed \\
         -o $prefix \\
-        $options.args \\
+        $args \\
         2> ${prefix}.junction_annotation.log
 
     cat <<-END_VERSIONS > versions.yml

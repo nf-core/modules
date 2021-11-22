@@ -23,7 +23,7 @@ process LAST_TRAIN {
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
 
     last-train \\
-        $options.args \\
+        $args \\
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\

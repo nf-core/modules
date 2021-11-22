@@ -35,7 +35,7 @@ process MUSCLE {
 
     """
     muscle \\
-        $options.args \\
+        $args \\
         -in $fasta \\
         $fasta_out \\
         $clw_out \\

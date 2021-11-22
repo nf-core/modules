@@ -20,7 +20,7 @@ process COOLER_ZOOMIFY {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     cooler zoomify \\
-        $options.args \\
+        $args \\
         -n $task.cpus \\
         -o ${prefix}.mcool \\
         $cool

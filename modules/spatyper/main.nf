@@ -23,7 +23,7 @@ process SPATYPER {
     def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """
     spaTyper \\
-        $options.args \\
+        $args \\
         $input_args \\
         --fasta $fasta \\
         --output ${prefix}.tsv

@@ -31,7 +31,7 @@ process GATK4_GETPILEUPSUMMARIES {
         -V $variants \\
         $sitesCommand \\
         -O ${prefix}.pileups.table \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

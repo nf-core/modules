@@ -21,7 +21,7 @@ process MASH_SKETCH {
     """
     mash \\
         sketch \\
-        $options.args \\
+        $args \\
         -p $task.cpus \\
         -o ${prefix} \\
         -r $reads \\

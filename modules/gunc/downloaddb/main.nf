@@ -18,7 +18,7 @@ process GUNC_DOWNLOADDB {
 
     script:
     """
-    gunc download_db . -db $db_name $options.args
+    gunc download_db . -db $db_name $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

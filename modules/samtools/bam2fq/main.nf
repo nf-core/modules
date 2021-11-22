@@ -24,7 +24,7 @@ process SAMTOOLS_BAM2FQ {
         """
         samtools \\
             bam2fq \\
-            $options.args \\
+            $args \\
             -@ $task.cpus \\
             -1 ${prefix}_1.fq.gz \\
             -2 ${prefix}_2.fq.gz \\
@@ -41,7 +41,7 @@ process SAMTOOLS_BAM2FQ {
         """
         samtools \\
             bam2fq \\
-            $options.args \\
+            $args \\
             -@ $task.cpus \\
             $inputbam >${prefix}_interleaved.fq.gz
 

@@ -23,7 +23,7 @@ process BEDTOOLS_SUBTRACT {
         subtract \\
         -a $intervals1 \\
         -b $intervals2 \\
-        $options.args \\
+        $args \\
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml

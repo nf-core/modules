@@ -20,7 +20,7 @@ process KALLISTO_INDEX {
     """
     kallisto \\
         index \\
-        $options.args \\
+        $args \\
         -i kallisto \\
         $fasta
 

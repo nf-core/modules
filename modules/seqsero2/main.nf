@@ -22,7 +22,7 @@ process SEQSERO2 {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     SeqSero2_package.py \\
-        $options.args \\
+        $args \\
         -d results/ \\
         -n $prefix \\
         -p $task.cpus \\

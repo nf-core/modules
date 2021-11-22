@@ -28,7 +28,7 @@ process SAMTOOLS_AMPLICONCLIP {
     """
     samtools \\
         ampliconclip \\
-        $options.args \\
+        $args \\
         $rejects \\
         $stats \\
         -b $bed \\

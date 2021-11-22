@@ -22,7 +22,7 @@ process FGBIO_SORTBAM {
     fgbio \\
         SortBam \\
         -i $bam \\
-        $options.args \\
+        $args \\
         -o ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

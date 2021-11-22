@@ -25,7 +25,7 @@ process DASTOOL_SCAFFOLDS2BIN {
     gunzip -f *.${file_extension}.gz
 
     Fasta_to_Scaffolds2Bin.sh \\
-        $options.args \\
+        $args \\
         -i . \\
         -e $file_extension \\
         > ${prefix}.tsv

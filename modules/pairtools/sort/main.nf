@@ -22,7 +22,7 @@ process PAIRTOOLS_SORT {
     """
     pairtools \\
         sort \\
-        $options.args \\
+        $args \\
         --nproc $task.cpus \\
         --memory "$mem" \\
         -o ${prefix}.pairs.gz \\

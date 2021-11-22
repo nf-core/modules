@@ -31,7 +31,7 @@ process MAXBIN2 {
         -contig $contigs \\
         $associate_files \\
         -thread $task.cpus \\
-        $options.args \\
+        $args \\
         -out $prefix
 
     gzip *.fasta *.noclass *.tooshort *log *.marker

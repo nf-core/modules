@@ -29,7 +29,7 @@ process IVAR_CONSENSUS {
         $bam | \\
         $save_mpileup \\
         ivar consensus \\
-            $options.args \\
+            $args \\
             -p $prefix
 
     cat <<-END_VERSIONS > versions.yml

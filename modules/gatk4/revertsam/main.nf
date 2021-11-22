@@ -22,7 +22,7 @@ process GATK4_REVERTSAM {
     gatk RevertSam \\
         I=$bam \\
         O=${prefix}.reverted.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

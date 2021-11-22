@@ -26,7 +26,7 @@ process SHOVILL {
     shovill \\
         --R1 ${reads[0]} \\
         --R2 ${reads[1]} \\
-        $options.args \\
+        $args \\
         --cpus $task.cpus \\
         --ram $memory \\
         --outdir ./ \\

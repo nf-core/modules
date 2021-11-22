@@ -23,7 +23,7 @@ process SEQTK_SAMPLE {
         """
         seqtk \\
             sample \\
-            $options.args \\
+            $args \\
             $reads \\
             $sample_size \\
             | gzip --no-name > ${prefix}.fastq.gz \\
@@ -40,14 +40,14 @@ process SEQTK_SAMPLE {
         """
         seqtk \\
             sample \\
-            $options.args \\
+            $args \\
             ${reads[0]} \\
             $sample_size \\
             | gzip --no-name > ${prefix}_1.fastq.gz \\
 
         seqtk \\
             sample \\
-            $options.args \\
+            $args \\
             ${reads[1]} \\
             $sample_size \\
             | gzip --no-name > ${prefix}_2.fastq.gz \\

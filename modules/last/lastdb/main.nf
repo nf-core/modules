@@ -21,7 +21,7 @@ process LAST_LASTDB {
     """
     mkdir lastdb
     lastdb \\
-        $options.args \\
+        $args \\
         -P $task.cpus \\
         lastdb/${prefix} \\
         $fastx

@@ -23,7 +23,7 @@ process UCSC_WIGTOBIGWIG {
 
     """
     wigToBigWig \\
-        $options.args \\
+        $args \\
         $wig \\
         $chromsizes \\
         ${wig.getSimpleName()}.bw

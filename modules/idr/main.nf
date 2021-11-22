@@ -37,7 +37,7 @@ process IDR {
         --output-file $idr_vals \\
         --log-output-file $log_file \\
         --plot \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

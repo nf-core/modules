@@ -26,7 +26,7 @@ process CSVTK_CONCAT {
     """
     csvtk \\
         concat \\
-        $options.args \\
+        $args \\
         --num-cpus $task.cpus \\
         --delimiter "${delimiter}" \\
         --out-delimiter "${out_delimiter}" \\

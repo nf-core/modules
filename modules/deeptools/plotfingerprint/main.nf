@@ -23,7 +23,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     def extend   = (meta.single_end && params.fragment_size > 0) ? "--extendReads ${params.fragment_size}" : ''
     """
     plotFingerprint \\
-        $options.args \\
+        $args \\
         $extend \\
         --bamfiles ${bams.join(' ')} \\
         --plotFile ${prefix}.plotFingerprint.pdf \\

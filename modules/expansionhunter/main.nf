@@ -23,7 +23,7 @@ process EXPANSIONHUNTER {
     def gender = (meta.gender == 'male' || meta.gender == 1 || meta.gender == 'XY') ? "male" : "female"
     """
     ExpansionHunter \\
-        $options.args \\
+        $args \\
         --reads $bam \\
         --output-prefix $prefix \\
         --reference $fasta \\

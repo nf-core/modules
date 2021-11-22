@@ -25,7 +25,7 @@ process RAPIDNJ {
 
     rapidnj \\
         alignment.sth \\
-        $options.args \\
+        $args \\
         -i sth \\
         -c $task.cpus \\
         -x rapidnj_phylogeny.tre

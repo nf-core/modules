@@ -22,7 +22,7 @@ process FILTLONG {
     """
     filtlong \\
         $short_reads \\
-        $options.args \\
+        $args \\
         $longreads \\
         | gzip -n > ${prefix}_lr_filtlong.fastq.gz
 

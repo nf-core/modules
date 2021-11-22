@@ -20,7 +20,7 @@ process NGMASTER {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ngmaster \\
-        $options.args \\
+        $args \\
         $fasta \\
         > ${prefix}.tsv
 

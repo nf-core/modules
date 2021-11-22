@@ -44,7 +44,7 @@ process TRIMGALORE {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
         trim_galore \\
-            $options.args \\
+            $args \\
             --cores $cores \\
             --gzip \\
             $c_r1 \\
@@ -61,7 +61,7 @@ process TRIMGALORE {
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
         trim_galore \\
-            $options.args \\
+            $args \\
             --cores $cores \\
             --paired \\
             --gzip \\

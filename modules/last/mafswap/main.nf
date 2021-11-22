@@ -19,7 +19,7 @@ process LAST_MAFSWAP {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    maf-swap $options.args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
+    maf-swap $args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
 
     # maf-swap has no --version option but lastdb, part of the same package, has.
     cat <<-END_VERSIONS > versions.yml

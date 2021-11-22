@@ -32,7 +32,7 @@ process BCFTOOLS_VIEW {
         ${regions_file} \\
         ${targets_file} \\
         ${samples_file} \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         ${vcf}
 

@@ -24,7 +24,7 @@ process PRODIGAL {
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     prodigal -i "${genome}" \\
-        $options.args \\
+        $args \\
         -f $output_format \\
         -d "${prefix}.fna" \\
         -o "${prefix}.${output_format}" \\

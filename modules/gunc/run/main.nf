@@ -26,7 +26,7 @@ process GUNC_RUN {
         --input_fasta $fasta \\
         --db_file $db \\
         --threads $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

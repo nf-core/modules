@@ -21,7 +21,7 @@ process GUNZIP {
     """
     gunzip \\
         -f \\
-        $options.args \\
+        $args \\
         $archive
 
     cat <<-END_VERSIONS > versions.yml

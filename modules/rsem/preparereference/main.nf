@@ -51,7 +51,7 @@ process RSEM_PREPAREREFERENCE {
         rsem-prepare-reference \\
             --gtf $gtf \\
             --num-threads $task.cpus \\
-            $options.args \\
+            $args \\
             $fasta \\
             rsem/genome
 

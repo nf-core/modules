@@ -21,7 +21,7 @@ process BEDTOOLS_BAMTOBED {
     """
     bedtools \\
         bamtobed \\
-        $options.args \\
+        $args \\
         -i $bam \\
         | bedtools sort > ${prefix}.bed
 

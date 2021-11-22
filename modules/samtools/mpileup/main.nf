@@ -23,7 +23,7 @@ process SAMTOOLS_MPILEUP {
     samtools mpileup \\
         --fasta-ref $fasta \\
         --output ${prefix}.mpileup \\
-        $options.args \\
+        $args \\
         $bam
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

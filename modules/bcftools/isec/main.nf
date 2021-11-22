@@ -20,7 +20,7 @@ process BCFTOOLS_ISEC {
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bcftools isec  \\
-        $options.args \\
+        $args \\
         -p $prefix \\
         *.vcf.gz
     cat <<-END_VERSIONS > versions.yml

@@ -34,7 +34,7 @@ process SALMON_INDEX {
         --threads $task.cpus \\
         -t $gentrome \\
         -d decoys.txt \\
-        $options.args \\
+        $args \\
         -i salmon
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

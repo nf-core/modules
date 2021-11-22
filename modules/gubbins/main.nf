@@ -27,7 +27,7 @@ process GUBBINS {
     """
     run_gubbins.py \\
         --threads $task.cpus \\
-        $options.args \\
+        $args \\
         $alignment
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

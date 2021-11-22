@@ -24,7 +24,7 @@ process UMITOOLS_DEDUP {
         -I $bam \\
         -S ${prefix}.bam \\
         $paired \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

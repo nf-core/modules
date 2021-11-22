@@ -31,7 +31,7 @@ process PLASMIDID {
         -d $fasta \\
         -s $prefix \\
         -c $scaffold \\
-        $options.args \\
+        $args \\
         -o .
 
     mv NO_GROUP/$prefix ./$prefix

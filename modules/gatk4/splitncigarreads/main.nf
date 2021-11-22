@@ -26,7 +26,7 @@ process GATK4_SPLITNCIGARREADS {
         -R $fasta \\
         -I $bam \\
         -O ${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

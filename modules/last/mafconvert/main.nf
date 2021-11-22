@@ -28,7 +28,7 @@ process LAST_MAFCONVERT {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    maf-convert $options.args $format $maf | gzip --no-name \\
+    maf-convert $args $format $maf | gzip --no-name \\
         > ${prefix}.${format}.gz
 
     # maf-convert has no --version option but lastdb (part of the same package) has.

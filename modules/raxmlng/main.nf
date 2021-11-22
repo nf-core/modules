@@ -19,7 +19,7 @@ process RAXMLNG {
     script:
     """
     raxml-ng \\
-        $options.args \\
+        $args \\
         --msa $alignment \\
         --threads $task.cpus \\
         --prefix output

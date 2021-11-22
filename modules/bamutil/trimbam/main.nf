@@ -23,7 +23,7 @@ process BAMUTIL_TRIMBAM {
         trimBam \\
         $bam \\
         ${prefix}.bam \\
-        $options.args \\
+        $args \\
         -L $trim_left \\
         -R $trim_right
 

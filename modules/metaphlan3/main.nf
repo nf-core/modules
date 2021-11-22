@@ -30,7 +30,7 @@ process METAPHLAN3 {
         --nproc $task.cpus \\
         $input_type \\
         $input_data \\
-        $options.args \\
+        $args \\
         $bowtie2_out \\
         --bowtie2db ${metaphlan_db} \\
         --biom ${prefix}.biom \\

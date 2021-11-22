@@ -22,7 +22,7 @@ process SAMTOOLS_DEPTH {
     """
     samtools \\
         depth \\
-        $options.args \\
+        $args \\
         -o ${prefix}.tsv \\
         $bam
 

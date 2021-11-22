@@ -21,7 +21,7 @@ process BWA_INDEX {
     mkdir bwa
     bwa \\
         index \\
-        $options.args \\
+        $args \\
         -p bwa/${fasta.baseName} \\
         $fasta
 

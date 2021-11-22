@@ -33,7 +33,7 @@ process GATK4_VARIANTFILTRATION {
         -R $fasta \\
         -V $vcf \\
         -O ${prefix}.vcf.gz \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

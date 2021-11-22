@@ -38,7 +38,7 @@ process MALT_BUILD {
         $igff \\
         -d 'malt_index/' \\
         -t $task.cpus \\
-        $options.args \\
+        $args \\
         -mdb ${map_db}/*.db |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml

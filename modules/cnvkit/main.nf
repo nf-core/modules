@@ -29,7 +29,7 @@ process CNVKIT {
         --normal $normalbam\\
         --fasta $fasta \\
         --targets $targetfile \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

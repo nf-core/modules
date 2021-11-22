@@ -21,7 +21,7 @@ process PIRATE {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     PIRATE \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --input ./ \\
         --output results/

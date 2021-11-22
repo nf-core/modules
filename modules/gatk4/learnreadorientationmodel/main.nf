@@ -25,7 +25,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
         LearnReadOrientationModel \\
         ${inputs_list.join(' ')} \\
         -O ${prefix}.tar.gz \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

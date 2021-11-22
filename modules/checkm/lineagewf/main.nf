@@ -28,7 +28,7 @@ process CHECKM_LINEAGEWF {
         --tab_table \\
         --pplacer_threads $task.cpus \\
         -x $fasta_ext \\
-        $options.args \\
+        $args \\
         . \\
         $prefix
 

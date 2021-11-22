@@ -21,7 +21,7 @@ process DSHBIO_FILTERBED {
     """
     dsh-bio \\
         filter-bed \\
-        $options.args \\
+        $args \\
         -i $bed \\
         -o ${prefix}.bed.gz
 

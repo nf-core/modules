@@ -21,7 +21,7 @@ process SNPSITES {
     """
     snp-sites \\
         $alignment \\
-        $options.args \\
+        $args \\
         > filtered_alignment.fas
 
     echo \$(snp-sites -C $alignment) > constant.sites.txt

@@ -19,7 +19,7 @@ process MULTIQC {
 
     script:
     """
-    multiqc -f $options.args .
+    multiqc -f $args .
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -21,7 +21,7 @@ process MINIASM {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     miniasm \\
-        $options.args \\
+        $args \\
         -f $reads \\
         $paf > \\
         ${prefix}.gfa

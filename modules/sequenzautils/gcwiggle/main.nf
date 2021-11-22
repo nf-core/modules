@@ -21,7 +21,7 @@ process SEQUENZAUTILS_GCWIGGLE {
     """
     sequenza-utils \\
         gc_wiggle \\
-        $options.args \\
+        $args \\
         --fasta $fasta \\
         -o ${prefix}.wig.gz
 

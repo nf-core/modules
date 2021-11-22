@@ -21,7 +21,7 @@ process LOFREQ_INDELQUAL {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     lofreq indelqual \\
-        $options.args \\
+        $args \\
         -f $fasta \\
         -o ${prefix}.bam \\
         $bam

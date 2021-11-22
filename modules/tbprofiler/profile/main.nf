@@ -26,7 +26,7 @@ process TBPROFILER_PROFILE {
     """
     tb-profiler \\
         profile \\
-        $options.args \\
+        $args \\
         --prefix ${prefix} \\
         --threads $task.cpus \\
         $input_reads

@@ -25,7 +25,7 @@ process DIAMOND_MAKEDB {
         --threads $task.cpus \\
         --in  $fasta \\
         -d $fasta \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

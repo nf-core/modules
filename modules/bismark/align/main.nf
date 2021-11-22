@@ -25,7 +25,7 @@ process BISMARK_ALIGN {
     """
     bismark \\
         $fastq \\
-        $options.args \\
+        $args \\
         --genome $index \\
         --bam
 

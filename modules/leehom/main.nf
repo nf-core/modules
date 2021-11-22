@@ -32,7 +32,7 @@ process LEEHOM {
     if ( reads.toString().endsWith('.bam') ) {
             """
             leeHom \\
-                $options.args \\
+                $args \\
                 -t $task.cpus \\
                 -o ${prefix}.bam \\
                 --log ${prefix}.log \\
@@ -46,7 +46,7 @@ process LEEHOM {
     } else if ( meta.single_end ) {
             """
             leeHom \\
-                $options.args \\
+                $args \\
                 -t $task.cpus \\
                 -fq1 $reads \\
                 -fqo ${prefix} \\
@@ -60,7 +60,7 @@ process LEEHOM {
     } else {
             """
             leeHom \\
-                $options.args \\
+                $args \\
                 -t $task.cpus \\
                 -fq1 ${reads[0]} \\
                 -fq2 ${reads[1]} \\

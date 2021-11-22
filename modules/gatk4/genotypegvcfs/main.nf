@@ -30,7 +30,7 @@ process GATK4_GENOTYPEGVCFS {
     """
     gatk \\
         GenotypeGVCFs \\
-        $options.args \\
+        $args \\
         $interval_options \\
         $dbsnp_options \\
         -R $fasta \\

@@ -19,7 +19,7 @@ process LAST_SPLIT {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    zcat < $maf | last-split $options.args | gzip --no-name > ${prefix}.maf.gz
+    zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

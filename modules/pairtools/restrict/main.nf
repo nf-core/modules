@@ -23,7 +23,7 @@ process PAIRTOOLS_RESTRICT {
     pairtools \\
         restrict \\
         -f $frag \\
-        $options.args \\
+        $args \\
         -o ${prefix}.pairs.gz \\
         $pairs
 

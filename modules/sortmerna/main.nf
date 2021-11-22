@@ -29,7 +29,7 @@ process SORTMERNA {
             --workdir . \\
             --aligned rRNA_reads \\
             --other non_rRNA_reads \\
-            $options.args
+            $args
 
         mv non_rRNA_reads.fq.gz ${prefix}.fastq.gz
         mv rRNA_reads.log ${prefix}.sortmerna.log
@@ -51,7 +51,7 @@ process SORTMERNA {
             --other non_rRNA_reads \\
             --paired_in \\
             --out2 \\
-            $options.args
+            $args
 
         mv non_rRNA_reads_fwd.fq.gz ${prefix}_1.fastq.gz
         mv non_rRNA_reads_rev.fq.gz ${prefix}_2.fastq.gz

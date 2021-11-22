@@ -13,16 +13,16 @@ process PORECHOP {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz")  , emit: reads
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.fastq.gz"), emit: reads
+    path "versions.yml"                , emit: versions
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     porechop \\
-        -i ${reads} \\
+        -i $reads \\
         -t $task.cpus \\
-        ${options.args} \\
+        $args \\
         -o ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml

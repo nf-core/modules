@@ -24,7 +24,7 @@ process PAIRTOOLS_PARSE {
     pairtools \\
         parse \\
         -c $chromsizes \\
-        $options.args \\
+        $args \\
         --output-stats ${prefix}.pairsam.stat \\
         -o ${prefix}.pairsam.gz \\
         $bam

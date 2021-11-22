@@ -22,7 +22,7 @@ process HMMCOPY_READCOUNTER {
         def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     readCounter \\
-        $options.args \\
+        $args \\
         ${bam} > ${prefix}.wig
 
     cat <<-END_VERSIONS > versions.yml

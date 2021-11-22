@@ -24,7 +24,7 @@ process BEDTOOLS_INTERSECT {
         intersect \\
         -a $intervals1 \\
         -b $intervals2 \\
-        $options.args \\
+        $args \\
         > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml

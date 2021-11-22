@@ -29,7 +29,7 @@ process PICARD_COLLECTWGSMETRICS {
     picard \\
         -Xmx${avail_mem}g \\
         CollectWgsMetrics \\
-        $options.args \\
+        $args \\
         INPUT=$bam \\
         OUTPUT=${prefix}.CollectWgsMetrics.coverage_metrics \\
         REFERENCE_SEQUENCE=$fasta

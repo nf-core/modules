@@ -33,7 +33,7 @@ process PICARD_FILTERSAMREADS {
             --INPUT $bam \\
             --OUTPUT ${prefix}.bam \\
             --FILTER $filter \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -49,7 +49,7 @@ process PICARD_FILTERSAMREADS {
             --OUTPUT ${prefix}.bam \\
             --FILTER $filter \\
             --READ_LIST_FILE $readlist \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:

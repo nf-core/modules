@@ -19,7 +19,7 @@ process BISMARK_GENOMEPREPARATION {
     script:
     """
     bismark_genome_preparation \\
-        $options.args \\
+        $args \\
         BismarkIndex
 
     cat <<-END_VERSIONS > versions.yml

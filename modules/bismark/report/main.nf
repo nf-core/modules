@@ -18,7 +18,7 @@ process BISMARK_REPORT {
 
     script:
     """
-    bismark2report $options.args
+    bismark2report $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -24,7 +24,7 @@ process ADAPTERREMOVAL {
         """
         AdapterRemoval  \\
             --file1 $reads \\
-            $options.args \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
@@ -42,7 +42,7 @@ process ADAPTERREMOVAL {
         AdapterRemoval  \\
             --file1 ${reads[0]} \\
             --file2 ${reads[1]} \\
-            $options.args \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
@@ -62,7 +62,7 @@ process ADAPTERREMOVAL {
             --file1 ${reads[0]} \\
             --file2 ${reads[1]} \\
             --collapse \\
-            $options.args \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\

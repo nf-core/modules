@@ -21,7 +21,7 @@ process DSHBIO_FILTERGFF3 {
     """
     dsh-bio \\
         filter-gff3 \\
-        $options.args \\
+        $args \\
         -i $gff3 \\
         -o ${prefix}.gff3.gz
 

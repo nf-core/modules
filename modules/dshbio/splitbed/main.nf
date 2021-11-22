@@ -21,7 +21,7 @@ process DSHBIO_SPLITBED {
     """
     dsh-bio \\
         split-bed \\
-        $options.args \\
+        $args \\
         -p $prefix \\
         -s '.bed.gz' \\
         -i $bed

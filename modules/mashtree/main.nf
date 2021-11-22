@@ -21,7 +21,7 @@ process MASHTREE {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mashtree \\
-        $options.args \\
+        $args \\
         --numcpus $task.cpus \\
         --outmatrix ${prefix}.tsv \\
         --outtree ${prefix}.dnd \\

@@ -24,7 +24,7 @@ process UNZIP {
     7za \\
         e \\
         -o"${archive.baseName}"/ \\
-        $options.args \\
+        $args \\
         $archive
 
     cat <<-END_VERSIONS > versions.yml

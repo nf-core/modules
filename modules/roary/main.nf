@@ -21,7 +21,7 @@ process ROARY {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     roary \\
-        $options.args \\
+        $args \\
         -p $task.cpus \\
         -f results/ \\
         $gff

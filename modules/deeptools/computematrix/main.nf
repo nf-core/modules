@@ -22,7 +22,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     computeMatrix \\
-        $options.args \\
+        $args \\
         --regionsFileName $bed \\
         --scoreFileName $bigwig \\
         --outFileName ${prefix}.computeMatrix.mat.gz \\

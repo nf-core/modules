@@ -25,7 +25,7 @@ process ULTRA_PIPELINE {
         pipeline \\
         --t $task.cpus \\
         --prefix $prefix \\
-        $options.args \\
+        $args \\
         \$(pwd)/$genome \\
         \$(pwd)/$gtf \\
         \$(pwd)/$reads \\

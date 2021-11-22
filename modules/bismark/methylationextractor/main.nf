@@ -30,7 +30,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
         --gzip \\
         --report \\
         $seqtype \\
-        $options.args \\
+        $args \\
         $bam
 
     cat <<-END_VERSIONS > versions.yml

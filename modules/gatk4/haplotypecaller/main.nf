@@ -42,7 +42,7 @@ process GATK4_HAPLOTYPECALLER {
         ${dbsnp_option} \\
         ${interval_option} \\
         -O ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         --tmp-dir .
 
     cat <<-END_VERSIONS > versions.yml

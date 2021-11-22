@@ -28,7 +28,7 @@ process MSISENSOR_MSI {
         -n $normal_bam \\
         -t $tumor_bam \\
         -o $prefix \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -25,7 +25,7 @@ process UMITOOLS_EXTRACT {
             extract \\
             -I $reads \\
             -S ${prefix}.umi_extract.fastq.gz \\
-            $options.args \\
+            $args \\
             > ${prefix}.umi_extract.log
 
         cat <<-END_VERSIONS > versions.yml
@@ -41,7 +41,7 @@ process UMITOOLS_EXTRACT {
             --read2-in=${reads[1]} \\
             -S ${prefix}.umi_extract_1.fastq.gz \\
             --read2-out=${prefix}.umi_extract_2.fastq.gz \\
-            $options.args \\
+            $args \\
             > ${prefix}.umi_extract.log
 
         cat <<-END_VERSIONS > versions.yml

@@ -34,7 +34,7 @@ process HICAP {
         --query_fp $fasta_name \\
         $database_args \\
         $model_args \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         -o ./
 

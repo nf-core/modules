@@ -23,7 +23,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
     """
     sequenza-utils \\
         bam2seqz \\
-        $options.args \\
+        $args \\
         -n $normalbam \\
         -t $tumourbam \\
         --fasta $fasta \\

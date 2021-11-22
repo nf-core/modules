@@ -21,7 +21,7 @@ process BWAMEM2_INDEX {
     mkdir bwamem2
     bwa-mem2 \\
         index \\
-        $options.args \\
+        $args \\
         $fasta -p bwamem2/${fasta}
 
     cat <<-END_VERSIONS > versions.yml

@@ -22,7 +22,7 @@ process SCOARY {
     def newick_tree = tree ? "-n ${tree}" : ""
     """
     scoary \\
-        $options.args \\
+        $args \\
         --no-time \\
         --threads $task.cpus \\
         --traits $traits \\

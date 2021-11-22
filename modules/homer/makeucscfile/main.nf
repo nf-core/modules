@@ -24,7 +24,7 @@ process HOMER_MAKEUCSCFILE {
     makeUCSCfile \\
         $tagDir \\
         -o auto
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

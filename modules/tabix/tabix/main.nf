@@ -18,7 +18,7 @@ process TABIX_TABIX {
 
     script:
     """
-    tabix $options.args $tab
+    tabix $args $tab
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

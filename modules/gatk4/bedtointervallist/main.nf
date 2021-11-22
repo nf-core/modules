@@ -24,7 +24,7 @@ process GATK4_BEDTOINTERVALLIST {
         -I $bed \\
         -SD $sequence_dict \\
         -O ${prefix}.interval_list \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -48,7 +48,7 @@ process GATK4_GENOMICSDBIMPORT {
         $inputs_command \\
         $dir_command \\
         $intervals_command \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

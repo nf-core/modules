@@ -24,7 +24,7 @@ process HOMER_FINDPEAKS {
 
     findPeaks \\
         $tagDir \\
-        $options.args \\
+        $args \\
         -o ${prefix}.peaks.txt
 
     cat <<-END_VERSIONS > versions.yml

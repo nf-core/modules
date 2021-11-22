@@ -22,7 +22,7 @@ process COOLER_DUMP {
     def suffix   = resolution     ? "::$resolution"               : ""
     """
     cooler dump \\
-        $options.args \\
+        $args \\
         -o ${prefix}.bedpe \\
         $cool$suffix
 

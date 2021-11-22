@@ -32,7 +32,7 @@ process GATK4_MERGEVCFS {
         $input \\
         O=${prefix}.vcf.gz \\
         $ref \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

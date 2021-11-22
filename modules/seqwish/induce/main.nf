@@ -28,7 +28,7 @@ process SEQWISH_INDUCE {
         --paf-alns=$paf \\
         --seqs=$fasta \\
         --gfa=${prefix}.gfa \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

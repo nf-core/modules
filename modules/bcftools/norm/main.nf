@@ -23,7 +23,7 @@ process BCFTOOLS_NORM {
     bcftools norm \\
         --fasta-ref ${fasta} \\
         --output ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         ${vcf}
 

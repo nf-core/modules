@@ -26,7 +26,7 @@ process SEACR_CALLPEAK {
     SEACR_1.3.sh \\
         $bedgraph \\
         $function_switch \\
-        $options.args \\
+        $args \\
         $prefix
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

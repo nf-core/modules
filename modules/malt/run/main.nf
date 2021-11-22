@@ -34,7 +34,7 @@ process MALT_RUN {
         -t $task.cpus \\
         -v \\
         -o . \\
-        $options.args \\
+        $args \\
         --inFile ${fastqs.join(' ')} \\
         -m $mode \\
         --index $index/ |&tee malt-run.log

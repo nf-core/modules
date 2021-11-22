@@ -22,7 +22,7 @@ process BISMARK_DEDUPLICATE {
     def seqtype    = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
-        $options.args \\
+        $args \\
         $seqtype \\
         --bam $bam
 

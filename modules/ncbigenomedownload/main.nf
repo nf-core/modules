@@ -34,7 +34,7 @@ process NCBIGENOMEDOWNLOAD {
     def accessions_opt = accessions ? "-A ${accessions}" : ""
     """
     ncbi-genome-download \\
-        $options.args \\
+        $args \\
         $accessions_opt \\
         --output-folder ./ \\
         --flat-output

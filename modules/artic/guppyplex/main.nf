@@ -21,7 +21,7 @@ process ARTIC_GUPPYPLEX {
     """
     artic \\
         guppyplex \\
-        $options.args \\
+        $args \\
         --directory $fastq_dir \\
         --output ${prefix}.fastq
 

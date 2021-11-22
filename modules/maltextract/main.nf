@@ -27,7 +27,7 @@ process MALTEXTRACT {
         -t $taxon_list \\
         -r $ncbi_dir \\
         -o results/ \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

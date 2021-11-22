@@ -34,7 +34,7 @@ process GSTAMA_COLLAPSE {
         -s $bam \\
         -f $fasta \\
         -p ${prefix} \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

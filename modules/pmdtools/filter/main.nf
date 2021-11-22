@@ -28,7 +28,7 @@ process PMDTOOLS_FILTER {
         calmd \\
         $bam \\
         $reference \\
-        $options.args \\
+        $args \\
         -@ ${split_cpus} \\
     | pmdtools \\
         --threshold $threshold \\

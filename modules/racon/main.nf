@@ -22,7 +22,7 @@ process RACON {
     racon -t "$task.cpus" \\
         "${reads}" \\
         "${paf}" \\
-        $options.args \\
+        $args \\
         "${assembly}" > \\
         ${prefix}_assembly_consensus.fasta
 

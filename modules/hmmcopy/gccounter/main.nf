@@ -20,7 +20,7 @@ process HMMCOPY_GCCOUNTER {
     script:
     """
     gcCounter \\
-        $options.args \\
+        $args \\
         ${fasta} > ${fasta.baseName}.gc.wig
 
     cat <<-END_VERSIONS > versions.yml

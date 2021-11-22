@@ -23,7 +23,7 @@ process PANGOLIN {
         $fasta\\
         --outfile ${prefix}.pangolin.csv \\
         --threads $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

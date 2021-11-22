@@ -30,7 +30,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     picard \\
         -Xmx${avail_mem}g \\
         CollectMultipleMetrics \\
-        $options.args \\
+        $args \\
         INPUT=$bam \\
         OUTPUT=${prefix}.CollectMultipleMetrics \\
         REFERENCE_SEQUENCE=$fasta

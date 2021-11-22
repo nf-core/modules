@@ -27,7 +27,7 @@ process MEGAHIT {
         megahit \\
             -r ${reads} \\
             -t $task.cpus \\
-            $options.args \\
+            $args \\
             --out-prefix $prefix
 
         pigz \\
@@ -48,7 +48,7 @@ process MEGAHIT {
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -t $task.cpus \\
-            $options.args \\
+            $args \\
             --out-prefix $prefix
 
         pigz \\

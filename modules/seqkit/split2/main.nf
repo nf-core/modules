@@ -22,7 +22,7 @@ process SEQKIT_SPLIT2 {
         """
         seqkit \\
             split2 \\
-            $options.args \\
+            $args \\
             --threads $task.cpus \\
             -1 $reads \\
             --out-dir $prefix
@@ -36,7 +36,7 @@ process SEQKIT_SPLIT2 {
         """
         seqkit \\
             split2 \\
-            $options.args \\
+            $args \\
             --threads $task.cpus \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\

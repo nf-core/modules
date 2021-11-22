@@ -25,7 +25,7 @@ process UNICYCLER {
     """
     unicycler \\
         --threads $task.cpus \\
-        $options.args \\
+        $args \\
         $short_reads \\
         $long_reads \\
         --out ./

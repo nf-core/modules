@@ -30,7 +30,7 @@ process PICARD_MERGESAMFILES {
         picard \\
             -Xmx${avail_mem}g \\
             MergeSamFiles \\
-            $options.args \\
+            $args \\
             ${'INPUT='+bam_files.join(' INPUT=')} \\
             OUTPUT=${prefix}.bam
         cat <<-END_VERSIONS > versions.yml

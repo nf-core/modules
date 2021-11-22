@@ -24,7 +24,7 @@ process HOMER_MAKETAGDIRECTORY {
     """
     makeTagDirectory \\
         tag_dir \\
-        $options.args \\
+        $args \\
         $bed \\
         -genome $fasta
 

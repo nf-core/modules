@@ -22,7 +22,7 @@ process BAMTOOLS_SPLIT {
     bamtools \\
         split \\
         -in $bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

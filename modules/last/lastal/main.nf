@@ -24,7 +24,7 @@ process LAST_LASTAL {
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
     lastal \\
         $trained_params \\
-        $options.args \\
+        $args \\
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\

@@ -24,7 +24,7 @@ process DELLY_CALL {
     """
     delly \\
         call \\
-        $options.args \\
+        $args \\
         -o ${prefix}.bcf \\
         -g  $fasta \\
         $bam \\

@@ -24,7 +24,7 @@ process BEDTOOLS_COMPLEMENT {
         complement \\
         -i $bed \\
         -g $sizes \\
-        $options.args \\
+        $args \\
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml

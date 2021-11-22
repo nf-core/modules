@@ -48,7 +48,7 @@ process DASTOOL_DASTOOL {
     $decompress_contigs
 
     DAS_Tool \\
-        $options.args \\
+        $args \\
         $proteins_pred \\
         $db_dir \\
         $engine \\

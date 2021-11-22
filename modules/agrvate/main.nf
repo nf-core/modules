@@ -21,7 +21,7 @@ process AGRVATE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     agrvate \\
-        $options.args \\
+        $args \\
         -i $fasta
 
     cat <<-END_VERSIONS > versions.yml

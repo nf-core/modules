@@ -19,7 +19,7 @@ process FLASH {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     flash \\
-        $options.args \\
+        $args \\
         -o ${prefix} \\
         -z \\
         ${reads[0]} \\

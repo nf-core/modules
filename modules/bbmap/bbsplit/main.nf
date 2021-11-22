@@ -45,7 +45,7 @@ process BBMAP_BBSPLIT {
                 ${other_refs.join(' ')} \\
                 path=bbsplit \\
                 threads=$task.cpus \\
-                $options.args
+                $args
 
             cat <<-END_VERSIONS > versions.yml
             ${getProcessName(task.process)}:
@@ -74,7 +74,7 @@ process BBMAP_BBSPLIT {
             $fastq_in \\
             $fastq_out \\
             refstats=${prefix}.stats.txt \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:

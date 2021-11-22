@@ -30,7 +30,7 @@ process BOWTIE2_ALIGN {
             -U $reads \\
             --threads $task.cpus \\
             $unaligned \\
-            $options.args \\
+            $args \\
             2> ${prefix}.bowtie2.log \\
             | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
 
@@ -51,7 +51,7 @@ process BOWTIE2_ALIGN {
             -2 ${reads[1]} \\
             --threads $task.cpus \\
             $unaligned \\
-            $options.args \\
+            $args \\
             2> ${prefix}.bowtie2.log \\
             | samtools view -@ $task.cpus $task.ext.args2 -bhS -o ${prefix}.bam -
 

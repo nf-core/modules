@@ -23,7 +23,7 @@ process CUTADAPT {
     """
     cutadapt \\
         --cores $task.cpus \\
-        $options.args \\
+        $args \\
         $trimmed \\
         $reads \\
         > ${prefix}.cutadapt.log

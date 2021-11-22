@@ -34,7 +34,7 @@ process PICARD_COLLECTHSMETRICS {
     picard \\
         -Xmx${avail_mem}g \\
         CollectHsMetrics \\
-        $options.args \\
+        $args \\
         $reference \\
         -BAIT_INTERVALS $bait_intervals \\
         -TARGET_INTERVALS $target_intervals \\

@@ -30,7 +30,7 @@ process BBMAP_BBDUK {
         $raw \\
         $trimmed \\
         threads=$task.cpus \\
-        $options.args \\
+        $args \\
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
     cat <<-END_VERSIONS > versions.yml

@@ -22,7 +22,7 @@ process METHYLDACKEL_MBIAS {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     MethylDackel mbias \\
-        $options.args \\
+        $args \\
         $fasta \\
         $bam \\
         $prefix \\

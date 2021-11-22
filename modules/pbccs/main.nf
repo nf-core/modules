@@ -33,7 +33,7 @@ process PBCCS {
         --metrics-json ${prefix}.chunk${chunk_num}.metrics.json.gz \\
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -22,7 +22,7 @@ process BEDTOOLS_MERGE {
     bedtools \\
         merge \\
         -i $bed \\
-        $options.args \\
+        $args \\
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml

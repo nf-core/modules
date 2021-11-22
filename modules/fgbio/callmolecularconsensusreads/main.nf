@@ -22,7 +22,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
     fgbio \\
         CallMolecularConsensusReads \\
         -i $bam \\
-        $options.args \\
+        $args \\
         -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml

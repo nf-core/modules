@@ -21,7 +21,7 @@ process DSHBIO_EXPORTSEGMENTS {
     """
     dsh-bio \\
         export-segments \\
-        $options.args \\
+        $args \\
         -i $gfa \\
         -o ${prefix}.fa
 

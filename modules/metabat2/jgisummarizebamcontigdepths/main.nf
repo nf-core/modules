@@ -23,7 +23,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
 
     jgi_summarize_bam_contig_depths \\
         --outputDepth ${prefix}.txt \\
-        $options.args \\
+        $args \\
         $bam
 
     bgzip --threads $task.cpus ${prefix}.txt

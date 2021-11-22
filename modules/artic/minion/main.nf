@@ -47,7 +47,7 @@ process ARTIC_MINION {
     """
     artic \\
         minion \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --read-file $fastq \\
         --scheme-directory ./primer-schemes \\

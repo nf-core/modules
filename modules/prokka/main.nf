@@ -35,7 +35,7 @@ process PROKKA {
     def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
     """
     prokka \\
-        $options.args \\
+        $args \\
         --cpus $task.cpus \\
         --prefix $prefix \\
         $proteins_opt \\

@@ -26,7 +26,7 @@ process TIDDIT_SV {
     """
     tiddit \\
         --sv \\
-        $options.args \\
+        $args \\
         --bam $bam \\
         $reference \\
         -o $prefix

@@ -40,7 +40,7 @@ process FARGENE {
         -cdf $input \\
         > unziped.fa |
         fargene \\
-            $options.args \\
+            $args \\
             -p $task.cpus \\
             -i unziped.fa \\
             --hmm-model $hmm_model \\

@@ -23,7 +23,7 @@ process MSISENSOR_SCAN {
         scan \\
         -d $fasta \\
         -o ${prefix}.msisensor_scan.tab \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

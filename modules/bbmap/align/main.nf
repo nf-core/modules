@@ -41,7 +41,7 @@ process BBMAP_ALIGN {
         $db \\
         $input \\
         out=${prefix}.bam \\
-        $options.args \\
+        $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g \\
         &> ${prefix}.bbmap.log

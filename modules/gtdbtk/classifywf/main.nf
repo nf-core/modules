@@ -35,7 +35,7 @@ process GTDBTK_CLASSIFYWF {
     fi
 
     gtdbtk classify_wf \\
-        $options.args \\
+        $args \\
         --genome_dir bins \\
         --prefix "gtdbtk.${meta.assembler}-${meta.id}" \\
         --out_dir "\${PWD}" \\

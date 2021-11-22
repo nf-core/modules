@@ -30,7 +30,7 @@ process PICARD_MARKDUPLICATES {
     picard \\
         -Xmx${avail_mem}g \\
         MarkDuplicates \\
-        $options.args \\
+        $args \\
         I=$bam \\
         O=${prefix}.bam \\
         M=${prefix}.MarkDuplicates.metrics.txt

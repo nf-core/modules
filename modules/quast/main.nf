@@ -30,7 +30,7 @@ process QUAST {
         $reference \\
         $features \\
         --threads $task.cpus \\
-        $options.args \\
+        $args \\
         ${consensus.join(' ')}
     ln -s ${prefix}/report.tsv
     cat <<-END_VERSIONS > versions.yml

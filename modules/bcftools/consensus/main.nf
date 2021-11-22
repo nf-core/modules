@@ -19,7 +19,7 @@ process BCFTOOLS_CONSENSUS {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    cat $fasta | bcftools consensus $vcf $options.args > ${prefix}.fa
+    cat $fasta | bcftools consensus $vcf $args > ${prefix}.fa
     header=\$(head -n 1 ${prefix}.fa | sed 's/>//g')
     sed -i 's/\${header}/${meta.id}/g' ${prefix}.fa
 

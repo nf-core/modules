@@ -27,7 +27,7 @@ process ISOSEQ3_REFINE {
     isoseq3 \\
         refine \\
         -j $task.cpus \\
-        $options.args \\
+        $args \\
         $bam \\
         $primers \\
         ${prefix}.bam

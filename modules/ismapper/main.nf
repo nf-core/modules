@@ -20,7 +20,7 @@ process ISMAPPER {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     ismap \\
-        $options.args \\
+        $args \\
         --t $task.cpus \\
         --output_dir results \\
         --queries $query \\

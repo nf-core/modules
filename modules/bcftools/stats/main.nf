@@ -19,7 +19,7 @@ process BCFTOOLS_STATS {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    bcftools stats $options.args $vcf > ${prefix}.bcftools_stats.txt
+    bcftools stats $args $vcf > ${prefix}.bcftools_stats.txt
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
         ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')

@@ -26,7 +26,7 @@ process HOMER_ANNOTATEPEAKS {
     annotatePeaks.pl \\
         $peak \\
         $fasta \\
-        $options.args \\
+        $args \\
         -gtf $gtf \\
         -cpu $task.cpus \\
         > ${prefix}.annotatePeaks.txt

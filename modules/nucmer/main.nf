@@ -34,7 +34,7 @@ process NUCMER {
     nucmer \\
         -p $prefix \\
         --coords \\
-        $options.args \\
+        $args \\
         $fasta_name_ref \\
         $fasta_name_query
 

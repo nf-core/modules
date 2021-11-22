@@ -27,7 +27,7 @@ process CSVTK_SPLIT {
     sed -i.bak '/^##/d' $csv
     csvtk \\
         split \\
-        $options.args \\
+        $args \\
         --num-cpus $task.cpus \\
         $delimiter \\
         $out_delimiter \\

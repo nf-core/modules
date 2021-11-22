@@ -23,8 +23,8 @@ process IMPUTEME_VCFTOPRS {
 
     #Set configuration - either from options.args or from defaults
     source("/imputeme/code/impute-me/functions.R")
-    if(file.exists('$options.args')){
-        set_conf("set_from_file",'$options.args')
+    if(file.exists('$args')){
+        set_conf("set_from_file",'$args')
     }else{
         set_conf("set_from_file", "/imputeme/code/impute-me/template/nextflow_default_configuration.R")
     }

@@ -24,7 +24,7 @@ process GATK4_FASTQTOSAM {
         $read_files \\
         -O ${prefix}.bam \\
         -SM $prefix \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

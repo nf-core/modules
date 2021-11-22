@@ -27,7 +27,7 @@ process DEDUP {
         -Xmx${task.memory.toGiga()}g  \\
         -i $bam \\
         -o . \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

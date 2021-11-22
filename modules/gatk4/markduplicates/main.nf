@@ -34,7 +34,7 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         --CREATE_INDEX true \\
         --OUTPUT ${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

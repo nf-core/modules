@@ -21,7 +21,7 @@ process LOFREQ_FILTER {
     """
     lofreq \\
         filter \\
-        $options.args \\
+        $args \\
         -i $vcf \\
         -o ${prefix}.vcf.gz
 

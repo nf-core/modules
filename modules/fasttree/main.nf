@@ -18,7 +18,7 @@ process FASTTREE {
     script:
     """
     fasttree \\
-        $options.args \\
+        $args \\
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
         > fasttree_phylogeny.tre

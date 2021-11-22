@@ -26,7 +26,7 @@ process SEQTK_SUBSEQ {
     """
     seqtk \\
         subseq \\
-        $options.args \\
+        $args \\
         $sequences \\
         $filter_list | \\
         gzip --no-name > ${sequences}${prefix}.${ext}.gz

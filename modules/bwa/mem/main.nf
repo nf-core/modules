@@ -24,7 +24,7 @@ process BWA_MEM {
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
     bwa mem \\
-        $options.args \\
+        $args \\
         $read_group \\
         -t $task.cpus \\
         \$INDEX \\

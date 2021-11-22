@@ -29,7 +29,7 @@ process SUBREAD_FEATURECOUNTS {
     }
     """
     featureCounts \\
-        $options.args \\
+        $args \\
         $paired_end \\
         -T $task.cpus \\
         -a $annotation \\

@@ -25,7 +25,7 @@ process BCFTOOLS_MPILEUP {
     echo "${meta.id}" > sample_name.list
     bcftools mpileup \\
         --fasta-ref $fasta \\
-        $options.args \\
+        $args \\
         $bam \\
         | bcftools call --output-type v $task.ext.args2 \\
         | bcftools reheader --samples sample_name.list \\

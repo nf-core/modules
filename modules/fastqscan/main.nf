@@ -21,7 +21,7 @@ process FASTQSCAN {
     """
     zcat $reads | \\
         fastq-scan \\
-        $options.args > ${prefix}.json
+        $args > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

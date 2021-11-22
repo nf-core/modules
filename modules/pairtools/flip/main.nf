@@ -23,7 +23,7 @@ process PAIRTOOLS_FLIP {
     pairtools \\
         flip \\
         -c $chromsizes \\
-        $options.args \\
+        $args \\
         -o ${prefix}.flip.gz \\
         $sam
 

@@ -20,7 +20,7 @@ process GATK4_INDEXFEATUREFILE {
     """
     gatk \\
         IndexFeatureFile \\
-        $options.args \\
+        $args \\
         -I $feature_file
 
     cat <<-END_VERSIONS > versions.yml

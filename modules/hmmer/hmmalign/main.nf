@@ -23,7 +23,7 @@ process HMMER_HMMALIGN {
     """
     $fastacmd | \\
         hmmalign \\
-        $options.args \\
+        $args \\
         $hmm \\
         - | gzip -c > ${meta.id}.sthlm.gz
 

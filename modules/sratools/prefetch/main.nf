@@ -27,7 +27,7 @@ process SRATOOLS_PREFETCH {
     fi
 
     prefetch \\
-        $options.args \\
+        $args \\
         --progress \\
         $id
 

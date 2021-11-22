@@ -21,7 +21,7 @@ process PYDAMAGE_ANALYZE {
     """
     pydamage \\
         analyze \\
-        $options.args \\
+        $args \\
         -p $task.cpus \\
         $bam
 

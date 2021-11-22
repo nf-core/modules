@@ -21,7 +21,7 @@ process COOLER_DIGEST {
     script:
     """
     cooler digest \\
-        $options.args \\
+        $args \\
         -o "${fasta.baseName}_${enzyme.replaceAll(/[^0-9a-zA-Z]+/, '_')}.bed" \\
         $chromsizes \\
         $fasta \\

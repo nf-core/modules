@@ -22,7 +22,7 @@ process GENMAP_MAPPABILITY {
     """
     genmap \\
         map \\
-        $options.args \\
+        $args \\
         -I $index \\
         -O mappability
 

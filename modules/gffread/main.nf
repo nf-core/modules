@@ -21,7 +21,7 @@ process GFFREAD {
     """
     gffread \\
         $gff \\
-        $options.args \\
+        $args \\
         -o ${prefix}.gtf
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

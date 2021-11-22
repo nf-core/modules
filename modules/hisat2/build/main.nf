@@ -51,7 +51,7 @@ process HISAT2_BUILD {
         -p $task.cpus \\
         $ss \\
         $exon \\
-        $options.args \\
+        $args \\
         $fasta \\
         hisat2/${fasta.baseName}
 

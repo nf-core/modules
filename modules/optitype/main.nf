@@ -35,7 +35,7 @@ process OPTITYPE {
     echo "use_discordant=false" >> config.ini
 
     # Run the actual OptiType typing with options.args
-    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $options.args --prefix $prefix --outdir $prefix
+    OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $args --prefix $prefix --outdir $prefix
 
     #Couldn't find a nicer way of doing this
     cat <<-END_VERSIONS > versions.yml

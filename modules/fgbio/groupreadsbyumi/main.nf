@@ -28,7 +28,7 @@ process FGBIO_GROUPREADSBYUMI {
         --tmp-dir=${PWD}/tmp \\
         GroupReadsByUmi \\
         -s $strategy \\
-        ${options.args} \\
+        $args \\
         -i $taggedbam \\
         -o ${prefix}_umi-grouped.bam \\
         -f ${prefix}_umi_histogram.txt

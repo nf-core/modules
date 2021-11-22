@@ -23,7 +23,7 @@ process SAMTOOLS_FIXMATE {
     """
     samtools \\
         fixmate  \\
-        $options.args \\
+        $args \\
         --threads ${task.cpus-1} \\
         $bam \\
         ${prefix}.bam \\

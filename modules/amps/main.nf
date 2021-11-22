@@ -28,7 +28,7 @@ process AMPS {
         -m $filter \\
         -t $task.cpus \\
         -j \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

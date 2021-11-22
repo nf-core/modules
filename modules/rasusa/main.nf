@@ -22,7 +22,7 @@ process RASUSA {
     def output   = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
-        $options.args \\
+        $args \\
         --coverage $depth_cutoff \\
         --genome-size $genome_size \\
         --input $reads \\

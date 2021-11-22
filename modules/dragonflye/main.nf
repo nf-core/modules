@@ -25,7 +25,7 @@ process DRAGONFLYE {
     """
     dragonflye \\
         --reads ${reads} \\
-        $options.args \\
+        $args \\
         --cpus $task.cpus \\
         --ram $memory \\
         --outdir ./ \\

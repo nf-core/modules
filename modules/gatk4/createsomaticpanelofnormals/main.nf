@@ -28,7 +28,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
         -R $fasta \\
         -V gendb://$genomicsdb \\
         -O ${prefix}.vcf.gz \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

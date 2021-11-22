@@ -23,7 +23,7 @@ process BEDTOOLS_SORT {
     bedtools \\
         sort \\
         -i $intervals \\
-        $options.args \\
+        $args \\
         > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml

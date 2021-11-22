@@ -22,7 +22,7 @@ process LAST_DOTPLOT {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     last-dotplot \\
-        $options.args \\
+        $args \\
         $maf \\
         $prefix.$format
 

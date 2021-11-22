@@ -24,7 +24,7 @@ process NANOPLOT {
         ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """
     NanoPlot \\
-        $options.args \\
+        $args \\
         -t $task.cpus \\
         $input_file
     cat <<-END_VERSIONS > versions.yml

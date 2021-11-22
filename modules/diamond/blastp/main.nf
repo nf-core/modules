@@ -29,7 +29,7 @@ process DIAMOND_BLASTP {
         --threads $task.cpus \\
         --db \$DB \\
         --query $fasta \\
-        $options.args \\
+        $args \\
         --out ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml

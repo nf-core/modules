@@ -20,7 +20,7 @@ process PYCOQC {
     script:
     """
     pycoQC \\
-        $options.args \\
+        $args \\
         -f $summary \\
         -o pycoqc.html \\
         -j pycoqc.json

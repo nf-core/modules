@@ -23,7 +23,7 @@ process ABACAS {
     abacas.pl \\
         -r $fasta \\
         -q $scaffold \\
-        $options.args \\
+        $args \\
         -o ${prefix}.abacas
 
     mv nucmer.delta ${prefix}.abacas.nucmer.delta

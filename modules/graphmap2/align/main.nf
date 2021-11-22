@@ -29,7 +29,7 @@ process GRAPHMAP2_ALIGN {
         -i $index \\
         -d $reads \\
         -o ${prefix}.sam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

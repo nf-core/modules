@@ -28,7 +28,7 @@ process BWAMETH_ALIGN {
     touch -c -- *
 
     bwameth.py \\
-        $options.args \\
+        $args \\
         $read_group \\
         -t $task.cpus \\
         --reference \$INDEX \\

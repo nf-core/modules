@@ -38,7 +38,7 @@ process MAPDAMAGE2 {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     mapDamage \\
-            $options.args \\
+            $args \\
             -i $bam \\
             -r $fasta
 

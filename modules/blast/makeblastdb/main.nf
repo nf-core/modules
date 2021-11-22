@@ -20,7 +20,7 @@ process BLAST_MAKEBLASTDB {
     """
     makeblastdb \\
         -in $fasta \\
-        $options.args
+        $args
     mkdir blast_db
     mv ${fasta}* blast_db
     cat <<-END_VERSIONS > versions.yml

@@ -24,7 +24,7 @@ process PLINK_EXTRACT {
     """
     plink \\
         --bfile ${meta.id} \\
-        $options.args \\
+        $args \\
         --extract $variants \\
         --threads $task.cpus \\
         --make-bed \\

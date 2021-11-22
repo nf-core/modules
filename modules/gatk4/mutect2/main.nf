@@ -61,7 +61,7 @@ process GATK4_MUTECT2 {
         ${normals_command} \\
         ${panels_command} \\
         -O ${prefix}.vcf.gz \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

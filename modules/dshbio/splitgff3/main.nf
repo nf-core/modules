@@ -21,7 +21,7 @@ process DSHBIO_SPLITGFF3 {
     """
     dsh-bio \\
         split-gff3 \\
-        $options.args \\
+        $args \\
         -p $prefix \\
         -s '.gff3.gz' \\
         -i $gff3

@@ -22,7 +22,7 @@ process BEDTOOLS_MASKFASTA {
     """
     bedtools \\
         maskfasta \\
-        $options.args \\
+        $args \\
         -fi $fasta \\
         -bed $bed \\
         -fo ${prefix}.fa

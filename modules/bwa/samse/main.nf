@@ -25,7 +25,7 @@ process BWA_SAMSE {
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
     bwa samse \\
-        $options.args \\
+        $args \\
         $read_group \\
         \$INDEX \\
         $sai \\

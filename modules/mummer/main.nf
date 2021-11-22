@@ -33,7 +33,7 @@ process MUMMER {
         gzip -c -d $query > $fasta_name_query
     fi
     mummer \\
-        $options.args \\
+        $args \\
         $fasta_name_ref \\
         $fasta_name_query \\
         > ${prefix}.coords

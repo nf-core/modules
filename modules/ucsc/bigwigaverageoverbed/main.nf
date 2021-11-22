@@ -24,7 +24,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     """
     # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.
     bigWigAverageOverBed \\
-        $options.args \\
+        $args \\
         $bigwig \\
         $bed \\
         ${prefix}.tab

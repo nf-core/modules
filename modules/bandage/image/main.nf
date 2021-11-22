@@ -20,8 +20,8 @@ process BANDAGE_IMAGE {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    Bandage image $gfa ${prefix}.png $options.args
-    Bandage image $gfa ${prefix}.svg $options.args
+    Bandage image $gfa ${prefix}.png $args
+    Bandage image $gfa ${prefix}.svg $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

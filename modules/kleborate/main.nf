@@ -20,7 +20,7 @@ process KLEBORATE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     kleborate \\
-        $options.args \\
+        $args \\
         --outfile ${prefix}.results.txt \\
         --assemblies *.fasta
 

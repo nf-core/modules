@@ -30,7 +30,7 @@ process MOSDEPTH {
     """
     mosdepth \\
         $interval \\
-        $options.args \\
+        $args \\
         $prefix \\
         $bam
     cat <<-END_VERSIONS > versions.yml

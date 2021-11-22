@@ -24,7 +24,7 @@ process LOFREQ_CALLPARALLEL {
     lofreq \\
         call-parallel \\
         --pp-threads $task.cpus \\
-        $options.args \\
+        $args \\
         -f $fasta \\
         -o ${prefix}.vcf.gz \\
         $bam

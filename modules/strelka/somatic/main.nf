@@ -34,7 +34,7 @@ process STRELKA_SOMATIC {
         --referenceFasta $fasta \\
         $options_target_bed \\
         $options_manta \\
-        $options.args \\
+        $args \\
         --runDir strelka
 
     python strelka/runWorkflow.py -m local -j $task.cpus

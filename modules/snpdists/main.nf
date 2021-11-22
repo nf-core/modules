@@ -20,7 +20,7 @@ process SNPDISTS {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     snp-dists \\
-        $options.args \\
+        $args \\
         $alignment > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

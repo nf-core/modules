@@ -19,7 +19,7 @@ process STAPHOPIASCCMEC {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    staphopia-sccmec --assembly $fasta $options.args > ${prefix}.tsv
+    staphopia-sccmec --assembly $fasta $args > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

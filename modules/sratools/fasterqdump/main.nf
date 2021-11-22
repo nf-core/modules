@@ -30,7 +30,7 @@ process SRATOOLS_FASTERQDUMP {
     fi
 
     fasterq-dump \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         ${sra.name}
 

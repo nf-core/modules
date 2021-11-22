@@ -20,7 +20,7 @@ process BBMAP_INDEX {
     """
     bbmap.sh \\
         ref=${fasta} \\
-        $options.args \\
+        $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
 

@@ -23,7 +23,7 @@ process GATK4_SAMTOFASTQ {
     gatk SamToFastq \\
         I=$bam \\
         $output \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

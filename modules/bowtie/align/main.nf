@@ -31,7 +31,7 @@ process BOWTIE_ALIGN {
         -x \$INDEX \\
         -q \\
         $unaligned \\
-        $options.args \\
+        $args \\
         $endedness \\
         2> ${prefix}.out \\
         | samtools view $task.ext.args2 -@ $task.cpus -bS -o ${prefix}.bam -

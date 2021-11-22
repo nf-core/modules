@@ -41,7 +41,7 @@ process RSEM_CALCULATEEXPRESSION {
         --temporary-folder ./tmp/ \\
         $strandedness \\
         $paired_end \\
-        $options.args \\
+        $args \\
         $reads \\
         \$INDEX \\
         $prefix

@@ -46,7 +46,7 @@ process GATK4_FILTERMUTECTCALLS {
         $segmentation_options \\
         $contamination_options \\
         -O ${prefix}.vcf.gz \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

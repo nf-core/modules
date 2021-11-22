@@ -33,7 +33,7 @@ process KRAKEN2_KRAKEN2 {
         --report ${prefix}.kraken2.report.txt \\
         --gzip-compressed \\
         $paired \\
-        $options.args \\
+        $args \\
         $reads
 
     pigz -p $task.cpus *.fastq

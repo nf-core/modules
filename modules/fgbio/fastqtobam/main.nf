@@ -32,7 +32,7 @@ process FGBIO_FASTQTOBAM {
         --read-structures $read_structure \\
         --sample $meta.id \\
         --library $meta.id \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

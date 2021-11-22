@@ -22,7 +22,7 @@ process PYDAMAGE_FILTER {
 
     pydamage \\
         filter \\
-        $options.args \\
+        $args \\
         $csv
 
     cat <<-END_VERSIONS > versions.yml

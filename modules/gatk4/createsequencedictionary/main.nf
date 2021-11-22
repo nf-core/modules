@@ -28,7 +28,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
         CreateSequenceDictionary \\
         --REFERENCE $fasta \\
         --URI $fasta \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

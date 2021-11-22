@@ -23,7 +23,7 @@ process MTNUCRATIO {
 
     """
     mtnucratio \\
-        $options.args \\
+        $args \\
         $bam \\
         $mt_id
 

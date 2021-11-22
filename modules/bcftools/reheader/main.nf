@@ -27,7 +27,7 @@ process BCFTOOLS_REHEADER {
         reheader \\
         $update_sequences \\
         $new_header \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         -o ${prefix}.vcf.gz \\
         $vcf

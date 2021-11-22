@@ -21,7 +21,7 @@ process GRAPHMAP2_INDEX {
         align \\
         -t $task.cpus \\
         -I \\
-        $options.args \\
+        $args \\
         -r $fasta
 
     cat <<-END_VERSIONS > versions.yml

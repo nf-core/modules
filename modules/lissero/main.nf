@@ -20,7 +20,7 @@ process LISSERO {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     lissero \\
-        $options.args \\
+        $args \\
         $fasta \\
         > ${prefix}.tsv
 

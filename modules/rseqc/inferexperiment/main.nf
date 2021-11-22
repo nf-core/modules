@@ -23,7 +23,7 @@ process RSEQC_INFEREXPERIMENT {
     infer_experiment.py \\
         -i $bam \\
         -r $bed \\
-        $options.args \\
+        $args \\
         > ${prefix}.infer_experiment.txt
 
     cat <<-END_VERSIONS > versions.yml

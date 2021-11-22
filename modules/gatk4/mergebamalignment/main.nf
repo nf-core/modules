@@ -27,7 +27,7 @@ process GATK4_MERGEBAMALIGNMENT {
         UNMAPPED=$unmapped \\
         R=$fasta \\
         O=${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

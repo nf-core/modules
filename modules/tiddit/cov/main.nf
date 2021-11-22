@@ -28,7 +28,7 @@ process TIDDIT_COV {
     tiddit \\
         --cov \\
         -o $prefix \\
-        $options.args \\
+        $args \\
         --bam $bam \\
         $reference
 

@@ -35,7 +35,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
         -O ${prefix}.metrics \
         --REFERENCE_SEQUENCE ${fasta} \
         --VALIDATION_STRINGENCY SILENT \
-        --TMP_DIR . $options.args
+        --TMP_DIR . $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

@@ -22,7 +22,7 @@ process BEDTOOLS_GETFASTA {
     """
     bedtools \\
         getfasta \\
-        $options.args \\
+        $args \\
         -fi $fasta \\
         -bed $bed \\
         -fo ${prefix}.fa

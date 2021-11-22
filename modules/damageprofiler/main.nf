@@ -29,7 +29,7 @@ process DAMAGEPROFILER {
     damageprofiler \\
     -i $bam \\
     -o $prefix/ \\
-    $options.args \\
+    $args \\
     $reference \\
     $species_list
 

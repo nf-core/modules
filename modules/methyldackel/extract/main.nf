@@ -21,7 +21,7 @@ process METHYLDACKEL_EXTRACT {
     script:
     """
     MethylDackel extract \\
-        $options.args \\
+        $args \\
         $fasta \\
         $bam
 

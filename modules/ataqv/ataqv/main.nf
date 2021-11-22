@@ -29,7 +29,7 @@ process ATAQV_ATAQV {
     def autosom_ref = autosom_ref_file ? "--autosomal-reference-file $autosom_ref_file" : ''
     """
     ataqv \\
-        $options.args \\
+        $args \\
         $peak \\
         $tss \\
         $excl_regs \\

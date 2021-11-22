@@ -25,7 +25,7 @@ process BLAST_BLASTN {
         -num_threads $task.cpus \\
         -db \$DB \\
         -query $fasta \\
-        $options.args \\
+        $args \\
         -out ${prefix}.blastn.txt
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

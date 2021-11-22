@@ -25,7 +25,7 @@ process METABAT2_METABAT2 {
     $decompress_depth
 
     metabat2 \\
-        $options.args \\
+        $args \\
         -i $fasta \\
         $depth_file \\
         -t $task.cpus \\

@@ -29,7 +29,7 @@ process RSEQC_INNERDISTANCE {
             -i $bam \\
             -r $bed \\
             -o $prefix \\
-            $options.args \\
+            $args \\
             > stdout.txt
         head -n 2 stdout.txt > ${prefix}.inner_distance_mean.txt
 

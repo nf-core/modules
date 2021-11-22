@@ -21,7 +21,7 @@ process DEEPTOOLS_PLOTPROFILE {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     plotProfile \\
-        $options.args \\
+        $args \\
         --matrixFile $matrix \\
         --outFileName ${prefix}.plotProfile.pdf \\
         --outFileNameData ${prefix}.plotProfile.tab

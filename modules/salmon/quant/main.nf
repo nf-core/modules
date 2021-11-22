@@ -59,7 +59,7 @@ process SALMON_QUANT {
         --libType=$strandedness \\
         $reference \\
         $input_reads \\
-        $options.args \\
+        $args \\
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml

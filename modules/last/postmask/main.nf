@@ -20,7 +20,7 @@ process LAST_POSTMASK {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
-    last-postmask $options.args $maf | gzip --no-name > ${prefix}.maf.gz
+    last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz
 
     # last-postmask does not have a --version option
     cat <<-END_VERSIONS > versions.yml

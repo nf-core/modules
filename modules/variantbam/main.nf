@@ -24,7 +24,7 @@ process VARIANTBAM {
     variant \\
         $bam \\
         -o ${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

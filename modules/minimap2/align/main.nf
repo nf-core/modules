@@ -22,7 +22,7 @@ process MINIMAP2_ALIGN {
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """
     minimap2 \\
-        $options.args \\
+        $args \\
         -t $task.cpus \\
         $reference \\
         $input_reads \\

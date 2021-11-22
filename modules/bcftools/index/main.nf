@@ -23,7 +23,7 @@ process BCFTOOLS_INDEX {
     """
     bcftools \\
         index \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         $vcf
 

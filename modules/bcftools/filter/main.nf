@@ -21,7 +21,7 @@ process BCFTOOLS_FILTER {
     """
     bcftools filter \\
         --output ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         $vcf
 
     cat <<-END_VERSIONS > versions.yml

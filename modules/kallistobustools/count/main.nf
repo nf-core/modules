@@ -36,7 +36,7 @@ process KALLISTOBUSTOOLS_COUNT {
         $introns \\
         --workflow $workflow \\
         -x $technology \\
-        $options.args \\
+        $args \\
         -o ${prefix}.count \\
         ${reads[0]} \\
         ${reads[1]}

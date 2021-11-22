@@ -39,7 +39,7 @@ process FREEBAYES {
             $samples_file \\
             $populations_file \\
             $cnv_file \\
-            $options.args \\
+            $args \\
             $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf
@@ -58,7 +58,7 @@ process FREEBAYES {
             $samples_file \\
             $populations_file \\
             $cnv_file \\
-            $options.args \\
+            $args \\
             $input > ${prefix}.vcf
 
         gzip --no-name ${prefix}.vcf

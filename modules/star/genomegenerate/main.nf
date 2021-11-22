@@ -31,7 +31,7 @@ process STAR_GENOMEGENERATE {
             --sjdbGTFfile $gtf \\
             --runThreadN $task.cpus \\
             $memory \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -54,7 +54,7 @@ process STAR_GENOMEGENERATE {
             --runThreadN $task.cpus \\
             --genomeSAindexNbases \$NUM_BASES \\
             $memory \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:

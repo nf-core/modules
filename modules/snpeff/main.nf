@@ -37,7 +37,7 @@ process SNPEFF {
     """
     snpEff -Xmx${avail_mem}g \\
         $db \\
-        $options.args \\
+        $args \\
         -csvStats ${prefix}.csv \\
         $cache \\
         $vcf \\

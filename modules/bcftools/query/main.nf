@@ -31,7 +31,7 @@ process BCFTOOLS_QUERY {
         ${regions_file} \\
         ${targets_file} \\
         ${samples_file} \\
-        $options.args \\
+        $args \\
         ${vcf}
 
     cat <<-END_VERSIONS > versions.yml

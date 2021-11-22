@@ -45,7 +45,7 @@ process STAR_ALIGN {
         $out_sam_type \\
         $ignore_gtf \\
         $seq_center \\
-        $options.args
+        $args
 
     $mv_unsorted_bam
 

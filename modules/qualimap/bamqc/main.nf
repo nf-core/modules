@@ -38,7 +38,7 @@ process QUALIMAP_BAMQC {
     qualimap \\
         --java-mem-size=$memory \\
         bamqc \\
-        $options.args \\
+        $args \\
         -bam $bam \\
         $regions \\
         -p $strandedness \\

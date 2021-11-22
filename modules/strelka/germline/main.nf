@@ -32,7 +32,7 @@ process STRELKA_GERMLINE {
         --bam $input \\
         --referenceFasta $fasta \\
         $regions \\
-        $options.args \\
+        $args \\
         --runDir strelka
 
     python strelka/runWorkflow.py -m local -j $task.cpus

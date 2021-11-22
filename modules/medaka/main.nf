@@ -21,7 +21,7 @@ process MEDAKA {
     """
     medaka_consensus \\
         -t $task.cpus \\
-        $options.args \\
+        $args \\
         -i $reads \\
         -d $assembly \\
         -o ./

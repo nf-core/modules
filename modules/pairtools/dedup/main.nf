@@ -21,7 +21,7 @@ process PAIRTOOLS_DEDUP {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pairtools dedup \\
-        $options.args \\
+        $args \\
         -o ${prefix}.pairs.gz \\
         --output-stats ${prefix}.pairs.stat \\
         $input

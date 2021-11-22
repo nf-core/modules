@@ -25,7 +25,7 @@ process BWAMEM2_MEM {
 
     bwa-mem2 \\
         mem \\
-        $options.args \\
+        $args \\
         $read_group \\
         -t $task.cpus \\
         \$INDEX \\

@@ -20,7 +20,7 @@ process COOLER_MERGE {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     cooler merge \\
-        $options.args \\
+        $args \\
         ${prefix}.cool \\
         ${cool}
 

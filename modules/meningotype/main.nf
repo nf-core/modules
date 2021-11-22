@@ -20,7 +20,7 @@ process MENINGOTYPE {
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     meningotype \\
-        $options.args \\
+        $args \\
         $fasta \\
         > ${prefix}.tsv
 

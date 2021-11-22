@@ -24,7 +24,7 @@ process NEXTCLADE {
     prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     nextclade \\
-        $options.args \\
+        $args \\
         --jobs $task.cpus \\
         --input-fasta $fasta \\
         --output-json ${prefix}.json \\

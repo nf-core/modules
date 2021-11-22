@@ -25,7 +25,7 @@ process RSEQC_JUNCTIONSATURATION {
         -i $bam \\
         -r $bed \\
         -o $prefix \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

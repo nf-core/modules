@@ -27,7 +27,7 @@ process GSTAMA_MERGE {
         -f $filelist \\
         -d merge_dup \\
         -p ${prefix} \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

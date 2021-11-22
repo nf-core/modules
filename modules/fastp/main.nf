@@ -37,7 +37,7 @@ process FASTP {
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $fail_fastq \\
-            $options.args \\
+            $args \\
             2> ${prefix}.fastp.log
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
@@ -61,7 +61,7 @@ process FASTP {
             $merge_fastq \\
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
-            $options.args \\
+            $args \\
             2> ${prefix}.fastp.log
 
         cat <<-END_VERSIONS > versions.yml

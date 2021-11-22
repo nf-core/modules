@@ -24,7 +24,7 @@ process CMSEQ_POLYMUT {
     def sortindex = bai ? "" : "--sortindex"
     """
     polymut.py \\
-        $options.args \\
+        $args \\
         $sortindex \\
         $fasta_refid \\
         --gff_file $gff \\

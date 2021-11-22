@@ -21,7 +21,7 @@ process BCFTOOLS_MERGE {
     """
     bcftools merge -Oz \\
         --output ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         *.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

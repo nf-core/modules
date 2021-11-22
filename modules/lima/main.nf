@@ -53,7 +53,7 @@ process LIMA {
         $primers \\
         $prefix.\$OUT_EXT \\
         -j $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

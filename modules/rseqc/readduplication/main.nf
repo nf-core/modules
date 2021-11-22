@@ -25,7 +25,7 @@ process RSEQC_READDUPLICATION {
     read_duplication.py \\
         -i $bam \\
         -o $prefix \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

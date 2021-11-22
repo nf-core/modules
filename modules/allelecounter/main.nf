@@ -24,7 +24,7 @@ process ALLELECOUNTER {
 
     """
     alleleCounter \\
-        $options.args \\
+        $args \\
         -l $loci \\
         -b $input \\
         $reference_options \\

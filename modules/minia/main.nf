@@ -24,7 +24,7 @@ process MINIA {
     """
     echo "${read_list}" | sed 's/,/\\n/g' > input_files.txt
     minia \\
-        $options.args \\
+        $args \\
         -nb-cores $task.cpus \\
         -in input_files.txt \\
         -out $prefix

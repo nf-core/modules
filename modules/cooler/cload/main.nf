@@ -24,7 +24,7 @@ process COOLER_CLOAD {
 
     """
     cooler cload \\
-        $options.args \\
+        $args \\
         $nproc \\
         ${chromsizes}:${cool_bin} \\
         $pairs \\

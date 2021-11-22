@@ -21,7 +21,7 @@ process PAIRTOOLS_SELECT {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     pairtools select \\
-        "$options.args" \\
+        "$args" \\
         -o ${prefix}.selected.pairs.gz \\
         --output-rest ${prefix}.unselected.pairs.gz \\
         ${input}
