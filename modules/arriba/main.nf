@@ -22,7 +22,7 @@ process ARRIBA {
     script:
     def args = task.ext.args ?: ''
     def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def blacklist = (options.args.contains('-b')) ? '' : '-f blacklist'
+    def blacklist = (args.contains('-b')) ? '' : '-f blacklist'
     """
     arriba \\
         -x $bam \\

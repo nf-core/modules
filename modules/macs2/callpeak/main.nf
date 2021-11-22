@@ -24,20 +24,20 @@ process MACS2_CALLPEAK {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args     = options.args.tokenize()
-    def format   = meta.single_end ? 'BAM' : 'BAMPE'
-    def control  = controlbam ? "--control $controlbam" : ''
-    if(args.contains('--format')){
-        def id = args.findIndexOf{it=='--format'}
-        format = args[id+1]
-        args.remove(id+1)
-        args.remove(id)
+    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args_list = args.tokenize()
+    def format    = meta.single_end ? 'BAM' : 'BAMPE'
+    def control   = controlbam ? "--control $controlbam" : ''
+    if(args_list.contains('--format')){
+        def id = args_list.findIndexOf{it=='--format'}
+        format = args_list[id+1]
+        args_list.remove(id+1)
+        args_list.remove(id)
     }
     """
     macs2 \\
         callpeak \\
-        ${args.join(' ')} \\
+        ${args_list.join(' ')} \\
         --gsize $macs2_gsize \\
         --format $format \\
         --name $prefix \\

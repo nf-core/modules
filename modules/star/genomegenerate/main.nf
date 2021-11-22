@@ -20,9 +20,9 @@ process STAR_GENOMEGENERATE {
 
     script:
     def args = task.ext.args ?: ''
+    def args_list = args.tokenize()
     def memory   = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
-    def args     = options.args.tokenize()
-    if (args.contains('--genomeSAindexNbases')) {
+    if (args_list.contains('--genomeSAindexNbases')) {
         """
         mkdir star
         STAR \\

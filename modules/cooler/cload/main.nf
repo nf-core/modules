@@ -21,7 +21,7 @@ process COOLER_CLOAD {
     script:
     def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def nproc  = options.args.contains('pairix') || options.args.contains('tabix')? "--nproc $task.cpus" : ''
+    def nproc  = args.contains('pairix') || args.contains('tabix')? "--nproc $task.cpus" : ''
 
     """
     cooler cload \\

@@ -86,21 +86,21 @@ process VCFTOOLS {
     script:
     def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args   = options.args.tokenize()
+    def args_list = args.tokenize()
 
-    def bed_arg  = (options.args.contains('--bed')) ? "--bed ${bed}" :
-        (options.args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
-        (options.args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
-    args.removeIf { it.contains('--bed') }
-    args.removeIf { it.contains('--exclude-bed') }
-    args.removeIf { it.contains('--hapcount') }
+    def bed_arg  = (args.contains('--bed')) ? "--bed ${bed}" :
+        (args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
+        (args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
+    args_list.removeIf { it.contains('--bed') }
+    args_list.removeIf { it.contains('--exclude-bed') }
+    args_list.removeIf { it.contains('--hapcount') }
 
-    def diff_variant_arg = (options.args.contains('--diff')) ? "--diff ${diff_variant_file}" :
-        (options.args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
-        (options.args.contains('--diff-bcf')) ? "--diff-bcf ${diff_variant_file}" : ''
-    args.removeIf { it.contains('--diff') }
-    args.removeIf { it.contains('--gzdiff') }
-    args.removeIf { it.contains('--diff-bcf') }
+    def diff_variant_arg = (args.contains('--diff')) ? "--diff ${diff_variant_file}" :
+        (args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
+        (args.contains('--diff-bcf')) ? "--diff-bcf ${diff_variant_file}" : ''
+    args_list.removeIf { it.contains('--diff') }
+    args_list.removeIf { it.contains('--gzdiff') }
+    args_list.removeIf { it.contains('--diff-bcf') }
 
     def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
         ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :
@@ -110,7 +110,7 @@ process VCFTOOLS {
     vcftools \\
         $input_file \\
         --out $prefix \\
-        ${args.join(' ')} \\
+        ${args_list.join(' ')} \\
         $bed_arg \\
         $diff_variant_arg
 

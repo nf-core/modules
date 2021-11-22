@@ -25,15 +25,14 @@ process MUSCLE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def fasta_out   = options.args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
-    def clw_out     = options.args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''
-    def msf_out     = options.args.contains('-msf') ? "-msfout ${prefix}_muscle_msa.msf" : ''
-    def phys_out    = options.args.contains('-phys') ? "-physout ${prefix}_muscle_msa.phys" : ''
-    def phyi_out    = options.args.contains('-phyi') ? "-phyiout ${prefix}_muscle_msa.phyi" : ''
-    def html_out    = options.args.contains('-html') ? "-htmlout ${prefix}_muscle_msa.html" : ''
-    def tree_out    = options.args.contains('-maketree') ? "-out ${prefix}_muscle_msa.tree" : ''
-
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def fasta_out = args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
+    def clw_out   = args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''
+    def msf_out   = args.contains('-msf') ? "-msfout ${prefix}_muscle_msa.msf" : ''
+    def phys_out  = args.contains('-phys') ? "-physout ${prefix}_muscle_msa.phys" : ''
+    def phyi_out  = args.contains('-phyi') ? "-phyiout ${prefix}_muscle_msa.phyi" : ''
+    def html_out  = args.contains('-html') ? "-htmlout ${prefix}_muscle_msa.html" : ''
+    def tree_out  = args.contains('-maketree') ? "-out ${prefix}_muscle_msa.tree" : ''
     """
     muscle \\
         $args \\

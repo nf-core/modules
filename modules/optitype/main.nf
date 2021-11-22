@@ -35,7 +35,7 @@ process OPTITYPE {
     echo "unpaired_weight=0" >> config.ini
     echo "use_discordant=false" >> config.ini
 
-    # Run the actual OptiType typing with options.args
+    # Run the actual OptiType typing with args
     OptiTypePipeline.py -i ${bam} -c config.ini --${meta.seq_type} $args --prefix $prefix --outdir $prefix
 
     #Couldn't find a nicer way of doing this

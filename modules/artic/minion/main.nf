@@ -40,7 +40,7 @@ process ARTIC_MINION {
     def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""
     def summary  = params.sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
     def model    = ""
-    if (options.args.tokenize().contains('--medaka')) {
+    if (args.tokenize().contains('--medaka')) {
         fast5   = ""
         summary = ""
         model = file(params.artic_minion_medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $params.artic_minion_medaka_model"

@@ -29,25 +29,25 @@ process CHROMAP_CHROMAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args     = options.args.tokenize()
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args_list = args.tokenize()
 
-    def file_extension = options.args.contains("--SAM") ? 'sam' : options.args.contains("--TagAlign")? 'tagAlign' : options.args.contains("--pairs")? 'pairs' : 'bed'
+    def file_extension = args.contains("--SAM") ? 'sam' : args.contains("--TagAlign")? 'tagAlign' : args.contains("--pairs")? 'pairs' : 'bed'
     if (barcodes) {
-        args << "-b ${barcodes.join(',')}"
+        args_list << "-b ${barcodes.join(',')}"
         if (whitelist) {
-            args << "--barcode-whitelist $whitelist"
+            args_list << "--barcode-whitelist $whitelist"
         }
     }
     if (chr_order) {
-        args << "--chr-order $chr_order"
+        args_list << "--chr-order $chr_order"
     }
     if (pairs_chr_order){
-        args << "--pairs-natural-chr-order $pairs_chr_order"
+        args_list << "--pairs-natural-chr-order $pairs_chr_order"
     }
-    def final_args = args.join(' ')
+    def final_args = args_list.join(' ')
     def compression_cmds = "gzip ${prefix}.${file_extension}"
-    if (options.args.contains("--SAM")) {
+    if (args.contains("--SAM")) {
         compression_cmds = """
         samtools view $task.ext.args2 -@ $task.cpus -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
@@ -56,7 +56,8 @@ process CHROMAP_CHROMAP {
     }
     if (meta.single_end) {
         """
-        chromap ${final_args} \\
+        chromap \\
+            $final_args \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
@@ -72,7 +73,8 @@ process CHROMAP_CHROMAP {
         """
     } else {
         """
-        chromap ${final_args} \\
+        chromap \\
+            $final_args \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\

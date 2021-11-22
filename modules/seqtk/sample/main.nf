@@ -19,7 +19,7 @@ process SEQTK_SAMPLE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (meta.single_end) {
         """
         seqtk \\
@@ -35,8 +35,8 @@ process SEQTK_SAMPLE {
         END_VERSIONS
         """
     } else {
-        if (!(options.args ==~ /.*-s[0-9]+.*/)) {
-            options.args = options.args + " -s100"
+        if (!(args ==~ /.*-s[0-9]+.*/)) {
+            args += " -s100"
         }
         """
         seqtk \\

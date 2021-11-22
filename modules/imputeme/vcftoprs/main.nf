@@ -22,7 +22,7 @@ process IMPUTEME_VCFTOPRS {
     """
     #!/usr/bin/env Rscript
 
-    #Set configuration - either from options.args or from defaults
+    #Set configuration - either from args or from defaults
     source("/imputeme/code/impute-me/functions.R")
     if(file.exists('$args')){
         set_conf("set_from_file",'$args')

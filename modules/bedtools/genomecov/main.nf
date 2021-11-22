@@ -20,15 +20,13 @@ process BEDTOOLS_GENOMECOV {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args_token = options.args.tokenize()
-    def args       = options.args
+    def args_list = args.tokenize()
     args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
-
-    if (!args_token.contains('-bg') && (scale > 0 && scale != 1)) {
+    if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {
         args += " -bg"
     }
 
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\

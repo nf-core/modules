@@ -36,7 +36,7 @@ process GENRICH {
     def bed        = save_bed       ? "-b ${prefix}.intervals.bed"    : ""
     def duplicates = ""
     if (save_duplicates) {
-        if (options.args.contains('-r')) {
+        if (args.contains('-r')) {
             duplicates = "-R ${prefix}.duplicates.txt"
         } else {
             log.info '[Genrich] Duplicates can only be saved if they are filtered, defaulting to -r option (Remove PCR duplicates).'
