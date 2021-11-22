@@ -1,6 +1,10 @@
 name: gatk4_variantrecalibrator
 description: |
   Build a recalibration model to score variant quality for filtering purposes.
+  It is highly recommended to follow GATK best practices when using this module,
+  the gaussian mixture model requires a large number of samples to be used for the
+  tool to produce optimal results. For example, 30 samples for exome data. For more details see
+  https://gatk.broadinstitute.org/hc/en-us/articles/4402736812443-Which-training-sets-arguments-should-I-use-for-running-VQSR-
 keywords:
   - VariantRecalibrator
   - gatk4
@@ -15,14 +19,12 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  ## TODO nf-core: Delete / customise this example input
   - vcf:
       type: list
       description: input vcf file(s) containing the variants to be recalibrated
