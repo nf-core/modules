@@ -1,4 +1,4 @@
-def VERSION = '377'
+def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_BIGWIGAVERAGEOVERBED {
     tag "$meta.id"
@@ -20,8 +20,8 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     script:
     def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    // BUG: bigWigAverageOverBed cannot handle ensembl seqlevels style
     """
-    # there is a bug that bigWigAverageOverBed can not handle ensembl seqlevels style.
     bigWigAverageOverBed \\
         $args \\
         $bigwig \\
@@ -30,7 +30,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ucsc: \$(echo $VERSION)
+        ucsc: $VERSION
     END_VERSIONS
     """
 }

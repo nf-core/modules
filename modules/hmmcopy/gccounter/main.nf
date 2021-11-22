@@ -1,4 +1,4 @@
-def VERSION = '0.1.1'
+def VERSION = '0.1.1' // Version information not provided by tool on CLI
 
 process HMMCOPY_GCCOUNTER {
     label 'process_low'
@@ -24,7 +24,7 @@ process HMMCOPY_GCCOUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        hmmcopy: \$(echo $VERSION)
+        hmmcopy: $VERSION
     END_VERSIONS
     """
 }

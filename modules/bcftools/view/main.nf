@@ -23,8 +23,6 @@ process BCFTOOLS_VIEW {
     def regions_file  = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file =  samples ? "--samples-file ${samples}" : ""
-
-
     """
     bcftools view \\
         --output ${prefix}.vcf.gz \\

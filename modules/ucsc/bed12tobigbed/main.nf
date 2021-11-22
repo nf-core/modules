@@ -1,4 +1,4 @@
-def VERSION = '377'
+def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_BED12TOBIGBED {
     tag "$meta.id"
@@ -19,7 +19,7 @@ process UCSC_BED12TOBIGBED {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     bedToBigBed \\
         $bed \\
@@ -28,7 +28,7 @@ process UCSC_BED12TOBIGBED {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ucsc: \$(echo $VERSION)
+        ucsc: $VERSION
     END_VERSIONS
     """
 }

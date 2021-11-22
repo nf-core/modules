@@ -1,4 +1,4 @@
-def VERSION = '0.1' // No version information printed
+def VERSION = '0.1' // Version information not provided by tool on CLI
 
 process CHROMAP_CHROMAP {
     tag "$meta.id"
@@ -67,7 +67,7 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            chromap: \$(echo "$VERSION")
+            chromap: $VERSION
         END_VERSIONS
         """
     } else {
@@ -85,7 +85,7 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            chromap: \$(echo "$VERSION")
+            chromap: $VERSION
         END_VERSIONS
         """
     }

@@ -49,7 +49,6 @@ process MANTA_GERMLINE {
     mv manta/results/variants/diploidSV.vcf.gz.tbi \
         ${prefix}.diploid_sv.vcf.gz.tbi
 
-
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
         manta: \$( configManta.py --version )

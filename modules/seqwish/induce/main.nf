@@ -1,4 +1,4 @@
-def VERSION = '0.7.1'
+def VERSION = '0.7.1' // Version information not provided by tool on CLI
 
 process SEQWISH_INDUCE {
     tag "$meta.id"
@@ -17,10 +17,9 @@ process SEQWISH_INDUCE {
     tuple val(meta), path("*.gfa"), emit: gfa
     path "versions.yml"           , emit: versions
 
-
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     seqwish \\
         --threads $task.cpus \\
@@ -31,7 +30,7 @@ process SEQWISH_INDUCE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        seqwish: \$(echo $VERSION)
+        seqwish: $VERSION
     END_VERSIONS
     """
 }

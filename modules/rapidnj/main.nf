@@ -1,4 +1,4 @@
-def VERSION = '2.3.2' // No version information printed
+def VERSION = '2.3.2' // Version information not provided by tool on CLI
 
 process RAPIDNJ {
     label 'process_medium'
@@ -31,7 +31,7 @@ process RAPIDNJ {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        rapidnj: \$(echo $VERSION)
+        rapidnj: $VERSION
         biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS
     """

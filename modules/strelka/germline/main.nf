@@ -14,7 +14,6 @@ process STRELKA_GERMLINE {
     path  target_bed
     path  target_bed_tbi
 
-
     output:
     tuple val(meta), path("*variants.vcf.gz")    , emit: vcf
     tuple val(meta), path("*variants.vcf.gz.tbi"), emit: vcf_tbi
@@ -24,7 +23,7 @@ process STRELKA_GERMLINE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def regions  = target_bed ? "--exome --callRegions ${target_bed}" : ""
     """
     configureStrelkaGermlineWorkflow.py \\

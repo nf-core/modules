@@ -1,3 +1,5 @@
+def VERSION = '2.8' // Version information not provided by tool on CLI
+
 process KRONATOOLS_KTIMPORTTAXONOMY {
     tag "${meta.id}"
     label 'process_high'
@@ -17,7 +19,6 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION='2.8'
     """
     ktImportTaxonomy "$report" -tax taxonomy
 

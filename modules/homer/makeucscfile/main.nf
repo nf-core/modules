@@ -1,4 +1,4 @@
-def VERSION = '4.11'
+def VERSION = '4.11' // Version information not provided by tool on CLI
 
 process HOMER_MAKEUCSCFILE {
     tag "$meta.id"
@@ -22,12 +22,12 @@ process HOMER_MAKEUCSCFILE {
     """
     makeUCSCfile \\
         $tagDir \\
-        -o auto
+        -o auto \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        homer: \$(echo $VERSION)
+        homer: $VERSION
     END_VERSIONS
     """
 }

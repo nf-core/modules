@@ -1,4 +1,4 @@
-def VERSION = '377'
+def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_BEDCLIP {
     tag "$meta.id"
@@ -28,7 +28,7 @@ process UCSC_BEDCLIP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ucsc: \$(echo $VERSION)
+        ucsc: $VERSION
     END_VERSIONS
     """
 }

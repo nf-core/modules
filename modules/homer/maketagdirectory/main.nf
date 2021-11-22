@@ -1,4 +1,4 @@
-def VERSION = '4.11'
+def VERSION = '4.11' // Version information not provided by tool on CLI
 
 process HOMER_MAKETAGDIRECTORY {
     tag "$meta.id"
@@ -15,11 +15,11 @@ process HOMER_MAKETAGDIRECTORY {
 
     output:
     tuple val(meta), path("tag_dir"), emit: tagdir
-    path  "versions.yml"             , emit: versions
+    path  "versions.yml"            , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     makeTagDirectory \\
         tag_dir \\
@@ -29,7 +29,7 @@ process HOMER_MAKETAGDIRECTORY {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        homer: \$(echo $VERSION)
+        homer: $VERSION
     END_VERSIONS
     """
 }

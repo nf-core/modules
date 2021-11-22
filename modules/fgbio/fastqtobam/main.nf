@@ -9,7 +9,7 @@ process FGBIO_FASTQTOBAM {
 
     input:
     tuple val(meta), path(reads)
-    val(read_structure)
+    val read_structure
 
     output:
     tuple val(meta), path("*_umi_converted.bam"), emit: umibam
@@ -17,14 +17,12 @@ process FGBIO_FASTQTOBAM {
 
     script:
     def args = task.ext.args ?: ''
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    mkdir tmpFolder
+    mkdir tmp
 
     fgbio \\
-        --tmp-dir=${PWD}/tmpFolder \\
+        --tmp-dir=${PWD}/tmp \\
         FastqToBam \\
         -i $reads \\
         -o "${prefix}_umi_converted.bam" \\

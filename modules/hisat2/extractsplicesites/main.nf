@@ -1,4 +1,4 @@
-def VERSION = '2.2.0'
+def VERSION = '2.2.0' // Version information not provided by tool on CLI
 
 process HISAT2_EXTRACTSPLICESITES {
     tag "$gtf"
@@ -22,7 +22,7 @@ process HISAT2_EXTRACTSPLICESITES {
     hisat2_extract_splice_sites.py $gtf > ${gtf.baseName}.splice_sites.txt
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        hisat2: \$(echo $VERSION)
+        hisat2: $VERSION
     END_VERSIONS
     """
 }

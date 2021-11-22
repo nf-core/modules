@@ -1,4 +1,4 @@
-def VERSION = '3.23'
+def VERSION = '3.23' // Version information not provided by tool on CLI
 
 process MUMMER {
     tag "$meta.id"
@@ -39,7 +39,7 @@ process MUMMER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        mummer: \$( echo $VERSION )
+        mummer: $VERSION
     END_VERSIONS
     """
 }

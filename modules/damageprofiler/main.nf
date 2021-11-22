@@ -19,23 +19,20 @@ process DAMAGEPROFILER {
 
     script:
     def args = task.ext.args ?: ''
-    def software     = getSoftwareName(task.process)
     prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference    = fasta ? "-r $fasta" : ""
     def species_list = specieslist ? "-sf $specieslist" : ""
-
     """
     damageprofiler \\
-    -i $bam \\
-    -o $prefix/ \\
-    $args \\
-    $reference \\
-    $species_list
+        -i $bam \\
+        -o $prefix/ \\
+        $args \\
+        $reference \\
+        $species_list
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
         damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
     END_VERSIONS
     """
-
 }

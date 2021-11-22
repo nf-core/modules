@@ -1,4 +1,4 @@
-def VERSION = '1.3'
+def VERSION = '1.3' // Version information not provided by tool on CLI
 
 process SEACR_CALLPEAK {
     tag "$meta.id"
@@ -27,9 +27,10 @@ process SEACR_CALLPEAK {
         $function_switch \\
         $args \\
         $prefix
+
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        seacr: \$(echo $VERSION)
+        seacr: $VERSION
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
         r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
     END_VERSIONS

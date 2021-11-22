@@ -1,3 +1,5 @@
+def VERSION='2.7.1' // Version information not provided by tool on CLI
+
 process KRONATOOLS_KRONADB {
     label 'process_low'
 
@@ -5,6 +7,7 @@ process KRONATOOLS_KRONADB {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
         'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
+
     input:
 
     output:
@@ -13,7 +16,6 @@ process KRONATOOLS_KRONADB {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION='2.7.1'
     """
     ktUpdateTaxonomy.sh taxonomy
 

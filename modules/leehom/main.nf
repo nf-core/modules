@@ -1,4 +1,4 @@
-def VERSION="1.2.15"
+def VERSION = '1.2.15' // Version information not provided by tool on CLI
 
 process LEEHOM {
     tag "$meta.id"
@@ -21,55 +21,54 @@ process LEEHOM {
     tuple val(meta), path("${prefix}_r2.fq.gz")     , optional: true, emit: unmerged_r2_fq_pass
     tuple val(meta), path("${prefix}_r2.fail.fq.gz"), optional: true, emit: unmerged_r2_fq_fail
     tuple val(meta), path("*.log")                                  , emit: log
-
     path "versions.yml"                                             , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
-    if ( reads.toString().endsWith('.bam') ) {
-            """
-            leeHom \\
-                $args \\
-                -t $task.cpus \\
-                -o ${prefix}.bam \\
-                --log ${prefix}.log \\
-                $reads
+    if (reads.toString().endsWith('.bam')) {
+        """
+        leeHom \\
+            $args \\
+            -t $task.cpus \\
+            -o ${prefix}.bam \\
+            --log ${prefix}.log \\
+            $reads
 
-            cat <<-END_VERSIONS > versions.yml
-            ${task.process.tokenize(':').last()}:
-                leehom: \$( echo $VERSION )
-            END_VERSIONS
-            """
-    } else if ( meta.single_end ) {
-            """
-            leeHom \\
-                $args \\
-                -t $task.cpus \\
-                -fq1 $reads \\
-                -fqo ${prefix} \\
-                --log ${prefix}.log
+        cat <<-END_VERSIONS > versions.yml
+        ${task.process.tokenize(':').last()}:
+            leehom: $VERSION
+        END_VERSIONS
+        """
+    } else if (meta.single_end) {
+        """
+        leeHom \\
+            $args \\
+            -t $task.cpus \\
+            -fq1 $reads \\
+            -fqo $prefix \\
+            --log ${prefix}.log
 
-            cat <<-END_VERSIONS > versions.yml
-            ${task.process.tokenize(':').last()}:
-                leehom: \$( echo $VERSION )
-            END_VERSIONS
-            """
+        cat <<-END_VERSIONS > versions.yml
+        ${task.process.tokenize(':').last()}:
+            leehom: $VERSION
+        END_VERSIONS
+        """
     } else {
-            """
-            leeHom \\
-                $args \\
-                -t $task.cpus \\
-                -fq1 ${reads[0]} \\
-                -fq2 ${reads[1]} \\
-                -fqo ${prefix} \\
-                --log ${prefix}.log
+        """
+        leeHom \\
+            $args \\
+            -t $task.cpus \\
+            -fq1 ${reads[0]} \\
+            -fq2 ${reads[1]} \\
+            -fqo $prefix \\
+            --log ${prefix}.log
 
-            cat <<-END_VERSIONS > versions.yml
-            ${task.process.tokenize(':').last()}:
-                leehom: \$( echo $VERSION )
-            END_VERSIONS
-            """
+        cat <<-END_VERSIONS > versions.yml
+        ${task.process.tokenize(':').last()}:
+            leehom: $VERSION
+        END_VERSIONS
+        """
     }
 }

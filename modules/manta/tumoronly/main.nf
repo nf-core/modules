@@ -49,7 +49,6 @@ process MANTA_TUMORONLY {
     mv manta/results/variants/tumorSV.vcf.gz.tbi \
         ${prefix}.tumor_sv.vcf.gz.tbi
 
-
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
         manta: \$( configManta.py --version )

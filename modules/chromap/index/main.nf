@@ -1,4 +1,4 @@
-def VERSION = 0.1 // No version information printed
+def VERSION = '0.1' // Version information not provided by tool on CLI
 
 process CHROMAP_INDEX {
     tag '$fasta'
@@ -18,7 +18,7 @@ process CHROMAP_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = fasta.baseName
+    def prefix = fasta.baseName
     """
     chromap \\
         -i \\
@@ -29,7 +29,7 @@ process CHROMAP_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        chromap: \$(echo "$VERSION")
+        chromap: $VERSION
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """

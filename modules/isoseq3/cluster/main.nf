@@ -16,15 +16,13 @@ process ISOSEQ3_CLUSTER {
     tuple val(meta), path("*.transcripts.cluster")           , emit: cluster
     tuple val(meta), path("*.transcripts.cluster_report.csv"), emit: cluster_report
     tuple val(meta), path("*.transcripts.transcriptset.xml") , emit: transcriptset
-    path  "versions.yml"                                     , emit: versions
-
     tuple val(meta), path("*.transcripts.hq.bam")            , optional: true, emit: hq_bam
     tuple val(meta), path("*.transcripts.hq.bam.pbi")        , optional: true, emit: hq_pbi
     tuple val(meta), path("*.transcripts.lq.bam")            , optional: true, emit: lq_bam
     tuple val(meta), path("*.transcripts.lq.bam.pbi")        , optional: true, emit: lq_pbi
     tuple val(meta), path("*.transcripts.singletons.bam")    , optional: true, emit: singletons_bam
     tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
-
+    path  "versions.yml"                                     , emit: versions
 
     script:
     def args = task.ext.args ?: ''

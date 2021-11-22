@@ -1,4 +1,4 @@
-def VERSION = '1.2.2'
+def VERSION = '1.2.2' // Version information not provided by tool on CLI
 
 process PHANTOMPEAKQUALTOOLS {
     tag "$meta.id"
@@ -24,9 +24,10 @@ process PHANTOMPEAKQUALTOOLS {
     """
     RUN_SPP=`which run_spp.R`
     Rscript -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" -p=$task.cpus
+
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        phantompeakqualtools: \$(echo $VERSION)
+        phantompeakqualtools: $VERSION
     END_VERSIONS
     """
 }

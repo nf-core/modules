@@ -1,4 +1,4 @@
-def VERSION = '1.4.4a'
+def VERSION = '1.4.4a' // Version information not provided by tool on CLI
 
 process VARIANTBAM {
     tag "$meta.id"
@@ -13,12 +13,12 @@ process VARIANTBAM {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.bam")         , emit: bam
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.bam"), emit: bam
+    path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     variant \\
         $bam \\
@@ -27,7 +27,7 @@ process VARIANTBAM {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        variantbam: \$(echo $VERSION)
+        variantbam: $VERSION
     END_VERSIONS
     """
 }

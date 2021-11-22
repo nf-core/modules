@@ -1,4 +1,4 @@
-def VERSION = '1.0.4'
+def VERSION = '1.0.4' // Version information not provided by tool on CLI
 
 process CMSEQ_POLYMUT {
     tag "$meta.id"
@@ -31,7 +31,7 @@ process CMSEQ_POLYMUT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        cmseq: \$( echo $VERSION )
+        cmseq: $VERSION
     END_VERSIONS
     """
 }

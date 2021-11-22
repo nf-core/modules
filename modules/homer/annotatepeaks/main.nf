@@ -1,4 +1,4 @@
-def VERSION = '4.11'
+def VERSION = '4.11' // Version information not provided by tool on CLI
 
 process HOMER_ANNOTATEPEAKS {
     tag "$meta.id"
@@ -20,7 +20,7 @@ process HOMER_ANNOTATEPEAKS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     annotatePeaks.pl \\
         $peak \\
@@ -32,7 +32,7 @@ process HOMER_ANNOTATEPEAKS {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        homer: \$(echo $VERSION)
+        homer: $VERSION
     END_VERSIONS
     """
 }

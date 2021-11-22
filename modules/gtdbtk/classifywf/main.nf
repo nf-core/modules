@@ -1,4 +1,4 @@
-def VERSION = '1.5.0' // When using stubs for the GTDB database, the version info isn't printed.
+def VERSION = '1.5.0' // Version information not provided by tool on CLI
 
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
@@ -68,7 +68,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        gtdbtk: \$(echo "$VERSION")
+        gtdbtk: $VERSION
     END_VERSIONS
     """
 }

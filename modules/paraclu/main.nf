@@ -1,3 +1,5 @@
+def VERSION = '10' // Version information not provided by tool on CLI
+
 process PARACLU {
     tag "$meta.id"
     label 'process_low'
@@ -18,7 +20,6 @@ process PARACLU {
     script:
     def args = task.ext.args ?: ''
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def VERSION=10
     """
 
     awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P

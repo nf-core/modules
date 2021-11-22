@@ -1,4 +1,4 @@
-def VERSION = '0.1.1'
+def VERSION = '0.1.1' // Version information not provided by tool on CLI
 
 process HMMCOPY_READCOUNTER {
     tag "$meta.id"
@@ -10,15 +10,15 @@ process HMMCOPY_READCOUNTER {
         'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_5' }"
 
     input:
-        tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
 
     output:
-        tuple val(meta), path("*.wig"), emit: wig
-        path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.wig"), emit: wig
+    path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-        def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
     readCounter \\
         $args \\
@@ -26,7 +26,7 @@ process HMMCOPY_READCOUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        hmmcopy: \$(echo $VERSION)
+        hmmcopy: $VERSION
     END_VERSIONS
     """
 }

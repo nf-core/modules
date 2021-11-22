@@ -1,4 +1,4 @@
-def VERSION = '2.2.0'
+def VERSION = '2.2.0' // Version information not provided by tool on CLI
 
 process HISAT2_BUILD {
     tag "$fasta"
@@ -42,7 +42,6 @@ process HISAT2_BUILD {
         log.info "[HISAT2 index build] Less than ${hisat2_build_memory} GB available, so NOT using splice sites and exons to build HISAT2 index."
         log.info "[HISAT2 index build] Use --hisat2_build_memory [small number] to skip this check."
     }
-
     """
     mkdir hisat2
     $extract_exons
@@ -56,7 +55,7 @@ process HISAT2_BUILD {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        hisat2: \$(echo $VERSION)
+        hisat2: $VERSION
     END_VERSIONS
     """
 }

@@ -1,4 +1,4 @@
-def VERSION = '2.2.0'
+def VERSION = '2.2.0' // Version information not provided by tool on CLI
 
 process HISAT2_ALIGN {
     tag "$meta.id"
@@ -15,15 +15,14 @@ process HISAT2_ALIGN {
     path  splicesites
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.log"), emit: summary
-    path  "versions.yml"          , emit: versions
-
+    tuple val(meta), path("*.bam")                   , emit: bam
+    tuple val(meta), path("*.log")                   , emit: summary
     tuple val(meta), path("*fastq.gz"), optional:true, emit: fastq
+    path  "versions.yml"                             , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -50,7 +49,7 @@ process HISAT2_ALIGN {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            hisat2: \$(echo $VERSION)
+            hisat2: $VERSION
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
@@ -82,7 +81,7 @@ process HISAT2_ALIGN {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            hisat2: \$(echo $VERSION)
+            hisat2: $VERSION
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """

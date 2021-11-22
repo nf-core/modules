@@ -14,14 +14,11 @@ process TIDDIT_COV {
     output:
     tuple val(meta), path("*.tab"), optional: true, emit: cov
     tuple val(meta), path("*.wig"), optional: true, emit: wig
-
     path  "versions.yml"          , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    def software  = getSoftwareName(task.process)
-    def prefix    = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def reference = fasta ? "--ref $fasta" : ""
     """
     tiddit \\

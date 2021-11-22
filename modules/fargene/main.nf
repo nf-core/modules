@@ -1,4 +1,4 @@
-def VERSION = '0.1'
+def VERSION = '0.1' // Version information not provided by tool on CLI
 
 process FARGENE {
     tag "$meta.id"
@@ -47,7 +47,7 @@ process FARGENE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        fargene: \$(echo $VERSION)
+        fargene: $VERSION
     END_VERSIONS
     """
 }

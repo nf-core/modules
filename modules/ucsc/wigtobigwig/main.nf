@@ -1,4 +1,4 @@
-def VERSION = '377' // No version information printed
+def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_WIGTOBIGWIG {
     tag '$wig'
@@ -11,25 +11,24 @@ process UCSC_WIGTOBIGWIG {
 
     input:
     path wig
-    path chromsizes
+    path sizes
 
     output:
-    path "*.bw"                   , emit: bw
-    path "versions.yml"           , emit: versions
+    path "*.bw"        , emit: bw
+    path "versions.yml", emit: versions
 
     script:
     def args = task.ext.args ?: ''
-
     """
     wigToBigWig \\
         $args \\
         $wig \\
-        $chromsizes \\
+        $sizes \\
         ${wig.getSimpleName()}.bw
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ucsc: \$(echo "$VERSION")
+        ucsc: $VERSION
     END_VERSIONS
     """
 }
