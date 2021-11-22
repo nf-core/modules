@@ -1,0 +1,45 @@
+name: humann_renorm
+description: Functional analysis of metagenome or metatranscrtiptome data
+keywords:
+  - function
+  - metagenomics
+  - metatranscriptomics
+  - profiling
+  - community
+tools:
+  - humann:
+      description: "HUMAnN: The HMP Unified Metabolic Analysis Network, version 3"
+      homepage: http://huttenhower.sph.harvard.edu/humann
+      documentation: https://github.com/biobakery/biobakery/wiki/humann3
+      tool_dev_url: https://github.com/biobakery/humann
+      doi: "10.7554/eLife.65088"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input:
+      type: file
+      description: Tab separated abundance file of HUMAnN3
+      pattern: "*.{tsv.gz,tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - renorm:
+      type: file
+      description: Normalized compressed tab separated text file
+      pattern: "*.{tsv.gz}"
+
+authors:
+  - "@d4straub"

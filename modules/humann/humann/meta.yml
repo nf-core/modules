@@ -1,0 +1,67 @@
+name: humann_humann
+description: Functional analysis of metagenome or metatranscrtiptome data
+keywords:
+  - function
+  - metagenomics
+  - metatranscriptomics
+  - profiling
+  - community
+tools:
+  - humann:
+      description: "HUMAnN: The HMP Unified Metabolic Analysis Network, version 3"
+      homepage: http://huttenhower.sph.harvard.edu/humann
+      documentation: https://github.com/biobakery/biobakery/wiki/humann3
+      tool_dev_url: https://github.com/biobakery/humann
+      doi: "10.7554/eLife.65088"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input:
+      type: file
+      description: |
+        A metagenome (DNA reads) or metatranscriptome (RNA reads) [fastq,fastq.gz,fasta,fasta.gz]
+        - please note: no paired-end files are supported, concatenate paired and reads into one file!
+        OR Pre-computed mappings of reads to database sequences [sam,bam,blastm8]
+        OR Pre-computed (typically gene) abundance tables [tsv,biom]
+      pattern: "*.{fastq,fastq.gz,fasta,fasta.gz,sam,bam,blastm8,tsv,biom}"
+  - nucleotide_db:
+      type: file
+      description: |
+        Can be a compressed tar archive (*.tar.gz) or a folder containing compressed fasta files (folder/*.gz)
+        See http://huttenhower.sph.harvard.edu/humann_data/chocophlan
+  - protein_db:
+      type: file
+      description: |
+        Can be a compressed tar archive (*.tar.gz) or a folder containing compressed fasta files (folder/*.gz)
+        See http://huttenhower.sph.harvard.edu/humann_data/uniprot
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - genefamilies:
+      type: file
+      description: Compressed tab separated text file
+      pattern: "*.{tsv.gz}"
+  - pathabundance:
+      type: file
+      description: Compressed tab separated text file
+      pattern: "*.{tsv.gz}"
+  - pathcoverage:
+      type: file
+      description: Compressed tab separated text file
+      pattern: "*.{tsv.gz}"
+
+authors:
+  - "@d4straub"
