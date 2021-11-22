@@ -24,7 +24,7 @@ process GATK4_VARIANTRECALIBRATOR {
     path fai
     path dict
     val allelespecific
-    val resources
+    tuple path(resvcfs), path(restbis), val(reslabels)
     val annotation
     val mode
     val create_rscript
@@ -37,26 +37,15 @@ process GATK4_VARIANTRECALIBRATOR {
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    resourcelist = resources.toList()
-    print(resourcelist)
-    vcfs = []
-    tbis = []
-    labels = []
-    resourcelist.each{ vcfin, tbiin, labelin ->
-       vcfs.add(vcfin)
-       tbis.add(tbiin)
-       labels.add(labelin + ' ' + vcfin)
-    }
     refCommand = fasta ? "-R ${fasta} " : ''
     vcfCommand = '-V ' + vcf.join( ' -V ')
     alleleSpecificCommand = allelespecific ? '-AS' : ''
-    resourceCommand = '--resource:' + labels.join( ' --resource:')
+    resourceCommand = '--resource:' + reslabels.join( ' --resource:')
     annotationCommand = '-an ' + annotation.join( ' -an ')
     modeCommand = mode ? "--mode ${mode} " : 'SNP'
     rscriptCommand = create_rscript ? "--rscript-file ${prefix}.plots.R" : ''
 
     """
-    echo $resourcelist
     gatk VariantRecalibrator \\
         ${refCommand} \\
         ${vcfCommand} \\
