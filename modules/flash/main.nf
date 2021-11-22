@@ -26,7 +26,7 @@ process FLASH {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
+        flash: \$(echo \$(flash --version 2>&1) | sed 's/^.*FLASH v//; s/ .*\$//')
     END_VERSIONS
     """
 }

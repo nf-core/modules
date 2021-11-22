@@ -42,7 +42,7 @@ process PICARD_COLLECTHSMETRICS {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }

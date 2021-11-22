@@ -59,7 +59,7 @@ process ARTIC_MINION {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+        artic: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """
 }

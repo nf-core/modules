@@ -31,7 +31,7 @@ process PRESEQ_LCEXTRAP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
+        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
     END_VERSIONS
     """
 }

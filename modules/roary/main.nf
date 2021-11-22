@@ -27,7 +27,7 @@ process ROARY {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( roary --version )
+        roary: \$( roary --version )
     END_VERSIONS
     """
 }

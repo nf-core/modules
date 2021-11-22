@@ -35,7 +35,7 @@ process BEDTOOLS_GENOMECOV {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+            bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
         END_VERSIONS
         """
     } else {
@@ -49,7 +49,7 @@ process BEDTOOLS_GENOMECOV {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(bedtools --version | sed -e "s/bedtools v//g")
+            bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
         END_VERSIONS
         """
     }

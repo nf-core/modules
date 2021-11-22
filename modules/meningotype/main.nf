@@ -25,7 +25,7 @@ process MENINGOTYPE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
+        meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
     END_VERSIONS
     """
 }

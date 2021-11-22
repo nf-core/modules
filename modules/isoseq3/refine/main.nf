@@ -33,7 +33,7 @@ process ISOSEQ3_REFINE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\\+//' )
+        isoseq3: \$( isoseq3 refine --version|sed 's/isoseq refine //'|sed 's/ (commit.\\+//' )
     END_VERSIONS
     """
 }

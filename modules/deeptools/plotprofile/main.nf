@@ -27,7 +27,7 @@ process DEEPTOOLS_PLOTPROFILE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(plotProfile --version | sed -e "s/plotProfile //g")
+        deeptools: \$(plotProfile --version | sed -e "s/plotProfile //g")
     END_VERSIONS
     """
 }

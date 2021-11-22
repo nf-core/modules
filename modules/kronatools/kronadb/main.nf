@@ -19,7 +19,7 @@ process KRONATOOLS_KRONADB {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: $VERSION
+        kronatools: $VERSION
     END_VERSIONS
     """
 }

@@ -27,7 +27,7 @@ process RSEQC_INFEREXPERIMENT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(infer_experiment.py --version | sed -e "s/infer_experiment.py //g")
+        rseqc: \$(infer_experiment.py --version | sed -e "s/infer_experiment.py //g")
     END_VERSIONS
     """
 }

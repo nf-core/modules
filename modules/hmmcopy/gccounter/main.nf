@@ -24,7 +24,7 @@ process HMMCOPY_GCCOUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        hmmcopy: \$(echo $VERSION)
     END_VERSIONS
     """
 }

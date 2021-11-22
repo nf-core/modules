@@ -42,7 +42,7 @@ process STRELKA_GERMLINE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( configureStrelkaGermlineWorkflow.py --version )
+        strelka: \$( configureStrelkaGermlineWorkflow.py --version )
     END_VERSIONS
     """
 }

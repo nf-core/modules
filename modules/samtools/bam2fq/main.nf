@@ -33,7 +33,7 @@ process SAMTOOLS_BAM2FQ {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     } else {
@@ -46,7 +46,7 @@ process SAMTOOLS_BAM2FQ {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     }

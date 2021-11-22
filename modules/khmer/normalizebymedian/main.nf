@@ -32,7 +32,7 @@ process KHMER_NORMALIZEBYMEDIAN {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( normalize-by-median.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
+        khmer: \$( normalize-by-median.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
     END_VERSIONS
     """
 }

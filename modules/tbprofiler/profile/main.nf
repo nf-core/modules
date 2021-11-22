@@ -32,7 +32,7 @@ process TBPROFILER_PROFILE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}:  \$( echo \$(tb-profiler --version 2>&1) | sed 's/TBProfiler version //')
+        tbprofiler:  \$( echo \$(tb-profiler --version 2>&1) | sed 's/TBProfiler version //')
     END_VERSIONS
     """
 }

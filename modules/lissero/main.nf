@@ -25,7 +25,7 @@ process LISSERO {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
+        lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
     END_VERSIONS
     """
 }

@@ -24,7 +24,7 @@ process LAST_POSTMASK {
     # last-postmask does not have a --version option
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(lastal --version 2>&1 | sed 's/lastal //')
+        last: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """
 }

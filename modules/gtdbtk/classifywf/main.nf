@@ -50,7 +50,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 
@@ -68,7 +68,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        gtdbtk: \$(echo "$VERSION")
     END_VERSIONS
     """
 }

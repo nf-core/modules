@@ -27,7 +27,7 @@ process PIRATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$( PIRATE --version 2>&1) | sed 's/PIRATE //' )
+        pirate: \$( echo \$( PIRATE --version 2>&1) | sed 's/PIRATE //' )
     END_VERSIONS
     """
 }

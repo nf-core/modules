@@ -42,7 +42,7 @@ process RSEM_PREPAREREFERENCE {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
+            rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
         END_VERSIONS
         """
@@ -57,7 +57,7 @@ process RSEM_PREPAREREFERENCE {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
+            rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
         END_VERSIONS
         """

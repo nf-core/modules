@@ -26,7 +26,7 @@ process PBBAM_PBMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        pbbam/pbmerge: \$( pbmerge --version|sed 's/pbmerge //' )
+        pbbam: \$( pbmerge --version|sed 's/pbmerge //' )
     END_VERSIONS
     """
 }

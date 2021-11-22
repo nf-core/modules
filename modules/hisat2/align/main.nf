@@ -50,7 +50,7 @@ process HISAT2_ALIGN {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            hisat2: \$(echo $VERSION)
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
@@ -82,7 +82,7 @@ process HISAT2_ALIGN {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo $VERSION)
+            hisat2: \$(echo $VERSION)
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """

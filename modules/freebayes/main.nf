@@ -45,7 +45,7 @@ process FREEBAYES {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
+            freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
 
@@ -64,7 +64,7 @@ process FREEBAYES {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
+            freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
     }

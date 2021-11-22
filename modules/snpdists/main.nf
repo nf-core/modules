@@ -24,7 +24,7 @@ process SNPDISTS {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
+        snpdists: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
     END_VERSIONS
     """
 }

@@ -27,7 +27,7 @@ process COOLER_DUMP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
     END_VERSIONS
     """
 }

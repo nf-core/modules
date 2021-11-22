@@ -28,7 +28,7 @@ process FASTANI {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(fastANI --version 2>&1 | sed 's/version//;')
+            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
         END_VERSIONS
         """
     } else {
@@ -40,7 +40,7 @@ process FASTANI {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(fastANI --version 2>&1 | sed 's/version//;')
+            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
         END_VERSIONS
         """
     }

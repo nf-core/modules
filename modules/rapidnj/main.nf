@@ -31,7 +31,7 @@ process RAPIDNJ {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        rapidnj: \$(echo $VERSION)
         biopython: \$(python -c "import Bio; print(Bio.__version__)")
     END_VERSIONS
     """

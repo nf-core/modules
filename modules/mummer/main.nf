@@ -39,7 +39,7 @@ process MUMMER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo $VERSION )
+        mummer: \$( echo $VERSION )
     END_VERSIONS
     """
 }

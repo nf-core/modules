@@ -29,7 +29,7 @@ process SNPSITES {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
+        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """
 }

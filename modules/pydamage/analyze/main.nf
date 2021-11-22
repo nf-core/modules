@@ -26,7 +26,7 @@ process PYDAMAGE_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
+        pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
     END_VERSIONS
     """
 }

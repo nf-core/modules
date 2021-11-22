@@ -29,7 +29,7 @@ process SPATYPER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
+        spatyper: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
     END_VERSIONS
     """
 }

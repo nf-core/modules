@@ -45,7 +45,7 @@ process MUSCLE {
         -loga muscle_msa.log
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
+        muscle: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
     END_VERSIONS
     """
 }

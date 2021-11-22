@@ -26,7 +26,7 @@ process PANGOLIN {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(pangolin --version | sed "s/pangolin //g")
+        pangolin: \$(pangolin --version | sed "s/pangolin //g")
     END_VERSIONS
     """
 }

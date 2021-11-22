@@ -22,7 +22,7 @@ process STAPHOPIASCCMEC {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(staphopia-sccmec --version 2>&1 | sed 's/^.*staphopia-sccmec //')
+        staphopiasccmec: \$(staphopia-sccmec --version 2>&1 | sed 's/^.*staphopia-sccmec //')
     END_VERSIONS
     """
 }

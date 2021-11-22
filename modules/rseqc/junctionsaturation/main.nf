@@ -28,7 +28,7 @@ process RSEQC_JUNCTIONSATURATION {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(junction_saturation.py --version | sed -e "s/junction_saturation.py //g")
+        rseqc: \$(junction_saturation.py --version | sed -e "s/junction_saturation.py //g")
     END_VERSIONS
     """
 }

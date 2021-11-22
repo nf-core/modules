@@ -34,7 +34,7 @@ process NEXTCLADE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(nextclade --version 2>&1)
+        nextclade: \$(nextclade --version 2>&1)
     END_VERSIONS
     """
 }

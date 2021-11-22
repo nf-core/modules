@@ -41,7 +41,7 @@ process ATAQV_ATAQV {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( ataqv --version )
+        ataqv: \$( ataqv --version )
     END_VERSIONS
     """
 }

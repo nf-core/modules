@@ -30,7 +30,7 @@ process LAST_TRAIN {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(lastdb --version | sed 's/lastdb //')
+        last: \$(lastdb --version | sed 's/lastdb //')
     END_VERSIONS
     """
 }

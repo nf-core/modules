@@ -40,7 +40,7 @@ process IDR {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(idr --version 2>&1) | sed 's/^.*IDR //; s/ .*\$//')
+        idr: \$(echo \$(idr --version 2>&1) | sed 's/^.*IDR //; s/ .*\$//')
     END_VERSIONS
     """
 }

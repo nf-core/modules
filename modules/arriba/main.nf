@@ -33,7 +33,7 @@ process ARRIBA {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """
 }

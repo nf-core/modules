@@ -38,7 +38,7 @@ process SUBREAD_FEATURECOUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g")
+        subread: \$( echo \$(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g")
     END_VERSIONS
     """
 }

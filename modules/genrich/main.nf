@@ -56,7 +56,7 @@ process GENRICH {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
+        genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
     END_VERSIONS
     """
 }

@@ -24,7 +24,7 @@ process FASTQSCAN {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
+        fastqscan: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
     END_VERSIONS
     """
 }

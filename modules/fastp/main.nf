@@ -40,7 +40,7 @@ process FASTP {
             2> ${prefix}.fastp.log
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     } else {
@@ -65,7 +65,7 @@ process FASTP {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     }

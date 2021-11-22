@@ -32,7 +32,7 @@ process MINIASM {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( miniasm -V 2>&1 )
+        miniasm: \$( miniasm -V 2>&1 )
     END_VERSIONS
     """
 }

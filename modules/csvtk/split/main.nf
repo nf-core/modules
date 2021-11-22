@@ -34,7 +34,7 @@ process CSVTK_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$( csvtk version | sed -e 's/csvtk v//g' ))
+        csvtk: \$(echo \$( csvtk version | sed -e 's/csvtk v//g' ))
     END_VERSIONS
     """
 }

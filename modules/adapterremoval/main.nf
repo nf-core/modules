@@ -33,7 +33,7 @@ process ADAPTERREMOVAL {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
     } else if (!meta.single_end && !meta.collapse) {
@@ -52,7 +52,7 @@ process ADAPTERREMOVAL {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
     } else {
@@ -71,7 +71,7 @@ process ADAPTERREMOVAL {
         cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
     }

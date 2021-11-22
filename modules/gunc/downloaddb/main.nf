@@ -21,7 +21,7 @@ process GUNC_DOWNLOADDB {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( gunc --version )
+        gunc: \$( gunc --version )
     END_VERSIONS
     """
 }

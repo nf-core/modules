@@ -30,7 +30,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(computeMatrix --version | sed -e "s/computeMatrix //g")
+        deeptools: \$(computeMatrix --version | sed -e "s/computeMatrix //g")
     END_VERSIONS
     """
 }

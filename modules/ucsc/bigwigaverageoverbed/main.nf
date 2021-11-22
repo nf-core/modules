@@ -30,7 +30,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        ucsc: \$(echo $VERSION)
     END_VERSIONS
     """
 }

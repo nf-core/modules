@@ -34,7 +34,7 @@ process DAMAGEPROFILER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
+        damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
     END_VERSIONS
     """
 

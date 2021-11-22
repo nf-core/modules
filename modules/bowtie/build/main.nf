@@ -21,7 +21,7 @@ process BOWTIE_BUILD {
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+        bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
 }

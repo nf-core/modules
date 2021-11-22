@@ -56,7 +56,7 @@ process HISAT2_BUILD {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        hisat2: \$(echo $VERSION)
     END_VERSIONS
     """
 }

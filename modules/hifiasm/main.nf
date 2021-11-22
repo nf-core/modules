@@ -40,7 +40,7 @@ process HIFIASM {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+            hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
     } else { // Phasing with Hi-C data is not supported yet
@@ -53,7 +53,7 @@ process HIFIASM {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+            hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
     }

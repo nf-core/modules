@@ -29,7 +29,7 @@ process PAIRTOOLS_SORT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
+        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
     END_VERSIONS
     """
 }

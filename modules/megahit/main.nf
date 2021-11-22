@@ -39,7 +39,7 @@ process MEGAHIT {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
+            megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """
     } else {
@@ -60,7 +60,7 @@ process MEGAHIT {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
+            megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """
     }

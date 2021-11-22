@@ -47,7 +47,7 @@ process FARGENE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+        fargene: \$(echo $VERSION)
     END_VERSIONS
     """
 }

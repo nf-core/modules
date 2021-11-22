@@ -26,7 +26,7 @@ process METHYLDACKEL_EXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
+        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """
 }

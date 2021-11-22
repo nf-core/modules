@@ -42,7 +42,7 @@ process SRATOOLS_FASTERQDUMP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
+        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """

@@ -34,7 +34,7 @@ process SRATOOLS_PREFETCH {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
+        sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """
 }

@@ -26,7 +26,7 @@ process RSEQC_READDISTRIBUTION {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(read_distribution.py --version | sed -e "s/read_distribution.py //g")
+        rseqc: \$(read_distribution.py --version | sed -e "s/read_distribution.py //g")
     END_VERSIONS
     """
 }

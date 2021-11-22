@@ -28,7 +28,7 @@ process BAMUTIL_TRIMBAM {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$( bam trimBam 2>&1 ) | sed 's/^Version: //;s/;.*//' )
+        bamutil: \$( echo \$( bam trimBam 2>&1 ) | sed 's/^Version: //;s/;.*//' )
     END_VERSIONS
     """
 }

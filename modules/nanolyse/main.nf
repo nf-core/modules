@@ -25,7 +25,7 @@ process NANOLYSE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
+        nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
     END_VERSIONS
     """
 }

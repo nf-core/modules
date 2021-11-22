@@ -33,7 +33,7 @@ process SHOVILL {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
+        shovill: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
     END_VERSIONS
     """
 }

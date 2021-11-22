@@ -29,7 +29,7 @@ process SCOARY {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( scoary --version 2>&1 )
+        scoary: \$( scoary --version 2>&1 )
     END_VERSIONS
     """
 }

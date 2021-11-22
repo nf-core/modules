@@ -22,7 +22,7 @@ process LAST_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(last-split --version 2>&1 | sed 's/last-split //')
+        last: \$(last-split --version 2>&1 | sed 's/last-split //')
     END_VERSIONS
     """
 }

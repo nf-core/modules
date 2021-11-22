@@ -39,7 +39,7 @@ process LEEHOM {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$( echo $VERSION )
+                leehom: \$( echo $VERSION )
             END_VERSIONS
             """
     } else if ( meta.single_end ) {
@@ -53,7 +53,7 @@ process LEEHOM {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$( echo $VERSION )
+                leehom: \$( echo $VERSION )
             END_VERSIONS
             """
     } else {
@@ -68,7 +68,7 @@ process LEEHOM {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$( echo $VERSION )
+                leehom: \$( echo $VERSION )
             END_VERSIONS
             """
     }

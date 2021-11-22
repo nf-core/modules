@@ -27,7 +27,7 @@ process UMITOOLS_DEDUP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(umi_tools --version 2>&1 | sed 's/^.*UMI-tools version://; s/ *\$//')
+        umitools: \$(umi_tools --version 2>&1 | sed 's/^.*UMI-tools version://; s/ *\$//')
     END_VERSIONS
     """
 }

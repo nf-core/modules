@@ -26,7 +26,7 @@ process PORECHOP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( porechop --version )
+        porechop: \$( porechop --version )
     END_VERSIONS
     """
 }

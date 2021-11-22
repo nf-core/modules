@@ -28,7 +28,7 @@ process SEQKIT_SPLIT2 {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
     } else {
@@ -43,7 +43,7 @@ process SEQKIT_SPLIT2 {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
     }

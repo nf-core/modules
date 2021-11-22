@@ -43,7 +43,7 @@ process PROKKA {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
+        prokka: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
     END_VERSIONS
     """
 }

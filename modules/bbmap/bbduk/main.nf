@@ -34,7 +34,7 @@ process BBMAP_BBDUK {
         &> ${prefix}.bbduk.log
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(bbversion.sh)
+        bbmap: \$(bbversion.sh)
     END_VERSIONS
     """
 }

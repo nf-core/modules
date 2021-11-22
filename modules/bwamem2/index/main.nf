@@ -25,7 +25,7 @@ process BWAMEM2_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
+        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
     END_VERSIONS
     """
 }

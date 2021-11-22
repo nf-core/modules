@@ -25,7 +25,7 @@ process CAT_FASTQ {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
         }
@@ -40,7 +40,7 @@ process CAT_FASTQ {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
         }

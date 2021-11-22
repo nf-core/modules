@@ -36,7 +36,7 @@ process PICARD_FILTERSAMREADS {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     } else if ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
@@ -52,7 +52,7 @@ process PICARD_FILTERSAMREADS {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
     }

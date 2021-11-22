@@ -25,7 +25,7 @@ process KLEBORATE {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
+        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """
 }

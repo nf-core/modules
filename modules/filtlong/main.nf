@@ -27,7 +27,7 @@ process FILTLONG {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$( filtlong --version | sed -e "s/Filtlong v//g" )
+        filtlong: \$( filtlong --version | sed -e "s/Filtlong v//g" )
     END_VERSIONS
     """
 }

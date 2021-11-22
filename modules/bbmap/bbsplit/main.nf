@@ -48,7 +48,7 @@ process BBMAP_BBSPLIT {
 
             cat <<-END_VERSIONS > versions.yml
             ${task.process.tokenize(':').last()}:
-                ${getSoftwareName(task.process)}: \$(bbversion.sh 2>&1)
+                bbmap: \$(bbversion.sh 2>&1)
             END_VERSIONS
             """
         } else {
@@ -77,7 +77,7 @@ process BBMAP_BBSPLIT {
 
         cat <<-END_VERSIONS > versions.yml
         ${task.process.tokenize(':').last()}:
-            ${getSoftwareName(task.process)}: \$(bbversion.sh 2>&1)
+            bbmap: \$(bbversion.sh 2>&1)
         END_VERSIONS
         """
     }

@@ -28,7 +28,7 @@ process MASH_SKETCH {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
-        ${getSoftwareName(task.process)}: \$(mash --version 2>&1)
+        mash: \$(mash --version 2>&1)
     END_VERSIONS
     """
 }
