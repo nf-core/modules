@@ -56,7 +56,7 @@ process HUMANN_HUMANN {
         --output out \\
         --output-basename $prefix \\
         --o-log ${prefix}.log
-    
+
     gzip -n out/*.tsv
     cp out/${prefix}_genefamilies.tsv.gz ${prefix}_genefamilies.tsv.gz
     cp out/${prefix}_genefamilies.tsv.gz ${prefix}_pathabundance.tsv.gz
