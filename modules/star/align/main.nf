@@ -4,11 +4,9 @@ process STAR_ALIGN {
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda (params.enable_conda ? 'bioconda::star=2.7.9a' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/star:2.7.9a--h9ee0642_0'
-    } else {
-        container 'quay.io/biocontainers/star:2.7.9a--h9ee0642_0'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/star:2.7.9a--h9ee0642_0' :
+        'quay.io/biocontainers/star:2.7.9a--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)

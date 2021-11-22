@@ -3,11 +3,9 @@ process FREEBAYES {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::freebayes=1.3.5" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/freebayes:1.3.5--py38ha193a2f_3"
-    } else {
-        container "quay.io/biocontainers/freebayes:1.3.5--py38ha193a2f_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/freebayes:1.3.5--py38ha193a2f_3' :
+        'quay.io/biocontainers/freebayes:1.3.5--py38ha193a2f_3' }"
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index)

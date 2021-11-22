@@ -3,11 +3,9 @@ process LISSERO {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lissero=0.4.9" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0"
-    } else {
-        container "quay.io/biocontainers/lissero:0.4.9--py_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0' :
+        'quay.io/biocontainers/lissero:0.4.9--py_0' }"
 
     input:
     tuple val(meta), path(fasta)

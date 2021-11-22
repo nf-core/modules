@@ -3,11 +3,9 @@ process MINIASM {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::miniasm=0.3_r179" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2"
-    } else {
-        container "quay.io/biocontainers/miniasm:0.3_r179--h5bf99c6_2"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2' :
+        'quay.io/biocontainers/miniasm:0.3_r179--h5bf99c6_2' }"
 
     input:
     tuple val(meta), path(reads), path(paf)

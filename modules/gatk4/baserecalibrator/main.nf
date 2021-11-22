@@ -3,11 +3,9 @@ process GATK4_BASERECALIBRATOR {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)

@@ -5,11 +5,9 @@ process HMMCOPY_READCOUNTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_5"
-    } else {
-        container "quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_5"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_5' :
+        'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_5' }"
 
     input:
         tuple val(meta), path(bam), path(bai)

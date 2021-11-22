@@ -3,11 +3,9 @@ process BWA_INDEX {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7"
-    } else {
-        container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7' :
+        'quay.io/biocontainers/bwa:0.7.17--hed695b0_7' }"
 
     input:
     path fasta

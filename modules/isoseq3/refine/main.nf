@@ -3,11 +3,9 @@ process ISOSEQ3_REFINE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/isoseq3:3.4.0--0"
-    } else {
-        container "quay.io/biocontainers/isoseq3:3.4.0--0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/isoseq3:3.4.0--0' :
+        'quay.io/biocontainers/isoseq3:3.4.0--0' }"
 
     input:
     tuple val(meta), path(bam)

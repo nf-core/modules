@@ -4,11 +4,9 @@ process UNZIP {
 
 
     conda (params.enable_conda ? "bioconda::p7zip=15.09" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/p7zip:15.09--h2d50403_4"
-    } else {
-        container "quay.io/biocontainers/p7zip:15.09--h2d50403_4"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/p7zip:15.09--h2d50403_4' :
+        'quay.io/biocontainers/p7zip:15.09--h2d50403_4' }"
 
     input:
     path archive

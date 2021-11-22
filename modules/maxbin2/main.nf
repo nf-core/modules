@@ -3,11 +3,9 @@ process MAXBIN2 {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::maxbin2=2.2.7" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/maxbin2:2.2.7--he1b5a44_2"
-    } else {
-        container "quay.io/biocontainers/maxbin2:2.2.7--he1b5a44_2"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/maxbin2:2.2.7--he1b5a44_2' :
+        'quay.io/biocontainers/maxbin2:2.2.7--he1b5a44_2' }"
 
     input:
     tuple val(meta), path(contigs), path(reads), path(abund)

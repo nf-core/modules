@@ -3,11 +3,9 @@ process CHECKM_LINEAGEWF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::checkm-genome=1.1.3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/checkm-genome:1.1.3--py_1"
-    } else {
-        container "quay.io/biocontainers/checkm-genome:1.1.3--py_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/checkm-genome:1.1.3--py_1' :
+        'quay.io/biocontainers/checkm-genome:1.1.3--py_1' }"
 
     input:
     tuple val(meta), path(fasta)

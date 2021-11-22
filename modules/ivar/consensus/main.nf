@@ -3,11 +3,9 @@ process IVAR_CONSENSUS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ivar=1.3.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0"
-    } else {
-        container "quay.io/biocontainers/ivar:1.3.1--h089eab3_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0' :
+        'quay.io/biocontainers/ivar:1.3.1--h089eab3_0' }"
 
     input:
     tuple val(meta), path(bam)

@@ -3,11 +3,9 @@ process MUSCLE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::muscle=3.8.1551" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/muscle:3.8.1551--h7d875b9_6"
-    } else {
-        container "quay.io/biocontainers/muscle:3.8.1551--h7d875b9_6"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/muscle:3.8.1551--h7d875b9_6' :
+        'quay.io/biocontainers/muscle:3.8.1551--h7d875b9_6' }"
 
     input:
     tuple val(meta), path(fasta)

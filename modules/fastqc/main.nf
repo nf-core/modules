@@ -3,11 +3,9 @@ process FASTQC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0"
-    } else {
-        container "quay.io/biocontainers/fastqc:0.11.9--0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
+        'quay.io/biocontainers/fastqc:0.11.9--0' }"
 
     input:
     tuple val(meta), path(reads)

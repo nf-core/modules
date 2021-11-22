@@ -3,11 +3,9 @@ process PRODIGAL {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::prodigal=2.6.3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/prodigal:2.6.3--h516909a_2"
-    } else {
-        container "quay.io/biocontainers/prodigal:2.6.3--h516909a_2"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/prodigal:2.6.3--h516909a_2' :
+        'quay.io/biocontainers/prodigal:2.6.3--h516909a_2' }"
 
     input:
     tuple val(meta), path(genome)

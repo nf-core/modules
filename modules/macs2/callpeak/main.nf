@@ -3,11 +3,9 @@ process MACS2_CALLPEAK {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3"
-    } else {
-        container "quay.io/biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
+        'quay.io/biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)

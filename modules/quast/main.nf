@@ -2,11 +2,9 @@ process QUAST {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::quast=5.0.2' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/quast:5.0.2--py37pl526hb5aa323_2'
-    } else {
-        container 'quay.io/biocontainers/quast:5.0.2--py37pl526hb5aa323_2'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/quast:5.0.2--py37pl526hb5aa323_2' :
+        'quay.io/biocontainers/quast:5.0.2--py37pl526hb5aa323_2' }"
 
     input:
     path consensus

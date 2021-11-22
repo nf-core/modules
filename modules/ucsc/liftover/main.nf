@@ -5,11 +5,9 @@ process UCSC_LIFTOVER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ucsc-liftover=377" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3"
-    } else {
-        container "quay.io/biocontainers/ucsc-liftover:377--h0b8a92a_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3' :
+        'quay.io/biocontainers/ucsc-liftover:377--h0b8a92a_3' }"
 
     input:
     tuple val(meta), path(bed)

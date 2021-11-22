@@ -3,11 +3,9 @@ process MTNUCRATIO {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mtnucratio=0.7" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2"
-    } else {
-        container "quay.io/biocontainers/mtnucratio:0.7--hdfd78af_2"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
+        'quay.io/biocontainers/mtnucratio:0.7--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(bam)

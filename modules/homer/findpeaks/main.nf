@@ -5,11 +5,9 @@ process HOMER_FINDPEAKS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::homer=4.11=pl526hc9558a2_3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3"
-    } else {
-        container "quay.io/biocontainers/homer:4.11--pl526hc9558a2_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
+        'quay.io/biocontainers/homer:4.11--pl526hc9558a2_3' }"
 
     input:
     tuple val(meta), path(tagDir)

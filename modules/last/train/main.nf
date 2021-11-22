@@ -3,11 +3,9 @@ process LAST_TRAIN {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::last=1250' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0"
-    } else {
-        container "quay.io/biocontainers/last:1250--h2e03b76_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0' :
+        'quay.io/biocontainers/last:1250--h2e03b76_0' }"
 
     input:
     tuple val(meta), path(fastx)

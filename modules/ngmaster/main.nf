@@ -3,11 +3,9 @@ process NGMASTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ngmaster=0.5.8" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1"
-    } else {
-        container "quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
+        'quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

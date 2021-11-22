@@ -3,11 +3,9 @@ process NCBIGENOMEDOWNLOAD {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ncbi-genome-download=0.3.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.0--pyh864c0ab_1"
-    } else {
-        container "quay.io/biocontainers/ncbi-genome-download:0.3.0--pyh864c0ab_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.0--pyh864c0ab_1' :
+        'quay.io/biocontainers/ncbi-genome-download:0.3.0--pyh864c0ab_1' }"
 
     input:
     val meta

@@ -3,11 +3,9 @@ process BAMTOOLS_SPLIT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9"
-    } else {
-        container "quay.io/biocontainers/bamtools:2.5.1--h9a82719_9"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
+        'quay.io/biocontainers/bamtools:2.5.1--h9a82719_9' }"
 
     input:
     tuple val(meta), path(bam)

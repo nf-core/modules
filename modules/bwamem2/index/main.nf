@@ -3,11 +3,9 @@ process BWAMEM2_INDEX {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bwa-mem2=2.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0"
-    } else {
-        container "quay.io/biocontainers/bwa-mem2:2.2.1--he513fc3_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0' :
+        'quay.io/biocontainers/bwa-mem2:2.2.1--he513fc3_0' }"
 
     input:
     path fasta

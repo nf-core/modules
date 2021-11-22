@@ -3,11 +3,9 @@ process TIDDIT_SV {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::tiddit=2.12.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/tiddit:2.12.1--py38h1773678_0"
-    } else {
-        container "quay.io/biocontainers/tiddit:2.12.1--py38h1773678_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/tiddit:2.12.1--py38h1773678_0' :
+        'quay.io/biocontainers/tiddit:2.12.1--py38h1773678_0' }"
 
     input:
     tuple val(meta), path(bam)

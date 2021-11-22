@@ -3,11 +3,9 @@ process PLINK_EXTRACT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1"
-    } else {
-        container "quay.io/biocontainers/plink:1.90b6.21--h779adbc_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
+        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam), path(variants)

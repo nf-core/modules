@@ -3,11 +3,9 @@ process STRELKA_GERMLINE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::strelka=2.9.10" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/strelka:2.9.10--0"
-    } else {
-        container "quay.io/biocontainers/strelka:2.9.10--0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/strelka:2.9.10--0' :
+        'quay.io/biocontainers/strelka:2.9.10--0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)

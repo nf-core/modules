@@ -3,11 +3,9 @@ process TRIMGALORE {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::trim-galore=0.6.7' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/trim-galore:0.6.7--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/trim-galore:0.6.7--hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/trim-galore:0.6.7--hdfd78af_0' :
+        'quay.io/biocontainers/trim-galore:0.6.7--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)

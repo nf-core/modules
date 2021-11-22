@@ -3,11 +3,9 @@ process COOLER_DUMP {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0"
-    } else {
-        container "quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0' :
+        'quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0' }"
 
     input:
     tuple val(meta), path(cool)

@@ -5,11 +5,9 @@ process UCSC_BED12TOBIGBED {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ucsc-bedtobigbed=377" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:377--h446ed27_1"
-    } else {
-        container "quay.io/biocontainers/ucsc-bedtobigbed:377--h446ed27_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:377--h446ed27_1' :
+        'quay.io/biocontainers/ucsc-bedtobigbed:377--h446ed27_1' }"
 
     input:
     tuple val(meta), path(bed)

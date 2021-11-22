@@ -3,11 +3,9 @@ process DELLY_CALL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::delly=0.8.7" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/delly:0.8.7--he03298f_1"
-    } else {
-        container "quay.io/biocontainers/delly:0.8.7--he03298f_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/delly:0.8.7--he03298f_1' :
+        'quay.io/biocontainers/delly:0.8.7--he03298f_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

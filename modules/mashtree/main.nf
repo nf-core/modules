@@ -3,11 +3,9 @@ process MASHTREE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::mashtree=1.2.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mashtree:1.2.0--pl526h516909a_0"
-    } else {
-        container "quay.io/biocontainers/mashtree:1.2.0--pl526h516909a_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mashtree:1.2.0--pl526h516909a_0' :
+        'quay.io/biocontainers/mashtree:1.2.0--pl526h516909a_0' }"
 
     input:
     tuple val(meta), path(seqs)

@@ -3,11 +3,9 @@ process BBMAP_INDEX {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bbmap:38.92--he522d1c_0"
-    } else {
-        container "quay.io/biocontainers/bbmap:38.92--he522d1c_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bbmap:38.92--he522d1c_0' :
+        'quay.io/biocontainers/bbmap:38.92--he522d1c_0' }"
 
     input:
     path fasta

@@ -3,11 +3,9 @@ process SAMTOOLS_INDEX {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0"
-    } else {
-        container "quay.io/biocontainers/samtools:1.14--hb421002_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0' :
+        'quay.io/biocontainers/samtools:1.14--hb421002_0' }"
 
     input:
     tuple val(meta), path(input)

@@ -3,11 +3,9 @@ process CUTADAPT {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1'
-    } else {
-        container 'quay.io/biocontainers/cutadapt:3.4--py37h73a75cf_1'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1' :
+        'quay.io/biocontainers/cutadapt:3.4--py37h73a75cf_1' }"
 
     input:
     tuple val(meta), path(reads)

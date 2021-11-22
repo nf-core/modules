@@ -3,11 +3,9 @@ process BWA_ALN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8"
-    } else {
-        container "quay.io/biocontainers/bwa:0.7.17--h5bf99c6_8"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8' :
+        'quay.io/biocontainers/bwa:0.7.17--h5bf99c6_8' }"
 
     input:
     tuple val(meta), path(reads)

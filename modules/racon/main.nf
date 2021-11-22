@@ -3,11 +3,9 @@ process RACON {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::racon=1.4.20" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1"
-    } else {
-        container "quay.io/biocontainers/racon:1.4.20--h9a82719_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1' :
+        'quay.io/biocontainers/racon:1.4.20--h9a82719_1' }"
 
     input:
     tuple val(meta), path(reads), path(assembly), path(paf)

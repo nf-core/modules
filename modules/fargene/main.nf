@@ -5,11 +5,9 @@ process FARGENE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::fargene=0.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fargene:0.1--py27h21c881e_4"
-    } else {
-        container "quay.io/biocontainers/fargene:0.1--py27h21c881e_4"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fargene:0.1--py27h21c881e_4' :
+        'quay.io/biocontainers/fargene:0.1--py27h21c881e_4' }"
 
     input:
     // input may be fasta (for genomes or longer contigs) or paired-end fastq (for metagenome), the latter in addition with --meta flag

@@ -3,11 +3,9 @@ process SPADES {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::spades=3.15.3' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0"
-    } else {
-        container "quay.io/biocontainers/spades:3.15.3--h95f258a_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0' :
+        'quay.io/biocontainers/spades:3.15.3--h95f258a_0' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)

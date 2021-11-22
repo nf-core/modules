@@ -3,11 +3,9 @@ process ARRIBA {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::arriba=2.1.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/arriba:2.1.0--h3198e80_1"
-    } else {
-        container "quay.io/biocontainers/arriba:2.1.0--h3198e80_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/arriba:2.1.0--h3198e80_1' :
+        'quay.io/biocontainers/arriba:2.1.0--h3198e80_1' }"
 
     input:
     tuple val(meta), path(bam)

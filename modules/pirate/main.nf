@@ -3,11 +3,9 @@ process PIRATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::pirate=1.0.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/pirate%3A1.0.4--hdfd78af_1"
-    } else {
-        container "quay.io/biocontainers/pirate:1.0.4--hdfd78af_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pirate%3A1.0.4--hdfd78af_1' :
+        'quay.io/biocontainers/pirate:1.0.4--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(gff)

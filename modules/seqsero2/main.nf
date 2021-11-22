@@ -3,11 +3,9 @@ process SEQSERO2 {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0"
-    } else {
-        container "quay.io/biocontainers/seqsero2:1.2.1--py_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
+        'quay.io/biocontainers/seqsero2:1.2.1--py_0' }"
 
     input:
     tuple val(meta), path(seqs)

@@ -3,11 +3,9 @@ process MLST {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mlst=2.19.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1"
-    } else {
-        container "quay.io/biocontainers/mlst:2.19.0--hdfd78af_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1' :
+        'quay.io/biocontainers/mlst:2.19.0--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

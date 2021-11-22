@@ -3,11 +3,9 @@ process STRELKA_SOMATIC {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::strelka=2.9.10" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1"
-    } else {
-        container "quay.io/biocontainers/strelka:2.9.10--h9ee0642_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1' :
+        'quay.io/biocontainers/strelka:2.9.10--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi)

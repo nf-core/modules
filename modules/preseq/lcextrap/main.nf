@@ -4,11 +4,9 @@ process PRESEQ_LCEXTRAP {
     label 'error_ignore'
 
     conda (params.enable_conda ? "bioconda::preseq=3.1.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/preseq:3.1.2--h06ef8b0_1"
-    } else {
-        container "quay.io/biocontainers/preseq:3.1.2--h06ef8b0_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/preseq:3.1.2--h06ef8b0_1' :
+        'quay.io/biocontainers/preseq:3.1.2--h06ef8b0_1' }"
 
     input:
     tuple val(meta), path(bam)

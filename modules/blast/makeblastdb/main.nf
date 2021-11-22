@@ -3,11 +3,9 @@ process BLAST_MAKEBLASTDB {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0'
-    } else {
-        container 'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
+        'quay.io/biocontainers/blast:2.12.0--pl5262h3289130_0' }"
 
     input:
     path fasta

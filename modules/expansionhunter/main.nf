@@ -3,11 +3,9 @@ process EXPANSIONHUNTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::expansionhunter=4.0.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2--he785bd8_0"
-    } else {
-        container "quay.io/biocontainers/expansionhunter:4.0.2--he785bd8_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2--he785bd8_0' :
+        'quay.io/biocontainers/expansionhunter:4.0.2--he785bd8_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

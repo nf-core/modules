@@ -4,11 +4,9 @@ process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
 
     conda (params.enable_conda ? "bioconda::gtdbtk=1.5.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gtdbtk:1.5.0--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/gtdbtk:1.5.0--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gtdbtk:1.5.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/gtdbtk:1.5.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path("bins/*")

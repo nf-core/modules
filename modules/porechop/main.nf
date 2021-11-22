@@ -3,11 +3,9 @@ process PORECHOP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::porechop=0.2.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2"
-    } else {
-        container "quay.io/biocontainers/porechop:0.2.4--py38h8c62d01_2"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
+        'quay.io/biocontainers/porechop:0.2.4--py38h8c62d01_2' }"
 
     input:
     tuple val(meta), path(reads)

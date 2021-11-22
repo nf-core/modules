@@ -3,11 +3,9 @@ process MENINGOTYPE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::meningotype=0.8.5" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/meningotype:0.8.5--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0' :
+        'quay.io/biocontainers/meningotype:0.8.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

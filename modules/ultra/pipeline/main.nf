@@ -3,11 +3,9 @@ process ULTRA_PIPELINE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4--pyh5e36f6f_1"
-    } else {
-        container "quay.io/biocontainers/ultra_bioinformatics:0.0.4--pyh5e36f6f_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4--pyh5e36f6f_1' :
+        'quay.io/biocontainers/ultra_bioinformatics:0.0.4--pyh5e36f6f_1' }"
 
     input:
     tuple val(meta), path(reads)

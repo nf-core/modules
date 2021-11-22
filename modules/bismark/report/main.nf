@@ -3,11 +3,9 @@ process BISMARK_REPORT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bismark:0.23.0--0"
-    } else {
-        container "quay.io/biocontainers/bismark:0.23.0--0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bismark:0.23.0--0' :
+        'quay.io/biocontainers/bismark:0.23.0--0' }"
 
     input:
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)

@@ -2,11 +2,9 @@ process FLASH {
     tag "$meta.id"
     label 'process_medium'
 
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/flash:1.2.11--hed695b0_5"
-    } else {
-        container "quay.io/biocontainers/flash:1.2.11--hed695b0_5"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/flash:1.2.11--hed695b0_5' :
+        'quay.io/biocontainers/flash:1.2.11--hed695b0_5' }"
 
     input:
     tuple val(meta), path(reads)

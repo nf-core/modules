@@ -3,11 +3,9 @@ process BCFTOOLS_VIEW {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bcftools=1.13" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bcftools:1.13--h3a49de5_0"
-    } else {
-        container "quay.io/biocontainers/bcftools:1.13--h3a49de5_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bcftools:1.13--h3a49de5_0' :
+        'quay.io/biocontainers/bcftools:1.13--h3a49de5_0' }"
 
     input:
     tuple val(meta), path(vcf), path(index)

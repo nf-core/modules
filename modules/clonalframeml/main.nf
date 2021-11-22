@@ -3,11 +3,9 @@ process CLONALFRAMEML {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::clonalframeml=1.12" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1"
-    } else {
-        container "quay.io/biocontainers/clonalframeml:1.12--h7d875b9_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1' :
+        'quay.io/biocontainers/clonalframeml:1.12--h7d875b9_1' }"
 
     input:
     tuple val(meta), path(newick), path(msa)

@@ -3,11 +3,9 @@ process BBMAP_ALIGN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.13 pigz=2.6" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0' :
+        'quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:f5f55fc5623bb7b3f725e8d2f86bedacfd879510-0' }"
 
     input:
     tuple val(meta), path(fastq)

@@ -5,11 +5,9 @@ process MUMMER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12"
-    } else {
-        container "quay.io/biocontainers/mummer:3.23--pl5262h1b792b2_12"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
+        'quay.io/biocontainers/mummer:3.23--pl5262h1b792b2_12' }"
 
     input:
     tuple val(meta), path(ref), path(query)

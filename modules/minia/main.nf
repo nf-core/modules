@@ -3,11 +3,9 @@ process MINIA {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::minia=3.2.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/minia:3.2.4--he513fc3_0"
-    } else {
-        container "quay.io/biocontainers/minia:3.2.4--he513fc3_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/minia:3.2.4--he513fc3_0' :
+        'quay.io/biocontainers/minia:3.2.4--he513fc3_0' }"
 
     input:
     tuple val(meta), path(reads)

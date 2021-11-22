@@ -3,11 +3,9 @@ process FGBIO_FASTQTOBAM {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::fgbio=1.4.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fgbio:1.4.0--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/fgbio:1.4.0--hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fgbio:1.4.0--hdfd78af_0' :
+        'quay.io/biocontainers/fgbio:1.4.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)

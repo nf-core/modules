@@ -4,11 +4,9 @@ process STAR_GENOMEGENERATE {
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda (params.enable_conda ? "bioconda::star=2.7.9a bioconda::samtools=1.13 conda-forge::gawk=5.1.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0' :
+        'quay.io/biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0' }"
 
     input:
     path fasta

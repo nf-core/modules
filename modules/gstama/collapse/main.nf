@@ -3,11 +3,9 @@ process GSTAMA_COLLAPSE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gs-tama=1.0.3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0"
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
+        'quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
     }
 
     input:

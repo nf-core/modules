@@ -2,11 +2,9 @@ process FASTTREE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fasttree=2.1.10" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4"
-    } else {
-        container "quay.io/biocontainers/fasttree:2.1.10--h516909a_4"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4' :
+        'quay.io/biocontainers/fasttree:2.1.10--h516909a_4' }"
 
     input:
     path alignment

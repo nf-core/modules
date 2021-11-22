@@ -3,11 +3,9 @@ process SHOVILL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::shovill=1.1.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/shovill:1.1.0--0"
-    } else {
-        container "quay.io/biocontainers/shovill:1.1.0--0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
+        'quay.io/biocontainers/shovill:1.1.0--0' }"
 
     input:
     tuple val(meta), path(reads)

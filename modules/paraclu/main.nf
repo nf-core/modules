@@ -3,11 +3,9 @@ process PARACLU {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::paraclu=10" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/paraclu%3A10--h9a82719_1"
-    } else {
-        container "quay.io/biocontainers/paraclu:10--h9a82719_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/paraclu%3A10--h9a82719_1' :
+        'quay.io/biocontainers/paraclu:10--h9a82719_1' }"
 
     input:
     tuple val(meta), path(bed)

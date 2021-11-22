@@ -3,11 +3,9 @@ process NANOPLOT {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::nanoplot=1.38.0' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/nanoplot:1.38.0--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/nanoplot:1.38.0--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/nanoplot:1.38.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/nanoplot:1.38.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(ontfile)

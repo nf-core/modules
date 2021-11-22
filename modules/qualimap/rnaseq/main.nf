@@ -3,11 +3,9 @@ process QUALIMAP_RNASEQ {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::qualimap=2.2.2d" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1"
-    } else {
-        container "quay.io/biocontainers/qualimap:2.2.2d--1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1' :
+        'quay.io/biocontainers/qualimap:2.2.2d--1' }"
 
     input:
     tuple val(meta), path(bam)

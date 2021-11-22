@@ -3,11 +3,9 @@ process NEXTCLADE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::nextclade_js=0.14.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/nextclade_js:0.14.4--h9ee0642_0"
-    } else {
-        container "quay.io/biocontainers/nextclade_js:0.14.4--h9ee0642_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/nextclade_js:0.14.4--h9ee0642_0' :
+        'quay.io/biocontainers/nextclade_js:0.14.4--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)

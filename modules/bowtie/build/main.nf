@@ -3,11 +3,9 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::bowtie=1.3.0' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1'
-    } else {
-        container 'quay.io/biocontainers/bowtie:1.3.0--py38hed8969a_1'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1' :
+        'quay.io/biocontainers/bowtie:1.3.0--py38hed8969a_1' }"
 
     input:
     path fasta

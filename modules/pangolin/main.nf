@@ -3,11 +3,9 @@ process PANGOLIN {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::pangolin=3.1.11' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/pangolin:3.1.11--pyhdfd78af_1'
-    } else {
-        container 'quay.io/biocontainers/pangolin:3.1.11--pyhdfd78af_1'
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pangolin:3.1.11--pyhdfd78af_1' :
+        'quay.io/biocontainers/pangolin:3.1.11--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)

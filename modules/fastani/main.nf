@@ -3,11 +3,9 @@ process FASTANI {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fastani=1.32" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0"
-    } else {
-        container "quay.io/biocontainers/fastani:1.32--he1c1bb9_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0' :
+        'quay.io/biocontainers/fastani:1.32--he1c1bb9_0' }"
 
     input:
     tuple val(meta), path(query)
