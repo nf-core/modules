@@ -27,15 +27,19 @@ input:
   - bam:
       type: file
       description: BAM file for input
-      pattern: "*.{bam}"
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAI index for BAM file
+      pattern: "*.bai"
   - ref:
       type: file
-      description: reference file used for mapping
+      description: Reference file used for mapping
       pattern: "*.fa"
   - fai:
       type: file
       description: fai used for reference mapping
-      pattern: "*.{fai,bai}"
+      pattern: "*.fai"
   - dict:
       type: file
       description: dict used for reference mapping
