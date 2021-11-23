@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_BEDTOINTERVALLIST } from '../../../../modules/gatk4/bedtointervallist/main.nf' addParams( options: [:] )
-include { GATK4_INTERVALLISTTOOLS } from '../../../../modules/gatk4/intervallisttools/main.nf' addParams( options: [args: '--SCATTER_COUNT 6 --SUBDIVISION_MODE BALANCING_WITHOUT_INTERVAL_SUBDIVISION_WITH_OVERFLOW --UNIQUE true --SORT true'] )
+include { GATK4_BEDTOINTERVALLIST } from '../../../../modules/gatk4/bedtointervallist/main.nf'
+include { GATK4_INTERVALLISTTOOLS } from '../../../../modules/gatk4/intervallisttools/main.nf'
 
 workflow test_gatk4_intervallisttools {
 

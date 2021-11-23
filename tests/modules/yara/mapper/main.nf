@@ -3,8 +3,8 @@
 nextflow.enable.dsl = 2
 
 
-include { YARA_INDEX } from '../../../../modules/yara/index/main.nf' addParams(options: ['args': '-e 3'])
-include { YARA_MAPPER } from '../../../../modules/yara/mapper/main.nf' addParams(options: ['args': '-e 3'])
+include { YARA_INDEX } from '../../../../modules/yara/index/main.nf'
+include { YARA_MAPPER } from '../../../../modules/yara/mapper/main.nf'
 
 workflow test_yara_single_end {
 

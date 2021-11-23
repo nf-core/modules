@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT } from '../../../modules/cnvkit/main.nf' addParams( options: [ 'args': '--output-reference reference.cnn' ] )
+include { CNVKIT } from '../../../modules/cnvkit/main.nf'
 
 workflow test_cnvkit {
     tumourbam = file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)

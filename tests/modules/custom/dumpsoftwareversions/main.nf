@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC                      } from '../../../../modules/fastqc/main.nf'                      addParams( options: [:]                    )
-include { MULTIQC                     } from '../../../../modules/multiqc/main.nf'                     addParams( options: [:]                    )
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../../../modules/custom/dumpsoftwareversions/main.nf' addParams( options: [publish_dir:'custom'] )
+include { FASTQC                      } from '../../../../modules/fastqc/main.nf'
+include { MULTIQC                     } from '../../../../modules/multiqc/main.nf'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../../../modules/custom/dumpsoftwareversions/main.nf'
 
 workflow test_custom_dumpsoftwareversions {
     input = [

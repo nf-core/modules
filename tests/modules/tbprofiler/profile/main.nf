@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { TBPROFILER_PROFILE as TBPROFILER_PROFILE_ILLUMINA } from '../../../../modules/tbprofiler/profile/main.nf' addParams( options: [args: '--platform illumina'] )
-include { TBPROFILER_PROFILE as TBPROFILER_PROFILE_NANOPORE} from '../../../../modules/tbprofiler/profile/main.nf' addParams( options: [args: '--platform nanopore'] )
+include { TBPROFILER_PROFILE as TBPROFILER_PROFILE_ILLUMINA } from '../../../../modules/tbprofiler/profile/main.nf'
+include { TBPROFILER_PROFILE as TBPROFILER_PROFILE_NANOPORE} from '../../../../modules/tbprofiler/profile/main.nf'
 
 workflow test_tbprofiler_profile_illumina {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CAT_FASTQ } from '../../../../modules/cat/fastq/main.nf' addParams( options: [publish_dir:'cat'] )
+include { CAT_FASTQ } from '../../../../modules/cat/fastq/main.nf'
 
 workflow test_cat_fastq_single_end {
     input = [

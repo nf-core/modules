@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf' addParams( options: [:] )
-include { BWA_MEM } from '../../../../modules/bwa/mem/main.nf' addParams( options: [:] )
+include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf'
+include { BWA_MEM } from '../../../../modules/bwa/mem/main.nf'
 
 //
 // Test with single-end data

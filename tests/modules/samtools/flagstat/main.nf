@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FLAGSTAT } from '../../../../modules/samtools/flagstat/main.nf' addParams( options: [:] )
+include { SAMTOOLS_FLAGSTAT } from '../../../../modules/samtools/flagstat/main.nf'
 
 workflow test_samtools_flagstat {
     input = [ [ id:'test', single_end:false ], // meta map

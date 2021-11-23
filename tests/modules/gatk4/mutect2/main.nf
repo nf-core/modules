@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf' addParams( options: [:] )
+include { GATK4_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf'
 // used to run with the mitochondria mode setting as this increases sensitivity, allowing for some tumor_normal variants to be detected while the old test data is still in use, will be removed when new test data for sarek is available.
-include { GATK4_MUTECT2 as GATK4_TEMPFIX_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf' addParams( options: [args: '--mitochondria-mode'] )
+include { GATK4_MUTECT2 as GATK4_TEMPFIX_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf'
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
     input = [ [ id:'test'], // meta map

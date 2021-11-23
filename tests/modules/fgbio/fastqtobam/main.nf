@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 params.read_structure = "+T 12M11S+T"
 
-include { FGBIO_FASTQTOBAM } from '../../../../modules/fgbio/fastqtobam/main.nf' addParams( options: [:] )
+include { FGBIO_FASTQTOBAM } from '../../../../modules/fgbio/fastqtobam/main.nf'
 
 workflow test_fgbio_fastqtobam {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_GROUPREADSBYUMI } from '../../../../modules/fgbio/groupreadsbyumi/main.nf' addParams( options: [:] )
+include { FGBIO_GROUPREADSBYUMI } from '../../../../modules/fgbio/groupreadsbyumi/main.nf'
 
 workflow test_fgbio_groupreadsbyumi {
 

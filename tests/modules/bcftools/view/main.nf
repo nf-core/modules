@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_VIEW } from '../../../../modules/bcftools/view/main.nf' addParams( options: ['args': '--no-version'] )
+include { BCFTOOLS_VIEW } from '../../../../modules/bcftools/view/main.nf'
 
 workflow test_bcftools_view {
 

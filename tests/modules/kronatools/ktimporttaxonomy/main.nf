@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KRONATOOLS_KTIMPORTTAXONOMY } from '../../../../modules/kronatools/ktimporttaxonomy/main.nf' addParams( options: [:] )
+include { KRONATOOLS_KTIMPORTTAXONOMY } from '../../../../modules/kronatools/ktimporttaxonomy/main.nf'
 
 workflow test_kronatools_ktimporttaxonomy {
 

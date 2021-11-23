@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPEFF } from '../../../modules/snpeff/main.nf' addParams( snpeff_tag: '5.0.WBcel235', use_cache: false )
+include { SNPEFF } from '../../../modules/snpeff/main.nf'
 
 workflow test_snpeff {
     input = [ [ id:'test' ], // meta map

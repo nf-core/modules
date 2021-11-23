@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PIRATE } from '../../../modules/pirate/main.nf' addParams( options: [:] )
+include { PIRATE } from '../../../modules/pirate/main.nf'
 
 workflow test_pirate {
     

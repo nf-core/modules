@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GLNEXUS } from '../../../modules/glnexus/main.nf' addParams( options: [:] )
+include { GLNEXUS } from '../../../modules/glnexus/main.nf'
 
 workflow test_glnexus {
     input = [ [ id:'test' ], // meta map

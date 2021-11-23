@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR          } from '../../../modules/untar/main.nf'          addParams( options: [:] )
-include { SAMTOOLS_VIEW  } from '../../../modules/samtools/view/main.nf'  addParams( options: ['suffix': '.sam'] )
-include { METAPHLAN3     } from '../../../modules/metaphlan3/main.nf'     addParams( options: [ 'args':'--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local' ] )
+include { UNTAR          } from '../../../modules/untar/main.nf'
+include { SAMTOOLS_VIEW  } from '../../../modules/samtools/view/main.nf'
+include { METAPHLAN3     } from '../../../modules/metaphlan3/main.nf'
 
 workflow test_metaphlan3_single_end {
 

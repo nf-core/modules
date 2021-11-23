@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_MERGE } from '../../../../modules/cooler/merge/main.nf' addParams( options: [:] )
-include { COOLER_DUMP  } from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
+include { COOLER_MERGE } from '../../../../modules/cooler/merge/main.nf'
+include { COOLER_DUMP  } from '../../../../modules/cooler/dump/main.nf'
 
 workflow test_cooler_merge {
 

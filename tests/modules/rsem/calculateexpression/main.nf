@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEM_PREPAREREFERENCE    } from '../../../../modules/rsem/preparereference/main.nf'    addParams(options: [args: "--star"])
-include { RSEM_CALCULATEEXPRESSION } from '../../../../modules/rsem/calculateexpression/main.nf' addParams(options: [args: "--star --star-gzipped-read-file"])
+include { RSEM_PREPAREREFERENCE    } from '../../../../modules/rsem/preparereference/main.nf'
+include { RSEM_CALCULATEEXPRESSION } from '../../../../modules/rsem/calculateexpression/main.nf'
 
 workflow test_rsem_calculateexpression {
 

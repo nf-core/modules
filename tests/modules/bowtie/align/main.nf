@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE_BUILD } from '../../../../modules/bowtie/build/main.nf' addParams( options: [:] )
-include { BOWTIE_ALIGN } from '../../../../modules/bowtie/align/main.nf' addParams( options: [:] )
+include { BOWTIE_BUILD } from '../../../../modules/bowtie/build/main.nf'
+include { BOWTIE_ALIGN } from '../../../../modules/bowtie/align/main.nf'
 
 workflow test_bowtie_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

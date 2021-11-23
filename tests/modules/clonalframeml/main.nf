@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CLONALFRAMEML } from '../../../modules/clonalframeml/main.nf' addParams( options: [:] )
+include { CLONALFRAMEML } from '../../../modules/clonalframeml/main.nf'
 
 workflow test_clonalframeml {
     
