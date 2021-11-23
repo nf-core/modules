@@ -22,7 +22,7 @@ process HUMANN_RENORM {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*_renorm_genefamilies.tsv.gz"), emit: renorm
+    tuple val(meta), path("*_renorm.tsv.gz"), emit: renorm
     path "versions.yml"                                  , emit: versions
 
     script:
@@ -36,10 +36,10 @@ process HUMANN_RENORM {
 
     humann_renorm_table \\
         --input input.tsv \\
-        --output ${prefix}_renorm_genefamilies.tsv \\
+        --output ${prefix}_renorm.tsv \\
         $options.args
 
-    gzip -n ${prefix}_renorm_genefamilies.tsv
+    gzip -n ${prefix}_renorm.tsv
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
