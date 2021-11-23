@@ -39,7 +39,6 @@ process GATK4_VARIANTRECALIBRATOR {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
-    vcfCommand = '-V ' + vcf.join( ' -V ')
     alleleSpecificCommand = allelespecific ? '-AS' : ''
     resourceCommand = '--resource:' + reslabels.join( ' --resource:')
     annotationCommand = '-an ' + annotation.join( ' -an ')
@@ -49,7 +48,7 @@ process GATK4_VARIANTRECALIBRATOR {
     """
     gatk VariantRecalibrator \\
         ${refCommand} \\
-        ${vcfCommand} \\
+        -V ${vcf} \\
         ${alleleSpecificCommand} \\
         ${resourceCommand} \\
         ${annotationCommand} \\

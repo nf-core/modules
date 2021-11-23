@@ -26,12 +26,12 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test' ]
   - vcf:
-      type: list
-      description: input vcf file(s) containing the variants to be recalibrated
+      type: file
+      description: input vcf file containing the variants to be recalibrated
       pattern: "*.vcf.gz"
   - tbi:
-      type: list
-      description: tbi file(s) matching with -vcf
+      type: file
+      description: tbi file matching with -vcf
       pattern: "*.vcf.gz.tbi"
   - fasta:
       type: file
