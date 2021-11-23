@@ -16,7 +16,7 @@ process GFFREAD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${gff.baseName}${options.suffix}" : "${gff.baseName}"
+    def prefix = task.ext.suffix ? "${gff.baseName}${task.ext.suffix}" : "${gff.baseName}"
     """
     gffread \\
         $gff \\

@@ -17,7 +17,7 @@ process RSEQC_INFEREXPERIMENT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     infer_experiment.py \\
         -i $bam \\

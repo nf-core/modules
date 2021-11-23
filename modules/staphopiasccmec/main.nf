@@ -16,7 +16,7 @@ process STAPHOPIASCCMEC {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     staphopia-sccmec --assembly $fasta $args > ${prefix}.tsv
 

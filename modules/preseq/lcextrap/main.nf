@@ -18,7 +18,7 @@ process PRESEQ_LCEXTRAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     """
     preseq \\

@@ -16,7 +16,7 @@ process GATK4_FASTQTOSAM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
     """
     gatk FastqToSam \\

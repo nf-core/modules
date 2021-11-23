@@ -17,7 +17,7 @@ process TABIX_BGZIPTABIX {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     bgzip -c $args $input > ${prefix}.gz
     tabix $args2 ${prefix}.gz

@@ -23,7 +23,7 @@ process GATK4_HAPLOTYPECALLER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def interval_option = interval ? "-L ${interval}" : ""
     def dbsnp_option    = dbsnp ? "-D ${dbsnp}" : ""
     def avail_mem       = 3

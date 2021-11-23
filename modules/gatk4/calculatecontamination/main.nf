@@ -18,7 +18,7 @@ process GATK4_CALCULATECONTAMINATION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def matched_command = matched ? " -matched ${matched} " : ''
     def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''
     """

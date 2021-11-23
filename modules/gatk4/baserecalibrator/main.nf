@@ -22,7 +22,7 @@ process GATK4_BASERECALIBRATOR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def intervalsCommand = intervalsBed ? "-L ${intervalsBed}" : ""
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')
 

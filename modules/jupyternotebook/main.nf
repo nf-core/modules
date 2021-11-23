@@ -28,7 +28,7 @@ process JUPYTERNOTEBOOK {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because

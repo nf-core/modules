@@ -16,7 +16,7 @@ process BCFTOOLS_STATS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     bcftools stats $args $vcf > ${prefix}.bcftools_stats.txt
     cat <<-END_VERSIONS > versions.yml

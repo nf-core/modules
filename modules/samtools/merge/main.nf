@@ -18,7 +18,7 @@ process SAMTOOLS_MERGE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def file_type = input_files[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """

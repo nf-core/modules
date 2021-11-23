@@ -20,7 +20,7 @@ process QUAST {
 
     script:
     def args = task.ext.args ?: ''
-    prefix        = options.suffix ?: software
+    prefix = task.ext.suffix ?: 'quast'
     def features  = use_gff ? "--features $gff" : ''
     def reference = use_fasta ? "-r $fasta" : ''
     """
@@ -31,7 +31,9 @@ process QUAST {
         --threads $task.cpus \\
         $args \\
         ${consensus.join(' ')}
+
     ln -s ${prefix}/report.tsv
+
     cat <<-END_VERSIONS > versions.yml
     ${task.process.tokenize(':').last()}:
         quast: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')

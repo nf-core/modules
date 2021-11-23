@@ -16,7 +16,7 @@ process SEQKIT_SPLIT2 {
 
     script:
     def args = task.ext.args ?: ''
-    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     if(meta.single_end){
         """
         seqkit \\

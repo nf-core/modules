@@ -19,7 +19,7 @@ process BISMARK_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     bismark \\

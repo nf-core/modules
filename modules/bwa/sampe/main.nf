@@ -17,7 +17,7 @@ process BWA_SAMPE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def read_group = meta.read_group ? "-r ${meta.read_group}" : ""
 
     """

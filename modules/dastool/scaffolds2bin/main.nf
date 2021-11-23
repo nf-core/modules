@@ -17,7 +17,7 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def file_extension = extension ? extension : "fasta"
 
     """

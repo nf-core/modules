@@ -29,7 +29,7 @@ process NCBIGENOMEDOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def accessions_opt = accessions ? "-A ${accessions}" : ""
     """
     ncbi-genome-download \\

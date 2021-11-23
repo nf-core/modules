@@ -18,7 +18,7 @@ process ALLELECOUNTER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def reference_options = fasta ? "-r $fasta": ""
 
     """

@@ -33,7 +33,7 @@ process ARTIC_MINION {
 
     script:
     def args = task.ext.args ?: ''
-    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
     def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""
     def summary  = params.sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""

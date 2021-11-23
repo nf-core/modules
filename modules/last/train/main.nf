@@ -17,7 +17,7 @@ process LAST_TRAIN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
 

@@ -16,7 +16,7 @@ process SAMTOOLS_FIXMATE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use the suffix option to disambiguate!"
 
     """

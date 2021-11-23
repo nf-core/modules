@@ -29,7 +29,7 @@ process PROKKA {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
     """

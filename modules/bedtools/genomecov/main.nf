@@ -24,7 +24,7 @@ process BEDTOOLS_GENOMECOV {
         args += " -bg"
     }
 
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\

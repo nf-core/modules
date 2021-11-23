@@ -17,7 +17,7 @@ process BEDTOOLS_GETFASTA {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${bed.baseName}${options.suffix}" : "${bed.baseName}"
+    def prefix = task.ext.suffix ? "${bed.baseName}${task.ext.suffix}" : "${bed.baseName}"
     """
     bedtools \\
         getfasta \\

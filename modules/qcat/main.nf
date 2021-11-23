@@ -17,7 +17,7 @@ process QCAT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     ## Unzip fastq file
     ## qcat doesn't support zipped files yet

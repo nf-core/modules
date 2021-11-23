@@ -18,7 +18,7 @@ process UNICYCLER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix      = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def short_reads = shortreads ? ( meta.single_end ? "-s $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}" ) : ""
     def long_reads  = longreads ? "-l $longreads" : ""
     """
