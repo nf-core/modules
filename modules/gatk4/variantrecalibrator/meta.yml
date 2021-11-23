@@ -55,7 +55,7 @@ input:
       pattern: '*/hapmap_3.3.hg38_chr21.vcf.gz'
   - restbis:
       type: list
-      description: BAM/CRAM/SAM file
+      description: tbis for the corresponding vcfs files to be used as truth, training and known resources.
       pattern: '*/hapmap_3.3.hg38_chr21.vcf.gz.tbi'
   - reslabels:
       type: list
@@ -78,6 +78,10 @@ output:
       type: file
       description: Output recal file used by ApplyVQSR
       pattern: "*.recal"
+  - idx:
+      type: file
+      description: Index file for the recal output file
+      pattern: "*.idx"
   - tranches:
       type: file
       description: Output tranches file used by ApplyVQSR
