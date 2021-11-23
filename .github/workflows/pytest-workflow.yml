@@ -23,13 +23,12 @@ jobs:
   test:
     runs-on: ubuntu-20.04
 
-    name: ${{ matrix.tags }} ${{ matrix.profile }} ${{ matrix.nxf_version }}
+    name: ${{ matrix.tags }} ${{ matrix.profile }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
-        nxf_version: ["21.04.0"]
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
         profile: ["docker", "singularity", "conda"]
     env:
@@ -60,13 +59,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}-nextflow-${{ matrix.nxf_version }}
+          key: ${{ runner.os }}
           restore-keys: |
             ${{ runner.os }}-nextflow-
 
       - name: Install Nextflow
         env:
-          NXF_VER: ${{ matrix.nxf_version }}
           CAPSULE_LOG: none
         run: |
           wget -qO- get.nextflow.io | bash
@@ -99,7 +97,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.profile }}-${{ matrix.nxf_version }}
+          name: logs-${{ matrix.profile }}
           path: |
             /home/runner/pytest_workflow_*/*/.nextflow.log
             /home/runner/pytest_workflow_*/*/log.out
