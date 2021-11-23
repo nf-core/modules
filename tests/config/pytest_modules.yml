@@ -305,7 +305,7 @@ cooler/digest:
 cooler/cload:
   - modules/cooler/cload/**
   - tests/modules/cooler/cload/**
-  
+
 cooler/dump:
   - modules/cooler/dump/**
   - tests/modules/cooler/dump/**
@@ -349,7 +349,7 @@ dastool/dastool:
 dastool/scaffolds2bin:
   - modules/dastool/scaffolds2bin/**
   - tests/modules/dastool/scaffolds2bin/**
-  
+
 dedup:
   - modules/dedup/**
   - tests/modules/dedup/**
@@ -481,6 +481,10 @@ freebayes:
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
+
+gatk4/applyvqsr:
+  - modules/gatk4/applyvqsr/**
+  - tests/modules/gatk4/applyvqsr/**
 
 gatk4/baserecalibrator:
   - modules/gatk4/baserecalibrator/**
@@ -1246,7 +1250,7 @@ seacr/callpeak:
 seqkit/split2:
   - modules/seqkit/split2/**
   - tests/modules/seqkit/split2/**
- 
+
 seqsero2:
   - modules/seqsero2/**
   - tests/modules/seqsero2/**
@@ -1459,7 +1463,7 @@ subworkflows/gatk_tumor_normal_somatic_variant_calling:
   - *gatk4_getpileupsummaries
   - *gatk4_calculatecontamination
   - *gatk4_filtermutectcalls
-  
+
 subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
   - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
