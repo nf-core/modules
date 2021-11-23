@@ -6,8 +6,8 @@ include { GATK4_APPLYVQSR } from '../../../../modules/gatk4/applyvqsr/main.nf' a
 
 workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map
-              [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz', checkIfExists: true)],
-              [ file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz.tbi', checkIfExists: true)],
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz', checkIfExists: true),
+              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103.vcf.gz.tbi', checkIfExists: true),
               file('/home/AD/gmackenz/test_data/francesco/variantrecals/base/test.recal', checkIfExists: true),
               file('/home/AD/gmackenz/test_data/francesco/variantrecals/base/test.recal.idx', checkIfExists: true),
               file('/home/AD/gmackenz/test_data/francesco/variantrecals/base/test.tranches', checkIfExists: true)

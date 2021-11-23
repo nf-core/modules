@@ -35,14 +35,13 @@ process GATK4_APPLYVQSR {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
-    vcfCommand = '-V ' + vcf.join( ' -V ')
     alleleSpecificCommand = allelespecific ? '-AS' : ''
     truthSensitivityCommand = truthsensitivity ? "--truth-sensitivity-filter-level ${truthsensitivity}" : ''
     modeCommand = mode ? "--mode ${mode} " : 'SNP'
     """
     gatk ApplyVQSR \\
         ${refCommand} \\
-        ${vcfCommand} \\
+        -V ${vcf} \\
         -O ${prefix}.recal \\
         ${alleleSpecificCommand} \\
         ${truthSensitivityCommand} \\
