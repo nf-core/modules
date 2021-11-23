@@ -42,7 +42,7 @@ process GATK4_APPLYVQSR {
     gatk ApplyVQSR \\
         ${refCommand} \\
         -V ${vcf} \\
-        -O ${prefix}.recal \\
+        -O ${prefix}.vcf.gz \\
         ${alleleSpecificCommand} \\
         ${truthSensitivityCommand} \\
         --tranches-file $tranches \\
