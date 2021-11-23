@@ -1,5 +1,5 @@
 - name: sratools fasterqdump test_sratools_fasterqdump_single_end
-  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_single_end -c ./tests/config/nextflow.config -c ./tests/modules/sratools/fasterqdump/nextflow.config
   tags:
     - subworkflows/sra_fastq
   files:
@@ -9,7 +9,7 @@
       md5sum: 466d05dafb2eec672150754168010b4d
 
 - name: sratools fasterqdump test_sratools_fasterqdump_paired_end
-  command: nextflow run tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/sratools/fasterqdump/nextflow.config
   tags:
     - subworkflows/sra_fastq
   files:

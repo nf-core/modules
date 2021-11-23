@@ -1,5 +1,5 @@
 - name: leehom test_leehom_bam
-  command: nextflow run tests/modules/leehom -entry test_leehom_bam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_bam -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
   tags:
     - leehom
   files:
@@ -11,7 +11,7 @@
       md5sum: 25d13b3b31b147bb3836dea9932c38dd
 
 - name: leehom test_leehom_se_fq
-  command: nextflow run tests/modules/leehom -entry test_leehom_se_fq -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_se_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
   tags:
     - leehom
   files:
@@ -23,7 +23,7 @@
       md5sum: 59aa280cb72dfbea05ba913cb89db143
 
 - name: leehom test_leehom_pe_fq
-  command: nextflow run tests/modules/leehom -entry test_leehom_pe_fq -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_pe_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
   tags:
     - leehom
   files:

@@ -1,5 +1,5 @@
 - name: delly call test_delly_call
-  command: nextflow run tests/modules/delly/call -entry test_delly_call -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/delly/call -entry test_delly_call -c ./tests/config/nextflow.config -c ./tests/modules/delly/call/nextflow.config
   tags:
     - delly
     - delly/call

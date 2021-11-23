@@ -1,5 +1,5 @@
 - name: cnvkit
-  command: nextflow run ./tests/modules/cnvkit/ -entry test_cnvkit -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/ -entry test_cnvkit -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/nextflow.config
   tags:
     - cnvkit
   files:

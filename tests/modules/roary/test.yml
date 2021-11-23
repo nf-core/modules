@@ -1,5 +1,5 @@
 - name: roary test_roary
-  command: nextflow run tests/modules/roary -entry test_roary -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/roary -entry test_roary -c ./tests/config/nextflow.config -c ./tests/modules/roary/nextflow.config
   tags:
     - roary
   files:
