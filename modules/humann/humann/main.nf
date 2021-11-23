@@ -59,8 +59,8 @@ process HUMANN_HUMANN {
 
     gzip -n out/*.tsv
     cp out/${prefix}_genefamilies.tsv.gz ${prefix}_genefamilies.tsv.gz
-    cp out/${prefix}_genefamilies.tsv.gz ${prefix}_pathabundance.tsv.gz
-    cp out/${prefix}_genefamilies.tsv.gz ${prefix}_pathcoverage.tsv.gz
+    cp out/${prefix}_pathabundance.tsv.gz ${prefix}_pathabundance.tsv.gz
+    cp out/${prefix}_pathcoverage.tsv.gz ${prefix}_pathcoverage.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
