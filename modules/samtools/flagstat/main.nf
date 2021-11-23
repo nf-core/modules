@@ -19,7 +19,7 @@ process SAMTOOLS_FLAGSTAT {
     """
     samtools flagstat --threads ${task.cpus-1} $bam > ${bam}.flagstat
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """

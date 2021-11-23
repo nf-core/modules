@@ -22,7 +22,7 @@ process SEQTK_MERGEPE {
         ln -s ${reads} ${prefix}.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
@@ -35,7 +35,7 @@ process SEQTK_MERGEPE {
             | gzip -n >> ${prefix}.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """

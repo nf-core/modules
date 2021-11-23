@@ -36,7 +36,7 @@ process UNICYCLER {
     mv unicycler.log ${prefix}.unicycler.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
     END_VERSIONS
     """

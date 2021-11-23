@@ -28,7 +28,7 @@ process YARA_INDEX {
     cp $fasta yara/yara.fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         yara: \$(echo \$(yara_indexer --version 2>&1) | sed 's/^.*yara_indexer version: //; s/ .*\$//')
     END_VERSIONS
     """

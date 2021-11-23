@@ -30,7 +30,7 @@ process PLINK_EXTRACT {
         --out $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
     END_VERSIONS
     """

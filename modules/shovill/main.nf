@@ -32,7 +32,7 @@ process SHOVILL {
         --force
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         shovill: \$(echo \$(shovill --version 2>&1) | sed 's/^.*shovill //')
     END_VERSIONS
     """

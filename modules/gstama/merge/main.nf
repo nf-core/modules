@@ -29,7 +29,7 @@ process GSTAMA_MERGE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         gstama: \$( tama_merge.py -version | head -n1 )
     END_VERSIONS
     """

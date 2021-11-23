@@ -31,7 +31,7 @@ process TBPROFILER_PROFILE {
         $input_reads
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         tbprofiler:  \$( echo \$(tb-profiler --version 2>&1) | sed 's/TBProfiler version //')
     END_VERSIONS
     """

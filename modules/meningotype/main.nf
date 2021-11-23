@@ -24,7 +24,7 @@ process MENINGOTYPE {
         > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
     END_VERSIONS
     """

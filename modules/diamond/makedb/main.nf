@@ -27,7 +27,7 @@ process DIAMOND_MAKEDB {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
     END_VERSIONS
     """

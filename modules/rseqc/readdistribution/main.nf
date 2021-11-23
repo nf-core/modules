@@ -25,7 +25,7 @@ process RSEQC_READDISTRIBUTION {
         > ${prefix}.read_distribution.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         rseqc: \$(read_distribution.py --version | sed -e "s/read_distribution.py //g")
     END_VERSIONS
     """

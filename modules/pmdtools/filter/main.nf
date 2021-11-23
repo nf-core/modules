@@ -44,7 +44,7 @@ process PMDTOOLS_FILTER {
         -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         pmdtools: \$( pmdtools --version | cut -f2 -d ' ' | sed 's/v//')
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS

@@ -24,7 +24,7 @@ process NANOLYSE {
     mv NanoLyse.log ${prefix}.nanolyse.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
     END_VERSIONS
     """

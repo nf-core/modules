@@ -33,7 +33,7 @@ process SRATOOLS_PREFETCH {
     vdb-validate $id
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """

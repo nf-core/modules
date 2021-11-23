@@ -35,7 +35,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
         REFERENCE_SEQUENCE=$fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         picard: \$(picard CollectMultipleMetrics --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
     END_VERSIONS
     """

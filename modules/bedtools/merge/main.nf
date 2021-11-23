@@ -25,7 +25,7 @@ process BEDTOOLS_MERGE {
         > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
     END_VERSIONS
     """

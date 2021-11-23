@@ -35,7 +35,7 @@ process KALLISTOBUSTOOLS_REF {
             $gtf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """
@@ -54,7 +54,7 @@ process KALLISTOBUSTOOLS_REF {
             $gtf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
         END_VERSIONS
         """

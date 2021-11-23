@@ -39,7 +39,7 @@ process NCBIGENOMEDOWNLOAD {
         --flat-output
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         ncbigenomedownload: \$( ncbi-genome-download --version )
     END_VERSIONS
     """

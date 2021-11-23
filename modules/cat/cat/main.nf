@@ -39,7 +39,7 @@ process CAT_CAT {
             > $file_out
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """

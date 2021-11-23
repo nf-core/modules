@@ -23,7 +23,7 @@ process BLAST_MAKEBLASTDB {
     mkdir blast_db
     mv ${fasta}* blast_db
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
     END_VERSIONS
     """

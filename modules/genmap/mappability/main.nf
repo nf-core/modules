@@ -26,7 +26,7 @@ process GENMAP_MAPPABILITY {
         -O mappability
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """

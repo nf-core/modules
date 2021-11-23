@@ -27,7 +27,7 @@ process SEQKIT_SPLIT2 {
             --out-dir $prefix
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """
@@ -42,7 +42,7 @@ process SEQKIT_SPLIT2 {
             --out-dir $prefix
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
         END_VERSIONS
         """

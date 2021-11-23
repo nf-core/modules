@@ -31,7 +31,7 @@ process PRODIGAL {
         -s "${prefix}_all.txt"
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
     END_VERSIONS
     """

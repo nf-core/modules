@@ -23,7 +23,7 @@ process HMMCOPY_GCCOUNTER {
         ${fasta} > ${fasta.baseName}.gc.wig
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         hmmcopy: $VERSION
     END_VERSIONS
     """

@@ -50,7 +50,7 @@ process MANTA_GERMLINE {
         ${prefix}.diploid_sv.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         manta: \$( configManta.py --version )
     END_VERSIONS
     """

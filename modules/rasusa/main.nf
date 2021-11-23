@@ -27,7 +27,7 @@ process RASUSA {
         --input $reads \\
         $output
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         rasusa: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")
     END_VERSIONS
     """

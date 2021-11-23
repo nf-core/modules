@@ -29,7 +29,7 @@ process GUBBINS {
         $args \\
         $alignment
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         gubbins: \$(run_gubbins.py --version 2>&1)
     END_VERSIONS
     """

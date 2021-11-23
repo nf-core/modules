@@ -25,7 +25,7 @@ process UNZIP {
         $archive
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
     END_VERSIONS
     """

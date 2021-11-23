@@ -41,7 +41,7 @@ process RSEM_PREPAREREFERENCE {
             rsem/genome
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
         END_VERSIONS
@@ -56,7 +56,7 @@ process RSEM_PREPAREREFERENCE {
             rsem/genome
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
         END_VERSIONS

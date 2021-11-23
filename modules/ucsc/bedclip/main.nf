@@ -27,7 +27,7 @@ process UCSC_BEDCLIP {
         ${prefix}.bedGraph
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         ucsc: $VERSION
     END_VERSIONS
     """

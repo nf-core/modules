@@ -30,7 +30,7 @@ process CMSEQ_POLYMUT {
         $bam > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         cmseq: $VERSION
     END_VERSIONS
     """

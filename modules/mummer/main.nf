@@ -38,7 +38,7 @@ process MUMMER {
         > ${prefix}.coords
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         mummer: $VERSION
     END_VERSIONS
     """

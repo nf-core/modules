@@ -24,7 +24,7 @@ process RSEQC_BAMSTAT {
         > ${prefix}.bam_stat.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         rseqc: \$(bam_stat.py --version | sed -e "s/bam_stat.py //g")
     END_VERSIONS
     """

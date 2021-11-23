@@ -27,7 +27,7 @@ process HOMER_FINDPEAKS {
         -o ${prefix}.peaks.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         homer: $VERSION
     END_VERSIONS
     """

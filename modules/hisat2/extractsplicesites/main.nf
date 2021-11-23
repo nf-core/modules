@@ -21,7 +21,7 @@ process HISAT2_EXTRACTSPLICESITES {
     """
     hisat2_extract_splice_sites.py $gtf > ${gtf.baseName}.splice_sites.txt
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         hisat2: $VERSION
     END_VERSIONS
     """

@@ -28,7 +28,7 @@ process RACON {
     gzip -n ${prefix}_assembly_consensus.fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         racon: \$( racon --version 2>&1 | sed 's/^.*v//' )
     END_VERSIONS
     """

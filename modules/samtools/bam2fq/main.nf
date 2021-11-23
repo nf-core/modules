@@ -32,7 +32,7 @@ process SAMTOOLS_BAM2FQ {
             $inputbam
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
@@ -45,7 +45,7 @@ process SAMTOOLS_BAM2FQ {
             $inputbam >${prefix}_interleaved.fq.gz
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """

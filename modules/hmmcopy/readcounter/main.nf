@@ -25,7 +25,7 @@ process HMMCOPY_READCOUNTER {
         ${bam} > ${prefix}.wig
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         hmmcopy: $VERSION
     END_VERSIONS
     """

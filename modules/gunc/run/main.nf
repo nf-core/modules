@@ -28,7 +28,7 @@ process GUNC_RUN {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         gunc: \$( gunc --version )
     END_VERSIONS
     """

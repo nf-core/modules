@@ -26,7 +26,7 @@ process ROARY {
         $gff
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         roary: \$( roary --version )
     END_VERSIONS
     """

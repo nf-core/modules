@@ -28,7 +28,7 @@ process HOMER_MAKETAGDIRECTORY {
         -genome $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         homer: $VERSION
     END_VERSIONS
     """

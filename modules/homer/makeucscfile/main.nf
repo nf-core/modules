@@ -26,7 +26,7 @@ process HOMER_MAKEUCSCFILE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         homer: $VERSION
     END_VERSIONS
     """

@@ -25,7 +25,7 @@ process COOLER_ZOOMIFY {
         $cool
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
     END_VERSIONS
     """

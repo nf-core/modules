@@ -33,7 +33,7 @@ process FGBIO_GROUPREADSBYUMI {
         -f ${prefix}_umi_histogram.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
     END_VERSIONS
     """

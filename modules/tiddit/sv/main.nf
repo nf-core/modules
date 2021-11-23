@@ -31,7 +31,7 @@ process TIDDIT_SV {
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
     END_VERSIONS
     """

@@ -26,7 +26,7 @@ process LAST_LASTDB {
         $fastx
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
     END_VERSIONS
     """

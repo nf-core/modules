@@ -32,7 +32,7 @@ process CHECKM_LINEAGEWF {
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         checkm: \$( checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
     END_VERSIONS
     """

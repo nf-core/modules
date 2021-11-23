@@ -23,7 +23,7 @@ process FASTTREE {
         > fasttree_phylogeny.tre
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         fasttree: \$(fasttree -help 2>&1 | head -1  | sed 's/^FastTree \\([0-9\\.]*\\) .*\$/\\1/')
     END_VERSIONS
     """

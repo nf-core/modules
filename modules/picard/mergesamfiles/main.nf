@@ -33,7 +33,7 @@ process PICARD_MERGESAMFILES {
             ${'INPUT='+bam_files.join(' INPUT=')} \\
             OUTPUT=${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             picard: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """
@@ -41,7 +41,7 @@ process PICARD_MERGESAMFILES {
         """
         ln -s ${bam_files[0]} ${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             picard: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
         END_VERSIONS
         """

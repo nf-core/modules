@@ -25,7 +25,7 @@ process SEQUENZAUTILS_GCWIGGLE {
         -o ${prefix}.wig.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         sequenzautils: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """

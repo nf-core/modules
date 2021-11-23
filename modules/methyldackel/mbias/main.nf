@@ -29,7 +29,7 @@ process METHYLDACKEL_MBIAS {
         > ${prefix}.mbias.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """

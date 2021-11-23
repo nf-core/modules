@@ -40,7 +40,7 @@ process ATAQV_ATAQV {
         $bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         ataqv: \$( ataqv --version )
     END_VERSIONS
     """

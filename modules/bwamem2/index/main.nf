@@ -24,7 +24,7 @@ process BWAMEM2_INDEX {
         $fasta -p bwamem2/${fasta}
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
     END_VERSIONS
     """

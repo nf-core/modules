@@ -27,7 +27,7 @@ process BLAST_BLASTN {
         $args \\
         -out ${prefix}.blastn.txt
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
     END_VERSIONS
     """

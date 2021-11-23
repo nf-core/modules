@@ -25,7 +25,7 @@ process PYCOQC {
         -j pycoqc.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         pycoqc: \$(pycoQC --version 2>&1 | sed 's/^.*pycoQC v//; s/ .*\$//')
     END_VERSIONS
     """

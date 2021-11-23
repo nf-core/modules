@@ -27,7 +27,7 @@ process MASHTREE {
         $seqs
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
     END_VERSIONS
     """

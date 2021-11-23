@@ -40,7 +40,7 @@ process STRELKA_GERMLINE {
     mv strelka/results/variants/variants.vcf.gz.tbi ${prefix}.variants.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         strelka: \$( configureStrelkaGermlineWorkflow.py --version )
     END_VERSIONS
     """

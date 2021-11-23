@@ -20,7 +20,7 @@ process BWAMETH_INDEX {
     bwameth.py index $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         bwameth: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
     END_VERSIONS
     """

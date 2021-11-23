@@ -36,7 +36,7 @@ process IVAR_VARIANTS {
             -p $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """

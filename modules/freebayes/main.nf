@@ -44,7 +44,7 @@ process FREEBAYES {
         gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
@@ -63,7 +63,7 @@ process FREEBAYES {
         gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """

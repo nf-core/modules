@@ -29,7 +29,7 @@ process DEDUP {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         dedup: \$( echo \$(dedup --version 2>&1) | tail -n 1 | sed 's/.* v//')
 
     END_VERSIONS

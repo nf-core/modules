@@ -31,7 +31,7 @@ process CNVKIT {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
     END_VERSIONS
     """

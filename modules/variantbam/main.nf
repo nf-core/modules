@@ -26,7 +26,7 @@ process VARIANTBAM {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         variantbam: $VERSION
     END_VERSIONS
     """

@@ -27,7 +27,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
         ${prefix}.bigWig
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         ucsc: $VERSION
     END_VERSIONS
     """

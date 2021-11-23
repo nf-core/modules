@@ -30,7 +30,7 @@ process ALLELECOUNTER {
         -o ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         allelecounter: \$(alleleCounter --version)
     END_VERSIONS
     """

@@ -20,7 +20,7 @@ process GUNC_DOWNLOADDB {
     gunc download_db . -db $db_name $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         gunc: \$( gunc --version )
     END_VERSIONS
     """

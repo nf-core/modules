@@ -23,7 +23,7 @@ process GFFREAD {
         $args \\
         -o ${prefix}.gtf
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         gffread: \$(gffread --version 2>&1)
     END_VERSIONS
     """

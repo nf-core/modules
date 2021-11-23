@@ -38,7 +38,7 @@ process MEGAHIT {
             megahit_out/intermediate_contigs/*.fa
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """
@@ -59,7 +59,7 @@ process MEGAHIT {
             megahit_out/intermediate_contigs/*.fa
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        ${task.process}:
             megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
         END_VERSIONS
         """

@@ -54,7 +54,7 @@ process HISAT2_BUILD {
         hisat2/${fasta.baseName}
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    ${task.process}:
         hisat2: $VERSION
     END_VERSIONS
     """
