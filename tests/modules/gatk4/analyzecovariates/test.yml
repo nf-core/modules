@@ -1,0 +1,8 @@
+- name: gatk4 analyzecovariates test_gatk4_analyzecovariates
+  command: nextflow run tests/modules/gatk4/analyzecovariates -entry test_gatk4_analyzecovariates -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/analyzecovariates
+  files:
+    - path: output/gatk4/test.table
+      md5sum: e2e43abdc0c943c1a54dae816d0b9ea7
