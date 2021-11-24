@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FILTLONG } from '../../../modules/filtlong/main.nf' addParams( options: [:] )
+include { FILTLONG } from '../../../modules/filtlong/main.nf' addParams( options: [args: '--keep_percent 90'] )
 
 workflow test_filtlong {
     
