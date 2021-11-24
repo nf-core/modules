@@ -31,7 +31,7 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         --numberOfProcessors $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         deeptools: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
     END_VERSIONS
     """

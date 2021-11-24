@@ -36,7 +36,7 @@ process BWAMETH_ALIGN {
         | samtools view $args2 -@ $task.cpus -bhS -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bwameth: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
     END_VERSIONS
     """

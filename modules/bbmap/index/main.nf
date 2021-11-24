@@ -24,7 +24,7 @@ process BBMAP_INDEX {
         -Xmx${task.memory.toGiga()}g
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bbmap: \$(bbversion.sh)
     END_VERSIONS
     """

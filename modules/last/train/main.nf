@@ -29,7 +29,7 @@ process LAST_TRAIN {
         > ${prefix}.\$INDEX_NAME.par
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         last: \$(lastdb --version | sed 's/lastdb //')
     END_VERSIONS
     """

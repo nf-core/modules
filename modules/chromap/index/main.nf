@@ -28,7 +28,7 @@ process CHROMAP_INDEX {
         -o ${prefix}.index
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         chromap: $VERSION
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS

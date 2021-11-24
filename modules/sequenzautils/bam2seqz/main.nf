@@ -30,7 +30,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
         -o ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         sequenzautils: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
     END_VERSIONS
     """

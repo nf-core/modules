@@ -41,7 +41,7 @@ process SRATOOLS_FASTERQDUMP {
         *.fastq
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS

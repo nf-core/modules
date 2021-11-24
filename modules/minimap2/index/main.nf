@@ -23,7 +23,7 @@ process MINIMAP2_INDEX {
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         minimap2: \$(minimap2 --version 2>&1)
     END_VERSIONS
     """

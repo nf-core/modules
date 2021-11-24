@@ -37,7 +37,7 @@ process LEEHOM {
             $reads
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             leehom: $VERSION
         END_VERSIONS
         """
@@ -51,7 +51,7 @@ process LEEHOM {
             --log ${prefix}.log
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             leehom: $VERSION
         END_VERSIONS
         """
@@ -66,7 +66,7 @@ process LEEHOM {
             --log ${prefix}.log
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             leehom: $VERSION
         END_VERSIONS
         """

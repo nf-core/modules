@@ -31,7 +31,7 @@ process HOMER_ANNOTATEPEAKS {
         > ${prefix}.annotatePeaks.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         homer: $VERSION
     END_VERSIONS
     """

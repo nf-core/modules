@@ -26,7 +26,7 @@ process DSHBIO_SPLITBED {
         -i $bed
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
     END_VERSIONS
     """

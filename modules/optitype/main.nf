@@ -39,7 +39,7 @@ process OPTITYPE {
 
     #Couldn't find a nicer way of doing this
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         optitype: \$(cat \$(which OptiTypePipeline.py) | grep -e "Version:" | sed -e "s/Version: //g")
     END_VERSIONS
     """

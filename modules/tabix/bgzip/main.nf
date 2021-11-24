@@ -21,7 +21,7 @@ process TABIX_BGZIP {
     bgzip -c $args $input > ${prefix}.${input.getExtension()}.gz
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """

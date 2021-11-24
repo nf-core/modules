@@ -38,7 +38,7 @@ process HICAP {
         -o ./
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
     END_VERSIONS
     """

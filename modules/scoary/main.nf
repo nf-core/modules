@@ -28,7 +28,7 @@ process SCOARY {
         --genes $genes
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         scoary: \$( scoary --version 2>&1 )
     END_VERSIONS
     """

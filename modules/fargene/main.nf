@@ -46,7 +46,7 @@ process FARGENE {
             -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         fargene: $VERSION
     END_VERSIONS
     """

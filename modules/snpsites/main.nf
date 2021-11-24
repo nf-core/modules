@@ -28,7 +28,7 @@ process SNPSITES {
     CONSTANT_SITES=\$(cat constant.sites.txt)
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """

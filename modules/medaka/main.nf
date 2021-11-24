@@ -30,7 +30,7 @@ process MEDAKA {
     gzip -n ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         medaka: \$( medaka --version 2>&1 | sed 's/medaka //g' )
     END_VERSIONS
     """

@@ -27,7 +27,7 @@ process BAMUTIL_TRIMBAM {
         -R $trim_right
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bamutil: \$( echo \$( bam trimBam 2>&1 ) | sed 's/^Version: //;s/;.*//' )
     END_VERSIONS
     """

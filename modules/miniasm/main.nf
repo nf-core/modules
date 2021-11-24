@@ -31,7 +31,7 @@ process MINIASM {
     gzip -n ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         miniasm: \$( miniasm -V 2>&1 )
     END_VERSIONS
     """

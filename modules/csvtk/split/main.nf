@@ -33,7 +33,7 @@ process CSVTK_SPLIT {
         $csv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         csvtk: \$(echo \$( csvtk version | sed -e 's/csvtk v//g' ))
     END_VERSIONS
     """

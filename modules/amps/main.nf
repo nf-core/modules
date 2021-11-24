@@ -30,7 +30,7 @@ process AMPS {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
     END_VERSIONS
     """

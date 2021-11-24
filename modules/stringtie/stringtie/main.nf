@@ -41,7 +41,7 @@ process STRINGTIE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         stringtie: \$(stringtie --version 2>&1)
     END_VERSIONS
     """

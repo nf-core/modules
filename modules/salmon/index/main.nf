@@ -36,7 +36,7 @@ process SALMON_INDEX {
         $args \\
         -i salmon
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         salmon: \$(echo \$(salmon --version) | sed -e "s/salmon //g")
     END_VERSIONS
     """

@@ -36,7 +36,7 @@ process MAXBIN2 {
     gzip *.fasta *.noclass *.tooshort *log *.marker
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
     END_VERSIONS
     """

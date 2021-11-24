@@ -24,7 +24,7 @@ process RAXMLNG {
         --prefix output
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
     END_VERSIONS
     """

@@ -44,7 +44,7 @@ process MUSCLE {
         $tree_out \\
         -loga muscle_msa.log
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         muscle: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
     END_VERSIONS
     """

@@ -50,7 +50,7 @@ process MANTA_TUMORONLY {
         ${prefix}.tumor_sv.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         manta: \$( configManta.py --version )
     END_VERSIONS
     """

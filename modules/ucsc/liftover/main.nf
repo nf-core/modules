@@ -31,7 +31,7 @@ process UCSC_LIFTOVER {
         ${prefix}.unlifted.bed
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ucsc: $VERSION
     END_VERSIONS
     """

@@ -32,7 +32,7 @@ process LAST_MAFCONVERT {
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
     END_VERSIONS
     """

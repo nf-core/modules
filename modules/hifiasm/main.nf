@@ -39,7 +39,7 @@ process HIFIASM {
             $reads
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
@@ -52,7 +52,7 @@ process HIFIASM {
             $reads
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """

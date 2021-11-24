@@ -29,7 +29,7 @@ process SEQWISH_INDUCE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         seqwish: $VERSION
     END_VERSIONS
     """

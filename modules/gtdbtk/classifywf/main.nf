@@ -49,7 +49,7 @@ process GTDBTK_CLASSIFYWF {
     mv gtdbtk.warnings.log "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
@@ -67,7 +67,7 @@ process GTDBTK_CLASSIFYWF {
     touch gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         gtdbtk: $VERSION
     END_VERSIONS
     """

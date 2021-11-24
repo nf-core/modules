@@ -27,7 +27,7 @@ process UCSC_BED12TOBIGBED {
         ${prefix}.bigBed
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ucsc: $VERSION
     END_VERSIONS
     """

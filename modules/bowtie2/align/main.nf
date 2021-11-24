@@ -35,7 +35,7 @@ process BOWTIE2_ALIGN {
             | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             bowtie2: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
@@ -63,7 +63,7 @@ process BOWTIE2_ALIGN {
         fi
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             bowtie2: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )

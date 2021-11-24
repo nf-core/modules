@@ -27,7 +27,7 @@ process BEDTOOLS_INTERSECT {
         > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
     END_VERSIONS
     """

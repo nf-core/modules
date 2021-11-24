@@ -37,7 +37,7 @@ process METABAT2_METABAT2 {
     bgzip --threads $task.cpus bins/*.fa
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         metabat2: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
     END_VERSIONS
     """

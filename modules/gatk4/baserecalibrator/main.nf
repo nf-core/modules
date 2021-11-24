@@ -42,7 +42,7 @@ process GATK4_BASERECALIBRATOR {
         -O ${prefix}.table
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """

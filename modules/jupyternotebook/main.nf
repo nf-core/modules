@@ -74,7 +74,7 @@ process JUPYTERNOTEBOOK {
         | jupyter nbconvert --stdin --to html --output ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         jupytext: \$(jupytext --version)
         ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
         nbconvert: \$(jupyter nbconvert --version)
