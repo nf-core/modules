@@ -15,5 +15,6 @@ workflow test_cooler_merge {
         ]
     ]
 
-    COOLER_MERGE ( input ).cool | COOLER_DUMP
+    COOLER_MERGE ( input )
+    COOLER_DUMP ( COOLER_MERGE.out.cool, "" )
 }
