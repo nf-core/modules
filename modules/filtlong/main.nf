@@ -27,7 +27,8 @@ process FILTLONG {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def short_reads = meta.single_end ? "-1 $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}"
+    def short_reads = '' // Start with empty value in case there are no short reads.
+    if (shortreads) short_reads = meta.single_end ? "-1 $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}"
     """
     filtlong \\
         $short_reads \\
