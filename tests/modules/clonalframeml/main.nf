@@ -7,8 +7,8 @@ include { CLONALFRAMEML } from '../../../modules/clonalframeml/main.nf' addParam
 workflow test_clonalframeml {
     
     input = [ [ id:'test' ], // meta map
-              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome_msa.newick", checkIfExists: true),
-              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome_msa.fa.gz", checkIfExists: true),]
+              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome.aln.nwk", checkIfExists: true),
+              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome.aln.gz", checkIfExists: true),]
 
     CLONALFRAMEML ( input )
 }
