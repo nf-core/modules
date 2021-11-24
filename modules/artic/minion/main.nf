@@ -35,13 +35,13 @@ process ARTIC_MINION {
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
-    def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""
-    def summary  = params.sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
+    def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""
+    def summary  = sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
     def model    = ""
     if (args.tokenize().contains('--medaka')) {
         fast5   = ""
         summary = ""
-        model = file(params.artic_minion_medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $params.artic_minion_medaka_model"
+        model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
     }
     """
     artic \\
