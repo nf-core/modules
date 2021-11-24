@@ -6,9 +6,9 @@ process ENSEMBLVEP {
 
     conda (params.enable_conda ? "bioconda::ensembl-vep=104.3" : null)
     if (params.use_cache) {
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ensembl-vep:104.3--pl5262h4a94de4_0' :
-        'quay.io/biocontainers/ensembl-vep:104.3--pl5262h4a94de4_0' }"
+        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'https://depot.galaxyproject.org/singularity/ensembl-vep:104.3--pl5262h4a94de4_0' :
+            'quay.io/biocontainers/ensembl-vep:104.3--pl5262h4a94de4_0' }"
     } else {
         container "nfcore/vep:${params.vep_tag}"
     }
@@ -28,7 +28,7 @@ process ENSEMBLVEP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    dir_cache    = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
+    def dir_cache = params.use_cache ? "\${PWD}/${cache}" : "/.vep"
     """
     mkdir $prefix
 

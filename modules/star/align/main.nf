@@ -12,6 +12,9 @@ process STAR_ALIGN {
     tuple val(meta), path(reads)
     path  index
     path  gtf
+    val star_ignore_sjdbgtf
+    val seq_platform
+    val seq_center
 
     output:
     tuple val(meta), path('*d.out.bam')       , emit: bam
@@ -30,9 +33,9 @@ process STAR_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def ignore_gtf      = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
-    def seq_platform    = params.seq_platform ? "'PL:$params.seq_platform'" : ""
-    def seq_center      = params.seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$params.seq_center' 'SM:$prefix' $seq_platform " : "--outSAMattrRGline ID:$prefix 'SM:$prefix' $seq_platform "
+    def ignore_gtf      = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
+    def seq_platform    = seq_platform ? "'PL:$seq_platform'" : ""
+    def seq_center      = seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$seq_center' 'SM:$prefix' $seq_platform " : "--outSAMattrRGline ID:$prefix 'SM:$prefix' $seq_platform "
     def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     def mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
     """

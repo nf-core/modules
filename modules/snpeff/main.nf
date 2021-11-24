@@ -6,9 +6,9 @@ process SNPEFF {
 
     conda (params.enable_conda ? "bioconda::snpeff=5.0" : null)
     if (params.use_cache) {
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
-        'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"
+        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
+            'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"
     } else {
         container "nfcore/snpeff:${params.snpeff_tag}"
     }
@@ -32,13 +32,14 @@ process SNPEFF {
         avail_mem = task.memory.giga
     }
     def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    cache        = params.use_cache ? "-dataDir \${PWD}/${snpeff_cache}" : ""
+    def dir_cache = params.use_cache ? "-dataDir \${PWD}/${cache}" : ""
     """
-    snpEff -Xmx${avail_mem}g \\
+    snpEff \\
+        -Xmx${avail_mem}g \\
         $db \\
         $args \\
         -csvStats ${prefix}.csv \\
-        $cache \\
+        $dir_cache \\
         $vcf \\
         > ${prefix}.ann.vcf
 
