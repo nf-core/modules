@@ -92,6 +92,8 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
+        # HACK Skip subworkflows
+        if: startsWith( matrix.tags, 'subworkflow' ) != true
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: NF_CORE_MODULES_TEST=1 TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof
 
