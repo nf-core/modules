@@ -1,6 +1,6 @@
 def VERSION = '2.8' // Version information not provided by tool on CLI
 
-process KRONATOOLS_KTIMPORTTAXONOMY {
+process KRONA_KTIMPORTTAXONOMY {
     tag "${meta.id}"
     label 'process_high'
 
@@ -24,7 +24,7 @@ process KRONATOOLS_KTIMPORTTAXONOMY {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        kronatools: $VERSION
+        krona: $VERSION
     END_VERSIONS
     """
 }

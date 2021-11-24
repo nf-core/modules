@@ -1,4 +1,4 @@
-name: kronatools_ktimporttaxonomy
+name: krona_ktimporttaxonomy
 description: KronaTools Import Taxonomy imports taxonomy classifications and produces an interactive Krona plot.
 keywords:
   - plot
@@ -8,7 +8,7 @@ keywords:
   - visualisation
   - krona chart
 tools:
-  - kronatools:
+  - krona:
       description: Krona Tools is a set of scripts to create Krona charts from several Bioinformatics tools as well as from text and XML files.
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: http://manpages.ubuntu.com/manpages/impish/man1/ktImportTaxonomy.1.html
@@ -24,7 +24,7 @@ input:
         e.g. [ id:'test']
   - database:
       type: path
-      description: "Path to the taxonomy database downloaded by kronatools/kronadb"
+      description: "Path to the taxonomy database downloaded by krona/kronadb"
   - report:
       type: file
       description: "A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.  Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.  Lines beginning with # will be ignored."

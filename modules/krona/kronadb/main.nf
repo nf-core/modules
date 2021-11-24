@@ -1,6 +1,6 @@
 def VERSION='2.7.1' // Version information not provided by tool on CLI
 
-process KRONATOOLS_KRONADB {
+process KRONA_KRONADB {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
@@ -21,7 +21,7 @@ process KRONATOOLS_KRONADB {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        kronatools: $VERSION
+        krona: $VERSION
     END_VERSIONS
     """
 }
