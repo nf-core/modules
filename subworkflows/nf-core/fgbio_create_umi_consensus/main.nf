@@ -13,12 +13,12 @@ params.groupumistrategy        = "Adjacency"
 params.umiconsensus_options    = [args: '-M 1 -S Coordinate', suffix: '_umiconsensus']
 
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM }         from '../../../modules/fgbio/fastqtobam/main'                        addParams( options: params.fastqtobam_options )
-include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ }          from '../../../modules/samtools/bam2fq/main.nf'                   addParams( options: params.bam2fq_options )
-include { BWA_INDEX }                                               from '../../../modules/bwa/index/main.nf'                         addParams( options: [:] )
+include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ }          from '../../../modules/samtools/bam2fq/main.nf'                      addParams( options: params.bam2fq_options )
+include { BWA_INDEX }                                               from '../../../modules/bwa/index/main.nf'                            addParams( options: [:] )
 include { BWA_MEM }                                                 from '../../../modules/bwa/mem/main'                                 addParams( options: params.bwamem_options )
 include { SAMBLASTER }                                              from '../../../modules/samblaster/main'                              addParams( options: params.samblaster_options )
 include { FGBIO_GROUPREADSBYUMI             as GROUPREADSBYUMI }    from '../../../modules/fgbio/groupreadsbyumi/main'                   addParams( options: params.groupreadsbyumi_options )
-include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS }   from '../../../modules/fgbio/callmolecularconsensusreads/main.nf' addParams( options: params.umiconsensus_options )
+include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS }   from '../../../modules/fgbio/callmolecularconsensusreads/main.nf'    addParams( options: params.umiconsensus_options )
 
 workflow CREATE_UMI_CONSENSUS {
     take:
