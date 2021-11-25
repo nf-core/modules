@@ -14,9 +14,12 @@ workflow test_arriba_single_end {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_ignore_sjdbgtf = false
+    seq_platform = 'illumina'
+    seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
     ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
 }
 
@@ -29,8 +32,11 @@ workflow test_arriba_paired_end {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_ignore_sjdbgtf = false
+    seq_platform = 'illumina'
+    seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
     ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
 }
