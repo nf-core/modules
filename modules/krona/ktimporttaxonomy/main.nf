@@ -23,7 +23,7 @@ process KRONA_KTIMPORTTAXONOMY {
     ktImportTaxonomy "$report" -tax taxonomy
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         krona: $VERSION
     END_VERSIONS
     """

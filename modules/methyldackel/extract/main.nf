@@ -25,7 +25,7 @@ process METHYLDACKEL_EXTRACT {
         $bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """

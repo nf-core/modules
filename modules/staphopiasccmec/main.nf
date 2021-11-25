@@ -21,7 +21,7 @@ process STAPHOPIASCCMEC {
     staphopia-sccmec --assembly $fasta $args > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         staphopiasccmec: \$(staphopia-sccmec --version 2>&1 | sed 's/^.*staphopia-sccmec //')
     END_VERSIONS
     """

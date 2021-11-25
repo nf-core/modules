@@ -66,7 +66,7 @@ process CHROMAP_CHROMAP {
         $compression_cmds
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             chromap: $VERSION
         END_VERSIONS
         """
@@ -84,7 +84,7 @@ process CHROMAP_CHROMAP {
         $compression_cmds
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             chromap: $VERSION
         END_VERSIONS
         """

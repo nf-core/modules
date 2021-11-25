@@ -23,7 +23,7 @@ process LAST_POSTMASK {
 
     # last-postmask does not have a --version option
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         last: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """

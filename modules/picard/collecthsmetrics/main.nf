@@ -41,7 +41,7 @@ process PICARD_COLLECTHSMETRICS {
         -OUTPUT ${prefix}_collecthsmetrics.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """

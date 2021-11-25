@@ -29,7 +29,7 @@ process MALTEXTRACT {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """

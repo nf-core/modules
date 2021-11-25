@@ -57,7 +57,7 @@ process DASTOOL_DASTOOL {
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         dastool: \$( DAS_Tool --version 2>&1 | grep "DAS Tool" | sed 's/DAS Tool version //' )
     END_VERSIONS
     """

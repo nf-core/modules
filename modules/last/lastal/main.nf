@@ -32,7 +32,7 @@ process LAST_LASTAL {
     # which makes its checksum non-reproducible.
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         last: \$(lastal --version 2>&1 | sed 's/lastal //')
     END_VERSIONS
     """

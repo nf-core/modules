@@ -28,7 +28,7 @@ process SPATYPER {
         --output ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         spatyper: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
     END_VERSIONS
     """

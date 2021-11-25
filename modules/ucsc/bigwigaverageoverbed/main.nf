@@ -29,7 +29,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
         ${prefix}.tab
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ucsc: $VERSION
     END_VERSIONS
     """

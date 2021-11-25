@@ -27,7 +27,7 @@ process PAIRTOOLS_FLIP {
         $sam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
     END_VERSIONS
     """

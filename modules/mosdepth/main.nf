@@ -33,7 +33,7 @@ process MOSDEPTH {
         $prefix \\
         $bam
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
     END_VERSIONS
     """

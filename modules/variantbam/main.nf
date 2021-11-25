@@ -26,7 +26,7 @@ process VARIANTBAM {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         variantbam: $VERSION
     END_VERSIONS
     """

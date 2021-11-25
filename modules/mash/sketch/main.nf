@@ -27,7 +27,7 @@ process MASH_SKETCH {
         2> ${prefix}.mash_stats
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         mash: \$(mash --version 2>&1)
     END_VERSIONS
     """

@@ -6,9 +6,10 @@ include { FGBIO_GROUPREADSBYUMI } from '../../../../modules/fgbio/groupreadsbyum
 
 workflow test_fgbio_groupreadsbyumi {
 
-    input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_unsorted_tagged_bam'], checkIfExists: true) ]
-
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_unsorted_tagged_bam'], checkIfExists: true)
+    ]
     strategy = "Adjacency"
 
     FGBIO_GROUPREADSBYUMI ( input, strategy )

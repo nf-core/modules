@@ -25,7 +25,7 @@ process PBBAM_PBMERGE {
         *.bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         pbbam: \$( pbmerge --version|sed 's/pbmerge //' )
     END_VERSIONS
     """

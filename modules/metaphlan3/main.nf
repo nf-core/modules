@@ -35,7 +35,7 @@ process METAPHLAN3 {
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """

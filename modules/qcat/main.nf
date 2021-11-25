@@ -37,7 +37,7 @@ process QCAT {
     gzip fastq/*
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         qcat: \$(qcat --version 2>&1 | sed 's/^.*qcat //; s/ .*\$//')
     END_VERSIONS
     """

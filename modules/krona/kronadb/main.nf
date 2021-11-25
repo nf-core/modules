@@ -20,7 +20,7 @@ process KRONA_KRONADB {
     ktUpdateTaxonomy.sh taxonomy
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         krona: $VERSION
     END_VERSIONS
     """

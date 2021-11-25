@@ -25,7 +25,7 @@ process PYDAMAGE_ANALYZE {
         $bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
     END_VERSIONS
     """

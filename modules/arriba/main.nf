@@ -32,7 +32,7 @@ process ARRIBA {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """

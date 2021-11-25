@@ -30,7 +30,7 @@ process DRAGONFLYE {
         --outdir ./ \\
         --force
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         dragonflye: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
     END_VERSIONS
     """

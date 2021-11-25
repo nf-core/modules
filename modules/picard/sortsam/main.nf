@@ -33,7 +33,7 @@ process PICARD_SORTSAM {
         --SORT_ORDER $sort_order
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         picard: \$(picard SortSam --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """

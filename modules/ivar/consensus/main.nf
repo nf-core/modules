@@ -33,7 +33,7 @@ process IVAR_CONSENSUS {
             -p $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """

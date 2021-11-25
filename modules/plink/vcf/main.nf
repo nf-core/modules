@@ -29,7 +29,7 @@ process PLINK_VCF {
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
     END_VERSIONS
     """

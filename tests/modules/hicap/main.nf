@@ -5,10 +5,11 @@ nextflow.enable.dsl = 2
 include { HICAP } from '../../../modules/hicap/main.nf'
 
 workflow test_hicap {
-    
-    input = [ [ id:'test', single_end:false ], // meta map
-              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/GCF_900478275.fna.gz", checkIfExists: true) ]
-    
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+    ]
     database_dir = []
     model_fp = []
 

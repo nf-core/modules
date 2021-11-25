@@ -27,7 +27,7 @@ process LAST_DOTPLOT {
 
     # last-dotplot has no --version option so let's use lastal from the same suite
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         last: \$(lastal --version | sed 's/lastal //')
     END_VERSIONS
     """

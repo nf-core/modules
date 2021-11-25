@@ -42,7 +42,7 @@ process MAPDAMAGE2 {
             -r $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         mapdamage2: \$(echo \$(mapDamage --version))
     END_VERSIONS
     """

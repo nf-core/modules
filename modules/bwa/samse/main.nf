@@ -31,7 +31,7 @@ process BWA_SAMSE {
         $reads | samtools sort -@ ${task.cpus - 1} -O bam - > ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS

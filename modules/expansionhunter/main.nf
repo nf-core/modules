@@ -30,7 +30,7 @@ process EXPANSIONHUNTER {
         --sex $gender
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
     END_VERSIONS
     """

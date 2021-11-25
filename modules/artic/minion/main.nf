@@ -58,7 +58,7 @@ process ARTIC_MINION {
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         artic: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """

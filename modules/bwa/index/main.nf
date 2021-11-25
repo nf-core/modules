@@ -25,7 +25,7 @@ process BWA_INDEX {
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
     END_VERSIONS
     """

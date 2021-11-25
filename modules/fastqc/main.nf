@@ -25,7 +25,7 @@ process FASTQC {
         fastqc $args --threads $task.cpus ${prefix}.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
         END_VERSIONS
         """
@@ -36,7 +36,7 @@ process FASTQC {
         fastqc $args --threads $task.cpus ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
         END_VERSIONS
         """

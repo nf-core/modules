@@ -31,7 +31,7 @@ process ULTRA_PIPELINE {
         ./
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
     END_VERSIONS
     """

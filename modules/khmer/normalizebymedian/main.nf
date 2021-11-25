@@ -31,7 +31,7 @@ process KHMER_NORMALIZEBYMEDIAN {
         $files
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         khmer: \$( normalize-by-median.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
     END_VERSIONS
     """

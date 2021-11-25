@@ -33,7 +33,7 @@ process NEXTCLADE {
         --output-tree ${prefix}.tree.json
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         nextclade: \$(nextclade --version 2>&1)
     END_VERSIONS
     """

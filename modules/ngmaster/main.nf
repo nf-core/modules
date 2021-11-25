@@ -24,7 +24,7 @@ process NGMASTER {
         > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         ngmaster: \$( echo \$(ngmaster --version 2>&1) | sed 's/^.*ngmaster //' )
     END_VERSIONS
     """

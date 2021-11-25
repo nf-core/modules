@@ -1,8 +1,4 @@
-include { dump_params_yml; indent_code_block }                      from "./parametrize"
-
-params.parametrize     = true
-params.implicit_params = true
-params.meta_params     = true
+include { dump_params_yml; indent_code_block } from "./parametrize"
 
 process RMARKDOWNNOTEBOOK {
     tag "$meta.id"
@@ -30,6 +26,9 @@ process RMARKDOWNNOTEBOOK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
+    def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
+    def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
@@ -37,14 +36,14 @@ process RMARKDOWNNOTEBOOK {
     //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
-    if (params.parametrize) {
+    if (parametrize) {
         nb_params = [:]
-        if (params.implicit_params) {
+        if (implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
             nb_params["input_dir"] = "./"
         }
-        if (params.meta_params) {
+        if (meta_params) {
             nb_params["meta"] = meta
         }
         nb_params += parameters
@@ -82,7 +81,7 @@ process RMARKDOWNNOTEBOOK {
     EOF
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
     END_VERSIONS
     """

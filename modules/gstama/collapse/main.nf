@@ -35,7 +35,7 @@ process GSTAMA_COLLAPSE {
         $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
+    "${task.process}":
         gstama: \$( tama_collapse.py -version | grep 'tc_version_date_'|sed 's/tc_version_date_//g' )
     END_VERSIONS
     """

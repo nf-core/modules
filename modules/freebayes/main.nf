@@ -10,15 +10,15 @@ process FREEBAYES {
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index)
     path fasta
-    path fai
+    path fasta_fai
     path targets
     path samples
     path populations
     path cnv
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    path  "versions.yml"                , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path  "versions.yml"             , emit: versions
 
     script:
     def args = task.ext.args ?: ''
@@ -32,7 +32,7 @@ process FREEBAYES {
     if (task.cpus > 1) {
         """
         freebayes-parallel \\
-            <(fasta_generate_regions.py ${fasta}.fai 10000) $task.cpus \\
+            <(fasta_generate_regions.py $fasta_fai 10000) $task.cpus \\
             -f $fasta \\
             $targets_file \\
             $samples_file \\
@@ -44,7 +44,7 @@ process FREEBAYES {
         gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
@@ -63,7 +63,7 @@ process FREEBAYES {
         gzip --no-name ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process}:
+        "${task.process}":
             freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
         END_VERSIONS
         """
