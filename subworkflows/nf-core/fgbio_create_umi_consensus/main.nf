@@ -20,8 +20,7 @@ include { SAMBLASTER }                                              from '../../
 include { FGBIO_GROUPREADSBYUMI             as GROUPREADSBYUMI }    from '../../../modules/fgbio/groupreadsbyumi/main'                   addParams( options: params.groupreadsbyumi_options )
 include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS }   from '../../../modules/fgbio/callmolecularconsensusreads/main.nf' addParams( options: params.umiconsensus_options )
 
-
-worfklow CREATE_UMI_CONSENSUS {
+workflow CREATE_UMI_CONSENSUS {
     take:
     reads                     // channel: [ val(meta), [ reads ] ]
     fasta                     // channel: /path/to/reference/fasta
@@ -29,13 +28,11 @@ worfklow CREATE_UMI_CONSENSUS {
 
     main:
     ch_versions = Channel.empty()
-    fastqtobam_input = Channel.from(reads)
-
 
     // using information in val(read_structure) FASTQ reads are converted into
     // a tagged unmapped BAM file (uBAM)
-    FASTQTOBAM ( fastqtobam_input, read_structure )
-    ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
+    FASTQTOBAM ( reads, read_structure )
+    ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
 
     // reference is indexed
     BWA_INDEX ( fasta )
