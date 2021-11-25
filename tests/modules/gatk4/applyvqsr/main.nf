@@ -8,9 +8,9 @@ workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map
               file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz', checkIfExists: true),
               file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz.tbi', checkIfExists: true),
-              file('/home/AD/gmackenz/test_storage/output/pytest_workflow_lli5rc3_/gatk4_variantrecalibrator_test_gatk4_variantrecalibrator/output/gatk4/test.recal', checkIfExists: true),
-              file('/home/AD/gmackenz/test_storage/output/pytest_workflow_lli5rc3_/gatk4_variantrecalibrator_test_gatk4_variantrecalibrator/output/gatk4/test.recal.idx', checkIfExists: true),
-              file('/home/AD/gmackenz/test_storage/output/pytest_workflow_lli5rc3_/gatk4_variantrecalibrator_test_gatk4_variantrecalibrator/output/gatk4/test.tranches', checkIfExists: true)
+              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.recal', checkIfExists: true),
+              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.recal.idx', checkIfExists: true),
+              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.tranches', checkIfExists: true)
             ]
     fasta = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta', checkIfExists: true)
     fai = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta.fai', checkIfExists: true)
