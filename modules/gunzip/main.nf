@@ -8,15 +8,15 @@ process GUNZIP {
         'biocontainers/biocontainers:v1.2.0_cv1' }"
 
     input:
-    path archive
+    tuple val(meta), path(archive)
 
     output:
-    path "$gunzip",       emit: gunzip
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("$gunzip"), emit: gunzip
+    path "versions.yml"             , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    gunzip       = archive.toString() - '.gz'
+    gunzip = archive.toString() - '.gz'
     """
     gunzip \\
         -f \\

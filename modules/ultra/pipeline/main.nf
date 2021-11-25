@@ -2,10 +2,10 @@ process ULTRA_PIPELINE {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4" : null)
+    conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4--pyh5e36f6f_1' :
-        'quay.io/biocontainers/ultra_bioinformatics:0.0.4--pyh5e36f6f_1' }"
+        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0' :
+        'quay.io/biocontainers/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -25,9 +25,9 @@ process ULTRA_PIPELINE {
         --t $task.cpus \\
         --prefix $prefix \\
         $args \\
-        \$(pwd)/$genome \\
-        \$(pwd)/$gtf \\
-        \$(pwd)/$reads \\
+        $genome \\
+        $gtf \\
+        $reads \\
         ./
 
     cat <<-END_VERSIONS > versions.yml
