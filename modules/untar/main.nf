@@ -16,12 +16,14 @@ process UNTAR {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     untar        = archive.toString() - '.tar.gz'
     """
     tar \\
         -xzvf \\
         $args \\
-        $archive
+        $archive \\
+        $args2 \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
