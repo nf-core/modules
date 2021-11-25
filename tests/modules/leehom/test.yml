@@ -4,11 +4,9 @@
     - leehom
   files:
     - path: output/leehom/test.bam
-      md5sum: 19a1bf95714523868791f1d4d3aaee73
+    - path: output/samtools/test.bam
     - path: output/leehom/test.log
       md5sum: d1f5da273eb69f41babda510797c7671
-    - path: output/samtools/test.bam
-      md5sum: 25d13b3b31b147bb3836dea9932c38dd
 
 - name: leehom test_leehom_se_fq
   command: nextflow run ./tests/modules/leehom -entry test_leehom_se_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config

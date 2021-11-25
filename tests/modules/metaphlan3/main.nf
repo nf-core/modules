@@ -42,7 +42,7 @@ workflow test_metaphlan3_sam {
 
 
     UNTAR ( db )
-    SAMTOOLS_VIEW ( input )
+    SAMTOOLS_VIEW ( input, [] )
     METAPHLAN3 ( SAMTOOLS_VIEW.out.bam, UNTAR.out.untar )
 }
 

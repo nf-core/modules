@@ -10,7 +10,7 @@ process KALLISTOBUSTOOLS_REF {
     input:
     path fasta
     path gtf
-    val  workflow
+    val  workflow_mode
 
     output:
     path "versions.yml"   , emit: versions
@@ -23,14 +23,14 @@ process KALLISTOBUSTOOLS_REF {
 
     script:
     def args = task.ext.args ?: ''
-    if (workflow == "standard") {
+    if (workflow_mode == "standard") {
         """
         kb \\
             ref \\
             -i kb_ref_out.idx \\
             -g t2g.txt \\
             -f1 cdna.fa \\
-            --workflow $workflow \\
+            --workflow $workflow_mode \\
             $fasta \\
             $gtf
 
@@ -49,7 +49,7 @@ process KALLISTOBUSTOOLS_REF {
             -f2 intron.fa \\
             -c1 cdna_t2c.txt \\
             -c2 intron_t2c.txt \\
-            --workflow $workflow \\
+            --workflow $workflow_mode \\
             $fasta \\
             $gtf
 
