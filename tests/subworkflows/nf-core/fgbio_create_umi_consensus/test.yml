@@ -1,0 +1,8 @@
+- name: fgbio_create_umi_consensus
+  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus -c tests/config/nextflow.config
+  tags:
+    - subworkflows/fgbio_create_umi_consensus
+  files:
+    - path: ./output/fastqtobam/*.bam
+    - path: ./output/groupreadsbyumi/*.bam
+    - path: ./output/callumiconsensus/*.bam
