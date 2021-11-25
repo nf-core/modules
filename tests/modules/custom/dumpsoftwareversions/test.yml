@@ -5,4 +5,10 @@
     - custom/dumpsoftwareversions
   files:
     - path: output/custom/software_versions.yml
+      contains:
+        - FASTQC
+        - MULTIQC
+      must_not_contain:
+        - fastqc1
+        - fastqc2
     - path: output/custom/software_versions_mqc.yml
