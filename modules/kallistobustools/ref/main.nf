@@ -23,7 +23,7 @@ process KALLISTOBUSTOOLS_REF {
 
     script:
     def args = task.ext.args ?: ''
-    if (work_flow == "standard") {
+    if (workflow_mode == "standard") {
         """
         kb \\
             ref \\
@@ -49,7 +49,7 @@ process KALLISTOBUSTOOLS_REF {
             -f2 intron.fa \\
             -c1 cdna_t2c.txt \\
             -c2 intron_t2c.txt \\
-            --workflow $work_flow \\
+            --workflow $workflow_mode \\
             $fasta \\
             $gtf
 
