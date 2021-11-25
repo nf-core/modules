@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ENSEMBLVEP } from '../../../modules/ensemblvep/main.nf' addParams( vep_tag: '104.3.WBcel235', use_cache: false )
+include { ENSEMBLVEP } from '../../../modules/ensemblvep/main.nf'
 
 workflow test_ensemblvep {
     input = [

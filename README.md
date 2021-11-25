@@ -78,7 +78,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
     nextflow.enable.dsl = 2
 
-    include { FASTQC } from './modules/nf-core/modules/fastqc/main' addParams( options: [:] )
+    include { FASTQC } from './modules/nf-core/modules/fastqc/main'
     ```
 
 5. Remove the module from the pipeline repository if required:

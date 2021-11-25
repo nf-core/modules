@@ -1,16 +1,13 @@
-params.use_cache = false
-params.snpeff_tag = ""
-
 process SNPEFF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::snpeff=5.0" : null)
-    if (params.use_cache) {
+    if (task.ext.use_cache) {
         container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
             'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
             'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' }"
     } else {
-        container "nfcore/snpeff:${params.snpeff_tag}"
+        container "nfcore/snpeff:${task.ext.snpeff_tag}"
     }
 
     input:
@@ -32,7 +29,7 @@ process SNPEFF {
         avail_mem = task.memory.giga
     }
     def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def dir_cache = params.use_cache ? "-dataDir \${PWD}/${cache}" : ""
+    def dir_cache = task.ext.use_cache ? "-dataDir \${PWD}/${cache}" : ""
     """
     snpEff \\
         -Xmx${avail_mem}g \\
