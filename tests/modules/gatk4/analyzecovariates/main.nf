@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_ANALYZECOVARIATES } from '../../../../modules/gatk4/analyzecovariates/main.nf' addParams( options: [:] )
+include { GATK4_ANALYZECOVARIATES } from '../../../../modules/gatk4/analyzecovariates/main.nf'
 
 workflow test_gatk4_analyzecovariates {
     input     = [ [ id:'test' ], // meta map
