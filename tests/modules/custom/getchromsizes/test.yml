@@ -1,5 +1,5 @@
 - name: custom getchromsizes
-  command: nextflow run ./tests/modules/custom/getchromsizes -entry test_custom_getchromsizes -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/custom/getchromsizes -entry test_custom_getchromsizes -c ./tests/config/nextflow.config -c ./tests/modules/custom/getchromsizes/nextflow.config
   tags:
     - custom
     - custom/getchromsizes

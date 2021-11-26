@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_DIGEST } from '../../../../modules/cooler/digest/main.nf' addParams( options: [:] )
+include { COOLER_DIGEST } from '../../../../modules/cooler/digest/main.nf'
 
 workflow test_cooler_digest {
 

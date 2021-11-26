@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MLST } from '../../../modules/mlst/main.nf' addParams( options: [:] )
+include { MLST } from '../../../modules/mlst/main.nf'
 
 workflow test_mlst {
     

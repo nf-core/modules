@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAMALIGNCLEANER } from '../../../modules/bamaligncleaner/main.nf' addParams( options: [:] )
+include { BAMALIGNCLEANER } from '../../../modules/bamaligncleaner/main.nf'
 
 workflow test_bamaligncleaner {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf' addParams( options: [:] )
+include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf'
 
 workflow test_metabat2_jgisummarizebamcontigdepths {
     

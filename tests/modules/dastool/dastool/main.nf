@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include { METABAT2_METABAT2 } from '../../../../modules/metabat2/metabat2/main.nf' addParams( options: [args: '--minContig 1500 --minCV 0.1 --minCVSum 0.1 --minClsSize 10 --minS 2'] )
-include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf' addParams( options: [:] )
-include { DASTOOL_SCAFFOLDS2BIN } from '../../../../modules/dastool/scaffolds2bin/main.nf' addParams( options: [:] )
-include { DASTOOL_DASTOOL } from '../../../../modules/dastool/dastool/main.nf' addParams( options: [args: '--score_threshold 0 --debug'] )
+include { METABAT2_METABAT2 } from '../../../../modules/metabat2/metabat2/main.nf'
+include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf'
+include { DASTOOL_SCAFFOLDS2BIN } from '../../../../modules/dastool/scaffolds2bin/main.nf'
+include { DASTOOL_DASTOOL } from '../../../../modules/dastool/dastool/main.nf'
 
 workflow test_dastool_dastool {
 

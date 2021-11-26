@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../modules/untar/main.nf'           addParams( options: [:] )
-include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimport/main.nf' addParams( options: [:] )
+include { UNTAR           } from '../../../../modules/untar/main.nf'
+include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimport/main.nf'
 
 workflow test_gatk4_genomicsdbimport_create_genomicsdb {
 
