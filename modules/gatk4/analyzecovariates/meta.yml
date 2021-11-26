@@ -1,7 +1,11 @@
-name: gatk4_baserecalibrator
-description: Generate recalibration table for Base Quality Score Recalibration (BQSR)
+name: gatk4_analyzecovariates
+description: |
+  Evaluate and compare base quality score recalibration tables
+  This tool generates plots to assess the quality of a recalibration run as part of the Base Quality Score Recalibration (BQSR) procedure.
 keywords:
-  - sort
+  - GATK
+  - BQSR
+  - AnalyzeCovariates
 tools:
   - gatk4:
     description: |
@@ -19,49 +23,57 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
+        e.g. [ id:'test' ]
+  - recal1:
       type: file
-      description: BAM/CRAM file from alignment
-      pattern: "*.{bam,cram}"
-  - input_index:
+      description: |
+        The tool can analyze up to 3 recalibration tables at once, recal1 is a mandatory input.
+        When only 1 recal is used, this is passed using the -bqsr argument, for 2 and 3 recals,
+        it is passed as -before. First pass recals should be passed using this.
+      pattern: "*.recal"
+  - recal2:
       type: file
-      description: BAI/CRAI file from alignment
-      pattern: "*.{bai,crai}"
-  - fasta:
+      description: |
+        The tool can analyze up to 3 recalibration tables at once, recal2 is an optional input
+        for running 2 or 3 recals, it is always passed using the -after argument. Second pass recals
+        should be passed using this.
+      pattern: "*.recal"
+  - recal3:
       type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
-  - intervalsBed:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
-  - knownSites:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
+      description: |
+        The tool can analyze up to 3 recalibration tables at once, recal3 is an optional input
+        only used when running 3 recals, it is always passed using the -bqsr argument. This should
+        be used for a recalibration table without a role in the first or seond pass.
+      pattern: "*.recal"
+  - cvsout:
+      type: boolean
+      description: When set to true, this will set the tool to output the intermediate csv file.
+      pattern: "{true,false}"
+  - ignoretimewarning:
+      type: boolean
+      description: |
+        If the csv specified by -before has been modified more recently than the -after recal,
+        a warning is output by default. If this is set to true, the warning is not output.
+      pattern: "{true,false}"
 
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
+  - plots:
+      type: file
+      description: Output file containing the plots from the analysis.
+      pattern: "*.pdf"
+  - csv:
+      type: file
+      description: Optional output containing the intermediate csv when the csvout argument is true.
+      pattern: "*.csv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - table:
-      type: file
-      description: Recalibration table from BaseRecalibrator
-      pattern: "*.{table}"
 
 authors:
-  - "@yocra3"
-  - "@FriederikeHanssen"
+  - "@GCJMackenzie"

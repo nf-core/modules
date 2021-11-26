@@ -13,13 +13,13 @@ process GATK4_ANALYZECOVARIATES {
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
+        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_1"
     } else {
-        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
+        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_1"
     }
 
     input:
-    tuple val(meta), path(firstpass), path(secondpass), path(other)
+    tuple val(meta), path(recal1), path(recal2), path(recal3)
     val csvout
     val ignoretimewarning
 
@@ -31,23 +31,23 @@ process GATK4_ANALYZECOVARIATES {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def inputsCommand = ''
-    if(other) {
-    inputsCommand = "-before ${firstpass} -after ${secondpass} -bqsr ${other}"
-    } else if(secondpass) {
-    inputsCommand =  "-before ${firstpass} -after ${secondpass}"
+    if(recal3) {
+    inputsCommand = "-before ${recal1} -after ${recal2} -bqsr ${recal3}"
+    } else if(recal2) {
+    inputsCommand =  "-before ${recal1} -after ${recal2}"
     } else {
-    inputsCommand = "-bqsr ${firstpass}"
+    inputsCommand = "-bqsr ${recal1}"
     }
     ignoreTimeCommand = ignoretimewarning ? "--ignore-last-modification-times" : ''
     csvCommand = csvout ? "-csv ${prefix}.csv" : ''
 
     """
-    echo ${PATH}
     gatk AnalyzeCovariates  \\
         ${inputsCommand} \\
         ${ignoreTimeCommand} \\
         -plots ${prefix}.pdf \\
         ${csvCommand} \\
+        --verbosity DEBUG \\
         $options.args
 
     cat <<-END_VERSIONS > versions.yml
