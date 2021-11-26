@@ -1,5 +1,5 @@
 - name: gatk4 applybqsr test_gatk4_applybqsr
-  command: nextflow run tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/applybqsr/nextflow.config
   tags:
     - gatk4/applybqsr
     - gatk4
@@ -8,7 +8,7 @@
       md5sum: af56f5dd81b95070079d54670507f530
 
 - name: gatk4 applybqsr test_gatk4_applybqsr_intervals
-  command: nextflow run tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_intervals -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/applybqsr/nextflow.config
   tags:
     - gatk4/applybqsr
     - gatk4
@@ -17,7 +17,7 @@
       md5sum: 0cbfa4be143e988d56ce741b5077510e
 
 - name: gatk4 applybqsr test_gatk4_applybqsr_cram
-  command: nextflow run tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_cram -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_cram -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/applybqsr/nextflow.config
   tags:
     - gatk4/applybqsr
     - gatk4

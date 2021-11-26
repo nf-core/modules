@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process DRAGONFLYE {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/dragonflye:1.0.4--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/dragonflye:1.0.4--hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/dragonflye:1.0.4--hdfd78af_0' :
+        'quay.io/biocontainers/dragonflye:1.0.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -30,18 +19,19 @@ process DRAGONFLYE {
     path "versions.yml"                                                        , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def memory = task.memory.toGiga()
     """
     dragonflye \\
         --reads ${reads} \\
-        $options.args \\
+        $args \\
         --cpus $task.cpus \\
         --ram $memory \\
         --outdir ./ \\
         --force
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
+    "${task.process}":
+        dragonflye: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
     END_VERSIONS
     """
 }

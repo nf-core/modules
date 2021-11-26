@@ -1,5 +1,5 @@
 - name: expansionhunter test_expansionhunter
-  command: nextflow run tests/modules/expansionhunter -entry test_expansionhunter -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/expansionhunter -entry test_expansionhunter -c ./tests/config/nextflow.config -c ./tests/modules/expansionhunter/nextflow.config
   tags:
     - expansionhunter
   files:

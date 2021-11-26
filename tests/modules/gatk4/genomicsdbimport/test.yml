@@ -1,5 +1,5 @@
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_create_genomicsdb
-  command: nextflow run tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_create_genomicsdb -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_create_genomicsdb -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/genomicsdbimport/nextflow.config
   tags:
     - gatk4/genomicsdbimport
     - gatk4
@@ -20,7 +20,7 @@
       md5sum: 18d3f68bd2cb6f4474990507ff95017a
 
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_get_intervalslist
-  command: nextflow run tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_get_intervalslist -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_get_intervalslist -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/genomicsdbimport/nextflow.config
   tags:
     - gatk4/genomicsdbimport
     - gatk4
@@ -29,7 +29,7 @@
       md5sum: 4c85812ac15fc1cd29711a851d23c0bf
 
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_update_genomicsdb
-  command: nextflow run tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_update_genomicsdb -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/genomicsdbimport -entry test_gatk4_genomicsdbimport_update_genomicsdb -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/genomicsdbimport/nextflow.config
   tags:
     - gatk4/genomicsdbimport
     - gatk4

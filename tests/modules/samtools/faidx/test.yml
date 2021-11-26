@@ -1,5 +1,5 @@
 - name: samtools faidx test workflow
-  command: nextflow run tests/modules/samtools/faidx -entry test_samtools_faidx -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/faidx -entry test_samtools_faidx -c ./tests/config/nextflow.config -c ./tests/modules/samtools/faidx/nextflow.config
   tags:
     - samtools
     - samtools/faidx

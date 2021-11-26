@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FAIDX } from '../../../../modules/samtools/faidx/main.nf' addParams( options: [:] )
+include { SAMTOOLS_FAIDX } from '../../../../modules/samtools/faidx/main.nf'
 
 workflow test_samtools_faidx {
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
