@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MUMMER } from '../../../modules/mummer/main.nf' addParams( options: [:] )
+include { MUMMER } from '../../../modules/mummer/main.nf'
 
 workflow test_mummer {
 

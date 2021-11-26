@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CSVTK_SPLIT } from '../../../../modules/csvtk/split/main.nf' addParams( options: [args: "-C '&' --fields 'first_name' "])
+include { CSVTK_SPLIT } from '../../../../modules/csvtk/split/main.nf'
 
 workflow test_csvtk_split_tsv {
 
