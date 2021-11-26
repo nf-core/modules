@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_APPLYVQSR } from '../../../../modules/gatk4/applyvqsr/main.nf' addParams( options: [:] )
+include { GATK4_APPLYVQSR } from '../../../../modules/gatk4/applyvqsr/main.nf'
 
 workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map
