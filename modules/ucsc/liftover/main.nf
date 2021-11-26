@@ -1,24 +1,13 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
-def VERSION = '377'
+def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_LIFTOVER {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::ucsc-liftover=377" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3"
-    } else {
-        container "quay.io/biocontainers/ucsc-liftover:377--h0b8a92a_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3' :
+        'quay.io/biocontainers/ucsc-liftover:377--h0b8a92a_3' }"
 
     input:
     tuple val(meta), path(bed)
@@ -30,19 +19,20 @@ process UCSC_LIFTOVER {
     path "versions.yml"                    , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
 
     """
     liftOver \\
-        $options.args \
+        $args \
         $bed \\
         $chain \\
         ${prefix}.lifted.bed \\
         ${prefix}.unlifted.bed
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+    "${task.process}":
+        ucsc: $VERSION
     END_VERSIONS
     """
 }

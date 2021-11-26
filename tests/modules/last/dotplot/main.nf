@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_DOTPLOT } from '../../../../modules/last/dotplot/main.nf' addParams( options: [:] )
+include { LAST_DOTPLOT } from '../../../../modules/last/dotplot/main.nf'
 
 workflow test_last_dotplot {
 

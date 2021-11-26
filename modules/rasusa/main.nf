@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process RASUSA {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::rasusa=0.3.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1"
-    } else {
-        container "quay.io/biocontainers/rasusa:0.3.0--h779adbc_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
+        'quay.io/biocontainers/rasusa:0.3.0--h779adbc_1' }"
 
     input:
     tuple val(meta), path(reads), val(genome_size)
@@ -27,18 +16,19 @@ process RASUSA {
     path "versions.yml"                , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def output   = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
-        $options.args \\
+        $args \\
         --coverage $depth_cutoff \\
         --genome-size $genome_size \\
         --input $reads \\
         $output
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")
+    "${task.process}":
+        rasusa: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")
     END_VERSIONS
     """
 }

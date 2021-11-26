@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GRAPHMAP2_INDEX } from '../../../../modules/graphmap2/index/main.nf' addParams( options: [:] )
-include { GRAPHMAP2_ALIGN } from '../../../../modules/graphmap2/align/main.nf' addParams( options: [:] )
+include { GRAPHMAP2_INDEX } from '../../../../modules/graphmap2/index/main.nf'
+include { GRAPHMAP2_ALIGN } from '../../../../modules/graphmap2/align/main.nf'
 
 workflow test_graphmap2_align {
 
