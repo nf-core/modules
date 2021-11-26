@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process ARTIC_MINION {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::artic=1.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0"
-    } else {
-        container "quay.io/biocontainers/artic:1.2.1--py_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0' :
+        'quay.io/biocontainers/artic:1.2.1--py_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -43,20 +32,21 @@ process ARTIC_MINION {
     path  "versions.yml"                                              , emit: versions
 
     script:
-    prefix       = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
-    def fast5    = params.fast5_dir          ? "--fast5-directory $fast5_dir"             : ""
-    def summary  = params.sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
+    def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""
+    def summary  = sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
     def model    = ""
-    if (options.args.tokenize().contains('--medaka')) {
+    if (args.tokenize().contains('--medaka')) {
         fast5   = ""
         summary = ""
-        model = file(params.artic_minion_medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $params.artic_minion_medaka_model"
+        model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
     }
     """
     artic \\
         minion \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --read-file $fastq \\
         --scheme-directory ./primer-schemes \\
@@ -68,8 +58,8 @@ process ARTIC_MINION {
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+    "${task.process}":
+        artic: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """
 }

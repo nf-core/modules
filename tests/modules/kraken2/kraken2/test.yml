@@ -1,5 +1,5 @@
 - name: kraken2 kraken2 single-end
-  command: nextflow run ./tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_single_end -c ./tests/config/nextflow.config -c ./tests/modules/kraken2/kraken2/nextflow.config
   tags:
     - kraken2
     - kraken2/kraken2
@@ -12,7 +12,7 @@
       md5sum: 4227755fe40478b8d7dc8634b489761e
 
 - name: kraken2 kraken2 paired-end
-  command: nextflow run ./tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/kraken2/kraken2/nextflow.config
   tags:
     - kraken2
     - kraken2/kraken2

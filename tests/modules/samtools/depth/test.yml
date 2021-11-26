@@ -1,5 +1,5 @@
 - name: samtools depth
-  command: nextflow run tests/modules/samtools/depth -entry test_samtools_depth -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/depth -entry test_samtools_depth -c ./tests/config/nextflow.config -c ./tests/modules/samtools/depth/nextflow.config
   tags:
     - samtools/depth
     - samtools

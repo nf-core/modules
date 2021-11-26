@@ -1,5 +1,5 @@
 - name: fastp test_fastp_single_end
-  command: nextflow run tests/modules/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -17,7 +17,7 @@
       md5sum: e0d856ebb3da9e4462c3ce9683efe01d
 
 - name: fastp test_fastp_paired_end
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -38,7 +38,7 @@
       md5sum: 9eff7203596580cc5e42aceab4a469df
 
 - name: fastp test_fastp_single_end_trim_fail
-  command: nextflow run tests/modules/fastp -entry test_fastp_single_end_trim_fail -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -58,7 +58,7 @@
       md5sum: de315d397c994d8e66bafc7a8dc11070
 
 - name: fastp test_fastp_paired_end_trim_fail
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -83,7 +83,7 @@
       md5sum: f52309b35a7c15cbd56a9c3906ef98a5
 
 - name: fastp test_fastp_paired_end_merged
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end_merged -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:

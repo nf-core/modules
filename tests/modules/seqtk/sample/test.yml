@@ -1,5 +1,5 @@
 - name: seqtk sample test_seqtk_sample_single_end
-  command: nextflow run tests/modules/seqtk/sample -entry test_seqtk_sample_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/seqtk/sample -entry test_seqtk_sample_single_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/sample/nextflow.config
   tags:
     - seqtk
     - seqtk/sample
@@ -8,7 +8,7 @@
       md5sum: 73c3e8f113860244f3ed3866a8b9d555
 
 - name: seqtk sample test_seqtk_sample_paired_end
-  command: nextflow run tests/modules/seqtk/sample -entry test_seqtk_sample_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/seqtk/sample -entry test_seqtk_sample_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/sample/nextflow.config
   tags:
     - seqtk
     - seqtk/sample

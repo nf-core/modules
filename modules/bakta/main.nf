@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BAKTA {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::bakta=1.2.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bakta:1.2.2--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/bakta:1.2.2--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bakta:1.2.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/bakta:1.2.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -37,27 +26,28 @@ process BAKTA {
     path "versions.yml"                                 , emit: versions
 
     script:
-    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_opt = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
     """
     bakta \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
-        --prefix ${prefix} \\
+        --prefix $prefix \\
         --db $db \\
         $proteins_opt \\
         $prodigal_tf \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
+    "${task.process}":
+        bakta: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
     END_VERSIONS
     """
 
     stub:
-    prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     touch ${prefix}.embl
     touch ${prefix}.faa
@@ -70,8 +60,8 @@ process BAKTA {
     touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
+    "${task.process}":
+        bakta: \$( echo \$(bakta --version 2>&1) | sed 's/^.*bakta //' )
     END_VERSIONS
     """
 }

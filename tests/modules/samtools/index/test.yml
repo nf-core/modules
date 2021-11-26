@@ -1,5 +1,5 @@
 - name: samtools index test_samtools_index_bai
-  command: nextflow run tests/modules/samtools/index -entry test_samtools_index_bai -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/index -entry test_samtools_index_bai -c ./tests/config/nextflow.config -c ./tests/modules/samtools/index/nextflow.config
   tags:
     - samtools
     - samtools/index
@@ -8,7 +8,7 @@
       md5sum: 704c10dd1326482448ca3073fdebc2f4
 
 - name: samtools index test_samtools_index_crai
-  command: nextflow run tests/modules/samtools/index -entry test_samtools_index_crai -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/index -entry test_samtools_index_crai -c ./tests/config/nextflow.config -c ./tests/modules/samtools/index/nextflow.config
   tags:
     - samtools
     - samtools/index
@@ -17,7 +17,7 @@
       md5sum: 537e3d8c937bcc4e34e1cf47cd71d484
 
 - name: samtools index test_samtools_index_csi
-  command: nextflow run tests/modules/samtools/index -entry test_samtools_index_csi -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/index -entry test_samtools_index_csi -c ./tests/config/nextflow.config -c ./tests/modules/samtools/index/nextflow.config
   tags:
     - samtools
     - samtools/index

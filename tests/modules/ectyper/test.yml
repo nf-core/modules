@@ -1,5 +1,5 @@
 - name: ectyper test_ectyper
-  command: nextflow run tests/modules/ectyper -entry test_ectyper -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/ectyper -entry test_ectyper -c ./tests/config/nextflow.config -c ./tests/modules/ectyper/nextflow.config
   tags:
     - ectyper
   files:
