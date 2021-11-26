@@ -1,5 +1,5 @@
 - name: ucsc wigtobigwig test_ucsc_wigtobigwig
-  command: nextflow run tests/modules/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/ucsc/wigtobigwig/nextflow.config
   tags:
     - ucsc
     - ucsc/wigtobigwig

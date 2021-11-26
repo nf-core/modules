@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BOWTIE2_ALIGN {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::bowtie2=2.4.2 bioconda::samtools=1.11 conda-forge::pigz=2.3.4' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0' :
+        'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -29,7 +18,9 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
     script:
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     if (meta.single_end) {
         def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
         """
@@ -39,13 +30,13 @@ process BOWTIE2_ALIGN {
             -U $reads \\
             --threads $task.cpus \\
             $unaligned \\
-            $options.args \\
+            $args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+        "${task.process}":
+            bowtie2: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
@@ -60,9 +51,9 @@ process BOWTIE2_ALIGN {
             -2 ${reads[1]} \\
             --threads $task.cpus \\
             $unaligned \\
-            $options.args \\
+            $args \\
             2> ${prefix}.bowtie2.log \\
-            | samtools view -@ $task.cpus $options.args2 -bhS -o ${prefix}.bam -
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
             mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
@@ -72,8 +63,8 @@ process BOWTIE2_ALIGN {
         fi
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
+        "${task.process}":
+            bowtie2: \$(echo \$(bowtie2 --version 2>&1) | sed 's/^.*bowtie2-align-s version //; s/ .*\$//')
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS

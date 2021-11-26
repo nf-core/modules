@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NEXTCLADE } from '../../../modules/nextclade/main.nf' addParams( options: [:] )
+include { NEXTCLADE } from '../../../modules/nextclade/main.nf'
 
 workflow test_nextclade {
     input = [ 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FARGENE } from '../../../modules/fargene/main.nf' addParams( options: [:] )
+include { FARGENE } from '../../../modules/fargene/main.nf'
 
 workflow test_fargene {
     

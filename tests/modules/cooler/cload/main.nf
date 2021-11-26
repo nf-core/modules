@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_CLOAD }                       from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'pairix'] )
-include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'pairs --chrom1 1 --pos1 2 --chrom2 4 --pos2 5 -N'] )
-include { COOLER_CLOAD as COOLER_CLOAD_TABIX } from '../../../../modules/cooler/cload/main.nf' addParams( options: [args:'tabix'] )
-include { COOLER_DUMP }                        from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
-include { COOLER_DUMP as COOLER_DUMP_PAIRS}    from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
-include { COOLER_DUMP as COOLER_DUMP_TABIX}    from '../../../../modules/cooler/dump/main.nf' addParams( options: [:] )
+include { COOLER_CLOAD }                       from '../../../../modules/cooler/cload/main.nf'
+include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from '../../../../modules/cooler/cload/main.nf'
+include { COOLER_CLOAD as COOLER_CLOAD_TABIX } from '../../../../modules/cooler/cload/main.nf'
+include { COOLER_DUMP }                        from '../../../../modules/cooler/dump/main.nf'
+include { COOLER_DUMP as COOLER_DUMP_PAIRS}    from '../../../../modules/cooler/dump/main.nf'
+include { COOLER_DUMP as COOLER_DUMP_TABIX}    from '../../../../modules/cooler/dump/main.nf'
 
 workflow test_cooler_cload_pairix {
 
