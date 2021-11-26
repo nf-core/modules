@@ -1,5 +1,5 @@
 - name: strelka somatic test_strelka_somatic
-  command: nextflow run tests/modules/strelka/somatic -entry test_strelka_somatic -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/strelka/somatic -entry test_strelka_somatic -c ./tests/config/nextflow.config -c ./tests/modules/strelka/somatic/nextflow.config
   tags:
     - strelka
     - strelka/somatic
@@ -12,7 +12,7 @@
       md5sum: 4cb176febbc8c26d717a6c6e67b9c905
 
 - name: strelka somatic test_strelka__best_practices_somatic
-  command: nextflow run tests/modules/strelka/somatic -entry test_strelka__best_practices_somatic -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/strelka/somatic -entry test_strelka__best_practices_somatic -c ./tests/config/nextflow.config -c ./tests/modules/strelka/somatic/nextflow.config
   tags:
     - strelka
     - strelka/somatic

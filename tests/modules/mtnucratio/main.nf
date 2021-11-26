@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MTNUCRATIO } from '../../../modules/mtnucratio/main.nf' addParams( options: [:] )
+include { MTNUCRATIO } from '../../../modules/mtnucratio/main.nf'
 
 workflow test_mtnucratio {
     

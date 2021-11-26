@@ -1,5 +1,5 @@
 - name: mosdepth
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth -c ./tests/config/nextflow.config -c ./tests/modules/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:

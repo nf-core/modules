@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process GENRICH {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::genrich=0.6.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/genrich:0.6.1--h5bf99c6_1"
-    } else {
-        container "quay.io/biocontainers/genrich:0.6.1--h5bf99c6_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/genrich:0.6.1--h5bf99c6_1' :
+        'quay.io/biocontainers/genrich:0.6.1--h5bf99c6_1' }"
 
     input:
     tuple val(meta), path(treatment_bam)
@@ -36,7 +25,8 @@ process GENRICH {
     path "versions.yml"                                      , emit: versions
 
     script:
-    def prefix     = options.suffix ? "${meta.id}${options.suffix}"   : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def control    = control_bam    ? "-c $control_bam"               : ''
     def blacklist  = blacklist_bed  ? "-E $blacklist_bed"             : ""
     def pvalues    = save_pvalues   ? "-f ${prefix}.pvalues.bedGraph" : ""
@@ -44,7 +34,7 @@ process GENRICH {
     def bed        = save_bed       ? "-b ${prefix}.intervals.bed"    : ""
     def duplicates = ""
     if (save_duplicates) {
-        if (options.args.contains('-r')) {
+        if (args.contains('-r')) {
             duplicates = "-R ${prefix}.duplicates.txt"
         } else {
             log.info '[Genrich] Duplicates can only be saved if they are filtered, defaulting to -r option (Remove PCR duplicates).'
@@ -54,7 +44,7 @@ process GENRICH {
     """
     Genrich \\
         -t $treatment_bam \\
-        $options.args \\
+        $args \\
         $control \\
         $blacklist \\
         -o ${prefix}.narrowPeak \\
@@ -65,8 +55,8 @@ process GENRICH {
         $control
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
+    "${task.process}":
+        genrich: \$(echo \$(Genrich --version 2>&1) | sed 's/^Genrich, version //; s/ .*\$//')
     END_VERSIONS
     """
 }

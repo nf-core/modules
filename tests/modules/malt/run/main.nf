@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../../modules/unzip/main.nf' addParams( options: [:] )
-include { MALT_BUILD } from  '../../../../modules/malt/build/main.nf' addParams( options: [:] )
-include { MALT_RUN } from '../../../../modules/malt/run/main.nf' addParams( options: [:] )
+include { UNZIP } from '../../../../modules/unzip/main.nf'
+include { MALT_BUILD } from  '../../../../modules/malt/build/main.nf'
+include { MALT_RUN } from '../../../../modules/malt/run/main.nf'
 
 workflow test_malt_run {
 

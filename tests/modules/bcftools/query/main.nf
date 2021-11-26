@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_QUERY } from '../../../../modules/bcftools/query/main.nf' addParams( options: ['args': "-f '%CHROM %POS %REF %ALT[%SAMPLE=%GT]'" ] )
+include { BCFTOOLS_QUERY } from '../../../../modules/bcftools/query/main.nf'
 
 workflow test_bcftools_query {
 

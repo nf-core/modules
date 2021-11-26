@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE   } from '../../../modules/star/genomegenerate/main.nf' addParams( options: [args: '--genomeSAindexNbases 11'] )
-include { STAR_ALIGN            } from '../../../modules/star/align/main.nf'          addParams( options: [args: '--readFilesCommand zcat --outSAMtype BAM Unsorted --outSAMunmapped Within --outBAMcompression 0 --outFilterMultimapNmax 50 --peOverlapNbasesMin 10 --alignSplicedMateMapLminOverLmate 0.5 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentMin 10 --chimOutType WithinBAM HardClip --chimJunctionOverhangMin 10 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --chimSegmentReadGapMax 3 --chimMultimapNmax 50'] )
-include { ARRIBA                } from '../../../modules/arriba/main.nf'              addParams( options: [:] )
+include { STAR_GENOMEGENERATE   } from '../../../modules/star/genomegenerate/main.nf'
+include { STAR_ALIGN            } from '../../../modules/star/align/main.nf'
+include { ARRIBA                } from '../../../modules/arriba/main.nf'
 
 workflow test_arriba_single_end {
 
@@ -14,9 +14,12 @@ workflow test_arriba_single_end {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_ignore_sjdbgtf = false
+    seq_platform = 'illumina'
+    seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
     ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
 }
 
@@ -29,8 +32,11 @@ workflow test_arriba_paired_end {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_ignore_sjdbgtf = false
+    seq_platform = 'illumina'
+    seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
     ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
 }
