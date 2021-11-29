@@ -1,5 +1,5 @@
-- name: fargene test_fargene
-  command: nextflow run tests/modules/fargene -entry test_fargene -c tests/config/nextflow.config
+- name: fargene
+  command: nextflow run ./tests/modules/fargene -entry test_fargene -c ./tests/config/nextflow.config -c ./tests/modules/fargene/nextflow.config
   tags:
     - fargene
   files:

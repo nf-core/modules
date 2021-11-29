@@ -1,5 +1,5 @@
 - name: diamond blastx
-  command: nextflow run ./tests/modules/diamond/blastx -entry test_diamond_blastx -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/diamond/blastx -entry test_diamond_blastx -c ./tests/config/nextflow.config -c ./tests/modules/diamond/blastx/nextflow.config
   tags:
       - diamond
       - diamond/blastx

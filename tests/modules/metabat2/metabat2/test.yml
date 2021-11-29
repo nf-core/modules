@@ -1,5 +1,5 @@
 - name: metabat2 metabat2 test_metabat2_no_depth
-  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_no_depth -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metabat2/metabat2 -entry test_metabat2_no_depth -c ./tests/config/nextflow.config -c ./tests/modules/metabat2/metabat2/nextflow.config
   tags:
     - metabat2/metabat2
     - metabat2
@@ -10,7 +10,7 @@
       md5sum: ea77e8c4426d2337419905b57f1ec335
 
 - name: metabat2 metabat2 test_metabat2_depth
-  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_depth -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metabat2/metabat2 -entry test_metabat2_depth -c ./tests/config/nextflow.config -c ./tests/modules/metabat2/metabat2/nextflow.config
   tags:
     - metabat2/metabat2
     - metabat2

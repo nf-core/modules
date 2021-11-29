@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MEDAKA } from '../../../modules/medaka/main.nf' addParams( options: [suffix:'.polished.genome'] )
+include { MEDAKA } from '../../../modules/medaka/main.nf'
 
 workflow test_medaka {
     

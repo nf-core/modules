@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TIDDIT_SV } from '../../../../modules/tiddit/sv/main.nf' addParams( options: [:] )
+include { TIDDIT_SV } from '../../../../modules/tiddit/sv/main.nf'
 
 workflow test_tiddit_sv {
     input = [ 

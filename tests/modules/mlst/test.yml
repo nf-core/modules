@@ -1,5 +1,5 @@
 - name: mlst test_mlst
-  command: nextflow run tests/modules/mlst -entry test_mlst -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/mlst -entry test_mlst -c ./tests/config/nextflow.config -c ./tests/modules/mlst/nextflow.config
   tags:
     - mlst
   files:

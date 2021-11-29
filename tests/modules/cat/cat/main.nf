@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CAT_CAT } from '../../../../modules/cat/cat/main.nf' addParams( options: [:] )
+include { CAT_CAT } from '../../../../modules/cat/cat/main.nf'
 
 workflow test_cat_unzipped_unzipped {
 

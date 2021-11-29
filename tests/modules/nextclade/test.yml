@@ -1,5 +1,5 @@
 - name: nextclade test_nextclade
-  command: nextflow run tests/modules/nextclade -entry test_nextclade -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nextclade -entry test_nextclade -c ./tests/config/nextflow.config -c ./tests/modules/nextclade/nextflow.config
   tags:
     - nextclade
   files:

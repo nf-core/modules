@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_GENOTYPEGVCFS } from '../../../../modules/gatk4/genotypegvcfs/main.nf' addParams( options: [suffix:'.genotyped'] )
-include { UNTAR               } from '../../../../modules/untar/main.nf'               addParams( options: [:] )
+include { GATK4_GENOTYPEGVCFS } from '../../../../modules/gatk4/genotypegvcfs/main.nf'
+include { UNTAR               } from '../../../../modules/untar/main.nf'
 
 // Basic parameters with uncompressed VCF input
 workflow test_gatk4_genotypegvcfs_vcf_input {

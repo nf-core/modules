@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_INFEREXPERIMENT }   from '../../../../modules/rseqc/inferexperiment/main.nf'   addParams(options: [:])
+include { RSEQC_INFEREXPERIMENT }   from '../../../../modules/rseqc/inferexperiment/main.nf'
 
 workflow test_rseqc_inferexperiment {
     input = [ [ id:'test' ], // meta map

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP } from '../../../modules/gunzip/main.nf' addParams( options: [:] )
-include { FARGENE } from '../../../modules/fargene/main.nf' addParams( options: [:] )
+include { GUNZIP } from '../../../modules/gunzip/main.nf'
+include { FARGENE } from '../../../modules/fargene/main.nf'
 
 workflow test_fargene {
     
