@@ -36,7 +36,7 @@ process FARGENE {
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     fargene \\
-        $options.args \\
+        $args \\
         -p $task.cpus \\
         -i $input \\
         --hmm-model $hmm_model \\
