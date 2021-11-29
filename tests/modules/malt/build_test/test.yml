@@ -1,5 +1,5 @@
 - name: malt build
-  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build -c ./tests/config/nextflow.config -c ./tests/modules/malt/build/nextflow.config
   tags:
     - malt
     - malt/build
@@ -21,7 +21,7 @@
     - path: output/malt/malt_index/taxonomy.tre
       md5sum: bde26a1fff5c63d3046d3863607a1e70
 - name: malt build gff
-  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build_gff -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build_gff -c ./tests/config/nextflow.config -c ./tests/modules/malt/build/nextflow.config
   tags:
     - malt
     - malt/build

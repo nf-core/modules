@@ -1,5 +1,5 @@
 - name: gatk4 mergebamalignment test_gatk4_mergebamalignment
-  command: nextflow run tests/modules/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/mergebamalignment/nextflow.config
   tags:
     - gatk4
     - gatk4/mergebamalignment

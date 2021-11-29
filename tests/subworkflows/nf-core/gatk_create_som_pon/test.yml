@@ -1,8 +1,9 @@
 - name: gatk_create_som_pon
   command: nextflow run ./tests/subworkflows/nf-core/gatk_create_som_pon -entry test_gatk_create_som_pon -c tests/config/nextflow.config
   tags:
-    - subworkflows/gatk_create_som_pon
-    - gatk4
+    - subworkflows
+    # - subworkflows/gatk_create_som_pon
+    # - gatk4
     # Modules
     # - gatk4/genomicsdbimport
     # - gatk4/createsomaticpanelofnormals

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TIDDIT_COV } from '../../../../modules/tiddit/cov/main.nf' addParams( options: [:] )
+include { TIDDIT_COV } from '../../../../modules/tiddit/cov/main.nf'
 
 workflow test_tiddit_cov {
 

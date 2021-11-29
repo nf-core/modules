@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQSERO2 } from '../../../modules/seqsero2/main.nf' addParams( options: [args: '-m k -t 4'] )
+include { SEQSERO2 } from '../../../modules/seqsero2/main.nf'
 
 workflow test_seqsero2 {
     

@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process HIFIASM {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::hifiasm=0.15.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0"
-    } else {
-        container "quay.io/biocontainers/hifiasm:0.15.4--h2e03b76_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0' :
+        'quay.io/biocontainers/hifiasm:0.15.4--h2e03b76_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -37,11 +26,12 @@ process HIFIASM {
     path  "versions.yml"                       , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     if (use_parental_kmers) {
         """
         hifiasm \\
-            $options.args \\
+            $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
@@ -49,21 +39,21 @@ process HIFIASM {
             $reads
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+        "${task.process}":
+            hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
     } else { // Phasing with Hi-C data is not supported yet
         """
         hifiasm \\
-            $options.args \\
+            $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
             $reads
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(hifiasm --version 2>&1)
+        "${task.process}":
+            hifiasm: \$(hifiasm --version 2>&1)
         END_VERSIONS
         """
     }
