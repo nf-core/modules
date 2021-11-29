@@ -30,7 +30,7 @@ process BUSCO {
 
     script:
     def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    if (lineage) options.args += " --offline --lineage_dataset $lineage"
+    if (lineage) options.args += " --lineage_dataset $lineage"
     """
     # Ensure the input is uncompressed
     gzip -cdf $fasta > __UNCOMPRESSED_FASTA_FILE__
