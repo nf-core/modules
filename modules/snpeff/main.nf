@@ -3,7 +3,7 @@ process SNPEFF {
 
     conda (params.enable_conda ? "bioconda::snpeff=5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        !task.ext.use_cache ?
+        task.ext.use_cache ?
             'https://depot.galaxyproject.org/singularity/snpeff:5.0--hdfd78af_1' :
             'quay.io/biocontainers/snpeff:5.0--hdfd78af_1' :
             "nfcore/snpeff:${task.ext.snpeff_tag}" }"

@@ -3,7 +3,7 @@ process ENSEMBLVEP {
 
     conda (params.enable_conda ? "bioconda::ensembl-vep=104.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        !task.ext.use_cache ?
+        task.ext.use_cache ?
             'https://depot.galaxyproject.org/singularity/ensembl-vep:104.3--pl5262h4a94de4_0' :
             'quay.io/biocontainers/ensembl-vep:104.3--pl5262h4a94de4_0' :
             "nfcore/vep:${task.ext.vep_tag}" }"
