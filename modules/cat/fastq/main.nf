@@ -8,7 +8,7 @@ process CAT_FASTQ {
         'biocontainers/biocontainers:v1.2.0_cv1' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: "input*/*")
 
     output:
     tuple val(meta), path("*.merged.fastq.gz"), emit: reads
