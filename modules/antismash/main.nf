@@ -11,7 +11,7 @@ process ANTISMASH {
     tuple val(meta), path(sequence_input)
 
     output:
-    tuple val(meta), path("${prefix}/clusterblast/*_c*.txt}")                  , emit: clusterblast_file
+    tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                  , emit: clusterblast_file
     tuple val(meta), path("${prefix}/css/*.css")                               , emit: css_file
     tuple val(meta), path("${prefix}/images")                                  , emit: image_directory
     tuple val(meta), path("${prefix}/js/*.js")                                 , emit: javascript
