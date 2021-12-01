@@ -1,7 +1,5 @@
 name: antismash
-
 description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters.
-
 keywords:
   - secondary metabolites
   - BGC
@@ -15,7 +13,6 @@ keywords:
   - eukaryotes
   - fungi
   - antismash
-
 tools:
   - antismash:
       description: antiSMASH - the antibiotics and Secondary Metabolite Analysis SHell
@@ -34,7 +31,7 @@ input:
   - sequence_input:
       type: file
       description: nucleotide sequence file (annotated)
-      pattern: "*.{gbk, gb, embl}"
+      pattern: "*.{gbk,gb,embl}"
 
 output:
   - meta:
@@ -47,14 +44,13 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  ## AntiSMASH output files
   - clusterblast_file:
       type: file
       description: Output of ClusterBlast algorithm
       pattern: "clusterblast/*_c*.txt"
   - css_file:
       type: file
-      description: style sheet containing the formatting of HTML output
+      description: Style sheet containing the formatting of HTML output
       pattern: "css/*.css"
   - image_directory:
       type: directory
