@@ -45,8 +45,8 @@ process ANTISMASH {
         --logfile $prefix/${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(antismash --version | sed 's/antiSMASH //')
+    "${task.process}":
+        antismash: \$(antismash --version | sed 's/antiSMASH //')
     END_VERSIONS
     """
 }
