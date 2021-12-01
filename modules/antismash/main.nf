@@ -1,21 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-params.options = [:]
-options        = initOptions(params.options)
-
 process ANTISMASH {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::antismash=6.0.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/antismash:6.0.1--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/antismash:6.0.1--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/antismash:6.0.1--pyhdfd78af_0' :
+        'quay.io/biocontainers/antismash:6.0.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(sequence_input)
@@ -41,14 +31,14 @@ process ANTISMASH {
     path "versions.yml"                                                        , emit: versions
 
     script:
-
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
-    # Specifically don't include annotations (--genefinding-tool none) as this should be run as a separate module for versioning purposes
+    ## We specifically do not include annotations (--genefinding-tool none) as
+    ## this should be run as a separate module for versioning purposes
     antismash \\
         $sequence_input \\
-        $options.args \\
+        $args \\
         -c $task.cpus \\
         --output-dir $prefix \\
         --genefinding-tool none \\
