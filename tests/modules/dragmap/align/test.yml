@@ -1,0 +1,17 @@
+- name: dragmap align single-end
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.sam
+      md5sum: e6b9562bcb03d3bf9c0f612ff2bfcedd
+
+- name: dragmap align paired-end
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.sam
+      md5sum: 2f8d94e08bb1ad6401ca8deaac599009
