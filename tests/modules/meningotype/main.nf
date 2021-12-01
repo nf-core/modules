@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MENINGOTYPE } from '../../../modules/meningotype/main.nf' addParams( options: [:] )
+include { MENINGOTYPE } from '../../../modules/meningotype/main.nf'
 
 workflow test_meningotype {
     

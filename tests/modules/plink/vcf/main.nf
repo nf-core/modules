@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLINK_VCF } from '../../../../modules/plink/vcf/main.nf' addParams( options: ['args':" --make-bed --biallelic-only strict --vcf-half-call missing --double-id --recode ped --id-delim \'=\' --allow-extra-chr"])
+include { PLINK_VCF } from '../../../../modules/plink/vcf/main.nf'
 
 workflow test_plink_vcf {
 

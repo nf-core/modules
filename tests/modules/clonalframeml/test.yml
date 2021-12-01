@@ -1,0 +1,15 @@
+- name: clonalframeml test_clonalframeml
+  command: nextflow run ./tests/modules/clonalframeml -entry test_clonalframeml -c ./tests/config/nextflow.config -c ./tests/modules/clonalframeml/nextflow.config
+  tags:
+    - clonalframeml
+  files:
+    - path: output/clonalframeml/test.ML_sequence.fasta
+      md5sum: 1b75cdaea78f5920ebb92125422a2589
+    - path: output/clonalframeml/test.em.txt
+      md5sum: 5439d59897a9a90390bb175207bf2b9b
+    - path: output/clonalframeml/test.importation_status.txt
+      md5sum: 6ce9dbc7746b1c884af042fa02311fba
+    - path: output/clonalframeml/test.labelled_tree.newick
+      md5sum: aa47754eea8a3b6bab56bd7c83ba78db
+    - path: output/clonalframeml/test.position_cross_reference.txt
+      md5sum: 8ff60768b348fc6f7a1e787aca72f596

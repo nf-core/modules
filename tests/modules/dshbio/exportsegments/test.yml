@@ -1,5 +1,5 @@
 - name: dshbio exportsegments
-  command: nextflow run ./tests/modules/dshbio/exportsegments -entry test_dshbio_exportsegments -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/dshbio/exportsegments -entry test_dshbio_exportsegments -c ./tests/config/nextflow.config -c ./tests/modules/dshbio/exportsegments/nextflow.config
   tags:
     - dshbio
     - dshbio/exportsegments
