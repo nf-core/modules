@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR          } from '../../../../modules/untar/main.nf'          addParams( options: [:] )
-include { CELLRANGER_MKFASTQ } from '../../../../modules/cellranger/mkfastq/main.nf' addParams( options: [:] )
+include { UNTAR          } from '../../../../modules/untar/main.nf'
+include { CELLRANGER_MKFASTQ } from '../../../../modules/cellranger/mkfastq/main.nf'
 
 workflow test_cellranger_mkfastq_simple {
 
