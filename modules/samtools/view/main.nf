@@ -18,7 +18,7 @@ process SAMTOOLS_VIEW {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta} -C" : ""
     def file_type = input.getExtension()
     """

@@ -27,7 +27,7 @@ process HIFIASM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (use_parental_kmers) {
         """
         hifiasm \\

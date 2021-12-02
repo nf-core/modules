@@ -16,7 +16,7 @@ process LAST_POSTMASK {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use the suffix option to disambiguate"
     """
     last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz

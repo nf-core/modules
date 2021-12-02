@@ -24,7 +24,7 @@ process FASTP {
     script:
     def args = task.ext.args ?: ''
     // Added soft-links to original fastqs for consistent naming in MultiQC
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """

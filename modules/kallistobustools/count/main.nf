@@ -22,7 +22,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def cdna     = t1c ? "-c1 $t1c" : ''
     def introns  = t2c ? "-c2 $t2c" : ''
     """
