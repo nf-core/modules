@@ -36,12 +36,16 @@ process METABAT2_METABAT2 {
 
     mv metabat2/${prefix} ${prefix}.tsv
     mv metabat2 bins
-    mv bins/*.tooShort.fa .
-    mv bins/*.lowDepth.fa .
-    mv bins/*.unbinned.fa .
+
+    if [[ -f "*.{tooShort,lowDepth,unbinned}.fa" ]]; then
+            mv bins/*.{tooShort,lowDepth,unbinned}.fa .
+            gzip *{tooShort,lowDepth,unbinned}.fa
+    fi
 
     gzip ${prefix}.tsv
-    gzip $task.cpus bins/*.fa
+    gzip bins/*.fa
+
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
