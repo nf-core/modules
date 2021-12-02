@@ -17,7 +17,7 @@ process BISMARK_DEDUPLICATE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def seqtype    = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\

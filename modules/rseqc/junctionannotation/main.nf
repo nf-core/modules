@@ -23,7 +23,7 @@ process RSEQC_JUNCTIONANNOTATION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     junction_annotation.py \\
         -i $bam \\
