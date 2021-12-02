@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DELLY_CALL } from '../../../../modules/delly/call/main.nf' addParams( options: [:] )
+include { DELLY_CALL } from '../../../../modules/delly/call/main.nf'
 
 workflow test_delly_call {
     input     = [ [ id:'test' ], // meta map

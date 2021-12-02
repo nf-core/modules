@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_GETPILEUPSUMMARIES } from '../../../../modules/gatk4/getpileupsummaries/main.nf' addParams( options: [:] )
+include { GATK4_GETPILEUPSUMMARIES } from '../../../../modules/gatk4/getpileupsummaries/main.nf'
 
 workflow test_gatk4_getpileupsummaries_just_variants {
 

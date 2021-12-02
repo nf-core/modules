@@ -21,8 +21,12 @@ input:
         e.g. [ id:'test']
   - vcf:
       type: list
-      description: Input VCF file
-      pattern: "*.{vcf}"
+      description: List of VCF(.gz) files
+      pattern: "*.{vcf,vcf.gz}"
+  - vcf_tbi:
+      type: list
+      description: List of VCF file indexes
+      pattern: "*.{idx,tbi}"
   - fasta:
       type: file
       description: Fasta file of reference genome
@@ -38,8 +42,12 @@ input:
 output:
   - vcf:
       type: file
-      description: filtered VCF file
-      pattern: "*.filtered.{vcf}"
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of VCF file
+      pattern: "*.vcf.gz.tbi"
   - versions:
       type: file
       description: File containing software versions

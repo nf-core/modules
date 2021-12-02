@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LOFREQ_CALLPARALLEL } from '../../../../modules/lofreq/callparallel/main.nf' addParams( options: [:] )
+include { LOFREQ_CALLPARALLEL } from '../../../../modules/lofreq/callparallel/main.nf'
 
 workflow test_lofreq_callparallel {
     
