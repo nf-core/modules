@@ -16,6 +16,7 @@ process CELLRANGER_MKFASTQ {
     path "*.fastq.gz"  , emit: fastq
 
     script:
+    def args = task.ext.args ?: ''
     """
     cellranger mkfastq --id=${bcl.getSimpleName()} \
         --run=$bcl \
