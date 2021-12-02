@@ -4,7 +4,7 @@
     - dragmap
     - dragmap/align
   files:
-    - path: output/dragmap/test.sam
+    - path: output/dragmap/test.bam
 
 - name: dragmap align paired-end
   command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
@@ -12,4 +12,4 @@
     - dragmap
     - dragmap/align
   files:
-    - path: output/dragmap/test.sam
+    - path: output/dragmap/test.bam

@@ -12,25 +12,28 @@ process DRAGMAP_ALIGN {
     path  hashmap
 
     output:
-    tuple val(meta), path("*.sam"), emit: sam
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path('*.log'), emit: log
     path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
         dragen-os \\
             -r $hashmap \\
             -1 $reads \\
-            --output-directory . \\
-            --output-file-prefix $prefix \\
             --num-threads $task.cpus \\
-            $args
+            $args \\
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
+            dragmap: \$(echo \$(dragen-os --version 2>&1))
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """
     } else {
@@ -39,14 +42,15 @@ process DRAGMAP_ALIGN {
             -r $hashmap \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            --output-directory . \\
-            --output-file-prefix $prefix \\
             --num-threads $task.cpus \\
-            $args
+            $args \\
+            | samtools view -@ $task.cpus $args2 -bhS -o ${prefix}.bam -
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
+            dragmap: \$(echo \$(dragen-os --version 2>&1))
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """
     }
