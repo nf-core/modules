@@ -1,5 +1,5 @@
-name: cellranger_mkref
-description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkref command.
+name: cellranger_mkgtf
+description: Module to build a filtered gtf needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkgtf command.
 keywords:
     - reference
     - mkref
@@ -13,25 +13,19 @@ tools:
         doi: ""
         licence: 10x Genomics EULA
 input:
-    - fasta:
-        type: file
-        description: fasta genome file
-        pattern: "*.{fasta,fa}"
     - gtf:
         type: file
-        description: gtf transcriptome file
+        description:
         pattern: "*.gtf"
-    - reference_name:
-        type: val
-        description: name to give the reference folder
-        pattern: str
 output:
-    - reference:
+    - gtf:
         type: folder
-        description: Folder containing all the reference indices needed by Cell Ranger
+        description: gtf transcriptome file
+        pattern: "*.filtered.gtf"
     - versions:
         type: file
         description: File containing software version
         pattern: "versions.yml"
 authors:
   - "@ggabernet"
+  - "@Emiller88"
