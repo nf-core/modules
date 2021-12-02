@@ -1,20 +1,20 @@
-name: busco test_busco_bacteroidales
-   command: nextflow run tests/modules/busco -entry test_busco_bacteroidales -c tests/config/nextflow.config
-   tags:
-     - busco
-   files:
-     - path: output/busco/test/run_bacteroidales_odb10/full_table.tsv
-       md5sum: 8d7b401d875ecd9291b01bf4485bf080
-     - path: output/busco/test/run_bacteroidales_odb10/short_summary.txt
-       contains: ['Complete BUSCOs (C)']
+- name: busco test_busco_bacteroidales
+  command: nextflow run tests/modules/busco -entry test_busco_bacteroidales -c tests/config/nextflow.config
+  tags:
+    - busco
+  files:
+    - path: output/busco/test/run_bacteroidales_odb10/full_table.tsv
+      md5sum: 8d7b401d875ecd9291b01bf4485bf080
+    - path: output/busco/test/run_bacteroidales_odb10/short_summary.txt
+      contains: ['Complete BUSCOs (C)']
 
- - name: busco test_busco_chr22
-   command: nextflow run tests/modules/busco -entry test_busco_chr22 -c tests/config/nextflow.config
-   tags:
-     - busco
-   files:
-     - path: output/busco/test/run_chr22_odb10/full_table.tsv
-       md5sum: 83f20e8996c591338ada73b6ab0eb269
-     - path: output/busco/test/run_chr22_odb10/short_summary.txt
-       contains: ['Complete BUSCOs (C)']
+- name: busco test_busco_chr22
+  command: nextflow run tests/modules/busco -entry test_busco_chr22 -c tests/config/nextflow.config
+  tags:
+    - busco
+  files:
+    - path: output/busco/test/run_chr22_odb10/full_table.tsv
+      md5sum: 83f20e8996c591338ada73b6ab0eb269
+    - path: output/busco/test/run_chr22_odb10/short_summary.txt
+      contains: ['Complete BUSCOs (C)']
 
