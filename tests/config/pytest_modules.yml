@@ -482,6 +482,10 @@ gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
 
+gatk4/applyvqsr: #&gatk4_applyvqsr
+  - modules/gatk4/applyvqsr/**
+  - tests/modules/gatk4/applyvqsr/**
+
 gatk4/baserecalibrator:
   - modules/gatk4/baserecalibrator/**
   - tests/modules/gatk4/baserecalibrator/**
@@ -518,7 +522,7 @@ gatk4/genomicsdbimport: #&gatk4_genomicsdbimport
   - modules/gatk4/genomicsdbimport/**
   - tests/modules/gatk4/genomicsdbimport/**
 
-gatk4/genotypegvcfs:
+gatk4/genotypegvcfs: #&gatk4_genotypegvcfs
   - modules/gatk4/genotypegvcfs/**
   - tests/modules/gatk4/genotypegvcfs/**
 
@@ -526,7 +530,7 @@ gatk4/getpileupsummaries: #&gatk4_getpileupsummaries
   - modules/gatk4/getpileupsummaries/**
   - tests/modules/gatk4/getpileupsummaries/**
 
-gatk4/haplotypecaller:
+gatk4/haplotypecaller: #&gatk4_haplotypecaller
   - modules/gatk4/haplotypecaller/**
   - tests/modules/gatk4/haplotypecaller/**
 
@@ -573,6 +577,10 @@ gatk4/splitncigarreads:
 gatk4/variantfiltration:
   - modules/gatk4/variantfiltration/**
   - tests/modules/gatk4/variantfiltration/**
+
+gatk4/variantrecalibrator: #&gatk4_variantrecalibrator
+  - modules/gatk4/variantrecalibrator/**
+  - tests/modules/gatk4/variantrecalibrator/**
 
 genmap/index:
   - modules/genmap/index/**
@@ -1454,6 +1462,15 @@ yara/mapper:
 #   - tests/subworkflows/nf-core/gatk_create_som_pon/**
 #   - *gatk4_genomicsdbimport
 #   - *gatk4_createsomaticpanelofnormals
+
+# subworkflows/gatk_joint_germline_variant_calling:
+#   - subworkflows/nf-core/gatk_joint_germline_variant_calling/**
+#   - tests/subworkflows/nf-core/gatk_joint_germline_variant_calling/**
+#   - *gatk4_haplotypecaller
+#   - *gatk4_genomicsdbimport
+#   - *gatk4_genotypegvcfs
+#   - *gatk4_variantrecalibrator
+#   - *gatk4_applyvqsr
 
 # subworkflows/gatk_tumor_normal_somatic_variant_calling:
 #   - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
