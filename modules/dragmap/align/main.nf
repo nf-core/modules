@@ -2,10 +2,10 @@ process DRAGMAP_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::dragmap=1.2.1" : null)
+    conda (params.enable_conda ? "bioconda::dragmap=1.2.1 bioconda::samtools=1.14 conda-forge::pigz=2.3.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--hd4ca14e_0':
-        'quay.io/biocontainers/dragmap:1.2.1--hd4ca14e_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:f7aad9060cde739c95685fc5ff6d6f7e3ec629c8-0':
+        'quay.io/biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:f7aad9060cde739c95685fc5ff6d6f7e3ec629c8-0' }"
 
     input:
     tuple val(meta), path(reads)
