@@ -32,7 +32,7 @@ process MACREL_CONTIGS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        macrel: \$(echo \$(macrel --version))
+        macrel: \$(echo \$(macrel --version | sed 's/macrel//g'))
     END_VERSIONS
     """
 }
