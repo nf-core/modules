@@ -1,9 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml macrel
-- name: macrel
-  command: nextflow run ./tests/modules/macrel -entry test_macrel -c tests/config/nextflow.config
+- name: macrel contigs test_macrel_contigs
+  command: nextflow run tests/modules/macrel/contigs -entry test_macrel_contigs -c tests/config/nextflow.config
   tags:
     - macrel
+    - macrel/contigs
   files:
-    - path: output/macrel/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/macrel/test/README.md
+      md5sum: fa3706dfc95d0538a52c4d0d824be5fb
+    - path: output/macrel/test/test.all_orfs.faa
+      md5sum: 1dafaa08e76532ea5e94ec742c7ca5e5
+    - path: output/macrel/test/test.prediction.gz
+    - path: output/macrel/test/test.smorfs.faa
+      md5sum: 59aacca46e94ffca8d765da5e28afc28
+    - path: output/macrel/test/test_log.txt
+      md5sum: 6fdba143dce759597eb9f80e5d968729
+    - path: output/macrel/versions.yml
+      md5sum: 6b9071d9574f002cc906dbb9ce125eed
