@@ -28,7 +28,6 @@ process MACREL_CONTIGS {
         --output ${prefix}/ \\
         --tag ${prefix} \\
         --log-file ${prefix}/${prefix}_log.txt \\
-        --mem ${task.memory}
         --threads $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
