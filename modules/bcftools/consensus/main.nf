@@ -16,7 +16,7 @@ process BCFTOOLS_CONSENSUS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cat $fasta | bcftools consensus $vcf $args > ${prefix}.fa
     header=\$(head -n 1 ${prefix}.fa | sed 's/>//g')

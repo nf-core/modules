@@ -4,7 +4,7 @@ LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>" \
 # Disclaimer: this container is not provided nor supported by 10x Genomics.
 
 # Install procps and clean apt cache
-RUN apt-get update \
+RUN apt-get update --allow-releaseinfo-change \
     && apt-get install -y procps \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
