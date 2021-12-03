@@ -17,7 +17,7 @@ process SUBREAD_FEATURECOUNTS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-p'
 
     def strandedness = 0

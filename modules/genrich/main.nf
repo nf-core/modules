@@ -26,7 +26,7 @@ process GENRICH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def control    = control_bam    ? "-c $control_bam"               : ''
     def blacklist  = blacklist_bed  ? "-E $blacklist_bed"             : ""
     def pvalues    = save_pvalues   ? "-f ${prefix}.pvalues.bedGraph" : ""
