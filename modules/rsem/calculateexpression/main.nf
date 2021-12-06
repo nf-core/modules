@@ -23,8 +23,8 @@ process RSEM_CALCULATEEXPRESSION {
     tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
