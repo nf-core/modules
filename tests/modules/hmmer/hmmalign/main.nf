@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMALIGN } from '../../../../modules/hmmer/hmmalign/main.nf' addParams( options: [:] )
+include { HMMER_HMMALIGN } from '../../../../modules/hmmer/hmmalign/main.nf'
 
 workflow test_hmmer_hmmalign {
 
