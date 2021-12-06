@@ -27,7 +27,9 @@ process GATK3_UNIFIEDGENOTYPER {
     path "versions.yml"               , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gatk3 -T UnifiedGenotyper \\
         -R $ref \\
