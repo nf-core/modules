@@ -11,12 +11,12 @@ process MACREL_CONTIGS {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*/*.smorfs.faa")     , emit: smorfs
-    tuple val(meta), path("*/*.all_orfs.faa")   , emit: all_orfs
-    tuple val(meta), path("*/*.prediction.gz")  , emit: amp_prediction
-    tuple val(meta), path("*/*.md")             , emit: readme_file
-    tuple val(meta), path("*/*_log.txt")        , emit: log_file
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*/*.smorfs.faa.gz")      , emit: smorfs
+    tuple val(meta), path("*/*.all_orfs.faa.gz")    , emit: all_orfs
+    tuple val(meta), path("*/*.prediction.gz")      , emit: amp_prediction
+    tuple val(meta), path("*/*.md")                 , emit: readme_file
+    tuple val(meta), path("*/*_log.txt")            , emit: log_file
+    path "versions.yml"                             , emit: versions
 
     script:
     def args = task.ext.args ?: ''
@@ -28,7 +28,7 @@ process MACREL_CONTIGS {
         --output ${prefix}/ \\
         --tag ${prefix} \\
         --log-file ${prefix}/${prefix}_log.txt \\
-        --threads $task.cpus
+        --threads $task.cpus;gzip -rfq `find . -type f -name "*.faa"`
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
