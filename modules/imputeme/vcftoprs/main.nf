@@ -11,7 +11,7 @@ process IMPUTEME_VCFTOPRS {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("id*/*.json"), emit: json
     path "versions.yml"            , emit: versions
 
     script:
@@ -34,13 +34,10 @@ process IMPUTEME_VCFTOPRS {
     convert_vcfs_to_simple_format(uniqueID=uniqueID)
     crawl_for_snps_to_analyze(uniqueIDs=uniqueID)
     run_export_script(uniqueIDs=uniqueID)
-    file.copy(paste0("./",uniqueID,"/",uniqueID,"_data.json"),"output.json")
 
-    #version export. Have to hardcode process name and software name because
-    #won't run inside an R-block
-    version_file_path="versions.yml"
-    f <- file(version_file_path,"w")
-    writeLines("IMPUTEME_VCFTOPRS:", f)
+    #version export.
+    f <- file("versions.yml","w")
+    writeLines("${task.process}", f)
     writeLines(paste0(" imputeme: ", sub("^v","",get_conf("version"))),f)
     close(f)
 
