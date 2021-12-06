@@ -17,7 +17,7 @@ process MINIMAP2_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     """
     minimap2 \\

@@ -35,15 +35,12 @@ process FARGENE {
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
-    gzip \\
-        -cdf $input \\
-        > unziped.fa |
-        fargene \\
-            $args \\
-            -p $task.cpus \\
-            -i unziped.fa \\
-            --hmm-model $hmm_model \\
-            -o $prefix
+    fargene \\
+        $args \\
+        -p $task.cpus \\
+        -i $input \\
+        --hmm-model $hmm_model \\
+        -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

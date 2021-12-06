@@ -17,7 +17,7 @@ process BEDTOOLS_MAKEWINDOWS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def arg_input = use_bed ? "-b $regions" : "-g $regions"
     """
     bedtools \\
