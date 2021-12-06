@@ -1,13 +1,16 @@
 # Updating the docker container and making a new module release
 
-Cell Ranger is a commercial tool by 10X Genomics. The container provided for the cellranger nf-core module is not provided nor supported by 10x Genomics. Updating the Cell Ranger version in the container and pushing the update to Dockerhub needs to be done manually.
+Bcl2fastq2 and Cell Ranger are commercial tools from Illumina and 10X Genomics, respectively. The container provided for the cellranger nf-core module is not provided nor supported by either Illumina or 10x Genomics. Updating the bcl2fastq2 or Cell Ranger versions in the container and pushing the update to Dockerhub needs to be done manually.
 
-1. Navigate to the [Cell Ranger download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest) and download the tar ball of the desired Cell Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
+1. Navigate to the appropriate download pages.
+        - [bcl2fastq2](https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html): download the linux rpm installer of the desired bcl2fastq2 version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
+        - [Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest): download the tar ball of the desired Cell Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
 
-2. Edit the Dockerfile: update the Cell Ranger version in this line:
+2. Edit the Dockerfile: update the bcl2fastq2 and Cell Ranger versions in this line:
 
     ```bash
-    ENV CELLRANGER_VER <VERSION>
+    ENV BCL2FASTQ2_VER=<VERSION> \
+        CELLRANGER_VER=<VERSION>
     ```
 
 3. Create the container:

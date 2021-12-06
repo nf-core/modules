@@ -5,7 +5,7 @@ process CELLRANGER_MKFASTQ {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "litd/docker-cellranger:v6.1.1" // FIXME Add bcl2fastq to nf-core docker image
+    container "nfcore/cellranger:6.1.2"
 
     input:
     path bcl
@@ -13,7 +13,7 @@ process CELLRANGER_MKFASTQ {
 
     output:
     path "versions.yml", emit: versions
-    path "*.fastq.gz"  , emit: fastq
+    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
 
     script:
     def args = task.ext.args ?: ''
