@@ -37,7 +37,7 @@ process ENSEMBLVEP {
         --cache_version $cache_version \\
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
-        --format vcf \\
+        --vcf \\
         --stats_file ${prefix}.summary.html
 
     rm -rf $prefix
