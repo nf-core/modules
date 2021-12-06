@@ -22,7 +22,7 @@ process GATK4_GENOTYPEGVCFS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_options    = dbsnp ? "-D ${dbsnp}" : ""
     def interval_options = intervals_bed ? "-L ${intervals_bed}" : ""
     def gvcf_options     = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"

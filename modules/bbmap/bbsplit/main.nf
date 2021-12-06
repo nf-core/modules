@@ -22,7 +22,7 @@ process BBMAP_BBSPLIT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = 3
     if (!task.memory) {
