@@ -23,10 +23,10 @@ RUN \
     cd /tmp && \
     unzip bcl2fastq2-$BCL2FASTQ2_VER.zip && \
     mv *.rpm bcl2fastq2-$BCL2FASTQ2_VER.rpm && \
-	rpm2cpio ./bcl2fastq2-$BCL2FASTQ2_VER.rpm | cpio -idmv && \
+    rpm2cpio ./bcl2fastq2-$BCL2FASTQ2_VER.rpm | cpio -idmv && \
     export PATH=/tmp/usr/local/bin/:$PATH && \
     ln -s /tmp/usr/local/bin/bcl2fastq /usr/bin/bcl2fastq && \
-	rm -rf bcl2fastq2-$BCL2FASTQ2_VER.*
+    rm -rf bcl2fastq2-$BCL2FASTQ2_VER.*
 
 # Install cellranger
 RUN \
