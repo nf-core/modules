@@ -33,7 +33,7 @@ process GATK3_UNIFIEDGENOTYPER {
         -R $ref \\
         -I $bam \\
         -o ${prefix}.vcf \\
-        $options.args
+        $args
 
     bgzip \\
         $args2 \\
