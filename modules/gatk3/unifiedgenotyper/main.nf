@@ -1,7 +1,3 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-
 process GATK3_UNIFIEDGENOTYPER {
     tag "$meta.id"
     label 'process_low'
