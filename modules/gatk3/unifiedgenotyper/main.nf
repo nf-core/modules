@@ -34,8 +34,8 @@ process GATK3_UNIFIEDGENOTYPER {
         ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( gatk3 --version )
+    "${task.process}":
+        gatk3: \$( gatk3 --version )
     END_VERSIONS
     """
 }
