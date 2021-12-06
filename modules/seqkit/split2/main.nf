@@ -12,7 +12,7 @@ process SEQKIT_SPLIT2 {
 
     output:
     tuple val(meta), path("**/*.gz"), emit: reads
-    path "versions.yml"                          , emit: versions
+    path "versions.yml"             , emit: versions
 
     script:
     def args   = task.ext.args   ?: ''
