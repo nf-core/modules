@@ -28,7 +28,7 @@ process MACREL_CONTIGS {
         --output ${prefix}/ \\
         --tag ${prefix} \\
         --log-file ${prefix}/${prefix}_log.txt \\
-        --threads $task.cpus;gzip -rfq `find . -type f -name "*.faa"`
+        --threads $task.cpus; gzip -rfq `find . -type f -name "*.faa"`
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
