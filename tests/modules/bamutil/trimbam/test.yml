@@ -1,0 +1,8 @@
+- name: bamutil trimbam test_bamutil_trimbam
+  command: nextflow run ./tests/modules/bamutil/trimbam -entry test_bamutil_trimbam -c ./tests/config/nextflow.config -c ./tests/modules/bamutil/trimbam/nextflow.config
+  tags:
+    - bamutil/trimbam
+    - bamutil
+  files:
+    - path: output/bamutil/test.bam
+      md5sum: 9ddd0ecca82f7f3433383f3d1308970e

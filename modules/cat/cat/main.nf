@@ -1,21 +1,10 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process CAT_CAT {
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "conda-forge::pigz=2.3.4" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/pigz:2.3.4"
-    } else {
-        container "quay.io/biocontainers/pigz:2.3.4"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
+        'quay.io/biocontainers/pigz:2.3.4' }"
 
     input:
     path files_in
@@ -26,6 +15,8 @@ process CAT_CAT {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
     if (file_list.size > 1) {
 
@@ -39,16 +30,16 @@ process CAT_CAT {
         def in_zip   = file_list[0].endsWith('.gz')
         def out_zip  = file_out.endsWith('.gz')
         def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
-        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $options.args2" : ''
+        def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
         """
         $command1 \\
-            $options.args \\
+            $args \\
             ${file_list.join(' ')} \\
             $command2 \\
             > $file_out
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
+        "${task.process}":
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """

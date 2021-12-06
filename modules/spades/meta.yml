@@ -20,11 +20,20 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - illumina:
       type: file
       description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+        List of input FastQ (Illumina or PacBio CCS reads) files
+        of size 1 and 2 for single-end and paired-end data,
+        respectively. This input data type is required.
+  - pacbio:
+      type: file
+      description: |
+        List of input PacBio CLR FastQ files of size 1.
+  - nanopore:
+      type: file
+      description: |
+        List of input FastQ files of size 1, originating from Oxford Nanopore technology.
   - hmm:
       type: file
       description:
@@ -39,26 +48,32 @@ output:
       type: file
       description: |
         Fasta file containing scaffolds
+      pattern: "*.fa.gz"
   - contigs:
       type: file
       description: |
         Fasta file containing contigs
+      pattern: "*.fa.gz"
   - transcripts:
       type: file
       description: |
         Fasta file containing transcripts
+      pattern: "*.fa.gz"
   - gene_clusters:
       type: file
       description: |
         Fasta file containing gene_clusters
+      pattern: "*.fa.gz"
   - gfa:
       type: file
       description: |
         gfa file containing assembly
+      pattern: "*.gfa.gz"
   - log:
       type: file
       description: |
         Spades log file
+      pattern: "*.log"
   - versions:
       type: file
       description: File containing software versions
@@ -67,3 +82,4 @@ output:
 authors:
   - "@JoseEspinosa"
   - "@drpatelh"
+  - "@d4straub"

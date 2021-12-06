@@ -1,0 +1,7 @@
+- name: fastqscan test_fastqscan
+  command: nextflow run ./tests/modules/fastqscan -entry test_fastqscan -c ./tests/config/nextflow.config -c ./tests/modules/fastqscan/nextflow.config
+  tags:
+    - fastqscan
+  files:
+    - path: output/fastqscan/test.json
+      md5sum: b9d59a36fe85e556b5a80573ea0b0266

@@ -1,0 +1,41 @@
+- name: leehom test_leehom_bam
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_bam -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  tags:
+    - leehom
+  files:
+    - path: output/leehom/test.bam
+    - path: output/samtools/test.bam
+    - path: output/leehom/test.log
+      md5sum: d1f5da273eb69f41babda510797c7671
+
+- name: leehom test_leehom_se_fq
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_se_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  tags:
+    - leehom
+  files:
+    - path: output/leehom/test.fail.fq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/leehom/test.fq.gz
+      md5sum: ed10c4bbf5c3082ca68823535b91e1e2
+    - path: output/leehom/test.log
+      md5sum: 59aa280cb72dfbea05ba913cb89db143
+
+- name: leehom test_leehom_pe_fq
+  command: nextflow run ./tests/modules/leehom -entry test_leehom_pe_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  tags:
+    - leehom
+  files:
+    - path: output/leehom/test.fail.fq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/leehom/test.fq.gz
+      md5sum: 84929b78e3f89371ecd3b4c915b9ec33
+    - path: output/leehom/test.log
+      md5sum: 800b5a88dc0822886bfbb271029e2a4a
+    - path: output/leehom/test_r1.fail.fq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/leehom/test_r1.fq.gz
+      md5sum: e9258420fa712e8536106995a7d1d97a
+    - path: output/leehom/test_r2.fail.fq.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/leehom/test_r2.fq.gz
+      md5sum: 27230bcc5eae81ec5c1701798d39c1af
