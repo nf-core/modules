@@ -1,24 +1,13 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
-def VERSION = '0.1' // No version information printed
+def VERSION = '0.1' // Version information not provided by tool on CLI
 
 process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::chromap=0.1 bioconda::samtools=1.13" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' :
+        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -37,34 +26,37 @@ process CHROMAP_CHROMAP {
     path "versions.yml"                                  , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args     = options.args.tokenize()
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_list = args.tokenize()
 
-    def file_extension = options.args.contains("--SAM") ? 'sam' : options.args.contains("--TagAlign")? 'tagAlign' : options.args.contains("--pairs")? 'pairs' : 'bed'
+    def file_extension = args.contains("--SAM") ? 'sam' : args.contains("--TagAlign")? 'tagAlign' : args.contains("--pairs")? 'pairs' : 'bed'
     if (barcodes) {
-        args << "-b ${barcodes.join(',')}"
+        args_list << "-b ${barcodes.join(',')}"
         if (whitelist) {
-            args << "--barcode-whitelist $whitelist"
+            args_list << "--barcode-whitelist $whitelist"
         }
     }
     if (chr_order) {
-        args << "--chr-order $chr_order"
+        args_list << "--chr-order $chr_order"
     }
     if (pairs_chr_order){
-        args << "--pairs-natural-chr-order $pairs_chr_order"
+        args_list << "--pairs-natural-chr-order $pairs_chr_order"
     }
-    def final_args = args.join(' ')
+    def final_args = args_list.join(' ')
     def compression_cmds = "gzip ${prefix}.${file_extension}"
-    if (options.args.contains("--SAM")) {
+    if (args.contains("--SAM")) {
         compression_cmds = """
-        samtools view $options.args2 -@ ${task.cpus} -bh \\
+        samtools view $args2 -@ $task.cpus -bh \\
             -o ${prefix}.bam ${prefix}.${file_extension}
         rm ${prefix}.${file_extension}
         """
     }
     if (meta.single_end) {
         """
-        chromap ${final_args} \\
+        chromap \\
+            $final_args \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
@@ -74,13 +66,14 @@ process CHROMAP_CHROMAP {
         $compression_cmds
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        "${task.process}":
+            chromap: $VERSION
         END_VERSIONS
         """
     } else {
         """
-        chromap ${final_args} \\
+        chromap \\
+            $final_args \\
             -t $task.cpus \\
             -x $index \\
             -r $fasta \\
@@ -91,8 +84,8 @@ process CHROMAP_CHROMAP {
         $compression_cmds
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(echo "$VERSION")
+        "${task.process}":
+            chromap: $VERSION
         END_VERSIONS
         """
     }

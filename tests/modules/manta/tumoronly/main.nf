@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MANTA_TUMORONLY } from '../../../../modules/manta/tumoronly/main.nf' addParams( options: [:] )
+include { MANTA_TUMORONLY } from '../../../../modules/manta/tumoronly/main.nf'
 
 workflow test_manta_tumoronly {
     input = [

@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input:
       type: file
-      description: fasta or paired-end fastq file containing either genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented metagenomic reads (fastq)
+      description: uncompressed fasta file or paired-end fastq files containing either genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented metagenomic reads (fastq)
       pattern: "*.{fasta}"
   - hmm_model:
       type: string

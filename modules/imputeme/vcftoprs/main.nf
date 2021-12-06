@@ -1,23 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process IMPUTEME_VCFTOPRS {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img"
-    } else {
-        container "biocontainers/imputeme:vv1.0.7_cv1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img' :
+        'biocontainers/imputeme:vv1.0.7_cv1' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -27,14 +15,15 @@ process IMPUTEME_VCFTOPRS {
     path "versions.yml"            , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     #!/usr/bin/env Rscript
 
-    #Set configuration - either from options.args or from defaults
+    #Set configuration - either from args or from defaults
     source("/imputeme/code/impute-me/functions.R")
-    if(file.exists('$options.args')){
-        set_conf("set_from_file",'$options.args')
+    if(file.exists('$args')){
+        set_conf("set_from_file",'$args')
     }else{
         set_conf("set_from_file", "/imputeme/code/impute-me/template/nextflow_default_configuration.R")
     }

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CUSTOM_GETCHROMSIZES } from '../../../../modules/custom/getchromsizes/main.nf' addParams( options: [:] )
+include { CUSTOM_GETCHROMSIZES } from '../../../../modules/custom/getchromsizes/main.nf'
 
 workflow test_custom_getchromsizes {
     
