@@ -38,7 +38,7 @@ process METABAT2_METABAT2 {
     mv metabat2 bins
 
     gzip ${prefix}.tsv
-    gzip bins/*.fa
+    find . -type f -name "bins/*.fa" | xargs -t -n 1 bgzip -@ ${task.cpus}
 
     ## Some bash trickery to successfully execute `mv`, even when no contigs are
     ## actually discarded.
