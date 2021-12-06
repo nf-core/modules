@@ -18,7 +18,7 @@ process BBMAP_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
 

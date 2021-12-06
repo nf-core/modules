@@ -18,7 +18,7 @@ process TIDDIT_COV {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref $fasta" : ""
     """
     tiddit \\
