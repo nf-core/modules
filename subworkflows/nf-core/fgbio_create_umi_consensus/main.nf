@@ -4,7 +4,6 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-params.groupumistrategy        = "Adjacency"
 params.aligner                 = "bwa-mem"
 
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM }         from '../../../modules/fgbio/fastqtobam/main'
@@ -68,7 +67,7 @@ workflow CREATE_UMI_CONSENSUS {
     ch_versions = ch_versions.mix(SAMBLASTER.out.versions)
 
     // appropriately tagged reads are now grouped by UMI information
-    GROUPREADSBYUMI ( SAMBLASTER.out.bam, params.groupumistrategy )
+    GROUPREADSBYUMI ( SAMBLASTER.out.bam )
     ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
 
     // using the above created groups, a consensus across reads in the same grou
