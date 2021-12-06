@@ -38,7 +38,7 @@ process GATK3_UNIFIEDGENOTYPER {
         $options.args
 
     bgzip \\
-        $options.args2 \\
+        $args2 \\
         -@ ${task.cpus} \\
         ${prefix}.vcf
 
