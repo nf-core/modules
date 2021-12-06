@@ -270,9 +270,25 @@ cat/fastq:
   - modules/cat/fastq/**
   - tests/modules/cat/fastq/**
 
-cellranger/mkref:
+cellranger/gtf: # &cellranger/gtf
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/mkref: # &cellranger/mkref
   - modules/cellranger/mkref/**
   - tests/modules/cellranger/mkref/**
+  # - *cellranger/gtf
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/count:
+  - modules/cellranger/count/**
+  - tests/modules/cellranger/count/**
+  # - *cellranger/mkref
+  - modules/cellranger/mkref/**
+  - tests/modules/cellranger/mkref/**
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
 
 checkm/lineagewf:
   - modules/checkm/lineagewf/**
@@ -385,6 +401,14 @@ diamond/blastx:
 diamond/makedb:
   - modules/diamond/makedb/**
   - tests/modules/diamond/makedb/**
+
+dragmap/align:
+  - modules/dragmap/align/**
+  - tests/modules/dragmap/align/**
+
+dragmap/hashtable:
+  - modules/dragmap/hashtable/**
+  - tests/modules/dragmap/hashtable/**
 
 dragonflye:
   - modules/dragonflye/**

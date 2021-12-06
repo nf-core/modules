@@ -18,7 +18,7 @@ process MUMMER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed_ref = ref.getName().endsWith(".gz") ? true : false
     def fasta_name_ref = ref.getName().replace(".gz", "")
 
