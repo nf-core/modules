@@ -23,7 +23,7 @@ process GATK4_APPLYVQSR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
     alleleSpecificCommand = allelespecific ? '-AS' : ''
     truthSensitivityCommand = truthsensitivity ? "--truth-sensitivity-filter-level ${truthsensitivity}" : ''

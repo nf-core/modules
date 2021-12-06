@@ -27,7 +27,7 @@ process GATK4_VARIANTRECALIBRATOR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
     alleleSpecificCommand = allelespecific ? '-AS' : ''
     resourceCommand = '--resource:' + reslabels.join( ' --resource:')

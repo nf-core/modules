@@ -1,5 +1,5 @@
 - name: gatk_joint_germline_variant_calling
-  command: nextflow run ./tests/subworkflows/nf-core/gatk_joint_germline_variant_calling -entry test_gatk_joint_germline_variant_calling -c tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/gatk_joint_germline_variant_calling -entry test_gatk_joint_germline_variant_calling -c tests/config/nextflow.config -c tests/modules/gatk4/haplotypecaller/nextflow.config
   tags:
     - subworkflows
     # - subworkflows/gatk_joint_germline_variant_calling
@@ -13,9 +13,22 @@
       # gatk4 haplotypecaller
     - path: ./output/haplotypecaller/test.vcf.gz
     - path: ./output/haplotypecaller/test.vcf.gz.tbi
+    - path: ./output/haplotypecaller/test2.vcf.gz
+    - path: ./output/haplotypecaller/test2.vcf.gz.tbi
       # gatk4 genomicsdbimport
-    - path: ./output/getpileupsummaries/test.pileups.table
-      md5sum: 8b1b4c8ab831eca50ee9e940463a741f
+    - path: output/genomicsdbimport/test_joint/__tiledb_workspace.tdb
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/genomicsdbimport/test_joint/callset.json
+      md5sum: 2ab411773b7267de61f8c04939de2a99
+    - path: output/genomicsdbimport/test_joint/chr21$1$46709983/.__consolidation_lock
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/genomicsdbimport/test_joint/chr21$1$46709983/__array_schema.tdb
+    - path: output/genomicsdbimport/test_joint/chr21$1$46709983/genomicsdb_meta_dir/genomicsdb_column_bounds.json
+      md5sum: 2502f79658bc000578ebcfddfc1194c0
+    - path: output/genomicsdbimport/test_joint/vcfheader.vcf
+      contains:
+        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
+    - path: output/genomicsdbimport/test_joint/vidmap.json
       # gatk4 genotypegvcfs
     - path: ./output/calculatecontamination/test.contamination.table
       md5sum: 5fdcf1728cf98985ce31c038eb24e05c

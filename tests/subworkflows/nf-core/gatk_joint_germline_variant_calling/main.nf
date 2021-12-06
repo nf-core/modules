@@ -2,23 +2,26 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/main' addParams( [:]  )
+include { GATK_JOINT_GERMLINE_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_joint_germline_variant_calling/main'
 
-workflow test_gatk_tumor_only_somatic_variant_calling {
-    input         = [
-                    [[ id:'test' ], // meta map
-                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'],     checkIfExists: true)],
-                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
-                    [] ]
-                    ]
-    fasta                 = file(params.test_data['homo_sapiens']['genome']['genome_fasta'],                            checkIfExists: true)
-    fai                   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'],                        checkIfExists: true)
-    dict                  = file(params.test_data['homo_sapiens']['genome']['genome_dict'],                             checkIfExists: true)
-    germline_resource     = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'],                    checkIfExists: true)
-    germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'],                checkIfExists: true)
-    panel_of_normals      = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz'],           checkIfExists: true)
-    panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'],       checkIfExists: true)
-    interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'],                    checkIfExists: true)
+workflow test_gatk_joint_germline_variant_calling {
+    input = [
+             [ [ id:'test' ], // meta map
+               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+             ],
+             [ [ id:'test2' ], // meta map
+               file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+               file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+             ]
+            ]
 
-    GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    sites = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
+    sites_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    joint_id = "test_joint"
+    GATK_JOINT_GERMLINE_VARIANT_CALLING ( input, fasta, fai, dict, sites, sites_tbi, intervals, joint_id )
 }

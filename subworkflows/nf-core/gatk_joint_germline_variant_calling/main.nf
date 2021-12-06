@@ -2,17 +2,11 @@
 // Run GATK haplotypecaller for all input samples, merge them with genomicsdbimport, perform joint genotyping with genotypeGVCFS and recalibrate with variantrecalibrator & applyvqsr.
 //
 
-params.haplotc_options     = [:]
-// params.genomicsdb_options   = [:]
-// params.genotypegvfcs_options  = [:]
-// params.variantrecal_options = [:]
-// params.applyvqsr_options = [:]
-
-include { GATK4_HAPLOTYPECALLER     as HAPLOTYPECALLER     } from '../../../modules/gatk4/haplotypecaller/main'     addParams( options: params.haplotc_options       )
-// include { GATK4_GENOMICSDBIMPORT    as GENOMICSDBINMPORT   } from '../../../modules/gatk4/genomicsdbimport/main'    addParams( options: params.genomicsdb_options    )
-// include { GATK4_GENOTYPEGVCFS       as GENOTYPEGVCFS       } from '../../../modules/gatk4/genotypegvcfs/main'       addParams( options: params.genotypegvfcs_options )
-// include { GATK4_VARIANTRECALIBRATOR as VARIANTRECALIBRATOR } from '../../../modules/gatk4/variantrecalibrator/main' addParams( options: params.variantrecal_options  )
-// include { GATK4_APPLYVQSR           as APPLYVQSR           } from '../../../modules/gatk4/applyvqsr/main'           addParams( options: params.applyvqsr_options     )
+include { GATK4_HAPLOTYPECALLER     as HAPLOTYPECALLER     } from '../../../modules/gatk4/haplotypecaller/main'
+include { GATK4_GENOMICSDBIMPORT    as GENOMICSDBIMPORT   } from '../../../modules/gatk4/genomicsdbimport/main'
+// include { GATK4_GENOTYPEGVCFS       as GENOTYPEGVCFS       } from '../../../modules/gatk4/genotypegvcfs/main'
+// include { GATK4_VARIANTRECALIBRATOR as VARIANTRECALIBRATOR } from '../../../modules/gatk4/variantrecalibrator/main'
+// include { GATK4_APPLYVQSR           as APPLYVQSR           } from '../../../modules/gatk4/applyvqsr/main'
 
 workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     take:
@@ -22,47 +16,41 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     fasta                     // channel: /path/to/reference/fasta
     fai                       // channel: /path/to/reference/fasta/index
     dict                      // channel: /path/to/reference/fasta/dictionary
-    path dbsnp
-    path dbsnp_tbi
-    path interval
+    sites
+    sites_tbi
+    interval_file
     // genomicsdbimport
-    // tuple val(meta), path(vcf), path(tbi), path(intervalfile), val(intervalval), path(wspace)
-    // val run_intlist
-    // val run_updatewspace
-    // val input_map
+    joint_id
     // genotypegvcfs
-    // tuple val(meta), path(gvcf), path(gvcf_index)
     // path  intervals_bed
     // variantrecalibrator
-    // tuple val(meta), path(vcf) , path(tbi)
     // val allelespecific
     // tuple path(resvcfs), path(restbis), val(reslabels)
     // val annotation
     // val mode
     // val create_rscript
     // applyvqsr
-    // tuple val(meta), path(vcf), path(tbi), path(recal), path(recalidx), path(tranches)
     // val truthsensitivity
 
     main:
     ch_versions = Channel.empty()
-    mutect2_input = channel.from(input)
+    haplotc_input = channel.from(input)
 
     //
-    //Perform variant calling using mutect2 module in tumor single mode.
+    //Perform variant calling using haplotypecaller module.
     //
-    HAPLOTYPECALLER ( mutect2_input , true , false , false , [] , fasta , fai , dict , germline_resource , germline_resource_tbi , panel_of_normals , panel_of_normals_tbi )
-    ch_versions = ch_versions.mix(MUTECT2.out.versions)
+    HAPLOTYPECALLER ( haplotc_input, fasta, fai, dict, sites, sites_tbi, interval_file )
+    ch_versions = ch_versions.mix(HAPLOTYPECALLER.out.versions.first())
 
     //
-    //Generate pileup summary table using getepileupsummaries.
+    //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
     //
-    // pileup_input = channel.from(input).map {
-    //     meta, input_file, input_index, which_norm ->
-    //     [meta, input_file[0], input_index[0]]
-    // }
-    // GETPILEUPSUMMARIES ( pileup_input , germline_resource , germline_resource_tbi , interval_file )
-    // ch_versions = ch_versions.mix(GETPILEUPSUMMARIES.out.versions)
+    ch_vcf = HAPLOTYPECALLER.out.vcf.collect{it[1]}.toList()
+    ch_index = HAPLOTYPECALLER.out.tbi.collect{it[1]}.toList()
+    additional_gendb_opts = [ interval_file, [], []]
+    gendb_input = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine(additional_gendb_opts)
+    GENOMICSDBIMPORT ( gendb_input, false, false, false )
+    ch_versions = ch_versions.mix(GENOMICSDBIMPORT.out.versions)
 
     //
     //Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
@@ -72,6 +60,7 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     // ch_pileup.add([])
     // CALCULATECONTAMINATION ( ch_pileup, true )
     // ch_versions = ch_versions.mix(CALCULATECONTAMINATION.out.versions)
+    // tuple val(meta), path(gvcf), path(gvcf_index)
 
     //
     //Mutect2 calls filtered by filtermutectcalls using the contamination and segmentation tables.
@@ -88,12 +77,17 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     // ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
     // FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fai, dict )
     // ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
+    // tuple val(meta), path(vcf) , path(tbi)
+
+    // FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fai, dict )
+    // ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
+    // tuple val(meta), path(vcf), path(tbi), path(recal), path(recalidx), path(tranches)
 
     emit:
     haplotc_vcf            = HAPLOTYPECALLER.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
     haplotc_index          = HAPLOTYPECALLER.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
 
-    // pileup_table           = GETPILEUPSUMMARIES.out.table.collect()                // channel: [ val(meta), [ table ] ]
+    genomicsdb       = GENOMICSDBIMPORT.out.genomicsdb               // channel: [ val(meta), [ genomicsdb ] ]
 
     // contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
     // segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
