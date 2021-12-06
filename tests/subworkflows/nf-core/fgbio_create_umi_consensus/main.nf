@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CREATE_UMI_CONSENSUS } from '../../../../subworkflows/nf-core/fgbio_create_umi_consensus/main' addParams( [:]  )
+include { CREATE_UMI_CONSENSUS } from '../../../../subworkflows/nf-core/fgbio_create_umi_consensus/main'
 
 workflow test_fgbio_create_umi_consensus_mem1 {
     reads          =    [
