@@ -9,8 +9,8 @@ params.aligner                 = "bwa-mem"
 
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM }         from '../../../modules/fgbio/fastqtobam/main'
 include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ }          from '../../../modules/samtools/bam2fq/main.nf'
-include { BWA_INDEX }                                               from '../../../modules/bwa/index/main.nf'
-include { BWA_MEM }                                                 from '../../../modules/bwa/mem/main'
+include { BWA_INDEX                         as BWAMEM1_INDEX }      from '../../../modules/bwa/index/main.nf'
+include { BWA_MEM                           as BWAMEM1_MEM }        from '../../../modules/bwa/mem/main'
 include { BWAMEM2_INDEX }                                           from '../../../modules/bwamem2/index/main.nf'
 include { BWAMEM2_MEM }                                             from '../../../modules/bwamem2/mem/main'
 include { SAMBLASTER }                                              from '../../../modules/samblaster/main'
@@ -44,13 +44,13 @@ workflow CREATE_UMI_CONSENSUS {
 
     if (aligner == "bwa-mem") {
         // reference is indexed
-        BWA_INDEX ( fasta )
-        ch_versions = ch_versions.mix(BWA_INDEX.out.versions)
+        BWAMEM1_INDEX ( fasta )
+        ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWA_MEM ( BAM2FASTQ.out.reads, BWA_INDEX.out.index )
-        ch_versions = ch_versions.mix(BWA_MEM.out.versions)
-        aligned_bam = BWA_MEM.out.bam
+        BWAMEM1_MEM ( BAM2FASTQ.out.reads, BWAMEM1_INDEX.out.index )
+        ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
+        aligned_bam = BWAMEM1_MEM.out.bam
     } else {
         // reference is indexed
         BWAMEM2_INDEX ( fasta )
