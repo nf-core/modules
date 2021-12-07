@@ -16,8 +16,8 @@ process BEDTOOLS_GETFASTA {
     path "versions.yml" , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${bed.baseName}${task.ext.suffix}" : "${bed.baseName}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${bed.baseName}"
     """
     bedtools \\
         getfasta \\
