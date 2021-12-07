@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BUSCO as BUSCO_BACTE } from '../../../modules/busco/main.nf' addParams( options: [args: '--mode genome --lineage_dataset bacteroidales_odb10'] )
-include { BUSCO as BUSCO_CHR22 } from '../../../modules/busco/main.nf' addParams( options: [args: '--mode genome --offline'] )
-include { UNTAR                } from '../../../modules/untar/main.nf' addParams( options: [:] )
+include { BUSCO as BUSCO_BACTE } from '../../../modules/busco/main.nf'
+include { BUSCO as BUSCO_CHR22 } from '../../../modules/busco/main.nf'
+include { UNTAR                } from '../../../modules/untar/main.nf'
 
 // This tests genome decompression, empty input channels and data download
 workflow test_busco_bacteroidales {
