@@ -20,6 +20,7 @@ process BWA_MEM {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
+    def split_cpus = Math.floor(task.cpus/2)
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
@@ -29,7 +30,7 @@ process BWA_MEM {
         -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | samtools view $args2 -@ $task.cpus -bhS -o ${prefix}.bam -
+        | samtools $args2 --threads ${split_cpus} -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
