@@ -26,7 +26,7 @@ process GATK4_FASTQTOSAM {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" FastqToSam \\
-        -I $reads \\
+        $read_files \\
         -O ${prefix}.bam \\
         -SM $prefix \\
         $args
