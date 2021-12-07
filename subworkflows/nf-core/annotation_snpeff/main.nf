@@ -14,9 +14,10 @@ workflow ANNOTATION_SNPEFF {
     main:
     SNPEFF(vcf, snpeff_db, snpeff_cache)
     ANNOTATION_BGZIPTABIX(SNPEFF.out.vcf)
+    ch_versions = SNPEFF.out.versions.first().mix(ANNOTATION_BGZIPTABIX.out.versions.first())
 
     emit:
     vcf_tbi  = ANNOTATION_BGZIPTABIX.out.gz_tbi // channel: [ val(meta), vcf.gz, vcf.gz.tbi ]
-    reports  = SNPEFF.out.report              //    path: *.html
-    versions = SNPEFF.out.versions            //    path: versions.yml
+    reports  = SNPEFF.out.report                //    path: *.html
+    versions = ch_versions                      //    path: versions.yml
 }

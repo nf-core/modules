@@ -17,8 +17,10 @@ workflow ANNOTATION_ENSEMBLVEP {
     ENSEMBLVEP(vcf, vep_genome, vep_species, vep_cache_version, vep_cache)
     ANNOTATION_BGZIPTABIX(ENSEMBLVEP.out.vcf)
 
+    ch_versions = ENSEMBLVEP.out.versions.first().mix(ANNOTATION_BGZIPTABIX.out.versions.first())
+
     emit:
     vcf_tbi  = ANNOTATION_BGZIPTABIX.out.gz_tbi // channel: [ val(meta), vcf.gz, vcf.gz.tbi ]
-    reports  = ENSEMBLVEP.out.report          //    path: *.html
-    versions = ENSEMBLVEP.out.versions        //    path: versions.yml
+    reports  = ENSEMBLVEP.out.report            //    path: *.html
+    versions = ch_versions                      //    path: versions.yml
 }
