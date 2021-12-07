@@ -26,8 +26,14 @@ process GATK4_MERGEVCFS {
         input += " I=${vcf}"
     }
     def ref = use_ref_dict ? "D=${ref_dict}" : ""
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK MergeVcfs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk MergeVcfs \\
+    gatk --java-options "-Xmx${avail_mem}g" MergeVcfs \\
         $input \\
         O=${prefix}.vcf.gz \\
         $ref \\
