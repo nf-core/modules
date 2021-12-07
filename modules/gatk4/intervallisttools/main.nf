@@ -17,11 +17,17 @@ process GATK4_INTERVALLISTTOOLS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK IntervalListTools] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
 
     mkdir ${prefix}_split
 
-    gatk \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         IntervalListTools \\
         -I ${interval_list} \\
         -O ${prefix}_split \\
