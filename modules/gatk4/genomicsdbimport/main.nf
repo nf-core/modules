@@ -42,8 +42,14 @@ process GATK4_GENOMICSDBIMPORT {
         updated_db = wspace.toString()
     }
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK GenomicsDBImport] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk GenomicsDBImport \\
+    gatk --java-options "-Xmx${avail_mem}g" GenomicsDBImport \\
         $inputs_command \\
         $dir_command \\
         $intervals_command \\
