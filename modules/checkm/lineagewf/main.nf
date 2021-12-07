@@ -17,8 +17,8 @@ process CHECKM_LINEAGEWF {
     path "versions.yml"                   , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     checkm \\
         lineage_wf \\
