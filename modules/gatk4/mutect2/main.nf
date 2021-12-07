@@ -53,8 +53,14 @@ process GATK4_MUTECT2 {
         normals_command = '-normal ' + which_norm.join( ' -normal ')
     }
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK Mutect2] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk Mutect2 \\
+    gatk --java-options "-Xmx${avail_mem}g" Mutect2 \\
         -R ${fasta} \\
         ${inputs_command} \\
         ${normals_command} \\
