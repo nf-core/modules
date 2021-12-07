@@ -1,0 +1,65 @@
+name: flye
+description: De novo assembler for single molecule sequencing reads
+keywords:
+  - assembly
+  - genome
+  - de novo
+  - genome assembler
+  - single molecule
+tools:
+  - flye:
+      description: De novo assembler for single molecule sequencing reads using repeat graphs
+      homepage: https://github.com/fenderglass/Flye
+      documentation: https://github.com/fenderglass/Flye/blob/flye/docs/USAGE.md
+      tool_dev_url: https://github.com/fenderglass/Flye
+      doi: doi:s41592-020-00971-x
+      licence: ['BSD-3-clause']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - reads:
+      type: file
+      description: Input file in FASTA/FASTQ format.
+      pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Assembled FASTA file
+      pattern: "*.fasta.gz"
+  - gfa:
+      type: file
+      description: Repeat graph
+      pattern: "*.gfa.gz"
+  - gv:
+      type: file
+      description: Repeat graph
+      pattern: "*.gv.gz"
+  - txt:
+      type: file
+      description: Extra contig information
+      pattern: "*.txt"
+  - log:
+      type: file
+      description: Flye log file
+      pattern: "*.log"
+  - json:
+      type: file
+      description: Flye parameters
+      pattern: "*.json"
+
+authors:
+  - "@asthara10"
