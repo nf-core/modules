@@ -1,14 +1,13 @@
 process ENSEMBLVEP {
+    tag "$meta.id"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ensembl-vep=104.3" : null)
-    if (task.ext.use_cache) {
-        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ task.ext.container_tag ?
+            "nfcore/vep:${task.ext.container_tag}" :
+            workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
             'https://depot.galaxyproject.org/singularity/ensembl-vep:104.3--pl5262h4a94de4_0' :
             'quay.io/biocontainers/ensembl-vep:104.3--pl5262h4a94de4_0' }"
-    } else {
-        container "nfcore/vep:${task.ext.vep_tag}"
-    }
 
     input:
     tuple val(meta), path(vcf)
@@ -24,8 +23,8 @@ process ENSEMBLVEP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def dir_cache = task.ext.use_cache ? "\${PWD}/${cache}" : "/.vep"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     """
     mkdir $prefix
 
@@ -39,7 +38,7 @@ process ENSEMBLVEP {
         --cache_version $cache_version \\
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
-        --format vcf \\
+        --vcf \\
         --stats_file ${prefix}.summary.html
 
     rm -rf $prefix

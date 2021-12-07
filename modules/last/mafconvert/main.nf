@@ -25,7 +25,7 @@ process LAST_MAFCONVERT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     maf-convert $args $format $maf | gzip --no-name \\
         > ${prefix}.${format}.gz

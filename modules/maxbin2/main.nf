@@ -23,7 +23,7 @@ process MAXBIN2 {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def associate_files = reads ? "-reads $reads" : "-abund $abund"
     """
     run_MaxBin.pl \\
