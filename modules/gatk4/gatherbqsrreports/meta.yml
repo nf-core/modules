@@ -1,32 +1,29 @@
 name: gatk4_gatherbqsrreports
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
+  - gatk4
+  - gatk4_gatherbqsrreports
+  - base_recalibration
 tools:
   - gatk4:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Genome Analysis Toolkit (GATK4)
-      homepage: None
-      documentation: None
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us
       tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: ""
+      doi: "10.1158/1538-7445.AM2017-3590"
       licence: ['BSD-3-clause']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - recal_table:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File(s) containing BQSR table(s)
+      pattern: "*.table"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +34,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - recal_table:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File containing joined BQSR table
+      pattern: "*.table"
 
 authors:
   - "@FriederikeHanssen"
