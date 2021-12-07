@@ -4,8 +4,6 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-params.aligner                 = "bwa-mem"
-
 include { BWAMEM2_INDEX                                         } from '../../../modules/bwamem2/index/main.nf'
 include { BWAMEM2_MEM                                           } from '../../../modules/bwamem2/mem/main'
 include { BWA_INDEX                         as BWAMEM1_INDEX    } from '../../../modules/bwa/index/main.nf'
