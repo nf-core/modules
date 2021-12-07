@@ -27,7 +27,7 @@ process BWA_MEM {
     bwa mem \\
         $args \\
         $read_group \\
-        -t $task.cpus \\
+        -t ${split_cpus} \\
         \$INDEX \\
         $reads \\
         | samtools $args2 --threads ${split_cpus} -o ${prefix}.bam -
