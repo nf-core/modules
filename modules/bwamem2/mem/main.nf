@@ -10,6 +10,7 @@ process BWAMEM2_MEM {
     input:
     tuple val(meta), path(reads)
     path  index
+    val   sort_bam
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -21,6 +22,7 @@ process BWAMEM2_MEM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     def split_cpus = Math.floor(task.cpus/2)
+    def samtools_command = sort_bam ? 'sort' : 'view'
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
@@ -31,7 +33,7 @@ process BWAMEM2_MEM {
         -t ${split_cpus} \\
         \$INDEX \\
         $reads \\
-        | samtools $args2 -@ ${split_cpus} -o ${prefix}.bam -
+        | samtools $samtools_command $args2 -@ ${split_cpus} -o ${prefix}.bam -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
