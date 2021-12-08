@@ -29,7 +29,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
         avail_mem = task.memory.giga
     }
     """
-    gatk EstimateLibraryComplexity \
+    gatk --java-options "-Xmx${avail_mem}g" EstimateLibraryComplexity \
         ${crams} \
         -O ${prefix}.metrics \
         --REFERENCE_SEQUENCE ${fasta} \

@@ -20,8 +20,8 @@ process SALMON_QUANT {
     path  "versions.yml"              , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     def reference   = "--index $index"
     def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
