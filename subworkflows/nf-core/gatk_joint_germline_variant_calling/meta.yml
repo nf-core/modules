@@ -1,22 +1,24 @@
 name: gatk_tumor_only_somatic_variant_calling
 description: |
-  Perform variant calling on a single tumor sample using mutect2 tumor only mode.
-  Run the input bam file through getpileupsummarries and then calculatecontaminationto get the contamination and segmentation tables.
-  Filter the mutect2 output vcf using filtermutectcalls and the contamination & segmentation tables for additional filtering.
+  Perform variant calling on a multiple germline samples using haplotypecaller in GVCF mode.
+  Run output gvcds through genomisdbimport together to create a joint genomicsdbworkspace, then run genotypeGVCFs on the workspace to get a joint calling vcf.
+  Recalibrate joint vcf using step1 (VariantRecalibrator) and step2 (applyVQSR) of VQSR.
 keywords:
   - gatk4
-  - mutect2
-  - getpileupsummaries
-  - calculatecontamination
-  - filtermutectcalls
+  - haplotypecaller
+  - genomisdbimport
+  - genotypegvcfs
+  - variantrecalibrator
+  -applyvqsr
   - variant_calling
-  - tumor_only
-  - filtered_vcf
+  - joint_germline
+  - VQSR
 modules:
-  - gatk4/mutect2
-  - gatk4/getpileupsummaries
-  - gatk4/calculatecontamination
-  - gatk4/filtermutectcalls
+  - gatk4/haplotypecaller
+  - gatk4/genomicsdbimport
+  - gatk4/genotypegvcfs
+  - gatk4/variantrecalibrator
+  - gatk4/applyvqsr
 input:
   - meta:
       type: map
@@ -25,12 +27,19 @@ input:
         e.g. [ id:'test' ]
   - input:
       type: list
-      description: list containing one BAM file, also able to take CRAM as an input
-      pattern: "[ *.{bam/cram} ]"
-  - input_index:
-      type: list
-      description: list containing one BAM file indexe, also able to take CRAM index as an input
-      pattern: "[ *.{bam.bai/cram.crai} ]"
+      description: |
+        list containing BAM files and their indexes to be run through haplotypecaller, also able to take CRAM as an input.
+        OR if run_haplotc is false then it will contain gvcf files and their tbi indexes.
+        e.g."[ [ id:'test' ], .{bam/cram}, {bam.bai/cram.crai} ]"
+        OR "[[ id:'test' ], .g.vcf, .g.vcf.tbi]"
+  - run_haplotc:
+      type: boolean
+      description: if true then run haplotypecaller portion of subworkflow, if false skip to genomicsdbimport
+      pattern: "{true,false}"
+  - run_vqsr:
+      type: boolean
+      description: if true then run vqsr portion of subworkflow, if false skip to end.
+      pattern: "{true,false}"
   - fasta:
       type: file
       description: The reference fasta file
@@ -43,66 +52,89 @@ input:
       type: file
       description: GATK sequence dictionary
       pattern: "*.dict"
-  - germline_resource:
+  - sites:
       type: file
-      description: Population vcf of germline sequencing, containing allele fractions.
+      description: Population vcf of germline sequencing, containing known sites.
       pattern: "*.vcf.gz"
-  - germline_resource_tbi:
+  - sites_index:
       type: file
-      description: Index file for the germline resource.
+      description: Index file for the known sites.
       pattern: "*.vcf.gz.tbi"
-  - panel_of_normals:
-      type: file
-      description: vcf file to be used as a panel of normals.
-      pattern: "*.vcf.gz"
-  - panel_of_normals_tbi:
-      type: file
-      description: Index for the panel of normals.
-      pattern: "*.vcf.gz.tbi"
-  - interval_file:
-      type: file
-      description: File containing intervals.
-      pattern: "*.interval_list"
+  - joint_id:
+      type: val
+      description: joint id to replace individual sample ids with.
+      pattern: "e.g. test_joint"
+  - allelespecific:
+      type: boolean
+      description: run allelespecific mode of vqsr modules.
+      pattern: "{true,false}"
+  - resources:                 // channel:
+      type: val
+      description: |
+        resource vcfs, indexes and labels to be used as truth, training and known sites resources,
+        vcf list imports the files into the module,
+        resource_labels list contains file names which are passed to the command.
+      pattern: "[[resource, vcfs, forvariantrecal], [resource, tbis, forvariantrecal], [resource, labels, forvariantrecal]]"
+  - annotation:
+      type: list
+      description: list of annotations to use for variantrecal filtering.
+      pattern: "['QD', 'FS', 'SOR']"
+  - mode:
+      type: val
+      description: which mode to run variantrecal and applyvqsr in, BOTH is only intended for testing and debugging purposes.
+      pattern: "{SNP,INDEL,BOTH}"
+  - create_rscript:
+      type: boolean
+      description: whether to generate rscript plots in variantrecal.
+      pattern: "{true,false}"
+  - truthsensitivity:
+      type: val
+      description: truthsensitivity cutoff for applyvqsr.
+      pattern: "0.0-100.0"
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: 'versions.yml'
-  - mutect2_vcf:
+  - haplotc_vcf:
       type: file
-      description: Compressed vcf file to be used for variant_calling.
-      pattern: "[ *.vcf.gz ]"
-  - mutect2_tbi:
+      description: Compressed gvcf file from haplotypecaller.
+      pattern: "[ *g.vcf.gz ]"
+  - haplotc_index:
       type: file
-      description: Indexes of the mutect2_vcf file
-      pattern: "[ *vcf.gz.tbi ]"
-  - mutect2_stats:
+      description: Indexes of the haplotypecaller_gvcf file
+      pattern: "[ *g.vcf.gz.tbi ]"
+  - genomicsdb:
+      type: directory
+      description: Genomicsddworkspace made using genomicsdbimport.
+      pattern: "/genomicsdbworkspace"
+  - genotype_vcf:
       type: file
-      description: Stats files for the mutect2 vcf
-      pattern: "[ *vcf.gz.stats ]"
-  - pileup_table:
-      type: file
-      description: File containing the pileup summary table.
-      pattern: "*.pileups.table"
-  - contamination_table:
+      description: File containing the joint vcf file from genotypegvcfs.
+      pattern: "*.vcf.gz"
+  - genotype_index:
       type: file
       description: File containing the contamination table.
-      pattern: "*.contamination.table"
-  - segmentation_table:
+      pattern: ".vcf.gz.tbi"
+  - recal_file:
       type: file
-      description: Output table containing segmentation of tumor minor allele fractions.
-      pattern: "*.segmentation.table"
-  - filtered_vcf:
+      description: recalibration tables file from variantrecalibrator.
+      pattern: "*.recal"
+  - recal_index:
       type: file
-      description: file containing filtered mutect2 calls.
+      description: Index file for the recalibration tables.
+      pattern: "*.idx"
+  - recal_tranches:
+      type: file
+      description: Tranches file for the recalibration tables.
+      pattern: "*.tranches"
+  - vqsr_vcf:
+      type: file
+      description: joint vcf file recalibrated using applyvqsr.
       pattern: "*.vcf.gz"
-  - filtered_tbi:
+  - vqsr_index:
       type: file
-      description: tbi file that pairs with filtered vcf.
+      description: Index file for recalibrated joint vcf.
       pattern: "*.vcf.gz.tbi"
-  - filtered_stats:
-      type: file
-      description: file containing statistics of the filtermutectcalls run.
-      pattern: "*.filteringStats.tsv"
 authors:
   - '@GCJMackenzie'

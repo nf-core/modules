@@ -3,98 +3,116 @@
 //
 
 include { GATK4_HAPLOTYPECALLER     as HAPLOTYPECALLER     } from '../../../modules/gatk4/haplotypecaller/main'
-include { GATK4_GENOMICSDBIMPORT    as GENOMICSDBIMPORT   } from '../../../modules/gatk4/genomicsdbimport/main'
-// include { GATK4_GENOTYPEGVCFS       as GENOTYPEGVCFS       } from '../../../modules/gatk4/genotypegvcfs/main'
-// include { GATK4_VARIANTRECALIBRATOR as VARIANTRECALIBRATOR } from '../../../modules/gatk4/variantrecalibrator/main'
-// include { GATK4_APPLYVQSR           as APPLYVQSR           } from '../../../modules/gatk4/applyvqsr/main'
+include { GATK4_GENOMICSDBIMPORT    as GENOMICSDBIMPORT    } from '../../../modules/gatk4/genomicsdbimport/main'
+include { GATK4_GENOTYPEGVCFS       as GENOTYPEGVCFS       } from '../../../modules/gatk4/genotypegvcfs/main'
+include { GATK4_VARIANTRECALIBRATOR as VARIANTRECALIBRATOR } from '../../../modules/gatk4/variantrecalibrator/main'
+include { GATK4_APPLYVQSR           as APPLYVQSR           } from '../../../modules/gatk4/applyvqsr/main'
 
 workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     take:
-    // gatk_joint_germline_variant_calling
-    // haplotypecaller
     input                     // channel: [ val(meta), [ input ], [ input_index ], [] ]
+    run_haplotc               // channel: true/false run haplotypecaller portion of workflow or skip to genomicsdbimport when false
+    run_vqsr                  // channel: true/false run vqsr portion of subworkflow
     fasta                     // channel: /path/to/reference/fasta
     fai                       // channel: /path/to/reference/fasta/index
     dict                      // channel: /path/to/reference/fasta/dictionary
-    sites
-    sites_tbi
-    interval_file
-    // genomicsdbimport
-    joint_id
-    // genotypegvcfs
-    // path  intervals_bed
-    // variantrecalibrator
-    // val allelespecific
-    // tuple path(resvcfs), path(restbis), val(reslabels)
-    // val annotation
-    // val mode
-    // val create_rscript
-    // applyvqsr
-    // val truthsensitivity
+    sites                     // channel: /path/to/known/sites/file
+    sites_index               // channel: /path/to/known/sites/index
+    interval_file             // channel: /path/to/interval/file
+    joint_id                  // channel: joint id to replace individual sample ids with
+    allelespecific            // channel: true/false run allelespecific mode of vqsr modules
+    resources                 // channel: [[resource, vcfs, forvariantrecal], [resource, tbis, forvariantrecal], [resource, labels, forvariantrecal]]
+    annotation                // channel: [annotations, to, use, for, variantrecal, filtering]
+    mode                      // channel: which mode to run variantrecal: SNP/INDEL/BOTH
+    create_rscript            // channel: true/false whether to generate rscript plots in variantrecal
+    truthsensitivity          // channel: 0-100.0 truthsensitivity cutoff for applyvqsr
 
     main:
-    ch_versions = Channel.empty()
-    haplotc_input = channel.from(input)
+    ch_versions       = Channel.empty()
 
-    //
-    //Perform variant calling using haplotypecaller module.
-    //
-    HAPLOTYPECALLER ( haplotc_input, fasta, fai, dict, sites, sites_tbi, interval_file )
-    ch_versions = ch_versions.mix(HAPLOTYPECALLER.out.versions.first())
+    // haplotypecaller can be skipped if input samples are already in gvcf format, essentially making the subworkflow joint genotyping.
+    if (run_haplotc) {
+        haplotc_input = channel.from(input)
+        //
+        //Perform variant calling using haplotypecaller module. Additional argument "-ERC GVCF" used to run in gvcf mode.
+        //
+        HAPLOTYPECALLER ( haplotc_input, fasta, fai, dict, sites, sites_index, interval_file )
+
+        ch_versions   = ch_versions.mix(HAPLOTYPECALLER.out.versions.first())
+        ch_vcf        = HAPLOTYPECALLER.out.vcf.collect{it[1]}.toList()
+        ch_index      = HAPLOTYPECALLER.out.tbi.collect{it[1]}.toList()
+
+    } else {
+        // if haplotypecaller is skipped, this channels the input to genomicsdbimport instead of the output vcfs and tbis that normally come from haplotypecaller
+        direct_input  = channel.from(input)
+        ch_vcf        = direct_input.collect{it[1]}.toList()
+        ch_index      = direct_input.collect{it[2]}.toList()
+    }
 
     //
     //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
     //
-    ch_vcf = HAPLOTYPECALLER.out.vcf.collect{it[1]}.toList()
-    ch_index = HAPLOTYPECALLER.out.tbi.collect{it[1]}.toList()
-    additional_gendb_opts = [ interval_file, [], []]
-    gendb_input = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine(additional_gendb_opts)
+    gendb_input       = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine([interval_file]).combine(['']).combine([dict])
+
     GENOMICSDBIMPORT ( gendb_input, false, false, false )
-    ch_versions = ch_versions.mix(GENOMICSDBIMPORT.out.versions)
+
+    ch_versions       = ch_versions.mix(GENOMICSDBIMPORT.out.versions)
 
     //
-    //Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
+    //Joint genotyping performed using GenotypeGVCFs
     //
-    // ch_pileup = GETPILEUPSUMMARIES.out.table.collect()
-    //[] is a placeholder for the optional input where the matched normal sample would be passed in for tumor-normal samples, which is not necessary for this workflow.
-    // ch_pileup.add([])
-    // CALCULATECONTAMINATION ( ch_pileup, true )
-    // ch_versions = ch_versions.mix(CALCULATECONTAMINATION.out.versions)
-    // tuple val(meta), path(gvcf), path(gvcf_index)
+    ch_genotype_in    = GENOMICSDBIMPORT.out.genomicsdb.collect()
+    //[] is a placeholder for the input where the vcf tbi file would be passed in for non-genomicsdb workspace runs, which is not necessary for this workflow as it uses genomicsdb workspaces.
+    ch_genotype_in.add([])
 
-    //
-    //Mutect2 calls filtered by filtermutectcalls using the contamination and segmentation tables.
-    //
-    // ch_vcf =           MUTECT2.out.vcf.collect()
-    // ch_tbi =           MUTECT2.out.tbi.collect()
-    // ch_stats =         MUTECT2.out.stats.collect()
-    //[] is added as a placeholder for the optional input file artifact priors, which is only used for tumor-normal samples and therefor isn't needed in this workflow.
-    // ch_stats.add([])
-    // ch_segment =       CALCULATECONTAMINATION.out.segmentation.collect()
-    // ch_contamination = CALCULATECONTAMINATION.out.contamination.collect()
-    //[] is added as a placeholder for entering a contamination estimate value, which is not needed as this workflow uses the contamination table instead.
-    // ch_contamination.add([])
-    // ch_filtermutect_in = ch_vcf.combine(ch_tbi, by: 0).combine(ch_stats, by: 0).combine(ch_segment, by: 0).combine(ch_contamination, by: 0)
-    // FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fai, dict )
-    // ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
-    // tuple val(meta), path(vcf) , path(tbi)
+    GENOTYPEGVCFS ( ch_genotype_in, fasta, fai, dict, sites, sites_index, interval_file )
 
-    // FILTERMUTECTCALLS ( ch_filtermutect_in, fasta, fai, dict )
-    // ch_versions = ch_versions.mix(FILTERMUTECTCALLS.out.versions)
-    // tuple val(meta), path(vcf), path(tbi), path(recal), path(recalidx), path(tranches)
+    ch_versions       = ch_versions.mix(GENOTYPEGVCFS.out.versions)
+
+    // setting run_vqsr to false skips the VQSR process, for if user does not wish to perform VQSR,
+    // or want to run the hard filtering recommended by gatk best practices for runs with a low number of samples instead.
+    if (run_vqsr) {
+        //
+        //Perform first step in VQSR using VariantRecalibrator
+        //
+        ch_gvcf       = GENOTYPEGVCFS.out.vcf.collect()
+        ch_gtbi       = GENOTYPEGVCFS.out.tbi.collect()
+        ch_vrecal_in  = ch_gvcf.combine(ch_gtbi, by: 0)
+
+        VARIANTRECALIBRATOR ( ch_vrecal_in, fasta, fai, dict, allelespecific, resources, annotation, mode, create_rscript )
+
+        ch_versions   = ch_versions.mix(VARIANTRECALIBRATOR.out.versions)
+
+        //
+        //Perform second step in VQSR using ApplyVQSR
+        //
+        ch_recal      = VARIANTRECALIBRATOR.out.recal.collect()
+        ch_idx        = VARIANTRECALIBRATOR.out.idx.collect()
+        ch_tranches   = VARIANTRECALIBRATOR.out.tranches.collect()
+        ch_vqsr_in    = ch_vrecal_in.combine(ch_recal, by: 0).combine(ch_idx, by: 0).combine(ch_tranches, by: 0)
+
+        APPLYVQSR ( ch_vqsr_in, fasta, fai, dict, allelespecific, truthsensitivity, mode )
+
+        ch_versions   = ch_versions.mix(APPLYVQSR.out.versions)
+
+    }
 
     emit:
-    haplotc_vcf            = HAPLOTYPECALLER.out.vcf.collect()                             // channel: [ val(meta), [ vcf ] ]
-    haplotc_index          = HAPLOTYPECALLER.out.tbi.collect()                             // channel: [ val(meta), [ tbi ] ]
+    haplotc_vcf    = run_haplotc ? HAPLOTYPECALLER.out.vcf.collect()          : [] // channel: [ val(meta), [ vcf ] ]
+    haplotc_index  = run_haplotc ? HAPLOTYPECALLER.out.tbi.collect()          : [] // channel: [ val(meta), [ tbi ] ]
 
-    genomicsdb       = GENOMICSDBIMPORT.out.genomicsdb               // channel: [ val(meta), [ genomicsdb ] ]
+    genomicsdb     =               GENOMICSDBIMPORT.out.genomicsdb.collect()       // channel: [ val(meta), [ genomicsdb ] ]
 
-    // contamination_table    = CALCULATECONTAMINATION.out.contamination.collect()    // channel: [ val(meta), [ contamination ] ]
-    // segmentation_table     = CALCULATECONTAMINATION.out.segmentation.collect()     // channel: [ val(meta), [ segmentation ] ]
+    genotype_vcf   =               GENOTYPEGVCFS.out.vcf.collect()                 // channel: [ val(meta), [ vcf ] ]
+    genotype_index =               GENOTYPEGVCFS.out.vcf.collect()                 // channel: [ val(meta), [ tbi ] ]
 
-    // filtered_vcf           = FILTERMUTECTCALLS.out.vcf.collect()                   // channel: [ val(meta), [ vcf ] ]
-    // filtered_index         = FILTERMUTECTCALLS.out.tbi.collect()                   // channel: [ val(meta), [ tbi ] ]
-    // filtered_stats         = FILTERMUTECTCALLS.out.stats.collect()                 // channel: [ val(meta), [ stats ] ]
 
-    versions               = ch_versions                                           // channel: [ versions.yml ]
+    recal_file     = run_vqsr    ? VARIANTRECALIBRATOR.out.recal.collect()    : [] // channel: [ val(meta), [ recal ] ]
+    recal_index    = run_vqsr    ? VARIANTRECALIBRATOR.out.idx.collect()      : [] // channel: [ val(meta), [ idx ] ]
+    recal_tranches = run_vqsr    ? VARIANTRECALIBRATOR.out.tranches.collect() : [] // channel: [ val(meta), [ tranches ] ]
+
+    vqsr_vcf       = run_vqsr    ? APPLYVQSR.out.vcf.collect()                : [] // channel: [ val(meta), [ vcf ] ]
+    vqsr_index     = run_vqsr    ? APPLYVQSR.out.tbi.collect()                : [] // channel: [ val(meta), [ tbi ] ]
+
+    versions       =               ch_versions                                     // channel: [ versions.yml ]
 }
