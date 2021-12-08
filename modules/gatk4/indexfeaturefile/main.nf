@@ -16,8 +16,14 @@ process GATK4_INDEXFEATUREFILE {
 
     script:
     def args = task.ext.args ?: ''
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK IndexFeatureFile] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         IndexFeatureFile \\
         $args \\
         -I $feature_file

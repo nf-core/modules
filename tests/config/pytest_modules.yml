@@ -1459,6 +1459,19 @@ yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
 
+# subworkflows/align_bowtie2:
+#   - subworkflows/nf-core/align_bowtie2/**
+#   - tests/subworkflows/nf-core/align_bowtie2/**
+#   - *subworkflows_bam_sort_samtools
+
+# subworkflows/annotation_ensemblvep: &subworkflows_annotation_ensemblvep
+#   - subworkflows/nf-core/annotation_ensemblvep/**
+#   - tests/subworkflows/nf-core/annotation_ensemblvep/**
+
+# subworkflows/annotation_snpeff: &subworkflows_annotation_snpeff
+#   - subworkflows/nf-core/annotation_snpeff/**
+#   - tests/subworkflows/nf-core/annotation_snpeff/**
+
 # subworkflows/bam_stats_samtools: &subworkflows_bam_stats_samtools
 #   - subworkflows/nf-core/bam_stats_samtools/**
 #   - tests/subworkflows/nf-core/bam_stats_samtools/**
@@ -1469,17 +1482,6 @@ yara/mapper:
 #   - *samtools_sort
 #   - *samtools_index
 #   - *subworkflows_bam_stats_samtools
-
-# subworkflows/align_bowtie2:
-#   - subworkflows/nf-core/align_bowtie2/**
-#   - tests/subworkflows/nf-core/align_bowtie2/**
-#   - *subworkflows_bam_sort_samtools
-
-# subworkflows/sra_fastq:
-#   - subworkflows/nf-core/sra_fastq/**
-#   - tests/subworkflows/nf-core/sra_fastq/**
-#   - *sratools_fasterqdump
-#   - *sratools_prefetch
 
 # subworkflows/gatk_create_som_pon:
 #   - subworkflows/nf-core/gatk_create_som_pon/**
@@ -1512,3 +1514,9 @@ yara/mapper:
 #   - *gatk4_getpileupsummaries
 #   - *gatk4_calculatecontamination
 #   - *gatk4_filtermutectcalls
+
+# subworkflows/sra_fastq:
+#   - subworkflows/nf-core/sra_fastq/**
+#   - tests/subworkflows/nf-core/sra_fastq/**
+#   - *sratools_fasterqdump
+#   - *sratools_prefetch
