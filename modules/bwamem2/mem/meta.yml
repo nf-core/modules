@@ -11,9 +11,9 @@ keywords:
 tools:
     - bwa:
         description: |
-            BWA is a software package for mapping DNA sequences against
+            BWA-mem2 is a software package for mapping DNA sequences against
             a large reference genome, such as the human genome.
-        homepage: http://bio-bwa.sourceforge.net/
+        homepage: https://github.com/bwa-mem2/bwa-mem2
         documentation: http://www.htslib.org/doc/samtools.html
         arxiv: arXiv:1303.3997
         licence: ['MIT']
@@ -31,7 +31,11 @@ input:
     - index:
         type: file
         description: BWA genome index files
-        pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+        pattern: "Directory containing BWA index *.{0132,amb,ann,bwt.2bit.64,pac}"
+    - sort_bam:
+        type: boolean
+        description: use samtools sort (true) or samtools view (false)
+        pattern: "true or false"
 output:
     - bam:
         type: file
