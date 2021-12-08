@@ -270,19 +270,21 @@ cat/fastq:
   - modules/cat/fastq/**
   - tests/modules/cat/fastq/**
 
-cellranger/count:
-  - modules/cellranger/count/**
-  - tests/modules/cellranger/count/**
-  - modules/cellranger/mkref/**
-  - tests/modules/cellranger/mkref/**
-  - modules/cellranger/gtf/**
-  - tests/modules/cellranger/gtf/**
-
 cellranger/gtf: # &cellranger/gtf
   - modules/cellranger/gtf/**
   - tests/modules/cellranger/gtf/**
 
 cellranger/mkref: # &cellranger/mkref
+  - modules/cellranger/mkref/**
+  - tests/modules/cellranger/mkref/**
+  # - *cellranger/gtf
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/count:
+  - modules/cellranger/count/**
+  - tests/modules/cellranger/count/**
+  # - *cellranger/mkref
   - modules/cellranger/mkref/**
   - tests/modules/cellranger/mkref/**
   - modules/cellranger/gtf/**
