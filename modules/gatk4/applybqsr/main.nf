@@ -22,13 +22,14 @@ process GATK4_APPLYBQSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval = intervals ? "-L ${intervals}" : ""
+    def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK ApplyBQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk ApplyBQSR \\
+    gatk --java-options "-Xmx${avail_mem}g" ApplyBQSR \\
         -R $fasta \\
         -I $input \\
         --bqsr-recal-file $bqsr_table \\
