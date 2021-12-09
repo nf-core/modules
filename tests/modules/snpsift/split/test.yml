@@ -1,70 +1,21 @@
 - name: snpsift split test_snpsift_split_base
   command: nextflow run tests/modules/snpsift/split -entry test_snpsift_split_base -c tests/config/nextflow.config
   tags:
-    - snpsift
     - snpsift/split
+    - snpsift
   files:
     - path: output/snpsift/test.rnaseq.chr22.vcf
       md5sum: 1bb8724dcbe6fa3101a814c0be51d1ea
-
-- name: snpsift split test_snpsift_split_mult
-  command: nextflow run tests/modules/snpsift/split -entry test_snpsift_split_mult -c tests/config/nextflow.config
-  tags:
-    - snpsift
-    - snpsift/split
-  files:
-    - path: output/snpsift/variants.chr1.vcf
-      md5sum: f7e3a3cc9d5aa6412a45c5ce421392b6
-    - path: output/snpsift/variants.chr10.vcf
-      md5sum: d5e3bf65465a242c9bc0a24212f8f4fc
-    - path: output/snpsift/variants.chr11.vcf
-      md5sum: d4fe7cc5da86ba87fe7c7ca5da5e3c66
-    - path: output/snpsift/variants.chr12.vcf
-      md5sum: 83d0d013593f9b6efa7a0b924637ba2b
-    - path: output/snpsift/variants.chr13.vcf
-      md5sum: a22514c4ef37b151e4e626a1ed82fc65
-    - path: output/snpsift/variants.chr14.vcf
-      md5sum: 2e56c434cd58da44185d66f48a121d3e
-    - path: output/snpsift/variants.chr15.vcf
-      md5sum: ab81fa6cc1682bef00cd78939c339ebd
-    - path: output/snpsift/variants.chr16.vcf
-      md5sum: 3ed0c11c5b8f4c4246d693356b244208
-    - path: output/snpsift/variants.chr17.vcf
-      md5sum: b613d1570191cc4ba4a49f8088866515
-    - path: output/snpsift/variants.chr18.vcf
-      md5sum: 5c1c1a0e108e84640795013f339a091d
-    - path: output/snpsift/variants.chr19.vcf
-      md5sum: 41d47595541850ba9a65386adacac210
-    - path: output/snpsift/variants.chr2.vcf
-      md5sum: e21bda6c29789109ef95e8dd2fe52aae
-    - path: output/snpsift/variants.chr20.vcf
-      md5sum: 0deea4be2906567ab0012927394d242c
-    - path: output/snpsift/variants.chr21.vcf
-      md5sum: 0b513f9a05c4f0b27b58ae4deafd6213
-    - path: output/snpsift/variants.chr22.vcf
-      md5sum: db86df79703932eb0753481acf99737a
-    - path: output/snpsift/variants.chr3.vcf
-      md5sum: b6e22580cec8293d2f452fd74720f3f4
-    - path: output/snpsift/variants.chr4.vcf
-      md5sum: fb4f7f1732b33be482cd9801fe0f3200
-    - path: output/snpsift/variants.chr5.vcf
-      md5sum: 389c4b612731663c3ae6e3eecf5ba1c5
-    - path: output/snpsift/variants.chr6.vcf
-      md5sum: 60820dbe2f0f5255693c538af0960aa2
-    - path: output/snpsift/variants.chr7.vcf
-      md5sum: 5587fd769eaf74f556781319146ac162
-    - path: output/snpsift/variants.chr8.vcf
-      md5sum: 6e928632cb61c6a9144ffe99d1174116
-    - path: output/snpsift/variants.chr9.vcf
-      md5sum: 037ffd54a0ee7e3cc514abbcb20b25ee
-    - path: output/snpsift/variants.chrX.vcf
-      md5sum: 5a0e80c576252c1f77f75712e5cca856
+    - path: output/snpsift/versions.yml
+      md5sum: 2b9f6b788db6c4fcbf258db763d8fab7
 
 - name: snpsift split test_snpsift_split_gz
   command: nextflow run tests/modules/snpsift/split -entry test_snpsift_split_gz -c tests/config/nextflow.config
   tags:
-    - snpsift
     - snpsift/split
+    - snpsift
   files:
     - path: output/snpsift/test.MT192765.1.vcf
       md5sum: 9d491cfa84067450342ba8e66c75e5b8
+    - path: output/snpsift/versions.yml
+      md5sum: 6bd63376670d6c1445caea2f31a3f579
