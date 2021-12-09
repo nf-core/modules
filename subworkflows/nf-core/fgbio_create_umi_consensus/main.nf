@@ -3,19 +3,19 @@
 // Convert them to unmapped BAM file, map them to the reference genome,
 // use the mapped information to group UMIs and generate consensus reads
 //
-
 params.aligner                  = "bwa-mem"
 params.groupreadsbyumi_strategy = 'Adjacency'
 
-include { FGBIO_FASTQTOBAM                  as FASTQTOBAM }         from '../../../modules/fgbio/fastqtobam/main'
-include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ }          from '../../../modules/samtools/bam2fq/main.nf'
-include { BWA_INDEX                         as BWAMEM1_INDEX }      from '../../../modules/bwa/index/main.nf'
-include { BWA_MEM                           as BWAMEM1_MEM }        from '../../../modules/bwa/mem/main'
-include { BWAMEM2_INDEX }                                           from '../../../modules/bwamem2/index/main.nf'
-include { BWAMEM2_MEM }                                             from '../../../modules/bwamem2/mem/main'
-include { SAMBLASTER }                                              from '../../../modules/samblaster/main'
-include { FGBIO_GROUPREADSBYUMI             as GROUPREADSBYUMI }    from '../../../modules/fgbio/groupreadsbyumi/main'
-include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS }   from '../../../modules/fgbio/callmolecularconsensusreads/main.nf'
+include { BWAMEM2_INDEX                                         } from '../../../modules/bwamem2/index/main.nf'
+include { BWAMEM2_MEM                                           } from '../../../modules/bwamem2/mem/main'
+include { BWA_INDEX                         as BWAMEM1_INDEX    } from '../../../modules/bwa/index/main.nf'
+include { BWA_MEM                           as BWAMEM1_MEM      } from '../../../modules/bwa/mem/main'
+include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS } from '../../../modules/fgbio/callmolecularconsensusreads/main.nf'
+include { FGBIO_FASTQTOBAM                  as FASTQTOBAM       } from '../../../modules/fgbio/fastqtobam/main'
+include { FGBIO_GROUPREADSBYUMI             as GROUPREADSBYUMI  } from '../../../modules/fgbio/groupreadsbyumi/main'
+include { SAMBLASTER                                            } from '../../../modules/samblaster/main'
+include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ        } from '../../../modules/samtools/bam2fq/main.nf'
+
 
 workflow CREATE_UMI_CONSENSUS {
     take:
