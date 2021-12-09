@@ -9,6 +9,7 @@ process FGBIO_GROUPREADSBYUMI {
 
     input:
     tuple val(meta), path(taggedbam)
+    val(strategy)
 
     output:
     tuple val(meta), path("*_umi-grouped.bam")  , emit: bam
@@ -17,7 +18,6 @@ process FGBIO_GROUPREADSBYUMI {
 
     script:
     def args = task.ext.args ?: ''
-    def strategy = task.ext.strategy ?: 'Adjacency'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

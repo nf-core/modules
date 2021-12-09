@@ -4,7 +4,8 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-params.aligner                 = "bwa-mem"
+params.aligner                  = "bwa-mem"
+params.groupreadsbyumi_strategy = 'Adjacency'
 
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM }         from '../../../modules/fgbio/fastqtobam/main'
 include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ }          from '../../../modules/samtools/bam2fq/main.nf'
