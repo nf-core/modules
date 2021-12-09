@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { FGBIO_GROUPREADSBYUMI } from '../../../../modules/fgbio/groupreadsbyumi/main.nf'
-params.groupreadsbyumi_strategy = 'Adjacency'
 
 workflow test_fgbio_groupreadsbyumi {
 
