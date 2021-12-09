@@ -39,6 +39,11 @@ input:
         will contain two structures separated by a blank space (i.e. "2M11S+T 2M11S+T").
         If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
         https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
+  - groupreadsbyumi_strategy:
+    type: string
+    description: |
+    Reguired argument: defines the UMI assignment strategy.
+    Must be chosen among: Identity, Edit, Adjacency, Paired.
 output:
   - versions:
       type: file

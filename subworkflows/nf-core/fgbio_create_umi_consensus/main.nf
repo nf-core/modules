@@ -3,8 +3,7 @@
 // Convert them to unmapped BAM file, map them to the reference genome,
 // use the mapped information to group UMIs and generate consensus reads
 //
-params.aligner                  = "bwa-mem"
-params.groupreadsbyumi_strategy = 'Adjacency'
+
 
 include { BWAMEM2_INDEX                                         } from '../../../modules/bwamem2/index/main.nf'
 include { BWAMEM2_MEM                                           } from '../../../modules/bwamem2/mem/main'
@@ -22,6 +21,7 @@ workflow CREATE_UMI_CONSENSUS {
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
     fasta                     // channel: [mandatory] /path/to/reference/fasta
     read_structure            // channel: [mandatory] val(read_structure)
+    groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner                   // string:  [mandatory] "bwa-mem" or "bwa-mem2"
 
     main:
@@ -68,7 +68,7 @@ workflow CREATE_UMI_CONSENSUS {
     ch_versions = ch_versions.mix(SAMBLASTER.out.versions)
 
     // appropriately tagged reads are now grouped by UMI information
-    GROUPREADSBYUMI ( SAMBLASTER.out.bam )
+    GROUPREADSBYUMI ( SAMBLASTER.out.bam, groupreadsbyumi_strategy )
     ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
 
     // using the above created groups, a consensus across reads in the same grou
