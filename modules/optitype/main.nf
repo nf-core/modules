@@ -15,9 +15,9 @@ process OPTITYPE {
     path "versions.yml"               , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args  = task.ext.args   ?: ''
+    def args2 = task.ext.args2  ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
 
     """
     # Create a config for OptiType on a per sample basis with task.ext.args2

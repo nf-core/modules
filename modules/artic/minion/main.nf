@@ -32,8 +32,8 @@ process ARTIC_MINION {
     path  "versions.yml"                                              , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
     def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""
     def summary  = sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
