@@ -20,7 +20,7 @@ workflow CREATE_UMI_CONSENSUS {
     take:
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
     fasta                     // channel: [mandatory] /path/to/reference/fasta
-    read_structure            // channel: [mandatory] val(read_structure)
+    read_structure            // string:  [mandatory] "read_structure"
     groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner                   // string:  [mandatory] "bwa-mem" or "bwa-mem2"
 
@@ -48,7 +48,7 @@ workflow CREATE_UMI_CONSENSUS {
         ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM1_MEM ( BAM2FASTQ.out.reads, BWAMEM1_INDEX.out.index )
+        BWAMEM1_MEM ( BAM2FASTQ.out.reads, BWAMEM1_INDEX.out.index, false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
         aligned_bam = BWAMEM1_MEM.out.bam
     } else {
@@ -57,7 +57,7 @@ workflow CREATE_UMI_CONSENSUS {
         ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM2_MEM ( BAM2FASTQ.out.reads, BWAMEM2_INDEX.out.index )
+        BWAMEM2_MEM ( BAM2FASTQ.out.reads, BWAMEM2_INDEX.out.index, false )
         ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         aligned_bam = BWAMEM2_MEM.out.bam
     }
