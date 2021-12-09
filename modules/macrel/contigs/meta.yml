@@ -39,23 +39,23 @@ output:
   - amp_prediction:
       type: file
       description: A zipped file, with all predicted amps in a table format.
-      pattern: "prediction.gz"
+      pattern: "*.prediction.gz"
   - smorfs:
       type: file
       description: A zipped fasta file containing aminoacid sequences showing the general gene prediction information in the contigs.
-      pattern: "smorfs.faa"
+      pattern: "*.smorfs.faa.gz"
   - all_orfs:
       type: file
-      description: A zipped fasta file containing aminoacid sequences showing the general gene prediction information in the contigs.
-      pattern: "all_orfs.faa"
+      description: A zipped fasta file containing amino acid sequences showing the general gene prediction information in the contigs.
+      pattern: "*.all_orfs.faa.gz"
   - readme_file:
       type: file
       description: A readme file containing tool specific information (e.g. citations, details about the output, etc.).
       pattern: "*.md"
   - log_file:
       type: file
-      description: A log file containing the information pertainign to the run.
-      pattern: "log.txt"
+      description: A log file containing the information pertaining to the run.
+      pattern: "*_log.txt"
 
 authors:
   - "@darcy220606"
