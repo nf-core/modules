@@ -11,5 +11,5 @@ workflow test_fgbio_groupreadsbyumi {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_unsorted_tagged_bam'], checkIfExists: true)
     ]
 
-    FGBIO_GROUPREADSBYUMI ( input, params.groupreadsbyumi_strategy )
+    FGBIO_GROUPREADSBYUMI ( input, 'Adjacency' )
 }
