@@ -19,8 +19,8 @@ process QUAST {
     path "versions.yml" , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ?: 'quast'
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: 'quast'
     def features  = use_gff ? "--features $gff" : ''
     def reference = use_fasta ? "-r $fasta" : ''
     """

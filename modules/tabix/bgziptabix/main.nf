@@ -11,7 +11,7 @@ process TABIX_BGZIPTABIX {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.gz"), path("*.tbi"), emit: tbi
+    tuple val(meta), path("*.gz"), path("*.tbi"), emit: gz_tbi
     path  "versions.yml" ,                        emit: versions
 
     script:
