@@ -35,8 +35,14 @@ process GATK4_VARIANTRECALIBRATOR {
     modeCommand = mode ? "--mode ${mode} " : 'SNP'
     rscriptCommand = create_rscript ? "--rscript-file ${prefix}.plots.R" : ''
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK Mutect2] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk VariantRecalibrator \\
+    gatk --java-options "-Xmx${avail_mem}g" VariantRecalibrator \\
         ${refCommand} \\
         -V ${vcf} \\
         ${alleleSpecificCommand} \\
