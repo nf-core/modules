@@ -6,15 +6,15 @@ include { GATK4_APPLYVQSR } from '../../../../modules/gatk4/applyvqsr/main.nf'
 
 workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map
-              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz', checkIfExists: true),
-              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz.tbi', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.recal', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.recal.idx', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_base/test.tranches', checkIfExists: true)
+              file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_recal'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_recal_idx'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_tranches'], checkIfExists: true)
             ]
-    fasta = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta', checkIfExists: true)
-    fai = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta.fai', checkIfExists: true)
-    dict = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.dict', checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
     allelespecific = false
     truthsensitivity = '99.0'
     mode = 'SNP'
@@ -24,15 +24,15 @@ workflow test_gatk4_applyvqsr {
 
 workflow test_gatk4_applyvqsr_allele_specific {
     input = [ [ id:'test'], // meta map
-              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz', checkIfExists: true),
-              file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/germline_calling/variants/HaplotypeCaller_disease_103_snpEff.ann.vcf.gz.tbi', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_as/test_allele_specific.recal', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_as/test_allele_specific.recal.idx', checkIfExists: true),
-              file('https://raw.githubusercontent.com/GCJMackenzie/test_data/master/vrecals_as/test_allele_specific.tranches', checkIfExists: true)
+              file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_allele_specific_recal'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_allele_specific_recal_idx'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test2_allele_specific_tranches'], checkIfExists: true)
             ]
-    fasta = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta', checkIfExists: true)
-    fai = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.fasta.fai', checkIfExists: true)
-    dict = file('https://raw.githubusercontent.com/lescai-teaching/datasets_class/master/reference/sequence/Homo_sapiens_assembly38_chr21.dict', checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
     allelespecific = true
     truthsensitivity = '99.0'
     mode = 'SNP'

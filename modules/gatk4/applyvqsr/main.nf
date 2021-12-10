@@ -28,8 +28,15 @@ process GATK4_APPLYVQSR {
     alleleSpecificCommand = allelespecific ? '-AS' : ''
     truthSensitivityCommand = truthsensitivity ? "--truth-sensitivity-filter-level ${truthsensitivity}" : ''
     modeCommand = mode ? "--mode ${mode} " : 'SNP'
+
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK Mutect2] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk ApplyVQSR \\
+    gatk --java-options "-Xmx${avail_mem}g" ApplyVQSR \\
         ${refCommand} \\
         -V ${vcf} \\
         -O ${prefix}.vcf.gz \\
