@@ -11,20 +11,38 @@ process SNPSIFT_SPLIT {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: split_vcfs
+    tuple val(meta), path("*.vcf"), emit: out_vcfs
     path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    """
-    SnpSift \\
-        split \\
-        $args \\
-        $vcf
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (meta.split) {
+        """
+        SnpSift \\
+            split \\
+            $args \\
+            $vcf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+        END_VERSIONS
+        """
+    } else {
+        """
+        SnpSift \\
+            split \\
+            -j \\
+            $args \\
+            $vcf \\
+            > ${prefix}.joined.vcf
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+        END_VERSIONS
+        """
+    }
+
 }

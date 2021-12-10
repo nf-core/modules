@@ -1,7 +1,8 @@
 name: snpsift_split
-description: Splits a VCF file into chromosomes
+description: Splits/Joins VCF(s) file into chromosomes
 keywords:
   - split
+  - join
   - vcf
 tools:
   - snpsift:
@@ -19,8 +20,8 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcf:
-      type: file
-      description: VCF file
+      type: file (split) or list of files (join)
+      description: VCF file(s)
       pattern: "*.{vcf,vcf.gz}"
 
 output:
@@ -33,9 +34,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - split_vcfs:
+  - out_vcfs:
       type: file
-      description: Split VCF files
+      description: Split/Joined VCF file(s)
       pattern: "*.vcf"
 
 authors:
