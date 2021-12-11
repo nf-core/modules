@@ -1,0 +1,9 @@
+- name: custom dumprunparams test_custom_dumpreportparams
+  command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams -c tests/config/nextflow.config
+  tags:
+    - custom/dumprunparams
+    - custom
+  files:
+    - path: output/custom/params_mqc.csv
+      contains: [ 'Parameter,col1', '--test1,false']
+    - path: output/custom/multiqc/multiqc_report.html

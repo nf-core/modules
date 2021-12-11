@@ -1,0 +1,21 @@
+name: custom_dumprunparams
+description: Custom module used to dump run parameters of a given nf-core pipeline run.
+keywords:
+  - custom
+  - params
+  - parameters
+tools:
+  - custom:
+      description: Custom module used to dump run parameters of a given nf-core pipeline run.
+      homepage: https://github.com/nf-core/tools
+      documentation: https://github.com/nf-core/tools
+      licence: ['MIT']
+
+output:
+  - mqc_csv:
+      type: file
+      description: MultiQC custom content CSV file containing run parameters.
+      pattern: "params_mqc.yml"
+
+authors:
+  - "@jfy133"
