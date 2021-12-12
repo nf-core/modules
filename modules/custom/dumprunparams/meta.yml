@@ -11,6 +11,11 @@ tools:
       documentation: https://github.com/nf-core/tools
       licence: ['MIT']
 
+input:
+  - exclude:
+      type: list
+      description: (Optional) groovy list of params to exclude from MultiQC report. Must be in format of list!
+
 output:
   - mqc_csv:
       type: file

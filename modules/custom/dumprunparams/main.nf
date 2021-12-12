@@ -1,17 +1,24 @@
 process CUSTOM_DUMPRUNPARAMS {
     label 'process_low'
 
+    input:
+    val(exclude)
+
     output:
     path("params_mqc.tsv"), emit: mqc_tsv
 
     script:
-    run_params=params
+    run_params = params
+    to_exclude = exclude instanceof List && exclude.size() > 0 ? exclude.join('|') : ''
+    exclude_cmd = exclude ? "| sed -E '/${to_exclude}/d'" : ''
+    println exclude
+    println exclude_cmd
     """
     echo "${run_params}" > run_params.txt
     table_header=\$( sed 's/,/\t/g' <( echo "Parameter,col1" ) )
-    ## TODO: maybe make replacement of `:` only when surrounded by a-z1-9 ?
-    ## EX: test_data:[sarscov2:[genome: OR https://raw <- need to test! Doesn't always work!
-    run_params=\$( sed 's#^\\[##g;s#\\]\$##g' run_params.txt | sed 's#, #\\n#g;s#:#\t#g' | sed 's#^#--#g' )
+
+    ## Remove outer brackets, remove nested arrays, split each param new line, delete lines containing params to ignore, convert params to cli flags
+    run_params=\$( sed 's#^\\[##g;s#\\]\$##g' run_params.txt | sed 's/\\[.*]/\\.\\.\\.truncated_list\\.\\.\\./g' | sed 's#, #\\n#g;s#:#\t#g' ${exclude_cmd} | sed 's#^#--#g' )
 
     cat <<-MQC_HEADER >> params_mqc.tsv
     # plot_type: 'table'

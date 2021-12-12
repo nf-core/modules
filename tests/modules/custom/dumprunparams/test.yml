@@ -1,9 +1,38 @@
-- name: custom dumprunparams test_custom_dumpreportparams
-  command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams -c tests/config/nextflow.config
+- name: custom dumprunparams test_custom_dumprunparams_multi
+  command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams_multi -c tests/config/nextflow.config
   tags:
     - custom/dumprunparams
     - custom
   files:
-    - path: output/custom/params_mqc.csv
-      contains: [ 'Parameter,col1', '--test1,false']
-    - path: output/custom/multiqc/multiqc_report.html
+    - path: output/custom/params_mqc.tsv
+      contains: '--name	test'
+    - path: output/multiqc/multiqc_report.html
+      contains: 'nf-core-rulez-k'
+    - path: output/multiqc/versions.yml
+      md5sum: a25e787befcfc31cbe354a0a26c7b1a2
+
+- name: custom dumprunparams test_custom_dumprunparams_oneexclude
+  command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams_oneexclude -c tests/config/nextflow.config
+  tags:
+    - custom/dumprunparams
+    - custom
+  files:
+    - path: output/custom/params_mqc.tsv
+      contains: '--name	test'
+    - path: output/multiqc/multiqc_report.html
+      contains: 'nf-core-rulez-k'
+    - path: output/multiqc/versions.yml
+      md5sum: 1a874425a4e32acfd565e7c76f4df574
+
+- name: custom dumprunparams test_custom_dumprunparams_twoexclude
+  command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams_twoexclude -c tests/config/nextflow.config
+  tags:
+    - custom/dumprunparams
+    - custom
+  files:
+    - path: output/custom/params_mqc.tsv
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/multiqc/multiqc_report.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/multiqc/versions.yml
+      md5sum: 5031d9e602a9356e8da67e9d528a1854
