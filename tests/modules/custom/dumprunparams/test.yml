@@ -5,7 +5,8 @@
     - custom
   files:
     - path: output/custom/params_mqc.tsv
-      contains: '--name	test'
+      contains:
+        - '--name	test'
     - path: output/multiqc/multiqc_report.html
       contains: 'nf-core-rulez-k'
     - path: output/multiqc/versions.yml
@@ -18,7 +19,8 @@
     - custom
   files:
     - path: output/custom/params_mqc.tsv
-      contains: '--name	test'
+      contains:
+        - '--name	test'
     - path: output/multiqc/multiqc_report.html
       contains: 'nf-core-rulez-k'
     - path: output/multiqc/versions.yml
@@ -31,8 +33,9 @@
     - custom
   files:
     - path: output/custom/params_mqc.tsv
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - '--name	test'
     - path: output/multiqc/multiqc_report.html
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains: 'nf-core-rulez-k'
     - path: output/multiqc/versions.yml
       md5sum: 5031d9e602a9356e8da67e9d528a1854
