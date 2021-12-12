@@ -11,7 +11,6 @@ workflow test_custom_dumprunparams_multi {
     MULTIQC ( CUSTOM_DUMPRUNPARAMS.out )
 }
 
-
 workflow test_custom_dumprunparams_oneexclude {
     CUSTOM_DUMPRUNPARAMS ( [ 'test_data' ] )
     MULTIQC ( CUSTOM_DUMPRUNPARAMS.out )
