@@ -24,7 +24,7 @@ process MOSDEPTH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def interval = window_size ? "--by ${window_size}" : "--by ${bed}"
     """
     mosdepth \\

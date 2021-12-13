@@ -19,9 +19,15 @@ process GATK4_SPLITNCIGARREADS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK SplitNCigarReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk SplitNCigarReads \\
+    gatk --java-options "-Xmx${avail_mem}g" SplitNCigarReads \\
         -R $fasta \\
         -I $bam \\
         -O ${prefix}.bam \\

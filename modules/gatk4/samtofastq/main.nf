@@ -16,10 +16,16 @@ process GATK4_SAMTOFASTQ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def output   = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK SamToFastq] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk SamToFastq \\
+    gatk --java-options "-Xmx${avail_mem}g" SamToFastq \\
         I=$bam \\
         $output \\
         $args

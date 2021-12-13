@@ -17,7 +17,7 @@ process BLAST_BLASTN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     DB=`find -L ./ -name "*.ndb" | sed 's/.ndb//'`
     blastn \\

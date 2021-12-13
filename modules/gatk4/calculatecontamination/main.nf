@@ -18,11 +18,17 @@ process GATK4_CALCULATECONTAMINATION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def matched_command = matched ? " -matched ${matched} " : ''
     def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK CalculateContamination] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk CalculateContamination \\
+    gatk --java-options "-Xmx${avail_mem}g" CalculateContamination \\
         -I $pileup \\
         $matched_command \\
         -O ${prefix}.contamination.table \\

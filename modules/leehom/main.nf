@@ -24,8 +24,8 @@ process LEEHOM {
     path "versions.yml"                                             , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     if (reads.toString().endsWith('.bam')) {
         """

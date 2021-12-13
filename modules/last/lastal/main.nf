@@ -17,7 +17,7 @@ process LAST_LASTAL {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

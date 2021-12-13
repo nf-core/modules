@@ -19,13 +19,19 @@ process GATK4_GETPILEUPSUMMARIES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def sitesCommand = ''
 
     sitesCommand = sites ? " -L ${sites} " : " -L ${variants} "
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK GetPileupSummaries] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk GetPileupSummaries \\
+    gatk --java-options "-Xmx${avail_mem}g" GetPileupSummaries \\
         -I $bam \\
         -V $variants \\
         $sitesCommand \\
