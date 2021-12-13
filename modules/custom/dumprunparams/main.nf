@@ -1,3 +1,5 @@
+def VERSION="0.0.1"
+
 process CUSTOM_DUMPRUNPARAMS {
     label 'process_low'
 
@@ -5,7 +7,8 @@ process CUSTOM_DUMPRUNPARAMS {
     val(exclude)
 
     output:
-    path("params_mqc.tsv"), emit: mqc_tsv
+    path "params_mqc.tsv", emit: mqc_tsv
+    path "versions.yml"  , emit: versions
 
     script:
     run_params = params
@@ -33,5 +36,10 @@ process CUSTOM_DUMPRUNPARAMS {
     \$table_header
     \$run_params
     MQC_HEADER
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dumprunparams: \$(echo ${VERSION})
+    END_VERSIONS
     """
 }
