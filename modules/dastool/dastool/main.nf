@@ -28,7 +28,7 @@ process DASTOOL_DASTOOL {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def bin_list = bins instanceof List ? bins.join(",") : "$bins"
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
     def db_dir = db_directory ? "--db_directory $db_directory" : ""

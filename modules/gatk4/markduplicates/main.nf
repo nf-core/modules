@@ -18,16 +18,16 @@ process GATK4_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_list = bams.collect(){ bam -> "--INPUT ".concat(bam.toString()) }.join(" ")
-    def avail_mem       = 3
+    def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK MarkDuplicates] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk MarkDuplicates \\
+    gatk --java-options "-Xmx${avail_mem}g" MarkDuplicates \\
         $bam_list \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\

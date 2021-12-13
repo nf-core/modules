@@ -25,7 +25,7 @@ process RMARKDOWNNOTEBOOK {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params

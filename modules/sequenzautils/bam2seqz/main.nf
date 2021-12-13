@@ -18,7 +18,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sequenza-utils \\
         bam2seqz \\

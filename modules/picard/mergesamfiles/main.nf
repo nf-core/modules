@@ -16,7 +16,7 @@ process PICARD_MERGESAMFILES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_files = bams.sort()
     def avail_mem = 3
     if (!task.memory) {

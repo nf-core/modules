@@ -21,7 +21,7 @@ process ATAQV_ATAQV {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
     def tss         = tss_file         ? "--tss-file $tss_file"                         : ''
     def excl_regs   = excl_regs_file   ? "--excluded-region-file $excl_regs_file"       : ''
