@@ -5,11 +5,14 @@ nextflow.enable.dsl = 2
 include { VCFANNO_LUA } from '../../../../modules/vcfanno/lua/main.nf'
 
 workflow test_vcfanno_lua {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) 
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    VCFANNO_LUA ( input )
+    vcfanno_config    = file(params.test_data['sarscov2']['illumina']['test_vcfanno_conf_toml'], checkIfExists: true)
+    vcfanno_functions = []
+
+    VCFANNO_LUA ( input, vcfanno_config, vcfanno_functions )
 }
