@@ -15,8 +15,8 @@ process GFFREAD {
     path "versions.yml" , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${gff.baseName}${task.ext.suffix}" : "${gff.baseName}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${gff.baseName}"
     """
     gffread \\
         $gff \\

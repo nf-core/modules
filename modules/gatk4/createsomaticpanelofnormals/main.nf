@@ -21,8 +21,14 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK CreateSomaticPanelOfNormals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         CreateSomaticPanelOfNormals \\
         -R $fasta \\
         -V gendb://$genomicsdb \\
