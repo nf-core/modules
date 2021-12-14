@@ -9,8 +9,8 @@ process VCFANNO_LUA {
 
     input:
     tuple val(meta), path(vcf)
-    path vcfanno_functions
     path vcfanno_config
+    path vcfanno_functions
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -20,14 +20,16 @@ process VCFANNO_LUA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def lua_functions = vcfanno_functions ?: ""
     """
     vcfanno \\
         -p $task.cpus \\
         $args \\
         -lua \\
-        ${vcfanno_functions} \\
         ${vcfanno_config} \\
-        > ${prefix}.vcf
+        $lua_functions \\
+        ${vcf} \\
+        > ${prefix}_annotated.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
