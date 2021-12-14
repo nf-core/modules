@@ -8,7 +8,7 @@ process BCFTOOLS_SORT {
         'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
 
     input:
-    tuple val(meta), path(vcf) //TODO Gwennid: Should it be vcf.gz? Perhaps not because contrary to the output, file extension is not provided.
+    tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
