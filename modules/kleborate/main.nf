@@ -21,7 +21,7 @@ process KLEBORATE {
     kleborate \\
         $args \\
         --outfile ${prefix}.results.txt \\
-        --assemblies *.fasta
+        --assemblies $fastas
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
