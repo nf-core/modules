@@ -1,0 +1,7 @@
+- name: samblaster test_samblaster
+  command: nextflow run ./tests/modules/samblaster -entry test_samblaster -c ./tests/config/nextflow.config -c ./tests/modules/samblaster/nextflow.config
+  tags:
+    - samblaster
+  files:
+    - path: output/samblaster/test.processed.bam
+      md5sum: 950f23d85f75be1cf872f45c0144bdf4

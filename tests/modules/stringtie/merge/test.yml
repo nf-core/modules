@@ -1,5 +1,5 @@
 - name: stringtie merge forward-strand
-  command: nextflow run tests/modules/stringtie/merge -entry test_stringtie_forward_merge -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config
   tags:
     - stringtie
     - stringtie/merge
@@ -24,7 +24,7 @@
       md5sum: 0e42709bfe30c2c7f2574ba664f5fa9f
 
 - name: stringtie merge test_stringtie_reverse_merge
-  command: nextflow run tests/modules/stringtie/merge -entry test_stringtie_reverse_merge -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config
   tags:
     - stringtie
     - stringtie/merge

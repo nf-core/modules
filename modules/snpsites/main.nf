@@ -1,21 +1,10 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process SNPSITES {
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::snp-sites=2.5.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0"
-    } else {
-        container "quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
+        'quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0' }"
 
     input:
     path alignment
@@ -27,10 +16,11 @@ process SNPSITES {
     env   CONSTANT_SITES, emit: constant_sites_string
 
     script:
+    def args = task.ext.args ?: ''
     """
     snp-sites \\
         $alignment \\
-        $options.args \\
+        $args \\
         > filtered_alignment.fas
 
     echo \$(snp-sites -C $alignment) > constant.sites.txt
@@ -38,8 +28,8 @@ process SNPSITES {
     CONSTANT_SITES=\$(cat constant.sites.txt)
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
+    "${task.process}":
+        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """
 }

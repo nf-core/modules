@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../modules/ucsc/bedgraphtobigwig/main.nf' addParams( options: [:] )
+include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../modules/ucsc/bedgraphtobigwig/main.nf'
 
 workflow test_ucsc_bedgraphtobigwig {
     input = [ [ id:'test' ], // meta map

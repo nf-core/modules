@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../modules/untar/main.nf'           addParams( options: [:] )
-include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimport/main.nf' addParams( options: [:] )
+include { UNTAR           } from '../../../../modules/untar/main.nf'
+include { GATK4_GENOMICSDBIMPORT } from '../../../../modules/gatk4/genomicsdbimport/main.nf'
 
 workflow test_gatk4_genomicsdbimport_create_genomicsdb {
 
-    input = [ [ id:'test_genomicsdb'], // meta map
+    input = [ [ id:'test'], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true) ,
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ,
               file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true) ,
@@ -26,7 +26,7 @@ workflow test_gatk4_genomicsdbimport_get_intervalslist {
 
     UNTAR ( db )
 
-    def input = Channel.of([ [ id:'test_genomicsdb'], // meta map
+    def input = Channel.of([ [ id:'test'], // meta map
               [] ,
               [] ,
               [] ,
@@ -45,7 +45,7 @@ workflow test_gatk4_genomicsdbimport_update_genomicsdb {
 
     UNTAR ( db )
 
-    def input = Channel.of([ [ id:'test_genomicsdb'], // meta map
+    def input = Channel.of([ [ id:'test'], // meta map
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'] , checkIfExists: true) ,
               file( params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'] , checkIfExists: true) ,
               [] ,

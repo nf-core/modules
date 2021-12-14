@@ -1,0 +1,25 @@
+- name: mapdamage2 test_mapdamage2
+  command: nextflow run ./tests/modules/mapdamage2 -entry test_mapdamage2 -c ./tests/config/nextflow.config -c ./tests/modules/mapdamage2/nextflow.config
+  tags:
+    - mapdamage2
+  files:
+    - path: output/mapdamage2/results_test.paired_end.sorted/3pGtoA_freq.txt
+      md5sum: 3b300b8d2842441675cb2b56740801f0
+    - path: output/mapdamage2/results_test.paired_end.sorted/5pCtoT_freq.txt
+      md5sum: 4c27465cd02e1fb8bf6fb2b01e98446d
+    - path: output/mapdamage2/results_test.paired_end.sorted/Fragmisincorporation_plot.pdf
+    - path: output/mapdamage2/results_test.paired_end.sorted/Runtime_log.txt
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_correct_prob.csv
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_hist.pdf
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_iter.csv
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_iter_summ_stat.csv
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_post_pred.pdf
+    - path: output/mapdamage2/results_test.paired_end.sorted/Stats_out_MCMC_trace.pdf
+    - path: output/mapdamage2/results_test.paired_end.sorted/dnacomp.txt
+      md5sum: 4244d9fa554bbfeebbcea8eba3ad6466
+    - path: output/mapdamage2/results_test.paired_end.sorted/dnacomp_genome.csv
+      md5sum: ea91a3d205717d3c6b3e0b77bb840945
+    - path: output/mapdamage2/results_test.paired_end.sorted/lgdistribution.txt
+      md5sum: f86dfc04b1fff4337cc91add6356e3a0
+    - path: output/mapdamage2/results_test.paired_end.sorted/misincorporation.txt
+      md5sum: 1c89b4c96d1f8996c3d0879cad5129a5

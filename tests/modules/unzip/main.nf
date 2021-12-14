@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../modules/unzip/main.nf' addParams( options: [:] )
+include { UNZIP } from '../../../modules/unzip/main.nf'
 
 workflow test_unzip {
 
