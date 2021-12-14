@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMCOPY_GENERATEMAP } from '../../../../modules/hmmcopy/generatemap/main.nf' addParams( options: [:] )
+include { HMMCOPY_GENERATEMAP } from '../../../../modules/hmmcopy/generatemap/main.nf'
 
 workflow test_hmmcopy_generatemap {
 
