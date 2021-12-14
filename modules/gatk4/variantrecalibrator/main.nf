@@ -22,7 +22,7 @@ process GATK4_VARIANTRECALIBRATOR {
     tuple val(meta), path("*.recal")   , emit: recal
     tuple val(meta), path("*.idx")     , emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R")  , optional:true, emit: plots
+    tuple val(meta), path("*plots.R")  , emit: plots, optional:true
     path "versions.yml"                , emit: versions
 
     script:
