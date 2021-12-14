@@ -7,7 +7,7 @@ include { UNTAR               } from '../../../../modules/untar/main.nf'
 
 // Basic parameters with uncompressed VCF input
 workflow test_gatk4_genotypegvcfs_vcf_input {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true) ]
@@ -21,7 +21,7 @@ workflow test_gatk4_genotypegvcfs_vcf_input {
 
 // Basic parameters with compressed VCF input
 workflow test_gatk4_genotypegvcfs_gz_input {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ]
@@ -35,7 +35,7 @@ workflow test_gatk4_genotypegvcfs_gz_input {
 
 // Basic parameters + optional dbSNP
 workflow test_gatk4_genotypegvcfs_gz_input_dbsnp {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ]
@@ -52,7 +52,7 @@ workflow test_gatk4_genotypegvcfs_gz_input_dbsnp {
 
 // Basic parameters + optional intervals
 workflow test_gatk4_genotypegvcfs_gz_input_intervals {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ]
@@ -68,7 +68,7 @@ workflow test_gatk4_genotypegvcfs_gz_input_intervals {
 
 // Basic parameters + optional dbSNP + optional intervals
 workflow test_gatk4_genotypegvcfs_gz_input_dbsnp_intervals {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ]
@@ -95,20 +95,16 @@ workflow test_gatk4_genotypegvcfs_gendb_input {
     test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
 
     UNTAR ( test_genomicsdb )
-
-    Channel.of(file("mock_gvcf_index.txt")).set{mock_gvcf_index}
-    Channel
-        .of([ id:'test' ])
-        .combine(UNTAR.out.untar)
-        .combine(mock_gvcf_index)
-        .set{ input }
+    gendb = UNTAR.out.untar.collect()
+    gendb.add([])
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [], [] )
 }
 
 // Basic parameters with GenomicsDB + optional dbSNP
 workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp {
-    
+
     fasta        = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
@@ -119,20 +115,16 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp {
     test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
 
     UNTAR ( test_genomicsdb )
-
-    Channel.of(file("mock_gvcf_index.txt")).set{mock_gvcf_index}
-    Channel
-        .of([ id:'test' ])
-        .combine(UNTAR.out.untar)
-        .combine(mock_gvcf_index)
-        .set{ input }
+    gendb = UNTAR.out.untar.collect()
+    gendb.add([])
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex, [] )
 }
 
 // Basic parameters with GenomicsDB + optional intervals
 workflow test_gatk4_genotypegvcfs_gendb_input_intervals {
-    
+
     fasta        = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
@@ -142,20 +134,16 @@ workflow test_gatk4_genotypegvcfs_gendb_input_intervals {
     test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
 
     UNTAR ( test_genomicsdb )
-
-    Channel.of(file("mock_gvcf_index.txt")).set{mock_gvcf_index}
-    Channel
-        .of([ id:'test' ])
-        .combine(UNTAR.out.untar)
-        .combine(mock_gvcf_index)
-        .set{ input }
+    gendb = UNTAR.out.untar.collect()
+    gendb.add([])
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [], intervalsBed )
 }
 
 // Basic parameters with GenomicsDB + optional dbSNP + optional intervals
 workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp_intervals {
-    
+
     fasta        = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
@@ -168,13 +156,9 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp_intervals {
     test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
 
     UNTAR ( test_genomicsdb )
-
-    Channel.of(file("mock_gvcf_index.txt")).set{mock_gvcf_index}
-    Channel
-        .of([ id:'test' ])
-        .combine(UNTAR.out.untar)
-        .combine(mock_gvcf_index)
-        .set{ input }
+    gendb = UNTAR.out.untar.collect()
+    gendb.add([])
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex, intervalsBed )
 }
