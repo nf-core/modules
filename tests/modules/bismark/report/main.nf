@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'    addParams( options: [:] )
-include { BISMARK_ALIGN                } from '../../../../modules/bismark/align/main.nf'                addParams( options: [:] )
-include { BISMARK_DEDUPLICATE          } from '../../../../modules/bismark/deduplicate/main.nf'          addParams( options: [:] )
-include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../modules/bismark/methylationextractor/main.nf' addParams( options: [:] )
-include { BISMARK_REPORT               } from '../../../../modules/bismark/report/main.nf'               addParams( options: [:] )
+include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'
+include { BISMARK_ALIGN                } from '../../../../modules/bismark/align/main.nf'
+include { BISMARK_DEDUPLICATE          } from '../../../../modules/bismark/deduplicate/main.nf'
+include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../modules/bismark/methylationextractor/main.nf'
+include { BISMARK_REPORT               } from '../../../../modules/bismark/report/main.nf'
 
 workflow test_bismark_report {
     input = [ [ id:'test', single_end:false ], // meta map

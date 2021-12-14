@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BED12TOBIGBED } from '../../../../modules/ucsc/bed12tobigbed/main.nf' addParams( options: [:] )
+include { UCSC_BED12TOBIGBED } from '../../../../modules/ucsc/bed12tobigbed/main.nf'
 
 workflow test_ucsc_bed12tobigbed {
     input = [ [ id: 'test' ], // meta map 

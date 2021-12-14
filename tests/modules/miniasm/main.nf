@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIASM } from '../../../modules/miniasm/main.nf' addParams( options: [suffix:'.assembly'] )
+include { MINIASM } from '../../../modules/miniasm/main.nf'
 
 workflow test_miniasm {
     

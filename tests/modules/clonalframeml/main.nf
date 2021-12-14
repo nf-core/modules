@@ -2,13 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { CLONALFRAMEML } from '../../../modules/clonalframeml/main.nf' addParams( options: [:] )
+include { CLONALFRAMEML } from '../../../modules/clonalframeml/main.nf'
 
 workflow test_clonalframeml {
-    
-    input = [ [ id:'test' ], // meta map
-              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome_msa.newick", checkIfExists: true),
-              file("https://github.com/bactopia/bactopia-tests/raw/main/data/species/haemophilus_influenzae/genome/genome_msa.fa.gz", checkIfExists: true),]
+
+    input = [
+        [ id:'test' ], // meta map
+        file(params.test_data['haemophilus_influenzae']['genome']['genome_aln_nwk'], checkIfExists: true),
+        file(params.test_data['haemophilus_influenzae']['genome']['genome_aln_gz'], checkIfExists: true)
+    ]
 
     CLONALFRAMEML ( input )
 }
