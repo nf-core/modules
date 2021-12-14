@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MERGEVCFS } from '../../../../modules/gatk4/mergevcfs/main.nf' addParams( options: [:] )
+include { GATK4_MERGEVCFS } from '../../../../modules/gatk4/mergevcfs/main.nf'
 
 workflow test_gatk4_mergevcfs {
     input = [ [ id:'test' ], // meta map

@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 params.save_mpileup = true
-include { IVAR_CONSENSUS } from '../../../../modules/ivar/consensus/main.nf' addParams( [ options: [args2: '-aa -A -d 0 -Q 0'] ] )
+include { IVAR_CONSENSUS } from '../../../../modules/ivar/consensus/main.nf'
 
 workflow test_ivar_consensus {
     input = [ [ id:'test'],

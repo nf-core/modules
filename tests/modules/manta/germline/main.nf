@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MANTA_GERMLINE } from '../../../../modules/manta/germline/main.nf' addParams( options: [:] )
+include { MANTA_GERMLINE } from '../../../../modules/manta/germline/main.nf'
 
 workflow test_manta_germline {
     input = [

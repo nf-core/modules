@@ -1,0 +1,10 @@
+- name: custom getchromsizes
+  command: nextflow run ./tests/modules/custom/getchromsizes -entry test_custom_getchromsizes -c ./tests/config/nextflow.config -c ./tests/modules/custom/getchromsizes/nextflow.config
+  tags:
+    - custom
+    - custom/getchromsizes
+  files:
+    - path: output/custom/genome.fasta.fai
+      md5sum: 9da2a56e2853dc8c0b86a9e7229c9fe5
+    - path: output/custom/genome.fasta.sizes
+      md5sum: a57c401f27ae5133823fb09fb21c8a3c
