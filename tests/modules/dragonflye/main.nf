@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DRAGONFLYE  } from '../../../modules/dragonflye/main.nf' addParams( options: [args: '--assembler miniasm --gsize 5000000'] )
-include { DRAGONFLYE as DRAGONFLYE_RAVEN   } from '../../../modules/dragonflye/main.nf' addParams( options: [args: '--assembler raven --gsize 5000000']   )
+include { DRAGONFLYE  } from '../../../modules/dragonflye/main.nf'
+include { DRAGONFLYE as DRAGONFLYE_RAVEN   } from '../../../modules/dragonflye/main.nf'
 
 workflow test_dragonflye {
     input = [ [ id:'test', single_end:true ], // meta map

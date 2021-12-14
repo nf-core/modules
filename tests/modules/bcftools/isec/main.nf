@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_ISEC } from '../../../../modules/bcftools/isec/main.nf' addParams( options: ['args': '--nfiles +2 --output-type z --no-version'] )
+include { BCFTOOLS_ISEC } from '../../../../modules/bcftools/isec/main.nf'
 
 workflow test_bcftools_isec {
     input = [ [ id:'test' ], // meta map

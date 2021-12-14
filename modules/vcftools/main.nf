@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process VCFTOOLS {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::vcftools=0.1.16" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4"
-    } else {
-        container "quay.io/biocontainers/vcftools:0.1.16--he513fc3_4"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4' :
+        'quay.io/biocontainers/vcftools:0.1.16--he513fc3_4' }"
 
     input:
     // Owing to the nature of vcftools we here provide solutions to working with optional bed files and optional
@@ -93,22 +82,23 @@ process VCFTOOLS {
     path "versions.yml"                               , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def args   = options.args.tokenize()
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_list = args.tokenize()
 
-    def bed_arg  = (options.args.contains('--bed')) ? "--bed ${bed}" :
-        (options.args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
-        (options.args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
-    args.removeIf { it.contains('--bed') }
-    args.removeIf { it.contains('--exclude-bed') }
-    args.removeIf { it.contains('--hapcount') }
+    def bed_arg  = (args.contains('--bed')) ? "--bed ${bed}" :
+        (args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
+        (args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
+    args_list.removeIf { it.contains('--bed') }
+    args_list.removeIf { it.contains('--exclude-bed') }
+    args_list.removeIf { it.contains('--hapcount') }
 
-    def diff_variant_arg = (options.args.contains('--diff')) ? "--diff ${diff_variant_file}" :
-        (options.args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
-        (options.args.contains('--diff-bcf')) ? "--diff-bcf ${diff_variant_file}" : ''
-    args.removeIf { it.contains('--diff') }
-    args.removeIf { it.contains('--gzdiff') }
-    args.removeIf { it.contains('--diff-bcf') }
+    def diff_variant_arg = (args.contains('--diff')) ? "--diff ${diff_variant_file}" :
+        (args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
+        (args.contains('--diff-bcf')) ? "--diff-bcf ${diff_variant_file}" : ''
+    args_list.removeIf { it.contains('--diff') }
+    args_list.removeIf { it.contains('--gzdiff') }
+    args_list.removeIf { it.contains('--diff-bcf') }
 
     def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
         ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :
@@ -118,13 +108,13 @@ process VCFTOOLS {
     vcftools \\
         $input_file \\
         --out $prefix \\
-        ${args.join(' ')} \\
+        ${args_list.join(' ')} \\
         $bed_arg \\
         $diff_variant_arg
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
+    "${task.process}":
+        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
     END_VERSIONS
     """
 }

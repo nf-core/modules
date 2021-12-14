@@ -2,15 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { JUPYTERNOTEBOOK } from '../../../modules/jupyternotebook/main.nf' addParams(
-    parametrize: false, options: [:]
-)
-include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE } from '../../../modules/jupyternotebook/main.nf' addParams(
-    options: [:]
-)
-include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE_IPYNB } from '../../../modules/jupyternotebook/main.nf' addParams(
-    options: [:]
-)
+include { JUPYTERNOTEBOOK } from '../../../modules/jupyternotebook/main.nf'
+include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE } from '../../../modules/jupyternotebook/main.nf'
+include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE_IPYNB } from '../../../modules/jupyternotebook/main.nf'
 
 workflow test_jupyternotebook {
 

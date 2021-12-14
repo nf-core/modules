@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process MALTEXTRACT {
 
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "bioconda::hops=0.35" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1"
-    } else {
-        container "quay.io/biocontainers/hops:0.35--hdfd78af_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
+        'quay.io/biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
     path rma6
@@ -28,6 +17,7 @@ process MALTEXTRACT {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\
@@ -36,11 +26,11 @@ process MALTEXTRACT {
         -t $taxon_list \\
         -r $ncbi_dir \\
         -o results/ \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
+    "${task.process}":
+        maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """
 }

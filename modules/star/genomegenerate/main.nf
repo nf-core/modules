@@ -1,23 +1,12 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process STAR_GENOMEGENERATE {
     tag "$fasta"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', meta:[:], publish_by_meta:[]) }
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda (params.enable_conda ? "bioconda::star=2.7.9a bioconda::samtools=1.13 conda-forge::gawk=5.1.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0' :
+        'quay.io/biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:a7908dfb0485a80ca94e4d17b0ac991532e4e989-0' }"
 
     input:
     path fasta
@@ -28,9 +17,10 @@ process STAR_GENOMEGENERATE {
     path "versions.yml" , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
+    def args_list = args.tokenize()
     def memory   = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
-    def args     = options.args.tokenize()
-    if (args.contains('--genomeSAindexNbases')) {
+    if (args_list.contains('--genomeSAindexNbases')) {
         """
         mkdir star
         STAR \\
@@ -40,11 +30,11 @@ process STAR_GENOMEGENERATE {
             --sjdbGTFfile $gtf \\
             --runThreadN $task.cpus \\
             $memory \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+        "${task.process}":
+            star: \$(STAR --version | sed -e "s/STAR_//g")
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
@@ -63,11 +53,11 @@ process STAR_GENOMEGENERATE {
             --runThreadN $task.cpus \\
             --genomeSAindexNbases \$NUM_BASES \\
             $memory \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(STAR --version | sed -e "s/STAR_//g")
+        "${task.process}":
+            star: \$(STAR --version | sed -e "s/STAR_//g")
             samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
             gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS

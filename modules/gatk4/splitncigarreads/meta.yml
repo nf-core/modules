@@ -24,10 +24,17 @@ input:
       description: BAM/SAM/CRAM file containing reads
       pattern: "*.{bam,sam,cram}"
   - fasta:
-      type: tuple of files
-      description: |
-        Tuple of fasta file (first), sequence dict (second) and fasta index (third)
-      pattern: ["*.fasta", "*.dict", "*.fai"]
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
 output:
   - bam:
       type: file

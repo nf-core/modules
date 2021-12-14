@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CELLRANGER_MKREF } from '../../../../modules/cellranger/mkref/main.nf' addParams( options: [:] )
+include { CELLRANGER_MKREF } from '../../../../modules/cellranger/mkref/main.nf'
 
 workflow test_cellranger_mkref {
 

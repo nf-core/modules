@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EXPANSIONHUNTER } from '../../../modules/expansionhunter/main.nf' addParams( options: [:] )
+include { EXPANSIONHUNTER } from '../../../modules/expansionhunter/main.nf'
 
 workflow test_expansionhunter {
 
