@@ -31,7 +31,7 @@ process GATK4_APPLYVQSR {
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK Mutect2] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK ApplyVQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
