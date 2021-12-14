@@ -47,10 +47,13 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  ## AntiSMASH output files
+  - clusterblast_file:
+      type: file
+      description: Output of ClusterBlast algorithm
+      pattern: "clusterblast/*_c*.txt"
   - css_file:
       type: file
-      description: style sheet containing the formatting of HTML output
+      description: Style sheet containing the formatting of HTML output
       pattern: "css/*.css"
   - image_directory:
       type: directory
@@ -60,6 +63,22 @@ output:
       type: file
       description: JavaScript files
       pattern: "js/*.js"
+  - knownclusterblast_html:
+      type: file
+      description: Tables with MIBiG hits in HTML format
+      pattern: "knownclusterblast/region*/ctg*.html"
+  - knownclusterblast_txt:
+      type: file
+      description: Tables with MIBiG hits
+      pattern: "knownclusterblast/*_c*.txt"
+  - svg_files_clusterblast:
+      type: file
+      description: SVG image showing the % identity of the aligned hits against their queries
+      pattern: "svg/clusterblast*.svg"
+  - svg_files_knownclusterblast:
+      type: file
+      description: SVG image showing the % identity of the aligned hits against their queries
+      pattern: "svg/knownclusterblast*.svg"
   - gbk_input:
       type: file
       description: Nucleotide sequence + annotations in GenBank file format; converted from input file
@@ -80,10 +99,18 @@ output:
       type: file
       description: Nucleotide sequence + annotations in GenBank file format; one file per antiSMASH hit
       pattern: "*region*.gbk"
+  - clusterblastoutput:
+      type: file
+      description: Raw BLAST output of known clusters previously predicted by antiSMASH using the built-in ClusterBlast algorithm
+      pattern: "clusterblastoutput.txt"
   - html:
       type: file
       description: Graphical web view of results in HTML format
-      pattern: "index.html"
+      patterN: "index.html"
+  - knownclusterblastoutput:
+      type: file
+      description: Raw BLAST output of known clusters of the MIBiG database
+      pattern: "knownclusterblastoutput.txt"
   - json_sideloading:
       type: file
       description: Sideloaded annotations of protoclusters and/or subregions (see documentation "Annotation sideloading")
