@@ -21,16 +21,14 @@ process HMMCOPY_GENERATEMAP {
 
     """
     # build required indexes
-    gzip -cdf $fasta | 
     generateMap.pl -b \\
         $args \\
-        -
+        $fasta
 
     # run
-     gzip -cdf $fasta | 
-     generateMap.pl \\
+    generateMap.pl \\
         $args \\
-        -
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
