@@ -1,8 +1,8 @@
+def VERSION = '0.1.1'
+    
 process HMMCOPY_GENERATEMAP {
     tag '$bam'
     label 'process_long'
-
-    def VERSION = '0.1.1'
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -21,14 +21,16 @@ process HMMCOPY_GENERATEMAP {
 
     """
     # build required indexes
+    gzip -cdf $fasta | 
     generateMap.pl -b \\
         $args \\
-        $fasta
+        -
 
     # run
-    generateMap.pl \\
+     gzip -cdf $fasta | 
+     generateMap.pl \\
         $args \\
-        $fasta
+        -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
