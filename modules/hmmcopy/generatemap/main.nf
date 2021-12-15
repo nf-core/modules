@@ -1,5 +1,5 @@
 def VERSION = '0.1.1'
-    
+
 process HMMCOPY_GENERATEMAP {
     tag '$bam'
     label 'process_long'
