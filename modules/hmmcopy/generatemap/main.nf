@@ -21,12 +21,12 @@ process HMMCOPY_GENERATEMAP {
 
     """
     # build required indexes
-    /usr/local/bin/perl /usr/local/bin/generateMap.pl -b \\
+    perl /usr/local/bin/generateMap.pl -b \\
         $args \\
         $fasta
 
     # run
-    /usr/local/bin/perl /usr/local/bin/generateMap.pl \\
+    perl /usr/local/bin/generateMap.pl \\
         $args \\
         $fasta
 
