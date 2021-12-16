@@ -1,0 +1,25 @@
+- name: gatk4 variantrecalibrator test_gatk4_variantrecalibrator
+  command: nextflow run tests/modules/gatk4/variantrecalibrator -entry test_gatk4_variantrecalibrator -c tests/config/nextflow.config -c ./tests/modules/gatk4/variantrecalibrator/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/variantrecalibrator
+  files:
+    - path: output/gatk4/test.recal
+      contains:
+        - "#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO"
+    - path: output/gatk4/test.recal.idx
+    - path: output/gatk4/test.tranches
+      md5sum: d238e97bf996863969dac7751e345549
+
+- name: gatk4 variantrecalibrator test_gatk4_variantrecalibrator_allele_specific
+  command: nextflow run tests/modules/gatk4/variantrecalibrator -entry test_gatk4_variantrecalibrator_allele_specific -c tests/config/nextflow.config -c ./tests/modules/gatk4/variantrecalibrator/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/variantrecalibrator
+  files:
+    - path: output/gatk4/test.recal
+      contains:
+        - "#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO"
+    - path: output/gatk4/test.recal.idx
+    - path: output/gatk4/test.tranches
+      md5sum: 444438d46716593634a6817958099292
