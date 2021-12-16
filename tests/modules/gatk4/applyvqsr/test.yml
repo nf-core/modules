@@ -1,17 +1,25 @@
 - name: gatk4 applyvqsr test_gatk4_applyvqsr
-  command: nextflow run tests/modules/gatk4/applyvqsr -entry test_gatk4_applyvqsr -c tests/config/nextflow.config -c ./tests/modules/gatk4/applyvqsr/nextflow.config
+  command: nextflow run tests/modules/gatk4/applyvqsr -entry test_gatk4_applyvqsr -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4/applyvqsr
   files:
-    - path: output/gatk4/test.vcf.gz
-    - path: output/gatk4/test.vcf.gz.tbi
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpy2sd_84q/gatk4/test.vcf.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpy2sd_84q/gatk4/test.vcf.gz.tbi
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpy2sd_84q/gatk4/versions.yml
+      md5sum: 984c932ee9a5683b18e22a369aa5c9e7
 
 - name: gatk4 applyvqsr test_gatk4_applyvqsr_allele_specific
-  command: nextflow run tests/modules/gatk4/applyvqsr -entry test_gatk4_applyvqsr_allele_specific -c tests/config/nextflow.config -c ./tests/modules/gatk4/applyvqsr/nextflow.config
+  command: nextflow run tests/modules/gatk4/applyvqsr -entry test_gatk4_applyvqsr_allele_specific -c tests/config/nextflow.config
   tags:
     - gatk4
     - gatk4/applyvqsr
   files:
-    - path: output/gatk4/test.vcf.gz
-    - path: output/gatk4/test.vcf.gz.tbi
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphcf33zpy/gatk4/test.vcf.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphcf33zpy/gatk4/test.vcf.gz.tbi
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphcf33zpy/gatk4/versions.yml
+      md5sum: 3b55f26c94c5f145f10ef4c5f83ec3cc
