@@ -19,8 +19,14 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def inputs_list = []
     f1r2.each() { a -> inputs_list.add(" -I " + a) }
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK LearnReadOrientationModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         LearnReadOrientationModel \\
         ${inputs_list.join(' ')} \\
         -O ${prefix}.tar.gz \\
