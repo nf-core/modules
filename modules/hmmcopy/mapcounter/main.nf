@@ -1,7 +1,6 @@
 def VERSION = '0.1.1' // Version information not provided by tool on CLI
 
 process HMMCOPY_MAPCOUNTER {
-    tag '$bam'
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
