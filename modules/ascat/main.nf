@@ -56,17 +56,22 @@ process ASCAT {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    #!/usr/bin/env Rscript
+    library(ASCAT)
+    ascat.bc = ascat.loadData("Tumor_LogR.txt","Tumor_BAF.txt","Germline_LogR.txt","Germline_BAF.txt")
+    ascat.plotRawData(ascat.bc)
+    ascat.bc = ascat.aspcf(ascat.bc)
+    ascat.plotSegmentedData(ascat.bc)
+    ascat.output = ascat.runAscat(ascat.bc)
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ascat: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
-    END_VERSIONS
+
+    #version export. Have to hardcode process name and software name because
+    #won't run inside an R-block
+    version_file_path="versions.yml"
+    f <- file(version_file_path,"w")
+    writeLines("ASCAT:", f)
+    writeLines(paste0(" ascat: 2.5.2",f)
+    close(f)
+
     """
 }
