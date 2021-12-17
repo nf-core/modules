@@ -4,7 +4,21 @@
     - gatk4
     - gatk4/genomicsdbimport
   files:
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpwbe6q1aj/gatk4/versions.yml
+    - path: output/gatk4/test/__tiledb_workspace.tdb
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test/callset.json
+      md5sum: a7d07d1c86449bbb1091ff29368da07a
+    - path: output/gatk4/test/chr22$1$40001/.__consolidation_lock
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test/chr22$1$40001/__array_schema.tdb
+    - path: output/gatk4/test/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
+      md5sum: 2502f79658bc000578ebcfddfc1194c0
+    - path: output/gatk4/test/vcfheader.vcf
+      contains:
+        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
+    - path: output/gatk4/test/vidmap.json
+      md5sum: 18d3f68bd2cb6f4474990507ff95017a
+    - path: output/gatk4/versions.yml
       md5sum: 92e9e7db68d22df72adc02e59fab1eb7
 
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_get_intervalslist
@@ -13,11 +27,11 @@
     - gatk4
     - gatk4/genomicsdbimport
   files:
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphs1r1sq0/gatk4/test.interval_list
+    - path: output/gatk4/test.interval_list
       md5sum: 4c85812ac15fc1cd29711a851d23c0bf
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphs1r1sq0/gatk4/versions.yml
+    - path: output/gatk4/versions.yml
       md5sum: b3fcd07c2f498a2ad503912524d74294
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmphs1r1sq0/untar/versions.yml
+    - path: output/untar/versions.yml
       md5sum: 8f080677b109aea2cfca50208b077534
 
 - name: gatk4 genomicsdbimport test_gatk4_genomicsdbimport_update_genomicsdb
@@ -26,7 +40,21 @@
     - gatk4
     - gatk4/genomicsdbimport
   files:
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpwcbnh_h6/gatk4/versions.yml
+    - path: output/gatk4/test_genomicsdb/__tiledb_workspace.tdb
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test_genomicsdb/callset.json
+      md5sum: 1ea31b59b9a218dd5681164aff4a5e07
+    - path: output/gatk4/test_genomicsdb/chr22$1$40001/.__consolidation_lock
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test_genomicsdb/chr22$1$40001/__array_schema.tdb
+      md5sum: 35e7fdd18149be80c0c3f56fa1f23971
+    - path: output/gatk4/test_genomicsdb/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
+      md5sum: 2502f79658bc000578ebcfddfc1194c0
+    - path: output/gatk4/test_genomicsdb/vcfheader.vcf
+      md5sum: 47a615385a49f9261e088104b903bb9b
+    - path: output/gatk4/test_genomicsdb/vidmap.json
+      md5sum: 18d3f68bd2cb6f4474990507ff95017a
+    - path: output/gatk4/versions.yml
       md5sum: f204d259538a490b40c1fe787a3d6602
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpwcbnh_h6/untar/versions.yml
+    - path: output/untar/versions.yml
       md5sum: 9b2916aea9790bdf427c0cb38109110c
