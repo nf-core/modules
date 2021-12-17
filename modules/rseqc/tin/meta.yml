@@ -34,8 +34,12 @@ input:
 output:
   - txt:
       type: file
-      description: tin.py results file
-      pattern: "*.tin.txt"
+      description: TXT file containing tin.py results summary
+      pattern: "*.txt"
+  - xls:
+      type: file
+      description: XLS file containing tin.py results
+      pattern: "*.xls"
   - versions:
       type: file
       description: File containing software versions
