@@ -1,10 +1,11 @@
 ## TODO nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml maxquant/lfq
 - name: maxquant lfq
-  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq -paramfile mqpar.xml -raw '*.raw' -fasta yeast.fasta -c tests/config/nextflow.config 
+#  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile ./tests/modules/maxquant/lfq/mqpar.xml --raw 'https://github.com/wombat-p/MaxQuant-Workflow/raw/dev/Nextflow/data_test/OVEMB150205_{12,14}.raw' --fasta 'https://github.com/wombat-p/MaxQuant-Workflow/raw/dev/Nextflow/data_test/ABRF_iPRG_2012_target.fasta' -c tests/config/nextflow.config 
+  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile ./tests/modules/maxquant/lfq/mqpar.xml  --fasta 'https://raw.githubusercontent.com/wombat-p/MaxQuant-Workflow/dev/data/yeast_UPS.fasta' -c tests/config/nextflow.config 
   tags:
     - maxquant
     - maxquant/lfq
   files:
     - path: output/maxquant/proteinGroups.txt
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      md5sum: 2a6461987ace82d3f593ffbd60b65442
