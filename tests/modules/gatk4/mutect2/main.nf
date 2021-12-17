@@ -8,16 +8,20 @@ include { GATK4_MUTECT2 as GATK4_TEMPFIX_MUTECT2 } from '../../../../modules/gat
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
     input = [ [ id:'test'], // meta map
-              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
+              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['mitochon_standin_recalibrated_sorted_bam'], checkIfExists: true)
+                ],
+              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['mitochon_standin_recalibrated_sorted_bam_bai'], checkIfExists: true)
+                ],
               ["testN"]
             ]
     run_single = false
     run_pon = false
     run_mito = false
     interval_label = []
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
     germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'], checkIfExists: true)
     germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'], checkIfExists: true)
