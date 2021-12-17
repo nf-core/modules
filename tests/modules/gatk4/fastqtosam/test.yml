@@ -1,21 +1,20 @@
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_single_end
-  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config  -c ./tests/modules/gatk4/fastqtosam/nextflow.config
   tags:
     - gatk4
     - gatk4/fastqtosam
   files:
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpmzvp6gbv/gatk4/test.bam
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpmzvp6gbv/gatk4/versions.yml
+    - path: output/gatk4/test.bam
+    - path: output/gatk4/versions.yml
       md5sum: db3fa4b463427b08e32a5d8264be59c1
 
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_paired_end
-  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config  -c ./tests/modules/gatk4/fastqtosam/nextflow.config
   tags:
     - gatk4
     - gatk4/fastqtosam
   files:
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpkpjc84dq/gatk4/test.bam
+    - path: output/gatk4/test.bam
       md5sum: 0a0d308b219837977b8df9daa26db7de
-    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpkpjc84dq/gatk4/versions.yml
+    - path: output/gatk4/versions.yml
       md5sum: f4e35e46a29d8faebda5e852f9d0a132
