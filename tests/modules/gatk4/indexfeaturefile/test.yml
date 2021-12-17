@@ -5,7 +5,6 @@
     - gatk4/indexfeaturefile
   files:
     - path: output/gatk4/genome.bed.idx
-      md5sum: 894e8d06d603e3cc5f95f5723131c915
 
 - name: gatk4 indexfeaturefile test_gatk4_indexfeaturefile_bed_gz
   command: nextflow run tests/modules/gatk4/indexfeaturefile -entry test_gatk4_indexfeaturefile_bed_gz -c tests/config/nextflow.config -c ./tests/modules/gatk4/indexfeaturefile/nextflow.config
