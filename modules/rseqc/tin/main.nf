@@ -8,7 +8,7 @@ process RSEQC_TIN {
         'quay.io/biocontainers/rseqc:3.0.1--py37h516909a_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path  bed
 
     output:
