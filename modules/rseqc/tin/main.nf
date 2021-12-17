@@ -13,6 +13,7 @@ process RSEQC_TIN {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.xls"), emit: xls
     path "versions.yml"           , emit: versions
 
     script:
@@ -22,8 +23,7 @@ process RSEQC_TIN {
     tin.py \\
         -i $bam \\
         -r $bed \\
-        $args \\
-        > ${prefix}.tin.txt
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
