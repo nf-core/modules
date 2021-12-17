@@ -24,7 +24,7 @@ process MAXQUANT_LFQ {
     path raw
 
     output:
-    tuple val(meta), path("combined/txt/*.txt"), emit: maxquant_txt
+    tuple val(meta), path("*.txt"), emit: maxquant_txt
     path "*.version.txt"          , emit: version
 
     script:
@@ -37,7 +37,7 @@ process MAXQUANT_LFQ {
     sed \"s_<numThreads>.*_<numThreads>$task.cpus</numThreads>_\" ${paramfile} > mqpar_changed.xml
     sed -i \"s|PLACEHOLDER|\$PWD/|g\" mqpar_changed.xml
     mkdir temp
-  
     maxquant mqpar_changed.xml
+    mv combined/txt/*.txt .
     """
 }
