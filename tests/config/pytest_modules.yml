@@ -270,21 +270,19 @@ cat/fastq:
   - modules/cat/fastq/**
   - tests/modules/cat/fastq/**
 
-cellranger/gtf: # &cellranger/gtf
-  - modules/cellranger/gtf/**
-  - tests/modules/cellranger/gtf/**
-
-cellranger/mkref: # &cellranger/mkref
-  - modules/cellranger/mkref/**
-  - tests/modules/cellranger/mkref/**
-  # - *cellranger/gtf
-  - modules/cellranger/gtf/**
-  - tests/modules/cellranger/gtf/**
-
 cellranger/count:
   - modules/cellranger/count/**
   - tests/modules/cellranger/count/**
-  # - *cellranger/mkref
+  - modules/cellranger/mkref/**
+  - tests/modules/cellranger/mkref/**
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/gtf:
+  - modules/cellranger/gtf/**
+  - tests/modules/cellranger/gtf/**
+
+cellranger/mkref:
   - modules/cellranger/mkref/**
   - tests/modules/cellranger/mkref/**
   - modules/cellranger/gtf/**
@@ -510,6 +508,10 @@ gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
 
+gatk4/applyvqsr:
+  - modules/gatk4/applyvqsr/**
+  - tests/modules/gatk4/applyvqsr/**
+
 gatk4/baserecalibrator:
   - modules/gatk4/baserecalibrator/**
   - tests/modules/gatk4/baserecalibrator/**
@@ -518,7 +520,7 @@ gatk4/bedtointervallist:
   - modules/gatk4/bedtointervallist/**
   - tests/modules/gatk4/bedtointervallist/**
 
-gatk4/calculatecontamination: #&gatk4_calculatecontamination
+gatk4/calculatecontamination:
   - modules/gatk4/calculatecontamination/**
   - tests/modules/gatk4/calculatecontamination/**
 
@@ -526,7 +528,7 @@ gatk4/createsequencedictionary:
   - modules/gatk4/createsequencedictionary/**
   - tests/modules/gatk4/createsequencedictionary/**
 
-gatk4/createsomaticpanelofnormals: #&gatk4_createsomaticpanelofnormals
+gatk4/createsomaticpanelofnormals:
   - modules/gatk4/createsomaticpanelofnormals/**
   - tests/modules/gatk4/createsomaticpanelofnormals/**
 
@@ -538,7 +540,7 @@ gatk4/fastqtosam:
   - modules/gatk4/fastqtosam/**
   - tests/modules/gatk4/fastqtosam/**
 
-gatk4/filtermutectcalls: #&gatk4_filtermutectcalls
+gatk4/filtermutectcalls:
   - modules/gatk4/filtermutectcalls/**
   - tests/modules/gatk4/filtermutectcalls/**
 
@@ -546,7 +548,7 @@ gatk4/gatherbqsrreports:
   - modules/gatk4/gatherbqsrreports/**
   - tests/modules/gatk4/gatherbqsrreports/**
 
-gatk4/genomicsdbimport: #&gatk4_genomicsdbimport
+gatk4/genomicsdbimport:
   - modules/gatk4/genomicsdbimport/**
   - tests/modules/gatk4/genomicsdbimport/**
 
@@ -554,7 +556,7 @@ gatk4/genotypegvcfs:
   - modules/gatk4/genotypegvcfs/**
   - tests/modules/gatk4/genotypegvcfs/**
 
-gatk4/getpileupsummaries: #&gatk4_getpileupsummaries
+gatk4/getpileupsummaries:
   - modules/gatk4/getpileupsummaries/**
   - tests/modules/gatk4/getpileupsummaries/**
 
@@ -570,7 +572,7 @@ gatk4/intervallisttools:
   - modules/gatk4/intervallisttools/**
   - tests/modules/gatk4/intervallisttools/**
 
-gatk4/learnreadorientationmodel: #&gatk4_learnreadorientationmodel
+gatk4/learnreadorientationmodel:
   - modules/gatk4/learnreadorientationmodel/**
   - tests/modules/gatk4/learnreadorientationmodel/**
 
@@ -586,7 +588,7 @@ gatk4/mergevcfs:
   - modules/gatk4/mergevcfs/**
   - tests/modules/gatk4/mergevcfs/**
 
-gatk4/mutect2: #&gatk4_mutect2
+gatk4/mutect2:
   - modules/gatk4/mutect2/**
   - tests/modules/gatk4/mutect2/**
 
@@ -605,6 +607,10 @@ gatk4/splitncigarreads:
 gatk4/variantfiltration:
   - modules/gatk4/variantfiltration/**
   - tests/modules/gatk4/variantfiltration/**
+
+gatk4/variantrecalibrator:
+  - modules/gatk4/variantrecalibrator/**
+  - tests/modules/gatk4/variantrecalibrator/**
 
 genmap/index:
   - modules/genmap/index/**
@@ -688,6 +694,14 @@ hisat2/extractsplicesites:
 hmmcopy/gccounter:
   - modules/hmmcopy/gccounter/**
   - tests/modules/hmmcopy/gccounter/**
+
+hmmcopy/generatemap:
+  - modules/hmmcopy/generatemap/**
+  - tests/modules/hmmcopy/generatemap/**
+
+hmmcopy/mapcounter:
+  - modules/hmmcopy/mapcounter/**
+  - tests/modules/hmmcopy/mapcounter/**
 
 hmmcopy/readcounter:
   - modules/hmmcopy/readcounter/**
@@ -1207,6 +1221,10 @@ rseqc/readduplication:
   - modules/rseqc/readduplication/**
   - tests/modules/rseqc/readduplication/**
 
+rseqc/tin:
+  - modules/rseqc/tin/**
+  - tests/modules/rseqc/tin/**
+
 salmon/index:
   - modules/salmon/index/**
   - tests/modules/salmon/index/**
@@ -1251,7 +1269,7 @@ samtools/idxstats:
   - modules/samtools/idxstats/**
   - tests/modules/samtools/idxstats/**
 
-samtools/index: #&samtools_index
+samtools/index:
   - modules/samtools/index/**
   - tests/modules/samtools/index/**
 
@@ -1263,7 +1281,7 @@ samtools/mpileup:
   - modules/samtools/mpileup/**
   - tests/modules/samtools/mpileup/**
 
-samtools/sort: #&samtools_sort
+samtools/sort:
   - modules/samtools/sort/**
   - tests/modules/samtools/sort/**
 
@@ -1327,6 +1345,10 @@ snpeff:
   - modules/snpeff/**
   - tests/modules/snpeff/**
 
+snpsift/split:
+  - modules/snpsift/split/**
+  - tests/modules/snpsift/split/**
+
 snpsites:
   - modules/snpsites/**
   - tests/modules/snpsites/**
@@ -1339,11 +1361,11 @@ spatyper:
   - modules/spatyper/**
   - tests/modules/spatyper/**
 
-sratools/fasterqdump: #&sratools_fasterqdump
+sratools/fasterqdump:
   - modules/sratools/fasterqdump/**
   - tests/modules/sratools/fasterqdump/**
 
-sratools/prefetch: #&sratools_prefetch
+sratools/prefetch:
   - modules/sratools/prefetch/**
   - tests/modules/sratools/prefetch/**
 
@@ -1462,56 +1484,3 @@ yara/index:
 yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
-
-# subworkflows/align_bowtie2:
-#   - subworkflows/nf-core/align_bowtie2/**
-#   - tests/subworkflows/nf-core/align_bowtie2/**
-#   - *subworkflows_bam_sort_samtools
-
-# subworkflows/annotation_ensemblvep: &subworkflows_annotation_ensemblvep
-#   - subworkflows/nf-core/annotation_ensemblvep/**
-#   - tests/subworkflows/nf-core/annotation_ensemblvep/**
-
-# subworkflows/annotation_snpeff: &subworkflows_annotation_snpeff
-#   - subworkflows/nf-core/annotation_snpeff/**
-#   - tests/subworkflows/nf-core/annotation_snpeff/**
-
-# subworkflows/bam_stats_samtools: &subworkflows_bam_stats_samtools
-#   - subworkflows/nf-core/bam_stats_samtools/**
-#   - tests/subworkflows/nf-core/bam_stats_samtools/**
-
-# subworkflows/bam_sort_samtools: &subworkflows_bam_sort_samtools
-#   - subworkflows/nf-core/bam_sort_samtools/**
-#   - tests/subworkflows/nf-core/bam_sort_samtools/**
-#   - *samtools_sort
-#   - *samtools_index
-#   - *subworkflows_bam_stats_samtools
-
-# subworkflows/gatk_create_som_pon:
-#   - subworkflows/nf-core/gatk_create_som_pon/**
-#   - tests/subworkflows/nf-core/gatk_create_som_pon/**
-#   - *gatk4_genomicsdbimport
-#   - *gatk4_createsomaticpanelofnormals
-
-# subworkflows/gatk_tumor_normal_somatic_variant_calling:
-#   - subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
-#   - tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/**
-#   - *gatk4_mutect2
-#   - *gatk4_learnreadorientationmodel
-#   - *gatk4_getpileupsummaries
-#   - *gatk4_calculatecontamination
-#   - *gatk4_filtermutectcalls
-
-# subworkflows/gatk_tumor_only_somatic_variant_calling:
-#   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
-#   - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
-#   - *gatk4_mutect2
-#   - *gatk4_getpileupsummaries
-#   - *gatk4_calculatecontamination
-#   - *gatk4_filtermutectcalls
-
-# subworkflows/sra_fastq:
-#   - subworkflows/nf-core/sra_fastq/**
-#   - tests/subworkflows/nf-core/sra_fastq/**
-#   - *sratools_fasterqdump
-#   - *sratools_prefetch
