@@ -1,0 +1,71 @@
+- name: megahit
+  command: nextflow run ./tests/modules/megahit -entry test_megahit -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/megahit/nextflow.config
+  tags:
+    - megahit
+  files:
+    - path: output/megahit/megahit_out/test.contigs.fa.gz
+      md5sum: 8ed114f22130e16df3532d3f6b03e116
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.contigs.fa.gz
+      md5sum: 4221d45f238045bbdb1eea04e4ce4261
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.local.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.contigs.fa.gz
+      md5sum: c72aeb242788542af0260098b4d61204
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.local.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.contigs.fa.gz
+      md5sum: aa188f4c92e69c1a4b396e8f2991236f
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.local.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+
+- name: megahit_single
+  command: nextflow run ./tests/modules/megahit -entry test_megahit_single -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/megahit/nextflow.config
+  tags:
+    - megahit
+  files:
+    - path: output/megahit/megahit_out/test.contigs.fa.gz
+      md5sum: f50352838b778cc67824f631197a8346
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.contigs.fa.gz
+      md5sum: 61554dc60ba8e95d9c1d9dca8d465bef
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k21.local.fa.gz
+      md5sum: b916fc620fdf0d23ef33485352c168b3
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.contigs.fa.gz
+      md5sum: d916bc564854aa0fabaa5234035aa47b
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k29.local.fa.gz
+      md5sum: cccf44441e65913b02fb64eb0835dcc1
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.contigs.fa.gz
+      md5sum: 4416a9e846ccbeb06b880ac2fdc02925
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k39.local.fa.gz
+      md5sum: 590d0a08285226d24f7f984f7b3b4f65
+    - path: output/megahit/megahit_out/intermediate_contigs/k59.addi.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k59.contigs.fa.gz
+      md5sum: 51ef726b87a53b0cbdde762d7973a8a7
+    - path: output/megahit/megahit_out/intermediate_contigs/k59.final.contigs.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/megahit/megahit_out/intermediate_contigs/k59.local.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a

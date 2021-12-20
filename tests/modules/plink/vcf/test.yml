@@ -1,0 +1,12 @@
+- name: plink vcf test_plink_vcf
+  command: nextflow run ./tests/modules/plink/vcf -entry test_plink_vcf -c ./tests/config/nextflow.config -c ./tests/modules/plink/vcf/nextflow.config
+  tags:
+    - plink
+    - plink/vcf
+  files:
+    - path: output/plink/test.bed
+      md5sum: 55c3ab2636212911b5f952ef6f5d855c
+    - path: output/plink/test.bim
+      md5sum: 54164b6f103e152de05712c6bb317db8
+    - path: output/plink/test.fam
+      md5sum: 22d32d7daa3ae6b819a24895e82b2a70

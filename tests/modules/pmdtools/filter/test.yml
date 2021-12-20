@@ -1,0 +1,8 @@
+- name: pmdtools filter
+  command: nextflow run ./tests/modules/pmdtools/filter -entry test_pmdtools_filter -c ./tests/config/nextflow.config -c ./tests/modules/pmdtools/filter/nextflow.config
+  tags:
+    - pmdtools
+    - pmdtools/filter
+  files:
+    - path: output/pmdtools/test.bam
+      md5sum: 0fa64cb87d0439d4482938a4b6990b9d

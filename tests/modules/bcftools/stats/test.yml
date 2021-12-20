@@ -1,8 +1,8 @@
 - name: bcftools stats test_bcftools_stats
-  command: nextflow run tests/modules/bcftools/stats -entry test_bcftools_stats -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/stats/nextflow.config
   tags:
     - bcftools
     - bcftools/stats
   files:
     - path: output/bcftools/test.bcftools_stats.txt
-      md5sum: c4c5938add12a20050eec3782c8ad623
+      md5sum: d3543531396cf7012f13ebdce639cbc8

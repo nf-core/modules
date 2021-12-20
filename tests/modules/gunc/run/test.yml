@@ -1,0 +1,8 @@
+- name: gunc run
+  command: nextflow run ./tests/modules/gunc/run -entry test_gunc_run -c ./tests/config/nextflow.config -c ./tests/modules/gunc/run/nextflow.config
+  tags:
+    - gunc
+    - gunc/run
+  files:
+    - path: output/gunc/GUNC.progenomes_2.1.maxCSS_level.tsv
+      md5sum: 0420c1a9f2c50fefaee9fab5d80a551a

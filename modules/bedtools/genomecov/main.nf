@@ -1,44 +1,42 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BEDTOOLS_GENOMECOV {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0"
-    } else {
-        container "quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0' :
+        'quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0' }"
 
     input:
-    tuple val(meta), path(intervals)
+    tuple val(meta), path(intervals), val(scale)
     path  sizes
     val   extension
 
     output:
     tuple val(meta), path("*.${extension}"), emit: genomecov
-    path  "*.version.txt"                  , emit: version
+    path  "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def args_list = args.tokenize()
+    args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
+    if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {
+        args += " -bg"
+    }
+
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\
             genomecov \\
             -ibam $intervals \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     } else {
         """
@@ -46,10 +44,13 @@ process BEDTOOLS_GENOMECOV {
             genomecov \\
             -i $intervals \\
             -g $sizes \\
-            $options.args \\
+            $args \\
             > ${prefix}.${extension}
 
-        bedtools --version | sed -e "s/bedtools v//g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
+        END_VERSIONS
         """
     }
 }

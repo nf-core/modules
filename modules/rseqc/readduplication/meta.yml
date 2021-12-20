@@ -11,6 +11,7 @@ tools:
       homepage: http://rseqc.sourceforge.net/
       documentation: http://rseqc.sourceforge.net/
       doi: 10.1093/bioinformatics/bts356
+      licence: ['GPL-3.0-or-later']
 input:
   - meta:
       type: map
@@ -42,10 +43,10 @@ output:
       type: file
       description: script to reproduce the plot
       pattern: "*.R"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@kevinmenden"

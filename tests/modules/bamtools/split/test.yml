@@ -1,0 +1,10 @@
+- name: bamtools split test_bamtools_split
+  command: nextflow run ./tests/modules/bamtools/split -entry test_bamtools_split -c ./tests/config/nextflow.config -c ./tests/modules/bamtools/split/nextflow.config
+  tags:
+    - bamtools/split
+    - bamtools
+  files:
+    - path: output/bamtools/test.paired_end.sorted.REF_chr22.bam
+      md5sum: b7dc50e0edf9c6bfc2e3b0e6d074dc07
+    - path: output/bamtools/test.paired_end.sorted.REF_unmapped.bam
+      md5sum: e0754bf72c51543b2d745d96537035fb

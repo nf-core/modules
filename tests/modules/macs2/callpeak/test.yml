@@ -1,0 +1,38 @@
+- name: macs2 callpeak test_macs2_callpeak_bed
+  command: nextflow run ./tests/modules/macs2/callpeak -entry test_macs2_callpeak_bed -c ./tests/config/nextflow.config -c ./tests/modules/macs2/callpeak/nextflow.config
+  tags:
+    - macs2
+    - macs2/callpeak
+  files:
+    - path: output/macs2/test_peaks.narrowPeak
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/macs2/test_peaks.xls
+      md5sum: 762383e3a35e1f9ac3834fd6b2926092
+    - path: output/macs2/test_summits.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+
+- name: macs2 callpeak test_macs2_callpeak
+  command: nextflow run ./tests/modules/macs2/callpeak -entry test_macs2_callpeak -c ./tests/config/nextflow.config -c ./tests/modules/macs2/callpeak/nextflow.config
+  tags:
+    - macs2
+    - macs2/callpeak
+  files:
+    - path: output/macs2/test_peaks.narrowPeak
+      md5sum: 2e4da1c1704595e12aaf99cc715ad70c
+    - path: output/macs2/test_peaks.xls
+      md5sum: 5d65cb3dbd5421ea3bb5b490a100e9a4
+    - path: output/macs2/test_summits.bed
+      md5sum: 26f0f97b6c14dbca129e947a58067c82
+
+- name: macs2 callpeak test_macs2_callpeak_ctrl
+  command: nextflow run ./tests/modules/macs2/callpeak -entry test_macs2_callpeak_ctrl -c ./tests/config/nextflow.config -c ./tests/modules/macs2/callpeak/nextflow.config
+  tags:
+    - macs2
+    - macs2/callpeak
+  files:
+    - path: output/macs2/test_peaks.narrowPeak
+      md5sum: 653e1108cc57ca07d0f60fc0f4fb8ba3
+    - path: output/macs2/test_peaks.xls
+      md5sum: bf86546faa7b581b5209c29b22046a0a
+    - path: output/macs2/test_summits.bed
+      md5sum: 4f3c7c53a1d730d90d1b3dd9d3197af4

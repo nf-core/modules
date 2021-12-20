@@ -1,0 +1,17 @@
+- name: tiddit cov test_tiddit_cov
+  command: nextflow run ./tests/modules/tiddit/cov -entry test_tiddit_cov -c ./tests/config/nextflow.config -c ./tests/modules/tiddit/cov/nextflow.config
+  tags:
+    - tiddit
+    - tiddit/cov
+  files:
+    - path: output/tiddit/test.tab
+      md5sum: f7974948f809f94879d8a60b726194f5
+
+- name: tiddit cov test_tiddit_cov_no_ref
+  command: nextflow run ./tests/modules/tiddit/cov -entry test_tiddit_cov_no_ref -c ./tests/config/nextflow.config -c ./tests/modules/tiddit/cov/nextflow.config
+  tags:
+    - tiddit
+    - tiddit/cov
+  files:
+    - path: output/tiddit/test.tab
+      md5sum: f7974948f809f94879d8a60b726194f5

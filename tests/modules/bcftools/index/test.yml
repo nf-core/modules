@@ -1,0 +1,17 @@
+- name: bcftools index
+  command: nextflow run ./tests/modules/bcftools/index -entry test_bcftools_index_csi -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/index/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/index
+  files:
+    - path: output/bcftools/test.vcf.gz.csi
+      md5sum: 5f930522d2b9dcdba2807b7da4dfa3fd
+
+- name: bcftools index tbi
+  command: nextflow run ./tests/modules/bcftools/index -entry test_bcftools_index_tbi -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/index/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/index
+  files:
+    - path: output/bcftools/test.vcf.gz.tbi
+      md5sum: 36e11bf96ed0af4a92caa91a68612d64

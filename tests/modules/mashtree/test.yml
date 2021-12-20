@@ -1,0 +1,8 @@
+- name: mashtree test_mashtree
+  command: nextflow run ./tests/modules/mashtree -entry test_mashtree -c ./tests/config/nextflow.config -c ./tests/modules/mashtree/nextflow.config
+  tags:
+    - mashtree
+  files:
+    - path: output/mashtree/test.dnd
+      md5sum: 007b3949a9f0c991624791d2fb076824
+    - path: output/mashtree/test.tsv

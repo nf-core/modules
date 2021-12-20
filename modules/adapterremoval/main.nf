@@ -1,21 +1,11 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process ADAPTERREMOVAL {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::adapterremoval=2.3.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0"
-    } else {
-        container "quay.io/biocontainers/adapterremoval:2.3.2--hb7ba0dd_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
+        'quay.io/biocontainers/adapterremoval:2.3.2--hb7ba0dd_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -23,17 +13,17 @@ process ADAPTERREMOVAL {
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')     , emit: log
-    path "*.version.txt"               , emit: version
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
         """
         AdapterRemoval  \\
             --file1 $reads \\
-            $options.args \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
@@ -41,14 +31,17 @@ process ADAPTERREMOVAL {
             --seed 42 \\
             --gzip \\
 
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     } else if (!meta.single_end && !meta.collapse) {
         """
         AdapterRemoval  \\
             --file1 ${reads[0]} \\
-            --file2 ${reads[0]} \\
-            $options.args \\
+            --file2 ${reads[1]} \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
@@ -57,15 +50,18 @@ process ADAPTERREMOVAL {
             --seed 42 \\
             --gzip \\
 
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     } else {
         """
         AdapterRemoval  \\
             --file1 ${reads[0]} \\
-            --file2 ${reads[0]} \\
+            --file2 ${reads[1]} \\
             --collapse \\
-            $options.args \\
+            $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
@@ -73,7 +69,10 @@ process ADAPTERREMOVAL {
             --gzip \\
 
         cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
-        AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g" > ${software}.version.txt
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
         """
     }
 

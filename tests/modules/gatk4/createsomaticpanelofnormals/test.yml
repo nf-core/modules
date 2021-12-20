@@ -1,0 +1,9 @@
+- name: gatk4 createsomaticpanelofnormals test_gatk4_createsomaticpanelofnormals
+  command: nextflow run ./tests/modules/gatk4/createsomaticpanelofnormals -entry test_gatk4_createsomaticpanelofnormals -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/createsomaticpanelofnormals/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/createsomaticpanelofnormals
+  files:
+    - path: output/gatk4/test.pon.vcf.gz
+    - path: output/gatk4/test.pon.vcf.gz.tbi
+      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4

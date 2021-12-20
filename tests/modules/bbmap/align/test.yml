@@ -1,0 +1,39 @@
+- name: bbmap align paired end fasta ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_fasta_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: e0ec7f1eec537acf146fac1cbdd868d1
+    - path: output/bbmap/test.bbmap.log
+
+- name: bbmap align paired end index ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 345a72a0d58366d75dd263b107caa460
+    - path: output/bbmap/test.bbmap.log
+
+- name: bbmap align single end index ref
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_single_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 95f690636581ce9b27cf8568c715ae4d
+    - path: output/bbmap/test.bbmap.log
+
+- name: bbmap align paired end index ref pigz
+  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref_pigz -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  tags:
+    - bbmap
+    - bbmap/align
+  files:
+    - path: output/bbmap/test.bam
+      md5sum: 441c4f196b9a82c7b224903538064308
+    - path: output/bbmap/test.bbmap.log

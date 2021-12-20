@@ -1,0 +1,39 @@
+- name: bwa aln single-end
+  command: nextflow run ./tests/modules/bwa/aln -entry test_bwa_aln_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/aln/nextflow.config
+  tags:
+    - bwa
+    - bwa/aln
+  files:
+    - path: ./output/bwa/test.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: ./output/bwa/bwa/genome.bwt
+      md5sum: 0469c30a1e239dd08f68afe66fde99da
+    - path: ./output/bwa/bwa/genome.amb
+      md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+    - path: ./output/bwa/bwa/genome.ann
+      md5sum: c32e11f6c859f166c7525a9c1d583567
+    - path: ./output/bwa/bwa/genome.pac
+      md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+    - path: ./output/bwa/bwa/genome.sa
+      md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+
+- name: bwa aln paired-end
+  command: nextflow run ./tests/modules/bwa/aln -entry test_bwa_aln_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/aln/nextflow.config
+  tags:
+    - bwa
+    - bwa/aln
+  files:
+    - path: ./output/bwa/test.1.sai
+      md5sum: aaaf39b6814c96ca1a5eacc662adf926
+    - path: ./output/bwa/test.2.sai
+      md5sum: b4f185d9b4cb256dd5c377070a536124
+    - path: ./output/bwa/bwa/genome.bwt
+      md5sum: 0469c30a1e239dd08f68afe66fde99da
+    - path: ./output/bwa/bwa/genome.amb
+      md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+    - path: ./output/bwa/bwa/genome.ann
+      md5sum: c32e11f6c859f166c7525a9c1d583567
+    - path: ./output/bwa/bwa/genome.pac
+      md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+    - path: ./output/bwa/bwa/genome.sa
+      md5sum: ab3952cabf026b48cd3eb5bccbb636d1

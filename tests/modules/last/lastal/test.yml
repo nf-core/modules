@@ -1,11 +1,11 @@
 - name: last lastal test_last_lastal_with_dummy_param_file
-  command: nextflow run tests/modules/last/lastal -entry test_last_lastal_with_dummy_param_file -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/last/lastal -entry test_last_lastal_with_dummy_param_file -c ./tests/config/nextflow.config -c ./tests/modules/last/lastal/nextflow.config
   tags:
     - last
     - last/lastal
   files:
     - path: output/last/contigs.genome.maf.gz
-      md5sum: 2fc56553282d0826310bdef16a55e587
+      md5sum: 670f4fa1a94b23690cdb6fc603813c75
     - path: output/untar/lastdb/genome.bck
       md5sum: 5519879b9b6c4d1fc508da7f17f88f2e
     - path: output/untar/lastdb/genome.des
@@ -22,13 +22,13 @@
       md5sum: b7c40f06b1309dc6f37849eeb86dfd22
 
 - name: last lastal test_last_lastal_with_real_param_file
-  command: nextflow run tests/modules/last/lastal -entry test_last_lastal_with_real_param_file -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/last/lastal -entry test_last_lastal_with_real_param_file -c ./tests/config/nextflow.config -c ./tests/modules/last/lastal/nextflow.config
   tags:
     - last
     - last/lastal
   files:
     - path: output/last/contigs.genome.maf.gz
-      md5sum: f50557bed5430b42de7b0d5d61075cf0
+      md5sum: b0202b013e1caa9163516cd4ff4fbdbc
     - path: output/untar/lastdb/genome.bck
       md5sum: 5519879b9b6c4d1fc508da7f17f88f2e
     - path: output/untar/lastdb/genome.des

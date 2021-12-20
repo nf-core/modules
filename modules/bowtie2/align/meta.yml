@@ -13,6 +13,7 @@ tools:
           homepage: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
           documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
           doi: 10.1038/nmeth.1923
+          licence: ['GPL-3.0-or-later']
 input:
     - meta:
           type: map
@@ -33,10 +34,10 @@ output:
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
-    - version:
+    - versions:
           type: file
-          description: File containing software version
-          pattern: "*.{version.txt}"
+          description: File containing software versions
+          pattern: "versions.yml"
     - fastq:
           type: file
           description: Unaligned FastQ files

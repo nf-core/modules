@@ -1,5 +1,5 @@
-- name: Run tests for minia - test_minia
-  command: nextflow run tests/modules/minia -entry test_minia -c tests/config/nextflow.config
+- name: minia
+  command: nextflow run ./tests/modules/minia -entry test_minia -c ./tests/config/nextflow.config -c ./tests/modules/minia/nextflow.config
   tags:
     - minia
   files:

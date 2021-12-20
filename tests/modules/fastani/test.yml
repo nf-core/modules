@@ -1,0 +1,7 @@
+- name: fastani
+  command: nextflow run ./tests/modules/fastani -entry test_fastani -c ./tests/config/nextflow.config -c ./tests/modules/fastani/nextflow.config
+  tags:
+    - fastani
+  files:
+    - path: output/fastani/test.ani.txt
+      md5sum: 31d4f04e8cffe13080c86db3f9f3a589

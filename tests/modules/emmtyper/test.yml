@@ -1,0 +1,7 @@
+- name: emmtyper test_emmtyper
+  command: nextflow run ./tests/modules/emmtyper -entry test_emmtyper -c ./tests/config/nextflow.config -c ./tests/modules/emmtyper/nextflow.config
+  tags:
+    - emmtyper
+  files:
+    - path: output/emmtyper/test.tsv
+      md5sum: c727ba859adec9ca8ff0e091ecf79c62

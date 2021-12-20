@@ -1,0 +1,49 @@
+- name: bam sort samtools single-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_samtools -entry test_bam_sort_samtools_single_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
+    # Modules
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/samtools/test.sorted.bam
+      md5sum: 8b56bb7d26ced04112f712250d915aaa
+    - path: ./output/samtools/test.sorted.bam.bai
+      md5sum: a70940ce9ba2e700ec2984e0a6526099
+      # samtools stats
+    - path: ./output/samtools/test.sorted.bam.flagstat
+      md5sum: 2191911d72575a2358b08b1df64ccb53
+    - path: ./output/samtools/test.sorted.bam.idxstats
+      md5sum: 613e048487662c694aa4a2f73ca96a20
+    - path: ./output/samtools/test.sorted.bam.stats
+
+- name: bam sort samtools paired-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_samtools -entry test_bam_sort_samtools_paired_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
+    # Modules
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/samtools/test.sorted.bam
+      md5sum: 4adc495469724a375d5e1a9f3485e38d
+    - path: ./output/samtools/test.sorted.bam.bai
+      md5sum: 20c91e3a0fd4661d7cb967f40d2486ba
+      # samtools stats
+    - path: ./output/samtools/test.sorted.bam.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: ./output/samtools/test.sorted.bam.idxstats
+      md5sum: df60a8c8d6621100d05178c93fb053a2
+    - path: ./output/samtools/test.sorted.bam.stats

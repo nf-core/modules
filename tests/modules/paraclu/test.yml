@@ -1,0 +1,7 @@
+- name: paraclu test_paraclu
+  command: nextflow run ./tests/modules/paraclu -entry test_paraclu -c ./tests/config/nextflow.config -c ./tests/modules/paraclu/nextflow.config
+  tags:
+    - paraclu
+  files:
+    - path: output/paraclu/test.clustered.simplified.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e

@@ -9,6 +9,7 @@ tools:
         description: |
             A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
         documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+        licence: ['MIT']
 input:
     - bed:
         type: file
@@ -24,10 +25,10 @@ output:
         type: file
         description: Output fasta file with extracted sequences
         pattern: "*.{fa}"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
-        pattern: "*.{version.txt}"
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
     - "@joseespinosa"
     - "@drpatelh"
