@@ -3,8 +3,6 @@
 nextflow.enable.dsl = 2
 
 include { GATK4_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf'
-// used to run with the mitochondria mode setting as this increases sensitivity, allowing for some tumor_normal variants to be detected while the old test data is still in use, will be removed when new test data for sarek is available.
-include { GATK4_MUTECT2 as GATK4_TEMPFIX_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf'
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
     input = [ [ id:'test'], // meta map
@@ -14,7 +12,7 @@ workflow test_gatk4_mutect2_tumor_normal_pair {
               [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
                 ],
-              ["testN"]
+              ["normal"]
             ]
     run_single = false
     run_pon = false
@@ -28,7 +26,7 @@ workflow test_gatk4_mutect2_tumor_normal_pair {
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
     panel_of_normals_tbi = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true)
 
-    GATK4_TEMPFIX_MUTECT2 ( input, run_single, run_pon, run_mito, interval_label, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
+    GATK4_MUTECT2 ( input, run_single, run_pon, run_mito, interval_label, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
 }
 
 workflow test_gatk4_mutect2_tumor_single {
@@ -104,7 +102,7 @@ workflow test_gatk4_mutect2_mitochondria {
     run_single = false
     run_pon = false
     run_mito = true
-    interval_label = 'chr22'
+    interval_label = 'chr21'
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
