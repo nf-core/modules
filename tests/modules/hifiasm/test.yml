@@ -1,0 +1,33 @@
+- name: hifiasm test_hifiasm_hifi_only
+  command: nextflow run ./tests/modules/hifiasm -entry test_hifiasm_hifi_only -c ./tests/config/nextflow.config -c ./tests/modules/hifiasm/nextflow.config
+  tags:
+    - hifiasm
+  files:
+    - path: output/hifiasm/test.asm.bp.hap1.p_ctg.gfa
+      md5sum: 73b0c1b01d445db91c269034b8660501
+    - path: output/hifiasm/test.asm.bp.hap2.p_ctg.gfa
+      md5sum: 76847b7835185ab92611a820467c0066
+    - path: output/hifiasm/test.asm.bp.p_utg.gfa
+      md5sum: 97446fb95de214835c36b10a90838486
+    - path: output/hifiasm/test.asm.bp.r_utg.gfa
+      md5sum: 97446fb95de214835c36b10a90838486
+    - path: output/hifiasm/test.asm.ec.bin
+    - path: output/hifiasm/test.asm.ovlp.reverse.bin
+    - path: output/hifiasm/test.asm.ovlp.source.bin
+
+- name: hifiasm test_hifiasm_with_parental_reads
+  command: nextflow run ./tests/modules/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config -c ./tests/modules/hifiasm/nextflow.config
+  tags:
+    - hifiasm
+  files:
+    - path: output/hifiasm/test.asm.dip.hap1.p_ctg.gfa
+      md5sum: 16907b1aea2081884deb9d039dd14038
+    - path: output/hifiasm/test.asm.dip.hap2.p_ctg.gfa
+      md5sum: d283479bf72a31d0cc34f880535d0bd4
+    - path: output/hifiasm/test.asm.dip.p_utg.gfa
+      md5sum: 97446fb95de214835c36b10a90838486
+    - path: output/hifiasm/test.asm.dip.r_utg.gfa
+      md5sum: 97446fb95de214835c36b10a90838486
+    - path: output/hifiasm/test.asm.ec.bin
+    - path: output/hifiasm/test.asm.ovlp.reverse.bin
+    - path: output/hifiasm/test.asm.ovlp.source.bin

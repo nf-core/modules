@@ -1,0 +1,7 @@
+- name: bamaligncleaner
+  command: nextflow run ./tests/modules/bamaligncleaner -entry test_bamaligncleaner -c ./tests/config/nextflow.config -c ./tests/modules/bamaligncleaner/nextflow.config
+  tags:
+    - bamaligncleaner
+  files:
+    - path: output/bamaligncleaner/test.bam
+      md5sum: 173cdb4c2713b77c528cac36ca2610fb

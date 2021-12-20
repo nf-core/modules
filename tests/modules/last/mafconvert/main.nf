@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_MAFCONVERT } from '../../../../modules/last/mafconvert/main.nf' addParams( options: [:] )
+include { LAST_MAFCONVERT } from '../../../../modules/last/mafconvert/main.nf'
 
 workflow test_last_mafconvert {
     

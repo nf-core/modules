@@ -1,5 +1,5 @@
 - name: deeptools plotfingerprint
-  command: nextflow run tests/modules/deeptools/plotfingerprint -entry test_deeptools_plotfingerprint -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/deeptools/plotfingerprint -entry test_deeptools_plotfingerprint -c ./tests/config/nextflow.config -c ./tests/modules/deeptools/plotfingerprint/nextflow.config
   tags:
     - deeptools
     - deeptools/plotfingerprint
@@ -7,7 +7,7 @@
     - path: output/deeptools/test.plotFingerprint.pdf
     - path: output/deeptools/test.plotFingerprint.qcmetrics.txt
       contains:
-      - "AUC"
-      - "0.24184576629880325"
+        - "AUC"
+        - "0.24184576629880325"
     - path: output/deeptools/test.plotFingerprint.raw.txt
-      md5sum: e2a9ff341a315f49e7c8387a3323bdfb
+      md5sum: aff8e53de0ddd893aa9d8f9d4ce7e291

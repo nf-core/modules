@@ -1,0 +1,7 @@
+- name: agrvate
+  command: nextflow run ./tests/modules/agrvate -entry test_agrvate -c ./tests/config/nextflow.config -c ./tests/modules/agrvate/nextflow.config
+  tags:
+    - agrvate
+  files:
+    - path: output/agrvate/genome-results/genome-summary.tab
+      md5sum: 781a9e5fc6ebc9f90ddfe8753d1633db

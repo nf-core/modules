@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRIX } from '../../../modules/pairix/main.nf' addParams( options: [:] )
+include { PAIRIX } from '../../../modules/pairix/main.nf'
 
 workflow test_pairix {
 

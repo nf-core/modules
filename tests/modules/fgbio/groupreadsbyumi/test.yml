@@ -1,0 +1,10 @@
+- name: fgbio groupreadsbyumi test_fgbio_groupreadsbyumi
+  command: nextflow run ./tests/modules/fgbio/groupreadsbyumi -entry test_fgbio_groupreadsbyumi -c ./tests/config/nextflow.config -c ./tests/modules/fgbio/groupreadsbyumi/nextflow.config
+  tags:
+    - fgbio
+    - fgbio/groupreadsbyumi
+  files:
+    - path: output/fgbio/test_umi-grouped.bam
+      md5sum: f1e53fc845fd99a3da172eb8063dff0b
+    - path: output/fgbio/test_umi_histogram.txt
+      md5sum: d17fd167b2a765d46e4b01bf08ece01b

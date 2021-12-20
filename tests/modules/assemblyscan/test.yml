@@ -1,0 +1,7 @@
+- name: assemblyscan test_assemblyscan
+  command: nextflow run ./tests/modules/assemblyscan -entry test_assemblyscan -c ./tests/config/nextflow.config -c ./tests/modules/assemblyscan/nextflow.config
+  tags:
+    - assemblyscan
+  files:
+    - path: output/assemblyscan/test.json
+      md5sum: 9140e3d43f2d676f62e1325ace5dd8bd

@@ -1,0 +1,48 @@
+- name: malt build
+  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build -c ./tests/config/nextflow.config -c ./tests/modules/malt/build/nextflow.config
+  tags:
+    - malt
+    - malt/build
+  files:
+    - path: output/malt/malt_index/index0.idx
+      md5sum: 1954f2c00b418d00112829b0a6adb8ce
+    - path: output/malt/malt_index/ref.db
+      md5sum: 772a09aeb162515485b037604399f2bd
+    - path: output/malt/malt_index/ref.idx
+      md5sum: 7dea362b3fac8e00956a4952a3d4f474
+    - path: output/malt/malt_index/ref.inf
+      md5sum: b146842067cf278ef1d23e6c2e7c0c35
+    - path: output/malt/malt_index/table0.db
+    - path: output/malt/malt_index/table0.idx
+    - path: output/malt/malt_index/taxonomy.idx
+      md5sum: bb335e7c378a5bd85761b6eeed16d984
+    - path: output/malt/malt_index/taxonomy.map
+      md5sum: f6b05bbab2149e388cb769098e14d433
+    - path: output/malt/malt_index/taxonomy.tre
+      md5sum: bde26a1fff5c63d3046d3863607a1e70
+- name: malt build gff
+  command: nextflow run ./tests/modules/malt/build_test -entry test_malt_build_gff -c ./tests/config/nextflow.config -c ./tests/modules/malt/build/nextflow.config
+  tags:
+    - malt
+    - malt/build
+  files:
+    - path: output/malt/malt_index/aadd.dbx
+      md5sum: 4e2ed57e713d5372bd09350f447cdf53
+    - path: output/malt/malt_index/aadd.idx
+      md5sum: 0994061bc8673ebd283fa6546c3dd12c
+    - path: output/malt/malt_index/index0.idx
+      md5sum: 1954f2c00b418d00112829b0a6adb8ce
+    - path: output/malt/malt_index/ref.db
+      md5sum: 772a09aeb162515485b037604399f2bd
+    - path: output/malt/malt_index/ref.idx
+      md5sum: 7dea362b3fac8e00956a4952a3d4f474
+    - path: output/malt/malt_index/ref.inf
+      md5sum: b146842067cf278ef1d23e6c2e7c0c35
+    - path: output/malt/malt_index/table0.db
+    - path: output/malt/malt_index/table0.idx
+    - path: output/malt/malt_index/taxonomy.idx
+      md5sum: bb335e7c378a5bd85761b6eeed16d984
+    - path: output/malt/malt_index/taxonomy.map
+      md5sum: f6b05bbab2149e388cb769098e14d433
+    - path: output/malt/malt_index/taxonomy.tre
+      md5sum: bde26a1fff5c63d3046d3863607a1e70

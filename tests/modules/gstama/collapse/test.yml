@@ -1,0 +1,24 @@
+- name: gstama collapse test_gstama_collapse
+  command: nextflow run ./tests/modules/gstama/collapse -entry test_gstama_collapse -c ./tests/config/nextflow.config -c ./tests/modules/gstama/collapse/nextflow.config
+  tags:
+    - gstama
+    - gstama/collapse
+  files:
+    - path: output/gstama/test_tc_collapsed.bed
+      md5sum: e5105198ed970a33ae0ecaa7bff421d9
+    - path: output/gstama/test_tc_local_density_error.txt
+      md5sum: b917ac1f14eccd590b6881a686f324d5
+    - path: output/gstama/test_tc_polya.txt
+      md5sum: 628ea62b918fc4f31e109f724d714a66
+    - path: output/gstama/test_tc_read.txt
+      md5sum: d2685d7f24cd1611e0770a5ce25422fe
+    - path: output/gstama/test_tc_strand_check.txt
+      md5sum: 42cc52b2660b1e0b84e1c9ab37a965ec
+    - path: output/gstama/test_tc_trans_read.bed
+      md5sum: 0ca1a32f33ef05242d897d913802554b
+    - path: output/gstama/test_tc_trans_report.txt
+      md5sum: 33a86c15ca2acce36b2a5962f4c1adc4
+    - path: output/gstama/test_tc_varcov.txt
+      md5sum: 587fd899ff658eb66b1770a35283bfcb
+    - path: output/gstama/test_tc_variants.txt
+      md5sum: 5b1165e9f33faba4f7207013fc27257e

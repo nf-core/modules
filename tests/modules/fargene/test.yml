@@ -1,0 +1,14 @@
+- name: fargene
+  command: nextflow run ./tests/modules/fargene -entry test_fargene -c ./tests/config/nextflow.config -c ./tests/modules/fargene/nextflow.config
+  tags:
+    - fargene
+  files:
+    - path: output/fargene/fargene_analysis.log
+    - path: output/fargene/test/hmmsearchresults/test1.contigs-class_A-hmmsearched.out
+    - path: output/fargene/test/results_summary.txt
+      md5sum: 690d351cfc52577263ef4cfab1c81f50
+    - path: output/fargene/test/tmpdir/test1.contigs-positives.out
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/fargene/test/tmpdir/tmp.out
+    - path: output/gunzip/test1.contigs.fa
+      md5sum: 80c4d78f2810f6d9e90fa6da9bb9c4f9

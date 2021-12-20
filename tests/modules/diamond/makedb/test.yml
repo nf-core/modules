@@ -1,0 +1,8 @@
+- name: diamond makedb test_diamond_makedb
+  command: nextflow run ./tests/modules/diamond/makedb -entry test_diamond_makedb -c ./tests/config/nextflow.config -c ./tests/modules/diamond/makedb/nextflow.config
+  tags:
+    - diamond
+    - diamond/makedb
+  files:
+    - path: output/diamond/genome.fasta.dmnd
+      md5sum: 2447fb376394c20d43ea3aad2aa5d15d

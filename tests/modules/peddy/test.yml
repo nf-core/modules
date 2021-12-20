@@ -1,0 +1,17 @@
+- name: peddy test_peddy
+  command: nextflow run ./tests/modules/peddy -entry test_peddy -c ./tests/config/nextflow.config ./tests/modules/peddy/nextflow.config
+  tags:
+    - peddy
+  files:
+    - path: output/peddy/justhusky_minimal.het_check.csv
+      md5sum: f4006d47355f2a760e40215b403926c3
+    - path: output/peddy/justhusky_minimal.html
+      md5sum: 4f189cdbe8f03fe5c32d343c183506a5
+    - path: output/peddy/justhusky_minimal.ped_check.csv
+      md5sum: d79a98558e280afe794d1374d2b985d4
+    - path: output/peddy/justhusky_minimal.ped_check.rel-difference.csv
+      md5sum: 9de7e287cb30c742db2ff3622b0e63b1
+    - path: output/peddy/justhusky_minimal.sex_check.csv
+      md5sum: 60848489bc697490da6a53b5170baf3b
+    - path: output/peddy/justhusky_minimal.vs.html
+      md5sum: 20f5f3a97fa781057c876ac79e044010

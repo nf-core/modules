@@ -1,0 +1,83 @@
+- name: align bowtie2 single-end
+  command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_single_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/align_bowtie2
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
+    # Modules
+    # - bowtie2
+    # - bowtie2/align
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/bowtie2/test.bam
+    - path: ./output/bowtie2/test.bowtie2.log
+    - path: ./output/index/bowtie2/genome.1.bt2
+      md5sum: cbe3d0bbea55bc57c99b4bfa25b5fbdf
+    - path: ./output/index/bowtie2/genome.2.bt2
+      md5sum: 47b153cd1319abc88dda532462651fcf
+    - path: ./output/index/bowtie2/genome.3.bt2
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: ./output/index/bowtie2/genome.4.bt2
+      md5sum: c25be5f8b0378abf7a58c8a880b87626
+    - path: ./output/index/bowtie2/genome.rev.1.bt2
+      md5sum: 52be6950579598a990570fbcf5372184
+    - path: ./output/index/bowtie2/genome.rev.2.bt2
+      md5sum: e3b4ef343dea4dd571642010a7d09597
+      # samtools sort
+    - path: ./output/samtools/test.sorted.bam
+    - path: ./output/samtools/test.sorted.bam.bai
+      # samtools stats
+    - path: ./output/samtools/test.sorted.bam.flagstat
+      md5sum: e9ce9093133116bc54fd335cfe698372
+    - path: ./output/samtools/test.sorted.bam.idxstats
+      md5sum: e16eb632f7f462514b0873c7ac8ac905
+    - path: ./output/samtools/test.sorted.bam.stats
+      md5sum: d9eb909c2cde69d6ae83999a72d770d7
+
+- name: align bowtie2 paired-end
+  command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_paired_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/align_bowtie2
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
+    # Modules
+    # - bowtie2
+    # - bowtie2/align
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/bowtie2/test.bam
+    - path: ./output/bowtie2/test.bowtie2.log
+    - path: ./output/index/bowtie2/genome.1.bt2
+      md5sum: cbe3d0bbea55bc57c99b4bfa25b5fbdf
+    - path: ./output/index/bowtie2/genome.2.bt2
+      md5sum: 47b153cd1319abc88dda532462651fcf
+    - path: ./output/index/bowtie2/genome.3.bt2
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: ./output/index/bowtie2/genome.4.bt2
+      md5sum: c25be5f8b0378abf7a58c8a880b87626
+    - path: ./output/index/bowtie2/genome.rev.1.bt2
+      md5sum: 52be6950579598a990570fbcf5372184
+    - path: ./output/index/bowtie2/genome.rev.2.bt2
+      md5sum: e3b4ef343dea4dd571642010a7d09597
+      # samtools sort
+    - path: ./output/samtools/test.sorted.bam
+    - path: ./output/samtools/test.sorted.bam.bai
+      # samtools stats
+    - path: ./output/samtools/test.sorted.bam.flagstat
+      md5sum: 49f3d51a8804ce58fe9cecd2549d279b
+    - path: ./output/samtools/test.sorted.bam.idxstats
+      md5sum: 29ff2fa56d35b2a47625b8f517f1a947
+    - path: ./output/samtools/test.sorted.bam.stats
+      md5sum: d0c7a1a4fbd2c1aed437ca419a9e344f

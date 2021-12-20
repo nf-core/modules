@@ -39,10 +39,10 @@ output:
       type: file
       description: The trimmed/modified fastq reads
       pattern: "*fastq.gz"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - log:
       type: file
       description: Bbduk log file

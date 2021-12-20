@@ -1,0 +1,100 @@
+name: dastool_dastool
+description: DAS Tool binning step.
+keywords:
+  - binning
+  - das tool
+  - table
+  - de novo
+  - bins
+  - contigs
+  - assembly
+  - das_tool
+tools:
+  - dastool:
+      description: |
+        DAS Tool is an automated method that integrates the results
+        of a flexible number of binning algorithms to calculate an optimized, non-redundant
+        set of bins from a single assembly.
+
+      homepage: https://github.com/cmks/DAS_Tool
+      documentation: https://github.com/cmks/DAS_Tool
+      tool_dev_url: https://github.com/cmks/DAS_Tool
+      doi: "10.1038/s41564-018-0171-1"
+      licence: ['BSD']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - contigs:
+      type: file
+      description: fasta file
+      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+  - bins:
+      type: file
+      description: "Scaffolds2bin tabular file generated with dastool/scaffolds2bin"
+      pattern: "*.scaffolds2bin.tsv"
+  - proteins:
+      type: file
+      description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
+      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+  - db_directory:
+      type: file
+      description: (optional) Directory of single copy gene database.
+  - search_engine:
+      type: val
+      description: Engine used for single copy gene identification. USEARCH is not supported due to it being proprietary [blast/diamond]
+
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+  - log:
+      type: file
+      description: Log file of the run
+      pattern: "*.log"
+  - summary:
+      type: file
+      description: Summary of output bins including quality and completeness estimates
+      pattern: "*summary.txt"
+  - scaffolds2bin:
+      type: file
+      description: Scaffolds to bin file of output bins
+      pattern: "*.scaffolds2bin.txt"
+  - eval:
+      type: file
+      description: Quality and completeness estimates of input bin sets
+      pattern: "*.eval"
+  - pdfs:
+      type: file
+      description: Plots showing the amount of high quality bins and score distribution of bins per method
+      pattern: "*.pdf"
+  - fasta_proteins:
+      type: file
+      description: Output from prodigal if not already supplied
+      pattern: "*.proteins.faa"
+  - fasta_archaea_scg:
+      type: file
+      description:  Results of archaeal single-copy-gene prediction
+      pattern: "*.archaea.scg"
+  - fasta_bacteria_scg:
+      type: file
+      description: Results of bacterial single-copy-gene prediction
+      pattern: "*.bacteria.scg"
+  - seqlength:
+      type: file
+      description: Summary of contig lengths
+      pattern: "*.seqlength"
+
+authors:
+  - "@maxibor"
+  - "@jfy133"

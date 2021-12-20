@@ -1,0 +1,8 @@
+- name: bedtools makewindows test_bedtools_makewindows
+  command: nextflow run ./tests/modules/bedtools/makewindows -entry test_bedtools_makewindows -c ./tests/config/nextflow.config -c ./tests/modules/bedtools/makewindows/nextflow.config
+  tags:
+    - bedtools/makewindows
+    - bedtools
+  files:
+    - path: output/bedtools/test.tab
+      md5sum: 0cf6ed2b6f470cd44a247da74ca4fe4e

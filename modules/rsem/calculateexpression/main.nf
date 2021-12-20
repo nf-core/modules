@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process RSEM_CALCULATEEXPRESSION {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::rsem=1.3.3 bioconda::star=2.7.6a" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0' :
+        'quay.io/biocontainers/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:606b713ec440e799d53a2b51a6e79dbfd28ecf3e-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -27,15 +16,15 @@ process RSEM_CALCULATEEXPRESSION {
     tuple val(meta), path("*.isoforms.results"), emit: counts_transcript
     tuple val(meta), path("*.stat")            , emit: stat
     tuple val(meta), path("*.log")             , emit: logs
-    path  "*.version.txt"                      , emit: version
+    path  "versions.yml"                       , emit: versions
 
     tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
     tuple val(meta), path("${prefix}.genome.bam")    , optional:true, emit: bam_genome
     tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
 
     script:
-    def software   = getSoftwareName(task.process)
-    prefix         = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -51,11 +40,15 @@ process RSEM_CALCULATEEXPRESSION {
         --temporary-folder ./tmp/ \\
         $strandedness \\
         $paired_end \\
-        $options.args \\
+        $args \\
         $reads \\
         \$INDEX \\
         $prefix
 
-    rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
+        star: \$(STAR --version | sed -e "s/STAR_//g")
+    END_VERSIONS
     """
 }

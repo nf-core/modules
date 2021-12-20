@@ -1,0 +1,8 @@
+- name: samtools depth
+  command: nextflow run ./tests/modules/samtools/depth -entry test_samtools_depth -c ./tests/config/nextflow.config -c ./tests/modules/samtools/depth/nextflow.config
+  tags:
+    - samtools/depth
+    - samtools
+  files:
+    - path: output/samtools/test.tsv
+      md5sum: aa27ebf69663ebded553b4d6538219d9

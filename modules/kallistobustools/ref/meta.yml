@@ -21,16 +21,16 @@ input:
       type: file
       description: Genomic gtf file
       pattern: "*.{gtf,gtf.gz}"
-  - workflow:
+  - workflow_mode:
       type: value
-      description: String value defining worfklow to use, can be one of "standard", "lamanno", "nucleus"
+      description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
       pattern: "{standard,lamanno,nucleus}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - kb_ref_idx:
       type: file
       description: Index file from kb ref.

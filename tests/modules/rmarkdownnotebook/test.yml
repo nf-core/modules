@@ -1,0 +1,27 @@
+- name: rmarkdownnotebook test_rmarkdown
+  command: nextflow run ./tests/modules/rmarkdownnotebook -entry test_rmarkdown -c ./tests/config/nextflow.config -c ./tests/modules/rmarkdownnotebook/nextflow.config
+  tags:
+    - rmarkdownnotebook
+  files:
+    - path: output/rmarkdownnotebook/session_info.log
+      contains:
+        - R version 4.1.0
+        - yaml_2.2.1
+    - path: output/rmarkdownnotebook/test_rmd.html
+      contains:
+        - "n_iter = 10"
+
+- name: rmarkdownnotebook test_rmarkdown_parametrize
+  command: nextflow run ./tests/modules/rmarkdownnotebook -entry test_rmarkdown_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/rmarkdownnotebook/nextflow.config
+  tags:
+    - rmarkdownnotebook
+  files:
+    - path: output/rmarkdownnotebook/artifacts/artifact.txt
+      md5sum: b10a8db164e0754105b7a99be72e3fe5
+    - path: output/rmarkdownnotebook/session_info.log
+      contains:
+        - R version 4.1.0
+        - yaml_2.2.1
+    - path: output/rmarkdownnotebook/test_rmd.html
+      contains:
+        - "n_iter = 12"

@@ -10,7 +10,7 @@ tools:
       documentation: https://cooler.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
-      licence: ['BSD-3-clause']
+      licence: ['BSD-3-Clause']
 
 input:
   - fasta:
@@ -26,10 +26,10 @@ input:
       documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - bed:
       type: file
       description: A genome segmentation of restriction fragments as a BED file.

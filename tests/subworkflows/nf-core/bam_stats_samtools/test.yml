@@ -1,0 +1,33 @@
+- name: bam stats samtools single-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_single_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/bam_stats_samtools
+    # Modules
+    # - samtools
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/samtools/test.single_end.sorted.bam.flagstat
+      md5sum: 2191911d72575a2358b08b1df64ccb53
+    - path: ./output/samtools/test.single_end.sorted.bam.idxstats
+      md5sum: 613e048487662c694aa4a2f73ca96a20
+    - path: ./output/samtools/test.single_end.sorted.bam.stats
+
+- name: bam stats samtools paired-end
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_paired_end -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/bam_stats_samtools
+    # # Modules
+    # - samtools
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
+  files:
+    - path: ./output/samtools/test.paired_end.sorted.bam.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: ./output/samtools/test.paired_end.sorted.bam.idxstats
+      md5sum: df60a8c8d6621100d05178c93fb053a2
+    - path: ./output/samtools/test.paired_end.sorted.bam.stats

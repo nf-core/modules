@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTOBUSTOOLS_REF } from '../../../../modules/kallistobustools/ref/main.nf' addParams( options: [:] )
+include { KALLISTOBUSTOOLS_REF } from '../../../../modules/kallistobustools/ref/main.nf'
 
 workflow test_kallistobustools_ref_standard {
 
@@ -30,3 +30,4 @@ workflow test_kallistobustools_ref_nucleus {
 
     KALLISTOBUSTOOLS_REF( fasta, gtf, workflow)
 }
+

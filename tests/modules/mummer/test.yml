@@ -1,0 +1,7 @@
+- name: mummer test_mummer
+  command: nextflow run ./tests/modules/mummer -entry test_mummer -c ./tests/config/nextflow.config -c ./tests/modules/mummer/nextflow.config
+  tags:
+    - mummer
+  files:
+    - path: output/mummer/test.coords
+      md5sum: 6084fe43c7cb2eca8b96d674560bdefc
