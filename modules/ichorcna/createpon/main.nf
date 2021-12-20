@@ -24,7 +24,7 @@ process ICHORCNA_CREATEPON {
     def centro = centromere ? "--centromere ${centromere}" : ''
 
     """
-    echo ${wigs} | tr " " "\n" > wig_files.txt
+    echo ${wigs} | tr " " "\\n" > wig_files.txt
 
     createPanelOfNormals.R \\
         --filelist wig_files.txt \\
@@ -35,6 +35,8 @@ process ICHORCNA_CREATEPON {
         --outfile 'PoN'
 
     rm wig_files.txt
+
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
