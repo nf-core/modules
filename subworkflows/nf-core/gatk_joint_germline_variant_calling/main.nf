@@ -106,7 +106,6 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     genotype_vcf   =               GENOTYPEGVCFS.out.vcf.collect()                 // channel: [ val(meta), [ vcf ] ]
     genotype_index =               GENOTYPEGVCFS.out.vcf.collect()                 // channel: [ val(meta), [ tbi ] ]
 
-
     recal_file     = run_vqsr    ? VARIANTRECALIBRATOR.out.recal.collect()    : [] // channel: [ val(meta), [ recal ] ]
     recal_index    = run_vqsr    ? VARIANTRECALIBRATOR.out.idx.collect()      : [] // channel: [ val(meta), [ idx ] ]
     recal_tranches = run_vqsr    ? VARIANTRECALIBRATOR.out.tranches.collect() : [] // channel: [ val(meta), [ tranches ] ]
