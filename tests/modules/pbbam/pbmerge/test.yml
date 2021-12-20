@@ -1,0 +1,10 @@
+- name: pbbam pbmerge test_pbbam_pbmerge
+  command: nextflow run ./tests/modules/pbbam/pbmerge -entry test_pbbam_pbmerge -c ./tests/config/nextflow.config -c ./tests/modules/pbbam/pbmerge/nextflow.config
+  tags:
+    - pbbam/pbmerge
+    - pbbam
+  files:
+    - path: output/pbbam/test.merged.bam
+      md5sum: 727c7ba1289192085c06890dda70f973
+    - path: output/pbbam/test.merged.bam.pbi
+      md5sum: edfadd3a81c598d1ee051899792db75d

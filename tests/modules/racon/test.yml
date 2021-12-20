@@ -1,0 +1,7 @@
+- name: racon test_racon
+  command: nextflow run ./tests/modules/racon -entry test_racon -c ./tests/config/nextflow.config -c ./tests/modules/racon/nextflow.config
+  tags:
+    - racon
+  files:
+    - path: output/racon/test_assembly_consensus.fasta.gz
+      md5sum: 96a0ba94c6154f6f37b5a76a0207eb6f

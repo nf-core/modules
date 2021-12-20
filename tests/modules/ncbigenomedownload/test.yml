@@ -1,0 +1,11 @@
+- name: ncbigenomedownload test_ncbigenomedownload
+  command: nextflow run ./tests/modules/ncbigenomedownload -entry test_ncbigenomedownload -c ./tests/config/nextflow.config -c ./tests/modules/ncbigenomedownload/nextflow.config
+  tags:
+    - ncbigenomedownload
+  files:
+    - path: output/ncbigenomedownload/GCF_000013425.1_ASM1342v1_assembly_stats.txt
+      md5sum: f78c6a373130e50fac5472962a5fdf44
+    - path: output/ncbigenomedownload/GCF_000013425.1_ASM1342v1_genomic.fna.gz
+      md5sum: b086eb1020e7df022afa545dc6d93297
+    - path: output/ncbigenomedownload/GCF_000013425.1_ASM1342v1_genomic.gbff.gz
+      md5sum: ae2da70e32c783858e6c60c72e9eeb7a

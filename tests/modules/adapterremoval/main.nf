@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ADAPTERREMOVAL } from '../../../modules/adapterremoval/main.nf' addParams( options: [:] )
+include { ADAPTERREMOVAL } from '../../../modules/adapterremoval/main.nf'
 
 workflow test_adapterremoval_single_end {
     input = [ [ id:'test', single_end:true, collapse:false ], // meta map

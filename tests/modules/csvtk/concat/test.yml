@@ -1,0 +1,8 @@
+- name: csvtk concat
+  command: nextflow run ./tests/modules/csvtk/concat -entry test_csvtk_concat -c ./tests/config/nextflow.config -c ./tests/modules/csvtk/concat/nextflow.config
+  tags:
+    - csvtk
+    - csvtk/concat
+  files:
+    - path: output/csvtk/test.csv
+      md5sum: 917fe5d857f04b58e0f49c384d167cec

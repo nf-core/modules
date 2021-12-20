@@ -12,6 +12,7 @@ tools:
       homepage: https://ccb.jhu.edu/software/kraken2/
       documentation: https://github.com/DerrickWood/kraken2/wiki/Manual
       doi: 10.1186/s13059-019-1891-0
+      licence: ['MIT']
 input:
   - meta:
       type: map
@@ -50,10 +51,10 @@ output:
         Kraken2 report containing stats about classified
         and not classifed reads.
       pattern: "*.{report.txt}"
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

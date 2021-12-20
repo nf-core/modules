@@ -1,0 +1,9 @@
+- name: mtnucratio
+  command: nextflow run ./tests/modules/mtnucratio -entry test_mtnucratio -c ./tests/config/nextflow.config -c ./tests/modules/mtnucratio/nextflow.config
+  tags:
+    - mtnucratio
+  files:
+    - path: output/mtnucratio/test.single_end.sorted.bam.mtnucratio
+      md5sum: 19e96849802c70aa0694785f716274b7
+    - path: output/mtnucratio/test.single_end.sorted.bam.mtnucratiomtnuc.json
+      md5sum: 14d24be6272854d6762f0dfad5918ef6

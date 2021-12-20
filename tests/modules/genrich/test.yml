@@ -1,0 +1,47 @@
+- name: genrich test_genrich
+  command: nextflow run ./tests/modules/genrich -entry test_genrich -c ./tests/config/nextflow.config -c ./tests/modules/genrich/nextflow.config
+  tags:
+    - genrich
+  files:
+    - path: output/genrich/test.narrowPeak
+      md5sum: 6afabdd3f691c7c84c66ff8a23984681
+
+- name: genrich test_genrich_ctrl
+  command: nextflow run ./tests/modules/genrich -entry test_genrich_ctrl -c ./tests/config/nextflow.config -c ./tests/modules/genrich/nextflow.config
+  tags:
+    - genrich
+  files:
+    - path: output/genrich/test.narrowPeak
+      md5sum: 2fcc392360b317f5ebee88cdbc149e05
+
+- name: genrich test_genrich_all_outputs
+  command: nextflow run ./tests/modules/genrich -entry test_genrich_all_outputs -c ./tests/config/nextflow.config -c ./tests/modules/genrich/nextflow.config
+  tags:
+    - genrich
+  files:
+    - path: output/genrich/test.duplicates.txt
+      md5sum: 159d557af7c23bc3cfb802d87fa96c34
+    - path: output/genrich/test.intervals.bed
+      md5sum: 4bea65caa3f4043d703af4b57161112e
+    - path: output/genrich/test.narrowPeak
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/genrich/test.pileup.bedGraph
+      md5sum: 03e53848de695b5794f32f15b2709203
+    - path: output/genrich/test.pvalues.bedGraph
+      md5sum: b14feef34b6d2379a173a734ca963cde
+
+- name: genrich test_genrich_blacklist
+  command: nextflow run ./tests/modules/genrich -entry test_genrich_blacklist -c ./tests/config/nextflow.config -c ./tests/modules/genrich/nextflow.config
+  tags:
+    - genrich
+  files:
+    - path: output/genrich/test.narrowPeak
+      md5sum: 6afabdd3f691c7c84c66ff8a23984681
+
+- name: genrich test_genrich_atacseq
+  command: nextflow run ./tests/modules/genrich -entry test_genrich_atacseq -c ./tests/config/nextflow.config -c ./tests/modules/genrich/nextflow.config
+  tags:
+    - genrich
+  files:
+    - path: output/genrich/test.narrowPeak
+      md5sum: ddea556b820f8be3695ffdf6c6f70aff

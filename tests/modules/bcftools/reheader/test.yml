@@ -1,0 +1,26 @@
+- name: bcftools reheader test_bcftools_reheader_update_sequences
+  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  tags:
+    - bcftools/reheader
+    - bcftools
+  files:
+    - path: output/bcftools/test.updated.vcf.gz
+      md5sum: 9e29f28038bfce77ee00022627209ed6
+
+- name: bcftools reheader test_bcftools_reheader_new_header
+  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_new_header -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  tags:
+    - bcftools/reheader
+    - bcftools
+  files:
+    - path: output/bcftools/test.updated.vcf.gz
+      md5sum: f7f536d889bbf5be40243252c394ee1f
+
+- name: bcftools reheader test_bcftools_reheader_new_header_update_sequences
+  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_new_header_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  tags:
+    - bcftools/reheader
+    - bcftools
+  files:
+    - path: output/bcftools/test.updated.vcf.gz
+      md5sum: 9e29f28038bfce77ee00022627209ed6

@@ -1,0 +1,41 @@
+name: imputeme_vcftoprs
+description: inputs a VCF-file with whole genome DNA sequencing. Outputs a JSON with polygenic risk scores.
+keywords:
+  - PRS, VCF
+tools:
+  - imputeme:
+      description:
+      homepage: www.impute.me
+      documentation: https://hub.docker.com/repository/docker/lassefolkersen/impute-me
+      tool_dev_url: https://github.com/lassefolkersen/impute-me
+      doi: "https://doi.org/10.3389/fgene.2020.00578"
+      licence: LGPL3
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ vcf:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: vcf file
+      pattern: "*.{vcf}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: json containing Z-scores for all calculated PRS
+      pattern: "*.{json}"
+
+authors:
+  - "@lassefolkersen"

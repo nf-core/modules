@@ -1,0 +1,7 @@
+- name: snpdists
+  command: nextflow run ./tests/modules/snpdists -entry test_snpdists -c ./tests/config/nextflow.config -c ./tests/modules/snpdists/nextflow.config
+  tags:
+    - snpdists
+  files:
+    - path: output/snpdists/test.tsv
+      md5sum: 0018e5ec43990eb16abe2411fff4e47e

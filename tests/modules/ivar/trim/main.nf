@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IVAR_TRIM } from '../../../../modules/ivar/trim/main.nf' addParams([:])
+include { IVAR_TRIM } from '../../../../modules/ivar/trim/main.nf'
 
 workflow test_ivar_trim {
     input = [ [ id:'test'],

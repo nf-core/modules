@@ -1,0 +1,10 @@
+- name: hicap test_hicap
+  command: nextflow run ./tests/modules/hicap -entry test_hicap -c ./tests/config/nextflow.config -c ./tests/modules/hicap/nextflow.config
+  tags:
+    - hicap
+  files:
+    - path: output/hicap/genome.gbk
+      md5sum: 562d026956903354ac80721f501335d4
+    - path: output/hicap/genome.svg
+      md5sum: 4fb94871dd0fdd8b4496049668176631
+    - path: output/hicap/genome.tsv

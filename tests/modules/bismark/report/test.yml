@@ -1,5 +1,5 @@
-- name: Run bismark report test workflow
-  command: nextflow run ./tests/modules/bismark/report -entry test_bismark_report -c tests/config/nextflow.config
+- name: bismark report test workflow
+  command: nextflow run ./tests/modules/bismark/report -entry test_bismark_report -c ./tests/config/nextflow.config -c ./tests/modules/bismark/report/nextflow.config
   tags:
     - bismark
     - bismark/report

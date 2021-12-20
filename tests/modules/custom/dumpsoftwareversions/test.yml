@@ -1,0 +1,14 @@
+- name: custom dumpsoftwareversions
+  command: nextflow run ./tests/modules/custom/dumpsoftwareversions -entry test_custom_dumpsoftwareversions -c ./tests/config/nextflow.config -c ./tests/modules/custom/dumpsoftwareversions/nextflow.config
+  tags:
+    - custom
+    - custom/dumpsoftwareversions
+  files:
+    - path: output/custom/software_versions.yml
+      contains:
+        - FASTQC
+        - MULTIQC
+      must_not_contain:
+        - fastqc1
+        - fastqc2
+    - path: output/custom/software_versions_mqc.yml

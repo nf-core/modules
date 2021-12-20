@@ -1,0 +1,8 @@
+- name: sratools prefetch test_sratools_prefetch
+  command: nextflow run ./tests/modules/sratools/prefetch -entry test_sratools_prefetch -c ./tests/config/nextflow.config -c ./tests/modules/sratools/prefetch/nextflow.config
+  tags:
+    - sratools/prefetch
+    - sratools
+  files:
+    - path: output/sratools/ERR2815334/ERR2815334.sra
+      md5sum: 9a98c7f6f4774b7ef94aa915b92a54ea

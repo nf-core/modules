@@ -1,0 +1,10 @@
+- name: hmmcopy readcounter test_hmmcopy_readcounter
+  command: nextflow run tests/modules/hmmcopy/readcounter -entry test_hmmcopy_readcounter -c tests/config/nextflow.config
+  tags:
+    - hmmcopy
+    - hmmcopy/readcounter
+  files:
+    - path: output/hmmcopy/test.wig
+      md5sum: 4682778422b9a2510a3cb70bd13ccd08
+    - path: output/hmmcopy/versions.yml
+      md5sum: 624a85e6a1bc61abc33cac03aea33a1e

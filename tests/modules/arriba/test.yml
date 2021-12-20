@@ -1,0 +1,91 @@
+- name: arriba test_arriba_single_end
+  command: nextflow run ./tests/modules/arriba -entry test_arriba_single_end -c ./tests/config/nextflow.config -c ./tests/modules/arriba/nextflow.config
+  tags:
+    - arriba
+  files:
+    - path: output/arriba/test.fusions.discarded.tsv
+      md5sum: cad8c215b938d1e45b747a5b7898a4c2
+    - path: output/arriba/test.fusions.tsv
+      md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
+    - path: output/star/star/Genome
+      md5sum: a654229fbca6071dcb6b01ce7df704da
+    - path: output/star/star/Log.out
+    - path: output/star/star/SA
+      md5sum: 8c3edc46697b72c9e92440d4cf43506c
+    - path: output/star/star/SAindex
+      md5sum: 9f085c626553b1c52f2827421972ac10
+    - path: output/star/star/chrLength.txt
+      md5sum: c81f40f27e72606d7d07097c1d56a5b5
+    - path: output/star/star/chrName.txt
+      md5sum: 5ae68a67b70976ee95342a7451cb5af1
+    - path: output/star/star/chrNameLength.txt
+      md5sum: b190587cae0531f3cf25552d8aa674db
+    - path: output/star/star/chrStart.txt
+      md5sum: 8d3291e6bcdbe9902fbd7c887494173f
+    - path: output/star/star/exonGeTrInfo.tab
+      md5sum: d04497f69d6ef889efd4d34fe63edcc4
+    - path: output/star/star/exonInfo.tab
+      md5sum: 0d560290fab688b7268d88d5494bf9fe
+    - path: output/star/star/geneInfo.tab
+      md5sum: 8b608537307443ffaee4927d2b428805
+    - path: output/star/star/genomeParameters.txt
+      md5sum: 9e42067b1ec70b773257529230dd7b3a
+    - path: output/star/star/sjdbInfo.txt
+      md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
+    - path: output/star/star/sjdbList.fromGTF.out.tab
+      md5sum: 8760c33e966dad0b39f440301ebbdee4
+    - path: output/star/star/sjdbList.out.tab
+      md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
+    - path: output/star/star/transcriptInfo.tab
+      md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
+    - path: output/star/test.Aligned.out.bam
+    - path: output/star/test.Log.final.out
+    - path: output/star/test.Log.out
+    - path: output/star/test.Log.progress.out
+    - path: output/star/test.SJ.out.tab
+
+- name: arriba test_arriba_paired_end
+  command: nextflow run ./tests/modules/arriba -entry test_arriba_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/arriba/nextflow.config
+  tags:
+    - arriba
+  files:
+    - path: output/arriba/test.fusions.discarded.tsv
+      md5sum: 85e36c887464e4deaa65f45174d3b8fd
+    - path: output/arriba/test.fusions.tsv
+      md5sum: 7c3383f7eb6d79b84b0bd30a7ef02d70
+    - path: output/star/star/Genome
+      md5sum: a654229fbca6071dcb6b01ce7df704da
+    - path: output/star/star/Log.out
+    - path: output/star/star/SA
+      md5sum: 8c3edc46697b72c9e92440d4cf43506c
+    - path: output/star/star/SAindex
+      md5sum: 9f085c626553b1c52f2827421972ac10
+    - path: output/star/star/chrLength.txt
+      md5sum: c81f40f27e72606d7d07097c1d56a5b5
+    - path: output/star/star/chrName.txt
+      md5sum: 5ae68a67b70976ee95342a7451cb5af1
+    - path: output/star/star/chrNameLength.txt
+      md5sum: b190587cae0531f3cf25552d8aa674db
+    - path: output/star/star/chrStart.txt
+      md5sum: 8d3291e6bcdbe9902fbd7c887494173f
+    - path: output/star/star/exonGeTrInfo.tab
+      md5sum: d04497f69d6ef889efd4d34fe63edcc4
+    - path: output/star/star/exonInfo.tab
+      md5sum: 0d560290fab688b7268d88d5494bf9fe
+    - path: output/star/star/geneInfo.tab
+      md5sum: 8b608537307443ffaee4927d2b428805
+    - path: output/star/star/genomeParameters.txt
+      md5sum: 9e42067b1ec70b773257529230dd7b3a
+    - path: output/star/star/sjdbInfo.txt
+      md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
+    - path: output/star/star/sjdbList.fromGTF.out.tab
+      md5sum: 8760c33e966dad0b39f440301ebbdee4
+    - path: output/star/star/sjdbList.out.tab
+      md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
+    - path: output/star/star/transcriptInfo.tab
+      md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
+    - path: output/star/test.Aligned.out.bam
+    - path: output/star/test.Log.final.out
+    - path: output/star/test.Log.out
+    - path: output/star/test.Log.progress.out
+    - path: output/star/test.SJ.out.tab

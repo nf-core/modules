@@ -1,7 +1,11 @@
 name: nf-core linting
 # This workflow is triggered on pushes and PRs to the repository.
 # It runs the `nf-core lint` tests to ensure that the module code meets the nf-core guidelines
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   changes:
@@ -20,9 +24,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
-    env:
-      NXF_VER: 21.04.0
-
     name: ${{ matrix.tags }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
@@ -66,6 +67,8 @@ jobs:
 
       - name: Lint ${{ matrix.tags }}
         run: nf-core modules lint ${{ matrix.tags }}
+        # HACK
+        if: startsWith( matrix.tags, 'subworkflow' ) != true
 
       - uses: actions/cache@v2
         with:

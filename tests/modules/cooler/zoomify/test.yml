@@ -1,0 +1,8 @@
+- name: cooler zoomify test_cooler_zoomify
+  command: nextflow run ./tests/modules/cooler/zoomify -entry test_cooler_zoomify -c ./tests/config/nextflow.config -c ./tests/modules/cooler/zoomify/nextflow.config
+  tags:
+    - cooler
+    - cooler/zoomify
+  files:
+    - path: output/cooler/test.bedpe
+      md5sum: 0ce5e715bfc4674cdda02f2d7e7e3170

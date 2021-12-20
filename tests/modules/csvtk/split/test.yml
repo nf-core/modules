@@ -1,0 +1,25 @@
+- name: csvtk split test_csvtk_split_tsv
+  command: nextflow run ./tests/modules/csvtk/split -entry test_csvtk_split_tsv -c ./tests/config/nextflow.config -c ./tests/modules/csvtk/split/nextflow.config
+  tags:
+    - csvtk/split
+    - csvtk
+  files:
+    - path: output/csvtk/test-Ken.tsv
+      md5sum: 589a2add7f0b8e998d4959e5d883e7d5
+    - path: output/csvtk/test-Rob.tsv
+      md5sum: 6c5555d689c4e685d35d6e394ad6e1e6
+    - path: output/csvtk/test-Robert.tsv
+      md5sum: 45ae6da8111096746d1736d34220a3ec
+
+- name: csvtk split test_csvtk_split_csv
+  command: nextflow run ./tests/modules/csvtk/split -entry test_csvtk_split_csv -c ./tests/config/nextflow.config -c ./tests/modules/csvtk/split/nextflow.config
+  tags:
+    - csvtk/split
+    - csvtk
+  files:
+    - path: output/csvtk/test-Ken.csv
+      md5sum: 71a931dae6f15f5ddb0318c7d4afe81e
+    - path: output/csvtk/test-Rob.csv
+      md5sum: efc4bc507021043a3bf2fb0724c4a216
+    - path: output/csvtk/test-Robert.csv
+      md5sum: 8de2f076e64252c2abed69b9c2a3a386

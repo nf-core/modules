@@ -18,6 +18,7 @@ tools:
         homepage: https://github.com/brentp/bwa-meth
         documentation: https://github.com/brentp/bwa-meth
         arxiv: arXiv:1401.1129
+        licence: ['MIT']
 input:
     - meta:
         type: map
@@ -50,9 +51,9 @@ output:
         type: file
         description: Text file containing methylation bias
         pattern: "*.{txt}"
-    - version:
+    - versions:
         type: file
-        description: File containing software version
-        pattern: "*.{version.txt}"
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
     - "@phue"
