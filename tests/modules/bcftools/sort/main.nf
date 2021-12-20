@@ -8,7 +8,7 @@ workflow test_bcftools_sort {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
     BCFTOOLS_SORT ( input )
