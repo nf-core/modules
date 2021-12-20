@@ -1,0 +1,21 @@
+- name: ichorcna createpon test_ichorcna_createpon
+  command: nextflow run tests/modules/ichorcna/createpon -entry test_ichorcna_createpon -c tests/config/nextflow.config
+  tags:
+    - ichorcna/createpon
+    - ichorcna
+  files:
+    - path: /tmp/tmpupogpxwb/ichorcna/PoN_median.rds
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /tmp/tmpupogpxwb/ichorcna/versions.yml
+      md5sum: 7a04fc1b0ddb997b5a8abf8e7ba928ee
+
+- name: ichorcna createpon test_ichorcna_createpon2
+  command: nextflow run tests/modules/ichorcna/createpon -entry test_ichorcna_createpon2 -c tests/config/nextflow.config
+  tags:
+    - ichorcna/createpon
+    - ichorcna
+  files:
+    - path: /tmp/tmpscjg3d5a/ichorcna/PoN_median.rds
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /tmp/tmpscjg3d5a/ichorcna/versions.yml
+      md5sum: 47e3529b62ac44cbafd1173fca17d284
