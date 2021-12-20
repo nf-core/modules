@@ -30,14 +30,14 @@ process ICHORCNA_RUN {
 
     """
     runIchorCNA.R --id ${prefix} \\
-      $args \\
-      --WIG ${wig} \\
-      --id ${meta.id} \\
-      --gcWig ${gc_wig} \\
-      --mapWig ${map_wig} \\
-      ${pon} \\
-      ${centro} \\
-      --outDir .
+        $args \\
+        --WIG ${wig} \\
+        --id ${meta.id} \\
+        --gcWig ${gc_wig} \\
+        --mapWig ${map_wig} \\
+        ${pon} \\
+        ${centro} \\
+        --outDir .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
