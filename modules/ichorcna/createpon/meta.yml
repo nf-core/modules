@@ -45,8 +45,13 @@ output:
 
   - rds:
       type: file
-      description: R data file (rds) containing panel of normals data
+      description: R data file (.rds) containing panel of normals data, medians of each bin.
       pattern: "*.rds"
+
+  - txt:
+      type: file
+      description: Text file containing panel of normals data, medians of each bin.
+      pattern: "*.txt"
 
 authors:
   - "@sppearce"

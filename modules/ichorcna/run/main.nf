@@ -19,7 +19,7 @@ process ICHORCNA_RUN {
     output:
     tuple val(meta), path("*.cna.seg")    , emit: cna_seg
     tuple val(meta), path("*.params.txt") , emit: ichorcna_params
-    path "**/*genomeWide.pdf"               , emit: genome_plot
+    path "**/*genomeWide.pdf"             , emit: genome_plot
     path "versions.yml"                   , emit: versions
 
     script:

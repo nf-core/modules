@@ -16,6 +16,7 @@ process ICHORCNA_CREATEPON {
 
     output:
     path "*.rds"        , emit: rds
+    path "*.txt"        , emit: txt
     path "versions.yml" , emit: versions
 
     script:
@@ -31,7 +32,9 @@ process ICHORCNA_CREATEPON {
         --mapWig ${map_wig} \\
         ${centro} \\
         ${args} \\
-        --outfile "PoN"
+        --outfile 'PoN'
+
+    rm wig_files.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
