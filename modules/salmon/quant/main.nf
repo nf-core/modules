@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process SALMON_QUANT {
     tag "$meta.id"
     label "process_medium"
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::salmon=1.4.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/salmon:1.4.0--hf69c8f4_0"
-    } else {
-        container "quay.io/biocontainers/salmon:1.4.0--hf69c8f4_0"
-    }
+    conda (params.enable_conda ? 'bioconda::salmon=1.5.2' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/salmon:1.5.2--h84f40af_0' :
+        'quay.io/biocontainers/salmon:1.5.2--h84f40af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -28,11 +17,11 @@ process SALMON_QUANT {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "*.version.txt"             , emit: version
+    path  "versions.yml"              , emit: versions
 
     script:
-    def software    = getSoftwareName(task.process)
-    prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     def reference   = "--index $index"
     def input_reads = meta.single_end ? "-r $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
@@ -69,9 +58,12 @@ process SALMON_QUANT {
         --libType=$strandedness \\
         $reference \\
         $input_reads \\
-        $options.args \\
+        $args \\
         -o $prefix
 
-    salmon --version | sed -e "s/salmon //g" > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        salmon: \$(echo \$(salmon --version) | sed -e "s/salmon //g")
+    END_VERSIONS
     """
 }

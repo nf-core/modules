@@ -1,41 +1,37 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process ALLELECOUNTER {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::cancerit-allelecount=4.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.2.1--h3ecb661_0"
-    } else {
-        container "quay.io/biocontainers/cancerit-allelecount:4.2.1--h3ecb661_0"
-    }
+    conda (params.enable_conda ? 'bioconda::cancerit-allelecount=4.3.0' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
+        'quay.io/biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path loci
+    path fasta
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "*.version.txt"                  , emit: version
+    path "versions.yml"                   , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference_options = fasta ? "-r $fasta": ""
+
     """
     alleleCounter \\
-        $options.args \\
+        $args \\
         -l $loci \\
-        -b $bam \\
+        -b $input \\
+        $reference_options \\
         -o ${prefix}.alleleCount
 
-    alleleCounter --version > ${software}.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        allelecounter: \$(alleleCounter --version)
+    END_VERSIONS
     """
 }

@@ -1,0 +1,8 @@
+- name: gunc downloaddb
+  command: nextflow run ./tests/modules/gunc/downloaddb -entry test_gunc_downloaddb -c ./tests/config/nextflow.config -c ./tests/modules/gunc/downloaddb/nextflow.config
+  tags:
+    - gunc
+    - gunc/downloaddb
+  files:
+    - path: output/gunc/gunc_db_progenomes2.1.dmnd
+      md5sum: 447c9330056b02f29f30fe81fe4af4eb

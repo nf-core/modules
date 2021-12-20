@@ -1,0 +1,7 @@
+- name: mlst test_mlst
+  command: nextflow run ./tests/modules/mlst -entry test_mlst -c ./tests/config/nextflow.config -c ./tests/modules/mlst/nextflow.config
+  tags:
+    - mlst
+  files:
+    - path: output/mlst/test.tsv
+      md5sum: b52df6178834a156c9402012718eb65e

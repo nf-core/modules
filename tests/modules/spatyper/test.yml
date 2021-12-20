@@ -1,0 +1,15 @@
+- name: spatyper test_spatyper
+  command: nextflow run ./tests/modules/spatyper -entry test_spatyper -c ./tests/config/nextflow.config -c ./tests/modules/spatyper/nextflow.config
+  tags:
+    - spatyper
+  files:
+    - path: output/spatyper/test.tsv
+      md5sum: a698352823875171696e5e7ed7015c13
+
+- name: spatyper test_spatyper_enrich
+  command: nextflow run ./tests/modules/spatyper -entry test_spatyper_enrich -c ./tests/config/nextflow.config -c ./tests/modules/spatyper/nextflow.config
+  tags:
+    - spatyper
+  files:
+    - path: output/spatyper/test.tsv
+      md5sum: a698352823875171696e5e7ed7015c13

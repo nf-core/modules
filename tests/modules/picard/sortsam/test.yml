@@ -1,0 +1,8 @@
+- name: picard sortsam
+  command: nextflow run ./tests/modules/picard/sortsam -entry test_picard_sortsam -c ./tests/config/nextflow.config -c ./tests/modules/picard/sortsam/nextflow.config
+  tags:
+    - picard
+    - picard/sortsam
+  files:
+    - path: output/picard/test.sorted.bam
+      md5sum: b44a6ca04811a9470c7813c3c9465fd5

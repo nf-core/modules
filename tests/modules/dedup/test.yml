@@ -1,0 +1,13 @@
+- name: dedup test_dedup
+  command: nextflow run ./tests/modules/dedup -entry test_dedup -c ./tests/config/nextflow.config -c ./tests/modules/dedup/nextflow.config
+  tags:
+    - dedup
+  files:
+    - path: output/dedup/test.paired_end.dedup.json
+      md5sum: 2def0b54aba1fafa21b274f260de1b6f
+    - path: output/dedup/test.paired_end.hist
+      md5sum: df3492273a1db0d8152e35d9d5e38aa6
+    - path: output/dedup/test.paired_end.log
+      md5sum: 4b8855bd63b2f4b37da4cfb17e61fb00
+    - path: output/dedup/test.paired_end_rmdup.bam
+      md5sum: 8b0408fe3e258989095303a47e5b5061

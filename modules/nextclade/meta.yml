@@ -11,7 +11,7 @@ tools:
       documentation: None
       tool_dev_url: https://github.com/nextstrain/nextclade
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -23,11 +23,6 @@ input:
       type: file
       description: FASTA file containing one or more consensus sequences
       pattern: "*.{fasta,fa}"
-  - output_format:
-      type: string
-      description: |
-        String for output format supported by nextclade
-        i.e one of 'json', 'csv', 'tsv', 'tree', 'tsv-clades-only'
 
 output:
   - meta:
@@ -35,10 +30,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - csv:
       type: file
       description: CSV file containing nextclade results

@@ -21,10 +21,10 @@ input:
       pattern: "*.{bed,lst}"
 
 output:
-  - version:
+  - versions:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing software versions
+      pattern: "versions.yml"
   - sequences:
       type: file
       description: FASTQ/FASTA file

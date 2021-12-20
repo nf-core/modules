@@ -1,0 +1,8 @@
+- name: fgbio fastqtobam test_fgbio_fastqtobam
+  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam -c ./tests/config/nextflow.config -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  tags:
+    - fgbio/fastqtobam
+    - fgbio
+  files:
+    - path: output/fgbio/test_umi_converted.bam
+      md5sum: 9510735554e5eff29244077a72075fb6

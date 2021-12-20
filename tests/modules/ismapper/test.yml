@@ -1,0 +1,27 @@
+- name: ismapper test_ismapper
+  command: nextflow run ./tests/modules/ismapper -entry test_ismapper -c ./tests/config/nextflow.config -c ./tests/modules/ismapper/nextflow.config
+  tags:
+    - ismapper
+  files:
+    - path: output/ismapper/results/test/ISSsu3/test_ISSsu3_left_final.fastq
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_ISSsu3_right_final.fastq
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test__AM946016.1_closest.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test__AM946016.1_intersect.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test__AM946016.1_table.txt
+      md5sum: 9e05cda3990cb841db2bfb6e6e04a1f5
+    - path: output/ismapper/results/test/ISSsu3/test_left_AM946016.1_finalcov.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_left_AM946016.1_merged.sorted.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_left_AM946016.1_unpaired.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_right_AM946016.1_finalcov.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_right_AM946016.1_merged.sorted.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/ismapper/results/test/ISSsu3/test_right_AM946016.1_unpaired.bed
+      md5sum: d41d8cd98f00b204e9800998ecf8427e

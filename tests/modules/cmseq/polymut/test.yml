@@ -1,0 +1,26 @@
+- name: cmseq polymut test_cmseq_polymut_1
+  command: nextflow run ./tests/modules/cmseq/polymut -entry test_cmseq_polymut_1 -c ./tests/config/nextflow.config -c ./tests/modules/cmseq/polymut/nextflow.config
+  tags:
+    - cmseq/polymut
+    - cmseq
+  files:
+    - path: output/cmseq/test.txt
+      md5sum: fd325c1724ee23d132a9115c64494efc
+
+- name: cmseq polymut test_cmseq_polymut_2
+  command: nextflow run ./tests/modules/cmseq/polymut -entry test_cmseq_polymut_2 -c ./tests/config/nextflow.config -c ./tests/modules/cmseq/polymut/nextflow.config
+  tags:
+    - cmseq/polymut
+    - cmseq
+  files:
+    - path: output/cmseq/test.txt
+      md5sum: fd325c1724ee23d132a9115c64494efc
+
+- name: cmseq polymut test_cmseq_polymut_3
+  command: nextflow run ./tests/modules/cmseq/polymut -entry test_cmseq_polymut_3 -c ./tests/config/nextflow.config -c ./tests/modules/cmseq/polymut/nextflow.config
+  tags:
+    - cmseq/polymut
+    - cmseq
+  files:
+    - path: output/cmseq/test.txt
+      md5sum: fd325c1724ee23d132a9115c64494efc

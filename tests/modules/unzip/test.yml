@@ -1,0 +1,10 @@
+- name: unzip
+  command: nextflow run ./tests/modules/unzip -entry test_unzip -c ./tests/config/nextflow.config -c ./tests/modules/unzip/nextflow.config
+  tags:
+    - unzip
+  files:
+    - path: output/unzip/ncbi_taxmap/
+    - path: output/unzip/ncbi_taxmap/ncbi.map
+      md5sum: de30dbba85f9070612b632e2a5a95952
+    - path: output/unzip/ncbi_taxmap/ncbi.tre
+      md5sum: 4029dd2091c685b9a86ddd9d0d870db0

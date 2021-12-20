@@ -1,0 +1,87 @@
+name: hifiasm
+description: Whole-genome assembly using PacBio HiFi reads
+keywords:
+  - genome assembly
+  - haplotype resolution
+  - phasing
+  - PacBio
+  - HiFi
+  - long reads
+tools:
+  - hifiasm:
+      description: Haplotype-resolved assembler for accurate HiFi reads
+      homepage: https://github.com/chhylp123/hifiasm
+      documentation: https://github.com/chhylp123/hifiasm
+      tool_dev_url: https://github.com/chhylp123/hifiasm
+      doi: "10.1038/s41592-020-01056-5"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTQ file with PacBio HiFi reads
+      pattern: "*.{fastq}"
+  - paternal_kmer_dump:
+      type: file
+      description: Yak kmer dump file for paternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
+  - maternal_kmer_dump:
+      type: file
+      description: Yak kmer dump file for maternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
+  - use_parental_kmers:
+      type: logical
+      description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - raw_unitigs:
+      type: file
+      description: Raw unitigs
+      pattern: "*.r_utg.gfa"
+  - processed_unitigs:
+      type: file
+      description: Processed unitigs
+      pattern: "*.p_utg.gfa"
+  - primary_contigs:
+      type: file
+      description: Primary contigs
+      pattern: "*.asm.p_ctg.gfa"
+  - alternate_contigs:
+      type: file
+      description: Alternative contigs
+      pattern: "*.asm.a_ctg.gfa"
+  - paternal_contigs:
+      type: file
+      description: Paternal contigs
+      pattern: "*.hap1.p_ctg.gfa"
+  - maternal_contigs:
+      type: file
+      description: Maternal contigs
+      pattern: "*.hap2.p_ctg.gfa"
+  - corrected_reads:
+      type: file
+      description: Corrected reads
+      pattern: "*.ec.bin"
+  - source_overlaps:
+      type: file
+      description: Source overlaps
+      pattern: "*.ovlp.source.bin"
+  - reverse_overlaps:
+      type: file
+      description: Reverse overlaps
+      pattern: "*.ovlp.reverse.bin"
+
+authors:
+  - "@sidorov-si"

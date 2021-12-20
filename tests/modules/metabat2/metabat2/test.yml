@@ -1,0 +1,24 @@
+- name: metabat2 metabat2 test_metabat2_no_depth
+  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_no_depth -c tests/config/nextflow.config
+  tags:
+    - metabat2
+    - metabat2/metabat2
+  files:
+    - path: output/metabat2/bins/test.1.fa.gz
+      md5sum: 0e9bce5b5a0033fd4411a21dec881170
+    - path: output/metabat2/test.tsv.gz
+    - path: output/metabat2/versions.yml
+      md5sum: 5742a71af36c3a748fd5726d76924ba8
+
+- name: metabat2 metabat2 test_metabat2_depth
+  command: nextflow run tests/modules/metabat2/metabat2 -entry test_metabat2_depth -c tests/config/nextflow.config
+  tags:
+    - metabat2
+    - metabat2/metabat2
+  files:
+    - path: output/metabat2/bins/test.1.fa.gz
+      md5sum: 0e9bce5b5a0033fd4411a21dec881170
+    - path: output/metabat2/test.tsv.gz
+    - path: output/metabat2/test.txt.gz
+    - path: output/metabat2/versions.yml
+      md5sum: 538c56b2df7d90580f05097218b5d5b1
