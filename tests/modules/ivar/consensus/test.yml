@@ -1,5 +1,5 @@
 - name: ivar consensus
-  command: nextflow run ./tests/modules/ivar/consensus -entry test_ivar_consensus -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/ivar/consensus -entry test_ivar_consensus -c ./tests/config/nextflow.config -c ./tests/modules/ivar/consensus/nextflow.config
   tags:
     - ivar
     - ivar/consensus

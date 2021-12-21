@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process SPADES {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::spades=3.15.3' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0"
-    } else {
-        container "quay.io/biocontainers/spades:3.15.3--h95f258a_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0' :
+        'quay.io/biocontainers/spades:3.15.3--h95f258a_0' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
@@ -32,7 +21,8 @@ process SPADES {
     path  "versions.yml"                          , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def maxmem = task.memory.toGiga()
     def illumina_reads = illumina ? ( meta.single_end ? "-s $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
@@ -40,7 +30,7 @@ process SPADES {
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
     """
     spades.py \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         --memory $maxmem \\
         $custom_hmms \\
@@ -73,8 +63,8 @@ process SPADES {
     fi
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(spades.py --version 2>&1 | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//')
+    "${task.process}":
+        spades: \$(spades.py --version 2>&1 | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//')
     END_VERSIONS
     """
 }

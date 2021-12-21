@@ -1,5 +1,5 @@
 - name: bamtools split test_bamtools_split
-  command: nextflow run tests/modules/bamtools/split -entry test_bamtools_split -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/bamtools/split -entry test_bamtools_split -c ./tests/config/nextflow.config -c ./tests/modules/bamtools/split/nextflow.config
   tags:
     - bamtools/split
     - bamtools

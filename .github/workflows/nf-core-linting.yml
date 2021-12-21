@@ -7,7 +7,6 @@ on:
   pull_request:
     branches: [master]
 
-
 jobs:
   changes:
     name: Check for changes
@@ -25,9 +24,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
-    env:
-      NXF_VER: 21.04.0
-
     name: ${{ matrix.tags }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'

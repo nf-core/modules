@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/gatk4/filtermutectcalls/main.nf' addParams( options: [suffix:'.filtered'] )
+include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/gatk4/filtermutectcalls/main.nf'
 
 workflow test_gatk4_filtermutectcalls_base {
 
@@ -17,9 +17,9 @@ workflow test_gatk4_filtermutectcalls_base {
         []
     ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
     GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }
@@ -37,9 +37,9 @@ workflow test_gatk4_filtermutectcalls_with_files {
         []
     ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
     GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }
@@ -57,9 +57,9 @@ workflow test_gatk4_filtermutectcalls_use_val {
         '20.0'
     ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
     GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
 }

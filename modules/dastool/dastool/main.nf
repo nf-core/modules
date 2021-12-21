@@ -1,21 +1,11 @@
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process DASTOOL_DASTOOL {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.3" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/das_tool:1.1.3--r41hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
+        'quay.io/biocontainers/das_tool:1.1.3--r41hdfd78af_0' }"
 
     input:
     tuple val(meta), path(contigs), path(bins)
@@ -37,7 +27,8 @@ process DASTOOL_DASTOOL {
     path "versions.yml"                                 , emit: versions
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def bin_list = bins instanceof List ? bins.join(",") : "$bins"
     def engine = search_engine ? "--search_engine $search_engine" : "--search_engine diamond"
     def db_dir = db_directory ? "--db_directory $db_directory" : ""
@@ -56,7 +47,7 @@ process DASTOOL_DASTOOL {
     $decompress_contigs
 
     DAS_Tool \\
-        $options.args \\
+        $args \\
         $proteins_pred \\
         $db_dir \\
         $engine \\
@@ -66,8 +57,8 @@ process DASTOOL_DASTOOL {
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( DAS_Tool --version 2>&1 | grep "DAS Tool" | sed 's/DAS Tool version //' )
+    "${task.process}":
+        dastool: \$( DAS_Tool --version 2>&1 | grep "DAS Tool" | sed 's/DAS Tool version //' )
     END_VERSIONS
     """
 }

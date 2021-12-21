@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process KALLISTOBUSTOOLS_COUNT {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? 'bioconda::kb-python=0.26.3' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/kb-python:0.26.3--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/kb-python:0.26.3--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/kb-python:0.26.3--pyhdfd78af_0' :
+        'quay.io/biocontainers/kb-python:0.26.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,7 +13,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2g
     path  t1c
     path  t2c
-    val   workflow
+    val   workflow_mode
     val   technology
 
     output:
@@ -32,7 +21,8 @@ process KALLISTOBUSTOOLS_COUNT {
     path "versions.yml"              , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def cdna     = t1c ? "-c1 $t1c" : ''
     def introns  = t2c ? "-c2 $t2c" : ''
     """
@@ -43,16 +33,16 @@ process KALLISTOBUSTOOLS_COUNT {
         -g $t2g \\
         $cdna \\
         $introns \\
-        --workflow $workflow \\
+        --workflow $workflow_mode \\
         -x $technology \\
-        $options.args \\
+        $args \\
         -o ${prefix}.count \\
         ${reads[0]} \\
         ${reads[1]}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
+    "${task.process}":
+        kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
     END_VERSIONS
     """
 }
