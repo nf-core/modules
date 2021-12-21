@@ -2,10 +2,10 @@ process GATK4_GENOTYPEGVCFS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.0.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.0.0--0' :
-        'quay.io/biocontainers/gatk4:4.2.0.0--0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.4.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gvcf), path(gvcf_index)
@@ -18,6 +18,7 @@ process GATK4_GENOTYPEGVCFS {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
     path  "versions.yml"             , emit: versions
 
     script:
@@ -26,8 +27,14 @@ process GATK4_GENOTYPEGVCFS {
     def dbsnp_options    = dbsnp ? "-D ${dbsnp}" : ""
     def interval_options = intervals_bed ? "-L ${intervals_bed}" : ""
     def gvcf_options     = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK GenotypeGVCFs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk \\
+    gatk --java-options "-Xmx${avail_mem}g" \\
         GenotypeGVCFs \\
         $args \\
         $interval_options \\

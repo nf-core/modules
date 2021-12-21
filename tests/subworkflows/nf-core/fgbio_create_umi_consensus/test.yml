@@ -1,0 +1,22 @@
+- name: fgbio_create_umi_consensus_bwamem1
+  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem1 -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fgbio_create_umi_consensus/nextflow.config
+  tags:
+    - subworkflows/fgbio_create_umi_consensus
+  files:
+    - path: ./output/fastqtobam/test_umi_converted.bam
+      md5sum: 9510735554e5eff29244077a72075fb6
+    - path: ./output/groupreadsbyumi/test_umi-grouped.bam
+      md5sum: 44f31da850d5a8100b43b629426f2e17
+    - path: ./output/callumiconsensus/test_umiconsensus.bam
+      md5sum: 24b48e3543de0ae7e8a95c116d5ca6a6
+- name: fgbio_create_umi_consensus_bwamem2
+  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem2 -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fgbio_create_umi_consensus/nextflow.config
+  tags:
+    - subworkflows/fgbio_create_umi_consensus_bwamem2
+  files:
+    - path: ./output/fastqtobam/test_umi_converted.bam
+      md5sum: 9510735554e5eff29244077a72075fb6
+    - path: ./output/groupreadsbyumi/test_umi-grouped.bam
+      md5sum: c69333155038b9a968fd096627d4dfb0
+    - path: ./output/callumiconsensus/test_umiconsensus.bam
+      md5sum: 24b48e3543de0ae7e8a95c116d5ca6a6
