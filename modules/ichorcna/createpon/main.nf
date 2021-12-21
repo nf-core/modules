@@ -22,6 +22,7 @@ process ICHORCNA_CREATEPON {
     script:
     def args = task.ext.args ?: ''
     def centro = centromere ? "--centromere ${centromere}" : ''
+    def prefix = task.ext.prefix ?: "PoN"
 
     """
     echo ${wigs} | tr " " "\\n" > wig_files.txt
@@ -32,11 +33,9 @@ process ICHORCNA_CREATEPON {
         --mapWig ${map_wig} \\
         ${centro} \\
         ${args} \\
-        --outfile 'PoN'
+        --outfile ${prefix}
 
     rm wig_files.txt
-
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
