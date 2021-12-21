@@ -46,6 +46,18 @@ output:
       type: file
       description: Bins created from assembled contigs in fasta file
       pattern: "*.fa.gz"
+  - tooshort:
+      type: file
+      description: Contigs that did not pass length filtering
+      pattern: "*.tooShort.fa.gz"
+  - lowdepth:
+      type: file
+      description: Contigs that did not have sufficient depth for binning
+      pattern: "*.lowDepth.fa.gz"
+  - unbinned:
+      type: file
+      description: Contigs that pass length and depth filtering but could not be binned
+      pattern: "*.unbinned.fa.gz"
   - membership:
       type: file
       description: cluster memberships as a matrix format.
@@ -54,3 +66,4 @@ output:
 
 authors:
   - "@maxibor"
+  - "@jfy133"
