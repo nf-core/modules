@@ -1,4 +1,6 @@
 # Dockerfile to create container with Cell Ranger v6.1.2 and bcl2fastq v2.20.0
+# Push to nfcore/cellrangermkfastq:<VER>
+
 FROM continuumio/miniconda3:4.8.2
 LABEL authors="Regina Reynolds, Gisela Gabernet <gisela.gabernet@gmail.com>" \
     description="Docker image containing bcl2fastq2 and Cell Ranger"

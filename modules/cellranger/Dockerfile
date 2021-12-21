@@ -1,7 +1,9 @@
 # Dockerfile to create container with Cell Ranger v6.1.2
+# Push to nfcore/cellranger:<VER>
+
 FROM continuumio/miniconda3:4.8.2
 LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>" \
-    description="Docker image containing bcl2fastq2 and Cell Ranger"
+    description="Docker image containing Cell Ranger"
 # Disclaimer: this container is not provided nor supported by Illumina or 10x Genomics.
 
 # Install procps and clean apt cache
@@ -13,7 +15,7 @@ RUN apt-get update --allow-releaseinfo-change \
     unzip \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Copy pre-downloaded bcl2fastq2 and cellranger file
+# Copy pre-downloaded cellranger file
 ENV CELLRANGER_VER=6.1.2
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
 
