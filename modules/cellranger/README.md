@@ -15,7 +15,6 @@ Cell Ranger is a commercial tools from 10X Genomics. The container provided for 
 
     ```bash
     docker build . -t nfcore/cellranger:<VERSION>
-    docker push nfcore/cellranger:<VERSION>
     ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.

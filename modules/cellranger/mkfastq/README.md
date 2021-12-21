@@ -16,11 +16,11 @@ Bcl2fastq2 and Cell Ranger are commercial tools from Illumina and 10X Genomics, 
 3. Create and test the container:
 
     ```bash
-    docker build . -t nfcore/cellrangermkfastq:<VERSION>
-    docker push nfcore/cellrangermkfastq:<VERSION>
+    docker build . -t nfcore/cellrangermkfastq:<CELLRANGER_VERSION>
     ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
 
     ```bash
-    docker push nfcore/cellranger:<VERSION>
+    docker push nfcore/cellrangermkfastq:<CELLRANGER_VERSION>
+    ```
