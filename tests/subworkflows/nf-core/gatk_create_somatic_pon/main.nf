@@ -19,11 +19,11 @@ workflow test_gatk_create_somatic_pon {
             []
         ]
     ]
-    fasta         = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai           = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict          = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    fasta         = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai           = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict          = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
     pon_name      = "test_panel"
-    interval_file = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
+    interval_file = file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true)
 
     GATK_CREATE_SOMATIC_PON ( input, fasta, fai, dict, pon_name, interval_file )
 }
