@@ -1,3 +1,5 @@
+include { dump_params_yml; indent_code_block } from "./parametrize"
+
 def VERSION="0.0.1"
 
 process CUSTOM_DUMPRUNPARAMS {
@@ -7,39 +9,31 @@ process CUSTOM_DUMPRUNPARAMS {
     val(exclude)
 
     output:
-    path "params_mqc.tsv", emit: mqc_tsv
-    path "versions.yml"  , emit: versions
+    //path "params_mqc.yml", emit: mqc_yml
+    //path "versions.yml"  , emit: versions
 
+    // NOTE: removing script meant input channels were not detected
     script:
     run_params = params
-    to_exclude = exclude instanceof List && exclude.size() > 0 ? exclude.join('|') : ''
-    exclude_cmd = exclude ? "| sed -E '/${to_exclude}/d'" : ''
-    println exclude
-    println exclude_cmd
+    to_exclude = run_params.subMap(exclude)
+    run_params_cleaned = exclude ? params.minus(to_exclude) : params
+    run_params_formatted = run_params_cleaned.each{ it.getValue() instanceof LinkedHashMap | it.getValue() instanceof List | it.getValue() instanceof nextflow.config.ConfigMap ? run_params[it.getKey()] = '<truncated_list>' : null }
+    println(run_params_formatted)
+
+    // From https://stackoverflow.com/a/51288381/11502856
+    // TODO try creating an importing custom groovy functions/methods (from link above) from a separate functions file
+
+
+    // mqc_yml = [
+    //     id: 'run_parameters',
+    //     section_name: 'Pipeline run parameters',
+    //     description: 'Resolved para,meters for pipeline run: ${workflow.runName}. Note: All possible parameters are listed, but not necessarily used - some will only be utilised if a given module has been explicitly activated.',
+    //     plot_type: 'table',
+    //     data: run_params_flattened
+    // ]
+
+    // WRITE FILE: https://www.nextflow.io/docs/latest/script.html#basic-read-write
+
     """
-    echo "${run_params}" > run_params.txt
-    table_header=\$( sed 's/,/\t/g' <( echo "Parameter,col1" ) )
-
-    ## Remove outer brackets, remove nested arrays, split each param new line, delete lines containing params to ignore, convert params to cli flags
-    run_params=\$( sed 's#^\\[##g;s#\\]\$##g' run_params.txt | sed 's/\\[.*]/\\.\\.\\.truncated_list\\.\\.\\./g' | sed 's#, #\\n#g;s#:#\t#g' ${exclude_cmd} | sed 's#^#--#g' )
-
-    cat <<-MQC_HEADER >> params_mqc.tsv
-    # plot_type: 'table'
-    # section_name: 'Pipeline run parameters'
-    # description: 'Resolved parameters for pipeline run: ${workflow.runName}. Note: All possible parameters are listed, but not necessarily used - some will only be utilised if a given module has been explicitly activated.'
-    # pconfig:
-    #     namespace: 'Cust Data'
-    # headers:
-    #     col1:
-    #         title: 'Value'
-    #         description: 'Final resolved values for all pipeline parameters'
-    \$table_header
-    \$run_params
-    MQC_HEADER
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dumprunparams: \$(echo ${VERSION})
-    END_VERSIONS
     """
 }

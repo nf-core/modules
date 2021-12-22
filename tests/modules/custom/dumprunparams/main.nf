@@ -8,15 +8,15 @@ include { MULTIQC } from '../../../modules/multiqc/main.nf'
 
 workflow test_custom_dumprunparams_multi {
     CUSTOM_DUMPRUNPARAMS ( [] )
-    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_tsv )
+    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_yml )
 }
 
 workflow test_custom_dumprunparams_oneexclude {
     CUSTOM_DUMPRUNPARAMS ( [ 'test_data' ] )
-    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_tsv )
+    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_yml )
 }
 
 workflow test_custom_dumprunparams_twoexclude {
     CUSTOM_DUMPRUNPARAMS ( [ 'test_data', 'enable_conda' ] )
-    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_tsv )
+    MULTIQC ( CUSTOM_DUMPRUNPARAMS.out.mqc_yml )
 }
