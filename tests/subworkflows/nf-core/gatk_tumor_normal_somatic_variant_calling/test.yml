@@ -1,14 +1,15 @@
 - name: gatk_tumor_normal_somatic_variant_calling
-  command: nextflow run ./tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling -entry test_gatk_tumor_normal_somatic_variant_calling -c tests/config/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling -entry test_gatk_tumor_normal_somatic_variant_calling -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/nextflow.config
   tags:
     - subworkflows
-    # - subworkflows/gatk_tumor_normal_somatic_variant_calling
+    - subworkflows/gatk_tumor_normal_somatic_variant_calling
+    - gatk_tumor_normal_somatic_variant_calling
     # Modules
-    # - gatk4/mutect2
-    # - gatk4/learnreadorientationmodel
-    # - gatk4/getpileupsummaries
-    # - gatk4/calculatecontamination
-    # - gatk4/filtermutectcalls
+    - gatk4/mutect2
+    - gatk4/learnreadorientationmodel
+    - gatk4/getpileupsummaries
+    - gatk4/calculatecontamination
+    - gatk4/filtermutectcalls
   files:
       # gatk4 mutect2
     - path: ./output/mutect2/test.vcf.gz

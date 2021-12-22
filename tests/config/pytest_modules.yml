@@ -1423,9 +1423,9 @@ subworkflows/bam_sort_samtools: &subworkflows_bam_sort_samtools
   - *samtools_index
   - *subworkflows_bam_stats_samtools
 
-subworkflows/gatk_create_som_pon:
-  - subworkflows/nf-core/gatk_create_som_pon/**
-  - tests/subworkflows/nf-core/gatk_create_som_pon/**
+subworkflows/gatk_create_somatic_pon:
+  - subworkflows/nf-core/gatk_create_somatic_pon/**
+  - tests/subworkflows/nf-core/gatk_create_somatic_pon/**
   - *gatk4_genomicsdbimport
   - *gatk4_createsomaticpanelofnormals
 
