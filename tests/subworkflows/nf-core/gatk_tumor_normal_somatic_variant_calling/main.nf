@@ -19,14 +19,14 @@ workflow test_gatk_tumor_normal_somatic_variant_calling {
             [ "testN" ]
         ]
     ]
-    fasta                 = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai                   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict                  = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
-    germline_resource     = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz'], checkIfExists: true)
-    germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_vcf_gz_tbi'], checkIfExists: true)
-    panel_of_normals      = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz'], checkIfExists: true)
-    panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_vcf_gz_tbi'], checkIfExists: true)
-    interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
+    fasta                 = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai                   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict                  = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    germline_resource     = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
+    germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
+    panel_of_normals      = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
+    panel_of_normals_tbi  = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true)
+    interval_file         = file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true)
 
     GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi, interval_file )
 }
