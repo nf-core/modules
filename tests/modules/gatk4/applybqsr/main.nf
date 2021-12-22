@@ -26,10 +26,10 @@ workflow test_gatk4_applybqsr_intervals {
                 file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
               ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    fai   = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict  = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
 
-  GATK4_APPLYBQSR ( input, fasta, fai, dict, intervals )
+  GATK4_APPLYBQSR ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_applybqsr_cram {
@@ -43,5 +43,5 @@ workflow test_gatk4_applybqsr_cram {
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-  GATK4_APPLYBQSR ( input, fasta, fai, dict, intervals )
+  GATK4_APPLYBQSR ( input, fasta, fai, dict )
 }

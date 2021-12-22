@@ -133,8 +133,6 @@ workflow test_gatk4_genotypegvcfs_gendb_input_intervals {
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    intervalsBed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
-
     test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
 
     UNTAR ( test_genomicsdb )

@@ -23,7 +23,6 @@ workflow test_gatk4_baserecalibrator_cram {
    input = [ [ id:'test' ], // meta map
                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
                 []
               ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -47,7 +46,7 @@ workflow test_gatk4_baserecalibrator_intervals {
     sites = file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
     sites_tbi = file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
 
-    GATK4_BASERECALIBRATOR ( input, fasta, fai, dict, intervals, sites, sites_tbi )
+    GATK4_BASERECALIBRATOR ( input, fasta, fai, dict, sites, sites_tbi )
 }
 
 workflow test_gatk4_baserecalibrator_multiple_sites {

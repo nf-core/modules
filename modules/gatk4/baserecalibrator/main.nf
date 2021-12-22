@@ -8,7 +8,7 @@ process GATK4_BASERECALIBRATOR {
         'quay.io/biocontainers/gatk4:4.2.4.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path (intervals)
+    tuple val(meta), path(input), path(input_index), path(intervals)
     path fasta
     path fai
     path dict
@@ -24,12 +24,14 @@ process GATK4_BASERECALIBRATOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def intervalsCommand = intervals ? "-L ${intervals}" : ""
     def sitesCommand = knownSites.collect{"--known-sites ${it}"}.join(' ')
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK BaseRecalibrator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
+
     """
     gatk --java-options "-Xmx${avail_mem}g" BaseRecalibrator  \
         -R $fasta \
