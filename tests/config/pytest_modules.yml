@@ -1446,9 +1446,9 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
   - *gatk4_calculatecontamination
   - *gatk4_filtermutectcalls
 
-subworkflows/sra_fastq:
-  - subworkflows/nf-core/sra_fastq/**
-  - tests/subworkflows/nf-core/sra_fastq/**
+subworkflows/sra_fastq_sratools:
+  - subworkflows/nf-core/sra_fastq_sratools/**
+  - tests/subworkflows/nf-core/sra_fastq_sratools/**
   - *sratools_fasterqdump
   - *sratools_prefetch
 

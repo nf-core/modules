@@ -2,22 +2,22 @@
 
 nextflow.enable.dsl = 2
 
-include { SRA_FASTQ } from '../../../../subworkflows/nf-core/sra_fastq/main.nf' addParams( [:] )
+include { SRA_FASTQ_SRATOOLS } from '../../../../subworkflows/nf-core/sra_fastq_sratools/main.nf'
 
-workflow test_sra_fastq_single_end {
+workflow test_sra_fastq_sratools_single_end {
     input = [
         [ id:'test_single_end', single_end:true ], // meta map
         'SRR13255544'
     ]
 
-    SRA_FASTQ ( input )
+    SRA_FASTQ_SRATOOLS ( input )
 }
 
-workflow test_sra_fastq_paired_end {
+workflow test_sra_fastq_sratools_paired_end {
     input = [
         [ id:'test_paired_end', single_end:false ], // meta map
         'SRR11140744'
     ]
 
-    SRA_FASTQ ( input )
+    SRA_FASTQ_SRATOOLS ( input )
 }
