@@ -18,7 +18,7 @@ workflow test_gatk4_genotypegvcfs_vcf_input {
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [],)
+    GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [])
 }
 
 // Basic parameters with compressed VCF input
@@ -53,7 +53,7 @@ workflow test_gatk4_genotypegvcfs_gz_input_dbsnp {
     dbsnp        = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     dbsnpIndex   = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
 
-    GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex, [] )
+    GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex)
 }
 
 // Basic parameters + optional intervals
@@ -77,7 +77,8 @@ workflow test_gatk4_genotypegvcfs_gz_input_dbsnp_intervals {
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
-              file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true) ]
+              file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+            ]
 
     fasta        = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
@@ -101,7 +102,7 @@ workflow test_gatk4_genotypegvcfs_gendb_input {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
-    input = Channel.of([ id:'test' ]).combine(gendb)
+    input = Channel.of([ id:'test' ]).combine(gendb).add([])
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [])
 }
@@ -121,7 +122,7 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
-    input = Channel.of([ id:'test' ]).combine(gendb)
+    input = Channel.of([ id:'test' ]).combine(gendb).add([])
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex)
 }
