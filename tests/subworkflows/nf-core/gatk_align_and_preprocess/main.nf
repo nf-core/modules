@@ -2,24 +2,44 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_CREATE_SOM_PON } from '../../../../subworkflows/nf-core/gatk_create_som_pon/main' addParams( [:]  )
+include { GATK_ALIGN_AND_PREPROCESS } from '../../../../subworkflows/nf-core/gatk_align_and_preprocess/main' addParams( [:]  )
 
-workflow test_gatk_create_som_pon {
-    ch_mutect2_in = [
-                    [[ id:'test1' ], // meta map
-                    [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-                    [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
-                    [] ],
-                    [[ id:'test2' ], // meta map
-                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
-                    [] ]
-                    ]
+workflow test_gatk_align_and_preprocess_fastq {
+    input = [
+        [[ id:'test', single_end:false, read_group:'@RG\tID:test\tSM:bar' ], // meta map
+        [
+            file(params.test_data['homo_sapiens']['illumina']['test_umi_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_umi_2_fastq_gz'], checkIfExists: true)
+        ]]
+    ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
-    pon_name = "test_panel"
-    interval_file = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
+    //bwaindex = []
+    bwaindex = '/home/AD/gmackenz/test_storage/output/pytest_workflow_c1q_a57m/test_gatk_align_and_preprocess_ubam/work/9e/62187c485fa9bac99ef75fb5577c26/bwamem2/'
+    is_ubam = false
+    sort_order = "coordinate"
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
+    knownsites = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
+    knownsites_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
 
-    GATK_CREATE_SOM_PON ( ch_mutect2_in, fasta, fai, dict, pon_name, interval_file )
+    GATK_ALIGN_AND_PREPROCESS ( input, fasta, fai, dict, bwaindex, is_ubam, sort_order, intervals, knownsites, knownsites_tbi )
+}
+
+workflow test_gatk_align_and_preprocess_ubam {
+    input = [ [[ id:'test', single_end:false ], // meta map
+              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_converted_bam'], checkIfExists: true) ]]
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    //bwaindex = []
+    bwaindex = '/home/AD/gmackenz/test_storage/output/pytest_workflow_c1q_a57m/test_gatk_align_and_preprocess_ubam/work/9e/62187c485fa9bac99ef75fb5577c26/bwamem2/'
+    is_ubam = true
+    sort_order = "coordinate"
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
+    knownsites = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
+    knownsites_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
+
+    GATK_ALIGN_AND_PREPROCESS ( input, fasta, fai, dict, bwaindex, is_ubam, sort_order, intervals, knownsites, knownsites_tbi )
 }
