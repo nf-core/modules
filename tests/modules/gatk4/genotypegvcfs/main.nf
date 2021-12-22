@@ -139,8 +139,8 @@ workflow test_gatk4_genotypegvcfs_gendb_input_intervals {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
+    gendb.add([file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)])
     input = Channel.of([ id:'test' ]).combine(gendb)
-    input = input.add(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [] )
 }
@@ -160,8 +160,8 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp_intervals {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
+    gendb.add([file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)])
     input = Channel.of([ id:'test' ]).combine(gendb)
-    input = input.add(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex )
 }
