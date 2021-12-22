@@ -29,6 +29,9 @@ input:
           type: file
           description: Bowtie2 genome index files
           pattern: "*.ebwt"
+    - save_unaligned:
+          type: boolean
+          description: Save unaligned reads to FastQ file(s)
 output:
     - bam:
           type: file
