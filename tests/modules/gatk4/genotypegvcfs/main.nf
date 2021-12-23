@@ -102,7 +102,9 @@ workflow test_gatk4_genotypegvcfs_gendb_input {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
-    input = Channel.of([ id:'test' ]).combine(gendb).add([])
+    gendb.add([])
+
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, [], [])
 }
@@ -122,7 +124,8 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp {
     UNTAR ( test_genomicsdb )
     gendb = UNTAR.out.untar.collect()
     gendb.add([])
-    input = Channel.of([ id:'test' ]).combine(gendb).add([])
+    gendb.add([])
+    input = Channel.of([ id:'test' ]).combine(gendb)
 
     GATK4_GENOTYPEGVCFS ( input, fasta, fastaIndex, fastaDict, dbsnp, dbsnpIndex)
 }
