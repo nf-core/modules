@@ -1,0 +1,10 @@
+- name: mash dist test_mash_dist
+  command: nextflow run tests/modules/mash/dist -entry test_mash_dist -c tests/config/nextflow.config
+  tags:
+    - mash
+    - mash/dist
+  files:
+    - path: output/mash/test.txt
+      md5sum: 1dfd5b53e1996f9fdb9d260b3e81c4d6
+    - path: output/mash/versions.yml
+      md5sum: f786d48a9af59e823d19c171969d0d50
