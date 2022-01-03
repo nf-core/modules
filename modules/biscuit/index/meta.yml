@@ -1,47 +1,38 @@
 name: biscuit_index
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Indexes a reference genome for use with Biscuit
 keywords:
-  - sort
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - index
+  - reference
+  - fasta
+
 tools:
   - biscuit:
-      ## TODO nf-core: Add a description and other details for the software below
       description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/#getting-started
+      tool_dev_url: https://github.com/huishenlab/biscuit
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input genome fasta file
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - index:
+      type: dir
+      description: Biscuit genome index directory
+      pattern: "BiscuitIndex"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@njspix"
