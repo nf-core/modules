@@ -6,7 +6,7 @@ Bcl2fastq2 and Cell Ranger are commercial tools from Illumina and 10X Genomics, 
         - [bcl2fastq2](https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html): download the linux rpm installer of the desired bcl2fastq2 version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
         - [Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest): download the tar ball of the desired Cell Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
 
-2. Edit the Dockerfile: update the bcl2fastq2 and Cell Ranger versions in this line:
+2. Edit the Dockerfile. Update the bcl2fastq2 and Cell Ranger versions in this line:
 
     ```bash
     ENV BCL2FASTQ2_VER=<VERSION> \
