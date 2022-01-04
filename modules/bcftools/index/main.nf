@@ -13,7 +13,7 @@ process BCFTOOLS_INDEX {
     output:
     tuple val(meta), path("*.csi"), optional:true, emit: csi
     tuple val(meta), path("*.tbi"), optional:true, emit: tbi
-    path "versions.yml"          , emit: version
+    path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
