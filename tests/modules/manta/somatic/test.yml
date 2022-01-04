@@ -1,0 +1,18 @@
+- name: manta somatic test_manta_somatic
+  command: nextflow run ./tests/modules/manta/somatic -entry test_manta_somatic -c ./tests/config/nextflow.config -c ./tests/modules/manta/somatic/nextflow.config
+  tags:
+    - manta/somatic
+    - manta
+  files:
+    - path: output/manta/test.candidate_small_indels.vcf.gz
+    - path: output/manta/test.candidate_small_indels.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+    - path: output/manta/test.candidate_sv.vcf.gz
+    - path: output/manta/test.candidate_sv.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+    - path: output/manta/test.diploid_sv.vcf.gz
+    - path: output/manta/test.diploid_sv.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905
+    - path: output/manta/test.somatic_sv.vcf.gz
+    - path: output/manta/test.somatic_sv.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { QUAST }   from '../../../modules/quast/main.nf'   addParams(options: [:])
+include { QUAST }   from '../../../modules/quast/main.nf'
 
 workflow test_quast_ref {
     fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

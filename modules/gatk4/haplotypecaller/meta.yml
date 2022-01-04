@@ -21,14 +21,17 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
+      description: BAM/CRAM file from alignment
+      pattern: "*.{bam,cram}"
+  - input_index:
       type: file
-      description: Index of BAM file
-      pattern: "*.bam.bai"
+      description: BAI/CRAI file from alignment
+      pattern: "*.{bai,crai}"
+  - intervals:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
   - fasta:
       type: file
       description: The reference fasta file
@@ -41,6 +44,13 @@ input:
       type: file
       description: GATK sequence dictionary
       pattern: "*.dict"
+  - dbsnp:
+      type: file
+      description: VCF file containing known sites (optional)
+  - dbsnp_tbi:
+      type: file
+      description: VCF index of dbsnp (optional)
+
 output:
   - meta:
       type: map
@@ -62,3 +72,4 @@ output:
 
 authors:
   - "@suzannejin"
+  - "@FriederikeHanssen"

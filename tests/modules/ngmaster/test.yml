@@ -1,0 +1,7 @@
+- name: ngmaster test_ngmaster
+  command: nextflow run ./tests/modules/ngmaster -entry test_ngmaster -c ./tests/config/nextflow.config -c ./tests/modules/ngmaster/nextflow.config
+  tags:
+    - ngmaster
+  files:
+    - path: output/ngmaster/test.tsv
+      md5sum: cf674474eaf8ac6abfcebce0af0226cf

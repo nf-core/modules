@@ -1,0 +1,64 @@
+name: peddy
+description: Manipulation, validation and exploration of pedigrees
+keywords:
+  - pedigrees
+  - ped
+  - family
+
+tools:
+  - peddy:
+      description: genotype, ped correspondence check, ancestry check, sex check. directly, quickly on VCF
+      homepage: https://github.com/brentp/peddy
+      documentation: https://peddy.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/brentp/peddy
+      doi: "https://doi.org/10.1016/j.ajhg.2017.01.017"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf.gz}"
+  - ped:
+      type: file
+      description: PED/FAM file
+      pattern: "*.{ped,fam}"
+  - vcf_tbi:
+      type: file
+      description: TBI file
+      pattern: "*.{vcf.gz.tbi}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ped:
+      type: file
+      description: PED/FAM file
+      pattern: "*.peddy.{ped}"
+  - html:
+      type: file
+      description: HTML file
+      pattern: "*.{html}"
+  - csv:
+      type: file
+      description: CSV file
+      pattern: "*.{csv}"
+  - png:
+      type: file
+      description: PNG file
+      pattern: "*.{png}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@rannick"

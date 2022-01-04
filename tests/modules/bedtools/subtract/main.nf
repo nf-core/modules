@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SUBTRACT } from '../../../../modules/bedtools/subtract/main.nf' addParams( options: [:] )
+include { BEDTOOLS_SUBTRACT } from '../../../../modules/bedtools/subtract/main.nf'
 
 workflow test_bedtools_subtract {
     input = [

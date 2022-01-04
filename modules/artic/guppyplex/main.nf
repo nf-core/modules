@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process ARTIC_GUPPYPLEX {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::artic=1.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0"
-    } else {
-        container "quay.io/biocontainers/artic:1.2.1--py_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0' :
+        'quay.io/biocontainers/artic:1.2.1--py_0' }"
 
     input:
     tuple val(meta), path(fastq_dir)
@@ -26,18 +15,19 @@ process ARTIC_GUPPYPLEX {
     path  "versions.yml"               , emit: versions
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     artic \\
         guppyplex \\
-        $options.args \\
+        $args \\
         --directory $fastq_dir \\
         --output ${prefix}.fastq
 
     pigz -p $task.cpus *.fastq
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+    "${task.process}":
+        artic: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """
 }

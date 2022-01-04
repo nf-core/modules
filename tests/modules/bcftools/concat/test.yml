@@ -1,5 +1,5 @@
 - name: bcftools concat test_bcftools_concat
-  command: nextflow run tests/modules/bcftools/concat -entry test_bcftools_concat -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/bcftools/concat -entry test_bcftools_concat -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/concat/nextflow.config
   tags:
     - bcftools/concat
     - bcftools
