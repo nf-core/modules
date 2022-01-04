@@ -8,8 +8,6 @@ process KRONA_KRONADB {
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
         'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
 
-    input:
-
     output:
     path 'taxonomy/taxonomy.tab', emit: db
     path "versions.yml"         , emit: versions
