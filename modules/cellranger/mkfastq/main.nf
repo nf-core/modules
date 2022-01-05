@@ -20,7 +20,7 @@ process CELLRANGER_MKFASTQ {
     """
     cellranger mkfastq --id=${bcl.getSimpleName()} \
         --run=$bcl \
-        --csv=$csv
+        --csv=$csv \
         $args
 
     cat <<-END_VERSIONS > versions.yml
