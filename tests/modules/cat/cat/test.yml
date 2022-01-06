@@ -6,6 +6,8 @@
   files:
     - path: output/cat/cat.txt
       md5sum: f44b33a0e441ad58b2d3700270e2dbe2
+    - path: output/cat/versions.yml
+      md5sum: 36080ae8e44023a88e0f3589d8affb1a
 
 - name: cat zipped zipped
   command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
@@ -14,6 +16,9 @@
     - cat/cat
   files:
     - path: output/cat/cat.txt.gz
+      md5sum: 1c3e5c5ddf6ebcaf56f3283905269974
+    - path: output/cat/versions.yml
+      md5sum: 5041ed256b71dadd5ca1dd30749b968d
 
 - name: cat zipped unzipped
   command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
@@ -23,6 +28,8 @@
   files:
     - path: output/cat/cat.txt
       md5sum: c439d3b60e7bc03e8802a451a0d9a5d9
+    - path: output/cat/versions.yml
+      md5sum: dbec957026e2485b72408ec9972baa50
 
 - name: cat unzipped zipped
   command: nextflow run ./tests/modules/cat/cat -entry test_cat_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
@@ -31,3 +38,17 @@
     - cat/cat
   files:
     - path: output/cat/cat.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/cat/versions.yml
+      md5sum: 438011291e3e616e6134aac0a41ed128
+
+- name: cat one file unzipped zipped
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/cat.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/cat/versions.yml
+      md5sum: d61a6725ed4a31db67ec7a43033278fd
