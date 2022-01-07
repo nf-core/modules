@@ -10,6 +10,7 @@ process BOWTIE2_ALIGN {
     input:
     tuple val(meta), path(reads)
     path  index
+    val   save_unaligned
 
     output:
     tuple val(meta), path('*.bam'), emit: bam
@@ -22,7 +23,7 @@ process BOWTIE2_ALIGN {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
-        def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
+        def unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
         bowtie2 \\
@@ -42,7 +43,7 @@ process BOWTIE2_ALIGN {
         END_VERSIONS
         """
     } else {
-        def unaligned = params.save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
+        def unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
         bowtie2 \\
