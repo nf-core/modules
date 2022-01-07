@@ -22,8 +22,9 @@ process SAMTOOLS_AMPLICONCLIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
-    def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
+    def rejects = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
+    def stats   = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
         ampliconclip \\
