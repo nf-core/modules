@@ -44,6 +44,7 @@ process ARTIC_MINION {
         model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
     }
     """
+    HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin \\
     artic \\
         minion \\
         $args \\
