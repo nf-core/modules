@@ -1,0 +1,15 @@
+- name: maxbin2
+  command: nextflow run ./tests/modules/maxbin2 -entry test_maxbin2 -c ./tests/config/nextflow.config -c ./tests/modules/maxbin2/nextflow.config
+  tags:
+    - maxbin2
+  files:
+    - path: output/maxbin2/test1.001.fasta.gz
+    - path: output/maxbin2/test1.002.fasta.gz
+    - path: output/maxbin2/test1.log.gz
+    - path: output/maxbin2/test1.marker.gz
+    - path: output/maxbin2/test1.marker_of_each_bin.tar.gz
+    - path: output/maxbin2/test1.noclass.gz
+    - path: output/maxbin2/test1.summary
+      contains:
+        - "Bin name\tAbundance\tCompleteness\tGenome size\tGC content"
+    - path: output/maxbin2/test1.tooshort.gz

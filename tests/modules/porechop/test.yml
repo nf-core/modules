@@ -1,0 +1,7 @@
+- name: porechop test_porechop
+  command: nextflow run ./tests/modules/porechop -entry test_porechop -c ./tests/config/nextflow.config -c ./tests/modules/porechop/nextflow.config
+  tags:
+    - porechop
+  files:
+    - path: output/porechop/test_porechop.fastq.gz
+      md5sum: 08f314ae9f162c8dcc27e5b513d2064d

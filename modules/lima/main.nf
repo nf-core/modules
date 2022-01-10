@@ -1,31 +1,18 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process LIMA {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/lima:2.2.0--h9ee0642_0"
-    } else {
-        container "quay.io/biocontainers/lima:2.2.0--h9ee0642_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/lima:2.2.0--h9ee0642_0' :
+        'quay.io/biocontainers/lima:2.2.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(ccs)
     path primers
 
     output:
-    tuple val(meta), path("*.clips")  , emit: clips
     tuple val(meta), path("*.counts") , emit: counts
-    tuple val(meta), path("*.guess")  , emit: guess
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
     path "versions.yml"               , emit: versions
@@ -38,9 +25,18 @@ process LIMA {
     tuple val(meta), path("*.fastq.gz")         , optional: true, emit: fastqgz
     tuple val(meta), path("*.xml")              , optional: true, emit: xml
     tuple val(meta), path("*.json")             , optional: true, emit: json
+    tuple val(meta), path("*.clips")            , optional: true, emit: clips
+    tuple val(meta), path("*.guess")            , optional: true, emit: guess
 
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if( "$ccs" == "${prefix}.bam" )      error "Input and output names are the same, set prefix in module configuration"
+    if( "$ccs" == "${prefix}.fasta" )    error "Input and output names are the same, set prefix in module configuration"
+    if( "$ccs" == "${prefix}.fasta.gz" ) error "Input and output names are the same, set prefix in module configuration"
+    if( "$ccs" == "${prefix}.fastq" )    error "Input and output names are the same, set prefix in module configuration"
+    if( "$ccs" == "${prefix}.fastq.gz" ) error "Input and output names are the same, set prefix in module configuration"
+
     """
     OUT_EXT=""
 
@@ -56,17 +52,16 @@ process LIMA {
         OUT_EXT="fastq.gz"
     fi
 
-    echo \$OUT_EXT
     lima \\
         $ccs \\
         $primers \\
         $prefix.\$OUT_EXT \\
         -j $task.cpus \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+    "${task.process}":
+        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
 }

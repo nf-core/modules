@@ -1,0 +1,17 @@
+- name: seqtk mergepe test_seqtk_mergepe_single_end
+  command: nextflow run ./tests/modules/seqtk/mergepe -entry test_seqtk_mergepe_single_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/mergepe/nextflow.config
+  tags:
+    - seqtk/mergepe
+    - seqtk
+  files:
+    - path: output/seqtk/test.processed.fastq.gz
+      md5sum: e325ef7deb4023447a1f074e285761af
+
+- name: seqtk mergepe test_seqtk_mergepe_paired_end
+  command: nextflow run ./tests/modules/seqtk/mergepe -entry test_seqtk_mergepe_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/mergepe/nextflow.config
+  tags:
+    - seqtk/mergepe
+    - seqtk
+  files:
+    - path: output/seqtk/test.processed.fastq.gz
+      md5sum: 3f094ef62d9bfe06aa25174a06bc7d04

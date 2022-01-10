@@ -1,5 +1,5 @@
 - name: fastp test_fastp_single_end
-  command: nextflow run tests/modules/fastp -entry test_fastp_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -12,12 +12,12 @@
         - "Q20 bases: 12922(92.9841%)"
         - "reads passed filter: 99"
     - path: output/fastp/test.trim.fastq.gz
-      md5sum: e2257263668dc8a75d95475099fb472d
+      md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test.fastp.json
-      md5sum: e0d856ebb3da9e4462c3ce9683efe01d
+      md5sum: a517ba37b17a342b5428f2c1f8fe3dd7
 
 - name: fastp test_fastp_paired_end
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -33,12 +33,12 @@
       contains:
         - '"passed_filter_reads": 198'
     - path: output/fastp/test_1.trim.fastq.gz
-      md5sum: e2257263668dc8a75d95475099fb472d
+      md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test_2.trim.fastq.gz
-      md5sum: 9eff7203596580cc5e42aceab4a469df
+      md5sum: 532b190fb4dc7b2277ee5cf1464e598c
 
 - name: fastp test_fastp_single_end_trim_fail
-  command: nextflow run tests/modules/fastp -entry test_fastp_single_end_trim_fail -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -51,14 +51,14 @@
         - "Q20 bases: 12922(92.9841%)"
         - "reads passed filter: 99"
     - path: output/fastp/test.trim.fastq.gz
-      md5sum: e2257263668dc8a75d95475099fb472d
+      md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test.fastp.json
-      md5sum: ee65a46d6e59fa556f112727b8a902ce
+      md5sum: 4be682c727942a45fc4c8600c28694a8
     - path: output/fastp/test.fail.fastq.gz
-      md5sum: de315d397c994d8e66bafc7a8dc11070
+      md5sum: b57f2026eb259a0b0c0b3960c270258d
 
 - name: fastp test_fastp_paired_end_trim_fail
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -74,16 +74,16 @@
       contains:
         - '"passed_filter_reads": 198'
     - path: output/fastp/test_1.trim.fastq.gz
-      md5sum: e2257263668dc8a75d95475099fb472d
+      md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test_2.trim.fastq.gz
-      md5sum: 9eff7203596580cc5e42aceab4a469df
+      md5sum: 532b190fb4dc7b2277ee5cf1464e598c
     - path: output/fastp/test_1.fail.fastq.gz
-      md5sum: e62ff0123a74adfc6903d59a449cbdb0
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/fastp/test_2.fail.fastq.gz
-      md5sum: f52309b35a7c15cbd56a9c3906ef98a5
+      md5sum: 72d0002841967676ac936d08746a9128
 
 - name: fastp test_fastp_paired_end_merged
-  command: nextflow run tests/modules/fastp -entry test_fastp_paired_end_merged -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -101,8 +101,8 @@
         - "total reads: 75"
         - "total bases: 13683"
     - path: output/fastp/test.merged.fastq.gz
-      md5sum: ce88539076ced5aff11f866836ea1f40
+      md5sum: 4955ca2c899729b17bd526d2626a8d73
     - path: output/fastp/test_1.trim.fastq.gz
-      md5sum: 65d75c13abbfbfd993914e1379634100
+      md5sum: 4a03721ee252b7c6e81e007550e6ab63
     - path: output/fastp/test_2.trim.fastq.gz
-      md5sum: 0d87ce4d8ef29fb35f337eb0f6c9fcb4
+      md5sum: 7a4ddf8485c147cd7aaf0d4f6cd57ace

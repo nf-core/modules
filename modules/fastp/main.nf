@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process FASTP {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::fastp=0.20.1' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/fastp:0.20.1--h8b12597_0'
-    } else {
-        container 'quay.io/biocontainers/fastp:0.20.1--h8b12597_0'
-    }
+    conda (params.enable_conda ? 'bioconda::fastp=0.23.2' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fastp:0.23.2--h79da9fb_0' :
+        'quay.io/biocontainers/fastp:0.23.2--h79da9fb_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -33,8 +22,9 @@ process FASTP {
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
 
     script:
+    def args = task.ext.args ?: ''
     // Added soft-links to original fastqs for consistent naming in MultiQC
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
@@ -46,11 +36,11 @@ process FASTP {
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $fail_fastq \\
-            $options.args \\
+            $args \\
             2> ${prefix}.fastp.log
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+        "${task.process}":
+            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     } else {
@@ -70,12 +60,12 @@ process FASTP {
             $merge_fastq \\
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
-            $options.args \\
+            $args \\
             2> ${prefix}.fastp.log
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+        "${task.process}":
+            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
     }

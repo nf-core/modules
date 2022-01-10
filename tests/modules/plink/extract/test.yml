@@ -1,0 +1,18 @@
+- name: plink extract test_plink_extract
+  command: nextflow run ./tests/modules/plink/extract -entry test_plink_extract -c ./tests/config/nextflow.config -c ./tests/modules/plink/extract/nextflow.config
+  tags:
+    - plink
+    - plink/extract
+  files:
+    - path: output/plink/test.bed
+      md5sum: 9121010aba9905eee965e96bc983611d
+    - path: output/plink/test.bim
+      md5sum: 510ec606219ee5daaf5c207cb01554bf
+    - path: output/plink/test.extract.bed
+      md5sum: 9e02f7143bcc756a51f20d50ca7f8032
+    - path: output/plink/test.extract.bim
+      md5sum: 63d190aea4094aa5d042aacd63397f94
+    - path: output/plink/test.extract.fam
+      md5sum: c499456df4da78792ef29934ef3cd47d
+    - path: output/plink/test.fam
+      md5sum: c499456df4da78792ef29934ef3cd47d

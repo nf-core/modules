@@ -1,0 +1,8 @@
+- name: metabat2 jgisummarizebamcontigdepths test_metabat2_jgisummarizebamcontigdepths
+  command: nextflow run ./tests/modules/metabat2/jgisummarizebamcontigdepths -entry test_metabat2_jgisummarizebamcontigdepths -c ./tests/config/nextflow.config -c ./tests/modules/metabat2/jgisummarizebamcontigdepths/nextflow.config
+  tags:
+    - metabat2/jgisummarizebamcontigdepths
+    - metabat2
+  files:
+    - path: output/metabat2/test.txt.gz
+      md5sum: 8f735aa408d6c90e5a0310e06ace7a9a

@@ -1,0 +1,35 @@
+- name: idr test_idr_narrowpeak
+  command: nextflow run ./tests/modules/idr -entry test_idr_narrowpeak -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  tags:
+    - idr
+  files:
+    - path: output/idr/test.idrValues.txt
+      md5sum: 09be837cc6abbc3eb5958b74802eea55
+    - path: output/idr/test.idrValues.txt.png
+      md5sum: 4a7143ccc0ccadb37c2317bf626e6d96
+    - path: output/idr/test.log.txt
+      md5sum: 6443507ac66b9d3b64bc56b78328083e
+
+- name: idr test_idr_broadpeak
+  command: nextflow run ./tests/modules/idr -entry test_idr_broadpeak -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  tags:
+    - idr
+  files:
+    - path: output/idr/test.idrValues.txt
+      md5sum: 387441c716815e4caec3e70a2cc11a4a
+    - path: output/idr/test.idrValues.txt.png
+      md5sum: 7204083ca5b920b4215a5991c12cb4e7
+    - path: output/idr/test.log.txt
+      md5sum: e6917133112b5cec135c182ffac19237
+
+- name: idr test_idr_noprefix
+  command: nextflow run ./tests/modules/idr -entry test_idr_noprefix -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  tags:
+    - idr
+  files:
+    - path: output/idr/idrValues.txt
+      md5sum: 09be837cc6abbc3eb5958b74802eea55
+    - path: output/idr/idrValues.txt.png
+      md5sum: 4a7143ccc0ccadb37c2317bf626e6d96
+    - path: output/idr/log.txt
+      md5sum: 6443507ac66b9d3b64bc56b78328083e

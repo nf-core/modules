@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VARIANTBAM } from '../../../modules/variantbam/main.nf' addParams( options: [args: '-m 1'] )
+include { VARIANTBAM } from '../../../modules/variantbam/main.nf'
 
 workflow test_variantbam {
 

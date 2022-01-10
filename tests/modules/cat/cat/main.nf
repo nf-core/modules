@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CAT_CAT } from '../../../../modules/cat/cat/main.nf' addParams( options: [:] )
+include { CAT_CAT } from '../../../../modules/cat/cat/main.nf'
 
 workflow test_cat_unzipped_unzipped {
 
@@ -39,6 +39,15 @@ workflow test_cat_unzipped_zipped {
     input = [
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
         file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+    ]
+
+    CAT_CAT ( input, 'cat.txt.gz' )
+}
+
+workflow test_cat_one_file_unzipped_zipped {
+
+    input = [
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
     ]
 
     CAT_CAT ( input, 'cat.txt.gz' )

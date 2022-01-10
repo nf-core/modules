@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BCFTOOLS_REHEADER {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.13" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bcftools:1.13--h3a49de5_0"
-    } else {
-        container "quay.io/biocontainers/bcftools:1.13--h3a49de5_0"
-    }
+    conda (params.enable_conda ? 'bioconda::bcftools=1.14' : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bcftools:1.14--h88f3f91_0' :
+        'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -28,7 +17,8 @@ process BCFTOOLS_REHEADER {
     path "versions.yml"              , emit: versions
 
     script:
-    def prefix           = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def update_sequences = fai ? "-f $fai" : ""
     def new_header       = header ? "-h $header" : ""
     """
@@ -36,14 +26,14 @@ process BCFTOOLS_REHEADER {
         reheader \\
         $update_sequences \\
         $new_header \\
-        $options.args \\
+        $args \\
         --threads $task.cpus \\
         -o ${prefix}.vcf.gz \\
         $vcf
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    "${task.process}":
+        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
 }

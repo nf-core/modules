@@ -1,0 +1,10 @@
+- name: bcftools sort test_bcftools_sort
+  command: nextflow run tests/modules/bcftools/sort -entry test_bcftools_sort -c tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/sort
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: fc178eb342a91dc0d1d568601ad8f8e2
+    - path: output/bcftools/versions.yml
+      md5sum: f1bb553befa5108f81135b8fec613b6b

@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process MACS2_CALLPEAK {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h0213d0e_1"
-    } else {
-        container "quay.io/biocontainers/macs2:2.2.7.1--py38h0213d0e_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
+        'quay.io/biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
@@ -32,13 +21,21 @@ process MACS2_CALLPEAK {
     tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def format   = meta.single_end ? 'BAM' : 'BAMPE'
-    def control  = controlbam ? "--control $controlbam" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_list = args.tokenize()
+    def format    = meta.single_end ? 'BAM' : 'BAMPE'
+    def control   = controlbam ? "--control $controlbam" : ''
+    if(args_list.contains('--format')){
+        def id = args_list.findIndexOf{it=='--format'}
+        format = args_list[id+1]
+        args_list.remove(id+1)
+        args_list.remove(id)
+    }
     """
     macs2 \\
         callpeak \\
-        $options.args \\
+        ${args_list.join(' ')} \\
         --gsize $macs2_gsize \\
         --format $format \\
         --name $prefix \\
@@ -46,8 +43,8 @@ process MACS2_CALLPEAK {
         $control
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(macs2 --version | sed -e "s/macs2 //g")
+    "${task.process}":
+        macs2: \$(macs2 --version | sed -e "s/macs2 //g")
     END_VERSIONS
     """
 }

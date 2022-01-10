@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RAPIDNJ } from '../../../modules/rapidnj/main.nf' addParams( options: [:] )
+include { RAPIDNJ } from '../../../modules/rapidnj/main.nf'
 
 workflow test_rapidnj {
     

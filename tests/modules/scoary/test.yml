@@ -1,0 +1,9 @@
+- name: scoary test_scoary
+  command: nextflow run ./tests/modules/scoary -entry test_scoary -c ./tests/config/nextflow.config -c ./tests/modules/scoary/nextflow.config
+  tags:
+    - scoary
+  files:
+    - path: output/scoary/Bogus_trait.results.csv
+      md5sum: 9550c692bbe6ff0ac844357bfabb809b
+    - path: output/scoary/Tetracycline_resistance.results.csv
+      md5sum: a87740818ab4de69a758fc75d7b879dd
