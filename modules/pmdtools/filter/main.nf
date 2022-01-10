@@ -22,7 +22,7 @@ process PMDTOOLS_FILTER {
     def args3 = task.ext.args3 ?: ''
     def split_cpus = Math.floor(task.cpus/2)
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use the suffix option to disambiguate!"
+    if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     //threshold and header flags activate filtering function of pmdtools
     """
     samtools \\
