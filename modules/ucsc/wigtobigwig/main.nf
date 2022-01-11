@@ -14,8 +14,8 @@ process UCSC_WIGTOBIGWIG {
     path sizes
 
     output:
-    tuple val(meta), path("*.bw")  , emit: bw
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.bw"), emit: bw
+    path "versions.yml"          , emit: versions
 
     script:
     def args = task.ext.args ?: ''
