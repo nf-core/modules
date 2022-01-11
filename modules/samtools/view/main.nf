@@ -18,6 +18,7 @@ process SAMTOOLS_VIEW {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta} -C" : ""
     def file_type = input.getExtension()
@@ -29,6 +30,7 @@ process SAMTOOLS_VIEW {
         ${reference} \\
         $args \\
         $input \\
+        $args2 \\
         > ${prefix}.${file_type}
 
     cat <<-END_VERSIONS > versions.yml
