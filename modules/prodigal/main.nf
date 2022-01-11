@@ -22,7 +22,7 @@ process PRODIGAL {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    prodigal -i "${genome}" \\
+    gzip -cdf ${genome} | prodigal \\
         $args \\
         -f $output_format \\
         -d "${prefix}.fna" \\
