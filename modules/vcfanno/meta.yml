@@ -1,32 +1,42 @@
 name: vcfanno
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: quickly annotate your VCF with any number of INFO fields from any number of VCFs or BED files
 keywords:
-  - sort
+  - vcf
+  - bed
+  - annotate
+  - variant
 tools:
   - vcfanno:
-      ## TODO nf-core: Add a description and other details for the software below
       description: annotate a VCF with other VCFs/BEDs/tabixed files
       homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
-      licence: ['MIT']
+      documentation: https://github.com/brentp/vcfanno#vcfanno
+      tool_dev_url: https://github.com/brentp/vcfanno
+      doi: "10.1186/s13059-016-0973-5"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: query VCF file
+      pattern: "*.{vcf.gz}"
+  - vcf.tbi:
+      type: file
+      description: query VCF file index
+      pattern: "*.{vcf.gz.tbi}"
+  - vcfanno_config:
+      type: file
+      description: |
+        A simple configuration file is used to specify both the source files
+        and the set of attributes (in the case of VCF)
+        or columns (in the case of BED or other tab-delimited formats)
+        that should be added to the query file.
+      pattern: "*.{toml}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +47,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Annotated VCF file
+      pattern: "*.{vcf}"
 
 authors:
   - "@projectoriented"
