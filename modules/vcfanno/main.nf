@@ -28,7 +28,7 @@ process VCFANNO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vcfanno: \$(echo \$(vcfanno 2>&1) | grep version | cut -f3 -d' ' ))
+        vcfanno: \$(echo \$(vcfanno 2>&1 | grep version | cut -f3 -d' ' ))
     END_VERSIONS
     """
 }
