@@ -22,8 +22,8 @@ process IVAR_VARIANTS {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def features     = gff ? "-g $gff" : ""
-    def save_mpileup = mpileup ? "tee ${prefix}.mpileup |" : ""
+    def features = gff ? "-g $gff" : ""
+    def mpileup = save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
         $args2 \\
