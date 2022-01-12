@@ -2,7 +2,7 @@
 #                nf-core modules create-test-yml maxquant/lfq
 - name: maxquant lfq
 #  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile ./tests/modules/maxquant/lfq/mqpar.xml --raw 'https://github.com/wombat-p/MaxQuant-Workflow/raw/dev/Nextflow/data_test/OVEMB150205_{12,14}.raw' --fasta 'https://github.com/wombat-p/MaxQuant-Workflow/raw/dev/Nextflow/data_test/ABRF_iPRG_2012_target.fasta' -c tests/config/nextflow.config 
-  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile ./tests/modules/maxquant/lfq/mqpar.xml  --fasta 'https://raw.githubusercontent.com/wombat-p/MaxQuant-Workflow/dev/data/yeast_UPS.fasta' -c tests/config/nextflow.config 
+  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile 'https://raw.githubusercontent.com/wombat-p/DSL2-data/master/nf-core-modules/test_data/maxquant/mqpar.xml'  --fasta 'https://raw.githubusercontent.com/wombat-p/MaxQuant-Workflow/dev/data/yeast_UPS.fasta' -c tests/config/nextflow.config 
   tags:
     - maxquant
     - maxquant/lfq

@@ -16,7 +16,8 @@ process MAXQUANT_LFQ {
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/maxquant:2.0.1.0--py39hdfd78af_2"
     } else {
-        container "wombatp/maxquant-pipeline:dev"
+#        container "wombatp/maxquant-pipeline:dev"
+	container "quay.io/biocontainers/maxquant:2.0.1.0
     }
 
     input:
