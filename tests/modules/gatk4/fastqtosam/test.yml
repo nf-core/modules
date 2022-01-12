@@ -6,7 +6,7 @@
   files:
     - path: output/gatk4/test.bam
     - path: output/gatk4/versions.yml
-      md5sum: db3fa4b463427b08e32a5d8264be59c1
+      md5sum: 03f3accdc3e3c392c1179213286a0b67
 
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_paired_end
   command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config  -c ./tests/modules/gatk4/fastqtosam/nextflow.config
@@ -16,4 +16,4 @@
   files:
     - path: output/gatk4/test.bam
     - path: output/gatk4/versions.yml
-      md5sum: f4e35e46a29d8faebda5e852f9d0a132
+      md5sum: 144e7118d5f277ad5fba863213c810b0
