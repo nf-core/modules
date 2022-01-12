@@ -13,10 +13,10 @@ process BOWTIE2_ALIGN {
     val   save_unaligned
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
-    tuple val(meta), path('*.log'), emit: log
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path('*.bam')    , emit: bam
+    tuple val(meta), path('*.log')    , emit: log
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
+    path  "versions.yml"              , emit: versions
 
     script:
     def args = task.ext.args ?: ''
