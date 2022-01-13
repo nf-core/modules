@@ -2,11 +2,11 @@ process VG_DECONSTRUCT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::vg=1.36.0' : null)
+    conda (params.enable_conda ? 'bioconda::vg=1.37.0' : null)
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.36.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.36.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vg:1.37.0--h9ee0642_0' :
+        'quay.io/biocontainers/vg:1.37.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta), path(gfa)
