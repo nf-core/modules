@@ -43,7 +43,7 @@ process ARTIC_MINION {
         summary = ""
         model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
     }
-    def hd5_plugin_path = task.ext.hd5_plugin_path ? "HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+    def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
     $hd5_plugin_path
 
