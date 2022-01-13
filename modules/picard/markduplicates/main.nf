@@ -39,4 +39,14 @@ process PICARD_MARKDUPLICATES {
         picard: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
+    touch ${prefix}.MarkDuplicates.metrics.txt
+    touch versions.yml
+    """
+
 }

@@ -27,4 +27,12 @@ process TABIX_BGZIPTABIX {
         tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gz
+    touch ${prefix}.gz.tbi
+    touch versions.yml
+    """
 }

@@ -35,4 +35,12 @@ process SAMTOOLS_MERGE {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def file_type = input_files[0].getExtension()
+    """
+    touch ${prefix}.${file_type}
+    touch versions.yml
+    """
 }

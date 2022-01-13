@@ -41,4 +41,12 @@ process FASTQC {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    touch ${prefix}.zip
+    touch versions.yml
+    """
 }
