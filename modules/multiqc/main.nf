@@ -31,6 +31,9 @@ process MULTIQC {
     touch multiqc_data
     touch multiqc_plots
     touch multiqc_report.html
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
+    END_VERSIONS
     """
 }

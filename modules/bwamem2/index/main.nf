@@ -37,6 +37,9 @@ process BWAMEM2_INDEX {
     touch ${fasta}.pac
     touch ${fasta}.amb
     touch ${fasta}.bwt.2bit.64
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
+    END_VERSIONS
     """
 }

@@ -36,6 +36,9 @@ process BCFTOOLS_NORM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf.gz
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
     """
 }

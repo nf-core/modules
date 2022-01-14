@@ -36,6 +36,9 @@ process SAMTOOLS_INDEX {
     touch ${input}.bai
     touch ${input}.crai
     touch ${input}.csi
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

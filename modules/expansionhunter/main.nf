@@ -39,6 +39,9 @@ process EXPANSIONHUNTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+    END_VERSIONS
     """
 }

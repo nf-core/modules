@@ -41,6 +41,9 @@ process SAMTOOLS_MERGE {
     def file_type = input_files[0].getExtension()
     """
     touch ${prefix}.${file_type}
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
     """
 }

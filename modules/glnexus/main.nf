@@ -44,6 +44,9 @@ process GLNEXUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bcf
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
+    END_VERSIONS
     """
 }
