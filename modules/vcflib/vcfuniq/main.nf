@@ -22,8 +22,8 @@ process VCFLIB_VCFUNIQ {
     """
     vcfuniq \\
         $vcf \\
-        > ${prefix}.vcf.gz
-
+        | bgzip -c $args > ${prefix}.vcf.gz
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         vcflib: $VERSION
