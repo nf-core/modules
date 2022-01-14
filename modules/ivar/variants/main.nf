@@ -11,6 +11,7 @@ process IVAR_VARIANTS {
     tuple val(meta), path(bam)
     path  fasta
     path  gff
+    val   save_mpileup
 
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
@@ -21,14 +22,14 @@ process IVAR_VARIANTS {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
-    def features     = params.gff ? "-g $gff" : ""
+    def features = gff ? "-g $gff" : ""
+    def mpileup = save_mpileup ? "tee ${prefix}.mpileup |" : ""
     """
     samtools mpileup \\
         $args2 \\
         --reference $fasta \\
         $bam | \\
-        $save_mpileup  \\
+        $mpileup  \\
         ivar variants \\
             $args \\
             $features \\
