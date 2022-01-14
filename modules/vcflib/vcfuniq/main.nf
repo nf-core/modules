@@ -1,4 +1,4 @@
-def VERSION = 1.0.2 // Version information not provided by tool on CLI
+def VERSION = '1.0.2' // Version information not provided by tool on CLI
 
 process VCFLIB_VCFUNIQ {
     tag "$meta.id"
