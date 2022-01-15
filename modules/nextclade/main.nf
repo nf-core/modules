@@ -31,6 +31,7 @@ process NEXTCLADE {
         --output-tsv ${prefix}.tsv \\
         --output-tsv-clades-only ${prefix}.clades.tsv \\
         --output-tree ${prefix}.tree.json
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         nextclade: \$(nextclade --version 2>&1)
