@@ -1,0 +1,33 @@
+name: nextclade datasetget
+description: Get dataset for SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
+keywords:
+  - nextclade
+  - variant
+  - consensus
+tools:
+  - nextclade:
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
+      homepage: https://clades.nextstrain.org
+      documentation: None
+      tool_dev_url: https://github.com/nextstrain/nextclade
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - name:
+      type: string
+      description: Name of dataset to retrieve. A list of available datasets can be obtained using the command nextclade dataset list.
+      pattern: ".+"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - dataset:
+      type: path
+      description: A directory containing the dataset files needed to run nextclade run
+      pattern: "dataset"
+
+authors:
+  - "@antunderwood"

@@ -1,13 +1,14 @@
-process NEXTCLADE {
+process NEXTCLADE_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::nextclade_js=0.14.4" : null)
+    conda (params.enable_conda ? "bioconda::nextclade=1.9.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade_js:0.14.4--h9ee0642_0' :
-        'quay.io/biocontainers/nextclade_js:0.14.4--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:1.9.0--h9ee0642_0' :
+        'quay.io/biocontainers/nextclade:1.9.0--h9ee0642_0' }"
 
     input:
+    path(dataset)
     tuple val(meta), path(fasta)
 
     output:
@@ -26,11 +27,12 @@ process NEXTCLADE {
         $args \\
         --jobs $task.cpus \\
         --input-fasta $fasta \\
+        --input-dataset $dataset \\
         --output-json ${prefix}.json \\
         --output-csv ${prefix}.csv \\
         --output-tsv ${prefix}.tsv \\
-        --output-tsv-clades-only ${prefix}.clades.tsv \\
-        --output-tree ${prefix}.tree.json
+        --output-tree ${prefix}.tree.json \\
+        --output-basename ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

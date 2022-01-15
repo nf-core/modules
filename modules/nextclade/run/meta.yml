@@ -1,12 +1,12 @@
-name: nextclade
-description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (Javascript implementation)
+name: nextclade run
+description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
 keywords:
   - nextclade
   - variant
   - consensus
 tools:
   - nextclade:
-      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (Javascript implementation)
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
       homepage: https://clades.nextstrain.org
       documentation: None
       tool_dev_url: https://github.com/nextstrain/nextclade
@@ -14,6 +14,10 @@ tools:
       licence: ["MIT"]
 
 input:
+  - dataset:
+      type: path
+      description: path containing the dataset files obtained by running nextclade dataset get
+      pattern: "dataset"
   - meta:
       type: map
       description: |
@@ -50,10 +54,6 @@ output:
       type: file
       description: TSV file containing nextclade results
       pattern: "*.{tsv}"
-  - tsv_clades:
-      type: file
-      description: TSV file containing nextclade results for clades only
-      pattern: "*.{clades.tsv}"
 
 authors:
-  - "@drpatelh"
+  - "@antunderwood"
