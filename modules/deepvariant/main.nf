@@ -1,8 +1,3 @@
-include { initOptions; saveFiles; getSoftwareName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process DEEPVARIANT {
     tag "$meta.id"
     label 'process_medium'
@@ -27,8 +22,8 @@ process DEEPVARIANT {
     path "versions.yml"               ,  emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     /opt/deepvariant/bin/run_deepvariant \\
@@ -36,7 +31,7 @@ process DEEPVARIANT {
         --reads=${bam} \\
         --output_vcf=${prefix}.vcf.gz \\
         --output_gvcf=${prefix}.g.vcf.gz \\
-        ${options.args} \\
+        ${args} \\
         --num_shards=${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
