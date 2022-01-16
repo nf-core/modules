@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPVARIANT } from '../../../modules/deepvariant/main.nf' addParams( options: ["args": "--regions=\"chr20:10,000,000-10,010,000\" --model_type=WGS"] )
+include { DEEPVARIANT } from '../../../modules/deepvariant/main.nf'
 
 workflow test_deepvariant {
 
