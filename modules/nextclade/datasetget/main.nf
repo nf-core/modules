@@ -9,6 +9,8 @@ process NEXTCLADE_DATASETGET {
 
     input:
     val dataset
+    val reference
+    val tag
 
     output:
     path "$prefix"     , emit: dataset
@@ -17,12 +19,16 @@ process NEXTCLADE_DATASETGET {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${dataset}"
+    def fasta = reference ?: "--reference ${reference}"
+    def version = tag ?: "--tag ${tag}"
     """
     nextclade \\
         dataset \\
         get \\
         $args \\
         --name $dataset \\
+        $fasta \\
+        $version \\
         --output-dir $prefix
 
     cat <<-END_VERSIONS > versions.yml

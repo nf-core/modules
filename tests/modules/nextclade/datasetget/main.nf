@@ -6,5 +6,8 @@ include { NEXTCLADE_DATASETGET } from '../../../../modules/nextclade/datasetget/
 
 workflow test_nextclade_datasetget {
 
-    NEXTCLADE_DATASETGET ( 'sars-cov-2' )
+    dataset = 'sars-cov-2'
+    reference = 'MN908947'
+    tag = '2022-01-05T19:54:31Z'
+    NEXTCLADE_DATASETGET ( dataset, reference, tag )
 }
