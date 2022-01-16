@@ -1,7 +1,7 @@
 process NEXTCLADE_DATASETGET {
     tag "$dataset"
     label 'process_low'
-    
+
     conda (params.enable_conda ? "bioconda::nextclade=1.9.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nextclade:1.9.0--h9ee0642_0' :
