@@ -1,0 +1,9 @@
+- name: deepvariant
+  command: nextflow run ./tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: output/deepvariant/test_out.vcf.gz
+      md5sum: 66d86be7a9bafe1f5c6304ebee18ee20
+    - path: output/deepvariant/test_out.g.vcf.gz
+      md5sum: 4ca868f0a4fdb17a280c3ed083d228e0
