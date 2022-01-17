@@ -20,7 +20,7 @@ process BCFTOOLS_CONSENSUS {
     """
     cat $fasta | bcftools consensus $vcf $args > ${prefix}.fa
     header=\$(head -n 1 ${prefix}.fa | sed 's/>//g')
-    sed -i 's/\${header}/${meta.id}/g' ${prefix}.fa
+    sed -i "s/\${header}/${meta.id}/g" ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
