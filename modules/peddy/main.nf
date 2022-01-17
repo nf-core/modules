@@ -15,6 +15,7 @@ process PEDDY {
     tuple val(meta), path("*.html")     , emit: html
     tuple val(meta), path("*.csv")      , emit: csv
     tuple val(meta), path("*.peddy.ped"), emit: ped
+    tuple val(meta), path("*.png")      , optional: true, emit: png
     path "versions.yml"                 , emit: versions
 
     script:
