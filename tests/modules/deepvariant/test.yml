@@ -1,9 +1,23 @@
-- name: deepvariant
-  command: nextflow run ./tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
+- name: deepvariant test_deepvariant
+  command: nextflow run tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
   tags:
     - deepvariant
   files:
-    - path: output/deepvariant/test_out.vcf.gz
-      md5sum: 66d86be7a9bafe1f5c6304ebee18ee20
-    - path: output/deepvariant/test_out.g.vcf.gz
-      md5sum: 4ca868f0a4fdb17a280c3ed083d228e0
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpe_yktcke/deepvariant/test_out.g.vcf.gz
+      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpe_yktcke/deepvariant/test_out.vcf.gz
+      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpe_yktcke/deepvariant/versions.yml
+      md5sum: 51572055ca5c07fc4001b25a9c273bf8
+
+- name: deepvariant test_deepvariant_cram_intervals
+  command: nextflow run tests/modules/deepvariant -entry test_deepvariant_cram_intervals -c tests/config/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpjpv7fmmn/deepvariant/test_out.g.vcf.gz
+      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpjpv7fmmn/deepvariant/test_out.vcf.gz
+      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpjpv7fmmn/deepvariant/versions.yml
+      md5sum: 7d9293db0d44423b114abc7116feb967
