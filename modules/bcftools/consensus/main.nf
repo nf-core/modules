@@ -18,9 +18,12 @@ process BCFTOOLS_CONSENSUS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    cat $fasta | bcftools consensus $vcf $args > ${prefix}.fa
-    header=\$(head -n 1 ${prefix}.fa | sed 's/>//g')
-    sed -i 's/\${header}/${meta.id}/g' ${prefix}.fa
+    cat $fasta \\
+        | bcftools \\
+            consensus \\
+            $vcf \\
+            $args \\
+            > ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
