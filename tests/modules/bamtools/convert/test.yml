@@ -1,0 +1,10 @@
+- name: bamtools convert test_bamtools_convert
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.fasta
+      md5sum: 52aeacf78571862b7e97c7d44ac8f827
+    - path: output/bamtools/versions.yml
+      md5sum: 18bdc83c53bc69072802d3255fd7c13b
