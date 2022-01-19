@@ -1,0 +1,13 @@
+- name: nextclade run
+  command: nextflow run ./tests/modules/nextclade/run -entry test_nextclade_run -c ./tests/config/nextflow.config -c ./tests/modules/nextclade/run/nextflow.config
+  tags:
+    - nextclade
+    - nextclade/run
+  files:
+    - path: output/nextclade/test.json
+    - path: output/nextclade/test.csv
+      md5sum: 3b87a4da190ba2e1fdc8418dc3a7ffdb
+    - path: output/nextclade/test.tsv
+      md5sum: 449393288e8734a02def139c550a8d9b
+    - path: output/nextclade/test.tree.json
+      md5sum: 9c6e33cb7ff860bee6194847bd2c855c
