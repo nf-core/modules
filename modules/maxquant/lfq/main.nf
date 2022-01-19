@@ -6,8 +6,7 @@ process MAXQUANT_LFQ {
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
         container "https://depot.galaxyproject.org/singularity/maxquant:2.0.1.0--py39hdfd78af_2"
     } else {
-#        container "wombatp/maxquant-pipeline:dev"
-	container "quay.io/biocontainers/maxquant:2.0.1.0
+	container "wombatp/maxquant-pipeline:v0.13"
     }
 
     input:
@@ -16,15 +15,15 @@ process MAXQUANT_LFQ {
 
     output:
     tuple val(meta), path("*.txt"), emit: maxquant_txt
-    path "*.version.txt"          , emit: version
+    path "versions.yml"          , emit: version
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"  
     
     """
-	
-    maxquant --version | head -n1 - >  maxquant.version.txt
+    export PATH=/usr/local/lib/dotnet:/usr/local/lib/dotnet/tools:/opt/conda/envs/nf-core-maxquant/bin:/opt/conda/envs/nf-core-maxquant/lib/dotnet/tools:/opt/conda/envs/nf-core-maxquant/lib/dotnet:$PATH	
+    echo "maxquant: \$(maxquant --version 2> versions.yml)"
     sed \"s_<numThreads>.*_<numThreads>$task.cpus</numThreads>_\" ${paramfile} > mqpar_changed.xml
     sed -i \"s|PLACEHOLDER|\$PWD/|g\" mqpar_changed.xml
     mkdir temp
