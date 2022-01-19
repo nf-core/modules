@@ -8,11 +8,11 @@ process MANTA_GERMLINE {
         'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta), path(inputs) // [[meta], [input1.bam, input2.bam, ...]]
+    path indices                  // [input1.bai, input2.bai, ...]
     path fasta
-    path fai
-    path target_bed
-    path target_bed_tbi
+    path fasta_fai
+    tuple val(bed_meta), path(target_bed), path(target_bed_tbi)
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
@@ -29,7 +29,7 @@ process MANTA_GERMLINE {
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --bam $input \
+        --bam ${inputs.join(' --bam ')} \
         --reference $fasta \
         $options_manta \
         --runDir manta

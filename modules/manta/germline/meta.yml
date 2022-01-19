@@ -23,11 +23,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - inputs:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - input_index:
+  - indices:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"
@@ -39,6 +39,11 @@ input:
       type: file
       description: Genome reference FASTA index file
       pattern: "*.{fa.fai,fasta.fai}"
+  - bed_meta:
+      type: map
+      description: |
+        Groovy Map containing information about the bed file
+        e.g. [ id:'test' ]
   - target_bed:
       type: file
       description: BED file containing target regions for variant calling
@@ -85,3 +90,4 @@ output:
 
 authors:
   - "@maxulysse"
+  - "@ramprasadn"
