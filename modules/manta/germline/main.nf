@@ -8,11 +8,12 @@ process MANTA_GERMLINE {
         'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(inputs) // [[meta], [input1.bam, input2.bam, ...]]
-    path indices                  // [input1.bai, input2.bai, ...]
+    tuple val(meta), path(input) // for joint calling provide a list of alignment files
+    path index                   // for joint calling provide a list of index files
     path fasta
     path fasta_fai
     tuple val(bed_meta), path(target_bed), path(target_bed_tbi)
+
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
