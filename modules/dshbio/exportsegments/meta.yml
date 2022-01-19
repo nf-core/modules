@@ -21,8 +21,8 @@ input:
             e.g. [ id:'test', single_end:false ]
     - gfa:
         type: file
-        description: Assembly segments in GFA 1.0 format
-        pattern: "*.{gfa}"
+        description: Assembly segments in uncompressed or compressed GFA 1.0 format
+        pattern: "*.{gfa|gfa.bgz|gfa.gz|gfa.zst}"
 output:
     - meta:
         type: map
@@ -31,8 +31,8 @@ output:
             e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: Assembly segment sequences in FASTA format
-        pattern: "*.{fa}"
+        description: Assembly segment sequences in gzipped FASTA format
+        pattern: "*.{fa.gz}"
     - versions:
         type: file
         description: File containing software versions
