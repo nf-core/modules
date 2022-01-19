@@ -12,7 +12,7 @@ process SAMTOOLS_MERGE {
     path fasta
 
     output:
-    tuple val(meta), path("${prefix}.bam"),  optional:true, emit: bam
+    tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     path  "versions.yml"                                  , emit: versions
 
@@ -22,7 +22,13 @@ process SAMTOOLS_MERGE {
     def file_type = input_files[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools merge --threads ${task.cpus-1} $args ${reference} ${prefix}.${file_type} $input_files
+    samtools \\
+        merge \\
+        --threads ${task.cpus-1} \\
+        $args \\
+        ${reference} \\
+        ${prefix}.${file_type} \\
+        $input_files
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
