@@ -25,11 +25,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input:
       type: file
-      description: BAM/CRAM/SAM file
+      description: BAM/CRAM/SAM file. For joint calling use a list of files.
       pattern: "*.{bam,cram,sam}"
   - index:
       type: file
-      description: BAM/CRAM/SAM index file
+      description: BAM/CRAM/SAM index file. For joint calling use a list of files.
       pattern: "*.{bai,crai,sai}"
   - fasta:
       type: file
