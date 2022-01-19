@@ -30,7 +30,7 @@ process MANTA_GERMLINE {
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \
-        --bam ${inputs.join(' --bam ')} \
+        --bam ${input.join(' --bam ')} \
         --reference $fasta \
         $options_manta \
         --runDir manta
