@@ -9,7 +9,8 @@ process IVAR_CONSENSUS {
 
     input:
     tuple val(meta), path(bam)
-    path  fasta
+    path fasta
+    val save_mpileup
 
     output:
     tuple val(meta), path("*.fa")      , emit: fasta
@@ -21,14 +22,16 @@ process IVAR_CONSENSUS {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
+    def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
     """
-    samtools mpileup \\
+    samtools \\
+        mpileup \\
         --reference $fasta \\
         $args2 \\
-        $bam | \\
-        $save_mpileup \\
-        ivar consensus \\
+        $bam \\
+        $mpileup \\
+        | ivar \\
+            consensus \\
             $args \\
             -p $prefix
 
