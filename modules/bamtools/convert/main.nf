@@ -11,7 +11,7 @@ process BAMTOOLS_CONVERT {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.{bed,fasta,fastq,json,pileup,sam,yaml}"), emit: out
+    tuple val(meta), path("*.{bed,fasta,fastq,json,pileup,sam,yaml}"), emit: data
     path "versions.yml"                                              , emit: versions
 
     script:
