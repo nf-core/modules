@@ -18,18 +18,18 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
 
-  - raw: 
-      type: file 
+  - raw:
+      type: file
       description: raw files with mass spectra
       pattern: "*.{raw,RAW,Raw}"
 
   - fasta:
-      type: file 
+      type: file
       description: fasta file with protein sequences
       pattern: "*.{fasta}"
 
   - parfile:
-      type: file 
+      type: file
       description: MaxQuant parameter file (XML)
       pattern: "*.{xml}"
 
