@@ -35,15 +35,10 @@ input:
       type: file
       description: Genome reference FASTA file
       pattern: "*.{fa,fasta}"
-  - fai:
+  - fasta_fai:
       type: file
       description: Genome reference FASTA index file
       pattern: "*.{fa.fai,fasta.fai}"
-  - bed_meta:
-      type: map
-      description: |
-        Groovy Map containing information about the bed file
-        e.g. [ id:'test' ]
   - target_bed:
       type: file
       description: BED file containing target regions for variant calling

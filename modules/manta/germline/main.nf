@@ -8,11 +8,10 @@ process MANTA_GERMLINE {
         'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input)
-    path index
+    tuple val(meta), path(input), path(index)
     path fasta
     path fasta_fai
-    tuple val(bed_meta), path(target_bed), path(target_bed_tbi)
+    tuple path(target_bed), path(target_bed_tbi)
 
 
     output:
@@ -27,13 +26,14 @@ process MANTA_GERMLINE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
+    def options_manta = target_bed ? "--callRegions $target_bed" : ""
     """
     configManta.py \
         --bam ${input.join(' --bam ')} \
         --reference $fasta \
+        --runDir manta \
         $options_manta \
-        --runDir manta
+        $args
 
     python manta/runWorkflow.py -m local -j $task.cpus
 
