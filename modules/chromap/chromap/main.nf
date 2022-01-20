@@ -2,7 +2,7 @@ process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::chromap=0.1 bioconda::samtools=1.14" : null)
+    conda (params.enable_conda ? "bioconda::chromap=0.1.5 bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:724a1037d59f6a19c9d4e7bdba77b52b37de0dc3-0' :
         'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:724a1037d59f6a19c9d4e7bdba77b52b37de0dc3-0' }"
