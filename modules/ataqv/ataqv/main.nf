@@ -5,7 +5,7 @@ process ATAQV_ATAQV {
     conda (params.enable_conda ? "bioconda::ataqv=1.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.2.1--py39ha23c084_2' :
-        'quay.io/biocontainers/ataqv:1.2.1--py36hfdecbe1_2' }"
+        'quay.io/biocontainers/ataqv:1.2.1--py39ha23c084_2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
