@@ -9,7 +9,7 @@ process BWA_MEM {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(index_path), path(index)
+    path  index
     val   sort_bam
 
     output:
@@ -27,7 +27,7 @@ process BWA_MEM {
         $args \\
         $read_group \\
         -t $task.cpus \\
-        $index_path \\
+        ${index[0].baseName} \\
         $reads \\
         | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
 
