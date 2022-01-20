@@ -11,8 +11,8 @@ process BWA_INDEX {
     path fasta
 
     output:
-    path "bwa"         , emit: index
-    path "versions.yml", emit: versions
+    tuple val("bwa/${fasta.baseName}"), path ("bwa") , emit: index
+    path "versions.yml"                              , emit: versions
 
     script:
     def args = task.ext.args ?: ''

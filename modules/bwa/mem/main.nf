@@ -9,7 +9,7 @@ process BWA_MEM {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(index_path), path(index)
     val   sort_bam
 
     output:
@@ -23,13 +23,11 @@ process BWA_MEM {
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     def samtools_command = sort_bam ? 'sort' : 'view'
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
-
     bwa mem \\
         $args \\
         $read_group \\
         -t $task.cpus \\
-        \$INDEX \\
+        $index_path \\
         $reads \\
         | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
 
