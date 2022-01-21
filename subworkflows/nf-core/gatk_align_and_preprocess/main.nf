@@ -14,14 +14,13 @@ include { GATK4_APPLYBQSR } from '../../../modules/gatk4/applybqsr/main.nf'
 
 workflow GATK_ALIGN_AND_PREPROCESS {
     take:
-    input       // channel: [ val(meta), [ input ], [ input_index ], [] ]
+    input       // channel: [ val(meta), [ input ], intervals ]
     fasta               // channel: /path/to/reference/fasta
     fai                 // channel: /path/to/reference/fasta/index
     dict                // channel: /path/to/reference/fasta/dictionary
     bwaindex            // channel: name for panel of normals
     is_ubam
     sort_order
-    intervals
     knownsites
     knownsites_tbi
 
@@ -49,14 +48,14 @@ workflow GATK_ALIGN_AND_PREPROCESS {
         //convert unaligned bam to fastq format
         //
         SAMTOOLS_FASTQ( ch_ubam )
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ.out.versions.first())
+        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ.out.versions)
         ch_bwa_in = SAMTOOLS_FASTQ.out.fastq.collect()
 
         //
         //Align reads using bwamem2 mem
         //
         BWAMEM2_MEM ( ch_bwa_in, ch_bwa_index, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions.first())
+        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         ch_markdup_in = BWAMEM2_MEM.out.bam.collect()
     } else {
         //
@@ -64,7 +63,7 @@ workflow GATK_ALIGN_AND_PREPROCESS {
         //
         ch_bwa_in = channel.from(input)
         BWAMEM2_MEM ( ch_bwa_in, ch_bwa_index, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions.first())
+        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         ch_markdup_in = BWAMEM2_MEM.out.bam.collect()
     }
 
@@ -73,37 +72,37 @@ workflow GATK_ALIGN_AND_PREPROCESS {
     //use picard markduplicates to mark duplicates in the alignment bams
     //
     PICARD_MARKDUPLICATES ( ch_markdup_in )
-    ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions.first())
+    ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions)
     ch_sortsam_in = PICARD_MARKDUPLICATES.out.bam.collect()
 
     //
     //Bam files sorted using picard sortsam.
     //
     PICARD_SORTSAM ( ch_sortsam_in, sort_order )
-    ch_versions = ch_versions.mix(PICARD_SORTSAM.out.versions.first())
+    ch_versions = ch_versions.mix(PICARD_SORTSAM.out.versions)
     ch_samindex_in = PICARD_SORTSAM.out.bam.collect()
 
     //
     //Index for sorted bam file made using samtools index
     //
     SAMTOOLS_INDEX (ch_samindex_in)
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
     ch_bai = SAMTOOLS_INDEX.out.bai.collect()
 
     //
     //Perform first pass of BQSR using gatk baserecalibrator.
     //
     ch_baserecal_in = ch_samindex_in.combine(ch_bai, by: 0)
-    GATK4_BASERECALIBRATOR( ch_baserecal_in, fasta, fai, dict, intervals, knownsites, knownsites_tbi )
-    ch_versions = ch_versions.mix(GATK4_BASERECALIBRATOR.out.versions.first())
+    GATK4_BASERECALIBRATOR( ch_baserecal_in, fasta, fai, dict, knownsites, knownsites_tbi )
+    ch_versions = ch_versions.mix(GATK4_BASERECALIBRATOR.out.versions)
     ch_bqsrtable = GATK4_BASERECALIBRATOR.out.table.collect()
 
     //
     //Perform second pass of BQSR using gatk applybqsr.
     //
     ch_bqsr_in = ch_baserecal_in.combine(ch_bqsrtable, by: 0)
-    GATK4_APPLYBQSR( ch_bqsr_in, fasta, fai, dict, intervals )
-    ch_versions = ch_versions.mix(GATK4_APPLYBQSR.out.versions.first())
+    GATK4_APPLYBQSR( ch_bqsr_in, fasta, fai, dict )
+    ch_versions = ch_versions.mix(GATK4_APPLYBQSR.out.versions)
 
     emit:
     bwa_index_out       = ch_bwa_index
