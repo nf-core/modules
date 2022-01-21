@@ -23,7 +23,10 @@ process MAXQUANT_LFQ {
 
     """
     export PATH=/usr/local/lib/dotnet:/usr/local/lib/dotnet/tools:/opt/conda/envs/nf-core-maxquant/bin:/opt/conda/envs/nf-core-maxquant/lib/dotnet/tools:/opt/conda/envs/nf-core-maxquant/lib/dotnet:$PATH
-    echo \"maxquant: \"\$(maxquant --version 2>&1 > /dev/null | cut -f2 -d\" \") > versions.yml
+    cat <<-END_VERSIONS > versions.yml
+      "${task.process}":
+          maxquant: \$(maxquant --version 2>&1 > /dev/null | cut -f2 -d\" \")
+    END_VERSIONS
     sed \"s_<numThreads>.*_<numThreads>$task.cpus</numThreads>_\" ${paramfile} > mqpar_changed.xml
     sed -i \"s|PLACEHOLDER|\$PWD/|g\" mqpar_changed.xml
     mkdir temp
