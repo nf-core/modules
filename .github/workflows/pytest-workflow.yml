@@ -96,12 +96,13 @@ jobs:
       - name: Output log on failure
         if: failure()
         run: |
+          sudo apt install bat
           echo "======> log.out <======="
-          cat /home/runner/pytest_workflow_*/*/log.out
+          bat /home/runner/pytest_workflow_*/*/log.out
           echo
           echo
           echo "======> log.err <======="
-          cat /home/runner/pytest_workflow_*/*/log.err
+          bat /home/runner/pytest_workflow_*/*/log.err
 
       - name: Upload logs on failure
         if: failure()
