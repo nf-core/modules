@@ -12,12 +12,11 @@ process SAMTOOLS_DEPTH {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"          , emit: versions
+    path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     samtools \\
         depth \\

@@ -2,10 +2,10 @@ process GATK4_FILTERMUTECTCALLS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(stats), path(orientationbias), path(segmentation), path(contaminationfile), val(contaminationest)
@@ -37,8 +37,14 @@ process GATK4_FILTERMUTECTCALLS {
     if (contaminationfile) {
         contamination_options = '--contamination-table ' + contaminationfile.join(' --contamination-table ')
     }
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK FilterMutectCalls] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk FilterMutectCalls \\
+    gatk --java-options "-Xmx${avail_mem}g" FilterMutectCalls \\
         -R $fasta \\
         -V $vcf \\
         $orientationbias_options \\

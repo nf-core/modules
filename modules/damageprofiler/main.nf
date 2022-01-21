@@ -18,8 +18,8 @@ process DAMAGEPROFILER {
     path  "versions.yml"              , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def reference    = fasta ? "-r $fasta" : ""
     def species_list = specieslist ? "-sf $specieslist" : ""
     """
