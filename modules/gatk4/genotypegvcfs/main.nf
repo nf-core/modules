@@ -2,19 +2,18 @@ process GATK4_GENOTYPEGVCFS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(gvcf), path(gvcf_index)
+    tuple val(meta), path(gvcf), path(gvcf_index), path(intervals)
     path  fasta
     path  fasta_index
     path  fasta_dict
     path  dbsnp
     path  dbsnp_index
-    path  intervals_bed
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -25,7 +24,7 @@ process GATK4_GENOTYPEGVCFS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_options    = dbsnp ? "-D ${dbsnp}" : ""
-    def interval_options = intervals_bed ? "-L ${intervals_bed}" : ""
+    def interval_options = intervals ? "-L ${intervals}" : ""
     def gvcf_options     = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
     def avail_mem = 3
     if (!task.memory) {
