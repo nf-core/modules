@@ -30,9 +30,10 @@ process TRANSDECODER_LONGORF {
     -O $prefix \\
     -t \\
     $fasta
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    transdecoder: \$(echo \$(Transdecoder.LongOrfs --version 2>&1) | sed 's/^.*Transdecoder.LongOrfs //; s/Using.*\$//' ))
+        transdecoder: \$(echo \$(TransDecoder.LongOrfs --version) | sed -e "s/TransDecoder.LongOrfs //g")
     END_VERSIONS
     """
 }
