@@ -18,8 +18,8 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     dict                      // channel: /path/to/reference/fasta/dictionary
     sites                     // channel: /path/to/known/sites/file
     sites_index               // channel: /path/to/known/sites/index
-    interval_file             // channel: /path/to/interval/file
     joint_id                  // channel: joint id to replace individual sample ids with
+    joint_intervals           // channel: joint intervals to be used for genomicsdbimport and genotypegvcfs
     allelespecific            // channel: true/false run allelespecific mode of vqsr modules
     resources                 // channel: [[resource, vcfs, forvariantrecal], [resource, tbis, forvariantrecal], [resource, labels, forvariantrecal]]
     annotation                // channel: [annotations, to, use, for, variantrecal, filtering]
@@ -36,7 +36,7 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
         //
         //Perform variant calling using haplotypecaller module. Additional argument "-ERC GVCF" used to run in gvcf mode.
         //
-        HAPLOTYPECALLER ( haplotc_input, fasta, fai, dict, sites, sites_index, interval_file )
+        HAPLOTYPECALLER ( haplotc_input, fasta, fai, dict, sites, sites_index)
 
         ch_versions   = ch_versions.mix(HAPLOTYPECALLER.out.versions.first())
         ch_vcf        = HAPLOTYPECALLER.out.vcf.collect{it[1]}.toList()
@@ -52,7 +52,7 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     //
     //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
     //
-    gendb_input       = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine([interval_file]).combine(['']).combine([dict])
+    gendb_input       = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine([joint_intervals]).combine(['']).combine([dict])
 
     GENOMICSDBIMPORT ( gendb_input, false, false, false )
 
@@ -64,8 +64,9 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     ch_genotype_in    = GENOMICSDBIMPORT.out.genomicsdb.collect()
     //[] is a placeholder for the input where the vcf tbi file would be passed in for non-genomicsdb workspace runs, which is not necessary for this workflow as it uses genomicsdb workspaces.
     ch_genotype_in.add([])
+    genotype_input    = ch_genotype_in.combine([joint_intervals])
 
-    GENOTYPEGVCFS ( ch_genotype_in, fasta, fai, dict, sites, sites_index, interval_file )
+    GENOTYPEGVCFS ( genotype_input, fasta, fai, dict, sites, sites_index)
 
     ch_versions       = ch_versions.mix(GENOTYPEGVCFS.out.versions)
 
