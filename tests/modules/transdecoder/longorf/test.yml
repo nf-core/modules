@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml transdecoder/longorf
+- name: transdecoder longorf
+  command: nextflow run ./tests/modules/transdecoder/longorf -entry test_transdecoder_longorf -c ./tests/config/nextflow.config -c ./tests/modules/transdecoder/longorf/nextflow.config
+  tags:
+    - transdecoder
+    - transdecoder/longorf
+  files:
+    - path: output/transdecoder/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
