@@ -1,13 +1,12 @@
-def VERSION = '0.1' // Version information not provided by tool on CLI
-
 process CHROMAP_INDEX {
     tag '$fasta'
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::chromap=0.1 bioconda::samtools=1.13" : null)
+    conda (params.enable_conda ? "bioconda::chromap=0.1.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' :
-        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' }"
+        'https://depot.galaxyproject.org/singularity/chromap:0.1.5--h9a82719_0' :
+        'quay.io/biocontainers/chromap:0.1.5--h9a82719_0' }"
+
 
     input:
     path fasta
@@ -29,8 +28,7 @@ process CHROMAP_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        chromap: $VERSION
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        chromap: \$(echo \$(chromap --version 2>&1))
     END_VERSIONS
     """
 }
