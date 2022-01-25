@@ -11,13 +11,10 @@ process TRANSDECODER_LONGORF {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${meta.id}/*.pep")                          , emit: pep
+    tuple val(meta), path("${meta.id}/*.pep")                          , emit: faa
     tuple val(meta), path("${meta.id}/*.gff3")                         , emit: gff
     tuple val(meta), path("${meta.id}/*.cds")                          , emit: fna
     tuple val(meta), path("${meta.id}/*.dat")                          , emit: dat
-    tuple val(meta), path("*.cmds")                                    , emit: cdms
-    tuple val(meta), path("${meta.id}.__checkpoints_longorfs/*.ok")    , emit: longorf_ok
-    tuple val(meta), path("${meta.id}.__checkpoints_longorfs/*.ok")    , emit: freq_file_ok
     path "versions.yml"                                                , emit: versions
 
     script:
@@ -26,10 +23,10 @@ process TRANSDECODER_LONGORF {
 
     """
     TransDecoder.LongOrfs \\
-    $args \\
-    -O $prefix \\
-    -t \\
-    $fasta
+        $args \\
+        -O $prefix \\
+        -t \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

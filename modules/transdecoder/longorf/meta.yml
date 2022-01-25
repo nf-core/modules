@@ -33,30 +33,22 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - pep:
-      type: file
+  - faa:
+      type: Amino acids fasta file
       description: all ORFs meeting the minimum length criteria, regardless of coding potential. file
       pattern: "*.{pep}"
-  - gff3:
-      type: file
+  - gff:
+      type: gff file
       description: positions of all ORFs as found in the target transcripts. file
       pattern: "*.{gff3}"
-  - cds:
-      type: file
+  - fna:
+      type: fasta file
       description: the nucleotide coding sequence for all detected ORFs. file
       pattern: "*{cds}"
   - dat:
-      type: file
-      description: file
+      type: tsv file
+      description: 
       pattern: "*{dat}"
-  - cmds:
-      type: file
-      description: file
-      pattern: "*{cmds}"
-  - ok:
-      type: file
-      description: file
-      pattern: "*{ok}"
 
 authors:
   - "@Danilo2771"
