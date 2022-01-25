@@ -6,7 +6,7 @@ include { GATK_ALIGN_AND_PREPROCESS } from '../../../../subworkflows/nf-core/gat
 
 workflow test_gatk_align_and_preprocess_fastq {
     input = [
-        [[ id:'test', single_end:false ], // meta map
+        [[ id:'test', single_end:false, read_group:'"@RG\\tID:Seq01p\\tSM:Seq01\\tPL:ILLUMINA"' ], // meta map
          [
              file(params.test_data['homo_sapiens']['illumina']['test_umi_1_fastq_gz'], checkIfExists: true),
              file(params.test_data['homo_sapiens']['illumina']['test_umi_2_fastq_gz'], checkIfExists: true)
@@ -28,11 +28,10 @@ workflow test_gatk_align_and_preprocess_fastq {
 }
 
 workflow test_gatk_align_and_preprocess_ubam {
-    input = [ [[ id:'test', single_end:false ], // meta map
+    input = [ [[ id:'test', single_end:false, read_group:'"@RG\\tID:Seq01p\\tSM:Seq01\\tPL:ILLUMINA"' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_umi_converted_bam'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)]
               ]
-
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
