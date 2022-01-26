@@ -1,5 +1,3 @@
-def VERSION = '2.5.0'
-
 process SVDB_MERGE {
     tag "$meta.id"
     label 'process_medium'
@@ -34,7 +32,7 @@ process SVDB_MERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        svdb: $VERSION
+        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
     END_VERSIONS
     """
 }
