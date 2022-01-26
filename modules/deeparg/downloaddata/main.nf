@@ -1,13 +1,12 @@
 def VERSION='1.0.2'
 
 process DEEPARG_DOWNLOADDATA {
-    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
+        'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
 
     input:
 
