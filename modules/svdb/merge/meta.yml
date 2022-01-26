@@ -19,7 +19,7 @@ input:
       description: prioritise the input vcf files according to this list, e.g ['tiddit','cnvnator']
   - vcfs:
       type: list
-      description: Two or more VCF files, e.g [ test1.vcf:tiddit, test2.vcf:cnvnator]
+      description: Two or more VCF files. Order of files should correspond to the order of tags used for priority.
       pattern: "*.{vcf,vcf.gz}"
 output:
   - meta:
