@@ -1,0 +1,8 @@
+- name: samtools markdup
+  command: nextflow run ./tests/modules/samtools/markdup -entry test_samtools_markdup -c ./tests/config/nextflow.config -c ./tests/modules/samtools/markdup/nextflow.config
+  tags:
+    - samtools
+    - samtools/markdup
+  files:
+    - path: output/samtools/dImpGla2.markdup.bam
+      md5sum: 48cddc3a67b4242106e7a19a00ee3198
