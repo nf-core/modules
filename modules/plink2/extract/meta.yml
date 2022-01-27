@@ -47,18 +47,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - pgen:
+  - extract_pgen:
       type: file
-      description: PLINK 2 binary genotype table
+      description: PLINK 2 binary genotype table, containing extracted variants
       pattern: "*.{pgen}"
-  - psam:
+  - extract_psam:
       type: file
-      description: PLINK 2 sample information file
+      description: PLINK 2 sample information file, containing extracted variants
       pattern: "*.{psam}"
-  - pvar:
+  - extract_pvar:
       type: file
-      description: PLINK 2 variant information file
-      pattern: "*.{pvar}"
+      description: PLINK 2 variant information file, containing extracted variants
+      pattern: "*.{pvar.zst}"
 
 authors:
   - "@nebfield"

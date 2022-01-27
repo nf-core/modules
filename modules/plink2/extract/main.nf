@@ -11,9 +11,9 @@ process PLINK2_EXTRACT {
     tuple val(meta), path(pgen), path(psam), path(pvar), path(variants)
 
     output:
-    tuple val(meta), path("*.pgen")    , emit: pgen
-    tuple val(meta), path("*.psam")    , emit: psam
-    tuple val(meta), path("*.pvar.zst"), emit: pvar
+    tuple val(meta), path("*.pgen")    , emit: extract_pgen
+    tuple val(meta), path("*.psam")    , emit: extract_psam
+    tuple val(meta), path("*.pvar.zst"), emit: extract_pvar
     path "versions.yml"            , emit: versions
 
     script:
