@@ -11,9 +11,9 @@ process PLINK2_EXTRACT {
     tuple val(meta), path(pgen), path(psam), path(pvar), path(variants)
 
     output:
-    tuple val(meta), path("*.pgen"), emit: pgen
-    tuple val(meta), path("*.psam"), emit: psam
-    tuple val(meta), path("*.pvar"), emit: pvar
+    tuple val(meta), path("*.pgen")    , emit: pgen
+    tuple val(meta), path("*.psam")    , emit: psam
+    tuple val(meta), path("*.pvar.zst"), emit: pvar
     path "versions.yml"            , emit: versions
 
     script:
@@ -26,7 +26,7 @@ process PLINK2_EXTRACT {
         $args \\
         --threads $task.cpus \\
         --extract $variants \\
-        --make-pgen \\
+        --make-pgen vzs \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
