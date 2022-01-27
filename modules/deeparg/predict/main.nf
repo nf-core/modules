@@ -11,7 +11,7 @@ process DEEPARG_PREDICT {
 
     input:
     tuple val(meta), path(fasta), val(model)
-    tuple path(db)
+    path(db)
 
     output:
     tuple val(meta), path("*.align.daa")            , emit: daa
