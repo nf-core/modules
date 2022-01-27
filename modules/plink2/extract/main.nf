@@ -19,7 +19,7 @@ process PLINK2_EXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$pgen" == "${prefix}.pgen" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if( "$pgen" == "${prefix}.pgen" ) error "Input and output names are the same, use \"task.ext.prefix\" in modules.config to disambiguate!"
     """
     plink2 \\
         --pfile ${pgen.baseName} \\
