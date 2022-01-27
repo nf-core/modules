@@ -67,7 +67,7 @@ workflow GATK_ALIGN_AND_PREPROCESS {
         //
         BWAMEM2_MEM ( ch_bwa_in, ch_bwa_index, false )
         ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
-        ch_mergebam_in = BWAMEM2_MEM.out.bam.collect()
+        ch_mem_out = BWAMEM2_MEM.out.bam.collect()
         //
 
         //Bam files sorted using picard sortsam.
@@ -75,16 +75,12 @@ workflow GATK_ALIGN_AND_PREPROCESS {
         PICARD_SORTSAM_UNMAPPED ( ch_input, "queryname" )
         ch_versions = ch_versions.mix(PICARD_SORTSAM_UNMAPPED.out.versions)
         ch_unmapped = PICARD_SORTSAM_UNMAPPED.out.bam.collect()
-        unmapped = ch_unmapped.map {
-            meta, unmapped_bam ->
-            [unmapped_bam]
-        }
 
         //
         //Use GATK4 Mergebamalignment to add additional info from the ubam, that was dropped by samtools fastq, back into the aligned bam file
         //
-
-        GATK4_MERGEBAMALIGNMENT ( ch_mergebam_in, unmapped, fasta, dict )
+        ch_mergebam_in = ch_mem_out.combine(ch_unmapped, by: 0)
+        GATK4_MERGEBAMALIGNMENT ( ch_mergebam_in, fasta, dict )
         ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         ch_markdup_in = BWAMEM2_MEM.out.bam.collect()
     } else {
