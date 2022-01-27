@@ -250,11 +250,11 @@ bwa/samse:
   - modules/bwa/samse/**
   - tests/modules/bwa/samse/**
 
-bwamem2/index:
+bwamem2/index: &bwamem2_index
   - modules/bwamem2/index/**
   - tests/modules/bwamem2/index/**
 
-bwamem2/mem:
+bwamem2/mem: &bwamem2_mem
   - modules/bwamem2/mem/**
   - tests/modules/bwamem2/mem/**
 
@@ -516,7 +516,7 @@ freebayes:
   - modules/freebayes/**
   - tests/modules/freebayes/**
 
-gatk4/applybqsr:
+gatk4/applybqsr: &gatk4_applybqsr
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
 
@@ -524,7 +524,7 @@ gatk4/applyvqsr:
   - modules/gatk4/applyvqsr/**
   - tests/modules/gatk4/applyvqsr/**
 
-gatk4/baserecalibrator:
+gatk4/baserecalibrator: &gatk4_baserecalibrator
   - modules/gatk4/baserecalibrator/**
   - tests/modules/gatk4/baserecalibrator/**
 
@@ -592,7 +592,7 @@ gatk4/markduplicates:
   - modules/gatk4/markduplicates/**
   - tests/modules/gatk4/markduplicates/**
 
-gatk4/mergebamalignment:
+gatk4/mergebamalignment: &gatk4_mergebamalignment
   - modules/gatk4/mergebamalignment/**
   - tests/modules/gatk4/mergebamalignment/**
 
@@ -1105,7 +1105,7 @@ picard/filtersamreads:
   - modules/picard/filtersamreads/**
   - tests/modules/picard/filtersamreads/**
 
-picard/markduplicates:
+picard/markduplicates: &picard_markduplicates
   - modules/picard/markduplicates/**
   - tests/modules/picard/markduplicates/**
 
@@ -1113,7 +1113,7 @@ picard/mergesamfiles:
   - modules/picard/mergesamfiles/**
   - tests/modules/picard/mergesamfiles/**
 
-picard/sortsam:
+picard/sortsam: &picard_sortsam
   - modules/picard/sortsam/**
   - tests/modules/picard/sortsam/**
 
@@ -1273,7 +1273,7 @@ samtools/faidx:
   - modules/samtools/faidx/**
   - tests/modules/samtools/faidx/**
 
-samtools/fastq:
+samtools/fastq: &samtools_fastq
   - modules/samtools/fastq/**
   - tests/modules/samtools/fastq/**
 
@@ -1289,7 +1289,7 @@ samtools/idxstats:
   - modules/samtools/idxstats/**
   - tests/modules/samtools/idxstats/**
 
-samtools/index:
+samtools/index: &samtools_index
   - modules/samtools/index/**
   - tests/modules/samtools/index/**
 

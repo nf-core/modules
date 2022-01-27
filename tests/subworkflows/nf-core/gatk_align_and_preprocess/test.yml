@@ -2,74 +2,107 @@
   command: nextflow run ./tests/subworkflows/nf-core/gatk_align_and_preprocess -entry test_gatk_align_and_preprocess_fastq -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/gatk_align_and_preprocess/nextflow.config
   tags:
     - subworkflows
-    # - subworkflows/gatk_create_som_pon
-    # - gatk4
+    - subworkflows/gatk_create_som_pon
+    - gatk4
     # Modules
-    # - gatk4/genomicsdbimport
-    # - gatk4/createsomaticpanelofnormals
+    - bwamem2 index
+    - bwamem2 mem
+    - picard markduplicates
+    - picard sortsam
+    - samtools index
+    - gatk4 BaseRecalibrator
+    - gatk4 applybqsr
   files:
-      # gatk4 mutect2
-    - path: output/gatk4/test1.vcf.gz
-    - path: output/gatk4/test1.vcf.gz.stats
-      md5sum: 4f77301a125913170b8e9e7828b4ca3f
-    - path: output/gatk4/test1.vcf.gz.tbi
-    - path: output/gatk4/test2.vcf.gz
-    - path: output/gatk4/test2.vcf.gz.stats
-      md5sum: 106c5828b02b906c97922618b6072169
-    - path: output/gatk4/test2.vcf.gz.tbi
-      # gatk4 genomicsdbimport
-    - path: output/gatk4/test_panel/__tiledb_workspace.tdb
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/callset.json
-      md5sum: 2ab411773b7267de61f8c04939de2a99
-    - path: output/gatk4/test_panel/chr22$1$40001/.__consolidation_lock
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/chr22$1$40001/__array_schema.tdb
-    - path: output/gatk4/test_panel/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
-      md5sum: 2502f79658bc000578ebcfddfc1194c0
-    - path: output/gatk4/test_panel/vcfheader.vcf
+    # bwamem2 index
+    - path: ./output/bwamem2/bwamem2/genome.fasta.amb
+      md5sum: 1891c1de381b3a96d4e72f590fde20c1
+    - path: ./output/bwamem2/bwamem2/genome.fasta.pac
+      md5sum: 8569fbdb2c98c6fb16dfa73d8eacb070
+    - path: ./output/bwamem2/bwamem2/genome.fasta.0123
+      md5sum: d73300d44f733bcdb7c988fc3ff3e3e9
+    - path: ./output/bwamem2/bwamem2/genome.fasta.bwt.2bit.64
+      md5sum: cd4bdf496eab05228a50c45ee43c1ed0
+    - path: ./output/bwamem2/bwamem2/genome.fasta.ann
+      md5sum: 2df4aa2d7580639fa0fcdbcad5e2e969
+    # bwamem2 mem
+    - path: output/bwamem2/test.mapped.bam
+      md5sum: cec7a9970a4fb2538ea7eb3d96b29ba3
+    # picard markduplicates
+    - path: ./output/picard/test.markduplicates.MarkDuplicates.metrics.txt
       contains:
-        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
-    - path: output/gatk4/test_panel/vidmap.json
-      md5sum: ac4e96e03bbbc5c72fac77d487e73d9e
-      # gatk4 createsomaticpanelofnormals
-    - path: output/gatk4/test_panel.vcf.gz
-    - path: output/gatk4/test_panel.vcf.gz.tbi
+        - "BIN	CoverageMult	all_sets	non_optical_sets"
+    - path: ./output/picard/test.markduplicates.bam
+      md5sum: eeb17e0864cc135db202c555a6f24f00
+    # picard sortsam duplicatesmarked
+    - path: output/picard/test.sorted.bam
+      md5sum: cd8c4bc072e0aedc8a8fab8d33b6f53b
+    # samtools index
+    - path: output/samtools/test.sorted.bam.bai
+      md5sum: 0ddfb51805b24f41a097d025356c9f9b
+    # gatk4 BaseRecalibrator
+    - path: output/gatk4/test.table
+      md5sum: 215f157a1188fa61bbe2cdc595d07e29
+    # gatk4 applybqsr
+    - path: output/gatk4/test.recalibrated.bam
+      md5sum: 0d5af33c6c3866922c0e3f18cbd98083
 
 - name: test_gatk_align_and_preprocess_ubam
   command: nextflow run ./tests/subworkflows/nf-core/gatk_align_and_preprocess -entry test_gatk_align_and_preprocess_ubam -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/gatk_align_and_preprocess/nextflow.config
   tags:
     - subworkflows
-    # - subworkflows/gatk_create_som_pon
-    # - gatk4
+    - subworkflows/gatk_create_som_pon
+    - gatk4
     # Modules
-    # - gatk4/genomicsdbimport
-    # - gatk4/createsomaticpanelofnormals
+    - bwamem2 index
+    - samtools fastq
+    - bwamem2 mem
+    - picard sortsam
+    - gatk4 mergebamalignment
+    - picard markduplicates
+    - samtools index
+    - gatk4 BaseRecalibrator
+    - gatk4 applybqsr
   files:
-      # gatk4 mutect2
-    - path: output/gatk4/test1.vcf.gz
-    - path: output/gatk4/test1.vcf.gz.stats
-      md5sum: 4f77301a125913170b8e9e7828b4ca3f
-    - path: output/gatk4/test1.vcf.gz.tbi
-    - path: output/gatk4/test2.vcf.gz
-    - path: output/gatk4/test2.vcf.gz.stats
-      md5sum: 106c5828b02b906c97922618b6072169
-    - path: output/gatk4/test2.vcf.gz.tbi
-      # gatk4 genomicsdbimport
-    - path: output/gatk4/test_panel/__tiledb_workspace.tdb
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/callset.json
-      md5sum: 2ab411773b7267de61f8c04939de2a99
-    - path: output/gatk4/test_panel/chr22$1$40001/.__consolidation_lock
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
-    - path: output/gatk4/test_panel/chr22$1$40001/__array_schema.tdb
-    - path: output/gatk4/test_panel/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
-      md5sum: 2502f79658bc000578ebcfddfc1194c0
-    - path: output/gatk4/test_panel/vcfheader.vcf
+    # bwamem2 index
+    - path: ./output/bwamem2/bwamem2/genome.fasta.amb
+      md5sum: 1891c1de381b3a96d4e72f590fde20c1
+    - path: ./output/bwamem2/bwamem2/genome.fasta.pac
+      md5sum: 8569fbdb2c98c6fb16dfa73d8eacb070
+    - path: ./output/bwamem2/bwamem2/genome.fasta.0123
+      md5sum: d73300d44f733bcdb7c988fc3ff3e3e9
+    - path: ./output/bwamem2/bwamem2/genome.fasta.bwt.2bit.64
+      md5sum: cd4bdf496eab05228a50c45ee43c1ed0
+    - path: ./output/bwamem2/bwamem2/genome.fasta.ann
+      md5sum: 2df4aa2d7580639fa0fcdbcad5e2e969
+    # samtools fastq
+    - path: output/samtools/test_2.fastq.gz
+      md5sum: 7e00ef40d5cfe272b67461381019dcc1
+    - path: output/samtools/test_1.fastq.gz
+      md5sum: 4522edbe158ec4804765794569f67493
+    # bwamem2 mem
+    - path: output/bwamem2/test.mapped.bam
+      md5sum: 8865a92e558877d7a2ddaff8e712a6ee
+    # picard sortsam unmapped
+    - path: output/picard/test.unmapped.sorted.bam
+      md5sum: fcd6c6a5434b763683fdf36e8500ae8b
+    # gatk4 mergebamalignment
+    - path: output/gatk4/test.merged.bam
+      md5sum: 8860b73c46fb9790742b6bda796099e4
+    # picard markduplicates
+    - path: ./output/picard/test.markduplicates.MarkDuplicates.metrics.txt
       contains:
-        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
-    - path: output/gatk4/test_panel/vidmap.json
-      md5sum: ac4e96e03bbbc5c72fac77d487e73d9e
-      # gatk4 createsomaticpanelofnormals
-    - path: output/gatk4/test_panel.vcf.gz
-    - path: output/gatk4/test_panel.vcf.gz.tbi
+        - "BIN	CoverageMult	all_sets	non_optical_sets"
+    - path: ./output/picard/test.markduplicates.bam
+      md5sum: 2c0279b19a0af60a8b0a3cf2a3aef088
+    # picard sortsam duplicatesmarked
+    - path: output/picard/test.sorted.bam
+      md5sum: 89cdd7821e4869b1235e1bec9ad1268a
+    # samtools index
+    - path: output/samtools/test.sorted.bam.bai
+      md5sum: b311e397c55ffd2f9064c120068b87ed
+    # gatk4 BaseRecalibrator
+    - path: output/gatk4/test.table
+      md5sum: 240dfe2ccd431a931e352b66a255f569
+    # gatk4 applybqsr
+    - path: output/gatk4/test.recalibrated.bam
+      md5sum: e48a08357b71e04821672c0eb49606a9
