@@ -1,0 +1,52 @@
+name: busco
+description: Benchmarking Universal Single Copy Orthologs
+keywords:
+  - quality control
+  - genome
+  - transcriptome
+  - proteome
+tools:
+  - busco:
+      description: BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
+      homepage: https://busco.ezlab.org/
+      documentation: https://busco.ezlab.org/busco_userguide.html
+      tool_dev_url: https://gitlab.com/ezlab/busco
+      doi: "10.1007/978-1-4939-9173-0_14"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Nucleic or amino acid sequence file in FASTA format
+      pattern: "*.{fasta}"
+  - augustus_config:
+      type: directory
+      description: AUGUSTUS config directory
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: Full summary table
+      pattern: "*.{tsv}"
+  - txt:
+      type: file
+      description: Short summary text
+      pattern: "*.{txt}"
+
+authors:
+  - "@priyanka-surana"
+  - "@charles-plessy"
