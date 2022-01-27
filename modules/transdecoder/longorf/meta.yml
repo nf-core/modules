@@ -33,22 +33,25 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - faa:
+  - pep:
       type: Amino acids fasta file
       description: all ORFs meeting the minimum length criteria, regardless of coding potential. file
       pattern: "*.{pep}"
-  - gff:
+  - gff3:
       type: gff file
       description: positions of all ORFs as found in the target transcripts. file
       pattern: "*.{gff3}"
-  - fna:
+  - cds:
       type: fasta file
       description: the nucleotide coding sequence for all detected ORFs. file
       pattern: "*{cds}"
   - dat:
       type: tsv file
-      description: 
+      description: nucleotide frequencies
       pattern: "*{dat}"
+  - folder:
+      type: folder
+      description: it contains all the file for run TRANSDECODER_PREDICT
 
 authors:
   - "@Danilo2771"
