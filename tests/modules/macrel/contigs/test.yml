@@ -1,0 +1,16 @@
+- name: macrel contigs test_macrel_contigs
+  command: nextflow run ./tests/modules/macrel/contigs -entry test_macrel_contigs -c ./tests/config/nextflow.config -c ./tests/modules/macrel/contigs/nextflow.config
+  tags:
+    - macrel/contigs
+    - macrel
+  files:
+    - path: output/macrel/test/README.md
+      md5sum: fa3706dfc95d0538a52c4d0d824be5fb
+    - path: output/macrel/test/test.all_orfs.faa.gz
+    - path: output/macrel/test/test.prediction.gz
+    - path: output/macrel/test/test.smorfs.faa.gz
+      md5sum: 79704c6120c2f794518301af6f9b963d
+    - path: output/macrel/test/test_log.txt
+      md5sum: 6fdba143dce759597eb9f80e5d968729
+    - path: output/macrel/versions.yml
+      md5sum: be8bf0d0647751c635c3736655f29f85
