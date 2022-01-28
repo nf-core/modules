@@ -16,7 +16,9 @@ def _get_workflow_names():
         # test_config = yaml.safe_load(f.read_text())
         test_config = yaml.load(f.read_text(), Loader=yaml.BaseLoader)
         for workflow in test_config:
-            if 'exit_code' not in workflow:
+            # https://github.com/nf-core/modules/pull/1242 - added to cover tests 
+            # that expect an error and therefore will not generate a versions.yml
+            if 'exit_code' not in workflow: 
                 yield workflow["name"]
 
 
