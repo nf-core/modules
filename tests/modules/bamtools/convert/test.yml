@@ -1,3 +1,19 @@
+- name: bamtools convert test_bamtools_convert_ext_error
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_ext_error -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+    - ext_error
+  exit_code: 1
+
+- name: bamtools convert test_bamtools_convert_noext_error
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_noext_error -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+    - noext_error
+  exit_code: 1
+
 - name: bamtools convert test_bamtools_convert_bed
   command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_bed -c tests/config/nextflow.config
   tags:

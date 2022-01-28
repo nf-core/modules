@@ -21,6 +21,8 @@ process BAMTOOLS_CONVERT {
     if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
     m = args =~ /-format ([a-z]+)/
     ext = m[0][1]
+
+
     """
     bamtools \\
         convert \\
