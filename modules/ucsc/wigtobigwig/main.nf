@@ -1,7 +1,7 @@
 def VERSION = '377' // Version information not provided by tool on CLI
 
 process UCSC_WIGTOBIGWIG {
-    tag '$wig'
+    tag "$meta.id"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ucsc-wigtobigwig=377" : null)
@@ -10,21 +10,22 @@ process UCSC_WIGTOBIGWIG {
         'quay.io/biocontainers/ucsc-wigtobigwig:377--h0b8a92a_2' }"
 
     input:
-    path wig
+    tuple val(meta), path(wig)
     path sizes
 
     output:
-    path "*.bw"        , emit: bw
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.bw"), emit: bw
+    path "versions.yml"          , emit: versions
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     wigToBigWig \\
         $args \\
         $wig \\
         $sizes \\
-        ${wig.getSimpleName()}.bw
+        ${prefix}.bw
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
