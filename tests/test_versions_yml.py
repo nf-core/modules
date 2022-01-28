@@ -16,7 +16,8 @@ def _get_workflow_names():
         # test_config = yaml.safe_load(f.read_text())
         test_config = yaml.load(f.read_text(), Loader=yaml.BaseLoader)
         for workflow in test_config:
-            yield workflow["name"]
+            if 'exit_code' not in workflow:
+                yield workflow["name"]
 
 
 @pytest.mark.workflow(*_get_workflow_names())
