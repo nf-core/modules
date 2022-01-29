@@ -55,4 +55,20 @@ process MANTA_GERMLINE {
         manta: \$( configManta.py --version )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.candidate_small_indels.vcf.gz
+    touch ${prefix}.candidate_small_indels.vcf.gz.tbi
+    touch ${prefix}.candidate_sv.vcf.gz
+    touch ${prefix}.candidate_sv.vcf.gz.tbi
+    touch ${prefix}.diploid_sv.vcf.gz
+    touch ${prefix}.diploid_sv.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        manta: \$( configManta.py --version )
+    END_VERSIONS
+    """
 }
