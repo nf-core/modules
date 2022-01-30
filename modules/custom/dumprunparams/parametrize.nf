@@ -37,8 +37,13 @@ def dump_params_yml(params) {
 
     // Therefore, we inject it into the bash script:
     return """\
-        cat <<"END_PARAMS_SECTION" > ./.params.yml
-        ${indent_code_block(yaml_str, 8)}
-        END_PARAMS_SECTION
+    cat <<"END_PARAMS_SECTION" > ./params_mqc.html
+    <!--
+    id: 'pipeline-run-params'
+    section_name: 'Pipeline Run Parameters'
+    description: 'Resolved parameters for ${workflow.manifest.name} (v${workflow.manifest.version}) pipeline run: ${workflow.runName}. Note: All possible parameters are listed, but not necessarily used - some will only be utilised if a given module has been explicitly activated.'
+    -->
+    <pre><code>${indent_code_block(yaml_str, 8)}</code></pre>
+    END_PARAMS_SECTION
     """
 }

@@ -4,13 +4,12 @@
     - custom/dumprunparams
     - custom
   files:
-    - path: output/custom/params_mqc.tsv
+    - path: output/custom/params_mqc.html
       contains:
-        - '--name	test'
+        - 'nf-core-rulez-k'
     - path: output/multiqc/multiqc_report.html
       contains:
         - 'nf-core-rulez-k'
-    - path: output/multiqc/versions.yml
 
 - name: custom dumprunparams test_custom_dumprunparams_oneexclude
   command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams_oneexclude -c tests/config/nextflow.config
@@ -18,13 +17,12 @@
     - custom/dumprunparams
     - custom
   files:
-    - path: output/custom/params_mqc.tsv
+    - path: output/custom/params_mqc.html
       contains:
-        - '--name	test'
+        - 'nf-core-rulez-k'
     - path: output/multiqc/multiqc_report.html
       contains:
         - 'nf-core-rulez-k'
-    - path: output/multiqc/versions.yml
 
 - name: custom dumprunparams test_custom_dumprunparams_twoexclude
   command: nextflow run tests/modules/custom/dumprunparams -entry test_custom_dumprunparams_twoexclude -c tests/config/nextflow.config
@@ -32,10 +30,9 @@
     - custom/dumprunparams
     - custom
   files:
-    - path: output/custom/params_mqc.tsv
+    - path: output/custom/params_mqc.html
       contains:
-        - '--name	test'
+        - 'nf-core-rulez-k'
     - path: output/multiqc/multiqc_report.html
       contains:
         - 'nf-core-rulez-k'
-    - path: output/multiqc/versions.yml
