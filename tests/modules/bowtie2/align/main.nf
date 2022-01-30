@@ -13,9 +13,10 @@ workflow test_bowtie2_align_single_end {
         ]
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    save_unaligned = false
 
     BOWTIE2_BUILD ( fasta )
-    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index )
+    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned )
 }
 
 workflow test_bowtie2_align_paired_end {
@@ -27,7 +28,8 @@ workflow test_bowtie2_align_paired_end {
         ]
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    save_unaligned = false
 
     BOWTIE2_BUILD ( fasta )
-    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index )
+    BOWTIE2_ALIGN ( input, BOWTIE2_BUILD.out.index, save_unaligned )
 }

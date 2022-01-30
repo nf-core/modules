@@ -4,7 +4,7 @@ process PIRATE {
 
     conda (params.enable_conda ? "bioconda::pirate=1.0.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pirate%3A1.0.4--hdfd78af_1' :
+        'https://depot.galaxyproject.org/singularity/pirate:1.0.4--hdfd78af_1' :
         'quay.io/biocontainers/pirate:1.0.4--hdfd78af_1' }"
 
     input:
