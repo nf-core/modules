@@ -7,12 +7,12 @@ keywords:
   - graft
   - contamination
   - mouse
-  
+
 tools:
   - bamcmp:
-      description: Bamcmp is a tool for deconvolving host and graft reads, using two bam files. Reads should be mapped to two genomes, and the mapped, 
-                   sorted bam files supplied to the tool. It is highly recommended to use the "-s as" option not the "-s mapq" option, else 
-                   reads which multimap to the contamination genome will be spuriously kept.
+      description: Bamcmp is a tool for deconvolving host and graft reads, using two bam files. Reads should be mapped to two genomes, and the mapped,
+                    sorted bam files supplied to the tool. It is highly recommended to use the "-s as" option not the "-s mapq" option, else
+                    reads which multimap to the contamination genome will be spuriously kept.
       homepage: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       documentation: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       tool_dev_url: https://github.com/CRUKMI-ComputationalBiology/bamcmp
@@ -30,7 +30,7 @@ input:
       type: file
       description: BAM/CRAM/SAM file with the reads aligned to the primary genome (the one you want to keep)
       pattern: "*.{bam,cram,sam}"
-      
+
   - contaminant:
       type: file
       description: BAM/CRAM/SAM file with the reads aligned to the contaminant genome (the one you want to filter out)
@@ -46,12 +46,12 @@ output:
       type: file
       description: Bam file containing the reads which align better to the primary genome.
       pattern: "*.{bam,cram,sam}"
-      
+
   - bam:
       type: file
       description: Bam file containing the reads which align better to the contaminant genome.
       pattern: "*.{bam,cram,sam}"
 
 authors:
-  - "@kmurat1" 
+  - "@kmurat1"
   - "@sppearce"
