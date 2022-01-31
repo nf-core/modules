@@ -1,4 +1,3 @@
-// Import generic module functions
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
@@ -43,7 +42,5 @@ process BAMCMP {
         ${getSoftwareName(task.process)}: \$( bamcmp --version 2>&1 | sed 's/^.*bamcmp //; s/Using.*\$//' )
     END_VERSIONS
     """
-
-    // bamcmp takes two bam files aligned to different genomes (containing the same reads) and splits the reads by which genome they align to "better". We strongly suggest using the "as" mode, not the "mapq" mode. If both bam files contain exactly the same reads, only need the -A output bam file, but if they have been filtered previously then also need to join the -a bam with the -A bam file.
 
 }
