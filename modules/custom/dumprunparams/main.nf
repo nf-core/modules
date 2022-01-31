@@ -22,7 +22,7 @@ process CUSTOM_DUMPRUNPARAMS {
     yml_cmd = dump_params_yml(run_params_formatted)
 
     """
-    ${yml_cmd}
+    ${indent_code_block(yml_cmd, 4)}
     echo ""
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
