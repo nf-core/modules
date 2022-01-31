@@ -1,36 +1,56 @@
 name: bamcmp
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Bamcmp (Bam Compare) is a tool for assigning reads between a primary genome and a contamination genome. For instance, filtering out mouse reads from patient derived xenograft mouse models (PDX).
 keywords:
-  - sort
+  - filter
+  - xenograft
+  - host
+  - graft
+  - contamination
+  - mouse
+  
 tools:
   - bamcmp:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: 
-      homepage: 
-      documentation: 
-      tool_dev_url: 
-      doi: ""
-      licence: 
+      description: Bamcmp is a tool for deconvolving host and graft reads, using two bam files. Reads should be mapped to two genomes, and the mapped, 
+                   sorted bam files supplied to the tool. It is highly recommended to use the "-s as" option not the "-s mapq" option, else 
+                   reads which multimap to the contamination genome will be spuriously kept.
+      homepage: https://github.com/CRUKMI-ComputationalBiology/bamcmp
+      documentation: https://github.com/CRUKMI-ComputationalBiology/bamcmp
+      tool_dev_url: https://github.com/CRUKMI-ComputationalBiology/bamcmp
+      doi: "10.1158/1541-7786.MCR-16-0431"
+      licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+
+  - sample:
       type: file
-      description: BAM/CRAM/SAM file
+      description: BAM/CRAM/SAM file with the reads aligned to the primary genome (the one you want to keep)
+      pattern: "*.{bam,cram,sam}"
+      
+  - contaminant:
+      type: file
+      description: BAM/CRAM/SAM file with the reads aligned to the contaminant genome (the one you want to filter out)
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
+
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
+      description: Bam file containing the reads which align better to the primary genome.
+      pattern: "*.{bam,cram,sam}"
+      
+  - bam:
+      type: file
+      description: Bam file containing the reads which align better to the contaminant genome.
       pattern: "*.{bam,cram,sam}"
 
 authors:
