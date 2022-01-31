@@ -16,7 +16,7 @@ process BAMCMP {
         container "quay.io/biocontainers/bamcmp"
     }
 
-   input:
+    input:
     tuple val(meta), path(sample), path(contaminant)
 
     output:
@@ -30,12 +30,12 @@ process BAMCMP {
 
 
     """
- bamcmp \\
-   -s "as" \\
-   -1 $sample \\
-   -2 $contaminant \\
-   -A ${prefix}_primary.bam \\
-   -B ${prefix}_contamination.bam
+    bamcmp \\
+        -s "as" \\
+        -1 $sample \\
+        -2 $contaminant \\
+        -A ${prefix}_primary.bam \\
+        -B ${prefix}_contamination.bam
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
