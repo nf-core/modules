@@ -17,9 +17,9 @@ input:
       description: (Optional) groovy list of params to exclude from MultiQC report. Must be in format of list!
 
 output:
-  - mqc_csv:
+  - mqc_html:
       type: file
-      description: MultiQC custom content YML file containing run parameters.
+      description: MultiQC custom content HMTL file containing run parameters.
       pattern: "params_mqc.yml"
 
 authors:
