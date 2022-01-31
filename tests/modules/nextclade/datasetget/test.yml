@@ -1,0 +1,22 @@
+- name: nextclade datasetget
+  command: nextflow run ./tests/modules/nextclade/datasetget -entry test_nextclade_datasetget -c ./tests/config/nextflow.config -c ./tests/modules/nextclade/datasetget/nextflow.config
+  tags:
+    - nextclade
+    - nextclade/datasetget
+  files:
+    - path: output/nextclade/sars-cov-2/genemap.gff
+      md5sum: 21ebebfd0f416eeb959e55ebffd808e8
+    - path: output/nextclade/sars-cov-2/primers.csv
+      md5sum: 5990c3483bf66ce607aeb90a44e7ef2e
+    - path: output/nextclade/sars-cov-2/qc.json
+      md5sum: c512f51fda0212b21ffff05779180963
+    - path: output/nextclade/sars-cov-2/reference.fasta
+      md5sum: c7ce05f28e4ec0322c96f24e064ef55c
+    - path: output/nextclade/sars-cov-2/sequences.fasta
+      md5sum: 41129d255b99e0e92bdf20e866b99a1b
+    - path: output/nextclade/sars-cov-2/tag.json
+      md5sum: 402ac2b87e2a6a64a3fbf5ad16497af3
+    - path: output/nextclade/sars-cov-2/tree.json
+      md5sum: b8f32f547ff9e2131d6fc66b68fc54b1
+    - path: output/nextclade/sars-cov-2/virus_properties.json
+      md5sum: 5f2de3949e07cb633f3d9e4a7654dc81

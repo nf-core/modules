@@ -11,13 +11,16 @@ process SAMTOOLS_FAIDX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path ("*.fai") , emit: fai
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path ("*.fai"), emit: fai
+    path "versions.yml"            , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     """
-    samtools faidx $fasta
+    samtools \\
+        faidx \\
+        $fasta
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
