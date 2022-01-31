@@ -43,7 +43,9 @@ def dump_params_yml(params) {
     section_name: 'Pipeline Run Parameters'
     description: 'Resolved parameters for ${workflow.manifest.name} (v${workflow.manifest.version}) pipeline run: ${workflow.runName}. Note: All possible parameters are listed, but not necessarily used - some will only be utilised if a given module has been explicitly activated.'
     -->
-    <pre><code>${indent_code_block(yaml_str, 8)}</code></pre>
+    <pre><code>
+    ${indent_code_block(yaml_str, 4)}
+    </code></pre>
     END_PARAMS_SECTION
     """
 }
