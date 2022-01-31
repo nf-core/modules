@@ -8,8 +8,7 @@ process GATK4_MERGEBAMALIGNMENT {
         'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(aligned)
-    path  unmapped
+    tuple val(meta), path(aligned), path(unmapped)
     path  fasta
     path  dict
 
@@ -28,10 +27,10 @@ process GATK4_MERGEBAMALIGNMENT {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeBamAlignment \\
-        ALIGNED=$aligned \\
-        UNMAPPED=$unmapped \\
-        R=$fasta \\
-        O=${prefix}.bam \\
+        -ALIGNED $aligned \\
+        -UNMAPPED $unmapped \\
+        -R $fasta \\
+        -O ${prefix}.bam \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
