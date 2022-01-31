@@ -1,3 +1,4 @@
+def VERSION = '2.2'
 include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
@@ -37,10 +38,11 @@ process BAMCMP {
         -A ${prefix}_primary.bam \\
         -B ${prefix}_contamination.bam
 
-    cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( bamcmp --version 2>&1 | sed 's/^.*bamcmp //; s/Using.*\$//' )
+cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamcmp: $VERSION
     END_VERSIONS
+
     """
 
 }
