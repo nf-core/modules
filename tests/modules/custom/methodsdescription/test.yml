@@ -1,0 +1,12 @@
+- name: custom methodsdescription test_custom_methodsdescription
+  command: nextflow run tests/modules/custom/methodsdescription -entry test_custom_methodsdescription -c tests/config/nextflow.config
+  tags:
+    - custom
+    - custom/methodsdescription
+  files:
+    - path: output/results/custom/method_description_mqc.html
+      contains:
+          - 'nf-core/jamessmells'
+    - path: output/results/multiqc/multiqc_report.html
+      contains:
+          - 'nf-core/jamessmells'
