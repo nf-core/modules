@@ -1,37 +1,30 @@
 name: custom_methodsdescription
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: autogeneration of methods description for pipeline run.
 keywords:
-  - sort
+  - custom
+  - custom/methodsdescription
+  - methods
+  - description
+  - reporting
 tools:
   - custom:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: 
-      homepage: 
-      documentation: 
-      tool_dev_url: 
-      doi: ""
-      licence: 
+      description: Custom module used to dump run parameters of a given nf-core pipeline run.
+      homepage: https://github.com/nf-core/tools
+      documentation: https://github.com/nf-core/tools
+      licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - none
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - mqc_html:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: MultiQC custom content HTML
+      pattern: "*_mqc.html"
 
 authors:
   - "@jfy133"
