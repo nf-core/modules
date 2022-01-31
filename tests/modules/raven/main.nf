@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RAVEN } from '../../../modules/raven/main.nf' addParams( options: [:] )
+include { RAVEN } from '../../../modules/raven/main.nf'
 
 workflow test_raven {
     
