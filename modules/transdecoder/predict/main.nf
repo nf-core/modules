@@ -9,7 +9,7 @@ process TRANSDECODER_PREDICT {
 
     input:
     tuple val(meta), path(fasta)
-    path(fold) 
+    path(fold)
 
     output:
     tuple val(meta), path("*.transdecoder.pep")  , emit: pep
