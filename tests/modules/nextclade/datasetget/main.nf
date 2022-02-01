@@ -8,7 +8,8 @@ workflow test_nextclade_datasetget {
 
     dataset = 'sars-cov-2'
     reference = 'MN908947'
-    tag = '2022-01-05T19:54:31Z'
+    tag = '2022-01-18T12:00:00Z'
 
     NEXTCLADE_DATASETGET ( dataset, reference, tag )
+
 }
