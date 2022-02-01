@@ -2,7 +2,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/gatk_align_and_preprocess -entry test_gatk_align_and_preprocess_fastq -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/gatk_align_and_preprocess/nextflow.config
   tags:
     - subworkflows
-    - subworkflows/gatk_create_som_pon
+    - subworkflows/gatk_align_and_preprocess
     - gatk4
     # Modules
     - bwamem2 index
@@ -50,7 +50,7 @@
   command: nextflow run ./tests/subworkflows/nf-core/gatk_align_and_preprocess -entry test_gatk_align_and_preprocess_ubam -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/gatk_align_and_preprocess/nextflow.config
   tags:
     - subworkflows
-    - subworkflows/gatk_create_som_pon
+    - subworkflows/gatk_align_and_preprocess
     - gatk4
     # Modules
     - bwamem2 index

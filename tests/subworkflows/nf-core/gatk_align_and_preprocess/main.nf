@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_ALIGN_AND_PREPROCESS } from '../../../../subworkflows/nf-core/gatk_align_and_preprocess/main' addParams( [:]  )
+include { GATK_ALIGN_AND_PREPROCESS } from '../../../../subworkflows/nf-core/gatk_align_and_preprocess/main'
 
 workflow test_gatk_align_and_preprocess_fastq {
     input = [
