@@ -1,7 +1,7 @@
 name: transdecoder_predict
-description: TransDecoder itentifies candidate coding regions within transcript sequences. it is used to build gff file. You can use this module after/with transdecoder_longorf
+description: TransDecoder identifies candidate coding regions within transcript sequences. Tt is used to build gff file. You can use this module after/with transdecoder_longorf
 keywords:
-  - eucaryotes
+  - eukaryotes
   - gff
 
 tools:
@@ -25,7 +25,7 @@ input:
       pattern: "*.{fasta}"
   - fold:
       type: folder
-      description: it contains the output from the module transdecoder_longorf
+      description: Output from the module transdecoder_longorf
       pattern: "*"
 
 output:
@@ -39,16 +39,16 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - pep:
-      type: Amino acids fasta file
-      description: all ORFs meeting the minimum length criteria, regardless of coding potential. file
+      type: amino acids fasta file
+      description: All ORFs meeting the minimum length criteria, regardless of coding potential
       pattern: "*.{pep}"
   - gff3:
-      type: fasta file
-      description: positions of all ORFs as found in the target transcripts. file
+      type: gff3 file
+      description: Positions of all ORFs as found in the target transcripts
       pattern: "*.{gff3}"
   - cds:
-      type: fasta file
-      description: the nucleotide coding sequence for all detected ORFs. file
+      type: nucleotide fasta file
+      description: the nucleotide coding sequence for all detected ORFs
       pattern: "*{cds}"
   - bed:
       type: bed file
