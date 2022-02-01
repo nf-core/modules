@@ -1,11 +1,11 @@
 - name: raven test_raven
-  command: nextflow run tests/modules/raven -entry test_raven -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/raven -entry test_raven -c ./tests/config/nextflow.config -c ./tests/modules/raven/nextflow.config
   tags:
     - raven
   files:
-    - path: /tmp/tmpxbmaxyq9/raven/test.fasta.gz
+    - path: /tmp/tmpnbvpqkfb/raven/test.fasta.gz
       md5sum: b026b6aba793a9f2bbfb17f732c91926
-    - path: /tmp/tmpxbmaxyq9/raven/test.gfa.gz
+    - path: /tmp/tmpnbvpqkfb/raven/test.gfa.gz
       md5sum: 09053490495f6deb7a3941e559cda626
-    - path: /tmp/tmpxbmaxyq9/raven/versions.yml
+    - path: /tmp/tmpnbvpqkfb/raven/versions.yml
       md5sum: 770e0826d5c1e2a11bc69fd7a46fb56e
