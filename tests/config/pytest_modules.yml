@@ -520,7 +520,7 @@ gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
 
-gatk4/applyvqsr:
+gatk4/applyvqsr: &gatk4_applyvqsr
   - modules/gatk4/applyvqsr/**
   - tests/modules/gatk4/applyvqsr/**
 
@@ -560,11 +560,11 @@ gatk4/gatherbqsrreports:
   - modules/gatk4/gatherbqsrreports/**
   - tests/modules/gatk4/gatherbqsrreports/**
 
-gatk4/genomicsdbimport:
+gatk4/genomicsdbimport: &gatk4_genomicsdbimport
   - modules/gatk4/genomicsdbimport/**
   - tests/modules/gatk4/genomicsdbimport/**
 
-gatk4/genotypegvcfs:
+gatk4/genotypegvcfs: &gatk4_genotypegvcfs
   - modules/gatk4/genotypegvcfs/**
   - tests/modules/gatk4/genotypegvcfs/**
 
@@ -572,7 +572,7 @@ gatk4/getpileupsummaries:
   - modules/gatk4/getpileupsummaries/**
   - tests/modules/gatk4/getpileupsummaries/**
 
-gatk4/haplotypecaller:
+gatk4/haplotypecaller: &gatk4_haplotypecaller
   - modules/gatk4/haplotypecaller/**
   - tests/modules/gatk4/haplotypecaller/**
 
@@ -620,7 +620,7 @@ gatk4/variantfiltration:
   - modules/gatk4/variantfiltration/**
   - tests/modules/gatk4/variantfiltration/**
 
-gatk4/variantrecalibrator:
+gatk4/variantrecalibrator: &gatk4_variantrecalibrator
   - modules/gatk4/variantrecalibrator/**
   - tests/modules/gatk4/variantrecalibrator/**
 
