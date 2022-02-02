@@ -20,11 +20,11 @@ process BAMCMP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bamcmp \\
-        -s "as" \\
         -1 $sample \\
         -2 $contaminant \\
         -A ${prefix}_primary.bam \\
-        -B ${prefix}_contamination.bam
+        -B ${prefix}_contamination.bam \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
