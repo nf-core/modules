@@ -12,9 +12,9 @@ process BAMCMP {
 
     conda (params.enable_conda ? "bioconda::bamcmp=2.2" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "docker://crukmi/bamcmp:2.0.0"
+        container "https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0"
     } else {
-        container "quay.io/biocontainers/bamcmp"
+        container "quay.io/biocontainers/bamcmp:2.2--h05f6578_0"
     }
 
     input:
