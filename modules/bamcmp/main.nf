@@ -28,8 +28,6 @@ process BAMCMP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
     bamcmp \\
         -s "as" \\
