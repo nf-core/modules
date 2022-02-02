@@ -21,9 +21,9 @@ process BAMCMP {
     tuple val(meta), path(sample), path(contaminant)
 
     output:
-    tuple val(meta), path("*primary.bam"), emit: bam
+    tuple val(meta), path("*primary.bam")      , emit: bam
     tuple val(meta), path("*contamination.bam"), emit: contamination_bam
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                        , emit: versions
 
     script:
     def args = task.ext.args ?: ''
