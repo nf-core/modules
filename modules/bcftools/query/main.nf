@@ -8,30 +8,29 @@ process BCFTOOLS_QUERY {
         'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(index)
-    path(regions)
-    path(targets)
-    path(samples)
+    tuple val(meta), path(vcf), path(tbi)
+    path regions
+    path targets
+    path samples
 
     output:
-    tuple val(meta), path("*.gz") , emit: vcf
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions_file  = regions ? "--regions-file ${regions}" : ""
+    def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file =  samples ? "--samples-file ${samples}" : ""
-
     """
     bcftools query \\
-        --output ${prefix}.vcf.gz \\
-        ${regions_file} \\
-        ${targets_file} \\
-        ${samples_file} \\
+        --output ${prefix}.txt \\
+        $regions_file \\
+        $targets_file \\
+        $samples_file \\
         $args \\
-        ${vcf}
+        $vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
