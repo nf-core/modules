@@ -1,21 +1,11 @@
 def VERSION = '2.2'
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BAMCMP {
-    tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}"
-
 
     conda (params.enable_conda ? "bioconda::bamcmp=2.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0"
-    } else {
-        container "quay.io/biocontainers/bamcmp:2.2--h05f6578_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0' :
+        'quay.io/biocontainers/bamcmp:2.2--h05f6578_0' }"
 
     input:
     tuple val(meta), path(sample), path(contaminant)
