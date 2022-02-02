@@ -40,7 +40,6 @@ process BAMCMP {
     "${task.process}":
         bamcmp: $VERSION
     END_VERSIONS
-
     """
 
 }
