@@ -36,7 +36,7 @@ process BAMCMP {
         -A ${prefix}_primary.bam \\
         -B ${prefix}_contamination.bam
 
-cat <<-END_VERSIONS > versions.yml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bamcmp: $VERSION
     END_VERSIONS
