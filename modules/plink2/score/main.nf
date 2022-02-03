@@ -20,6 +20,7 @@ process PLINK2_SCORE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     plink2 \\
+        --threads $task.cpus \\
         --pfile ${pgen.baseName} \\
         --score ${scorefile} \\
         $args \\
