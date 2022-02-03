@@ -23,22 +23,20 @@ input:
         type: file
         description: |
           The vcf file to be qeuried.
-          e.g. 'file.vcf'
-    - index:
+        pattern: "*.{vcf.gz, vcf}"
+    - tbi:
         type: file
         description: |
           The tab index for the VCF file to be inspected.
-          e.g. 'file.tbi'
+        pattern: "*.tbi"
     - regions:
         type: file
         description: |
           Optionally, restrict the operation to regions listed in this file.
-          e.g. 'file.vcf'
     - targets:
         type: file
         description: |
           Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
-          e.g. 'file.vcf'
     - samples:
         type: file
         description: |
@@ -50,13 +48,14 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - vcf:
+    - txt:
         type: file
-        description: VCF query output file
-        pattern: "*.{vcf.gz}"
+        description: BCFTools query output file
+        pattern: "*.txt"
     - versions:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 authors:
   - "@abhi18av"
+  - "@drpatelh"
