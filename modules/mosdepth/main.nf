@@ -44,4 +44,22 @@ process MOSDEPTH {
         mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.global.dist.txt
+    touch ${prefix}.region.dist.txt
+    touch ${prefix}.summary.txt
+    touch ${prefix}.per-base.d4
+    touch ${prefix}.per-base.bed.gz
+    touch ${prefix}.per-base.bed.gz.csi
+    touch ${prefix}.regions.bed.gz
+    touch ${prefix}.regions.bed.gz.csi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
