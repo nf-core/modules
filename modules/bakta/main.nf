@@ -23,6 +23,7 @@ process BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.tsv"), emit: hypotheticals_tsv
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv")              , emit: tsv
+    tuple val(meta), path("${prefix}.txt")              , emit: txt
     path "versions.yml"                                 , emit: versions
 
     script:
@@ -58,6 +59,7 @@ process BAKTA {
     touch ${prefix}.hypotheticals.tsv
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
