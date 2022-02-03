@@ -32,4 +32,15 @@ process UCSC_WIGTOBIGWIG {
         ucsc: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bw
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ucsc: $VERSION
+    END_VERSIONS
+    """
 }

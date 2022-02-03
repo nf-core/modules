@@ -33,4 +33,16 @@ process TIDDIT_COV {
         tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.wig
+    touch $prefix.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
+    END_VERSIONS
+    """
 }
