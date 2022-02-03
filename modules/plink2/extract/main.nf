@@ -14,7 +14,7 @@ process PLINK2_EXTRACT {
     tuple val(meta), path("*.pgen")    , emit: extract_pgen
     tuple val(meta), path("*.psam")    , emit: extract_psam
     tuple val(meta), path("*.pvar.zst"), emit: extract_pvar
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                , emit: versions
 
     script:
     def args = task.ext.args ?: ''
