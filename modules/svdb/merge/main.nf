@@ -35,4 +35,15 @@ process SVDB_MERGE {
         svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_sv_merge.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
+    END_VERSIONS
+    """
 }
