@@ -11,10 +11,10 @@ process PLINK2_VCF {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.pgen"), emit: pgen
-    tuple val(meta), path("*.psam"), emit: psam
-    tuple val(meta), path("*.pvar"), emit: pvar
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.pgen")    , emit: pgen
+    tuple val(meta), path("*.psam")    , emit: psam
+    tuple val(meta), path("*.pvar.zst"), emit: pvar
+    path "versions.yml"                , emit: versions
 
     script:
     def args = task.ext.args ?: ''
@@ -23,6 +23,7 @@ process PLINK2_VCF {
     plink2 \\
         $args \\
         --vcf $vcf \\
+        --make-pgen vzs \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
