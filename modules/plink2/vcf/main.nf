@@ -19,8 +19,11 @@ process PLINK2_VCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def mem_mb = task.memory.toMega()
     """
     plink2 \\
+        --threads $task.cpus \\
+        --memory $mem_mb \\
         $args \\
         --vcf $vcf \\
         --make-pgen vzs \\
