@@ -15,6 +15,9 @@ process SRATOOLS_PREFETCH {
     tuple val(meta), path("$id"), emit: sra
     path "versions.yml"         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
