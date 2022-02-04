@@ -53,10 +53,9 @@ workflow GATK_JOINT_GERMLINE_VARIANT_CALLING {
     //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
     //
     gendb_input = Channel.of([[ id:joint_id ]]).combine(ch_vcf).combine(ch_index).combine([joint_intervals]).combine(['']).combine([dict])
-    gendb_input.view()
     GATK4_GENOMICSDBIMPORT ( gendb_input, false, false, false )
 
-    ch_versions       = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions)
+    ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions)
 
     //
     //Joint genotyping performed using GenotypeGVCFs

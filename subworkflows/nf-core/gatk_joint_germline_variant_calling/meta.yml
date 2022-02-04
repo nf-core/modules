@@ -1,4 +1,4 @@
-name: gatk_tumor_only_somatic_variant_calling
+name: gatk_joint_germline_variant_calling_skip_haplotc
 description: |
   Perform variant calling on a multiple germline samples using haplotypecaller in GVCF mode.
   Run output gvcds through genomisdbimport together to create a joint genomicsdbworkspace, then run genotypeGVCFs on the workspace to get a joint calling vcf.

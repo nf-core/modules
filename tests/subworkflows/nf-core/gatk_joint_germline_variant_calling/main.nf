@@ -10,24 +10,24 @@ workflow test_gatk_joint_germline_variant_calling_skip_haplotc {
             [ id:'test' ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_g_vcf_gz'],  checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_g_vcf_gz_tbi'],  checkIfExists: true),
-            []
+            file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true)
         ],
         [
             [ id:'test2' ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test2_g_vcf_gz'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test2_g_vcf_gz_tbi'], checkIfExists: true),
-            []
+            file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true)
         ]
     ]
     run_haplotc     = false
     run_vqsr        = true
-    fasta           = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta']                           , checkIfExists: true)
-    fai             = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai']                       , checkIfExists: true)
-    dict            = file(params.test_data['homo_sapiens']['genome']['genome_21_dict']                            , checkIfExists: true)
-    sites           = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz']                  , checkIfExists: true)
-    sites_tbi       = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz_tbi']              , checkIfExists: true)
+    fasta           = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai             = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    dict            = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    sites           = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz'], checkIfExists: true)
+    sites_tbi       = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz_tbi'], checkIfExists: true)
     joint_id        = "test_joint"
-    joint_intervals = file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list']                 , checkIfExists: true)
+    joint_intervals = file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true)
     allelespecific  = false
     resources = [
         [
@@ -60,26 +60,26 @@ workflow test_gatk_joint_germline_variant_calling_skip_vqsr {
     input = [
         [
             [ id:'test' ], // meta map
-            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam']     , checkIfExists: true),
-            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'] , checkIfExists: true),
-            file(params.test_data['homo_sapiens']['genome']['genome_bed']                         , checkIfExists: true)
+            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
         ],
         [
             [ id:'test2' ], // meta map
-            file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam']    , checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['genome']['genome_bed']                         , checkIfExists: true)
+            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
         ]
     ]
     run_haplotc      = true
     run_vqsr         = false
-    fasta            = file(params.test_data['homo_sapiens']['genome']['genome_fasta']                       , checkIfExists: true)
-    fai              = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai']                   , checkIfExists: true)
-    dict             = file(params.test_data['homo_sapiens']['genome']['genome_dict']                        , checkIfExists: true)
-    sites            = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz']              , checkIfExists: true)
-    sites_tbi        = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi']          , checkIfExists: true)
+    fasta            = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai              = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict             = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    sites            = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
+    sites_tbi        = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
     joint_id         = "test_joint"
-    joint_intervals  = file(params.test_data['homo_sapiens']['genome']['genome_bed']                         , checkIfExists: true)
+    joint_intervals  = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
     allelespecific   = []
     resources        = []
     annotation       = []
