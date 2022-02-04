@@ -14,6 +14,9 @@ process GATK4_INTERVALLISTTOOLS {
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
