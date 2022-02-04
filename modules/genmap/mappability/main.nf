@@ -16,6 +16,9 @@ process GENMAP_MAPPABILITY {
     path "*.txt"        , optional:true, emit: txt
     path "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """

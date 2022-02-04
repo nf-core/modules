@@ -23,6 +23,9 @@ process MOSDEPTH {
     tuple val(meta), path('*.regions.bed.gz.csi') , emit: regions_csi , optional:true
     path  "versions.yml"                          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

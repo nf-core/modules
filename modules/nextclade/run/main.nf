@@ -18,6 +18,9 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.tree.json"), emit: json_tree
     path "versions.yml"                         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
