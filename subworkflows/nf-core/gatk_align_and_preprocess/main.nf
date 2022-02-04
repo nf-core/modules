@@ -3,14 +3,14 @@
 // BWA index created from fasta file if not already provided
 //
 
-include { BWAMEM2_INDEX           } from '../../../modules/bwamem2/index/main.nf'
-include { SAMTOOLS_FASTQ          } from '../../../modules/samtools/fastq/main.nf'
-include { BWAMEM2_MEM             } from '../../../modules/bwamem2/mem/main.nf'
-include { GATK4_MERGEBAMALIGNMENT } from '../../../modules/gatk4/mergebamalignment/main.nf'
-include { PICARD_MARKDUPLICATES   } from '../../../modules/picard/markduplicates/main.nf'
-include { SAMTOOLS_INDEX          } from '../../../modules/samtools/index/main.nf'
-include { GATK4_BASERECALIBRATOR  } from '../../../modules/gatk4/baserecalibrator/main.nf'
-include { GATK4_APPLYBQSR         } from '../../../modules/gatk4/applybqsr/main.nf'
+include { BWAMEM2_INDEX                                     } from '../../../modules/bwamem2/index/main.nf'
+include { SAMTOOLS_FASTQ                                    } from '../../../modules/samtools/fastq/main.nf'
+include { BWAMEM2_MEM                                       } from '../../../modules/bwamem2/mem/main.nf'
+include { GATK4_MERGEBAMALIGNMENT                           } from '../../../modules/gatk4/mergebamalignment/main.nf'
+include { PICARD_MARKDUPLICATES                             } from '../../../modules/picard/markduplicates/main.nf'
+include { SAMTOOLS_INDEX                                    } from '../../../modules/samtools/index/main.nf'
+include { GATK4_BASERECALIBRATOR                            } from '../../../modules/gatk4/baserecalibrator/main.nf'
+include { GATK4_APPLYBQSR                                   } from '../../../modules/gatk4/applybqsr/main.nf'
 include { PICARD_SORTSAM as PICARD_SORTSAM_UNMAPPED         } from '../../../modules/picard/sortsam/main.nf'
 include { PICARD_SORTSAM as PICARD_SORTSAM_DUPLICATESMARKED } from '../../../modules/picard/sortsam/main.nf'
 
