@@ -16,6 +16,9 @@ process KHMER_NORMALIZEBYMEDIAN {
     path "${name}.fastq.gz", emit: reads
     path "versions.yml"    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     pe_args = pe_reads ? "--paired" : ""

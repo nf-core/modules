@@ -19,6 +19,9 @@ process CLONALFRAMEML {
     tuple val(meta), path("*.position_cross_reference.txt"), emit: pos_ref
     path "versions.yml"                                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
