@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { BWAMEM2_INDEX             } from '../../../../modules/bwamem2/index/main.nf'
 include { GATK_ALIGN_AND_PREPROCESS } from '../../../../subworkflows/nf-core/gatk_align_and_preprocess/main'
 
 workflow test_gatk_align_and_preprocess_fastq {
@@ -18,11 +19,16 @@ workflow test_gatk_align_and_preprocess_fastq {
     fasta          = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai            = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict           = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
-    bwaindex       = []
     is_ubam        = false
     sort_order     = "coordinate"
     knownsites     = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     knownsites_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
+    //
+    //bwa index generated using BWAMEM2_INDEX
+    //
+    BWAMEM2_INDEX( fasta )
+    bwaindex       = BWAMEM2_INDEX.out.index
+
 
     GATK_ALIGN_AND_PREPROCESS ( input, fasta, fai, dict, bwaindex, is_ubam, sort_order, knownsites, knownsites_tbi )
 }
@@ -38,11 +44,15 @@ workflow test_gatk_align_and_preprocess_ubam {
     fasta          = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai            = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict           = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
-    bwaindex       = []
     is_ubam        = true
     sort_order     = "coordinate"
     knownsites     = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     knownsites_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
+    //
+    //bwa index generated using BWAMEM2_INDEX
+    //
+    BWAMEM2_INDEX( fasta )
+    bwaindex       = BWAMEM2_INDEX.out.index
 
     GATK_ALIGN_AND_PREPROCESS ( input, fasta, fai, dict, bwaindex, is_ubam, sort_order, knownsites, knownsites_tbi )
 }

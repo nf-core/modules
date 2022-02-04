@@ -7,11 +7,11 @@
     # Modules
     - bwamem2 index
     - bwamem2 mem
+    - gatk4 applybqsr
+    - gatk4 BaseRecalibrator
     - picard markduplicates
     - picard sortsam
     - samtools index
-    - gatk4 BaseRecalibrator
-    - gatk4 applybqsr
   files:
     # bwamem2 index
     - path: ./output/bwamem2/bwamem2/genome.fasta.amb
@@ -54,14 +54,14 @@
     - gatk4
     # Modules
     - bwamem2 index
-    - samtools fastq
     - bwamem2 mem
-    - picard sortsam
+    - gatk4 applybqsr
+    - gatk4 BaseRecalibrator
     - gatk4 mergebamalignment
     - picard markduplicates
+    - picard sortsam
+    - samtools fastq
     - samtools index
-    - gatk4 BaseRecalibrator
-    - gatk4 applybqsr
   files:
     # bwamem2 index
     - path: ./output/bwamem2/bwamem2/genome.fasta.amb
