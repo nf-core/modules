@@ -20,6 +20,9 @@ process FREEBAYES {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     path  "versions.yml"             , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -41,7 +44,7 @@ process FREEBAYES {
             $args \\
             $input > ${prefix}.vcf
 
-        gzip --no-name ${prefix}.vcf
+        bgzip ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -60,7 +63,7 @@ process FREEBAYES {
             $args \\
             $input > ${prefix}.vcf
 
-        gzip --no-name ${prefix}.vcf
+        bgzip ${prefix}.vcf
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

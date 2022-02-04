@@ -15,6 +15,9 @@ process IQTREE {
     path "*.treefile",    emit: phylogeny
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def fconst_args = constant_sites ? "-fconst $constant_sites" : ''
