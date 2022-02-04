@@ -25,6 +25,9 @@ process GTDBTK_CLASSIFYWF {
     path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
     path "versions.yml"                                             , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
