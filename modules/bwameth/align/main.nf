@@ -15,6 +15,9 @@ process BWAMETH_ALIGN {
     tuple val(meta), path("*.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''

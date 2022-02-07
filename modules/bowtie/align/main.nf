@@ -17,6 +17,9 @@ process BOWTIE_ALIGN {
     path  "versions.yml"          , emit: versions
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
