@@ -6,7 +6,6 @@ process FASTQC {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
         'quay.io/biocontainers/fastqc:0.11.9--0' }"
-    cpus 42
 
     input:
     tuple val(meta), path(reads)
