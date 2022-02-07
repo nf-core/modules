@@ -2,10 +2,10 @@ process GATK4_MUTECT2 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
     tuple val(meta) , path(input) , path(input_index) , val(which_norm)
@@ -27,6 +27,9 @@ process GATK4_MUTECT2 {
     tuple val(meta), path("*.stats")      , emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
     path "versions.yml"                   , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

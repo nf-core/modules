@@ -31,6 +31,9 @@ process ARTIC_MINION {
     tuple val(meta), path("*.json"), optional:true                    , emit: json
     path  "versions.yml"                                              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
@@ -43,7 +46,10 @@ process ARTIC_MINION {
         summary = ""
         model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
     }
+    def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
+    $hd5_plugin_path
+
     artic \\
         minion \\
         $args \\

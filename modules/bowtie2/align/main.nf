@@ -2,27 +2,31 @@ process BOWTIE2_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::bowtie2=2.4.2 bioconda::samtools=1.11 conda-forge::pigz=2.3.4' : null)
+    conda (params.enable_conda ? 'bioconda::bowtie2=2.4.4 bioconda::samtools=1.14 conda-forge::pigz=2.6' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0' :
-        'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:4d235f41348a00533f18e47c9669f1ecb327f629-0' :
+        'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:4d235f41348a00533f18e47c9669f1ecb327f629-0' }"
 
     input:
     tuple val(meta), path(reads)
     path  index
+    val   save_unaligned
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
-    tuple val(meta), path('*.log'), emit: log
-    path  "versions.yml"          , emit: versions
-    tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
+    tuple val(meta), path('*.bam')    , emit: bam
+    tuple val(meta), path('*.log')    , emit: log
+    tuple val(meta), path('*fastq.gz'), emit: fastq, optional:true
+    path  "versions.yml"              , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
-        def unaligned = params.save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
+        def unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
         bowtie2 \\
@@ -42,7 +46,7 @@ process BOWTIE2_ALIGN {
         END_VERSIONS
         """
     } else {
-        def unaligned = params.save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
+        def unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
         bowtie2 \\

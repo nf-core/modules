@@ -11,25 +11,31 @@ process IVAR_VARIANTS {
     tuple val(meta), path(bam)
     path  fasta
     path  gff
+    val   save_mpileup
 
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
     path "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def save_mpileup = params.save_mpileup ? "tee ${prefix}.mpileup |" : ""
-    def features     = params.gff ? "-g $gff" : ""
+    def features = gff ? "-g $gff" : ""
+    def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
     """
-    samtools mpileup \\
+    samtools \\
+        mpileup \\
         $args2 \\
         --reference $fasta \\
-        $bam | \\
-        $save_mpileup  \\
-        ivar variants \\
+        $bam \\
+        $mpileup \\
+        | ivar \\
+            variants \\
             $args \\
             $features \\
             -r $fasta \\

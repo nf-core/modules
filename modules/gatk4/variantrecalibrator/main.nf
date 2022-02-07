@@ -2,10 +2,10 @@ process GATK4_VARIANTRECALIBRATOR {
     tag "$meta.id"
     label 'process_low'
 
-        conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
-        container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
-            'quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0' }"
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf) , path(tbi)
@@ -24,6 +24,9 @@ process GATK4_VARIANTRECALIBRATOR {
     tuple val(meta), path("*.tranches"), emit: tranches
     tuple val(meta), path("*plots.R")  , emit: plots, optional:true
     path "versions.yml"                , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
