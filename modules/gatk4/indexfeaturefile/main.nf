@@ -14,6 +14,9 @@ process GATK4_INDEXFEATUREFILE {
     tuple val(meta), path("*.{tbi,idx}"), emit: index
     path  "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def avail_mem = 3
