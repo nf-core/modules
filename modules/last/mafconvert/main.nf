@@ -23,6 +23,9 @@ process LAST_MAFCONVERT {
     tuple val(meta), path("*.tab.gz"),      optional:true, emit: tab_gz
     path "versions.yml"                                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

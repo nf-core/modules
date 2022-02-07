@@ -15,6 +15,9 @@ process SNPSITES {
     path "versions.yml" , emit: versions
     env   CONSTANT_SITES, emit: constant_sites_string
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
