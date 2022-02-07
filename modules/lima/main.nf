@@ -28,6 +28,9 @@ process LIMA {
     tuple val(meta), path("*.clips")            , optional: true, emit: clips
     tuple val(meta), path("*.guess")            , optional: true, emit: guess
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
