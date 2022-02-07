@@ -16,6 +16,9 @@ process PLINK2_EXTRACT {
     tuple val(meta), path("*.pvar.zst"), emit: extract_pvar
     path "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

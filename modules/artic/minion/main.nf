@@ -31,6 +31,9 @@ process ARTIC_MINION {
     tuple val(meta), path("*.json"), optional:true                    , emit: json
     path  "versions.yml"                                              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
