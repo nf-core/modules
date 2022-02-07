@@ -14,6 +14,9 @@ process PYDAMAGE_ANALYZE {
     tuple val(meta), path("pydamage_results/pydamage_results.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

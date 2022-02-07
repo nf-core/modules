@@ -16,6 +16,9 @@ process METHYLDACKEL_EXTRACT {
     tuple val(meta), path("*.bedGraph"), emit: bedgraph
     path  "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
