@@ -1,7 +1,7 @@
 ## TODO nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml maxquant/lfq
 - name: maxquant lfq
-  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq --paramfile 'https://raw.githubusercontent.com/wombat-p/DSL2-data/master/nf-core-modules/test_data/maxquant/mqpar.xml'  --fasta 'https://raw.githubusercontent.com/wombat-p/MaxQuant-Workflow/dev/data/yeast_UPS.fasta' -c tests/config/nextflow.config 
+  command: nextflow run ./tests/modules/maxquant/lfq -entry test_maxquant_lfq  -c tests/config/nextflow.config 
   tags:
     - maxquant
     - maxquant/lfq
