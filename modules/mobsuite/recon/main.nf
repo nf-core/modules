@@ -39,7 +39,7 @@ process MOBSUITE_RECON {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon (//; s/).*\$//')
+        mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon //; s/ .*\$//')
     END_VERSIONS
     """
 }
