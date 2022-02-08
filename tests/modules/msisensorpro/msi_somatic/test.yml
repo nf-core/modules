@@ -1,0 +1,10 @@
+- name: msisensorpro msi_somatic test_msisensorpro_msi
+  command: nextflow run tests/modules/msisensorpro/msi_somatic -entry test_msisensorpro_msi -c tests/config/nextflow.config
+  tags:
+    - msisensorpro/msi_somatic
+    - msisensorpro
+  files:
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpo51vi1yj/msisensorpro/test.msisensor_scan.list
+      md5sum: 309d41b136993db24a9f3dade877753b
+    - path: /var/folders/ht/csn08jc56dl9htfwcml7fzlw0000gn/T/tmpo51vi1yj/msisensorpro/versions.yml
+      md5sum: 0d4fea74f70be0fe2446e4a4f832b4a4
