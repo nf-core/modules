@@ -12,8 +12,7 @@ workflow test_vcfanno {
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    toml = file("https://raw.githubusercontent.com/nf-core/test-datasets/8fbd9f99a2feb3f9e39cd3bcdc4a9176a5835673/data/delete_me/vcfanno.toml", 
-                checkIfExists: true)
+    resource_dir = file(params.test_data['homo_sapiens']['genome']['vcfanno_resource_dir'], type:'dir', checkIfExists: true)
 
-    VCFANNO ( input, toml )
+    VCFANNO ( input, resource_dir )
 }
