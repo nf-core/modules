@@ -11,7 +11,6 @@ process FREEBAYES {
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)
     path fasta
     path fasta_fai
-    path targets
     path samples
     path populations
     path cnv
