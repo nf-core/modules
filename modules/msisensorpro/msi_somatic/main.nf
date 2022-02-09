@@ -1,5 +1,5 @@
 process MSISENSORPRO_MSI_SOMATIC {
-    //tag "$meta.id"
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::msisensor-pro=1.2.0" : null)
