@@ -9,7 +9,8 @@ process ASCAT {
         'quay.io/biocontainers/ascat:3.0.0--r41hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(tumorbam)
+    tuple val(meta), path(normalbam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -20,11 +21,20 @@ process ASCAT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     library(ASCAT)
-    ascat.bc = ascat.loadData("Tumor_LogR.txt","Tumor_BAF.txt","Germline_LogR.txt","Germline_BAF.txt")
-    ascat.plotRawData(ascat.bc)
-    ascat.bc = ascat.aspcf(ascat.bc)
-    ascat.plotSegmentedData(ascat.bc)
-    ascat.output = ascat.runAscat(ascat.bc)
+    d<-ascat.prepareHTS(
+      tumourseqfile = $tumorbam,
+      normalseqfile = $normalbam,
+      tumourname = "Tumour",
+      normalname = "Normal",
+      allelecounter_exe = "alleleCounter",
+      alleles.prefix = "G1000_alleles_hg19_chr",
+      loci.prefix = "G1000_loci_hg19_chr",
+      gender = "XX",
+      genomeVersion = "hg19",
+      nthreads = 1)
+
+
+
 
 
     #version export. Have to hardcode process name and software name because
@@ -32,7 +42,7 @@ process ASCAT {
     version_file_path="versions.yml"
     f <- file(version_file_path,"w")
     writeLines("ASCAT:", f)
-    writeLines(paste0(" ascat: 2.5.2",f)
+    writeLines(paste0(" ascat: 3.0.0",f)
     close(f)
 
     """
