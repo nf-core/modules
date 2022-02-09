@@ -17,6 +17,9 @@ process HMMER_HMMSEARCH {
     tuple val(meta), path('*.domtbl'), emit: domain_summary, optional: true
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
