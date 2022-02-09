@@ -32,16 +32,14 @@ workflow test_strelka_best_practices_somatic {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true),
-        // file(params.test_data['homo_sapiens']['genome']['hapmap_3_3_hg38_21_vcf_gz'], checkIfExists: true),
-        // file(params.test_data['homo_sapiens']['genome']['hapmap_3_3_hg38_21_vcf_gz_tbi'], checkIfExists: true),
-        file("/Users/monarchy/Projects/Coding/test-datasets/data/genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz"),
-        file("/Users/monarchy/Projects/Coding/test-datasets/data/genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz.tbi"),
+        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed_gz_tbi'], checkIfExists: true)
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    fai   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
 
     STRELKA_SOMATIC ( input, fasta, fai )
 }
