@@ -6,7 +6,7 @@ process ASCAT {
     conda (params.enable_conda ? "bioconda::ascat=3.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ascat:3.0.0':
-        'quay.io/biocontainers/ascat:3.0.0--r41hdfd78af_0' }"
+        'biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce' }"
 
     input:
     tuple val(meta), path(tumorbam)
