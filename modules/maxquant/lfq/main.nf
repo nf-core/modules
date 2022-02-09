@@ -14,7 +14,7 @@ process MAXQUANT_LFQ {
 
     output:
     tuple val(meta), path("*.txt"), emit: maxquant_txt
-    path "versions.yml"          , emit: version
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
