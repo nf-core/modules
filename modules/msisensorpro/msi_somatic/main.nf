@@ -20,7 +20,6 @@ process MSISENSORPRO_MSI_SOMATIC {
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
     path "versions.yml"                        , emit: versions
 
-
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
