@@ -1,4 +1,3 @@
-
 process MSISENSORPRO_MSI_SOMATIC {
     //tag "$meta.id"
     label 'process_low'
