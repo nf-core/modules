@@ -18,6 +18,9 @@ process PRODIGAL {
     tuple val(meta), path("${prefix}_all.txt"),             emit: all_gene_annotations
     path "versions.yml",                                    emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
