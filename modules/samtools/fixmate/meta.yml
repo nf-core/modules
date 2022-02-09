@@ -1,24 +1,24 @@
 name: samtools_fixmate
 description: Samtools fixmate is a tool that can fill in information (insert size, cigar, mapq) about paired end reads onto the corresponding other read. Also has options to remove secondary/unmapped alignments and recalculate whether reads are proper pairs.
 keywords:
-    - fixmate
-    - samtools
-    - insert size
-    - repair
-    - bam
-    - paired
-    - read pairs
+  - fixmate
+  - samtools
+  - insert size
+  - repair
+  - bam
+  - paired
+  - read pairs
 tools:
-    - samtools:
-        description: |
-            SAMtools is a set of utilities for interacting with and post-processing
-            short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-            These files are generated as output by short read aligners like BWA.
-        homepage: http://www.htslib.org/
-        documentation: http://www.htslib.org/doc/samtools.html
-        tool_dev_url: https://github.com/samtools/samtools
-        doi: 10.1093/bioinformatics/btp352
-        licence: ['MIT']
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      tool_dev_url: https://github.com/samtools/samtools
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
 input:
   - meta:
       type: map

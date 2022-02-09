@@ -20,7 +20,7 @@ input:
   - bam:
       type: file
       description: BAM/CRAM/SAM file
-      pattern: '*.{bam,cram,sam}'
+      pattern: "*.{bam,cram,sam}"
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - meta:
@@ -31,11 +31,11 @@ output:
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
-      pattern: '*.{bam,cram,sam}'
+      pattern: "*.{bam,cram,sam}"
   - versions:
       type: file
       description: File containing software versions
-      pattern: 'versions.yml'
+      pattern: "versions.yml"
 authors:
-  - '@drpatelh'
-  - '@ewels'
+  - "@drpatelh"
+  - "@ewels"

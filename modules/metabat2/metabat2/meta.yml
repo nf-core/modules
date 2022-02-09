@@ -13,7 +13,7 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/metabat/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
       doi: "10.7717/peerj.7359"
-      licence: ['BSD-3-clause-LBNL']
+      licence: ["BSD-3-clause-LBNL"]
 
 input:
   - meta:
@@ -28,8 +28,8 @@ input:
   - depth:
       type: file
       description: |
-          Optional text file listing the coverage per contig pre-generated
-          by metabat2_jgisummarizebamcontigdepths
+        Optional text file listing the coverage per contig pre-generated
+        by metabat2_jgisummarizebamcontigdepths
       pattern: "*.txt"
 
 output:
@@ -62,7 +62,6 @@ output:
       type: file
       description: cluster memberships as a matrix format.
       pattern: "*.tsv.gz"
-
 
 authors:
   - "@maxibor"

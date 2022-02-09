@@ -48,20 +48,20 @@ output:
   - versions:
       type: file
       description: File containing software versions
-      pattern: 'versions.yml'
+      pattern: "versions.yml"
   - ubam:
       type: file
       description: unmapped bam file
-      pattern: '*.bam'
+      pattern: "*.bam"
   - groupbam:
       type: file
       description: mapped bam file, where reads are grouped by UMI tag
-      pattern: '*.bam'
+      pattern: "*.bam"
   - consensusbam:
       type: file
       description: |
         mapped bam file, where reads are created as consensus of those
         belonging to the same UMI group
-      pattern: '*.bam'
+      pattern: "*.bam"
 authors:
-  - '@lescai'
+  - "@lescai"

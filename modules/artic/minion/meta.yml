@@ -1,6 +1,6 @@
 name: artic_minion
 description: |
-    Run the alignment/variant-call/consensus logic of the artic pipeline
+  Run the alignment/variant-call/consensus logic of the artic pipeline
 keywords:
   - artic
   - aggregate
@@ -12,7 +12,7 @@ tools:
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -21,11 +21,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fastq:
       type: file
-      description:  FastQ file containing reads
+      description: FastQ file containing reads
       pattern: "*.{fastq.gz}"
   - fast5_dir:
       type: directory
-      description:  Directory containing MinION FAST5 files
+      description: Directory containing MinION FAST5 files
       pattern: "*"
   - sequencing_summary:
       type: file
