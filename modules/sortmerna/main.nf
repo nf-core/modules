@@ -30,6 +30,7 @@ process SORTMERNA {
             --threads $task.cpus \\
             --workdir . \\
             --aligned rRNA_reads \\
+            --fastx \\
             --other non_rRNA_reads \\
             $args
 
@@ -50,6 +51,7 @@ process SORTMERNA {
             --threads $task.cpus \\
             --workdir . \\
             --aligned rRNA_reads \\
+            --fastx \\
             --other non_rRNA_reads \\
             --paired_in \\
             --out2 \\
