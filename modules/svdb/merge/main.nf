@@ -21,6 +21,7 @@ process SVDB_MERGE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input  = ""
     if(priority) {
         prio = "--priority ${priority.join(',')}"
         for (int index = 0; index < vcfs.size(); index++) {
