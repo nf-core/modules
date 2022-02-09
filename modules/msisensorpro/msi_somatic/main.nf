@@ -8,7 +8,6 @@ process MSISENSORPRO_MSI_SOMATIC {
         'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
         'quay.io/biocontainers/msisensor-pro:1.2.0--hfc31af2_0' }"
 
-
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index), path(intervals)
     path (fasta)
