@@ -18,6 +18,9 @@ process DRAGONFLYE {
     tuple val(meta), path("flye-info.txt"), optional:true                      , emit: txt
     path "versions.yml"                                                        , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def memory = task.memory.toGiga()
