@@ -16,6 +16,9 @@ process MAXQUANT_LFQ {
     tuple val(meta), path("*.txt"), emit: maxquant_txt
     path "versions.yml"          , emit: version
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
