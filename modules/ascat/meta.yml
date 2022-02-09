@@ -1,11 +1,9 @@
 name: ascat
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: copy number profiles of tumour cells.
 keywords:
   - sort
 tools:
   - ascat:
-      ## TODO nf-core: Add a description and other details for the software below
       description: ASCAT is a method to derive copy number profiles of tumour cells,
 accounting for normal cell admixture and tumour aneuploidy (Figure 1).
 ASCAT infers tumour purity (the fraction of tumour cells) and ploidy (the
@@ -33,7 +31,6 @@ input:
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -44,7 +41,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
@@ -52,3 +48,4 @@ output:
 
 authors:
   - "@aasNGC"
+  - "@lassefolkersen"
