@@ -1,9 +1,22 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml sortmerna
-- name: sortmerna
-  command: nextflow run ./tests/modules/sortmerna -entry test_sortmerna -c ./tests/config/nextflow.config -c ./tests/modules/sortmerna/nextflow.config
+- name: sortmerna test_sortmerna_single_end
+  command: nextflow run tests/modules/sortmerna -entry test_sortmerna_single_end -c tests/config/nextflow.config
   tags:
     - sortmerna
   files:
-    - path: output/sortmerna/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/sortmerna/test.non_rRNA.fastq.gz
+    - path: output/sortmerna/test.sortmerna.log
+      contains: ' Command:'
+    - path: output/sortmerna/versions.yml
+      md5sum: 3f9f2ec12cd79432f9a16a0713bf4652
+
+- name: sortmerna test_sortmerna_paired_end
+  command: nextflow run tests/modules/sortmerna -entry test_sortmerna_paired_end -c tests/config/nextflow.config
+  tags:
+    - sortmerna
+  files:
+    - path: output/sortmerna/test.sortmerna.log
+      contains: ' Command:'
+    - path: output/sortmerna/test_1.non_rRNA.fastq.gz
+    - path: output/sortmerna/test_2.non_rRNA.fastq.gz
+    - path: output/sortmerna/versions.yml
+      md5sum: 3f29f0be958778201669742d407b6e7d
