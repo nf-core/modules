@@ -1,0 +1,10 @@
+- name: amrfinderplus update test_amrfinderplus_update
+  command: nextflow run tests/modules/amrfinderplus/update -entry test_amrfinderplus_update -c tests/config/nextflow.config
+  tags:
+    - amrfinderplus
+    - amrfinderplus/update
+  files:
+    - path: output/amrfinderplus/amrfinderdb.tar.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/amrfinderplus/versions.yml
+      md5sum: b06ce1bec8b13aa8d59247064af8ea1d
