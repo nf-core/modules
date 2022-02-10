@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ABRICATE_ABRICATE } from '../../../../modules/abricate/abricate/main.nf'
+include { ABRICATE_RUN } from '../../../../modules/abricate/run/main.nf'
 include { ABRICATE_SUMMARY } from '../../../../modules/abricate/summary/main.nf'
 
 workflow test_abricate_summary {
@@ -14,8 +14,8 @@ workflow test_abricate_summary {
               file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true))
     ]
 
-    ABRICATE_ABRICATE ( Channel.fromList(inputs) )
+    ABRICATE_RUN ( Channel.fromList(inputs) )
     ABRICATE_SUMMARY ( 
-        ABRICATE_ABRICATE.out.report.collect{ meta, report -> report }.map{ report -> [[ id: 'test_summary'], report]}
+        ABRICATE_RUN.out.report.collect{ meta, report -> report }.map{ report -> [[ id: 'test_summary'], report]}
     )
 }

@@ -1,4 +1,4 @@
-process ABRICATE_ABRICATE {
+process ABRICATE_RUN {
     tag "$meta.id"
     label 'process_medium'
 

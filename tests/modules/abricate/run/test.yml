@@ -1,8 +1,8 @@
-- name: abricate abricate test_abricate_abricate
-  command: nextflow run tests/modules/abricate/abricate -entry test_abricate_abricate -c tests/config/nextflow.config
+- name: abricate run
+  command: nextflow run tests/modules/abricate/run -entry test_abricate_run -c tests/config/nextflow.config
   tags:
-    - abricate/abricate
     - abricate
+    - abricate/run
   files:
     - path: output/abricate/test.txt
       md5sum: cd07e2953b127aed8d09bf1b2b903a1f
