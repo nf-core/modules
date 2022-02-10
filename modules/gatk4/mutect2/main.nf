@@ -28,6 +28,9 @@ process GATK4_MUTECT2 {
     tuple val(meta), path("*.f1r2.tar.gz"), optional:true, emit: f1r2
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

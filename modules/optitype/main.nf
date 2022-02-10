@@ -14,6 +14,9 @@ process OPTITYPE {
     tuple val(meta), path("${prefix}"), emit: output
     path "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args  = task.ext.args   ?: ''
     def args2 = task.ext.args2  ?: ''

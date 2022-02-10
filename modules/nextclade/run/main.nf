@@ -2,10 +2,10 @@ process NEXTCLADE_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::nextclade=1.9.0" : null)
+    conda (params.enable_conda ? "bioconda::nextclade=1.10.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:1.9.0--h9ee0642_0' :
-        'quay.io/biocontainers/nextclade:1.9.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:1.10.2--h9ee0642_0' :
+        'quay.io/biocontainers/nextclade:1.10.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -17,6 +17,9 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.json")     , emit: json
     tuple val(meta), path("${prefix}.tree.json"), emit: json_tree
     path "versions.yml"                         , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
