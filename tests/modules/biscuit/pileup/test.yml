@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml biscuit/pileup
+- name: biscuit pileup
+  command: nextflow run ./tests/modules/biscuit/pileup -entry test_biscuit_pileup -c ./tests/config/nextflow.config -c ./tests/modules/biscuit/pileup/nextflow.config
+  tags:
+    - biscuit
+    - biscuit/pileup
+  files:
+    - path: output/biscuit/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
