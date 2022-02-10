@@ -2,10 +2,10 @@ process BISCUIT_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
+    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.14" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biscuit:1.0.2.20220113--h81a5ba2_0':
-        'quay.io/biocontainers/biscuit:1.0.2.20220113--h81a5ba2_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-44134f7dad96451eeaecf3505064bb0a4ff131aa:16678cc03bf715c528c7d2db1f0fb570d2358ce8-0':
+        'quay.io/biocontainers/mulled-v2-44134f7dad96451eeaecf3505064bb0a4ff131aa:16678cc03bf715c528c7d2db1f0fb570d2358ce8-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -22,11 +22,13 @@ process BISCUIT_ALIGN {
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
 
     """
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+
     biscuit align \\
         $args \\
         $read_group \\
         -@ $task.cpus \\
-        $index \\
+        \$INDEX \\
         $reads \\
         | samtools sort $args2 --threads $task.cpus -o ${prefix}.bam -
 

@@ -11,7 +11,7 @@ process BISCUIT_INDEX {
     path fasta, stageAs: "BiscuitIndex/*"
 
     output:
-    path "BiscuitIndex", emit: index
+    path "BiscuitIndex/*.fa*", emit: index, includeInputs: true
     path "versions.yml", emit: versions
 
     script:
