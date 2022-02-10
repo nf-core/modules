@@ -49,7 +49,7 @@ process AMRFINDERPLUS_RUN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        amrfinderplus: amrfinder --version
+        amrfinderplus: \$(amrfinder --version)
     END_VERSIONS
     """
 }
