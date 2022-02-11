@@ -26,17 +26,17 @@ input:
       pattern: "*.{hmm}"
   - seqdb:
       type: file
-      description: Database of sequences
+      description: Database of sequences in FASTA format
       pattern: "*.{fasta,fna,faa,fa}"
   - write_align:
       type: val
-      description: Flag to write optional alignment output
+      description: Flag to write optional alignment output. Specify with 'true' to output
   - write_target:
       type: val
-      description: Flag to write optional per target summary
+      description: Flag to write optional per target summary . Specify with 'true' to output
   - write_domain:
       type: val
-      description: Flag to write optional per domain summary
+      description: Flag to write optional per domain summary. Specify with 'true' to output
 
 output:
   - meta:
@@ -54,15 +54,15 @@ output:
       pattern: "*.{txt}"
   - alignments:
       type: file
-      description: Multiple sequence alignment (MSA) in Stockholm format
+      description: Optional multiple sequence alignment (MSA) in Stockholm format
       pattern: "*.{sto}"
   - target_summary:
       type: file
-      description: Tabular (space-delimited) summary of per-target output
+      description: Optional tabular (space-delimited) summary of per-target output
       pattern: "*.{tbl}"
   - domain_summary:
       type: file
-      description: Tabular (space-delimited) summary of per-domain output
+      description: Optional tabular (space-delimited) summary of per-domain output
       pattern: "*.{domtbl}"
 
 authors:
