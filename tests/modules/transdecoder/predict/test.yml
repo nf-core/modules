@@ -1,0 +1,12 @@
+- name: transdecoder predict test_transdecoder_predict
+  command: nextflow run tests/modules/transdecoder/predict -entry test_transdecoder_predict -c tests/config/nextflow.config
+  tags:
+    - transdecoder
+    - transdecoder/predict
+  files:
+    - path: output/transdecoder/genome.fasta.transdecoder.bed
+    - path: output/transdecoder/genome.fasta.transdecoder.cds
+    - path: output/transdecoder/genome.fasta.transdecoder.gff3
+    - path: output/transdecoder/genome.fasta.transdecoder.pep
+    - path: output/transdecoder/versions.yml
+      md5sum: 2847cc159dc93e9014b57d76987623ea

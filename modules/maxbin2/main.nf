@@ -21,6 +21,9 @@ process MAXBIN2 {
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -15,8 +15,11 @@ process PEDDY {
     tuple val(meta), path("*.html")     , emit: html
     tuple val(meta), path("*.csv")      , emit: csv
     tuple val(meta), path("*.peddy.ped"), emit: ped
-    tuple val(meta), path("*.png")      , emit: png
+    tuple val(meta), path("*.png")      , optional: true, emit: png
     path "versions.yml"                 , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -33,5 +36,18 @@ process PEDDY {
     "${task.process}":
         peddy: \$( peddy --version 2>&1 | sed 's/peddy, version //' )
     END_VERSIONS
+    """
+
+    stub:
+    """
+    filename=\$(basename $vcf)
+    touch \$filename.ped_check.csv
+    touch \$filename.vs.html
+    touch \$filename.het_check.csv
+    touch \$filename.sex_check.csv
+    touch \$filename.peddy.ped
+    touch \$filename.html
+
+    touch versions.yml
     """
 }
