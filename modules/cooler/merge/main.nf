@@ -14,6 +14,9 @@ process COOLER_MERGE {
     tuple val(meta), path("*.cool"), emit: cool
     path "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
