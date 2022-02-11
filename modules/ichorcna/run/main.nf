@@ -22,6 +22,9 @@ process ICHORCNA_RUN {
     path "**/*genomeWide.pdf"             , emit: genome_plot
     path "versions.yml"                   , emit: versions
 
+    when:
+        task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
