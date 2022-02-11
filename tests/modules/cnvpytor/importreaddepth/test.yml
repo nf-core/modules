@@ -1,0 +1,10 @@
+- name: cnvpytor importreaddepth test_cnvpytor_importreaddepth
+  command: nextflow run tests/modules/cnvpytor/importreaddepth -entry test_cnvpytor_importreaddepth -c tests/config/nextflow.config
+  tags:
+    - cnvpytor
+    - cnvpytor/importreaddepth
+  files:
+    - path: output/cnvpytor/test.pytor
+      md5sum: 9bac8923a6ce32064da712d0719de31d
+    - path: output/cnvpytor/versions.yml
+      md5sum: 4b1157840a8423359de36c8b45a32bdb
