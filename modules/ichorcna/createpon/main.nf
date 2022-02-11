@@ -9,7 +9,7 @@ process ICHORCNA_CREATEPON {
         'quay.io/biocontainers/r-ichorcna:0.3.2--r41hdfd78af_0' }"
 
     input:
-    path(wigs)
+    path wigs
     path gc_wig
     path map_wig
     path centromere
