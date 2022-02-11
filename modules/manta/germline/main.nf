@@ -30,9 +30,11 @@ process MANTA_GERMLINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def options_manta = target_bed ? "--callRegions $target_bed" : ""
+    def input_files = input.collect{"--bam ${it}"}.join(' ')
+
     """
     configManta.py \
-        --bam ${input.join(' --bam ')} \
+        ${input_files} \
         --reference $fasta \
         --runDir manta \
         $options_manta \
