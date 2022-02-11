@@ -31,7 +31,11 @@ input:
   - input_index:
       type: file
       description: BAM/CRAM/SAM index file
-      pattern: "*.bam.bai"
+      pattern: "*.{bai,crai}"
+  - target_bed:
+      type: file
+      description: Optional - Limit analysis to targets listed in this BED-format FILE.
+      pattern: "*.bed"
   - fasta:
       type: file
       description: reference fasta file
@@ -40,10 +44,6 @@ input:
       type: file
       description: reference fasta file index
       pattern: "*.{fa,fasta}.fai"
-  - targets:
-      type: file
-      description: Optional - Limit analysis to targets listed in this BED-format FILE.
-      pattern: "*.bed"
   - samples:
       type: file
       description: Optional - Limit analysis to samples listed (one per line) in the FILE.
