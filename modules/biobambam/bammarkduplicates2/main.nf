@@ -15,6 +15,9 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     tuple val(meta), path("*.metrics.txt"), emit: metrics
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
