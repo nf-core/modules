@@ -1,0 +1,50 @@
+name: ngscheckmate_ncm
+description: A package for determining whether sequencing data comes from the same individual by using SNP matching. Designed for humans
+keywords:
+  - ngscheckmate
+  - matching
+  - snp
+tools:
+  - ngscheckmate:
+      description: NGSCheckMate is a software package for identifying next generation sequencing (NGS) data files from the same individual, including matching between DNA and RNA.
+      homepage: https://github.com/parklab/NGSCheckMate
+      documentation: https://github.com/parklab/NGSCheckMate
+      tool_dev_url: https://github.com/parklab/NGSCheckMate
+      doi: "doi:/10.1093/nar/gkx193"
+      licence: ['MIT']
+
+input:
+  - vcfs:
+      type: file
+      description: VCF files for each individual sample (possibly gzipped)
+      pattern: "*.{vcf}*"
+
+  - snp_bed:
+      type: file
+      description: BED file containing the SNPs to analyse
+      pattern: "*.{bed}"
+
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - pdf:
+      type: file
+      description: A pdf containing a dendrogram showing how the samples match up
+      pattern: "*.{pdf}"
+
+  - corr_matrix:
+      type: file
+      description: A text file containing the correlation matrix between each sample
+      pattern: "*corr_matrix.txt"
+
+  - matched_txt:
+      type: file
+      description: A txt file containing which samples match with each other
+      pattern: "*matched.txt"
+
+authors:
+  - "@sppearce"
