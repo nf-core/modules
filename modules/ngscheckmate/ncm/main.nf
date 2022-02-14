@@ -20,7 +20,7 @@ process NGSCHECKMATE_NCM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "NGSCheckMate"
+    def prefix = task.ext.prefix ?: "output"
 
     """
     gunzip -f *.vcf.gz
