@@ -12,7 +12,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     output:
     tuple val(meta), path("*.pytor")	, emit: pytor
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                 , emit: versions
 
     script:
     def args = task.ext.args ?: ''
