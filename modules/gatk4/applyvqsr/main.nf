@@ -12,9 +12,6 @@ process GATK4_APPLYVQSR {
     path fasta
     path fai
     path dict
-    val allelespecific
-    val truthsensitivity
-    val mode
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf
@@ -28,9 +25,6 @@ process GATK4_APPLYVQSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
-    alleleSpecificCommand = allelespecific ? '-AS' : ''
-    truthSensitivityCommand = truthsensitivity ? "--truth-sensitivity-filter-level ${truthsensitivity}" : ''
-    modeCommand = mode ? "--mode ${mode} " : 'SNP'
 
     def avail_mem = 3
     if (!task.memory) {
@@ -43,11 +37,8 @@ process GATK4_APPLYVQSR {
         ${refCommand} \\
         -V ${vcf} \\
         -O ${prefix}.vcf.gz \\
-        ${alleleSpecificCommand} \\
-        ${truthSensitivityCommand} \\
         --tranches-file $tranches \\
         --recal-file $recal \\
-        ${modeCommand} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
