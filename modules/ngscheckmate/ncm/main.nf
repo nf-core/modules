@@ -20,13 +20,14 @@ process NGSCHECKMATE_NCM {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "NGSCheckMate"
 
     """
     gunzip -f *.vcf.gz
 
     ls -d "\${PWD}"/*.vcf > vcfList.txt
 
-    ncm.py -V -l vcfList.txt -bed ${snp_bed} -O .
+    ncm.py -V -l vcfList.txt -bed ${snp_bed} -O . -N ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
