@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_VARIANTRECALIBRATOR } from '../../../../modules/gatk4/variantrecalibrator/main.nf'
+include { GATK4_VARIANTRECALIBRATOR as GATK4_VARIANTRECALIBRATOR_NO_ALLELESPECIFICTY } from '../../../../modules/gatk4/variantrecalibrator/main.nf'
+include { GATK4_VARIANTRECALIBRATOR as GATK4_VARIANTRECALIBRATOR_WITH_ALLELESPECIFICTY } from '../../../../modules/gatk4/variantrecalibrator/main.nf'
 
 workflow test_gatk4_variantrecalibrator {
 
@@ -14,7 +15,6 @@ workflow test_gatk4_variantrecalibrator {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    allelespecific = false
     resources = [
                  [
                  file(params.test_data['homo_sapiens']['genome']['hapmap_3_3_hg38_21_vcf_gz'], checkIfExists: true),
@@ -35,11 +35,8 @@ workflow test_gatk4_variantrecalibrator {
                  'dbsnp,known=true,training=false,truth=false,prior=2.0 dbsnp_138.hg38.vcf.gz'
                  ]
                 ]
-    annotation = ['QD', 'MQ', 'FS', 'SOR']
-    mode = 'SNP'
-    create_rscript = false
 
-    GATK4_VARIANTRECALIBRATOR ( input, fasta, fai, dict, allelespecific, resources, annotation, mode, create_rscript)
+    GATK4_VARIANTRECALIBRATOR_NO_ALLELESPECIFICTY ( input, fasta, fai, dict, resources)
 }
 
 workflow test_gatk4_variantrecalibrator_allele_specific {
@@ -52,7 +49,6 @@ workflow test_gatk4_variantrecalibrator_allele_specific {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    allelespecific = true
     resources = [
                  [
                  file(params.test_data['homo_sapiens']['genome']['hapmap_3_3_hg38_21_vcf_gz'], checkIfExists: true),
@@ -73,9 +69,6 @@ workflow test_gatk4_variantrecalibrator_allele_specific {
                  'dbsnp,known=true,training=false,truth=false,prior=2.0 dbsnp_138.hg38.vcf.gz'
                  ]
                 ]
-    annotation = ['QD', 'MQ', 'FS']
-    mode = 'SNP'
-    create_rscript = false
 
-    GATK4_VARIANTRECALIBRATOR ( input, fasta, fai, dict, allelespecific, resources, annotation, mode, create_rscript)
+    GATK4_VARIANTRECALIBRATOR_WITH_ALLELESPECIFICTY ( input, fasta, fai, dict, resources)
 }

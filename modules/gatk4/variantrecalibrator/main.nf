@@ -12,11 +12,7 @@ process GATK4_VARIANTRECALIBRATOR {
     path fasta
     path fai
     path dict
-    val allelespecific
     tuple path(resvcfs), path(restbis), val(reslabels)
-    val annotation
-    val mode
-    val create_rscript
 
     output:
     tuple val(meta), path("*.recal")   , emit: recal
@@ -32,11 +28,7 @@ process GATK4_VARIANTRECALIBRATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
-    alleleSpecificCommand = allelespecific ? '-AS' : ''
     resourceCommand = '--resource:' + reslabels.join( ' --resource:')
-    annotationCommand = '-an ' + annotation.join( ' -an ')
-    modeCommand = mode ? "--mode ${mode} " : 'SNP'
-    rscriptCommand = create_rscript ? "--rscript-file ${prefix}.plots.R" : ''
 
     def avail_mem = 3
     if (!task.memory) {
@@ -48,13 +40,8 @@ process GATK4_VARIANTRECALIBRATOR {
     gatk --java-options "-Xmx${avail_mem}g" VariantRecalibrator \\
         ${refCommand} \\
         -V ${vcf} \\
-        ${alleleSpecificCommand} \\
-        ${resourceCommand} \\
-        ${annotationCommand} \\
-        ${modeCommand} \\
         -O ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
-        ${rscriptCommand}\\
         $args
 
     cat <<-END_VERSIONS > versions.yml
