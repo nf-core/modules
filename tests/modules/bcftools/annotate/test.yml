@@ -1,0 +1,8 @@
+- name: bcftools annotate test_bcftools_annotate
+  command: nextflow run tests/modules/bcftools/annotate -entry test_bcftools_annotate -c tests/config/nextflow.config
+  tags:
+    - bcftools/annotate
+    - bcftools
+  files:
+    - path: output/bcftools/versions.yml
+      md5sum: 1ce0a2ad3eeeeacff14897f7b99673d5
