@@ -42,6 +42,7 @@ process GATK4_VARIANTRECALIBRATOR {
         -V ${vcf} \\
         -O ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
+        ${resourceCommand}
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -7,7 +7,7 @@
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
     - path: output/gatk4/versions.yml
-      md5sum: 524a78cdfa56c8b09a4ff3f4cb278261
+      md5sum: ce9c443375683e7f2958fe958759ad29
 
 - name: gatk4 applyvqsr test_gatk4_applyvqsr_allele_specific
   command: nextflow run tests/modules/gatk4/applyvqsr -entry test_gatk4_applyvqsr_allele_specific -c tests/config/nextflow.config -c ./tests/modules/gatk4/applyvqsr/nextflow.config
@@ -18,4 +18,4 @@
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
     - path: output/gatk4/versions.yml
-      md5sum: 3cd4a1395bb28b1cfaab87a791ece59a
+      md5sum: 521353d12d576de2864f1d18a3e54f14
