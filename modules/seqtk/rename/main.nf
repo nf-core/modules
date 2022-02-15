@@ -9,7 +9,6 @@ process SEQTK_RENAME {
 
     input:
     tuple val(meta), path(sequences)
-    val(name)
 
     output:
     tuple val(meta), path("*.gz")     , emit: sequences
@@ -20,7 +19,7 @@ process SEQTK_RENAME {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = "${name}" ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fasta"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         extension = "fastq"
