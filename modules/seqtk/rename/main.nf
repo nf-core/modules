@@ -7,7 +7,8 @@ process SEQTK_RENAME {
         'quay.io/biocontainers/seqtk:1.3--h5bf99c6_3' }"
 
     input:
-    path(sequences), val(prefix)
+    path(sequences)
+    val(prefix)
 
     output:
     path("*.gz")                  , emit: sequences
@@ -28,7 +29,7 @@ process SEQTK_RENAME {
         $args \\
         $sequences \\
         $prefix | \\
-        gzip --no-name > ${prefix}.${extension}.gz
+        gzip -c --no-name > ${prefix}.${extension}.gz
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

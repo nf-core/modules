@@ -9,3 +9,9 @@ workflow test_seqtk_rename {
     prefix = "test"
     SEQTK_RENAME ( sequences, prefix )
 }
+
+workflow test_seqtk_rename_fq {
+    sequences = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) 
+    prefix = "test"
+    SEQTK_RENAME ( sequences, prefix )
+}

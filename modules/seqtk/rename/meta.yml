@@ -13,7 +13,7 @@ tools:
 input:
   - sequences:
       type: file
-      description: List of input FASTQ or FASTA files of size 1 and 2 for single-end and paired-end data,respectively
+      description: A FASTQ or FASTA file
       pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz, fna, fna.gz}"
   - prefix:
       type: value
@@ -27,7 +27,7 @@ output:
   - sequences:
       type: file
       description: FASTQ/FASTA file containing renamed sequences
-      pattern: "*.{fastq.gz, fq.gz, fastq.gz, fa.gz, fas.gz, fna.gz}"
+      pattern: "*.{fastq.gz, fasta.gz}"
 
 authors:
   - "@hseabolt"
