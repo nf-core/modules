@@ -1,10 +1,10 @@
 name: macs2_callpeak
 description: Peak calling of enriched genomic regions of ChIP-seq and ATAC-seq experiments
 keywords:
-    - alignment
-    - atac-seq
-    - chip-seq
-    - peak-calling
+  - alignment
+  - atac-seq
+  - chip-seq
+  - peak-calling
 tools:
   - macs2:
       description: Model Based Analysis for ChIP-Seq data
@@ -12,7 +12,7 @@ tools:
       documentation: https://docs.csc.fi/apps/macs2/
       tool_dev_url: https://github.com/macs3-project/MACS
       doi: "https://doi.org/10.1101/496521"
-      licence: ['BSD']
+      licence: ["BSD"]
 
 input:
   - meta:
@@ -28,7 +28,8 @@ input:
       description: The control file
   - macs2_gsize:
       type: string
-      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9),
+      description:
+        Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9),
         'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8)
 
 output:

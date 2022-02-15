@@ -10,7 +10,7 @@ tools:
       description: Microbial assembly pipeline for Nanopore reads
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
-      licence: ['GPL v2']
+      licence: ["GPL v2"]
 
 input:
   - meta:
@@ -19,9 +19,9 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - reads:
-        type: file
-        description: Input Nanopore FASTQ file
-        pattern: "*.fastq.gz"
+      type: file
+      description: Input Nanopore FASTQ file
+      pattern: "*.fastq.gz"
 output:
   - meta:
       type: map
