@@ -1,11 +1,11 @@
-- name: ngscheckmate ncm
-  command: nextflow run ./tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm -c ./tests/config/nextflow.config -c ./tests/modules/ngscheckmate/ncm/nextflow.config
+- name: ngscheckmate ncm test_ngscheckmate_ncm
+  command: nextflow run tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm -c tests/config/nextflow.config
   tags:
     - ngscheckmate
     - ngscheckmate/ncm
   files:
-    - path: output/ngscheckmate/output.pdf
-      md5sum: ad9849b81330a6416dc01bd8d3cd318f
+    - path: output/ngscheckmate/output_all.txt
+      md5sum: fd74956dcac279b6f58e82ea73e344f8
     - path: output/ngscheckmate/output_corr_matrix.txt
       md5sum: 0c86bdad2721c470fe6be119f291c8e5
     - path: output/ngscheckmate/output_matched.txt
