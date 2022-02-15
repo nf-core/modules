@@ -21,7 +21,7 @@ process GATK4_COMBINEGVCFS {
     def prefix = task.ext.prefix ?: ""
     def avail_mem       = 3
     if (!task.memory) {
-        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK COMBINEGVCFS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
