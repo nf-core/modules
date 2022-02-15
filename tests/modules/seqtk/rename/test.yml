@@ -1,21 +1,21 @@
 - name: seqtk rename test_seqtk_rename
   command: nextflow run tests/modules/seqtk/rename -entry test_seqtk_rename -c tests/config/nextflow.config
   tags:
-    - seqtk
     - seqtk/rename
+    - seqtk
   files:
-    - path: /scicomp/home-pure/ngr8/tmp/tmphs4awmgb/seqtk/test.fasta.gz
+    - path: /scicomp/home-pure/ngr8/tmp/tmp048xy0nm/seqtk/test.renamed.fasta.gz
       md5sum: 7b407952dcf0d925f1996e04a201d05b
-    - path: /scicomp/home-pure/ngr8/tmp/tmphs4awmgb/seqtk/versions.yml
+    - path: /scicomp/home-pure/ngr8/tmp/tmp048xy0nm/seqtk/versions.yml
       md5sum: 24127592f1b9e5ee8e5ab04ee748c491
 
 - name: seqtk rename test_seqtk_rename_fq
   command: nextflow run tests/modules/seqtk/rename -entry test_seqtk_rename_fq -c tests/config/nextflow.config
   tags:
-    - seqtk
     - seqtk/rename
+    - seqtk
   files:
-    - path: /scicomp/home-pure/ngr8/tmp/tmp98lftaqm/seqtk/test.fastq.gz
+    - path: /scicomp/home-pure/ngr8/tmp/tmpie78k72b/seqtk/test.renamed.fastq.gz
       md5sum: babdfc2a3940a1e32a63479db2c1d600
-    - path: /scicomp/home-pure/ngr8/tmp/tmp98lftaqm/seqtk/versions.yml
+    - path: /scicomp/home-pure/ngr8/tmp/tmpie78k72b/seqtk/versions.yml
       md5sum: 06c19670eb2b4185e8f4fa5dcf8fb0d5

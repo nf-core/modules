@@ -1,4 +1,5 @@
 process SEQTK_RENAME {
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
@@ -7,18 +8,19 @@ process SEQTK_RENAME {
         'quay.io/biocontainers/seqtk:1.3--h5bf99c6_3' }"
 
     input:
-    path(sequences)
-    val(prefix)
+    tuple val(meta), path(sequences)
+    val(name)
 
     output:
-    path("*.gz")                  , emit: sequences
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.gz")     , emit: sequences
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = "${name}" ?: "${meta.id}"
     def extension = "fasta"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         extension = "fastq"
@@ -29,7 +31,7 @@ process SEQTK_RENAME {
         $args \\
         $sequences \\
         $prefix | \\
-        gzip -c --no-name > ${prefix}.${extension}.gz
+        gzip -c --no-name > ${prefix}.renamed.${extension}.gz
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":

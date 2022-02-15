@@ -11,6 +11,11 @@ tools:
       licence: ['MIT']
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
   - sequences:
       type: file
       description: A FASTQ or FASTA file
@@ -20,6 +25,11 @@ input:
       description: The new read header prefix string
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
