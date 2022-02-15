@@ -1,0 +1,10 @@
+- name: arima 2readsbamcombiner
+  command: nextflow run ./tests/modules/arima/2readsbamcombiner -entry test_arima_2readsbamcombiner -c ./tests/config/nextflow.config -c ./tests/modules/arima/2readsbamcombiner/nextflow.config
+  tags:
+    - arima
+    - arima/2readsbamcombiner
+  files:
+    - path: output/arima/test_combined.bam
+      md5sum: 08eb28e46d5e7ddcc7815d5bbd266098
+    - path: output/arima/versions.yml
+      md5sum: cd62dd3953eff4b271586fa173912246
