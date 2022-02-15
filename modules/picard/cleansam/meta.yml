@@ -3,6 +3,7 @@ description: Cleans the provided SAM/BAM, soft-clipping beyond-end-of-reference 
 keywords:
   - clean
   - sam
+  - bam
 tools:
   - picard:
       description: |
@@ -21,8 +22,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - sam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/SAM file
+      pattern: "*.{bam,sam}"
 
 output:
   - meta:
@@ -36,8 +37,8 @@ output:
       pattern: "versions.yml"
   - sam:
       type: file
-      description: Cleaned BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Cleaned BAM/SAM file
+      pattern: "*.{bam,sam}"
 
 authors:
   - "@sateeshperi"
