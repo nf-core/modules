@@ -14,10 +14,13 @@ process OPTITYPE {
     tuple val(meta), path("${prefix}"), emit: output
     path "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args  = task.ext.args   ?: ''
+    def args2 = task.ext.args2  ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
 
     """
     # Create a config for OptiType on a per sample basis with task.ext.args2

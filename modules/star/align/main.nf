@@ -30,6 +30,9 @@ process STAR_ALIGN {
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

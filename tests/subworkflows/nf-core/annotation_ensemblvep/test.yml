@@ -1,0 +1,7 @@
+- name: ensemblvep annotation_ensemblvep
+  command: nextflow run ./tests/subworkflows/nf-core/annotation_ensemblvep -entry annotation_ensemblvep -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/annotation_ensemblvep/nextflow.config
+  tags:
+    - annotation_ensemblvep
+  files:
+    - path: output/annotation/test_VEP.ann.vcf.gz
+    - path: output/annotation/test_VEP.ann.vcf.gz.tbi

@@ -2,10 +2,10 @@ process GATK4_GENOMICSDBIMPORT {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(intervalfile), val(intervalval), path(wspace)
@@ -19,9 +19,12 @@ process GATK4_GENOMICSDBIMPORT {
     tuple val(meta), path("*.interval_list"), optional:true, emit: intervallist
     path "versions.yml"                                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     // settings for running default create gendb mode
     inputs_command = input_map ? "--sample-name-map ${vcf[0]}" : "${'-V ' + vcf.join(' -V ')}"
@@ -42,8 +45,14 @@ process GATK4_GENOMICSDBIMPORT {
         updated_db = wspace.toString()
     }
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK GenomicsDBImport] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
-    gatk GenomicsDBImport \\
+    gatk --java-options "-Xmx${avail_mem}g" GenomicsDBImport \\
         $inputs_command \\
         $dir_command \\
         $intervals_command \\

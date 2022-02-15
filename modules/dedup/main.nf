@@ -17,9 +17,12 @@ process DEDUP {
     tuple val(meta), path("*log")       , emit: log
     path "versions.yml"                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
 
     """
     dedup \\

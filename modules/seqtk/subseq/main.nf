@@ -15,9 +15,12 @@ process SEQTK_SUBSEQ {
     path "*.gz"         , emit: sequences
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ?: ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: ''
     def ext = "fa"
     if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         ext = "fq"

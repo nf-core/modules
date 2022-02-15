@@ -16,6 +16,9 @@ process COOLER_DIGEST {
     path "*.bed"                  , emit: bed
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """

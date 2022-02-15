@@ -31,9 +31,12 @@ process FARGENE {
     tuple val(meta), path("${prefix}/tmpdir/*.out")                                              , optional: true, emit: tmp
     path "versions.yml"                                                                          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     fargene \\
         $args \\

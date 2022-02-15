@@ -2,6 +2,7 @@ def VERSION = '1.5.0' // Version information not provided by tool on CLI
 
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
+    label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gtdbtk=1.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,6 +24,9 @@ process GTDBTK_CLASSIFYWF {
     path "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"         , emit: warnings
     path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
     path "versions.yml"                                             , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

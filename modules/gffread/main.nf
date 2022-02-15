@@ -14,9 +14,12 @@ process GFFREAD {
     path "*.gtf"        , emit: gtf
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${gff.baseName}${task.ext.suffix}" : "${gff.baseName}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${gff.baseName}"
     """
     gffread \\
         $gff \\

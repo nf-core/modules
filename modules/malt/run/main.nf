@@ -1,6 +1,5 @@
 process MALT_RUN {
-
-    label 'process_high_memory'
+    label 'process_high'
 
     conda (params.enable_conda ? "bioconda::malt=0.53" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -17,6 +16,9 @@ process MALT_RUN {
     path "*.{tab,text,sam}",  optional:true, emit: alignments
     path "*.log"                           , emit: log
     path "versions.yml"                    , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
