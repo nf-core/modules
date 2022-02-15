@@ -1,4 +1,3 @@
-
 process PICARD_ADDORREPLACEREADGROUPS {
     tag "$meta.id"
     label 'process_low'
