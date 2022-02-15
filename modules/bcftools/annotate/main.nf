@@ -29,7 +29,7 @@ process BCFTOOLS_ANNOTATE {
     bcftools \\
         annotate \\
         $args \\
-        --output ${prefix}.${output_suffix} \\
+        --output ${prefix}_annotated.${output_suffix} \\
         --output-type $output_type_compressed \\
         --threads $task.cpus \\
         $input

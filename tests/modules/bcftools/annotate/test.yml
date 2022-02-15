@@ -1,8 +1,10 @@
 - name: bcftools annotate test_bcftools_annotate
   command: nextflow run tests/modules/bcftools/annotate -entry test_bcftools_annotate -c tests/config/nextflow.config
   tags:
-    - bcftools/annotate
     - bcftools
+    - bcftools/annotate
   files:
+    - path: output/bcftools/test_annotated.vcf.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bcftools/versions.yml
       md5sum: 1ce0a2ad3eeeeacff14897f7b99673d5
