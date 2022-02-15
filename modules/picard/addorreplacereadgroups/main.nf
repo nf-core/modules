@@ -18,7 +18,13 @@ process PICARD_ADDORREPLACEREADGROUPS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-        def avail_mem = 3
+    def ID = task.ext.id ?: "id"
+    def LIBRARY= task.ext.library ?: "library"
+    def PLATFORM= task.ext.platform ?: "illumina"
+    def BARCODE= task.ext.barcode ?: "barcode"
+    def SAMPLE= task.ext.sample ?: "sample"
+    def INDEX= task.ext.index ?: "index"
+    def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
@@ -28,9 +34,14 @@ process PICARD_ADDORREPLACEREADGROUPS {
     picard \\
         AddOrReplaceReadGroups \\
         -Xmx${avail_mem}g \\
-        --INPUT $bam \\
+        --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        --SORT_ORDER $sort_order
+        -ID ${ID} \\
+        -LB ${LIBRARY} \\
+        -PL ${PLATFORM} \\
+        -PU ${BARCODE} \\
+        -SM ${SAMPLE} \\
+        -CREATE_INDEX true
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

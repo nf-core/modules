@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml picard/addorreplacereadgroups
-- name: picard addorreplacereadgroups
-  command: nextflow run ./tests/modules/picard/addorreplacereadgroups -entry test_picard_addorreplacereadgroups -c ./tests/config/nextflow.config -c ./tests/modules/picard/addorreplacereadgroups/nextflow.config
+- name: picard addorreplacereadgroups test_picard_addorreplacereadgroups
+  command: nextflow run tests/modules/picard/addorreplacereadgroups -entry test_picard_addorreplacereadgroups -c tests/config/nextflow.config
   tags:
-    - picard
     - picard/addorreplacereadgroups
+    - picard
   files:
-    - path: output/picard/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: /tmp/tmplihpx58p/picard/test.bam
+      md5sum: 7b82f3461c2d80fc6a10385e78c9427f
+    - path: /tmp/tmplihpx58p/picard/versions.yml
+      md5sum: 4eb80c4ba3e009b80e256aec18b01d6c

@@ -1,7 +1,9 @@
 name: picard_addorreplacereadgroups
 description: Assigns all the reads in a file to a single new read-group
 keywords:
-  - sort
+  - add
+  - replace
+  - read-group
 tools:
   - picard:
       description: |
@@ -20,8 +22,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input BAM file
+      pattern: "*.{bam}"
 
 output:
   - meta:
@@ -35,8 +37,8 @@ output:
       pattern: "versions.yml"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Output BAM file
+      pattern: "*.{bam}"   
 
 authors:
   - "@sateeshperi"
