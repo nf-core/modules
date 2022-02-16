@@ -22,8 +22,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - sam:
       type: file
-      description: BAM/SAM file
-      pattern: "*.{bam,sam}"
+      description: SAM file
+      pattern: "*.{sam}"
 
 output:
   - meta:
@@ -37,8 +37,8 @@ output:
       pattern: "versions.yml"
   - sam:
       type: file
-      description: Cleaned BAM/SAM file
-      pattern: "*.{bam,sam}"
+      description: Cleaned SAM file
+      pattern: "*.{sam}"
 
 authors:
   - "@sateeshperi"

@@ -7,7 +7,7 @@ include { PICARD_CLEANSAM } from '../../../../modules/picard/cleansam/main.nf'
 workflow test_picard_cleansam {
     
     input = [ 
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test', single_end:true ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true) 
     ]
 
