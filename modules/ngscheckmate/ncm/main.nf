@@ -23,7 +23,7 @@ process NGSCHECKMATE_NCM {
     def prefix = task.ext.prefix ?: "output"
 
     """
-    gunzip -f *.vcf.gz
+    basename -s .gz *.gz | xargs -P $task.cpus -n 1 -t -I % sh -c 'gunzip -cdf %.gz > %'
 
     ls -d "\${PWD}"/*.vcf > vcfList.txt
 
