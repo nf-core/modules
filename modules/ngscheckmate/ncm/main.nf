@@ -31,7 +31,7 @@ process NGSCHECKMATE_NCM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ngscheckmate: \$(echo \$(ncm.py --help | grep Identity | sed "s/ *Ensuring Sample Identity v//g"))
+        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
     END_VERSIONS
     """
 }
