@@ -12,7 +12,7 @@ tools:
       documentation: https://github.com/rrwick/Unicycler
       tool_dev_url: https://github.com/rrwick/Unicycler
       doi: 10.1371/journal.pcbi.1005595
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -20,14 +20,14 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - shortreads:
-          type: file
-          description: |
-              List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
-              respectively.
+      type: file
+      description: |
+        List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
   - longreads:
-          type: file
-          description: |
-              List of input FastQ files of size 1, PacBio or Nanopore long reads.
+      type: file
+      description: |
+        List of input FastQ files of size 1, PacBio or Nanopore long reads.
 output:
   - meta:
       type: map
