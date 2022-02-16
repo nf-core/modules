@@ -7,11 +7,12 @@ process NGSCHECKMATE_NCM {
         'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_0' }"
 
     input:
-    path bam
+    path files
     path snp_bed
+    value bam_mode
 
     output:
-    path "*.pdf"                  , emit: bam
+    path "*.pdf"                  , emit: pdf
     path "*.txt"                  , emit: txt
     path "versions.yml"           , emit: versions
 
@@ -21,13 +22,12 @@ process NGSCHECKMATE_NCM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "output"
+    def mode_flag = bam_mode ? "-B" : "-V"
 
     """
-    basename -s .gz *.gz | xargs -P $task.cpus -n 1 -t -I % sh -c 'gunzip -cdf %.gz > %'
+    for i in *.vcf.gz; do i2=\$(echo \$i | sed s/.vcf.gz/.vcf/g); gunzip -cdf \$i > \$i2;done
 
-    ls -1 "\${PWD}"/*.vcf > vcfList.txt
-
-    ncm.py -V -l vcfList.txt -bed ${snp_bed} -O . -N ${prefix}
+    ncm.py ${mode_flag} -d . -bed ${snp_bed} -O . -N ${prefix} $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

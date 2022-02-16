@@ -14,16 +14,20 @@ tools:
       licence: ['MIT']
 
 input:
-  - vcfs:
+  - files:
       type: file
-      description: VCF files for each individual sample (possibly gzipped)
-      pattern: "*.{vcf}*"
+      description: VCF or BAM files for each individual sample (possibly gzipped)
+      pattern: "*.{vcf,bam}*"
 
   - snp_bed:
       type: file
       description: BED file containing the SNPs to analyse
       pattern: "*.{bed}"
 
+  - bam_mode:
+      type: boolean
+      description: Specify whether to run in bam mode, rather than vcf mode
+      pattern: "true/false"
 
 output:
   - versions:

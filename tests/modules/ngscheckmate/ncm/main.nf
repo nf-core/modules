@@ -9,7 +9,7 @@ include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/bedtools/makewindows/
 include { BCFTOOLS_MPILEUP } from '../../../../modules/bcftools/mpileup/main.nf'
 include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP2 } from '../../../../modules/bcftools/mpileup/main.nf'
 
-workflow test_ngscheckmate_ncm {
+workflow test_ngscheckmate_ncm_vcf {
     input1 = [ [ id:'test1' ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]]
 
@@ -35,5 +35,5 @@ workflow test_ngscheckmate_ncm {
     view().
     set{snp_channel}
 
-    NGSCHECKMATE_NCM(vcf_channel, snp_channel)
+    NGSCHECKMATE_NCM(vcf_channel, snp_channel, false)
 }
