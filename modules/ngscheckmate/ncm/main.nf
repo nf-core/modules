@@ -25,7 +25,7 @@ process NGSCHECKMATE_NCM {
     """
     basename -s .gz *.gz | xargs -P $task.cpus -n 1 -t -I % sh -c 'gunzip -cdf %.gz > %'
 
-    ls -d "\${PWD}"/*.vcf > vcfList.txt
+    ls -1 "\${PWD}"/*.vcf > vcfList.txt
 
     ncm.py -V -l vcfList.txt -bed ${snp_bed} -O . -N ${prefix}
 
