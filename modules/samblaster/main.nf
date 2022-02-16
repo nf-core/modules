@@ -14,12 +14,15 @@ process SAMBLASTER {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use the suffix option to disambiguate"
+    if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools view -h $args2 $bam | \\
     samblaster $args | \\

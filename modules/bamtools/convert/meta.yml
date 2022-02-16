@@ -1,0 +1,52 @@
+name: bamtools_convert
+description: BamTools provides both a programmer's API and an end-user's toolkit for handling BAM files.
+keywords:
+  - bamtools
+  - bamtools/convert
+  - bam
+  - convert
+  - bed
+  - fasta
+  - fastq
+  - json
+  - pileup
+  - sam
+  - yaml
+tools:
+  - bamtools:
+      description: C++ API & command-line toolkit for working with BAM data
+      homepage: http://github.com/pezmaster31/bamtools
+      documentation: https://github.com/pezmaster31/bamtools/wiki
+      tool_dev_url: http://github.com/pezmaster31/bamtools
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - out:
+      type: file
+      description: The data in the asked format (bed, fasta, fastq, json, pileup, sam, yaml)
+      pattern: "*.{bed,fasta,fastq,json,pileup,sam,yaml}"
+
+authors:
+  - "@sguizard"

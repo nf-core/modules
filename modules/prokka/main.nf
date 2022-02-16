@@ -27,9 +27,12 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
     """

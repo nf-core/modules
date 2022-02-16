@@ -1,0 +1,21 @@
+- name: gatk4 gatherbqsrreports test_gatk4_gatherbqsrreports
+  command: nextflow run tests/modules/gatk4/gatherbqsrreports -entry test_gatk4_gatherbqsrreports -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/gatherbqsrreports
+  files:
+    - path: output/gatk4/test.table
+      md5sum: 9603b69fdc3b5090de2e0dd78bfcc4bf
+    - path: output/gatk4/versions.yml
+      md5sum: 8d52c5aaab73294e9ea5491b95f3e1e1
+
+- name: gatk4 gatherbqsrreports test_gatk4_gatherbqsrreports_multiple
+  command: nextflow run tests/modules/gatk4/gatherbqsrreports -entry test_gatk4_gatherbqsrreports_multiple -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/gatherbqsrreports
+  files:
+    - path: output/gatk4/test.table
+      md5sum: 0c1257eececf95db8ca378272d0f21f9
+    - path: output/gatk4/versions.yml
+      md5sum: 91cad396b9f2045c3cd8c0f256672e80

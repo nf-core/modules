@@ -1,0 +1,19 @@
+- name: dragmap hashtable
+  command: nextflow run ./tests/modules/dragmap/hashtable -entry test_dragmap_hashtable -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/hashtable/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/hashtable
+  files:
+    - path: output/dragmap/dragmap/hash_table.cfg
+    - path: output/dragmap/dragmap/hash_table.cfg.bin
+    - path: output/dragmap/dragmap/hash_table.cmp
+      md5sum: bc210e5358fd65656f9aea297b59ec7d
+    - path: output/dragmap/dragmap/hash_table_stats.txt
+    - path: output/dragmap/dragmap/reference.bin
+      md5sum: b6b5c12a42416b990cd2844de8f33c5d
+    - path: output/dragmap/dragmap/ref_index.bin
+      md5sum: 8470be9566ecee77eb4aea6a38922a66
+    - path: output/dragmap/dragmap/repeat_mask.bin
+      md5sum: 2439259a2fd32a1d0f4c53d585f3da3a
+    - path: output/dragmap/dragmap/str_table.bin
+      md5sum: 302e2b30993973527e69c6bcd1f093d0

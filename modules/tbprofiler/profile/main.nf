@@ -18,9 +18,12 @@ process TBPROFILER_PROFILE {
     tuple val(meta), path("vcf/*.vcf.gz")  , emit: vcf
     path "versions.yml"                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def input_reads = meta.single_end ? "--read1 $reads" : "--read1 ${reads[0]} --read2 ${reads[1]}"
     """
     tb-profiler \\

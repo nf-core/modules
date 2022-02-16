@@ -1,0 +1,7 @@
+- name: snpeff annotation_snpeff
+  command: nextflow run ./tests/subworkflows/nf-core/annotation_snpeff -entry annotation_snpeff -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/annotation_snpeff/nextflow.config
+  tags:
+    - annotation_snpeff
+  files:
+    - path: output/annotation/test_snpEff.ann.vcf.gz
+    - path: output/annotation/test_snpEff.ann.vcf.gz.tbi

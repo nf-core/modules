@@ -19,11 +19,15 @@ process SAMTOOLS_AMPLICONCLIP {
     tuple val(meta), path("*.cliprejects.bam"), optional:true, emit: rejects_bam
     path "versions.yml"                       , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def rejects  = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
-    def stats    = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
+    def rejects = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
+    def stats   = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
         ampliconclip \\

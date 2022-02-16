@@ -1,0 +1,34 @@
+name: hmmcopy_mapcounter
+description: mapCounter function from HMMcopy utilities, used to generate mappability in non-overlapping windows from a bigwig file
+keywords:
+  - hmmcopy
+  - mapcounter
+  - cnv
+tools:
+  - hmmcopy:
+      description: C++ based programs for analyzing BAM files and preparing read counts -- used with bioconductor-hmmcopy
+      homepage: https://github.com/shahcompbio/hmmcopy_utils
+      documentation: https://github.com/shahcompbio/hmmcopy_utils
+      tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
+      doi: ""
+      licence: ["GPL v3"]
+
+input:
+  - bigwig:
+      type: file
+      description: BigWig file with the mappability score of the genome, for instance made with generateMap function.
+      pattern: "*.wig"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - wig:
+      type: file
+      description: wig file containing mappability of each window of the genome
+      pattern: "*.map.wig"
+
+authors:
+  - "@sppearce"

@@ -14,17 +14,21 @@ process SAMTOOLS_FASTQ {
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     path  "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def endedness = meta.single_end ? "-0 ${prefix}.fastq.gz" : "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz"
-
     """
-    samtools fastq \\
+    samtools \\
+        fastq \\
         $args \\
         --threads ${task.cpus-1} \\
         $endedness \\
         $bam
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')

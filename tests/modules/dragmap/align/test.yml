@@ -1,0 +1,35 @@
+- name: dragmap align single-end
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.bam
+    - path: output/dragmap/test.dragmap.log
+
+- name: dragmap align single-end_sort
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_single_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.bam
+    - path: output/dragmap/test.dragmap.log
+
+- name: dragmap align paired-end
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.bam
+    - path: output/dragmap/test.dragmap.log
+
+- name: dragmap align paired-end_sort
+  command: nextflow run ./tests/modules/dragmap/align -entry test_dragmap_align_paired_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/dragmap/align/nextflow.config
+  tags:
+    - dragmap
+    - dragmap/align
+  files:
+    - path: output/dragmap/test.bam
+    - path: output/dragmap/test.dragmap.log

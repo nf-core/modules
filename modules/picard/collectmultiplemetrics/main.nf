@@ -2,10 +2,10 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::picard=2.25.7' : null)
+    conda (params.enable_conda ? "bioconda::picard=2.26.10" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.25.7--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.25.7--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.26.10--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.26.10--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -15,6 +15,9 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     tuple val(meta), path("*_metrics"), emit: metrics
     tuple val(meta), path("*.pdf")    , emit: pdf
     path  "versions.yml"              , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

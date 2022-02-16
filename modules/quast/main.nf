@@ -18,9 +18,12 @@ process QUAST {
     path '*.tsv'        , emit: tsv
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ?: 'quast'
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: 'quast'
     def features  = use_gff ? "--features $gff" : ''
     def reference = use_fasta ? "-r $fasta" : ''
     """

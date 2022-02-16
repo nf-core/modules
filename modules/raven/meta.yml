@@ -1,0 +1,47 @@
+name: raven
+description: De novo genome assembler for long uncorrected reads.
+keywords:
+  - de novo
+  - assembly
+  - genome
+  - genome assembler
+  - long uncorrected reads
+tools:
+  - raven:
+      description: Raven is a de novo genome assembler for long uncorrected reads.
+      homepage: https://github.com/lbcb-sci/raven
+      documentation: https://github.com/lbcb-sci/raven#usage
+      tool_dev_url: https://github.com/lbcb-sci/raven
+      doi: doi.org/10.1038/s43588-021-00073-4
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', suffix:'bacteria' ]
+  - reads:
+      type: file
+      description: Input file in FASTA/FASTQ format.
+      pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', suffix:'bacteria' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Assembled FASTA file
+      pattern: "*.fasta.gz"
+  - gfa:
+      type: file
+      description: Repeat graph
+      pattern: "*.gfa.gz"
+
+authors:
+  - "@fmalmeida"
