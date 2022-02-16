@@ -11,6 +11,7 @@ workflow test_gatk4_genotypegvcfs_vcf_input {
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true),
+              [],
               []
             ]
 
@@ -27,6 +28,7 @@ workflow test_gatk4_genotypegvcfs_gz_input {
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+              [],
               []
             ]
 
@@ -43,6 +45,7 @@ workflow test_gatk4_genotypegvcfs_gz_input_dbsnp {
     input = [ [ id:'test' ], // meta map
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+              [],
               []
             ]
 
