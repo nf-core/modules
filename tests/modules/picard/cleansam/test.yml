@@ -1,10 +1,10 @@
 - name: picard cleansam test_picard_cleansam
   command: nextflow run tests/modules/picard/cleansam -entry test_picard_cleansam -c tests/config/nextflow.config
   tags:
-    - picard
     - picard/cleansam
+    - picard
   files:
-    - path: /tmp/tmpfrpl68pn/picard/test.sam
+    - path: output/picard/test.sam
       md5sum: e314171a6060eb79947c13ad126ddf00
-    - path: /tmp/tmpfrpl68pn/picard/versions.yml
+    - path: output/picard/versions.yml
       md5sum: e6457d7c6de51bf6f4b577eda65e57ac
