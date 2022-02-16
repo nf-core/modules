@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml picard/createsequencedictionary
-- name: picard createsequencedictionary
-  command: nextflow run ./tests/modules/picard/createsequencedictionary -entry test_picard_createsequencedictionary -c ./tests/config/nextflow.config -c ./tests/modules/picard/createsequencedictionary/nextflow.config
+- name: picard createsequencedictionary test_picard_createsequencedictionary
+  command: nextflow run tests/modules/picard/createsequencedictionary -entry test_picard_createsequencedictionary -c tests/config/nextflow.config
   tags:
-    - picard
     - picard/createsequencedictionary
+    - picard
   files:
-    - path: output/picard/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/picard/test.dict
+      contains: 'SN:MT192765.1'
+    - path: output/picard/versions.yml
+      md5sum: b3d8c7ea65b8a6d3237b153d13fe2014

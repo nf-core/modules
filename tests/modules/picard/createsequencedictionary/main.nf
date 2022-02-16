@@ -7,8 +7,8 @@ include { PICARD_CREATESEQUENCEDICTIONARY } from '../../../../modules/picard/cre
 workflow test_picard_createsequencedictionary {
     
     input = [ 
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) 
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) 
     ]
 
     PICARD_CREATESEQUENCEDICTIONARY ( input )

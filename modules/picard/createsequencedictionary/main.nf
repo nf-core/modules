@@ -1,19 +1,18 @@
-
 process PICARD_CREATESEQUENCEDICTIONARY {
     tag "$meta.id"
     label 'process_medium'
-    
-    conda (params.enable_conda ? "bioconda::picard=2.26.10" : null)
+
+    conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.26.10--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.26.10--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.26.9--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.26.9--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.dict"), emit: reference_dict
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
