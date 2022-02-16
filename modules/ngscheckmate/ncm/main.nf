@@ -9,7 +9,7 @@ process NGSCHECKMATE_NCM {
     input:
     path files
     path snp_bed
-    value bam_mode
+    val bam_mode
 
     output:
     path "*.pdf"                  , emit: pdf
