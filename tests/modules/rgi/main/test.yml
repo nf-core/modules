@@ -1,0 +1,12 @@
+- name: rgi main
+  command: nextflow run ./tests/modules/rgi/main -entry test_rgi_main -c ./tests/config/nextflow.config -c ./tests/modules/rgi/main/nextflow.config
+  tags:
+    - rgi
+    - rgi/main
+  files:
+    - path: output/rgi/test.json
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/rgi/test.tsv
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/rgi/versions.yml
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
