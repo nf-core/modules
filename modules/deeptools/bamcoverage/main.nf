@@ -31,7 +31,7 @@ process DEEPTOOLS_BAMCOVERAGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deeptools: \$(bamCoverage --version | sed -e "s/computeMatrix //g")
+        deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
     END_VERSIONS
     """
 }
