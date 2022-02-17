@@ -1,0 +1,8 @@
+- name: gatk4 gatherpileupsummaries
+  command: nextflow run ./tests/modules/gatk4/gatherpileupsummaries -entry test_gatk4_gatherpileupsummaries -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/gatherpileupsummaries/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/gatherpileupsummaries
+  files:
+    - path: output/gatk4/test.pileupsummaries.table
+      md5sum: 8e0ca6f66e112bd2f7ec1d31a2d62469
