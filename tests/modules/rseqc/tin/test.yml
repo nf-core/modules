@@ -1,0 +1,10 @@
+- name: rseqc tin
+  command: nextflow run ./tests/modules/rseqc/tin -entry test_rseqc_tin -c ./tests/config/nextflow.config -c ./tests/modules/rseqc/tin/nextflow.config
+  tags:
+    - rseqc
+    - rseqc/tin
+  files:
+    - path: output/rseqc/test.paired_end.sorted.summary.txt
+      md5sum: 9d98447e178b89a89f6f5aba7a772fe6
+    - path: output/rseqc/test.paired_end.sorted.tin.xls
+      md5sum: 6b1b1b0dc1dc265342ba8c3f27fa60e6

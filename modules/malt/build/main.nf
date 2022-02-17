@@ -18,6 +18,9 @@ process MALT_BUILD {
     path "versions.yml"  , emit: versions
     path "malt-build.log", emit: log
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def avail_mem = 6

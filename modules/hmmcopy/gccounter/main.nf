@@ -5,8 +5,8 @@ process HMMCOPY_GCCOUNTER {
 
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_5' :
-        'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_5' }"
+        'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_7' :
+        'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_7' }"
 
     input:
     path fasta
@@ -14,6 +14,9 @@ process HMMCOPY_GCCOUNTER {
     output:
     path "*.gc.wig"    , emit: wig
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
