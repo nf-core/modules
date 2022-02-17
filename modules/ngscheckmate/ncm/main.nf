@@ -25,7 +25,9 @@ process NGSCHECKMATE_NCM {
     def mode_flag = bam_mode ? "-B" : "-V"
 
     """
-    for i in *.vcf.gz; do i2=\$(echo \$i | sed s/.vcf.gz/.vcf/g); gunzip -cdf \$i > \$i2;done
+    for VCFGZ in *.vcf.gz; do
+        gunzip -cdf \$VCFGZ > \$( basename \$VCFGZ .gz );
+    done
 
     ncm.py ${mode_flag} -d . -bed ${snp_bed} -O . -N ${prefix} $args
     rm -f *.vcf  # clean up decompressed vcfs
