@@ -12,9 +12,9 @@ process PRESEQ_LCEXTRAP {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.ccurve.txt"), emit: ccurve
-    tuple val(meta), path("*.log")       , emit: log
-    path  "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.lc_extrap.txt"), emit: lc_extrap
+    tuple val(meta), path("*.log")          , emit: log
+    path  "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,7 @@ process PRESEQ_LCEXTRAP {
         lc_extrap \\
         $args \\
         $paired_end \\
-        -output ${prefix}.ccurve.txt \\
+        -output ${prefix}.lc_extrap.txt \\
         $bam
     cp .command.err ${prefix}.command.log
 
