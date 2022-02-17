@@ -1,4 +1,3 @@
-
 process GATK4_GATHERPILEUPSUMMARIES {
     tag "$meta.id"
     label 'process_low'
