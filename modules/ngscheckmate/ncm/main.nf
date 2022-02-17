@@ -28,6 +28,7 @@ process NGSCHECKMATE_NCM {
     for i in *.vcf.gz; do i2=\$(echo \$i | sed s/.vcf.gz/.vcf/g); gunzip -cdf \$i > \$i2;done
 
     ncm.py ${mode_flag} -d . -bed ${snp_bed} -O . -N ${prefix} $args
+    rm -f *.vcf  # clean up decompressed vcfs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
