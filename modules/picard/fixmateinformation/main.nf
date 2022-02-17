@@ -1,12 +1,11 @@
-
 process PICARD_FIXMATEINFORMATION {
     tag "$meta.id"
     label 'process_low'
     
-    conda (params.enable_conda ? "bioconda::picard=2.26.10" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.26.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.26.10--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.26.10--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.26.9--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.26.9--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -18,6 +17,7 @@ process PICARD_FIXMATEINFORMATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def STRINGENCY = task.ext.stringency ?: "STRICT"
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard FixMateInformation] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -28,9 +28,9 @@ process PICARD_FIXMATEINFORMATION {
     picard \\
         FixMateInformation \\
         -Xmx${avail_mem}g \\
-        --INPUT $bam \\
-        --OUTPUT ${prefix}.bam \\
-        --SORT_ORDER $sort_order
+        -I ${bam} \\
+        -O ${prefix}.bam \\
+        --VALIDATION_STRINGENCY ${STRINGENCY}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

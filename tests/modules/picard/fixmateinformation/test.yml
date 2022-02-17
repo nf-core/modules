@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml picard/fixmateinformation
-- name: picard fixmateinformation
-  command: nextflow run ./tests/modules/picard/fixmateinformation -entry test_picard_fixmateinformation -c ./tests/config/nextflow.config -c ./tests/modules/picard/fixmateinformation/nextflow.config
+- name: picard fixmateinformation test_picard_fixmateinformation
+  command: nextflow run tests/modules/picard/fixmateinformation -entry test_picard_fixmateinformation -c tests/config/nextflow.config
   tags:
     - picard
     - picard/fixmateinformation
   files:
     - path: output/picard/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+      md5sum: 746102e8c242c0ef42e045c49d320030
+    - path: output/picard/versions.yml
+      md5sum: 4329ba7cdca8f4f6018dfd5c019ba2eb

@@ -20,8 +20,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file
+      pattern: "*.{bam}"
 
 output:
   - meta:
@@ -35,8 +35,8 @@ output:
       pattern: "versions.yml"
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: mate-pair verified BAM file
+      pattern: "*.{bam}"
 
 authors:
   - "@sateeshperi"
