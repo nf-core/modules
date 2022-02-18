@@ -1,15 +1,17 @@
-process QUALIMAP_BAMQC {
+process QUALIMAP_BAMQCCRAM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::qualimap=2.2.2d" : null)
+    conda (params.enable_conda ? "bioconda::qualimap=2.2.2d bioconda::samtools=1.12" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/qualimap:2.2.2d--1' :
-        'quay.io/biocontainers/qualimap:2.2.2d--1' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:4bf11d12f2c3eccf1eb585097c0b6fd31c18c418-0' :
+        'quay.io/biocontainers/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:4bf11d12f2c3eccf1eb585097c0b6fd31c18c418-0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path gff
+    tuple val(meta), path(cram), path(crai)
+    path  gff
+    path  fasta
+    path  fasta_fai
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -36,11 +38,13 @@ process QUALIMAP_BAMQC {
     unset DISPLAY
     mkdir tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
+
+    samtools view -hb -T ${fasta} ${cram} |
     qualimap \\
         --java-mem-size=$memory \\
         bamqc \\
         $args \\
-        -bam $bam \\
+        -bam /dev/stdin \\
         $regions \\
         -p $strandedness \\
         $collect_pairs \\
@@ -50,6 +54,7 @@ process QUALIMAP_BAMQC {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
