@@ -9,8 +9,6 @@ process GATK4_MERGEMUTECTSTATS {
 
     input:
     tuple val(meta), path(stats)
-
-
     output:
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     path "versions.yml"                    , emit: versions
