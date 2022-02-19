@@ -42,11 +42,16 @@ input:
         bed files containing coordinates of each primer in the scheme,
         relative to the reference genome
       pattern: "*.{scheme.bed}"
-  - medaka_model:
+  - medaka_model_file:
       type: file
       description: |
-        Medaka model to use (if option --medaka is set)
-      pattern: "*.*"
+        Medaka model file to use (if option --medaka is set)
+      pattern: "*.hdf5"
+  - medaka_model_string:
+      type: value
+      description: |
+        Medaka model string to use (if option --medaka is set)
+      pattern: "*"
   - scheme:
       type: value
       description: Name of the primer scheme
