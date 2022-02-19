@@ -1,0 +1,80 @@
+- name: qualimap bamqccram test_qualimap_bamqc
+  command: nextflow run tests/modules/qualimap/bamqccram -entry test_qualimap_bamqc -c tests/config/nextflow.config
+  tags:
+    - qualimap/bamqccram
+    - qualimap
+  files:
+    - path: ./output/qualimap/test/qualimapReport.html
+    - path: ./output/qualimap/test/genome_results.txt
+      md5sum: 61d8b36507652fd7d7db9583de708161
+    - path: ./output/qualimap/test/css/plus.png
+      md5sum: 0125e6faa04e2cf0141a2d599d3bb220
+    - path: ./output/qualimap/test/css/down-pressed.png
+      md5sum: ebe8979581eda700fb234a73c661a4b9
+    - path: ./output/qualimap/test/css/underscore.js
+      md5sum: db5ba047a66617d4cd3e8c5099cc51db
+    - path: ./output/qualimap/test/css/ajax-loader.gif
+      md5sum: ae6667053ad118020b8e68ccf307b519
+    - path: ./output/qualimap/test/css/searchtools.js
+      md5sum: d550841adeedc8ed47c40ee607620937
+    - path: ./output/qualimap/test/css/up.png
+    - path: ./output/qualimap/test/css/file.png
+    - path: ./output/qualimap/test/css/up-pressed.png
+    - path: ./output/qualimap/test/css/down.png
+    - path: ./output/qualimap/test/css/minus.png
+    - path: ./output/qualimap/test/css/bgtop.png
+    - path: ./output/qualimap/test/css/comment.png
+    - path: ./output/qualimap/test/css/basic.css
+      md5sum: 25b2823342c0604924a2870eeb4e7e94
+    - path: ./output/qualimap/test/css/report.css
+      md5sum: 7a5f09eaf7c176f966f4e8854168b812
+    - path: ./output/qualimap/test/css/pygments.css
+      md5sum: d625a0adb949f181bd0d3f1432b0fa7f
+    - path: ./output/qualimap/test/css/comment-close.png
+    - path: ./output/qualimap/test/css/doctools.js
+      md5sum: 5ff571aa60e63f69c1890283e240ff8d
+    - path: ./output/qualimap/test/css/comment-bright.png
+    - path: ./output/qualimap/test/css/qualimap_logo_small.png
+    - path: ./output/qualimap/test/css/websupport.js
+      md5sum: 9e61e1e8a7433c56bd7e5a615affcf85
+    - path: ./output/qualimap/test/css/agogo.css
+      md5sum: bd757b1a7ce6fdc0288ba148680f4583
+    - path: ./output/qualimap/test/css/bgfooter.png
+    - path: ./output/qualimap/test/css/jquery.js
+      md5sum: 10092eee563dec2dca82b77d2cf5a1ae
+    - path: ./output/qualimap/test/raw_data_qualimapReport/insert_size_histogram.txt
+      md5sum: b7aeda7558e9b31f027f7dc530df90b8
+    - path: ./output/qualimap/test/raw_data_qualimapReport/mapped_reads_nucleotide_content.txt
+      md5sum: 42774c6edd6e36538acbdb6ffbd019c2
+    - path: ./output/qualimap/test/raw_data_qualimapReport/genome_fraction_coverage.txt
+      md5sum: 972a19d4846bf4e93ba32ae3dff5289c
+    - path: ./output/qualimap/test/raw_data_qualimapReport/mapping_quality_histogram.txt
+      md5sum: 4e3918da81202b52395a576f99c1a50f
+    - path: ./output/qualimap/test/raw_data_qualimapReport/insert_size_across_reference.txt
+    - path: ./output/qualimap/test/raw_data_qualimapReport/coverage_histogram.txt
+      md5sum: 353e74d2a6c4281686c9063de570a64d
+    - path: ./output/qualimap/test/raw_data_qualimapReport/mapping_quality_across_reference.txt
+      md5sum: 9bf33149528be9a0e154e4ba7cb89420
+    - path: ./output/qualimap/test/raw_data_qualimapReport/mapped_reads_gc-content_distribution.txt
+      md5sum: be36d9346a402ba580718497d5075d06
+    - path: ./output/qualimap/test/raw_data_qualimapReport/homopolymer_indels.txt
+      md5sum: b0e19fcfb60e5f039eb0986ef61ab3ed
+    - path: ./output/qualimap/test/raw_data_qualimapReport/duplication_rate_histogram.txt
+      md5sum: 76e80e4ce8d0e01bbd65f1c28f5a92e7
+    - path: ./output/qualimap/test/raw_data_qualimapReport/coverage_across_reference.txt
+      md5sum: b609d33a1f98d24aa84a04e60513cbee
+    - path: ./output/qualimap/test/raw_data_qualimapReport/mapped_reads_clipping_profile.txt
+      md5sum: 7c86f7b225b99bc60008d7e4e55d6adb
+    - path: ./output/qualimap/test/images_qualimapReport/genome_reads_content_per_read_position.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_gc_content_per_window.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_coverage_0to50_histogram.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_uniq_read_starts_histogram.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_mapping_quality_across_reference.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_coverage_histogram.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_coverage_across_reference.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_homopolymer_indels.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_insert_size_histogram.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_mapping_quality_histogram.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_insert_size_across_reference.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_reads_clipping_profile.png
+    - path: ./output/qualimap/test/images_qualimapReport/genome_coverage_quotes.png
