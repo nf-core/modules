@@ -1,4 +1,4 @@
-name: qualimap_bamqc
+name: qualimap_bamqccram
 description: Evaluate alignment data
 keywords:
   - quality control
@@ -21,7 +21,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - bacramm:
       type: file
       description: BAM file
       pattern: "*.{bam}"
@@ -29,6 +29,10 @@ input:
       type: file
       description: Feature file with regions of interest
       pattern: "*.{gff,gtf,bed}"
+  - fasta:
+      type: file
+      description: Reference file of cram file
+      pattern: "*.{fasta,fa,fna}"
 output:
   - meta:
       type: map
@@ -44,4 +48,4 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
-  - "@phue"
+  - "@FriederikeHanssen"
