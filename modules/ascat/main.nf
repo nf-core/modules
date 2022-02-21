@@ -13,7 +13,7 @@ process ASCAT {
     tuple val(meta), path(normalbam)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.rdata"), emit: rdata
     path "versions.yml"           , emit: versions
 
     script:
