@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { UNTAR } from '../../../modules/untar/main.nf'
 include { VCFANNO } from '../../../modules/vcfanno/main.nf'
 
 workflow test_vcfanno {
@@ -16,9 +17,10 @@ workflow test_vcfanno {
                 [] ]
 
     toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
-    resource_dir = file(params.test_data['homo_sapiens']['genome']['vcfanno_resource_dir'], type:'dir', checkIfExists: true)
+    resource_dir = file(params.test_data['homo_sapiens']['genome']['vcfanno_tar_gz'], checkIfExists: true)
 
-    VCFANNO ( input, input_2, toml, resource_dir )
+    UNTAR ( resource_dir )
+    VCFANNO ( input, input_2, toml, UNTAR.out.untar )
 }
 
 workflow test_vcfanno_uncompressed {
@@ -32,7 +34,8 @@ workflow test_vcfanno_uncompressed {
     ]
 
     toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
-    resource_dir = file(params.test_data['homo_sapiens']['genome']['vcfanno_resource_dir'], type:'dir', checkIfExists: true)
+    resource_dir = file(params.test_data['homo_sapiens']['genome']['vcfanno_tar_gz'], checkIfExists: true)
 
-    VCFANNO ( input, input_2, toml, resource_dir )
+    UNTAR ( resource_dir )
+    VCFANNO ( input, input_2, toml, UNTAR.out.untar )
 }
