@@ -31,11 +31,23 @@ process ASCAT {
       loci.prefix = "G1000_loci_hg19_chr",
       gender = "XX",
       genomeVersion = "hg19",
-      nthreads = 1)
+      nthreads = $task.cpus
+    )
 
 
+    ascat.bc = ascat.loadData(
+      Tumor_LogR_file = "Tumour_tumourLogR.txt",
+      Tumor_BAF_file = "Tumour_normalBAF.txt",
+      Germline_LogR_file = "Tumour_normalLogR.txt",
+      Germline_BAF_file = "Tumour_normalBAF.txt",
+      genomeVersion = "hg19"
+    )
 
+    ascat.bc = ascat.aspcf(ascat.bc)
 
+    ascat.output = ascat.runAscat(ascat.bc)
+
+    save(ascat.output, file = "ascat.output.rdata)
 
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
