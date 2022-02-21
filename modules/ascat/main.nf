@@ -21,6 +21,12 @@ process ASCAT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     library(ASCAT)
+
+    #Must download loci and allele file from dropbox and unzip
+    #https://www.dropbox.com/s/l3m0yvyca86lpwb/G1000_loci_hg19.zip
+    #https://www.dropbox.com/s/3fzvir3uqe3073d/G1000_alleles_hg19.zip
+
+
     d<-ascat.prepareHTS(
       tumourseqfile = $tumorbam,
       normalseqfile = $normalbam,
