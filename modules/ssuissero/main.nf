@@ -28,6 +28,7 @@ process SSUISSERO {
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
+
     SsuisSero.sh \\
         -i $fasta_name \\
         -o ./ \\
