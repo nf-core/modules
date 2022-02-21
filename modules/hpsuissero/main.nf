@@ -20,7 +20,6 @@ process HPSUISSERO {
     task.ext.when == null || task.ext.when
 
     script:
-    script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
