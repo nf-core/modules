@@ -1,5 +1,5 @@
 name: bcftools_annotate
-description: write your description here
+description: Add or remove annotations.
 keywords:
   - bcftools
   - annotate
@@ -36,10 +36,10 @@ output:
   - vcf:
       type: file
       description: Compressed annotated VCF file
-      pattern: "*.vcf.gz"
+      pattern: "*_annotated.vcf.gz"
   - bcf:
       type: file
       description: Compressed annotated BCF file
-      pattern: "*.bcf"
+      pattern: "*_annotated.bcf"
 authors:
   - "@projectoriented"
