@@ -22,16 +22,15 @@ process SEQTK_SEQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = "fastq"
-    if ("$sequences" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {  
+    if ("$sequences" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {
         extension = "fasta"
     }
-    
     """
     seqtk \\
         seq \\
         $args \\
         $sequences | \\
-        gzip -c > ${prefix}.seqtk-seq.${extension}.gz 
+        gzip -c > ${prefix}.seqtk-seq.${extension}.gz
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
