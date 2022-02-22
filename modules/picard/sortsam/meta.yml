@@ -1,17 +1,17 @@
 name: picard_sortsam
 description: Sorts BAM/SAM files based on a variety of picard specific criteria
 keywords:
-    - sort
-    - bam
-    - sam
+  - sort
+  - bam
+  - sam
 tools:
-    - picard:
-        description: |
-            A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
-            data and formats such as SAM/BAM/CRAM and VCF.
-        homepage: https://broadinstitute.github.io/picard/
-        documentation: https://broadinstitute.github.io/picard/
-        licence: ['MIT']
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -42,7 +42,6 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam}"
-
 
 authors:
   - "@jfy133"

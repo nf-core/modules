@@ -2,19 +2,16 @@ process GATK4_APPLYVQSR {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(recal), path(recalidx), path(tranches)
     path fasta
     path fai
     path dict
-    val allelespecific
-    val truthsensitivity
-    val mode
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf
@@ -28,9 +25,6 @@ process GATK4_APPLYVQSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     refCommand = fasta ? "-R ${fasta} " : ''
-    alleleSpecificCommand = allelespecific ? '-AS' : ''
-    truthSensitivityCommand = truthsensitivity ? "--truth-sensitivity-filter-level ${truthsensitivity}" : ''
-    modeCommand = mode ? "--mode ${mode} " : 'SNP'
 
     def avail_mem = 3
     if (!task.memory) {
@@ -43,11 +37,8 @@ process GATK4_APPLYVQSR {
         ${refCommand} \\
         -V ${vcf} \\
         -O ${prefix}.vcf.gz \\
-        ${alleleSpecificCommand} \\
-        ${truthSensitivityCommand} \\
         --tranches-file $tranches \\
         --recal-file $recal \\
-        ${modeCommand} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
