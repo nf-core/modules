@@ -1,0 +1,21 @@
+- name: deeptools bamcoverage test_deeptools_bamcoverage_bam
+  command: nextflow run tests/modules/deeptools/bamcoverage -entry test_deeptools_bamcoverage_bam -c tests/config/nextflow.config
+  tags:
+    - deeptools
+    - deeptools/bamcoverage
+  files:
+    - path: output/deeptools/test.bigWig
+      md5sum: 95fe9383a9e6c02aea6b785cf074274f
+    - path: output/deeptools/versions.yml
+      md5sum: 68c94e73b7a8c0935578bad61fea54c1
+
+- name: deeptools bamcoverage test_deeptools_bamcoverage_cram
+  command: nextflow run tests/modules/deeptools/bamcoverage -entry test_deeptools_bamcoverage_cram -c tests/config/nextflow.config
+  tags:
+    - deeptools
+    - deeptools/bamcoverage
+  files:
+    - path: output/deeptools/test.bigWig
+      md5sum: 95fe9383a9e6c02aea6b785cf074274f
+    - path: output/deeptools/versions.yml
+      md5sum: 665bbd2979c49bf3974a24bd44a88e94
