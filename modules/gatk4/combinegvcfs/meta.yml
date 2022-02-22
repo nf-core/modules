@@ -22,11 +22,18 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-  - vcf:
+  - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fai}"
+    - dict:
+        type: file
+        description: FASTA dictionary file
+        pattern: "*.{dict}"           
+  - vcffiles:
       type: file
       description: Compressed VCF files
-      pattern: "*.vcf.gz"    
-
+      pattern: "*.vcf.gz"
 output:
   - gvcf:
       type: file

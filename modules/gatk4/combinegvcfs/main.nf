@@ -1,6 +1,5 @@
-
 process GATK4_COMBINEGVCFS {
-    //tag "$meta.id"
+    tag "$meta.id"
     label 'process_low'
     
     conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
@@ -9,32 +8,37 @@ process GATK4_COMBINEGVCFS {
         'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
 
     input:
-    path(fasta)
-    path(vcf)
+    tuple val(meta), path(fasta), path(fastaIndex), path (fastaDict)
+    path(vcffiles)
+    path(vcf_idx)
 
     output:
-    path("combined.gvcf.gz")      , emit: combined_gvcf
-    path "versions.yml"           , emit: versions
+    path("*.combined.g.vcf.gz"), emit: combined_gvcf
+    path "versions.yml"        , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem       = 3
     if (!task.memory) {
         log.info '[GATK COMBINEGVCFS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
-
+    def variant_string = ''
+    vcffiles.each {variant_string += "-V ${it} "} // loop to create a string adding -V to each vcf file
     """
     gatk \\
         --java-options "-Xmx${avail_mem}g" \\
         CombineGVCFs \\
-        -R $fasta \\
-        -O combined.gvcf.gz \\
-        $args \\
+        -R ${fasta} \\
+        -O ${prefix}.combined.g.vcf.gz \\
+        ${args} \\
         --tmp-dir . \\
-        $vcf
+        ${variant_string}
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -6,13 +6,23 @@ include { GATK4_COMBINEGVCFS } from '../../../../modules/gatk4/combinegvcfs/main
 
 workflow test_gatk4_combinegvcfs {
     
-    input = [
-        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
-        file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true)
-    ]
-    
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+           ]
 
-    GATK4_COMBINEGVCFS ( fasta, input )
+    
+    vcffiles = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
+                 file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf'], checkIfExists: true) ]
+
+    vcf_idx = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_idx'], checkIfExists: true) ]  
+
+
+//    vcffiles = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
+//                 file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'], checkIfExists: true) ]
+
+    GATK4_COMBINEGVCFS ( input, vcffiles, vcf_idx )
 }
 
