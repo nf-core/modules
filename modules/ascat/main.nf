@@ -15,48 +15,30 @@ process ASCAT {
     
 
     output:
-    tuple val(meta), path("*.png"),      emit: png
-    tuple val(meta), path("*cnvs.txt"), emit: cnvs
-    tuple val(meta), path("*purityploidy.txt"), emit: purityploidy
-    tuple val(meta), path("*segments.txt"),  emit: segments
-    tuple val(meta), path("*PCFed.txt"),  emit: PCFed
-    path "versions.yml"           ,      emit: versions
+    tuple val(meta), path("*.png"),              emit: png
+    tuple val(meta), path("*cnvs.txt"),          emit: cnvs
+    tuple val(meta), path("*purityploidy.txt"),  emit: purityploidy
+    tuple val(meta), path("*segments.txt"),      emit: segments
+    path "versions.yml",                         emit: versions
 
     script:
-    //TODO: make gender and genomeVersion as arguments
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    if (args.contains("--gender XY")) {
-        gender_args = "XY"
-    }
-    else {
-        gender_args = "XX"
-    }
-    if (args.contains("--genomeVersion hg38")) {
-        genomeVersion_args = "hg38"
-    }
-    else {
-        genomeVersion_args = "hg19"
-    }
 
     """
     #!/usr/bin/env Rscript
 
-    #set (temporary) test arguments, figure out how to define later
+    #TODO: set (temporary) test arguments, figure out how to define later
     gcfile_args = NULL
     ploidy = NULL
     purity = NULL
+    gender = "XY"
+    genomeVersion ="hg19"
 
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
 
-    #Must download loci and allele file from dropbox and unzip
-    #https://www.dropbox.com/s/l3m0yvyca86lpwb/G1000_loci_hg19.zip
-    #https://www.dropbox.com/s/3fzvir3uqe3073d/G1000_alleles_hg19.zip
-
-    print("$loci_files")
     #prepare from BAM files
     ascat.prepareHTS(
       tumourseqfile = "$tumor_bam",
@@ -66,9 +48,9 @@ process ASCAT {
       allelecounter_exe = "alleleCounter",
       alleles.prefix = "$allele_files/G1000_alleles_hg19_chr",
       loci.prefix = "$loci_files/G1000_loci_hg19_chr",
-      gender = "$gender_args",
-      genomeVersion = "$genomeVersion_args",
-      chrom_names = c("21","22"),
+      gender = gender,
+      genomeVersion = genomeVersion,
+      chrom_names = c("21","22"), #TODO: remove this, it's only for testing
       nthreads = $task.cpus
     )
 
@@ -78,10 +60,10 @@ process ASCAT {
       Tumor_BAF_file = "Tumour_normalBAF.txt",
       Germline_LogR_file = "Tumour_normalLogR.txt",
       Germline_BAF_file = "Tumour_normalBAF.txt",
-      genomeVersion = "$genomeVersion_args"
+      genomeVersion = genomeVersion
     )
 
-    #GC wave correction
+    #GC wave correction (TODO: re-activate - it's a mandatory argument in run_sarek)
     #ascat.bc = ascat.GCcorrect(ascat.bc, gcfile_args)
 
     #Plot the raw data
