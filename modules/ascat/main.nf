@@ -8,13 +8,19 @@ process ASCAT {
         'quay.io/biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0' }"
 
     input:
-    tuple val(meta), path(normal_input), path(tumor_input)
+    tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai)
     // path(gcfile) #TODO add in this later, it's a required argument in sarek
+    path(allele_files)
+    path(loci_files)
     
 
     output:
-    tuple val(meta), path("*.rdata"), emit: rdata
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.png"),      emit: png
+    tuple val(meta), path("*cnvs.txt"), emit: cnvs
+    tuple val(meta), path("*purityploidy.txt"), emit: purityploidy
+    tuple val(meta), path("*segments.txt"),  emit: segments
+    tuple val(meta), path("*PCFed.txt"),  emit: PCFed
+    path "versions.yml"           ,      emit: versions
 
     script:
     //TODO: make gender and genomeVersion as arguments
@@ -27,15 +33,15 @@ process ASCAT {
     else {
         gender_args = "XX"
     }
-    if (args.contains("--genomeVersion hg19")) {
-        genomeVersion_args = "hg19"
+    if (args.contains("--genomeVersion hg38")) {
+        genomeVersion_args = "hg38"
     }
     else {
-        genomeVersion_args = "hg38"
+        genomeVersion_args = "hg19"
     }
 
     """
-
+    #!/usr/bin/env Rscript
 
     #set (temporary) test arguments, figure out how to define later
     gcfile_args = NULL
@@ -50,18 +56,19 @@ process ASCAT {
     #https://www.dropbox.com/s/l3m0yvyca86lpwb/G1000_loci_hg19.zip
     #https://www.dropbox.com/s/3fzvir3uqe3073d/G1000_alleles_hg19.zip
 
-
+    print("$loci_files")
     #prepare from BAM files
     ascat.prepareHTS(
-      tumourseqfile = $tumor_input,
-      normalseqfile = $normal_input,
+      tumourseqfile = "$tumor_bam",
+      normalseqfile = "$normal_bam",
       tumourname = "Tumour",
       normalname = "Normal",
       allelecounter_exe = "alleleCounter",
-      alleles.prefix = "G1000_alleles_hg19_chr",
-      loci.prefix = "G1000_loci_hg19_chr",
-      gender = $gender_args,
-      genomeVersion = $genomeVersion_args,
+      alleles.prefix = "$allele_files/G1000_alleles_hg19_chr",
+      loci.prefix = "$loci_files/G1000_loci_hg19_chr",
+      gender = "$gender_args",
+      genomeVersion = "$genomeVersion_args",
+      chrom_names = c("21","22"),
       nthreads = $task.cpus
     )
 
@@ -71,7 +78,7 @@ process ASCAT {
       Tumor_BAF_file = "Tumour_normalBAF.txt",
       Germline_LogR_file = "Tumour_normalLogR.txt",
       Germline_BAF_file = "Tumour_normalBAF.txt",
-      genomeVersion = $genomeVersion_args
+      genomeVersion = "$genomeVersion_args"
     )
 
     #GC wave correction
@@ -99,11 +106,11 @@ process ASCAT {
     }
 
     #Write out segmented regions (including regions with one copy of each allele)
-    write.table(ascat.output[["segments"]], file=paste($prefix, ".segments.txt", sep=""), sep="\t", quote=F, row.names=F)
+    write.table(ascat.output[["segments"]], file=paste0("$prefix", ".segments.txt"), sep="\t", quote=F, row.names=F)
 
     #Write out CNVs in bed format
     cnvs=ascat.output[["segments"]][2:6]
-    write.table(cnvs, file=paste($prefix,".cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(cnvs, file=paste0("$prefix",".cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     #Write out purity and ploidy info
     summary <- tryCatch({
@@ -114,14 +121,14 @@ process ASCAT {
     		}
     )
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
-    write.table(summary, file=paste($prefix,".purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(summary, file=paste0("$prefix",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     #version export. Have to hardcode process name and software name because
     #won't run inside an R-block
     version_file_path="versions.yml"
     f <- file(version_file_path,"w")
     writeLines("ASCAT:", f)
-    writeLines(paste0(" ascat: 3.0.0",f)
+    writeLines(" ascat: 3.0.0",f)
     close(f)
 
     """

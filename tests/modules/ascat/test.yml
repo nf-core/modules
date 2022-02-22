@@ -1,9 +1,29 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml ascat
-- name: ascat
-  command: nextflow run ./tests/modules/ascat -entry test_ascat -c ./tests/config/nextflow.config -c ./tests/modules/ascat/nextflow.config
+- name: ascat test_ascat
+  command: nextflow run tests/modules/ascat -entry test_ascat -c tests/config/nextflow.config
   tags:
     - ascat
   files:
-    - path: output/ascat/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.ASCATprofile.png
+      md5sum: 26f47d2ec931550bc08f7133c2ce6df5
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.ASPCF.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.BAF.PCFed.txt
+      md5sum: 4ea10abb2c9e7734fb9e89ca84e128d2
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.LogR.PCFed.txt
+      md5sum: 77263aa1db72f94ff585bec5286181d4
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.germline.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.rawprofile.png
+      md5sum: 71ebc19ddace0fe0bdd190e0977b1b12
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.sunrise.png
+      md5sum: f904045d26f5cfe8e2e81f3800bf6c1b
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/Tumour.tumour.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/test.cnvs.txt
+      md5sum: 4f99f706b2e498182bbddfaf8b0fafda
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/test.purityploidy.txt
+      md5sum: 04d28acfd97c3617fda01e0698857de4
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/test.segments.txt
+      md5sum: 471d8590deda74a6cde6b5849bd5cbab
+    - path: /home/ec2-user/tmp/tmpz931czaj/ascat/versions.yml
+      md5sum: 1af20694ec11004c4f8bc0c609b06386
