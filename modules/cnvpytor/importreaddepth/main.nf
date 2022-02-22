@@ -1,6 +1,6 @@
 process CNVPYTOR_IMPORTREADDEPTH {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,7 +8,9 @@ process CNVPYTOR_IMPORTREADDEPTH {
         'quay.io/biocontainers/cnvpytor:1.0--py39h6a678da_2' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input_file), path(index)
+    path fasta
+    path fai
 
     output:
     tuple val(meta), path("*.pytor")	, emit: pytor
@@ -17,12 +19,13 @@ process CNVPYTOR_IMPORTREADDEPTH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def reference = fasta ? "-T  ${fasta}" : ''
     """
     cnvpytor \\
         -root ${prefix}.pytor \\
-        -rd $bam \\
-        $args
+        -rd $input_file \\
+        $args \\
+        $reference
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
