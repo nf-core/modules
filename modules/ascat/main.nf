@@ -24,16 +24,24 @@ process ASCAT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def purity = args.purity ? "$args.purity" : "NULL"
+    def ploidy = args.ploidy ? "$args.ploidy" : "NULL"
+    def gender = args.gender ? "$args.gender" : "'XX'"
+    def genomeVersion = args.genomeVersion ? "$args.genomeVersion" : "'hg19'"
 
     """
     #!/usr/bin/env Rscript
 
     #TODO: set (temporary) test arguments, figure out how to define later
     gcfile_args = NULL
-    ploidy = NULL
-    purity = NULL
-    gender = "XY"
-    genomeVersion ="hg19"
+    ploidy = $ploidy
+    purity = $purity
+    gender = $gender
+    genomeVersion =$genomeVersion
+
+    print("tests")
+    print(ploidy)
+    print(purity)
 
     library(RColorBrewer)
     library(ASCAT)
