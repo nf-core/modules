@@ -1,4 +1,3 @@
-
 process ASCAT {
     tag "$meta.id"
     label 'process_medium'
@@ -9,7 +8,7 @@ process ASCAT {
         'biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce' }"
 
     input:
-    tuple val(meta), path(tumorbam)
+    tuple val(meta), path(normal_input), path(tumor_input)
 
     output:
     tuple val(meta), path("*.rdata"), emit: rdata
@@ -55,8 +54,8 @@ process ASCAT {
 
     #prepare from BAM files
     ascat.prepareHTS(
-      tumourseqfile = $tumorbam,
-      normalseqfile = $normalbam,
+      tumourseqfile = $tumor_input,
+      normalseqfile = $normal_input,
       tumourname = "Tumour",
       normalname = "Normal",
       allelecounter_exe = "alleleCounter",
