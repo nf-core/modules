@@ -1,0 +1,33 @@
+- name: faqcs test_fastp_single_end
+  command: nextflow run tests/modules/faqcs -entry test_fastp_single_end -c tests/config/nextflow.config
+  tags:
+    - faqcs
+  files:
+    - path: /tmp/tmp0zzh3opv/faqcs/test.fastp.log
+      md5sum: be79dc893f87de1f82faf749cdfb848c
+    - path: /tmp/tmp0zzh3opv/faqcs/test.stats.txt
+      md5sum: ea20e93706b2e4c676004253baa3cec6
+    - path: /tmp/tmp0zzh3opv/faqcs/test.trimmed.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: /tmp/tmp0zzh3opv/faqcs/test_qc_report.pdf
+      contains: ['%PDF-1.4']
+    - path: /tmp/tmp0zzh3opv/faqcs/versions.yml
+      md5sum: 2a38d7e7ab5299336e9669c393c9da6c
+
+- name: faqcs test_fastp_paired_end
+  command: nextflow run tests/modules/faqcs -entry test_fastp_paired_end -c tests/config/nextflow.config
+  tags:
+    - faqcs
+  files:
+    - path: /tmp/tmpx3_3qjwy/faqcs/test.fastp.log
+      md5sum: be79dc893f87de1f82faf749cdfb848c
+    - path: /tmp/tmpx3_3qjwy/faqcs/test.stats.txt
+      md5sum: 9a693f8af94ab8c485519d9a523aa622
+    - path: /tmp/tmpx3_3qjwy/faqcs/test_1.trimmed.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: /tmp/tmpx3_3qjwy/faqcs/test_2.trimmed.fastq.gz
+      md5sum: 375aeb74819ca3d72203135ac80df78c
+    - path: /tmp/tmpx3_3qjwy/faqcs/test_qc_report.pdf
+      contains: ['%PDF-1.4']
+    - path: /tmp/tmpx3_3qjwy/faqcs/versions.yml
+      md5sum: 208d54c0cf6dfc54e719b81b990afac9
