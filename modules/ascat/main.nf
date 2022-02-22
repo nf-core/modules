@@ -14,19 +14,19 @@ process ASCAT {
     
 
     output:
-    tuple val(meta), path("*.png"),              emit: png
+    tuple val(meta), path("*png"),               emit: png
     tuple val(meta), path("*cnvs.txt"),          emit: cnvs
     tuple val(meta), path("*purityploidy.txt"),  emit: purityploidy
     tuple val(meta), path("*segments.txt"),      emit: segments
     path "versions.yml",                         emit: versions
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def gender = args.gender ? "$args.gender" : "'XX'"
-    def genomeVersion = args.genomeVersion ? "$args.genomeVersion" : "'hg19'"
-    def purity = args.purity ? "$args.purity" : "NULL"
-    def ploidy = args.ploidy ? "$args.ploidy" : "NULL"
-    def gc_files = args.gc_files ? "$args.gc_files" : "NULL"
+    def prefix         = task.ext.prefix      ?: "${meta.id}"
+    def gender         = task.ext.args?["general"]["gender"]          ? task.ext.args["general"]["gender"]         : "'XX'"
+    def genomeVersion  = task.ext.args?["general"]?["genomeVersion"]   ? task.ext.args["general"]["genomeVersion"]  : "'hg19'"
+    def purity         = task.ext.args?["general"]?["purity"]          ? task.ext.args["general"]["purity"]         : "NULL"
+    def ploidy         = task.ext.args?["general"]?["ploidy"]          ? task.ext.args["general"]["ploidy"]         : "NULL"
+    def gc_files       = task.ext.args?["general"]?["gc_files"]        ? task.ext.args["general"]["gc_files"]       : "NULL"
 
     """
     #!/usr/bin/env Rscript
@@ -71,16 +71,22 @@ process ASCAT {
 
     #Plot the segmented data
     ascat.plotSegmentedData(ascat.bc)
-
+    print("TESTSTUFF")
+    print($purity)
+    print($ploidy)
     #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
     #If psi and rho are manually set:
     if (!is.null($purity) && !is.null($ploidy)){
       ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
+print("TEST1")
     } else if(!is.null($purity) && is.null($ploidy)){
+print("TEST2")
       ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
     } else if(!is.null($ploidy) && is.null($purity)){
+print("TEST3")
       ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
     } else {
+print("TEST4")
       ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }
 
