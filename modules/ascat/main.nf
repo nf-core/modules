@@ -9,7 +9,6 @@ process ASCAT {
 
     input:
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai)
-    // path(gcfile) #TODO add in this later, it's a required argument in sarek
     path(allele_files)
     path(loci_files)
     
@@ -22,27 +21,15 @@ process ASCAT {
     path "versions.yml",                         emit: versions
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def purity = args.purity ? "$args.purity" : "NULL"
-    def ploidy = args.ploidy ? "$args.ploidy" : "NULL"
     def gender = args.gender ? "$args.gender" : "'XX'"
     def genomeVersion = args.genomeVersion ? "$args.genomeVersion" : "'hg19'"
+    def purity = args.purity ? "$args.purity" : "NULL"
+    def ploidy = args.ploidy ? "$args.ploidy" : "NULL"
+    def gc_files = args.gc_files ? "$args.gc_files" : "NULL"
 
     """
     #!/usr/bin/env Rscript
-
-    #TODO: set (temporary) test arguments, figure out how to define later
-    gcfile_args = NULL
-    ploidy = $ploidy
-    purity = $purity
-    gender = $gender
-    genomeVersion =$genomeVersion
-
-    print("tests")
-    print(ploidy)
-    print(purity)
-
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
@@ -56,8 +43,8 @@ process ASCAT {
       allelecounter_exe = "alleleCounter",
       alleles.prefix = "$allele_files/G1000_alleles_hg19_chr",
       loci.prefix = "$loci_files/G1000_loci_hg19_chr",
-      gender = gender,
-      genomeVersion = genomeVersion,
+      gender = $gender,
+      genomeVersion = $genomeVersion,
       chrom_names = c("21","22"), #TODO: remove this, it's only for testing
       nthreads = $task.cpus
     )
@@ -68,11 +55,13 @@ process ASCAT {
       Tumor_BAF_file = "Tumour_normalBAF.txt",
       Germline_LogR_file = "Tumour_normalLogR.txt",
       Germline_BAF_file = "Tumour_normalBAF.txt",
-      genomeVersion = genomeVersion
+      genomeVersion = $genomeVersion
     )
 
-    #GC wave correction (TODO: re-activate - it's a mandatory argument in run_sarek)
-    #ascat.bc = ascat.GCcorrect(ascat.bc, gcfile_args)
+    #optional GC wave correction
+    if(!is.null($gc_files)){
+      ascat.bc = ascat.GCcorrect(ascat.bc, gcfile)
+    }
 
     #Plot the raw data
     ascat.plotRawData(ascat.bc)
@@ -85,12 +74,12 @@ process ASCAT {
 
     #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
     #If psi and rho are manually set:
-    if (!is.null(purity) && !is.null(ploidy)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=purity, psi_manual=ploidy)
-    } else if(!is.null(purity) && is.null(ploidy)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=purity)
-    } else if(!is.null(ploidy) && is.null(purity)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=ploidy)
+    if (!is.null($purity) && !is.null($ploidy)){
+      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
+    } else if(!is.null($purity) && is.null($ploidy)){
+      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
+    } else if(!is.null($ploidy) && is.null($purity)){
+      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
     } else {
       ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }

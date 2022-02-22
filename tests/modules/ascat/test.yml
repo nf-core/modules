@@ -1,51 +1,51 @@
-- name: ascat test_ascat_with_purity
-  command: nextflow run tests/modules/ascat -entry test_ascat_with_purity -c tests/config/nextflow.config
-  tags:
-    - ascat
-  files:
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.ASCATprofile.png
-      md5sum: 26f47d2ec931550bc08f7133c2ce6df5
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.ASPCF.png
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.germline.png
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.rawprofile.png
-      md5sum: 71ebc19ddace0fe0bdd190e0977b1b12
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.sunrise.png
-      md5sum: f904045d26f5cfe8e2e81f3800bf6c1b
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/Tumour.tumour.png
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/test.cnvs.txt
-      md5sum: 4f99f706b2e498182bbddfaf8b0fafda
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/test.purityploidy.txt
-      md5sum: 04d28acfd97c3617fda01e0698857de4
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/test.segments.txt
-      md5sum: 471d8590deda74a6cde6b5849bd5cbab
-    - path: /home/ec2-user/tmp/tmp1awsosjt/ascat/versions.yml
-      md5sum: 1af20694ec11004c4f8bc0c609b06386
-
 - name: ascat test_ascat
   command: nextflow run tests/modules/ascat -entry test_ascat -c tests/config/nextflow.config
   tags:
     - ascat
   files:
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.ASCATprofile.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.ASCATprofile.png
       md5sum: 26f47d2ec931550bc08f7133c2ce6df5
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.ASPCF.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.ASPCF.png
       contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.germline.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.germline.png
       contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.rawprofile.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.rawprofile.png
       md5sum: 71ebc19ddace0fe0bdd190e0977b1b12
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.sunrise.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.sunrise.png
       md5sum: f904045d26f5cfe8e2e81f3800bf6c1b
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/Tumour.tumour.png
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/Tumour.tumour.png
       contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/test.cnvs.txt
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/test.cnvs.txt
       md5sum: 4f99f706b2e498182bbddfaf8b0fafda
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/test.purityploidy.txt
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/test.purityploidy.txt
       md5sum: 04d28acfd97c3617fda01e0698857de4
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/test.segments.txt
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/test.segments.txt
       md5sum: 471d8590deda74a6cde6b5849bd5cbab
-    - path: /home/ec2-user/tmp/tmpjyy0pojj/ascat/versions.yml
+    - path: /home/ec2-user/tmp/tmpoo3lkwy6/ascat/versions.yml
+      md5sum: 1af20694ec11004c4f8bc0c609b06386
+
+- name: ascat test_ascat_with_purity
+  command: nextflow run tests/modules/ascat -entry test_ascat_with_purity -c tests/config/nextflow.config
+  tags:
+    - ascat
+  files:
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.ASCATprofile.png
+      md5sum: 26f47d2ec931550bc08f7133c2ce6df5
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.ASPCF.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.germline.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.rawprofile.png
+      md5sum: 71ebc19ddace0fe0bdd190e0977b1b12
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.sunrise.png
+      md5sum: f904045d26f5cfe8e2e81f3800bf6c1b
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/Tumour.tumour.png
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/test.cnvs.txt
+      md5sum: 4f99f706b2e498182bbddfaf8b0fafda
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/test.purityploidy.txt
+      md5sum: 04d28acfd97c3617fda01e0698857de4
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/test.segments.txt
+      md5sum: 471d8590deda74a6cde6b5849bd5cbab
+    - path: /home/ec2-user/tmp/tmpd65mq2ig/ascat/versions.yml
       md5sum: 1af20694ec11004c4f8bc0c609b06386
