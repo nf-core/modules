@@ -35,7 +35,7 @@ process SVDB_MERGE {
     svdb \\
         --merge \\
         $args \\
-        --priority $priority \\
+        --priority $prio \\
         --vcf $input \\
         > ${prefix}_sv_merge.vcf
 
