@@ -25,7 +25,7 @@ process SEQTK_SEQ {
     if ("$sequences" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {  
         extension = "fasta"
     }
-
+    
     """
     seqtk \\
         seq \\

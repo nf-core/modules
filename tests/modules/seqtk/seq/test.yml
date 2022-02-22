@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 - name: seqtk seq test_seqtk_seq
   command: nextflow run tests/modules/seqtk/seq -entry test_seqtk_seq -c tests/config/nextflow.config
+=======
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml seqtk/seq
+- name: seqtk seq
+  command: nextflow run ./tests/modules/seqtk/seq -entry test_seqtk_seq -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/seq/nextflow.config
+>>>>>>> bf81f40c75c047c36a0a58eb9dc59d05cf8152a5
   tags:
     - seqtk
     - seqtk/seq
   files:
+<<<<<<< HEAD
     - path: output/seqtk/test.seqtk-seq.fasta.gz
       md5sum: 50d73992c8c7e56dc095ef47ec52a754
     - path: output/seqtk/versions.yml
@@ -19,3 +27,7 @@
       md5sum: 2f009f1647971a97b4edec726a99dc1a
     - path: output/seqtk/versions.yml
       md5sum: 3467a76d3540bee8f58de050512bddaa
+=======
+    - path: output/seqtk/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+>>>>>>> bf81f40c75c047c36a0a58eb9dc59d05cf8152a5
