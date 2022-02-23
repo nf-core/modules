@@ -2,15 +2,16 @@ process GATK4_COMBINEGVCFS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta), path(fastaIndex), path (fastaDict)
-    path(vcffiles)
-    path(vcf_idx)
+    tuple val(meta), path(vcf), path(vcf_idx)
+    path (fasta)
+    path (fasta_fai)
+    path (fasta_dict)
 
     output:
     tuple val(meta), path("*.combined.g.vcf.gz"), emit: combined_gvcf
@@ -28,8 +29,7 @@ process GATK4_COMBINEGVCFS {
     } else {
         avail_mem = task.memory.giga
     }
-    def variant_string = ''
-    vcffiles.each {variant_string += "-V ${it} "} // loop to create a string adding -V to each vcf file
+    def input_files = vcf.collect{"-V ${it}"}.join(' ') // add '-V' to each vcf file
     """
     gatk \\
         --java-options "-Xmx${avail_mem}g" \\
@@ -37,8 +37,7 @@ process GATK4_COMBINEGVCFS {
         -R ${fasta} \\
         -O ${prefix}.combined.g.vcf.gz \\
         ${args} \\
-        --tmp-dir . \\
-        ${variant_string}
+        ${input_files}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
