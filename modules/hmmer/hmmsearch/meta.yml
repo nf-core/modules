@@ -23,11 +23,11 @@ input:
   - hmmfile:
       type: file
       description: One or more HMM profiles created with hmmbuild
-      pattern: "*.{hmm}"
+      pattern: "*.{hmm,hmm.gz}"
   - seqdb:
       type: file
       description: Database of sequences in FASTA format
-      pattern: "*.{fasta,fna,faa,fa}"
+      pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
   - write_align:
       type: val
       description: Flag to write optional alignment output. Specify with 'true' to output
@@ -51,19 +51,19 @@ output:
   - output:
       type: file
       description: Human readable output summarizing hmmsearch results
-      pattern: "*.{txt}"
+      pattern: "*.{txt.gz}"
   - alignments:
       type: file
       description: Optional multiple sequence alignment (MSA) in Stockholm format
-      pattern: "*.{sto}"
+      pattern: "*.{sto.gz}"
   - target_summary:
       type: file
       description: Optional tabular (space-delimited) summary of per-target output
-      pattern: "*.{tbl}"
+      pattern: "*.{tbl.gz}"
   - domain_summary:
       type: file
       description: Optional tabular (space-delimited) summary of per-domain output
-      pattern: "*.{domtbl}"
+      pattern: "*.{domtbl.gz}"
 
 authors:
   - "@Midnighter"
