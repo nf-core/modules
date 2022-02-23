@@ -19,9 +19,9 @@ tools:
 
 input:
   - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
   - fai:
         type: file
         description: FASTA index file
@@ -31,22 +31,22 @@ input:
         description: FASTA dictionary file
         pattern: "*.{dict}"
   - vcffiles:
-      type: file
-      description: Compressed VCF files
-      pattern: "*.vcf.gz"
+        type: file
+        description: Compressed VCF files
+        pattern: "*.vcf.gz"
   - vcf_idx:
-      type: file
-      description: VCF Index file
-      pattern: "*.{fai}"
+        type: file
+        description: VCF Index file
+        pattern: "*.{fai}"
 output:
   - gvcf:
-      type: file
-      description: Compressed GVCF file
-      pattern: "*.combined.g.vcf.gz"
+        type: file
+        description: Compressed Combined GVCF file
+        pattern: "*.combined.g.vcf.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@sateeshperi"
