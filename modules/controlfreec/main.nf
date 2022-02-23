@@ -62,23 +62,23 @@ process CONTROLFREEC_SOMATIC {
     def matefile_normal             = mpileup_normal                                            ? "mateFile = \${PWD}${mpileup_normal}"                                                         : ""
     def matecopynumberfile_normal   = cpn_normal                                                ? "mateCopyNumberFile = \${PWD}${cpn_normal}"                                                   : ""
     def minipileup_normal           = minipileup_normal                                         ? "miniPileup = \${PWD}${minipileup_normal}"                                                    : ""
-    def inputformat_normal          = task.ext.args?["general"]?["inputformat_normal"]          ? "inputFormat = ${task.ext.args["general"]["inputformat_normal"]}"                             : ""
-    def mateorientation_normal      = task.ext.args?["general"]?["mateorientation_normal"]      ? "mateOrientation = ${task.ext.args["general"]["mateorientation_normal"]}"                     : ""
+    def inputformat_normal          = task.ext.args?["control"]?["inputformat"]                 ? "inputFormat = ${task.ext.args["general"]["inputformat"]}"                                    : ""
+    def mateorientation_normal      = task.ext.args?["control"]?["mateorientation"]             ? "mateOrientation = ${task.ext.args["general"]["mateorientation"]}"                            : ""
 
     //"Sample" configuration
     def matefile_tumor             = mpileup_tumor                                              ? "mateFile = \${PWD}${mpileup_tumor}"                                                          : ""
     def matecopynumberfile_tumor   = cpn_tumor                                                  ? "mateCopyNumberFile = \${PWD}${cpn_tumor}"                                                    : ""
     def minipileup_tumor           = minipileup_tumor                                           ? "miniPileup = \${PWD}${minipileup_tumor}"                                                     : ""
-    def inputformat_tumor          = task.ext.args?["general"]?["inputformat_tumor"]            ? "inputFormat = ${task.ext.args["general"]["inputformat_tumor"]}"                              : ""
-    def mateorientation_tumor      = task.ext.args?["general"]?["mateorientation_tumor"]        ? "mateOrientation = ${task.ext.args["general"]["mateorientation_tumor"]}"                      : ""
+    def inputformat_tumor          = task.ext.args?["sample"]?["inputformat"]                   ? "inputFormat = ${task.ext.args["general"]["inputformat"]}"                                    : ""
+    def mateorientation_tumor      = task.ext.args?["sample"]?["mateorientation"]               ? "mateOrientation = ${task.ext.args["general"]["mateorientation"]}"                            : ""
 
 
     //"BAF" configuration
     def makepileup                 = snp_position                                               ? "makePileup = \${PWD}${snp_position}"                                                         : ""
     def fastafile                  = fasta                                                      ? "fastaFile = \${PWD}${fasta}"                                                                 : ""
-    def minimalcoverageperposition = task.ext.args?["general"]?["minimalcoverageperposition"]   ? "minimalCoveragePerPosition = ${task.ext.args["general"]["minimalcoverageperposition"]}"      : ""
-    def minimalqualityperposition  = task.ext.args?["general"]?["minimalqualityperposition"]    ? "minimalQualityPerPosition = ${task.ext.args["general"]["minimalqualityperposition"]}"        : ""
-    def shiftinquality             = task.ext.args?["general"]?["shiftinquality"]               ? "shiftInQuality = ${task.ext.args["general"]["shiftinquality"]}"                              : ""
+    def minimalcoverageperposition = task.ext.args?["BAF"]?["minimalcoverageperposition"]       ? "minimalCoveragePerPosition = ${task.ext.args["general"]["minimalcoverageperposition"]}"      : ""
+    def minimalqualityperposition  = task.ext.args?["BAF"]?["minimalqualityperposition"]        ? "minimalQualityPerPosition = ${task.ext.args["general"]["minimalqualityperposition"]}"        : ""
+    def shiftinquality             = task.ext.args?["BAF"]?["shiftinquality"]                   ? "shiftInQuality = ${task.ext.args["general"]["shiftinquality"]}"                              : ""
     def snpfile                    = known_snps                                                 ? "SNPfile = \$PWD${known_snps}"                                                                : ""
 
     //"Target" configuration
