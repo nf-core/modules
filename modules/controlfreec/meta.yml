@@ -13,8 +13,8 @@ tools:
       doi: "10.1093/bioinformatics/btq635"
       licence: ['GPL >=2']
 
-#makePileup not supported  since bedtools is not in container -> fasta actually not needed then?!dd t
-#bedtools not supported
+# makePileup not supported  since bedtools is not in container -> fasta actually not needed then?!dd t
+# bedtools not supported
 
 input:
   - args:
@@ -90,7 +90,7 @@ input:
       pattern: "*.pileup"
   - minipileup_tumor:
       type: file
-      description:  miniPileup file from previous run (optional)
+      description: miniPileup file from previous run (optional)
       pattern: "*.pileup"
   - fasta:
       type: file
