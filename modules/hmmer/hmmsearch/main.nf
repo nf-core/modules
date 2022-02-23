@@ -11,10 +11,10 @@ process HMMER_HMMSEARCH {
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)
 
     output:
-    tuple val(meta), path(output)    , emit: output
-    tuple val(meta), path('*.sto')   , emit: alignments    , optional: true
-    tuple val(meta), path('*.tbl')   , emit: target_summary, optional: true
-    tuple val(meta), path('*.domtbl'), emit: domain_summary, optional: true
+    tuple val(meta), path('*.txt.gz')    , emit: output
+    tuple val(meta), path('*.sto.gz')   , emit: alignments    , optional: true
+    tuple val(meta), path('*.tbl.gz')   , emit: target_summary, optional: true
+    tuple val(meta), path('*.domtbl.gz'), emit: domain_summary, optional: true
     path "versions.yml"              , emit: versions
 
     when:
@@ -37,6 +37,11 @@ process HMMER_HMMSEARCH {
         $domain_summary \\
         $hmmfile \\
         $seqdb
+
+    gzip --no-name *.txt \\
+        ${write_align ? '*.sto' : ''} \\
+        ${write_target ? '*.tbl' : ''} \\
+        ${write_domain ? '*.domtbl' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

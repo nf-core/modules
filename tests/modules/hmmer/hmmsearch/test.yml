@@ -4,7 +4,7 @@
     - hmmer/hmmsearch
     - hmmer
   files:
-    - path: output/hmmer/test.txt
+    - path: output/hmmer/test.txt.gz
       contains:
         - '[ok]'
     - path: output/hmmer/versions.yml
@@ -16,15 +16,15 @@
     - hmmer/hmmsearch
     - hmmer
   files:
-    - path: output/hmmer/test.sto
-      md5sum: 62384d08dbf6ec5c0515e68362cfce0a
-    - path: output/hmmer/test.domtbl
+    - path: output/hmmer/test.sto.gz
+      md5sum: d3121aa33455074c566fb7f8fdcda7b0
+    - path: output/hmmer/test.domtbl.gz
       contains:
         - '# [ok]'
-    - path: output/hmmer/test.tbl
+    - path: output/hmmer/test.tbl.gz
       contains:
         - '# [ok]'
-    - path: output/hmmer/test.txt
+    - path: output/hmmer/test.txt.gz
       contains:
         - '[ok]'
     - path: output/hmmer/versions.yml

@@ -8,8 +8,8 @@ workflow test_hmmer_hmmsearch {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/bac.16S_rRNA.hmm', checkIfExists: true),
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/e_coli_k12_16s.fna', checkIfExists: true),
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
         false,
         false,
         false
@@ -22,8 +22,8 @@ workflow test_hmmer_hmmsearch_optional {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/bac.16S_rRNA.hmm', checkIfExists: true),
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/e_coli_k12_16s.fna', checkIfExists: true),
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
         true,
         true,
         true
