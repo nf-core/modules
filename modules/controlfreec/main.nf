@@ -109,7 +109,7 @@ process CONTROLFREEC_SOMATIC {
     echo ${minimalsubclonepresence} >> config.txt
     echo "maxThreads = ${task.cpus}" >> config.txt
     echo ${noisydata} >> config.txt
-    echo "outputDir = ./" >> config.txt
+    echo "outputDir = \${PWD}" >> config.txt
     echo ${ploidy} >> config.txt
     echo ${printNA} >> config.txt
     echo ${readcountthreshold} >> config.txt
