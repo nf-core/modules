@@ -1,0 +1,14 @@
+- name: abricate summary
+  command: nextflow run tests/modules/abricate/summary -entry test_abricate_summary -c tests/config/nextflow.config
+  tags:
+    - abricate
+    - abricate/summary
+  files:
+    - path: output/abricate/test1.txt
+      md5sum: cd07e2953b127aed8d09bf1b2b903a1f
+    - path: output/abricate/test2.txt
+      md5sum: 69af3321b0bc808b7ef85f102395736f
+    - path: output/abricate/test_summary.txt
+      md5sum: a4ec7010e75404ce3a1033f0c4b4a7f9
+    - path: output/abricate/versions.yml
+      md5sum: a18f0471c49e5f25ec0b0c4ad5fab08e
