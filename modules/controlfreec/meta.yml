@@ -13,7 +13,7 @@ tools:
       doi: "10.1093/bioinformatics/btq635"
       licence: ['GPL >=2']
 
-#makePileup not supported  since bedtools is not in container
+#makePileup not supported  since bedtools is not in container -> fasta actually not needed then?!dd t
 #bedtools not supported
 
 input:
@@ -57,9 +57,9 @@ input:
               "mateorientation": <optional>,
           ],
           "BAF":[
-              "minimalcoverageperposition": <optional value>,
-              "minimalqualityperposition": <optional value>,
-              "shiftinquality": <optional value>
+              "minimalcoverageperposition": <optional>,
+              "minimalqualityperposition": <optional>,
+              "shiftinquality": <optional>
           ]
         ]
       }
