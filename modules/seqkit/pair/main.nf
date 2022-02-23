@@ -1,7 +1,7 @@
 process SEQKIT_PAIR {
     tag "$meta.id"
     label 'process_medium'
-    
+
     conda (params.enable_conda ? "bioconda::seqkit=2.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.1.0--h9ee0642_0':
@@ -17,7 +17,7 @@ process SEQKIT_PAIR {
 
     when:
     task.ext.when == null || task.ext.when
-    
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -29,16 +29,16 @@ process SEQKIT_PAIR {
         -u \\
         $args \\
         --threads $task.cpus \\
-    
-    # gzip paired reads 
+
+    # gzip paired reads
     if [[ -f ${reads[0]}.paired.fastq ]]; then
             gzip ${reads[0]}.paired.fastq
     fi
     if [[ -f ${reads[1]}.paired.fastq ]]; then
             gzip ${reads[1]}.paired.fastq
     fi
-    
-    # gzip unpaired reads 
+
+    # gzip unpaired reads
     if [[ -f ${reads[0]}.unpaired.fastq ]]; then
         gzip ${reads[0]}.unpaired.fastq
     fi
