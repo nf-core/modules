@@ -1,4 +1,4 @@
-code name: gatk4_selectvariants
+name: gatk4_selectvariants
 description: Select a subset of variants from a VCF file
 keywords:
   - gatk
@@ -27,7 +27,7 @@ input:
       type: list
       description: VCF(.gz) file
       pattern: "*.{vcf,vcf.gz}"
-  - vcf_tbi:
+  - vcf_idx:
       type: list
       description: VCF file index
       pattern: "*.{idx,tbi}"
@@ -42,6 +42,10 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.selectvariants.vcf.gz"
+  - vcf_tbi:
+      type: list
+      description: VCF file index
+      pattern: "*.{idx,tbi}"
   - versions:
       type: file
       description: File containing software versions
