@@ -22,8 +22,8 @@ workflow test_ascat {
         [ id:'test', single_end:false ], // meta map
         file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
         file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true),
-        file("/home/ec2-user/input_files/bams/test2.bam", checkIfExists: true),
-        file("/home/ec2-user/input_files/bams/test2.bam.bai", checkIfExists: true)
+        file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
+        file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true)
     ]
 
     ASCAT_SIMPLE ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
@@ -36,18 +36,8 @@ workflow test_ascat {
 
 
 
-workflow test_ascat_with_ploidy_and_purity {
-
-//    input = [
-//        [ id:'test', single_end:false ], // meta map
-//        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-//        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-//        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-//        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
-//    ]
-
-
-    input = [
+workflow test_ascat_with_ploidy_and_purity {  
+   input = [
         [ id:'test', single_end:false ], // meta map
         file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
         file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true),
@@ -59,4 +49,20 @@ workflow test_ascat_with_ploidy_and_purity {
 }
 
 
-  
+
+workflow test_ascat_with_crams {
+
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file("/home/ec2-user/input_files/crams/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram", checkIfExists: true),
+        file("/home/ec2-user/input_files/crams/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram.crai", checkIfExists: true),
+        file("/home/ec2-user/input_files/crams/duplicate_test.cram", checkIfExists: true),
+        file("/home/ec2-user/input_files/crams/duplicate_test.cram.crai", checkIfExists: true)
+    ]
+
+    ASCAT_PLOIDY_AND_PURITY ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+}
+
+
+
