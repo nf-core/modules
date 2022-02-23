@@ -11,7 +11,6 @@ workflow test_gatk4_combinegvcfs {
               file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
            ]
-
     
     vcffiles = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
                  file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf'], checkIfExists: true) ]
