@@ -8,10 +8,10 @@ process SEQTK_SEQ {
         'quay.io/biocontainers/seqtk:1.3--h5bf99c6_3' }"
 
     input:
-    tuple val(meta), path(sequences)
+    tuple val(meta), path(fastx)
 
     output:
-    tuple val(meta), path("*.gz")     , emit: sequences
+    tuple val(meta), path("*.gz")     , emit: fastx
     path "versions.yml"               , emit: versions
 
     when:
@@ -22,14 +22,14 @@ process SEQTK_SEQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = "fastq"
-    if ("$sequences" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {
+    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {
         extension = "fasta"
     }
     """
     seqtk \\
         seq \\
         $args \\
-        $sequences | \\
+        $fastx | \\
         gzip -c > ${prefix}.seqtk-seq.${extension}.gz
 
     cat <<-END_VERSIONS > versions.yml
