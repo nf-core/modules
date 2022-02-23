@@ -2,10 +2,10 @@ process BCFTOOLS_ANNOTATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::bcftools=1.14" : null)
+    conda (params.enable_conda ? "bioconda::bcftools=1.15" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.14--h88f3f91_0':
-        'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.15--haf5b3da_0':
+        'quay.io/biocontainers/bcftools:1.15--haf5b3da_0' }"
 
     input:
     tuple val(meta), path(input)
