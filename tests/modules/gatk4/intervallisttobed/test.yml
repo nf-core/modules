@@ -1,0 +1,8 @@
+- name: gatk4 intervallisttobed
+  command: nextflow run ./tests/modules/gatk4/intervallisttobed -entry test_gatk4_intervallisttobed -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/intervallisttobed/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/intervallisttobed
+  files:
+    - path: output/gatk4/test.bed
+      md5sum: 9046675d01199fbbee79f2bc1c5dce52
