@@ -8,10 +8,10 @@ process CONTROLFREEC_SOMATIC {
         'quay.io/biocontainers/control-freec:11.6--h1b792b2_1' }"
 
     input:
-    tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(minipileup_normal), path(minipileup_tumor)
-    tuple val(meta), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)
+    tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)
     path fasta
-    path fasta_fai
+    path fai
+    path snp_position
     path known_snps
     path known_snps_tbi
     path chr_length
@@ -20,7 +20,8 @@ process CONTROLFREEC_SOMATIC {
     path target_bed
 
     output:
-    tuple val(meta), path("*.txt"), emit: bam
+    tuple val(meta), path("*.txt"), emit: bedgraph, optional: true
+
     path "versions.yml"           , emit: versions
 
     when:
@@ -31,7 +32,7 @@ process CONTROLFREEC_SOMATIC {
 
     //"General" configurations
     def bedgraphoutput              = task.ext.args?["general"]?["bedgraphoutput"]              ? "BedGraphOutput = ${task.ext.args["general"]["bedgraphoutput"]}"                              : ""
-    //bedtools: not needed since pileup files are defined as input
+    //bedtools: not needed since pileup files are defined as input & we would need a new container, same for samtools and sambamba usage
     def breakpointthreshold         = task.ext.args?["general"]?["breakpointthreshold"]         ? "breakPointThreshold = ${task.ext.args["general"]["breakpointthreshold"]}"                    : ""
     def breakpointtype              = task.ext.args?["general"]?["breakpointtype"]              ? "breakPointType = ${task.ext.args["general"]["breakpointtype"]}"                              : ""
     def coefficientofvariation      = task.ext.args?["general"]?["coefficient"]                 ? "coefficientOfVariation = ${task.ext.args["general"]["coefficientofvariation"]}"              : ""
@@ -73,8 +74,8 @@ process CONTROLFREEC_SOMATIC {
 
 
     //"BAF" configuration
-    def makepileup                 =
-    def fastafile                  = fasta                                                      ? "fastaFile = $\{PWD}${fasta}"                                                                 : ""
+    def makepileup                 = snp_position                                               ? "makePileup = \${PWD}${snp_position}"                                                         : ""
+    def fastafile                  = fasta                                                      ? "fastaFile = \${PWD}${fasta}"                                                                 : ""
     def minimalcoverageperposition = task.ext.args?["general"]?["minimalcoverageperposition"]   ? "minimalCoveragePerPosition = ${task.ext.args["general"]["minimalcoverageperposition"]}"      : ""
     def minimalqualityperposition  = task.ext.args?["general"]?["minimalqualityperposition"]    ? "minimalQualityPerPosition = ${task.ext.args["general"]["minimalqualityperposition"]}"        : ""
     def shiftinquality             = task.ext.args?["general"]?["shiftinquality"]               ? "shiftInQuality = ${task.ext.args["general"]["shiftinquality"]}"                              : ""
@@ -116,11 +117,36 @@ process CONTROLFREEC_SOMATIC {
     echo ${uniquematch} >> config.txt
     echo ${window} >> config.txt
 
+    echo "[control]" >> config.txt
+    echo ${matefile_normal} >> config.txt
+    echo ${matecopynumberfile_normal} >> config.txt
+    echo ${minipileup_normal} >> config.txt
+    echo ${inputformat_normal} >> config.txt
+    echo ${mateorientation_normal} >> config.txt
+
     echo "[sample]" >> config.txt
+    echo ${matefile_tumor} >> config.txt
+    echo ${matecopynumberfile_tumor} >> config.txt
+    echo ${minipileup_tumor} >> config.txt
+    echo ${inputformat_tumor} >> config.txt
+    echo ${mateorientation_tumor} >> config.txt
+
+    echo "[BAF]" >> config.txt
+    echo ${makepileup} >> config.txt
+    echo ${fasta} >> config.txt
+    echo ${minimalcoverageperposition} >> config.txt
+    echo ${minimalqualityperposition} >> config.txt
+    echo ${shiftinquality} >> config.txt
+    echo ${snpfile} >> config.txt
+
+    echo "[target]" >> config.txt
+    echo ${target_bed} >> config.txt
+
+    freec -conf ${config}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        controlfreec: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
     END_VERSIONS
     """
 }

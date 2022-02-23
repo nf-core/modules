@@ -1,18 +1,16 @@
 name: controlfreec
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Copy number and genotype annotation from whole genome and whole exome sequencing data
 keywords:
-  - sort
+  - cna
+  - cnv
+  - somatic
 tools:
   - controlfreec:
-      ## TODO nf-core: Add a description and other details for the software below
-      description: Copy number and genotype annotation from whole genome and whole exome
-sequencing data.
-
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      description: Copy number and genotype annotation from whole genome and whole exome sequencing data.
+      homepage: http://boevalab.inf.ethz.ch/FREEC
+      documentation: http://boevalab.inf.ethz.ch/FREEC/tutorial.html
+      tool_dev_url: https://github.com/BoevaLab/FREEC/
+      doi: "10.1093/bioinformatics/btq635"
       licence: ['GPL >=2']
 
 ## TODO nf-core: Add a description of all of the variables used as input
@@ -22,13 +20,67 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - mpileup_normal:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - mpileup_tumor:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - cpn_normal:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - cpn_tumor:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - minipileup_normal:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - minipileup_tumor:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - fasta:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - fai:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - snp_position:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - known_snps:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - known_snps_tbi:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - chr_length:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - chr_directory:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - mappability:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - target_bed:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
