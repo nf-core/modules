@@ -11,8 +11,9 @@ process SEQKIT_PAIR {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.paired.fastq.gz"), emit: paired_fastq
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.paired.fastq.gz")                  , emit: reads
+    tuple val(meta), path("*.unpaired.fastq.gz"), optional: true, emit: unpaired_reads
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +29,22 @@ process SEQKIT_PAIR {
         -u \\
         $args \\
         --threads $task.cpus \\
+    
+    # gzip paired reads 
+    if [[ -f ${reads[0]}.paired.fastq ]]; then
+            gzip ${reads[0]}.paired.fastq
+    fi
+    if [[ -f ${reads[1]}.paired.fastq ]]; then
+            gzip ${reads[1]}.paired.fastq
+    fi
+    
+    # gzip unpaired reads 
+    if [[ -f ${reads[0]}.unpaired.fastq ]]; then
+        gzip ${reads[0]}.unpaired.fastq
+    fi
+    if [[ -f ${reads[1]}.unpaired.fastq ]]; then
+        gzip ${reads[1]}.unpaired.fastq
+    fi
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
