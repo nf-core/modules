@@ -1,7 +1,7 @@
 process GATK4_COMBINEGVCFS {
     tag "$meta.id"
     label 'process_low'
-    
+
     conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
@@ -39,7 +39,7 @@ process GATK4_COMBINEGVCFS {
         ${args} \\
         --tmp-dir . \\
         ${variant_string}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')

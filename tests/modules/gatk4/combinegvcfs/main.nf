@@ -17,11 +17,7 @@ workflow test_gatk4_combinegvcfs {
                  file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf'], checkIfExists: true) ]
 
     vcf_idx = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_idx'], checkIfExists: true) ]  
-
-
-//    vcffiles = [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
-//                 file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'], checkIfExists: true) ]
+                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_idx'], checkIfExists: true) ]
 
     GATK4_COMBINEGVCFS ( input, vcffiles, vcf_idx )
 }
