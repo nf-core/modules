@@ -11,10 +11,11 @@ workflow test_ivar_variants_no_gff_no_mpileup {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    gff = []
+    fai   = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    gff   = []
     save_mpileup = false
 
-    IVAR_VARIANTS ( input, fasta, gff, save_mpileup )
+    IVAR_VARIANTS ( input, fasta, fai, gff, save_mpileup )
 }
 
 workflow test_ivar_variants_no_gff_with_mpileup {
@@ -24,10 +25,11 @@ workflow test_ivar_variants_no_gff_with_mpileup {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    gff = []
+    fai   = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    gff   = []
     save_mpileup = true
 
-    IVAR_VARIANTS ( input, fasta, gff, save_mpileup )
+    IVAR_VARIANTS ( input, fasta, fai, gff, save_mpileup )
 }
 
 workflow test_ivar_variants_with_gff_with_mpileup {
@@ -37,8 +39,9 @@ workflow test_ivar_variants_with_gff_with_mpileup {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    gff = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
+    fai   = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    gff   = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
     save_mpileup = true
 
-    IVAR_VARIANTS ( input, fasta, gff, save_mpileup )
+    IVAR_VARIANTS ( input, fasta, fai, gff, save_mpileup )
 }
