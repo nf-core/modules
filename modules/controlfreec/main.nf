@@ -33,6 +33,8 @@ process CONTROLFREEC_SOMATIC {
     //"General" configurations
     def bedgraphoutput              = task.ext.args?["general"]?["bedgraphoutput"]              ? "BedGraphOutput = ${task.ext.args["general"]["bedgraphoutput"]}"                              : ""
     //bedtools: not needed since pileup files are defined as input & we would need a new container, same for samtools and sambamba usage
+    def chr_files                   = chr_directory                                             ? "chrFiles = \${PWD}/${chr_directory.fileName}"                                                : ""
+    def chr_length                  = chr_length                                                ? "chrLength = \${PWD}/${chr_length.fileName}"                                                  : ""
     def breakpointthreshold         = task.ext.args?["general"]?["breakpointthreshold"]         ? "breakPointThreshold = ${task.ext.args["general"]["breakpointthreshold"]}"                    : ""
     def breakpointtype              = task.ext.args?["general"]?["breakpointtype"]              ? "breakPointType = ${task.ext.args["general"]["breakpointtype"]}"                              : ""
     def coefficientofvariation      = task.ext.args?["general"]?["coefficient"]                 ? "coefficientOfVariation = ${task.ext.args["general"]["coefficientofvariation"]}"              : ""
@@ -59,30 +61,30 @@ process CONTROLFREEC_SOMATIC {
     def window                      = task.ext.args?["general"]?["window"]                      ? "window = ${task.ext.args["general"]["window"]}"                                              : ""
 
     //"Control" configurations
-    def matefile_normal             = mpileup_normal                                            ? "mateFile = \${PWD}${mpileup_normal}"                                                         : ""
-    def matecopynumberfile_normal   = cpn_normal                                                ? "mateCopyNumberFile = \${PWD}${cpn_normal}"                                                   : ""
-    def minipileup_normal           = minipileup_normal                                         ? "miniPileup = \${PWD}${minipileup_normal}"                                                    : ""
-    def inputformat_normal          = task.ext.args?["control"]?["inputformat"]                 ? "inputFormat = ${task.ext.args["general"]["inputformat"]}"                                    : ""
-    def mateorientation_normal      = task.ext.args?["control"]?["mateorientation"]             ? "mateOrientation = ${task.ext.args["general"]["mateorientation"]}"                            : ""
+    def matefile_normal             = mpileup_normal                                            ? "mateFile = \${PWD}/${mpileup_normal}"                                                        : ""
+    def matecopynumberfile_normal   = cpn_normal                                                ? "mateCopyNumberFile = \${PWD}/${cpn_normal}"                                                  : ""
+    def minipileup_normal           = minipileup_normal                                         ? "miniPileup = \${PWD}/${minipileup_normal}"                                                   : ""
+    def inputformat_normal          = task.ext.args?["control"]?["inputformat"]                 ? "inputFormat = ${task.ext.args["control"]["inputformat"]}"                                    : ""
+    def mateorientation_normal      = task.ext.args?["control"]?["mateorientation"]             ? "mateOrientation = ${task.ext.args["control"]["mateorientation"]}"                            : ""
 
     //"Sample" configuration
-    def matefile_tumor             = mpileup_tumor                                              ? "mateFile = \${PWD}${mpileup_tumor}"                                                          : ""
-    def matecopynumberfile_tumor   = cpn_tumor                                                  ? "mateCopyNumberFile = \${PWD}${cpn_tumor}"                                                    : ""
-    def minipileup_tumor           = minipileup_tumor                                           ? "miniPileup = \${PWD}${minipileup_tumor}"                                                     : ""
-    def inputformat_tumor          = task.ext.args?["sample"]?["inputformat"]                   ? "inputFormat = ${task.ext.args["general"]["inputformat"]}"                                    : ""
-    def mateorientation_tumor      = task.ext.args?["sample"]?["mateorientation"]               ? "mateOrientation = ${task.ext.args["general"]["mateorientation"]}"                            : ""
-
+    def matefile_tumor             = mpileup_tumor                                              ? "mateFile = \${PWD}/${mpileup_tumor}"                                                         : ""
+    def matecopynumberfile_tumor   = cpn_tumor                                                  ? "mateCopyNumberFile = \${PWD}/${cpn_tumor}"                                                   : ""
+    def minipileup_tumor           = minipileup_tumor                                           ? "miniPileup = \${PWD}/${minipileup_tumor}"                                                    : ""
+    def inputformat_tumor          = task.ext.args?["sample"]?["inputformat"]                   ? "inputFormat = ${task.ext.args["sample"]["inputformat"]}"                                     : ""
+    def mateorientation_tumor      = task.ext.args?["sample"]?["mateorientation"]               ? "mateOrientation = ${task.ext.args["sample"]["mateorientation"]}"                             : ""
 
     //"BAF" configuration
-    def makepileup                 = snp_position                                               ? "makePileup = \${PWD}${snp_position}"                                                         : ""
-    def fastafile                  = fasta                                                      ? "fastaFile = \${PWD}${fasta}"                                                                 : ""
-    def minimalcoverageperposition = task.ext.args?["BAF"]?["minimalcoverageperposition"]       ? "minimalCoveragePerPosition = ${task.ext.args["general"]["minimalcoverageperposition"]}"      : ""
-    def minimalqualityperposition  = task.ext.args?["BAF"]?["minimalqualityperposition"]        ? "minimalQualityPerPosition = ${task.ext.args["general"]["minimalqualityperposition"]}"        : ""
-    def shiftinquality             = task.ext.args?["BAF"]?["shiftinquality"]                   ? "shiftInQuality = ${task.ext.args["general"]["shiftinquality"]}"                              : ""
-    def snpfile                    = known_snps                                                 ? "SNPfile = \$PWD${known_snps}"                                                                : ""
+    def makepileup                 = snp_position                                               ? "makePileup = \${PWD}/${snp_position}"                                                        : ""
+    def fastafile                  = fasta                                                      ? "fastaFile = \${PWD}/${fasta}"                                                                : ""
+    def minimalcoverageperposition = task.ext.args?["BAF"]?["minimalcoverageperposition"]       ? "minimalCoveragePerPosition = ${task.ext.args["BAF"]["minimalcoverageperposition"]}"          : ""
+    def minimalqualityperposition  = task.ext.args?["BAF"]?["minimalqualityperposition"]        ? "minimalQualityPerPosition = ${task.ext.args["BAF"]["minimalqualityperposition"]}"            : ""
+    def shiftinquality             = task.ext.args?["BAF"]?["shiftinquality"]                   ? "shiftInQuality = ${task.ext.args["BAF"]["shiftinquality"]}"                                  : ""
+    def snpfile                    = known_snps                                                 ? "SNPfile = \$PWD/${known_snps}"                                                               : ""
 
     //"Target" configuration
     def target_bed                 = target_bed                                                 ? "captureRegions = ${target_bed}"                                                              : ""
+    // TODO; fix output
     """
     touch config.txt
 
@@ -90,8 +92,8 @@ process CONTROLFREEC_SOMATIC {
     echo ${bedgraphoutput} >> config.txt
     echo ${breakpointthreshold} >> config.txt
     echo ${breakpointtype} >> config.txt
-    echo "chrFiles = \${PWD}/${chr_directory.fileName}" >> config.txt
-    echo "chrLenFile = \${PWD}/${chr_length.fileName}" >> config.txt
+    echo ${chr_files} >> config.txt
+    echo ${chr_length} >> config.txt
     echo ${coefficientofvariation} >> config.txt
     echo ${contamination} >> config.txt
     echo ${contaminationadjustment} >> config.txt
@@ -107,7 +109,7 @@ process CONTROLFREEC_SOMATIC {
     echo ${minimalsubclonepresence} >> config.txt
     echo "maxThreads = ${task.cpus}" >> config.txt
     echo ${noisydata} >> config.txt
-    echo "outputDir = ${prefix}" >> config.txt
+    echo "outputDir = ./" >> config.txt
     echo ${ploidy} >> config.txt
     echo ${printNA} >> config.txt
     echo ${readcountthreshold} >> config.txt
@@ -142,7 +144,7 @@ process CONTROLFREEC_SOMATIC {
     echo "[target]" >> config.txt
     echo ${target_bed} >> config.txt
 
-    freec -conf ${config}
+    freec -conf config.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -13,73 +13,75 @@ tools:
       doi: "10.1093/bioinformatics/btq635"
       licence: ['GPL >=2']
 
-## TODO nf-core: Add a description of all of the variables used as input
+#makePileup not supported  since bedtools is not in container
+#bedtools not supported
+
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - mpileup_normal:
+  - mateFile_normal:
       type: file
-      description: file with mapped reads
-      pattern: "*.{sam,bam,cram,pileup, pileup.gz,}"
-  - mpileup_tumor:
+      description: File with mapped reads
+      pattern: "*.{sam,bam,pileup(.gz),bowtie(.gz),eland(.gz),arachne(.gz),psl(.gz),bed(.gz)}"
+  - mateFile_tumor:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File with mapped reads
+      pattern: "*.{sam,bam,pileup(.gz),bowtie(.gz),eland(.gz),arachne(.gz),psl(.gz),bed(.gz)}"
   - cpn_normal:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Raw copy number profiles (optional)
+      pattern: "*.cpn"
   - cpn_tumor:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Raw copy number profiles (optional)
+      pattern: "*.cpn"
   - minipileup_normal:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: miniPileup file from previous run (optional)
+      pattern: "*.pileup"
   - minipileup_tumor:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description:  miniPileup file from previous run (optional)
+      pattern: "*.pileup"
   - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Reference file (optional; required if args 'makePileup' is set)
+      pattern: "*.{fasta,fna,fa}"
   - fai:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Fasta index
+      pattern: "*.fai"
   - snp_position:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description:
+      pattern: "*.{}"
   - known_snps:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File with known SNPs
+      pattern: "*.{vcf,vcf.gz}"
   - known_snps_tbi:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Index of known_snps
+      pattern: "*.tbi"
   - chr_length:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File with chromosome lengths. Missing chromosomes won't be analysed.
+      pattern: "*.len"
   - chr_directory:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Path to directory with chromosome fasta files (optional?)
+      pattern: "*/"
   - mappability:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Contains information of mappable positions (optional??)
+      pattern: "*.gem"
   - target_bed:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sorted bed file containing capture regions (optional)
+      pattern: "*.bed"
 
 output:
   - meta:
