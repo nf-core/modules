@@ -23,9 +23,9 @@ process HMMER_HMMALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     hmmalign \\
-    $args \\
-    $hmm \\
-    $fasta | gzip -c > ${meta.id}.sthlm.gz
+        $args \\
+        $hmm \\
+        $fasta | gzip -c > ${meta.id}.sthlm.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
