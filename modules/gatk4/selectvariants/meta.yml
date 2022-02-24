@@ -1,0 +1,55 @@
+name: gatk4_selectvariants
+description: Select a subset of variants from a VCF file
+keywords:
+  - gatk
+  - gatk4
+  - selectvariants
+  - vcf
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036362532-SelectVariants
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - vcf:
+      type: list
+      description: VCF(.gz) file
+      pattern: "*.{vcf,vcf.gz}"
+  - vcf_idx:
+      type: list
+      description: VCF file index
+      pattern: "*.{idx,tbi}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.selectvariants.vcf.gz"
+  - vcf_tbi:
+      type: list
+      description: VCF file index
+      pattern: "*.{idx,tbi}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@mjcipriano"
