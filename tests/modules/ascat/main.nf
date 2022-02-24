@@ -4,6 +4,8 @@ nextflow.enable.dsl = 2
 
 include { ASCAT as ASCAT_SIMPLE} from '../../../modules/ascat/main.nf'
 include { ASCAT as ASCAT_PLOIDY_AND_PURITY} from '../../../modules/ascat/main.nf'
+include { ASCAT as ASCAT_CRAM} from '../../../modules/ascat/main.nf'
+
 
 
 
@@ -61,7 +63,7 @@ workflow test_ascat_with_crams {
         file("/home/ec2-user/input_files/crams/duplicate_test.cram.crai", checkIfExists: true)
     ]
 
-    ASCAT_PLOIDY_AND_PURITY ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+    ASCAT_CRAM ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
 }
 
 

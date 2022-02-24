@@ -1,7 +1,7 @@
 process ASCAT {
     tag "$meta.id"
     label 'process_medium'
-    
+
     conda (params.enable_conda ? "bioconda::ascat=3.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ascat:3.0.0':
@@ -11,7 +11,6 @@ process ASCAT {
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai)
     path(allele_files)
     path(loci_files)
-    
 
     output:
     tuple val(meta), path("*png"),               emit: png
@@ -28,6 +27,7 @@ process ASCAT {
     def purity         = args.purity          ?  "$args.purity" :        "NULL"
     def ploidy         = args.ploidy          ?  "$args.ploidy" :        "NULL"
     def gc_files       = args.gc_files        ?  "$args.gc_files" :      "NULL"
+    def ref_fasta_arg  = args.ref_fasta       ?  ",ref.fasta = '$args.ref_fasta'" : ""
 
 
     """
@@ -35,7 +35,6 @@ process ASCAT {
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
-    print("$args")
 
     #prepare from BAM files
     ascat.prepareHTS(
@@ -50,6 +49,7 @@ process ASCAT {
       genomeVersion = "$genomeVersion",
       chrom_names = c("21","22"), #TODO: remove this, it's only for testing
       nthreads = $task.cpus
+      $ref_fasta_arg
     )
 
     #Load the data
