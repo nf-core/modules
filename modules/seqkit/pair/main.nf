@@ -48,7 +48,7 @@ process SEQKIT_PAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
