@@ -23,10 +23,12 @@ process BISCUIT_PILEUP {
     def bgzip_cpus = task.cpus-biscuit_cpus
 
     """
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+
     biscuit pileup \\
         -@ $biscuit_cpus \\
         $args \\
-        $index \\
+        \$INDEX \\
         $bams \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
 
