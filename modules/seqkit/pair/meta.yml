@@ -35,8 +35,12 @@ output:
       pattern: "versions.yml"
   - reads:
       type: file
-      description: The trimmed/modified fastq reads
+      description: Paired fastq reads
       pattern: "*.paired.fastq.gz"
+  - unpaired_reads:
+      type: file
+      description: Unpaired reads (optional)
+      pattern: "*.unpaired.fastq.gz"
 
 authors:
   - "@sateeshperi"
