@@ -8,7 +8,7 @@ workflow test_cnvpytor_partition {
 
     input = [
         [ id:'test'], // meta map
-        file(params.pytor_file, checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
     ]
 
     CNVPYTOR_PARTITION ( input )
