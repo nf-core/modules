@@ -13,6 +13,7 @@ process YARA_MAPPER {
 
     output:
     tuple val(meta), path("*.mapped.bam"), emit: bam
+    tuple val(meta), path("*.mapped.bai"), emit: bai
     path "versions.yml"                  , emit: versions
 
     when:
@@ -29,6 +30,8 @@ process YARA_MAPPER {
             -f bam \\
             ${index}/yara \\
             $reads | samtools view -@ $task.cpus -hb -F4 > ${prefix}.mapped.bam
+
+        samtools index -@ $task.cpus ${prefix}.mapped.bam
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -48,6 +51,9 @@ process YARA_MAPPER {
 
         samtools view -@ $task.cpus -hF 4 -f 0x40 -b output.bam > ${prefix}_1.mapped.bam
         samtools view -@ $task.cpus -hF 4 -f 0x80 -b output.bam > ${prefix}_2.mapped.bam
+
+        samtools index -@ $task.cpus ${prefix}_1.mapped.bam
+        samtools index -@ $task.cpus ${prefix}_2.mapped.bam
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
