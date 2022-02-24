@@ -12,20 +12,23 @@ process BISCUIT_PILEUP {
     path index
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"           , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
+    def bgzip_cpus = task.cpus-biscuit_cpus
 
     """
     biscuit pileup \\
+        -@ $biscuit_cpus \\
         $args \\
-
         $index \\
-        | bgzip $args2 > ${prefix}.vcf.gz
+        $bams \\
+        | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -20,6 +20,8 @@ process BISCUIT_ALIGN {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
+    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
+    def samtools_cpus = task.cpus-biscuit_cpus
 
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
@@ -27,10 +29,10 @@ process BISCUIT_ALIGN {
     biscuit align \\
         $args \\
         $read_group \\
-        -@ $task.cpus \\
+        -@ $biscuit_cpus \\
         \$INDEX \\
         $reads \\
-        | samtools sort $args2 --threads $task.cpus -o ${prefix}.bam -
+        | samtools sort $args2 --threads $samtools_cpus -o ${prefix}.bam -
 
 
     cat <<-END_VERSIONS > versions.yml
