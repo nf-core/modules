@@ -1,4 +1,4 @@
-process GATK4_GENOTYPEGVCFS {
+process GATK4_GENOTYPEGVCFS{
     tag "$meta.id"
     label 'process_high'
 
