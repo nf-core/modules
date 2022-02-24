@@ -11,8 +11,7 @@ process MANTA_SOMATIC {
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor)
     path fasta
     path fai
-    path target_bed
-    path target_bed_tbi
+    tuple path(target_bed), path(target_bed_tbi)
 
     output:
     tuple val(meta), path("*.candidate_small_indels.vcf.gz")     , emit: candidate_small_indels_vcf
