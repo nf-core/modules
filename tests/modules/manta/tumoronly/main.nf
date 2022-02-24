@@ -11,12 +11,11 @@ workflow test_manta_tumoronly {
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
     ]
 
-    fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai     = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    bed     = []
-    bed_tbi = []
+    fasta   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai     = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    bed     = [ [], [] ]
 
-    MANTA_TUMORONLY ( input, fasta, fai, bed, bed_tbi )
+    MANTA_TUMORONLY ( input, fasta, fai, bed)
 }
 
 workflow test_manta_tumoronly_target_bed {
@@ -26,10 +25,12 @@ workflow test_manta_tumoronly_target_bed {
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true)
     ]
 
-    fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai     = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-    bed     = file(params.test_data['homo_sapiens']['genome']['genome_bed_gz'], checkIfExists: true)
-    bed_tbi = file(params.test_data['homo_sapiens']['genome']['genome_bed_gz_tbi'], checkIfExists: true)
+    fasta   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    fai     = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+    bed     = [
+        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed_gz_tbi'], checkIfExists: true),
+    ]
 
-    MANTA_TUMORONLY ( input, fasta, fai, bed, bed_tbi )
+    MANTA_TUMORONLY ( input, fasta, fai, bed)
 }
