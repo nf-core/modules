@@ -112,17 +112,13 @@ input:
       type: file
       description: Index of known_snps
       pattern: "*.tbi"
-  - chr_length:
-      type: file
-      description: File with chromosome lengths. Missing chromosomes won't be analysed.
-      pattern: "*.{len,fai}"
   - chr_directory:
       type: file
-      description: Path to directory with chromosome fasta files (optional?)
+      description: Path to directory with chromosome fasta files (optional, required if gccontentprofile is not provided)
       pattern: "*/"
   - mappability:
       type: file
-      description: Contains information of mappable positions (optional??)
+      description: Contains information of mappable positions (optional)
       pattern: "*.gem"
   - target_bed:
       type: file
@@ -140,11 +136,46 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - bedgraph:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Bedgraph format for the UCSC genome browser
+      pattern: ".bedgraph"
+  - ratio_bedgraph:
+      type: file
+      description: file with ratios in BedGraph format for visualization in the UCSC genome browser
+      pattern: "_ratio.Bedgraph"
+  - control_cpn:
+      type: file
+      description: files with raw copy number profiles
+      pattern: "*_control.cpn"
+  - sample_cpn:
+      type: file
+      description: files with raw copy number profiles
+      pattern: "*_sample.cpn"
+  - gcprofile_cpn:
+      type: file
+      description:  file with GC-content profile.
+      pattern: "GC_profile.cpn"
+  - BAF:
+      type: file
+      description: file B-allele frequencies for each possibly heterozygous SNP position
+      pattern: "*_BAF.txt"
+  - CNV:
+      type: file
+      description: file with coordinates of predicted copy number alterations.
+      pattern: "*_CNVs"
+  - info:
+      type: file
+      description: parsable file with information about FREEC run
+      pattern: "*_info.txt"
+  - ratio:
+      type: file
+      description: file with ratios and predicted copy number alterations for each window
+      pattern: "*_ratio.txt"
+  - config:
+      type: file
+      description:
+      pattern:
 
 authors:
   - "@FriederikeHanssen"
