@@ -1,0 +1,12 @@
+- name: seqkit pair test_seqkit_pair
+  command: nextflow run tests/modules/seqkit/pair -entry test_seqkit_pair -c tests/config/nextflow.config
+  tags:
+    - seqkit/pair
+    - seqkit
+  files:
+    - path: output/seqkit/test_1.paired.fastq.gz
+      md5sum: fbfe7e8bdbc29abaaf58b6f1a32448e5
+    - path: output/seqkit/test_2.paired.fastq.gz
+      md5sum: 7d3c0912e5adc2674e8ecc1e647381b3
+    - path: output/seqkit/versions.yml
+      md5sum: 3086293bc986fc2ece38b1951d090819
