@@ -32,10 +32,10 @@ process SEQKIT_PAIR {
 
     # gzip paired reads
     if [[ -f ${reads[0]}.paired.fastq ]]; then
-            gzip ${reads[0]}.paired.fastq
+        gzip ${reads[0]}.paired.fastq
     fi
     if [[ -f ${reads[1]}.paired.fastq ]]; then
-            gzip ${reads[1]}.paired.fastq
+        gzip ${reads[1]}.paired.fastq
     fi
 
     # gzip unpaired reads
@@ -47,8 +47,8 @@ process SEQKIT_PAIR {
     fi
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-        seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    "${task.process}":
+    seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
