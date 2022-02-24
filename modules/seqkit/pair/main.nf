@@ -27,7 +27,7 @@ process SEQKIT_PAIR {
         -1 ${reads[0]} \\
         -2 ${reads[1]} \\
         $args \\
-        --threads $task.cpus \\
+        --threads $task.cpus
 
     # gzip fastq
     find . -maxdepth 1 -name "*.fastq" -exec gzip {} \;
