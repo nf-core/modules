@@ -17,12 +17,13 @@ process CONTROLFREEC_SOMATIC {
     path chr_directory
     path mappability
     path target_bed
+    path gccontent_profile
 
     output:
     tuple val(meta), path("*_ratio.BedGraph")   , emit: bedgraph, optional: true
     tuple val(meta), path("*_control.cpn")      , emit: control_cpn
     tuple val(meta), path("*_sample.cpn")       , emit: sample_cpn
-    tuple val(meta), path("*GC_profile.cpm")    , emit: gcprofile_cpn, optional:true
+    tuple val(meta), path("GC_profile.*.cpn")    , emit: gcprofile_cpn, optional:true
     tuple val(meta), path("*_BAF.txt")          , emit: BAF
     tuple val(meta), path("*_CNVs")             , emit: CNV
     tuple val(meta), path("*_info.txt  ")       , emit: info
@@ -36,7 +37,6 @@ process CONTROLFREEC_SOMATIC {
     script:
     //"General" configurations
     def bedgraphoutput              = task.ext.args?["general"]?["bedgraphoutput"]              ? "BedGraphOutput = ${task.ext.args["general"]["bedgraphoutput"]}"                              : ""
-    //bedtools: not needed since pileup files are defined as input & we would need a new container, same for samtools and sambamba usage
     def chr_files                   = chr_directory                                             ? "chrFiles =\${PWD}/${chr_directory}"                                                          : ""
     def chr_length                  = fai                                                       ? "chrLenFile = \${PWD}/${fai}"                                                                 : ""
     def breakpointthreshold         = task.ext.args?["general"]?["breakpointthreshold"]         ? "breakPointThreshold = ${task.ext.args["general"]["breakpointthreshold"]}"                    : ""
@@ -46,9 +46,9 @@ process CONTROLFREEC_SOMATIC {
     def contaminationadjustment     = task.ext.args?["general"]?["contaminationadjustment"]     ? "contaminationAdjustment = ${task.ext.args["general"]["contaminationadjustment"]}"            : ""
     def degree                      = task.ext.args?["general"]?["degree"]                      ? "degree = ${task.ext.args["general"]["degree"]}"                                              : ""
     def forcegccontentnormalization = task.ext.args?["general"]?["forcegccontentnormalization"] ? "forceGCcontentNormalization = ${task.ext.args["general"]["forcegccontentnormalization"]}"    : ""
-    def gccontentprofile            = task.ext.args?["general"]?["gccontentprofile"]            ? "GCcontentProfile = ${task.ext.args["general"]["gccontentprofile"]}"                          : ""
+    def gccontentprofile            = gccontent_profile                                         ? "GCcontentProfile = ${gccontent_profile}"                                                     : ""
     def mappability                 = mappability                                               ? "gemMappabilityFile = \${PWD}/${mappability}"                                                 : ""
-    def intercept                   = task.ext.args?["general"]?["intercept"]                   ? "intercep = ${task.ext.args["general"]["intercept"]}"                                         : ""
+    def intercept                   = task.ext.args?["general"]?["intercept"]                   ? "intercept = ${task.ext.args["general"]["intercept"]}"                                         : ""
     def mincnalength                = task.ext.args?["general"]?["mincnalength"]                ? "minCNAlength = ${task.ext.args["general"]["mincnalength"]}"                                  : ""
     def minmappabilityperwindow     = task.ext.args?["general"]?["minmappabilityperwindow"]     ? "minMappabilityPerWindow = ${task.ext.args["general"]["minmappabilityperwindow"]}"            : ""
     def minexpectedgc               = task.ext.args?["general"]?["minexpectedgc"]               ? "minExpectedGC = ${task.ext.args["general"]["minexpectedgc"]}"                                : ""
@@ -63,7 +63,7 @@ process CONTROLFREEC_SOMATIC {
     def step                        = task.ext.args?["general"]?["step"]                        ? "step = ${task.ext.args["general"]["step"]}"                                                  : ""
     def telocentromeric             = task.ext.args?["general"]?["telocentromeric"]             ? "telocentromeric = ${task.ext.args["general"]["telocentromeric"]} "                           : ""
     def uniquematch                 = task.ext.args?["general"]?["uniquematch"]                 ? "uniqueMatch = ${task.ext.args["general"]["uniquematch"]}"                                    : ""
-    def window                      = task.ext.args?["general"]?["window"]                      ? "window = ${task.ext.args?["general"]?["window"]}"                                            : ""
+    def window                      = task.ext.args?["general"]?["window"]                      ? "window = ${task.ext.args["general"]["window"]}"                                              : ""
 
     //"Control" configurations
     def matefile_normal             = mpileup_normal                                            ? "mateFile = \${PWD}/${mpileup_normal}"                                                        : ""

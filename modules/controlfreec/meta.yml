@@ -140,10 +140,6 @@ output:
       type: file
       description: Bedgraph format for the UCSC genome browser
       pattern: ".bedgraph"
-  - ratio_bedgraph:
-      type: file
-      description: file with ratios in BedGraph format for visualization in the UCSC genome browser
-      pattern: "_ratio.Bedgraph"
   - control_cpn:
       type: file
       description: files with raw copy number profiles
@@ -155,7 +151,7 @@ output:
   - gcprofile_cpn:
       type: file
       description:  file with GC-content profile.
-      pattern: "GC_profile.cpn"
+      pattern: "GC_profile.*.cpn"
   - BAF:
       type: file
       description: file B-allele frequencies for each possibly heterozygous SNP position
@@ -174,8 +170,8 @@ output:
       pattern: "*_ratio.txt"
   - config:
       type: file
-      description:
-      pattern:
+      description: Config file used to run Control-FREEC
+      pattern: "config.txt"
 
 authors:
   - "@FriederikeHanssen"

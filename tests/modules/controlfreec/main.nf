@@ -30,6 +30,7 @@ workflow test_controlfreec {
                             dbsnp_tbi,
                             chrfiles,
                             [],
-                            target_bed
+                            target_bed,
+                            []
                         )
 }
