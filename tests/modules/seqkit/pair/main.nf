@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { SEQKIT_PAIR } from '../../../../modules/seqkit/pair/main.nf'
 
-workflow test_seqkit_pair_gz {
+workflow test_seqkit_pair {
     
     input = [ 
         [ id:'test', single_end:false ], // meta map
