@@ -26,29 +26,15 @@ process SEQKIT_PAIR {
         pair \\
         -1 ${reads[0]} \\
         -2 ${reads[1]} \\
-        -u \\
         $args \\
         --threads $task.cpus \\
 
-    # gzip paired reads
-    if [[ -f ${reads[0]}.paired.fastq ]]; then
-        gzip ${reads[0]}.paired.fastq
-    fi
-    if [[ -f ${reads[1]}.paired.fastq ]]; then
-        gzip ${reads[1]}.paired.fastq
-    fi
-
-    # gzip unpaired reads
-    if [[ -f ${reads[0]}.unpaired.fastq ]]; then
-        gzip ${reads[0]}.unpaired.fastq
-    fi
-    if [[ -f ${reads[1]}.unpaired.fastq ]]; then
-        gzip ${reads[1]}.unpaired.fastq
-    fi
+    # gzip fastq 
+    find . -maxdepth 1 -name "*.fastq" -exec gzip {} \;
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
     END_VERSIONS
     """
 }
