@@ -19,14 +19,17 @@ workflow test_controlfreec {
     dbsnp = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz'], checkIfExists: true)
     dbsnp_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz_tbi'], checkIfExists: true)
 
+    chrfiles = file("/Users/monarchy/Projects/Coding/modules/sequences/", checkIfExists: true)
+    target_bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+
     CONTROLFREEC_SOMATIC (  input,
                             fasta,
                             fai,
                             [],
                             dbsnp,
                             dbsnp_tbi,
-                            "/Users/monarchy/Projects/Coding/test-datasets/data/genomics/homo_sapiens/genome/chr21/sequence/genome.sizes",
-                            "/Users/monarchy/Projects/Coding/test-datasets/data/genomics/homo_sapiens/genome/chr21/sequence/",
+                            chrfiles,
                             [],
-                            [])
+                            target_bed
+                        )
 }

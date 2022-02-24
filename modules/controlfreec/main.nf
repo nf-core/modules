@@ -14,13 +14,12 @@ process CONTROLFREEC_SOMATIC {
     path snp_position
     path known_snps
     path known_snps_tbi
-    path chr_length
     path chr_directory
     path mappability
     path target_bed
 
     output:
-    tuple val(meta), path("*.txt"), emit: bedgraph, optional: true
+    tuple val(meta), path("*"), emit: bedgraph, optional: true
 
     path "versions.yml"           , emit: versions
 
@@ -28,13 +27,11 @@ process CONTROLFREEC_SOMATIC {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
     //"General" configurations
     def bedgraphoutput              = task.ext.args?["general"]?["bedgraphoutput"]              ? "BedGraphOutput = ${task.ext.args["general"]["bedgraphoutput"]}"                              : ""
     //bedtools: not needed since pileup files are defined as input & we would need a new container, same for samtools and sambamba usage
-    def chr_files                   = chr_directory                                             ? "chrFiles = \${PWD}/${chr_directory.fileName}"                                                : ""
-    def chr_length                  = chr_length                                                ? "chrLength = \${PWD}/${chr_length.fileName}"                                                  : ""
+    def chr_files                   = chr_directory                                             ? "chrFiles =\${PWD}/${chr_directory}"                                                          : ""
+    def chr_length                  = fai                                                       ? "chrLenFile = \${PWD}/${fai}"                                                                 : ""
     def breakpointthreshold         = task.ext.args?["general"]?["breakpointthreshold"]         ? "breakPointThreshold = ${task.ext.args["general"]["breakpointthreshold"]}"                    : ""
     def breakpointtype              = task.ext.args?["general"]?["breakpointtype"]              ? "breakPointType = ${task.ext.args["general"]["breakpointtype"]}"                              : ""
     def coefficientofvariation      = task.ext.args?["general"]?["coefficient"]                 ? "coefficientOfVariation = ${task.ext.args["general"]["coefficientofvariation"]}"              : ""
@@ -51,6 +48,7 @@ process CONTROLFREEC_SOMATIC {
     def maxexpectedgc               = task.ext.args?["general"]?["maxexpectedgc"]               ? "maxExpectedGC = ${task.ext.args["general"]["maxexpectedgc"]}"                                : ""
     def minimalsubclonepresence     = task.ext.args?["general"]?["minimalsubclonepresence"]     ? "minimalSubclonePresence = ${task.ext.args["general"]["minimalsubclonepresence"]}"            : ""
     def noisydata                   = task.ext.args?["general"]?["noisydata"]                   ? "noisyData = ${task.ext.args["general"]["noisydata"]}"                                        : ""
+    def output                      = task.ext.prefix                                           ? "outputDir = \${PWD}/${task.ext.prefix}"  : ""
     def ploidy                      = task.ext.args?["general"]?["ploidy"]                      ? "ploidy = ${task.ext.args["general"]["ploidy"]}"                                              : ""
     def printNA                     = task.ext.args?["general"]?["printNA"]                     ? "printNA = ${task.ext.args["general"]["printNA"]}"                                            : ""
     def readcountthreshold          = task.ext.args?["general"]?["readcountthreshold"]          ? "readCountThreshold = ${task.ext.args["general"]["readcountthreshold"]}"                      : ""
@@ -58,7 +56,7 @@ process CONTROLFREEC_SOMATIC {
     def step                        = task.ext.args?["general"]?["step"]                        ? "step = ${task.ext.args["general"]["step"]}"                                                  : ""
     def telocentromeric             = task.ext.args?["general"]?["telocentromeric"]             ? "telocentromeric = ${task.ext.args["general"]["telocentromeric"]} "                           : ""
     def uniquematch                 = task.ext.args?["general"]?["uniquematch"]                 ? "uniqueMatch = ${task.ext.args["general"]["uniquematch"]}"                                    : ""
-    def window                      = task.ext.args?["general"]?["window"]                      ? "window = ${task.ext.args["general"]["window"]}"                                              : ""
+    def window                      = task.ext.args?["general"]?["window"]                      ? "window = ${task.ext.args?["general"]?["window"]}"                                            : ""
 
     //"Control" configurations
     def matefile_normal             = mpileup_normal                                            ? "mateFile = \${PWD}/${mpileup_normal}"                                                        : ""
@@ -84,7 +82,6 @@ process CONTROLFREEC_SOMATIC {
 
     //"Target" configuration
     def target_bed                 = target_bed                                                 ? "captureRegions = ${target_bed}"                                                              : ""
-    // TODO; fix output
     """
     touch config.txt
 
@@ -109,7 +106,7 @@ process CONTROLFREEC_SOMATIC {
     echo ${minimalsubclonepresence} >> config.txt
     echo "maxThreads = ${task.cpus}" >> config.txt
     echo ${noisydata} >> config.txt
-    echo "outputDir = \${PWD}" >> config.txt
+    echo ${output} >> config.txt
     echo ${ploidy} >> config.txt
     echo ${printNA} >> config.txt
     echo ${readcountthreshold} >> config.txt
@@ -135,7 +132,7 @@ process CONTROLFREEC_SOMATIC {
 
     echo "[BAF]" >> config.txt
     echo ${makepileup} >> config.txt
-    echo ${fasta} >> config.txt
+    echo ${fastafile} >> config.txt
     echo ${minimalcoverageperposition} >> config.txt
     echo ${minimalqualityperposition} >> config.txt
     echo ${shiftinquality} >> config.txt
