@@ -11,8 +11,7 @@ process MANTA_TUMORONLY {
     tuple val(meta), path(input), path(input_index)
     path fasta
     path fai
-    path target_bed
-    path target_bed_tbi
+    tuple path(target_bed), path(target_bed_tbi)
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
