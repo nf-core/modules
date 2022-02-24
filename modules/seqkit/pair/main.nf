@@ -29,7 +29,7 @@ process SEQKIT_PAIR {
         $args \\
         --threads $task.cpus \\
 
-    # gzip fastq 
+    # gzip fastq
     find . -maxdepth 1 -name "*.fastq" -exec gzip {} \;
 
     cat <<-END_VERSIONS > versions.yml
