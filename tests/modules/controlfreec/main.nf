@@ -19,7 +19,10 @@ workflow test_controlfreec {
     dbsnp = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz'], checkIfExists: true)
     dbsnp_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz_tbi'], checkIfExists: true)
 
-    chrfiles = file("/Users/monarchy/Projects/Coding/modules/sequences/", checkIfExists: true)
+    chrfiles = file(params.test_data['homo_sapiens']['genome']['genome_21_chromosomes_dir'], checkIfExists: true)
+    chr_directory = chrfiles.getParent()
+    println chr_directory
+    println chrfiles
     target_bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
     CONTROLFREEC_SOMATIC (  input,
@@ -28,7 +31,7 @@ workflow test_controlfreec {
                             [],
                             dbsnp,
                             dbsnp_tbi,
-                            chrfiles,
+                            chr_directory,
                             [],
                             target_bed,
                             []
