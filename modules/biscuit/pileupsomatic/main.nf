@@ -36,7 +36,7 @@ process BISCUIT_PILEUPSOMATIC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        biscuit: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')
     END_VERSIONS
     """
 }

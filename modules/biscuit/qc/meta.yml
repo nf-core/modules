@@ -1,47 +1,51 @@
 name: biscuit_qc
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Perform basic quality control on a BAM file generated with Biscuit
 keywords:
-  - sort
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - index
+  - BAM
+  - quality control
+
 tools:
   - biscuit:
-      ## TODO nf-core: Add a description and other details for the software below
       description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/#getting-started
+      tool_dev_url: https://github.com/huishenlab/biscuit
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file produced using Biscuit
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - meta:
-      type: map
+  - biscuit_qc_reports:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        Summary files containing the following information:
+          - CpG retention by position in read
+          - CpH retention by position in read
+          - Read duplication statistics
+          - Insert size distribution
+          - Distribution of mapping qualities
+          - Proportion of reads mapping to each strand
+          - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
+      pattern: "*.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@njspix"
