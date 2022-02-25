@@ -27,7 +27,15 @@ process ASCAT {
     def purity         = args.purity          ?  "$args.purity" :        "NULL"
     def ploidy         = args.ploidy          ?  "$args.ploidy" :        "NULL"
     def gc_files       = args.gc_files        ?  "$args.gc_files" :      "NULL"
-    def ref_fasta_arg  = args.ref_fasta       ?  ",ref.fasta = '$args.ref_fasta'" : ""
+
+    def minCounts_arg                    = args.minCounts                     ?  ",minCounts = $args.minCounts" : ""
+    def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
+    def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
+    def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
+    def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = $args.ref_fasta" : ""
+    def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
+    def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
+
 
 
     """
@@ -47,10 +55,16 @@ process ASCAT {
       loci.prefix = "$loci_files/G1000_loci_hg19_chr",
       gender = "$gender",
       genomeVersion = "$genomeVersion",
-      chrom_names = c("21","22"), #TODO: remove this, it's only for testing
       nthreads = $task.cpus
+      $minCounts_arg
+      $chrom_names_arg
+      $min_base_qual_arg
+      $min_map_qual_arg
       $ref_fasta_arg
+      $skip_allele_counting_tumour_arg
+      $skip_allele_counting_normal_arg
     )
+
 
     #Load the data
     ascat.bc = ascat.loadData(
@@ -58,7 +72,8 @@ process ASCAT {
       Tumor_BAF_file = "Tumour_normalBAF.txt",
       Germline_LogR_file = "Tumour_normalLogR.txt",
       Germline_BAF_file = "Tumour_normalBAF.txt",
-      genomeVersion = "$genomeVersion"
+      genomeVersion = "$genomeVersion",
+      gender = "$gender"
     )
 
     #optional GC wave correction
