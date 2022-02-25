@@ -1,0 +1,10 @@
+- name: picard addorreplacereadgroups test_picard_addorreplacereadgroups
+  command: nextflow run tests/modules/picard/addorreplacereadgroups -entry test_picard_addorreplacereadgroups -c tests/config/nextflow.config
+  tags:
+    - picard
+    - picard/addorreplacereadgroups
+  files:
+    - path: output/picard/test.bam
+      md5sum: 7b82f3461c2d80fc6a10385e78c9427f
+    - path: output/picard/versions.yml
+      md5sum: 8a2d176295e1343146ea433c79bb517f
