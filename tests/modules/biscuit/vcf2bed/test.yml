@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml biscuit/vcf2bed
-- name: biscuit vcf2bed
-  command: nextflow run ./tests/modules/biscuit/vcf2bed -entry test_biscuit_vcf2bed -c ./tests/config/nextflow.config -c ./tests/modules/biscuit/vcf2bed/nextflow.config
+- name: biscuit vcf2bed test_biscuit_vcf2bed
+  command: nextflow run tests/modules/biscuit/vcf2bed -entry test_biscuit_vcf2bed -c tests/config/nextflow.config
   tags:
-    - biscuit
     - biscuit/vcf2bed
+    - biscuit
   files:
-    - path: output/biscuit/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/biscuit/test.bed.gz
+      md5sum: e2dd492289dc8463f364285e31b9553a
+    - path: output/biscuit/versions.yml
+      md5sum: d8368b8f6a054e1c26b8ed5da255fe9f
