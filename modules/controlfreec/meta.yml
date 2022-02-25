@@ -13,14 +13,15 @@ tools:
       doi: "10.1093/bioinformatics/btq635"
       licence: ['GPL >=2']
 
-# makePileup not supported  since bedtools is not in container -> fasta actually not needed then?!dd t
-# bedtools not supported
-
 input:
   - args:
     type: map
     description: |
-      Groovy Map containing tool parameters. MUST follow the structure/keywords below and be provided via modules.config. <optional> parameters can be removed from the map, if they are not set:
+      Groovy Map containing tool parameters. MUST follow the structure/keywords below and be provided via modules.config.
+      <optional> parameters can be removed from the map, if they are not set. All value must be surrounded by quotes, meta map parameters can be set with, i.e. sex = meta.sex:
+      For default values, please check the documentation above.
+
+      ```
       {
         [
           "general" :[
@@ -63,6 +64,8 @@ input:
           ]
         ]
       }
+      ```
+
   - meta:
       type: map
       description: |

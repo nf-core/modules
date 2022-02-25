@@ -23,10 +23,10 @@ process CONTROLFREEC_SOMATIC {
     tuple val(meta), path("*_ratio.BedGraph")   , emit: bedgraph, optional: true
     tuple val(meta), path("*_control.cpn")      , emit: control_cpn
     tuple val(meta), path("*_sample.cpn")       , emit: sample_cpn
-    tuple val(meta), path("GC_profile.*.cpn")    , emit: gcprofile_cpn, optional:true
+    tuple val(meta), path("GC_profile.*.cpn")   , emit: gcprofile_cpn, optional:true
     tuple val(meta), path("*_BAF.txt")          , emit: BAF
     tuple val(meta), path("*_CNVs")             , emit: CNV
-    tuple val(meta), path("*_info.txt  ")       , emit: info
+    tuple val(meta), path("*_info.txt")       , emit: info
     tuple val(meta), path("*_ratio.txt")        , emit: ratio
     tuple val(meta), path("config.txt")         , emit: config
     path "versions.yml"                         , emit: versions
