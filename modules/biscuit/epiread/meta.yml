@@ -1,47 +1,58 @@
 name: biscuit_epiread
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+  Summarizes read-level methylation (and optionally SNV) information from a
+  Biscuit BAM file in a standard-compliant BED format.
 keywords:
-  - sort
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - aligner
+  - bam
 tools:
   - biscuit:
-      ## TODO nf-core: Add a description and other details for the software below
       description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/#getting-started
+      tool_dev_url: https://github.com/huishenlab/biscuit
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Biscuit BAM file
+  - bai:
+      type: file
+      description: BAM index
+  - snp_bed:
+      type: file
+      description: BED file containing SNP information (optional)
+  - index:
+      type: dir
+      description: Biscuit genome index directory
+      pattern: "BiscuitIndex"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - epiread_bed:
+      type: file
+      description: Gzipped BED file with methylation (and optionally SNV) information
+      pattern: "*.{epiread.bed.gz}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@njspix"
