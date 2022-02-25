@@ -9,6 +9,7 @@ process BUSCO {
 
     input:
     tuple val(meta), path(fasta)
+    val(mode)
     path(augustus_config)
     val(lineage)
 
@@ -24,15 +25,26 @@ process BUSCO {
     """
     # Ensure the input is uncompressed
     gzip -cdf $fasta > __UNCOMPRESSED_FASTA_FILE__
+    
+    # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
+    # Check for container variable initialisation script and source it.
+    if [ -f "/usr/local/env-activate.sh" ]; then
+        # . "/usr/local/env-activate.sh"  # Errors out because of various unbound variables
+        export PATH='/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+        export CONDA_PREFIX='/usr/local'
+        export CONDA_SHLVL='1'
+        export CONDA_DEFAULT_ENV='/usr/local'
+        export CONDA_PROMPT_MODIFIER=''
+        . "/usr/local/etc/conda/activate.d/activate-r-base.sh"
+        . "/usr/local/etc/conda/activate.d/augustus.sh"
+        . "/usr/local/etc/conda/activate.d/openjdk_activate.sh"
+    fi
+    
     # Copy the image's AUGUSTUS config directory if it was not provided to the module
     [ ! -e augustus_config ] && cp -a /usr/local/config augustus_config
-    AUGUSTUS_CONFIG_PATH=augustus_config \\
-    busco \\
-        $args \\
-        --augustus \\
-        --cpu $task.cpus \\
-        --in __UNCOMPRESSED_FASTA_FILE__ \\
-        --out $meta.id
+    
+    # Busco command
+    AUGUSTUS_CONFIG_PATH=augustus_config busco $args --augustus --mode $mode --cpu $task.cpus --in __UNCOMPRESSED_FASTA_FILE__ --out $meta.id
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

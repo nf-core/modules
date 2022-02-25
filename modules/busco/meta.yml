@@ -24,6 +24,9 @@ input:
       type: file
       description: Nucleic or amino acid sequence file in FASTA format
       pattern: "*.{fasta}"
+  - mode:
+      type: value
+      description: Sets the assessment MODE – genome, proteins, transcriptome
   - augustus_config:
       type: directory
       description: AUGUSTUS config directory
