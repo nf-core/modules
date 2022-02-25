@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CONTROLFREEC_SOMATIC } from '../../../modules/controlfreec/main.nf'
+include { CONTROLFREEC } from '../../../modules/controlfreec/main.nf'
 
 workflow test_controlfreec {
 
@@ -25,7 +25,7 @@ workflow test_controlfreec {
     println chrfiles
     target_bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
-    CONTROLFREEC_SOMATIC (  input,
+    CONTROLFREEC (  input,
                             fasta,
                             fai,
                             [],

@@ -1,4 +1,4 @@
-process CONTROLFREEC_SOMATIC {
+process CONTROLFREEC {
     tag "$meta.id"
     label 'process_low'
 
