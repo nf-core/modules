@@ -12,6 +12,10 @@ script_description = """
 Script to merge the upstream nf-core 'master' branch onto our own nf-core-modules ('main' branch)
 """
 
+# Define a cron job such as:
+#30 2 * * * /bin/bash -cl 'env PYTHONPATH=$HOME/workspace/tol-it/lib /software/python-3.9.2/bin/python3 $HOME/workspace/tol-it/nextflow/modules/sync_with_upstream.py > workspace/tol-it/nextflow/modules/sync_with_upstream.cron.txt 2>&1'
+
+
 GITHUB_SANGER_MODULES = 'git@github.com:sanger-tol/nf-core-modules.git'
 GITHUB_NFCORE_MODULES = 'git@github.com:nf-core/modules.git'
 SANGER_REMOTE_NAME = 'sanger'
