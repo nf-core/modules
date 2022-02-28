@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { CONTROLFREEC } from '../../../modules/controlfreec/main.nf'
-
+include { UNTAR }        from '../../../modules/untar/main.nf'
 workflow test_controlfreec {
 
     input = [
@@ -20,18 +20,16 @@ workflow test_controlfreec {
     dbsnp_tbi = file(params.test_data['homo_sapiens']['genome']['dbsnp_138_hg38_21_vcf_gz_tbi'], checkIfExists: true)
 
     chrfiles = file(params.test_data['homo_sapiens']['genome']['genome_21_chromosomes_dir'], checkIfExists: true)
-    chr_directory = chrfiles.getParent()
-    println chr_directory
-    println chrfiles
     target_bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
+    UNTAR(chrfiles)
     CONTROLFREEC (  input,
                             fasta,
                             fai,
                             [],
                             dbsnp,
                             dbsnp_tbi,
-                            chr_directory,
+                            UNTAR.out.untar,
                             [],
                             target_bed,
                             []
