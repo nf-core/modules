@@ -17,6 +17,9 @@ process KRAKEN2_KRAKEN2 {
     tuple val(meta), path('*report.txt')   , emit: txt
     path "versions.yml"                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

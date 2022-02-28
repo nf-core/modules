@@ -1,0 +1,12 @@
+- name: rgi main
+  command: nextflow run ./tests/modules/rgi/main -entry test_rgi_main -c ./tests/config/nextflow.config -c ./tests/modules/rgi/main/nextflow.config
+  tags:
+    - rgi
+    - rgi/main
+  files:
+    - path: output/rgi/test.json
+      contains: ["NZ_LS483480", "orf_end", "perc_identity", "Pulvomycin"]
+    - path: output/rgi/test.txt
+      contains: ["NZ_LS483480", "ORF_ID", "Model_type", "Pulvomycin"]
+    - path: output/rgi/versions.yml
+      md5sum: 614a45d9d59680d4e743498773cf830a
