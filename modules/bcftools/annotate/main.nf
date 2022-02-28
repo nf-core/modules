@@ -22,7 +22,7 @@ process BCFTOOLS_ANNOTATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def matcher = input ==~ /\S+\.*vcf\.\S*/ 
+    def matcher = input ==~ /\S+\.*vcf\.\S*/
     def output_suffix = matcher ? "vcf.gz" : "bcf"
     def output_type_compressed = matcher ? "z" : "b"
     """
