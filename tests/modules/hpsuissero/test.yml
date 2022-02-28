@@ -1,0 +1,9 @@
+- name: hpsuissero test_hpsuissero
+  command: nextflow run tests/modules/hpsuissero -entry test_hpsuissero -c tests/config/nextflow.config
+  tags:
+    - hpsuissero
+  files:
+    - path: output/hpsuissero/test_serotyping_res.tsv
+      md5sum: 559dd2ca386eeb58f3975e3204ce9d43
+    - path: output/hpsuissero/versions.yml
+      md5sum: f65438e63a74ac6ee365bfdbbd3f996a
