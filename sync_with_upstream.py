@@ -20,6 +20,7 @@ SANGER_BRANCH_NAME = 'main'
 NFCORE_BRANCH_NAME = 'master'
 
 
+# Run the command, and report failures to Slack
 def run_and_check_command(args):
     print("Running", args)
     proc = subprocess.run(args, capture_output=True, text=True)
@@ -46,10 +47,13 @@ def run_and_check_command(args):
         print(proc.stdout)
 
 def main():
+    # No parameters are exposes. Only a dry-run option for testing
     parser = argparse.ArgumentParser(description=script_description)
     parser.add_argument('-n', '--dry-run', action='store_true')
     args = parser.parse_args()
+    # Work in an isolated directory
     with tempfile.TemporaryDirectory() as tmpdirname:
+        # A bunch of commands we run one after the other
         run_and_check_command(["git", "clone", "-o", SANGER_REMOTE_NAME, "-b", SANGER_BRANCH_NAME, GITHUB_SANGER_MODULES, tmpdirname])
         os.chdir(tmpdirname)
         run_and_check_command(["git", "remote", "add", NFCORE_REMOTE_NAME, GITHUB_NFCORE_MODULES])
