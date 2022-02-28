@@ -51,7 +51,7 @@ def run_and_check_command(args):
         print(proc.stdout)
 
 def main():
-    # No parameters are exposes. Only a dry-run option for testing
+    # No parameters are exposed. Only a dry-run option for testing
     parser = argparse.ArgumentParser(description=script_description)
     parser.add_argument('-n', '--dry-run', action='store_true')
     args = parser.parse_args()
