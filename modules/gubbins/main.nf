@@ -21,6 +21,9 @@ process GUBBINS {
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
     path "versions.yml"                     , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """

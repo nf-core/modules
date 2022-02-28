@@ -15,6 +15,9 @@ process SAMTOOLS_STATS {
     tuple val(meta), path("*.stats"), emit: stats
     path  "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ""

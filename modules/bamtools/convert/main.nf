@@ -14,6 +14,9 @@ process BAMTOOLS_CONVERT {
     tuple val(meta), path("*.{bed,fasta,fastq,json,pileup,sam,yaml}"), emit: data
     path "versions.yml"                                              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

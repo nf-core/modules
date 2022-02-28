@@ -15,6 +15,9 @@ process MASH_DIST {
     tuple val(meta), path("*.txt"), emit: dist
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

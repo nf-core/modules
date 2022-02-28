@@ -16,6 +16,9 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     path  "versions.yml"                                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"

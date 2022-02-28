@@ -1,0 +1,8 @@
+- name: gatk4 mergemutectstats
+  command: nextflow run ./tests/modules/gatk4/mergemutectstats -entry test_gatk4_mergemutectstats -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/mergemutectstats/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/mergemutectstats
+  files:
+    - path: output/gatk4/test.vcf.gz.stats
+      md5sum: 17d2091015d04cbd4a26b7a67dc659e6
