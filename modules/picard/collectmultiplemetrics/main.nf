@@ -16,6 +16,9 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     tuple val(meta), path("*.pdf")    , emit: pdf
     path  "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
