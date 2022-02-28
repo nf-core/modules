@@ -1,23 +1,17 @@
-- name: arima filterfiveend test_arima_filterfiveend_single_end
-  command: nextflow run tests/modules/arima/filterfiveend -entry test_arima_filterfiveend_single_end -c tests/config/nextflow.config
+#nf-core modules create-test-yml arima/filterfiveend
+- name: arima filterfiveend_single_end
+  command: nextflow run ./tests/modules/arima/filterfiveend -entry test_arima_filterfiveend_single_end -c ./tests/config/nextflow.config -c ./tests/modules/arima/filterfiveend/nextflow.config
   tags:
     - arima
     - arima/filterfiveend
   files:
-    - path: /tmp/tmpufg9q8eu/arima/test_filtered.bam
-      md5sum: 27ab6ce5247235a84f01375a31165290
-    - path: /tmp/tmpufg9q8eu/arima/versions.yml
-      md5sum: 3d982e5651378aeab30930dddf993779
+    - path: output/arima/test_filtered.bam
 
-- name: arima filterfiveend test_arima_filterfiveend_paired_end
-  command: nextflow run tests/modules/arima/filterfiveend -entry test_arima_filterfiveend_paired_end -c tests/config/nextflow.config
+- name: arima test_arima_filterfiveend_paired_end
+  command: nextflow run ./tests/modules/arima/filterfiveend -entry test_arima_filterfiveend_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/arima/filterfiveend/nextflow.config
   tags:
     - arima
     - arima/filterfiveend
   files:
-    - path: /tmp/tmpx5rtp9qe/arima/test_1_filtered.bam
-      md5sum: 5c18bed07a5a5ec92c644d8fa3482b61
-    - path: /tmp/tmpx5rtp9qe/arima/test_2_filtered.bam
-      md5sum: a3c3b6cf8d9caf89219b605d5f5fe38a
-    - path: /tmp/tmpx5rtp9qe/arima/versions.yml
-      md5sum: bf6404329b22bbfa03d371d4ac656003
+    - path: output/arima/test_1_filtered.bam
+    - path: output/arima/test_2_filtered.bam
