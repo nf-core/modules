@@ -27,7 +27,7 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$(stranger --version 2>&1)
+        stranger: \$( stranger --version )
     END_VERSIONS
     """
 }
