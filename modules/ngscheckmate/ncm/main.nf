@@ -47,7 +47,11 @@ process NGSCHECKMATE_NCM {
     fi
 
     ncm.py -d . -bed ${snp_bed} -O . -N ${prefix} $args
-    rm -f *.vcf  # clean up decompressed vcfs
+
+    if $unzip
+    then
+        rm -f *.vcf  # clean up decompressed vcfs
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
