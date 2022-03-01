@@ -1,0 +1,9 @@
+- name: mafft test_mafft
+  command: nextflow run tests/modules/mafft -entry test_mafft -c tests/config/nextflow.config
+  tags:
+    - mafft
+  files:
+    - path: output/mafft/test.fas
+      md5sum: 23426611f4a0df532b6708f072bd445b
+    - path: output/mafft/versions.yml
+      md5sum: b1b5ab3728ae17401808335f1c8f8215
