@@ -24,11 +24,6 @@ input:
       description: BED file containing the SNPs to analyse
       pattern: "*.{bed}"
 
-  - bam_mode:
-      type: boolean
-      description: Specify whether to run in bam mode, rather than vcf mode
-      pattern: "true/false"
-
 output:
   - versions:
       type: file

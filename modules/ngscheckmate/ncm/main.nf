@@ -3,13 +3,12 @@ process NGSCHECKMATE_NCM {
 
     conda (params.enable_conda ? "bioconda::ngscheckmate=1.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_0':
-        'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_1':
+        'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_1' }"
 
     input:
     path files
     path snp_bed
-    val bam_mode
 
     output:
     path "*.pdf"                  , emit: pdf
@@ -22,14 +21,32 @@ process NGSCHECKMATE_NCM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "output"
-    def mode_flag = bam_mode ? "-B" : "-V"
+    def unzip = false
+    opts = args.tokenize()
+    if (files.every{ it.toString().endsWith('.bam') || it.toString().endsWith('.bai') } ) {
+        if (!opts.contains('-B')) args += ' -B'
+        assert !opts.contains('-V')
+    } else if ( files.every{ it.toString().endsWith('.vcf') }) {
+        if (!opts.contains('-V')) args += ' -V'
+        assert !opts.contains('-B')
+    } else if ( files.every{ it.toString().endsWith('.vcf.gz') }) {
+        unzip = true
+        if (!opts.contains('-V')) args += ' -V'
+        assert !opts.contains('-B')
+    } else {
+        throw new Exception("Files must be of the same type")
+    }
 
     """
-    for VCFGZ in *.vcf.gz; do
-        gunzip -cdf \$VCFGZ > \$( basename \$VCFGZ .gz );
-    done
 
-    ncm.py ${mode_flag} -d . -bed ${snp_bed} -O . -N ${prefix} $args
+    if $unzip
+    then
+        for VCFGZ in *.vcf.gz; do
+            gunzip -cdf \$VCFGZ > \$( basename \$VCFGZ .gz );
+        done
+    fi
+
+    ncm.py -d . -bed ${snp_bed} -O . -N ${prefix} $args
     rm -f *.vcf  # clean up decompressed vcfs
 
     cat <<-END_VERSIONS > versions.yml

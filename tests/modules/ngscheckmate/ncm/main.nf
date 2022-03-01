@@ -26,7 +26,7 @@ workflow test_ngscheckmate_ncm_bam {
     view().
     set{snp_channel}
 
-    NGSCHECKMATE_NCM(input, snp_channel, true)
+    NGSCHECKMATE_NCM(input, snp_channel)
 }
 
 workflow test_ngscheckmate_ncm_vcf {
@@ -55,7 +55,7 @@ workflow test_ngscheckmate_ncm_vcf {
     view().
     set{snp_channel}
 
-    NGSCHECKMATE_NCM(vcf_channel, snp_channel, false)
+    NGSCHECKMATE_NCM(vcf_channel, snp_channel)
 }
 
 
