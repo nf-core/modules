@@ -22,7 +22,7 @@ process BCFTOOLS_ANNOTATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def matcher = input =~ /vcf/
+    def matcher = input ==~ /\S+\.*vcf\.\S*/
     def output_suffix = matcher ? "vcf.gz" : "bcf"
     def output_type_compressed = matcher ? "z" : "b"
     """
@@ -36,7 +36,7 @@ process BCFTOOLS_ANNOTATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+        bcftools: \$( bcftools --version |& sed '1!d; s/^.*bcftools //' )
     END_VERSIONS
     """
 }
