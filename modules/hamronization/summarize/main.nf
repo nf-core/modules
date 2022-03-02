@@ -11,10 +11,10 @@ process HAMRONIZATION_SUMMARIZE {
     val(format)
 
     output:
-    path("hamronization_combined_report.json") , optional: true, emit: json
-    path("hamronization_combined_report.tsv")  , optional: true, emit: tsv
-    path("hamronization_combined_report.html") , optional: true, emit: html
-    path "versions.yml"             , emit: versions
+    path("hamronization_combined_report.json"), optional: true, emit: json
+    path("hamronization_combined_report.tsv") , optional: true, emit: tsv
+    path("hamronization_combined_report.html"), optional: true, emit: html
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
