@@ -1,0 +1,13 @@
+- name: stranger test_stranger
+  command: nextflow run tests/modules/stranger -entry test_stranger -c tests/config/nextflow.config
+  tags:
+    - stranger
+  files:
+    - path: output/expansionhunter/test.vcf
+      md5sum: cfd4a1d35c0e469b99eb6aaa6d22de76
+    - path: output/expansionhunter/versions.yml
+      md5sum: f3962a6eecfddf9682414c0f605a885a
+    - path: output/stranger/test.vcf.gz
+      md5sum: bbe15159195681d5c18596d3ad85c78f
+    - path: output/stranger/versions.yml
+      md5sum: 5ec35fd835fb1be50bc3e7c004310fc0
