@@ -8,12 +8,12 @@ process SVDB_QUERY {
         'quay.io/biocontainers/svdb:2.5.0--py39hcbe4a3b_0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    tuple val(in_occ), val(in_frq), val(out_occ), val(out_frq)
-    path (vcf_db)
+    tuple val(meta), path(input_vcf), val(output_vcf)
+    tuple path(vcf_db), val(in_occ), val(in_frq), val(out_occ), val(out_frq)
+
 
     output:
-    tuple val(meta), path("*_ann_svdbq.vcf"), emit: vcf
+    tuple val(meta), path("${output_vcf}")  , emit: vcf
     path "versions.yml"                     , emit: versions
 
     when:
@@ -41,8 +41,8 @@ process SVDB_QUERY {
         $input \\
         $args \\
         --db $vcf_db \\
-        --query_vcf $vcf \\
-        >${prefix}_ann_svdbq.vcf
+        --query_vcf $input_vcf \\
+        >$output_vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

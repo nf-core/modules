@@ -27,9 +27,13 @@ input:
   - out_frq:
       type: val
       description: The frequency count tag as annotated by svdb
-  - vcf:
+  - input_vcf:
       type: file
       description: query vcf file
+      pattern: "*.{vcf,vcf.gz}"
+  - output_vcf:
+      type: val
+      description: output vcf filename
       pattern: "*.{vcf,vcf.gz}"
   - vcf_db:
       type: file
