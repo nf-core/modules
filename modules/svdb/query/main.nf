@@ -9,6 +9,7 @@ process SVDB_QUERY {
 
     input:
     tuple val(meta), path(vcf)
+    tuple val(in_occ), val(in_frq), val(out_occ), val(out_frq)
     path (vcf_db)
 
     output:
@@ -19,11 +20,25 @@ process SVDB_QUERY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input  = ""
+    if(in_occ) {
+            input += " --in_occ ${in_occ}"
+    }
+    if(in_frq) {
+            input += " --in_frq ${in_frq}"
+    }
+    if(out_occ) {
+            input += " --out_occ ${out_occ}"
+    }
+    if(out_frq) {
+            input += " --out_frq ${out_frq}"
+    }
     """
     svdb \\
         --query \\
+        $input \\
         $args \\
         --db $vcf_db \\
         --query_vcf $vcf \\

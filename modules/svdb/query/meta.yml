@@ -15,6 +15,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - in_occ:
+      type: val
+      description: The allele count tag
+  - in_frq:
+      type: val
+      description: The frequency count tag
+  - out_occ:
+      type: val
+      description: The allele count tag as annotated by svdb
+  - out_frq:
+      type: val
+      description: The frequency count tag as annotated by svdb
   - vcf:
       type: file
       description: query vcf file

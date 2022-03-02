@@ -10,9 +10,13 @@ workflow test_svdb_query {
               [ file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true) ]
             ]
 
+    allele_freq_count = [
+        "AC", "AF", "gnomad_svAC", "gnomad_svAF"
+    ]
+
     vcf_db = [
                 file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_sv_vcf_gz'], checkIfExists: true)
             ]
 
-    SVDB_QUERY ( input, vcf_db )
+    SVDB_QUERY ( input, allele_freq_count, vcf_db )
 }
