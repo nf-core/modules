@@ -1,5 +1,4 @@
-process HAMRONIZATION_DEEPARG {
-    tag "$meta.id"
+process HAMRONIZATION_SUMMARIZE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hamronization=1.0.3" : null)
@@ -8,33 +7,28 @@ process HAMRONIZATION_DEEPARG {
         'quay.io/biocontainers/hamronization:1.0.3--py_0' }"
 
     input:
-    tuple val(meta), path(report)
+    path(reports)
     val(format)
-    val(software_version)
-    val(reference_db_version)
 
     output:
-    tuple val(meta), path("*.json"), optional: true, emit: json
-    tuple val(meta), path("*.tsv") , optional: true, emit: tsv
-    path "versions.yml"            , emit: versions
+    path("hamronization_combined_report.json") , optional: true, emit: json
+    path("hamronization_combined_report.tsv")  , optional: true, emit: tsv
+    path("hamronization_combined_report.html") , optional: true, emit: html
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outformat = format == 'interactive' ? 'html' : format
     """
     hamronize \\
-        deeparg \\
-        ${report} \\
+        summarize \\
+        ${reports.join(' ')} \\
+        -t ${format} \\
         $args \\
-        --format ${format} \\
-        --analysis_software_version ${software_version} \\
-        --reference_database_version ${reference_db_version} \\
-        --input_file_name ${prefix} \\
-        > ${prefix}.${format}
-
+        -o hamronization_combined_report.${outformat}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
