@@ -23,11 +23,13 @@ process PLINK2_EXTRACT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$pgen" == "${prefix}.pgen" ) error "Input and output names are the same, use \"task.ext.prefix\" in modules.config to disambiguate!"
+    def mem_mb = task.memory.toMega()
     """
     plink2 \\
+        --threads $task.cpus \\
+        --memory $mem_mb \\
         --pfile ${pgen.baseName} \\
         $args \\
-        --threads $task.cpus \\
         --extract $variants \\
         --make-pgen vzs \\
         --out ${prefix}
