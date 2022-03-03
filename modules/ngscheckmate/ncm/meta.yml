@@ -47,8 +47,13 @@ output:
 
   - matched:
       type: file
-      description: A txt file containing which samples match with each other
+      description: A txt file containing only the samples that match with each other
       pattern: "*matched.txt"
+
+  - all:
+      type: file
+      description: A txt file containing all the sample comparisons, whether they match or not
+      pattern: "*all.txt"
 
 authors:
   - "@sppearce"
