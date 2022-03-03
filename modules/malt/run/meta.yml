@@ -19,6 +19,11 @@ tools:
       licence: ["GPL v3"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fastqs:
       type: file
       description: Input FASTQ files
