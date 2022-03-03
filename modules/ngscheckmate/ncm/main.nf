@@ -13,8 +13,9 @@ process NGSCHECKMATE_NCM {
 
     output:
     path "*.pdf"                  , emit: pdf
-    path "*corr_matrix.txt"       , emit: corr_matrix
-    path "*matched.txt"           , emit: matched
+    path "*_corr_matrix.txt"       , emit: corr_matrix
+    path "*_matched.txt"           , emit: matched
+    path "*_all.txt"           , emit: all
     path "versions.yml"           , emit: versions
 
     when:
