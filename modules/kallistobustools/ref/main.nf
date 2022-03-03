@@ -21,6 +21,9 @@ process KALLISTOBUSTOOLS_REF {
     path "cdna_t2c.txt"   , optional:true, emit: cdna_t2c
     path "intron_t2c.txt" , optional:true, emit: intron_t2c
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     if (workflow_mode == "standard") {

@@ -5,7 +5,7 @@ process BOWTIE2_BUILD {
     conda (params.enable_conda ? 'bioconda::bowtie2=2.4.4' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bowtie2:2.4.4--py39hbb4e92a_0' :
-        'quay.io/biocontainers/bowtie2:2.4.4--py36hd4290be_0' }"
+        'quay.io/biocontainers/bowtie2:2.4.4--py39hbb4e92a_0' }"
 
     input:
     path fasta
@@ -13,6 +13,9 @@ process BOWTIE2_BUILD {
     output:
     path 'bowtie2'      , emit: index
     path "versions.yml" , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

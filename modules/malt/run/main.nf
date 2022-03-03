@@ -1,6 +1,6 @@
 process MALT_RUN {
-
-    label 'process_high_memory'
+    tag "$meta.id"
+    label 'process_high'
 
     conda (params.enable_conda ? "bioconda::malt=0.53" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,15 +8,18 @@ process MALT_RUN {
         'quay.io/biocontainers/malt:0.53--hdfd78af_0' }"
 
     input:
-    path fastqs
+    tuple val(meta), path(fastqs)
     val mode
     path index
 
     output:
-    path "*.rma6"                          , emit: rma6
-    path "*.{tab,text,sam}",  optional:true, emit: alignments
-    path "*.log"                           , emit: log
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.rma6")                          , emit: rma6
+    tuple val(meta), path("*.{tab,text,sam}"),  optional:true, emit: alignments
+    tuple val(meta), path("*.log")                           , emit: log
+    path "versions.yml"                                      , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

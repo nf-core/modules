@@ -1,0 +1,60 @@
+name: nextclade_run
+description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
+keywords:
+  - nextclade
+  - variant
+  - consensus
+tools:
+  - nextclade:
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks
+      homepage: https://github.com/nextstrain/nextclade
+      documentation: https://github.com/nextstrain/nextclade
+      tool_dev_url: https://github.com/nextstrain/nextclade
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - dataset:
+      type: path
+      description: Path containing the dataset files obtained by running nextclade dataset get
+      pattern: "*"
+  - fasta:
+      type: file
+      description: FASTA file containing one or more consensus sequences
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - csv:
+      type: file
+      description: CSV file containing nextclade results
+      pattern: "*.{csv}"
+  - json:
+      type: file
+      description: JSON file containing nextclade results
+      pattern: "*.{json}"
+  - json_tree:
+      type: file
+      description: Auspice JSON V2 containing nextclade results
+      pattern: "*.{tree.json}"
+  - tsv:
+      type: file
+      description: TSV file containing nextclade results
+      pattern: "*.{tsv}"
+
+authors:
+  - "@antunderwood"
+  - "@drpatelh"
