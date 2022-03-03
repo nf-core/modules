@@ -43,7 +43,7 @@ process PICARD_SORTVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard SortSam --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
