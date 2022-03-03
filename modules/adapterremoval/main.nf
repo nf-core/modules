@@ -11,9 +11,15 @@ process ADAPTERREMOVAL {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: reads
-    tuple val(meta), path('*.log')     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path('*.truncated.gz')         , optional: true, emit: singles_truncated
+    tuple val(meta), path('*.discarded.gz')         , optional: true, emit: discarded
+    tuple val(meta), path('*.pair1.truncated.gz')   , optional: true, emit: pair1_truncated
+    tuple val(meta), path('*.pair2.truncated.gz')   , optional: true, emit: pair2_truncated
+    tuple val(meta), path('*.collapsed.gz')         , optional: true, emit: collapsed
+    tuple val(meta), path('*.collapsed.truncated')  , optional: true, emit: collapsed_truncated
+    tuple val(meta), path('*paired.gz')             , optional: true, emit: paired_interleaved
+    tuple val(meta), path('*.log')                  , emit: log
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,30 +34,27 @@ process ADAPTERREMOVAL {
             --file1 $reads \\
             $args \\
             --basename $prefix \\
-            --threads $task.cpus \\
+            --threads ${task.cpus} \\
             --settings ${prefix}.log \\
-            --output1 ${prefix}.trimmed.fastq.gz \\
             --seed 42 \\
-            --gzip \\
+            --gzip
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
         END_VERSIONS
         """
-    } else if (!meta.single_end && !meta.collapse) {
+    } else if (!meta.single_end ) {
         """
         AdapterRemoval  \\
             --file1 ${reads[0]} \\
             --file2 ${reads[1]} \\
             $args \\
             --basename $prefix \\
-            --threads $task.cpus \\
+            --threads ${task.cpus} \\
             --settings ${prefix}.log \\
-            --output1 ${prefix}.pair1.trimmed.fastq.gz \\
-            --output2 ${prefix}.pair2.trimmed.fastq.gz \\
             --seed 42 \\
-            --gzip \\
+            --gzip
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -63,13 +66,12 @@ process ADAPTERREMOVAL {
         AdapterRemoval  \\
             --file1 ${reads[0]} \\
             --file2 ${reads[1]} \\
-            --collapse \\
             $args \\
             --basename $prefix \\
             --threads $task.cpus \\
             --settings ${prefix}.log \\
             --seed 42 \\
-            --gzip \\
+            --gzip
 
         cat *.collapsed.gz *.collapsed.truncated.gz > ${prefix}.merged.fastq.gz
         cat <<-END_VERSIONS > versions.yml
