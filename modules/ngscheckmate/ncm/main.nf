@@ -41,7 +41,6 @@ process NGSCHECKMATE_NCM {
     }
 
     """
-    export NCM_REF="./"${fasta}
 
     if $unzip
     then
@@ -50,7 +49,7 @@ process NGSCHECKMATE_NCM {
         done
     fi
 
-    ncm.py -d . -bed ${snp_bed} -O . -N ${prefix} $args
+    NCM_REF="./"${fasta} ncm.py -d . -bed ${snp_bed} -O . -N ${prefix} $args
 
     if $unzip
     then
