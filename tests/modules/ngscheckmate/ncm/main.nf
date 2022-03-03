@@ -30,8 +30,10 @@ workflow test_ngscheckmate_ncm_bam {
 }
 
 workflow test_ngscheckmate_ncm_vcf {
-    input1 = [ [ id:'test1' ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]]
+    input1 = [ 
+        [ id:'test1' ], // meta map
+        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
+    ]
 
     input2 = [ [ id:'test2' ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]]
