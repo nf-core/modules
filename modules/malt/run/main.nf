@@ -8,7 +8,7 @@ process MALT_RUN {
         'quay.io/biocontainers/malt:0.53--hdfd78af_0' }"
 
     input:
-    tuple val(meta) path(fastqs)
+    tuple val(meta), path(fastqs)
     val mode
     path index
 
