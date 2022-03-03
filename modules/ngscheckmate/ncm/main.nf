@@ -13,7 +13,8 @@ process NGSCHECKMATE_NCM {
 
     output:
     path "*.pdf"                  , emit: pdf
-    path "*.txt"                  , emit: txt
+    path "*corr_matrix.txt"       , emit: corr_matrix
+    path "*matched.txt"           , emit: matched
     path "versions.yml"           , emit: versions
 
     when:
@@ -40,7 +41,7 @@ process NGSCHECKMATE_NCM {
 
     """
     export NCM_REF="./"${fasta}
-    
+
     if $unzip
     then
         for VCFGZ in *.vcf.gz; do

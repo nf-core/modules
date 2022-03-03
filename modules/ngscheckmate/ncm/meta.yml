@@ -1,5 +1,5 @@
 name: ngscheckmate_ncm
-description: A package for determining whether sequencing data comes from the same individual by using SNP matching. Designed for humans
+description: Determining whether sequencing data comes from the same individual by using SNP matching. Designed for humans on vcf or bam files.
 keywords:
   - ngscheckmate
   - matching
@@ -16,12 +16,17 @@ tools:
 input:
   - files:
       type: file
-      description: VCF or BAM files for each individual sample (possibly gzipped)
-      pattern: "*.{vcf,bam}*"
+      description: VCF or BAM files for each sample, in a merged channel (possibly gzipped). BAM files require an index too.
+      pattern: "*.{vcf,vcf.gz,bam,bai}"
 
   - snp_bed:
       type: file
       description: BED file containing the SNPs to analyse
+      pattern: "*.{bed}"
+
+  - fasta:
+      type: file
+      description: fasta file for the genome, only used in the bam mode
       pattern: "*.{bed}"
 
 output:
@@ -40,7 +45,7 @@ output:
       description: A text file containing the correlation matrix between each sample
       pattern: "*corr_matrix.txt"
 
-  - matched_txt:
+  - matched:
       type: file
       description: A txt file containing which samples match with each other
       pattern: "*matched.txt"
