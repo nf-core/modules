@@ -47,15 +47,14 @@ workflow test_ngscheckmate_ncm_vcf {
     BCFTOOLS_MPILEUP2 ( input2, fasta, false )
 
     BCFTOOLS_MPILEUP2.out.vcf.
-      combine(BCFTOOLS_MPILEUP.out.vcf).
-      map{[it[1],it[3]]}.
-      set{vcf_channel}
+        combine( BCFTOOLS_MPILEUP.out.vcf ).
+        map { [ it[1], it[3] ] }.
+        set { vcf_channel }
 
-    BEDTOOLS_MAKEWINDOWS(inputBed, true).
-    tab.
-    map{it[1]}.
-    view().
-    set{snp_channel}
+    BEDTOOLS_MAKEWINDOWS( inputBed, true ).tab.
+        map { it[1] }.
+        view().
+        set { snp_channel }
 
     NGSCHECKMATE_NCM(vcf_channel, snp_channel, fasta)
 }
