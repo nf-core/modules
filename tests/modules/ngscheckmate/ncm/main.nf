@@ -10,10 +10,10 @@ include { BCFTOOLS_MPILEUP } from '../../../../modules/bcftools/mpileup/main.nf'
 include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP2 } from '../../../../modules/bcftools/mpileup/main.nf'
 
 workflow test_ngscheckmate_ncm_bam {
-    input = [file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam']),
-                file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai']),
-                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam']),
-                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'])]
+    input = [file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)]
 
     fasta = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 
