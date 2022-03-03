@@ -9,6 +9,7 @@ process NGSCHECKMATE_NCM {
     input:
     path files
     path snp_bed
+    path fasta
 
     output:
     path "*.pdf"                  , emit: pdf
@@ -38,7 +39,8 @@ process NGSCHECKMATE_NCM {
     }
 
     """
-
+    export NCM_REF="./"${fasta}
+    
     if $unzip
     then
         for VCFGZ in *.vcf.gz; do
