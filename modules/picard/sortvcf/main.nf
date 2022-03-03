@@ -9,10 +9,11 @@ process PICARD_SORTVCF {
 
     input:
     tuple val(meta), path(vcf)
+    path sequence_dict
 
     output:
     tuple val(meta), path("*_sorted.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,10 +21,20 @@ process PICARD_SORTVCF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def seq_dict = sequence_dict ? "-SEQUENCE_DICTIONARY $sequence_dict" : ""
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[Picard SortVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
+
     """
     picard \\
         SortVcf \\
+        -Xmx${avail_mem}g \\
         --INPUT $vcf \\
+        $seq_dict \\
         --OUTPUT ${prefix}_sorted.vcf
 
     cat <<-END_VERSIONS > versions.yml
