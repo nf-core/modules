@@ -16,6 +16,9 @@ process BISCUIT_BLASTER {
     tuple val(meta), path("*.bai"), emit: bai
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_args = task.ext.args ?: ''
