@@ -44,6 +44,16 @@ process ASCAT {
     library(ASCAT)
     options(bitmapType='cairo')
 
+
+    #check if loci and alleles file exist. Download default if not
+    if(!file.exists("$allele_files")){
+      system("aws s3 cp s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/ASCAT/G1000_loci_hg19/ ./ --recursive")
+      allele_files <- "G1000_alleles_hg19_chr"
+    }else{
+      allele_files <- "$allele_files/G1000_alleles_hg19_chr"
+    }
+
+
     #prepare from BAM files
     ascat.prepareHTS(
       tumourseqfile = "$tumor_bam",
@@ -51,7 +61,7 @@ process ASCAT {
       tumourname = "Tumour",
       normalname = "Normal",
       allelecounter_exe = "alleleCounter",
-      alleles.prefix = "$allele_files/G1000_alleles_hg19_chr",
+      alleles.prefix = allele_files,
       loci.prefix = "$loci_files/G1000_loci_hg19_chr",
       gender = "$gender",
       genomeVersion = "$genomeVersion",

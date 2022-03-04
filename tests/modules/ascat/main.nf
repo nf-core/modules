@@ -28,7 +28,7 @@ workflow test_ascat {
         file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true)
     ]
 
-    ASCAT_SIMPLE ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+    ASCAT_SIMPLE ( input , [], "/home/ec2-user/input_files/loci_files")
 }
 
 
@@ -63,7 +63,7 @@ workflow test_ascat_with_crams {
         file("/home/ec2-user/input_files/crams/duplicate_test.cram.crai", checkIfExists: true)
     ]
 
-    ASCAT_CRAM ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+    ASCAT_CRAM ( input , [], "/home/ec2-user/input_files/loci_files")
 }
 
 
