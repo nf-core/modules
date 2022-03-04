@@ -23,6 +23,7 @@ process MALT_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 6
     if (!task.memory) {
         log.info '[MALT_RUN] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
@@ -39,7 +40,7 @@ process MALT_RUN {
         $args \\
         --inFile ${fastqs.join(' ')} \\
         -m $mode \\
-        --index $index/ |&tee malt-run.log
+        --index $index/ |&tee ${prefix}-malt-run.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
