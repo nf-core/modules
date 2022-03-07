@@ -24,7 +24,6 @@ process BISCUIT_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def samtools_cpus = task.cpus-biscuit_cpus
-
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
@@ -38,7 +37,7 @@ process BISCUIT_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
