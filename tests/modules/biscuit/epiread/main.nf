@@ -25,7 +25,7 @@ workflow test_biscuit_epiread_snp {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true),
-        file('/varidata/research/projects/laird/nathan/projects/pipelining/test-datasets/data/delete_me/biscuit/test-snp.bed')
+        file('https://raw.githubusercontent.com/njspix/test-datasets/modules/data/delete_me/biscuit/test-snp.bed')
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
