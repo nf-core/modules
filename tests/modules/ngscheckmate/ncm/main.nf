@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { NGSCHECKMATE_NCM } from '../../../../modules/ngscheckmate/ncm/main.nf'
+include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_BAM} from '../../../../modules/ngscheckmate/ncm/main.nf'
+include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_VCF} from '../../../../modules/ngscheckmate/ncm/main.nf'
 
 include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/bedtools/makewindows/main.nf'
 
@@ -26,7 +27,7 @@ workflow test_ngscheckmate_ncm_bam {
     view().
     set{snp_channel}
 
-    NGSCHECKMATE_NCM(input, snp_channel, fasta)
+    NGSCHECKMATE_NCM_BAM(input, snp_channel, fasta)
 }
 
 workflow test_ngscheckmate_ncm_vcf {
@@ -56,7 +57,7 @@ workflow test_ngscheckmate_ncm_vcf {
         view().
         set { snp_channel }
 
-    NGSCHECKMATE_NCM(vcf_channel, snp_channel, fasta)
+    NGSCHECKMATE_NCM_VCF(vcf_channel, snp_channel, fasta)
 }
 
 
