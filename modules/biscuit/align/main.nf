@@ -30,7 +30,6 @@ process BISCUIT_ALIGN {
 
     biscuit align \\
         $args \\
-        $read_group \\
         -@ $biscuit_cpus \\
         \$INDEX \\
         $reads \\
