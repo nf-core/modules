@@ -47,39 +47,39 @@ process ASCAT {
 
     #prepare from BAM files
     ascat.prepareHTS(
-      tumourseqfile = "$tumor_bam",
-      normalseqfile = "$normal_bam",
-      tumourname = "Tumour",
-      normalname = "Normal",
-      allelecounter_exe = "alleleCounter",
-      alleles.prefix = "$allele_files/G1000_alleles_${genomeVersion}_chr",
-      loci.prefix = "$loci_files/G1000_loci_${genomeVersion}_chr",
-      gender = "$gender",
-      genomeVersion = "$genomeVersion",
-      nthreads = $task.cpus
-      $minCounts_arg
-      $chrom_names_arg
-      $min_base_qual_arg
-      $min_map_qual_arg
-      $ref_fasta_arg
-      $skip_allele_counting_tumour_arg
-      $skip_allele_counting_normal_arg
+        tumourseqfile = "$tumor_bam",
+        normalseqfile = "$normal_bam",
+        tumourname = "Tumour",
+        normalname = "Normal",
+        allelecounter_exe = "alleleCounter",
+        alleles.prefix = "$allele_files/G1000_alleles_${genomeVersion}_chr",
+        loci.prefix = "$loci_files/G1000_loci_${genomeVersion}_chr",
+        gender = "$gender",
+        genomeVersion = "$genomeVersion",
+        nthreads = $task.cpus
+        $minCounts_arg
+        $chrom_names_arg
+        $min_base_qual_arg
+        $min_map_qual_arg
+        $ref_fasta_arg
+        $skip_allele_counting_tumour_arg
+        $skip_allele_counting_normal_arg
     )
 
 
     #Load the data
     ascat.bc = ascat.loadData(
-      Tumor_LogR_file = "Tumour_tumourLogR.txt",
-      Tumor_BAF_file = "Tumour_normalBAF.txt",
-      Germline_LogR_file = "Tumour_normalLogR.txt",
-      Germline_BAF_file = "Tumour_normalBAF.txt",
-      genomeVersion = "$genomeVersion",
-      gender = "$gender"
+        Tumor_LogR_file = "Tumour_tumourLogR.txt",
+        Tumor_BAF_file = "Tumour_normalBAF.txt",
+        Germline_LogR_file = "Tumour_normalLogR.txt",
+        Germline_BAF_file = "Tumour_normalBAF.txt",
+        genomeVersion = "$genomeVersion",
+        gender = "$gender"
     )
 
     #optional GC wave correction
     if(!is.null($gc_files)){
-      ascat.bc = ascat.GCcorrect(ascat.bc, $gc_files)
+        ascat.bc = ascat.GCcorrect(ascat.bc, $gc_files)
     }
 
     #Plot the raw data
@@ -94,13 +94,13 @@ process ASCAT {
     #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
     #If psi and rho are manually set:
     if (!is.null($purity) && !is.null($ploidy)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
     } else if(!is.null($purity) && is.null($ploidy)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
     } else if(!is.null($ploidy) && is.null($purity)){
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
     } else {
-      ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }
 
     #Write out segmented regions (including regions with one copy of each allele)
