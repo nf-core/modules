@@ -21,26 +21,24 @@ process BISCUIT_BLASTER {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def biscuit_args = task.ext.args ?: ''
-    def samblaster_args = task.ext.args2 ?: ''
-    def sort_args = task.ext.args3 ?: ''
-    def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
-    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.05),1)
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
+    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.95),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
     biscuit align \\
         -@ $biscuit_cpus \\
-        $biscuit_args \\
-        $read_group \\
+        $args \\
         \$INDEX \\
         $reads | \\
     samblaster \\
-        $samblaster_args | \\
+        $args2 | \\
     samtools sort \\
         -@ $samtools_cpus \\
-        $sort_args \\
+        $args3 \\
         --write-index \\
         -o ${prefix}.bam##idx##${prefix}.bam.bai
 

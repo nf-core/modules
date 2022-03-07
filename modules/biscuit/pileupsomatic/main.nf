@@ -24,7 +24,6 @@ process BISCUIT_PILEUPSOMATIC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
     def bgzip_cpus = task.cpus-biscuit_cpus
-
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 

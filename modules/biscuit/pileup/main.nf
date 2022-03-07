@@ -13,7 +13,7 @@ process BISCUIT_PILEUP {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,6 @@ process BISCUIT_PILEUP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
     def bgzip_cpus = task.cpus-biscuit_cpus
-
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 

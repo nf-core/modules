@@ -19,7 +19,6 @@ process BISCUIT_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-
     """
     biscuit \\
         index \\

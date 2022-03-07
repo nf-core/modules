@@ -22,7 +22,7 @@ process BISCUIT_EPIREAD {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
+    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     // As of 2/25/22, epiread does not support reading a gzipped SNP BED file.
     // This is a bit hacky but allows the user to supply a gzipped OR uncompressed bed file
@@ -30,7 +30,7 @@ process BISCUIT_EPIREAD {
     def unzipped_snp_bed = snp_bed ? snp_bed.toString() - ~/\.gz$/: ""
     // SNP BED input is optional
     def options_snp_bed = snp_bed ? "-B ${unzipped_snp_bed}" : ""
-
+    if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
@@ -46,7 +46,7 @@ process BISCUIT_EPIREAD {
     bgzip \\
         -@ $samtools_cpus \\
         $args2 \\
-        -c > ${prefix}.epiread.bed.gz
+        -c > ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

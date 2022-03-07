@@ -12,7 +12,7 @@ process BISCUIT_BSCONV {
     path(index)
 
     output:
-    tuple val(meta), path("*.bsconv.bam"), emit: bsconv_bam
+    tuple val(meta), path("*.bam"), emit: bsconv_bam
     path "versions.yml"                  , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process BISCUIT_BSCONV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
@@ -29,7 +29,7 @@ process BISCUIT_BSCONV {
         $args \\
         \$INDEX \\
         $bam \\
-        ${prefix}.bsconv.bam
+        ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

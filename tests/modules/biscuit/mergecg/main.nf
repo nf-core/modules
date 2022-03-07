@@ -9,7 +9,7 @@ workflow test_biscuit_mergecg {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('/varidata/research/projects/laird/nathan/projects/pipelining/test-datasets/data/delete_me/biscuit/test-cg.bed.gz', checkIfExists: true)
+        file('https://raw.githubusercontent.com/njspix/test-datasets/modules/data/delete_me/biscuit/test-cg.bed.gz', checkIfExists: true)
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 

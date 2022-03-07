@@ -21,7 +21,6 @@ process BISCUIT_VCF2BED {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     biscuit vcf2bed \\
         $args \\
@@ -33,7 +32,7 @@ process BISCUIT_VCF2BED {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')        biscuit: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
