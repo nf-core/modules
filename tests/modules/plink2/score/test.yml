@@ -1,0 +1,16 @@
+- name: plink2 score test_plink2_score
+  command: nextflow run tests/modules/plink2/score -entry test_plink2_score -c tests/config/nextflow.config
+  tags:
+    - plink2
+    - plink2/score
+  files:
+    - path: output/plink2/test.pgen
+      md5sum: fac12ca9041d6950f6b7d60ac2120721
+    - path: output/plink2/test.psam
+      md5sum: e6c714488754cb8448c3dfda08c4c0ea
+    - path: output/plink2/test.pvar.zst
+      md5sum: 98d59e9779a8b62d5032cd98b642a63b
+    - path: output/plink2/test.sscore
+      md5sum: 97bde840f69febd65f2c00e9243126e9
+    - path: output/plink2/versions.yml
+      md5sum: 71499ab14e1583c88ced3a7a4f05bfa7
