@@ -24,7 +24,6 @@ process BISCUIT_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def samtools_cpus = task.cpus-biscuit_cpus
-
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
