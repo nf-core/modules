@@ -112,11 +112,11 @@ process ASCAT {
 
     #Write out purity and ploidy info
     summary <- tryCatch({
-    		matrix(c(ascat.output[["aberrantcellfraction"]], ascat.output[["ploidy"]]), ncol=2, byrow=TRUE)}, error = function(err) {
-    			# error handler picks up where error was generated
-    			print(paste("Could not find optimal solution:  ",err))
-    			return(matrix(c(0,0),nrow=1,ncol=2,byrow = TRUE))
-    		}
+            matrix(c(ascat.output[["aberrantcellfraction"]], ascat.output[["ploidy"]]), ncol=2, byrow=TRUE)}, error = function(err) {
+                # error handler picks up where error was generated
+                print(paste("Could not find optimal solution:  ",err))
+                return(matrix(c(0,0),nrow=1,ncol=2,byrow = TRUE))
+        }
     )
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
     write.table(summary, file=paste0("$prefix",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
