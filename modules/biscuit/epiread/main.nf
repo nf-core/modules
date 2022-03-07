@@ -50,8 +50,8 @@ process BISCUIT_EPIREAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
     END_VERSIONS
     """
 }

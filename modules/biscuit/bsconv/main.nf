@@ -33,7 +33,7 @@ process BISCUIT_BSCONV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        biscuit: \$(echo \$(biscuit version 2>&1) | sed 's/^.*BISCUIT Version: //; s/Using.*\$//')
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
     END_VERSIONS
     """
 }
