@@ -32,7 +32,7 @@ process ASCAT {
     def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
     def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
     def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
-    def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = $args.ref_fasta" : ""
+    def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = '$args.ref_fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
 
@@ -45,15 +45,6 @@ process ASCAT {
     options(bitmapType='cairo')
 
 
-    #check if loci and alleles file exist. Download default if not
-    if(!file.exists("$allele_files")){
-      system("aws s3 cp s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/ASCAT/G1000_loci_hg19/ ./ --recursive")
-      allele_files <- "G1000_alleles_hg19_chr"
-    }else{
-      allele_files <- "$allele_files/G1000_alleles_hg19_chr"
-    }
-
-
     #prepare from BAM files
     ascat.prepareHTS(
       tumourseqfile = "$tumor_bam",
@@ -61,8 +52,8 @@ process ASCAT {
       tumourname = "Tumour",
       normalname = "Normal",
       allelecounter_exe = "alleleCounter",
-      alleles.prefix = allele_files,
-      loci.prefix = "$loci_files/G1000_loci_hg19_chr",
+      alleles.prefix = "$allele_files/G1000_alleles_${genomeVersion}_chr",
+      loci.prefix = "$loci_files/G1000_loci_${genomeVersion}_chr",
       gender = "$gender",
       genomeVersion = "$genomeVersion",
       nthreads = $task.cpus
@@ -88,7 +79,7 @@ process ASCAT {
 
     #optional GC wave correction
     if(!is.null($gc_files)){
-      ascat.bc = ascat.GCcorrect(ascat.bc, gcfile)
+      ascat.bc = ascat.GCcorrect(ascat.bc, $gc_files)
     }
 
     #Plot the raw data

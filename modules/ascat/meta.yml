@@ -18,19 +18,34 @@ both parental alleles for all SNP loci across the genome).
       doi: ""
       licence: ['GPL v3']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - normal_bam:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
+  - normal_bai:
+      type: file
+      description: index for normal_bam
+      pattern: "*.{bai}"
+  - tumor_bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern "*.{bam,cram,sam}"
+  - tumor_bai:
+      type: file
+      description: index for tumor_bam
+      pattern: "*.{bai}"
+  - allele_files:
+      type: file
+      description: allele files for ASCAT. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+  - loci_files:
+      type: file
+      description: loci files for ASCAT. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
 output:
   - meta:
       type: map
@@ -41,11 +56,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - png:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: ASCAT plots
+      pattern: "*.{png}"
+  - purityploidy:
+      type: file
+      description: purity and ploidy data
+      pattern: "*.purityploidy.txt"
+  - segments:
+      type: file
+      description: segements data
+      pattern: "*.segments.txt"
 authors:
   - "@aasNGC"
   - "@lassefolkersen"
