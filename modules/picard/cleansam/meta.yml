@@ -1,8 +1,7 @@
 name: picard_cleansam
-description: Cleans the provided SAM/BAM, soft-clipping beyond-end-of-reference alignments and setting MAPQ to 0 for unmapped reads
+description: Cleans the provided BAM, soft-clipping beyond-end-of-reference alignments and setting MAPQ to 0 for unmapped reads
 keywords:
   - clean
-  - sam
   - bam
 tools:
   - picard:
@@ -22,8 +21,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - sam:
       type: file
-      description: SAM file
-      pattern: "*.{sam}"
+      description: BAM file
+      pattern: "*.{bam}"
 
 output:
   - meta:
@@ -37,8 +36,8 @@ output:
       pattern: "versions.yml"
   - sam:
       type: file
-      description: Cleaned SAM file
-      pattern: "*.{sam}"
+      description: Cleaned BAM file
+      pattern: "*.{bam}"
 
 authors:
   - "@sateeshperi"
