@@ -1,8 +1,8 @@
 - name: biscuit mergecg test_biscuit_mergecg
   command: nextflow run tests/modules/biscuit/mergecg -entry test_biscuit_mergecg -c tests/config/nextflow.config
   tags:
-    - biscuit/mergecg
     - biscuit
+    - biscuit/mergecg
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -23,4 +23,4 @@
     - path: output/biscuit/test.mergecg.bed.gz
       md5sum: d693b28ddc81265f388860d391fc7c5b
     - path: output/biscuit/versions.yml
-      md5sum: 4a6b6f805165c7228a9c63602fe6a7f5
+      md5sum: f670d63671af06bf8654677bf373b3a1

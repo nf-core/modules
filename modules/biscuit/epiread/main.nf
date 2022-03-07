@@ -12,7 +12,7 @@ process BISCUIT_EPIREAD {
     path(index)
 
     output:
-    tuple val(meta), path("*.epiread.bed.gz"), emit: epiread_bed
+    tuple val(meta), path("*.bed.gz"), emit: epiread_bed
     path "versions.yml"                      , emit: versions
 
     when:

@@ -1,8 +1,8 @@
 - name: biscuit qc test_biscuit_qc
   command: nextflow run tests/modules/biscuit/qc -entry test_biscuit_qc -c tests/config/nextflow.config
   tags:
-    - biscuit
     - biscuit/qc
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -35,4 +35,4 @@
     - path: output/biscuit/test_totalReadConversionRate.txt
       md5sum: 8f0c1fceaebfa74f2757720e3bc85fed
     - path: output/biscuit/versions.yml
-      md5sum: dd65c3d397cd8a0f8b0138ec253708e8
+      md5sum: a730fa4888e6882cf1b8ba92645b04ee

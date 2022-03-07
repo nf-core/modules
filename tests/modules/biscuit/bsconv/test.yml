@@ -1,8 +1,8 @@
 - name: biscuit bsconv test_biscuit_bsconv
   command: nextflow run tests/modules/biscuit/bsconv -entry test_biscuit_bsconv -c tests/config/nextflow.config
   tags:
-    - biscuit/bsconv
     - biscuit
+    - biscuit/bsconv
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -20,7 +20,7 @@
       md5sum: 62eb83cd557a47b59589713d98024fc2
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
-    - path: output/biscuit/test.bsconv.bam
+    - path: output/biscuit/test.bam
       md5sum: e33e9498d00dd32222b90a6bd981226f
     - path: output/biscuit/versions.yml
-      md5sum: 2560d9d61aba293ee6abc72924c1e1e6
+      md5sum: 7deec1f096203542bbb72ac4fa05f9ba
