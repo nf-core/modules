@@ -38,7 +38,7 @@ process BISCUIT_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
     END_VERSIONS
     """
 }
