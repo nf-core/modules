@@ -8,7 +8,7 @@ workflow test_biscuit_vcf2bed {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file('/varidata/research/projects/laird/nathan/projects/pipelining/test-datasets/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
+        file('https://raw.githubusercontent.com/njspix/test-datasets/blob/modules/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
     ]
 
     BISCUIT_VCF2BED ( input )
