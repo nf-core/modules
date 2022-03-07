@@ -12,11 +12,11 @@ process NGSCHECKMATE_NCM {
     path fasta
 
     output:
-    path "*.pdf"                  , emit: pdf
-    path "*_corr_matrix.txt"       , emit: corr_matrix
-    path "*_matched.txt"           , emit: matched
-    path "*_all.txt"           , emit: all
-    path "versions.yml"           , emit: versions
+    path "*.pdf"            , emit: pdf
+    path "*_corr_matrix.txt", emit: corr_matrix
+    path "*_matched.txt"    , emit: matched
+    path "*_all.txt"        , emit: all
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
