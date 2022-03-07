@@ -13,7 +13,7 @@ process BISCUIT_PILEUPSOMATIC {
 
     output:
     tuple val(meta), path("*.somatic.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
