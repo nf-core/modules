@@ -22,7 +22,6 @@ process BISCUIT_ALIGN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus/1.11),1)
     def samtools_cpus = task.cpus-biscuit_cpus
 
