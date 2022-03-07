@@ -9,11 +9,14 @@ process PLINK2_SCORE {
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar)
-    path scorefile
+    path(scorefile)
 
     output:
     tuple val(meta), path("*.sscore"), emit: score
-    path "versions.yml"              , emit: versions
+    path("versions.yml")             , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
