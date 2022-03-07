@@ -1,0 +1,8 @@
+- name: vcflib vcfuniq
+  command: nextflow run ./tests/modules/vcflib/vcfuniq -entry test_vcflib_vcfuniq -c ./tests/config/nextflow.config -c ./tests/modules/vcflib/vcfuniq/nextflow.config
+  tags:
+    - vcflib
+    - vcflib/vcfuniq
+  files:
+    - path: output/vcflib/test.uniq.vcf.gz
+      md5sum: fc178eb342a91dc0d1d568601ad8f8e2

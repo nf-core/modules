@@ -31,3 +31,11 @@
     - cat/cat
   files:
     - path: output/cat/cat.txt.gz
+
+- name: cat one file unzipped zipped
+  command: nextflow run ./tests/modules/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  tags:
+    - cat
+    - cat/cat
+  files:
+    - path: output/cat/cat.txt.gz

@@ -16,10 +16,13 @@ process PLINK_EXTRACT {
     tuple val(meta), path("*.fam"), emit: fam
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bed" == "${prefix}.bed" ) error "Input and output names are the same, use the suffix option to disambiguate"
+    if( "$bed" == "${prefix}.bed" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     plink \\
         --bfile ${meta.id} \\

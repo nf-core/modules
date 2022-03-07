@@ -14,6 +14,9 @@ process FILTLONG {
     tuple val(meta), path("${meta.id}_lr_filtlong.fastq.gz"), emit: reads
     path "versions.yml"                                     , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

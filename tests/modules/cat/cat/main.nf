@@ -43,3 +43,12 @@ workflow test_cat_unzipped_zipped {
 
     CAT_CAT ( input, 'cat.txt.gz' )
 }
+
+workflow test_cat_one_file_unzipped_zipped {
+
+    input = [
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+    ]
+
+    CAT_CAT ( input, 'cat.txt.gz' )
+}
