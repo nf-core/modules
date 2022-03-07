@@ -13,7 +13,7 @@ process BISCUIT_BSCONV {
 
     output:
     tuple val(meta), path("*.bam"), emit: bsconv_bam
-    path "versions.yml"                  , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
