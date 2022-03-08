@@ -9,17 +9,17 @@ include { ASCAT as ASCAT_CRAM} from '../../../modules/ascat/main.nf'
 
 
 
-//workflow test_ascat {
-//   input = [
-//       [ id:'test', single_end:false ], // meta map
-//       file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
-//       file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true),
-//       file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
-//       file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true)
-//   ]
-//
-//    ASCAT_SIMPLE ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
-//}
+workflow test_ascat {
+   input = [
+       [ id:'test', single_end:false ], // meta map
+       file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
+       file("/home/ec2-user/input_files/bams/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true),
+       file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
+       file("/home/ec2-user/input_files/bams/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true)
+   ]
+
+    ASCAT_SIMPLE ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+}
 
 
 
