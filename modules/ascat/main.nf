@@ -131,6 +131,28 @@ process ASCAT {
     writeLines("ASCAT:", f)
     writeLines(" ascat: 3.0.0",f)
     close(f)
-
     """
+
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.cnvs.txt
+    touch ${prefix}.purityploidy.txt
+    touch ${prefix}.segments.txt
+    touch Tumour.ASCATprofile.png
+    touch Tumour.ASPCF.png
+    touch Tumour.germline.png
+    touch Tumour.rawprofile.png
+    touch Tumour.sunrise.png
+    touch Tumour.tumour.png
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+
 }
