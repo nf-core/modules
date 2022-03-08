@@ -147,7 +147,7 @@ process ASCAT {
     touch Tumour.sunrise.png
     touch Tumour.tumour.png
 
-    echo 'ASCAT' > versions.yml
+    echo 'ASCAT:' > versions.yml
     echo ' ascat: 3.0.0' >> versions.yml
     """
 
