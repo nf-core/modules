@@ -147,11 +147,11 @@ process ASCAT {
     touch Tumour.sunrise.png
     touch Tumour.tumour.png
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    version_file_path="versions.yml"
+    f <- file(version_file_path,"w")
+    writeLines("ASCAT:", f)
+    writeLines(" ascat: 3.0.0",f)
+    close(f)
     """
 
 
