@@ -147,11 +147,8 @@ process ASCAT {
     touch Tumour.sunrise.png
     touch Tumour.tumour.png
 
-    version_file_path="versions.yml"
-    f <- file(version_file_path,"w")
-    writeLines("ASCAT:", f)
-    writeLines(" ascat: 3.0.0",f)
-    close(f)
+    echo 'ASCAT' > versions.yml
+    echo ' ascat: 3.0.0' >> versions.yml
     """
 
 
