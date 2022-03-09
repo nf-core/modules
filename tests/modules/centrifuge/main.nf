@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CENTRIFUGE } from '../../../../modules/centrifuge/centrifuge/main.nf'
+include { CENTRIFUGE } from '../../../modules/centrifuge/main.nf'
 
 workflow test_centrifuge_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
@@ -24,5 +24,4 @@ workflow test_centrifuge_paired_end {
     CENTRIFUGE ( input, db )
 
 
-}
 }
