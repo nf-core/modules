@@ -1,0 +1,13 @@
+- name: centrifuge test_centrifuge_single_end
+  command: nextflow run tests/modules/centrifuge -entry test_centrifuge_single_end -c tests/config/nextflow.config
+  tags:
+    - centrifuge
+  files:
+    - path: output/centrifuge/test.centrifuge.report.txt
+
+- name: centrifuge test_centrifuge_paired_end
+  command: nextflow run tests/modules/centrifuge -entry test_centrifuge_paired_end -c tests/config/nextflow.config
+  tags:
+    - centrifuge
+  files:
+    - path: output/centrifuge/test.centrifuge.report.txt
