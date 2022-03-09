@@ -14,6 +14,9 @@ process SEQKIT_REPLACE {
     tuple val(meta), path("*.fast*"), emit: fastx
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
