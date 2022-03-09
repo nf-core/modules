@@ -25,7 +25,6 @@ process NGSCHECKMATE_NCM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "output"
     def unzip = files.any { it.toString().endsWith(".vcf.gz") }
-
     """
 
     if $unzip
