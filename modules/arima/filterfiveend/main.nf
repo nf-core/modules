@@ -2,12 +2,12 @@
 process ARIMA_FILTERFIVEEND {
     tag "$meta.id"
     label 'process_medium'
-    def version = '0.001'
+    def version = '0.001-c24'
 
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the arima filter_five_end_v1 tool. Please use docker or singularity containers."
     }
-    container "gitlab-registry.internal.sanger.ac.uk/tol-it/arima:${version}"
+    container "quay.io/sanger-tol/arima:${version}"
 
     input:
     tuple val(meta), path(read)
