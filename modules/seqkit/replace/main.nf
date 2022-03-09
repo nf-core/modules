@@ -12,7 +12,7 @@ process SEQKIT_REPLACE {
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
-    path "versions.yml"           , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
