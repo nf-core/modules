@@ -25,7 +25,6 @@ process SEQKIT_REPLACE {
         extension = "fasta"
     }
     def endswith = task.ext.suffix ?: "${extension}.gz"
-
     """
     seqkit \\
         replace \\
