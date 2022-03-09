@@ -2,12 +2,12 @@ process ARIMA_2READSBAMCOMBINER {
     tag "$meta.id"
     label 'process_low'
 
-    def version = '0.001-c20'
+    def version = '0.001-c24'
 
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the arima two reads bam combiner. Please use docker or singularity containers."
     }
-    container "quay.io/tol/arima:${version}"
+    container "quay.io/sanger-tol/arima:${version}"
 
     input:
     tuple val(meta), path(bams)
