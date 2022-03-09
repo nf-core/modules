@@ -4,8 +4,11 @@ process CHROMAP_INDEX {
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.0--hd03093a_1' :
-        'quay.io/biocontainers/chromap:0.2.0--hd03093a_1' }"
+        // TODO: Uncommment when singularity container becomes available
+        // 'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' :
+        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' :
+        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' }"
+
 
 
     input:
