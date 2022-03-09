@@ -9,8 +9,6 @@ process CHROMAP_INDEX {
         'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' :
         'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' }"
 
-
-
     input:
     path fasta
 
