@@ -23,6 +23,9 @@ process MANTA_TUMORONLY {
     tuple val(meta), path("*tumor_sv.vcf.gz.tbi")              , emit: tumor_sv_vcf_tbi
     path "versions.yml"                                        , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

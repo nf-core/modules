@@ -9,21 +9,29 @@ process VCFANNO {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path vcfanno_config
+    tuple val(meta), path(vcf_uncompressed)
+    path toml
+    path resource_dir
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_annotated.vcf"), emit: vcf
+    path "versions.yml"                     , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_vcf = vcf_uncompressed ?: vcf
     """
+    ln -sf $resource_dir/* \$(pwd)
+
     vcfanno \\
         -p $task.cpus \\
         $args \\
-        $vcfanno_config \\
-        $vcf \\
+        $toml \\
+        $input_vcf \\
         > ${prefix}_annotated.vcf
 
     cat <<-END_VERSIONS > versions.yml

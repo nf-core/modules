@@ -18,6 +18,9 @@ process PICARD_COLLECTHSMETRICS {
     tuple val(meta), path("*collecthsmetrics.txt"), emit: hs_metrics
     path "versions.yml"                           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
