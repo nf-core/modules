@@ -9,8 +9,11 @@ workflow test_centrifuge_single_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
     db   =  file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz", checkIfExists: true)
+    save_unaligned = true
+    save_aligned = false
+    sam_format = false
 
-    CENTRIFUGE (input , db )
+    CENTRIFUGE ( input, db, save_unaligned, save_aligned, sam_format )
 
 }
 
@@ -20,8 +23,11 @@ workflow test_centrifuge_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
      db   =  file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz", checkIfExists: true)
+     save_unaligned = true
+     save_aligned = false
+     sam_format = false
 
-    CENTRIFUGE ( input, db )
+    CENTRIFUGE ( input, db, save_unaligned, save_aligned, sam_format )
 
 
 }
