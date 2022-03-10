@@ -12,8 +12,8 @@ process BISCUIT_MERGECG {
     path index
 
     output:
-    tuple val(meta), path("*.mergecg.bed.gz"), emit: mergecg_bed
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.bed.gz"), emit: mergecg_bed
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,7 @@ process BISCUIT_MERGECG {
     LC_ALL=C sort -k1,1 -k2,2n | \\
     bgzip \\
         $args2 \\
-        -c > ${prefix}.mergecg.bed.gz
+        -c > ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
