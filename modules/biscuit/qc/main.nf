@@ -26,6 +26,7 @@ process BISCUIT_QC {
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
     biscuit qc \\
+        $args
         $se \\
         \$INDEX \\
         $bam \\
