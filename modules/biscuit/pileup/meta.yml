@@ -37,7 +37,8 @@ input:
       pattern: "*.{bai}"
   - tumor_bam:
       type: file(s)
-      description: | Optional. If a tumor BAM file is provided, pileup will run in "somatic" mode and will annotate variants with
+      description: | 
+              Optional. If a tumor BAM file is provided, pileup will run in "somatic" mode and will annotate variants with
               their somatic state (present in tumor only, present in normal only, present in both, etc). Note that if a
               tumor BAM file is provided, exactly one normal BAM must be provided.
       pattern: "*.{bam}"
