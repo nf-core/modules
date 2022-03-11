@@ -17,6 +17,7 @@ process NGSCHECKMATE_NCM {
     path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
     path "versions.yml"     , emit: versions
+    path "*.vcf"            , emit: vcfs
 
     when:
     task.ext.when == null || task.ext.when
