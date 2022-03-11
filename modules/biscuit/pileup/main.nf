@@ -8,7 +8,7 @@ process BISCUIT_PILEUP {
         'quay.io/biocontainers/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0' }"
 
     input:
-    tuple val(meta), path(bams), path(bais)
+    tuple val(meta), path(normal_bams), path(normal_bais), path(tumor_bam), path(tumor_bai)
     path index
 
     output:
@@ -24,6 +24,9 @@ process BISCUIT_PILEUP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def bgzip_cpus = task.cpus-biscuit_cpus
+    if ( tumor_bam != [] && normal_bams.toList().size() > 1 ) error "[BISCUIT_PILEUP] error: Tumor BAM provided with more than one normal BAM ${normal_bams.toList().size()}"    
+    if ( tumor_bam.toList().size() > 1 ) error "[BISCUIT_PILEUP] error: more than one tumor BAM provided"
+    input = ( tumor_bam==[] ) ? "${normal_bams}" : "-S -T ${tumor_bam} -I ${normal_bams}"
     """
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
 
@@ -31,7 +34,7 @@ process BISCUIT_PILEUP {
         -@ $biscuit_cpus \\
         $args \\
         \$INDEX \\
-        $bams \\
+        $input \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,5 +1,5 @@
 name: biscuit_pileup
-description: Computes cytosine methylation and callable SNV mutations
+description: Computes cytosine methylation and callable SNV mutations, optionally in reference to a germline BAM to call somatic variants
 keywords:
   - bisulfite
   - DNA methylation
@@ -24,13 +24,26 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bams:
+  - normal_bams:
       type: file(s)
-      description: BAM file or files
+      description: |
+              BAM files to be analyzed. If no tumor_bam file is provided, any number of "normal" BAMs may be provided
+              ("normal" here is just a semantic issue, these BAMs could be from tumor or any other kind of tissue). If a 
+              tumor BAM file is provided, exactly one normal (germline) BAM must be provided.
       pattern: "*.{bam}"
-  - bais:
+  - normal_bais:
       type: file(s)
-      description: BAM index file or files
+      description: BAM index file or files corresponding to the provided normal_bams
+      pattern: "*.{bai}"
+  - tumor_bam:
+      type: file(s)
+      description: | Optional. If a tumor BAM file is provided, pileup will run in "somatic" mode and will annotate variants with
+              their somatic state (present in tumor only, present in normal only, present in both, etc). Note that if a
+              tumor BAM file is provided, exactly one normal BAM must be provided.
+      pattern: "*.{bam}" 
+  - tumor_bai:
+      type: file(s)
+      description: Optional. BAM index file corresponding to provided tumor_bam
       pattern: "*.{bai}"
   - index:
       type: dir
