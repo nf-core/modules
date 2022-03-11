@@ -12,6 +12,30 @@ tools:
       licence: ['GPL v3']
 
 input:
+    - args:
+    type: map
+    description: |
+      Groovy Map containing tool parameters. MUST follow the structure/keywords below and be provided via modules.config.
+      <optional> parameters can be removed from the map, if they are not set.
+      For default values, please check the documentation above.
+      ```
+      {
+        [
+          "gender": "XX",
+          "genomeVersion": "hg19"
+          "purity": <optional>,
+          "ploidy": <optional>,
+          "gc_files": <optional>,
+          "minCounts": <optional>,
+          "chrom_names": <optional>,
+          "min_base_qual": <optional>,
+          "min_map_qual": <optional>,
+          "ref_fasta": <optional>,
+          "skip_allele_counting_tumour": <optional>,
+          "skip_allele_counting_normal": <optional>
+        ]
+      }
+      ```
   - meta:
       type: map
       description: |
