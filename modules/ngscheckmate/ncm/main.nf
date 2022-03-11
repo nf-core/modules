@@ -3,7 +3,7 @@ process NGSCHECKMATE_NCM {
 
     conda (params.enable_conda ? "bioconda::ngscheckmate=1.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3':
+        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_3':
         'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3' }"
 
     input:
@@ -16,8 +16,8 @@ process NGSCHECKMATE_NCM {
     path "*_corr_matrix.txt", emit: corr_matrix
     path "*_matched.txt"    , emit: matched
     path "*_all.txt"        , emit: all
-    path "versions.yml"     , emit: versions
     path "*.vcf"            , emit: vcfs
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
