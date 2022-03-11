@@ -22,7 +22,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "-T  ${fasta}" : ''
+    def reference = fasta ? "-T ${fasta}" : ''
     """
     cnvpytor \\
         -root ${prefix}.pytor \\
