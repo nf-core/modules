@@ -26,7 +26,7 @@ process ASCAT {
     def args           = task.ext.args        ?: ''
     def prefix         = task.ext.prefix      ?: "${meta.id}"
     def gender         = args.gender          ?  "$args.gender" :        "NULL"
-    def genomeVersion  = args.genomeVersion   ?  "$args.genomeVersion" : "hg19"
+    def genomeVersion  = args.genomeVersion   ?  "$args.genomeVersion" : "NULL"
     def purity         = args.purity          ?  "$args.purity" :        "NULL"
     def ploidy         = args.ploidy          ?  "$args.ploidy" :        "NULL"
     def gc_files       = args.gc_files        ?  "$args.gc_files" :      "NULL"
