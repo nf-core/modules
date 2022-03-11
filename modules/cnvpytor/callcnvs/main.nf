@@ -19,10 +19,11 @@ process CNVPYTOR_CALLCNVS {
 
     script:
     def args = task.ext.args ?: '1000'
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cnvpytor \\
         -root $pytor \\
-	    -call $args > calls.${args}.tsv
+        -call $args > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
