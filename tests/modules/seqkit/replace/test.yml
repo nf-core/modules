@@ -1,0 +1,21 @@
+- name: seqkit replace test_seqkit_replace
+  command: nextflow run tests/modules/seqkit/replace -entry test_seqkit_replace -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit/replace
+  files:
+    - path: output/seqkit/test.fasta.gz
+      md5sum: 053847219695c0a923d02352442d7abf
+    - path: output/seqkit/versions.yml
+      md5sum: dc9d18b7836c9db00a3032fd191bd831
+
+- name: seqkit replace test_seqkit_replace_uncomp
+  command: nextflow run tests/modules/seqkit/replace -entry test_seqkit_replace_uncomp -c tests/config/nextflow.config
+  tags:
+    - seqkit
+    - seqkit/replace
+  files:
+    - path: output/seqkit/test..fasta
+      md5sum: 05d3294a62c72f5489f067c1da3c2f6c
+    - path: output/seqkit/versions.yml
+      md5sum: 3b88128487ec949f0bdeecebc375c407
