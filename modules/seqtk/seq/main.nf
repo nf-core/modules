@@ -33,8 +33,8 @@ process SEQTK_SEQ {
         gzip -c > ${prefix}.seqtk-seq.${extension}.gz
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
