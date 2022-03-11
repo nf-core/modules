@@ -37,7 +37,7 @@ workflow test_ascat {
 //        file("/home/ec2-user/input_files/bams/test2.bam.bai", checkIfExists: true)
 //    ]
 //
-//    ASCAT_PLOIDY_AND_PURITY ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+//    ASCAT_PLOIDY_AND_PURITY ( input , "/home/ec2-user/input_files/allele_files/G1000_alleles_hg19_chr", "/home/ec2-user/input_files/loci_files/G1000_alleles_hg19_chr")
 //}
 
 
@@ -51,7 +51,7 @@ workflow test_ascat {
 //        file("/home/ec2-user/input_files/crams/duplicate_test.cram.crai", checkIfExists: true)
 //    ]
 //
-//    ASCAT_CRAM ( input , "/home/ec2-user/input_files/allele_files", "/home/ec2-user/input_files/loci_files")
+//    ASCAT_CRAM ( input , "/home/ec2-user/input_files/allele_files/G1000_alleles_hg19_chr", "/home/ec2-user/input_files/loci_files/G1000_alleles_hg19_chr")
 //}
 
 

@@ -55,8 +55,8 @@ process ASCAT {
         tumourname = "Tumour",
         normalname = "Normal",
         allelecounter_exe = "alleleCounter",
-        alleles.prefix = "$allele_files/G1000_alleles_${genomeVersion}_chr",
-        loci.prefix = "$loci_files/G1000_loci_${genomeVersion}_chr",
+        alleles.prefix = "$allele_files",
+        loci.prefix = "$loci_files",
         gender = "$gender",
         genomeVersion = "$genomeVersion",
         nthreads = $task.cpus
