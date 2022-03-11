@@ -27,7 +27,7 @@ process CNVPYTOR_CALLCNVS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*cnvpytor //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
