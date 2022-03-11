@@ -14,6 +14,9 @@ process CNVPYTOR_PARTITION {
     tuple val(meta), path("${pytor.baseName}.pytor"), emit: pytor
     path "versions.yml"                             , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: '1000'
     """

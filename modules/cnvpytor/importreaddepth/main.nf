@@ -16,6 +16,9 @@ process CNVPYTOR_IMPORTREADDEPTH {
     tuple val(meta), path("*.pytor")	, emit: pytor
     path "versions.yml"                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -29,7 +32,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*cnvpytor //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
