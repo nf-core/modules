@@ -25,10 +25,8 @@ process NGSCHECKMATE_NCM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "output"
-    def unzip = files.any { it.toString().matches(".*\\.vcf\\.gz") }
-
+    def unzip = files.any { it.toString().endsWith(".vcf.gz") }
     """
-
     if $unzip
     then
         for VCFGZ in *.vcf.gz; do
