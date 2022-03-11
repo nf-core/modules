@@ -17,19 +17,19 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - normal_bam:
+  - input_normal:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - normal_bai:
+  - index_normal:
       type: file
       description: index for normal_bam
       pattern: "*.{bai}"
-  - tumor_bam:
+  - input_tumor:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - tumor_bai:
+  - index_tumor:
       type: file
       description: index for tumor_bam
       pattern: "*.{bai}"
@@ -59,7 +59,7 @@ output:
       pattern: "*.purityploidy.txt"
   - segments:
       type: file
-      description: segements data
+      description: segments data
       pattern: "*.segments.txt"
 authors:
   - "@aasNGC"

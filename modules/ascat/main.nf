@@ -8,7 +8,7 @@ process ASCAT {
         'quay.io/biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0' }"
 
     input:
-    tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai)
+    tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
     path(allele_files)
     path(loci_files)
 
@@ -50,8 +50,8 @@ process ASCAT {
 
     #prepare from BAM files
     ascat.prepareHTS(
-        tumourseqfile = "$tumor_bam",
-        normalseqfile = "$normal_bam",
+        tumourseqfile = "$input_tumor",
+        normalseqfile = "$input_normal",
         tumourname = "Tumour",
         normalname = "Normal",
         allelecounter_exe = "alleleCounter",
