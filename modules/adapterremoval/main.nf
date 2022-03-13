@@ -11,15 +11,15 @@ process ADAPTERREMOVAL {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}.truncated.gz")    , optional: true, emit: singles_truncated
-    tuple val(meta), path("*.discarded.gz")            , optional: true, emit: discarded
-    tuple val(meta), path("*.pair1.truncated.gz")      , optional: true, emit: pair1_truncated
-    tuple val(meta), path("*.pair2.truncated.gz")      , optional: true, emit: pair2_truncated
-    tuple val(meta), path("${prefix}.collapsed.gz")    , optional: true, emit: collapsed
-    tuple val(meta), path("*.collapsed.truncated.gz")  , optional: true, emit: collapsed_truncated
-    tuple val(meta), path("*.paired.gz")               , optional: true, emit: paired_interleaved
-    tuple val(meta), path('*.log')                     , emit: log
-    path "versions.yml"                                , emit: versions
+    tuple val(meta), path("${prefix}.truncated.gz")            , optional: true, emit: singles_truncated
+    tuple val(meta), path("${prefix}.discarded.gz")            , optional: true, emit: discarded
+    tuple val(meta), path("${prefix}.pair1.truncated.gz")      , optional: true, emit: pair1_truncated
+    tuple val(meta), path("${prefix}.pair2.truncated.gz")      , optional: true, emit: pair2_truncated
+    tuple val(meta), path("${prefix}.collapsed.gz")            , optional: true, emit: collapsed
+    tuple val(meta), path("${prefix}.collapsed.truncated.gz")  , optional: true, emit: collapsed_truncated
+    tuple val(meta), path("${prefix}.paired.gz")               , optional: true, emit: paired_interleaved
+    tuple val(meta), path('*.log')                             , emit: log
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
