@@ -11,7 +11,7 @@ workflow test_adapterremoval_single_end {
               file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
             ]
 
-    ADAPTERREMOVAL ( input )
+    ADAPTERREMOVAL ( input, [] )
 }
 
 workflow test_adapterremoval_paired_end {
@@ -20,7 +20,7 @@ workflow test_adapterremoval_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    ADAPTERREMOVAL ( input )
+    ADAPTERREMOVAL ( input, [] )
 }
 
 workflow test_adapterremoval_paired_end_collapse {
@@ -29,6 +29,6 @@ workflow test_adapterremoval_paired_end_collapse {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    ADAPTERREMOVAL_COLLAPSE ( input )
+    ADAPTERREMOVAL_COLLAPSE ( input, [] )
 }
 
