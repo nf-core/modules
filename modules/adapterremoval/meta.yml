@@ -24,6 +24,13 @@ input:
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+  - adapterlist:
+      type: file
+      description:
+        Optional text file containing list of adapters to look for for removal
+        with one adapter per line. Otherwise will look for default adapters (see
+        AdapterRemoval man page), or can be modified to remove user-specified
+        adapters via ext.args.
 
 output:
   - meta:

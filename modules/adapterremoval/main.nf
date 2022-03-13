@@ -8,7 +8,7 @@ process ADAPTERREMOVAL {
         'quay.io/biocontainers/adapterremoval:2.3.2--hb7ba0dd_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), path(adapterlist)
 
     output:
     tuple val(meta), path("${prefix}.truncated.gz")            , optional: true, emit: singles_truncated
@@ -26,6 +26,7 @@ process ADAPTERREMOVAL {
 
     script:
     def args = task.ext.args ?: ''
+    def list = adapterlist ? "--adapter-list ${adapterlist}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
@@ -33,6 +34,7 @@ process ADAPTERREMOVAL {
         AdapterRemoval  \\
             --file1 $reads \\
             $args \\
+            $adapterlist \\
             --basename ${prefix} \\
             --threads ${task.cpus} \\
             --settings ${prefix}.log \\
