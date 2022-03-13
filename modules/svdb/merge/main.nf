@@ -4,7 +4,7 @@ process SVDB_MERGE {
 
     conda (params.enable_conda ? "bioconda::svdb=2.5.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdb:2.5.2--py39h5371cbf_00':
+        'https://depot.galaxyproject.org/singularity/svdb:2.5.2--py39h5371cbf_0':
         'quay.io/biocontainers/svdb:2.5.2--py39h5371cbf_0' }"
 
     input:
