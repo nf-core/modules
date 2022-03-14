@@ -1,7 +1,7 @@
-- name: antismash test_antismash
+- name: antismashlite test_antismashlite
   command: nextflow run tests/modules/antismash -entry test_antismash -c tests/config/nextflow.config
   tags:
-    - antismash
+    - antismash-lite
   files:
     - path: output/antismash/test/NZ_CP069563.1.region001.gbk
       contains:
@@ -35,7 +35,7 @@
     - path: output/antismash/versions.yml
       md5sum: c574ecd9a325e967d9b81911746269a8
 
-- name: antismash test_prokka_antismash
+- name: antismashlite test_prokka_antismashlite
   command: nextflow run tests/modules/antismash -entry test_prokka_antismash -c tests/config/nextflow.config
   tags:
     - antismash

@@ -1,11 +1,11 @@
-process ANTISMASH {
+process ANTISMASHLITE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::antismash=6.0.1" : null)
+    conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash:6.0.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/antismash:6.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_0' :
+        'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(sequence_input)
@@ -33,6 +33,7 @@ process ANTISMASH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+
     """
     ## We specifically do not include annotations (--genefinding-tool none) as
     ## this should be run as a separate module for versioning purposes

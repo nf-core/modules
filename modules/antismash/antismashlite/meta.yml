@@ -1,4 +1,4 @@
-name: antismash
+name: antismash-lite
 
 description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters.
 
@@ -17,7 +17,7 @@ keywords:
   - antismash
 
 tools:
-  - antismash:
+  - antismash-lite:
       description: antiSMASH - the antibiotics and Secondary Metabolite Analysis SHell
       homepage: https://docs.antismash.secondarymetabolites.org
       documentation: https://docs.antismash.secondarymetabolites.org
@@ -35,6 +35,10 @@ input:
       type: file
       description: nucleotide sequence file (annotated)
       pattern: "*.{gbk, gb, gbff, genbank, embl}"
+  - databases:
+      type: directory
+      description: downloaded antismash databases e.g. data/databases
+      pattern: "*"
 
 output:
   - meta:
@@ -118,4 +122,3 @@ output:
 
 authors:
   - "@jasmezz"
-  - "@darcy220606"
