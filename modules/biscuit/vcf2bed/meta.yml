@@ -1,0 +1,48 @@
+name: biscuit_vcf2bed
+description: |
+  Summarizes methylation or SNV information from a Biscuit VCF in a
+  standard-compliant BED file.
+keywords:
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - aligner
+  - vcf
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: Biscuit vcf file (output of biscuit pileup)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: Gzipped BED file with methylation or SNV information
+      pattern: "*.{bed.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@njspix"
