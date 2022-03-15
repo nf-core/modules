@@ -1,0 +1,55 @@
+name: biscuit_bsconv
+description: Summarize and/or filter reads based on bisulfite conversion rate
+keywords:
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - aligner
+  - bam
+  - filter
+
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-bsconv
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file contained mapped reads
+  - bai:
+      type: file
+      description: BAM file index
+  - index:
+      type: dir
+      description: Biscuit genome index directory (generated with 'biscuit index')
+      pattern: "BiscuitIndex"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bsconv_bam:
+      type: file
+      description: Output BAM file containing filtered read alignments
+      pattern: "*.{bam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@njspix"
