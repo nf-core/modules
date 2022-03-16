@@ -12,10 +12,14 @@ workflow test_malt_run {
     gff = file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true)
     seq_type = "DNA"
     map_db = file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true)
-    input = file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+    ]
     mode = "BlastN"
 
     UNZIP ( map_db )
     MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.unzipped_archive )
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
 }
+
