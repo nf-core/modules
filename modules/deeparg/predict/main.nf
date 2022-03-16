@@ -8,6 +8,7 @@ process DEEPARG_PREDICT {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity//deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '--fakeroot' : '' }
 
     input:
     tuple val(meta), path(fasta), val(model)
