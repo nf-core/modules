@@ -12,7 +12,7 @@ process COOLER_CLOAD {
     path chromsizes
 
     output:
-    tuple val(meta), val(cool_bin), path("*.cool"), emit: cool
+    tuple val(meta), path("*.cool"), val(cool_bin), emit: cool
     path "versions.yml"                           , emit: versions
 
     when:
