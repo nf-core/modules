@@ -1,0 +1,35 @@
+name: alevinfry_generatepermitlist
+description: Alevin-Fry generate-permit-list tool
+keywords:
+  - sort
+tools:
+  - alevinfry:
+      description: alevin-fry is a tool for the efficient processing of single-cell data based on RAD files produced by alevin
+      homepage: https://github.com/COMBINE-lab/alevin-fry
+      documentation: https://alevin-fry.readthedocs.io/en/latest/generate_permit_list.html
+      tool_dev_url: https://github.com/COMBINE-lab/alevin-fry
+      doi: "10.1038/s41592-022-01408-3"
+      licence: ['BSD 3-clause']
+
+input:
+  - inputdir:
+      type: file
+      description: Salmon output directory with RAD file
+      pattern: "*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - permitlist:
+      type: file
+      description: Output directory of RAD
+      pattern: "*"
+  - log:
+      type: file
+      description: Output JSON logfile for module
+      pattern: "*.json"
+
+authors:
+  - "@apeltzer"
