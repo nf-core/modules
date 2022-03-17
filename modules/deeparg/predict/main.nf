@@ -12,7 +12,7 @@ process DEEPARG_PREDICT {
     We have to force singularity to run with --fakeroot to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
     This flag may not be available on all systems and may be considered a security problem. so please document and /or warn for this in your pipeline!
     */
-    containerOptions "${workflow.containerEngine == 'singularity' ? '--fakeroot' : ''}"
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '--fakeroot' : '' }
 
     input:
     tuple val(meta), path(fasta), val(model)
