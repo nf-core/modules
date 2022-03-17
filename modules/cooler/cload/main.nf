@@ -8,8 +8,7 @@ process COOLER_CLOAD {
         'quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0' }"
 
     input:
-    tuple val(meta), path(pairs), path(index)
-    val cool_bin
+    tuple val(meta), path(pairs), path(index), val(cool_bin)
     path chromsizes
 
     output:
