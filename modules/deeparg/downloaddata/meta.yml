@@ -17,16 +17,7 @@ tools:
       licence: ["MIT"]
 
 input:
-  - dummy:
-    type: file
-    description: |
-      Some empty or dummy file. This is required to 'trick' the singularity
-      container to read a certain file that has incorrect permissions (requires
-      root), which is required for loading of an ancient dependency included in
-      the container. For nf-core pipelines, we suggest using simple passing
-      file("$projectDir/assets/multiqc_config.yaml) as the input channel for
-      this input. Otherwise an empty list is sufficient here as this is only
-      used when singularity is used.
+  - none: No input required for download module.
 
 output:
   - versions:

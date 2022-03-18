@@ -8,14 +8,12 @@ process DEEPARG_DOWNLOADDATA {
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
     /*
-    We have to force singularity to run with --fakeroot to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
-    This flag may not be available on all systems and may be considered a security problem. so please document and /or warn for this in your pipeline!
+    We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
     */
-    containerOptions { "${workflow.containerEngine}" == 'singularity' ? "-B ${dummy}:/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO" : '' }
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
 
 
     input:
-    path(dummy)
 
     output:
     path "db/"          , emit: db
