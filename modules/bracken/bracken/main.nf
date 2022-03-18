@@ -8,7 +8,8 @@ process BRACKEN_BRACKEN {
         'quay.io/biocontainers/bracken:2.6.2--py39hc16433a_0' }"
 
     input:
-    tuple val(meta), path(kraken_report), path(database), val(taxonomic_level)
+    tuple val(meta), path(kraken_report)
+    path database
 
     output:
     tuple val(meta), path(report), emit: reports
@@ -18,18 +19,19 @@ process BRACKEN_BRACKEN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '-t 10'
+    def threshold = meta.threshold ?: 10
+    def taxonomic_level = meta.taxonomic_level ?: 'S'
+    def read_length = meta.read_length ?: 150
+    def args = task.ext.args ?: "-t ${taxonomic_level} -l ${threshold} -r ${read_length}"
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bracken_version = '2.6.1'
+    def bracken_version = '2.6.2'
     report = "${prefix}_${taxonomic_level}.tsv"
     """
     bracken \\
         ${args} \\
         -d "${database}" \\
         -i "${kraken_report}" \\
-        -o "${report}" \\
-        -r ${meta.read_length} \\
-        -l ${taxonomic_level}
+        -o "${report}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
