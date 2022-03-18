@@ -6,7 +6,7 @@ on:
     branches: [master]
 
 jobs:
-  Markdown:
+  Prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -19,7 +19,7 @@ jobs:
         run: npm install -g prettier
 
       - name: Run Prettier --check
-        run: prettier --check ${GITHUB_WORKSPACE}/**/*.md
+        run: prettier --check .
 
   EditorConfig:
     runs-on: ubuntu-latest
@@ -33,18 +33,3 @@ jobs:
 
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
-
-  YAML:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
-
-      - name: Install Prettier
-        run: npm install -g prettier
-
-      - name: Run Prettier --check
-        run: prettier --check ${GITHUB_WORKSPACE}/**/*.yml
