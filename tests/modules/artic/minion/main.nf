@@ -16,7 +16,7 @@ workflow test_artic_minion {
     fasta              = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists: true)
     bed                = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists: true)
 
-    fast5_dir = UNTAR ( fast5_tar ).untar
+    fast5_dir = UNTAR ( fast5_tar ).untar.map{ it[1] }
 
     ARTIC_MINION ( input, fast5_dir, sequencing_summary, fasta, bed, [], '', 'nCoV-2019', '3')
 }
