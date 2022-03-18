@@ -22,7 +22,7 @@ process BRACKEN_BRACKEN {
     def threshold = meta.threshold ?: 10
     def taxonomic_level = meta.taxonomic_level ?: 'S'
     def read_length = meta.read_length ?: 150
-    def args = task.ext.args ?: "-t ${taxonomic_level} -l ${threshold} -r ${read_length}"
+    def args = task.ext.args ?: "-l ${taxonomic_level} -t ${threshold} -r ${read_length}"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bracken_version = '2.6.2'
     bracken_report = "${prefix}_${taxonomic_level}.tsv"
