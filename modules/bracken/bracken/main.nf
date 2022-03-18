@@ -2,10 +2,10 @@ process BRACKEN_BRACKEN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::bracken=2.6.1" : null)
+    conda (params.enable_conda ? "bioconda::bracken=2.6.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bracken:2.6.1--py39h7cff6ad_2':
-        'quay.io/biocontainers/bracken:2.6.1--py38h8c62d01_2' }"
+        'https://depot.galaxyproject.org/singularity/bracken:2.6.2--py39hc16433a_0':
+        'quay.io/biocontainers/bracken:2.6.2--py39hc16433a_0' }"
 
     input:
     tuple val(meta), path(kraken_report), path(database), val(taxonomic_level)
