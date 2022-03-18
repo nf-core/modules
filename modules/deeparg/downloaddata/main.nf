@@ -7,6 +7,12 @@ process DEEPARG_DOWNLOADDATA {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
+    /*
+    We have to force singularity to run with --fakeroot to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
+    This flag may not be available on all systems and may be considered a security problem. so please document and /or warn for this in your pipeline!
+    */
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '--fakeroot' : '' }
+
 
     input:
 
