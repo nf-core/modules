@@ -1,0 +1,51 @@
+name: biscuit_mergecg
+description: Merges methylation information for opposite-strand C's in a CpG context
+keywords:
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - aligner
+  - bed
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: |
+        Biscuit BED file (output of biscuit vcf2bed)
+  - index:
+      type: dir
+      description: Biscuit genome index directory (generated with 'biscuit index')
+      pattern: "BiscuitIndex"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - mergecg_bed:
+      type: file
+      description: Gzipped BED file with merged methylation information
+      pattern: "*.bed.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@njspix"
