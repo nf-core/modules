@@ -1,4 +1,4 @@
-name: bracken
+name: bracken_bracken
 description: Re-estimate taxonomic abundance of metagenomic samples analyzed by kraken.
 keywords:
   - sort
@@ -25,12 +25,6 @@ input:
       type: file
       description: Directory containing the kraken2/Bracken files for analysis
       pattern: "*"
-  - taxonomic_level:
-      type: string
-      description: >
-        The taxonomic level at which Bracken should re-estimate abundances. This depends
-        on the levels used in the kraken2 output but most often corresponds to the NCBI
-        taxonomy, e.g., F, G, S, S1 and so on.
 
 output:
   - meta:
