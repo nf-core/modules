@@ -12,7 +12,7 @@ process BRACKEN_BRACKEN {
     path database
 
     output:
-    tuple val(meta), path(report), emit: reports
+    tuple val(meta), path(bracken_report), emit: reports
     path "versions.yml"          , emit: versions
 
     when:
@@ -25,13 +25,13 @@ process BRACKEN_BRACKEN {
     def args = task.ext.args ?: "-t ${taxonomic_level} -l ${threshold} -r ${read_length}"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bracken_version = '2.6.2'
-    report = "${prefix}_${taxonomic_level}.tsv"
+    bracken_report = "${prefix}_${taxonomic_level}.tsv"
     """
     bracken \\
         ${args} \\
-        -d "${database}" \\
-        -i "${kraken_report}" \\
-        -o "${report}"
+        -d '${database}' \\
+        -i '${kraken_report}' \\
+        -o '${bracken_report}'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
