@@ -11,7 +11,7 @@ workflow test_artic_minion {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
-    fast5_tar          = file(params.test_data['sarscov2']['nanopore']['fast5_tar_gz'], checkIfExists: true)
+    fast5_tar          = [ [], file(params.test_data['sarscov2']['nanopore']['fast5_tar_gz'], checkIfExists: true) ]
     sequencing_summary = file(params.test_data['sarscov2']['nanopore']['test_sequencing_summary'], checkIfExists: true)
     fasta              = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists: true)
     bed                = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists: true)
