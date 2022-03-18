@@ -7,14 +7,13 @@ include { DEEPARG_PREDICT      } from '../../../../modules/deeparg/predict/main.
 
 workflow test_deeparg_predict {
 
-    dummy = file(params.test_data['bacteroides_fragilis']['genome']['genome_paf'], checkIfExists: true)
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
         'LS'
     ]
 
-    DEEPARG_DOWNLOADDATA(dummy)
-    DEEPARG_PREDICT ( input, DEEPARG_DOWNLOADDATA.out.db, dummy )
+    DEEPARG_DOWNLOADDATA( )
+    DEEPARG_PREDICT ( input, DEEPARG_DOWNLOADDATA.out.db )
 
 }
