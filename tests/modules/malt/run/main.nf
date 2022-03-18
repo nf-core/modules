@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../../modules/unzip/main.nf'
+include { UNZIP      } from '../../../../modules/unzip/main.nf'
 include { MALT_BUILD } from  '../../../../modules/malt/build/main.nf'
-include { MALT_RUN } from '../../../../modules/malt/run/main.nf'
+include { MALT_RUN   } from '../../../../modules/malt/run/main.nf'
 
 workflow test_malt_run {
 
@@ -19,7 +19,7 @@ workflow test_malt_run {
     mode = "BlastN"
 
     UNZIP ( map_db )
-    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.unzipped_archive.map{ it[1] } )
+    MALT_BUILD ( fastas, seq_type, gff, UNZIP.out.unzipped_archive.map { it[1] } )
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
 }
 
