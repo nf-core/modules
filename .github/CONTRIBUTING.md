@@ -16,7 +16,9 @@ Contributions to the code are even more welcome ;)
 If you'd like to write some code for nf-core/modules, the standard workflow is as follows:
 
 1. Check that there isn't already an issue about your idea in the [nf-core/modules issues](https://github.com/nf-core/modules/issues) to avoid duplicating work
-    * If there isn't one already, please create one so that others know you're working on this
+
+- If there isn't one already, please create one so that others know you're working on this
+
 2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/modules repository](https://github.com/nf-core/modules) to your GitHub account
 3. When adding a module file, follow the [guidelines](https://github.com/nf-core/modules#adding-a-new-module-file)
 4. Ensure that [tests are working locally](https://github.com/nf-core/modules#running-tests-locally)
@@ -39,7 +41,6 @@ These tests are run both with the latest available version of `Nextflow` and als
 ## Getting help
 
 For further information/help, please consult the [nf-core/modules README](https://github.com/nf-core/modules) and don't hesitate to get in touch on the nf-core Slack [#modules](https://nfcore.slack.com/channels/modules) channel ([join our Slack here](https://nf-co.re/join/slack)).
-
 
 ### Images and figures
 
