@@ -1,10 +1,43 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml bracken/bracken
-- name: bracken bracken
-  command: nextflow run ./tests/modules/bracken/bracken -entry test_bracken_bracken -c ./tests/config/nextflow.config -c ./tests/modules/bracken/bracken/nextflow.config
+- name: bracken bracken test_kraken2_bracken_single_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_single_end_default_args -c tests/config/nextflow.config
   tags:
     - bracken
     - bracken/bracken
   files:
-    - path: output/bracken/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/bracken/test_S.tsv
+      md5sum: 4a21ae14ff8a0311d55f139af5247838
+    - path: output/bracken/versions.yml
+      md5sum: 73507abfd645a2d0cd4f781b0f6001ac
+
+- name: bracken bracken test_kraken2_bracken_single_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_single_end_custom_args -c tests/config/nextflow.config
+  tags:
+    - bracken
+    - bracken/bracken
+  files:
+    - path: output/bracken/test_G.tsv
+      md5sum: f609b09d6edb5ebc1ea1435d1dd46cde
+    - path: output/bracken/versions.yml
+      md5sum: c19d45c1d9b114a19e75ee7c1d490b23
+
+- name: bracken bracken test_kraken2_bracken_paired_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_paired_end_default_args -c tests/config/nextflow.config
+  tags:
+    - bracken
+    - bracken/bracken
+  files:
+    - path: output/bracken/test_S.tsv
+      md5sum: 4a21ae14ff8a0311d55f139af5247838
+    - path: output/bracken/versions.yml
+      md5sum: 83477616431b50fdecf9a22b60244b4c
+
+- name: bracken bracken test_kraken2_bracken_paired_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_paired_end_custom_args -c tests/config/nextflow.config
+  tags:
+    - bracken
+    - bracken/bracken
+  files:
+    - path: output/bracken/test_G.tsv
+      md5sum: f609b09d6edb5ebc1ea1435d1dd46cde
+    - path: output/bracken/versions.yml
+      md5sum: e158e3e8601219435d75be0ee19614da
