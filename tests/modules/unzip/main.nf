@@ -11,5 +11,5 @@ workflow test_unzip {
         file(params.test_data['sarscov2']['genome']['ncbi_taxmap_zip'], checkIfExists: true)
     ]
 
-    UNZIP ( [], archive )
+    UNZIP ( archive )
 }
