@@ -11,8 +11,8 @@ process UNTAR {
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("$untar")      , emit: untar
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("$untar"), emit: untar
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
