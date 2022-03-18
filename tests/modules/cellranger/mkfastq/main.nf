@@ -18,7 +18,7 @@ workflow test_cellranger_mkfastq_simple {
 workflow test_cellranger_mkfastq_illumina {
 
     samplesheet_csv = file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true)
-    tiny_bcl = file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz", checkIfExists: true)
+    tiny_bcl = [ [], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz", checkIfExists: true) ]
 
     UNTAR ( tiny_bcl )
 
