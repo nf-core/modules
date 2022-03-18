@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml picard/liftovervcf
+- name: picard liftovervcf
+  command: nextflow run ./tests/modules/picard/liftovervcf -entry test_picard_liftovervcf -c ./tests/config/nextflow.config -c ./tests/modules/picard/liftovervcf/nextflow.config
+  tags:
+    - picard
+    - picard/liftovervcf
+  files:
+    - path: output/picard/test.lifted.vcf
+      md5sum: 
+    - path: output/picard/test.unlifted.vcf
+      md5sum: 
