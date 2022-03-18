@@ -6,7 +6,7 @@ process DEEPARG_PREDICT {
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity//deeparg:1.0.2--pyhdfd78af_1' :
+        'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
     /*
     We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
