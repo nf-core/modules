@@ -22,8 +22,8 @@ input:
   - reads:
       type: file
       description: |
-          List of input BAM files of size 1 and 2 for single-end and paired-end data,
-          respectively.
+        List of input BAM files of size 1 and 2 for single-end and paired-end data,
+        respectively.
   - bam:
       type: file
       description: BAM/CRAM/SAM file
@@ -38,8 +38,8 @@ output:
   - reads:
       type: file
       description: |
-          List of input adapter trimmed FastQ files of size 1 and 2 for
-          single-end and paired-end data, respectively.
+        List of input adapter trimmed FastQ files of size 1 and 2 for
+        single-end and paired-end data, respectively.
       pattern: "*.{_filtered.bam}"
   - versions:
       type: file
