@@ -6,5 +6,7 @@ include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from '../../../../modules/a
 
 workflow test_antismash_antismashlitedownloaddatabases {
 
-    ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( )
+    input = ''
+
+    ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( input )
 }

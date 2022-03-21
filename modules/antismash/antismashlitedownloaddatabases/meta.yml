@@ -24,6 +24,10 @@ tools:
       licence: ['AGPL v3']
 
 input:
+  - database_dir:
+      type: directory
+      description: Directory containing the user-specified path for the download of antiSMASH databases
+      pattern: "*"
 
 output:
   - versions:
@@ -31,30 +35,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - database_clusterblast:
+  - database:
       type: directory
       description: Downloaded clusterblast databases
-      pattern: "*/clusterblast"
-  - database_clustercompare:
-      type: directory
-      description: Downloaded clustercompare databases
-      pattern: "*/clustercompare"
-  - database_pfam:
-      type: directory
-      description: Downloaded pfam databases
-      pattern: "*/pfam"
-  - database_resfam:
-      type: directory
-      description: Downloaded resfam databases
-      pattern: "*/resfam"
-  - database_tigrfam:
-      type: directory
-      description: Downloaded tigrfam databases
-      pattern: "*/tigrfam"
-  - database_readme:
-      type: file
-      description: Downloaded antiSMASH databases
-      pattern: "*/README"
+      pattern: "lib/python3.8/site-packages/antismash/databases/"
 
 authors:
   - "@jasmezz"

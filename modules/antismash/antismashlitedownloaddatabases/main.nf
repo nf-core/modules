@@ -8,24 +8,22 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_0' }"
 
     input:
+    val(database_dir)
 
     output:
-    path("*/clusterblast")   , emit: database_clusterblast
-    path("*/clustercompare") , emit: database_clustercompare
-    path("*/pfam")           , emit: database_pfam
-    path("*/resfam")         , emit: database_resfam
-    path("*/tigrfam")        , emit: database_tigrfam
-    path("*/README")         , emit: database_readme
-    path "versions.yml"           , emit: versions
+    path(database_dir) , emit: database
+
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-
+    def databases = database_dir ? "--database-dir ${database_dir}" : ''
     """
     download-antismash-databases \\
+        $databases \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
