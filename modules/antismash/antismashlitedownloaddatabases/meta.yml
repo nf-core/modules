@@ -1,0 +1,60 @@
+name: antismash_antismashlitedownloaddatabases
+description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters. This module downloads the antiSMASH databases.
+keywords:
+  - secondary metabolites
+  - BGC
+  - biosynthetic gene cluster
+  - genome mining
+  - NRPS
+  - RiPP
+  - antibiotics
+  - prokaryotes
+  - bacteria
+  - eukaryotes
+  - fungi
+  - antismash
+  - database
+tools:
+  - antismash:
+      description: antiSMASH - the antibiotics and Secondary Metabolite Analysis SHell
+      homepage: https://docs.antismash.secondarymetabolites.org
+      documentation: https://docs.antismash.secondarymetabolites.org
+      tool_dev_url: https://github.com/antismash/antismash
+      doi: "10.1093/nar/gkab335"
+      licence: ['AGPL v3']
+
+input:
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - database_clusterblast:
+      type: directory
+      description: Downloaded clusterblast databases
+      pattern: "*/clusterblast"
+  - database_clustercompare:
+      type: directory
+      description: Downloaded clustercompare databases
+      pattern: "*/clustercompare"
+  - database_pfam:
+      type: directory
+      description: Downloaded pfam databases
+      pattern: "*/pfam"
+  - database_resfam:
+      type: directory
+      description: Downloaded resfam databases
+      pattern: "*/resfam"
+  - database_tigrfam:
+      type: directory
+      description: Downloaded tigrfam databases
+      pattern: "*/tigrfam"
+  - database_readme:
+      type: file
+      description: Downloaded antiSMASH databases
+      pattern: "*/README"
+
+authors:
+  - "@jasmezz"

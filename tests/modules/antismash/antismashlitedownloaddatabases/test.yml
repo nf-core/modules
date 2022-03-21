@@ -1,0 +1,10 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml antismash/antismashlitedownloaddatabases
+- name: antismash antismashlitedownloaddatabases
+  command: nextflow run ./tests/modules/antismash/antismashlitedownloaddatabases -entry test_antismash_antismashlitedownloaddatabases -c ./tests/config/nextflow.config -c ./tests/modules/antismash/antismashlitedownloaddatabases/nextflow.config
+  tags:
+    - antismash
+    - antismash/antismashlitedownloaddatabases
+  files:
+    - path: output/antismash/test.bam
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
