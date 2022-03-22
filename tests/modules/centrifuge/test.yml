@@ -1,0 +1,22 @@
+- name: centrifuge test_centrifuge_single_end
+  command: nextflow run tests/modules/centrifuge -entry test_centrifuge_single_end -c tests/config/nextflow.config
+  tags:
+    - centrifuge
+  files:
+    - path: output/centrifuge/test.kreport.txt
+    - path: output/centrifuge/test.report.txt
+    - path: output/centrifuge/test.results.txt
+    - path: output/centrifuge/test.unmapped.fastq.gz
+    - path: output/centrifuge/versions.yml
+
+- name: centrifuge test_centrifuge_paired_end
+  command: nextflow run tests/modules/centrifuge -entry test_centrifuge_paired_end -c tests/config/nextflow.config
+  tags:
+    - centrifuge
+  files:
+    - path: output/centrifuge/test.kreport.txt
+    - path: output/centrifuge/test.report.txt
+    - path: output/centrifuge/test.results.txt
+    - path: output/centrifuge/test.unmapped.fastq.1.gz
+    - path: output/centrifuge/test.unmapped.fastq.2.gz
+    - path: output/centrifuge/versions.yml
