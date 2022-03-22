@@ -23,12 +23,6 @@ tools:
       doi: "10.1093/nar/gkab335"
       licence: ['AGPL v3']
 
-input:
-  - database_dir:
-      type: directory
-      description: Directory containing the user-specified path for the download of antiSMASH databases
-      pattern: "*"
-
 output:
   - versions:
       type: file
@@ -37,8 +31,8 @@ output:
 
   - database:
       type: directory
-      description: Downloaded clusterblast databases
-      pattern: "lib/python3.8/site-packages/antismash/databases/"
+      description: Download directory for antiSMASH databases
+      pattern: "antismash_db"
 
 authors:
   - "@jasmezz"

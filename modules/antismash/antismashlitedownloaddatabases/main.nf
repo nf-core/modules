@@ -1,5 +1,4 @@
 process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
-    tag '$database_dir'
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
@@ -7,12 +6,8 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_0' :
         'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_0' }"
 
-    input:
-    val(database_dir)
-
     output:
-    path(database_dir) , emit: database
-
+    path("antismash_db") , emit: database
     path "versions.yml", emit: versions
 
     when:
@@ -20,10 +15,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    def databases = database_dir ? "--database-dir ${database_dir}" : ''
     """
     download-antismash-databases \\
-        $databases \\
+        --database-dir antismash_db \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
