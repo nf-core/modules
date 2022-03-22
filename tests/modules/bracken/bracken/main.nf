@@ -12,9 +12,10 @@ workflow test_bracken_bracken_single_end_default_args {
             ]
     db    = file(params.test_data['sarscov2']['genome']['kraken2_bracken_tar_gz'], checkIfExists: true)
 
-    UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
-    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
+    ch_db = UNTAR ( [[:], db] ).untar
+        .map { it[1] }
+    KRAKEN2_KRAKEN2 ( input, ch_db )
+    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, ch_db )
 }
 
 workflow test_bracken_bracken_single_end_custom_args {
@@ -23,9 +24,10 @@ workflow test_bracken_bracken_single_end_custom_args {
             ]
     db    = file(params.test_data['sarscov2']['genome']['kraken2_bracken_tar_gz'], checkIfExists: true)
 
-    UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
-    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
+    ch_db = UNTAR ( [[:], db] ).untar
+        .map { it[1] }
+    KRAKEN2_KRAKEN2 ( input, ch_db )
+    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, ch_db )
 }
 
 workflow test_bracken_bracken_paired_end_default_args {
@@ -35,9 +37,10 @@ workflow test_bracken_bracken_paired_end_default_args {
             ]
     db    = file(params.test_data['sarscov2']['genome']['kraken2_bracken_tar_gz'], checkIfExists: true)
 
-    UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
-    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
+    ch_db = UNTAR ( [[:], db] ).untar
+        .map { it[1] }
+    KRAKEN2_KRAKEN2 ( input, ch_db )
+    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, ch_db )
 }
 
 workflow test_bracken_bracken_paired_end_custom_args {
@@ -47,7 +50,8 @@ workflow test_bracken_bracken_paired_end_custom_args {
             ]
     db    = file(params.test_data['sarscov2']['genome']['kraken2_bracken_tar_gz'], checkIfExists: true)
 
-    UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
-    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
+    ch_db = UNTAR ( [[:], db] ).untar
+        .map { it[1] }
+    KRAKEN2_KRAKEN2 ( input, ch_db )
+    BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, ch_db )
 }
