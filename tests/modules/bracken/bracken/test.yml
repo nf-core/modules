@@ -1,5 +1,5 @@
-- name: bracken bracken test_kraken2_bracken_single_end_default_args
-  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_single_end_default_args -c tests/config/nextflow.config
+- name: bracken bracken test_bracken_bracken_single_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_single_end_default_args -c tests/config/nextflow.config
   tags:
     - bracken
     - bracken/bracken
@@ -9,8 +9,8 @@
     - path: output/bracken/versions.yml
       md5sum: 73507abfd645a2d0cd4f781b0f6001ac
 
-- name: bracken bracken test_kraken2_bracken_single_end_custom_args
-  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_single_end_custom_args -c tests/config/nextflow.config
+- name: bracken bracken test_bracken_bracken_single_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_single_end_custom_args -c tests/config/nextflow.config
   tags:
     - bracken
     - bracken/bracken
@@ -20,8 +20,8 @@
     - path: output/bracken/versions.yml
       md5sum: c19d45c1d9b114a19e75ee7c1d490b23
 
-- name: bracken bracken test_kraken2_bracken_paired_end_default_args
-  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_paired_end_default_args -c tests/config/nextflow.config
+- name: bracken bracken test_bracken_bracken_paired_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_paired_end_default_args -c tests/config/nextflow.config
   tags:
     - bracken
     - bracken/bracken
@@ -31,8 +31,8 @@
     - path: output/bracken/versions.yml
       md5sum: 83477616431b50fdecf9a22b60244b4c
 
-- name: bracken bracken test_kraken2_bracken_paired_end_custom_args
-  command: nextflow run tests/modules/bracken/bracken -entry test_kraken2_bracken_paired_end_custom_args -c tests/config/nextflow.config
+- name: bracken bracken test_bracken_bracken_paired_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_paired_end_custom_args -c tests/config/nextflow.config
   tags:
     - bracken
     - bracken/bracken

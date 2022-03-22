@@ -6,7 +6,7 @@ include { UNTAR           } from '../../../../modules/untar/main.nf'
 include { KRAKEN2_KRAKEN2 } from '../../../../modules/kraken2/kraken2/main.nf'
 include { BRACKEN_BRACKEN } from '../../../../modules/bracken/bracken/main.nf'
 
-workflow test_kraken2_bracken_single_end_default_args {
+workflow test_bracken_bracken_single_end_default_args {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
@@ -17,7 +17,7 @@ workflow test_kraken2_bracken_single_end_default_args {
     BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
 }
 
-workflow test_kraken2_bracken_single_end_custom_args {
+workflow test_bracken_bracken_single_end_custom_args {
     input = [ [ id:'test', single_end:true, threshold:0, taxonomic_level:'G', read_length:100 ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
@@ -28,7 +28,7 @@ workflow test_kraken2_bracken_single_end_custom_args {
     BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
 }
 
-workflow test_kraken2_bracken_paired_end_default_args {
+workflow test_bracken_bracken_paired_end_default_args {
     input = [ [ id:'test', single_end:false ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
@@ -40,7 +40,7 @@ workflow test_kraken2_bracken_paired_end_default_args {
     BRACKEN_BRACKEN ( KRAKEN2_KRAKEN2.out.txt, UNTAR.out.untar )
 }
 
-workflow test_kraken2_bracken_paired_end_custom_args {
+workflow test_bracken_bracken_paired_end_custom_args {
     input = [ [ id:'test', single_end:false, threshold:0, taxonomic_level:'G', read_length:100 ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
