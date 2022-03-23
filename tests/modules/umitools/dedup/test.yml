@@ -1,14 +1,37 @@
-- name: umitools extract test_umitools_extract_paired_end
-  command: nextflow run tests/modules/umitools/extract -entry test_umitools_extract_paired_end -c tests/config/nextflow.config
+- name: umitools dedup test_umitools_dedup_single_end
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_single_end -c tests/config/nextflow.config
   tags:
-    - umitools/extract
     - umitools
+    - umitools/dedup
   files:
-    - path: output/umitools/test.umi_extract.log
-      contains: [ 'job finished in' ]
-    - path: output/umitools/test.umi_extract_1.fastq.gz
-      should_exist: true
-    - path: output/umitools/test.umi_extract_2.fastq.gz
-      should_exist: true
+    - path: output/bwa/test.bam
+      md5sum: ea41a3cdca1856b22845e1067fd31f37
+    - path: output/bwa/versions.yml
+      md5sum: ce4d987f2c53f4c01b31d210c357b24a
+    - path: output/samtools/test.bam.bai
+      md5sum: 095af0ad3921212597ffd7c342ecd5a0
+    - path: output/samtools/versions.yml
+      md5sum: 69b7cde627c9b4e8403dfc125db71cc7
+    - path: output/umitools/dedup.bam
+      md5sum: d95df177063432748ff33f473910cb1e
     - path: output/umitools/versions.yml
-      md5sum: 0aec6f919d62b7b79f6d0c5d79411464
+      md5sum: 730e768dd199d2f5bfb6fd0850446344
+
+- name: umitools dedup test_umitools_dedup_paired_end
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_paired_end -c tests/config/nextflow.config
+  tags:
+    - umitools
+    - umitools/dedup
+  files:
+    - path: output/bwa/test.bam
+      md5sum: 1ad786cae0ff2254c655e3a206929617
+    - path: output/bwa/versions.yml
+      md5sum: b524c5ddf61c20f4a0a93ae8fc78b851
+    - path: output/samtools/test.bam.bai
+      md5sum: 7496f4056a8e86327ca93e350f282fc2
+    - path: output/samtools/versions.yml
+      md5sum: 72fc2ab934fd4bca0f7f14a705530d34
+    - path: output/umitools/dedup.bam
+      md5sum: e8d1eae2aacef76254948c5568e94555
+    - path: output/umitools/versions.yml
+      md5sum: fd39e05042d354b3d8de49b617d3183d
