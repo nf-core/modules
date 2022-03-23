@@ -1,0 +1,39 @@
+name: cnvpytor_callcnvs
+description: command line tool for calling CNVs in whole genome sequencing data
+  - CNV calling
+tools:
+  - cnvpytor:
+      description: calling CNVs using read depth
+      homepage: https://github.com/abyzovlab/CNVpytor
+      documentation: https://github.com/abyzovlab/CNVpytor
+      tool_dev_url: https://github.com/abyzovlab/CNVpytor
+      doi: "10.1101/2021.01.27.428472v1"
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - pytor:
+      type: file
+      description: cnvpytor root file
+      pattern: "*.{pytor}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - cnvs:
+      type: file
+      description: file containing identified copy numer variations
+      pattern: "*.{tsv}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sima-r"
