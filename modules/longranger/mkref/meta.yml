@@ -1,0 +1,76 @@
+name: longranger_mkref
+description: Creates indices of a fasta file required for alignment step
+keywords:
+  - longranger
+  - mkref
+  - 10X
+  - reference
+tools:
+  - longranger:
+      description: Long Ranger is a set of analysis pipelines that processes Chromium sequencing output to align reads and call and phase SNPs, indels, and structural variants. 
+      homepage: https://support.10xgenomics.com/genome-exome/software/pipelines/latest/what-is-long-ranger
+      documentation: https://support.10xgenomics.com/genome-exome/software/pipelines/latest/what-is-long-ranger
+      tool_dev_url: https://github.com/10XGenomics/longranger
+      doi: ""
+      licence: https://support.10xgenomics.com/genome-exome/software/downloads/latest
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reference:
+      type: file
+      description: Genome reference 
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - folder:
+      type: path
+      description: Path to folder with indices
+      pattern: "*refdata-*"
+  - sa:
+      type: 
+      description: SA index
+      pattern: "refdata-*/fasta/genome.fa.sa"
+  - amb:
+      type: file
+      description: AMB index
+      pattern: "refdata-*/fasta/genome.fa.amb"
+  - ann:
+      type: file
+      description: ANN index
+      pattern: "refdata-*/fasta/genome.fa.ann"
+  - bwt:
+      type: file
+      description: BWT index
+      pattern: "refdata-*/fasta/genome.fa.bwt"
+  - fai:
+      type: file
+      description: FAI index
+      pattern: "refdata-*/fasta/genome.fa.fai"
+  - flat:
+      type: file
+      description: FLAT index
+      pattern: "refdata-*/fasta/genome.fa.flat"
+  - gdx:
+      type: file
+      description: GDX index
+      pattern: "refdata-*/fasta/genome.fa.gdx"
+  - pac:
+      type: file
+      description: PAC index
+      pattern: "refdata-*/fasta/genome.fa.pac"
+
+authors:
+  - "@ksenia-krasheninnikova"
