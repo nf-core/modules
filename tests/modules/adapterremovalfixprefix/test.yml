@@ -1,0 +1,9 @@
+- name: adapterremovalfixprefix test_adapterremovalfixprefix
+  command: nextflow run tests/modules/adapterremovalfixprefix -entry test_adapterremovalfixprefix -c tests/config/nextflow.config
+  tags:
+    - adapterremovalfixprefix
+  files:
+    - path: output/adapterremovalfixprefix/test.fq.gz
+      md5sum: ff956de3532599a56c3efe5369f0953f
+    - path: output/adapterremovalfixprefix/versions.yml
+      md5sum: 983cb58079bf015c1d489a7e48261746
