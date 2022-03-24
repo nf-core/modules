@@ -1,0 +1,61 @@
+name: kaiju
+description: Taxonomic classification of metagenomic sequence data using a protein reference database
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - db
+tools:
+  - kaiju:
+      description: Fast and sensitive taxonomic classification for metagenomics
+      homepage: https://kaiju.binf.ku.dk/
+      documentation: https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
+      tool_dev_url: https://github.com/bioinformatics-centre/kaiju
+      doi: "10.1038/ncomms11257"
+      licence: ['GNU GPL v3']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+      pattern: "*.{fastq,fastq.gz,fasta,fasta.gz}"
+  - db:
+      type: files
+      description: |
+        List containing the 3 Kaiju database files
+        e.g. [ 'database.fmi', 'nodes.dmp', 'names.dmp' ]
+  - taxon_rank:
+      type: string
+      description: |
+        Taxonomic rank to display in report
+        e.g. [ 'phylum', 'class', 'order', 'family', 'genus', 'species']
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - results:
+      type: file
+      description: Results with taxonomic classification of each read
+      pattern: "*.results.tsv"
+  - report:
+      type: file
+      description: Summary report of classifications for a taxonomic rank
+      pattern: "*.report.tsv"
+
+authors:
+  - "@talnor"
+  - "@sofstam"

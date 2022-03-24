@@ -1,0 +1,23 @@
+- name: kaiju test_kaiju_single_end
+  command: nextflow run tests/modules/kaiju -entry test_kaiju_single_end -c tests/config/nextflow.config
+  tags:
+    - kaiju
+  files:
+    - path: output/kaiju/test.report.tsv
+      md5sum: b7481a8bbc4613664bd9afd2ea493592
+    - path: output/kaiju/test.results.tsv
+      contains: ["C\tERR5069949.2257580\t2697049"]
+    - path: output/kaiju/versions.yml
+      md5sum: a4b8aa6ac2069468c33a4ae34f539022
+
+- name: kaiju test_kaiju_paired_end
+  command: nextflow run tests/modules/kaiju -entry test_kaiju_paired_end -c tests/config/nextflow.config
+  tags:
+    - kaiju
+  files:
+    - path: output/kaiju/test.report.tsv
+      md5sum: aab51084d8645a8d9f3439ced5ada7e7
+    - path: output/kaiju/test.results.tsv
+      contains: ["C\tERR5069949.2257580\t2697049"]
+    - path: output/kaiju/versions.yml
+      md5sum: a60696633acc4386bf768c64ba43af2e
