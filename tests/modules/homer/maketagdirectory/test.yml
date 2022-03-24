@@ -1,5 +1,5 @@
-- name: homer maketagdirectory
-  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+- name: homer maketagdirectory bed
+  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_bed -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
   tags:
     - homer
     - homer/maketagdirectory
@@ -31,3 +31,20 @@
       md5sum: 816baa642c946f8284eaa465638e9abb
     - path: output/homer/tag_dir/tagLengthDistribution.txt
       md5sum: e5aa2b9843ca9c04ace297280aed6af4
+
+- name: homer maketagdirectory bam
+  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_bam -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+  tags:
+    - homer
+    - homer/maketagdirectory
+  files:
+    - path: output/homer/tag_dir/MT192765.1.tags.tsv
+      md5sum: 365808c4751ef6dd7085ac52037a22bc
+    - path: output/homer/tag_dir/tagAutocorrelation.txt
+      md5sum: 8b396f2aef1cdd3af4fab57b142d3250
+    - path: output/homer/tag_dir/tagCountDistribution.txt
+      md5sum: afc6d007096c3872bbe84c9dc8edb832
+    - path: output/homer/tag_dir/tagInfo.txt
+      md5sum: fbaf46eeb8a0723fa8b5eabd93f9d821
+    - path: output/homer/tag_dir/tagLengthDistribution.txt
+      md5sum: 44f231adb2a705ae81950808c55cf248
