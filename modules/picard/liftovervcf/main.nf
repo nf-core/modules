@@ -26,7 +26,7 @@ process PICARD_LIFTOVERVCF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 1
-    
+
     """
     picard \\
         -Xmx${avail_mem}g \\
