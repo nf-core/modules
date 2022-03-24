@@ -32,6 +32,7 @@ process DRAGONFLYE {
         --ram $memory \\
         --outdir ./ \\
         --force
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dragonflye: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
