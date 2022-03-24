@@ -30,6 +30,9 @@ input:
   - fasta:
       type: file
       description: fasta file
+  - dict:
+      type: file
+      description: dictionary for fasta file
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -44,11 +47,11 @@ output:
       pattern: "versions.yml"
   - vcf:
       type: file
-      description: VCF file
+      description: VCF file containing successfully lifted variants
       pattern: "*.{vcf,vcf.gz}"
-  - vcf_unfiltered:
+  - vcf_unlifted:
       type: file
-      description: VCF file
+      description: VCF file containing unsuccessfully lifted variants
       pattern: "*.{vcf,vcf.gz}"
 
 authors:

@@ -10,13 +10,13 @@ process PICARD_LIFTOVERVCF {
 
     input:
     tuple val(meta), path(input_vcf)
+    path dict
     path chain
-    path reject_variants
     path fasta
 
     output:
     tuple val(meta), path("*lifted.vcf")  , emit: lifted
-    tuple val(meta), path(reject_variants), emit: unlifted
+    tuple val(meta), path("*unlifted.vcf"), emit: unlifted
     path "versions.yml"                   , emit: versions
 
     when:
@@ -32,11 +32,11 @@ process PICARD_LIFTOVERVCF {
         -Xmx${avail_mem}g \\
         LiftoverVcf \\
         $args \\
-        INPUT=$input_vcf \\ 
-        OUTPUT=${prefix}.lifted.vcf \\
-        CHAIN=$chain \\ 
-        REJECT=$reject_variants \\
-        REFERENCE_SEQUENCE=$fasta
+        I=$input_vcf \\
+        O=${prefix}.lifted.vcf \\
+        CHAIN=$chain \\
+        REJECT=${prefix}.unlifted.vcf \\
+        R=$fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

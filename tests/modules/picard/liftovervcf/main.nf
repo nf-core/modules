@@ -6,10 +6,12 @@ include { PICARD_LIFTOVERVCF } from '../../../../modules/picard/liftovervcf/main
 
 workflow test_picard_liftovervcf {
     
-    input = [ 
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) 
-    ]
-
-    PICARD_LIFTOVERVCF ( input )
+    input = [ [ id:'test' ], 
+        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true) 
+            ]
+    dict =  file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    chain =  file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+    fasta  = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+    
+    PICARD_LIFTOVERVCF ( input, dict, chain, fasta )
 }
