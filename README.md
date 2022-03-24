@@ -133,7 +133,7 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 
 ## Adding new modules
 
-If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/modules).
+If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/modules#writing-a-new-module-reference).
 
 > Please be kind to our code reviewers and submit one pull request per module :)
 
