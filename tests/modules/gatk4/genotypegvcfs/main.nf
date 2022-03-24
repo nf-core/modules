@@ -97,10 +97,10 @@ workflow test_gatk4_genotypegvcfs_gendb_input {
     fastaIndex      = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict       = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
+    test_genomicsdb = [ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]
 
     UNTAR ( test_genomicsdb )
-    gendb = UNTAR.out.untar.collect()
+    gendb = UNTAR.out.untar.map{ it[1] }.collect()
     gendb.add([])
     gendb.add([])
 
@@ -119,10 +119,10 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp {
     dbsnp        = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     dbsnpIndex   = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
 
-    test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
+    test_genomicsdb = [ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]
 
     UNTAR ( test_genomicsdb )
-    gendb = UNTAR.out.untar.collect()
+    gendb = UNTAR.out.untar.map{ it[1] }.collect()
     gendb.add([])
     gendb.add([])
     input = Channel.of([ id:'test' ]).combine(gendb)
@@ -137,10 +137,10 @@ workflow test_gatk4_genotypegvcfs_gendb_input_intervals {
     fastaIndex   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     fastaDict    = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
+    test_genomicsdb = [ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]
 
     UNTAR ( test_genomicsdb )
-    gendb = UNTAR.out.untar.collect()
+    gendb = UNTAR.out.untar.map{ it[1] }.collect()
     gendb.add([])
     gendb.add([file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)])
     input = Channel.of([ id:'test' ]).combine(gendb)
@@ -158,10 +158,10 @@ workflow test_gatk4_genotypegvcfs_gendb_input_dbsnp_intervals {
     dbsnp        = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true)
     dbsnpIndex   = file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz_tbi'], checkIfExists: true)
 
-    test_genomicsdb = file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true)
+    test_genomicsdb = [ [], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]
 
     UNTAR ( test_genomicsdb )
-    gendb = UNTAR.out.untar.collect()
+    gendb = UNTAR.out.untar.map{ it[1] }.collect()
     gendb.add([])
     gendb.add([file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)])
     input = Channel.of([ id:'test' ]).combine(gendb)
