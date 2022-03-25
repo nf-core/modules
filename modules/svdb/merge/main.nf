@@ -26,7 +26,7 @@ process SVDB_MERGE {
     if(priority) {
         prio = "--priority ${priority.join(',')}"
         for (int index = 0; index < vcfs.size(); index++) {
-            input += " ${vcfs[index]}:${priority[index]}"
+            input = " ${vcfs[index]}:${priority[index]}"
         }
     }
     """
