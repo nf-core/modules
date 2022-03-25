@@ -11,7 +11,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     tuple val(meta), path(cnvs), path(ratio)
 
     output:
-    tuple val(meta), path("*.p.value.txt"), emit: bam
+    tuple val(meta), path("*.p.value.txt"), emit: p_value_txt
     path "versions.yml"                   , emit: versions
 
     when:
@@ -19,8 +19,11 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cat /usr/local/bin/assess_significance.R | R --slave --args ${cnvs} ${ratio}
+
+    mv *.p.value.txt ${prefix}.p.value.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
