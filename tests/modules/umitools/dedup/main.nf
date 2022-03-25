@@ -6,7 +6,10 @@ include { UMITOOLS_EXTRACT } from '../../../../modules/umitools/extract/main.nf'
 include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf'
 include { BWA_MEM   } from '../../../../modules/bwa/mem/main.nf'
 include { SAMTOOLS_INDEX   } from '../../../../modules/samtools/index/main.nf'
-include { UMITOOLS_DEDUP } from '../../../../modules/umitools/dedup/main.nf'
+include { 
+    UMITOOLS_DEDUP 
+    UMITOOLS_DEDUP as UMITOOLS_DEDUP_NOUMI 
+} from '../../../../modules/umitools/dedup/main.nf'
 
 //
 // Test with no UMI
