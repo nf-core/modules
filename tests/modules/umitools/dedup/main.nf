@@ -6,10 +6,7 @@ include { UMITOOLS_EXTRACT } from '../../../../modules/umitools/extract/main.nf'
 include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf'
 include { BWA_MEM   } from '../../../../modules/bwa/mem/main.nf'
 include { SAMTOOLS_INDEX   } from '../../../../modules/samtools/index/main.nf'
-include { 
-    UMITOOLS_DEDUP 
-    UMITOOLS_DEDUP as UMITOOLS_DEDUP_NOUMI 
-} from '../../../../modules/umitools/dedup/main.nf'
+include { UMITOOLS_DEDUP } from '../../../../modules/umitools/dedup/main.nf'
 
 //
 // Test with no UMI
@@ -20,7 +17,7 @@ workflow test_umitools_dedup_no_umi {
               [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
             ]
 
-    UMITOOLS_DEDUP_NOUMI ( input )
+    UMITOOLS_DEDUP ( input )
 }
 
 //
