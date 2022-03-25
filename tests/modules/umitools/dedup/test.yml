@@ -1,3 +1,20 @@
+- name: umitools dedup test_umitools_dedup_no_umi
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_no_umi -c tests/config/nextflow.config
+  tags:
+    - umitools/dedup
+    - umitools
+  files:
+    - path: output/umitools/dedup.bam
+      md5sum: 53b4edc399db81b87d2343e78af73cf0
+    - path: output/umitools/dedup_edit_distance.tsv
+      md5sum: 65186b0964e2f8d970cc04d736d8b119
+    - path: output/umitools/dedup_per_umi.tsv
+      md5sum: 8e6783a4a79437b095f095f2aefe7c01
+    - path: output/umitools/dedup_per_umi_per_position.tsv
+      md5sum: 9386db4a104b8e4e32f3ca4a84efa4ac
+    - path: output/umitools/versions.yml
+      md5sum: 4aaaa33565bcd9a984255139933d6446
+
 - name: umitools dedup test_umitools_dedup_single_end
   command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_single_end -c tests/config/nextflow.config
   tags:

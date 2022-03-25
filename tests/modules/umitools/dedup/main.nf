@@ -9,6 +9,18 @@ include { SAMTOOLS_INDEX   } from '../../../../modules/samtools/index/main.nf'
 include { UMITOOLS_DEDUP } from '../../../../modules/umitools/dedup/main.nf'
 
 //
+// Test with no UMI
+//
+workflow test_umitools_dedup_no_umi {
+    input = [ [ id:'test'], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
+              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
+            ]
+
+    UMITOOLS_DEDUP(input)
+}
+
+//
 // Test with single-end data
 //
 workflow test_umitools_dedup_single_end {
