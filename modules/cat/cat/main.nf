@@ -1,4 +1,5 @@
 process CAT_CAT {
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "conda-forge::pigz=2.3.4" : null)
