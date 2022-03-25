@@ -14,7 +14,8 @@ process HOMER_MAKETAGDIRECTORY {
     path fasta
 
     output:
-    tuple val(meta), path("tag_dir"), emit: tagdir
+    tuple val(meta), path("*_tagdir"), emit: tagdir
+    tuple val(meta), path("*_tagdir/tagInfo.txt"), emit: taginfo
     path  "versions.yml"            , emit: versions
 
     when:
@@ -25,7 +26,7 @@ process HOMER_MAKETAGDIRECTORY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     makeTagDirectory \\
-        tag_dir \\
+        ${prefix}_tagdir \\
         -genome $fasta \\
         $args \\
         $bam
