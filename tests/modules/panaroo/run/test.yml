@@ -1,0 +1,38 @@
+- name: panaroo run test_panaroo_run
+  command: nextflow run tests/modules/panaroo/run -entry test_panaroo_run -c tests/config/nextflow.config
+  tags:
+    - panaroo/run
+    - panaroo
+  files:
+    - path: output/panaroo/results/combined_DNA_CDS.fasta
+      md5sum: 92bd4f6b9c84c84c0989d77d2558b7d1
+    - path: output/panaroo/results/combined_protein_CDS.fasta
+      md5sum: 7a5636c4f2abc190f5dd4dfbb1da7034
+    - path: output/panaroo/results/combined_protein_cdhit_out.txt
+      md5sum: 2164b81606712b53af2198b4d50eed08
+    - path: output/panaroo/results/combined_protein_cdhit_out.txt.clstr
+      md5sum: aaa9fc2b797c932b6d9ff2df640113f1
+    - path: output/panaroo/results/core_alignment_header.embl
+      contains: ["DNA", "feature", "locus_tag"]
+    - path: output/panaroo/results/core_gene_alignment.aln
+      contains: ["test1", "test2", "test3"]
+    - path: output/panaroo/results/final_graph.gml
+      contains: ["graph", "isolateNames", "test3"]
+    - path: output/panaroo/results/gene_data.csv
+      md5sum: 45df2d26ac81754b858c0e4757e834b2
+    - path: output/panaroo/results/gene_presence_absence.Rtab
+      md5sum: 9efbed5df121dc0c4fbb58869b65c3e4
+    - path: output/panaroo/results/gene_presence_absence.csv
+      contains: ["Gene", "unique", "test3"]
+    - path: output/panaroo/results/gene_presence_absence_roary.csv
+      contains: ["Gene", "Max", "Fragment"]
+    - path: output/panaroo/results/pan_genome_reference.fa
+      md5sum: d0b03cdfaab8965d86cb1045db3c2d20
+    - path: output/panaroo/results/pre_filt_graph.gml
+      contains: ["graph", "node", "id"]
+    - path: output/panaroo/results/struct_presence_absence.Rtab
+      md5sum: 246017db1175f9b1683dfe60cb2e9b5b
+    - path: output/panaroo/results/summary_statistics.txt
+      md5sum: 9c73c416e1758bea06c67b4ec9fd0720
+    - path: output/panaroo/versions.yml
+      md5sum: 909e7b046a8a87319986d34b7328641c
