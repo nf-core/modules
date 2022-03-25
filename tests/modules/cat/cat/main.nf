@@ -10,8 +10,8 @@ workflow test_cat_unzipped_unzipped {
 
     input = [
         [ id:'test', single_end:true ], // meta map
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
-        file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+        [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+        file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true) ]
     ]
 
     CAT_CAT ( input )
