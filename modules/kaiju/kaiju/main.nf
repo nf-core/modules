@@ -12,7 +12,7 @@ process KAIJU_KAIJU {
     tuple path(db), path(dbnodes)
 
     output:
-    tuple val(meta), path('*.results.tsv'), emit: results
+    tuple val(meta), path('*.tsv'), emit: results
     path "versions.yml"                   , emit: versions
 
     when:
