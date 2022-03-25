@@ -11,7 +11,7 @@ process LONGRANGER_ALIGN {
         exit 1, "Longranger can not be run in container environment"
     }
  
-    memory '100 GB'
+    label 'mem_high'
 
     input:
     tuple val(meta), val(sample)
