@@ -28,7 +28,7 @@ process KAIJU_KAIJU {
         -z $task.cpus \\
         -t ${dbnodes} \\
         -f ${db} \\
-        -o ${prefix}.results.tsv \\
+        -o ${prefix}.tsv \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
