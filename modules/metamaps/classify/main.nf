@@ -1,41 +1,15 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process METAMAPS_CLASSIFY {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "bioconda::metamaps=0.1.98102e9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metamaps:0.1.98102e9--h176a8bc_0':
         'quay.io/biocontainers/metamaps:0.1.98102e9--h176a8bc_0' }"
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(classification_res)
+    path database_folder
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -59,17 +33,15 @@ process METAMAPS_CLASSIFY {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    metamaps \\
+        classify \\
+        --mappings $classification_res \\
+        --threads $task.cpus \\
+        --DB $database_folder \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metamaps: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        metamaps: \$(echo \$(metamaps 2>&1) | grep -E "^MetaMaps\sv\s" | sed -E 's/^MetaMaps\sv\s([0-9]+\.[0-9]+)/\1/')
     END_VERSIONS
     """
 }
