@@ -1,32 +1,29 @@
 name: preseq_ccurve
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Software for predicting library complexity and genome coverage in high-throughput sequencing
 keywords:
-  - sort
+  - preseq
+  - library
+  - complexity
 tools:
   - preseq:
-      ## TODO nf-core: Add a description and other details for the software below
       description: Software for predicting library complexity and genome coverage in high-throughput sequencing
-      homepage: None
-      documentation: None
-      tool_dev_url: None
+      homepage: http://smithlabresearch.org/software/preseq/
+      documentation: http://smithlabresearch.org/wp-content/uploads/manual.pdf
+      tool_dev_url: https://github.com/smithlabcode/preseq
       doi: ""
-      licence: ['GPL']
+      licence: ["GPL"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +34,15 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - ccurve:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: File containing output of Preseq c curve
+      pattern: "*.{c_curve.txt}"
+  - log:
+      type: file
+      description: Log file containing stderr produced by Preseq
+      pattern: "*.{log}"
 
 authors:
+  - "@drpatelh"
   - "@Emiller88"

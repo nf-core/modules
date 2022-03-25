@@ -12,7 +12,7 @@ process PRESEQ_CCURVE {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.c_curve.txt"), emit: ccurve
+    tuple val(meta), path("*.c_curve.txt"), emit: c_curve
     tuple val(meta), path("*.log")        , emit: log
     path "versions.yml"                   , emit: versions
 
