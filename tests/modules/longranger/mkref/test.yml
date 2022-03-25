@@ -1,0 +1,9 @@
+- name: longranger mkref
+  command: nextflow run ./tests/modules/longranger/mkref -entry test_longranger_mkref -c ./tests/config/nextflow.config -c ./tests/modules/longranger/mkref/nextflow.config
+  tags:
+    - longranger
+    - longranger/mkref
+#DOWNLOADED FROM WEB
+#  files:
+#    - path: output/longranger/test.bam
+#      md5sum: e667c7caad0bc4b7ac383fd023c654fc
