@@ -3,8 +3,8 @@
 nextflow.enable.dsl = 2
 
 include { CONTROLFREEC_ASSESSSIGNIFICANCE } from '../../../../modules/controlfreec/assesssignificance/main.nf'
-include { CONTROLFREEC } from '../../../../modules/controlfreec/freec/main.nf'
-include { UNTAR }        from '../../../../modules/untar/main.nf'
+include { CONTROLFREEC_FREEC              } from '../../../../modules/controlfreec/freec/main.nf'
+include { UNTAR                           }        from '../../../../modules/untar/main.nf'
 
 workflow test_controlfreec_assesssignificance {
 
@@ -25,16 +25,16 @@ workflow test_controlfreec_assesssignificance {
     target_bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
     UNTAR(chrfiles)
-    CONTROLFREEC (  input,
-                    fasta,
-                    fai,
-                    [],
-                    dbsnp,
-                    dbsnp_tbi,
-                    UNTAR.out.untar.map{ it[1] },
-                    [],
-                    target_bed,
-                    []
+    CONTROLFREEC_FREEC (input,
+                        fasta,
+                        fai,
+                        [],
+                        dbsnp,
+                        dbsnp_tbi,
+                        UNTAR.out.untar.map{ it[1] },
+                        [],
+                        target_bed,
+                        []
                         )
 
     sig_in = CONTROLFREEC.out.CNV.join(CONTROLFREEC.out.ratio)
