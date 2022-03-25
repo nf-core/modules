@@ -14,9 +14,9 @@ process HOMER_MAKETAGDIRECTORY {
     path fasta
 
     output:
-    tuple val(meta), path("*_tagdir"), emit: tagdir
+    tuple val(meta), path("*_tagdir")            , emit: tagdir
     tuple val(meta), path("*_tagdir/tagInfo.txt"), emit: taginfo
-    path  "versions.yml"            , emit: versions
+    path  "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
