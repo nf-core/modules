@@ -12,8 +12,11 @@ process METAMAPS_CLASSIFY {
     path database_folder
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*classification_res")                           , emit: classification_res
+    tuple val(meta), path("*classification_res.meta")                      , emit: meta_file
+    tuple val(meta), path("*classification_res.meta.unmappedReadsLengths") , emit: meta_unmappedReadsLengths
+    tuple val(meta), path("*classification_res.parameters")                , emit: para_file
+
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
