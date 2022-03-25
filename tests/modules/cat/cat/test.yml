@@ -4,7 +4,7 @@
     - cat
     - cat/cat
   files:
-    - path: output/cat/cat.txt
+    - path: output/cat/test.fasta
       md5sum: f44b33a0e441ad58b2d3700270e2dbe2
 
 - name: cat zipped zipped
@@ -13,7 +13,7 @@
     - cat
     - cat/cat
   files:
-    - path: output/cat/cat.txt.gz
+    - path: output/cat/test.gz
 
 - name: cat zipped unzipped
   command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
