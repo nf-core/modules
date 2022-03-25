@@ -15,8 +15,8 @@
     - path: output/homer/tag_dir/tagLengthDistribution.txt
       md5sum: e5aa2b9843ca9c04ace297280aed6af4
 
-- name: homer meta maketagdirectory
-  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_meta_maketagdirectory -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+- name: homer maketagdirectory meta
+  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_meta -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
   tags:
     - homer
     - homer/maketagdirectory

@@ -17,7 +17,7 @@ workflow test_homer_maketagdirectory_bed {
 }
 
 
-workflow test_homer_meta_maketagdirectory {
+workflow test_homer_maketagdirectory_meta {
     input =
         [[[ id:'test1'],
           [file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]],
