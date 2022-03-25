@@ -37,6 +37,6 @@ workflow test_controlfreec_assesssignificance {
                         []
                         )
 
-    sig_in = CONTROLFREEC.out.CNV.join(CONTROLFREEC.out.ratio)
+    sig_in = CONTROLFREEC_FREEC.out.CNV.join(CONTROLFREEC_FREEC.out.ratio)
     CONTROLFREEC_ASSESSSIGNIFICANCE ( sig_in )
 }
