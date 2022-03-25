@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { PIRATE } from '../../../modules/pirate/main.nf'
+include { PANAROO_RUN } from '../../../../modules/panaroo/run/main.nf'
 
-workflow test_pirate {
-
+workflow test_panaroo_run {
+    
     input = [
         [ id:'test', single_end:false ], // meta map
         [
@@ -15,5 +15,5 @@ workflow test_pirate {
         ]
     ]
 
-    PIRATE ( input )
+    PANAROO_RUN ( input )
 }
