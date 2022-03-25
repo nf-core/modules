@@ -20,7 +20,7 @@ workflow test_umitools_dedup_no_umi {
               [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true) ]
             ]
 
-    UMITOOLS_DEDUP(input)
+    UMITOOLS_DEDUP_NOUMI ( input )
 }
 
 //
