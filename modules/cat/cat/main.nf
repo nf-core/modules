@@ -7,12 +7,11 @@ process CAT_CAT {
         'quay.io/biocontainers/pigz:2.3.4' }"
 
     input:
-    path files_in
-    val  file_out
+    tuple val(meta), path(files_in)
 
     output:
-    path "${file_out}*" , emit: file_out
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("${file_out}*"), emit: file_out
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +21,8 @@ process CAT_CAT {
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
 
+    def prefix = task.ext.prefix ?: "${meta.id}".file_list[0].extension
+
     // | input     | output     | command1 | command2 |
     // |-----------|------------|----------|----------|
     // | gzipped   | gzipped    | cat      |          |
@@ -30,7 +31,7 @@ process CAT_CAT {
     // | ungzipped | gzipped    | cat      | pigz     |
 
     def in_zip   = file_list[0].endsWith('.gz')
-    def out_zip  = file_out.endsWith('.gz')
+    def out_zip  = prefix.endsWith('.gz')
     def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
     def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
     """
