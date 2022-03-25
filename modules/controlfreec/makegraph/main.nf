@@ -11,9 +11,9 @@ process CONTROLFREEC_MAKEGRAPH {
     tuple val(meta), path(ratio), path(baf)
 
     output:
-    tuple val(meta), path("*_BAF.txt.png")       , emit: png_baf
-    tuple val(meta), path("*_ratio.txt.log2.png"), emit: png_ratio_log2
-    tuple val(meta), path("*_ratio.txt.png")     , emit: png_ratio
+    tuple val(meta), path("*_BAF.png")       , emit: png_baf
+    tuple val(meta), path("*_ratio.log2.png"), emit: png_ratio_log2
+    tuple val(meta), path("*_ratio.png")     , emit: png_ratio
 
     path "versions.yml"           , emit: versions
 
@@ -21,10 +21,16 @@ process CONTROLFREEC_MAKEGRAPH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def baf = baf ?: ""
     """
     cat /usr/local/bin/makeGraph.R | R --slave --args ${args} ${ratio} ${baf}
+
+    mv *_BAF.txt.png ${prefix}_BAF.png
+    mv *_ratio.txt.log2.png ${prefix}_ratio.log2.png
+    mv *_ratio.txt.png ${prefix}_ratio.png
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
