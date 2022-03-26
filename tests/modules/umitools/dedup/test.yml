@@ -1,0 +1,54 @@
+- name: umitools dedup test_umitools_dedup_no_umi
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_no_umi -c tests/config/nextflow.config
+  tags:
+    - umitools/dedup
+    - umitools
+  files:
+    - path: output/umitools/dedup.bam
+      md5sum: 53b4edc399db81b87d2343e78af73cf0
+    - path: output/umitools/dedup_edit_distance.tsv
+      md5sum: 65186b0964e2f8d970cc04d736d8b119
+    - path: output/umitools/dedup_per_umi.tsv
+      md5sum: 8e6783a4a79437b095f095f2aefe7c01
+    - path: output/umitools/dedup_per_umi_per_position.tsv
+      md5sum: 9386db4a104b8e4e32f3ca4a84efa4ac
+    - path: output/umitools/versions.yml
+      md5sum: 4aaaa33565bcd9a984255139933d6446
+
+- name: umitools dedup test_umitools_dedup_single_end
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_single_end -c tests/config/nextflow.config
+  tags:
+    - umitools
+    - umitools/dedup
+  files:
+    - path: output/bwa/test.bam
+      md5sum: ea41a3cdca1856b22845e1067fd31f37
+    - path: output/bwa/versions.yml
+      md5sum: ce4d987f2c53f4c01b31d210c357b24a
+    - path: output/samtools/test.bam.bai
+      md5sum: 095af0ad3921212597ffd7c342ecd5a0
+    - path: output/samtools/versions.yml
+      md5sum: 69b7cde627c9b4e8403dfc125db71cc7
+    - path: output/umitools/dedup.bam
+      md5sum: d95df177063432748ff33f473910cb1e
+    - path: output/umitools/versions.yml
+      md5sum: 730e768dd199d2f5bfb6fd0850446344
+
+- name: umitools dedup test_umitools_dedup_paired_end
+  command: nextflow run tests/modules/umitools/dedup -entry test_umitools_dedup_paired_end -c tests/config/nextflow.config
+  tags:
+    - umitools
+    - umitools/dedup
+  files:
+    - path: output/bwa/test.bam
+      md5sum: 1ad786cae0ff2254c655e3a206929617
+    - path: output/bwa/versions.yml
+      md5sum: b524c5ddf61c20f4a0a93ae8fc78b851
+    - path: output/samtools/test.bam.bai
+      md5sum: 7496f4056a8e86327ca93e350f282fc2
+    - path: output/samtools/versions.yml
+      md5sum: 72fc2ab934fd4bca0f7f14a705530d34
+    - path: output/umitools/dedup.bam
+      md5sum: e8d1eae2aacef76254948c5568e94555
+    - path: output/umitools/versions.yml
+      md5sum: fd39e05042d354b3d8de49b617d3183d
