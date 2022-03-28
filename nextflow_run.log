@@ -1,0 +1,111 @@
+N E X T F L O W  ~  version 21.10.6
+Launching `tests/modules/purgedups/fastk/main.nf` [fervent_lumiere] - revision: 02223a3e8e
+[-        ] process > test_purgedups_fastk:PURGED... -
+
+[-        ] process > test_purgedups_fastk:PURGED... -
+Pulling Singularity image docker://quay.io/sanger-tol/fastk:0.001-c2 [cache /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity/quay.io-sanger-tol-fastk-0.001-c2.img]
+WARN: Singularity cache directory has not been defined -- Remote image will be stored in the path: /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity -- Use env variable NXF_SINGULARITY_CACHEDIR to specify a different location
+
+[-        ] process > test_purgedups_fastk:PURGED... -
+Pulling Singularity image docker://quay.io/sanger-tol/fastk:0.001-c2 [cache /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity/quay.io-sanger-tol-fastk-0.001-c2.img]
+WARN: Singularity cache directory has not been defined -- Remote image will be stored in the path: /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity -- Use env variable NXF_SINGULARITY_CACHEDIR to specify a different location
+Error executing process > 'test_purgedups_fastk:PURGEDUPS_FASTK (test)'
+
+Caused by:
+  Failed to pull singularity image
+  command: singularity pull  --name quay.io-sanger-tol-fastk-0.001-c2.img.pulling.1647961042719 docker://quay.io/sanger-tol/fastk:0.001-c2 > /dev/null
+  status : 255
+  message:
+    time="2022-03-22T14:57:22Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    INFO:    Converting OCI blobs to SIF format
+    WARNING: 'nodev' mount option set on /tmp, it could be a source of failure during build process
+    INFO:    Starting build...
+    time="2022-03-22T14:57:24Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    time="2022-03-22T14:57:25Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    Getting image source signatures
+    Copying blob sha256:b487f29e2f74d18c9e1d4ce1d18f5bc5c85ecf2dd3be54c2302e10505af8c8d6
+    Copying blob sha256:059c826793480c91be73bd7c9e7242de79d68253a388bd7a5fc295253a70a55f
+    Copying blob sha256:2a230dbf54f3392375a71368dd70115a17a139c56a37e9f9701b01535bb3396c
+    Copying blob sha256:1ddb18afd468c4e249aedf8719e751877be45fa14ac0d479283809c26a3dfbd2
+    Copying blob sha256:b9f6687fec34825acae4943f5244aa04b9620598c589a4a0706382ca33293260
+    Copying blob sha256:e4bf615cc2e292fe02f8ece568a342177350d5d3d6381ba4bdcf7c46fe097191
+    Copying blob sha256:b1cc4d5f427608b88e2e780419fa8deb276c70e6cfcc1ce3b906bda447fed7e8
+    Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+    Copying blob sha256:27a784b94141a6df6ef05af8d24e0122c191cbc89b5990aaed4db6ba76742937
+    Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+    FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get: Error initializing source oci:/nfs/users/nfs_y/yy5/.singularity/cache/blob:f32f1de2078706a040adfa259012daf880f1a37d85c14232d867df5888fabe7a: Error writing blob: sync /nfs/users/nfs_y/yy5/.singularity/cache/blob/oci-put-blob168948013: disk quota exceeded
+
+
+
+
+
+[-        ] process > test_purgedups_fastk:PURGED... -
+Pulling Singularity image docker://quay.io/sanger-tol/fastk:0.001-c2 [cache /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity/quay.io-sanger-tol-fastk-0.001-c2.img]
+WARN: Singularity cache directory has not been defined -- Remote image will be stored in the path: /nfs/team135/yy5/nfcore_modules/nf-core-modules/work/singularity -- Use env variable NXF_SINGULARITY_CACHEDIR to specify a different location
+Error executing process > 'test_purgedups_fastk:PURGEDUPS_FASTK (test)'
+
+Caused by:
+  Failed to pull singularity image
+  command: singularity pull  --name quay.io-sanger-tol-fastk-0.001-c2.img.pulling.1647961042719 docker://quay.io/sanger-tol/fastk:0.001-c2 > /dev/null
+  status : 255
+  message:
+    time="2022-03-22T14:57:22Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    INFO:    Converting OCI blobs to SIF format
+    WARNING: 'nodev' mount option set on /tmp, it could be a source of failure during build process
+    INFO:    Starting build...
+    time="2022-03-22T14:57:24Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    time="2022-03-22T14:57:25Z" level=warning msg="\"/run/user/14784\" directory set by $XDG_RUNTIME_DIR does not exist. Either create the directory or unset $XDG_RUNTIME_DIR.: stat /run/user/14784: no such file or directory: Trying to pull image in the event that it is a public image."
+    Getting image source signatures
+    Copying blob sha256:b487f29e2f74d18c9e1d4ce1d18f5bc5c85ecf2dd3be54c2302e10505af8c8d6
+    Copying blob sha256:059c826793480c91be73bd7c9e7242de79d68253a388bd7a5fc295253a70a55f
+    Copying blob sha256:2a230dbf54f3392375a71368dd70115a17a139c56a37e9f9701b01535bb3396c
+    Copying blob sha256:1ddb18afd468c4e249aedf8719e751877be45fa14ac0d479283809c26a3dfbd2
+    Copying blob sha256:b9f6687fec34825acae4943f5244aa04b9620598c589a4a0706382ca33293260
+    Copying blob sha256:e4bf615cc2e292fe02f8ece568a342177350d5d3d6381ba4bdcf7c46fe097191
+    Copying blob sha256:b1cc4d5f427608b88e2e780419fa8deb276c70e6cfcc1ce3b906bda447fed7e8
+    Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+    Copying blob sha256:27a784b94141a6df6ef05af8d24e0122c191cbc89b5990aaed4db6ba76742937
+    Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+    FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get: Error initializing source oci:/nfs/users/nfs_y/yy5/.singularity/cache/blob:f32f1de2078706a040adfa259012daf880f1a37d85c14232d867df5888fabe7a: Error writing blob: sync /nfs/users/nfs_y/yy5/.singularity/cache/blob/oci-put-blob168948013: disk quota exceeded
+
+
+
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-21>
+Subject: Job 496677: <PROFILE=singularity nextflow run tests/modules/purgedups/fastk -entry test_purgedups_fastk -c tests/config/nextflow.config> in cluster <farm5> Exited
+
+Job <PROFILE=singularity nextflow run tests/modules/purgedups/fastk -entry test_purgedups_fastk -c tests/config/nextflow.config> was submitted from host <farm5-head1> by user <yy5> in cluster <farm5> at Tue Mar 22 14:57:01 2022
+Job was executed on host(s) <2*node-14-21>, in queue <normal>, as user <yy5> in cluster <farm5> at Tue Mar 22 14:57:02 2022
+</nfs/users/nfs_y/yy5> was used as the home directory.
+</nfs/team135/yy5/nfcore_modules/nf-core-modules> was used as the working directory.
+Started at Tue Mar 22 14:57:02 2022
+Terminated at Tue Mar 22 14:57:58 2022
+Results reported at Tue Mar 22 14:57:58 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+PROFILE=singularity nextflow run tests/modules/purgedups/fastk -entry test_purgedups_fastk -c tests/config/nextflow.config
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   23.73 sec.
+    Max Memory :                                 222 MB
+    Average Memory :                             176.50 MB
+    Total Requested Memory :                     12000.00 MB
+    Delta Memory :                               11778.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                44
+    Run time :                                   55 sec.
+    Turnaround time :                            57 sec.
+
+The output (if any) is above this job summary.
+
