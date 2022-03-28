@@ -10,7 +10,6 @@ process GATK4_MERGEVCFS {
     input:
     tuple val(meta), path(vcf)
     path  dict
-    val   use_reference
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
@@ -23,7 +22,7 @@ process GATK4_MERGEVCFS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def vcfs = vcf.collect{ "I=${it}"}.join(' ')
-    def reference_command = use_reference ? "D=${dict}" : ""
+    def reference_command = dict ? "D=${dict}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
