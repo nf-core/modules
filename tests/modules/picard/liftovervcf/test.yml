@@ -5,7 +5,8 @@
     - picard/liftovervcf
   files:
     - path: output/picard/test.lifted.vcf
-      contains: 'chr22'
+      contains:
+        - "fileformat"
     - path: output/picard/test.unlifted.vcf
       md5sum: ea6589c43743174edce8a4ac16407ab0
     - path: output/picard/versions.yml
