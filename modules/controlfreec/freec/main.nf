@@ -1,4 +1,4 @@
-process CONTROLFREEC {
+process CONTROLFREEC_FREEC {
     tag "$meta.id"
     label 'process_low'
 
