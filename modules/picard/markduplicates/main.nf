@@ -49,6 +49,7 @@ process PICARD_MARKDUPLICATES {
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)

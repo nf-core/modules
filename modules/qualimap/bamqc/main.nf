@@ -114,6 +114,7 @@ process QUALIMAP_BAMQC {
     touch genome_results.txt
     touch qualimapReport.html
     cd ../
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')

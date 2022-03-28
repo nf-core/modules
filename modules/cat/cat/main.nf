@@ -50,7 +50,7 @@ process CAT_CAT {
 
     stub:
     """
-    touch $file_out
+    touch $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

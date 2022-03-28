@@ -53,6 +53,7 @@ process PICARD_SORTVCF {
     touch ${prefix}_sorted.vcf.gz
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)

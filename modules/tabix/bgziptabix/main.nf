@@ -36,6 +36,7 @@ process TABIX_BGZIPTABIX {
     """
     touch ${prefix}.gz
     touch ${prefix}.gz.tbi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')

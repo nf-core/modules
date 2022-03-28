@@ -63,7 +63,7 @@ process SVDB_QUERY {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_ann_svdbq.vcf
+    touch ${prefix}_query.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

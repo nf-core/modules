@@ -55,7 +55,14 @@ process GATK4_INTERVALLISTTOOLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}_split
+    mkdir -p ${prefix}_split/temp_0001_of_6
+    mkdir -p ${prefix}_split/temp_0002_of_6
+    mkdir -p ${prefix}_split/temp_0003_of_6
+    mkdir -p ${prefix}_split/temp_0004_of_6
+    touch ${prefix}_split/temp_0001_of_6/1scattered.interval_list
+    touch ${prefix}_split/temp_0002_of_6/2scattered.interval_list
+    touch ${prefix}_split/temp_0003_of_6/3scattered.interval_list
+    touch ${prefix}_split/temp_0004_of_6/4scattered.interval_list
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
