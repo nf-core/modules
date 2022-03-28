@@ -9,9 +9,9 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
 
     input:
     tuple val(meta), path(genomicsdb)
-    path fasta
-    path fai
-    path dict
+    path  fasta
+    path  fai
+    path  dict
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -24,6 +24,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK CreateSomaticPanelOfNormals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -31,8 +32,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" \\
-        CreateSomaticPanelOfNormals \\
+    gatk --java-options "-Xmx${avail_mem}g" CreateSomaticPanelOfNormals \\
         -R $fasta \\
         -V gendb://$genomicsdb \\
         -O ${prefix}.vcf.gz \\

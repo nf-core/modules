@@ -9,7 +9,7 @@ process GATK4_BEDTOINTERVALLIST {
 
     input:
     tuple val(meta), path(bed)
-    path sequence_dict
+    path  dict
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
@@ -21,6 +21,7 @@ process GATK4_BEDTOINTERVALLIST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -30,7 +31,7 @@ process GATK4_BEDTOINTERVALLIST {
     """
     gatk --java-options "-Xmx${avail_mem}g" BedToIntervalList \\
         -I $bed \\
-        -SD $sequence_dict \\
+        -SD $dict \\
         -O ${prefix}.interval_list \\
         $args
 

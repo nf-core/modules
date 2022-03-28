@@ -1,8 +1,7 @@
-name: gatk4_applybqsr
-description: Apply base quality score recalibration (BQSR) to a bam file
+name: gatk4_baserecalibrator_spark
+description: Generate recalibration table for Base Quality Score Recalibration (BQSR)
 keywords:
-  - bqsr
-  - bam
+  - sort
 tools:
   - gatk4:
     description: |
@@ -28,9 +27,6 @@ input:
       type: file
       description: BAI/CRAI file from alignment
       pattern: "*.{bai,crai}"
-  - bqsr_table:
-      type: file
-      description: Recalibration table from gatk4_baserecalibrator
   - intervals:
       type: file
       description: Bed file with the genomic regions included in the library (optional)
@@ -46,6 +42,9 @@ input:
       type: file
       description: GATK sequence dictionary
       pattern: "*.dict"
+  - knownSites:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
 
 output:
   - meta:
@@ -57,15 +56,12 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - table:
       type: file
-      description: Recalibrated BAM file
-      pattern: "*.{bam}"
-  - cram:
-      type: file
-      description: Recalibrated CRAM file
-      pattern: "*.{cram}"
+      description: Recalibration table from BaseRecalibrator
+      pattern: "*.{table}"
 
 authors:
   - "@yocra3"
   - "@FriederikeHanssen"
+  - "@maxulysse"

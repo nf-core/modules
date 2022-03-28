@@ -8,10 +8,7 @@ process GATK4_MUTECT2 {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta) , path(input) , path(input_index) , path(intervals), val(which_norm)
-    val  run_single
-    val  run_pon
-    val  run_mito
+    tuple val(meta), path(input), path(input_index), path(intervals), val(which_norm)
     path fasta
     path fai
     path dict
@@ -19,6 +16,9 @@ process GATK4_MUTECT2 {
     path germline_resource_tbi
     path panel_of_normals
     path panel_of_normals_tbi
+    val  run_single
+    val  run_pon
+    val  run_mito
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf
@@ -35,11 +35,10 @@ process GATK4_MUTECT2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def panels_command = ''
     def normals_command = ''
-
-    def inputs_command = '-I ' + input.join( ' -I ')
+    def inputs = input.collect{ "-I ${it}"}.join(" ")
     def interval = intervals ? "-L ${intervals}" : ""
 
-    if(run_pon) {
+    if (run_pon) {
         panels_command = ''
         normals_command = ''
 
@@ -64,11 +63,11 @@ process GATK4_MUTECT2 {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" Mutect2 \\
-        -R ${fasta} \\
-        ${inputs_command} \\
-        ${normals_command} \\
-        ${panels_command} \\
-        ${interval} \\
+        -R $fasta \\
+        $inputs \\
+        $normals_command \\
+        $panels_command \\
+        $interval \\
         -O ${prefix}.vcf.gz \\
         $args
 

@@ -9,9 +9,9 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
 
     input:
     tuple val(meta), path(cram)
-    path(fasta)
-    path(fai)
-    path(dict)
+    path  fasta
+    path  fai
+    path  dict
 
     output:
     tuple val(meta), path('*.metrics'), emit: metrics
@@ -23,7 +23,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def crams = cram.collect(){ x -> "-I ".concat(x.toString()) }.join(" ")
+    def crams = cram.collect(){"-I ${it}"}.join(" ")
 
     def avail_mem = 3
     if (!task.memory) {
@@ -32,12 +32,13 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" EstimateLibraryComplexity \
-        ${crams} \
-        -O ${prefix}.metrics \
-        --REFERENCE_SEQUENCE ${fasta} \
-        --VALIDATION_STRINGENCY SILENT \
-        --TMP_DIR . $args
+    gatk --java-options "-Xmx${avail_mem}g" EstimateLibraryComplexity \\
+        ${crams} \\
+        -O ${prefix}.metrics \\
+        --REFERENCE_SEQUENCE ${fasta} \\
+        --VALIDATION_STRINGENCY SILENT \\
+        --TMP_DIR . \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

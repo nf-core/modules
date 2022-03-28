@@ -9,10 +9,10 @@ process GATK4_VARIANTRECALIBRATOR {
 
     input:
     tuple val(meta), path(vcf) , path(tbi)
-    path fasta
-    path fai
-    path dict
     tuple path(resvcfs), path(restbis), val(reslabels)
+    path  fasta
+    path  fai
+    path  dict
 
     output:
     tuple val(meta), path("*.recal")   , emit: recal
@@ -27,8 +27,8 @@ process GATK4_VARIANTRECALIBRATOR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    refCommand = fasta ? "-R ${fasta} " : ''
-    resourceCommand = '--resource:' + reslabels.join( ' --resource:')
+    reference_command = fasta ? "-R ${fasta} " : ''
+    resource_command = '--resource:' + reslabels.join( ' --resource:')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -38,11 +38,11 @@ process GATK4_VARIANTRECALIBRATOR {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" VariantRecalibrator \\
-        ${refCommand} \\
-        -V ${vcf} \\
+        $reference_command \\
+        -V $vcf \\
         -O ${prefix}.recal \\
         --tranches-file ${prefix}.tranches \\
-        ${resourceCommand} \\
+        $resource_command \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

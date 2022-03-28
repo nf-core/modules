@@ -9,11 +9,11 @@ process GATK4_HAPLOTYPECALLER {
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    path fasta
-    path fai
-    path dict
-    path dbsnp
-    path dbsnp_tbi
+    path  fasta
+    path  fai
+    path  dict
+    path  dbsnp
+    path  dbsnp_tbi
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -35,9 +35,7 @@ process GATK4_HAPLOTYPECALLER {
         avail_mem = task.memory.giga
     }
     """
-    gatk \\
-        --java-options "-Xmx${avail_mem}g" \\
-        HaplotypeCaller \\
+    gatk --java-options "-Xmx${avail_mem}g" HaplotypeCaller \\
         -R $fasta \\
         -I $input \\
         ${dbsnp_option} \\

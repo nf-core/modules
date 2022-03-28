@@ -21,6 +21,7 @@ process GATK4_FASTQTOSAM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'

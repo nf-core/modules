@@ -1,11 +1,11 @@
-process GATK4_APPLYBQSR {
+process GATK4_APPLYBQSR_SPARK {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
@@ -29,18 +29,19 @@ process GATK4_APPLYBQSR {
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK ApplyBQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK ApplyBQSRSpark] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" ApplyBQSR \\
+    gatk --java-options "-Xmx${avail_mem}g" ApplyBQSRSpark \\
         -R $fasta \\
         -I $input \\
         --bqsr-recal-file $bqsr_table \\
         $interval \\
         --tmp-dir . \\
         -O ${prefix}.${file_type} \\
+        --spark-master local[${task.cpus}] \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

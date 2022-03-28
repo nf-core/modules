@@ -9,7 +9,7 @@ process GATK4_CALCULATECONTAMINATION {
 
     input:
     tuple val(meta), path(pileup), path(matched)
-    val segmentout
+    val   segmentout
 
     output:
     tuple val(meta), path('*.contamination.table'), emit: contamination
@@ -24,6 +24,7 @@ process GATK4_CALCULATECONTAMINATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def matched_command = matched ? " -matched ${matched} " : ''
     def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK CalculateContamination] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -33,8 +34,8 @@ process GATK4_CALCULATECONTAMINATION {
     """
     gatk --java-options "-Xmx${avail_mem}g" CalculateContamination \\
         -I $pileup \\
-        $matched_command \\
         -O ${prefix}.contamination.table \\
+        $matched_command \\
         $segment_command \\
         $args
 

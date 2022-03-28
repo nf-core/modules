@@ -8,9 +8,9 @@ process GATK4_MERGEVCFS {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcfs)
-    path  ref_dict
-    val   use_ref_dict
+    tuple val(meta), path(vcf)
+    path  dict
+    val   use_reference
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
@@ -22,13 +22,9 @@ process GATK4_MERGEVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcfs = vcf.collect{ "I=${it}"}.join(' ')
+    def reference_command = use_reference ? "D=${dict}" : ""
 
-    // Make list of VCFs to merge
-    def input = ""
-    for (vcf in vcfs) {
-        input += " I=${vcf}"
-    }
-    def ref = use_ref_dict ? "D=${ref_dict}" : ""
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK MergeVcfs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -39,7 +35,7 @@ process GATK4_MERGEVCFS {
     gatk --java-options "-Xmx${avail_mem}g" MergeVcfs \\
         $input \\
         O=${prefix}.vcf.gz \\
-        $ref \\
+        $reference_command \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

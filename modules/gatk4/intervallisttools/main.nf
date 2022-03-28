@@ -8,11 +8,11 @@ process GATK4_INTERVALLISTTOOLS {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(interval_list)
+    tuple val(meta), path(intervals)
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
