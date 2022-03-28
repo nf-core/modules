@@ -24,8 +24,6 @@ input:
       pattern: "*.{vcf,vcf.gz}"
   - chain:
       type: file
-  - reject_variants:
-      type: file
   - fasta:
       type: file
       description: fasta file
