@@ -1,32 +1,34 @@
 name: metamaps_classify
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Strain-level metagenomic assignment
 keywords:
-  - sort
+  - metamaps
+  - long reads
+  - metagenomics
+  - taxonomy
 tools:
   - metamaps:
-      ## TODO nf-core: Add a description and other details for the software below
       description: MetaMaps is a tool for long-read metagenomic analysis
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: https://github.com/DiltheyLab/MetaMaps
+      documentation: https://github.com/DiltheyLab/MetaMaps/blob/master/README.md
+      tool_dev_url: https://github.com/DiltheyLab/MetaMaps
+      doi: "doi:10.1038/s41467-019-10934-2"
       licence: ['Public Domain']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - classification_res:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Coordinates where reads map
+      pattern: "*.{classification_res}"
+  - database_folder:
+      type: folder
+      description: Path to MetaMaps database
+      pattern: "*"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,11 +39,34 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - wimp:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sample composition at different taxonomic levels
+      pattern: "*.{classification_res.EM.WIMP}"
+  - evidence_unknown_species:
+      type: file
+      description: Statistics on read identities and zero-coverage regions
+      pattern: "*.{classification_res.EM.evidenceUnknownSpecies}"
+  - reads2taxon:
+      type: file
+      description: Taxon ID assignement of reads
+      pattern: "*.{classification_res.EM.reads2Taxon}"
+  - em:
+      type: file
+      description: The final and complete set of approximate read mappings
+      pattern: "*.{classification_res.EM}"
+  - contig_coverage:
+      type: file
+      description: Read coverage for contigs
+      pattern: "*.{classification_res.EM.contigCoverage}"
+  - length_and_id:
+      type: file
+      description: Read length and estimated identity for all reads
+      pattern: "*.{classification_res.EM.lengthAndIdentitiesPerMappingUnit}"
+  - krona:
+      type: file
+      description: Taxon ID assignement of reads in Krona format
+      pattern: "*.{classification_res.EM.reads2Taxon.krona}"
 
 authors:
   - "@henningonsbring"
