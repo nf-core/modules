@@ -16,6 +16,9 @@ process LAST_DOTPLOT {
     tuple val(meta), path("*.png"), optional:true, emit: png
     path "versions.yml"                          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,0 +1,12 @@
+- name: "bbmap pileup"
+  command: nextflow run ./tests/modules/bbmap/pileup -entry test_bbmap_pileup -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/pileup/nextflow.config
+  tags:
+    - "bbmap"
+    - "bbmap/pileup"
+  files:
+    - path: "output/bbmap/test.coverage.stats.txt"
+      md5sum: c3fc9d0681589b69e3301ca3cb27b7a4
+    - path: "output/bbmap/test.coverage.hist.txt"
+      md5sum: 96915920ef42ddc9483457dd4585a088
+    - path: output/bbmap/versions.yml
+      md5sum: 894acc38bdc167dc22851df15e5a8453

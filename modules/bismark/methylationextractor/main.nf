@@ -19,6 +19,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tuple val(meta), path("*.M-bias.txt")          , emit: mbias
     path "versions.yml"                            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def seqtype  = meta.single_end ? '-s' : '-p'

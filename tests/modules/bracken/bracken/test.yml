@@ -1,0 +1,43 @@
+- name: bracken bracken test_bracken_bracken_single_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_single_end_default_args -c tests/config/nextflow.config
+  tags:
+    - bracken/bracken
+    - bracken
+  files:
+    - path: output/bracken/test_S.tsv
+      md5sum: 4a21ae14ff8a0311d55f139af5247838
+    - path: output/bracken/versions.yml
+      md5sum: ab8b1550f84a99bae80f050fe718abd0
+
+- name: bracken bracken test_bracken_bracken_single_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_single_end_custom_args -c tests/config/nextflow.config
+  tags:
+    - bracken/bracken
+    - bracken
+  files:
+    - path: output/bracken/test_G.tsv
+      md5sum: f609b09d6edb5ebc1ea1435d1dd46cde
+    - path: output/bracken/versions.yml
+      md5sum: af87e8d4c42fbcb0469ab13912b8a9bd
+
+- name: bracken bracken test_bracken_bracken_paired_end_default_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_paired_end_default_args -c tests/config/nextflow.config
+  tags:
+    - bracken/bracken
+    - bracken
+  files:
+    - path: output/bracken/test_S.tsv
+      md5sum: 4a21ae14ff8a0311d55f139af5247838
+    - path: output/bracken/versions.yml
+      md5sum: 4602111eb25bd19a7f9d725acc5921f6
+
+- name: bracken bracken test_bracken_bracken_paired_end_custom_args
+  command: nextflow run tests/modules/bracken/bracken -entry test_bracken_bracken_paired_end_custom_args -c tests/config/nextflow.config
+  tags:
+    - bracken/bracken
+    - bracken
+  files:
+    - path: output/bracken/test_G.tsv
+      md5sum: f609b09d6edb5ebc1ea1435d1dd46cde
+    - path: output/bracken/versions.yml
+      md5sum: d4618b01df5ac09cc366fe2ae7c13f06

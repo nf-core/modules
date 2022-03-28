@@ -1,0 +1,41 @@
+name: seqkit_replace
+description: Use seqkit to find/replace strings within sequences and sequence headers
+keywords:
+  - seqkit
+  - replace
+tools:
+  - seqkit:
+      description: Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://bioinf.shenwei.me/seqkit/usage/
+      documentation: https://bioinf.shenwei.me/seqkit/usage/
+      tool_dev_url: https://github.com/shenwei356/seqkit/
+      doi: "10.1371/journal.pone.016396"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastx:
+      type: file
+      description: fasta/q file
+      pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastx:
+      type: file
+      description: fasta/q file with replaced values
+      pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}*"
+
+authors:
+  - "@mjcipriano"

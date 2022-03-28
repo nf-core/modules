@@ -1,0 +1,31 @@
+- name: hmmer hmmsearch test_hmmer_hmmsearch
+  command: nextflow run tests/modules/hmmer/hmmsearch -entry test_hmmer_hmmsearch -c tests/config/nextflow.config
+  tags:
+    - hmmer/hmmsearch
+    - hmmer
+  files:
+    - path: output/hmmer/test.txt.gz
+      contains:
+        - "[ok]"
+    - path: output/hmmer/versions.yml
+      md5sum: ed0808c10abd205c6bd0fb01f45259bb
+
+- name: hmmer hmmsearch test_hmmer_hmmsearch_optional
+  command: nextflow run tests/modules/hmmer/hmmsearch -entry test_hmmer_hmmsearch_optional -c tests/config/nextflow.config
+  tags:
+    - hmmer/hmmsearch
+    - hmmer
+  files:
+    - path: output/hmmer/test.sto.gz
+      md5sum: d3121aa33455074c566fb7f8fdcda7b0
+    - path: output/hmmer/test.domtbl.gz
+      contains:
+        - "# [ok]"
+    - path: output/hmmer/test.tbl.gz
+      contains:
+        - "# [ok]"
+    - path: output/hmmer/test.txt.gz
+      contains:
+        - "[ok]"
+    - path: output/hmmer/versions.yml
+      md5sum: ebdcb08ae540e840f7b5c4c75a3a2993

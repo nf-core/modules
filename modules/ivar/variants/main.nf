@@ -10,6 +10,7 @@ process IVAR_VARIANTS {
     input:
     tuple val(meta), path(bam)
     path  fasta
+    path  fai
     path  gff
     val   save_mpileup
 
@@ -17,6 +18,9 @@ process IVAR_VARIANTS {
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
     path "versions.yml"               , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

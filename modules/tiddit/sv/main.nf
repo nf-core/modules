@@ -18,6 +18,9 @@ process TIDDIT_SV {
     tuple val(meta), path("*.signals.tab"), emit: signals
     path  "versions.yml"                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -29,6 +32,19 @@ process TIDDIT_SV {
         --bam $bam \\
         $reference \\
         -o $prefix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.vcf
+    touch $prefix.ploidy.tab
+    touch $prefix.signals.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

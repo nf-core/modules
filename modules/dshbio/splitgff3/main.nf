@@ -14,6 +14,9 @@ process DSHBIO_SPLITGFF3 {
     tuple val(meta), path("*.gff3.gz"), emit: gff3
     path "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

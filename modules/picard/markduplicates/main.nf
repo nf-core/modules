@@ -16,6 +16,9 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.metrics.txt"), emit: metrics
     path  "versions.yml"                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -33,6 +36,19 @@ process PICARD_MARKDUPLICATES {
         I=$bam \\
         O=${prefix}.bam \\
         M=${prefix}.MarkDuplicates.metrics.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
+    touch ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

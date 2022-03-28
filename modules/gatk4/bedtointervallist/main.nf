@@ -2,10 +2,10 @@ process GATK4_BEDTOINTERVALLIST {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -14,6 +14,9 @@ process GATK4_BEDTOINTERVALLIST {
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
     path  "versions.yml"                    , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -30,6 +33,17 @@ process GATK4_BEDTOINTERVALLIST {
         -SD $sequence_dict \\
         -O ${prefix}.interval_list \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.interval_list
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

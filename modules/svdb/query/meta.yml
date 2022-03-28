@@ -1,0 +1,55 @@
+name: svdb_query
+description: Query a structural variant database, using a vcf file as query
+keywords:
+  - structural variants
+tools:
+  - svdb:
+      description: structural variant database software
+      homepage: https://github.com/J35P312/SVDB
+      documentation: https://github.com/J35P312/SVDB/blob/master/README.md
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - in_occs:
+      type: list
+      description: A list of allele count tags
+  - in_frqs:
+      type: list
+      description: A list of allele frequency tags
+  - vcf:
+      type: file
+      description: query vcf file
+      pattern: "*.{vcf,vcf.gz}"
+  - vcf_db:
+      type: file
+      description: database vcf file
+      pattern: "*.{vcf,vcf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - out_occs:
+      type: list
+      description: A list of allele count tags
+  - out_frqs:
+      type: list
+      description: A list of allele frequency tags
+  - vcf:
+      type: file
+      description: Annotated output VCF file
+      pattern: "*_query.vcf"
+
+authors:
+  - "@ramprasadn"

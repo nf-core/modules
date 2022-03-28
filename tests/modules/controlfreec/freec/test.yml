@@ -1,0 +1,23 @@
+- name: controlfreec test_controlfreec_freec
+  command: nextflow run tests/modules/controlfreec/freec -entry test_controlfreec_freec -c tests/config/nextflow.config
+  tags:
+    - controlfreec
+    - controlfreec/freec
+  files:
+    - path: output/controlfreec/config.txt
+    - path: output/controlfreec/test.mpileup.gz_control.cpn
+      md5sum: 1768b571677c418560e5a8fe203bdc79
+    - path: output/controlfreec/test2.mpileup.gz_BAF.txt
+      md5sum: 3bb7437001cf061a77eaf87b8558c48d
+    - path: output/controlfreec/test2.mpileup.gz_CNVs
+      md5sum: 1f4f5834dbd1490afdb22f6d3091c4c9
+    - path: output/controlfreec/test2.mpileup.gz_info.txt
+      md5sum: 1a3055d35028525ccc9e693cc9f335e0
+    - path: output/controlfreec/test2.mpileup.gz_ratio.BedGraph
+      md5sum: 8ba455b232be20cdcc5bf1e4035e8032
+    - path: output/controlfreec/test2.mpileup.gz_ratio.txt
+      md5sum: b76b2434de710325069e37fb1e132760
+    - path: output/controlfreec/test2.mpileup.gz_sample.cpn
+      md5sum: c80dad58a77b1d7ba6d273999f4b4b4b
+    - path: output/controlfreec/versions.yml
+      md5sum: 3ab250a2ab3be22628124c7c65324651
