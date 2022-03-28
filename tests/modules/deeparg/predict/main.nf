@@ -13,7 +13,7 @@ workflow test_deeparg_predict {
         'LS'
     ]
 
-    DEEPARG_DOWNLOADDATA()
+    DEEPARG_DOWNLOADDATA( )
     DEEPARG_PREDICT ( input, DEEPARG_DOWNLOADDATA.out.db )
 
 }

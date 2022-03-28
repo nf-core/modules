@@ -1,0 +1,21 @@
+- name: ichorcna createpon test_ichorcna_createpon
+  command: nextflow run tests/modules/ichorcna/createpon -entry test_ichorcna_createpon -c tests/config/nextflow.config
+  tags:
+    - ichorcna/createpon
+    - ichorcna
+  files:
+    - path: output/ichorcna/PoN_median.txt
+      contains: ["seqnames"]
+    - path: output/ichorcna/versions.yml
+      md5sum: 59a2121301113cc013bfae65935e07f1
+
+- name: ichorcna createpon test_ichorcna_createpon2
+  command: nextflow run tests/modules/ichorcna/createpon -entry test_ichorcna_createpon2 -c tests/config/nextflow.config
+  tags:
+    - ichorcna/createpon
+    - ichorcna
+  files:
+    - path: output/ichorcna/PoN_median.txt
+      contains: ["seqnames"]
+    - path: output/ichorcna/versions.yml
+      md5sum: 31a5fcc0075dbe747f7736efbdb99644

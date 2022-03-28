@@ -29,6 +29,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
+    tuple val(meta), path('*.out.sam')               , optional:true, emit: sam
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,0 +1,10 @@
+- name: gatk4 combinegvcfs test_gatk4_combinegvcfs
+  command: nextflow run tests/modules/gatk4/combinegvcfs -entry test_gatk4_combinegvcfs -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/combinegvcfs
+  files:
+    - path: output/gatk4/test.combined.g.vcf.gz
+      contains: ["VCFv4.2"]
+    - path: output/gatk4/versions.yml
+      md5sum: 49d9c467f84b6a99a4da3ef161af26bd

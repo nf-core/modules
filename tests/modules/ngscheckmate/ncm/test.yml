@@ -1,0 +1,29 @@
+- name: ngscheckmate ncm test_ngscheckmate_ncm_bam
+  command: nextflow run tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm_bam -c tests/config/nextflow.config
+  tags:
+    - ngscheckmate/ncm
+    - ngscheckmate
+  files:
+    - path: output/ngscheckmate/output_all.txt
+      md5sum: f71a712c3f6ecf64dd526365212f1b7c
+    - path: output/ngscheckmate/output_corr_matrix.txt
+      md5sum: 6777377aa9ae3d57f841b12896318db0
+    - path: output/ngscheckmate/output_matched.txt
+      md5sum: f71a712c3f6ecf64dd526365212f1b7c
+    - path: output/ngscheckmate/versions.yml
+      md5sum: fbb2bebd65b4f4e1e93c6bf5c08a6829
+
+- name: ngscheckmate ncm test_ngscheckmate_ncm_vcf
+  command: nextflow run tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm_vcf -c tests/config/nextflow.config
+  tags:
+    - ngscheckmate/ncm
+    - ngscheckmate
+  files:
+    - path: output/ngscheckmate/output_all.txt
+      md5sum: fd74956dcac279b6f58e82ea73e344f8
+    - path: output/ngscheckmate/output_corr_matrix.txt
+      md5sum: 0c86bdad2721c470fe6be119f291c8e5
+    - path: output/ngscheckmate/output_matched.txt
+      md5sum: fd74956dcac279b6f58e82ea73e344f8
+    - path: output/ngscheckmate/versions.yml
+      md5sum: f06910b83dde194a47870c553cefe193

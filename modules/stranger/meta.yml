@@ -1,0 +1,44 @@
+name: stranger
+description: Annotates output files from ExpansionHunter with the pathologic implications of the repeat sizes.
+keywords:
+  - STR
+  - repeat_expansions
+  - annotate
+  - vcf
+tools:
+  - stranger:
+      description: Annotate VCF files with str variants
+      homepage: https://github.com/moonso/stranger
+      documentation: https://github.com/moonso/stranger
+      tool_dev_url: https://github.com/moonso/stranger
+      doi: "10.5281/zenodo.4548873"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF with repeat expansions
+      pattern: "*.{vcf.gz,vcf}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: annotated VCF with keys STR_STATUS, NormalMax and PathologicMin
+      pattern: "*.{vcf.gz}"
+
+authors:
+  - "@ljmesi"

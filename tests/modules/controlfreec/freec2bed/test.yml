@@ -1,0 +1,8 @@
+- name: controlfreec freec2bed test_controlfreec_freec2bed
+  command: nextflow run tests/modules/controlfreec/freec2bed -entry test_controlfreec_freec2bed -c tests/config/nextflow.config
+  tags:
+    - controlfreec/freec2bed
+    - controlfreec
+  files:
+    - path: output/controlfreec/test.bed
+      md5sum: abe10b7ce94ba903503e697394c17297
