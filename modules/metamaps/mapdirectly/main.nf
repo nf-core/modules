@@ -14,7 +14,7 @@ process METAMAPS_MAPDIRECTLY {
     output:
     tuple val(meta), path("*classification_res")                           , emit: classification_res
     tuple val(meta), path("*classification_res.meta")                      , emit: meta_file
-    tuple val(meta), path("*classification_res.meta.unmappedReadsLengths") , emit: meta_unmappedReadsLengths
+    tuple val(meta), path("*classification_res.meta.unmappedReadsLengths") , emit: meta_unmappedreadsLengths
     tuple val(meta), path("*classification_res.parameters")                , emit: para_file
 
     path "versions.yml"           , emit: versions
