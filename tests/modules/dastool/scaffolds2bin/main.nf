@@ -2,9 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { METABAT2_METABAT2 } from '../../../../modules/metabat2/metabat2/main.nf'
-include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf'
-include { DASTOOL_SCAFFOLDS2BIN } from '../../../../modules/dastool/scaffolds2bin/main.nf'
+include { GUNZIP                                } from '../../../../modules/gunzip/main.nf'
+include { METABAT2_METABAT2                     } from '../../../../modules/metabat2/metabat2/main.nf'
+include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS  } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf'
+include { DASTOOL_SCAFFOLDS2BIN                 } from '../../../../modules/dastool/scaffolds2bin/main.nf'
 
 workflow test_dastool_scaffolds2bin {
 
@@ -41,7 +42,7 @@ workflow test_dastool_scaffolds2bin_ungzipped {
     METABAT2_METABAT2 ( input_metabat2 )
 
     // TODO test unzipped input files
-    ch_input_2_scaffolds2bin = GUNZIP( METABAT2_METABAT2.out.fasta  )
+    ch_input_2_scaffolds2bin = GUNZIP( METABAT2_METABAT2.out.fasta  ).gunzip
 
-    DASTOOL_SCAFFOLDS2BIN ( ch_input_2_scaffolds2bin.collect(), "fa")
+    DASTOOL_SCAFFOLDS2BIN ( ch_input_2_scaffolds2bin, "fa")
 }
