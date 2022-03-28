@@ -2,7 +2,10 @@
 
 nextflow.enable.dsl = 2
 
+params.outdir = "./"
+
 include { LONGRANGER_MKREF } from '../../../../modules/longranger/mkref/main.nf'
+
 
 workflow test_longranger_mkref {
     LONGRANGER_MKREF([ [id : "longranger test"],

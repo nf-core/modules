@@ -2,6 +2,8 @@
 
 nextflow.enable.dsl = 2
 
+params.outdir = "./"
+
 include { LONGRANGER_ALIGN } from '../../../../modules/longranger/align/main.nf'
 
 process DOWNLOAD_READS {

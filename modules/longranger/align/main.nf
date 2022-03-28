@@ -1,3 +1,4 @@
+params.enable_conda = false
 
 process LONGRANGER_ALIGN {
     tag "$meta.id"
