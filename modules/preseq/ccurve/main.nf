@@ -1,4 +1,4 @@
-process PRESEQ_LCEXTRAP {
+process PRESEQ_CCURVE {
     tag "$meta.id"
     label 'process_medium'
     label 'error_ignore'
@@ -12,9 +12,9 @@ process PRESEQ_LCEXTRAP {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.lc_extrap.txt"), emit: lc_extrap
-    tuple val(meta), path("*.log")          , emit: log
-    path  "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.c_curve.txt"), emit: c_curve
+    tuple val(meta), path("*.log")        , emit: log
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +25,10 @@ process PRESEQ_LCEXTRAP {
     def paired_end = meta.single_end ? '' : '-pe'
     """
     preseq \\
-        lc_extrap \\
+        c_curve \\
         $args \\
         $paired_end \\
-        -output ${prefix}.lc_extrap.txt \\
+        -output ${prefix}.c_curve.txt \\
         $bam
     cp .command.err ${prefix}.command.log
 
