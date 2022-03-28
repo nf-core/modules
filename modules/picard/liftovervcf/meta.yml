@@ -10,13 +10,12 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037060932-LiftoverVcf-Picard
       tool_dev_url: https://github.com/broadinstitute/picard
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - meta:
       type: map
-      description:
-        Groovy Map containing sample information
+      description: Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - input_vcf:
       type: file
@@ -34,8 +33,7 @@ input:
 output:
   - meta:
       type: map
-      description:
-        Groovy Map containing sample information
+      description: Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
