@@ -8,11 +8,11 @@ process UNTAR {
         'biocontainers/biocontainers:v1.2.0_cv1' }"
 
     input:
-    path archive
+    tuple val(meta), path(archive)
 
     output:
-    path ("$untar")       , emit: untar
-    path "versions.yml"   , emit: versions
+    tuple val(meta), path("$untar"), emit: untar
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
