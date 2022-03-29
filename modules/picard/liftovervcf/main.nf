@@ -1,4 +1,3 @@
-
 process PICARD_LIFTOVERVCF {
     tag "$meta.id"
     label 'process_low'
