@@ -39,14 +39,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - vcf:
+  - vcf_lifted:
       type: file
       description: VCF file containing successfully lifted variants
-      pattern: "*.{vcf,vcf.gz}"
+      pattern: "*.{lifted.vcf.gz}"
   - vcf_unlifted:
       type: file
       description: VCF file containing unsuccessfully lifted variants
-      pattern: "*.{vcf,vcf.gz}"
+      pattern: "*.{unlifted.vcf.gz}"
 
 authors:
   - "@lucpen"

@@ -1,13 +1,13 @@
 - name: picard liftovervcf test_picard_liftovervcf
   command: nextflow run tests/modules/picard/liftovervcf -entry test_picard_liftovervcf -c tests/config/nextflow.config
   tags:
-    - picard
     - picard/liftovervcf
+    - picard
   files:
-    - path: output/picard/test.lifted.vcf
+    - path: output/picard/test.lifted.vcf.gz
       contains:
         - "chr22"
-    - path: output/picard/test.unlifted.vcf
-      md5sum: ea6589c43743174edce8a4ac16407ab0
+    - path: output/picard/test.unlifted.vcf.gz
+      md5sum: 43d760d50cb49e461c9fc3949fa4fc03
     - path: output/picard/versions.yml
       md5sum: b16383e5111c1850cb2c8f97353001d0

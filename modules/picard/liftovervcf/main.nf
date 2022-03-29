@@ -14,8 +14,8 @@ process PICARD_LIFTOVERVCF {
     path fasta
 
     output:
-    tuple val(meta), path("*lifted.vcf")  , emit: lifted
-    tuple val(meta), path("*unlifted.vcf"), emit: unlifted
+    tuple val(meta), path("*lifted.vcf.gz")  , emit: vcf_lifted
+    tuple val(meta), path("*unlifted.vcf.gz"), emit: vcf_unlifted
     path "versions.yml"                   , emit: versions
 
     when:
@@ -36,9 +36,9 @@ process PICARD_LIFTOVERVCF {
         LiftoverVcf \\
         $args \\
         I=$input_vcf \\
-        O=${prefix}.lifted.vcf \\
+        O=${prefix}.lifted.vcf.gz \\
         CHAIN=$chain \\
-        REJECT=${prefix}.unlifted.vcf \\
+        REJECT=${prefix}.unlifted.vcf.gz \\
         R=$fasta
 
     cat <<-END_VERSIONS > versions.yml
