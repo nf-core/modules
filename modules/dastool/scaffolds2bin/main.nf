@@ -22,9 +22,10 @@ process DASTOOL_SCAFFOLDS2BIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_extension = extension ? extension : "fasta"
-
+    def clean_fasta = fasta.toString() - ".gz"
+    def decompress_fasta = fasta.toString() == clean_fasta ? "" : "gunzip -q -f $fasta"
     """
-    gunzip -f *.${file_extension}.gz
+    $decompress_fasta
 
     Fasta_to_Scaffolds2Bin.sh \\
         $args \\

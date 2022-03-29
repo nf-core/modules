@@ -57,10 +57,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - tag_dir:
+  - tagdir:
       type: directory
       description: The "Tag Directory"
-      pattern: "tag_dir"
+      pattern: "*_tagdir"
+  - taginfo:
+      type: directory
+      description: The tagInfo.txt included to ensure there's proper output
+      pattern: "*_tagdir/tagInfo.txt"
   - versions:
       type: file
       description: File containing software versions

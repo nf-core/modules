@@ -25,6 +25,7 @@ process SVDB_MERGE {
     def prio   = ""
     if(priority) {
         prio = "--priority ${priority.join(',')}"
+        input = ""
         for (int index = 0; index < vcfs.size(); index++) {
             input += " ${vcfs[index]}:${priority[index]}"
         }
