@@ -16,10 +16,12 @@ process CAT_CAT {
 
     when:
     task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { it.toString() }
+
     // | input     | output     | command1 | command2 |
     // |-----------|------------|----------|----------|
     // | gzipped   | gzipped    | cat      |          |
@@ -39,6 +41,7 @@ process CAT_CAT {
         ${file_list.join(' ')} \\
         $command2 \\
         > ${prefix}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
@@ -47,7 +50,7 @@ process CAT_CAT {
 
     stub:
     """
-    touch ${prefix}
+    touch $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
