@@ -1,5 +1,4 @@
 process CAT_CAT {
-    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "conda-forge::pigz=2.3.4" : null)
@@ -8,11 +7,12 @@ process CAT_CAT {
         'quay.io/biocontainers/pigz:2.3.4' }"
 
     input:
-    tuple val(meta), path(files_in)
+    path files_in
+    val  file_out
 
     output:
-    tuple val(meta), path("${prefix}"), emit: file_out
-    path "versions.yml"               , emit: versions
+    path "${file_out}*" , emit: file_out
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,18 +29,16 @@ process CAT_CAT {
     // | gzipped   | ungzipped  | zcat     |          |
     // | ungzipped | gzipped    | cat      | pigz     |
 
-    // Use input file ending as default
-    prefix = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
-    out_zip  = prefix.endsWith('.gz')
-    in_zip   = file_list[0].endsWith('.gz')
-    command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
-    command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
+    def in_zip   = file_list[0].endsWith('.gz')
+    def out_zip  = file_out.endsWith('.gz')
+    def command1 = (in_zip && !out_zip) ? 'zcat' : 'cat'
+    def command2 = (!in_zip && out_zip) ? "| pigz -c -p $task.cpus $args2" : ''
     """
     $command1 \\
         $args \\
         ${file_list.join(' ')} \\
         $command2 \\
-        > ${prefix}
+        > $file_out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -50,7 +48,7 @@ process CAT_CAT {
 
     stub:
     """
-    touch $prefix
+    touch $file_out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
