@@ -25,7 +25,11 @@ process PICARD_LIFTOVERVCF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 1
-
+    if (!task.memory) {
+        log.info '[Picard LiftoverVcf] Available memory not known - defaulting to 1GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     picard \\
         -Xmx${avail_mem}g \\
