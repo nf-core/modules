@@ -70,5 +70,4 @@ process SVDB_QUERY {
         svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
     END_VERSIONS
     """
-
 }
