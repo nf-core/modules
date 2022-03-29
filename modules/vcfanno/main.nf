@@ -39,4 +39,15 @@ process VCFANNO {
         vcfanno: \$(echo \$(vcfanno 2>&1 | grep version | cut -f3 -d' ' ))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_annotated.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vcfanno: \$(echo \$(vcfanno 2>&1 | grep version | cut -f3 -d' ' ))
+    END_VERSIONS
+    """
 }
