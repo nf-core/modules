@@ -47,4 +47,14 @@ process CAT_CAT {
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch $prefix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+    END_VERSIONS
+    """
 }
