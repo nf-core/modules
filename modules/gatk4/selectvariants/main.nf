@@ -30,8 +30,8 @@ process GATK4_SELECTVARIANTS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}G" SelectVariants \\
-        -V $vcf \\
-        -O ${prefix}.selectvariants.vcf.gz \\
+        --variant $vcf \\
+        --output ${prefix}.selectvariants.vcf.gz \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

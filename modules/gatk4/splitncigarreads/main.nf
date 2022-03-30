@@ -32,9 +32,9 @@ process GATK4_SPLITNCIGARREADS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" SplitNCigarReads \\
-        -R $fasta \\
-        -I $bam \\
-        -O ${prefix}.bam \\
+        --input $bam \\
+        --output ${prefix}.bam \\
+        --reference $fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

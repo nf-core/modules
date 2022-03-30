@@ -25,24 +25,24 @@ process GATK4_BASERECALIBRATOR_SPARK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_command = intervals ? "-L ${intervals}" : ""
-    def sites_command = known_sites.collect{"--known-sites ${it}"}.join(' ')
+    def interval_command = intervals ? "--intervals $intervals" : ""
+    def sites_command = known_sites.collect{"--known-sites $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK BaseRecalibrator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK BaseRecalibratorSpark] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" BaseRecalibratorSpark \\
-        -R $fasta \\
-        -I $input \\
+        --input $input \\
+        --output ${prefix}.table \\
+        --reference $fasta \\
+        $interval_command \\
         $sites_command \\
-        $intervals_command \\
-        --tmp-dir . \\
-        -O ${prefix}.table \\
         --spark-master local[${task.cpus}] \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

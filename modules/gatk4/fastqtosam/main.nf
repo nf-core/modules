@@ -20,7 +20,7 @@ process GATK4_FASTQTOSAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_files = meta.single_end ? "-F1 $reads" : "-F1 ${reads[0]} -F2 ${reads[1]}"
+    def reads_command = meta.single_end ? "--FASTQ $reads" : "--FASTQ ${reads[0]} --FASTQ2 ${reads[1]}"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,9 +30,9 @@ process GATK4_FASTQTOSAM {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" FastqToSam \\
-        $read_files \\
-        -O ${prefix}.bam \\
-        -SM $prefix \\
+        $reads_command \\
+        --OUPUT ${prefix}.bam \\
+        --SAMPLE_NAME $prefix \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

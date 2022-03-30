@@ -9,7 +9,6 @@ process GATK4_CALCULATECONTAMINATION {
 
     input:
     tuple val(meta), path(pileup), path(matched)
-    val   segmentout
 
     output:
     tuple val(meta), path('*.contamination.table'), emit: contamination
@@ -22,8 +21,7 @@ process GATK4_CALCULATECONTAMINATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def matched_command = matched ? " -matched ${matched} " : ''
-    def segment_command = segmentout ? " -segments ${prefix}.segmentation.table" : ''
+    def matched_command = matched ? " --matched-normal $matched" : ''
 
     def avail_mem = 3
     if (!task.memory) {
@@ -33,10 +31,9 @@ process GATK4_CALCULATECONTAMINATION {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" CalculateContamination \\
-        -I $pileup \\
-        -O ${prefix}.contamination.table \\
+        --input $pileup \\
+        --output ${prefix}.contamination.table \\
         $matched_command \\
-        $segment_command \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -23,7 +23,7 @@ process GATK4_COMBINEGVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcfs = vcf.collect{"-V ${it}"}.join(' ')
+    def vcfs_command = vcf.collect{"--variant $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -32,11 +32,10 @@ process GATK4_COMBINEGVCFS {
         avail_mem = task.memory.giga
     }
     """
-    gatk \\
-        --java-options "-Xmx${avail_mem}g" CombineGVCFs \\
-        -R ${fasta} \\
-        -O ${prefix}.combined.g.vcf.gz \\
-        $vcfs \\
+    gatk --java-options "-Xmx${avail_mem}g" CombineGVCFs \\
+        $vcfs_command \\
+        --output ${prefix}.combined.g.vcf.gz \\
+        --reference ${fasta} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

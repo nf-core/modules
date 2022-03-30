@@ -25,8 +25,8 @@ process GATK4_BASERECALIBRATOR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_command = intervals ? "-L ${intervals}" : ""
-    def sites_command = known_sites.collect{"--known-sites ${it}"}.join(' ')
+    def interval_command = intervals ? "--intervals $intervals" : ""
+    def sites_command = known_sites.collect{"--known-sites $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -36,12 +36,12 @@ process GATK4_BASERECALIBRATOR {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" BaseRecalibrator  \\
-        -R $fasta \\
-        -I $input \\
+        --input $input \\
+        --output ${prefix}.table \\
+        --reference $fasta \\
+        $interval_command \\
         $sites_command \\
-        $intervals_command \\
         --tmp-dir . \\
-        -O ${prefix}.table \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -24,7 +24,7 @@ process GATK4_APPLYVQSR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    ref_command = fasta ? "-R ${fasta} " : ''
+    def fasta_command = fasta ? "--reference $fasta" : ''
 
     def avail_mem = 3
     if (!task.memory) {
@@ -34,9 +34,9 @@ process GATK4_APPLYVQSR {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" ApplyVQSR \\
-        $ref_command \\
-        -V ${vcf} \\
-        -O ${prefix}.vcf.gz \\
+        --variant ${vcf} \\
+        --output ${prefix}.vcf.gz \\
+        $fasta_command \\
         --tranches-file $tranches \\
         --recal-file $recal \\
         $args

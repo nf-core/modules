@@ -32,7 +32,7 @@ process GATK4_INTERVALLISTTOOLS {
 
     gatk --java-options "-Xmx${avail_mem}g" \\
         IntervalListTools \\
-        -I ${interval_list} \\
+        -I $intervals \\
         -O ${prefix}_split \\
         $args
 

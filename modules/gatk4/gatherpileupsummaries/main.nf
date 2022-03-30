@@ -22,7 +22,7 @@ process GATK4_GATHERPILEUPSUMMARIES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pileups = pileup.collect{ "-I ${it} " }.join(' ')
+    def pileup_command = pileup.collect{ "--input ${it} " }.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -32,9 +32,9 @@ process GATK4_GATHERPILEUPSUMMARIES {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" GatherPileupSummaries \\
+        $pileup_command \\
         --sequence-dictionary $dict \\
-        $pileups \\
-        -O ${prefix}.pileupsummaries.table \\
+        --output ${prefix}.pileupsummaries.table \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

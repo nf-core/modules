@@ -24,8 +24,7 @@ process GATK4_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def interval = intervals ? "-L ${intervals}" : ""
-    def file_type = input.getExtension()
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -35,12 +34,12 @@ process GATK4_APPLYBQSR {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" ApplyBQSR \\
-        -R $fasta \\
-        -I $input \\
+        --input $input \\
+        --output ${prefix}.${input.getExtension()} \\
+        --reference $fasta \\
         --bqsr-recal-file $bqsr_table \\
-        $interval \\
+        $interval_command \\
         --tmp-dir . \\
-        -O ${prefix}.${file_type} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

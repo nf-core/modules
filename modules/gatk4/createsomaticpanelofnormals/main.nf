@@ -33,9 +33,9 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" CreateSomaticPanelOfNormals \\
-        -R $fasta \\
-        -V gendb://$genomicsdb \\
-        -O ${prefix}.vcf.gz \\
+        --variant gendb://$genomicsdb \\
+        --output ${prefix}.vcf.gz \\
+        --reference $fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

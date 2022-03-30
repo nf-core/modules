@@ -30,9 +30,9 @@ process GATK4_BEDTOINTERVALLIST {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" BedToIntervalList \\
-        -I $bed \\
-        -SD $dict \\
-        -O ${prefix}.interval_list \\
+        --INPUT $bed \\
+        --OUTPUT ${prefix}.interval_list \\
+        --SEQUENCE_DICTIONARY $dict \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
