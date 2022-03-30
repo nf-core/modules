@@ -42,9 +42,9 @@ process TIDDIT_SV {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch $prefix.vcf
-    touch $prefix.ploidy.tab
-    touch $prefix.signals.tab
+    touch ${prefix}.vcf
+    touch ${prefix}.ploidy.tab
+    touch ${prefix}.signals.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
