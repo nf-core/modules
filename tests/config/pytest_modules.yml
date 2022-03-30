@@ -106,6 +106,10 @@ bbmap/index:
   - modules/bbmap/index/**
   - tests/modules/bbmap/index/**
 
+bbmap/pileup:
+  - modules/bbmap/pileup/**
+  - tests/modules/bbmap/pileup/**
+
 bcftools/annotate:
   - modules/bcftools/annotate/**
   - tests/modules/bcftools/annotate/**
@@ -313,6 +317,10 @@ bowtie2/build:
   - modules/bowtie2/build/**
   - tests/modules/bowtie2/build_test/**
 
+bracken/bracken:
+  - modules/bracken/bracken/**
+  - tests/modules/bracken/bracken/**
+
 bwa/aln:
   - modules/bwa/aln/**
   - tests/modules/bwa/aln/**
@@ -411,9 +419,25 @@ cnvkit/batch:
   - modules/cnvkit/batch/**
   - tests/modules/cnvkit/batch/**
 
-controlfreec:
-  - modules/controlfreec/**
-  - tests/modules/controlfreec/**
+controlfreec/assesssignificance:
+  - modules/controlfreec/assesssignificance/**
+  - tests/modules/controlfreec/assesssignificance/**
+
+controlfreec/freec:
+  - modules/controlfreec/freec/**
+  - tests/modules/controlfreec/freec/**
+
+controlfreec/freec2bed:
+  - modules/controlfreec/freec2bed/**
+  - tests/modules/controlfreec/freec2bed/**
+
+controlfreec/freec2circos:
+  - modules/controlfreec/freec2circos/**
+  - tests/modules/controlfreec/freec2circos/**
+
+controlfreec/makegraph:
+  - modules/controlfreec/makegraph/**
+  - tests/modules/controlfreec/makegraph/**
 
 cooler/cload:
   - modules/cooler/cload/**
@@ -868,6 +892,7 @@ homer/annotatepeaks:
 
 homer/findpeaks:
   - modules/homer/findpeaks/**
+  - modules/homer/maketagdirectory/**
   - tests/modules/homer/findpeaks/**
 
 homer/maketagdirectory:
@@ -877,6 +902,12 @@ homer/maketagdirectory:
 homer/makeucscfile:
   - modules/homer/makeucscfile/**
   - tests/modules/homer/makeucscfile/**
+
+homer/pos2bed:
+  - modules/homer/pos2bed/**
+  - modules/homer/maketagdirectory/**
+  - modules/homer/findpeaks/**
+  - tests/modules/homer/pos2bed/**
 
 hpsuissero:
   - modules/hpsuissero/**
@@ -929,6 +960,10 @@ ivar/variants:
 jupyternotebook:
   - modules/jupyternotebook/**
   - tests/modules/jupyternotebook/**
+
+kaiju/kaiju:
+  - modules/kaiju/kaiju/**
+  - tests/modules/kaiju/kaiju/**
 
 kallisto/index:
   - modules/kallisto/index/**
@@ -1240,6 +1275,10 @@ pairtools/sort:
   - modules/pairtools/sort/**
   - tests/modules/pairtools/sort/**
 
+panaroo/run:
+  - modules/panaroo/run/**
+  - tests/modules/panaroo/run/**
+
 pangolin:
   - modules/pangolin/**
   - tests/modules/pangolin/**
@@ -1347,6 +1386,10 @@ pmdtools/filter:
 porechop:
   - modules/porechop/**
   - tests/modules/porechop/**
+
+preseq/ccurve:
+  - modules/preseq/ccurve/**
+  - tests/modules/preseq/ccurve/**
 
 preseq/lcextrap:
   - modules/preseq/lcextrap/**
@@ -1743,6 +1786,15 @@ ucsc/wigtobigwig:
 ultra/pipeline:
   - modules/ultra/pipeline/**
   - tests/modules/ultra/pipeline/**
+
+umitools/dedup:
+  - modules/umitools/dedup/**
+  - modules/umitools/extract/**
+  - tests/modules/umitools/dedup/**
+
+umitools/extract:
+  - modules/umitools/extract/**
+  - tests/modules/umitools/extract/**
 
 unicycler:
   - modules/unicycler/**
