@@ -12,7 +12,7 @@ process METAMAPS_CLASSIFY {
     path database_folder
 
     output:
-    tuple val(meta), path("*classification_res.EM.WIMP")                             , emit: wimp
+    tuple val(meta), path("*classification_res.EM.WIMP")                              , emit: wimp
     tuple val(meta), path("*classification_res.EM.evidenceUnknownSpecies")            , emit: evidence_unknown_species
     tuple val(meta), path("*classification_res.EM.reads2Taxon")                       , emit: reads2taxon
     tuple val(meta), path("*classification_res.EM")                                   , emit: em
