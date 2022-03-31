@@ -28,6 +28,7 @@ process METAMAPS_MAPDIRECTLY {
     """
     metamaps \\
         mapDirectly \\
+        $args
         --all \\
         --reference $database \\
         --threads $task.cpus \\
