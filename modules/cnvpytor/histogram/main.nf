@@ -18,11 +18,21 @@ process CNVPYTOR_HISTOGRAM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '1000'
+    def args = task.ext.args ?: ''
     """
     cnvpytor \\
         -root $pytor \\
-        -his $args
+        $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch test.pytor
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
