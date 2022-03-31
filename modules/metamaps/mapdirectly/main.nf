@@ -16,8 +16,7 @@ process METAMAPS_MAPDIRECTLY {
     tuple val(meta), path("*classification_res.meta")                      , emit: meta_file
     tuple val(meta), path("*classification_res.meta.unmappedReadsLengths") , emit: meta_unmappedreadsLengths
     tuple val(meta), path("*classification_res.parameters")                , emit: para_file
-
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                                                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
