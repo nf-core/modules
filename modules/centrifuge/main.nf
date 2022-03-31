@@ -30,7 +30,6 @@ process CENTRIFUGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired = meta.single_end ? "-U ${reads}" :  "-1 ${reads[0]} -2 ${reads[1]}"
-    def db_name = db.toString().replace(".tar.gz","")
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
@@ -42,9 +41,8 @@ process CENTRIFUGE {
     }
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
-    tar -xf $db
     centrifuge \\
-        -x $db_name \\
+        -x ${db}/${db} \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
@@ -53,7 +51,7 @@ process CENTRIFUGE {
         $aligned \\
         $sam_output \\
         $args
-    centrifuge-kreport -x $db_name ${prefix}.results.txt > ${prefix}.kreport.txt
+    centrifuge-kreport -x ${db}/${db} ${prefix}.results.txt > ${prefix}.kreport.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
