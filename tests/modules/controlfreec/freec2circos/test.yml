@@ -1,0 +1,8 @@
+- name: controlfreec freec2circos test_controlfreec_freec2circos
+  command: nextflow run tests/modules/controlfreec/freec2circos -entry test_controlfreec_freec2circos -c tests/config/nextflow.config
+  tags:
+    - controlfreec
+    - controlfreec/freec2circos
+  files:
+    - path: output/controlfreec/test.circos.txt
+      md5sum: 19cf35f2c36b46f717dc8342b8a5a645

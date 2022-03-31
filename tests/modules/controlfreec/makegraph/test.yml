@@ -1,0 +1,12 @@
+- name: controlfreec makegraph test_controlfreec_makegraph
+  command: nextflow run tests/modules/controlfreec/makegraph -entry test_controlfreec_makegraph -c tests/config/nextflow.config
+  tags:
+    - controlfreec
+    - controlfreec/makegraph
+  files:
+    - path: output/controlfreec/test_BAF.png
+      md5sum: f9d977839e09c7e2472d970bd4aa834c
+    - path: output/controlfreec/test_ratio.log2.png
+      md5sum: b3c7916b1b4951a0cc3da20d8e9e0262
+    - path: output/controlfreec/test_ratio.png
+      md5sum: 1435b29536b3b1555b4c423f8f4fb000

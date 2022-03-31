@@ -1,0 +1,19 @@
+- name: preseq ccurve single-end
+  command: nextflow run ./tests/modules/preseq/ccurve -entry test_preseq_ccurve_single_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/ccurve/nextflow.config
+  tags:
+    - preseq
+    - preseq/ccurve
+  files:
+    - path: output/preseq/test.c_curve.txt
+      md5sum: cf4743abdd355595d6ec1fb3f38e66e5
+    - path: output/preseq/test.command.log
+
+- name: preseq ccurve paired-end
+  command: nextflow run ./tests/modules/preseq/ccurve -entry test_preseq_ccurve_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/ccurve/nextflow.config
+  tags:
+    - preseq
+    - preseq/ccurve
+  files:
+    - path: output/preseq/test.c_curve.txt
+      md5sum: cf4743abdd355595d6ec1fb3f38e66e5
+    - path: output/preseq/test.command.log
