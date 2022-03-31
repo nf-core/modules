@@ -12,7 +12,7 @@ process DASTOOL_FASTATOCONTIG2BIN {
     val(extension)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: contig2bin
+    tuple val(meta), path("*.tsv"), emit: fastatocontig2bin
     path "versions.yml"           , emit: versions
 
     when:
