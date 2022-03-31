@@ -12,12 +12,22 @@ tools:
       licence: ["LGPL-2.1-or-later"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - archive:
       type: file
       description: ZIP file
       pattern: "*.zip"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - unzipped_archive:
       type: directory
       description: Directory contents of the unzipped archive

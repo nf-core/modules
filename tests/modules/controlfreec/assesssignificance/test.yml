@@ -1,0 +1,10 @@
+- name: controlfreec assesssignificance test_controlfreec_assesssignificance
+  command: nextflow run tests/modules/controlfreec/assesssignificance -entry test_controlfreec_assesssignificance -c tests/config/nextflow.config
+  tags:
+    - controlfreec/assesssignificance
+    - controlfreec
+  files:
+    - path: output/controlfreec/test.p.value.txt
+      md5sum: 44e23b916535fbc1a3f47b57fad292df
+    - path: output/controlfreec/versions.yml
+      md5sum: 0aa42fed10d61e4570fe1e0e83ffe932
