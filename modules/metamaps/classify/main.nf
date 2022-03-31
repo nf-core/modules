@@ -19,7 +19,7 @@ process METAMAPS_CLASSIFY {
     tuple val(meta), path("*classification_res.EM.contigCoverage")                    , emit: contig_coverage
     tuple val(meta), path("*classification_res.EM.lengthAndIdentitiesPerMappingUnit") , emit: length_and_id
     tuple val(meta), path("*classification_res.EM.reads2Taxon.krona")                 , emit: krona
-    path "versions.yml"                                                                                         , emit: versions
+    path "versions.yml"                                                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
