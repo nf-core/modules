@@ -11,10 +11,10 @@ process GSTAMA_POLYACLEANUP {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_tama.fa")                   , emit: fasta
-    tuple val(meta), path("*_tama_polya_flnc_report.txt"), emit: report
-    tuple val(meta), path("*_tama_tails.fa")             , emit: tails
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("*_tama.fa.gz")                   , emit: fasta
+    tuple val(meta), path("*_tama_polya_flnc_report.txt.gz"), emit: report
+    tuple val(meta), path("*_tama_tails.fa.gz")             , emit: tails
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +28,9 @@ process GSTAMA_POLYACLEANUP {
         -f $fasta \\
         -p ${prefix} \\
         $args
+    gzip ${prefix}.fa
+    gzip ${prefix}_polya_flnc_report.txt
+    gzip ${prefix}_tails.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

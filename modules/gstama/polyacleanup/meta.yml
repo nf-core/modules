@@ -40,16 +40,16 @@ output:
       pattern: "versions.yml"
   - fasta:
       type: file
-      description: The Full Length Non Chimeric reads clened from remaining polyA tails. The sequences are in FASTA format.
-      pattern: "*_tama.fa"
+      description: The Full Length Non Chimeric reads clened from remaining polyA tails. The sequences are in FASTA format compressed with gzip.
+      pattern: "*_tama.fa.gz"
   - report:
       type: file
-      description: A text file describing the number of polyA tails removed and their length.
-      pattern: "*_tama_polya_flnc_report.txt"
+      description: A text file describing the number of polyA tails removed and their length. Compressed with gzip.
+      pattern: "*_tama_polya_flnc_report.txt.gz"
   - tails:
       type: file
-      description: A fasta file of trimmed polyA tails.
-      pattern: "*_tama_tails.fa"
+      description: A gzip compressed FASTA file of trimmed polyA tails.
+      pattern: "*_tama_tails.fa.gz"
 
 authors:
   - "@sguizard"
