@@ -9,6 +9,7 @@ process GATK4_CALCULATECONTAMINATION {
 
     input:
     tuple val(meta), path(pileup), path(matched)
+    val   tumor_segmentation
 
     output:
     tuple val(meta), path('*.contamination.table'), emit: contamination
@@ -22,6 +23,7 @@ process GATK4_CALCULATECONTAMINATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def matched_command = matched ? " --matched-normal $matched" : ''
+    def tumor_segmentation_command = tumor_segmentation ? "--tumor-segmentation ${prefix}.segmentation.table" : ''
 
     def avail_mem = 3
     if (!task.memory) {
@@ -34,6 +36,7 @@ process GATK4_CALCULATECONTAMINATION {
         --input $pileup \\
         --output ${prefix}.contamination.table \\
         $matched_command \\
+        $tumor_segmentation_command \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
