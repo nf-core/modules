@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { UNTAR                } from '../../../../modules/untar/main.nf'
 include { METAMAPS_MAPDIRECTLY } from '../../../../modules/metamaps/mapdirectly/main.nf'
 
 workflow test_metamaps_mapdirectly {
@@ -14,5 +15,6 @@ workflow test_metamaps_mapdirectly {
         file(params.test_data['sarscov2']['genome']['metamaps_db'], checkIfExists: true)
     ]
 
-    METAMAPS_MAPDIRECTLY ( input )
+    UNTAR ( database )
+    METAMAPS_MAPDIRECTLY ( input, UNTAR.out.untar )
 }
