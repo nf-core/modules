@@ -30,7 +30,7 @@ process METAMAPS_CLASSIFY {
     """
     metamaps \\
         classify \\
-        $args
+        $args \\
         --mappings $classification_res \\
         --threads $task.cpus \\
         --DB $database_folder \\

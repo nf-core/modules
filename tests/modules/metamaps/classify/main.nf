@@ -8,16 +8,21 @@ include { METAMAPS_CLASSIFY    } from '../../../../modules/metamaps/classify/mai
 
 workflow test_metamaps_classify {
 
-    classification_res = [
+    input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['sarscov2']['nanopore']['test2_fastq_gz'], checkIfExists: true)
     ]
-    database_folder = [
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+    database = [
+        [],file(params.test_data['sarscov2']['genome']['metamaps_db'], checkIfExists: true)
     ]
 
     UNTAR ( database )
-    METAMAPS_MAPDIRECTLY ( input, UNTAR.out.untar )
-    db_file = new File(UNTAR.out.untar, "/DB.fa")
-    METAMAPS_CLASSIFY ( METAMAPS_MAPDIRECTLY, db_file )
+        .untar
+        .map { id, it ->
+            filename = it.toString() + "/DB.fa"
+            return [ file(filename) ]
+        }
+        .set { ch_db }
+    map_directly_output = METAMAPS_MAPDIRECTLY ( input, ch_db )
+    METAMAPS_CLASSIFY ( map_directly_output, database )
 }
