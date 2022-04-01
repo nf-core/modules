@@ -35,4 +35,15 @@ process CNVPYTOR_IMPORTREADDEPTH {
         cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.pytor
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+    END_VERSIONS
+    """
 }
