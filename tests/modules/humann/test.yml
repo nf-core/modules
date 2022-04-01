@@ -1,0 +1,7 @@
+- name: humann test_humann
+  command: nextflow run tests/modules/humann -entry test_humann -c tests/config/nextflow.config
+  tags:
+    - humann
+  files:
+    - path: output/humann/versions.yml
+      md5sum: f6ffecc08eaf8ab67253798065a54158
