@@ -1,0 +1,41 @@
+name: "elprep_vcftoelsites"
+description: Convert a .vcf file to an .elsites file
+keywords:
+  - vcf
+  - elsites
+tools:
+  - "vcf-to-elsites":
+      description: "Convert a .vcf file to an .elsites file"
+      homepage: "https://github.com/ExaScience/elprep"
+      documentation: "https://github.com/ExaScience/elprep/blob/master/README.md"
+      doi: "10.1371/journal.pone.0132868"
+      licence: "['AGPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: vcf file
+      pattern: "*.{vcf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - elsites:
+      type: file
+      description: elsites file
+      pattern: "*.elsites"
+
+authors:
+  - "@matthdsm"
