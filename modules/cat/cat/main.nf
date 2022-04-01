@@ -49,6 +49,8 @@ process CAT_CAT {
     """
 
     stub:
+    def file_list = files_in.collect { it.toString() }
+    prefix   = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
     """
     touch $prefix
 
