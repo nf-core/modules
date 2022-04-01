@@ -31,8 +31,13 @@ process LONGRANGER_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def jobmode = task.executor ?: "local"
+    def localmem = task.memory.toGiga()
     """
-    ${moduleDir}/bin/run_longranger.py $sample $fastqs $reference ${moduleDir}/override.json
+    longranger align --id=$sample --fastqs=$fastqs \
+        --sample=$sample --reference=$reference \
+        --jobmode=${jobmode} --localcores=${task.cpus} --localmem=${localmem} \
+        ${task.ext.args} 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
