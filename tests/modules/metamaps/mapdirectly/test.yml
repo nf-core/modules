@@ -1,8 +1,18 @@
-- name: metamaps mapdirectly
-  command: nextflow run ./tests/modules/metamaps/mapdirectly -entry test_metamaps_mapdirectly -c ./tests/config/nextflow.config -c ./tests/modules/metamaps/mapdirectly/nextflow.config
+- name: metamaps mapdirectly test_metamaps_mapdirectly
+  command: nextflow run tests/modules/metamaps/mapdirectly -entry test_metamaps_mapdirectly -c tests/config/nextflow.config
   tags:
     - metamaps
     - metamaps/mapdirectly
   files:
-    - path: output/metamaps/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/metamaps/test.classification_res
+      md5sum: b9d5f39b357bf9a2e64561f582f1ba7b
+    - path: output/metamaps/test.classification_res.meta
+      md5sum: c6e00e2d29412527af24facbac447f30
+    - path: output/metamaps/test.classification_res.meta.unmappedReadsLengths
+      md5sum: 9e28b42be31e8ba40fcb49ccbafe4926
+    - path: output/metamaps/test.classification_res.parameters
+      md5sum: f96963e2d95ca22c74bf5871041254aa
+    - path: output/metamaps/versions.yml
+      md5sum: 75304dd4d1135e407909addf3614f162
+    - path: output/untar/versions.yml
+      md5sum: fffc0eead9be74cf1e4d18cb78afbfed

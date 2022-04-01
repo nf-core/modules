@@ -27,12 +27,12 @@ process METAMAPS_MAPDIRECTLY {
     """
     metamaps \\
         mapDirectly \\
-        $args
+        $args \\
         --all \\
         --reference $database \\
         --threads $task.cpus \\
         --query $reads \\
-        --output "${prefix}.classification_res"
+        --output ${prefix}.classification_res
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

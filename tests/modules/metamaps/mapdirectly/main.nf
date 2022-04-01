@@ -12,9 +12,15 @@ workflow test_metamaps_mapdirectly {
         file(params.test_data['sarscov2']['nanopore']['test2_fastq_gz'], checkIfExists: true)
     ]
     database = [
-        file(params.test_data['sarscov2']['genome']['metamaps_db'], checkIfExists: true)
+        [],file(params.test_data['sarscov2']['genome']['metamaps_db'], checkIfExists: true)
     ]
 
     UNTAR ( database )
-    METAMAPS_MAPDIRECTLY ( input, UNTAR.out.untar )
+        .untar
+        .map { id, it ->
+            filename = it.toString() + "/DB.fa"
+            return [ file(filename) ]
+        }
+        .set { ch_db }
+    METAMAPS_MAPDIRECTLY ( input, ch_db )
 }
