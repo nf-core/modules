@@ -27,7 +27,8 @@ input:
       type: directory
       description: Centrifuge database in .tar.gz format
       pattern: "*.tar.gz"
-  - db_name: string
+  - db_name:
+      type: string
       description: Centrifuge filenames without the suffix ".cf"
   - save_unaligned:
       type: value
