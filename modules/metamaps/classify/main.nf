@@ -37,7 +37,7 @@ process METAMAPS_CLASSIFY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metamaps: \$(echo \$(metamaps 2>&1) | grep -E "^MetaMaps\sv\s" | sed -E 's/^MetaMaps\sv\s([0-9]+\.[0-9]+)/\1/')
+        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
     END_VERSIONS
     """
 }
