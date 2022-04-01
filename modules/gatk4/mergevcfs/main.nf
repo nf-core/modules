@@ -21,7 +21,7 @@ process GATK4_MERGEVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcfs = vcf.collect{ "I=${it}"}.join(' ')
+    def input_list = vcf.collect{ "I=${it}"}.join(' ')
     def reference_command = dict ? "D=${dict}" : ""
 
     def avail_mem = 3
@@ -32,7 +32,7 @@ process GATK4_MERGEVCFS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeVcfs \\
-        $input \\
+        $input_list \\
         O=${prefix}.vcf.gz \\
         $reference_command \\
         $args

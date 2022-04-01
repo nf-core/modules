@@ -29,6 +29,7 @@ process GATK4_GENOTYPEGVCFS {
     def dbsnp_command = dbsnp ? "-D ${dbsnp}" : ""
     def interval_command = intervals ? "-L ${intervals}" : ""
     def gvcf_command = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK GenotypeGVCFs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'

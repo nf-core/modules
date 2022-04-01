@@ -8,7 +8,7 @@ process GATK4_MARKDUPLICATES_SPARK {
         'broadinstitute/gatk:4.2.3.0' }"
 
     input:
-    tuple val(meta), path(bams)
+    tuple val(meta), path(bam)
     path  fasta
     path  fasta_fai
     path  dict
@@ -23,7 +23,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def bam_list = bams.collect{"--INPUT ${it}"}.join(' ')
+    def input_list = bam.collect{"--INPUT ${it}"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -35,7 +35,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     export SPARK_USER=spark3
 
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
-        $bam_list \\
+        $input_list \\
         --reference ${fasta} \\
         --tmp-dir . \\
         --output ${prefix} \\

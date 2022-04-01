@@ -20,7 +20,7 @@ process GATK4_MERGEMUTECTSTATS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def input = stats.collect{ " -stats ${it} "}.join()
+    def input_list = stats.collect{ "-stats ${it}"}.join()
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,7 +30,7 @@ process GATK4_MERGEMUTECTSTATS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeMutectStats \\
-        ${input} \\
+        $input_list \\
         -output ${meta.id}.vcf.gz.stats \\
         $args
 

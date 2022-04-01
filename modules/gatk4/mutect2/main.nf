@@ -35,7 +35,7 @@ process GATK4_MUTECT2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def panels_command = ''
     def normals_command = ''
-    def inputs = input.collect{ "-I ${it}"}.join(" ")
+    def input_list = input.collect{ "-I ${it}"}.join(" ")
     def interval = intervals ? "-L ${intervals}" : ""
 
     if (run_pon) {
@@ -64,7 +64,7 @@ process GATK4_MUTECT2 {
     """
     gatk --java-options "-Xmx${avail_mem}g" Mutect2 \\
         -R $fasta \\
-        $inputs \\
+        $input_list \\
         $normals_command \\
         $panels_command \\
         $interval \\

@@ -20,7 +20,7 @@ process GATK4_GATHERBQSRREPORTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def table_command = table.collect{"--input ${it}"}.join(' ')
+    def input_list = table.collect{"--input ${it}"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,7 +30,7 @@ process GATK4_GATHERBQSRREPORTS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" GatherBQSRReports \\
-        ${table_command} \\
+        $input_list \\
         --output ${prefix}.table \\
         --tmp-dir . \\
         $args

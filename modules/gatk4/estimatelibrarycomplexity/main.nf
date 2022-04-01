@@ -23,7 +23,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def crams_command = cram.collect(){"--INPUT $it"}.join(" ")
+    def input_list = cram.collect(){"--INPUT $it"}.join(" ")
 
     def avail_mem = 3
     if (!task.memory) {
@@ -33,7 +33,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" EstimateLibraryComplexity \\
-        $crams_command \\
+        $input_list \\
         --OUTPUT ${prefix}.metrics \\
         --REFERENCE_SEQUENCE ${fasta} \\
         --TMP_DIR . \\

@@ -20,7 +20,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = f1r2.collect{"-I ${it}"}.join(' ')
+    def input_list = f1r2.collect{"-I ${it}"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,7 +30,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" LearnReadOrientationModel \\
-        $inputs \\
+        $input_list \\
         -O ${prefix}.tar.gz \\
         $args
 

@@ -26,7 +26,7 @@ process GATK4_GETPILEUPSUMMARIES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sites_command = intervals ? " -L ${intervals} " : " -L ${variants} "
-    def reference    = fasta ? " -R ${fasta}" :""
+    def reference_command = fasta ? "--reference $fasta" : ''
 
     def avail_mem = 3
     if (!task.memory) {
@@ -39,7 +39,7 @@ process GATK4_GETPILEUPSUMMARIES {
         -I $input \\
         -V $variants \\
         $sites_command \\
-        ${reference} \\
+        $reference_command \\
         -O ${prefix}.pileups.table \\
         $args
 

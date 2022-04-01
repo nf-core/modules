@@ -8,7 +8,7 @@ process GATK4_MARKDUPLICATES {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bams)
+    tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam")    , emit: bam
@@ -22,7 +22,7 @@ process GATK4_MARKDUPLICATES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bam_list = bams.collect{"--INPUT ${it}"}.join(' ')
+    def input_list = bam.collect{"--INPUT ${it}"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -32,11 +32,10 @@ process GATK4_MARKDUPLICATES {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicates \\
-        $bam_list \\
+        $input_list \\
+        --OUTPUT ${prefix}.bam \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
-        --CREATE_INDEX true \\
-        --OUTPUT ${prefix}.bam \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
