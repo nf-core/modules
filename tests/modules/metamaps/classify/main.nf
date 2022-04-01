@@ -23,6 +23,6 @@ workflow test_metamaps_classify {
             return [ file(filename) ]
         }
         .set { ch_db }
-    map_directly_output = METAMAPS_MAPDIRECTLY ( input, ch_db )
-    METAMAPS_CLASSIFY ( map_directly_output, database )
+    METAMAPS_MAPDIRECTLY ( input, ch_db )
+    METAMAPS_CLASSIFY ( METAMAPS_MAPDIRECTLY.out.classification_res, UNTAR.out.untar )
 }
