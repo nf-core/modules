@@ -4,10 +4,17 @@
     - centrifuge
   files:
     - path: output/centrifuge/test.kreport.txt
+  
     - path: output/centrifuge/test.report.txt
+      md5sum: 0d038ed45d52951652cc40bce5f22e3d
     - path: output/centrifuge/test.results.txt
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/centrifuge/test.unmapped.fastq.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/centrifuge/versions.yml
+      md5sum: aa7d5fabe61c77a1931bcc29fd80d147
+    - path: output/untar/versions.yml
+      md5sum: b9d29b7ce04414109f81cfe1681350b6
 
 - name: centrifuge test_centrifuge_paired_end
   command: nextflow run tests/modules/centrifuge -entry test_centrifuge_paired_end -c tests/config/nextflow.config
@@ -15,9 +22,16 @@
     - centrifuge
   files:
     - path: output/centrifuge/test.kreport.txt
+      md5sum: af1a51fe57eb6d428350ff4a4bf759d4
     - path: output/centrifuge/test.report.txt
+      md5sum: 0d038ed45d52951652cc40bce5f22e3d
     - path: output/centrifuge/test.results.txt
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/centrifuge/test.unmapped.fastq.1.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/centrifuge/test.unmapped.fastq.2.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/centrifuge/versions.yml
-
+      md5sum: 7d4a1b72b00aaba01f5c7c323062d32e
+    - path: output/untar/versions.yml
+      md5sum: 1a7488c94c0a6284ee259b5340682a08

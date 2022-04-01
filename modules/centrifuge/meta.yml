@@ -27,6 +27,8 @@ input:
       type: directory
       description: Centrifuge database in .tar.gz format
       pattern: "*.tar.gz"
+  - db_name: string
+      description: Centrifuge filenames without the suffix ".cf"
   - save_unaligned:
       type: value
       description: If true unmapped fastq files are saved
