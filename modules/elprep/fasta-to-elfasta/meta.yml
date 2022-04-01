@@ -1,59 +1,41 @@
-name: "elprep"
-description: Sort, Mark duplicates and call variants from a BAM file
+name: "elprep_fastatoelfasta"
+description: Convert a fasta file to an .elfasta file
 keywords:
-  - bam
-  - sam
-  - vcf
-  - sort
-  - duplicates
-  - gatk
-  - picard
+  - bed
+  - elsites
 tools:
-  - "elprep":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "elPrep is a high-performance tool for preparing .sam/.bam files for variant calling in sequencing pipelines. It can be used as a drop-in replacement for SAMtools/Picard/GATK4."
+  - "bed-to-elsites":
+      description: "Convert a fasta file to an .elfasta file"
       homepage: "https://github.com/ExaScience/elprep"
       documentation: "https://github.com/ExaScience/elprep/blob/master/README.md"
       doi: "10.1371/journal.pone.0132868"
       licence: "['AGPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - input:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fasta file
+      pattern: "*.{fa,fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - elfasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.vcf.gz"
+      description: elfasta file
+      pattern: "*.elfasta"
 
 authors:
   - "@matthdsm"
