@@ -22,7 +22,7 @@ process CNVPYTOR_PARTITION {
     """
     cnvpytor \\
         -root $pytor \\
-        $args
+        -partition $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

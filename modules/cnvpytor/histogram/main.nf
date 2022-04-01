@@ -18,11 +18,11 @@ process CNVPYTOR_HISTOGRAM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '1000'
     """
     cnvpytor \\
         -root $pytor \\
-        $args
+        -his $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

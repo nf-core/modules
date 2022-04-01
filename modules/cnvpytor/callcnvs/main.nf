@@ -18,12 +18,12 @@ process CNVPYTOR_CALLCNVS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '1000'
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cnvpytor \\
         -root $pytor \\
-        $args > ${prefix}.tsv
+        -call $args > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,5 +41,4 @@ process CNVPYTOR_CALLCNVS {
         cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
     END_VERSIONS
     """
-
 }
