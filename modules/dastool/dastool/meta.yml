@@ -34,8 +34,8 @@ input:
       pattern: "*.{fa.gz,fas.gz,fasta.gz}"
   - bins:
       type: file
-      description: "Scaffolds2bin tabular file generated with dastool/scaffolds2bin"
-      pattern: "*.scaffolds2bin.tsv"
+      description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
+      pattern: "*.tsv"
   - proteins:
       type: file
       description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
@@ -43,9 +43,6 @@ input:
   - db_directory:
       type: file
       description: (optional) Directory of single copy gene database.
-  - search_engine:
-      type: val
-      description: Engine used for single copy gene identification. USEARCH is not supported due to it being proprietary [blast/diamond]
 
 output:
   - meta:
@@ -65,14 +62,17 @@ output:
       type: file
       description: Summary of output bins including quality and completeness estimates
       pattern: "*summary.txt"
-  - scaffolds2bin:
+  - contig2bin:
       type: file
       description: Scaffolds to bin file of output bins
-      pattern: "*.scaffolds2bin.txt"
+      pattern: "*.contig2bin.txt"
   - eval:
       type: file
       description: Quality and completeness estimates of input bin sets
       pattern: "*.eval"
+  - bins:
+      description: Final refined bins in fasta format
+      pattern: "*.fa"
   - pdfs:
       type: file
       description: Plots showing the amount of high quality bins and score distribution of bins per method
@@ -89,6 +89,10 @@ output:
       type: file
       description: Results of bacterial single-copy-gene prediction
       pattern: "*.bacteria.scg"
+  - b6:
+      type: file
+      description: Results in b6 format
+      pattern: "*.b6"
   - seqlength:
       type: file
       description: Summary of contig lengths
