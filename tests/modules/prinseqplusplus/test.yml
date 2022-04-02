@@ -1,0 +1,33 @@
+- name: prinseqplusplus test_prinseqplusplus_single_end
+  command: nextflow run tests/modules/prinseqplusplus -entry test_prinseqplusplus_single_end -c tests/config/nextflow.config
+  tags:
+    - prinseqplusplus
+  files:
+    - path: output/prinseqplusplus/test.log
+      md5sum: f9bceec6e29b63bac4b8da14efeadfcd
+    - path: output/prinseqplusplus/test_bad_out.fastq.gz
+      md5sum: 1d4afe20744e7e3a82e665fde2ecdaab
+    - path: output/prinseqplusplus/test_good_out.fastq.gz
+      md5sum: c78c0a4fdab348e5955bfe5b8c147b8d
+    - path: output/prinseqplusplus/versions.yml
+      md5sum: e194788e64fd36a8ac9d4ee62ede0b40
+
+- name: prinseqplusplus test_prinseqplusplus_paired_end
+  command: nextflow run tests/modules/prinseqplusplus -entry test_prinseqplusplus_paired_end -c tests/config/nextflow.config
+  tags:
+    - prinseqplusplus
+  files:
+    - path: output/prinseqplusplus/test.log
+      md5sum: a4c70d4d813dd195dcc2d31790ab5db3
+    - path: output/prinseqplusplus/test_bad_out_R1.fastq.gz
+      md5sum: 1d4afe20744e7e3a82e665fde2ecdaab
+    - path: output/prinseqplusplus/test_bad_out_R2.fastq.gz
+      md5sum: 3c8336683a6be6ba7ef7b370f009e3eb
+    - path: output/prinseqplusplus/test_good_out_R1.fastq.gz
+      md5sum: c78c0a4fdab348e5955bfe5b8c147b8d
+    - path: output/prinseqplusplus/test_good_out_R2.fastq.gz
+      md5sum: a31fe00f2dabfad9df842e727fd86987
+    - path: output/prinseqplusplus/test_single_out_R1.fastq.gz
+    - path: output/prinseqplusplus/test_single_out_R2.fastq.gz
+    - path: output/prinseqplusplus/versions.yml
+      md5sum: b3b27b17128e36a3bdd9cfbcc058d8bc
