@@ -23,9 +23,9 @@ process BIOBAMBAM_BAMSORMADUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = "cram" if args.contains("--output-format=cram") else "bam"
+    def suffix = "cram" if args.contains("outputformat=cram") else "bam"
 
-    if (args.contains("--output-format=cram") and reference == null) error "Reference required for CRAM output."
+    if (args.contains("outputformat=cram") and reference == null) error "Reference required for CRAM output."
 
     """
     bamsormadup \\
