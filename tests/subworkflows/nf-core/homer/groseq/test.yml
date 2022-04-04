@@ -1,0 +1,21 @@
+- name: subworkflow homer_groseq bam
+  command: nextflow run ./tests/subworkflows/nf-core/homer/groseq/ -entry test_homer_groseq_bam -c tests/config/nextflow.config -c tests/subworkflows/nf-core/homer_groseq/nextflow.config
+  tags:
+    - homer
+  files:
+    - path: output/homer/tag_dir/tagInfo.txt
+      md5sum: 6f7a728ed6e3483df40531bed4c03aca
+    - path: output/homer/tag_dir/tag_dir.ucsc.bedGraph.gz
+    - path: output/homer/test.peaks.txt
+      md5sum: e567770514ac9a75b0f24a2a1e17bd69
+
+- name: subworkflow homer_groseq bed
+  command: nextflow run ./tests/subworkflows/nf-core/homer/groseq/ -entry test_homer_groseq_bed -c tests/config/nextflow.config -c tests/subworkflows/nf-core/homer/groseq/nextflow.config
+  tags:
+    - homer
+  files:
+    - path: output/homer/tag_dir/tagInfo.txt
+      md5sum: bbcfdb6c210ccdb48635e2c1c6de6106
+    - path: output/homer/tag_dir/tag_dir.ucsc.bedGraph.gz
+    - path: output/homer/test.peaks.txt
+      md5sum: 301024a6881e4e0436fccbaaebb59093
