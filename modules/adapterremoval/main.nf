@@ -18,7 +18,7 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.fastq.gz")            , optional: true, emit: collapsed
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz")  , optional: true, emit: collapsed_truncated
     tuple val(meta), path("${prefix}.paired.fastq.gz")               , optional: true, emit: paired_interleaved
-    tuple val(meta), path('*.log')                                   , emit: log
+    tuple val(meta), path('*.settings')                              , emit: log
     path "versions.yml"                                              , emit: versions
 
     when:
@@ -37,7 +37,7 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads ${task.cpus} \\
-            --settings ${prefix}.log \\
+            --settings ${prefix}.settings \\
             --seed 42 \\
             --gzip
 
@@ -70,7 +70,7 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads $task.cpus \\
-            --settings ${prefix}.log \\
+            --settings ${prefix}.settings \\
             --seed 42 \\
             --gzip
 
