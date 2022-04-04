@@ -14,8 +14,7 @@ process ADAPTERREMOVAL {
     output:
     tuple val(meta), path("${prefix}.truncated.fastq.gz")            , optional: true, emit: singles_truncated
     tuple val(meta), path("${prefix}.discarded.fastq.gz")            , optional: true, emit: discarded
-    tuple val(meta), path("${prefix}.pair1.truncated.fastq.gz")      , optional: true, emit: pair1_truncated
-    tuple val(meta), path("${prefix}.pair2.truncated.fastq.gz")      , optional: true, emit: pair2_truncated
+    tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq.gz")  , optional: true, emit: paired_truncated
     tuple val(meta), path("${prefix}.collapsed.fastq.gz")            , optional: true, emit: collapsed
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz")  , optional: true, emit: collapsed_truncated
     tuple val(meta), path("${prefix}.paired.fastq.gz")               , optional: true, emit: paired_interleaved
