@@ -7,7 +7,7 @@ keywords:
   - reference
 tools:
   - longranger:
-      description: Long Ranger is a set of analysis pipelines that processes Chromium sequencing output to align reads and call and phase SNPs, indels, and structural variants. 
+      description: Long Ranger is a set of analysis pipelines that processes Chromium sequencing output to align reads and call and phase SNPs, indels, and structural variants.
       homepage: https://support.10xgenomics.com/genome-exome/software/pipelines/latest/what-is-long-ranger
       documentation: https://support.10xgenomics.com/genome-exome/software/pipelines/latest/what-is-long-ranger
       tool_dev_url: https://github.com/10XGenomics/longranger
@@ -22,7 +22,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reference:
       type: file
-      description: Genome reference 
+      description: Genome reference
       pattern: "*.{fa,fasta}"
 
 output:
@@ -40,7 +40,7 @@ output:
       description: Path to folder with indices
       pattern: "*refdata-*"
   - sa:
-      type: 
+      type:
       description: SA index
       pattern: "refdata-*/fasta/genome.fa.sa"
   - amb:
