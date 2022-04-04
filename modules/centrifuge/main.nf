@@ -44,7 +44,7 @@ process CENTRIFUGE {
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
     centrifuge \\
-        -x ${db}/$db_name \\
+        -x ${db}/${db_name} \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
