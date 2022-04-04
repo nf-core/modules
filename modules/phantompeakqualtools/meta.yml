@@ -1,0 +1,60 @@
+name: "phantompeakqualtools"
+
+description:
+keywords:
+  - "ChIP-Seq"
+  - "QC"
+  - "phantom peaks"
+tools:
+  - "phantompeakqualtools":
+      description: |
+        "This package computes informative enrichment and quality measures
+        for ChIP-seq/DNase-seq/FAIRE-seq/MNase-seq data. It can also be used
+        to obtain robust estimates of the predominant fragment length or
+        characteristic tag shift values in these assays."
+      homepage: "None"
+      documentation: "https://github.com/kundajelab/phantompeakqualtools"
+      tool_dev_url: "https://github.com/kundajelab/phantompeakqualtools"
+      doi: "https://doi.org/10.1101/gr.136184.111"
+      licence: "['BSD-3-clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - spp:
+      type: file
+      description: |
+        A ChIP-Seq Processing Pipeline file containing
+        peakshift/phantomPeak results
+      pattern: "*.{out}"
+  - pdf:
+      type: file
+      description: A pdf containing save cross-correlation plots
+      pattern: "*.{pdf}"
+  - rdata:
+      type: file
+      description: Rdata file containing the R session
+      pattern: "*.{Rdata}"
+
+authors:
+  - "@drpatelh"
+  - "@Emiller88"
+  - "@JoseEspinosa"

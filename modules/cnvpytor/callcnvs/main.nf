@@ -4,7 +4,7 @@ process CNVPYTOR_CALLCNVS {
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:A1.0--py39h6a678da_2':
+        'https://depot.galaxyproject.org/singularity/cnvpytor:1.0--py39h6a678da_2':
         'quay.io/biocontainers/cnvpytor:1.0--py39h6a678da_2' }"
 
     input:
@@ -24,6 +24,17 @@ process CNVPYTOR_CALLCNVS {
     cnvpytor \\
         -root $pytor \\
         -call $args > ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
