@@ -19,8 +19,8 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.fastq.gz")            , optional: true, emit: collapsed
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz")  , optional: true, emit: collapsed_truncated
     tuple val(meta), path("${prefix}.paired.fastq.gz")               , optional: true, emit: paired_interleaved
-    tuple val(meta), path('*.log')                             , emit: log
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path('*.log')                                   , emit: log
+    path "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
