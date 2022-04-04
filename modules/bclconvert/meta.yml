@@ -1,39 +1,43 @@
 name: "bclconvert"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Demultiplex Illumina BCL files
 keywords:
-  - sort
+  - demultiplex
 tools:
   - "bclconvert":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+      description: "Demultiplex Illumina BCL files"
+      homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl-convert.html"
+      documentation: "https://support-docs.illumina.com/SW/BCL_Convert/Content/SW/FrontPages/BCL_Convert.htm"
+      tool_dev_url: "NA"
+      doi: "NA"
+      licence: "NA"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - samplesheet:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: "Input samplesheet"
+      pattern: "*.{csv}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  ## TODO: is this valid?
+  - run_dir:
+      type: directory
+      description: "Input run directory"
+
 output:
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - fastq:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: Demultiplexed FASTQ files
+      pattern: "*.{fastq.gz}"
+  - reports:
+      type: file
+      description: Demultiplexing Reports
+      pattern: "*.{csv,xml,bin}"
+  - logs:
+      type: file
+      description: Log files
+      pattern: "*.{log,txt}"
 authors:
   - "@matthdsm"
