@@ -2,6 +2,7 @@ name: biobambam_bamsormadup
 description: Parallel sorting and duplicate marking
 keywords:
   - markduplicates
+  - sort
   - bam
   - cram
 tools:
@@ -20,8 +21,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
+      description: BAM/SAM file
+      pattern: "*.{bam,sam}"
   - reference:
       type: file
       description: Reference genome
@@ -35,7 +36,7 @@ output:
   - bam:
       type: file
       description: BAM/CRAM file with duplicate reads marked/removed
-      pattern: "*.{bam,cram}"
+      pattern: "*.{sam,bam,cram}"
   - bam_index:
       type: file
       description: BAM index file

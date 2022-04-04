@@ -12,10 +12,10 @@ process BIOBAMBAM_BAMSORMADUP {
     tuple val(meta), path(reference)
 
     output:
-    tuple val(meta), path("*.{bam,cram}")         ,emit: bam
-    tuple val(meta), path("*.bam.bai")     ,optional:true, emit: bam_index
-    tuple val(meta), path("*.txt")         ,emit: metrics
-    path "versions.yml"                    ,emit: versions
+    tuple val(meta), path("*.{sam,bam,cram}")   ,emit: bam
+    tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
+    tuple val(meta), path("*.txt")              ,emit: metrics
+    path "versions.yml"                         ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
