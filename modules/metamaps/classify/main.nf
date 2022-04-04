@@ -10,6 +10,9 @@ process METAMAPS_CLASSIFY {
     input:
     tuple val(meta), path(classification_res)
     path database_folder
+    path meta_file
+    path readlengths
+    path para
 
     output:
     tuple val(meta), path("*classification_res.EM.WIMP")                              , emit: wimp
@@ -33,7 +36,7 @@ process METAMAPS_CLASSIFY {
         $args \\
         --mappings $classification_res \\
         --threads $task.cpus \\
-        --DB $database_folder \\
+        --DB $database_folder
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -24,5 +24,15 @@ workflow test_metamaps_classify {
         }
         .set { ch_db }
     METAMAPS_MAPDIRECTLY ( input, ch_db )
-    METAMAPS_CLASSIFY ( METAMAPS_MAPDIRECTLY.out.classification_res, UNTAR.out.untar )
+        .classification_res
+        .map { meta, it ->
+            return [[ 'id':'test' ], it ]
+        }
+        .set { ch_mapname }
+    UNTAR.out.untar
+        .map { id, it ->
+            return [ it ]
+        }
+        .set { ch_db_classify }
+    METAMAPS_CLASSIFY ( ch_mapname, ch_db_classify, METAMAPS_MAPDIRECTLY.out.meta_file, METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths, METAMAPS_MAPDIRECTLY.out.para_file )
 }
