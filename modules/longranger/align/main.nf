@@ -11,7 +11,7 @@ process LONGRANGER_ALIGN {
             workflow.containerEngine == 'docker' ) {
         exit 1, "Longranger can not be run in container environment"
     }
- 
+
     label 'mem_high'
 
     input:
@@ -37,7 +37,7 @@ process LONGRANGER_ALIGN {
     longranger align --id=$sample --fastqs=$fastqs \
         --sample=$sample --reference=$reference \
         --jobmode=${jobmode} --localcores=${task.cpus} --localmem=${localmem} \
-        ${task.ext.args} 
+        ${task.ext.args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
