@@ -37,7 +37,6 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads ${task.cpus} \\
-            --settings ${prefix}.settings \\
             --seed 42 \\
             --gzip
 
@@ -70,7 +69,6 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads $task.cpus \\
-            --settings ${prefix}.settings \\
             --seed 42 \\
             --gzip
 
