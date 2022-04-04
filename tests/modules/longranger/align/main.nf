@@ -33,8 +33,7 @@ workflow test_longranger_align {
     DOWNLOAD_REF ()
 
     LONGRANGER_ALIGN ( 
-        [ [id : "longranger test"], "pEimTen1"],
-        [ [id : "longranger test"], file("${workDir}/10x/")],
-        [ [id : "longranger test"], file("${workDir}/refdata-pEimTen1.contigs/")],
+        [ [id : "pEimTen1"], file("${workDir}/10x/")],
+        [ [id : "pEimTen1"], file("${workDir}/refdata-pEimTen1.contigs/")],
     )
 }

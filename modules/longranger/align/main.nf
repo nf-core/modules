@@ -15,14 +15,13 @@ process LONGRANGER_ALIGN {
     label 'mem_high'
 
     input:
-    tuple val(meta), val(sample)
     tuple val(meta), path(fastqs)
     tuple val(meta), path(reference)
 
     output:
-    tuple val(meta), path("${sample}/outs/possorted_bam.bam"), emit: bam
-    tuple val(meta), path("${sample}/outs/possorted_bam.bam.bai"), emit: bai
-    tuple val(meta), path("${sample}/outs/summary.csv"), emit: csv
+    tuple val(meta), path("${meta.id}/outs/possorted_bam.bam"), emit: bam
+    tuple val(meta), path("${meta.id}/outs/possorted_bam.bam.bai"), emit: bai
+    tuple val(meta), path("${meta.id}/outs/summary.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -33,6 +32,7 @@ process LONGRANGER_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def jobmode = task.executor ?: "local"
     def localmem = task.memory.toGiga()
+    def sample = "${meta.id}"
     """
     longranger align --id=$sample --fastqs=$fastqs \
         --sample=$sample --reference=$reference \
