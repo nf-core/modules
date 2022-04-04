@@ -9,11 +9,13 @@ process BIOBAMBAM_BAMSORMADUP {
 
     input:
     tuple val(meta), path(bam)
+    tuple val(meta), path(reference)
 
     output:
-    tuple val(meta), path("*.bam")        , emit: bam
-    tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.{bam,cram}")         ,emit: bam
+    tuple val(meta), path("*.bam.bai")     ,optional:true, emit: bam_index
+    tuple val(meta), path("*.txt")         ,emit: metrics
+    path "versions.yml"                    ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +28,7 @@ process BIOBAMBAM_BAMSORMADUP {
         $args \\
         I=$bam \\
         O=${prefix}.bam \\
-        M=${prefix}.metrics.txt \\
+        M=${prefix}.txt \\
         tmpfile=$prefix \\
         threads=$task.cpus
 
