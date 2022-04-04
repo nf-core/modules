@@ -18,16 +18,8 @@ process LONGRANGER_MKREF {
     tuple val(meta), path(reference)
 
     output:
-    tuple val(meta), path("refdata-*"),                          emit: folder
-    tuple val(meta), path("refdata-*/fasta/genome.fa.sa"),       emit: sa
-    tuple val(meta), path("refdata-*/fasta/genome.fa.amb"),      emit: amb
-    tuple val(meta), path("refdata-*/fasta/genome.fa.ann"),      emit: ann
-    tuple val(meta), path("refdata-*/fasta/genome.fa.bwt"),      emit: bwt
-    tuple val(meta), path("refdata-*/fasta/genome.fa.fai"),      emit: fai
-    tuple val(meta), path("refdata-*/fasta/genome.fa.flat"),     emit: flat
-    tuple val(meta), path("refdata-*/fasta/genome.fa.gdx"),      emit: gdx
-    tuple val(meta), path("refdata-*/fasta/genome.fa.pac"),      emit: pac
-    path "versions.yml",                        emit: versions
+    tuple val(meta), path("refdata-*"),           emit: folder
+    path "versions.yml",        emit: versions
 
     when:
     task.ext.when == null || task.ext.when
