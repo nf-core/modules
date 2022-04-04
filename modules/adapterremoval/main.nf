@@ -49,11 +49,6 @@ process ADAPTERREMOVAL {
 
         ensure_fastq '${prefix}.truncated.gz'
         ensure_fastq '${prefix}.discarded.gz'
-        ensure_fastq '${prefix}.pair1.truncated.gz'
-        ensure_fastq '${prefix}.pair2.truncated.gz'
-        ensure_fastq '${prefix}.collapsed.gz'
-        ensure_fastq '${prefix}.collapsed.truncated.gz'
-        ensure_fastq '${prefix}.paired.gz'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
