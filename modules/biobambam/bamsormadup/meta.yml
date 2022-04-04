@@ -23,8 +23,8 @@ input:
       type: file
       description: BAM file
       pattern: "*.{bam,sam}"
-  - reference:
-      type: file
+  - fasta:
+      type: optional file
       description: Reference genome
       pattern: "*.{fa,fasta}"
 output:

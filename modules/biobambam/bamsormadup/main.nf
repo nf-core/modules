@@ -1,6 +1,6 @@
 process BIOBAMBAM_BAMSORMADUP {
     tag "$meta.id"
-    label 'process_medium'
+    label "process_medium"
 
     conda (params.enable_conda ? "bioconda::biobambam=2.0.183" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,7 +9,7 @@ process BIOBAMBAM_BAMSORMADUP {
 
     input:
     tuple val(meta), path(bam)
-    tuple val(meta), path(reference)
+    path(fasta)
 
     output:
     tuple val(meta), path("*.{bam,cram}")       ,emit: bam
