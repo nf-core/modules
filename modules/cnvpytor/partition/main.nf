@@ -32,7 +32,7 @@ process CNVPYTOR_PARTITION {
 
     stub:
     """
-    touch test.pytor
+    touch ${pytor.baseName}.pytor
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
