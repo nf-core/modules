@@ -14,7 +14,7 @@ process DASTOOL_DASTOOL {
 
     output:
     tuple val(meta), path("*.log")                                      , emit: log
-    tuple val(meta), path("*_summary.tsv")                              , emit: summary
+    tuple val(meta), path("*_summary.tsv")              , optional: true, emit: summary
     tuple val(meta), path("*_DASTool_contig2bin.tsv")                   , emit: contig2bin
     tuple val(meta), path("*.eval")                     , optional: true, emit: eval
     tuple val(meta), path("*_DASTool_bins/*.fa")        , optional: true, emit: bins
