@@ -21,7 +21,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/SAM file
+      description: BAM file
       pattern: "*.{bam,sam}"
   - reference:
       type: file
@@ -35,8 +35,8 @@ output:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: SAM/BAM/CRAM file with duplicate reads marked/removed
-      pattern: "*.{sam,bam,cram}"
+      description: BAM/CRAM file with duplicate reads marked/removed
+      pattern: "*.{bam,cram}"
   - bam_index:
       type: file
       description: BAM index file

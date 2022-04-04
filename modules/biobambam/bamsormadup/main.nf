@@ -12,7 +12,7 @@ process BIOBAMBAM_BAMSORMADUP {
     tuple val(meta), path(reference)
 
     output:
-    tuple val(meta), path("*.{sam,bam,cram}")   ,emit: bam
+    tuple val(meta), path("*.{bam,cram}")       ,emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
     tuple val(meta), path("*.txt")              ,emit: metrics
     path "versions.yml"                         ,emit: versions
@@ -23,11 +23,15 @@ process BIOBAMBAM_BAMSORMADUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = "cram" if args.contains("--output-format=cram") else "bam"
+
+    if (args.contains("--output-format=cram") and reference == null) error "Reference required for CRAM output."
+
     """
     bamsormadup \\
         $args \\
         I=$bam \\
-        O=${prefix}.bam \\
+        O=${prefix}.${suffix} \\
         M=${prefix}.txt \\
         tmpfile=$prefix \\
         threads=$task.cpus
