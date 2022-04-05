@@ -19,7 +19,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'pEimTen1' ]
   - reference:
       type: file
       description: Genome reference
@@ -30,7 +30,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'pEimTen1' ]
   - versions:
       type: file
       description: File containing software versions
@@ -39,38 +39,6 @@ output:
       type: path
       description: Path to folder with indices
       pattern: "*refdata-*"
-  - sa:
-      type:
-      description: SA index
-      pattern: "refdata-*/fasta/genome.fa.sa"
-  - amb:
-      type: file
-      description: AMB index
-      pattern: "refdata-*/fasta/genome.fa.amb"
-  - ann:
-      type: file
-      description: ANN index
-      pattern: "refdata-*/fasta/genome.fa.ann"
-  - bwt:
-      type: file
-      description: BWT index
-      pattern: "refdata-*/fasta/genome.fa.bwt"
-  - fai:
-      type: file
-      description: FAI index
-      pattern: "refdata-*/fasta/genome.fa.fai"
-  - flat:
-      type: file
-      description: FLAT index
-      pattern: "refdata-*/fasta/genome.fa.flat"
-  - gdx:
-      type: file
-      description: GDX index
-      pattern: "refdata-*/fasta/genome.fa.gdx"
-  - pac:
-      type: file
-      description: PAC index
-      pattern: "refdata-*/fasta/genome.fa.pac"
 
 authors:
   - "@ksenia-krasheninnikova"

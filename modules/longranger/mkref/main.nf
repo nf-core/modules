@@ -1,5 +1,3 @@
-params.enable_conda = false
-
 process LONGRANGER_MKREF {
     tag "$meta.id"
     label 'process_medium'
@@ -11,8 +9,6 @@ process LONGRANGER_MKREF {
             workflow.containerEngine == 'docker' ) {
         exit 1, "Longranger can not be run in container environment"
     }
-
-    label 'mem_high'
 
     input:
     tuple val(meta), path(reference)
@@ -32,7 +28,7 @@ process LONGRANGER_MKREF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    longranger align --version
+    longranger: \$(echo \$(longranger mkref --version) | grep longranger | sed 's/.*(//' | sed 's/).*//')
     END_VERSIONS
     """
 }
