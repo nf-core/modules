@@ -53,7 +53,7 @@ process CENTRIFUGE {
         $aligned \\
         $sam_output \\
         $args
-    centrifuge-kreport -x $db_name ${prefix}.results.txt > ${prefix}.kreport.txt
+    centrifuge-kreport -x ${db}/${db_name} ${prefix}.results.txt > ${prefix}.kreport.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
