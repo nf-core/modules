@@ -19,10 +19,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.{bam,sam}"
+  - bams:
+      type: files
+      description: List containing 1 or more bam files
   - fasta:
       type: optional file
       description: Reference genome

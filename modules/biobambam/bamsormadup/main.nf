@@ -6,13 +6,13 @@ process BIOBAMBAM_BAMSORMADUP {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'quay.io/biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bams)
     path(fasta)
 
     output:
     tuple val(meta), path("*.{bam,cram}")       ,emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
-    tuple val(meta), path("*.metrics.txt")              ,emit: metrics
+    tuple val(meta), path("*.metrics.txt")      ,emit: metrics
     path "versions.yml"                         ,emit: versions
 
     when:
@@ -22,12 +22,13 @@ process BIOBAMBAM_BAMSORMADUP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("outputformat=cram") ? "cram" : "bam"
+    def input_string = bams.join(" I=")
 
     if (args.contains("outputformat=cram") && reference == null) error "Reference required for CRAM output."
 
     """
     bamcat \\
-        I=$bam \\
+        I=${input_string} \\
         level=0 \\
     | bamsormadup \\
         $args \\
