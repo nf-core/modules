@@ -13,17 +13,17 @@ process BCLCONVERT {
     path run_dir
 
     output:
-    path "**.fastq.gz"   ,emit: fastq
-    path "Reports/*.{csv,xml,bin}", emit: reports
-    path "Logs/*.{log,txt}", emit: logs
-    path "versions.yml" , emit: versions
+    path "*.fastq.gz"              ,emit: fastq
+    path "Reports/*.{csv,xml,bin}"  ,emit: reports
+    path "Logs/*.{log,txt}"         ,emit: logs
+    path "versions.yml"             ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    
+
     """
     bcl-convert \
         $args \\
@@ -39,34 +39,5 @@ process BCLCONVERT {
     "${task.process}":
         bclconvert: \$(echo \$(bcl-convert -V 2>&1) | sed ''s/^.*Version //;s/Copyright.*//'' ))
     END_VERSIONS
-    """
-
-    stub:
-    """
-    touch sample1_S1_L001_R1_001.fastq.gz
-    touch sample1_S1_L001_R2_001.fastq.gz
-    touch sample1_S1_L002_R1_001.fastq.gz
-    touch sample1_S1_L002_R2_001.fastq.gz
-    touch sample2_S2_L001_R1_001.fastq.gz
-    touch sample2_S2_L001_R2_001.fastq.gz
-    touch sample2_S2_L002_R1_001.fastq.gz
-    touch sample2_S2_L002_R2_001.fastq.gz
-
-    mkdir Reports
-    touch Reports/Adapter_Metrics.csv
-    touch Reports/Demultiplex_Stats.csv
-    touch Reports/fastq_list.csv
-    touch Reports/Index_Hopping_Counts.csv
-    touch Reports/IndexMetricsOut.bin
-    touch Reports/Quality_Metrics.csv
-    touch Reports/RunInfo.xml
-    touch Reports/SampleSheet.csv
-    touch Reports/Top_Unknown_Barcodes.csv
-
-    mkdir Logs
-    touch Logs/Errors.log
-    touch Logs/FastqComplete.
-    touch Logs/Info.log
-    touch Logs/Warnings.log
     """
 }

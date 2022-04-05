@@ -16,8 +16,6 @@ input:
       type: file
       description: "Input samplesheet"
       pattern: "*.{csv}"
-
-  ## TODO: is this valid?
   - run_dir:
       type: directory
       description: "Input run directory"
@@ -28,15 +26,15 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - fastq:
-      type: file
+      type: files
       description: Demultiplexed FASTQ files
       pattern: "*.{fastq.gz}"
   - reports:
-      type: file
+      type: files
       description: Demultiplexing Reports
       pattern: "*.{csv,xml,bin}"
   - logs:
-      type: file
+      type: files
       description: Log files
       pattern: "*.{log,txt}"
 authors:
