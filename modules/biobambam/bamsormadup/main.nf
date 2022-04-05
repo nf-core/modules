@@ -26,16 +26,19 @@ process BIOBAMBAM_BAMSORMADUP {
     if (args.contains("outputformat=cram") && reference == null) error "Reference required for CRAM output."
 
     """
-    bamsormadup \\
-        $args \\
+    bamcat \\
         I=$bam \\
-        O=${prefix}.${suffix} \\
+        level=0 \\
+    | bamsormadup \\
+        $args \\
         M=${prefix}.metrics.txt \\
         tmpfile=$prefix \\
-        threads=$task.cpus
+        threads=$task.cpus \\
+        > ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        bamcat: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
         bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
     END_VERSIONS
     """
