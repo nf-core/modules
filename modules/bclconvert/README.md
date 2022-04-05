@@ -4,13 +4,6 @@ bcl-convert is a commercial tool from Illumina. The container provided for the b
 
 1. Navigate to the appropriate download page. - [BCL Convert](https://support.illumina.com/sequencing/sequencing_software/bcl-convert/downloads.html): download the rpm of the desired bcl-convert version with `curl` or `wget`.
 2. Unpack the RPM package using `rpm2cpio bcl-convert-*.rpm | cpio -i --make-directories`. Place the executable in the same folder where the Dockerfile lies.
-
-2. Edit the Dockerfile. Update the bcl-convert versions in this line:
-
-   ```bash
-   ENV BCLCONVERT_VER=<VERSION>
-   ```
-
 3. Create and test the container:
 
    ```bash
