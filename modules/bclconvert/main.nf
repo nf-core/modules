@@ -12,7 +12,7 @@ process BCLCONVERT {
     path run_dir
 
     output:
-    path "**.fastq.gz"              ,emit: fastq
+    path "*.fastq.gz"               ,emit: fastq
     path "Reports/*.{csv,xml,bin}"  ,emit: reports
     path "Logs/*.{log,txt}"         ,emit: logs
     path "versions.yml"             ,emit: versions

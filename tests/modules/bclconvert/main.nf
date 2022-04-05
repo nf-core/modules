@@ -6,8 +6,8 @@ include { BCLCONVERT } from '../../../modules/bclconvert/main.nf'
 
 process STUB_BCLCONVERT_INPUT {
     output:
-    path "SampleSheet.csv"          ,samplesheet
-    path "DDMMYY_SERIAL_FLOWCELL"   ,run_dir
+    path "SampleSheet.csv"          ,emit: samplesheet
+    path "DDMMYY_SERIAL_FLOWCELL"   ,emit: run_dir
 
     stub:
     """
