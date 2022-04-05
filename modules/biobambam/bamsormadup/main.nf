@@ -12,7 +12,7 @@ process BIOBAMBAM_BAMSORMADUP {
     output:
     tuple val(meta), path("*.{bam,cram}")       ,emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
-    tuple val(meta), path("*.txt")              ,emit: metrics
+    tuple val(meta), path("*.metrics.txt")              ,emit: metrics
     path "versions.yml"                         ,emit: versions
 
     when:
@@ -30,7 +30,7 @@ process BIOBAMBAM_BAMSORMADUP {
         $args \\
         I=$bam \\
         O=${prefix}.${suffix} \\
-        M=${prefix}.txt \\
+        M=${prefix}.metrics.txt \\
         tmpfile=$prefix \\
         threads=$task.cpus
 
