@@ -2,18 +2,17 @@ process BCLCONVERT {
     tag 'demultiplexing'
     label 'process_high'
 
-    // TODO @ewels: Make bcl-convert container optional, no public container available due to licensing
-    //conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
-    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //    'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-    //    'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+    if (params.enable_conda) {
+        exit 1, "Conda environments cannot be used when using bcl-convert. Please use docker or singularity containers."
+    }
+    container "nfcore/bclconvert:3.9.3"
 
     input:
     path samplesheet
     path run_dir
 
     output:
-    path "*.fastq.gz"              ,emit: fastq
+    path "*.fastq.gz"               ,emit: fastq
     path "Reports/*.{csv,xml,bin}"  ,emit: reports
     path "Logs/*.{log,txt}"         ,emit: logs
     path "versions.yml"             ,emit: versions
