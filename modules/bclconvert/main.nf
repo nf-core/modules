@@ -36,41 +36,41 @@ process BCLCONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bclconvert: \$(echo \$(bcl-convert -V 2>&1) | sed ''s/^.*Version //;s/Copyright.*//'' ))
+        bclconvert: \$(echo \$(bcl-convert -V 2>&1) | sed 's/^.*Version //;s/Copyright.*//' ))
     END_VERSIONS
     """
 
     stub:
     """
-    touch sample1_S1_L001_R1_001.fastq.gz
-    touch sample1_S1_L001_R2_001.fastq.gz
-    touch sample1_S1_L002_R1_001.fastq.gz
-    touch sample1_S1_L002_R2_001.fastq.gz
-    touch sample2_S2_L001_R1_001.fastq.gz
-    touch sample2_S2_L001_R2_001.fastq.gz
-    touch sample2_S2_L002_R1_001.fastq.gz
-    touch sample2_S2_L002_R2_001.fastq.gz
+    echo "sample1_S1_L001_R1_001" > sample1_S1_L001_R1_001.fastq.gz
+    echo "sample1_S1_L001_R2_001" > sample1_S1_L001_R2_001.fastq.gz
+    echo "sample1_S1_L002_R1_001" > sample1_S1_L002_R1_001.fastq.gz
+    echo "sample1_S1_L002_R2_001" > sample1_S1_L002_R2_001.fastq.gz
+    echo "sample2_S2_L001_R1_001" > sample2_S2_L001_R1_001.fastq.gz
+    echo "sample2_S2_L001_R2_001" > sample2_S2_L001_R2_001.fastq.gz
+    echo "sample2_S2_L002_R1_001" > sample2_S2_L002_R1_001.fastq.gz
+    echo "sample2_S2_L002_R2_001" > sample2_S2_L002_R2_001.fastq.gz
 
     mkdir Reports
-    touch Reports/Adapter_Metrics.csv
-    touch Reports/Demultiplex_Stats.csv
-    touch Reports/fastq_list.csv
-    touch Reports/Index_Hopping_Counts.csv
-    touch Reports/IndexMetricsOut.bin
-    touch Reports/Quality_Metrics.csv
-    touch Reports/RunInfo.xml
-    touch Reports/SampleSheet.csv
-    touch Reports/Top_Unknown_Barcodes.csv
+    echo "Adapter_Metrics" >  Reports/Adapter_Metrics.csv
+    echo "Demultiplex_Stats" >  Reports/Demultiplex_Stats.csv
+    echo "fastq_list" >  Reports/fastq_list.csv
+    echo "Index_Hopping_Counts" >  Reports/Index_Hopping_Counts.csv
+    echo "IndexMetricsOut" >  Reports/IndexMetricsOut.bin
+    echo "Quality_Metrics" >  Reports/Quality_Metrics.csv
+    echo "RunInfo" >  Reports/RunInfo.xml
+    echo "SampleSheet" >  Reports/SampleSheet.csv
+    echo "Top_Unknown_Barcodes" >  Reports/Top_Unknown_Barcodes.csv
 
     mkdir Logs
-    touch Logs/Errors.log
-    touch Logs/FastqComplete.
-    touch Logs/Info.log
-    touch Logs/Warnings.log
+    echo "Errors" > Logs/Errors.log
+    echo "FastqComplete" > Logs/FastqComplete.txt
+    echo "Info" > Logs/Info.log
+    echo "Warnings" > Logs/Warnings.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bclconvert: \$(echo \$(bcl-convert -V 2>&1) | sed ''s/^.*Version //;s/Copyright.*//'' ))
+        bclconvert: 00.000.000.3.9.3
     END_VERSIONS
     """
 }
