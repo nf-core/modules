@@ -1,0 +1,49 @@
+- name: bclconvert test_bclconvert
+  command: nextflow run tests/modules/bclconvert -entry test_bclconvert -c tests/config/nextflow.config -stub-run
+  tags:
+    - bclconvert
+  files:
+    - path: output/stub/Logs/Errors.log
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Logs/FastqComplete.txt
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Logs/Info.log
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Logs/Warnings.log
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/Adapter_Metrics.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/Demultiplex_Stats.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/IndexMetricsOut.bin
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/Index_Hopping_Counts.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/Quality_Metrics.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/RunInfo.xml
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/SampleSheet.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/Top_Unknown_Barcodes.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/Reports/fastq_list.csv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample1_S1_L001_R1_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample1_S1_L001_R2_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample1_S1_L002_R1_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample1_S1_L002_R2_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample2_S2_L001_R1_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample2_S2_L001_R2_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample2_S2_L002_R1_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/sample2_S2_L002_R2_001.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/stub/versions.yml
+      md5sum: 627b44e0f6756aa9b2236c7f40b2da10
