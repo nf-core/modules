@@ -1,4 +1,4 @@
-process CENTRIFUGE {
+process CENTRIFUGE_CENTRIFUGE {
     tag "$meta.id"
     label 'process_high'
 
@@ -18,7 +18,6 @@ process CENTRIFUGE {
     output:
     tuple val(meta), path('*report.txt')                 , emit: report
     tuple val(meta), path('*results.txt')                , emit: results
-    tuple val(meta), path('*kreport.txt')                , emit: kreport
     tuple val(meta), path('*.sam')                       , optional: true, emit: sam
     tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz')   , optional: true, emit: fastq_mapped
     tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz') , optional: true, emit: fastq_unmapped
@@ -53,7 +52,6 @@ process CENTRIFUGE {
         $aligned \\
         $sam_output \\
         $args
-    centrifuge-kreport -x ${db}/${db_name} ${prefix}.results.txt > ${prefix}.kreport.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

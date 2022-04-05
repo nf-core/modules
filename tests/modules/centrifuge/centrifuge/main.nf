@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR      } from '../../../modules/untar/main.nf'
-include { CENTRIFUGE } from '../../../modules/centrifuge/main.nf'
+include { UNTAR                 } from '../../../../modules/untar/main.nf'
+include { CENTRIFUGE_CENTRIFUGE } from '../../../../modules/centrifuge/centrifuge/main.nf'
 
-workflow test_centrifuge_single_end {
+workflow test_centrifuge_centrifuge_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
@@ -16,11 +16,11 @@ workflow test_centrifuge_single_end {
     sam_format = false
 
     UNTAR ( db )
-    CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] },db_name, save_unaligned, save_aligned, sam_format )
+    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] },db_name, save_unaligned, save_aligned, sam_format )
 
 }
 
-workflow test_centrifuge_paired_end {
+workflow test_centrifuge_centrifuge_paired_end {
     input = [ [ id:'test', single_end:false ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
@@ -32,7 +32,7 @@ workflow test_centrifuge_paired_end {
      sam_format = false
 
     UNTAR ( db )
-    CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, db_name, save_unaligned, save_aligned, sam_format )
+    CENTRIFUGE_CENTRIFUGE ( input, UNTAR.out.untar.map{ it[1] }, db_name, save_unaligned, save_aligned, sam_format )
 
 
 }
