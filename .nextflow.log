@@ -1,0 +1,32 @@
+Apr-01 10:52:46.722 [main] DEBUG nextflow.cli.Launcher - $> nextflow run tests/modules/humann -entry test_humann -c tests/config/nextflow.config --outdir /tmp/tmptgzp5cyw -work-dir /tmp/tmpgsaogpt7
+Apr-01 10:52:46.825 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 21.10.6
+Apr-01 10:52:48.016 [main] INFO  nextflow.cli.CmdRun - Launching `tests/modules/humann/main.nf` [condescending_bassi] - revision: cd944d1eb1
+Apr-01 10:52:48.029 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /mnt/volume1/DSL2_2.3.2/tests/modules/humann/nextflow.config
+Apr-01 10:52:48.039 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+nextflow.exception.AbortOperationException: The specified configuration file does not exist: /mnt/volume1/DSL2_2.3.2/tests/config/nextflow.config -- check the name or choose another file
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:72)
+	at org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:59)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrap.callConstructor(ConstructorSite.java:84)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:59)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at nextflow.config.ConfigBuilder.validateConfigFiles(ConfigBuilder.groovy:245)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:193)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at nextflow.config.ConfigBuilder.buildConfigObject(ConfigBuilder.groovy:734)
+	at nextflow.config.ConfigBuilder.build(ConfigBuilder.groovy:748)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:271)
+	at nextflow.cli.Launcher.run(Launcher.groovy:480)
+	at nextflow.cli.Launcher.main(Launcher.groovy:639)
