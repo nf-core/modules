@@ -34,7 +34,7 @@ process STADENIOLIB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stadeniolib: \$(echo \$(scramble -h 2>&1) | sed 's/^.*version //; s/Author.*\$//' )
+        stadeniolib: \$(echo \$(scramble -h | head -n 1 |sed 's/^.*version //'))
     END_VERSIONS
     """
 }
