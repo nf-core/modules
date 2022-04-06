@@ -12,7 +12,7 @@ process AMPLIFY_PREDICT {
     tuple val(meta), path(faa)
     
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path('*.tsv'), emit: tsv
     path "versions.yml",            emit: versions
 
     
@@ -24,14 +24,15 @@ process AMPLIFY_PREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     
     """
-    amplify\\
-     -s "${faa}"\\
-     $args
-    mv *.tsv amplify_output.tsv
+    AMPlify \\
+        $args \\
+        -s '${faa}'
+
+    mv *.tsv '${prefix}.tsv'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        amplify_predict: 1.0.3
+        AMPlify: 1.0.3
     END_VERSIONS
     """
 }
