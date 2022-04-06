@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process SAMTOOLS_VIEW {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0"
-    } else {
-        container "quay.io/biocontainers/samtools:1.14--hb421002_0"
-    }
+    conda (params.enable_conda ? "bioconda::samtools=1.15" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/samtools:1.15--h1170115_1' :
+        'quay.io/biocontainers/samtools:1.15--h1170115_1' }"
 
     input:
     tuple val(meta), path(input)
@@ -27,16 +16,29 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path("*.cram"), emit: cram, optional: true
     path  "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta} -C" : ""
     def file_type = input.getExtension()
+    if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    samtools view --threads ${task.cpus-1} ${reference} $options.args $input > ${prefix}.${file_type}
+    samtools \\
+        view \\
+        --threads ${task.cpus-1} \\
+        ${reference} \\
+        $args \\
+        $input \\
+        $args2 \\
+        > ${prefix}.${file_type}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

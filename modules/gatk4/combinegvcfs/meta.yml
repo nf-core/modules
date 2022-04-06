@@ -1,0 +1,55 @@
+name: gatk4_combinegvcfs
+description: Combine per-sample gVCF files produced by HaplotypeCaller into a multi-sample gVCF file
+keywords:
+  - gvcf
+  - gatk4
+  - vcf
+  - combinegvcfs
+  - Short_Variant_Discovery
+tools:
+  - gatk4:
+      description:
+        Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593911-CombineGVCFs
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+
+input:
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.{fai}"
+  - dict:
+      type: file
+      description: FASTA dictionary file
+      pattern: "*.{dict}"
+  - vcf:
+      type: file
+      description: Compressed VCF files
+      pattern: "*.vcf.gz"
+  - vcf_idx:
+      type: file
+      description: VCF Index file
+      pattern: "*.{fai}"
+output:
+  - gvcf:
+      type: file
+      description: Compressed Combined GVCF file
+      pattern: "*.combined.g.vcf.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"

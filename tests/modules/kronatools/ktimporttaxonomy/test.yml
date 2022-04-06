@@ -1,9 +1,0 @@
-- name: kronatools ktimporttaxonomy test_kronatools_ktimporttaxonomy
-  command: nextflow run tests/modules/kronatools/ktimporttaxonomy -entry test_kronatools_ktimporttaxonomy -c tests/config/nextflow.config
-  tags:
-    - kronatools/ktimporttaxonomy
-    - kronatools
-  files:
-    - path: output/kronatools/taxonomy.krona.html
-      contains:
-        - "DOCTYPE html PUBLIC"

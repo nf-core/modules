@@ -1,0 +1,19 @@
+- name: cellranger count test_cellranger_count
+  command: nextflow run tests/modules/cellranger/count -entry test_cellranger_count -c tests/config/nextflow.config -c tests/modules/cellranger/count/nextflow.config
+  tags:
+    - cellranger
+    - cellranger/count
+  files:
+    - path: output/cellranger/sample-123/outs/filtered_feature_bc_matrix.h5
+    - path: output/cellranger/sample-123/outs/metrics_summary.csv
+      md5sum: 707df0f101d479d93f412ca74f9c4131
+    - path: output/cellranger/sample-123/outs/molecule_info.h5
+      md5sum: 0e56836ef0725f2ab05f56ca5a71e55b
+    - path: output/cellranger/sample-123/outs/possorted_genome_bam.bam
+      md5sum: 15441da9cfceea0bb48c8b66b1b860df
+    - path: output/cellranger/sample-123/outs/possorted_genome_bam.bam.bai
+      md5sum: 7c3d49c77016a09535aff61a027f750c
+    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix
+    - path: output/cellranger/sample-123/outs/raw_feature_bc_matrix.h5
+      md5sum: cdad1cd7b215d7137cf92515e81a8525
+    - path: output/cellranger/sample-123/outs/web_summary.html

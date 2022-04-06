@@ -1,5 +1,5 @@
 - name: gatk4 revertsam test_gatk4_revertsam
-  command: nextflow run tests/modules/gatk4/revertsam -entry test_gatk4_revertsam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/revertsam -entry test_gatk4_revertsam -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/revertsam/nextflow.config
   tags:
     - gatk4
     - gatk4/revertsam

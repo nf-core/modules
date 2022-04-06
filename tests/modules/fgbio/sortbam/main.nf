@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_SORTBAM } from '../../../../modules/fgbio/sortbam/main.nf' addParams( options: [:] )
+include { FGBIO_SORTBAM } from '../../../../modules/fgbio/sortbam/main.nf'
 
 workflow test_fgbio_sortbam {
     input = [ [ id:'test' ], // meta map

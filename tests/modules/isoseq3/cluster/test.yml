@@ -1,5 +1,5 @@
 - name: isoseq3 cluster test_isoseq3_cluster
-  command: nextflow run tests/modules/isoseq3/cluster -entry test_isoseq3_cluster -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/isoseq3/cluster -entry test_isoseq3_cluster -c ./tests/config/nextflow.config -c ./tests/modules/isoseq3/cluster/nextflow.config
   tags:
     - isoseq3
     - isoseq3/cluster
@@ -25,4 +25,4 @@
     - path: output/isoseq3/test.transcripts.singletons.bam.pbi
       md5sum: 8e0e0681179c0c36209b49fa60783841
     - path: output/isoseq3/test.transcripts.transcriptset.xml
-      contains: [ 'PacBio.DataSet.TranscriptSet' ]
+      contains: ["PacBio.DataSet.TranscriptSet"]

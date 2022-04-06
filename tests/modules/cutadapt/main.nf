@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CUTADAPT } from '../../../modules/cutadapt/main.nf'  addParams( options: [ args:'-q 25' ] )
+include { CUTADAPT } from '../../../modules/cutadapt/main.nf'
 
 //
 // Test with single-end data

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PRODIGAL } from '../../../modules/prodigal/main.nf' addParams( options: [:] )
+include { PRODIGAL } from '../../../modules/prodigal/main.nf'
 
 workflow test_prodigal {
     input = [ [ id:'test' ], // meta map

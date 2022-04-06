@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { ULTRA_PIPELINE } from '../../../../modules/ultra/pipeline/main.nf' addParams( options: [:] )
-include { GUNZIP         } from '../../../../modules/gunzip/main.nf'         addParams( options: [:] )
-include { GFFREAD        } from '../../../../modules/gffread/main.nf'        addParams( options: [args: "--sort-alpha --keep-genes -T", suffix: "_sorted"] )
+include { ULTRA_PIPELINE } from '../../../../modules/ultra/pipeline/main.nf'
+include { GUNZIP         } from '../../../../modules/gunzip/main.nf'
+include { GFFREAD        } from '../../../../modules/gffread/main.nf'
 
 workflow test_ultra_pipeline {
 

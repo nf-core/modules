@@ -1,5 +1,5 @@
 - name: untar
-  command: nextflow run ./tests/modules/untar -entry test_untar -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/untar -entry test_untar -c ./tests/config/nextflow.config -c ./tests/modules/untar/nextflow.config
   tags:
     - untar
   files:

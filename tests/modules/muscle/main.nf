@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MUSCLE } from '../../../modules/muscle/main.nf' addParams( options: ['args': '-fasta -verbose -phys -phyi -maxiters 2'])
-include { MUSCLE as MUSCLE_TREE } from '../../../modules/muscle/main.nf' addParams( options: ['args': '-maketree'])
+include { MUSCLE } from '../../../modules/muscle/main.nf'
+include { MUSCLE as MUSCLE_TREE } from '../../../modules/muscle/main.nf'
 
 workflow test_muscle {
 

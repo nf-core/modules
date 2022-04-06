@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf' addParams( options: [:] )
-include { BWA_ALN   } from '../../../../modules/bwa/aln/main.nf'   addParams( options: [:] )
-include { BWA_SAMSE } from '../../../../modules/bwa/samse/main.nf' addParams( options: [:] )
+include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf'
+include { BWA_ALN   } from '../../../../modules/bwa/aln/main.nf'
+include { BWA_SAMSE } from '../../../../modules/bwa/samse/main.nf'
 
 workflow test_bwa_samse {
 

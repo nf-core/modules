@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DSHBIO_SPLITBED } from '../../../../modules/dshbio/splitbed/main.nf' addParams( options: [suffix: '.', args: '--records 2'] )
+include { DSHBIO_SPLITBED } from '../../../../modules/dshbio/splitbed/main.nf'
 
 workflow test_dshbio_splitbed {
     input = [ [ id:'test' ], // meta map

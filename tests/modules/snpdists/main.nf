@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPDISTS } from '../../../modules/snpdists/main.nf' addParams( options: [:] )
+include { SNPDISTS } from '../../../modules/snpdists/main.nf'
 
 workflow test_snpdists {
     

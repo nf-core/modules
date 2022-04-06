@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_COLLECTWGSMETRICS } from '../../../../modules/picard/collectwgsmetrics/main.nf' addParams( options: [:] )
+include { PICARD_COLLECTWGSMETRICS } from '../../../../modules/picard/collectwgsmetrics/main.nf'
 
 workflow test_picard_collectwgsmetrics {
     input = [ [ id:'test', single_end:false ], // meta map

@@ -1,5 +1,5 @@
 - name: tiddit sv
-  command: nextflow run ./tests/modules/tiddit/sv -entry test_tiddit_sv -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/tiddit/sv -entry test_tiddit_sv -c ./tests/config/nextflow.config -c ./tests/modules/tiddit/sv/nextflow.config
   tags:
     - tiddit
     - tiddit/sv
@@ -11,7 +11,7 @@
     - path: output/tiddit/test.vcf
 
 - name: tiddit sv no ref
-  command: nextflow run ./tests/modules/tiddit/sv -entry test_tiddit_sv_no_ref -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/tiddit/sv -entry test_tiddit_sv_no_ref -c ./tests/config/nextflow.config -c ./tests/modules/tiddit/sv/nextflow.config
   tags:
     - tiddit
     - tiddit/sv

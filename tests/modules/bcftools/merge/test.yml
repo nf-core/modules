@@ -1,5 +1,5 @@
 - name: bcftools merge test_bcftools_merge
-  command: nextflow run tests/modules/bcftools/merge -entry test_bcftools_merge -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/merge/nextflow.config
   tags:
     - bcftools/merge
     - bcftools

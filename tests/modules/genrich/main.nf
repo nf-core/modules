@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GENRICH } from '../../../modules/genrich/main.nf' addParams( options: ["args": "-p 0.1"] )
-include { GENRICH as GENRICH_CTRL    } from '../../../modules/genrich/main.nf' addParams( options: ["args": "-p 0.9"] )
-include { GENRICH as GENRICH_ALL     } from '../../../modules/genrich/main.nf' addParams( options: ["args": "-r -p 0.1"] )
-include { GENRICH as GENRICH_ATACSEQ } from '../../../modules/genrich/main.nf' addParams( options: ["args": "-j -p 0.1"] )
+include { GENRICH } from '../../../modules/genrich/main.nf'
+include { GENRICH as GENRICH_CTRL    } from '../../../modules/genrich/main.nf'
+include { GENRICH as GENRICH_ALL     } from '../../../modules/genrich/main.nf'
+include { GENRICH as GENRICH_ATACSEQ } from '../../../modules/genrich/main.nf'
 
 workflow test_genrich {
     input     = [ [ id:'test', single_end:false ], // meta map

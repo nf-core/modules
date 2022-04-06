@@ -1,5 +1,5 @@
 - name: picard collectmultiplemetrics
-  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c ./tests/config/nextflow.config -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
   tags:
     - picard
     - picard/collectmultiplemetrics

@@ -1,0 +1,30 @@
+name: krona_kronadb
+description: KronaTools Update Taxonomy downloads a taxonomy database
+keywords:
+  - database
+  - taxonomy
+  - krona
+tools:
+  - krona:
+      description: Krona Tools is a set of scripts to create Krona charts from several Bioinformatics tools as well as from text and XML files.
+      homepage: https://github.com/marbl/Krona/wiki/KronaTools
+      documentation: https://github.com/marbl/Krona/wiki/Installing
+      tool_dev_url:
+      doi: https://doi.org/10.1186/1471-2105-12-385
+      licence:
+
+input:
+  - none: There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: A TAB separated file that contains a taxonomy database.
+      pattern: "*.{tab}"
+
+authors:
+  - "@mjakobs"

@@ -1,5 +1,5 @@
 - name: bcftools norm
-  command: nextflow run ./tests/modules/bcftools/norm -entry test_bcftools_norm -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/bcftools/norm -entry test_bcftools_norm -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/norm/nextflow.config
   tags:
     - bcftools
     - bcftools/norm

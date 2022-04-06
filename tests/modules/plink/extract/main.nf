@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { PLINK_VCF     } from '../../../../modules/plink/vcf/main.nf'     addParams ( options: [args:'--make-bed --set-missing-var-ids @:#:\\$1:\\$2'])
-include { PLINK_EXTRACT } from '../../../../modules/plink/extract/main.nf' addParams( options: [suffix:'.extract'] )
+include { PLINK_VCF     } from '../../../../modules/plink/vcf/main.nf'
+include { PLINK_EXTRACT } from '../../../../modules/plink/extract/main.nf'
 
 workflow test_plink_extract {
 

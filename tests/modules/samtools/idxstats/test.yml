@@ -1,5 +1,5 @@
 - name: samtools idxstats
-  command: nextflow run ./tests/modules/samtools/idxstats -entry test_samtools_idxstats -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/samtools/idxstats -entry test_samtools_idxstats -c ./tests/config/nextflow.config -c ./tests/modules/samtools/idxstats/nextflow.config
   tags:
     - samtools
     - samtools/idxstats

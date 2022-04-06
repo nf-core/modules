@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf' addParams( options: [:] )
+include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf'
 
 workflow test_diamond_makedb {
 

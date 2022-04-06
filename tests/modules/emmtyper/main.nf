@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EMMTYPER } from '../../../modules/emmtyper/main.nf' addParams( options: [:] )
+include { EMMTYPER } from '../../../modules/emmtyper/main.nf'
 
 workflow test_emmtyper {
     

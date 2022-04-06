@@ -1,0 +1,16 @@
+- name: transdecoder longorf test_transdecoder_longorf
+  command: nextflow run tests/modules/transdecoder/longorf -entry test_transdecoder_longorf -c tests/config/nextflow.config
+  tags:
+    - transdecoder
+    - transdecoder/longorf
+  files:
+    - path: output/transdecoder/versions.yml
+      md5sum: 15cffd5b1119e63d52dc754caf0f2d3c
+    - path: output/transdecoder/test/base_freqs.dat
+      md5sum: 5226ef383532e9b16c16b03e35ce181e
+    - path: output/transdecoder/test/longest_orfs.cds
+      md5sum: 041ac609e4c4ffb38676b1f88365be0f
+    - path: output/transdecoder/test/longest_orfs.gff3
+      md5sum: 96062ef88364f6bf1368d65cd1aad350
+    - path: output/transdecoder/test/longest_orfs.pep
+      md5sum: 0b903d36040676efeb2c50ab5ba46bbd

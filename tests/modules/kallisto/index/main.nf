@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTO_INDEX } from '../../../../modules/kallisto/index/main.nf' addParams( options: [:] )
+include { KALLISTO_INDEX } from '../../../../modules/kallisto/index/main.nf'
 
 workflow test_kallisto_index {
 

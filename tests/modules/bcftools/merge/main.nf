@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 //keep --no-verson argument, otherwise md5 will change on each execution
-include { BCFTOOLS_MERGE } from '../../../../modules/bcftools/merge/main.nf' addParams( options: ['args': '--force-samples --no-version'] )
+include { BCFTOOLS_MERGE } from '../../../../modules/bcftools/merge/main.nf'
 
 workflow test_bcftools_merge {
     input = [ [ id:'test' ], // meta map

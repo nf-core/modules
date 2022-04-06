@@ -1,5 +1,5 @@
 - name: damageprofiler
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler -c tests/config/nextflow.config -dump-channels
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler -c ./tests/config/nextflow.config -dump-channels -c ./tests/modules/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:
@@ -36,7 +36,7 @@
       md5sum: bec0c5fc2fa9c82b04949e2d8b6e979c
 
 - name: damageprofiler_reference
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_reference -c tests/config/nextflow.config -dump-channels
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_reference -c ./tests/config/nextflow.config -dump-channels -c ./tests/modules/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:
@@ -73,7 +73,7 @@
       md5sum: bec0c5fc2fa9c82b04949e2d8b6e979c
 
 - name: damageprofiler_specieslist
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_specieslist -c tests/config/nextflow.config -dump-channels
+  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_specieslist -c ./tests/config/nextflow.config -dump-channels -c ./tests/modules/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:

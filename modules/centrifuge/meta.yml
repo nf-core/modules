@@ -1,0 +1,76 @@
+name: centrifuge
+description: Classifies metagenomic sequence data
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - db
+tools:
+  - centrifuge:
+      description: Centrifuge is a classifier for metagenomic sequences.
+      homepage: https://ccb.jhu.edu/software/centrifuge/
+      documentation: https://ccb.jhu.edu/software/centrifuge/manual.shtml
+      doi: 10.1101/gr.210641.116
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - db:
+      type: directory
+      description: Centrifuge database in .tar.gz format
+      pattern: "*.tar.gz"
+  - db_name:
+      type: string
+      description: Centrifuge database filenames without the suffix ".cf"
+  - save_unaligned:
+      type: value
+      description: If true unmapped fastq files are saved
+  - save_aligned:
+      type: value
+      description: If true mapped fastq files are saved
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: |
+        File containing a classification summary
+      pattern: "*.{report.txt}"
+  - results:
+      type: file
+      description: |
+        File containing classification results
+      pattern: "*.{results.txt}"
+  - kreport:
+      type: file
+      description: |
+        File containing kraken-style report from centrifuge
+        out files.
+      pattern: "*.{kreport.txt}"
+  - fastq_unmapped:
+      type: file
+      description: Unmapped fastq files
+      pattern: "*.unmapped.fastq.gz"
+  - fastq_mapped:
+      type: file
+      description: Mapped fastq files
+      pattern: "*.mapped.fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@sofstam"
+  - "@jfy133"
+  - "@sateeshperi"

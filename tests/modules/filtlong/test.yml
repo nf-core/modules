@@ -1,5 +1,5 @@
 - name: filtlong test_filtlong
-  command: nextflow run tests/modules/filtlong -entry test_filtlong -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:
@@ -7,7 +7,7 @@
       md5sum: 7029066c27ac6f5ef18d660d5741979a
 
 - name: filtlong test_filtlong_illumina_se
-  command: nextflow run tests/modules/filtlong -entry test_filtlong_illumina_se -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_se -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:
@@ -15,7 +15,7 @@
       md5sum: 7029066c27ac6f5ef18d660d5741979a
 
 - name: filtlong test_filtlong_illumina_pe
-  command: nextflow run tests/modules/filtlong -entry test_filtlong_illumina_pe -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_pe -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SLOP } from '../../../../modules/bedtools/slop/main.nf' addParams( options: [args: '-l 15 -r 30', suffix: '_out'] )
+include { BEDTOOLS_SLOP } from '../../../../modules/bedtools/slop/main.nf'
 
 workflow test_bedtools_slop {
     input = [ [ id:'test'],

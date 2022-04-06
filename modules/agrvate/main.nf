@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process AGRVATE {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::agrvate=1.0.2" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/agrvate:1.0.2--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/agrvate:1.0.2--hdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agrvate:1.0.2--hdfd78af_0' :
+        'quay.io/biocontainers/agrvate:1.0.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -26,16 +15,20 @@ process AGRVATE {
     path "${fasta.baseName}-results"                                                , emit: results_dir
     path "versions.yml"                                                             , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agrvate \\
-        $options.args \\
+        $args \\
         -i $fasta
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
+    "${task.process}":
+        agrvate: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
     END_VERSIONS
     """
 }

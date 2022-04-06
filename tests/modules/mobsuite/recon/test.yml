@@ -1,0 +1,12 @@
+- name: mobsuite recon test_mobsuite_recon
+  command: nextflow run tests/modules/mobsuite/recon -entry test_mobsuite_recon -c tests/config/nextflow.config
+  tags:
+    - mobsuite/recon
+    - mobsuite
+  files:
+    - path: output/mobsuite/results/chromosome.fasta
+      md5sum: 33b2a0fa321c73c6ba8d8272dd53c6d4
+    - path: output/mobsuite/results/contig_report.txt
+      md5sum: a0ae364a9f2b475f77588d0b3c24b857
+    - path: output/mobsuite/versions.yml
+      md5sum: 7f7a0f8957394b0e526233a0edb8e20a

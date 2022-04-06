@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CHROMAP_INDEX } from '../../../../modules/chromap/index/main.nf' addParams( options: [:] )
+include { CHROMAP_INDEX } from '../../../../modules/chromap/index/main.nf'
 
 workflow test_chromap_index {
 

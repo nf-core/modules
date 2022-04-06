@@ -1,21 +1,10 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process BBMAP_BBSPLIT {
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::bbmap=38.93" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/bbmap:38.93--he522d1c_0"
-    } else {
-        container "quay.io/biocontainers/bbmap:38.93--he522d1c_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bbmap:38.93--he522d1c_0' :
+        'quay.io/biocontainers/bbmap:38.93--he522d1c_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -31,8 +20,12 @@ process BBMAP_BBSPLIT {
     tuple val(meta), path('*txt')             , optional:true, emit: stats
     path "versions.yml"                       , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -54,11 +47,11 @@ process BBMAP_BBSPLIT {
                 ${other_refs.join(' ')} \\
                 path=bbsplit \\
                 threads=$task.cpus \\
-                $options.args
+                $args
 
             cat <<-END_VERSIONS > versions.yml
-            ${getProcessName(task.process)}:
-                ${getSoftwareName(task.process)}: \$(bbversion.sh 2>&1)
+            "${task.process}":
+                bbmap: \$(bbversion.sh 2>&1)
             END_VERSIONS
             """
         } else {
@@ -83,11 +76,11 @@ process BBMAP_BBSPLIT {
             $fastq_in \\
             $fastq_out \\
             refstats=${prefix}.stats.txt \\
-            $options.args
+            $args
 
         cat <<-END_VERSIONS > versions.yml
-        ${getProcessName(task.process)}:
-            ${getSoftwareName(task.process)}: \$(bbversion.sh 2>&1)
+        "${task.process}":
+            bbmap: \$(bbversion.sh 2>&1)
         END_VERSIONS
         """
     }

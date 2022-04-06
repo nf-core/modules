@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_MERGEPE                                           } from '../../../../modules/seqtk/mergepe/main.nf'           addParams( options: [:] )
-include { KHMER_NORMALIZEBYMEDIAN                                 } from '../../../../modules/khmer/normalizebymedian/main.nf' addParams( options: [:] )
-include { KHMER_NORMALIZEBYMEDIAN as KHMER_NORMALIZEBYMEDIAN_ARGS } from '../../../../modules/khmer/normalizebymedian/main.nf' addParams( options: [args: '-C 20 -k 32'] )
+include { SEQTK_MERGEPE                                           } from '../../../../modules/seqtk/mergepe/main.nf'
+include { KHMER_NORMALIZEBYMEDIAN                                 } from '../../../../modules/khmer/normalizebymedian/main.nf'
+include { KHMER_NORMALIZEBYMEDIAN as KHMER_NORMALIZEBYMEDIAN_ARGS } from '../../../../modules/khmer/normalizebymedian/main.nf'
 
 workflow test_khmer_normalizebymedian_only_pe {
     

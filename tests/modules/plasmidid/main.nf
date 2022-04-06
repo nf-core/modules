@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLASMIDID } from '../../../modules/plasmidid/main.nf' addParams ( options: ['args' : '-k 0.8'] )
+include { PLASMIDID } from '../../../modules/plasmidid/main.nf'
 
 workflow test_plasmidid {
 

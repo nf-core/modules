@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GSTAMA_COLLAPSE } from '../../../../modules/gstama/collapse/main.nf' addParams( options: [ args:"-x capped -b BAM", suffix:'_tc' ] )
+include { GSTAMA_COLLAPSE } from '../../../../modules/gstama/collapse/main.nf'
 
 workflow test_gstama_collapse {
 

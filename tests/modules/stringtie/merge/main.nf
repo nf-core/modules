@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE       } from '../../../../modules/stringtie/stringtie/main.nf' addParams( options: [:] )
-include { STRINGTIE_MERGE } from '../../../../modules/stringtie/merge/main.nf'     addParams( options: [:] )
+include { STRINGTIE       } from '../../../../modules/stringtie/stringtie/main.nf'
+include { STRINGTIE_MERGE } from '../../../../modules/stringtie/merge/main.nf'
 
 /*
  * Test with forward strandedness

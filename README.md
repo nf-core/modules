@@ -1,6 +1,6 @@
 # ![nf-core/modules](docs/images/nfcore-modules_logo.png)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.04.0-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -31,109 +31,109 @@ We have written a helper command in the `nf-core/tools` package that uses the Gi
 1. Install the latest version of [`nf-core/tools`](https://github.com/nf-core/tools#installation) (`>=2.0`)
 2. List the available modules:
 
-    ```console
-    $ nf-core modules list remote
+   ```console
+   $ nf-core modules list remote
 
-                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
+                                         ,--./,-.
+         ___     __   __   __   ___     /,-._.--~\
+   |\ | |__  __ /  ` /  \ |__) |__         }  {
+   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                         `._,._,'
 
-    nf-core/tools version 2.0
+   nf-core/tools version 2.0
 
-    INFO     Modules available from nf-core/modules (master):                       pipeline_modules.py:164
+   INFO     Modules available from nf-core/modules (master):                       pipeline_modules.py:164
 
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ Module Name                    ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ bandage/image                  │
-    │ bcftools/consensus             │
-    │ bcftools/filter                │
-    │ bcftools/isec                  │
-    ..truncated..
-    ```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ Module Name                    ┃
+   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+   │ bandage/image                  │
+   │ bcftools/consensus             │
+   │ bcftools/filter                │
+   │ bcftools/isec                  │
+   ..truncated..
+   ```
 
 3. Install the module in your pipeline directory:
 
-    ```console
-    $ nf-core modules install fastqc
+   ```console
+   $ nf-core modules install fastqc
 
-                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
+                                         ,--./,-.
+         ___     __   __   __   ___     /,-._.--~\
+   |\ | |__  __ /  ` /  \ |__) |__         }  {
+   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                         `._,._,'
 
-    nf-core/tools version 2.0
+   nf-core/tools version 2.0
 
-    INFO     Installing fastqc                                                      pipeline_modules.py:213
-    INFO     Downloaded 3 files to ./modules/nf-core/modules/fastqc                 pipeline_modules.py:236
-    ```
+   INFO     Installing fastqc                                                      pipeline_modules.py:213
+   INFO     Downloaded 3 files to ./modules/nf-core/modules/fastqc                 pipeline_modules.py:236
+   ```
 
 4. Import the module in your Nextflow script:
 
-    ```nextflow
-    #!/usr/bin/env nextflow
+   ```nextflow
+   #!/usr/bin/env nextflow
 
-    nextflow.enable.dsl = 2
+   nextflow.enable.dsl = 2
 
-    include { FASTQC } from './modules/nf-core/modules/fastqc/main' addParams( options: [:] )
-    ```
+   include { FASTQC } from './modules/nf-core/modules/fastqc/main'
+   ```
 
 5. Remove the module from the pipeline repository if required:
 
-    ```console
-    $ nf-core modules remove fastqc
+   ```console
+   $ nf-core modules remove fastqc
 
-                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
+                                         ,--./,-.
+         ___     __   __   __   ___     /,-._.--~\
+   |\ | |__  __ /  ` /  \ |__) |__         }  {
+   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                         `._,._,'
 
-    nf-core/tools version 2.0
+   nf-core/tools version 2.0
 
-    INFO     Removing fastqc                                                        pipeline_modules.py:271
-    INFO     Successfully removed fastqc                                            pipeline_modules.py:285
-    ```
+   INFO     Removing fastqc                                                        pipeline_modules.py:271
+   INFO     Successfully removed fastqc                                            pipeline_modules.py:285
+   ```
 
 6. Check that a locally installed nf-core module is up-to-date compared to the one hosted in this repo:
 
-    ```console
-    $ nf-core modules lint fastqc
+   ```console
+   $ nf-core modules lint fastqc
 
-                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
+                                         ,--./,-.
+         ___     __   __   __   ___     /,-._.--~\
+   |\ | |__  __ /  ` /  \ |__) |__         }  {
+   | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                         `._,._,'
 
-    nf-core/tools version 2.0
+   nf-core/tools version 2.0
 
-    INFO     Linting pipeline: .                                                    lint.py:104
-    INFO     Linting module: fastqc                                                 lint.py:106
+   INFO     Linting pipeline: .                                                    lint.py:104
+   INFO     Linting module: fastqc                                                 lint.py:106
 
-    ╭─────────────────────────────────────────────────────────────────────────────────╮
-    │ [!] 1 Test Warning                                                              │
-    ╰─────────────────────────────────────────────────────────────────────────────────╯
-    ╭──────────────┬───────────────────────────────┬──────────────────────────────────╮
-    │ Module name  │ Test message                  │ File path                        │
-    ├──────────────┼───────────────────────────────┼──────────────────────────────────┤
-    │ fastqc       │ Local copy of module outdated │ modules/nf-core/modules/fastqc/  │
-    ╰──────────────┴────────────────────────────── ┴──────────────────────────────────╯
-    ╭──────────────────────╮
-    │ LINT RESULTS SUMMARY │
-    ├──────────────────────┤
-    │ [✔]  15 Tests Passed │
-    │ [!]   1 Test Warning │
-    │ [✗]   0 Test Failed  │
-    ╰──────────────────────╯
-    ```
+   ╭─────────────────────────────────────────────────────────────────────────────────╮
+   │ [!] 1 Test Warning                                                              │
+   ╰─────────────────────────────────────────────────────────────────────────────────╯
+   ╭──────────────┬───────────────────────────────┬──────────────────────────────────╮
+   │ Module name  │ Test message                  │ File path                        │
+   ├──────────────┼───────────────────────────────┼──────────────────────────────────┤
+   │ fastqc       │ Local copy of module outdated │ modules/nf-core/modules/fastqc/  │
+   ╰──────────────┴────────────────────────────── ┴──────────────────────────────────╯
+   ╭──────────────────────╮
+   │ LINT RESULTS SUMMARY │
+   ├──────────────────────┤
+   │ [✔]  15 Tests Passed │
+   │ [!]   1 Test Warning │
+   │ [✗]   0 Test Failed  │
+   ╰──────────────────────╯
+   ```
 
 ## Adding new modules
 
-If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/adding_modules).
+If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/modules#writing-a-new-module-reference).
 
 > Please be kind to our code reviewers and submit one pull request per module :)
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQUENZAUTILS_GCWIGGLE } from '../../../../modules/sequenzautils/gcwiggle/main.nf' addParams( options: [ 'args': '-w 50' ] )
+include { SEQUENZAUTILS_GCWIGGLE } from '../../../../modules/sequenzautils/gcwiggle/main.nf'
 
 workflow test_sequenzautils_gcwiggle {
     input = [ [ id:'test' ], // meta map

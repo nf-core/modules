@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMCOPY_READCOUNTER } from '../../../../modules/hmmcopy/readcounter/main.nf' addParams( options: [:] )
+include { HMMCOPY_READCOUNTER } from '../../../../modules/hmmcopy/readcounter/main.nf'
 
 workflow test_hmmcopy_readcounter {
 

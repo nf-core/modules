@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAMTOOLS_SPLIT } from '../../../../modules/bamtools/split/main.nf' addParams( options: [args:"-reference"] )
+include { BAMTOOLS_SPLIT } from '../../../../modules/bamtools/split/main.nf'
 
 workflow test_bamtools_split {
 

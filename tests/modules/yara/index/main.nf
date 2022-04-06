@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { YARA_INDEX } from '../../../../modules/yara/index/main.nf' addParams( options: [publish_dir:'yara'] )
+include { YARA_INDEX } from '../../../../modules/yara/index/main.nf'
 
 workflow test_yara_index {
 

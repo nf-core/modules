@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ABACAS } from '../../../modules/abacas/main.nf' addParams ( options: ['args' : '-m -p nucmer'] )
+include { ABACAS } from '../../../modules/abacas/main.nf'
 
 workflow test_abacas {
 

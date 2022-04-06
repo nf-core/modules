@@ -1,22 +1,11 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process SAMTOOLS_STATS {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0"
-    } else {
-        container "quay.io/biocontainers/samtools:1.14--hb421002_0"
-    }
+    conda (params.enable_conda ? "bioconda::samtools=1.15" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/samtools:1.15--h1170115_1' :
+        'quay.io/biocontainers/samtools:1.15--h1170115_1' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -26,14 +15,34 @@ process SAMTOOLS_STATS {
     tuple val(meta), path("*.stats"), emit: stats
     path  "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
+    def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ""
     """
-    samtools stats --threads ${task.cpus-1} ${reference} ${input} > ${input}.stats
+    samtools \\
+        stats \\
+        --threads ${task.cpus-1} \\
+        ${reference} \\
+        ${input} \\
+        > ${input}.stats
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${input}.stats
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

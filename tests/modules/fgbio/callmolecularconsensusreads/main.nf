@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_SORTBAM } from '../../../../modules/fgbio/sortbam/main.nf' addParams( options: [args: '-s TemplateCoordinate', suffix: '_out'] )
-include { FGBIO_CALLMOLECULARCONSENSUSREADS } from '../../../../modules/fgbio/callmolecularconsensusreads/main.nf' addParams( options: [args: '-M 1', suffix: '_molreads'] )
+include { FGBIO_SORTBAM } from '../../../../modules/fgbio/sortbam/main.nf'
+include { FGBIO_CALLMOLECULARCONSENSUSREADS } from '../../../../modules/fgbio/callmolecularconsensusreads/main.nf'
 
 workflow test_fgbio_callmolecularconsensusreads {
     input = [ [ id:'test' ], // meta map

@@ -1,0 +1,16 @@
+- name: cellranger mkfastq test_cellranger_mkfastq_simple
+  command: nextflow run tests/modules/cellranger/mkfastq -entry test_cellranger_mkfastq_simple -c tests/config/nextflow.config -c ./tests/modules/cellranger/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellranger
+    - cellranger/mkfastq
+  files:
+    - path: output/cellranger/cellranger-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+- name: cellranger mkfastq test_cellranger_mkfastq_illumina
+  command: nextflow run tests/modules/cellranger/mkfastq -entry test_cellranger_mkfastq_illumina -c tests/config/nextflow.config -c ./tests/modules/cellranger/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellranger
+    - cellranger/mkfastq
+  files:
+    - path: output/cellranger/cellranger-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
+      md5sum: d41d8cd98f00b204e9800998ecf8427e

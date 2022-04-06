@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { RAXMLNG as RAXMLNG_NO_BOOTSTRAP } from '../../../modules/raxmlng/main.nf' addParams( options: [args:'--model GTR+G']                 )
-include { RAXMLNG as RAXMLNG_BOOTSTRAP    } from '../../../modules/raxmlng/main.nf' addParams( options: [args:'--all --model GTR+G --bs-trees 1000'] )
+include { RAXMLNG as RAXMLNG_NO_BOOTSTRAP } from '../../../modules/raxmlng/main.nf'
+include { RAXMLNG as RAXMLNG_BOOTSTRAP    } from '../../../modules/raxmlng/main.nf'
 
 //
 // Test without bootstrapping

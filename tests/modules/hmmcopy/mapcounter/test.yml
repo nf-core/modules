@@ -1,0 +1,12 @@
+- name: hmmcopy mapcounter test_hmmcopy_mapcounter
+  command: nextflow run tests/modules/hmmcopy/mapcounter -entry test_hmmcopy_mapcounter -c tests/config/nextflow.config
+  tags:
+    - hmmcopy/mapcounter
+    - hmmcopy
+  files:
+    - path: output/hmmcopy/genome.fasta.map.bw
+      md5sum: 7ad68224a1e40287978284c387e8eb70
+    - path: output/hmmcopy/genome.fasta.map.map.wig
+      md5sum: e2d39dc204ed31c1ce372d633a42560f
+    - path: output/hmmcopy/versions.yml
+      md5sum: 8361e3c0f8b96cf84834678cf988a209

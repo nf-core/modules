@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FLASH } from '../../../modules/flash/main.nf' addParams( options: [args:'-m 20 -M 100'] )
+include { FLASH } from '../../../modules/flash/main.nf'
 
 workflow test_flash {
     input = [

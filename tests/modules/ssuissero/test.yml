@@ -1,0 +1,9 @@
+- name: ssuissero test_ssuissero
+  command: nextflow run tests/modules/ssuissero -entry test_ssuissero -c tests/config/nextflow.config
+  tags:
+    - ssuissero
+  files:
+    - path: output/ssuissero/test_serotyping_res.tsv
+      md5sum: 559dd2ca386eeb58f3975e3204ce9d43
+    - path: output/ssuissero/versions.yml
+      md5sum: be29b478690b2047e0413ffe01c85e1e

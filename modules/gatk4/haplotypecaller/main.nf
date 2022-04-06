@@ -1,40 +1,32 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process GATK4_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_medium'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/gatk4:4.2.3.0--hdfd78af_0"
-    }
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
+        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta), path(input), path(input_index), path(intervals)
     path fasta
     path fai
     path dict
     path dbsnp
     path dbsnp_tbi
-    path interval
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix          = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def interval_option = interval ? "-L ${interval}" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def interval_option = intervals ? "-L ${intervals}" : ""
     def dbsnp_option    = dbsnp ? "-D ${dbsnp}" : ""
     def avail_mem       = 3
     if (!task.memory) {
@@ -51,12 +43,12 @@ process GATK4_HAPLOTYPECALLER {
         ${dbsnp_option} \\
         ${interval_option} \\
         -O ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         --tmp-dir .
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }

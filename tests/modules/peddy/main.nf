@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PEDDY } from '../../../modules/peddy/main.nf' addParams( options: [:] )
+include { PEDDY } from '../../../modules/peddy/main.nf'
 
 workflow test_peddy {
 
@@ -13,5 +13,5 @@ workflow test_peddy {
     ]
     ped = file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
 
-    PEDDY ( input , ped )
+    PEDDY ( input, ped )
 }

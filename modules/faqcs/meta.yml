@@ -1,0 +1,72 @@
+name: faqcs
+description: Perform adapter and quality trimming on sequencing reads with reporting
+keywords:
+  - trimming
+  - quality control
+  - fastq
+  - faqcs
+tools:
+  - faqcs:
+      description: |
+        FaQCs combines several features of currently available applications into a single, user-friendly process, and includes additional unique capabilities such as filtering the PhiX control sequences, conversion of FASTQ formats, and multi-threading. The original data and trimmed summaries are reported within a variety of graphics and reports, providing a simple way to do data quality control and assurance.
+      homepage: https://github.com/LANL-Bioinformatics/FaQCs
+      documentation: https://github.com/LANL-Bioinformatics/FaQCs
+      tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
+      doi: "https://doi.org/10.1186/s12859-014-0366-2"
+      licence: ["GPLv3 License"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: The trimmed/modified fastq reads
+      pattern: "*trimmed.fastq.gz"
+  - reads_fail:
+      type: file
+      description: Reads that failed the preprocessing (Optional with --discard args setting)
+      pattern: "*discard.fastq.gz"
+  - reads_unpaired:
+      type: file
+      description: Reads without matching mates in paired-end files (Optional)
+      pattern: "*trimmed.unpaired.fastq.gz"
+  - stats:
+      type: file
+      description: trimming/qc text stats file
+      pattern: "*.stats.txt"
+  - txt:
+      type: file
+      description: trimming/qc text txt files from --debug option
+      pattern: "*.txt"
+  - statspdf:
+      type: file
+      description: trimming/qc pdf report file
+      pattern: "*_qc_report.pdf"
+  - log:
+      type: file
+      description: fastq log file
+      pattern: "*.log"
+authors:
+  - "@mjcipriano"
+  - "@sateeshperi"
+  - "@hseabolt"

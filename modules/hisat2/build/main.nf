@@ -1,25 +1,14 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
-def VERSION = '2.2.0'
+def VERSION = '2.2.0' // Version information not provided by tool on CLI
 
 process HISAT2_BUILD {
     tag "$fasta"
     label 'process_high'
     label 'process_high_memory'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'index', meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? 'bioconda::hisat2=2.2.1' : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/hisat2:2.2.1--h1b792b2_3"
-    } else {
-        container "quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hisat2:2.2.1--h1b792b2_3' :
+        'quay.io/biocontainers/hisat2:2.2.1--h1b792b2_3' }"
 
     input:
     path fasta
@@ -30,7 +19,11 @@ process HISAT2_BUILD {
     path "hisat2"       , emit: index
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
+    def args = task.ext.args ?: ''
     def avail_mem = 0
     if (!task.memory) {
         log.info "[HISAT2 index build] Available memory not known - defaulting to 0. Specify process memory requirements to change this."
@@ -52,7 +45,6 @@ process HISAT2_BUILD {
         log.info "[HISAT2 index build] Less than ${hisat2_build_memory} GB available, so NOT using splice sites and exons to build HISAT2 index."
         log.info "[HISAT2 index build] Use --hisat2_build_memory [small number] to skip this check."
     }
-
     """
     mkdir hisat2
     $extract_exons
@@ -60,13 +52,13 @@ process HISAT2_BUILD {
         -p $task.cpus \\
         $ss \\
         $exon \\
-        $options.args \\
+        $args \\
         $fasta \\
         hisat2/${fasta.baseName}
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$(echo $VERSION)
+    "${task.process}":
+        hisat2: $VERSION
     END_VERSIONS
     """
 }

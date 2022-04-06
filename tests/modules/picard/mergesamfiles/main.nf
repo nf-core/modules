@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_MERGESAMFILES } from '../../../../modules/picard/mergesamfiles/main.nf' addParams( options: [:] )
+include { PICARD_MERGESAMFILES } from '../../../../modules/picard/mergesamfiles/main.nf'
 
 workflow test_picard_mergesamfiles {
     input = [ [ id:'test', single_end:false ], // meta map

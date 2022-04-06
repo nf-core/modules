@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'    addParams( options: [:] )
-include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../modules/bismark/methylationextractor/main.nf' addParams( options: [:] )
+include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'
+include { BISMARK_METHYLATIONEXTRACTOR } from '../../../../modules/bismark/methylationextractor/main.nf'
 
 workflow test_bismark_methylationextractor {
     input = [ [ id:'test', single_end:false ], // meta map

@@ -12,7 +12,7 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: "10.1158/1538-7445.AM2017-3590"
-      licence: ['BSD-3-clause']
+      licence: ["BSD-3-clause"]
 
 input:
   - meta:
@@ -25,6 +25,12 @@ input:
       description: |
         Tuple of gVCF(.gz) file (first) and its index (second) or the path to a GenomicsDB (and empty)
       pattern: ["*.{vcf,vcf.gz}", "*.{idx,tbi}"]
+  - intervals:
+      type: file
+      description: Interval file with the genomic regions included in the library (optional)
+  - intervals_index:
+      type: file
+      description: Interval index file (optional)
   - fasta:
       type: file
       description: Reference fasta file
@@ -45,10 +51,6 @@ input:
       type: tuple of files
       description: dbSNP VCF index file
       pattern: "*.tbi"
-  - intervals_bed:
-      type: file
-      description: An intevals BED file
-      pattern: "*.bed"
 
 output:
   - meta:
@@ -59,6 +61,10 @@ output:
   - vcf:
       type: file
       description: Genotyped VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Tbi index for VCF file
       pattern: "*.vcf.gz"
   - versions:
       type: file

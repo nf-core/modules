@@ -1,5 +1,5 @@
 - name: diamond makedb test_diamond_makedb
-  command: nextflow run ./tests/modules/diamond/makedb -entry test_diamond_makedb -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/diamond/makedb -entry test_diamond_makedb -c ./tests/config/nextflow.config -c ./tests/modules/diamond/makedb/nextflow.config
   tags:
     - diamond
     - diamond/makedb

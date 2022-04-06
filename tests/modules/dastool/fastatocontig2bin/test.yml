@@ -1,0 +1,20 @@
+- name: dastool fastatocontig2bin test_dastool_fastatocontig2bin
+  command: nextflow run tests/modules/dastool/fastatocontig2bin -entry test_dastool_fastatocontig2bin -c tests/config/nextflow.config
+  tags:
+    - dastool
+    - dastool/fastatocontig2bin
+  files:
+    - path: output/dastool/test.tsv
+      md5sum: 6e46c0be14dded7cb13af38f54feea47
+    - path: output/dastool/versions.yml
+      md5sum: ff4b6f14bee4548bf09b5e602c306595
+
+- name: dastool fastatocontig2bin test_dastool_fastatocontig2bin_ungzipped
+  command: nextflow run tests/modules/dastool/fastatocontig2bin -entry test_dastool_fastatocontig2bin_ungzipped -c tests/config/nextflow.config
+  tags:
+    - dastool
+    - dastool/fastatocontig2bin
+  files:
+    - path: output/dastool/test.tsv
+      md5sum: 6e46c0be14dded7cb13af38f54feea47
+    - path: output/dastool/versions.yml

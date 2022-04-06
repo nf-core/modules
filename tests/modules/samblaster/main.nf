@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMBLASTER } from '../../../modules/samblaster/main.nf' addParams( options: [args: "-M --addMateTags", suffix:'.processed'] )
+include { SAMBLASTER } from '../../../modules/samblaster/main.nf'
 
 workflow test_samblaster {
 

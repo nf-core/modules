@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SPADES } from '../../../modules/spades/main.nf' addParams( options: ['args': '--rnaviral'] )
+include { SPADES } from '../../../modules/spades/main.nf'
 
 workflow test_spades_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

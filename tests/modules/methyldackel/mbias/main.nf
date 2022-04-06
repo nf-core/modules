@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { METHYLDACKEL_MBIAS } from '../../../../modules/methyldackel/mbias/main.nf' addParams( options: [:] )
+include { METHYLDACKEL_MBIAS } from '../../../../modules/methyldackel/mbias/main.nf'
 
 workflow test_methyldackel_mbias {
     input = [ [ id:'test', single_end:false ], // meta map

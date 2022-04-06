@@ -1,0 +1,40 @@
+name: cellranger_count
+description: Module to use Cell Ranger's pipelines analyze sequencing data produced from Chromium Single Cell Gene Expression.
+keywords:
+  - align
+  - count
+  - reference
+tools:
+  - cellranger:
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      doi: ""
+      licence: 10x Genomics EULA
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - reference:
+      type: folder
+      description: Folder containing all the reference indices needed by Cell Ranger
+output:
+  - outs:
+      type: file
+      description: Files containing the outputs of Cell Ranger
+      pattern: "sample-${meta.gem}/outs/*"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@ggabernet"
+  - "@Emiller88"

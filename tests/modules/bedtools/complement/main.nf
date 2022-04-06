@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_COMPLEMENT } from '../../../../modules/bedtools/complement/main.nf' addParams( options: [suffix: '_out'] )
+include { BEDTOOLS_COMPLEMENT } from '../../../../modules/bedtools/complement/main.nf'
 
 workflow test_bedtools_complement {
     input = [ [ id:'test'],

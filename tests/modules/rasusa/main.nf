@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RASUSA } from '../../../modules/rasusa/main.nf' addParams( options: ['suffix':'_100X'])
+include { RASUSA } from '../../../modules/rasusa/main.nf'
 
 workflow test_rasusa {
     input = [ [ id:'test', single_end:false], // meta map

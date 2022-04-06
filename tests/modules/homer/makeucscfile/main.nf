@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HOMER_MAKETAGDIRECTORY } from '../../../../modules/homer/maketagdirectory/main.nf' addParams( options: [args: '-format bed'] )
-include { HOMER_MAKEUCSCFILE } from '../../../../modules/homer/makeucscfile/main.nf' addParams( options: [:] )
+include { HOMER_MAKETAGDIRECTORY } from '../../../../modules/homer/maketagdirectory/main.nf'
+include { HOMER_MAKEUCSCFILE } from '../../../../modules/homer/makeucscfile/main.nf'
 
 workflow test_homer_makeucscfile {
     input = [[id:'test'],

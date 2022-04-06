@@ -13,7 +13,7 @@ tools:
       documentation: https://github.com/fannyhb/fargene
       tool_dev_url: https://github.com/fannyhb/fargene
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input:
       type: file
-      description: fasta or paired-end fastq file containing either genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented metagenomic reads (fastq)
+      description: uncompressed fasta file or paired-end fastq files containing either genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented metagenomic reads (fastq)
       pattern: "*.{fasta}"
   - hmm_model:
       type: string
@@ -95,7 +95,6 @@ output:
       type: file
       description: The from FASTQ to FASTA converted input files and their translated input sequences. Are only saved if option --store-peptides is used.
       pattern: "*.{fasta}"
-
 
 authors:
   - "@louperelo"

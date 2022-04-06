@@ -1,29 +1,16 @@
-// Import generic module functions
-include { initOptions; saveFiles; getProcessName; getSoftwareName } from './functions'
-include { dump_params_yml; indent_code_block }                      from "./parametrize"
-
-params.options         = [:]
-options                = initOptions(params.options)
-params.parametrize     = true
-params.implicit_params = true
-params.meta_params     = true
+include { dump_params_yml; indent_code_block } from "./parametrize"
 
 process RMARKDOWNNOTEBOOK {
     tag "$meta.id"
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "r-base=4.1.0 r-rmarkdown=2.9 r-yaml=2.2.1" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5%3A0e852a1e4063fdcbe3f254ac2c7469747a60e361-0"
-    } else {
-        container "quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
+        'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
 
     input:
     tuple val(meta), path(notebook)
@@ -36,8 +23,15 @@ process RMARKDOWNNOTEBOOK {
     tuple val(meta), path ("session_info.log"), emit: session_info
     path  "versions.yml"                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
+    def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
+    def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
@@ -45,14 +39,14 @@ process RMARKDOWNNOTEBOOK {
     //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
-    if (params.parametrize) {
+    if (parametrize) {
         nb_params = [:]
-        if (params.implicit_params) {
+        if (implicit_params) {
             nb_params["cpus"] = task.cpus
             nb_params["artifact_dir"] = "artifacts"
             nb_params["input_dir"] = "./"
         }
-        if (params.meta_params) {
+        if (meta_params) {
             nb_params["meta"] = meta
         }
         nb_params += parameters
@@ -73,9 +67,9 @@ process RMARKDOWNNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="${task.cpus}"
-    export OPENBLAS_NUM_THREADS="${task.cpus}"
-    export OMP_NUM_THREADS="${task.cpus}"
+    export MKL_NUM_THREADS="$task.cpus"
+    export OPENBLAS_NUM_THREADS="$task.cpus"
+    export OMP_NUM_THREADS="$task.cpus"
 
     # Work around  https://github.com/rstudio/rmarkdown/issues/1508
     # If the symbolic link is not replaced by a physical file
@@ -90,7 +84,7 @@ process RMARKDOWNNOTEBOOK {
     EOF
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
+    "${task.process}":
         rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
     END_VERSIONS
     """

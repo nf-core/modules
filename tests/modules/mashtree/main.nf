@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MASHTREE } from '../../../modules/mashtree/main.nf' addParams( options: [:] )
+include { MASHTREE } from '../../../modules/mashtree/main.nf'
 
 workflow test_mashtree {
     

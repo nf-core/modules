@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_RESTRICT } from '../../../../modules/pairtools/restrict/main.nf' addParams( options: ['suffix':'.restrict'] )
+include { PAIRTOOLS_RESTRICT } from '../../../../modules/pairtools/restrict/main.nf'
 
 workflow test_pairtools_restrict {
 

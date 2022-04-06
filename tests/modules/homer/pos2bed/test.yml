@@ -1,0 +1,10 @@
+- name: "homer pos2bed"
+  command: nextflow run ./tests/modules/homer/pos2bed -entry test_homer_pos2bed -c ./tests/config/nextflow.config -c ./tests/modules/homer/pos2bed/nextflow.config
+  tags:
+    - "homer"
+    - "homer/pos2bed"
+  files:
+    - path: output/homer/test.bed
+      md5sum: 5d6ddd9c7e621a66f6f045b9b5abecb4
+    - path: output/homer/versions.yml
+      md5sum: 1485f4b2d76484e8fe3310e2505de2fd

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTANI } from '../../../modules/fastani/main.nf' addParams( options: [:] )
+include { FASTANI } from '../../../modules/fastani/main.nf'
 
 workflow test_fastani {
 

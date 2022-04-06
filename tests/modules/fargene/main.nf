@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FARGENE } from '../../../modules/fargene/main.nf' addParams( options: [:] )
+include { GUNZIP } from '../../../modules/gunzip/main.nf'
+include { FARGENE } from '../../../modules/fargene/main.nf'
 
 workflow test_fargene {
     
@@ -10,5 +11,6 @@ workflow test_fargene {
               file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true) ]
     hmm_model = 'class_a'
 
-    FARGENE ( input, hmm_model )
+    GUNZIP ( input )
+    FARGENE ( GUNZIP.out.gunzip, hmm_model )
 }

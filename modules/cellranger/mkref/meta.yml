@@ -12,7 +12,6 @@ tools:
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       doi: ""
       licence: 10x Genomics EULA
-
 input:
   - fasta:
       type: file
@@ -26,14 +25,13 @@ input:
       type: val
       description: name to give the reference folder
       pattern: str
-
 output:
+  - reference:
+      type: folder
+      description: Folder containing all the reference indices needed by Cell Ranger
   - versions:
       type: file
       description: File containing software version
       pattern: "versions.yml"
-  - reference:
-      type: folder
-      description: Folder containing all the reference indices needed by Cell Ranger
 authors:
   - "@ggabernet"

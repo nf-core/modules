@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_BAM2FQ } from '../../../../modules/samtools/bam2fq/main.nf' addParams( options: [args: "-T RX"] )
+include { SAMTOOLS_BAM2FQ } from '../../../../modules/samtools/bam2fq/main.nf'
 
 workflow test_samtools_bam2fq_nosplit {
 

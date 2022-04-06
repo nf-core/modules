@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SHOVILL                    } from '../../../modules/shovill/main.nf' addParams( options: [args: '--gsize 2800000 --kmers 31']          )
-include { SHOVILL as SHOVILL_SKESA   } from '../../../modules/shovill/main.nf' addParams( options: [args: '--assembler skesa --gsize 2800000']   )
-include { SHOVILL as SHOVILL_MEGAHIT } from '../../../modules/shovill/main.nf' addParams( options: [args: '--assembler megahit --gsize 2800000'] )
-include { SHOVILL as SHOVILL_VELVET  } from '../../../modules/shovill/main.nf' addParams( options: [args: '--assembler velvet --gsize 2800000']  )
+include { SHOVILL                    } from '../../../modules/shovill/main.nf'
+include { SHOVILL as SHOVILL_SKESA   } from '../../../modules/shovill/main.nf'
+include { SHOVILL as SHOVILL_MEGAHIT } from '../../../modules/shovill/main.nf'
+include { SHOVILL as SHOVILL_VELVET  } from '../../../modules/shovill/main.nf'
 
 workflow test_shovill {
     input = [ [ id:'test', single_end:false ], // meta map

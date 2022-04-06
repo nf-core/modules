@@ -1,0 +1,20 @@
+- name: cnvpytor histogram test_cnvpytor_histogram
+  command: nextflow run tests/modules/cnvpytor/histogram -entry test_cnvpytor_histogram -c tests/config/nextflow.config
+  tags:
+    - cnvpytor
+    - cnvpytor/histogram
+  files:
+    - path: output/cnvpytor/test.pytor
+      md5sum: aa03a8fa15b39f77816705a48e10312a
+    - path: output/cnvpytor/versions.yml
+      md5sum: 0f4d75c4f3a3eb26c22616d12b0b78b2
+
+- name: cnvpytor histogram test_cnvpytor_histogram stub
+  command: nextflow run tests/modules/cnvpytor/histogram -entry test_cnvpytor_histogram -c tests/config/nextflow.config -stub-run
+  tags:
+    - cnvpytor
+    - cnvpytor/histogram
+  files:
+    - path: output/cnvpytor/test.pytor
+    - path: output/cnvpytor/versions.yml
+      md5sum: 0f4d75c4f3a3eb26c22616d12b0b78b2

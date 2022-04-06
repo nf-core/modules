@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOPLOT  } from '../../../modules/nanoplot/main.nf' addParams( options: [:] )
+include { NANOPLOT  } from '../../../modules/nanoplot/main.nf'
 
 workflow test_nanoplot_summary {
     def input = []

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf' addParams( options: [:]                           )
-include { DIAMOND_BLASTP } from '../../../../modules/diamond/blastp/main.nf' addParams( options: [ suffix: '.diamond_blastp' ] )
+include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf'
+include { DIAMOND_BLASTP } from '../../../../modules/diamond/blastp/main.nf'
 
 workflow test_diamond_blastp {
 

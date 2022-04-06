@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQSCAN } from '../../../modules/fastqscan/main.nf' addParams( options: [ args: "-g 30000"] )
+include { FASTQSCAN } from '../../../modules/fastqscan/main.nf'
 
 workflow test_fastqscan {
     

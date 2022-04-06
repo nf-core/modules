@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DSHBIO_SPLITGFF3 } from '../../../../modules/dshbio/splitgff3/main.nf' addParams( options: [suffix: '.', args: '--records 15'] )
+include { DSHBIO_SPLITGFF3 } from '../../../../modules/dshbio/splitgff3/main.nf'
 
 workflow test_dshbio_splitgff3 {
     input = [ [ id:'test' ], // meta map

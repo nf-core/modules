@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_DEDUPLICATE } from '../../../../modules/bismark/deduplicate/main.nf' addParams( options: [:] )
+include { BISMARK_DEDUPLICATE } from '../../../../modules/bismark/deduplicate/main.nf'
 
 workflow test_bismark_deduplicate {
     input = [ [ id:'test', single_end:false ], // meta map

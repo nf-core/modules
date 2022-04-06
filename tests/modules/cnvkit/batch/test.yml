@@ -1,5 +1,5 @@
 - name: cnvkit batch test_cnvkit_hybrid
-  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_hybrid -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_hybrid -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
     - cnvkit/batch
     - cnvkit
@@ -28,7 +28,7 @@
       md5sum: aa8a018b1d4d1e688c9f9f6ae01bf4d7
 
 - name: cnvkit batch test_cnvkit_wgs
-  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_wgs -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_wgs -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
     - cnvkit/batch
     - cnvkit
@@ -59,7 +59,7 @@
       md5sum: 6ae6b3fce7299eedca6133d911c38fe1
 
 - name: cnvkit batch test_cnvkit_cram
-  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_cram -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_cram -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
     - cnvkit/batch
     - cnvkit
@@ -90,7 +90,7 @@
       md5sum: 6ae6b3fce7299eedca6133d911c38fe1
 
 - name: cnvkit batch test_cnvkit_tumoronly
-  command: nextflow run tests/modules/cnvkit/batch -entry test_cnvkit_tumoronly -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_tumoronly -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
     - cnvkit/batch
     - cnvkit

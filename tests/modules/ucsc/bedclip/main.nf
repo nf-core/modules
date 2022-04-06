@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BEDCLIP } from '../../../../modules/ucsc/bedclip/main.nf' addParams( options: [suffix:'.clip'] )
+include { UCSC_BEDCLIP } from '../../../../modules/ucsc/bedclip/main.nf'
 
 workflow test_ucsc_bedclip {
     input = [ [ id:'test', single_end:false ], // meta map

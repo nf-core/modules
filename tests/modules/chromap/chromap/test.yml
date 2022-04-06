@@ -1,32 +1,35 @@
 - name: chromap chromap test_chromap_chromap_single_end
-  command: nextflow run tests/modules/chromap/chromap -entry test_chromap_chromap_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_single_end -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
   files:
     - path: output/chromap/genome.index
-      md5sum: f889d5f61d80823766af33277d27d386
     - path: output/chromap/test.bed.gz
-      md5sum: 7029066c27ac6f5ef18d660d5741979a
+      md5sum: 25e40bde24c7b447292cd68573728694
+    - path: output/chromap/versions.yml
+      md5sum: d24cfc35ad958206a5bc5694221b4fae
 
 - name: chromap chromap test_chromap_chromap_paired_end
-  command: nextflow run tests/modules/chromap/chromap -entry test_chromap_chromap_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
   files:
     - path: output/chromap/genome.index
-      md5sum: f889d5f61d80823766af33277d27d386
     - path: output/chromap/test.bed.gz
-      md5sum: cafd8fb21977f5ae69e9008b220ab169
+      md5sum: 7cdc8448882b75811e0c784f5f20aef2
+    - path: output/chromap/versions.yml
+      md5sum: 68ffe268a9d460956de4aad2a55ffd68
 
 - name: chromap chromap test_chromap_chromap_paired_bam
-  command: nextflow run tests/modules/chromap/chromap -entry test_chromap_chromap_paired_bam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_paired_bam -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
   files:
     - path: output/chromap/genome.index
-      md5sum: f889d5f61d80823766af33277d27d386
     - path: output/chromap/test.bam
-      md5sum: bd1e3fe0f3abd1430ae191754f16a3ed
+      md5sum: df467417407408e42992dc3dd15b22f5
+    - path: output/chromap/versions.yml
+      md5sum: ea732b4c6f1312d09745b66c3963dd3f

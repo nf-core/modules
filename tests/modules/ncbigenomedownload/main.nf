@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NCBIGENOMEDOWNLOAD } from '../../../modules/ncbigenomedownload/main.nf' addParams( options: [ args: '-A GCF_000013425.1 --formats genbank,fasta,assembly-stats bacteria '] )
+include { NCBIGENOMEDOWNLOAD } from '../../../modules/ncbigenomedownload/main.nf'
 
 workflow test_ncbigenomedownload {
     

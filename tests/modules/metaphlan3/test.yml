@@ -1,11 +1,11 @@
 - name: metaphlan3 test_metaphlan3_single_end
-  command: nextflow run tests/modules/metaphlan3 -entry test_metaphlan3_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_single_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
     - path: output/metaphlan3/test.biom
       contains:
-      - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
     - path: output/metaphlan3/test.bowtie2out.txt
       md5sum: ef46a9c6a8ce9cae26fbfd5527116fd5
     - path: output/metaphlan3/test_profile.txt
@@ -30,13 +30,13 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_paired_end
-  command: nextflow run tests/modules/metaphlan3 -entry test_metaphlan3_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
     - path: output/metaphlan3/test.biom
       contains:
-      - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
     - path: output/metaphlan3/test.bowtie2out.txt
       md5sum: ce11486fcc0e68fe7152867a3634e09a
     - path: output/metaphlan3/test_profile.txt
@@ -61,13 +61,13 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_sam
-  command: nextflow run tests/modules/metaphlan3 -entry test_metaphlan3_sam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_sam -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
     - path: output/metaphlan3/test.biom
       contains:
-      - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
     - path: output/metaphlan3/test_profile.txt
       md5sum: e050d49f7df8a23617880ef9ed7745a0
     - path: output/samtools/test.sam.bam
@@ -92,13 +92,13 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_fasta
-  command: nextflow run tests/modules/metaphlan3 -entry test_metaphlan3_fasta -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_fasta -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
     - path: output/metaphlan3/test.biom
       contains:
-      - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
+        - '"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"'
     - path: output/metaphlan3/test.bowtie2out.txt
       md5sum: fece494a410b8328608a11de10af6396
     - path: output/metaphlan3/test_profile.txt

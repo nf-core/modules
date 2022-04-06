@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PARACLU } from '../../../modules/paraclu/main.nf' addParams( options: [:] )
+include { PARACLU } from '../../../modules/paraclu/main.nf'
 
 workflow test_paraclu {
 

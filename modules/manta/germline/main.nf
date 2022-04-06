@@ -1,29 +1,18 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
-
-params.options = [:]
-options        = initOptions(params.options)
-
 process MANTA_GERMLINE {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1"
-    } else {
-        container "quay.io/biocontainers/manta:1.6.0--h9ee0642_1"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
+        'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta), path(input), path(index)
     path fasta
-    path fai
-    path target_bed
-    path target_bed_tbi
+    path fasta_fai
+    tuple path(target_bed), path(target_bed_tbi)
+
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
@@ -34,15 +23,21 @@ process MANTA_GERMLINE {
     tuple val(meta), path("*diploid_sv.vcf.gz.tbi")            , emit: diploid_sv_vcf_tbi
     path "versions.yml"                                        , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def prefix = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_files = input.collect{"--bam ${it}"}.join(' ')
+    def options_manta = target_bed ? "--callRegions $target_bed" : ""
     """
     configManta.py \
-        --bam $input \
+        ${input_files} \
         --reference $fasta \
+        --runDir manta \
         $options_manta \
-        --runDir manta
+        $args
 
     python manta/runWorkflow.py -m local -j $task.cpus
 
@@ -59,10 +54,25 @@ process MANTA_GERMLINE {
     mv manta/results/variants/diploidSV.vcf.gz.tbi \
         ${prefix}.diploid_sv.vcf.gz.tbi
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        manta: \$( configManta.py --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.candidate_small_indels.vcf.gz
+    touch ${prefix}.candidate_small_indels.vcf.gz.tbi
+    touch ${prefix}.candidate_sv.vcf.gz
+    touch ${prefix}.candidate_sv.vcf.gz.tbi
+    touch ${prefix}.diploid_sv.vcf.gz
+    touch ${prefix}.diploid_sv.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
-    ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( configManta.py --version )
+    "${task.process}":
+        manta: \$( configManta.py --version )
     END_VERSIONS
     """
 }

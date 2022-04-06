@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CMSEQ_POLYMUT } from '../../../../modules/cmseq/polymut/main.nf' addParams( options: [:] )
+include { CMSEQ_POLYMUT } from '../../../../modules/cmseq/polymut/main.nf'
 
 workflow test_cmseq_polymut_1 {
 

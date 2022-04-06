@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PYCOQC } from '../../../modules/pycoqc/main.nf' addParams ( options: ['args' : '--min_pass_qual 0'] )
+include { PYCOQC } from '../../../modules/pycoqc/main.nf'
 
 workflow test_pycoqc {
 

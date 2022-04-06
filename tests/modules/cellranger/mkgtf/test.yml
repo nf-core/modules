@@ -1,0 +1,8 @@
+- name: cellranger mkgtf test_cellranger_mkgtf
+  command: nextflow run tests/modules/cellranger/mkgtf -entry test_cellranger_mkgtf -c tests/config/nextflow.config -c tests/modules/cellranger/mkgtf/nextflow.config
+  tags:
+    - cellranger
+    - cellranger/mkgtf
+  files:
+    - path: output/cellranger/genome.filtered.gtf
+      md5sum: a8b8a7b5039e05d3a9cf9151ea138b5b
