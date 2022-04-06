@@ -10,6 +10,7 @@ process CENTRIFUGE {
     input:
     tuple val(meta), path(reads)
     path db
+    val db_name
     val save_unaligned
     val save_aligned
     val sam_format
@@ -42,9 +43,8 @@ process CENTRIFUGE {
     }
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
-    tar -xf $db
     centrifuge \\
-        -x $db_name \\
+        -x ${db}/${db_name} \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
