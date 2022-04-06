@@ -15,6 +15,7 @@ process BCLCONVERT {
     path "*.fastq.gz"               ,emit: fastq
     path "Reports/*.{csv,xml,bin}"  ,emit: reports
     path "Logs/*.{log,txt}"         ,emit: logs
+    path "InterOp/*.bin"            ,emit: interop
     path "versions.yml"             ,emit: versions
 
     when:
@@ -33,6 +34,10 @@ process BCLCONVERT {
         --bcl-num-conversion-threads $task.cpus \\
         --bcl-num-compression-threads $task.cpus \\
         --bcl-num-decompression-threads $task.cpus
+
+    mkdir InterOp
+    cp ${run_dir}/InterOp/*.bin InterOp/
+    mv Reports/*.bin InterOp/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -67,6 +72,9 @@ process BCLCONVERT {
     echo "FastqComplete" > Logs/FastqComplete.txt
     echo "Info" > Logs/Info.log
     echo "Warnings" > Logs/Warnings.log
+
+    mkdir InterOp/
+    echo "InterOp" > InterOp/InterOp.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

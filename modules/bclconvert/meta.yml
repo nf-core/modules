@@ -26,16 +26,20 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - fastq:
-      type: files
+      type: file
       description: Demultiplexed FASTQ files
       pattern: "*.{fastq.gz}"
   - reports:
-      type: files
+      type: file
       description: Demultiplexing Reports
-      pattern: "*.{csv,xml,bin}"
+      pattern: "Reports/*.{csv,xml}"
   - logs:
-      type: files
+      type: file
       description: Log files
-      pattern: "*.{log,txt}"
+      pattern: "Logs/*.{log,txt}"
+  - interop:
+      type: file
+      description: Interop files
+      pattern: "Interop/*.{bin}"
 authors:
   - "@matthdsm"
