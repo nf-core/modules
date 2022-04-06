@@ -78,7 +78,7 @@ process BCLCONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bclconvert: 00.000.000.3.9.3
+        bclconvert: \$(echo \$(bcl-convert -V 2>&1) | sed 's/^.*Version //;s/Copyright.*//' ))
     END_VERSIONS
     """
 }
