@@ -10,7 +10,6 @@ process CENTRIFUGE_CENTRIFUGE {
     input:
     tuple val(meta), path(reads)
     path db
-    val db_name
     val save_unaligned
     val save_aligned
     val sam_format
@@ -30,7 +29,7 @@ process CENTRIFUGE_CENTRIFUGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired = meta.single_end ? "-U ${reads}" :  "-1 ${reads[0]} -2 ${reads[1]}"
-    def db_name = db.toString().replace(".tar.gz","")
+    //def db_name = db.toString().replace(".tar.gz","")
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
@@ -42,8 +41,9 @@ process CENTRIFUGE_CENTRIFUGE {
     }
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
     centrifuge \\
-        -x ${db}/${db_name} \\
+        -x \$db_name \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
