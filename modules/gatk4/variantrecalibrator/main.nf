@@ -40,8 +40,8 @@ process GATK4_VARIANTRECALIBRATOR {
     gatk --java-options "-Xmx${avail_mem}g" VariantRecalibrator \\
         --variant $vcf \\
         --output ${prefix}.recal \\
-        $reference_command \\
         --tranches-file ${prefix}.tranches \\
+        $reference_command \\
         $resource_command \\
         $args
 
