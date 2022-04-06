@@ -11,5 +11,5 @@ workflow test_stadeniolib {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
-    STADENIOLIB ( input, file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true))
+    STADENIOLIB ( input, file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['genome__fasta_fai'], checkIfExists: true))
 }

@@ -10,6 +10,7 @@ process STADENIOLIB {
     input:
     tuple val(meta), path(bam)
     path(fasta)
+    path(fai)
 
     output:
     tuple val(meta), path("*.cram") ,emit: cram
