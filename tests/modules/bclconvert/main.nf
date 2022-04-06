@@ -12,7 +12,7 @@ process STUB_BCLCONVERT_INPUT {
     stub:
     """
     mkdir DDMMYY_SERIAL_FLOWCELL
-    touch SampleSheet.csv
+    echo "SampleSheet" > SampleSheet.csv
     """
 }
 
