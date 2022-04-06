@@ -1,0 +1,48 @@
+name: motus_merge
+description: Merge taxonomy files from different samples
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - taxonomic profiling
+tools:
+  - motus:
+      description: The mOTU profiler is a computational tool that estimates relative taxonomic abundance of known and currently unknown microbial community members using metagenomic shotgun sequencing data.
+      homepage: https://github.com/motu-tool/mOTUs
+      documentation: https://github.com/motu-tool/mOTUs/wiki
+      tool_dev_url: https://github.com/motu-tool/mOTUs
+      doi: "10.1038/s41467-019-08844-4"
+      licence: ["GNU GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - motus_outs:
+      type: file
+      description: |
+        List of mOTUs output files.
+  - db:
+      type: files
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - merged_out:
+      type: file
+      description: Merged results with taxonomic classification of each input
+      pattern: "*.motus.out"
+
+authors:
+  - "@jianhong"

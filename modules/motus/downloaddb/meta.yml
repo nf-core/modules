@@ -1,0 +1,34 @@
+name: motus_downloaddb
+description: Download the mOTUs database
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - taxonomic profiling
+tools:
+  - motus:
+      description: The mOTU profiler is a computational tool that estimates relative taxonomic abundance of known and currently unknown microbial community members using metagenomic shotgun sequencing data.
+      homepage: https://github.com/motu-tool/mOTUs
+      documentation: https://github.com/motu-tool/mOTUs/wiki
+      tool_dev_url: https://github.com/motu-tool/mOTUs
+      doi: "10.1038/s41467-019-08844-4"
+      licence: ["GNU GPL v3"]
+
+input:
+  - motus_downloaddb:
+      type: file
+      description: |
+        the mOTUs downloadDB source file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: The mOTUs database
+      pattern: "db_mOTU"
+
+authors:
+  - "@jianhong"
