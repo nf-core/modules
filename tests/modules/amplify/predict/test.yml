@@ -1,0 +1,18 @@
+- name: amplify predict amplify_predict
+  command: nextflow run tests/modules/amplify/predict -entry amplify_predict -c tests/config/nextflow.config
+  tags:
+    - amplify/predict
+    - amplify
+  files:
+    - path: output/amplify/amplify_output.tsv
+      md5sum: 1951084ce1d410028be86754997e5852
+    - path: output/amplify/versions.yml
+      md5sum: 5cffd3220be13dd21b35db08c76b7058
+    - path: output/prodigal/test.faa
+      md5sum: 45eb7402377eb411e0b83c58036bab4e
+    - path: output/prodigal/test.fna
+      md5sum: fd8caeb4cf2ccf8acfbb8cfa4ce5b168
+    - path: output/prodigal/test.gff
+      md5sum: 865018e881b3199d86d0e0c469d518d3
+    - path: output/prodigal/test_all.txt
+      md5sum: db4318d7164eb0a23dfc4fa643fb7945
