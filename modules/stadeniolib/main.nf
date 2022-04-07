@@ -25,6 +25,7 @@ process STADENIOLIB {
 
     """
     scramble \
+        $args \
         -I bam \
         -O cram \
         -r ${fasta} \
