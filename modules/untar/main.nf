@@ -5,7 +5,7 @@ process UNTAR {
     conda (params.enable_conda ? "conda-forge::tar=1.34" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv2/biocontainers_v1.2.0_cv2.img' :
-        'biocontainers/biocontainers:1.2.0_cv2' }"
+        'biocontainers/biocontainers:v1.2.0_cv2' }"
 
     input:
     tuple val(meta), path(archive)
