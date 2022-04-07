@@ -1,51 +1,53 @@
 name: "picard_crosscheckfingerprints"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Checks that all data in the set of input files appear to come from the same individual
 keywords:
-  - sort
+  - alignment
+  - metrics
+  - statistics
+  - fingerprint
+  - bam
 tools:
-  - "picard":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Java tools for working with NGS data in the BAM format"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "https://github.com/broadinstitute/picard"
-      doi: ""
-      licence: "['MIT']"
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      tool_dev_url: https://github.com/broadinstitute/picard/
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - input1:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: List containing 1 or more bam/vcf files or a file containing filepaths
+      pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - input2:
+      type: file
+      description: Optional list containing 1 or more bam/vcf files or a file containing filepaths
+      pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - haplotype_map:
+      type: file
+      description: Haplotype map file
+      pattern: "*.{txt}"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - crosscheck_metrics:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Metrics created by crosscheckfingerprints
+      pattern: "*.{crosscheck_metrics.txt}"
 
 authors:
   - "@matthdsm"
