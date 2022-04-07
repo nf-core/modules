@@ -29,7 +29,6 @@ process CENTRIFUGE_CENTRIFUGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired = meta.single_end ? "-U ${reads}" :  "-1 ${reads[0]} -2 ${reads[1]}"
-    //def db_name = db.toString().replace(".tar.gz","")
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
@@ -41,7 +40,7 @@ process CENTRIFUGE_CENTRIFUGE {
     }
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
-    // we add `-no-name ._` to ensure silly Mac OSX metafiles files aren't included 
+    ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
     db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
     centrifuge \\
         -x \$db_name \\
