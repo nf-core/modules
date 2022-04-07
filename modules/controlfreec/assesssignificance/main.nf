@@ -30,4 +30,15 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
         controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.p.value.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
+    END_VERSIONS
+    """
 }

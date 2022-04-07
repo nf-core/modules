@@ -31,6 +31,18 @@ process CONTROLFREEC_MAKEGRAPH {
     mv *_ratio.txt.log2.png ${prefix}_ratio.log2.png
     mv *_ratio.txt.png ${prefix}_ratio.png
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        controlfreec: \$(echo \$(freec -version 2>&1) | sed 's/^.*Control-FREEC  //; s/:.*\$//' | sed -e "s/Control-FREEC v//g" )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_BAF.png
+    touch ${prefix}_ratio.log2.png
+    touch ${prefix}_ratio.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
