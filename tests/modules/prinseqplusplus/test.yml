@@ -1,0 +1,27 @@
+- name: prinseqplusplus test_prinseqplusplus_single_end
+  command: nextflow run tests/modules/prinseqplusplus -entry test_prinseqplusplus_single_end -c tests/config/nextflow.config
+  tags:
+    - prinseqplusplus
+  files:
+    - path: output/prinseqplusplus/test.log
+      contains:
+        - "reads removed by -lc_entropy"
+    - path: output/prinseqplusplus/test_bad_out.fastq.gz
+    - path: output/prinseqplusplus/test_good_out.fastq.gz
+    - path: output/prinseqplusplus/versions.yml
+
+- name: prinseqplusplus test_prinseqplusplus_paired_end
+  command: nextflow run tests/modules/prinseqplusplus -entry test_prinseqplusplus_paired_end -c tests/config/nextflow.config
+  tags:
+    - prinseqplusplus
+  files:
+    - path: output/prinseqplusplus/test.log
+      contains:
+        - "reads removed by -lc_entropy"
+    - path: output/prinseqplusplus/test_bad_out_R1.fastq.gz
+    - path: output/prinseqplusplus/test_bad_out_R2.fastq.gz
+    - path: output/prinseqplusplus/test_good_out_R1.fastq.gz
+    - path: output/prinseqplusplus/test_good_out_R2.fastq.gz
+    - path: output/prinseqplusplus/test_single_out_R1.fastq.gz
+    - path: output/prinseqplusplus/test_single_out_R2.fastq.gz
+    - path: output/prinseqplusplus/versions.yml
