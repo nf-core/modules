@@ -12,7 +12,7 @@ process SNAPALIGNER_INDEX {
 
     output:
     path "snap"            ,emit: index
-    path "versions.yml"    , emit: versions
+    path "versions.yml"    ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
