@@ -1,4 +1,4 @@
-name: centrifuge
+name: centrifuge_centrifuge
 description: Classifies metagenomic sequence data
 keywords:
   - classify
@@ -25,11 +25,7 @@ input:
         respectively.
   - db:
       type: directory
-      description: Centrifuge database in .tar.gz format
-      pattern: "*.tar.gz"
-  - db_name:
-      type: string
-      description: Centrifuge database filenames without the suffix ".cf"
+      description: Path to directory containing centrifuge database files
   - save_unaligned:
       type: value
       description: If true unmapped fastq files are saved
@@ -52,12 +48,6 @@ output:
       description: |
         File containing classification results
       pattern: "*.{results.txt}"
-  - kreport:
-      type: file
-      description: |
-        File containing kraken-style report from centrifuge
-        out files.
-      pattern: "*.{kreport.txt}"
   - fastq_unmapped:
       type: file
       description: Unmapped fastq files
