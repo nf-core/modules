@@ -21,7 +21,7 @@ process CONTROLFREEC_FREEC {
 
     output:
     tuple val(meta), path("*_ratio.BedGraph")   , emit: bedgraph, optional: true
-    tuple val(meta), path("*_control.cpn")      , emit: control_cpn
+    tuple val(meta), path("*_control.cpn")      , emit: control_cpn, optional: true
     tuple val(meta), path("*_sample.cpn")       , emit: sample_cpn
     tuple val(meta), path("GC_profile.*.cpn")   , emit: gcprofile_cpn, optional:true
     tuple val(meta), path("*_BAF.txt")          , emit: BAF
@@ -160,7 +160,6 @@ process CONTROLFREEC_FREEC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_ratio.BedGraph
-    touch ${prefix}_control.cpn
     touch ${prefix}_sample.cpn
     touch GC_profile.${prefix}.cpn
     touch ${prefix}_BAF.txt
