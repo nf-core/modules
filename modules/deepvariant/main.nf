@@ -46,7 +46,7 @@ process DEEPVARIANT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.g.vcf.gz
