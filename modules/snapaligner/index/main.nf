@@ -11,8 +11,8 @@ process SNAPALIGNER_INDEX {
     path fasta
 
     output:
-    path "snap"            ,emit: index
-    path "versions.yml"    ,emit: versions
+    path "snap/*"            ,emit: index
+    path "versions.yml"      ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
