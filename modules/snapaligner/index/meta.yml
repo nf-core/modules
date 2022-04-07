@@ -1,0 +1,30 @@
+name: "snapaligner_index"
+description: Create a SNAP index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - "snapaligner":
+      description: "Scalable Nucleotide Alignment Program -- a fast and accurate read aligner for high-throughput sequencing data"
+      homepage: "http://snap.cs.berkeley.edu"
+      documentation: "https://1drv.ms/b/s!AhuEg_0yZD86hcpblUt-muHKYsG8fA?e=R8ogug"
+      tool_dev_url: "https://github.com/amplab/snap"
+      doi: "10.1101/2021.11.23.469039"
+      licence: "['Apache v2']"
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+output:
+  - index:
+      type: file
+      description: SNAP genome index files
+      pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"

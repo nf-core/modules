@@ -1,0 +1,11 @@
+- name: "snapaligner index"
+  command: nextflow run ./tests/modules/snapaligner/index -entry test_snapaligner_index -c ./tests/config/nextflow.config -c ./tests/modules/snapaligner/index/nextflow.config
+  tags:
+    - "snapaligner"
+    - "snapaligner/index"
+  files:
+    - path: "output/snapaligner/Genome"
+    - path: "output/snapaligner/GenomeIndex"
+    - path: "output/snapaligner/GenomeIndexHash"
+    - path: "output/snapaligner/OverflowTable"
+    - path: output/snapaligner/versions.yml
