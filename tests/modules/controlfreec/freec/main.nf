@@ -40,7 +40,7 @@ workflow test_controlfreec_freec {
 workflow test_controlfreec_freec_single {
 
     input = [
-        [ id:'test', single_end:false, sex:'XX' ], // meta map
+        [ id:'test2', single_end:false, sex:'XX' ], // meta map
         [],
         file(params.test_data['homo_sapiens']['illumina']['test2_mpileup'], checkIfExists: true),
         [],[],[],[]
