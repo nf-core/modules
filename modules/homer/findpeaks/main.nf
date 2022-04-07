@@ -13,8 +13,8 @@ process HOMER_FINDPEAKS {
     tuple val(meta), path(tagDir)
 
     output:
-    tuple val(meta), path("*peaks.txt"), emit: txt
-    path  "versions.yml"               , emit: versions
+    tuple val(meta), path("*.peaks.txt"), emit: txt
+    path  "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
