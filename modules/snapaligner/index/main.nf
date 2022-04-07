@@ -23,9 +23,9 @@ process SNAPALIGNER_INDEX {
     mkdir snap
     snap-aligner \\
     index \\
-    $args \\
     $fasta \\
-    snap
+    snap \\
+    $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
