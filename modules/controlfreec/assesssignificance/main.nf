@@ -20,9 +20,9 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def path = params.enable_conda ? "$(which assess_significance.R)" : "/usr/local/bin/assess_significance.R"
+    //def path = params.enable_conda ? "$(which assess_significance.R)" : "/usr/local/bin/assess_significance.R"
     """
-    cat ${path} | R --slave --args ${cnvs} ${ratio}
+    cat \$(which assess_significance.R) | R --slave --args ${cnvs} ${ratio}
 
     mv *.p.value.txt ${prefix}.p.value.txt
 
