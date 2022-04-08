@@ -20,7 +20,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def path = params.enable_conda ? "assess_significance.R" : "/usr/local/bin/assess_significance.R"
+    def path = params.enable_conda ? "~/miniconda3/envs/controlfreec/bin/assess_significance.R" : "/usr/local/bin/assess_significance.R"
     """
     cat ${path} | R --slave --args ${cnvs} ${ratio}
 
