@@ -101,20 +101,6 @@ workflow test_gatk4_mutect2_generate_pon {
     GATK4_MUTECT2 ( input, fasta, fai, dict, [], [], [], [] )
 }
 
-workflow test_gatk4_mutect2_generate_pon {
-    input = [ [ id:'test'], // meta map
-              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
-              []
-            ]
-
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-
-    GATK4_MUTECT2 ( input, fasta, fai, dict, [], [], [], [] )
-}
-
 // mitochondria mode would ideally have some mitochondria test data
 // but since the mitochondria settings only increase detection sensitivity
 // we can use the chr22 data as a stand in as it is already a small dataset
