@@ -27,7 +27,7 @@ process BCLCONVERT {
     """
     bcl-convert \
         $args \\
-        --output-directory \$PWD \
+        --output-directory ${prefix} \\
         --bcl-input-directory ${run_dir} \\
         --sample-sheet ${samplesheet} \\
         --bcl-num-parallel-tiles $task.cpus \\
