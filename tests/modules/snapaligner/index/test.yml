@@ -1,8 +1,8 @@
 - name: snapaligner index test_snapaligner_index
   command: nextflow run tests/modules/snapaligner/index -entry test_snapaligner_index -c tests/config/nextflow.config
   tags:
-    - snapaligner
     - snapaligner/index
+    - snapaligner
   files:
     - path: output/snapaligner/snap/Genome
       md5sum: 7e189c954142ba37460332b467e34ed4
@@ -12,4 +12,3 @@
     - path: output/snapaligner/snap/OverflowTable
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/snapaligner/versions.yml
-      md5sum: 916a11ef3791d96568cb7939f1047ac7

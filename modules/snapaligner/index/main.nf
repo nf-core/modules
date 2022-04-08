@@ -27,7 +27,7 @@ process SNAPALIGNER_INDEX {
     index \\
     $fasta \\
     snap \\
-    -t ${task.cpus} \\
+    -t${task.cpus} \\
     $args
 
     cat <<-END_VERSIONS > versions.yml
