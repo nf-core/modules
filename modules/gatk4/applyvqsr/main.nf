@@ -8,7 +8,7 @@ process GATK4_APPLYVQSR {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(recal), path(recal_index), path(tranches)
+    tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
     path  fasta
     path  fai
     path  dict
