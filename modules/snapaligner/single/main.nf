@@ -1,4 +1,4 @@
-process SNAPALIGNER_PAIRED {
+process SNAPALIGNER_SINGLE {
     tag '$meta.id'
     label 'process_high'
 

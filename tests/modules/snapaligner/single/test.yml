@@ -1,9 +1,9 @@
-- name: "snapaligner single"
-  command: nextflow run ./tests/modules/snapaligner/single -entry test_snapaligner_single -c ./tests/config/nextflow.config -c ./tests/modules/snapaligner/single/nextflow.config
+- name: snapaligner single test_snapaligner_single
+  command: nextflow run tests/modules/snapaligner/single -entry test_snapaligner_single -c tests/config/nextflow.config
   tags:
-    - "snapaligner"
-    - "snapaligner/single"
+    - snapaligner/single
+    - snapaligner
   files:
-    - path: "output/snapaligner/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/snapaligner/test.bam
+      md5sum: 696f7ea8e1aa5f9d7dafb9d0134fe25d
     - path: output/snapaligner/versions.yml

@@ -13,5 +13,5 @@ workflow test_snapaligner_single {
     ]
 
     SNAPALIGNER_INDEX ( file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),[],[],[])
-    SNAPALIGNER_PAIRED ( input, SNAPALIGNER_INDEX.out.index )
+    SNAPALIGNER_SINGLE ( input, SNAPALIGNER_INDEX.out.index )
 }
