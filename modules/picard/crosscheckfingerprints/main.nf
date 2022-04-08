@@ -48,15 +48,4 @@ process PICARD_CROSSCHECKFINGERPRINTS {
         picard: \$( picard CrosscheckFingerprints --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d: )
     END_VERSIONS
     """
-
-    stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    echo ${prefix}.crosscheck_metrics > ${prefix}.crosscheck_metrics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$( picard CrosscheckFingerprints --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d: )
-    END_VERSIONS
-    """
 }
