@@ -32,6 +32,10 @@ input:
       type: file
       description: FASTA index file from samtools faidx
       pattern: "*.{fai}"
+  - gzi:
+      type: file
+      description: Optional gzip index file for BAM inputs
+      pattern: "*.gzi"
 
 output:
   #Only when we have meta
@@ -48,5 +52,9 @@ output:
       type: file
       description: Converted reads
       pattern: "*.{sam, bam, cram}"
+  - gzi:
+      type: Optional file
+      description: gzip index file for BAM outputs
+      pattern: ".{bam.gzi}"
 authors:
   - "@matthdsm"

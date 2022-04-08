@@ -8,12 +8,14 @@ process STADENIOLIB_SCRAMBLE {
         'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
     path(fasta)
     path(fai)
+    path(gzi)
 
     output:
     tuple val(meta), path("*.cram") ,emit: cram
+    path "*.gzi"                    ,emit: gzi, optional: true
     path "versions.yml"             ,emit: versions
 
     when:
@@ -23,15 +25,33 @@ process STADENIOLIB_SCRAMBLE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def inputformat = reads.getExtension
+    def outputformat = "cram"
+    if ("-O sam" in args) {
+        outputformat = "sam"
+    } else if ("-O bam" in args) {
+        outputformat = "bam"
+    }
+
+    def reference = if fasta && fai : "--r ${fasta}" else ""
+    if (outputformat == "cram" && !reference) {
+        error "Cannot convert to CRAM without a reference"
+    }
+
+    def gz_index = if gzi : "--g ${gzi}" else ""
+    if (outputformat == "cram" || outputformat == "sam") {
+        gz_index = ""
+        warning "Cannot use gzip index for CRAM or SAM output"
+    }
+
     """
     scramble \
         $args \
-        -I bam \
-        -O cram \
-        -r ${fasta} \
+        -I ${inputformat} \
+        $reference \
         -t $task.cpus \
-        ${bam} \
-        ${prefix}.cram
+        ${reads} \
+        ${prefix}.${outputformat}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
