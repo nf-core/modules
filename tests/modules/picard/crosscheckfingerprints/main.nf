@@ -10,5 +10,5 @@ workflow test_picard_crosscheckfingerprints {
         [ id:'test', single_end:false ], // meta map
         [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)],
     ]
-    PICARD_CROSSCHECKFINGERPRINTS ( input,[], file(params.test_data['homo_sapiens']['genome']['hapmap_3_3_hg38_21_vcf_gz'], checkIfExists: true))
+    PICARD_CROSSCHECKFINGERPRINTS ( input,[], file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true))
 }
