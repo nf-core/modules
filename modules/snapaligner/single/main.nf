@@ -1,4 +1,4 @@
-process SNAPALIGNER_SINGLE {
+process SNAPALIGNER_PAIRED {
     tag '$meta.id'
     label 'process_high'
 
@@ -8,12 +8,12 @@ process SNAPALIGNER_SINGLE {
         'quay.io/biocontainers/snap-aligner:2.0.1--hd03093a_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
     path index
 
     output:
-    tuple val(meta), path("*.bam")  ,emit: bam
-    path "versions.yml"             ,emit: versions
+    tuple val(meta), path("*.bam"), emit: bam
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,13 +23,19 @@ process SNAPALIGNER_SINGLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    snap-aligner single \\
-    $index \\
+    mkdir -p index
+    mv $index index/
 
+    snap-aligner single \\
+        index \\
+        ${reads.join(" ")} \\
+        -o -bam ${prefix}.bam \\
+        -t ${task.cpus} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //')
+         snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //')
     END_VERSIONS
     """
 }
