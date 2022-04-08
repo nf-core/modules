@@ -17,6 +17,12 @@ input:
   - fasta:
       type: file
       description: Input genome fasta file
+  - altcontigfile:
+      type: file
+      description: Optional file with a list of alt contig names, one per line.
+  - nonaltcontigfile:
+      type: file
+      description: Optional file that contains a list of contigs (one per line) that will not be marked ALT regardless of size
 output:
   - index:
       type: file

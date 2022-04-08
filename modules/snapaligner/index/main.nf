@@ -9,6 +9,8 @@ process SNAPALIGNER_INDEX {
 
     input:
     path fasta
+    path altcontigfile
+    path nonaltcontigfile
 
     output:
     path "snap/*"            ,emit: index
@@ -25,6 +27,7 @@ process SNAPALIGNER_INDEX {
     index \\
     $fasta \\
     snap \\
+    -t ${task.cpus} \\
     $args
 
     cat <<-END_VERSIONS > versions.yml
