@@ -4,6 +4,7 @@ nextflow.enable.dsl = 2
 
 include { GATK4_MUTECT2                       } from '../../../../modules/gatk4/mutect2/main.nf'
 include { GATK4_MUTECT2 as GATK4_MUTECT2_PAIR } from '../../../../modules/gatk4/mutect2/main.nf'
+include { GATK4_MUTECT2 as GATK4_MUTECT2_MITO } from '../../../../modules/gatk4/mutect2/main.nf'
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
     input = [ [ id:'test', normal_id:'normal', tumor_id:'tumour' ], // meta map
@@ -92,5 +93,5 @@ workflow test_gatk4_mutect2_mitochondria {
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    GATK4_MUTECT2 ( input, fasta, fai, dict, [], [], [], [] )
+    GATK4_MUTECT2_MITO ( input, fasta, fai, dict, [], [], [], [] )
 }

@@ -30,7 +30,7 @@ process GATK4_MUTECT2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = input.collect{ "-I ${it}"}.join(" ")
+    def inputs = input.collect{ "--input ${it}"}.join(" ")
     def interval_command = intervals ? "--intervals $intervals" : ""
     def pon_command = panel_of_normals ? "--panel-of-normals $panel_of_normals" : ""
     def gr_command = germline_resource ? "--germline-resource $germline_resource" : ""
@@ -43,12 +43,12 @@ process GATK4_MUTECT2 {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" Mutect2 \\
-        -R $fasta \\
         $inputs \\
+        --output ${prefix}.vcf.gz \\
+        --reference $fasta \\
         $pon_command \\
         $gr_command \\
         $interval_command \\
-        -O ${prefix}.vcf.gz \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
