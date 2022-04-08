@@ -11,6 +11,7 @@ process SNAPALIGNER_INDEX {
     path fasta
     path altcontigfile
     path nonaltcontigfile
+    path altliftoverfile
 
     output:
     path "snap/*"            ,emit: index
@@ -21,14 +22,20 @@ process SNAPALIGNER_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def altcontigfile_arg = altcontigfile ? '-altContigFile ' + altcontigfile : ''
+    def nonaltcontigfile_arg = nonaltcontigfile ? '-nonAltContigFile ' + nonaltcontigfile : ''
+    def altliftoverfile_arg = altliftoverfile ? '-altLiftoverFile ' + altliftoverfile : ''
     """
     mkdir snap
-    
+
     snap-aligner \\
       index \\
       $fasta \\
       snap \\
       -t${task.cpus} \\
+      $altcontigfile_arg \\
+      $nonaltcontigfile_arg \\
+      $altliftoverfile_arg \\
       $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -46,7 +53,7 @@ process SNAPALIGNER_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //')
+        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/\.$//')
     END_VERSIONS
     """
 }
