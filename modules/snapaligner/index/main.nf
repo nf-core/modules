@@ -29,14 +29,14 @@ process SNAPALIGNER_INDEX {
     mkdir snap
 
     snap-aligner \\
-      index \\
-      $fasta \\
-      snap \\
-      -t${task.cpus} \\
-      $altcontigfile_arg \\
-      $nonaltcontigfile_arg \\
-      $altliftoverfile_arg \\
-      $args
+        index \\
+        $fasta \\
+        snap \\
+        -t${task.cpus} \\
+        $altcontigfile_arg \\
+        $nonaltcontigfile_arg \\
+        $altliftoverfile_arg \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
