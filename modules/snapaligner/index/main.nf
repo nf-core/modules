@@ -23,6 +23,7 @@ process SNAPALIGNER_INDEX {
     def args = task.ext.args ?: ''
     """
     mkdir snap
+    
     snap-aligner \\
       index \\
       $fasta \\
