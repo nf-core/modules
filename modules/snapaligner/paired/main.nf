@@ -8,7 +8,8 @@ process SNAPALIGNER_PAIRED {
         'quay.io/biocontainers/snap-aligner:2.0.1--hd03093a_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(reads)
+    path index
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -20,8 +21,14 @@ process SNAPALIGNER_PAIRED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    snap-aligner paired <index-dir> <inputFile(s)> [<options>] where <input file(s)> is a list of files to process.
+    snap-aligner paired \\
+    $index \\
+    ${reads.join(" ")}
+    -o -bam ${prefix}.bam \\
+    -t ${task.cpus} \\
+    $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
