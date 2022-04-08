@@ -1,4 +1,4 @@
-process STADENIOLIB {
+process STADENIOLIB_SCRAMBLE {
     tag "$meta.id"
     label 'process_medium'
 

@@ -1,12 +1,13 @@
-name: "stadeniolib"
-description: Staden Package 'io_lib' (sometimes referred to as libstaden-read by distributions). This contains code for reading and writing a variety of Bioinformatics / DNA Sequence formats.
+name: "stadeniolib_scramble"
+description: Advanced sequence file format conversions
 keywords:
+  - sam
   - bam
   - cram
   - compression
 tools:
   - "scramble":
-      description: "Advanced compression tool for BAM files."
+      description: "Staden Package 'io_lib' (sometimes referred to as libstaden-read by distributions). This contains code for reading and writing a variety of Bioinformatics / DNA Sequence formats."
       homepage: "https://github.com/jkbonfield/io_lib"
       documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
       tool_dev_url: "https://github.com/jkbonfield/io_lib"
@@ -19,7 +20,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - reads:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
@@ -43,9 +44,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - cram:
+  - reads:
       type: file
-      description: Cram file
-      pattern: "*.{cram}"
+      description: Converted reads
+      pattern: "*.{sam, bam, cram}"
 authors:
   - "@matthdsm"
