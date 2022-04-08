@@ -8,7 +8,7 @@ process GATK4_FILTERMUTECTCALLS {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(stats), path(orientationbias), path(segmentation), path(table), val(estimate)
+    tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(orientationbias), path(segmentation), path(table), val(estimate)
     path  fasta
     path  fai
     path  dict
@@ -26,10 +26,10 @@ process GATK4_FILTERMUTECTCALLS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def orientationbias_command = orientationbias ? orientationbias.collect{"--orientation-bias-artifact-priors $it"}.join(' ') : ""
-    def segmentation_command = segmentation ? segmentation.collect{"--tumor-segmentation $it"}.join(' ') : ""
-    def estimate_command = estimate ? " --contamination-estimate ${estimate} " : ''
-    def table_command = table ? " --contamination-table ${table} " : ''
+    def orientationbias_command = orientationbias ? orientationbias.collect{"--orientation-bias-artifact-priors $it"}.join(' ') : ''
+    def segmentation_command    = segmentation    ? segmentation.collect{"--tumor-segmentation $it"}.join(' ')                  : ''
+    def estimate_command        = estimate        ? " --contamination-estimate ${estimate} "                                    : ''
+    def table_command           = table           ? " --contamination-table ${table} "                                          : ''
 
     def avail_mem = 3
     if (!task.memory) {

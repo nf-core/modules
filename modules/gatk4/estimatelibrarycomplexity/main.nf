@@ -8,7 +8,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(cram)
+    tuple val(meta), path(input)
     path  fasta
     path  fai
     path  dict
@@ -23,7 +23,7 @@ process GATK4_ESTIMATELIBRARYCOMPLEXITY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = cram.collect(){"--INPUT $it"}.join(" ")
+    def input_list = input.collect(){"--INPUT $it"}.join(" ")
 
     def avail_mem = 3
     if (!task.memory) {
