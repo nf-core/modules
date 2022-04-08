@@ -46,6 +46,7 @@ process GATK4_MUTECT2 {
         -R $fasta \\
         $inputs \\
         $pon_command \\
+        $gr_command \\
         $interval_command \\
         -O ${prefix}.vcf.gz \\
         $args

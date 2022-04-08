@@ -2,10 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MUTECT2 } from '../../../../modules/gatk4/mutect2/main.nf'
+include { GATK4_MUTECT2                       } from '../../../../modules/gatk4/mutect2/main.nf'
+include { GATK4_MUTECT2 as GATK4_MUTECT2_PAIR } from '../../../../modules/gatk4/mutect2/main.nf'
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
-    input = [ [ id:'test'], // meta map
+    input = [ [ id:'test', normal_id:'normal', tumor_id:'tumour' ], // meta map
               [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)
                 ],
@@ -23,7 +24,7 @@ workflow test_gatk4_mutect2_tumor_normal_pair {
     panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
     panel_of_normals_tbi = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true)
 
-    GATK4_MUTECT2 ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
+    GATK4_MUTECT2_PAIR ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
 }
 
 workflow test_gatk4_mutect2_tumor_single {
