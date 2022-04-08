@@ -24,7 +24,7 @@ process CONTROLFREEC_MAKEGRAPH {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def baf = baf ?: ""
-    def path = params.enable_conda ? "~/miniconda3/envs/control-freec/bin/makeGraph.R" : "/usr/local/bin/makeGraph.R"
+    def path = params.enable_conda ? "~/miniconda3/envs/*/bin/makeGraph.R" : "/usr/local/bin/makeGraph.R"
     """
     cat ${path} | R --slave --args ${args} ${ratio} ${baf}
 
