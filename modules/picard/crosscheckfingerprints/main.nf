@@ -9,8 +9,8 @@ process PICARD_CROSSCHECKFINGERPRINTS {
 
     input:
     tuple val(meta), path(input1)
-    path(input2)
-    file haplotype_map
+    path input2
+    path haplotype_map
 
     output:
     tuple val(meta), path("*.crosscheck_metrics.txt")   ,emit: crosscheck_metrics
