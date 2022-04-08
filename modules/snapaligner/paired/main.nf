@@ -27,11 +27,11 @@ process SNAPALIGNER_PAIRED {
     mv $index index/
 
     snap-aligner paired \\
-    index \\
-    ${reads.join(" ")} \\
-    -o -bam ${prefix}.bam \\
-    -t ${task.cpus} \\
-    $args
+        index \\
+        ${reads.join(" ")} \\
+        -o -bam ${prefix}.bam \\
+        -t ${task.cpus} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
