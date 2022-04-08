@@ -1,4 +1,4 @@
-process CENTRIFUGE {
+process CENTRIFUGE_CENTRIFUGE {
     tag "$meta.id"
     label 'process_high'
 
@@ -10,7 +10,6 @@ process CENTRIFUGE {
     input:
     tuple val(meta), path(reads)
     path db
-    val db_name
     val save_unaligned
     val save_aligned
     val sam_format
@@ -18,7 +17,6 @@ process CENTRIFUGE {
     output:
     tuple val(meta), path('*report.txt')                 , emit: report
     tuple val(meta), path('*results.txt')                , emit: results
-    tuple val(meta), path('*kreport.txt')                , emit: kreport
     tuple val(meta), path('*.sam')                       , optional: true, emit: sam
     tuple val(meta), path('*.mapped.fastq{,.1,.2}.gz')   , optional: true, emit: fastq_mapped
     tuple val(meta), path('*.unmapped.fastq{,.1,.2}.gz') , optional: true, emit: fastq_unmapped
@@ -31,7 +29,6 @@ process CENTRIFUGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired = meta.single_end ? "-U ${reads}" :  "-1 ${reads[0]} -2 ${reads[1]}"
-    def db_name = db.toString().replace(".tar.gz","")
     def unaligned = ''
     def aligned = ''
     if (meta.single_end) {
@@ -43,8 +40,10 @@ process CENTRIFUGE {
     }
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
+    ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
     centrifuge \\
-        -x ${db}/${db_name} \\
+        -x \$db_name \\
         -p $task.cpus \\
         $paired \\
         --report-file ${prefix}.report.txt \\
@@ -53,7 +52,6 @@ process CENTRIFUGE {
         $aligned \\
         $sam_output \\
         $args
-    centrifuge-kreport -x $db_name ${prefix}.results.txt > ${prefix}.kreport.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
