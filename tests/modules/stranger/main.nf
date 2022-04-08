@@ -21,5 +21,5 @@ workflow test_stranger {
 
 workflow test_stranger_without_optional_variant_catalog {
     EXPANSIONHUNTER ( input, fasta, variant_catalog )
-    STRANGER ( EXPANSIONHUNTER.out.vcf, Channel.empty() )
+    STRANGER ( EXPANSIONHUNTER.out.vcf, [] )
 }
