@@ -45,7 +45,7 @@ process PICARD_CROSSCHECKFINGERPRINTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(picard CrosscheckFingerprints --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$( picard CrosscheckFingerprints --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d: )
     END_VERSIONS
     """
 
