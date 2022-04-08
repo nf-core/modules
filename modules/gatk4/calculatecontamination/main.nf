@@ -34,7 +34,6 @@ process GATK4_CALCULATECONTAMINATION {
         --input $pileup \\
         --output ${prefix}.contamination.table \\
         $matched_command \\
-        $tumor_segmentation_command \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
