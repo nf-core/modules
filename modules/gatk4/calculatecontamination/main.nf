@@ -21,7 +21,7 @@ process GATK4_CALCULATECONTAMINATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def matched_command = matched ? " --matched-normal $matched" : ''
+    def matched_command = matched ? "--matched-normal $matched" : ''
 
     def avail_mem = 3
     if (!task.memory) {
