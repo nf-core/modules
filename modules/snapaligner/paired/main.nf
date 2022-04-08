@@ -23,9 +23,12 @@ process SNAPALIGNER_PAIRED {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir -p index
+    mv $index index/
+
     snap-aligner paired \\
-    $index \\
-    ${reads.join(" ")}
+    index \\
+    ${reads.join(" ")} \\
     -o -bam ${prefix}.bam \\
     -t ${task.cpus} \\
     $args

@@ -1,11 +1,9 @@
-- name: "snapaligner paired"
-  command: nextflow run ./tests/modules/snapaligner/paired -entry test_snapaligner_paired -c ./tests/config/nextflow.config -c ./tests/modules/snapaligner/paired/nextflow.config
+- name: snapaligner paired test_snapaligner_paired
+  command: nextflow run tests/modules/snapaligner/paired -entry test_snapaligner_paired -c tests/config/nextflow.config
   tags:
-    - "snapaligner"
-    #
-    - "snapaligner/paired"
-    #
+    - snapaligner
+    - snapaligner/paired
   files:
-    - path: "output/snapaligner/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/snapaligner/test.bam
+      md5sum: 2ac92e9539fa246dd6db52b5de56fca5
     - path: output/snapaligner/versions.yml
