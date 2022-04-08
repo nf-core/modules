@@ -41,7 +41,7 @@ process BCLCONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bclconvert: echo \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
+        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
     END_VERSIONS
     """
 
@@ -78,7 +78,7 @@ process BCLCONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bclconvert: echo \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
+        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
     END_VERSIONS
     """
 }
