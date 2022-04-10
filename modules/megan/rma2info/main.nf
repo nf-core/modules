@@ -32,7 +32,7 @@ process MEGAN_RMA2INFO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        megan: \$(echo \$(rma 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
+        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
     END_VERSIONS
     """
 }
