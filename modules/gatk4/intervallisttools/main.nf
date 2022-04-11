@@ -32,8 +32,8 @@ process GATK4_INTERVALLISTTOOLS {
     mkdir ${prefix}_split
 
     gatk --java-options "-Xmx${avail_mem}g" IntervalListTools \\
-        --input $intervals \\
-        --output ${prefix}_split \\
+        --INPUT $intervals \\
+        --OUTPUT ${prefix}_split \\
         $args
 
     python3 <<CODE
