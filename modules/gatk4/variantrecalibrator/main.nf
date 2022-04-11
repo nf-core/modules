@@ -27,7 +27,7 @@ process GATK4_VARIANTRECALIBRATOR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference_command = fasta ? "--reference ${fasta} " : ''
+    def reference_command = fasta ? "--reference $fasta " : ''
     def resource_command = labels.collect{"--resource:$it"}.join(' ')
 
     def avail_mem = 3

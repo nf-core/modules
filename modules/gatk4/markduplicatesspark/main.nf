@@ -23,7 +23,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = bam.collect{"--INPUT ${it}"}.join(' ')
+    def input_list = bam.collect{"--INPUT $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -36,10 +36,10 @@ process GATK4_MARKDUPLICATES_SPARK {
 
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
-        --reference ${fasta} \\
-        --tmp-dir . \\
-        --output ${prefix} \\
+        --output $prefix \\
+        --reference $fasta \\
         --spark-master local[${task.cpus}] \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -22,7 +22,7 @@ process GATK4_GATHERPILEUPSUMMARIES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = pileup.collect{ "--I ${it}" }.join(' ')
+    def input_list = pileup.collect{ "--I $it" }.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {

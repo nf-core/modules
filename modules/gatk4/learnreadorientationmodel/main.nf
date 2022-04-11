@@ -20,7 +20,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = f1r2.collect{"--input ${it}"}.join(' ')
+    def input_list = f1r2.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
