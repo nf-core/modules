@@ -33,6 +33,7 @@ process GATK4_BEDTOINTERVALLIST {
         --INPUT $bed \\
         --OUTPUT ${prefix}.interval_list \\
         --SEQUENCE_DICTIONARY $dict \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

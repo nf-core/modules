@@ -35,6 +35,7 @@ process GATK4_MERGEBAMALIGNMENT {
         --ALIGNED_BAM $aligned \\
         --OUTPUT ${prefix}.bam \\
         --REFERENCE_SEQUENCE $fasta \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

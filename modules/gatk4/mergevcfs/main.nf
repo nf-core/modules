@@ -35,6 +35,7 @@ process GATK4_MERGEVCFS {
         $input_list \\
         --OUTPUT ${prefix}.vcf.gz \\
         $reference_command \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

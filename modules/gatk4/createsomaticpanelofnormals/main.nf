@@ -36,6 +36,7 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
         --variant gendb://$genomicsdb \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

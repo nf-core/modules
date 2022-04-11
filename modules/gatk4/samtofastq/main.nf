@@ -32,6 +32,7 @@ process GATK4_SAMTOFASTQ {
     gatk --java-options "-Xmx${avail_mem}g" SamToFastq \\
         --INPUT $bam \\
         $output \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

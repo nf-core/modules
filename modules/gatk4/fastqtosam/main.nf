@@ -33,6 +33,7 @@ process GATK4_FASTQTOSAM {
         $reads_command \\
         --OUTPUT ${prefix}.bam \\
         --SAMPLE_NAME $prefix \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

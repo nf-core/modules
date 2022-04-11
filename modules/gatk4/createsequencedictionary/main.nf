@@ -30,6 +30,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
     gatk --java-options "-Xmx${avail_mem}g" CreateSequenceDictionary \\
         --REFERENCE $fasta \\
         --URI $fasta \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

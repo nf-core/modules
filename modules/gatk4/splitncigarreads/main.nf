@@ -35,6 +35,7 @@ process GATK4_SPLITNCIGARREADS {
         --input $bam \\
         --output ${prefix}.bam \\
         --reference $fasta \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

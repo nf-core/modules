@@ -42,8 +42,8 @@ process GATK4_HAPLOTYPECALLER {
         --reference $fasta \\
         $dbsnp_command \\
         $interval_command \\
-        $args \\
-        --tmp-dir .
+        --tmp-dir . \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

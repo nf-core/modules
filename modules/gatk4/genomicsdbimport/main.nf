@@ -56,6 +56,7 @@ process GATK4_GENOMICSDBIMPORT {
         $input_command \\
         $genomicsdb_command \\
         $interval_command \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

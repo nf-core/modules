@@ -32,6 +32,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     gatk --java-options "-Xmx${avail_mem}g" LearnReadOrientationModel \\
         $input_list \\
         --output ${prefix}.tar.gz \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

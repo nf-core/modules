@@ -31,6 +31,7 @@ process GATK4_INTERVALLISTTOBED {
     gatk --java-options "-Xmx${avail_mem}g" IntervalListToBed \\
         --INPUT $intervals \\
         --OUTPUT ${prefix}.bed \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

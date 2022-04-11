@@ -46,6 +46,7 @@ process GATK4_FILTERMUTECTCALLS {
         $segmentation_command \\
         $estimate_command \\
         $table_command \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

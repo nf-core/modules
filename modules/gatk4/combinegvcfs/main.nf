@@ -36,6 +36,7 @@ process GATK4_COMBINEGVCFS {
         $input_list \\
         --output ${prefix}.combined.g.vcf.gz \\
         --reference ${fasta} \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

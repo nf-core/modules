@@ -29,8 +29,9 @@ process GATK4_REVERTSAM {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" RevertSam \\
-        I=$bam \\
-        O=${prefix}.reverted.bam \\
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.reverted.bam \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
