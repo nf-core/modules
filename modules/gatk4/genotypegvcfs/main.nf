@@ -26,9 +26,9 @@ process GATK4_GENOTYPEGVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def dbsnp_command = dbsnp ? "-D ${dbsnp}" : ""
-    def interval_command = intervals ? "-L ${intervals}" : ""
     def gvcf_command = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
+    def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -38,11 +38,11 @@ process GATK4_GENOTYPEGVCFS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" GenotypeGVCFs \\
+        --variant $gvcf_command \\
+        --output ${prefix}.vcf.gz \\
+        --reference $fasta \\
         $interval_command \\
         $dbsnp_command \\
-        -R $fasta \\
-        -V $gvcf_command \\
-        -O ${prefix}.vcf.gz \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

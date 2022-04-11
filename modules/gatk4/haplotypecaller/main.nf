@@ -26,8 +26,8 @@ process GATK4_HAPLOTYPECALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def interval_command = intervals ? "-L ${intervals}" : ""
-    def dbsnp_command = dbsnp ? "-D ${dbsnp}" : ""
+    def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -37,9 +37,9 @@ process GATK4_HAPLOTYPECALLER {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" HaplotypeCaller \\
-        -R $fasta \\
-        -I $input \\
-        -O ${prefix}.vcf.gz \\
+        --input $input \\
+        --output ${prefix}.vcf.gz \\
+        --reference $fasta \\
         $dbsnp_command \\
         $interval_command \\
         $args \\

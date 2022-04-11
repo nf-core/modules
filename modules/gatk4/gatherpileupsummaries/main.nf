@@ -33,9 +33,8 @@ process GATK4_GATHERPILEUPSUMMARIES {
     """
     gatk --java-options "-Xmx${avail_mem}g" GatherPileupSummaries \\
         $input_list \\
-        --sequence-dictionary $dict \\
         --O ${prefix}.pileupsummaries.table \\
-        --showHidden \\
+        --sequence-dictionary $dict \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
