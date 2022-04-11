@@ -31,10 +31,10 @@ process GATK4_MERGEBAMALIGNMENT {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeBamAlignment \\
-        -ALIGNED $aligned \\
-        -UNMAPPED $unmapped \\
-        -R $fasta \\
-        -O ${prefix}.bam \\
+        --UNMAPPED_BAM $unmapped \\
+        --ALIGNED_BAM $aligned \\
+        --OUTPUT ${prefix}.bam \\
+        --REFERENCE_SEQUENCE $fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

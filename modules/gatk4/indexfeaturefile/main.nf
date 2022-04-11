@@ -28,7 +28,7 @@ process GATK4_INDEXFEATUREFILE {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" IndexFeatureFile \\
-        -I $feature_file \\
+        --input $feature_file \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
