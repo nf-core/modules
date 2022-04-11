@@ -1,4 +1,4 @@
-!/usr/bin/env nextflow
+#!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
 
@@ -34,6 +34,6 @@ workflow test_longranger_align {
 
     LONGRANGER_ALIGN (
         [ [id : "pEimTen1"], file("${workDir}/10x/")],
-        [ [id : "pEimTen1"], file("${workDir}/refdata-pEimTen1.contigs/")],
+        file("${workDir}/refdata-pEimTen1.contigs/"),
     )
 }

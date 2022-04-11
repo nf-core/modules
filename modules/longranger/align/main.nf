@@ -12,7 +12,7 @@ process LONGRANGER_ALIGN {
 
     input:
     tuple val(meta), path(fastqs)
-    tuple val(meta), path(reference)
+    path(reference)
 
     output:
     tuple val(meta), path("${meta.id}/outs/possorted_bam.bam"), emit: bam
@@ -32,7 +32,7 @@ process LONGRANGER_ALIGN {
     """
     longranger align --id=$sample --fastqs=$fastqs \
         --sample=$sample --reference=$reference \
-        --jobmode=${jobmode} --localcores=${task.cpus} --localmem=${localmem} \
+        --jobmode=${jobmode} \
         ${task.ext.args}
 
     cat <<-END_VERSIONS > versions.yml
