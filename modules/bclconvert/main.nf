@@ -30,10 +30,10 @@ process BCLCONVERT {
         --output-directory $PWD \\
         --bcl-input-directory ${run_dir} \\
         --sample-sheet ${samplesheet} \\
-        --bcl-num-parallel-tiles $task.cpus \\
-        --bcl-num-conversion-threads $task.cpus \\
-        --bcl-num-compression-threads $task.cpus \\
-        --bcl-num-decompression-threads $task.cpus
+        --bcl-num-parallel-tiles ${task.cpus / 4} \\
+        --bcl-num-conversion-threads ${task.cpus / 4} \\
+        --bcl-num-compression-threads ${task.cpus / 4} \\
+        --bcl-num-decompression-threads ${task.cpus / 4}
 
     mkdir InterOp
     cp ${run_dir}/InterOp/*.bin InterOp/
