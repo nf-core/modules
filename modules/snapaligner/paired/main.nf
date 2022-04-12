@@ -35,7 +35,7 @@ process SNAPALIGNER_PAIRED {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //')
+        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/\.\$//')
     END_VERSIONS
     """
 }
