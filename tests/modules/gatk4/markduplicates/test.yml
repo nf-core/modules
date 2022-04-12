@@ -10,7 +10,6 @@
       md5sum: 2efd50b2e6b7fd9bdf242cd9e266cfa9
     - path: output/gatk4/test.metrics
     - path: output/gatk4/versions.yml
-      md5sum: 0bc949aaa8792cd6c537cdaab0e2c145
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
   command: nextflow run tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c tests/config/nextflow.config -c ./tests/modules/gatk4/markduplicates/nextflow.config
@@ -24,4 +23,3 @@
       md5sum: 8187febc6108ffef7f907e89b9c091a4
     - path: output/gatk4/test.metrics
     - path: output/gatk4/versions.yml
-      md5sum: b10d63cf7b2b672915cb30cea081ccd5
