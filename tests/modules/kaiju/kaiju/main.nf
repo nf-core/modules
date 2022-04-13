@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { UNTAR       } from '../../../../modules/untar/main.nf'
 include { KAIJU_KAIJU } from '../../../../modules/kaiju/kaiju/main.nf'
 
 workflow test_kaiju_kaiju_single_end {
@@ -10,12 +11,10 @@ workflow test_kaiju_kaiju_single_end {
         [ id:'test', single_end:true ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
-    db    = [
-        file(params.test_data['sarscov2']['genome']['kaiju_fmi'], checkIfExists: true), // database
-        file(params.test_data['sarscov2']['genome']['kaiju_nodes'], checkIfExists: true) // taxon nodes
-    ]
+    db    = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
 
-    KAIJU_KAIJU ( input, db )
+    UNTAR ( db )
+    KAIJU_KAIJU ( input, UNTAR.out.untar.map{ it[1] } )
 }
 
 workflow test_kaiju_kaiju_paired_end {
@@ -25,10 +24,9 @@ workflow test_kaiju_kaiju_paired_end {
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
     ]
-    db    = [
-        file(params.test_data['sarscov2']['genome']['kaiju_fmi'], checkIfExists: true), // database
-        file(params.test_data['sarscov2']['genome']['kaiju_nodes'], checkIfExists: true) // taxon nodes
-    ]
+    db    = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
 
-    KAIJU_KAIJU ( input, db )
+    UNTAR ( db )
+    KAIJU_KAIJU ( input, UNTAR.out.untar.map{ it[1] } )
+
 }
