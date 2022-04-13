@@ -11,7 +11,7 @@ process ELPREP_SPLIT {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("**.{bam,sam}"), emit: bam
+    tuple val(meta), path("**/$prefix*.{bam,sam}"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,16 +29,18 @@ process ELPREP_SPLIT {
     mkdir input
     mv ${bam} input/
 
+    mkdir ${prefix}
+
     elprep split \\
         input \\
-        ${prefix} \\
+        . \\
         $args \\
         --nr-of-threads $task.cpus \\
-        --output-prefix $prefix \\
+        --output-prefix $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*$//')
+        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
     END_VERSIONS
     """
 }
