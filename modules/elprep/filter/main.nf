@@ -87,11 +87,7 @@ process ELPREP_FILTER {
     if ((args.contains("--bqsr") || args.contains("--haplotypecaller")) && reference_elfasta == null) error "Reference required BQSR and variant calling."
 
     """
-    # create directory and move all input so elprep can find and merge them before splitting
-    mkdir input
-    mv ${bam} input/
-
-    elprep filter input ${prefix}.${suffix} \\
+    elprep filter ${bam} ${prefix}.${suffix} \\
         --nr-of-threads $task.cpus \\
         $args
 
