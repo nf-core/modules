@@ -18,7 +18,7 @@ input:
   - results:
       type: file
       description: File containing the centrifuge classification results
-      pattern: "*.{tsv,sam}"
+      pattern: "*.{txt}"
 
 output:
   - meta:
@@ -35,6 +35,7 @@ output:
       description: |
         File containing kraken-style report from centrifuge
         out files.
-      pattern: "*.{kreport.txt}"
+      pattern: "*.{txt}"
 authors:
   - "@sofstam"
+  - "@jfy133"
