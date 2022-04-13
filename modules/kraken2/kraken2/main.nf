@@ -32,6 +32,7 @@ process KRAKEN2_KRAKEN2 {
     def classified_command = save_classified ? "--classified-out ${classified}" : ""
     def unclassified_command = save_classified ? "--unclassified-out ${unclassified}" : ""
     def readclassification_command = save_readclassification ? "--output ${prefix}.kraken2.classifiedreads.txt" : ""
+    def compress_reads_command = save_classified ? "pigz -p $task.cpus *.fastq" : ""
 
     """
     kraken2 \\
@@ -46,7 +47,7 @@ process KRAKEN2_KRAKEN2 {
         $args \\
         $reads
 
-    pigz -p $task.cpus *.fastq
+    $compress_reads_command
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
