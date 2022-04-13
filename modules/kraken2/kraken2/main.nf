@@ -10,12 +10,15 @@ process KRAKEN2_KRAKEN2 {
     input:
     tuple val(meta), path(reads)
     path  db
+    val save_classified
+    val save_readclassification
 
     output:
-    tuple val(meta), path('*classified*')  , emit: classified
-    tuple val(meta), path('*unclassified*'), emit: unclassified
-    tuple val(meta), path('*report.txt')   , emit: txt
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path('*classified*')     , optional:true, emit: classified
+    tuple val(meta), path('*unclassified*')   , optional:true, emit: unclassified
+    tuple val(meta), path('*classifiedreads*'), optional:true, emit: classifiedreads
+    tuple val(meta), path('*report.txt')                     , emit: txt
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,14 +29,19 @@ process KRAKEN2_KRAKEN2 {
     def paired       = meta.single_end ? "" : "--paired"
     def classified   = meta.single_end ? "${prefix}.classified.fastq"   : "${prefix}.classified#.fastq"
     def unclassified = meta.single_end ? "${prefix}.unclassified.fastq" : "${prefix}.unclassified#.fastq"
+    def classified_command = save_classified ? "--classified-out ${classified}" : ""
+    def unclassified_command = save_classified ? "--unclassified-out ${unclassified}" : ""
+    def readclassification_command = save_readclassification ? "--output ${prefix}.kraken2.classifiedreads.txt" : ""
+
     """
     kraken2 \\
         --db $db \\
         --threads $task.cpus \\
-        --unclassified-out $unclassified \\
-        --classified-out $classified \\
         --report ${prefix}.kraken2.report.txt \\
         --gzip-compressed \\
+        $unclassified_command \\
+        $classified_command \\
+        $readclassification_command \\
         $paired \\
         $args \\
         $reads
