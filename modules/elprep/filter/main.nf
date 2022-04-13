@@ -49,7 +49,7 @@ process ELPREP_FILTER {
     }
 
     // markdup args
-    if args.contains("--mark-duplicates"){
+    if (args.contains("--mark-duplicates")){
         args += " --mark-optical-duplicates ${prefix}.metrics.txt"
     }
     // variant calling args
