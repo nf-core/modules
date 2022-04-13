@@ -1,3 +1,5 @@
+def VERSION = '1.0.3' // Version information not provided by tool
+
 process AMPLIFY_PREDICT {
     tag "$meta.id"
     label 'process_low'
@@ -25,15 +27,15 @@ process AMPLIFY_PREDICT {
     """
     AMPlify \\
         $args \\
+        ${custom_model_dir} \\
         -s '${faa}'
-        ${custom_model_dir}
 
     #rename output, because tool includes date and time in name
     mv *.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        AMPlify: 1.0.3
+        AMPlify: $VERSION
     END_VERSIONS
     """
 }
