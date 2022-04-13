@@ -1,4 +1,3 @@
-
 process AMPLIFY_PREDICT {
     tag "$meta.id"
     label 'process_low'
@@ -21,7 +20,6 @@ process AMPLIFY_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     AMPlify \\
         $args \\
