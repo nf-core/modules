@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag 'demultiplexing'
+    tag '$samplesheet'
     label 'process_high'
 
     if (params.enable_conda) {
