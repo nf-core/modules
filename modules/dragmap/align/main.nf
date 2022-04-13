@@ -24,14 +24,12 @@ process DRAGMAP_ALIGN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_group = meta.read_group ? "--RGSM ${meta.read_group}" : ""
     def samtools_command = sort_bam ? 'sort' : 'view'
     if (meta.single_end) {
         """
         dragen-os \\
             -r $hashmap \\
             $args \\
-            $read_group \\
             --num-threads $task.cpus \\
             -1 $reads \\
             2> ${prefix}.dragmap.log \\
