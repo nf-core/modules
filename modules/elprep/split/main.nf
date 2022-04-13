@@ -11,7 +11,7 @@ process ELPREP_SPLIT {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("**/$prefix*.{bam,sam}"), emit: bam
+    tuple val(meta), path("**.{bam,sam}"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
