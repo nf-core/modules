@@ -1,5 +1,3 @@
-def VERSION = '1.0.3' // Version information not provided by tool on CLI
-
 process AMPLIFY_PREDICT {
     tag "$meta.id"
     label 'process_low'
@@ -35,7 +33,7 @@ process AMPLIFY_PREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        AMPlify: $VERSION
+        AMPlify: 1.0.3
     END_VERSIONS
     """
 }
