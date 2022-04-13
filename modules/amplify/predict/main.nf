@@ -1,3 +1,5 @@
+def VERSION = '1.0.3' // Version information not provided by tool on CLI
+
 process AMPLIFY_PREDICT {
     tag "$meta.id"
     label 'process_low'
@@ -9,6 +11,7 @@ process AMPLIFY_PREDICT {
 
     input:
     tuple val(meta), path(faa)
+    path(model_dir)
 
     output:
     tuple val(meta), path('*.tsv'), emit: tsv
@@ -20,16 +23,19 @@ process AMPLIFY_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
     """
     AMPlify \\
         $args \\
         -s '${faa}'
+        ${custom_model_dir}
 
-    mv *.tsv '${prefix}.tsv'
+    #rename output, because tool includes date and time in name
+    mv *.tsv ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        AMPlify: 1.0.3
+        AMPlify: $VERSION
     END_VERSIONS
     """
 }
