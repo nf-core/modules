@@ -1,0 +1,38 @@
+name: biscuit_index
+description: Indexes a reference genome for use with Biscuit
+keywords:
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - index
+  - reference
+  - fasta
+
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/alignment
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+
+output:
+  - index:
+      type: dir
+      description: Biscuit genome index directory
+      pattern: "BiscuitIndex"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@njspix"

@@ -1,0 +1,10 @@
+- name: picard createsequencedictionary test_picard_createsequencedictionary
+  command: nextflow run tests/modules/picard/createsequencedictionary -entry test_picard_createsequencedictionary -c tests/config/nextflow.config
+  tags:
+    - picard/createsequencedictionary
+    - picard
+  files:
+    - path: output/picard/test.dict
+      contains: ["SN:MT192765.1"]
+    - path: output/picard/versions.yml
+      md5sum: b3d8c7ea65b8a6d3237b153d13fe2014

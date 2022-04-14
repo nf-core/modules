@@ -1,10 +1,10 @@
 process MULTIQC {
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::multiqc=1.11' : null)
+    conda (params.enable_conda ? 'bioconda::multiqc=1.12' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/multiqc:1.11--pyhdfd78af_0' :
-        'quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/multiqc:1.12--pyhdfd78af_0' :
+        'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0' }"
 
     input:
     path multiqc_files
@@ -22,6 +22,18 @@ process MULTIQC {
     def args = task.ext.args ?: ''
     """
     multiqc -f $args .
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch multiqc_data
+    touch multiqc_plots
+    touch multiqc_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

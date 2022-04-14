@@ -1,0 +1,21 @@
+- name: seqtk rename test_seqtk_rename
+  command: nextflow run tests/modules/seqtk/rename -entry test_seqtk_rename -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/rename
+  files:
+    - path: output/seqtk/test.renamed.fasta.gz
+      md5sum: 7b407952dcf0d925f1996e04a201d05b
+    - path: output/seqtk/versions.yml
+      md5sum: 24127592f1b9e5ee8e5ab04ee748c491
+
+- name: seqtk rename test_seqtk_rename_fq
+  command: nextflow run tests/modules/seqtk/rename -entry test_seqtk_rename_fq -c tests/config/nextflow.config
+  tags:
+    - seqtk
+    - seqtk/rename
+  files:
+    - path: output/seqtk/test.renamed.fastq.gz
+      md5sum: babdfc2a3940a1e32a63479db2c1d600
+    - path: output/seqtk/versions.yml
+      md5sum: 06c19670eb2b4185e8f4fa5dcf8fb0d5

@@ -1,0 +1,55 @@
+- name: faqcs test_fastp_single_end
+  command: nextflow run tests/modules/faqcs -entry test_fastp_single_end -c tests/config/nextflow.config
+  tags:
+    - faqcs
+  files:
+    - path: output/faqcs/qa.test.base_content.txt
+      md5sum: f992603f01ca430c03c8aae02eba2f5d
+    - path: output/faqcs/qa.test.for_qual_histogram.txt
+      md5sum: a3d462ab84151e982f99f85f52c21de3
+    - path: output/faqcs/qa.test.length_count.txt
+      md5sum: 80915f09fbaf5884c32e95acab2d031c
+    - path: output/faqcs/test.base_content.txt
+      md5sum: f992603f01ca430c03c8aae02eba2f5d
+    - path: output/faqcs/test.fastp.log
+      md5sum: be79dc893f87de1f82faf749cdfb848c
+    - path: output/faqcs/test.for_qual_histogram.txt
+      md5sum: a3d462ab84151e982f99f85f52c21de3
+    - path: output/faqcs/test.length_count.txt
+      md5sum: 80915f09fbaf5884c32e95acab2d031c
+    - path: output/faqcs/test.stats.txt
+      md5sum: ea20e93706b2e4c676004253baa3cec6
+    - path: output/faqcs/test.trimmed.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: output/faqcs/test_qc_report.pdf
+    - path: output/faqcs/versions.yml
+      md5sum: 2a38d7e7ab5299336e9669c393c9da6c
+
+- name: faqcs test_fastp_paired_end
+  command: nextflow run tests/modules/faqcs -entry test_fastp_paired_end -c tests/config/nextflow.config
+  tags:
+    - faqcs
+  files:
+    - path: output/faqcs/qa.test.base_content.txt
+      md5sum: 99aa9a775ccd8d6503f0cf80f775203c
+    - path: output/faqcs/qa.test.for_qual_histogram.txt
+      md5sum: 4f4b131be5425bdfa4b3237e44fa7d48
+    - path: output/faqcs/qa.test.length_count.txt
+      md5sum: 420298983c762754d5b0ef32c9d5dad4
+    - path: output/faqcs/test.base_content.txt
+      md5sum: 99aa9a775ccd8d6503f0cf80f775203c
+    - path: output/faqcs/test.fastp.log
+      md5sum: be79dc893f87de1f82faf749cdfb848c
+    - path: output/faqcs/test.for_qual_histogram.txt
+      md5sum: 4f4b131be5425bdfa4b3237e44fa7d48
+    - path: output/faqcs/test.length_count.txt
+      md5sum: 420298983c762754d5b0ef32c9d5dad4
+    - path: output/faqcs/test.stats.txt
+      md5sum: 9a693f8af94ab8c485519d9a523aa622
+    - path: output/faqcs/test_1.trimmed.fastq.gz
+      md5sum: 875863b402f67403dac63ef59b9c9a8a
+    - path: output/faqcs/test_2.trimmed.fastq.gz
+      md5sum: 375aeb74819ca3d72203135ac80df78c
+    - path: output/faqcs/test_qc_report.pdf
+    - path: output/faqcs/versions.yml
+      md5sum: 208d54c0cf6dfc54e719b81b990afac9
