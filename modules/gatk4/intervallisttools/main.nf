@@ -8,11 +8,11 @@ process GATK4_INTERVALLISTTOOLS {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(interval_list)
+    tuple val(meta), path(intervals)
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +20,7 @@ process GATK4_INTERVALLISTTOOLS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK IntervalListTools] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -30,10 +31,10 @@ process GATK4_INTERVALLISTTOOLS {
 
     mkdir ${prefix}_split
 
-    gatk --java-options "-Xmx${avail_mem}g" \\
-        IntervalListTools \\
-        -I ${interval_list} \\
-        -O ${prefix}_split \\
+    gatk --java-options "-Xmx${avail_mem}g" IntervalListTools \\
+        --INPUT $intervals \\
+        --OUTPUT ${prefix}_split \\
+        --TMP_DIR . \\
         $args
 
     python3 <<CODE

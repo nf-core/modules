@@ -22,6 +22,7 @@ process GATK4_MERGEBAMALIGNMENT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK MergeBamAlignment] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -30,10 +31,11 @@ process GATK4_MERGEBAMALIGNMENT {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeBamAlignment \\
-        -ALIGNED $aligned \\
-        -UNMAPPED $unmapped \\
-        -R $fasta \\
-        -O ${prefix}.bam \\
+        --UNMAPPED_BAM $unmapped \\
+        --ALIGNED_BAM $aligned \\
+        --OUTPUT ${prefix}.bam \\
+        --REFERENCE_SEQUENCE $fasta \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
