@@ -9,11 +9,11 @@ process KAIJU_KAIJU {
 
     input:
     tuple val(meta), path(reads)
-    tuple path(db), path(dbnodes)
+    path(db)
 
     output:
     tuple val(meta), path('*.tsv'), emit: results
-    path "versions.yml"                   , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,13 @@ process KAIJU_KAIJU {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = meta.single_end ? "-i ${reads}" : "-i ${reads[0]} -j ${reads[1]}"
     """
+    dbnodes=`find -L ${db} -name "*nodes.dmp"`
+    dbname=`find -L ${db} -name "*.fmi" -not -name "._*"`
     kaiju \\
         $args \\
         -z $task.cpus \\
-        -t ${dbnodes} \\
-        -f ${db} \\
+        -t \$dbnodes \\
+        -f \$dbname \\
         -o ${prefix}.tsv \\
         $input
 
