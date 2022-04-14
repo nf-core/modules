@@ -23,6 +23,20 @@ tools:
       doi: "10.1093/nar/gkab335"
       licence: ['AGPL v3']
 
+input:
+  - database_css:
+      type: directory
+      description: antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step
+      pattern: "css"
+  - database_detection:
+      type: directory
+      description: antismash/detection folder which is being created during the antiSMASH database downloading step
+      pattern: "detection"
+  - database_modules:
+      type: directory
+      description: antismash/modules folder which is being created during the antiSMASH database downloading step
+      pattern: "modules"
+
 output:
   - versions:
       type: file
