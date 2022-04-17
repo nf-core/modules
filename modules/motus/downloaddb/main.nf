@@ -24,6 +24,7 @@ process MOTUS_DOWNLOADDB {
     ## other than current directory
     cp $motus_downloaddb ${motus_downloaddb.simpleName}_copy.py
     python ${motus_downloaddb.simpleName}_copy.py \\
+        $args \\
         -t $task.cpus
     ## clean up
     rm ${motus_downloaddb.simpleName}_copy.py
