@@ -19,7 +19,7 @@ process MOTUS_DOWNLOADDB {
     script:
     def args = task.ext.args ?: ''
     """
-    ## must copy file to working directory,
+    ## must copy script file to working directory,
     ## otherwise the reference_db will be download to bin folder
     ## other than current directory
     cp $motus_downloaddb ${motus_downloaddb.simpleName}_copy.py
