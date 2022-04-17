@@ -18,7 +18,7 @@ process MOTUS_DOWNLOADDB {
 
     script:
     def args     = task.ext.args ?: ''
-    def software = ${motus_downloaddb.simplename}_copy.py
+    def software = ${motus_downloaddb.simpleName}_copy.py
     """
     ## must copy script file to working directory,
     ## otherwise the reference_db will be download to bin folder
