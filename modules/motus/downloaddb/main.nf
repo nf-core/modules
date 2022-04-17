@@ -10,7 +10,7 @@ process MOTUS_DOWNLOADDB {
     path motus_downloaddb_script
 
     output:
-    path "db_mOTU"                , emit: db
+    path "db_mOTU/"                , emit: db
     path "versions.yml"           , emit: versions
 
     when:
