@@ -7,7 +7,7 @@ process MOTUS_DOWNLOADDB {
         'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
 
     input:
-    path motus_downloaddb
+    path motus_downloaddb_script
 
     output:
     path "db_mOTU"                , emit: db
