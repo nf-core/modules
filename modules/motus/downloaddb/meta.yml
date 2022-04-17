@@ -5,6 +5,8 @@ keywords:
   - metagenomics
   - fastq
   - taxonomic profiling
+  - database
+  - download
 tools:
   - "motus":
       description: "The mOTU profiler is a computational tool that estimates relative taxonomic abundance of known and currently unknown microbial community members using metagenomic shotgun sequencing data."
@@ -19,7 +21,7 @@ input:
       type: file
       description: |
         the mOTUs downloadDB script source file
-      pattern: "*{.py}"
+      pattern: "downloadDB.py"
 
 output:
   - versions:
@@ -27,7 +29,7 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - db:
-      type: file
+      type: directory
       description: The mOTUs database
       pattern: "db_mOTU"
 

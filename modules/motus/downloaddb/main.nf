@@ -11,23 +11,24 @@ process MOTUS_DOWNLOADDB {
 
     output:
     path "db_mOTU/"                , emit: db
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args     = task.ext.args ?: ''
+    def software = ${motus_downloaddb.simpleName}_copy.py
     """
     ## must copy file to working directory,
     ## otherwise the reference_db will be download to bin folder
     ## other than current directory
-    cp $motus_downloaddb ${motus_downloaddb.simpleName}_copy.py
-    python ${motus_downloaddb.simpleName}_copy.py \\
+    cp $motus_downloaddb ${software}
+    python ${software} \\
         $args \\
         -t $task.cpus
     ## clean up
-    rm ${motus_downloaddb.simpleName}_copy.py
+    rm ${software}
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
