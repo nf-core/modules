@@ -11,8 +11,8 @@ process ELPREP_MERGE {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("**.{bam,sam}"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("**.{bam,sam}")   , emit: bam
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
