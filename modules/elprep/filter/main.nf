@@ -29,7 +29,7 @@ process ELPREP_FILTER {
     tuple val(meta), path("*.vcf.gz")               ,optional: true, emit: gvcf
     tuple val(meta), path("*.table")                ,optional: true, emit: table
     tuple val(meta), path("*.activity_profile.igv") ,optional: true, emit: activity_profile
-    tuple val(meta), path("*.activity_regions.igv") ,optional: true, emit: activity_regions
+    tuple val(meta), path("*.assembly_regions.igv") ,optional: true, emit: activity_regions
     path "versions.yml"                             ,emit: versions
 
     when:
