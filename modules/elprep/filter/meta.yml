@@ -51,7 +51,7 @@ input:
   - get_activity_profile:
       type: boolean
       description: Get the activity profile calculated by the haplotypecaller to the given file in IGV format.
-  - get_activity_regions:
+  - get_assembly_regions:
       type: boolean
       description: Get the assembly regions calculated by haplotypecaller to the speficied file in IGV format.
 output:
@@ -88,9 +88,9 @@ output:
       type: file
       description: Optional activity profile output file
       pattern: "*.{activity_profile.igv}"
-  - activity_regions:
+  - assembly_regions:
       type: file
       description: Optional activity regions output file
-      pattern: "*.{activity_regions.igv}"
+      pattern: "*.{assembly_regions.igv}"
 authors:
   - "@matthdsm"

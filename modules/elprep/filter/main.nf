@@ -54,7 +54,7 @@ process ELPREP_FILTER {
     }
     // variant calling args
     if (run_haplotypecaller) {
-        args += "--haplotypecaller ${prefix}.g.vcf.gz"
+        args += " --haplotypecaller ${prefix}.g.vcf.gz"
     }
     if (reference_elfasta) {
         args += " --reference ${reference_elfasta}"
@@ -78,10 +78,10 @@ process ELPREP_FILTER {
 
     // misc
     if (get_activity_profile) {
-        args += " ----activity-profile ${prefix}.activity_profile.igv"
+        args += " --activity-profile ${prefix}.activity_profile.igv"
     }
     if (get_activity_regions) {
-        args += " --activity-regions ${prefix}.activity_regions.igv"
+        args += " --assembly-regions ${prefix}.assembly_regions.igv"
     }
     // errors
     if ((args.contains("--bqsr") || args.contains("--haplotypecaller")) && reference_elfasta == null) error "Reference required BQSR and variant calling."
