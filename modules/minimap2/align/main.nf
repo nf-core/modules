@@ -10,10 +10,12 @@ process MINIMAP2_ALIGN {
     input:
     tuple val(meta), path(reads)
     path reference
+    val sam_format
 
     output:
-    tuple val(meta), path("*.paf"), emit: paf
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.paf"), emit: paf, optional: true
+    tuple val(meta), path("*.sam"), emit: sam, optional: true
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +24,15 @@ process MINIMAP2_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
+    def sam_output = sam_format ? "-a -o ${prefix}.sam" : "-o ${prefix}.paf"
     """
     minimap2 \\
         $args \\
         -t $task.cpus \\
         $reference \\
         $input_reads \\
-        > ${prefix}.paf
+        $sam_output
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

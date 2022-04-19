@@ -9,8 +9,9 @@ workflow test_minimap2_align_single_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    sam_format = true
 
-    MINIMAP2_ALIGN ( input, fasta )
+    MINIMAP2_ALIGN ( input, fasta, sam_format )
 }
 
 workflow test_minimap2_align_paired_end {
@@ -19,6 +20,7 @@ workflow test_minimap2_align_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    sam_format = true
 
-    MINIMAP2_ALIGN ( input, fasta )
+    MINIMAP2_ALIGN ( input, fasta, sam_format )
 }
