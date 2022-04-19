@@ -1,3 +1,5 @@
+def VERSION = '2.1' // Version information not provided by tool on CLI
+
 process GAMMA {
     tag "$meta.id"
     label 'process_low'
@@ -14,7 +16,7 @@ process GAMMA {
     output:
     tuple val(meta), path("*.gamma"), emit: gamma
     tuple val(meta), path("*.psl")  , emit: psl
-    tuple val(meta), path("*.gff")  , optional:true, emit: gff
+    tuple val(meta), path("*.gff")  , emit: gff      , optional:true
     path "versions.yml"             , emit: versions
 
     when:
@@ -23,7 +25,6 @@ process GAMMA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     GAMMA.py \\
     $args \\
@@ -33,7 +34,7 @@ process GAMMA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gamma: "2.1"
+        gamma: $VERSION
     END_VERSIONS
     """
 }
