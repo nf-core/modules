@@ -23,7 +23,10 @@ process BAMTOOLS_SPLIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"-in $it"}.join(' ')
     if (bam_list) {
-        input += " -list $bam_list"
+        input_list += " -list $bam_list"
+    }
+    if (!args.contains("-stub")) {
+        args += " -stub ${prefix}"
     }
 
     """
