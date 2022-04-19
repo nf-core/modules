@@ -1,9 +1,3 @@
-- name: "elprep split"
-  command: nextflow run ./tests/modules/elprep/split -entry test_elprep_split -c ./tests/config/nextflow.config -c ./tests/modules/elprep/split/nextflow.config
-  tags:
-    - "elprep"
-    - "elprep/split"
-  files:
 - name: elprep split test_elprep_split
   command: nextflow run tests/modules/elprep/split -entry test_elprep_split -c tests/config/nextflow.config
   tags:
