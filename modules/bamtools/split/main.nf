@@ -20,7 +20,6 @@ process BAMTOOLS_SPLIT {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"-in $it"}.join(' ')
     if (bam_list) {
@@ -30,9 +29,8 @@ process BAMTOOLS_SPLIT {
     """
     bamtools merge \\
         ${input_list} \\
-        $args \\
-    bamtools split \\
-        $args2
+    | bamtools split \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
