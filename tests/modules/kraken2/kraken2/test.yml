@@ -11,7 +11,6 @@
     - path: output/kraken2/versions.yml
       md5sum: 6e3ad947ac8dee841a89216071c181cc
     - path: output/untar/versions.yml
-      md5sum: 88d802373c27f589afbf096432c0b373
 
 - name: kraken2 kraken2 test_kraken2_kraken2_paired_end
   command: nextflow run tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_paired_end -c tests/config/nextflow.config
@@ -28,7 +27,6 @@
     - path: output/kraken2/versions.yml
       md5sum: 604482fe7a4519f890fae9c8beb1bd6e
     - path: output/untar/versions.yml
-      md5sum: f2a40f625715e6e77f6725a95b4eb292
 
 - name: kraken2 kraken2 test_kraken2_kraken2_classifyreads
   command: nextflow run tests/modules/kraken2/kraken2 -entry test_kraken2_kraken2_classifyreads -c tests/config/nextflow.config
@@ -43,4 +41,3 @@
     - path: output/kraken2/versions.yml
       md5sum: 3488c304259e83c5bea573403293fce9
     - path: output/untar/versions.yml
-      md5sum: 11c14c1f5e3b01d39f15d2c1dcd42c87
