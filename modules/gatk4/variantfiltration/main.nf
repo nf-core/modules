@@ -8,7 +8,7 @@ process GATK4_VARIANTFILTRATION {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(vcf_tbi)
+    tuple val(meta), path(vcf), path(tbi)
     path  fasta
     path  fai
     path  dict
@@ -24,6 +24,7 @@ process GATK4_VARIANTFILTRATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -32,9 +33,10 @@ process GATK4_VARIANTFILTRATION {
     }
     """
     gatk --java-options "-Xmx${avail_mem}G" VariantFiltration \\
-        -R $fasta \\
-        -V $vcf \\
-        -O ${prefix}.vcf.gz \\
+        --variant $vcf \\
+        --output ${prefix}.vcf.gz \\
+        --reference $fasta \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
