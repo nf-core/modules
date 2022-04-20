@@ -9,7 +9,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         workflow.containerEngine == 'singularity' ?
         "-B $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
         workflow.containerEngine == 'docker' ?
-        "-v $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v $database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v $database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        "-v \$PWD/$database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
         ''
         }
     input:
