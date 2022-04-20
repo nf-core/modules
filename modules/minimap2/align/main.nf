@@ -37,8 +37,8 @@ process MINIMAP2_ALIGN {
     def input_reads = meta.single_end ? "$reads" : "${reads[0]} ${reads[1]}"
     def sam_output = sam_format ? "-a -o ${prefix}.sam" : "-o ${prefix}.paf"
     def preset = preset_pacbio_reads ? "-x map-pb" : preset_nanopore_reads ? "-x map-ont" : preset_pacbio_hifi_reads ? "-x map-hifi" :\
-                 preset_pacbio_overlap ? "-x ava-pb" : preset_nanopore_overlap ? "-x ava-ont" : preset_asm5 ? "-x asm5" : preset_asm10 ? "-x asm10" :\
-                 preset_asm20 ? "-x asm20" : preset_nanopore_spliced ? "-x splice" : preset_pacbio_spliced ? "-x splice:hq" : preset_short_read ? "-x sr" : ''
+                preset_pacbio_overlap ? "-x ava-pb" : preset_nanopore_overlap ? "-x ava-ont" : preset_asm5 ? "-x asm5" : preset_asm10 ? "-x asm10" :\
+                preset_asm20 ? "-x asm20" : preset_nanopore_spliced ? "-x splice" : preset_pacbio_spliced ? "-x splice:hq" : preset_short_read ? "-x sr" : ''
     """
     minimap2 \\
         $args \\
@@ -47,7 +47,6 @@ process MINIMAP2_ALIGN {
         $input_reads \\
         $sam_output \\
         $preset
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
