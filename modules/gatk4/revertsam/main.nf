@@ -20,6 +20,7 @@ process GATK4_REVERTSAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK RevertSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -28,8 +29,9 @@ process GATK4_REVERTSAM {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" RevertSam \\
-        I=$bam \\
-        O=${prefix}.reverted.bam \\
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.reverted.bam \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
