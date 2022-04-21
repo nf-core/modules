@@ -5,6 +5,12 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
         'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
+
+    /* 
+    These files are normally downloaded by download-antismash-databases itself, and must be retrieved for input by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines. This is solely for use for CI tests of the nf-core/module version of antiSMASH.
+    Reason: Upon execution, the tool checks if certain database files are present within the container and if not, it tries to create them in /usr/local/bin, for which only root user has write permissions. Mounting those database files with this module prevents the tool from trying to create them.
+    */
+    
     containerOptions {
         workflow.containerEngine == 'singularity' ?
         "-B $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
@@ -12,6 +18,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         "-v \$PWD/$database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
         ''
         }
+    
     input:
     path database_css
     path database_detection
