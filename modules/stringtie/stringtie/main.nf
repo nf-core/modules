@@ -1,4 +1,4 @@
-process STRINGTIE {
+process STRINGTIE_STRINGTIE {
     tag "$meta.id"
     label 'process_medium'
 
