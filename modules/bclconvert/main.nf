@@ -30,7 +30,7 @@ process BCLCONVERT {
         --output-directory . \\
         --bcl-input-directory ${run_dir} \\
         --sample-sheet ${samplesheet} \\
-        --bcl-num-parallel-tiles ${task.cpus / 4}
+        --bcl-num-parallel-tiles ${task.cpus}
 
     mkdir InterOp
     cp ${run_dir}/InterOp/*.bin InterOp/
