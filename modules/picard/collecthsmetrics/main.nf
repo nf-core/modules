@@ -42,6 +42,8 @@ process PICARD_COLLECTHSMETRICS {
         -TARGET_INTERVALS $target_intervals \\
         -INPUT $bam \\
         -OUTPUT ${prefix}_collecthsmetrics.txt
+        -OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics \\
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
