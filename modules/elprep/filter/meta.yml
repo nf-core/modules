@@ -34,21 +34,27 @@ input:
   - reference_sequences:
       type: file
       description: Optional SAM header to replace existing header.
+      pattern: "*.sam"
   - filter_regions_bed:
       type: file
       description: Optional BED file containing regions to filter.
+      pattern: "*.bed"
   - reference_elfasta:
       type: file
       description: Elfasta file, required for BQSR and variant calling.
+      pattern: "*.elfasta"
   - known_sites:
       type: file
       description: Optional elsites file containing known SNPs for BQSR.
+      pattern: "*.elsites"
   - target_regions_bed:
       type: file
       description: Optional BED file containing target regions for BQSR and variant calling.
+      pattern: "*.bed"
   - intermediate_bqsr_tables:
       type: file
       description: Optional list of BQSR tables, used when parsing files created by `elprep split`
+      pattern: "*.table"
   - bqsr_tables_only:
       type: boolean
       description: Write intermediate BQSR tables, used when parsing files created by `elprep split`.
