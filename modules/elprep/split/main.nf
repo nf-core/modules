@@ -20,9 +20,7 @@ process ELPREP_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.single_end) {
-        args += " --single-end"
-    }
+    meta.single_end ? args += " --single-end": ""
 
     """
     # create directory and move all input so elprep can find and merge them before splitting
