@@ -26,7 +26,7 @@ process PHANTOMPEAKQUALTOOLS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     RUN_SPP=`which run_spp.R`
-    Rscript $args -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" -p=$task.cpus
+    Rscript $args -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
