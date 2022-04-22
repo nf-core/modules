@@ -1,0 +1,14 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml atlas/pmd
+- name: "atlas pmd"
+  command: nextflow run ./tests/modules/atlas/pmd -entry test_atlas_pmd -c ./tests/config/nextflow.config -c ./tests/modules/atlas/pmd/nextflow.config
+  tags:
+    - "atlas"
+    #
+    - "atlas/pmd"
+    #
+  files:
+    - path: "output/atlas/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/atlas/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
