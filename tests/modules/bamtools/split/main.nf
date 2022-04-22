@@ -15,12 +15,15 @@ workflow test_bamtools_split_single_input {
     BAMTOOLS_SPLIT_SINGLE ( input )
 }
 
-workflow test_bamtools_split_multiple_input {
+workflow test_bamtools_split_multiple {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)]
-    [
+        [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)]
+
+    ]
 
     BAMTOOLS_SPLIT_MULTIPLE ( input )
 }
+
