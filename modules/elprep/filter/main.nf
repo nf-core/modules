@@ -41,9 +41,7 @@ process ELPREP_FILTER {
     def suffix = args.contains("--output-type sam") ? "sam" : "bam"
 
     // filter args
-    if (reference_sequences) {
-        args += " --replace-reference-sequences ${reference_sequences}"
-    }
+reference_sequences ? args += " --replace-reference-sequences ${reference_sequences}" : ""
     if (filter_regions_bed) {
         args += " --filter-non-overlapping-reads ${filter_regions_bed}"
     }
