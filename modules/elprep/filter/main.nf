@@ -29,7 +29,7 @@ process ELPREP_FILTER {
     tuple val(meta), path("*.vcf.gz")               ,optional: true, emit: gvcf
     tuple val(meta), path("*.table")                ,optional: true, emit: table
     tuple val(meta), path("*.activity_profile.igv") ,optional: true, emit: activity_profile
-    tuple val(meta), path("*.assembly_regions.igv") ,optional: true, emit: activity_regions
+    tuple val(meta), path("*.assembly_regions.igv") ,optional: true, emit: assembly_regions
     path "versions.yml"                             ,emit: versions
 
     when:
@@ -41,31 +41,44 @@ process ELPREP_FILTER {
     def suffix = args.contains("--output-type sam") ? "sam" : "bam"
 
     // filter args
-    reference_sequences ? args += " --replace-reference-sequences ${reference_sequences}" : ""
-    filter_regions_bed  ? args += " --filter-non-overlapping-reads ${filter_regions_bed}" : ""
+    def reference_sequences_cmd = reference_sequences ? " --replace-reference-sequences ${reference_sequences}" : ""
+    def filter_regions_cmd      = filter_regions_bed  ? " --filter-non-overlapping-reads ${filter_regions_bed}" : ""
 
     // markdup args
-    args.contains("--mark-duplicates") ? args += " --mark-optical-duplicates ${prefix}.metrics.txt": ""
+    def markdup_cmd = args.contains("--mark-duplicates") ? " --mark-optical-duplicates ${prefix}.metrics.txt": ""
 
     // variant calling args
-    run_haplotypecaller ? args += " --haplotypecaller ${prefix}.g.vcf.gz": ""
-    reference_elfasta   ? args += " --reference ${reference_elfasta}": ""
-    known_sites_elsites ? args += " --known-sites ${known_sites_elsites}": ""
-    target_regions_bed  ? args += " --target-regions ${target_regions_bed}": ""
+    def haplotyper_cmd = run_haplotypecaller ? " --haplotypecaller ${prefix}.g.vcf.gz": ""
+
+    def fasta_cmd           = reference_elfasta   ? " --reference ${reference_elfasta}": ""
+    def known_sites_cmd     = known_sites_elsites ? " --known-sites ${known_sites_elsites}": ""
+    def target_regions_cmd  = target_regions_bed  ? " --target-regions ${target_regions_bed}": ""
 
     // bqsr args
-    run_bqsr ? args += " --bqsr ${prefix}.recall": ""
+    def bqsr_cmd = run_bqsr ? " --bqsr ${prefix}.recall": ""
+    def bqsr_tables_only_cmd = bqsr_tables_only ? " --bqsr-tables-only ${prefix}.table": ""
 
-    intermediate_bqsr_tables ? args += " --bqsr-apply .": ""
-    bqsr_tables_only ? args += " --bqsr-tables-only ${prefix}.table": ""
+    def intermediate_bqsr_cmd = intermediate_bqsr_tables ? " --bqsr-apply .": ""
 
     // misc
-    get_activity_profile ? args += " --activity-profile ${prefix}.activity_profile.igv": ""
-    get_assembly_regions ? args += " --assembly-regions ${prefix}.assembly_regions.igv": ""
+    def activity_profile_cmd = get_activity_profile ? " --activity-profile ${prefix}.activity_profile.igv": ""
+    def assembly_regions_cmd = get_assembly_regions ? " --assembly-regions ${prefix}.assembly_regions.igv": ""
 
     """
     elprep filter ${bam} ${prefix}.${suffix} \\
-        --nr-of-threads $task.cpus \\
+        ${reference_sequences_cmd} \\
+        ${filter_regions_cmd} \\
+        ${markdup_cmd} \\
+        ${haplotyper_cmd} \\
+        ${fasta_cmd} \\
+        ${known_sites_cmd} \\
+        ${target_regions_cmd} \\
+        ${bqsr_cmd} \\
+        ${bqsr_tables_only_cmd} \\
+        ${intermediate_bqsr_cmd} \\
+        ${activity_profile_cmd} \\
+        ${assembly_regions_cmd} \\
+        --nr-of-threads ${task.cpus} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
