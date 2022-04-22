@@ -16,7 +16,7 @@ process GAMMA {
     output:
     tuple val(meta), path("*.gamma"), emit: gamma
     tuple val(meta), path("*.psl")  , emit: psl
-    tuple val(meta), path("*.gff") , optional:true , emit: gff 
+    tuple val(meta), path("*.gff") , optional:true , emit: gff
     path "versions.yml"             , emit: versions
 
     when:
@@ -27,10 +27,10 @@ process GAMMA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     GAMMA.py \\
-      $args \\
-      $fasta \\
-      $db \\
-      $prefix
+        $args \\
+        $fasta \\
+        $db \\
+        $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
