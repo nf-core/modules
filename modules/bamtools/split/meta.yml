@@ -25,11 +25,6 @@ input:
       type: file
       description: A list of one or more BAM files to merge and then split
       pattern: "*.bam"
-  - bam_list:
-      type: file
-      description: |
-        Optional input file containing bam files to merge before splitting,
-        one line per file
 
 output:
   - meta:
