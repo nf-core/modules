@@ -24,11 +24,13 @@ process BAMTOOLS_SPLIT {
     def stub =  !args.contains("-stub") ? "-stub ${prefix}" : ""
 
     """
-    bamtools merge \\
-        ${input_list} \\
-    | bamtools split \\
-        $stub \\
-        $args
+    bamtools \\
+        merge \\
+        $input_list \\
+        | bamtools \\
+            split \\
+            -stub $prefix \\
+            $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
