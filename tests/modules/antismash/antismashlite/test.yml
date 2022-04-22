@@ -1,0 +1,37 @@
+- name: antismash antismashlite test_antismashlite
+  command: nextflow run ./tests/modules/antismash/antismashlite -entry test_antismashlite -c tests/config/nextflow.config
+  tags:
+    - antismash/antismashlite
+    - antismash
+  files:
+    - path: output/antismash/test/NZ_CP069563.1.region001.gbk
+      contains: ['/tool="antismash"']
+    - path: output/antismash/test/NZ_CP069563.1.region002.gbk
+      contains: ['/tool="antismash"']
+    - path: output/antismash/test/css/bacteria.css
+      md5sum: 8b3c2f8b143d5245a5f42f55803c532c
+    - path: output/antismash/test/genome.gbk
+      contains: ['/tool="antismash"']
+    - path: output/antismash/test/genome.json
+      contains: ['{"version": "6.0.1", "input_file": "genome.gbff.gz", "records": [{"id": "NZ_CP069563.1", "seq": {"data":']
+    - path: output/antismash/test/genome.zip
+    - path: output/antismash/test/index.html
+      md5sum: 4792f0f4faf318035fbec5b4bf0ff76e
+    - path: output/antismash/test/js/antismash.js
+      md5sum: 58e90c3d783ae014cc3d51849bcb50a2
+    - path: output/antismash/test/js/jquery.js
+      md5sum: 397754ba49e9e0cf4e7c190da78dda05
+    - path: output/antismash/test/js/jquery.tablesorter.min.js
+      md5sum: 5e9e08cef4d1be0eaa538e6eb28809a7
+    - path: output/antismash/test/regions.js
+      md5sum: dfc82025379d87df63fbfce734e67725
+    - path: output/antismash/test/test.log
+      contains: ['antiSMASH version: 6.0.1']
+    - path: output/antismash/versions.yml
+      md5sum: 7151dfd4d39173338397b2dab50acf8e
+    - path: output/untar1/versions.yml
+      md5sum: 42c2c02eb6b5bc47b151bdd2c49bbb2d
+    - path: output/untar2/versions.yml
+      md5sum: 5a608b991b7d3e55cc43206939991a2d
+    - path: output/untar3/versions.yml
+      md5sum: ec74401950e3820b7575840571a6f00c
