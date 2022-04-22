@@ -18,12 +18,10 @@ process ELPREP_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.single_end) {
-        args += " --single-end"
-    }
-    def suffix = args.contains("--output-type sam") ? "sam" : "bam"
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def suffix      = args.contains("--output-type sam") ? "sam" : "bam"
+    def single_end  = meta.single_end ? " --single-end" : ""
 
     """
     # create directory and move all input so elprep can find and merge them before splitting
@@ -34,6 +32,7 @@ process ELPREP_MERGE {
         input \\
         ${prefix}.${suffix} \\
         $args \\
+        ${single_end} \\
         --nr-of-threads $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
