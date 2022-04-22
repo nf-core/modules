@@ -2,6 +2,7 @@ name: "gamma"
 description: Gene Allele Mutation Microbial Assessment
 keywords:
   - gamma
+  - gene-calling
 tools:
   - "gamma":
       description: "Tool for Gene Allele Mutation Microbial Assessment"
@@ -23,7 +24,7 @@ input:
       pattern: "*.{fa,fasta}"
   - db:
       type: file
-      description: FASTA file
+      description: Database in FASTA format
       pattern: "*.{fa,fasta}"
 
 output:
@@ -39,12 +40,12 @@ output:
 
   - gamma:
       type: file
-      description: GAMMA file
+      description: GAMMA file with annotated gene matches
       pattern: "*.{gamma}"
 
   - psl:
       type: file
-      description: PSL file
+      description: PSL file with all gene matches found
       pattern: "*.{psl}"
 
   - gff:
@@ -54,3 +55,4 @@ output:
 
 authors:
   - "@sateeshperi"
+  - "@rastanton"
