@@ -16,7 +16,7 @@ process GAMMA {
     output:
     tuple val(meta), path("*.gamma"), emit: gamma
     tuple val(meta), path("*.psl")  , emit: psl
-    tuple val(meta), path("*.gff")  , emit: gff      , optional:true
+    tuple val(meta), path("*.gff") , optional:true , emit: gff 
     path "versions.yml"             , emit: versions
 
     when:
