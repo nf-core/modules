@@ -21,8 +21,6 @@ process BAMTOOLS_SPLIT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"-in $it"}.join(' ')
-    def stub =  !args.contains("-stub") ? "-stub ${prefix}" : ""
-
     """
     bamtools \\
         merge \\
