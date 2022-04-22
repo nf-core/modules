@@ -26,7 +26,7 @@ input:
       type: string
       description: |
         Taxonomic rank to display in report
-        e.g. [ 'phylum', 'class', 'order', 'family', 'genus', 'species']
+        pattern: "phylum|class|order|family|genus|species"
 
 output:
   - meta:
@@ -47,3 +47,4 @@ output:
 authors:
   - "@sofstam"
   - "@talnor"
+  - "@jfy133"

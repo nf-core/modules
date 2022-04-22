@@ -19,18 +19,3 @@ workflow test_kaiju_kaiju_single_end {
     KAIJU_KAIJU ( input, ch_db.untar.map{ it[1] } )
     KAIJU_KAIJU2TABLE ( KAIJU_KAIJU.out.results, ch_db.untar.map{ it[1] }, taxon_rank )
 }
-
-workflow test_kaiju_kaiju_paired_end {
-
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-          file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-    ]
-    db    = [ [], file(params.test_data['sarscov2']['genome']['kaiju_tar_gz'], checkIfExists: true) ]
-    taxon_rank = "species"
-
-    ch_db = UNTAR ( db )
-    KAIJU_KAIJU ( input, ch_db.untar.map{ it[1] } )
-    KAIJU_KAIJU2TABLE ( KAIJU_KAIJU.out.results, ch_db.untar.map{ it[1] }, taxon_rank )
-}
