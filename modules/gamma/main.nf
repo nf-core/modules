@@ -27,10 +27,10 @@ process GAMMA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     GAMMA.py \\
-    $args \\
-    $fasta \\
-    $db \\
-    $prefix
+      $args \\
+      $fasta \\
+      $db \\
+      $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
