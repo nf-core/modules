@@ -3,7 +3,7 @@ nextflow.enable.dsl = 2
 
 include { METABAT2_METABAT2 } from '../../../../modules/metabat2/metabat2/main.nf'
 include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/metabat2/jgisummarizebamcontigdepths/main.nf'
-include { DASTOOL_SCAFFOLDS2BIN } from '../../../../modules/dastool/scaffolds2bin/main.nf'
+include { DASTOOL_FASTATOCONTIG2BIN } from '../../../../modules/dastool/fastatocontig2bin/main.nf'
 include { DASTOOL_DASTOOL } from '../../../../modules/dastool/dastool/main.nf'
 
 workflow test_dastool_dastool {
@@ -21,13 +21,13 @@ workflow test_dastool_dastool {
 
     METABAT2_METABAT2 ( input_metabat2 )
 
-    DASTOOL_SCAFFOLDS2BIN ( METABAT2_METABAT2.out.fasta.collect(), "fa")
+    DASTOOL_FASTATOCONTIG2BIN ( METABAT2_METABAT2.out.fasta.collect(), "fa")
 
     Channel.of([ [ id:'test', single_end:false ], // meta map
                       file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)])
-        .join(DASTOOL_SCAFFOLDS2BIN.out.scaffolds2bin)
+        .join( DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin )
         .set {input_dastool}
-    
 
-    DASTOOL_DASTOOL ( input_dastool, [], [], [] )
+
+    DASTOOL_DASTOOL ( input_dastool, [], [] )
 }

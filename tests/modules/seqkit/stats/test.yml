@@ -1,0 +1,54 @@
+- name: seqkit stats test_seqkit_stats_single_end
+  command: nextflow run tests/modules/seqkit/stats -entry test_seqkit_stats_single_end -c tests/config/nextflow.config
+  tags:
+    - seqkit/stats
+    - seqkit
+  files:
+    - path: output/seqkit/test.tsv
+      md5sum: e23227d089a7e04b0ec0cb547c4aadff
+    - path: output/seqkit/versions.yml
+      md5sum: d67f0c16feb9df77b11f6c91bbdf9926
+
+- name: seqkit stats test_seqkit_stats_paired_end
+  command: nextflow run tests/modules/seqkit/stats -entry test_seqkit_stats_paired_end -c tests/config/nextflow.config
+  tags:
+    - seqkit/stats
+    - seqkit
+  files:
+    - path: output/seqkit/test.tsv
+      md5sum: 9de20dc39fb01285e3f0c382fda9db52
+    - path: output/seqkit/versions.yml
+      md5sum: bd8881933b953d07f2600e2e6a88ebf3
+
+- name: seqkit stats test_seqkit_stats_nanopore
+  command: nextflow run tests/modules/seqkit/stats -entry test_seqkit_stats_nanopore -c tests/config/nextflow.config
+  tags:
+    - seqkit/stats
+    - seqkit
+  files:
+    - path: output/seqkit/test.tsv
+      md5sum: 5da1709eb5ae64fa3b2d624bffe2e7aa
+    - path: output/seqkit/versions.yml
+      md5sum: 565632701fbe048f7ba99f1865bd48ca
+
+- name: seqkit stats test_seqkit_stats_genome_fasta
+  command: nextflow run tests/modules/seqkit/stats -entry test_seqkit_stats_genome_fasta -c tests/config/nextflow.config
+  tags:
+    - seqkit/stats
+    - seqkit
+  files:
+    - path: output/seqkit/test.tsv
+      md5sum: f64489767a4e769539ef3faf83260184
+    - path: output/seqkit/versions.yml
+      md5sum: 782fcdeaa922c8bb532ffa5808849d87
+
+- name: seqkit stats test_seqkit_stats_transcriptome_fasta
+  command: nextflow run tests/modules/seqkit/stats -entry test_seqkit_stats_transcriptome_fasta -c tests/config/nextflow.config
+  tags:
+    - seqkit/stats
+    - seqkit
+  files:
+    - path: output/seqkit/test.tsv
+      md5sum: fbb975b665a08c8862fcd1268613a945
+    - path: output/seqkit/versions.yml
+      md5sum: db99b016d986d26102ec398264a58410

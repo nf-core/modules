@@ -2,10 +2,10 @@ process DSHBIO_FILTERBED {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::dsh-bio=2.0.7" : null)
+    conda (params.enable_conda ? "bioconda::dsh-bio=2.0.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.0.7--hdfd78af_0' :
-        'quay.io/biocontainers/dsh-bio:2.0.7--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dsh-bio:2.0.8--hdfd78af_0' :
+        'quay.io/biocontainers/dsh-bio:2.0.8--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)

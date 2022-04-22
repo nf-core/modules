@@ -1,0 +1,14 @@
+- name: gstama polyacleanup test_gstama_polyacleanup
+  command: nextflow run tests/modules/gstama/polyacleanup -entry test_gstama_polyacleanup -c tests/config/nextflow.config
+  tags:
+    - gstama
+    - gstama/polyacleanup
+  files:
+    - path: output/gstama/test_tama.fa.gz
+      md5sum: 9c768387478e5f966a42c369c0270b09
+    - path: output/gstama/test_tama_polya_flnc_report.txt.gz
+      md5sum: fe3606979ed11538aacd83159f4cff03
+    - path: output/gstama/test_tama_tails.fa.gz
+      md5sum: ba21256c0afe0bda71b3ee66b4c761bf
+    - path: output/gstama/versions.yml
+      md5sum: 07ebb812ae13a350d955fab7600b2542
