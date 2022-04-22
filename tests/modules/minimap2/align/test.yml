@@ -5,7 +5,9 @@
     - minimap2/align
   files:
     - path: output/minimap2/test.sam
+      md5sum: 411a6fa9ea8120cf689c363a1d37c5c0
     - path: output/minimap2/versions.yml
+      md5sum: b536aa5c2fb3143b654c04c934b952f6
 
 - name: minimap2 align test_minimap2_align_paired_end
   command: nextflow run tests/modules/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
@@ -14,4 +16,6 @@
     - minimap2/align
   files:
     - path: output/minimap2/test.sam
+      md5sum: 26902525f7f80311a0a5203d4b3d4be2
     - path: output/minimap2/versions.yml
+      md5sum: 135c921fb68f33754f23edd8d81432b2
