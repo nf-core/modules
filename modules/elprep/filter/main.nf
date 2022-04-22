@@ -23,7 +23,7 @@ process ELPREP_FILTER {
 
 
     output:
-    tuple val(meta), path("**.{bam,sam}")           ,emit: bam
+    tuple val(meta), path("output/**.{bam,sam}")    ,emit: bam
     tuple val(meta), path("*.metrics.txt")          ,optional: true, emit: metrics
     tuple val(meta), path("*.recall")               ,optional: true, emit: recall
     tuple val(meta), path("*.vcf.gz")               ,optional: true, emit: gvcf
@@ -65,7 +65,7 @@ process ELPREP_FILTER {
     def assembly_regions_cmd = get_assembly_regions ? " --assembly-regions ${prefix}.assembly_regions.igv": ""
 
     """
-    elprep filter ${bam} ${prefix}.${suffix} \\
+    elprep filter ${bam} output/${prefix}.${suffix} \\
         ${reference_sequences_cmd} \\
         ${filter_regions_cmd} \\
         ${markdup_cmd} \\
