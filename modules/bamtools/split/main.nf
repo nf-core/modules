@@ -9,7 +9,6 @@ process BAMTOOLS_SPLIT {
 
     input:
     tuple val(meta), path(bam)
-    path(bam_list)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -21,18 +20,22 @@ process BAMTOOLS_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def input_list = bam.collect{"-in $it"}.join(' ')
-    if (bam_list) {
-        input_list += " -list $bam_list"
-    }
-    if (!args.contains("-stub")) {
-        args += " -stub ${prefix}"
+    def stub_cmd = !args.contains("-stub") : " -stub ${prefix}" : ""
+
+    if (size(bam) > 1){
+        def bamtools_merge_cmd = "bamtools merge ${input_list} |"
+    } else {
+        def split_input = input_list
     }
 
+
     """
-    bamtools merge \\
-        ${input_list} \\
-    | bamtools split \\
+    ${bamtools_merge_cmd} \\
+    bamtools split \\
+        $split_input \\
+        $stub_cmd \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
