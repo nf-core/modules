@@ -12,7 +12,7 @@ process SHIGATYPER {
 
     output:
     tuple val(meta), path("${prefix}.tsv")     , emit: tsv
-    tuple val(meta), path("${prefix}-hits.tsv"), emit: hits, optional: true
+    tuple val(meta), path("${prefix}-hits.tsv"), optional: true, emit: hits
     path "versions.yml"                        , emit: versions
 
     when:
