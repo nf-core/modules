@@ -33,4 +33,15 @@ process STRANGER {
         stranger: \$( stranger --version )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        stranger: \$( stranger --version )
+    END_VERSIONS
+    """
 }
