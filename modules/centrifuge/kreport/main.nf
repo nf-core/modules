@@ -14,7 +14,7 @@ process CENTRIFUGE_KREPORT {
     output:
     tuple val(meta), path('*.txt')                , emit: kreport
     path "versions.yml"                                  , emit: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
