@@ -20,7 +20,7 @@ workflow test_bamtools_split_multiple {
     input = [
         [ id:'test', single_end:false ], // meta map
         [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)]
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)]
 
     ]
 
