@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE } from '../../../../modules/stringtie/stringtie/main.nf'
+include { STRINGTIE_STRINGTIE } from '../../../../modules/stringtie/stringtie/main.nf'
 //
 // Test with forward strandedness
 //
@@ -13,7 +13,7 @@ workflow test_stringtie_forward {
     ]
     annotation_gtf = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
-    STRINGTIE ( input, annotation_gtf )
+    STRINGTIE_STRINGTIE ( input, annotation_gtf )
 }
 
 //
@@ -26,5 +26,5 @@ workflow test_stringtie_reverse {
     ]
     annotation_gtf = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
 
-    STRINGTIE ( input, annotation_gtf )
+    STRINGTIE_STRINGTIE ( input, annotation_gtf )
 }
