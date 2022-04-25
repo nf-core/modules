@@ -15,8 +15,8 @@ process MINIMAP2_ALIGN {
     val cigar_bam
 
     output:
-    tuple val(meta), path("*.paf"), emit: paf, optional: true
-    tuple val(meta), path("*.sam"), emit: sam, optional: true
+    tuple val(meta), path("*.paf"), optional: true, emit: paf
+    tuple val(meta), path("*.sam"), optional: true, emit: paf
     path "versions.yml"           , emit: versions
 
     when:
