@@ -16,7 +16,7 @@ process MINIMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.paf"), optional: true, emit: paf
-    tuple val(meta), path("*.sam"), optional: true, emit: paf
+    tuple val(meta), path("*.sam"), optional: true, emit: sam
     path "versions.yml"           , emit: versions
 
     when:
