@@ -24,7 +24,7 @@ process SAMTOOLS_BAMTOCRAM {
     def args = task.ext.args  ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    samtools view --threads ${task.cpus-1} --reference ${fasta} -C $args $input > ${prefix}.cram
+    samtools view --threads ${task.cpus} --reference ${fasta} -C $args $input > ${prefix}.cram
     samtools index -@${task.cpus} ${prefix}.cram
 
     cat <<-END_VERSIONS > versions.yml
