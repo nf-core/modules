@@ -27,13 +27,12 @@ process LONGRANGER_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def jobmode = task.executor ?: "local"
-    def localmem = task.memory.toGiga()
     def sample = "${meta.id}"
     """
     longranger align --id=$sample --fastqs=$fastqs \
         --sample=$sample --reference=$reference \
         --jobmode=${jobmode} \
-        ${task.ext.args}
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
