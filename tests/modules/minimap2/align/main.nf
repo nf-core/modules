@@ -10,8 +10,8 @@ workflow test_minimap2_align_single_end {
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     sam_format = true
-    cigar_paf_format = true
-    cigar_bam = true
+    cigar_paf_format = false
+    cigar_bam = false
 
     MINIMAP2_ALIGN ( input, fasta, sam_format, cigar_paf_format, cigar_bam)
 }
@@ -23,8 +23,8 @@ workflow test_minimap2_align_paired_end {
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     sam_format  = true
-    cigar_paf_format = true
-    cigar_bam = true
+    cigar_paf_format = false
+    cigar_bam = false
 
     MINIMAP2_ALIGN ( input, fasta, sam_format, cigar_paf_format, cigar_bam )
 }
