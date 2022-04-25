@@ -22,7 +22,8 @@ process PHANTOMPEAKQUALTOOLS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     RUN_SPP=`which run_spp.R`
