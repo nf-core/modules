@@ -23,9 +23,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test']
-  - database:
-      type: path
-      description: "Path to the taxonomy database downloaded by krona/kronadb"
   - report:
       type: file
       description: "Tab-delimited text file. Each line should be a number followed by a list of wedges to contribute to (starting from the highest level). If no wedges are listed (and just a quantity is given), it will contribute to the top level. If the same lineage is listed more than once, the values will be added. Quantities can be omitted if -q is specified. Lines beginning with '#' will be ignored."
