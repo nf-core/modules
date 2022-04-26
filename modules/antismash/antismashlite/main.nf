@@ -7,9 +7,20 @@ process ANTISMASH_ANTISMASHLITE {
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
         'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
 
+    containerOptions {
+        workflow.containerEngine == 'singularity' ?
+        "-B $css_dir:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$detection_dir:/usr/local/lib/python3.8/site-packages/antismash/detection,$modules_dir:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        workflow.containerEngine == 'docker' ?
+        "-v \$PWD/$css_dir:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$detection_dir:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$modules_dir:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        ''
+        }
+
     input:
     tuple val(meta), path(sequence_input)
     path(databases)
+    path css_dir
+    path detection_dir
+    path modules_dir
 
     output:
     tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                 , optional: true, emit: clusterblast_file
@@ -42,13 +53,13 @@ process ANTISMASH_ANTISMASHLITE {
     ## We specifically do not include annotations (--genefinding-tool none) as
     ## this should be run as a separate module for versioning purposes
     antismash \\
-        $sequence_input \\
         $args \\
         -c $task.cpus \\
         --output-dir $prefix \\
         --genefinding-tool none \\
         --logfile $prefix/${prefix}.log \\
-        --databases $databases
+        --databases $databases \\
+        $sequence_input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
