@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag '$samplesheet'
+    tag "$meta.id"
     label 'process_high'
 
     if (params.enable_conda) {
@@ -8,15 +8,14 @@ process BCLCONVERT {
     container "nfcore/bclconvert:3.9.3"
 
     input:
-    path samplesheet
-    path run_dir
+    tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    path "*.fastq.gz"               ,emit: fastq
-    path "Reports/*.{csv,xml,bin}"  ,emit: reports
-    path "Logs/*.{log,txt}"         ,emit: logs
-    path "InterOp/*.bin"            ,emit: interop
-    path "versions.yml"             ,emit: versions
+    tuple val(meta), path("**.fastq.gz")            ,emit: fastq
+    tuple val(meta), path("Reports/*.{csv,xml}")    ,emit: reports
+    tuple val(meta), path("Logs/*.{log,txt}")       ,emit: logs
+    tuple val(meta), path("**.bin")                 ,emit: interop
+    tuple val(meta), path("versions.yml")           ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,16 +24,12 @@ process BCLCONVERT {
     def args = task.ext.args ?: ''
 
     """
-    bcl-convert \
+    bcl-convert \\
         $args \\
         --output-directory . \\
         --bcl-input-directory ${run_dir} \\
         --sample-sheet ${samplesheet} \\
         --bcl-num-parallel-tiles ${task.cpus}
-
-    mkdir InterOp
-    cp ${run_dir}/InterOp/*.bin InterOp/
-    mv Reports/*.bin InterOp/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

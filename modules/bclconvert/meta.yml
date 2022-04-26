@@ -12,6 +12,10 @@ tools:
       licence: "ILLUMINA"
 
 input:
+  - meta:
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - samplesheet:
       type: file
       description: "Input samplesheet"
@@ -40,6 +44,6 @@ output:
   - interop:
       type: file
       description: Interop files
-      pattern: "Interop/*.{bin}"
+      pattern: "*.{bin}"
 authors:
   - "@matthdsm"
