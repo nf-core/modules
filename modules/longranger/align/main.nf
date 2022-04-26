@@ -11,8 +11,8 @@ process LONGRANGER_ALIGN {
     }
 
     input:
-    tuple val(meta), path(fastqs)
-    path(reference)
+    tuple val(meta), path(reference)
+    path(fastqs)
 
     output:
     tuple val(meta), path("${meta.id}/outs/possorted_bam.bam"), emit: bam
@@ -25,7 +25,6 @@ process LONGRANGER_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def jobmode = task.executor ?: "local"
     def sample = "${meta.id}"
     """
