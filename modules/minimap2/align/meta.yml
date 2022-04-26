@@ -30,15 +30,16 @@ input:
       description: |
         Reference database in FASTA format.
   - bam_format:
-      type: value
-      description: Output in BAM format
+      type: boolean
+      description: Specify that output should be in BAM format
   - cigar_paf_format:
-      type: value
-      description: Output CIGAR in PAF format
+      type: boolean
+      description: Specify that output CIGAR should be in PAF format
   - cigar_bam:
-      type: value
-      description: Write CIGAR with >65535 ops at the CG tag
-      documentation: https://github.com/lh3/minimap2#working-with-65535-cigar-operations
+      type: boolean
+      description: |
+        Write CIGAR with >65535 ops at the CG tag. This is recommended when
+        doing XYZ (https://github.com/lh3/minimap2#working-with-65535-cigar-operations)
 output:
   - meta:
       type: map
