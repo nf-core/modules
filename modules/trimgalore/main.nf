@@ -11,13 +11,13 @@ process TRIMGALORE {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${outprefix}"), emit: reads
-    tuple val(meta), path("*report.txt") , emit: log
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*{trimmed,val}*.fq.gz"), emit: reads
+    tuple val(meta), path("*report.txt")          , emit: log
+    path "versions.yml"                           , emit: versions
 
-    tuple val(meta), path("*unpaired*.fq.gz"), optional: true, emit: unpaired
-    tuple val(meta), path("*.html")          , optional: true, emit: html
-    tuple val(meta), path("*.zip")           , optional: true, emit: zip
+    tuple val(meta), path("*unpaired*.fq.gz")     , emit: unpaired, optional: true
+    tuple val(meta), path("*.html")               , emit: html    , optional: true
+    tuple val(meta), path("*.zip")                , emit: zip     , optional: true
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +44,6 @@ process TRIMGALORE {
     // Added soft-links to original fastqs for consistent naming in MultiQC
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
-        outprefix = "*trimmed.fq.gz"
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
         trim_galore \\
@@ -62,7 +61,6 @@ process TRIMGALORE {
         END_VERSIONS
         """
     } else {
-        outprefix = "*val*.fq.gz"
         """
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
