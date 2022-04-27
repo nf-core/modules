@@ -44,7 +44,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash: \$(antismash --version | sed 's/antiSMASH //')
+        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
     END_VERSIONS
     """
 }
