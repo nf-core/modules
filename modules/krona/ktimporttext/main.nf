@@ -21,19 +21,10 @@ process KRONA_KTIMPORTTEXT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    fs=($report)
-
-    if [ "\${#fs[@]}" -eq "1" ]; then
-        ktImportText  \\
-            $args \\
-            -o ${prefix}.html \\
-            $report,${meta.id}
-    else
-        ktImportText  \\
-            $args \\
-            -o ${prefix}.html \\
-            $report
-    fi
+    ktImportText  \\
+        $args \\
+        -o ${prefix}.html \\
+        $report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

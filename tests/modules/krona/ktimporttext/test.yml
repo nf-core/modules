@@ -1,8 +1,18 @@
-- name: krona ktimporttext test_krona_ktimporttext
-  command: nextflow run tests/modules/krona/ktimporttext -entry test_krona_ktimporttext -c tests/config/nextflow.config
+- name: krona ktimporttext test_krona_ktimporttext_multi
+  command: nextflow run tests/modules/krona/ktimporttext -entry test_krona_ktimporttext_multi -c tests/config/nextflow.config
   tags:
-    - krona/ktimporttext
     - krona
+    - krona/ktimporttext
+  files:
+    - path: output/krona/test.html
+      contains:
+        - "DOCTYPE html PUBLIC"
+
+- name: krona ktimporttext test_krona_ktimporttext_single
+  command: nextflow run tests/modules/krona/ktimporttext -entry test_krona_ktimporttext_single -c tests/config/nextflow.config
+  tags:
+    - krona
+    - krona/ktimporttext
   files:
     - path: output/krona/test.html
       contains:
