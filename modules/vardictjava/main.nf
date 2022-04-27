@@ -13,7 +13,7 @@ process VARDICTJAVA {
     path(regions_of_interest)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -34,7 +34,7 @@ process VARDICTJAVA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vardictjava: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vardictjava: \$(echo 1.8.3)
     END_VERSIONS
     """
 }
