@@ -1,7 +1,7 @@
 name: srst2_srst2
 description: |
-  Short Read Sequence Typing for Bacterial Pathogens is a program designed to take Illumina sequence data, 
-  a MLST database and/or a database of gene sequences (e.g. resistance genes, virulence genes, etc) 
+  Short Read Sequence Typing for Bacterial Pathogens is a program designed to take Illumina sequence data,
+  a MLST database and/or a database of gene sequences (e.g. resistance genes, virulence genes, etc)
   and report the presence of STs and/or reference genes.
 keywords:
   - mlst
@@ -10,11 +10,11 @@ keywords:
 tools:
   - srst2:
       description: "Short Read Sequence Typing for Bacterial Pathogens"
-      homepage: {http://katholt.github.io/srst2/}
-      documentation: {https://github.com/katholt/srst2/blob/master/README.md}
-      tool_dev_url: {https://github.com/katholt/srst2}
+      homepage: { http://katholt.github.io/srst2/ }
+      documentation: { https://github.com/katholt/srst2/blob/master/README.md }
+      tool_dev_url: { https://github.com/katholt/srst2 }
       doi: ""
-      licence: ['BSD']
+      licence: ["BSD"]
 
 input:
   - meta:
@@ -49,11 +49,11 @@ output:
       pattern: "versions.yml"
   - txt:
       type: file
-      description: results text file 
+      description: results text file
       pattern: "*_fullgenes_*_results.txt"
   - txt:
       type: file
-      description: results text file 
+      description: results text file
       pattern: "*_genes_*_results.txt"
   - bam:
       type: file
