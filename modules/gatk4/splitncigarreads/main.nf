@@ -8,7 +8,7 @@ process GATK4_SPLITNCIGARREADS {
         'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai), path(intervals)
     path  fasta
     path  fai
     path  dict
@@ -23,6 +23,7 @@ process GATK4_SPLITNCIGARREADS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -35,6 +36,7 @@ process GATK4_SPLITNCIGARREADS {
         --input $bam \\
         --output ${prefix}.bam \\
         --reference $fasta \\
+        $interval_command \\
         --tmp-dir . \\
         $args
 
