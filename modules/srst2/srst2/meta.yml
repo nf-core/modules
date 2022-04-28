@@ -49,11 +49,11 @@ output:
       pattern: "versions.yml"
   - txt:
       type: file
-      description: results text file
+      description: A detailed report, with one row per gene per sample described here: https://github.com/katholt/srst2#gene-typing
       pattern: "*_fullgenes_*_results.txt"
   - txt:
       type: file
-      description: results text file
+      description: A tabulated summary report of samples x genes.
       pattern: "*_genes_*_results.txt"
   - bam:
       type: file
