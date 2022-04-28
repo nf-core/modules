@@ -30,7 +30,7 @@ process VARDICTJAVA {
         -th $task.cpus \\
         -N $prefix \\
         -G $reference_fasta \\
-        $regions_of_interest
+        $regions_of_interest \\
         | gzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
