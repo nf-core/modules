@@ -10,14 +10,17 @@ workflow BAM_QC_PICARD {
     take:
     ch_bam              // channel: [ val(meta), [ bam ]]
     ch_fasta            // channel: [ fasta ]
+    ch_fasta_faix       // channel: [ fasta_fai ]
     ch_bait_interval    // channel: [ bait_interval ]
     ch_target_interval  // channel: [ target_interval ]
 
     main:
     ch_versions = Channel.empty()
+    ch_coverage_metrics = Channel.empty()
 
     PICARD_COLLECTMULTIPLEMETRICS( ch_bam, ch_fasta )
     ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions.first())
+
     if (ch_bait_interval || ch_target_interval) {
         if (ch_bait_interval.isEmpty()) {
             log.error("Bait interval channel is empty")
@@ -26,18 +29,17 @@ workflow BAM_QC_PICARD {
             log.error("Target interval channel is empty")
         }
         PICARD_COLLECTHSMETRICS( ch_bam, ch_fasta, [], ch_bait_interval, ch_target_interval )
+        ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.coverage_metrics.first())
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
         PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
         ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
+        ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.coverage_metrics.first())
     }
 
-    ch_coverage_metrics = Channel.empty()
-    ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.coverage_metrics.first(), PICARD_COLLECTWGSMETRICS.out.coverage_metrics.first())
-
     emit:
-    coverage_metrics    = PICARD_COLLECTWGSMETRICS.out.metrics      // channel: [ val(meta), [ coverage_metrics ] ]
+    coverage_metrics    = ch_coverage_metrics                       // channel: [ val(meta), [ coverage_metrics ] ]
     multiple_metrics    = PICARD_COLLECTMULTIPLEMETRICS.out.metrics // channel: [ val(meta), [ multiple_metrics ] ]
 
-    versions = ch_versions                                          // channel: [ versions.yml ]
+    versions            = ch_versions                               // channel: [ versions.yml ]
 }
