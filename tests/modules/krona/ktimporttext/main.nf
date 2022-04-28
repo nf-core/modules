@@ -9,9 +9,9 @@ workflow test_krona_ktimporttext_multi {
     input = [
         [ id:'test', single_end:false ], // meta map
         [
-            file('http://krona.sourceforge.net/examples/text.txt', checkIfExists: true), // krona default test file
+            file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/krona/ktimporttext.txt', checkIfExists: true), // krona default test file
             file(params.test_data['sarscov2']['metagenome']['kraken_report'], checkIfExists: true), //Kraken2 report file
-            file('https://raw.githubusercontent.com/jianhong/test-datasets/modules/data/delete_me/krona/kaiju_out4krona.txt', checkIfExists: true) // Kaiju output 4 krona
+            file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/krona/kaiju_out4krona.txt', checkIfExists: true) // Kaiju output 4 krona
         ]
     ]
 
