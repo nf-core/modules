@@ -8,7 +8,8 @@ process VARDICTJAVA {
         'quay.io/biocontainers/vardict-java:1.8.3--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(regions_of_interest)
+    tuple val(meta), path(bam) 
+    path(regions_of_interest)
     path(reference_fasta)
 
     output:
@@ -23,14 +24,11 @@ process VARDICTJAVA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    head -n 20 $reference_fasta
-    cat $reference_fasta | wc -l
-
     vardict-java \\
         $args \\
         -b $bam \\
         -th $task.cpus \\
-        -n $prefix \\
+        -N $prefix \\
         -G $reference_fasta \\
         $regions_of_interest \\
         > ${prefix}.vcf
