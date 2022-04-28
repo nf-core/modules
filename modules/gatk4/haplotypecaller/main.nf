@@ -17,8 +17,9 @@ process GATK4_HAPLOTYPECALLER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
     path "versions.yml"              , emit: versions
+
+    tuple val(meta), path("*.tbi")   , optional:true, emit: tbi
 
     when:
     task.ext.when == null || task.ext.when
