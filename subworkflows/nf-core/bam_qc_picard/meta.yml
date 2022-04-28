@@ -22,14 +22,14 @@ input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: Index for BAM/CRAM/SAM file
-      pattern: "*.{bai,crai,sai}"
   - fasta:
       type: optional file
-      description: Reference file the CRAM was created with
+      description: Reference fasta file
       pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: optional file
+      description: Reference fasta file index
+      pattern: "*.{fasta,fa}.fai"
   - bait_intervals:
       type: optional file
       description: An interval list file that contains the locations of the baits used.
