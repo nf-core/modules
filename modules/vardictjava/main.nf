@@ -21,7 +21,7 @@ process VARDICTJAVA {
 
     script:
     def args = task.ext.args ?: ''
-    def args_conversion = task.ext.args_conversion ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -35,7 +35,7 @@ process VARDICTJAVA {
         $regions_of_interest \\
         | teststrandbias.R \\
         | var2vcf_valid.pl \\
-            $args_conversion \\
+            $args2 \\
             -N $prefix \\
         | gzip -c > ${prefix}.vcf.gz
 
