@@ -23,7 +23,10 @@ process KRONA_KTIMPORTTAXONOMY {
     script:
     def args = task.ext.args ?: ''
     """
-    ktImportTaxonomy "$report" -tax taxonomy
+    ktImportTaxonomy \\
+       "$report" \\
+       $args \\
+       -tax taxonomy
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
