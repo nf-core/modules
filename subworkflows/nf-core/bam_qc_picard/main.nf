@@ -10,7 +10,7 @@ workflow BAM_QC_PICARD {
     take:
     ch_bam              // channel: [ val(meta), [ bam ]]
     ch_fasta            // channel: [ fasta ]
-    ch_fasta_faix       // channel: [ fasta_fai ]
+    ch_fasta_fai        // channel: [ fasta_fai ]
     ch_bait_interval    // channel: [ bait_interval ]
     ch_target_interval  // channel: [ target_interval ]
 
@@ -28,7 +28,7 @@ workflow BAM_QC_PICARD {
         if (ch_target_interval.isEmpty()) {
             log.error("Target interval channel is empty")
         }
-        PICARD_COLLECTHSMETRICS( ch_bam, ch_fasta, [], ch_bait_interval, ch_target_interval )
+        PICARD_COLLECTHSMETRICS( ch_bam, ch_fasta, ch_fasta_fai, ch_bait_interval, ch_target_interval )
         ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.coverage_metrics.first())
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
