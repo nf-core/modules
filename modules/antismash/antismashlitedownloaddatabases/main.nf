@@ -27,9 +27,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     output:
     path("antismash_db") , emit: database
-    path("css"), emit: css_dir
-    path("detection"), emit: detection_dir
-    path("modules"), emit: modules_dir
+    path("antismash_dir"), emit: antismash_dir
     path "versions.yml", emit: versions
 
     when:
@@ -41,6 +39,8 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     download-antismash-databases \\
         --database-dir antismash_db \\
         $args
+
+    cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
