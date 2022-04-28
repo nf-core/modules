@@ -29,7 +29,7 @@ process SRST2_SRST2 {
     } else if (meta.db=="mlst") {
         database = "--mlst_db ${db}"
     } else {
-        return
+        error "Please set meta.db to either \"gene\" or \"mlst\""
     }
     """
     srst2 \\
