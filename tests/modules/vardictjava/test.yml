@@ -1,12 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml vardictjava
-- name: "vardictjava"
-  command: nextflow run ./tests/modules/vardictjava -entry test_vardictjava -c ./tests/config/nextflow.config -c ./tests/modules/vardictjava/nextflow.config
+- name: vardictjava test_vardictjava
+  command: nextflow run tests/modules/vardictjava -entry test_vardictjava -c tests/config/nextflow.config
   tags:
-    - "vardictjava"
-    #
+    - vardictjava
   files:
-    - path: "output/vardictjava/test.vcf"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/vardictjava/test.vcf.gz
+      md5sum: 2179dcaee6183495b421293f42db11b5
     - path: output/vardictjava/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: aac455b8c9c9194c5fed80e4fd495b96

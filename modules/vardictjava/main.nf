@@ -8,12 +8,12 @@ process VARDICTJAVA {
         'quay.io/biocontainers/vardict-java:1.8.3--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam) 
+    tuple val(meta), path(bam), path(bai)
     path(regions_of_interest)
-    path(reference_fasta)
+    tuple path(reference_fasta), path(reference_fai)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -30,7 +30,7 @@ process VARDICTJAVA {
         -th $task.cpus \\
         -N $prefix \\
         -G $reference_fasta \\
-        $regions_of_interest \\
+        $regions_of_interest
         | gzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
