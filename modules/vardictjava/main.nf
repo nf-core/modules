@@ -21,17 +21,22 @@ process VARDICTJAVA {
 
     script:
     def args = task.ext.args ?: ''
+    def args_conversion = task.ext.args_conversion ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     vardict-java \\
         $args \\
-        -c 1 -S 2 -E 3 -h \\
+        -c 1 -S 2 -E 3 \\
         -b $bam \\
         -th $task.cpus \\
         -N $prefix \\
         -G $reference_fasta \\
         $regions_of_interest \\
+        | teststrandbias.R \\
+        | var2vcf_valid.pl \\
+            $args_conversion \\
+            -N $prefix \\
         | gzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
