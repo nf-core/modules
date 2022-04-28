@@ -31,7 +31,7 @@ process VARDICTJAVA {
         -N $prefix \\
         -G $reference_fasta \\
         $regions_of_interest \\
-        > ${prefix}.vcf
+        | gzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
