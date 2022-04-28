@@ -26,6 +26,7 @@ process VARDICTJAVA {
     """
     vardict-java \\
         $args \\
+        -c 1 -S 2 -E 3 \\
         -b $bam \\
         -th $task.cpus \\
         -N $prefix \\
