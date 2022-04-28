@@ -30,6 +30,8 @@ process PURGEDUPS_FASTK {
     mkdir -p $FASTKDB
     FastK -k$kmer -T1 -t1 -P$myoutdir -N$FASTKDB/reads $trimmedReads
     cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastk: $version
     END_VERSIONS
     """
 }
