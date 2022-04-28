@@ -29,12 +29,12 @@ workflow BAM_QC_PICARD {
             log.error("Target interval channel is empty")
         }
         PICARD_COLLECTHSMETRICS( ch_bam, ch_fasta, ch_fasta_fai, ch_bait_interval, ch_target_interval )
-        ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.coverage_metrics.first())
+        ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics.first())
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
         PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
         ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
-        ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.coverage_metrics.first())
+        ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics.first())
     }
 
     emit:
