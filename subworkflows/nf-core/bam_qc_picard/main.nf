@@ -2,11 +2,9 @@
 // Run QC steps on BAM/CRAM files using Picard
 //
 
-params.options = [:]
-
-include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../modules/picardcollectmultiplemetrics/main'
-include { PICARD_COLLECTWGSMETRICS      } from '../../../modules/picardcollectwgsmetrics/main'
-include { PICARD_COLLECTHSMETRICS       } from '../../../modules/picardcollecthsmetrics/main'
+include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../modules/picard/collectmultiplemetrics/main'
+include { PICARD_COLLECTWGSMETRICS      } from '../../../modules/picard/collectwgsmetrics/main'
+include { PICARD_COLLECTHSMETRICS       } from '../../../modules/picard/collecthsmetrics/main'
 
 workflow BAM_QC_PICARD {
     take:
@@ -18,7 +16,7 @@ workflow BAM_QC_PICARD {
     main:
     ch_versions = Channel.empty()
 
-    PICARD_COLLECTMULTIPLEMETRICS( ch_bam_bai, ch_fasta] )
+    PICARD_COLLECTMULTIPLEMETRICS( ch_bam_bai, ch_fasta )
     ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions.first())
     if (ch_bait_interval || ch_target_interval) {
         if (ch_bait_interval.isEmpty()) {
