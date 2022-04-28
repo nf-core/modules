@@ -4,9 +4,9 @@
 
 params.options = [:]
 
-include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../modules/picardcollectmultiplemetrics/main' addParams( options: params.options )
-include { PICARD_COLLECTWGSMETRICS      } from '../../../modules/picardcollectwgsmetrics/main'      addParams( options: params.options )
-include { PICARD_COLLECTHSMETRICS       } from '../../../modules/picardcollecthsmetrics/main'       addParams( options: params.options )
+include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../modules/picardcollectmultiplemetrics/main'
+include { PICARD_COLLECTWGSMETRICS      } from '../../../modules/picardcollectwgsmetrics/main'
+include { PICARD_COLLECTHSMETRICS       } from '../../../modules/picardcollecthsmetrics/main'
 
 workflow BAM_QC_PICARD {
     take:
