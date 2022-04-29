@@ -23,6 +23,8 @@ process SEXDETERRMINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_list = sample_list_file ? '-f ${sample_list_file}' : ''
+    if ("$depth" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
     sexdeterrmine \\
         -I $depth \\
