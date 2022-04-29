@@ -1,12 +1,15 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml sexdeterrmine
-- name: "sexdeterrmine"
-  command: nextflow run ./tests/modules/sexdeterrmine -entry test_sexdeterrmine -c ./tests/config/nextflow.config -c ./tests/modules/sexdeterrmine/nextflow.config
+- name: sexdeterrmine test_sexdeterrmine
+  command: nextflow run tests/modules/sexdeterrmine -entry test_sexdeterrmine -c tests/config/nextflow.config
   tags:
-    - "sexdeterrmine"
-    #
+    - sexdeterrmine
   files:
-    - path: "output/sexdeterrmine/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/samtools/test.tsv
+      md5sum: c894abd0c78ea7760e0b54bbafb93722
+    - path: output/samtools/versions.yml
+      md5sum: dbd04b700335c8ad236bd667254c8dd8
+    - path: output/sexdeterrmine/sexdeterrmine.json
+      md5sum: 16d9e7891d4c92bc1d66db2e70e9d86f
+    - path: output/sexdeterrmine/test_sexdet.tsv
+      md5sum: 7ffc35e478de66939819a9ca4a5df2d7
     - path: output/sexdeterrmine/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 077361101e8e7997aec3da8a01e59eee
