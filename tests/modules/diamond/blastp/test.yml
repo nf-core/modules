@@ -1,19 +1,19 @@
 - name: diamond blastp test_diamond_blastp
   command: nextflow run tests/modules/diamond/blastp -entry test_diamond_blastp -c tests/config/nextflow.config
   tags:
-    - diamond
     - diamond/blastp
+    - diamond
   files:
     - path: output/diamond/test.diamond_blastp.txt
-      md5sum: 3ca7f6290c1d8741c573370e6f8b4db0
+      md5sum: 2515cf88590afa32356497e79a51fce9
     - path: output/diamond/versions.yml
 
 - name: diamond blastp test_diamond_blastp_daa
   command: nextflow run tests/modules/diamond/blastp -entry test_diamond_blastp_daa -c tests/config/nextflow.config
   tags:
-    - diamond
     - diamond/blastp
+    - diamond
   files:
     - path: output/diamond/test.diamond_blastp.daa
-      md5sum: d4a79ad1fcb2ec69460e5a09a9468db7
+      md5sum: 0b539c68a5b66dd6e20ad5d218f4f4c6
     - path: output/diamond/versions.yml
