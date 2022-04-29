@@ -33,9 +33,9 @@ process PICARD_COLLECTMULTIPLEMETRICS {
         -Xmx${avail_mem}g \\
         CollectMultipleMetrics \\
         $args \\
-        INPUT=$bam \\
-        OUTPUT=${prefix}.CollectMultipleMetrics \\
-        REFERENCE_SEQUENCE=$fasta
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.CollectMultipleMetrics \\
+        --REFERENCE_SEQUENCE $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
