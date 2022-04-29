@@ -32,9 +32,10 @@ process PICARD_COLLECTWGSMETRICS {
         -Xmx${avail_mem}g \\
         CollectWgsMetrics \\
         $args \\
-        -INPUT $bam \\
-        -OUTPUT ${prefix}.CollectWgsMetrics.coverage_metrics \\
-        -REFERENCE_SEQUENCE $fasta
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.CollectWgsMetrics.coverage_metrics \\
+        --REFERENCE_SEQUENCE $fasta
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
