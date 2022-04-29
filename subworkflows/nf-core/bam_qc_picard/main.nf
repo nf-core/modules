@@ -30,7 +30,7 @@ workflow BAM_QC_PICARD {
     } else {
         PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
         ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
-        ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics.first())
+        ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics)
     }
 
     emit:
