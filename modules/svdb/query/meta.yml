@@ -15,6 +15,12 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - in_occs:
+      type: list
+      description: A list of allele count tags
+  - in_frqs:
+      type: list
+      description: A list of allele frequency tags
   - vcf:
       type: file
       description: query vcf file
@@ -34,10 +40,16 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - out_occs:
+      type: list
+      description: A list of allele count tags
+  - out_frqs:
+      type: list
+      description: A list of allele frequency tags
   - vcf:
       type: file
       description: Annotated output VCF file
-      pattern: "*_ann_svdbq.vcf"
+      pattern: "*_query.vcf"
 
 authors:
   - "@ramprasadn"

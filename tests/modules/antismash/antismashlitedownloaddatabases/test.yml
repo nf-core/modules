@@ -1,0 +1,17 @@
+- name: antismash antismashlitedownloaddatabases test_antismash_antismashlitedownloaddatabases
+  command: nextflow run tests/modules/antismash/antismashlitedownloaddatabases -entry test_antismash_antismashlitedownloaddatabases -c tests/config/nextflow.config
+  tags:
+    - antismash
+    - antismash/antismashlitedownloaddatabases
+  files:
+    - path: output/antismash/versions.yml
+      md5sum: 24859c67023abab99de295d3675a24b6
+    - path: output/antismash/antismash_db
+    - path: output/antismash/antismash_db/clusterblast
+    - path: output/antismash/antismash_db/clustercompare
+    - path: output/antismash/antismash_db/pfam
+    - path: output/antismash/antismash_db/resfam
+    - path: output/antismash/antismash_db/tigrfam
+    - path: output/antismash/css
+    - path: output/antismash/detection
+    - path: output/antismash/modules

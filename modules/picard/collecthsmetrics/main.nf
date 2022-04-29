@@ -15,8 +15,8 @@ process PICARD_COLLECTHSMETRICS {
     path target_intervals
 
     output:
-    tuple val(meta), path("*collecthsmetrics.txt"), emit: hs_metrics
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*_metrics")  , emit: metrics
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,7 +41,19 @@ process PICARD_COLLECTHSMETRICS {
         -BAIT_INTERVALS $bait_intervals \\
         -TARGET_INTERVALS $target_intervals \\
         -INPUT $bam \\
-        -OUTPUT ${prefix}_collecthsmetrics.txt
+        -OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
+
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.CollectHsMetrics.coverage_metrics
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

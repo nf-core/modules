@@ -13,8 +13,8 @@ process HOMER_MAKEUCSCFILE {
     tuple val(meta), path(tagDir)
 
     output:
-    tuple val(meta), path("tag_dir/*ucsc.bedGraph.gz"), emit: bedGraph
-    path  "versions.yml"                              , emit: versions
+    tuple val(meta), path("*.bedGraph.gz"), emit: bedGraph
+    path  "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process HOMER_MAKEUCSCFILE {
     """
     makeUCSCfile \\
         $tagDir \\
-        -o auto \\
+        -o ${prefix}.bedGraph \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
