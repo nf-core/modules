@@ -8,7 +8,7 @@ process PICARD_COLLECTWGSMETRICS {
         'quay.io/biocontainers/picard:2.27.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam)
     path  fasta
 
     output:
@@ -35,6 +35,7 @@ process PICARD_COLLECTWGSMETRICS {
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectWgsMetrics.coverage_metrics \\
         --REFERENCE_SEQUENCE $fasta
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
