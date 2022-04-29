@@ -31,8 +31,8 @@ process PICARD_FIXMATEINFORMATION {
     picard \\
         FixMateInformation \\
         -Xmx${avail_mem}g \\
-        -I ${bam} \\
-        -O ${prefix}.bam \\
+        --INPUT ${bam} \\
+        --OUTPUT ${prefix}.bam \\
         --VALIDATION_STRINGENCY ${STRINGENCY}
 
     cat <<-END_VERSIONS > versions.yml

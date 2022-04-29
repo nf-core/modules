@@ -31,8 +31,8 @@ process PICARD_CLEANSAM {
         -Xmx${avail_mem}g \\
         CleanSam  \\
         ${args} \\
-        -I ${bam} \\
-        -O ${prefix}.bam
+        --INPUT ${bam} \\
+        --OUTPUT ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
