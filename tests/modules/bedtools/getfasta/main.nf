@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_GETFASTA } from '../../../../modules/bedtools/getfasta/main.nf'
 

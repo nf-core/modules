@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BCLCONVERT } from '../../../modules/bclconvert/main.nf'
 

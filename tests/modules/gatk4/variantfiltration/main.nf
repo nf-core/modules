@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_VARIANTFILTRATION } from '../../../../modules/gatk4/variantfiltration/main.nf'
 

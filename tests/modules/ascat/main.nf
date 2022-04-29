@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ASCAT as ASCAT_SIMPLE} from '../../../modules/ascat/main.nf'
 include { ASCAT as ASCAT_PLOIDY_AND_PURITY} from '../../../modules/ascat/main.nf'

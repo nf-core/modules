@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { KRONA_KTIMPORTTAXONOMY } from '../../../../modules/krona/ktimporttaxonomy/main.nf'
 

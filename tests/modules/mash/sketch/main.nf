@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MASH_SKETCH } from '../../../../modules/mash/sketch/main.nf'
 

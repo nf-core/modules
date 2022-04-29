@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HMMCOPY_MAPCOUNTER } from '../../../../modules/hmmcopy/mapcounter/main.nf'
 include { HMMCOPY_GENERATEMAP } from '../../../../modules/hmmcopy/generatemap/main.nf'

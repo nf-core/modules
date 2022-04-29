@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { JUPYTERNOTEBOOK } from '../../../modules/jupyternotebook/main.nf'
 include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE } from '../../../modules/jupyternotebook/main.nf'

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MEGAN_RMA2INFO } from '../../../../modules/megan/rma2info/main.nf'
 

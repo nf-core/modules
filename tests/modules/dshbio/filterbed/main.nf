@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DSHBIO_FILTERBED } from '../../../../modules/dshbio/filterbed/main.nf'
 

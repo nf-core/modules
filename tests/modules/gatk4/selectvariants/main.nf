@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_SELECTVARIANTS } from '../../../../modules/gatk4/selectvariants/main.nf'
 

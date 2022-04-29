@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CNVPYTOR_IMPORTREADDEPTH } from '../../../../modules/cnvpytor/importreaddepth/main.nf'
 

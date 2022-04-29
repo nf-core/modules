@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GENRICH } from '../../../modules/genrich/main.nf'
 include { GENRICH as GENRICH_CTRL    } from '../../../modules/genrich/main.nf'

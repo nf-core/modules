@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SRATOOLS_PREFETCH } from '../../../../modules/sratools/prefetch/main.nf'
 

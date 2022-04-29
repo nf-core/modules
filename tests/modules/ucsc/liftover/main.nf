@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UCSC_LIFTOVER } from '../../../../modules/ucsc/liftover/main.nf'
 

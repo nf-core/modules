@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BISCUIT_VCF2BED } from '../../../../modules/biscuit/vcf2bed/main.nf'
 

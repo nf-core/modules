@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BWA_INDEX } from '../../../../modules/bwa/index/main.nf'
 include { BWA_ALN   } from '../../../../modules/bwa/aln/main.nf'

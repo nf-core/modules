@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQUENZAUTILS_BAM2SEQZ } from '../../../../modules/sequenzautils/bam2seqz/main.nf'
 

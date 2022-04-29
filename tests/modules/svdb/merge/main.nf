@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SVDB_MERGE } from '../../../../modules/svdb/merge/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MOSDEPTH } from '../../../modules/mosdepth/main.nf'
 

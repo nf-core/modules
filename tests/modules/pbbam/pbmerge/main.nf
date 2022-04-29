@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PBBAM_PBMERGE } from '../../../../modules/pbbam/pbmerge/main.nf'
 

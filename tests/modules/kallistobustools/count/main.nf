@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { KALLISTOBUSTOOLS_COUNT } from '../../../../modules/kallistobustools/count/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LAST_MAFCONVERT } from '../../../../modules/last/mafconvert/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { KALLISTO_INDEX } from '../../../../modules/kallisto/index/main.nf'
 

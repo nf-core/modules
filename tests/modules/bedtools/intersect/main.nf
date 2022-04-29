@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_INTERSECT } from '../../../../modules/bedtools/intersect/main.nf'
 

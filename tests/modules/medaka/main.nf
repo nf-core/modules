@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MEDAKA } from '../../../modules/medaka/main.nf'
 

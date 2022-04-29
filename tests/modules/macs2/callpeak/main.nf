@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MACS2_CALLPEAK } from '../../../../modules/macs2/callpeak/main.nf'
 include { MACS2_CALLPEAK as MACS2_CALLPEAK_CTRL    } from '../../../../modules/macs2/callpeak/main.nf'

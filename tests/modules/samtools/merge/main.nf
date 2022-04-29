@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SAMTOOLS_MERGE } from '../../../../modules/samtools/merge/main.nf'
 

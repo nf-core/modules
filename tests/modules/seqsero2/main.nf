@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQSERO2 } from '../../../modules/seqsero2/main.nf'
 

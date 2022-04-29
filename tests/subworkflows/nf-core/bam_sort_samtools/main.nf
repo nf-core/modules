@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BAM_SORT_SAMTOOLS } from '../../../../subworkflows/nf-core/bam_sort_samtools/main' addParams( sort_options: ['suffix': '.sorted']  )
 

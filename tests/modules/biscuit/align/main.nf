@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BISCUIT_INDEX }                     from '../../../../modules/biscuit/index/main.nf'
 include { BISCUIT_ALIGN as BISCUIT_ALIGN_SE } from '../../../../modules/biscuit/align/main.nf'

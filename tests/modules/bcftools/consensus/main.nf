@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BCFTOOLS_CONSENSUS } from '../../../../modules/bcftools/consensus/main.nf'
 

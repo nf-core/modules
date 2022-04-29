@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CONTROLFREEC_FREEC } from '../../../../modules/controlfreec/freec/main.nf'
 include { UNTAR              }        from '../../../../modules/untar/main.nf'

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQWISH_INDUCE } from '../../../../modules/seqwish/induce/main.nf'
 

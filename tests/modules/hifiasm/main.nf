@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HIFIASM } from '../../../modules/hifiasm/main.nf'
 

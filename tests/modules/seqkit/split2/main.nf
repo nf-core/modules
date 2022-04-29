@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_LENGTH } from '../../../../modules/seqkit/split2/main.nf'
 include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_SIZE   } from '../../../../modules/seqkit/split2/main.nf'

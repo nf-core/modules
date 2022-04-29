@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CNVPYTOR_PARTITION } from '../../../../modules/cnvpytor/partition/main.nf'
 

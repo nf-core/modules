@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BAM_STATS_SAMTOOLS } from '../../../../subworkflows/nf-core/bam_stats_samtools/main' addParams( options: [:] )
 

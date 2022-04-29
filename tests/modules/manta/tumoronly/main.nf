@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MANTA_TUMORONLY } from '../../../../modules/manta/tumoronly/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HAMRONIZATION_DEEPARG } from '../../../../modules/hamronization/deeparg/main.nf'
 

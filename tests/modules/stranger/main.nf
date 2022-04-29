@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { EXPANSIONHUNTER } from '../../../modules/expansionhunter/main.nf'
 include { STRANGER } from '../../../modules/stranger/main.nf'

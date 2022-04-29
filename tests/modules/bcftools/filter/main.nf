@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 //keep --no-verson argument, otherwise md5 will change on each execution
 include { BCFTOOLS_FILTER } from '../../../../modules/bcftools/filter/main.nf'

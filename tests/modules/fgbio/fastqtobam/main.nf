@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { FGBIO_FASTQTOBAM } from '../../../../modules/fgbio/fastqtobam/main.nf'
 

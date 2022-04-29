@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { RGI_MAIN } from '../../../../modules/rgi/main/main.nf'
 

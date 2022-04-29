@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CELLRANGER_MKGTF } from '../../../../modules/cellranger/mkgtf/main.nf'
 

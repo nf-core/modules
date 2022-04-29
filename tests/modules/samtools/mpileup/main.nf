@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SAMTOOLS_MPILEUP } from '../../../../modules/samtools/mpileup/main.nf'
 

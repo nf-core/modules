@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_SLOP } from '../../../../modules/bedtools/slop/main.nf'
 

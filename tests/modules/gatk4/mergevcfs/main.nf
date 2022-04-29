@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_MERGEVCFS } from '../../../../modules/gatk4/mergevcfs/main.nf'
 

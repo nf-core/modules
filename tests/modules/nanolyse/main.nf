@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { NANOLYSE } from '../../../modules/nanolyse/main.nf'
 

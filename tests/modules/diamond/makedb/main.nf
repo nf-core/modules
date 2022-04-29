@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf'
 

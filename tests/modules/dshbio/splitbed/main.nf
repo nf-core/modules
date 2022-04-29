@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DSHBIO_SPLITBED } from '../../../../modules/dshbio/splitbed/main.nf'
 

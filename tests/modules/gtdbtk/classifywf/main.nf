@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GTDBTK_CLASSIFYWF } from '../../../../modules/gtdbtk/classifywf/main.nf'
 

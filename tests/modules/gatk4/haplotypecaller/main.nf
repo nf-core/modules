@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_HAPLOTYPECALLER } from '../../../../modules/gatk4/haplotypecaller/main.nf'
 

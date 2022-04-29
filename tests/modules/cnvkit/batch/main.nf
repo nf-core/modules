@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CNVKIT_BATCH as CNVKIT_HYBRID    } from '../../../../modules/cnvkit/batch/main.nf'
 include { CNVKIT_BATCH as CNVKIT_WGS       } from '../../../../modules/cnvkit/batch/main.nf'

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HISAT2_EXTRACTSPLICESITES } from '../../../../modules/hisat2/extractsplicesites/main.nf'
 

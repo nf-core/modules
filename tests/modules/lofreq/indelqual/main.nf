@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 
 include { LOFREQ_INDELQUAL } from '../../../../modules/lofreq/indelqual/main.nf'

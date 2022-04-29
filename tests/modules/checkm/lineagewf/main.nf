@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CHECKM_LINEAGEWF } from '../../../../modules/checkm/lineagewf/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SALMON_INDEX } from '../../../../modules/salmon/index/main.nf'
 include { SALMON_QUANT } from '../../../../modules/salmon/quant/main.nf'

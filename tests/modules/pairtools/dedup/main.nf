@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PAIRTOOLS_DEDUP } from '../../../../modules/pairtools/dedup/main.nf'
 

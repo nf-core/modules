@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ECTYPER } from '../../../modules/ectyper/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PLINK_VCF     } from '../../../../modules/plink/vcf/main.nf'
 include { PLINK_EXTRACT } from '../../../../modules/plink/extract/main.nf'

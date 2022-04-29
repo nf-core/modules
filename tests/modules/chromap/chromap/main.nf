@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CHROMAP_INDEX                           } from '../../../../modules/chromap/index/main.nf'
 include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_BASE } from '../../../../modules/chromap/chromap/main.nf'

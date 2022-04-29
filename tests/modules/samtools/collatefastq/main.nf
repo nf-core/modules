@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SAMTOOLS_COLLATEFASTQ } from '../../../../modules/samtools/collatefastq/main.nf'
 

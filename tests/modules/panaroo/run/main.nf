@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PANAROO_RUN } from '../../../../modules/panaroo/run/main.nf'
 

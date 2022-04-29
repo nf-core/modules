@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MANTA_SOMATIC } from '../../../../modules/manta/somatic/main.nf'
 

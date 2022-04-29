@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BBMAP_INDEX } from '../../../../modules/bbmap/index/main.nf'
 include { BBMAP_ALIGN } from '../../../../modules/bbmap/align/main.nf'

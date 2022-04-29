@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UNTAR as UNTAR1 } from '../../../../modules/untar/main.nf'
 include { UNTAR as UNTAR2 } from '../../../../modules/untar/main.nf'

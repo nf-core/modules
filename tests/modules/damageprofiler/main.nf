@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DAMAGEPROFILER } from '../../../modules/damageprofiler/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BBMAP_PILEUP } from '../../../../modules/bbmap/pileup/main.nf'
 

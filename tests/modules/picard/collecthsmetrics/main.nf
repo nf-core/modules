@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PICARD_COLLECTHSMETRICS } from '../../../../modules/picard/collecthsmetrics/main.nf'
 

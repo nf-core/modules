@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SAMTOOLS_STATS } from '../../../../modules/samtools/stats/main.nf'
 

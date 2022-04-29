@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { KLEBORATE } from '../../../modules/kleborate/main.nf'
 

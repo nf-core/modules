@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MAXBIN2 } from '../../../modules/maxbin2/main.nf'
 

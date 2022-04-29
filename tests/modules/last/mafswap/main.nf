@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LAST_MAFSWAP } from '../../../../modules/last/mafswap/main.nf'
 

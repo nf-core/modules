@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { RSEM_PREPAREREFERENCE }   from '../../../../modules/rsem/preparereference/main.nf'
 

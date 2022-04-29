@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PICARD_MERGESAMFILES } from '../../../../modules/picard/mergesamfiles/main.nf'
 

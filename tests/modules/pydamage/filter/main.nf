@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PYDAMAGE_ANALYZE } from '../../../../modules/pydamage/analyze/main.nf'
 include { PYDAMAGE_FILTER } from '../../../../modules/pydamage/filter/main.nf'

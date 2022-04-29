@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LEGSTA } from '../../../modules/legsta/main.nf'
 

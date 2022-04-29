@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { STRELKA_GERMLINE } from '../../../../modules/strelka/germline/main.nf'
 

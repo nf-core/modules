@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BWAMEM2_INDEX } from '../../../../modules/bwamem2/index/main.nf'
 

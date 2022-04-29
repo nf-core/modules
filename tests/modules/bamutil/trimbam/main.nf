@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BAMUTIL_TRIMBAM } from '../../../../modules/bamutil/trimbam/main.nf'
 

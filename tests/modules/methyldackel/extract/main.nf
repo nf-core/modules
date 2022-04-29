@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { METHYLDACKEL_EXTRACT } from '../../../../modules/methyldackel/extract/main.nf'
 

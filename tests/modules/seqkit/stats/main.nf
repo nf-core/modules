@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQKIT_STATS } from '../../../../modules/seqkit/stats/main.nf'
 

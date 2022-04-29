@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { QUALIMAP_BAMQC } from '../../../../modules/qualimap/bamqc/main.nf'
 

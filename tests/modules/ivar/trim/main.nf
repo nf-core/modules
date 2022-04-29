@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { IVAR_TRIM } from '../../../../modules/ivar/trim/main.nf'
 

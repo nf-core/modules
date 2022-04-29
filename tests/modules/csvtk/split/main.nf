@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CSVTK_SPLIT } from '../../../../modules/csvtk/split/main.nf'
 

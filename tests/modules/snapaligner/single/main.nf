@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SNAPALIGNER_INDEX } from '../../../../modules/snapaligner/index/main.nf'
 include { SNAPALIGNER_SINGLE } from '../../../../modules/snapaligner/single/main.nf'

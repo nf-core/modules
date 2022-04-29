@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { VCFLIB_VCFUNIQ } from '../../../../modules/vcflib/vcfuniq/main.nf'
 

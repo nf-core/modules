@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PRODIGAL } from '../../../modules/prodigal/main.nf'
 

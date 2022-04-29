@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GFFREAD } from '../../../modules/gffread/main.nf'
 

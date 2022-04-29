@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BISCUIT_INDEX                         } from '../../../../modules/biscuit/index/main.nf'
 include { BISCUIT_BLASTER as BISCUIT_BLASTER_SE } from '../../../../modules/biscuit/biscuitblaster/main.nf'

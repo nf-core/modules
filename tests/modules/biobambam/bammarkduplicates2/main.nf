@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BIOBAMBAM_BAMMARKDUPLICATES2 } from '../../../../modules/biobambam/bammarkduplicates2/main.nf'
 

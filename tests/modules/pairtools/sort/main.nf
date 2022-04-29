@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PAIRTOOLS_SORT } from '../../../../modules/pairtools/sort/main.nf'
 

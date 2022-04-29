@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UNTAR       } from '../../../../modules/untar/main.nf'
 include { KAIJU_KAIJU } from '../../../../modules/kaiju/kaiju/main.nf'

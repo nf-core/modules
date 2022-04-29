@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BWAMETH_INDEX } from '../../../../modules/bwameth/index/main.nf'
 

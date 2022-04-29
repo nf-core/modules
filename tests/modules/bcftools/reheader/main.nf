@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BCFTOOLS_REHEADER } from '../../../../modules/bcftools/reheader/main.nf'
 

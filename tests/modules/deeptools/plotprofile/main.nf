@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DEEPTOOLS_PLOTPROFILE } from '../../../../modules/deeptools/plotprofile/main.nf'
 

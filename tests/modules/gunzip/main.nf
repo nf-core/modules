@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GUNZIP } from '../../../modules/gunzip/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include {
     HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_BED

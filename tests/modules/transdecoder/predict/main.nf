@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { TRANSDECODER_PREDICT } from '../../../../modules/transdecoder/predict/main.nf'
 include { TRANSDECODER_LONGORF } from '../../../../modules/transdecoder/longorf/main.nf'

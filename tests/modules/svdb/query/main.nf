@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SVDB_QUERY } from '../../../../modules/svdb/query/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BAMALIGNCLEANER } from '../../../modules/bamaligncleaner/main.nf'
 

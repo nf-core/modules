@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { FGBIO_SORTBAM } from '../../../../modules/fgbio/sortbam/main.nf'
 

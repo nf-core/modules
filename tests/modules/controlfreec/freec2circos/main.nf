@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CONTROLFREEC_FREEC2CIRCOS } from '../../../../modules/controlfreec/freec2circos/main.nf'
 include { CONTROLFREEC_FREEC     } from '../../../../modules/controlfreec/freec/main.nf'

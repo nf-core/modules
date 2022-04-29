@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SRA_FASTQ } from '../../../../subworkflows/nf-core/sra_fastq/main.nf' addParams( [:] )
 

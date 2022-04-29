@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GENMAP_INDEX } from '../../../../modules/genmap/index/main.nf'
 

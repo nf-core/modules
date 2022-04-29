@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { TBPROFILER_PROFILE } from '../../../../modules/tbprofiler/profile/main.nf'
 

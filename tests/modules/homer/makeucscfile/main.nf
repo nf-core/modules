@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HOMER_MAKETAGDIRECTORY } from '../../../../modules/homer/maketagdirectory/main.nf'
 include { HOMER_MAKEUCSCFILE } from '../../../../modules/homer/makeucscfile/main.nf'

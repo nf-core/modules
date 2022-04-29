@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HMMCOPY_GCCOUNTER } from '../../../../modules/hmmcopy/gccounter/main.nf'
 

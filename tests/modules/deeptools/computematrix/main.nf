@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DEEPTOOLS_COMPUTEMATRIX } from '../../../../modules/deeptools/computematrix/main.nf'
 

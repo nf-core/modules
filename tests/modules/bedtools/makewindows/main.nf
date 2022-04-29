@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/bedtools/makewindows/main.nf'
 

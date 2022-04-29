@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { RSEQC_INFEREXPERIMENT }   from '../../../../modules/rseqc/inferexperiment/main.nf'
 

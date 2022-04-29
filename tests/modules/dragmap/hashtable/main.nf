@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DRAGMAP_HASHTABLE } from '../../../../modules/dragmap/hashtable/main.nf'
 

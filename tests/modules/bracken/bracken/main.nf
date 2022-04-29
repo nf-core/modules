@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UNTAR           } from '../../../../modules/untar/main.nf'
 include { KRAKEN2_KRAKEN2 } from '../../../../modules/kraken2/kraken2/main.nf'

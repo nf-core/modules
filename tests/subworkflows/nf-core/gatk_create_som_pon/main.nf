@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK_CREATE_SOM_PON } from '../../../../subworkflows/nf-core/gatk_create_som_pon/main' addParams( [:]  )
 

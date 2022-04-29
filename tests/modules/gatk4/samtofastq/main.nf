@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_SAMTOFASTQ } from '../../../../modules/gatk4/samtofastq/main.nf'
 

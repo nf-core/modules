@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PICARD_FIXMATEINFORMATION } from '../../../../modules/picard/fixmateinformation/main.nf'
 

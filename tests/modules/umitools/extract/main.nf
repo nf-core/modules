@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UMITOOLS_EXTRACT } from '../../../../modules/umitools/extract/main.nf'
 

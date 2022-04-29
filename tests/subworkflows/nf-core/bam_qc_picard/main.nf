@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BAM_QC_PICARD } from '../../../../subworkflows/nf-core/bam_qc_picard/main' addParams([:])
 

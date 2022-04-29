@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PICARD_MARKDUPLICATES } from '../../../../modules/picard/markduplicates/main.nf'
 include { PICARD_MARKDUPLICATES as PICARD_MARKDUPLICATES_UNSORTED}  from '../../../../modules/picard/markduplicates/main.nf'

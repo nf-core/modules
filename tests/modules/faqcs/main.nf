@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { FAQCS } from '../../../modules/faqcs/main.nf'
 

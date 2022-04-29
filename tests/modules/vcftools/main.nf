@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { VCFTOOLS as VCFTOOLS_BASE     } from '../../../modules/vcftools/main.nf'
 include { VCFTOOLS as VCFTOOLS_OPTIONAL } from '../../../modules/vcftools/main.nf'

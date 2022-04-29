@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ELPREP_SPLIT } from '../../../../modules/elprep/split/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ARTIC_GUPPYPLEX } from '../../../../modules/artic/guppyplex/main.nf'
 

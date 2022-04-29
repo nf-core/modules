@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_NO_ALLELSPECIFICITY } from '../../../../modules/gatk4/applyvqsr/main.nf'
 include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_WITH_ALLELSPECIFICITY} from '../../../../modules/gatk4/applyvqsr/main.nf'

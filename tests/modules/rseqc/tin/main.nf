@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { RSEQC_TIN } from '../../../../modules/rseqc/tin/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CAT_CAT                        } from '../../../../modules/cat/cat/main.nf'
 include { CAT_CAT as CAT_UNZIPPED_ZIPPED } from '../../../../modules/cat/cat/main.nf'

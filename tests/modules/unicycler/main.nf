@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UNICYCLER } from '../../../modules/unicycler/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CSVTK_CONCAT } from '../../../../modules/csvtk/concat/main.nf'
 

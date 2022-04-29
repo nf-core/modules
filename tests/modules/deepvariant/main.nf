@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DEEPVARIANT                          } from '../../../modules/deepvariant/main.nf'
 include { DEEPVARIANT as DEEPVARIANT_INTERVALS } from '../../../modules/deepvariant/main.nf'

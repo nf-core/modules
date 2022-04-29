@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_MARKDUPLICATES_SPARK } from '../../../../modules/gatk4/markduplicatesspark/main.nf'
 

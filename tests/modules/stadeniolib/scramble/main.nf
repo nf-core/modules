@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { STADENIOLIB_SCRAMBLE } from '../../../../modules/stadeniolib/scramble/main.nf'
 

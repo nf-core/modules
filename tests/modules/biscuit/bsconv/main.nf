@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BISCUIT_INDEX  } from '../../../../modules/biscuit/index/main.nf'
 include { BISCUIT_BSCONV } from '../../../../modules/biscuit/bsconv/main.nf'

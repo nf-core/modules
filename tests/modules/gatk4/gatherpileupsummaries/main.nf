@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_GATHERPILEUPSUMMARIES } from '../../../../modules/gatk4/gatherpileupsummaries/main.nf'
 

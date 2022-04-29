@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ABRICATE_RUN } from '../../../../modules/abricate/run/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MINIMAP2_ALIGN } from '../../../../modules/minimap2/align/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LEEHOM } from '../../../modules/leehom/main.nf'
 include { SAMTOOLS_VIEW } from '../../../modules/samtools/view/main.nf'

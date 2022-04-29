@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BLAST_MAKEBLASTDB } from '../../../../modules/blast/makeblastdb/main.nf'
 include { BLAST_BLASTN      } from '../../../../modules/blast/blastn/main.nf'

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PRESEQ_LCEXTRAP } from '../../../../modules/preseq/lcextrap/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DELLY_CALL } from '../../../../modules/delly/call/main.nf'
 

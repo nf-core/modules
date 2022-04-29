@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_MERGE } from '../../../../modules/bedtools/merge/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { COOLER_CLOAD }                       from '../../../../modules/cooler/cload/main.nf'
 include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from '../../../../modules/cooler/cload/main.nf'

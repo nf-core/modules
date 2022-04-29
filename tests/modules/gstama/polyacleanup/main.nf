@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GSTAMA_POLYACLEANUP } from '../../../../modules/gstama/polyacleanup/main.nf'
 

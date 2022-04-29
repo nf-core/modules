@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LOFREQ_CALL } from '../../../../modules/lofreq/call/main.nf'
 

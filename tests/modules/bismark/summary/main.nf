@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BISMARK_GENOMEPREPARATION    } from '../../../../modules/bismark/genomepreparation/main.nf'
 include { BISMARK_ALIGN                } from '../../../../modules/bismark/align/main.nf'

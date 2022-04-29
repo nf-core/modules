@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ULTRA_PIPELINE } from '../../../../modules/ultra/pipeline/main.nf'
 include { GUNZIP         } from '../../../../modules/gunzip/main.nf'

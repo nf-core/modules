@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { TABIX_TABIX as TABIX_BED     } from '../../../../modules/tabix/tabix/main.nf'
 include { TABIX_TABIX as TABIX_GFF     } from '../../../../modules/tabix/tabix/main.nf'

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CMSEQ_POLYMUT } from '../../../../modules/cmseq/polymut/main.nf'
 

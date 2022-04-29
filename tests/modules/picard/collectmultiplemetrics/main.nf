@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../../modules/picard/collectmultiplemetrics/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { PAIRTOOLS_SELECT } from '../../../../modules/pairtools/select/main.nf'
 

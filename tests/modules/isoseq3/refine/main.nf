@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ISOSEQ3_REFINE } from '../../../../modules/isoseq3/refine/main'
 

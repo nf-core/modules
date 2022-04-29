@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQKIT_PAIR } from '../../../../modules/seqkit/pair/main.nf'
 

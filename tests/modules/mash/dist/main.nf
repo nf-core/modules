@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MASH_DIST } from '../../../../modules/mash/dist/main.nf'
 

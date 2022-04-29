@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BIOBAMBAM_BAMSORMADUP } from '../../../../modules/biobambam/bamsormadup/main.nf'
 

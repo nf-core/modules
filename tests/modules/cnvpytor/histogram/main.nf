@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CNVPYTOR_HISTOGRAM } from '../../../../modules/cnvpytor/histogram/main.nf'
 

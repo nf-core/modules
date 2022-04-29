@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UNZIP as UNZIP_MALT        } from '../../../modules/unzip/main.nf'
 include { UNZIP as UNZIP_MALTEXTRACT }  from '../../../modules/unzip/main.nf'

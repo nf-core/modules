@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { MEGAHIT } from '../../../modules/megahit/main.nf'
 

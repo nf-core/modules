@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BEDTOOLS_SUBTRACT } from '../../../../modules/bedtools/subtract/main.nf'
 

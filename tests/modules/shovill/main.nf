@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SHOVILL                    } from '../../../modules/shovill/main.nf'
 include { SHOVILL as SHOVILL_SKESA   } from '../../../modules/shovill/main.nf'

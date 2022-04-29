@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HOMER_ANNOTATEPEAKS } from '../../../../modules/homer/annotatepeaks/main.nf'
 

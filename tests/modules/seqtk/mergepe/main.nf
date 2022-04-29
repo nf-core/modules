@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQTK_MERGEPE } from '../../../../modules/seqtk/mergepe/main.nf'
 

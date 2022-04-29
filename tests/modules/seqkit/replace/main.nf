@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SEQKIT_REPLACE } from '../../../../modules/seqkit/replace/main.nf'
 include { SEQKIT_REPLACE as SEQKIT_REPLACEUNCOMP } from '../../../../modules/seqkit/replace/main.nf'

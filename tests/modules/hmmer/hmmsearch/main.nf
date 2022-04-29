@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HMMER_HMMSEARCH } from '../../../../modules/hmmer/hmmsearch/main.nf'
 

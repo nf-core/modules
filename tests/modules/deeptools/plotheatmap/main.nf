@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DEEPTOOLS_PLOTHEATMAP } from '../../../../modules/deeptools/plotheatmap/main.nf'
 

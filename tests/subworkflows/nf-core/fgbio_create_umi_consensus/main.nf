@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { CREATE_UMI_CONSENSUS } from '../../../../subworkflows/nf-core/fgbio_create_umi_consensus/main'
 

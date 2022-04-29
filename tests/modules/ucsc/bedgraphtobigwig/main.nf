@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { UCSC_BEDGRAPHTOBIGWIG  } from '../../../../modules/ucsc/bedgraphtobigwig/main.nf'
 

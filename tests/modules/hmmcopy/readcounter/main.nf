@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { HMMCOPY_READCOUNTER } from '../../../../modules/hmmcopy/readcounter/main.nf'
 

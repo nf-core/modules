@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ANNOTATION_ENSEMBLVEP } from '../../../../subworkflows/nf-core/annotation_ensemblvep/main'
 

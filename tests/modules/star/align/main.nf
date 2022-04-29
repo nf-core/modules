@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { STAR_GENOMEGENERATE               } from '../../../../modules/star/genomegenerate/main.nf'
 include { STAR_ALIGN                        } from '../../../../modules/star/align/main.nf'

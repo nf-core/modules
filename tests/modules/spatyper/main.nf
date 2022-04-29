@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SPATYPER } from '../../../modules/spatyper/main.nf'
 include { SPATYPER as SPATYPER_ENRICH } from '../../../modules/spatyper/main.nf'

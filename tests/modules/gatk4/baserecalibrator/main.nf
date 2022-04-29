@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_BASERECALIBRATOR } from '../../../../modules/gatk4/baserecalibrator/main.nf'
 

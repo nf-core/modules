@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { SAMTOOLS_BAM2FQ } from '../../../../modules/samtools/bam2fq/main.nf'
 

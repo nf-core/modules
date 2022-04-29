@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { BANDAGE_IMAGE } from '../../../../modules/bandage/image/main.nf'
 

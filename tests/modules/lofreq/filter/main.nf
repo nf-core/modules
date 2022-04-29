@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { LOFREQ_FILTER } from '../../../../modules/lofreq/filter/main.nf'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { DSHBIO_SPLITGFF3 } from '../../../../modules/dshbio/splitgff3/main.nf'
 

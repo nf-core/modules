@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { ANNOTATION_SNPEFF } from '../../../../subworkflows/nf-core/annotation_snpeff/main'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { FGBIO_GROUPREADSBYUMI } from '../../../../modules/fgbio/groupreadsbyumi/main.nf'
 

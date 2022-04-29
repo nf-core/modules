@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { IVAR_CONSENSUS } from '../../../../modules/ivar/consensus/main.nf'
 

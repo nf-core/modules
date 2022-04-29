@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { COOLER_DIGEST } from '../../../../modules/cooler/digest/main.nf'
 

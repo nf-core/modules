@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { GATK4_BASERECALIBRATOR_SPARK } from '../../../../modules/gatk4/baserecalibratorspark/main.nf'
 

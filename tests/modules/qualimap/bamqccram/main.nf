@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+
 
 include { QUALIMAP_BAMQCCRAM } from '../../../../modules/qualimap/bamqccram/main.nf'
 
