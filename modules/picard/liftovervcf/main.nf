@@ -35,11 +35,11 @@ process PICARD_LIFTOVERVCF {
         -Xmx${avail_mem}g \\
         LiftoverVcf \\
         $args \\
-        I=$input_vcf \\
-        O=${prefix}.lifted.vcf.gz \\
-        CHAIN=$chain \\
-        REJECT=${prefix}.unlifted.vcf.gz \\
-        R=$fasta
+        -I $input_vcf \\
+        -O ${prefix}.lifted.vcf.gz \\
+        --CHAIN $chain \\
+        --REJECT ${prefix}.unlifted.vcf.gz \\
+        -R $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

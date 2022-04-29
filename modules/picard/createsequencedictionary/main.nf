@@ -31,8 +31,8 @@ process PICARD_CREATESEQUENCEDICTIONARY {
         -Xmx${avail_mem}g \\
         CreateSequenceDictionary  \\
         $args \\
-        R=$fasta \\
-        O=${prefix}.dict
+        -R $fasta \\
+        -O ${prefix}.dict
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

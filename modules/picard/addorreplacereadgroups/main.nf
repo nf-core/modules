@@ -43,7 +43,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         -PL ${PLATFORM} \\
         -PU ${BARCODE} \\
         -SM ${SAMPLE} \\
-        -CREATE_INDEX true
+        --CREATE_INDEX true
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

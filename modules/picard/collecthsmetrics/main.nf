@@ -38,10 +38,10 @@ process PICARD_COLLECTHSMETRICS {
         CollectHsMetrics \\
         $args \\
         $reference \\
-        -BAIT_INTERVALS $bait_intervals \\
-        -TARGET_INTERVALS $target_intervals \\
-        -INPUT $bam \\
-        -OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
+        --BAIT_INTERVALS $bait_intervals \\
+        --TARGET_INTERVALS $target_intervals \\
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
 
 
     cat <<-END_VERSIONS > versions.yml
