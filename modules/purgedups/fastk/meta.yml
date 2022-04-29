@@ -4,7 +4,6 @@ keywords:
   - fastk
 tools:
   - purgedups_fastk:
-      ## TODO nf-core: Add a description and other details for the software below
       description: k‑mer counter that is optimized for processing high quality DNA assembly data sets
       homepage: https://github.com/thegenemyers/FASTK/blob/master/README.md
       documentation: https://github.com/thegenemyers/FASTK/blob/master/README.md
@@ -12,7 +11,6 @@ tools:
       doi: ""
       licence: Copyright (c) 2020, Dr. Eugene W. Myers (EWM). All rights reserved.
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -31,7 +29,6 @@ input:
   - redir:
     type:
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -42,7 +39,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file

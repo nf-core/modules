@@ -1,10 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purgedups/fastk
 - name: purgedups fastk
   command: nextflow run ./tests/modules/purgedups/fastk -entry test_purgedups_fastk -c ./tests/config/nextflow.config -c ./tests/modules/purgedups/fastk/nextflow.config
   tags:
     - purgedups
     - purgedups/fastk
   files:
-    - path: output/purgedups/test.bam
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/purgedups/FASTKDB/reads.hist
+      md5sum: 3d5ae3a4449b9222559fbba368126036
+    - path: output/purgedups/versions.yml
+      md5sum: 20fdcc53e5f2508690d6e8806e71d841
