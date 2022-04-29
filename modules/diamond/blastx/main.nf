@@ -11,10 +11,11 @@ process DIAMOND_BLASTX {
 
     input:
     tuple val(meta), path(fasta)
-    path  db
+    path db
+    val outext
 
     output:
-    tuple val(meta), path('*.txt'), emit: txt
+    tuple val(meta), path('*.{blast,xml,txt,daa,sam,tsv,paf}'), emit: output
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,6 +24,15 @@ process DIAMOND_BLASTX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    switch ( outext ) {
+        case "blast": outfmt = 0; break
+        case "xml": outfmt = 5; break
+        case "txt": outfmt = 6; break
+        case "daa": outfmt = 100; break
+        case "sam": outfmt = 101; break
+        case "tsv": outfmt = 102; break
+        case "paf": outfmt = 103; break
+    }
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
 
@@ -31,8 +41,9 @@ process DIAMOND_BLASTX {
         --threads $task.cpus \\
         --db \$DB \\
         --query $fasta \\
+        --outfmt ${outfmt} \\
         $args \\
-        --out ${prefix}.txt
+        --out ${prefix}.${outext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
