@@ -29,7 +29,7 @@ process ELPREP_MERGE {
     mv ${bam} input/
 
     elprep merge \\
-        input \\
+        input/ \\
         output/${prefix}.${suffix} \\
         $args \\
         ${single_end} \\
