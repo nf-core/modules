@@ -2,13 +2,15 @@ name: Bug report
 description: Report something that is broken or incorrect
 labels: bug
 body:
-  - type: markdown
+  - type: checkboxes
     attributes:
-      value: |
-        Before you post this issue, please check the documentation:
-
-        - [nf-core website: troubleshooting](https://nf-co.re/usage/troubleshooting)
-        - [nf-core/rnaseq pipeline documentation](https://nf-co.re/rnaseq/usage)
+      label: Have you checked the docs?
+      description: I have checked the following places for my error
+      options:
+        - label: "[nf-core website: troubleshooting](https://nf-co.re/usage/troubleshooting)"
+          required: true
+        - label: "[nf-core modules documentation](https://nf-co.re/docs/contributing/modules)"
+          required: true
 
   - type: textarea
     id: description
