@@ -7,7 +7,7 @@ include { DIAMOND_BLASTX } from '../../../../modules/diamond/blastx/main.nf'
 
 workflow test_diamond_blastx {
 
-    db = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    db = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
     outext = 'txt'
 
@@ -17,7 +17,7 @@ workflow test_diamond_blastx {
 
 workflow test_diamond_blastx_daa {
 
-    db = [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+    db = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
     outext = 'daa'
 
