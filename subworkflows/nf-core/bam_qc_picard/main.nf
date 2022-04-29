@@ -25,7 +25,7 @@ workflow BAM_QC_PICARD {
         if (!ch_bait_interval) log.error("Bait interval channel is empty")
         if (!ch_target_interval) log.error("Target interval channel is empty")
         PICARD_COLLECTHSMETRICS( ch_bam, ch_fasta, ch_fasta_fai, ch_bait_interval, ch_target_interval )
-        ch_coverage_metrics = PICARD_COLLECTHSMETRICS.out.metrics
+        ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
         PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
