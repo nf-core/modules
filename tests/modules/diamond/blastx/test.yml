@@ -1,8 +1,24 @@
-- name: diamond blastx
-  command: nextflow run ./tests/modules/diamond/blastx -entry test_diamond_blastx -c ./tests/config/nextflow.config -c ./tests/modules/diamond/blastx/nextflow.config
+- name: diamond blastx test_diamond_blastx
+  command: nextflow run tests/modules/diamond/blastx -entry test_diamond_blastx -c tests/config/nextflow.config
   tags:
     - diamond
     - diamond/blastx
   files:
-    - path: ./output/diamond/test.diamond_blastx.txt
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/diamond/genome.fasta.dmnd
+      md5sum: 2447fb376394c20d43ea3aad2aa5d15d
+    - path: output/diamond/test.diamond_blastx.txt
+    - path: output/diamond/versions.yml
+      md5sum: 747934f57b7c0f8901570500f206eac6
+
+- name: diamond blastx test_diamond_blastx_daa
+  command: nextflow run tests/modules/diamond/blastx -entry test_diamond_blastx_daa -c tests/config/nextflow.config
+  tags:
+    - diamond
+    - diamond/blastx
+  files:
+    - path: output/diamond/genome.fasta.dmnd
+      md5sum: 2447fb376394c20d43ea3aad2aa5d15d
+    - path: output/diamond/test.diamond_blastx.daa
+      md5sum: 2a0ce0f7e01dcead828b87d5cbaccf7a
+    - path: output/diamond/versions.yml
+      md5sum: 05cbabfd500fc17e26b3d8061c5a78c3
