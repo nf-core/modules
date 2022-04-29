@@ -33,8 +33,8 @@ process PICARD_MERGESAMFILES {
             -Xmx${avail_mem}g \\
             MergeSamFiles \\
             $args \\
-            ${'INPUT='+bam_files.join(' INPUT=')} \\
-            OUTPUT=${prefix}.bam
+            ${'--INPUT '+bam_files.join(' --INPUT ')} \\
+            --OUTPUT ${prefix}.bam
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             picard: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)

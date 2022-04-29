@@ -38,11 +38,11 @@ process PICARD_ADDORREPLACEREADGROUPS {
         -Xmx${avail_mem}g \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        -ID ${ID} \\
-        -LB ${LIBRARY} \\
-        -PL ${PLATFORM} \\
-        -PU ${BARCODE} \\
-        -SM ${SAMPLE} \\
+        --RGID ${ID} \\
+        --RGLB ${LIBRARY} \\
+        --RGPL ${PLATFORM} \\
+        --RGPU ${BARCODE} \\
+        --RGSM ${SAMPLE} \\
         --CREATE_INDEX true
 
     cat <<-END_VERSIONS > versions.yml
