@@ -37,9 +37,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     def args = task.ext.args ?: ''
     conda = params.enable_conda
     """
-    #download-antismash-databases \\
-    #    --database-dir antismash_db \\
-    #    $args
+    download-antismash-databases \\
+        --database-dir antismash_db \\
+        $args
 
     if [[ $conda = false ]]; \
         then \
