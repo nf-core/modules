@@ -43,7 +43,7 @@ process GATK4_REVERTSAM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.reverted.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
