@@ -1,32 +1,33 @@
 name: busco
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Evaluation of the quality of genomic “data products” such as genome assemblies or gene sets.
 keywords:
   - sort
 tools:
   - busco:
-      ## TODO nf-core: Add a description and other details for the software below
       description: BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
-      homepage: None
-      documentation: None
-      tool_dev_url: None
-      doi: ""
+      homepage: "https://busco.ezlab.org/"
+      documentation: "https://busco.ezlab.org/busco_userguide.html"
+      tool_dev_url: "https://gitlab.com/ezlab/busco/-/releases#5.2.1"
+      doi: "10.1002/cpz1.323"
       licence: ['MIT']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        Either a nucleotide fasta file or a protein fasta file, depending on the BUSCO mode.
+        As of v5.1.0 the input argument can now also be a directory containing fasta files to run in batch mode.
+      pattern: "*.fasta" #How do I handle passing a directory to this?
+  - mode:
+      type: string
+      description: Sets the assessment MODE as genome, proteins, transcriptome.
+      pattern: "*.fasta"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - meta:
       type: map
@@ -37,7 +38,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
       description: Sorted BAM/CRAM/SAM file
