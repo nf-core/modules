@@ -9,6 +9,8 @@ process MOTUS_PROFILE {
 
     input:
     tuple val(meta), path(reads)
+    path db
+    path bam
 
     output:
     tuple val(meta), path("*.out"), emit: out
@@ -25,12 +27,16 @@ process MOTUS_PROFILE {
                     "-i ${reads}" :
                     meta.single_end ?
                         "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
+    def refdb = db ? "-db ${db}" : ""
+    def intermediateBam = bam ? "-I $bam" : ""
     """
     motus profile \\
         $args \\
         $inputs \\
+        $refdb \\
+        $intermediateBam \\
         -t $task.cpus \\
-        -n ${prefix} \\
+        -n $prefix \\
         -o ${prefix}.out
 
     cat <<-END_VERSIONS > versions.yml
