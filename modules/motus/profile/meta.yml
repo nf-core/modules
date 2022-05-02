@@ -14,7 +14,6 @@ tools:
       doi: "10.1038/s41467-019-08844-4"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - meta:
       type: map
@@ -31,6 +30,11 @@ input:
       type: derectory
       description: |
         mOTUs database downloaded by `motus downloadDB`
+  - bam:
+      type: file
+      description: |
+        The intermediate bam file mapped by bwa to the mOTUs database or
+        the output bam file from motus profile
 
 output:
   - meta:
