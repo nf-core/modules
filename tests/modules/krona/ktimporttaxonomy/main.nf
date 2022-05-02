@@ -12,7 +12,7 @@ workflow test_krona_ktimporttaxonomy_reads {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['metagenome']['test_1.kraken2.reads.txt'], checkIfExists: true)
+        file(params.test_data['sarscov2']['metagenome']['classified_reads_assignment'], checkIfExists: true)
     ]
     // taxonomy = file(params.test_data['generic']['txt']['hello'], checkIfExists: true)
 
@@ -24,7 +24,7 @@ workflow test_krona_ktimporttaxonomy_report {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['metagenome']['test_1.kraken2.report.txt'], checkIfExists: true)
+        file(params.test_data['sarscov2']['metagenome']['report'], checkIfExists: true)
     ]
     taxonomy = file(params.test_data['generic']['txt']['hello'], checkIfExists: true)
 
