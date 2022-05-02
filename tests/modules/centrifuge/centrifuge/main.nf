@@ -25,7 +25,6 @@ workflow test_centrifuge_centrifuge_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
      db    =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true) ]
-     //db_name = "minigut_cf"
      save_unaligned = true
      save_aligned = false
      sam_format = false

@@ -28,12 +28,50 @@ input:
       type: directory
       description: Directory containing the protein blast database
       pattern: "*"
+  - out_ext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `blast` corresponds to
+        BLAST pairwise format. `xml` corresponds to BLAST xml format.
+        `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
+        taxonomic classification format.
+      pattern: "blast|xml|txt|daa|sam|tsv|paf"
+  - blast_columns:
+      type: string
+      description: |
+        Optional space separated list of DIAMOND tabular BLAST output keywords
+        used for in conjunction with the 'txt' out_ext option (--outfmt 6). See
+        DIAMOND documnetation for more information.
 
 output:
-  - txt:
+  - blast:
       type: file
       description: File containing blastp hits
-      pattern: "*.{blastp.txt}"
+      pattern: "*.{blast}"
+  - xml:
+      type: file
+      description: File containing blastp hits
+      pattern: "*.{xml}"
+  - txt:
+      type: file
+      description: File containing hits in tabular BLAST format.
+      pattern: "*.{txt}"
+  - daa:
+      type: file
+      description: File containing hits DAA format
+      pattern: "*.{daa}"
+  - sam:
+      type: file
+      description: File containing aligned reads in SAM format
+      pattern: "*.{sam}"
+  - tsv:
+      type: file
+      description: Tab separated file containing taxonomic classification of hits
+      pattern: "*.{tsv}"
+  - paf:
+      type: file
+      description: File containing aligned reads in pairwise mapping format format
+      pattern: "*.{paf}"
   - versions:
       type: file
       description: File containing software versions
@@ -41,3 +79,4 @@ output:
 
 authors:
   - "@spficklin"
+  - "@jfy133"
