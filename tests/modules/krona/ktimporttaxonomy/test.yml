@@ -5,7 +5,8 @@
     - krona/ktimporttaxonomy
   files:
     - path: output/krona/taxonomy.krona.html
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - "DOCTYPE html PUBLIC"
     - path: output/krona/versions.yml
       md5sum: c6823bf3822cf3714fe9f2073ee76d60
 
@@ -16,6 +17,7 @@
     - krona/ktimporttaxonomy
   files:
     - path: output/krona/taxonomy.krona.html
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - "DOCTYPE html PUBLIC"
     - path: output/krona/versions.yml
       md5sum: 06b76d9a7602d63fec182e195cc16a76
