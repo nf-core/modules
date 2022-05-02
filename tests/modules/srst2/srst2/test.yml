@@ -1,4 +1,5 @@
 - name: srst2 srst2 test_srst2_srst2_exit #Testing pipeline exit when not meta.db
+  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_exit -c tests/config/nextflow.config
   tags:
     - srst2/srst2
     - srst2
