@@ -16,7 +16,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test', mode:"protein", lineage:"", autolineage:false]
   - fasta:
       type: file
       description: |
@@ -31,7 +31,7 @@ input:
       description: |
         It can be a dataset name, i.e. bacteria_odb10, or a path i.e. ./bacteria_odb10 or /home/user/bacteria_odb10.
         In the former case, which is the recommended usage, BUSCO will automatically download and version the corresponding dataset.
-        You can get the list of possible datasets by running "busco --list-datasets" see "https://busco.ezlab.org/list_of_lineages.html".
+        You can get the list of possible datasets by running "busco --list-datasets" see "www.busco.ezlab.org/list_of_lineages.html" and "www.busco.ezlab.org/busco_userguide.html#lineage-datasets".
 
 output:
   - meta:
@@ -39,22 +39,26 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - short_summary:
+      type: txt
+      description: Contains a plain text summary of the results in BUSCO notation.
+      pattern: "./short_summary.*.txt"
+  - run_full_table:
+      type: tsv
+      description: Contains the complete results in a tabular format with scores and lengths of BUSCO matches, and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein mode).
+      pattern: "./run_*/full_table.tsv"
+  - run_short_summary:
+      type: txt
+      description: Contains a plain text summary of the results in BUSCO notation.
+      pattern: "./run_*/short_summary.*.txt"
+  - missing_busco_list:
+      type: tsv
+      description: Contains a list of missing BUSCOs.
+      pattern: "./run_*/missing_busco_list.tsv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - full_table:
-      type: tsv
-      description: Contains the complete results in a tabular format with scores and lengths of BUSCO matches, and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein mode).
-      pattern: "full_table.tsv"
-  - short_summary:
-      type: txt
-      description: Contains a plain text summary of the results in BUSCO notation.
-      pattern: "short_summary.*.txt"
-  - missing_busco_list:
-      type: tsv
-      description: Contains a list of missing BUSCOs.
-      pattern: "missing_busco_list.tsv"
 
 authors:
   - "@nvlachos"
