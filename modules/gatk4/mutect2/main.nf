@@ -62,8 +62,8 @@ process GATK4_MUTECT2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf.gz
-    touch ${prefix}.tbi
-    touch ${prefix}.stats
+    touch ${prefix}.vcf.gz.tbi
+    touch ${prefix}.vcf.gz.stats
     touch ${prefix}.f1r2.tar.gz
 
     cat <<-END_VERSIONS > versions.yml
