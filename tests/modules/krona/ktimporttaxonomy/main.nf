@@ -21,7 +21,7 @@ workflow test_krona_ktimporttaxonomy_report {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['metagenome']['report'], checkIfExists: true)
+        file(params.test_data['sarscov2']['metagenome']['kraken_report'], checkIfExists: true)
     ]
 
     DOWNLOAD_DB()
