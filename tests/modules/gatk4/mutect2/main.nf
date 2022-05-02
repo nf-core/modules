@@ -121,18 +121,18 @@ workflow test_gatk4_mutect2_mitochondria {
 
 workflow test_gatk4_mutect2_tumor_single_stubs {
     input = [ [ id:'test'], // meta map
-              [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
-              [ file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
+              [ "foo.bam" ],
+              [ "foo.bam.bai" ],
               []
             ]
 
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    germline_resource = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz'], checkIfExists: true)
-    germline_resource_tbi = file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_21_vcf_gz_tbi'], checkIfExists: true)
-    panel_of_normals = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz'], checkIfExists: true)
-    panel_of_normals_tbi = file(params.test_data['homo_sapiens']['genome']['mills_and_1000g_indels_21_vcf_gz_tbi'], checkIfExists: true)
+    fasta = "genome.fasta"
+    fai = "genome.fasta.fai"
+    dict = "genome.fasta.dict"
+    germline_resource = "genome_gnomAD.r2.1.1.vcf.gz"
+    germline_resource_tbi = "genome_gnomAD.r2.1.1.vcf.gz.tbi"
+    panel_of_normals = "genome_mills_and_1000G.indels.hg38.vcf.gz"
+    panel_of_normals_tbi = "genome_mills_and_1000G.indels.hg38.vcf.gz.tbi"
 
     GATK4_MUTECT2 ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
 }
