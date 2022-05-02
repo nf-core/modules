@@ -9,20 +9,20 @@ workflow test_diamond_blastx {
 
     db = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
-    outext = 'txt'
+    out_ext = 'txt'
     blast_columns = 'qseqid qlen'
 
     DIAMOND_MAKEDB ( db )
-    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, outext, blast_columns )
+    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
 
 workflow test_diamond_blastx_daa {
 
     db = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
-    outext = 'daa'
+    out_ext = 'daa'
     blast_columns = []
 
     DIAMOND_MAKEDB ( db )
-    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, outext, blast_columns )
+    DIAMOND_BLASTX ( [ [id:'test'], fasta ], DIAMOND_MAKEDB.out.db, out_ext, blast_columns )
 }
