@@ -4,14 +4,13 @@ process BUSCO {
 
     conda (params.enable_conda ? "bioconda::busco=5.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/busco:5.3.2--pyhdfd78af_0':
+        'quay.io/biocontainers/bsuco:5.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastas)
     val(mode)
-    val(output)
-    path(lineage)
+    path(lineage_path)
 
     output:
     tuple val(meta), path("short_summary.*.txt"),    emit: short_summary
@@ -22,13 +21,16 @@ process BUSCO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // handling lineage
+    def lineage = meta.lineage ? "--lineage_dataset ${lineage_path}" : ""
+
     """
     busco \\
         --in ${fastas} \\
         --mode ${mode}
-        --lineage_dataset ${lineage} \\
-        --out ${output} \\
+        --out meta.id \\
         -c $task.cpus \\
+        ${lineage} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

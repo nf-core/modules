@@ -9,7 +9,7 @@ tools:
       documentation: "https://busco.ezlab.org/busco_userguide.html"
       tool_dev_url: "https://gitlab.com/ezlab/busco/-/releases#5.2.1"
       doi: "10.1002/cpz1.323"
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -24,11 +24,8 @@ input:
         As of v5.1.0 the input argument can now also be a directory containing fasta files to run in batch mode.
       pattern: "*.fasta" #How do I handle passing a directory to this?
   - mode:
-      type: string
-      description: Sets the assessment MODE as genome, proteins, transcriptome.
-  - output_dir:
-      type: string
-      description: defines the folder that will contain all results, logs, and intermediate data.
+      type: value
+      description: Sets the assessment MODE as "genome", "protein", "transcriptome".
   - lineage:
       type: string
       description: |
@@ -46,10 +43,19 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - full_table:
+      type: tsv
+      description: Contains the complete results in a tabular format with scores and lengths of BUSCO matches, and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein mode).
+      pattern: "full_table.tsv"
+  - short_summary:
+      type: txt
+      description: Contains a plain text summary of the results in BUSCO notation.
+      pattern: "short_summary.*.txt"
+  - missing_busco_list:
+      type: tsv
+      description: Contains a list of missing BUSCOs.
+      pattern: "missing_busco_list.tsv"
 
 authors:
   - "@nvlachos"
+  - "@jvhagey"
