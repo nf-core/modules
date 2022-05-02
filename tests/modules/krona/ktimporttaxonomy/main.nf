@@ -28,6 +28,6 @@ workflow test_krona_ktimporttaxonomy_report {
     ]
     taxonomy = file(params.test_data['generic']['txt']['hello'], checkIfExists: true)
 
-    TDOWNLOAD_DB()
+    DOWNLOAD_DB()
     TAXONOMY_REPORT ( input, DOWNLOAD_DB.out.db )
 }
