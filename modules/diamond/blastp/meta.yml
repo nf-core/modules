@@ -28,6 +28,14 @@ input:
       type: directory
       description: Directory containing the protein blast database
       pattern: "*"
+  - outext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `blast` corresponds to
+        BLAST pairwise format. `xml` corresponds to BLAST xml format.
+        `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
+        taxonomic classification format.
+      pattern: "blast|xml|txt|daa|sam|tsv|paf"
 
 output:
   - txt:
@@ -41,3 +49,4 @@ output:
 
 authors:
   - "@spficklin"
+  - "@jfy133"
