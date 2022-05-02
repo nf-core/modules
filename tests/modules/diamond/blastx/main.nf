@@ -9,7 +9,7 @@ workflow test_diamond_blastx {
 
     db = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
     fasta = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
-    out_ext = 'txt'
+    out_ext = 'tfdfdt'
     blast_columns = 'qseqid qlen'
 
     DIAMOND_MAKEDB ( db )
