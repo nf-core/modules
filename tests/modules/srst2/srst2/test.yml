@@ -1,3 +1,9 @@
+- name: srst2 srst2 test_srst2_srst2_exit #Testing pipeline exit when not meta.db
+  tags:
+    - srst2/srst2
+    - srst2
+  exit_code: 1
+
 - name: srst2 srst2 test_srst2_srst2_mlst
   command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_mlst -c tests/config/nextflow.config
   tags:
@@ -41,6 +47,3 @@
     - path: output/srst2/test__test1_1.resFinder_20180221_srst2.sorted.bam
     - path: output/srst2/versions.yml
       md5sum: 790fe00493c6634d17801a930073218b
-
-- name: srst2 srst2 test_srst2_srst2_exit #Testing pipeline exit when not meta.db
-  exit_code: 1
