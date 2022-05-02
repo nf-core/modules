@@ -38,6 +38,11 @@ process DIAMOND_BLASTP {
         case "sam": outfmt = 101; break
         case "tsv": outfmt = 102; break
         case "paf": outfmt = 103; break
+        default:
+            outfmt = '6';
+            out_ext = 'txt';
+            log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)");
+            break
     }
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
