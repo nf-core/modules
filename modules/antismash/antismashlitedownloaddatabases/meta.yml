@@ -27,7 +27,7 @@ input:
   - database_css:
       type: directory
       description: |
-        antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by ther use by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
+        antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
       pattern: "css"
   - database_detection:
       type: directory
