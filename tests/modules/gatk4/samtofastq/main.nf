@@ -22,7 +22,7 @@ workflow test_gatk4_samtofastq_paired_end {
 
 workflow test_gatk4_samtofastq_paired_end_stubs {
     input = [ [ id:'test', single_end: false ], // meta map
-              [ file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+              [ "foo_paired_end.bam" ]
             ]
 
     GATK4_SAMTOFASTQ ( input )
