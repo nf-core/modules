@@ -24,23 +24,17 @@
     - path: output/antismash/test/js/jquery.tablesorter.min.js
       md5sum: 5e9e08cef4d1be0eaa538e6eb28809a7
     - path: output/antismash/test/regions.js
-      md5sum: dfc82025379d87df63fbfce734e67725
+      contains: ['"seq_id": "NZ_CP069563.1"']
     - path: output/antismash/test/test.log
       contains: ['antiSMASH version: 6.0.1']
     - path: output/antismash/versions.yml
-      md5sum: 7151dfd4d39173338397b2dab50acf8e
-    - path: output/untar1/versions.yml
-      md5sum: 1e4721017721c45370996318e6b807e5
-    - path: output/untar2/versions.yml
-      md5sum: a6ae4977a432f3c5ef26687cec8622de
-    - path: output/untar3/versions.yml
-      md5sum: a5ee00c1c426ed601ff654891ba0f645
+      md5sum: 759431a43da33e2ef8e2d0ebd79a439b
 
 - name: antismash antismashlite test_prokka_antismashlite
   command: nextflow run tests/modules/antismash/antismashlite -entry test_prokka_antismashlite -c tests/config/nextflow.config
   tags:
-    - antismash
     - antismash/antismashlite
+    - antismash
   files:
     - path: output/antismash/test/NZ_CP069563.1.region001.gbk
       contains: ['/tool="antismash"']
@@ -69,8 +63,6 @@
       md5sum: da6bed0032d0f7ad4741e0074ad6b1ff
     - path: output/gunzip/genome.fna
       md5sum: dafd38f5454b54fbea38245d773062a5
-    - path: output/gunzip/versions.yml
-      md5sum: 93ce587e93791c8cf500482d42b6069f
     - path: output/prokka/test/test.err
       md5sum: 194fd8a1d1cde9919841a1afd4414760
     - path: output/prokka/test/test.faa
@@ -95,11 +87,3 @@
       md5sum: 26e8aa4b2212f320e82b6db7c93d4461
     - path: output/prokka/test/test.txt
       md5sum: aea5834a64dff02d3588cecbe25c3914
-    - path: output/prokka/versions.yml
-      md5sum: 286ac10895a9f26ee8dd933dbc5d2b1c
-    - path: output/untar1/versions.yml
-      md5sum: 6c1bfedb010be6dfee273aa267b1cae3
-    - path: output/untar2/versions.yml
-      md5sum: 65db3fe9c809e5371158deae444fb343
-    - path: output/untar3/versions.yml
-      md5sum: 713d3aa0ee24ff680a8024cc53765d60

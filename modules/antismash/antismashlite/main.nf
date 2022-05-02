@@ -9,18 +9,16 @@ process ANTISMASH_ANTISMASHLITE {
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-        "-B $css_dir:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$detection_dir:/usr/local/lib/python3.8/site-packages/antismash/detection,$modules_dir:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
         workflow.containerEngine == 'docker' ?
-        "-v \$PWD/$css_dir:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$detection_dir:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$modules_dir:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
         ''
         }
 
     input:
     tuple val(meta), path(sequence_input)
     path(databases)
-    path css_dir
-    path detection_dir
-    path modules_dir
+    path(antismash_dir) // Optional input: AntiSMASH installation folder. It is not needed for using this module with conda, but required for docker/singularity (see meta.yml).
 
     output:
     tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                 , optional: true, emit: clusterblast_file
