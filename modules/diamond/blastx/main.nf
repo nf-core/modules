@@ -10,7 +10,7 @@ process DIAMOND_BLASTX {
     input:
     tuple val(meta), path(fasta)
     path db
-    val outext
+    val out_ext
     val blast_columns
 
     output:
@@ -30,7 +30,7 @@ process DIAMOND_BLASTX {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def columns = blast_columns ? "${blast_columns}" : ''
-    switch ( outext ) {
+    switch ( out_ext ) {
         case "blast": outfmt = 0; break
         case "xml": outfmt = 5; break
         case "txt": outfmt = 6; break
@@ -49,7 +49,7 @@ process DIAMOND_BLASTX {
         --query $fasta \\
         --outfmt ${outfmt} ${columns} \\
         $args \\
-        --out ${prefix}.${outext}
+        --out ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

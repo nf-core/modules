@@ -28,7 +28,7 @@ input:
       type: directory
       description: Directory containing the protein blast database
       pattern: "*"
-  - outext:
+  - out_ext:
       type: string
       description: |
         Specify the type of output file to be generated. `blast` corresponds to
@@ -40,7 +40,7 @@ input:
       type: string
       description: |
         Optional space separated list of DIAMOND tabular BLAST output keywords
-        used for in conjunction with the 'txt' outext option (--outfmt 6). See
+        used for in conjunction with the 'txt' out_ext option (--outfmt 6). See
         DIAMOND documnetation for more information.
 
 output:
