@@ -32,7 +32,7 @@ process MOTUS_DOWNLOADDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mOTUs: \$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
+        mOTUs: \$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/Reference.*\$//')
     END_VERSIONS
     """
 }
