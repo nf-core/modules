@@ -121,11 +121,11 @@ workflow test_gatk4_mutect2_mitochondria {
 
 workflow test_gatk4_mutect2_tumor_normal_pair_f1r2_stubs {
     input = [ [ id:'test', normal_id:'normal', tumor_id:'tumour' ], // meta map
-              [ "foo_parired.bam",
-                "foo_parired2.bam"
+              [ "foo_paired.bam",
+                "foo_paired2.bam"
                 ],
-              [ "foo_parired.bam.bai",
-                "foo_parired2.bam.bai"
+              [ "foo_paired.bam.bai",
+                "foo_paired2.bam.bai"
                 ],
               []
             ]
