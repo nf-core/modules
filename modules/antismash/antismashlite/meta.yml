@@ -37,21 +37,11 @@ input:
       type: directory
       description: downloaded antismash databases e.g. data/databases
       pattern: "*"
-  - css_dir:
+  - antismash_dir:
       type: directory
       description: |
-        antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the use by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "css"
-  - detection_dir:
-      type: directory
-      description: |
-        antismash/detection folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the use by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "detection"
-  - modules_dir:
-      type: directory
-      description: |
-        antismash/modules folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the use by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "modules"
+        antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command within antismash-lite. As this folder cannot be modified within the docker and singularity containers, it needs to be mounted (including all modified files from the downloading step) as a workaround.
+      pattern: "*"
 
 output:
   - meta:

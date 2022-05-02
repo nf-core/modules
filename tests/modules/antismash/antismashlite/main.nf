@@ -11,7 +11,7 @@ include { ANTISMASH_ANTISMASHLITE } from '../../../../modules/antismash/antismas
 include { PROKKA } from '../../../modules/prokka/main.nf'
 
 workflow test_antismashlite {
-    input = [
+    input_genome = [
         [ id:'test' ], // meta map
         file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true) ]
 
@@ -34,7 +34,7 @@ workflow test_antismashlite {
     UNTAR2 ( input_antismash_db2 )
     UNTAR3 ( input_antismash_db3 )
     ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
-    ANTISMASH_ANTISMASHLITE ( input, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
+    ANTISMASH_ANTISMASHLITE ( input_genome, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, [] )
 }
 
 workflow test_prokka_antismashlite {
@@ -62,5 +62,5 @@ workflow test_prokka_antismashlite {
     UNTAR2 ( input_antismash_db2 )
     UNTAR3 ( input_antismash_db3 )
     ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
-    ANTISMASH_ANTISMASHLITE ( PROKKA.out.gbk, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
+    ANTISMASH_ANTISMASHLITE ( PROKKA.out.gbk, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir )
 }
