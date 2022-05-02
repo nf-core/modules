@@ -34,7 +34,7 @@ workflow test_antismashlite {
     UNTAR2 ( input_antismash_db2 )
     UNTAR3 ( input_antismash_db3 )
     ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
-    ANTISMASH_ANTISMASHLITE ( input_genome, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, [] )
+    ANTISMASH_ANTISMASHLITE ( input_genome, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir )
 }
 
 workflow test_prokka_antismashlite {
