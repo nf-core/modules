@@ -26,7 +26,15 @@ input:
   - mode:
       type: string
       description: Sets the assessment MODE as genome, proteins, transcriptome.
-      pattern: "*.fasta"
+  - output_dir:
+      type: string
+      description: defines the folder that will contain all results, logs, and intermediate data.
+  - lineage:
+      type: string
+      description: |
+        It can be a dataset name, i.e. bacteria_odb10, or a path i.e. ./bacteria_odb10 or /home/user/bacteria_odb10.
+        In the former case, which is the recommended usage, BUSCO will automatically download and version the corresponding dataset.
+        You can get the list of possible datasets by running "busco --list-datasets" see "https://busco.ezlab.org/list_of_lineages.html".
 
 output:
   - meta:

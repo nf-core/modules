@@ -9,6 +9,8 @@ process BUSCO {
 
     input:
     tuple val(meta), path(fastas)
+    val(mode)
+    val(output)
     path(lineage)
 
     output:
@@ -22,9 +24,10 @@ process BUSCO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     busco \\
-        -i \\
-        -l \\
-        -o \\
+        --in ${fastas} \\
+        --mode ${mode}
+        --lineage_dataset ${lineage} \\
+        --out ${output} \\
         -c $task.cpus \\
         $args
 
