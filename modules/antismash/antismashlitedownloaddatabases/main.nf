@@ -35,12 +35,19 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
+    conda = params.enable_conda
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
         $args
 
-    cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir
+    if [[ $conda = false ]]; \
+        then \
+            cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir; \
+        else \
+            antismash_path=\$(python -c 'import antismash;print(antismash.__file__.split("__")[0])') \
+            cp -r \$antismash_path antismash_dir; \
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
