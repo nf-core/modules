@@ -4,11 +4,10 @@
     - krona
     - krona/ktimporttaxonomy
   files:
-    - path: output/taxonomy/taxonomy.krona.html
-      contains:
-        - "DOCTYPE html PUBLIC"
-    - path: output/taxonomy/versions.yml
-      md5sum: ea32399c9fd3bc1d4fc1081cb3a345d5
+    - path: output/krona/taxonomy.krona.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/krona/versions.yml
+      md5sum: c6823bf3822cf3714fe9f2073ee76d60
 
 - name: krona ktimporttaxonomy test_krona_ktimporttaxonomy_report
   command: nextflow run tests/modules/krona/ktimporttaxonomy -entry test_krona_ktimporttaxonomy_report -c tests/config/nextflow.config
@@ -16,7 +15,7 @@
     - krona
     - krona/ktimporttaxonomy
   files:
-    - path: output/taxonomy/taxonomy.krona.html
-      contains:
-        - "DOCTYPE html PUBLIC"
-      md5sum: 4d46e08ff46dbd1e7075b93903b72400
+    - path: output/krona/taxonomy.krona.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/krona/versions.yml
+      md5sum: 06b76d9a7602d63fec182e195cc16a76
