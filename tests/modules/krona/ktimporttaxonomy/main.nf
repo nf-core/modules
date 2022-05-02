@@ -12,9 +12,9 @@ workflow test_krona_ktimporttaxonomy_reads {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['metagenome']['classified_reads_assignment'], checkIfExists: true)
     ]
+    taxonomy = file("https://raw.githubusercontent.com/lescai/test-datasets/modules/data/genomics/sarscov2/metagenome/krona_taxonomy.tab")
 
-    DOWNLOAD_DB()
-    TAXONOMY_READS ( input, DOWNLOAD_DB.out.db )
+    TAXONOMY_READS ( input, taxonomy )
 }
 
 workflow test_krona_ktimporttaxonomy_report {
@@ -23,7 +23,7 @@ workflow test_krona_ktimporttaxonomy_report {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['metagenome']['kraken_report'], checkIfExists: true)
     ]
+    taxonomy = file("https://raw.githubusercontent.com/lescai/test-datasets/modules/data/genomics/sarscov2/metagenome/krona_taxonomy.tab")
 
-    DOWNLOAD_DB()
-    TAXONOMY_REPORT ( input, DOWNLOAD_DB.out.db )
+    TAXONOMY_REPORT ( input, taxonomy )
 }
