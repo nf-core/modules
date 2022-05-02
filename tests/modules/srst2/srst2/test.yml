@@ -1,8 +1,22 @@
+- name: srst2 srst2 test_srst2_srst2_mlst
+  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_mlst -c tests/config/nextflow.config
+  tags:
+    - srst2/srst2
+    - srst2
+  files:
+    - path: output/srst2/test__SRR9067271.MLST_DB.pileup
+      md5sum: f59217dd9340264b9913c20b545b2ce7
+    - path: output/srst2/test__SRR9067271.MLST_DB.sorted.bam
+    - path: output/srst2/test__mlst__MLST_DB__results.txt
+      md5sum: ec1b1f69933401d67c57f64cad11a098
+    - path: output/srst2/versions.yml
+      md5sum: a0c256a2fd3636069710b8ef22ee5ea7
+
 - name: srst2 srst2 test_srst2_srst2_paired_end
   command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_paired_end -c tests/config/nextflow.config
   tags:
-    - srst2
     - srst2/srst2
+    - srst2
   files:
     - path: output/srst2/test__genes__resFinder_20180221_srst2__results.txt
       md5sum: 099aa6cacec5524b311f606debdfb3a9
@@ -15,8 +29,8 @@
 - name: srst2 srst2 test_srst2_srst2_single_end
   command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_single_end -c tests/config/nextflow.config
   tags:
-    - srst2
     - srst2/srst2
+    - srst2
   files:
     - path: output/srst2/test__fullgenes__resFinder_20180221_srst2__results.txt
       md5sum: d0762ef8c38afd0e0a34cce52ed1a3db
@@ -27,3 +41,6 @@
     - path: output/srst2/test__test1_1.resFinder_20180221_srst2.sorted.bam
     - path: output/srst2/versions.yml
       md5sum: 790fe00493c6634d17801a930073218b
+
+- name: srst2 srst2 test_srst2_srst2_exit #Testing pipeline exit when not meta.db
+  exit_code: 1
