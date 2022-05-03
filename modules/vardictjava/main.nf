@@ -9,8 +9,8 @@ process VARDICTJAVA {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(regions_of_interest)
-    tuple path(reference_fasta), path(reference_fai)
+    path(bed)
+    tuple path(fasta), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -33,8 +33,8 @@ process VARDICTJAVA {
         -b $bam \\
         -th $task.cpus \\
         -N $prefix \\
-        -G $reference_fasta \\
-        $regions_of_interest \\
+        -G $fasta \\
+        $bed \\
         | teststrandbias.R \\
         | var2vcf_valid.pl \\
             $args2 \\
@@ -43,7 +43,7 @@ process VARDICTJAVA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vardict-java: \$VERSION
+        vardict-java: $VERSION
         var2vcf_valid.pl: \$(echo \$(var2vcf_valid.pl -h | sed -n 2p | awk '{ print \$2 }'))
     END_VERSIONS
     """
