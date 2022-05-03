@@ -24,6 +24,8 @@ process VARDICTJAVA {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def VERSION = '1.8.3'
+
     """
     vardict-java \\
         $args \\
@@ -41,7 +43,8 @@ process VARDICTJAVA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vardict-java: \$(echo 1.8.3)
+        vardict-java: \$VERSION
+        var2vcf_valid.pl: \$(echo \$(var2vcf_valid.pl -h | sed -n 2p | awk '{ print \$2 }'))
     END_VERSIONS
     """
 }
