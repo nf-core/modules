@@ -43,7 +43,6 @@
 - name: bowtie2 align single-end large-index
   command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config --force_large_index
   tags:
-  tags:
     - bowtie2
     - bowtie2/align
   files:
