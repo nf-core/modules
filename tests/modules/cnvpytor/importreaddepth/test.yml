@@ -1,0 +1,39 @@
+- name: cnvpytor importreaddepth test_cnvpytor_importreaddepth
+  command: nextflow run tests/modules/cnvpytor/importreaddepth -entry test_cnvpytor_importreaddepth -c tests/config/nextflow.config
+  tags:
+    - cnvpytor
+    - cnvpytor/importreaddepth
+  files:
+    - path: output/cnvpytor/test.pytor
+    - path: output/cnvpytor/versions.yml
+      md5sum: 5834495324c08a37f3fd73ccdd881dc8
+
+- name: cnvpytor importreaddepth test_cnvpytor_importreaddepth stub
+  command: nextflow run tests/modules/cnvpytor/importreaddepth -entry test_cnvpytor_importreaddepth -c tests/config/nextflow.config -stub-run
+  tags:
+    - cnvpytor
+    - cnvpytor/importreaddepth
+  files:
+    - path: output/cnvpytor/test.pytor
+    - path: output/cnvpytor/versions.yml
+      md5sum: 5834495324c08a37f3fd73ccdd881dc8
+
+- name: cnvpytor importreaddepth test_cnvpytor_importreaddepth_cram
+  command: nextflow run tests/modules/cnvpytor/importreaddepth -entry test_cnvpytor_importreaddepth_cram -c tests/config/nextflow.config
+  tags:
+    - cnvpytor
+    - cnvpytor/importreaddepth
+  files:
+    - path: output/cnvpytor/test.pytor
+    - path: output/cnvpytor/versions.yml
+      md5sum: dfa0afb0982d985b96d1633f71ebb82a
+
+- name: cnvpytor importreaddepth test_cnvpytor_importreaddepth_cram stub
+  command: nextflow run tests/modules/cnvpytor/importreaddepth -entry test_cnvpytor_importreaddepth_cram -c tests/config/nextflow.config -stub-run
+  tags:
+    - cnvpytor
+    - cnvpytor/importreaddepth
+  files:
+    - path: output/cnvpytor/test.pytor
+    - path: output/cnvpytor/versions.yml
+      md5sum: dfa0afb0982d985b96d1633f71ebb82a

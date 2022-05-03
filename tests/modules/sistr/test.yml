@@ -1,0 +1,15 @@
+- name: sistr test_sistr
+  command: nextflow run tests/modules/sistr -entry test_sistr -c tests/config/nextflow.config
+  tags:
+    - sistr
+  files:
+    - path: output/sistr/test-allele.fasta
+      md5sum: 144a74999eb9dd01520be5c61e8bd210
+    - path: output/sistr/test-allele.json
+      md5sum: 3eb993c9489904621f539a93ff9a90ec
+    - path: output/sistr/test-cgmlst.csv
+      md5sum: c50a2144955fe1b98a6d5792bf295088
+    - path: output/sistr/test.tab
+      contains: ["cgmlst_ST", "serovar", "matched"]
+    - path: output/sistr/versions.yml
+      md5sum: 8b852f002c3ce67e3f6498da15b28296

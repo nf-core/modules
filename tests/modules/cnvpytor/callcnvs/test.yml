@@ -1,0 +1,20 @@
+- name: cnvpytor callcnvs test_cnvpytor_callcnvs
+  command: nextflow run tests/modules/cnvpytor/callcnvs -entry test_cnvpytor_callcnvs -c tests/config/nextflow.config
+  tags:
+    - cnvpytor
+    - cnvpytor/callcnvs
+  files:
+    - path: output/cnvpytor/test.tsv
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/cnvpytor/versions.yml
+      md5sum: 0bea08a253fcb2ff0ff79b99df77b9fa
+
+- name: cnvpytor callcnvs test_cnvpytor_callcnvs stub
+  command: nextflow run tests/modules/cnvpytor/callcnvs -entry test_cnvpytor_callcnvs -c tests/config/nextflow.config -stub-run
+  tags:
+    - cnvpytor
+    - cnvpytor/callcnvs
+  files:
+    - path: output/cnvpytor/test.tsv
+    - path: output/cnvpytor/versions.yml
+      md5sum: 0bea08a253fcb2ff0ff79b99df77b9fa

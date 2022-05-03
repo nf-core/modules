@@ -1,0 +1,42 @@
+name: cnvpytor_partition
+description: partitioning read depth histograms
+keywords:
+  - cnv calling
+  - partition histograms
+tools:
+  - cnvpytor:
+      description: calling CNVs using read depth
+      homepage: https://github.com/abyzovlab/CNVpytor
+      documentation: https://github.com/abyzovlab/CNVpytor
+      tool_dev_url: https://github.com/abyzovlab/CNVpytor
+      doi: "10.1101/2021.01.27.428472v1"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - pytor:
+      type: file
+      description: pytor file containing read depth data
+      pattern: "*.{pytor}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - partitions:
+      type: file
+      description: pytor file containing partitions of read depth histograms using mean-shift method
+      pattern: "*.{pytor}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sima-r"

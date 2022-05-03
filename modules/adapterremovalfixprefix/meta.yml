@@ -1,0 +1,43 @@
+name: adapterremovalfixprefix
+description: Fixes prefixes from AdapterRemoval2 output to make sure no clashing read names are in the output. For use with DeDup.
+keywords:
+  - adapterremoval
+  - fastq
+  - dedup
+tools:
+  - adapterremovalfixprefix:
+      description: Fixes adapter removal prefixes to make sure no clashing read names are in the output.
+      homepage: https://github.com/apeltzer/AdapterRemovalFixPrefix
+      documentation: None
+      tool_dev_url: https://github.com/apeltzer/AdapterRemovalFixPrefix
+      doi: "10.1186/s13059-016-0918-z"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: FASTQ file from AdapterRemoval2
+      pattern: "*.{fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fixed_fastq:
+      type: file
+      description: FASTQ file with fixed read prefixes for DeDup
+      pattern: "*.{fq.gz}"
+
+authors:
+  - "@jfy133"

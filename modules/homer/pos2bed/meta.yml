@@ -1,0 +1,42 @@
+name: "homer_pos2bed"
+description: Coverting from HOMER peak to BED file formats
+keywords:
+  - peaks
+tools:
+  - "homer":
+      description: |
+        HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
+      homepage: "http://homer.ucsd.edu/homer/index.html"
+      documentation: "http://homer.ucsd.edu/homer/"
+      tool_dev_url: "http://homer.ucsd.edu/homer/ngs/miscellaneous.html"
+      doi: 10.1016/j.molcel.2010.05.004.
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tagDir:
+      type: directory
+      description: "The 'Tag Directory'"
+      pattern: "tagDir"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@Emiller88"

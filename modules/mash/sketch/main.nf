@@ -14,6 +14,9 @@ process MASH_SKETCH {
     tuple val(meta), path("*.mash_stats") , emit: stats
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
