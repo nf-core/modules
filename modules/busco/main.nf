@@ -8,10 +8,10 @@ process BUSCO {
         'quay.io/biocontainers/busco:5.3.2--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)  // Required:    meta map, and fasta sequence file
-    each lineage                  // Required:    lineage to check against
-    path busco_lineages_path      // Recommended: path to busco lineages - downloads if not set
-    path config_file              // Optional:    busco configuration file
+    tuple val(meta), path(fasta, stageAs: 'tmp_input/*')  // Required:    meta map, and fasta sequence files
+    each lineage                                          // Required:    lineage to check against
+    path busco_lineages_path                              // Recommended: path to busco lineages - downloads if not set
+    path config_file                                      // Optional:    busco configuration file
 
     output:
     tuple val(meta), path("*-busco"), emit: busco_dir
@@ -50,11 +50,21 @@ process BUSCO {
     fi
 
     # Ensure the input is uncompressed
-    gzip -cdf $fasta > ${prefix}_uncompressed.fasta
+    INPUT_SEQS=input_seqs
+    mkdir "\$INPUT_SEQS"
+    cd "\$INPUT_SEQS"
+    for FASTA in ../tmp_input/*; do
+        if [ "\${FASTA##*.}" == 'gz' ]; then
+            gzip -cdf "\$FASTA" > \$( basename "\$FASTA" .gz )
+        else
+            ln -s "\$FASTA" .
+        fi
+    done
+    cd ..
 
     busco \\
         --cpu $task.cpus \\
-        --in ${prefix}_uncompressed.fasta \\
+        --in "\$INPUT_SEQS" \\
         --out ${prefix}-busco \\
         --lineage_dataset $lineage \\
         $busco_lineage_dir \\
@@ -62,7 +72,7 @@ process BUSCO {
         $args
 
     # clean up
-    rm ${prefix}_uncompressed.fasta
+    rm -rf "\$INPUT_SEQS"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
