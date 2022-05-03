@@ -9,6 +9,7 @@ process CNVPYTOR_PARTITION {
 
     input:
     tuple val(meta), path(pytor)
+    val bin_sizes
 
     output:
     tuple val(meta), path("${pytor.baseName}.pytor"), emit: pytor
@@ -18,15 +19,15 @@ process CNVPYTOR_PARTITION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def bins = bin_sizes ?: '1000'
     """
     cnvpytor \\
         -root $pytor \\
-        -partition $args
+        -partition $bins
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
     END_VERSIONS
     """
 
