@@ -2,10 +2,10 @@ process BAMTOOLS_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
+    conda (params.enable_conda ? "bioconda::bamtools=2.5.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
-        'quay.io/biocontainers/bamtools:2.5.1--h9a82719_9' }"
+        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hd03093a_0' :
+        'quay.io/biocontainers/bamtools:2.5.2--hd03093a_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -20,11 +20,15 @@ process BAMTOOLS_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_list = bam.collect{"-in $it"}.join(' ')
     """
     bamtools \\
-        split \\
-        -in $bam \\
-        $args
+        merge \\
+        $input_list \\
+        | bamtools \\
+            split \\
+            -stub $prefix \\
+            $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

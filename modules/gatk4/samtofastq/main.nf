@@ -20,7 +20,8 @@ process GATK4_SAMTOFASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output   = meta.single_end ? "FASTQ=${prefix}.fastq.gz" : "FASTQ=${prefix}_1.fastq.gz SECOND_END_FASTQ=${prefix}_2.fastq.gz"
+    def output = meta.single_end ? "--FASTQ ${prefix}.fastq.gz" : "--FASTQ ${prefix}_1.fastq.gz --SECOND_END_FASTQ ${prefix}_2.fastq.gz"
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK SamToFastq] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -29,9 +30,23 @@ process GATK4_SAMTOFASTQ {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" SamToFastq \\
-        I=$bam \\
+        --INPUT $bam \\
         $output \\
+        --TMP_DIR . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.fastq.gz
+    touch ${prefix}_1.fastq.gz
+    touch ${prefix}_2.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

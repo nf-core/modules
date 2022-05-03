@@ -1,0 +1,51 @@
+name: biscuit_qc
+description: Perform basic quality control on a BAM file generated with Biscuit
+keywords:
+  - biscuit
+  - DNA methylation
+  - WGBS
+  - scWGBS
+  - bisulfite sequencing
+  - index
+  - BAM
+  - quality control
+
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-qc
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file produced using Biscuit
+
+output:
+  - biscuit_qc_reports:
+      type: file
+      description: |
+        Summary files containing the following information:
+          - CpG retention by position in read
+          - CpH retention by position in read
+          - Read duplication statistics
+          - Insert size distribution
+          - Distribution of mapping qualities
+          - Proportion of reads mapping to each strand
+          - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
+      pattern: "*.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@njspix"
