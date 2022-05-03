@@ -37,7 +37,7 @@ process CNVPYTOR_PARTITION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
     END_VERSIONS
     """
 }
