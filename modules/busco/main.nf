@@ -24,20 +24,14 @@ process BUSCO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
     def busco_config = config_file ? "--config $config_file" : ''
-    def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
+    def busco_lineage_dir = busco_lineages_path ? "--offline --download_path ${busco_lineages_path}" : ''
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
     if [ -f "/usr/local/env-activate.sh" ]; then
-        # . "/usr/local/env-activate.sh"  # Errors out because of various unbound variables
-        export PATH='/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-        export CONDA_PREFIX='/usr/local'
-        export CONDA_SHLVL='1'
-        export CONDA_DEFAULT_ENV='/usr/local'
-        export CONDA_PROMPT_MODIFIER=''
-        . "/usr/local/etc/conda/activate.d/activate-r-base.sh"
-        . "/usr/local/etc/conda/activate.d/augustus.sh"
-        . "/usr/local/etc/conda/activate.d/openjdk_activate.sh"
+        set +u  # Otherwise, errors out because of various unbound variables
+        . "/usr/local/env-activate.sh"
+        set -u
     fi
 
     # If the augustus config directory is not writable, then copy to writeable area
