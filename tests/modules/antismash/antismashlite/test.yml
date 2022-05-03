@@ -36,31 +36,42 @@
     - antismash/antismashlite
     - antismash
   files:
-    - path: output/antismash/test/NZ_CP069563.1.region001.gbk
-      contains: ['/tool="antismash"']
-    - path: output/antismash/test/NZ_CP069563.1.region002.gbk
-      contains: ['/tool="antismash"']
-    - path: output/antismash/test/css/bacteria.css
-      md5sum: 8b3c2f8b143d5245a5f42f55803c532c
-    - path: output/antismash/test/index.html
-      md5sum: 3773c3ec61fb1e8cd9a67791b37d9b79
-    - path: output/antismash/test/js/antismash.js
-      md5sum: 58e90c3d783ae014cc3d51849bcb50a2
-    - path: output/antismash/test/js/jquery.js
-      md5sum: 397754ba49e9e0cf4e7c190da78dda05
-    - path: output/antismash/test/js/jquery.tablesorter.min.js
-      md5sum: 5e9e08cef4d1be0eaa538e6eb28809a7
-    - path: output/antismash/test/regions.js
-      contains: [ '"seq_id": "NZ_CP069563.1"' ]
-    - path: output/antismash/test/test.gbk
-      contains: ['/tool="antismash"']
-    - path: output/antismash/test/test.json
-      contains: ['"id": "NZ_CP069563.1"']
-    - path: output/antismash/test/test.log
-      contains: ['antiSMASH status: SUCCESS']
-    - path: output/antismash/test/test.zip
+    - path: output/antismash/clusterblast/stub_c.stub.txt
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/css/stub.css
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/images
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/js/stub.js
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/knownclusterblast/regionstub/ctg.stub.html
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/knownclusterblast/stub._c.stub.txt
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/svg/clusterblast.stub.svg
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/svg/knownclusterblast.stub.svg
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/stub.gbk
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/stub.json
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/stub.log
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/stub.zip
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/stub.region.stub.
+    - md5sum: d41d8cd98f00b204e9800998ecf8427egbk
+    - path: output/antismash/clusterblastoutpu
+    - md5sum: d41d8cd98f00b204e9800998ecf8427et.txt
+    - path: output/antismash/index.html
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/antismash/knownclusterblast
+    - md5sum: d41d8cd98f00b204e9800998ecf8427eoutput.txt
+    - path: output/antismash/regions.js
+    - md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/antismash/versions.yml
-      md5sum: da6bed0032d0f7ad4741e0074ad6b1ff
+      md5sum: 33e96b52f50beacd83c7e0feab8cb03b
     - path: output/gunzip/genome.fna
       md5sum: dafd38f5454b54fbea38245d773062a5
     - path: output/prokka/test/test.err
@@ -74,13 +85,13 @@
     - path: output/prokka/test/test.fsa
       md5sum: dbe7d3d43d46920802d2aec5cd177ddc
     - path: output/prokka/test/test.gbk
-      md5sum: 286ea011a64c0d281de3981ed2f296ff
+      contains: ['NZ_CP069563.1']
     - path: output/prokka/test/test.gff
       md5sum: 9f733b702454e7750b7d4686369fe7e4
     - path: output/prokka/test/test.log
       contains: ["Annotation finished successfully."]
     - path: output/prokka/test/test.sqn
-      md5sum: a901ac190675f976e373219f0191d067
+      contains: ['str "NZ_CP069563.1"']
     - path: output/prokka/test/test.tbl
       md5sum: 98f3b705f47b40255631ae43823e8271
     - path: output/prokka/test/test.tsv

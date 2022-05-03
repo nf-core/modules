@@ -10,6 +10,23 @@ include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from '../../../modules/anti
 include { ANTISMASH_ANTISMASHLITE } from '../../../../modules/antismash/antismashlite/main.nf'
 include { PROKKA } from '../../../modules/prokka/main.nf'
 
+process STUB_ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
+    input:
+    path database_css
+    path database_detection
+    path database_modules
+
+    output:
+    path("antismash_db") , emit: database
+    path("antismash_dir"), emit: antismash_dir
+
+    stub:
+    """
+    mkdir antismash_db
+    mkdir antismash_dir
+    """
+}
+
 workflow test_antismashlite {
     input_genome = [
         [ id:'test' ], // meta map
@@ -61,6 +78,6 @@ workflow test_prokka_antismashlite {
     UNTAR1 ( input_antismash_db1 )
     UNTAR2 ( input_antismash_db2 )
     UNTAR3 ( input_antismash_db3 )
-    ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
-    ANTISMASH_ANTISMASHLITE ( PROKKA.out.gbk, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir )
+    STUB_ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
+    ANTISMASH_ANTISMASHLITE ( PROKKA.out.gbk, STUB_ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, STUB_ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir )
 }
