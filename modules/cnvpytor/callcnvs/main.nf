@@ -9,10 +9,11 @@ process CNVPYTOR_CALLCNVS {
 
     input:
     tuple val(meta), path(pytor)
+    val bin_sizes
 
     output:
-    tuple val(meta), path("*.tsv"), emit: cnvs
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,22 +24,21 @@ process CNVPYTOR_CALLCNVS {
     """
     cnvpytor \\
         -root $pytor \\
-        -call $args > ${prefix}.tsv
+        -call $bin_sizes
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
     END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tsv
+    touch ${pytor.baseName}.pytor
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
     END_VERSIONS
     """
 }
