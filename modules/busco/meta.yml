@@ -27,7 +27,7 @@ input:
       type: value
       description: Sets the assessment MODE as "genome", "protein", "transcriptome".
   - lineage:
-      type: string
+      type: value
       description: |
         It can be a dataset name, i.e. bacteria_odb10, or a path i.e. ./bacteria_odb10 or /home/user/bacteria_odb10.
         In the former case, which is the recommended usage, BUSCO will automatically download and version the corresponding dataset.
@@ -39,22 +39,72 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - short_summary:
+  - short_summary_txt:
       type: txt
       description: Contains a plain text summary of the results in BUSCO notation.
       pattern: "./short_summary.*.txt"
+  - short_summary_json:
+      type: json
+      description: Contains a summary of the results in JSON form.
+      pattern: "./short_summary.*.json"
   - run_full_table:
       type: tsv
       description: Contains the complete results in a tabular format with scores and lengths of BUSCO matches, and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein mode).
       pattern: "./run_*/full_table.tsv"
-  - run_short_summary:
+  - run_short_summary_txt:
       type: txt
       description: Contains a plain text summary of the results in BUSCO notation.
       pattern: "./run_*/short_summary.*.txt"
+  - run_short_summary_json:
+      type: json
+      description: Contains a summary of the results in JSON form.
+      pattern: "./run_*/short_summary.*.json"
   - missing_busco_list:
       type: tsv
       description: Contains a list of missing BUSCOs.
       pattern: "./run_*/missing_busco_list.tsv"
+  - hmmer_output:
+      type: out
+      description: Tabular format HMMER output of searches with BUSCO HMMs.
+      pattern: "./run_*/missing_busco_list.tsv"
+  - blast_coordinates:
+      type: tsv
+      description: locations of BUSCO matches (eukaryotic genome).
+      pattern: "./run_*/blast_output/coordinates.tsv"
+  - tblastn:
+      type: tsv
+      description: Tabular tBLASTn results.
+      pattern: "./run_*/blast_output/tblastn.tsv"
+  - blast_sequences:
+      type: fasta
+      description: Sequences having blast results.
+      pattern: "./run_*/blast_output/sequences/*.temp"
+  - single_copy_busco_sequences:
+      type: fasta
+      description: FASTA format file for each BUSCO gene identified. ".faa" files contain protein sequences, ".fna" files (where created) contain coding sequences.
+      pattern: "*.{fna,faa}"
+  - multi_copy_busco_sequences:
+      type: fasta
+      description: FASTA format file for each BUSCO gene identified. ".faa" files contain protein sequences, ".fna" files (where created) contain coding sequences.
+      pattern: "*.{fna,faa}"
+  - fragmented_busco_sequences:
+      type: fasta
+      description: FASTA format file for each BUSCO gene identified. ".faa" files contain protein sequences, ".fna" files (where created) contain coding sequences.
+      pattern: "*.{fna,faa}"
+  - predicted_fna:
+      type: fna
+      description: A nucleotide file for each predicted gene
+      pattern: "./prodigal_output/predicted_genes/predicted.fna"
+  - predicted_faa:
+      type: faa
+      description: A protein file for each predicted gene
+      pattern: "./prodigal_output/predicted_genes/predicted.faa"
+  - translated_sequences:
+      type: faa
+      description: |
+        Six frame translations of each transcript made by the transcriptome mode.
+        It is a naive translation, ignoring start and stop codons only in order to apply hmmsearch and do not represent proteins.
+      pattern: "./translated_sequences/*.faa"
   - versions:
       type: file
       description: File containing software versions
@@ -63,3 +113,4 @@ output:
 authors:
   - "@nvlachos"
   - "@jvhagey"
+  - "@priyanka-surana"
