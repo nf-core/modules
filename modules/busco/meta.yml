@@ -22,14 +22,17 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: Nucleic or amino acid sequence file in FASTA format
-      pattern: "*.{fasta}"
-  - mode:
+      description: Nucleic or amino acid sequence file in FASTA format.
+      pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
+  - lineage:
       type: value
-      description: Sets the assessment MODE – genome, proteins, transcriptome
-  - augustus_config:
+      description: The BUSCO lineage to use.
+  - busco_lineages_path:
       type: directory
-      description: AUGUSTUS config directory
+      description: Path to local BUSCO lineages directory.
+  - config_file:
+      type: directory
+      description: Path to BUSCO config file.
 
 output:
   - meta:
@@ -37,19 +40,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - busco_dir:
+      type: directory
+      description: BUSCO lineage specific output
+      pattern: "*-busco"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - tsv:
-      type: file
-      description: Full summary table
-      pattern: "*.{tsv}"
-  - txt:
-      type: file
-      description: Short summary text
-      pattern: "*.{txt}"
 
 authors:
   - "@priyanka-surana"
   - "@charles-plessy"
+  - "@mahesh-panchal"
