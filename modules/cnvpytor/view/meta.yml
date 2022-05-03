@@ -24,6 +24,9 @@ input:
   - bin_sizes:
       type: string
       description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+  - output_format:
+      type: string
+      description: output format of the cnv calls. Valid entries are "tsv", "vcf", and "xls"
 
 output:
   - meta:

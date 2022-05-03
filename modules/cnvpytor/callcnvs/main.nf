@@ -19,7 +19,7 @@ process CNVPYTOR_CALLCNVS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '1000'
+    def bins = bin_sizes ?: '1000'
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cnvpytor \\
