@@ -1,5 +1,7 @@
 name: antismash_antismashlite
-description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters.
+description: |
+  antiSMASH allows the rapid genome-wide identification, annotation
+  and analysis of secondary metabolite biosynthesis gene clusters.
 keywords:
   - secondary metabolites
   - BGC
@@ -40,7 +42,13 @@ input:
   - antismash_dir:
       type: directory
       description: |
-        antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command within antismash-lite. As this folder cannot be modified within the docker and singularity containers, it needs to be mounted (including all modified files from the downloading step) as a workaround.
+        antismash installation folder which is being modified during the
+        antiSMASH database downloading step. The modified files are
+        normally downloaded by download-antismash-databases itself, and must be
+        retrieved by the user by manually running the command within antismash-lite.
+        As this folder cannot be modified within the docker and singularity containers,
+        it needs to be mounted (including all modified files from the downloading step)
+        as a workaround.
       pattern: "*"
 
 output:
