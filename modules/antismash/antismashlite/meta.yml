@@ -87,11 +87,11 @@ output:
       pattern: "svg/knownclusterblast*.svg"
   - gbk_input:
       type: file
-      description: Nucleotide sequence + annotations in GenBank file format; converted from input file
+      description: Nucleotide sequence + annotations in GenBank format; converted from input file
       pattern: "*.gbk"
   - json_results:
       type: file
-      description: Simple representation of all detected areas during the antiSMASH run in JSON format
+      description: Nucleotide sequence + annotations in JSON format; converted from GenBank file (gbk_input)
       pattern: "*.json"
   - log:
       type: file
@@ -99,11 +99,11 @@ output:
       pattern: "*.log"
   - zip:
       type: file
-      description: Contains a compressed version of the folder in zip format
+      description: Contains a compressed version of the output folder in zip format
       pattern: "*.zip"
   - gbk_results:
       type: file
-      description: Nucleotide sequence + annotations in GenBank file format; one file per antiSMASH hit
+      description: Nucleotide sequence + annotations in GenBank format; one file per antiSMASH hit
       pattern: "*region*.gbk"
   - clusterblastoutput:
       type: file

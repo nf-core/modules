@@ -22,22 +22,22 @@ process ANTISMASH_ANTISMASHLITE {
 
     output:
     tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                 , optional: true, emit: clusterblast_file
-    tuple val(meta), path("$prefix/css/*.css")                               , emit: css_file
-    tuple val(meta), path("$prefix/images")                                  , emit: image_directory
-    tuple val(meta), path("$prefix/js/*.js")                                 , emit: javascript
+    tuple val(meta), path("${prefix}/css/*.css")                             , emit: css_file
+    tuple val(meta), path("${prefix}/images")                                , emit: image_directory
+    tuple val(meta), path("${prefix}/js/*.js")                               , emit: javascript
     tuple val(meta), path("${prefix}/knownclusterblast/region*/ctg*.html")   , optional: true, emit: knownclusterblast_html
     tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt")            , optional: true, emit: knownclusterblast_txt
     tuple val(meta), path("${prefix}/svg/clusterblast*.svg")                 , optional: true, emit: svg_files_clusterblast
     tuple val(meta), path("${prefix}/svg/knownclusterblast*.svg")            , optional: true, emit: svg_files_knownclusterblast
-    tuple val(meta), path("$prefix/*.gbk")                                   , emit: gbk_input
-    tuple val(meta), path("$prefix/*.json")                                  , emit: json_results
-    tuple val(meta), path("$prefix/*.log")                                   , emit: log
-    tuple val(meta), path("$prefix/*.zip")                                   , emit: zip
-    tuple val(meta), path("$prefix/*region*.gbk")                            , emit: gbk_results
+    tuple val(meta), path("${prefix}/*.gbk")                                 , emit: gbk_input
+    tuple val(meta), path("${prefix}/*.json")                                , emit: json_results
+    tuple val(meta), path("${prefix}/*.log")                                 , emit: log
+    tuple val(meta), path("${prefix}/*.zip")                                 , emit: zip
+    tuple val(meta), path("${prefix}/*region*.gbk")                          , emit: gbk_results
     tuple val(meta), path("${prefix}/clusterblastoutput.txt")                , optional: true, emit: clusterblastoutput
-    tuple val(meta), path("$prefix/index.html")                              , emit: html
+    tuple val(meta), path("${prefix}/index.html")                            , emit: html
     tuple val(meta), path("${prefix}/knownclusterblastoutput.txt")           , optional: true, emit: knownclusterblastoutput
-    tuple val(meta), path("$prefix/regions.js")                              , emit: json_sideloading
+    tuple val(meta), path("${prefix}/regions.js")                            , emit: json_sideloading
     path "versions.yml"                                                      , emit: versions
 
     when:
@@ -58,6 +58,33 @@ process ANTISMASH_ANTISMASHLITE {
         --logfile $prefix/${prefix}.log \\
         --databases $databases \\
         $sequence_input
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir ${prefix}
+    touch ${prefix}/clusterblast/stub_c.stub.txt
+    touch ${prefix}/css/stub.css
+    touch ${prefix}/images
+    touch ${prefix}/js/stub.js
+    touch ${prefix}/knownclusterblast/regionstub/ctg.stub.html
+    touch ${prefix}/knownclusterblast/stub._c.stub.txt
+    touch ${prefix}/svg/clusterblast.stub.svg
+    touch ${prefix}/svg/knownclusterblast.stub.svg
+    touch ${prefix}/stub.gbk
+    touch ${prefix}/stub.json
+    touch ${prefix}/stub.log
+    touch ${prefix}/stub.zip
+    touch ${prefix}/stub.region.stub.gbk
+    touch ${prefix}/clusterblastoutput.txt
+    touch ${prefix}/index.html
+    touch ${prefix}/knownclusterblastoutput.txt
+    touch ${prefix}/regions.js
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
