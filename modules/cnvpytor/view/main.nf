@@ -23,13 +23,14 @@ process CNVPYTOR_VIEW {
 
     script:
     def output_suffix = output_format ?: 'vcf'
+    def bins = bin_sizes ?: '1000'
     """
 
     python3 <<CODE
     import cnvpytor,os
     from pathlib import Path
     pytor_files = Path.cwd().glob("*.pytor")
-    binsizes = "${bin_sizes}".split(" ")
+    binsizes = "${bins}".split(" ")
     for pytor_file in pytor_files:
         for binsize in binsizes:
             file_list = [str(pytor_file)]

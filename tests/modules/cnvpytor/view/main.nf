@@ -23,10 +23,9 @@ workflow test_cnvpytor_view_tsvout {
         file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
     ]
 
-    bin_sizes = "10000"
     output_suffix = "tsv"
 
-    CNVPYTOR_VIEW ( input, bin_sizes, output_suffix )
+    CNVPYTOR_VIEW ( input, [], output_suffix )
 }
 
 workflow test_cnvpytor_view_stub {
@@ -36,8 +35,8 @@ workflow test_cnvpytor_view_stub {
         file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
     ]
 
-    bin_sizes = "10000"
-    output_suffix = "tsv"
+    bin_sizes = []
+    output_suffix = []
 
     CNVPYTOR_VIEW ( input, bin_sizes, output_suffix )
 }
