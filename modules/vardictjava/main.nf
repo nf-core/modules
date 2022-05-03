@@ -1,3 +1,5 @@
+def VERSION = '1.8.3'
+
 process VARDICTJAVA {
     tag "$meta.id"
     label 'process_medium'
@@ -23,8 +25,6 @@ process VARDICTJAVA {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def VERSION = '1.8.3'
 
     """
     vardict-java \\
