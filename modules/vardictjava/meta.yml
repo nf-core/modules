@@ -25,16 +25,28 @@ input:
       type: file
       description: BAM/SAM file
       pattern: "*.{bam,sam}"
+  
+  - bai:
+      type: file
+      description: Index of the BAM file 
+      pattern: "*.bai"
 
-  - reference_fasta:
+  - fasta:
       type: file
       description: FASTA of the reference genome
       pattern: "*.{fa,fasta}"
 
-  - regions_of_interest:
+  - fasta_fai:
+      type: file
+      description: The index of the FASTA of the reference genome
+      pattern: "*.fai"
+
+  - bed:
       type: file
       description: BED with the regions of interest
       pattern: "*.bed"
+
+  
 
 output:
   - meta:
