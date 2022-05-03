@@ -19,3 +19,11 @@ workflow test_gatk4_samtofastq_paired_end {
 
     GATK4_SAMTOFASTQ ( input )
 }
+
+workflow test_gatk4_samtofastq_paired_end_stubs {
+    input = [ [ id:'test', single_end: false ], // meta map
+              [ "foo_paired_end.bam" ]
+            ]
+
+    GATK4_SAMTOFASTQ ( input )
+}
