@@ -5,7 +5,7 @@ process BUSCO {
     conda (params.enable_conda ? "bioconda::busco=5.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/busco:5.3.2--pyhdfd78af_0':
-        'quay.io/biocontainers/bsuco:5.3.2--pyhdfd78af_0' }"
+        'quay.io/biocontainers/busco:5.3.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
