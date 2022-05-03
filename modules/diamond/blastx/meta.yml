@@ -28,7 +28,7 @@ input:
       type: directory
       description: Directory containing the nucelotide blast database
       pattern: "*"
-  - outext:
+  - out_ext:
       type: string
       description: |
         Specify the type of output file to be generated. `blast` corresponds to
@@ -38,10 +38,34 @@ input:
       pattern: "blast|xml|txt|daa|sam|tsv|paf"
 
 output:
+  - blast:
+      type: file
+      description: File containing blastp hits
+      pattern: "*.{blast}"
+  - xml:
+      type: file
+      description: File containing blastp hits
+      pattern: "*.{xml}"
   - txt:
       type: file
-      description: File containing blastx hits
-      pattern: "*.{blastx.txt}"
+      description: File containing hits in tabular BLAST format.
+      pattern: "*.{txt}"
+  - daa:
+      type: file
+      description: File containing hits DAA format
+      pattern: "*.{daa}"
+  - sam:
+      type: file
+      description: File containing aligned reads in SAM format
+      pattern: "*.{sam}"
+  - tsv:
+      type: file
+      description: Tab separated file containing taxonomic classification of hits
+      pattern: "*.{tsv}"
+  - paf:
+      type: file
+      description: File containing aligned reads in pairwise mapping format format
+      pattern: "*.{paf}"
   - versions:
       type: file
       description: File containing software versions

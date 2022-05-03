@@ -10,11 +10,18 @@ process DIAMOND_BLASTP {
     input:
     tuple val(meta), path(fasta)
     path db
-    val outext
+    val out_ext
+    val blast_columns
 
     output:
-    tuple val(meta), path('*.{blast,xml,txt,daa,sam,tsv,paf}'), emit: output
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path('*.blast'), optional: true, emit: blast
+    tuple val(meta), path('*.xml')  , optional: true, emit: xml
+    tuple val(meta), path('*.txt')  , optional: true, emit: txt
+    tuple val(meta), path('*.daa')  , optional: true, emit: daa
+    tuple val(meta), path('*.sam')  , optional: true, emit: sam
+    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
+    tuple val(meta), path('*.paf')  , optional: true, emit: paf
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +29,8 @@ process DIAMOND_BLASTP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    switch ( outext ) {
+    def columns = blast_columns ? "${blast_columns}" : ''
+    switch ( out_ext ) {
         case "blast": outfmt = 0; break
         case "xml": outfmt = 5; break
         case "txt": outfmt = 6; break
@@ -30,6 +38,11 @@ process DIAMOND_BLASTP {
         case "sam": outfmt = 101; break
         case "tsv": outfmt = 102; break
         case "paf": outfmt = 103; break
+        default:
+            outfmt = '6';
+            out_ext = 'txt';
+            log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)");
+            break
     }
     """
     DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
@@ -39,9 +52,9 @@ process DIAMOND_BLASTP {
         --threads $task.cpus \\
         --db \$DB \\
         --query $fasta \\
-        --outfmt ${outfmt} \\
+        --outfmt ${outfmt} ${columns} \\
         $args \\
-        --out ${prefix}.${outext}
+        --out ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
