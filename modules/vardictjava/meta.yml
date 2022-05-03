@@ -25,10 +25,10 @@ input:
       type: file
       description: BAM/SAM file
       pattern: "*.{bam,sam}"
-  
+
   - bai:
       type: file
-      description: Index of the BAM file 
+      description: Index of the BAM file
       pattern: "*.bai"
 
   - fasta:
@@ -45,8 +45,6 @@ input:
       type: file
       description: BED with the regions of interest
       pattern: "*.bed"
-
-  
 
 output:
   - meta:
