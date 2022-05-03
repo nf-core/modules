@@ -1,8 +1,8 @@
 - name: samtools bam2fq test_samtools_bam2fq_nosplit
   command: nextflow run tests/modules/samtools/bam2fq -entry test_samtools_bam2fq_nosplit -c tests/config/nextflow.config
   tags:
-    - samtools
     - samtools/bam2fq
+    - samtools
   files:
     - path: output/samtools/test_interleaved.fq.gz
       md5sum: 7a57a8ab53dd1d799cca67a85c47ccd9
@@ -12,8 +12,8 @@
 - name: samtools bam2fq test_samtools_bam2fq_withsplit
   command: nextflow run tests/modules/samtools/bam2fq -entry test_samtools_bam2fq_withsplit -c tests/config/nextflow.config
   tags:
-    - samtools
     - samtools/bam2fq
+    - samtools
   files:
     - path: output/samtools/test_1.fq.gz
       md5sum: 1c84aadcdca10e97be2b5b6ce773f5ed
