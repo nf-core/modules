@@ -118,3 +118,25 @@ workflow test_gatk4_mutect2_mitochondria {
 
     GATK4_MUTECT2_MITO ( input, fasta, fai, dict, [], [], [], [] )
 }
+
+workflow test_gatk4_mutect2_tumor_normal_pair_f1r2_stubs {
+    input = [ [ id:'test', normal_id:'normal', tumor_id:'tumour' ], // meta map
+              [ "foo_paired.bam",
+                "foo_paired2.bam"
+                ],
+              [ "foo_paired.bam.bai",
+                "foo_paired2.bam.bai"
+                ],
+              []
+            ]
+
+    fasta = "genome.fasta"
+    fai = "genome.fasta.fai"
+    dict = "genome.fasta.dict"
+    germline_resource = "genome_gnomAD.r2.1.1.vcf.gz"
+    germline_resource_tbi = "genome_gnomAD.r2.1.1.vcf.gz.tbi"
+    panel_of_normals = "genome_mills_and_1000G.indels.hg38.vcf.gz"
+    panel_of_normals_tbi = "genome_mills_and_1000G.indels.hg38.vcf.gz.tbi"
+
+    GATK4_MUTECT2_F1R2 ( input, fasta, fai, dict, germline_resource, germline_resource_tbi, panel_of_normals, panel_of_normals_tbi )
+}

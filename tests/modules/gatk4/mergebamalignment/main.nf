@@ -14,3 +14,14 @@ workflow test_gatk4_mergebamalignment {
 
     GATK4_MERGEBAMALIGNMENT ( input, fasta, dict )
 }
+
+workflow test_gatk4_mergebamalignment_stubs {
+     input    = [ [ id:'test' ], // meta map
+                 "test_foo.bam",
+                 "test_bar.bam"
+               ]
+    fasta    = "genome.fasta"
+    dict     = "genome.fasta.dict"
+
+    GATK4_MERGEBAMALIGNMENT ( input, fasta, dict )
+}
