@@ -9,7 +9,10 @@ workflow test_busco {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file( params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+        [
+            file( params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
+            file( params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
+        ]
     ]
 
     BUSCO (
@@ -20,4 +23,3 @@ workflow test_busco {
     )
 
 }
-
