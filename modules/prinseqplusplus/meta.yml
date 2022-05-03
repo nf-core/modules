@@ -1,0 +1,60 @@
+name: "prinseqplusplus"
+description: PRINSEQ++ is a C++ implementation of the prinseq-lite.pl program. It can be used to filter, reformat or trim genomic and metagenomic sequence data
+keywords:
+  - fastq
+  - fasta
+  - filter
+  - trim
+tools:
+  - "prinseqplusplus":
+      description: "PRINSEQ++ - Multi-threaded C++ sequence cleaning"
+      homepage: "https://github.com/Adrian-Cantu/PRINSEQ-plus-plus"
+      documentation: "https://github.com/Adrian-Cantu/PRINSEQ-plus-plus"
+      tool_dev_url: "https://github.com/Adrian-Cantu/PRINSEQ-plus-plus"
+      doi: "10.7287/peerj.preprints.27553v1"
+      licence: "['GPL v2']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end
+        data, respectively.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - good_reads:
+      type: file
+      description: Reads passing filter(s) in gzipped FASTQ format
+      pattern: "*_good_out_{R1,R2}.fastq.gz"
+  - single_reads:
+      type: file
+      description: |
+        Single reads without the pair passing filter(s) in gzipped FASTQ format
+      pattern: "*_single_out_{R1,R2}.fastq.gz"
+  - bad_reads:
+      type: file
+      description: |
+        Reads without not passing filter(s) in gzipped FASTQ format
+      pattern: "*_bad_out_{R1,R2}.fastq.gz"
+  - log:
+      type: file
+      description: |
+        Verbose level 2 STDOUT information in a log file
+      pattern: "*.log"
+
+authors:
+  - "@jfy133"

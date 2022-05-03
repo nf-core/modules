@@ -24,8 +24,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description:
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
       pattern: "*.fastq.gz"
 
@@ -35,14 +34,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
       type: file
       description: Converted BAM file
       pattern: "*.bam"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@ntoda03"

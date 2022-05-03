@@ -1,0 +1,70 @@
+name: biscuit_pileup
+description: Computes cytosine methylation and callable SNV mutations, optionally in reference to a germline BAM to call somatic variants
+keywords:
+  - bisulfite
+  - DNA methylation
+  - pileup
+  - variant calling
+  - WGBS
+  - scWGBS
+  - bam
+  - vcf
+tools:
+  - biscuit:
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      homepage: https://huishenlab.github.io/biscuit/
+      documentation: https://huishenlab.github.io/biscuit/docs/pileup.html
+      tool_dev_url: https://github.com/huishenlab/biscuit
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - normal_bams:
+      type: file(s)
+      description: |
+        BAM files to be analyzed. If no tumor_bam file is provided, any number of "normal" BAMs may be provided
+        ("normal" here is just a semantic issue, these BAMs could be from tumor or any other kind of tissue). If a
+        tumor BAM file is provided, exactly one normal (germline) BAM must be provided.
+      pattern: "*.{bam}"
+  - normal_bais:
+      type: file(s)
+      description: BAM index file or files corresponding to the provided normal_bams
+      pattern: "*.{bai}"
+  - tumor_bam:
+      type: file(s)
+      description: |
+        Optional. If a tumor BAM file is provided, pileup will run in "somatic" mode and will annotate variants with
+        their somatic state (present in tumor only, present in normal only, present in both, etc). Note that if a
+        tumor BAM file is provided, exactly one normal BAM must be provided.
+      pattern: "*.{bam}"
+  - tumor_bai:
+      type: file(s)
+      description: Optional. BAM index file corresponding to provided tumor_bam
+      pattern: "*.{bai}"
+  - index:
+      type: dir
+      description: Biscuit genome index directory (generated with 'biscuit index')
+      pattern: "BiscuitIndex"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: vcf file with methylation information
+      pattern: "*.{vcf.gz}"
+
+authors:
+  - "@njspix"

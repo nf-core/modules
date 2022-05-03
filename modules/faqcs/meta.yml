@@ -13,7 +13,7 @@ tools:
       documentation: https://github.com/LANL-Bioinformatics/FaQCs
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
       doi: "https://doi.org/10.1186/s12859-014-0366-2"
-      licence: ['GPLv3 License']
+      licence: ["GPLv3 License"]
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -54,6 +54,10 @@ output:
       type: file
       description: trimming/qc text stats file
       pattern: "*.stats.txt"
+  - txt:
+      type: file
+      description: trimming/qc text txt files from --debug option
+      pattern: "*.txt"
   - statspdf:
       type: file
       description: trimming/qc pdf report file

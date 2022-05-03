@@ -1,0 +1,54 @@
+name: cnvpytor_importreaddepth
+description: command line tool for CNV/CNA analysis. This step imports the read depth data into a root pytor file.
+keywords:
+  - read depth
+  - cnv calling
+tools:
+  - cnvpytor -rd:
+      description: calling CNVs using read depth
+      homepage: https://github.com/abyzovlab/CNVpytor
+      documentation: https://github.com/abyzovlab/CNVpytor
+      tool_dev_url: https://github.com/abyzovlab/CNVpytor
+      doi: "10.1101/2021.01.27.428472v1"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input_file:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram}"
+  - index:
+      type: file
+      description: bam file index
+      pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: specifies reference genome file (only for cram file without reference genome)
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+  - fai:
+    type: file
+    description: Index of reference fasta file
+    pattern: "*.fai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - pytor:
+      type: file
+      description: read depth root file in which read depth data binned to 100 base pair bins will be stored.
+      pattern: "*.{pytor}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sima-r"

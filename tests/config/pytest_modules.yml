@@ -14,6 +14,10 @@ adapterremoval:
   - modules/adapterremoval/**
   - tests/modules/adapterremoval/**
 
+adapterremovalfixprefix:
+  - modules/adapterremovalfixprefix/**
+  - tests/modules/adapterremovalfixprefix/**
+
 agrvate:
   - modules/agrvate/**
   - tests/modules/agrvate/**
@@ -21,6 +25,10 @@ agrvate:
 allelecounter:
   - modules/allelecounter/**
   - tests/modules/allelecounter/**
+
+amplify/predict:
+  - modules/amplify/predict/**
+  - tests/modules/amplify/predict/**
 
 amps:
   - modules/amps/**
@@ -34,6 +42,10 @@ amrfinderplus/update:
   - modules/amrfinderplus/update/**
   - tests/modules/amrfinderplus/update/**
 
+antismash/antismashlitedownloaddatabases:
+  - modules/antismash/antismashlitedownloaddatabases/**
+  - tests/modules/antismash/antismashlitedownloaddatabases/**
+
 arriba:
   - modules/arriba/**
   - tests/modules/arriba/**
@@ -45,6 +57,10 @@ artic/guppyplex:
 artic/minion:
   - modules/artic/minion/**
   - tests/modules/artic/minion/**
+
+ascat:
+  - modules/ascat/**
+  - tests/modules/ascat/**
 
 assemblyscan:
   - modules/assemblyscan/**
@@ -98,6 +114,14 @@ bbmap/index:
   - modules/bbmap/index/**
   - tests/modules/bbmap/index/**
 
+bbmap/pileup:
+  - modules/bbmap/pileup/**
+  - tests/modules/bbmap/pileup/**
+
+bcftools/annotate:
+  - modules/bcftools/annotate/**
+  - tests/modules/bcftools/annotate/**
+
 bcftools/concat:
   - modules/bcftools/concat/**
   - tests/modules/bcftools/concat/**
@@ -150,6 +174,10 @@ bcftools/view:
   - modules/bcftools/view/**
   - tests/modules/bcftools/view/**
 
+bclconvert:
+  - modules/bclconvert/**
+  - tests/modules/bclconvert/**
+
 bedtools/bamtobed:
   - modules/bedtools/bamtobed/**
   - tests/modules/bedtools/bamtobed/**
@@ -197,6 +225,53 @@ bedtools/subtract:
 biobambam/bammarkduplicates2:
   - modules/biobambam/bammarkduplicates2/**
   - tests/modules/biobambam/bammarkduplicates2/**
+
+biobambam/bamsormadup:
+  - modules/biobambam/bamsormadup/**
+  - tests/modules/biobambam/bamsormadup/**
+
+biscuit/align:
+  - modules/biscuit/index/**
+  - modules/biscuit/align/**
+  - tests/modules/biscuit/align/**
+
+biscuit/biscuitblaster:
+  - modules/biscuit/index/**
+  - modules/biscuit/biscuitblaster/**
+  - tests/modules/biscuit/biscuitblaster/**
+
+biscuit/bsconv:
+  - modules/biscuit/index/**
+  - modules/biscuit/bsconv/**
+  - tests/modules/biscuit/bsconv/**
+
+biscuit/epiread:
+  - modules/biscuit/index/**
+  - modules/biscuit/epiread/**
+  - tests/modules/biscuit/epiread/**
+
+biscuit/index:
+  - modules/biscuit/index/**
+  - tests/modules/biscuit/index/**
+
+biscuit/mergecg:
+  - modules/biscuit/index/**
+  - modules/biscuit/mergecg/**
+  - tests/modules/biscuit/mergecg/**
+
+biscuit/pileup:
+  - modules/biscuit/index/**
+  - modules/biscuit/pileup/**
+  - tests/modules/biscuit/pileup/**
+
+biscuit/qc:
+  - modules/biscuit/index/**
+  - modules/biscuit/qc/**
+  - tests/modules/biscuit/qc/**
+
+biscuit/vcf2bed:
+  - modules/biscuit/vcf2bed/**
+  - tests/modules/biscuit/vcf2bed/**
 
 bismark/align:
   - modules/bismark/align/**
@@ -257,6 +332,10 @@ bowtie2/align:
 bowtie2/build:
   - modules/bowtie2/build/**
   - tests/modules/bowtie2/build_test/**
+
+bracken/bracken:
+  - modules/bracken/bracken/**
+  - tests/modules/bracken/bracken/**
 
 busco:
   - modules/busco/**
@@ -332,6 +411,10 @@ cellranger/mkref:
   - modules/cellranger/gtf/**
   - tests/modules/cellranger/gtf/**
 
+centrifuge/centrifuge:
+  - modules/centrifuge/centrifuge/**
+  - tests/modules/centrifuge/centrifuge/**
+
 checkm/lineagewf:
   - modules/checkm/lineagewf/**
   - tests/modules/checkm/lineagewf/**
@@ -355,6 +438,26 @@ cmseq/polymut:
 cnvkit/batch:
   - modules/cnvkit/batch/**
   - tests/modules/cnvkit/batch/**
+
+controlfreec/assesssignificance:
+  - modules/controlfreec/assesssignificance/**
+  - tests/modules/controlfreec/assesssignificance/**
+
+controlfreec/freec:
+  - modules/controlfreec/freec/**
+  - tests/modules/controlfreec/freec/**
+
+controlfreec/freec2bed:
+  - modules/controlfreec/freec2bed/**
+  - tests/modules/controlfreec/freec2bed/**
+
+controlfreec/freec2circos:
+  - modules/controlfreec/freec2circos/**
+  - tests/modules/controlfreec/freec2circos/**
+
+controlfreec/makegraph:
+  - modules/controlfreec/makegraph/**
+  - tests/modules/controlfreec/makegraph/**
 
 cooler/cload:
   - modules/cooler/cload/**
@@ -403,6 +506,10 @@ damageprofiler:
 dastool/dastool:
   - modules/dastool/dastool/**
   - tests/modules/dastool/dastool/**
+
+dastool/fastatocontig2bin:
+  - modules/dastool/fastatocontig2bin/**
+  - tests/modules/dastool/fastatocontig2bin/**
 
 dastool/scaffolds2bin:
   - modules/dastool/scaffolds2bin/**
@@ -496,6 +603,18 @@ ectyper:
   - modules/ectyper/**
   - tests/modules/ectyper/**
 
+elprep/filter:
+  - modules/elprep/filter/**
+  - tests/modules/elprep/filter/**
+
+elprep/merge:
+  - modules/elprep/merge/**
+  - tests/modules/elprep/merge/**
+
+elprep/split:
+  - modules/elprep/split/**
+  - tests/modules/elprep/split/**
+
 emmtyper:
   - modules/emmtyper/**
   - tests/modules/emmtyper/**
@@ -564,9 +683,17 @@ freebayes:
   - modules/freebayes/**
   - tests/modules/freebayes/**
 
+gamma:
+  - modules/gamma/**
+  - tests/modules/gamma/**
+
 gatk4/applybqsr:
   - modules/gatk4/applybqsr/**
   - tests/modules/gatk4/applybqsr/**
+
+gatk4/applybqsrspark:
+  - modules/gatk4/applybqsrspark/**
+  - tests/modules/gatk4/applybqsrspark/**
 
 gatk4/applyvqsr:
   - modules/gatk4/applyvqsr/**
@@ -575,6 +702,10 @@ gatk4/applyvqsr:
 gatk4/baserecalibrator:
   - modules/gatk4/baserecalibrator/**
   - tests/modules/gatk4/baserecalibrator/**
+
+gatk4/baserecalibratorspark:
+  - modules/gatk4/baserecalibratorspark/**
+  - tests/modules/gatk4/baserecalibratorspark/**
 
 gatk4/bedtointervallist:
   - modules/gatk4/bedtointervallist/**
@@ -652,6 +783,10 @@ gatk4/markduplicates:
   - modules/gatk4/markduplicates/**
   - tests/modules/gatk4/markduplicates/**
 
+gatk4/markduplicatesspark:
+  - modules/gatk4/markduplicatesspark/**
+  - tests/modules/gatk4/markduplicatesspark/**
+
 gatk4/mergebamalignment:
   - modules/gatk4/mergebamalignment/**
   - tests/modules/gatk4/mergebamalignment/**
@@ -728,6 +863,10 @@ gstama/merge:
   - modules/gstama/merge/**
   - tests/modules/gstama/merge/**
 
+gstama/polyacleanup:
+  - modules/gstama/polyacleanup/**
+  - tests/modules/gstama/polyacleanup/**
+
 gtdbtk/classifywf:
   - modules/gtdbtk/classifywf/**
   - tests/modules/gtdbtk/classifywf/**
@@ -747,6 +886,14 @@ gunc/run:
 gunzip:
   - modules/gunzip/**
   - tests/modules/gunzip/**
+
+hamronization/deeparg:
+  - modules/hamronization/deeparg/**
+  - tests/modules/hamronization/deeparg/**
+
+hamronization/summarize:
+  - modules/hamronization/summarize/**
+  - tests/modules/hamronization/summarize/**
 
 hicap:
   - modules/hicap/**
@@ -801,6 +948,7 @@ homer/annotatepeaks:
 
 homer/findpeaks:
   - modules/homer/findpeaks/**
+  - modules/homer/maketagdirectory/**
   - tests/modules/homer/findpeaks/**
 
 homer/maketagdirectory:
@@ -810,6 +958,16 @@ homer/maketagdirectory:
 homer/makeucscfile:
   - modules/homer/makeucscfile/**
   - tests/modules/homer/makeucscfile/**
+
+homer/pos2bed:
+  - modules/homer/pos2bed/**
+  - modules/homer/maketagdirectory/**
+  - modules/homer/findpeaks/**
+  - tests/modules/homer/pos2bed/**
+
+hpsuissero:
+  - modules/hpsuissero/**
+  - tests/modules/hpsuissero/**
 
 ichorcna/createpon:
   - modules/ichorcna/createpon/**
@@ -859,6 +1017,14 @@ jupyternotebook:
   - modules/jupyternotebook/**
   - tests/modules/jupyternotebook/**
 
+kaiju/kaiju:
+  - modules/kaiju/kaiju/**
+  - tests/modules/kaiju/kaiju/**
+
+kaiju/kaiju2table:
+  - modules/kaiju/kaiju2table/**
+  - tests/modules/kaiju/kaiju2table/**
+
 kallisto/index:
   - modules/kallisto/index/**
   - tests/modules/kallisto/index/**
@@ -891,6 +1057,10 @@ krona/kronadb:
 krona/ktimporttaxonomy:
   - modules/krona/ktimporttaxonomy/**
   - tests/modules/krona/ktimporttaxonomy/**
+
+krona/ktimporttext:
+  - modules/krona/ktimporttext/**
+  - tests/modules/krona/ktimporttext/**
 
 last/dotplot:
   - modules/last/dotplot/**
@@ -964,6 +1134,10 @@ macs2/callpeak:
   - modules/macs2/callpeak/**
   - tests/modules/macs2/callpeak/**
 
+mafft:
+  - modules/mafft/**
+  - tests/modules/mafft/**
+
 malt/build:
   - modules/malt/build/**
   - tests/modules/malt/build_test/**
@@ -1015,6 +1189,10 @@ medaka:
 megahit:
   - modules/megahit/**
   - tests/modules/megahit/**
+
+megan/rma2info:
+  - modules/megan/rma2info/**
+  - tests/modules/megan/rma2info/**
 
 meningotype:
   - modules/meningotype/**
@@ -1125,6 +1303,10 @@ ngmaster:
   - modules/ngmaster/**
   - tests/modules/ngmaster/**
 
+ngscheckmate/ncm:
+  - modules/ngscheckmate/ncm/**
+  - tests/modules/ngscheckmate/ncm/**
+
 nucmer:
   - modules/nucmer/**
   - tests/modules/nucmer/**
@@ -1161,6 +1343,10 @@ pairtools/sort:
   - modules/pairtools/sort/**
   - tests/modules/pairtools/sort/**
 
+panaroo/run:
+  - modules/panaroo/run/**
+  - tests/modules/panaroo/run/**
+
 pangolin:
   - modules/pangolin/**
   - tests/modules/pangolin/**
@@ -1180,6 +1366,10 @@ pbccs:
 peddy:
   - modules/peddy/**
   - tests/modules/peddy/**
+
+phantompeakqualtools:
+  - modules/phantompeakqualtools/**
+  - tests/modules/phantompeakqualtools/**
 
 phyloflash:
   - modules/phyloflash/**
@@ -1209,6 +1399,10 @@ picard/createsequencedictionary:
   - modules/picard/createsequencedictionary/**
   - tests/modules/picard/createsequencedictionary/**
 
+picard/crosscheckfingerprints:
+  - modules/picard/crosscheckfingerprints/**
+  - tests/modules/picard/crosscheckfingerprints/**
+
 picard/filtersamreads:
   - modules/picard/filtersamreads/**
   - tests/modules/picard/filtersamreads/**
@@ -1216,6 +1410,10 @@ picard/filtersamreads:
 picard/fixmateinformation:
   - modules/picard/fixmateinformation/**
   - tests/modules/picard/fixmateinformation/**
+
+picard/liftovervcf:
+  - modules/picard/liftovervcf/**
+  - tests/modules/picard/liftovervcf/**
 
 picard/markduplicates:
   - modules/picard/markduplicates/**
@@ -1228,6 +1426,10 @@ picard/mergesamfiles:
 picard/sortsam:
   - modules/picard/sortsam/**
   - tests/modules/picard/sortsam/**
+
+picard/sortvcf:
+  - modules/picard/sortvcf/**
+  - tests/modules/picard/sortvcf/**
 
 pirate:
   - modules/pirate/**
@@ -1249,6 +1451,10 @@ plink2/extract:
   - modules/plink2/extract/**
   - tests/modules/plink2/extract/**
 
+plink2/score:
+  - modules/plink2/score/**
+  - tests/modules/plink2/score/**
+
 plink2/vcf:
   - modules/plink2/vcf/**
   - tests/modules/plink2/vcf/**
@@ -1261,9 +1467,17 @@ porechop:
   - modules/porechop/**
   - tests/modules/porechop/**
 
+preseq/ccurve:
+  - modules/preseq/ccurve/**
+  - tests/modules/preseq/ccurve/**
+
 preseq/lcextrap:
   - modules/preseq/lcextrap/**
   - tests/modules/preseq/lcextrap/**
+
+prinseqplusplus:
+  - modules/prinseqplusplus/**
+  - tests/modules/prinseqplusplus/**
 
 prodigal:
   - modules/prodigal/**
@@ -1393,6 +1607,14 @@ samtools/bam2fq:
   - modules/samtools/bam2fq/**
   - tests/modules/samtools/bam2fq/**
 
+samtools/bamtocram:
+  - modules/samtools/bamtocram/**
+  - tests/modules/samtools/bamtocram/**
+
+samtools/collatefastq:
+  - modules/samtools/collatefastq/**
+  - tests/modules/samtools/collatefastq/**
+
 samtools/depth:
   - modules/samtools/depth/**
   - tests/modules/samtools/depth/**
@@ -1453,9 +1675,17 @@ seqkit/pair:
   - modules/seqkit/pair/**
   - tests/modules/seqkit/pair/**
 
+seqkit/replace:
+  - modules/seqkit/replace/**
+  - tests/modules/seqkit/replace/**
+
 seqkit/split2:
   - modules/seqkit/split2/**
   - tests/modules/seqkit/split2/**
+
+seqkit/stats:
+  - modules/seqkit/stats/**
+  - tests/modules/seqkit/stats/**
 
 seqsero2:
   - modules/seqsero2/**
@@ -1501,6 +1731,18 @@ sistr:
   - modules/sistr/**
   - tests/modules/sistr/**
 
+snapaligner/index:
+  - modules/snapaligner/index/**
+  - tests/modules/snapaligner/index/**
+
+snapaligner/paired:
+  - modules/snapaligner/paired/**
+  - tests/modules/snapaligner/paired/**
+
+snapaligner/single:
+  - modules/snapaligner/single/**
+  - tests/modules/snapaligner/single/**
+
 snpdists:
   - modules/snpdists/**
   - tests/modules/snpdists/**
@@ -1537,6 +1779,18 @@ sratools/prefetch:
   - modules/sratools/prefetch/**
   - tests/modules/sratools/prefetch/**
 
+srst2/srst2:
+  - modules/srst2/srst2/**
+  - tests/modules/srst2/srst2/**
+
+ssuissero:
+  - modules/ssuissero/**
+  - tests/modules/ssuissero/**
+
+stadeniolib/scramble:
+  - modules/stadeniolib/scramble/**
+  - tests/modules/stadeniolib/scramble/**
+
 staphopiasccmec:
   - modules/staphopiasccmec/**
   - tests/modules/staphopiasccmec/**
@@ -1548,6 +1802,10 @@ star/align:
 star/genomegenerate:
   - modules/star/genomegenerate/**
   - tests/modules/star/genomegenerate/**
+
+stranger:
+  - modules/stranger/**
+  - tests/modules/stranger/**
 
 strelka/germline:
   - modules/strelka/germline/**
@@ -1645,6 +1903,15 @@ ultra/pipeline:
   - modules/ultra/pipeline/**
   - tests/modules/ultra/pipeline/**
 
+umitools/dedup:
+  - modules/umitools/dedup/**
+  - modules/umitools/extract/**
+  - tests/modules/umitools/dedup/**
+
+umitools/extract:
+  - modules/umitools/extract/**
+  - tests/modules/umitools/extract/**
+
 unicycler:
   - modules/unicycler/**
   - tests/modules/unicycler/**
@@ -1656,6 +1923,10 @@ untar:
 unzip:
   - modules/unzip/**
   - tests/modules/unzip/**
+
+vardictjava:
+  - modules/vardictjava/**
+  - tests/modules/vardictjava/**
 
 variantbam:
   - modules/variantbam/**
