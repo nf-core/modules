@@ -441,8 +441,8 @@
     - path: output/busco/versions.yml
       md5sum: d7392261a57960a7e6aea609dce824f5
 
-- name: busco test_busco_genome_lineage
-  command: nextflow run tests/modules/busco -entry test_busco_genome_lineage -c tests/config/nextflow.config
+- name: busco test_busco_genome
+  command: nextflow run tests/modules/busco -entry test_busco_genome -c tests/config/nextflow.config
   tags:
     - busco
   files:
