@@ -14,8 +14,11 @@ process BUSCO {
     path config_file                                      // Optional:    busco configuration file
 
     output:
-    tuple val(meta), path("*-busco"), emit: busco_dir
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("short_summary.*.txt")      , emit: short_summaries_txt
+    tuple val(meta), path("short_summary.*.json")     , emit: short_summaries_json
+    tuple val(meta), path("*-busco")                  , emit: busco_dir
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,6 +70,10 @@ process BUSCO {
 
     # clean up
     rm -rf "\$INPUT_SEQS"
+
+    # Move files to avoid staging/publishing issues
+    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    mv ${prefix}-busco/*/short_summary.*.{json,txt} .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

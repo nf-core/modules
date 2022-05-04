@@ -1,7 +1,61 @@
-- name: busco test_busco
-  command: nextflow run tests/modules/busco -entry test_busco -c tests/config/nextflow.config
+- name: busco test_busco_genome_single_fasta
+  command: nextflow run tests/modules/busco -entry test_busco_genome_single_fasta -c tests/config/nextflow.config
   tags:
     - busco
+    - bacteria
+    - genome
   files:
     - path: output/busco/versions.yml
-      md5sum: 921e2abe85bf73e63a8b494453dc83cf
+      md5sum: 8aa830f71587d859df35c6cfab59f35d
+
+- name: busco test_busco_genome_multi_fasta
+  command: nextflow run tests/modules/busco -entry test_busco_genome_multi_fasta -c tests/config/nextflow.config
+  tags:
+    - busco
+    - bacteria
+    - genome
+  files:
+    - path: output/busco/versions.yml
+      md5sum: 9a959eb0a1f765777dff1ea2f5c139c0
+
+- name: busco test_busco_eukaryote_metaeuk
+  command: nextflow run tests/modules/busco -entry test_busco_eukaryote_metaeuk -c tests/config/nextflow.config
+  tags:
+    - busco
+    - eukaryote
+    - genome
+    - metaeuk
+  files:
+    - path: output/busco/versions.yml
+      md5sum: 34a808c257e6db1b0456f3b4372bc477
+
+- name: busco test_busco_eukaryote_augustus
+  command: nextflow run tests/modules/busco -entry test_busco_eukaryote_augustus -c tests/config/nextflow.config
+  tags:
+    - busco
+    - eukaryote
+    - genome
+    - augustus
+  files:
+    - path: output/busco/versions.yml
+      md5sum: 2caac915461410b16a1524ac064cd0df
+
+- name: busco test_busco_protein
+  command: nextflow run tests/modules/busco -entry test_busco_protein -c tests/config/nextflow.config
+  tags:
+    - busco
+    - bacteria
+    - proteins
+  files:
+    - path: output/busco/versions.yml
+      md5sum: d7392261a57960a7e6aea609dce824f5
+
+- name: busco test_busco_transcriptome
+  command: nextflow run tests/modules/busco -entry test_busco_transcriptome -c tests/config/nextflow.config
+  tags:
+    - busco
+    - bacteria
+    - transcriptome
+  files:
+    - path: output/busco/versions.yml
+      md5sum: 30eacbc7df70f6b1e72e0a7b6d02a7e1
