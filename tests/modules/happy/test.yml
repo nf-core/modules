@@ -1,7 +1,27 @@
-- name: happy test_happy
-  command: nextflow run tests/modules/happy -entry test_happy -c tests/config/nextflow.config
+- name: happy test_happy_vcf
+  command: nextflow run tests/modules/happy -entry test_happy_vcf -c tests/config/nextflow.config
   tags:
     - happy
   files:
+    - path: output/happy/test.extended.csv
+      md5sum: ef79c7c789ef4f146ca2e50dafaf22b3
+    - path: output/happy/test.runinfo.json
+      contains: '"name": "hap.py"'
+    - path: output/happy/test.summary.csv
+      md5sum: f8aa5d36d3c48dede2f607fd565894ad
     - path: output/happy/versions.yml
-      md5sum: ab8944c1b24e55bab311a9d389c75c90
+      md5sum: 2c2b8249f9f52194da7f09076dbb5019
+
+- name: happy test_happy_gvcf
+  command: nextflow run tests/modules/happy -entry test_happy_gvcf -c tests/config/nextflow.config
+  tags:
+    - happy
+  files:
+    - path: output/happy/test.extended.csv
+      md5sum: 3d5c21b67a259a3f6dcb088d55b86cd3
+    - path: output/happy/test.runinfo.json
+      contains: '"name": "hap.py"'
+    - path: output/happy/test.summary.csv
+      md5sum: 03044e9bb5a0c6f0947b7e910fc8a558
+    - path: output/happy/versions.yml
+      md5sum: 75331161af9ec046d045ffcba83abddf
