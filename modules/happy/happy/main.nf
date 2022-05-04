@@ -1,7 +1,6 @@
-def VERSION_HAP = '0.3.14'
-def VERSION_PRE = '0.3.14'
+def VERSION = '0.3.14'
 
-process HAPPY {
+process HAPPY_HAPPY {
     tag "$meta.id"
     label 'process_medium'
 
@@ -23,22 +22,13 @@ process HAPPY {
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    pre.py \\
-        $args \\
-        -R $bed \\
-        --reference $fasta \\
-        --threads $task.cpus \\
-        $query_vcf \\
-        ${prefix}_preprocessed.vcf.gz
-
     hap.py \\
         $truth_vcf \\
-        ${prefix}_preprocessed.vcf.gz \\
-        $args2 \\
+        $query_vcf \\
+        $args \\
         --reference $fasta \\
         --threads $task.cpus \\
         -R $bed \\
@@ -46,8 +36,7 @@ process HAPPY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hap.py: $VERSION_HAP
-        pre.py: $VERSION_PRE
+        hap.py: $VERSION
     END_VERSIONS
     """
 }
