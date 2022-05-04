@@ -11,3 +11,11 @@ workflow test_gatk4_revertsam {
 
     GATK4_REVERTSAM ( input )
 }
+
+workflow test_gatk4_revertsam_stubs {
+    input = [ [ id:'test' ], // meta map
+              "foo_paired_end.bam"
+            ]
+
+    GATK4_REVERTSAM ( input )
+}
