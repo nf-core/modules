@@ -41,8 +41,6 @@ process BUSCO {
     """
     gzip -cdf ${fasta} > __UNCOMPRESSED_FASTA_FILE__
 
-    export NUMEXPR_MAX_THREADS=\$((${task.cpus}*2))
-
     busco \\
         --in __UNCOMPRESSED_FASTA_FILE__ \\
         --mode ${meta.mode} \\
