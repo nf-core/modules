@@ -42,6 +42,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - summary:
+      type: file
+      description: A CSV file containing the summary of the benchmarking
+      pattern: "*.summary.csv"  
+  - extended:
+      type: file
+      description: A CSV file containing extended info of the benchmarking
+      pattern: "*.extended.csv"
+  - runinfo:
+      type: file
+      description: A JSON file containing the run info
+      pattern: "*.runinfo.json"
   - versions:
       type: file
       description: File containing software versions
