@@ -1,0 +1,7 @@
+- name: happy test_happy
+  command: nextflow run tests/modules/happy -entry test_happy -c tests/config/nextflow.config
+  tags:
+    - happy
+  files:
+    - path: output/happy/versions.yml
+      md5sum: ab8944c1b24e55bab311a9d389c75c90
