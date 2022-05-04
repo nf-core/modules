@@ -20,9 +20,12 @@ workflow test_busco_genome_single_fasta {
     )
 
     /* Output tree:
-    /tmp/tmpimsfk4sj/busco/
-    ├── test-bacteria_odb10-busco -> /tmp/tmp1sz7013h/b7/fdeaab567e1c5bccc475a4c19b8582/test-bacteria_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmpisa3ktco/busco/
+    ├── short_summary.specific.bacteria_odb10.genome.fna.json -> /tmp/tmpm91x0mn2/8a/ff5c15baba0942cca15a8d53e98009/short_summary.specific.bacteria_odb10.genome.fna.json
+    ├── short_summary.specific.bacteria_odb10.genome.fna.txt -> /tmp/tmpm91x0mn2/8a/ff5c15baba0942cca15a8d53e98009/short_summary.specific.bacteria_odb10.genome.fna.txt
+    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.json -> /tmp/tmpm91x0mn2/91/3abf602561d35fcd917711402977a3/short_summary.specific.bacteroidetes_odb10.genome.fna.json
+    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.txt -> /tmp/tmpm91x0mn2/91/3abf602561d35fcd917711402977a3/short_summary.specific.bacteroidetes_odb10.genome.fna.txt
+    ├── test-bacteria_odb10-busco -> /tmp/tmpm91x0mn2/8a/ff5c15baba0942cca15a8d53e98009/test-bacteria_odb10-busco/
     │   ├── genome.fna/
     │   │   ├── logs/
     │   │   │   ├── hmmsearch_err.log
@@ -31,19 +34,17 @@ workflow test_busco_genome_single_fasta {
     │   │   │   └── prodigal_out.log
     │   │   ├── prodigal_output/
     │   │   │   └── predicted_genes/
-    │   │   ├── run_bacteria_odb10/
-    │   │   │   ├── busco_sequences/
-    │   │   │   ├── full_table.tsv
-    │   │   │   ├── hmmer_output/
-    │   │   │   ├── missing_busco_list.tsv
-    │   │   │   ├── short_summary.json
-    │   │   │   └── short_summary.txt
-    │   │   ├── short_summary.specific.bacteria_odb10.genome.fna.json
-    │   │   └── short_summary.specific.bacteria_odb10.genome.fna.txt
+    │   │   └── run_bacteria_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
     │   └── logs/
     │       └── busco.log
-    ├── test-bacteroidetes_odb10-busco -> /tmp/tmp1sz7013h/75/0da56f59ee44bd2b85e0172906de49/test-bacteroidetes_odb10-busco/
-    │   ├── batch_summary.txt
+    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmpm91x0mn2/8a/ff5c15baba0942cca15a8d53e98009/test-bacteria_odb10-busco.batch_summary.txt
+    ├── test-bacteroidetes_odb10-busco -> /tmp/tmpm91x0mn2/91/3abf602561d35fcd917711402977a3/test-bacteroidetes_odb10-busco/
     │   ├── genome.fna/
     │   │   ├── logs/
     │   │   │   ├── hmmsearch_err.log
@@ -52,18 +53,17 @@ workflow test_busco_genome_single_fasta {
     │   │   │   └── prodigal_out.log
     │   │   ├── prodigal_output/
     │   │   │   └── predicted_genes/
-    │   │   ├── run_bacteroidetes_odb10/
-    │   │   │   ├── busco_sequences/
-    │   │   │   ├── full_table.tsv
-    │   │   │   ├── hmmer_output/
-    │   │   │   ├── missing_busco_list.tsv
-    │   │   │   ├── short_summary.json
-    │   │   │   └── short_summary.txt
-    │   │   ├── short_summary.specific.bacteroidetes_odb10.genome.fna.json
-    │   │   └── short_summary.specific.bacteroidetes_odb10.genome.fna.txt
+    │   │   └── run_bacteroidetes_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
     │   └── logs/
     │       └── busco.log
-    └── versions.yml -> /tmp/tmp1sz7013h/b7/fdeaab567e1c5bccc475a4c19b8582/versions.yml
+    ├── test-bacteroidetes_odb10-busco.batch_summary.txt -> /tmp/tmpm91x0mn2/91/3abf602561d35fcd917711402977a3/test-bacteroidetes_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmpm91x0mn2/91/3abf602561d35fcd917711402977a3/versions.yml
     */
 
 }
@@ -86,9 +86,12 @@ workflow test_busco_genome_multi_fasta {
     )
 
     /* Output tree:
-    /tmp/tmpt22rjxzq/busco/
-    ├── test-bacteria_odb10-busco -> /tmp/tmpfxt64xr_/36/425acbe5e9b27ba0bac8861f735494/test-bacteria_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmpk19byek7/busco/
+    ├── short_summary.specific.bacteria_odb10.genome.fasta.json -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/short_summary.specific.bacteria_odb10.genome.fasta.json
+    ├── short_summary.specific.bacteria_odb10.genome.fasta.txt -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/short_summary.specific.bacteria_odb10.genome.fasta.txt
+    ├── short_summary.specific.bacteria_odb10.genome.fna.json -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/short_summary.specific.bacteria_odb10.genome.fna.json
+    ├── short_summary.specific.bacteria_odb10.genome.fna.txt -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/short_summary.specific.bacteria_odb10.genome.fna.txt
+    ├── test-bacteria_odb10-busco -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/test-bacteria_odb10-busco/
     │   ├── genome.fasta/
     │   │   ├── logs/
     │   │   │   ├── hmmsearch_err.log
@@ -97,15 +100,13 @@ workflow test_busco_genome_multi_fasta {
     │   │   │   └── prodigal_out.log
     │   │   ├── prodigal_output/
     │   │   │   └── predicted_genes/
-    │   │   ├── run_bacteria_odb10/
-    │   │   │   ├── busco_sequences/
-    │   │   │   ├── full_table.tsv
-    │   │   │   ├── hmmer_output/
-    │   │   │   ├── missing_busco_list.tsv
-    │   │   │   ├── short_summary.json
-    │   │   │   └── short_summary.txt
-    │   │   ├── short_summary.specific.bacteria_odb10.genome.fasta.json
-    │   │   └── short_summary.specific.bacteria_odb10.genome.fasta.txt
+    │   │   └── run_bacteria_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
     │   ├── genome.fna/
     │   │   ├── logs/
     │   │   │   ├── hmmsearch_err.log
@@ -114,18 +115,17 @@ workflow test_busco_genome_multi_fasta {
     │   │   │   └── prodigal_out.log
     │   │   ├── prodigal_output/
     │   │   │   └── predicted_genes/
-    │   │   ├── run_bacteria_odb10/
-    │   │   │   ├── busco_sequences/
-    │   │   │   ├── full_table.tsv
-    │   │   │   ├── hmmer_output/
-    │   │   │   ├── missing_busco_list.tsv
-    │   │   │   ├── short_summary.json
-    │   │   │   └── short_summary.txt
-    │   │   ├── short_summary.specific.bacteria_odb10.genome.fna.json
-    │   │   └── short_summary.specific.bacteria_odb10.genome.fna.txt
+    │   │   └── run_bacteria_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
     │   └── logs/
     │       └── busco.log
-    └── versions.yml -> /tmp/tmpfxt64xr_/36/425acbe5e9b27ba0bac8861f735494/versions.yml
+    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/test-bacteria_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmplt9fv3tl/15/ff310a16d9ce7ad24e207a05ce718e/versions.yml
     */
 
 }
@@ -145,28 +145,28 @@ workflow test_busco_eukaryote_metaeuk {
     )
 
     /* Output tree:
-    /tmp/tmp22sf7kg9/busco/
-    ├── test-eukaryota_odb10-busco -> /tmp/tmpmic8qsk6/d5/d8cb6681c0fcaa6da34b57ec174d59/test-eukaryota_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmpeq4dsir5/busco/
+    ├── short_summary.specific.eukaryota_odb10.genome.fasta.json -> /tmp/tmp60hby2pk/6f/529873d91cda6bae3a4a6a21746aee/short_summary.specific.eukaryota_odb10.genome.fasta.json
+    ├── short_summary.specific.eukaryota_odb10.genome.fasta.txt -> /tmp/tmp60hby2pk/6f/529873d91cda6bae3a4a6a21746aee/short_summary.specific.eukaryota_odb10.genome.fasta.txt
+    ├── test-eukaryota_odb10-busco -> /tmp/tmp60hby2pk/6f/529873d91cda6bae3a4a6a21746aee/test-eukaryota_odb10-busco/
     │   ├── genome.fasta/
     │   │   ├── logs/
     │   │   │   ├── hmmsearch_err.log
     │   │   │   ├── hmmsearch_out.log
     │   │   │   ├── metaeuk_err.log
     │   │   │   └── metaeuk_out.log
-    │   │   ├── run_eukaryota_odb10/
-    │   │   │   ├── busco_sequences/
-    │   │   │   ├── full_table.tsv
-    │   │   │   ├── hmmer_output/
-    │   │   │   ├── metaeuk_output/
-    │   │   │   ├── missing_busco_list.tsv
-    │   │   │   ├── short_summary.json
-    │   │   │   └── short_summary.txt
-    │   │   ├── short_summary.specific.eukaryota_odb10.genome.fasta.json
-    │   │   └── short_summary.specific.eukaryota_odb10.genome.fasta.txt
+    │   │   └── run_eukaryota_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── metaeuk_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
     │   └── logs/
     │       └── busco.log
-    └── versions.yml -> /tmp/tmpmic8qsk6/d5/d8cb6681c0fcaa6da34b57ec174d59/versions.yml
+    ├── test-eukaryota_odb10-busco.batch_summary.txt -> /tmp/tmp60hby2pk/6f/529873d91cda6bae3a4a6a21746aee/test-eukaryota_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmp60hby2pk/6f/529873d91cda6bae3a4a6a21746aee/versions.yml
     */
 
 }
@@ -186,9 +186,8 @@ workflow test_busco_eukaryote_augustus {
     )
 
     /* Output tree:
-    /tmp/tmpo77wyvb9/busco/
-    ├── test-eukaryota_odb10-busco -> /tmp/tmpshljnwcg/25/9891a19cbabda15a5c10fb5e34987f/test-eukaryota_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmp2xqaygjj/busco/
+    ├── test-eukaryota_odb10-busco -> /tmp/tmpjqs61x9o/3f/67cc14e873c0ceb45e2a27594d624c/test-eukaryota_odb10-busco/
     │   ├── genome.fasta/
     │   │   ├── blast_db/
     │   │   │   ├── genome.fasta.ndb
@@ -210,7 +209,8 @@ workflow test_busco_eukaryote_augustus {
     │   │       └── hmmer_output/
     │   └── logs/
     │       └── busco.log
-    └── versions.yml -> /tmp/tmpshljnwcg/25/9891a19cbabda15a5c10fb5e34987f/versions.yml
+    ├── test-eukaryota_odb10-busco.batch_summary.txt -> /tmp/tmpjqs61x9o/3f/67cc14e873c0ceb45e2a27594d624c/test-eukaryota_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmpjqs61x9o/3f/67cc14e873c0ceb45e2a27594d624c/versions.yml
     */
 
 }
@@ -230,25 +230,25 @@ workflow test_busco_protein {
     )
 
     /* Output tree:
-    /tmp/tmplju98s42/busco/
-    ├── test-bacteria_odb10-busco -> /tmp/tmp0oru9_61/9c/e992f5eee84806770002e4510f51cb/test-bacteria_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmpzwd5dn56/busco/
+    ├── short_summary.specific.bacteria_odb10.proteome.fasta.json -> /tmp/tmpk1nlgbf_/ae/0db07b5cd08fb23d0aba5f134ebbe2/short_summary.specific.bacteria_odb10.proteome.fasta.json
+    ├── short_summary.specific.bacteria_odb10.proteome.fasta.txt -> /tmp/tmpk1nlgbf_/ae/0db07b5cd08fb23d0aba5f134ebbe2/short_summary.specific.bacteria_odb10.proteome.fasta.txt
+    ├── test-bacteria_odb10-busco -> /tmp/tmpk1nlgbf_/ae/0db07b5cd08fb23d0aba5f134ebbe2/test-bacteria_odb10-busco/
     │   ├── logs/
     │   │   └── busco.log
     │   └── proteome.fasta/
     │       ├── logs/
     │       │   ├── hmmsearch_err.log
     │       │   └── hmmsearch_out.log
-    │       ├── run_bacteria_odb10/
-    │       │   ├── busco_sequences/
-    │       │   ├── full_table.tsv
-    │       │   ├── hmmer_output/
-    │       │   ├── missing_busco_list.tsv
-    │       │   ├── short_summary.json
-    │       │   └── short_summary.txt
-    │       ├── short_summary.specific.bacteria_odb10.proteome.fasta.json
-    │       └── short_summary.specific.bacteria_odb10.proteome.fasta.txt
-    └── versions.yml -> /tmp/tmp0oru9_61/9c/e992f5eee84806770002e4510f51cb/versions.yml
+    │       └── run_bacteria_odb10/
+    │           ├── busco_sequences/
+    │           ├── full_table.tsv
+    │           ├── hmmer_output/
+    │           ├── missing_busco_list.tsv
+    │           ├── short_summary.json
+    │           └── short_summary.txt
+    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmpk1nlgbf_/ae/0db07b5cd08fb23d0aba5f134ebbe2/test-bacteria_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmpk1nlgbf_/ae/0db07b5cd08fb23d0aba5f134ebbe2/versions.yml
     */
 }
 workflow test_busco_transcriptome {
@@ -266,9 +266,10 @@ workflow test_busco_transcriptome {
     )
 
     /* Output tree:
-    /tmp/tmp5twpr8o9/busco/
-    ├── test-bacteria_odb10-busco -> /tmp/tmp_qyjiads/0d/886515d0f06686b2227517398ef8ce/test-bacteria_odb10-busco/
-    │   ├── batch_summary.txt
+    /tmp/tmpitjyvo9g/busco/
+    ├── short_summary.specific.bacteria_odb10.test1.contigs.fa.json -> /tmp/tmp6wqi0eyx/4f/ed0b23f0fc807bb68091298845c135/short_summary.specific.bacteria_odb10.test1.contigs.fa.json
+    ├── short_summary.specific.bacteria_odb10.test1.contigs.fa.txt -> /tmp/tmp6wqi0eyx/4f/ed0b23f0fc807bb68091298845c135/short_summary.specific.bacteria_odb10.test1.contigs.fa.txt
+    ├── test-bacteria_odb10-busco -> /tmp/tmp6wqi0eyx/4f/ed0b23f0fc807bb68091298845c135/test-bacteria_odb10-busco/
     │   ├── logs/
     │   │   └── busco.log
     │   └── test1.contigs.fa/
@@ -296,8 +297,6 @@ workflow test_busco_transcriptome {
     │       │   ├── short_summary.json
     │       │   ├── short_summary.txt
     │       │   └── single_copy_proteins.faa
-    │       ├── short_summary.specific.bacteria_odb10.test1.contigs.fa.json
-    │       ├── short_summary.specific.bacteria_odb10.test1.contigs.fa.txt
     │       └── translated_proteins/
     │           ├── 1024388at2.faa
     │           ├── 1054741at2.faa
@@ -321,7 +320,8 @@ workflow test_busco_transcriptome {
     │           ├── 874197at2.faa
     │           ├── 932854at2.faa
     │           └── 95696at2.faa
-    └── versions.yml -> /tmp/tmp_qyjiads/0d/886515d0f06686b2227517398ef8ce/versions.yml
+    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmp6wqi0eyx/4f/ed0b23f0fc807bb68091298845c135/test-bacteria_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmp6wqi0eyx/4f/ed0b23f0fc807bb68091298845c135/versions.yml
     */
 
 }

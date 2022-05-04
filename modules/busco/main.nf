@@ -15,8 +15,8 @@ process BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
-    tuple val(meta), path("short_summary.*.txt")      , emit: short_summaries_txt
-    tuple val(meta), path("short_summary.*.json")     , emit: short_summaries_json
+    tuple val(meta), path("short_summary.*.txt")      , emit: short_summaries_txt, optional: true
+    tuple val(meta), path("short_summary.*.json")     , emit: short_summaries_json, optional: true
     tuple val(meta), path("*-busco")                  , emit: busco_dir
     path "versions.yml"                               , emit: versions
 
@@ -73,7 +73,7 @@ process BUSCO {
 
     # Move files to avoid staging/publishing issues
     mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
-    mv ${prefix}-busco/*/short_summary.*.{json,txt} .
+    mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
