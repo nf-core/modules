@@ -27,8 +27,6 @@ process MOTUS_DOWNLOADDB {
     python ${software} \\
         $args \\
         -t $task.cpus
-    ## clean up
-    rm ${software}
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
