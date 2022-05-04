@@ -1,5 +1,5 @@
-name: "happy"
-description: Hap.py is a tool to compare diploid genotypes at haplotype level. Rather than comparing VCF records row by row, hap.py will generate and match alternate sequences in a superlocus. A superlocus is a small region of the genome (sized between 1 and around 1000 bp) that contains one or more variants.
+name: "happy_prepy"
+description: Pre.py is a preprocessing tool made to preprocess VCF files for Hap.py
 keywords:
   - happy
   - benchmark
@@ -19,13 +19,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - truth_vcf:
+  - vcf:
       type: file
-      description: gold standard VCF file
-      pattern: "*.{vcf,vcf.gz}"
-  - query_vcf:
-      type: file
-      description: VCF/GVCF file to query
+      description: VCF file to preprocess
       pattern: "*.{vcf,vcf.gz}"
   - bed:
       type: file
@@ -35,6 +31,10 @@ input:
       type: file
       description: FASTA file of the reference genome
       pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA
+      pattern: "*.fai"
 
 output:
   - meta:
@@ -42,18 +42,10 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - summary:
+  - vcf:
       type: file
-      description: A CSV file containing the summary of the benchmarking
-      pattern: "*.summary.csv"
-  - extended:
-      type: file
-      description: A CSV file containing extended info of the benchmarking
-      pattern: "*.extended.csv"
-  - runinfo:
-      type: file
-      description: A JSON file containing the run info
-      pattern: "*.runinfo.json"
+      description: A preprocessed VCF file
+      pattern: "*.vcf.gz"
   - versions:
       type: file
       description: File containing software versions

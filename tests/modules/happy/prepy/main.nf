@@ -2,13 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { HAPPY } from '../../../modules/happy/main.nf'
+include { HAPPY_PREPY } from '../../../../modules/happy/prepy/main.nf'
 
-workflow test_happy_vcf {
+workflow test_happy_prepy_vcf {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)        
     ]
@@ -18,14 +17,13 @@ workflow test_happy_vcf {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     ])
 
-    HAPPY ( input, fasta )
+    HAPPY_PREPY ( input, fasta )
 }
 
-workflow test_happy_gvcf {
+workflow test_happy_prepy_gvcf {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)        
     ]
@@ -35,5 +33,5 @@ workflow test_happy_gvcf {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     ])
 
-    HAPPY ( input, fasta )
+    HAPPY_PREPY ( input, fasta )
 }
