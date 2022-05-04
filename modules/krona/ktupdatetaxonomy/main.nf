@@ -1,6 +1,6 @@
 def VERSION='2.7.1' // Version information not provided by tool on CLI
 
-process KRONA_KRONADB {
+process KRONA_KTUPDATETAXONOMY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
@@ -20,7 +20,7 @@ process KRONA_KRONADB {
     """
     ktUpdateTaxonomy.sh \\
         $args \\
-        taxonomy
+        taxonomy/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
