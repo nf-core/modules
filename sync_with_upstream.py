@@ -62,11 +62,13 @@ def main():
         os.chdir(tmpdirname)
         run_and_check_command(["git", "remote", "add", NFCORE_REMOTE_NAME, GITHUB_NFCORE_MODULES])
         run_and_check_command(["git", "fetch", NFCORE_REMOTE_NAME])
-        run_and_check_command(["git", "merge", "--ff", "--no-edit", f"{NFCORE_REMOTE_NAME}/{NFCORE_BRANCH_NAME}"])
+        run_and_check_command(["git", "merge", "--no-edit", f"{NFCORE_REMOTE_NAME}/{NFCORE_BRANCH_NAME}"])
         if args.dry_run:
             run_and_check_command(["git", "push", "-n", SANGER_REMOTE_NAME])
+            run_and_check_command(["git", "push", "-n", SANGER_REMOTE_NAME, f"{NFCORE_REMOTE_NAME}/{NFCORE_BRANCH_NAME}:nf-core_master"])
         else:
             run_and_check_command(["git", "push", SANGER_REMOTE_NAME])
+            run_and_check_command(["git", "push", SANGER_REMOTE_NAME, f"{NFCORE_REMOTE_NAME}/{NFCORE_BRANCH_NAME}:nf-core_master"])
 
 if __name__ == "__main__":
     main()
