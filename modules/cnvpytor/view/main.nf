@@ -29,16 +29,14 @@ process CNVPYTOR_VIEW {
     python3 <<CODE
     import cnvpytor,os
     from pathlib import Path
-    pytor_files = Path.cwd().glob("*.pytor")
+    pytor_file = Path("$pytor")
     binsizes = "${bins}".split(" ")
-    for pytor_file in pytor_files:
-        for binsize in binsizes:
-            file_list = [str(pytor_file)]
-            app = cnvpytor.Viewer(file_list, params={} )
-            outputfile = "{}_{}.{}".format(pytor_file.stem,binsize.strip(),"${output_suffix}")
-            app.print_filename = outputfile
-            app.bin_size = int(binsize)
-            app.print_calls_file()
+    for binsize in binsizes:
+        app = cnvpytor.Viewer(["$pytor"], params={} )
+        outputfile = "{}_{}.{}".format(pytor_file.stem,binsize.strip(),"${output_suffix}")
+        app.print_filename = outputfile
+        app.bin_size = int(binsize)
+        app.print_calls_file()
     CODE
 
     cat <<-END_VERSIONS > versions.yml
