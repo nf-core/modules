@@ -8,7 +8,7 @@ workflow test_cnvpytor_view {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
+        [file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)]
     ]
 
     bin_sizes = "10000 100000"
@@ -20,7 +20,7 @@ workflow test_cnvpytor_view_tsvout {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
+        [file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)]
     ]
 
     output_suffix = "tsv"
@@ -32,7 +32,7 @@ workflow test_cnvpytor_view_stub {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)
+        [file(params.test_data['homo_sapiens']['illumina']['test_pytor'], checkIfExists: true)]
     ]
 
     bin_sizes = []
