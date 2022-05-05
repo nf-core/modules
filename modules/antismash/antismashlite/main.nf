@@ -17,6 +17,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     input:
     tuple val(meta), path(sequence_input)
+    path(gff)
     path(databases)
     path(antismash_dir) // Optional input: AntiSMASH installation folder. It is not needed for using this module with conda, but required for docker/singularity (see meta.yml).
 
@@ -46,6 +47,12 @@ process ANTISMASH_ANTISMASHLITE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    if ( sequence_input.getExtension != 'fasta' && sequence_input.getExtension != 'fna' && gff )
+        log.warn "GFF input to antiSMASH can only be used if FASTA sequence input is supplied. GFF will be ignored for sample ${meta.id}"
+    if ( (sequence_input.getExtension == 'fasta' || sequence_input.getExtension == 'fna') && gff )
+        gff_flag = "--genefinding-gff3 ${gff}"
+    else
+        gff_flag = ""
 
     """
     ## We specifically do not include annotations (--genefinding-tool none) as
@@ -57,6 +64,7 @@ process ANTISMASH_ANTISMASHLITE {
         --genefinding-tool none \\
         --logfile $prefix/${prefix}.log \\
         --databases $databases \\
+        $gff_flag \\
         $sequence_input
 
     cat <<-END_VERSIONS > versions.yml
