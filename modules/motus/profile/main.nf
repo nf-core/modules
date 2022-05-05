@@ -39,10 +39,10 @@ process MOTUS_PROFILE {
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
     ## mOTUs will check the database version is same version as exec version.
-    if [ "$refdb" == "" ]; then
+    if [ "$db" == "" ]; then
         VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
     else
-        VERSION=\$(grep motus $refdb/db_mOTU_versions | sed 's/motus\\t//g')
+        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
     fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
