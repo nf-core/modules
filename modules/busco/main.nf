@@ -8,7 +8,7 @@ process BUSCO {
         'quay.io/biocontainers/busco:5.3.2--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path('tmp_input/*')  // Required:    meta map, and fasta sequence files
+    tuple val(meta), path('tmp_input/*')
     each lineage                          // Required:    lineage to check against
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
     path config_file                      // Optional:    busco configuration file
