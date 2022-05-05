@@ -23,8 +23,11 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test']
   - database:
-      type: path
-      description: "Path to the taxonomy database downloaded by krona/kronadb"
+      type: file
+      description: |
+        Path to the taxonomy database .tab file downloaded by krona/ktUpdateTaxonomy
+        The file will be saved under a folder named "taxonomy" as "taxonomy/taxonomy.tab".
+        The parent folder will be passed as argument to ktImportTaxonomy.
   - report:
       type: file
       description: "A tab-delimited file with taxonomy IDs and (optionally) query IDs, magnitudes, and scores.  Query IDs are taken from column 1, taxonomy IDs from column 2, and scores from column 3.  Lines beginning with # will be ignored."
