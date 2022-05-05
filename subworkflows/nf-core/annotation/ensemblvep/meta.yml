@@ -1,15 +1,11 @@
-name: ENSEMBLVEP
-description: Ensembl Variant Effect Predictor (VEP)
+name: annotation_ensemblvep
+description: |
+  Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file
 keywords:
-  - annotation
-tools:
-  - ensemblvep:
-      description: |
-        VEP determines the effect of your variants (SNPs, insertions, deletions, CNVs
-        or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions.
-      homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
-      documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
-      licence: ["Apache-2.0"]
+  - ensemblvep
+modules:
+  - ensemblvep
+  - tabix/bgziptabix
 input:
   - meta:
       type: map
@@ -41,18 +37,13 @@ input:
       description: |
         path to file(s) needed for plugins  (optional)
 output:
-  - vcf:
-      type: file
-      description: |
-        annotated vcf
-      pattern: "*.ann.vcf"
-  - report:
-      type: file
-      description: VEP report file
-      pattern: "*.html"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - vcf_tbi:
+      type: file
+      description: Compressed vcf file + tabix index
+      pattern: "[ *{.vcf.gz,vcf.gz.tbi} ]"
 authors:
   - "@maxulysse"
