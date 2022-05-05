@@ -1,0 +1,43 @@
+process SHASTA {
+    tag "$meta.id"
+    label 'process_medium'
+    
+    conda (params.enable_conda ? "bioconda::shasta=0.8.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/shasta:0.8.0--h7d875b9_0':
+        'quay.io/biocontainers/shasta:0.8.0--h7d875b9_0' }"
+
+    input:
+    tuple val(meta), path(reads)
+
+    output:
+    tuple val(meta), path("ShastaRun/Assembly.fasta.gz"), emit: assembly
+    tuple val(meta), path("ShastaRun/Assembly.gfa.gz")  , emit: gfa
+    tuple val(meta), path("ShastaRun/")                 , emit: results
+    path "versions.yml"                                 , emit: versions
+
+    script:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def model  = "${meta.model}" ?: 'Nanopore-Oct2021'
+    """
+    # shasta requires uncompressed
+    zcat -f $reads > reads.fq
+
+    # run shasta
+    shasta \\
+        --input reads.fq \\
+        --config $model \\
+        $args \\
+        --threads $task.cpus
+
+    # compress results
+    gzip -c ShastaRun/Assembly.fasta > ShastaRun/Assembly.fasta.gz
+    gzip -c ShastaRun/Assembly.gfa   > ShastaRun/Assembly.gfa.gz
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shasta: \$(shasta --version)
+    END_VERSIONS
+    """
+}

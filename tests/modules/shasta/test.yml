@@ -1,0 +1,7 @@
+- name: shasta test_shasta
+  command: nextflow run ./tests/modules/shasta -entry test_shasta -c ./tests/config/nextflow.config -c ./tests/modules/shasta/nextflow.config
+  tags:
+    - shasta
+  files:
+    - path: output/shasta/versions.yml
+      md5sum: fbae9eaec10312cdd110f9c5753cc0fe
