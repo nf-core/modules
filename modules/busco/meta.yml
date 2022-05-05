@@ -40,6 +40,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - batch_summary:
+      type: file
+      description: Summary of all sequence files analyzed
+      pattern: "*-busco.batch_summary.txt"
+  - short_summaries_txt:
+      type: file
+      description: Short Busco summary in plain text format
+      pattern: "short_summary.*.txt"
+  - short_summaries_json:
+      type: file
+      description: Short Busco summary in JSON format
+      pattern: "short_summary.*.json"
   - busco_dir:
       type: directory
       description: BUSCO lineage specific output
