@@ -64,31 +64,4 @@ process ANTISMASH_ANTISMASHLITE {
         antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
     END_VERSIONS
     """
-
-    stub:
-    """
-    mkdir ${prefix}
-    touch ${prefix}/clusterblast/stub_c.stub.txt
-    touch ${prefix}/css/stub.css
-    touch ${prefix}/images
-    touch ${prefix}/js/stub.js
-    touch ${prefix}/knownclusterblast/regionstub/ctg.stub.html
-    touch ${prefix}/knownclusterblast/stub._c.stub.txt
-    touch ${prefix}/svg/clusterblast.stub.svg
-    touch ${prefix}/svg/knownclusterblast.stub.svg
-    touch ${prefix}/stub.gbk
-    touch ${prefix}/stub.json
-    touch ${prefix}/stub.log
-    touch ${prefix}/stub.zip
-    touch ${prefix}/stub.region.stub.gbk
-    touch ${prefix}/clusterblastoutput.txt
-    touch ${prefix}/index.html
-    touch ${prefix}/knownclusterblastoutput.txt
-    touch ${prefix}/regions.js
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
-    END_VERSIONS
-    """
 }
