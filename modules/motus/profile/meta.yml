@@ -25,16 +25,13 @@ input:
       description: |
         List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
         respectively.
-      pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz}"
+        Or the intermediate bam file mapped by bwa to the mOTUs database or
+        the output bam file from motus profile
+      pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz,.bam}"
   - db:
       type: derectory
       description: |
         mOTUs database downloaded by `motus downloadDB`
-  - bam:
-      type: file
-      description: |
-        The intermediate bam file mapped by bwa to the mOTUs database or
-        the output bam file from motus profile
 
 output:
   - meta:

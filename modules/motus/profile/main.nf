@@ -10,7 +10,6 @@ process MOTUS_PROFILE {
     input:
     tuple val(meta), path(reads)
     path db
-    path bam
 
     output:
     tuple val(meta), path("*.out"), emit: out
@@ -28,20 +27,26 @@ process MOTUS_PROFILE {
                     meta.single_end ?
                         "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
     def refdb = db ? "-db ${db}" : ""
-    def intermediateBam = bam ? "-I $bam" : ""
     """
     motus profile \\
         $args \\
         $inputs \\
         $refdb \\
-        $intermediateBam \\
         -t $task.cpus \\
         -n $prefix \\
         -o ${prefix}.out
 
+    ## mOTUs version number is not available from command line.
+    ## mOTUs save the version number in index database folder.
+    ## mOTUs will check the database version is same version as exec version.
+    if [ "$refdb" == "" ]; then
+        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
+    else
+        VERSION=\$(grep motus $refdb/db_mOTU_versions | sed 's/motus\\t//g')
+    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mOTUs: \$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
+        mOTUs: \$VERSION
     END_VERSIONS
     """
 }
