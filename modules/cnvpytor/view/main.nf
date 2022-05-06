@@ -8,7 +8,7 @@ process CNVPYTOR_VIEW {
         'quay.io/biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(pytor)
+    tuple val(meta), path(pytor_files)
     val bin_sizes
     val output_format
 
@@ -23,17 +23,18 @@ process CNVPYTOR_VIEW {
 
     script:
     def output_suffix = output_format ?: 'vcf'
-    def bins = bin_sizes ?: '1000'
+    def bins   = bin_sizes ?: '1000'
+    def input  = pytor_files.join(" ")
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
     python3 <<CODE
     import cnvpytor,os
-    from pathlib import Path
-    pytor_file = Path("$pytor")
     binsizes = "${bins}".split(" ")
     for binsize in binsizes:
-        app = cnvpytor.Viewer(["$pytor"], params={} )
-        outputfile = "{}_{}.{}".format(pytor_file.stem,binsize.strip(),"${output_suffix}")
+        file_list = "${input}".split(" ")
+        app = cnvpytor.Viewer(file_list, params={} )
+        outputfile = "{}_{}.{}".format("${prefix}",binsize.strip(),"${output_suffix}")
         app.print_filename = outputfile
         app.bin_size = int(binsize)
         app.print_calls_file()
@@ -47,8 +48,9 @@ process CNVPYTOR_VIEW {
 
     stub:
     def output_suffix = output_format ?: 'vcf'
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${pytor.baseName}.${output_suffix}
+    touch ${prefix}.${output_suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

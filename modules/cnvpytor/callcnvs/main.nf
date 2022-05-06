@@ -20,7 +20,6 @@ process CNVPYTOR_CALLCNVS {
 
     script:
     def bins = bin_sizes ?: '1000'
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cnvpytor \\
         -root $pytor \\
