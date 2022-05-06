@@ -3,7 +3,7 @@ process SHASUM {
     label 'process_low'
 
     if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using bcl-convert. Please use docker or singularity containers."
+        exit 1, "Conda environments cannot be used when using sha256sum. Please use docker or singularity containers."
     }
     container "debian:bullseye-slim"
 
