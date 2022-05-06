@@ -27,8 +27,8 @@ workflow test_gatk4_mergevcfs_no_dict {
 
 workflow test_gatk4_mergevcfs_no_dict_stubs {
     input = [ [ id:'test' ], // meta map
-              [ "foo.vcf",
-                "foo2.vcf" ]
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
             ]
 
     GATK4_MERGEVCFS ( input, [] )
