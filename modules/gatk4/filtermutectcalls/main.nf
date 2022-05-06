@@ -59,7 +59,7 @@ process GATK4_FILTERMUTECTCALLS {
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.filteringStats.tsv
+    touch ${prefix}.vcf.gz.filteringStats.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
