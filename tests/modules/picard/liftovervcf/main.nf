@@ -19,11 +19,11 @@ workflow test_picard_liftovervcf {
 workflow test_picard_liftovervcf_stubs {
 
     input_vcf = [ [ id:'test' ],
-        "foo.vcf"
+        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
             ]
-    dict =  "genome.fasta.dict"
-    chain =  "genome.chain.gz"
-    fasta  = [ "genome.fasta" ]
+    dict =  file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    chain =  file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+    fasta  = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
 
     PICARD_LIFTOVERVCF ( input_vcf, dict, chain, fasta )
 }
