@@ -11,7 +11,7 @@
     - path: output/picard/versions.yml
 
 - name: picard liftovervcf test_picard_liftovervcf_stubs
-  command: nextflow run tests/modules/picard/liftovervcf -entry test_picard_liftovervcf -c tests/config/nextflow.config -stub-run
+  command: nextflow run tests/modules/picard/liftovervcf -entry test_picard_liftovervcf_stubs -c tests/config/nextflow.config -stub-run
   tags:
     - picard/liftovervcf
     - picard
