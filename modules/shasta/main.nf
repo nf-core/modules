@@ -37,7 +37,7 @@ process SHASTA {
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        shasta: \$(shasta --version)
+        shasta: \$(shasta --version | head -n 1 | cut -f 3 -d " ")
     END_VERSIONS
     """
 }

@@ -31,17 +31,22 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
   - assembly:
       type: file
       description: Assembled FASTA file
-      pattern: "*.fasta.gz"
+      pattern: "ShastaRun/Assembly.fasta.gz"
   - gfa:
       type: file
       description: Repeat graph
-      pattern: "*.gfa.gz"
+      pattern: "ShastaRun/Assembly.gfa.gz"
   - results:
       type: dir
       description: Resulting assembly directory
+      pattern: "ShastaRun"
 
 authors:
   - "@fmalmeida"
