@@ -1,21 +1,29 @@
-name: annotation_ensemblvep
+name: annotation_snpeff
 description: |
-  Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file
+  Perform annotation with snpeff and bgzip + tabix index the resulting VCF file
 keywords:
-  - ensemblvep
+  - snpeff
 modules:
-  - ensemblvep
+  - snpeff
   - tabix/bgziptabix
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input:
-      type: vcf
-      description: list containing one vcf file
-      pattern: "[ *.{vcf,vcf.gz} ]"
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: |
+        vcf to annotate
+  - db:
+      type: value
+      description: |
+        which db to annotate with
+  - cache:
+      type: file
+      description: |
+        path to snpEff cache (optional)
 output:
   - versions:
       type: file
