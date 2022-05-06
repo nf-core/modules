@@ -24,3 +24,12 @@ workflow test_gatk4_mergevcfs_no_dict {
 
     GATK4_MERGEVCFS ( input, [] )
 }
+
+workflow test_gatk4_mergevcfs_no_dict_stubs {
+    input = [ [ id:'test' ], // meta map
+              [ "foo.vcf",
+                "foo2.vcf" ]
+            ]
+
+    GATK4_MERGEVCFS ( input, [] )
+}
