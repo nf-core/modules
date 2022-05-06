@@ -1,14 +1,21 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml rtgtools/vcfeval
-- name: "rtgtools vcfeval"
-  command: nextflow run ./tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c ./tests/config/nextflow.config -c ./tests/modules/rtgtools/vcfeval/nextflow.config
+- name: rtgtools vcfeval test_rtgtools_vcfeval
+  command: nextflow run tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c tests/config/nextflow.config
   tags:
-    - "rtgtools"
-    #
-    - "rtgtools/vcfeval"
-    #
+    - rtgtools
+    - rtgtools/vcfeval
   files:
-    - path: "output/rtgtools/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/rtgtools/test_results.txt
+      md5sum: 2e011aa6e54d258fcc3b45b2dda02ae4
     - path: output/rtgtools/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 270ed7a5a8e347b251eb4aa2198f98e8
+
+- name: rtgtools vcfeval test_rtgtools_vcfeval_no_index
+  command: nextflow run tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_index -c tests/config/nextflow.config
+  tags:
+    - rtgtools
+    - rtgtools/vcfeval
+  files:
+    - path: output/rtgtools/test_results.txt
+      md5sum: 2e011aa6e54d258fcc3b45b2dda02ae4
+    - path: output/rtgtools/versions.yml
+      md5sum: 8d0407000988c78fa43fe5cfe3d4449d
