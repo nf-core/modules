@@ -23,7 +23,7 @@ workflow test_picard_liftovervcf_stubs {
             ]
     dict =  "genome.fasta.dict"
     chain =  "genome.chain.gz"
-    fasta  = "genome.fasta" ]
+    fasta  = [ "genome.fasta" ]
 
     PICARD_LIFTOVERVCF ( input_vcf, dict, chain, fasta )
 }
