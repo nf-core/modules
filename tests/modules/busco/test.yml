@@ -3,6 +3,20 @@
   tags:
     - busco
   files:
+    - path: output/busco/short_summary.generic.bacteria_odb10.genome.fna.json
+      contains:
+        - "one_line_summary"
+        - "input_file"
+        - "mode"
+        - "dataset"
+    - path: output/busco/short_summary.generic.bacteria_odb10.genome.fna.txt
+      contains:
+        - "BUSCO version"
+        - "The lineage dataset is"
+        - "BUSCO was run in mode"
+        - "Complete BUSCOs"
+        - "Missing BUSCOs"
+        - "Dependencies and versions"
     - path: output/busco/short_summary.specific.bacteria_odb10.genome.fna.json
       contains:
         - "one_line_summary"
@@ -10,6 +24,20 @@
         - "mode"
         - "dataset"
     - path: output/busco/short_summary.specific.bacteria_odb10.genome.fna.txt
+      contains:
+        - "BUSCO version"
+        - "The lineage dataset is"
+        - "BUSCO was run in mode"
+        - "Complete BUSCOs"
+        - "Missing BUSCOs"
+        - "Dependencies and versions"
+    - path: output/busco/short_summary.specific.bacteroidales_odb10.genome.fna.json
+      contains:
+        - "one_line_summary"
+        - "input_file"
+        - "mode"
+        - "dataset"
+    - path: output/busco/short_summary.specific.bacteroidales_odb10.genome.fna.txt
       contains:
         - "BUSCO version"
         - "The lineage dataset is"
@@ -31,6 +59,8 @@
         - "Complete BUSCOs"
         - "Missing BUSCOs"
         - "Dependencies and versions"
+    - path: output/busco/test-auto-busco.batch_summary.txt
+      md5sum: 32f7765c310f33555c31c7a3e64c990e
     - path: output/busco/test-bacteria_odb10-busco.batch_summary.txt
       md5sum: e50690742e9ae6abdd2bf99334ff9e12
     - path: output/busco/test-bacteroidetes_odb10-busco.batch_summary.txt
