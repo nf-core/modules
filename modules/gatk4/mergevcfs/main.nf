@@ -48,6 +48,7 @@ process GATK4_MERGEVCFS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf.gz
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
