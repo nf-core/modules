@@ -12,31 +12,16 @@ process SRATOOLS_PREFETCH {
     tuple val(meta), val(id)
 
     output:
-    tuple val(meta), path("$id"), emit: sra
+    tuple val(meta), path(id), emit: sra
     path "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
-    script:
-    def args = task.ext.args ?: ''
-    def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
-    """
-    eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
-    if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
-        mkdir -p "\$(dirname "\${NCBI_SETTINGS}")"
-        printf '${config}' > "\${NCBI_SETTINGS}"
-    fi
+    shell:
+    args = task.ext.args ?: ''
+    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
+    config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
 
-    prefetch \\
-        $args \\
-        $id
-
-    vdb-validate $id
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
-    END_VERSIONS
-    """
+    template 'retry_with_backoff.sh'
 }
