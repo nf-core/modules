@@ -22,7 +22,7 @@ process MOTUS_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = "$reads[0]".toLowerCase().endsWith('.bam') ?
+    def inputs = "$reads[0]".getExtension == ('.bam') ?
                     "-i ${reads}" :
                     meta.single_end ?
                         "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
