@@ -62,8 +62,9 @@ workflow test_gatk4_filtermutectcalls_use_val {
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
     GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
+}
 
-    workflow test_gatk4_filtermutectcalls_base_stubs {
+workflow test_gatk4_filtermutectcalls_base_stubs {
 
     input = [
          [ id:'test'], // meta map
@@ -81,6 +82,4 @@ workflow test_gatk4_filtermutectcalls_use_val {
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
 
     GATK4_FILTERMUTECTCALLS ( input, fasta, fai, dict )
-}
-
 }
