@@ -26,7 +26,7 @@ input:
       pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
   - lineage:
       type: value
-      description: The BUSCO lineage to use.
+      description: The BUSCO lineage to use, or "auto" to automatically select lineage
   - busco_lineages_path:
       type: directory
       description: Path to local BUSCO lineages directory.
