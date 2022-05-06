@@ -24,11 +24,11 @@ process RTGTOOLS_VCFEVAL {
     def regions = bed ? "--bed-regions=$bed" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
-    
+
     sdf_basename = sdf.getBaseName().replace(".tar","")
     tar_decomp = ""
     if((sdf =~ /.tar.gz\b/).find() == true) {
-        tar_decomp = "tar -xzf $sdf"  
+        tar_decomp = "tar -xzf $sdf"
     }
 
     """
