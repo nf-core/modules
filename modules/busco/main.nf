@@ -9,7 +9,7 @@ process BUSCO {
 
     input:
     tuple val(meta), path('tmp_input/*')
-    each lineage                          // Required:    lineage to check against
+    each lineage                          // Required:    lineage to check against, "auto" enables --auto-lineage instead
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
     path config_file                      // Optional:    busco configuration file
 
@@ -27,6 +27,7 @@ process BUSCO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
     def busco_config = config_file ? "--config $config_file" : ''
+    def busco_lineage = lineage.equals('auto') ? '--auto-lineage' : "--lineage_dataset ${lineage}"
     def busco_lineage_dir = busco_lineages_path ? "--offline --download_path ${busco_lineages_path}" : ''
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
@@ -63,7 +64,7 @@ process BUSCO {
         --cpu $task.cpus \\
         --in "\$INPUT_SEQS" \\
         --out ${prefix}-busco \\
-        --lineage_dataset $lineage \\
+        $busco_lineage \\
         $busco_lineage_dir \\
         $busco_config \\
         $args
