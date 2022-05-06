@@ -5,15 +5,15 @@ should be updated via [their SOP](https://github.com/nf-core/test-datasets/blob/
 
 Test data for Tree of Life modules live on the farm at `/lustre/scratch123/tol/resources/nextflow/test_data`.
 Data should follow the usual directory structure (e.g. `genomic_data/<specimen-id>/<data-type>/`) as much
-as possible, and all be registered in [test\_data.config](test_data.config).
+as possible, and all be registered in [test_data.config](test_data.config).
 
 ## Datasets
 
 We include some complete data files from organisms of different genome sizes:
 
-- small genomes: species < 100 Mb. Currently *Anthocharis cardamines* (`ilAntCard1`), *Asterias rubens* (`eAstRub1`), *Eimeria tenella* (`pEimTen1`), and *Laetiporus sulphureus* (`gfLaeSulp1`)
-- medium genomes: species < 1 GB. Currently *Erannis defoliaria* (`ilEraDefo1`), *Erithacus rubecula* (`bEriRub1`), *Pararge aegeria* (`ilParAegt2`)
-- large genomes: species > 1 GB. Currently *Cervus elaphus* (`mCerEla1`), *Meles meles* (`mMelMel1`), and *Sciurus vulgaris* (`mSciVul1`)
+- small genomes: species < 100 Mb. Currently _Anthocharis cardamines_ (`ilAntCard1`), _Asterias rubens_ (`eAstRub1`), _Eimeria tenella_ (`pEimTen1`), and _Laetiporus sulphureus_ (`gfLaeSulp1`)
+- medium genomes: species < 1 GB. Currently _Erannis defoliaria_ (`ilEraDefo1`), _Erithacus rubecula_ (`bEriRub1`), _Pararge aegeria_ (`ilParAegt2`)
+- large genomes: species > 1 GB. Currently _Cervus elaphus_ (`mCerEla1`), _Meles meles_ (`mMelMel1`), and _Sciurus vulgaris_ (`mSciVul1`)
 
 We also have hand-crafted test datasets, e.g. a subset of 1,000 reads, that can be more suitable for unit-testing.
 
