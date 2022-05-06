@@ -1,7 +1,7 @@
 - name: snapaligner align test_snapaligner_single
   command: nextflow run tests/modules/snapaligner/align -entry test_snapaligner_single -c tests/config/nextflow.config
   tags:
-    - snapaligner/single
+    - snapaligner/align
     - snapaligner
   files:
     - path: output/snapaligner/test.bam
@@ -11,7 +11,7 @@
 - name: snapaligner align test_snapaligner_paired
   command: nextflow run tests/modules/snapaligner/align -entry test_snapaligner_paired -c tests/config/nextflow.config
   tags:
-    - snapaligner/paired
+    - snapaligner/align
     - snapaligner
   files:
     - path: output/snapaligner/test.bam
