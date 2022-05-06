@@ -43,9 +43,10 @@ process PICARD_LIFTOVERVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard LiftoverVcf --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
+        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -53,7 +54,7 @@ process PICARD_LIFTOVERVCF {
     touch ${prefix}.unlifted.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard LiftoverVcf --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
+        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
