@@ -51,7 +51,6 @@ process PICARD_LIFTOVERVCF {
     """
     touch ${prefix}.lifted.vcf.gz
     touch ${prefix}.unlifted.vcf.gz
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(picard LiftoverVcf --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
