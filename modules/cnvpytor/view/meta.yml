@@ -1,8 +1,7 @@
-name: cnvpytor_partition
-description: partitioning read depth histograms
+name: cnvpytor_view
+description: view function to generate vcfs
 keywords:
   - cnv calling
-  - partition histograms
 tools:
   - cnvpytor:
       description: calling CNVs using read depth
@@ -25,6 +24,9 @@ input:
   - bin_sizes:
       type: string
       description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+  - output_format:
+      type: string
+      description: output format of the cnv calls. Valid entries are "tsv", "vcf", and "xls"
 
 output:
   - meta:
@@ -32,10 +34,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - partitions:
+  - tsv:
       type: file
-      description: pytor file containing partitions of read depth histograms using mean-shift method
-      pattern: "*.{pytor}"
+      description: tsv file containing cnv calls
+      pattern: "*.{tsv}"
+  - vcf:
+      type: file
+      description: vcf file containing cnv calls
+      pattern: "*.{vcf}"
+  - xls:
+      type: file
+      description: xls file containing cnv calls
+      pattern: "*.{xls}"
   - versions:
       type: file
       description: File containing software versions
