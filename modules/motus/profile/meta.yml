@@ -20,14 +20,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+        If input file is the mgc read counts table, the mgc should be set to `true`
+        e.g. [ id:'test', single_end:false, mgc:true ]
   - reads:
       type: file
       description: |
         List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
         respectively.
         Or the intermediate bam file mapped by bwa to the mOTUs database or
-        the output bam file from motus profile
-      pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz,.bam}"
+        the output bam file from motus profile.
+        Or the intermediate mgc read counts table. Please note if mgc table is input,
+        the `mgc` in metadata must be `true`.
+      pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz,.bam,.tsv,.txt,.mgc}"
   - db:
       type: directory
       description: |
@@ -51,6 +55,10 @@ output:
       type: file
       description: Optional intermediate sorted BAM file from BWA
       pattern: "*.{bam}"
+  - mgc:
+      type: file
+      description: Optional intermediate mgc read count table file saved with `-M`.
+      pattern: "*.{mgc}"
 
 authors:
   - "@jianhong"

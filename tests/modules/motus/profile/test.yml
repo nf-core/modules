@@ -15,3 +15,12 @@
   files:
     - path: output/motus/test.out
       contains: ["#consensus_taxonomy\ttest"]
+
+- name: motus profile test_motus_profile_bam
+  command: nextflow run tests/modules/motus/profile -entry test_motus_profile_bam -c tests/config/nextflow.config
+  tags:
+    - motus
+    - motus/profile
+  files:
+    - path: output/motus/test.out
+      contains: ["#consensus_taxonomy\ttest"]

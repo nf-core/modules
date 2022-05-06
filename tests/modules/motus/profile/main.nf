@@ -29,3 +29,15 @@ workflow test_motus_profile_paired_end {
 
     MOTUS_PROFILE ( input,  MOTUS_DOWNLOADDB.out.db)
 }
+
+workflow test_motus_profile_bam {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
+    ]
+
+    MOTUS_DOWNLOADDB(file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py'))
+
+    MOTUS_PROFILE ( input,  MOTUS_DOWNLOADDB.out.db)
+}
