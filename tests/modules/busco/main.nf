@@ -13,12 +13,58 @@ workflow test_busco_genome_single_fasta {
 
     BUSCO (
         input,
-        ['auto','bacteria_odb10', 'bacteroidetes_odb10'],  // Launch with auto to use --auto-lineage, and specified lineages
+        ['bacteria_odb10', 'bacteroidetes_odb10'],  // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
         [], // Download busco lineage
         [], // No config
     )
 
     /* Output tree:
+    /tmp/tmpyz_hi62i/busco/
+    ├── short_summary.specific.bacteria_odb10.genome.fna.json -> /tmp/tmpza_0dth3/33/7d8c9b2c8931d9ad6a67aa843895e7/short_summary.specific.bacteria_odb10.genome.fna.json
+    ├── short_summary.specific.bacteria_odb10.genome.fna.txt -> /tmp/tmpza_0dth3/33/7d8c9b2c8931d9ad6a67aa843895e7/short_summary.specific.bacteria_odb10.genome.fna.txt
+    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.json -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/short_summary.specific.bacteroidetes_odb10.genome.fna.json
+    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.txt -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/short_summary.specific.bacteroidetes_odb10.genome.fna.txt
+    ├── test-bacteria_odb10-busco -> /tmp/tmpza_0dth3/33/7d8c9b2c8931d9ad6a67aa843895e7/test-bacteria_odb10-busco/
+    │   ├── genome.fna/
+    │   │   ├── logs/
+    │   │   │   ├── hmmsearch_err.log
+    │   │   │   ├── hmmsearch_out.log
+    │   │   │   ├── prodigal_err.log
+    │   │   │   └── prodigal_out.log
+    │   │   ├── prodigal_output/
+    │   │   │   └── predicted_genes/
+    │   │   └── run_bacteria_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
+    │   └── logs/
+    │       └── busco.log
+    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmpza_0dth3/33/7d8c9b2c8931d9ad6a67aa843895e7/test-bacteria_odb10-busco.batch_summary.txt
+    ├── test-bacteroidetes_odb10-busco -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/test-bacteroidetes_odb10-busco/
+    │   ├── genome.fna/
+    │   │   ├── logs/
+    │   │   │   ├── hmmsearch_err.log
+    │   │   │   ├── hmmsearch_out.log
+    │   │   │   ├── prodigal_err.log
+    │   │   │   └── prodigal_out.log
+    │   │   ├── prodigal_output/
+    │   │   │   └── predicted_genes/
+    │   │   └── run_bacteroidetes_odb10/
+    │   │       ├── busco_sequences/
+    │   │       ├── full_table.tsv
+    │   │       ├── hmmer_output/
+    │   │       ├── missing_busco_list.tsv
+    │   │       ├── short_summary.json
+    │   │       └── short_summary.txt
+    │   └── logs/
+    │       └── busco.log
+    ├── test-bacteroidetes_odb10-busco.batch_summary.txt -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/test-bacteroidetes_odb10-busco.batch_summary.txt
+    └── versions.yml -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/versions.yml
+
+    Former Output tree -w 'auto':
     /tmp/tmp846crjv2/busco/
     ├── short_summary.generic.bacteria_odb10.genome.fna.json -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.generic.bacteria_odb10.genome.fna.json
     ├── short_summary.generic.bacteria_odb10.genome.fna.txt -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.generic.bacteria_odb10.genome.fna.txt
