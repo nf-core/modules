@@ -15,3 +15,15 @@ workflow test_picard_liftovervcf {
 
     PICARD_LIFTOVERVCF ( input_vcf, dict, chain, fasta )
 }
+
+workflow test_picard_liftovervcf_stubs {
+
+    input_vcf = [ [ id:'test' ],
+        "foo.vcf"
+            ]
+    dict =  "genome.fasta.dict"
+    chain =  "genome.chain.gz"
+    fasta  = "genome.fasta" ]
+
+    PICARD_LIFTOVERVCF ( input_vcf, dict, chain, fasta )
+}
