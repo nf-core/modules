@@ -1,0 +1,44 @@
+- name: "sratools ncbisettings test_sratools_ncbisettings_with_good_existing"
+  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_good_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow.config
+  tags:
+    - "sratools"
+    - "sratools/ncbisettings"
+  files:
+    - path: "output/sratools/user-settings.mkfg"
+      should_exist: false
+    - path: output/sratools/versions.yml
+      contains:
+        - "sratools: 2.11.0"
+
+- name: "sratools ncbisettings test_sratools_ncbisettings_with_bad_existing"
+  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_bad_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow.config
+  tags:
+    - "sratools"
+    - "sratools/ncbisettings"
+  exit_code: 1
+  stdout:
+    contains:
+      - "Command error:"
+      - "missing the required entries"
+      - "/LIBS/GUID"
+      - "/libs/cloud/report_instance_identity"
+      - "Feel free to add the following"
+  files:
+    - path: "output/sratools/user-settings.mkfg"
+      should_exist: false
+    - path: output/sratools/versions.yml
+      should_exist: false
+
+- name: "sratools ncbisettings test_sratools_ncbisettings_with_nonexisting"
+  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_nonexisting -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow.config
+  tags:
+    - "sratools"
+    - "sratools/ncbisettings"
+  files:
+    - path: "output/sratools/user-settings.mkfg"
+      contains:
+        - "/LIBS/GUID"
+        - "/libs/cloud/report_instance_identity"
+    - path: output/sratools/versions.yml
+      contains:
+        - "sratools: 2.11.0"
