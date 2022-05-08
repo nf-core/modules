@@ -22,6 +22,12 @@ input:
       type: val
       description: >
         A string denoting an SRA id.
+  - ncbi_settings:
+      type: file
+      description: >
+        Either a proper NCBI settings file or in case an existing file should be used,
+        a file with name EXISTS.
+      pattern: "*.mkfg | EXISTS"
 
 output:
   - meta:
