@@ -1,5 +1,4 @@
-//There is a -L option to only output alignments in interval, might be an option for exons/panel data?
-process SAMTOOLS_BAMTOCRAM {
+process SAMTOOLS_CONVERT {
     tag "$meta.id"
     label 'process_medium'
 
@@ -14,8 +13,9 @@ process SAMTOOLS_BAMTOCRAM {
     path  fai
 
     output:
-    tuple val(meta), path("*.cram"), path("*.crai"), emit: cram_crai
-    path  "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.cram"), path("*.crai") , emit: cram_crai, optional: true
+    tuple val(meta), path("*.bam"), path("*.bai")   , emit: bam_bai, optional:true
+    path  "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,9 +23,17 @@ process SAMTOOLS_BAMTOCRAM {
     script:
     def args = task.ext.args  ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def file_type = input.getExtension() == "bam" ? "cram" : "bam"
+
     """
-    samtools view --threads ${task.cpus} --reference ${fasta} -C $args $input > ${prefix}.cram
-    samtools index -@${task.cpus} ${prefix}.cram
+    samtools view \\
+        --threads ${task.cpus} \\
+        --reference ${fasta} \\
+        $args \\
+        $input \\
+        -o ${prefix}.${file_type}
+
+    samtools index -@${task.cpus} ${prefix}.${file_type}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
