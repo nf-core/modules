@@ -3,39 +3,61 @@
 nextflow.enable.dsl = 2
 
 include { RTGTOOLS_VCFEVAL } from '../../../../modules/rtgtools/vcfeval/main.nf'
+include { UNTAR } from '../../../modules/untar/main.nf'
 
 workflow test_rtgtools_vcfeval {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)        
     ]
 
-    sdf = Channel.value(
-        file(params.test_data['homo_sapiens']['genome']['genome_21_sdf'])
-    )
+    truth = [
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true)
+    ]
 
-    RTGTOOLS_VCFEVAL ( input, sdf )
+    compressed_sdf = [
+        [],
+        file(params.test_data['homo_sapiens']['genome']['genome_21_sdf'])
+    ]
+
+    sdf = UNTAR( compressed_sdf ).untar
+        .map({
+            meta, folder ->
+                folder
+        })
+    
+
+    RTGTOOLS_VCFEVAL ( input, truth, sdf )
 }
 
 workflow test_rtgtools_vcfeval_no_index {
     
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
-        [],
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         [],
         file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)        
     ]
 
-    sdf = Channel.value(
-        file(params.test_data['homo_sapiens']['genome']['genome_21_sdf'])
-    )
+    truth = [
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+        []
+    ]
 
-    RTGTOOLS_VCFEVAL ( input, sdf )
+    compressed_sdf = [
+        [],
+        file(params.test_data['homo_sapiens']['genome']['genome_21_sdf'])
+    ]
+
+    sdf = UNTAR( compressed_sdf ).untar
+        .map({
+            meta, folder ->
+                [folder]
+        })
+
+    RTGTOOLS_VCFEVAL ( input, truth, sdf )
 }

@@ -8,8 +8,8 @@ process RTGTOOLS_VCFEVAL {
         'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta),  path(query_vcf), path(query_vcf_tbi), path(bed)
-    tuple path(truth_vcf), path(truth_vcf_tbi),
+    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(bed)
+    tuple path(truth_vcf), path(truth_vcf_tbi)
     path(sdf)
 
     output:
@@ -26,15 +26,7 @@ process RTGTOOLS_VCFEVAL {
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
 
-    sdf_basename = sdf.getBaseName().replace(".tar","")
-    tar_decomp = ""
-    if((sdf =~ /.tar.gz\b/).find() == true) {
-        tar_decomp = "tar -xzf $sdf"
-    }
-
     """
-    $tar_decomp
-
     $truth_index
     $query_index
 
@@ -44,7 +36,7 @@ process RTGTOOLS_VCFEVAL {
         $regions \\
         --calls=$query_vcf \\
         --output=$prefix \\
-        --template=$sdf_basename \\
+        --template=$sdf \\
         --threads=$task.cpus \\
         > ${prefix}_results.txt
 
