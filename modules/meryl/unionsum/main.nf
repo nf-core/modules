@@ -11,8 +11,8 @@ process MERYL_UNIONSUM {
     tuple val(meta), path(meryl_dbs)
 
     output:
-    tuple val(meta), path("*.meryldb"), emit: meryl_db
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.unionsum.meryldb"), emit: meryl_db
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process MERYL_UNIONSUM {
     meryl union-sum \\
         threads=$task.cpus \\
         $args \\
-        output ${prefix}.meryl \\
+        output ${prefix}.unionsum.meryldb \\
         $meryl_dbs
 
     cat <<-END_VERSIONS > versions.yml
