@@ -10,7 +10,7 @@ process RTGTOOLS_VCFEVAL {
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi) 
     tuple path(truth_vcf), path(truth_vcf_tbi)
-    path(bed)
+    path(truth_regions)
     path(sdf)
 
     output:
@@ -23,7 +23,7 @@ process RTGTOOLS_VCFEVAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = bed ? "--bed-regions=$bed" : ""
+    def regions = truth_regions ? "--bed-regions=$truth_regions" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
 
