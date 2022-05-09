@@ -1,4 +1,4 @@
-process SNAPALIGNER_PAIRED {
+process SNAPALIGNER_ALIGN {
     tag '$meta.id'
     label 'process_high'
 
@@ -21,15 +21,16 @@ process SNAPALIGNER_PAIRED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def subcmd = meta.single_end ? "single" : "paired"
 
     """
     mkdir -p index
     mv $index index/
 
-    snap-aligner paired \\
+    snap-aligner ${subcmd} \\
         index \\
         ${reads.join(" ")} \\
-        -o -bam ${prefix}.bam \\
+        -o ${prefix}.bam \\
         -t ${task.cpus} \\
         $args
 
