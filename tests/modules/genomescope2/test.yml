@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml genomescope2
+- name: "genomescope2"
+  command: nextflow run ./tests/modules/genomescope2 -entry test_genomescope2 -c ./tests/config/nextflow.config -c ./tests/modules/genomescope2/nextflow.config
+  tags:
+    - "genomescope2"
+    #
+  files:
+    - path: "output/genomescope2/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/genomescope2/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
