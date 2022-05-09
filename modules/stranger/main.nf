@@ -9,6 +9,7 @@ process STRANGER {
 
     input:
     tuple val(meta), path(vcf)
+    path variant_catalog
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
@@ -20,10 +21,23 @@ process STRANGER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def options_variant_catalog = variant_catalog ? "--repeats-file $variant_catalog" : ""
     """
     stranger \\
         $args \\
-        $vcf | gzip --no-name > ${prefix}.vcf.gz
+        $vcf \\
+        $options_variant_catalog | gzip --no-name > ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        stranger: \$( stranger --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
