@@ -8,7 +8,7 @@ include { MERYL_UNIONSUM } from '../../../../modules/meryl/unionsum/main.nf'
 workflow test_meryl_unionsum {
 
     input = [
-        [ id:'test' ], // meta map
+        [ id:'test', single_end: false ], // meta map
         [
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
