@@ -21,8 +21,8 @@ process SAMTOOLS_CONVERT {
 
     script:
     def args = task.ext.args  ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def file_type = input.getExtension() == "bam" ? "cram" : "bam"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_extension = input.getExtension() == "bam" ? "cram" : "bam"
 
     """
     samtools view \\
@@ -30,9 +30,9 @@ process SAMTOOLS_CONVERT {
         --reference ${fasta} \\
         $args \\
         $input \\
-        -o ${prefix}.${file_type}
+        -o ${prefix}.${output_extension}
 
-    samtools index -@${task.cpus} ${prefix}.${file_type}
+    samtools index -@${task.cpus} ${prefix}.${output_extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
