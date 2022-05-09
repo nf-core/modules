@@ -1,9 +1,0 @@
-- name: samtools bamtocram test_samtools_bamtocram
-  command: nextflow run ./tests/modules/samtools/bamtocram -entry test_samtools_bamtocram -c ./tests/config/nextflow.config -c ./tests/modules/samtools/bamtocram/nextflow.config
-  tags:
-    - samtools/bamtocram
-    - samtools
-  files:
-    - path: output/samtools/test.cram
-    - path: output/samtools/test.cram.crai
-    - path: output/samtools/versions.yml
