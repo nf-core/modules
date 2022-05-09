@@ -43,6 +43,10 @@ output:
       type: file
       description: filtered/converted CRAM file + index
       pattern: "*{.cram,.crai}"
+  - bam_bai:
+      type: file
+      description: filtered/converted BAM file + index
+      pattern: "*{.bam,.bai}"
   - version:
       type: file
       description: File containing software version
