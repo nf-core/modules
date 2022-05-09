@@ -10,14 +10,15 @@ workflow test_rtgtools_vcfeval {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)        
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),        
     ]
 
     truth = [
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true)
     ]
+
+    bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
     compressed_sdf = [
         [],
@@ -31,7 +32,7 @@ workflow test_rtgtools_vcfeval {
         })
     
 
-    RTGTOOLS_VCFEVAL ( input, truth, sdf )
+    RTGTOOLS_VCFEVAL ( input, truth, bed, sdf )
 }
 
 workflow test_rtgtools_vcfeval_no_index {
@@ -40,13 +41,14 @@ workflow test_rtgtools_vcfeval_no_index {
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
         [],
-        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)        
     ]
 
     truth = [
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
         []
     ]
+
+    bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
     compressed_sdf = [
         [],
@@ -59,5 +61,5 @@ workflow test_rtgtools_vcfeval_no_index {
                 [folder]
         })
 
-    RTGTOOLS_VCFEVAL ( input, truth, sdf )
+    RTGTOOLS_VCFEVAL ( input, truth, bed, sdf )
 }

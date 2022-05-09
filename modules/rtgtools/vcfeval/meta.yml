@@ -40,9 +40,9 @@ input:
       description: The BED file of the called VCF
       pattern: "*.bed"
   - sdf:
-      type: folder/file
-      description: The SDF (RTG Sequence Data File) of the reference genome. Can be a folder or a tar-zipped folder.
-      pattern: "*.{,tar.gz}"
+      type: file
+      description: The SDF (RTG Sequence Data File) folder of the reference genome
+      pattern: "*"
 
 output:
   - meta:
