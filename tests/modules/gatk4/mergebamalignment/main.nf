@@ -17,11 +17,11 @@ workflow test_gatk4_mergebamalignment {
 
 workflow test_gatk4_mergebamalignment_stubs {
      input    = [ [ id:'test' ], // meta map
-                 "test_foo.bam",
-                 "test_bar.bam"
+                 file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true),
+                 file(params.test_data['sarscov2']['illumina']['test_unaligned_bam'], checkIfExists: true)
                ]
-    fasta    = "genome.fasta"
-    dict     = "genome.fasta.dict"
+    fasta    = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    dict     = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_MERGEBAMALIGNMENT ( input, fasta, dict )
 }
