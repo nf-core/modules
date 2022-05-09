@@ -13,7 +13,7 @@ process SAMTOOLS_CONVERT {
     path  fai
 
     output:
-    tuple val(meta), path("*.{cram,bam}"), path("*.{crai,bai}") , emit: aligned_index
+    tuple val(meta), path("*.{cram,bam}"), path("*.{crai,bai}") , emit: alignment_index
     path  "versions.yml"                                        , emit: versions
 
     when:
