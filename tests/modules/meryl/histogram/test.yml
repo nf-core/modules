@@ -1,14 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml meryl/histogram
-- name: "meryl histogram"
-  command: nextflow run ./tests/modules/meryl/histogram -entry test_meryl_histogram -c ./tests/config/nextflow.config -c ./tests/modules/meryl/histogram/nextflow.config
+- name: meryl histogram test_meryl_histogram
+  command: nextflow run tests/modules/meryl/histogram -entry test_meryl_histogram -c tests/config/nextflow.config
   tags:
-    - "meryl"
-    #
-    - "meryl/histogram"
-    #
+    - meryl/histogram
+    - meryl
   files:
-    - path: "output/meryl/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/meryl/test.hist
+      md5sum: 4bfdc8b287ee0cfd9922bbfa8cd64650
     - path: output/meryl/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 050038f1b1df79977a393cce1b4b2ddb
