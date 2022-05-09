@@ -35,9 +35,9 @@ input:
       type: file
       description: The index of the called VCF (optional)
       pattern: "*.tbi"
-  - bed:
+  - truth_regions:
       type: file
-      description: The BED file of the called VCF
+      description: The BED file containing the truth regions
       pattern: "*.bed"
   - sdf:
       type: file
