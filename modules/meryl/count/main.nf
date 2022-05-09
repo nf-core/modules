@@ -11,15 +11,14 @@ process MERYL_COUNT {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.meryl"), emit: meryl
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.meryldb"), emit: meryl_db
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     for READ in $reads; do
@@ -27,15 +26,8 @@ process MERYL_COUNT {
             threads=$task.cpus \\
             $args \\
             $reads \\
-            output read.\${READ%.f*}.meryl
+            output read.\${READ%.f*}.meryldb
     done
-    meryl union-sum \\
-        threads=$task.cpus \\
-        $args2 \\
-        output ${prefix}.meryl
-
-    # clean up
-    rm -rf read.*.meryl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

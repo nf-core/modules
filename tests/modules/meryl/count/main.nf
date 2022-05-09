@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { MERYL_COUNT } from '../../../../modules/meryl/count/main.nf'
 
-workflow test_meryl_count_single_end {
+workflow test_meryl_count {
 
     input = [
         [ id:'test' ], // meta map
