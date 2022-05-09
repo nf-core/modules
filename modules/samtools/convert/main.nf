@@ -13,16 +13,15 @@ process SAMTOOLS_CONVERT {
     path  fai
 
     output:
-    tuple val(meta), path("*.cram"), path("*.crai") , emit: cram_crai, optional: true
-    tuple val(meta), path("*.bam"), path("*.bai")   , emit: bam_bai, optional:true
-    path  "versions.yml"                            , emit: versions
+    tuple val(meta), path("*.{cram,bam}"), path("*.{crai,bai}") , emit: aligned_index
+    path  "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args  ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input.getExtension() == "bam" ? "cram" : "bam"
 
     """
