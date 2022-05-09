@@ -1,8 +1,8 @@
-- name: meryl count test_meryl_count_single_end
-  command: nextflow run tests/modules/meryl/count -entry test_meryl_count_single_end -c tests/config/nextflow.config
+- name: meryl count test_meryl_count
+  command: nextflow run tests/modules/meryl/count -entry test_meryl_count -c tests/config/nextflow.config
   tags:
-    - meryl/count
     - meryl
+    - meryl/count
   files:
     - path: output/meryl/versions.yml
-      md5sum: 5fe537d873925ccbcc4edf0983e9eda0
+      md5sum: 9bc9470c2eff996026781d5ff8c2b369
