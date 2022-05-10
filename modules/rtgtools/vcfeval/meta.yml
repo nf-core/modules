@@ -58,62 +58,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - done:
+  - logging:
       type: file
-      description: A file containing the message on succesful completion
-      pattern: "done"
-  - progress:
+      description: Files containing logging from vcfeval
+      pattern: "*{done,progress,.log}"
+  - vcf:
       type: file
-      description: A file containing the simplified logging of the process
-      pattern: "progress"
-  - vcfeval_log:
+      description: VCF files containing the false negatives, false positives and true positives with their index files
+      pattern: "*.vcf{.gz,.gz.tbi}"
+  - roc:
       type: file
-      description: A file containing the extended logging of the process
-      pattern: "*.log"
-  - false_negatives_vcf:
-      type: file
-      description: A VCF file containing the false negative variants
-      pattern: "fn.vcf.gz"
-  - false_negatives_index:
-      type: file
-      description: The index file for the false negatives' VCF file
-      pattern: "fn.vcf.gz.tbi"
-  - false_positive_vcf:
-      type: file
-      description: A VCF file containing the false positive variants
-      pattern: "fp.vcf.gz"
-  - false_positives_index:
-      type: file
-      description: The index file for the false positives' VCF file
-      pattern: "fp.vcf.gz.tbi"
-  - true_positive_vcf:
-      type: file
-      description: A VCF file containing the true positive variants
-      pattern: "tp.vcf.gz"
-  - true_positives_index:
-      type: file
-      description: The index file for the true positives' VCF file
-      pattern: "tp.vcf.gz.tbi"
-  - true_positive_baseline_vcf:
-      type: file
-      description: A VCF file containing the true positive baseline variants
-      pattern: "tp-baseline.vcf.gz"
-  - true_positives_baseline_index:
-      type: file
-      description: The index file for the baseline true positives' VCF file
-      pattern: "tp-baseline.vcf.gz.tbi"
-  - non_snp_roc:
-      type: file
-      description: A TSV file containing the ROC data for the non-SNP variants
-      pattern: "non_snp_roc.tsv.gz"
-  - snp_roc:
-      type: file
-      description: A TSV file containing the ROC data for the SNP variants
-      pattern: "snp_roc.tsv.gz"
-  - weighted_roc:
-      type: file
-      description: A TSV file containing the weighted ROC data
-      pattern: "weighted_roc.tsv.gz"
+      description: TSV files containing ROC data for the evaluated variants
+      pattern: "*.tsv.gz"
   - summary:
       type: file
       description: A TXT file containing the summary of the evaluation
