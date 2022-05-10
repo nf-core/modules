@@ -17,7 +17,7 @@ process RTGTOOLS_VCFEVAL {
     output:
     tuple val(meta), path("done"), path("progress"), path("*.log") , emit: logs
     tuple val(meta), path("*{tp,fn,fp,baseline}.vcf.gz.tbi"), path("*{tp,fn,fp,baseline}.vcf.gz") , emit: vcf
-    tuple val(meta), path("*.tsv.gz")           , emit: roc    
+    tuple val(meta), path("*.tsv.gz")           , emit: roc  
     tuple val(meta), path("summary.txt")        , emit: summary
     tuple val(meta), path("phasing.txt")        , emit: phasing
     path "versions.yml"                         , emit: versions
