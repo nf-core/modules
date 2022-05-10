@@ -4,36 +4,36 @@
     - rtgtools
     - rtgtools/vcfeval
   files:
-    - path: output/rtgtools/test/done
-    - path: output/rtgtools/test/fn.vcf.gz
+    - path: output/rtgtools/done
+    - path: output/rtgtools/fn.vcf.gz
       md5sum: 4577a8c3226b9f8ed9e260c3bd4b1259
-    - path: output/rtgtools/test/fn.vcf.gz.tbi
+    - path: output/rtgtools/fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/fp.vcf.gz
+    - path: output/rtgtools/fp.vcf.gz
       md5sum: 1417bb8ac7a0e202df660291a74de0db
-    - path: output/rtgtools/test/fp.vcf.gz.tbi
+    - path: output/rtgtools/fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/non_snp_roc.tsv.gz
+    - path: output/rtgtools/non_snp_roc.tsv.gz
       md5sum: 8fd51a1e5084d15d43880cb1e31a0180
-    - path: output/rtgtools/test/phasing.txt
+    - path: output/rtgtools/phasing.txt
       md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test/progress
-    - path: output/rtgtools/test/snp_roc.tsv.gz
+    - path: output/rtgtools/progress
+    - path: output/rtgtools/snp_roc.tsv.gz
       md5sum: ff2ece544adfcefaa06da054876a9ae3
-    - path: output/rtgtools/test/summary.txt
+    - path: output/rtgtools/summary.txt
       md5sum: f4c8df93c8bdab603036bbc27b4a28c3
-    - path: output/rtgtools/test/tp-baseline.vcf.gz
+    - path: output/rtgtools/tp-baseline.vcf.gz
       md5sum: 4577a8c3226b9f8ed9e260c3bd4b1259
-    - path: output/rtgtools/test/tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/tp-baseline.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/tp.vcf.gz
+    - path: output/rtgtools/tp.vcf.gz
       md5sum: 1417bb8ac7a0e202df660291a74de0db
-    - path: output/rtgtools/test/tp.vcf.gz.tbi
+    - path: output/rtgtools/tp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/vcfeval.log
-    - path: output/rtgtools/test/weighted_roc.tsv.gz
-      md5sum: 5209f1bdeb03704714ae92b183d08e0f
+    - path: output/rtgtools/vcfeval.log
     - path: output/rtgtools/versions.yml
+    - path: output/rtgtools/weighted_roc.tsv.gz
+      md5sum: 5209f1bdeb03704714ae92b183d08e0f
 
 - name: rtgtools vcfeval test_rtgtools_vcfeval_no_optional_inputs
   command: nextflow run tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c tests/config/nextflow.config
@@ -41,33 +41,33 @@
     - rtgtools
     - rtgtools/vcfeval
   files:
-    - path: output/rtgtools/test/done
-    - path: output/rtgtools/test/fn.vcf.gz
+    - path: output/rtgtools/done
+    - path: output/rtgtools/fn.vcf.gz
       md5sum: e51420e4be520ae309a2384830bf4c15
-    - path: output/rtgtools/test/fn.vcf.gz.tbi
+    - path: output/rtgtools/fn.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/fp.vcf.gz
+    - path: output/rtgtools/fp.vcf.gz
       md5sum: 7d818cf526983de6cbb5cf517c44a8f7
-    - path: output/rtgtools/test/fp.vcf.gz.tbi
+    - path: output/rtgtools/fp.vcf.gz.tbi
       md5sum: 092a7a3162e7cff25d273525751eb284
-    - path: output/rtgtools/test/non_snp_roc.tsv.gz
+    - path: output/rtgtools/non_snp_roc.tsv.gz
       md5sum: a535fb80081b43b19788347152b6b8b4
-    - path: output/rtgtools/test/phasing.txt
+    - path: output/rtgtools/phasing.txt
       md5sum: 133677dbd8be657439ea2b03fdfb8795
-    - path: output/rtgtools/test/progress
-    - path: output/rtgtools/test/snp_roc.tsv.gz
+    - path: output/rtgtools/progress
+    - path: output/rtgtools/snp_roc.tsv.gz
       md5sum: 6006656c4a534935c7873398287bc110
-    - path: output/rtgtools/test/summary.txt
+    - path: output/rtgtools/summary.txt
       md5sum: f33feb32f84958fb931063044fba369b
-    - path: output/rtgtools/test/tp-baseline.vcf.gz
+    - path: output/rtgtools/tp-baseline.vcf.gz
       md5sum: ed68ea567a26d3b864ada79e9253bc97
-    - path: output/rtgtools/test/tp-baseline.vcf.gz.tbi
+    - path: output/rtgtools/tp-baseline.vcf.gz.tbi
       md5sum: 3518deff814eed340b0f5386294b5879
-    - path: output/rtgtools/test/tp.vcf.gz
+    - path: output/rtgtools/tp.vcf.gz
       md5sum: 92fd51021d101c99da066324655d24c9
-    - path: output/rtgtools/test/tp.vcf.gz.tbi
+    - path: output/rtgtools/tp.vcf.gz.tbi
       md5sum: 169063c1f570f0055059f3cb3518a8b4
-    - path: output/rtgtools/test/vcfeval.log
-    - path: output/rtgtools/test/weighted_roc.tsv.gz
-      md5sum: 0ba825084bd6b94accdf54fff23ea18c
+    - path: output/rtgtools/vcfeval.log
     - path: output/rtgtools/versions.yml
+    - path: output/rtgtools/weighted_roc.tsv.gz
+      md5sum: 0ba825084bd6b94accdf54fff23ea18c
