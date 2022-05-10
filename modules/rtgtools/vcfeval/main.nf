@@ -20,10 +20,10 @@ process RTGTOOLS_VCFEVAL {
     tuple val(meta), path("**fn.vcf.gz"), path("**fn.vcf.gz.tbi") , emit: fn
     tuple val(meta), path("**fp.vcf.gz"), path("**fp.vcf.gz.tbi") , emit: fp
     tuple val(meta), path("**baseline.vcf.gz"), path("**baseline.vcf.gz.tbi") , emit: baseline
-    tuple val(meta), path("**.tsv.gz")           , emit: roc
+    tuple val(meta), path("**.tsv.gz")                    , emit: roc
     tuple val(meta), path("**results/summary.txt")        , emit: summary
     tuple val(meta), path("**results/phasing.txt")        , emit: phasing
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
