@@ -40,9 +40,7 @@ retry_with_backoff() {
     echo "${output}"
 }
 
-if [[ "!{ncbi_settings.name}" != "EXISTS" ]]; then
-    export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
-fi
+export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
 
 retry_with_backoff !{args2} \
     prefetch \
