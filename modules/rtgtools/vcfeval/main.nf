@@ -33,8 +33,8 @@ process RTGTOOLS_VCFEVAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed_regions = truth_regions ? "--bed-regions=$truth_regions" : ""
     def eval_regions = evaluation_regions ? "--evaluation-regions=$evaluation_regions" : ""
-    def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
-    def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
+    def truth_index = truth_vcf_tbi ?: "rtg index $truth_vcf"
+    def query_index = query_vcf_tbi ?: "rtg index $query_vcf"
 
     """
     $truth_index
