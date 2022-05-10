@@ -15,11 +15,14 @@ process RTGTOOLS_VCFEVAL {
     path(sdf)
 
     output:
-    tuple val(meta), path("done"), path("progress"), path("*.log") , emit: logs
-    tuple val(meta), path("*{tp,fn,fp,baseline}.vcf.gz.tbi"), path("*{tp,fn,fp,baseline}.vcf.gz") , emit: vcf
-    tuple val(meta), path("*.tsv.gz")           , emit: roc
-    tuple val(meta), path("summary.txt")        , emit: summary
-    tuple val(meta), path("phasing.txt")        , emit: phasing
+    tuple val(meta), path("**{done,progress,.log}") , emit: logs
+    tuple val(meta), path("**tp.vcf.gz"), path("**tp.vcf.gz.tbi") , emit: tp
+    tuple val(meta), path("**fn.vcf.gz"), path("**fn.vcf.gz.tbi") , emit: fn
+    tuple val(meta), path("**fp.vcf.gz"), path("**fp.vcf.gz.tbi") , emit: fp
+    tuple val(meta), path("**baseline.vcf.gz"), path("**baseline.vcf.gz.tbi") , emit: baseline
+    tuple val(meta), path("**.tsv.gz")           , emit: roc
+    tuple val(meta), path("**summary.txt")        , emit: summary
+    tuple val(meta), path("**phasing.txt")        , emit: phasing
     path "versions.yml"                         , emit: versions
 
     when:
