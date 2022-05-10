@@ -29,6 +29,8 @@ process BOWTIE2_ALIGN {
         def unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+        [ -z "\$INDEX" ] && INDEX=`find -L ./ -name "*.rev.1.bt2l" | sed 's/.rev.1.bt2l//'`
+        [ -z "\$INDEX" ] && echo "BT2 index files not found" 1>&2 && exit 1
         bowtie2 \\
             -x \$INDEX \\
             -U $reads \\
@@ -49,6 +51,8 @@ process BOWTIE2_ALIGN {
         def unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ''
         """
         INDEX=`find -L ./ -name "*.rev.1.bt2" | sed 's/.rev.1.bt2//'`
+        [ -z "\$INDEX" ] && INDEX=`find -L ./ -name "*.rev.1.bt2l" | sed 's/.rev.1.bt2l//'`
+        [ -z "\$INDEX" ] && echo "BT2 index files not found" 1>&2 && exit 1
         bowtie2 \\
             -x \$INDEX \\
             -1 ${reads[0]} \\
