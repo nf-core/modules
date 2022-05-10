@@ -62,21 +62,21 @@ output:
       type: file
       description: Files containing logging from vcfeval
       pattern: "*{done,progress,.log}"
-  - true_positives:
+  - tp:
       type: file
-      description: VCF files containing true positives with their index files
+      description: A tuple containing the VCF and TBI file for the true positive variants
       pattern: "tp.vcf{.gz,.gz.tbi}"
-  - true_positives_baseline:
+  - baseline:
       type: file
-      description: VCF files containing baseline true positives with their index files
+      description: A tuple containing the VCF and TBI file for the baseline true positive variants
       pattern: "tp-baseline.vcf{.gz,.gz.tbi}"
-  - false_positives:
+  - fp:
       type: file
-      description: VCF files containing false positives with their index files
+      description: A tuple containing the VCF and TBI file for the false positive variants
       pattern: "fp.vcf{.gz,.gz.tbi}"
-  - false_negatives:
+  - fn:
       type: file
-      description: VCF files containing false negatives with their index files
+      description: A tuple containing the VCF and TBI file for the false negative variants
       pattern: "fn.vcf{.gz,.gz.tbi}"
   - roc:
       type: file
