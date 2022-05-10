@@ -15,8 +15,12 @@ process RTGTOOLS_VCFEVAL {
     path(sdf)
 
     output:
-    tuple val(meta), path("${task.ext.prefix ?: meta.id}/*")    , emit: results
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("done"), path("progress"), path("*.log") , emit: logs
+    tuple val(meta), path("*{tp,fn,fp,baseline}.vcf.gz.tbi"), path("*{tp,fn,fp,baseline}.vcf.gz") , emit: vcf
+    tuple val(meta), path("*.tsv.gz")           , emit: roc    
+    tuple val(meta), path("summary.txt")        , emit: summary
+    tuple val(meta), path("phasing.txt")        , emit: phasing
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,6 +46,8 @@ process RTGTOOLS_VCFEVAL {
         --output=$prefix \\
         --template=$sdf \\
         --threads=$task.cpus \\
+
+    mv ${prefix}/* .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
