@@ -18,7 +18,9 @@ workflow test_rtgtools_vcfeval {
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+    truth_regions = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+
+    evaluation_regions = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
 
     compressed_sdf = [
         [],
@@ -32,10 +34,10 @@ workflow test_rtgtools_vcfeval {
         })
     
 
-    RTGTOOLS_VCFEVAL ( input, truth, bed, sdf )
+    RTGTOOLS_VCFEVAL ( input, truth, truth_regions, evaluation_regions, sdf )
 }
 
-workflow test_rtgtools_vcfeval_no_index {
+workflow test_rtgtools_vcfeval_no_optional_inputs {
     
     input = [
         [ id:'test' ], // meta map
@@ -48,7 +50,9 @@ workflow test_rtgtools_vcfeval_no_index {
         []
     ]
 
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+    truth_regions = []
+
+    evaluation_regions = []
 
     compressed_sdf = [
         [],
@@ -61,5 +65,5 @@ workflow test_rtgtools_vcfeval_no_index {
                 [folder]
         })
 
-    RTGTOOLS_VCFEVAL ( input, truth, bed, sdf )
+    RTGTOOLS_VCFEVAL ( input, truth, truth_regions, evaluation_regions, sdf )
 }

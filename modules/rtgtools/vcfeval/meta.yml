@@ -37,7 +37,11 @@ input:
       pattern: "*.tbi"
   - truth_regions:
       type: file
-      description: The BED file containing the truth regions
+      description: A BED file containining the strict regions where VCFeval should only evaluate the fully overlapping variants (optional)
+      pattern: "*.bed"
+  - evaluation_regions:
+      type: file
+      description: A BED file containing the regions where VCFeval will evaluate every fully and partially overlapping variant (optional)
       pattern: "*.bed"
   - sdf:
       type: file
@@ -56,8 +60,8 @@ output:
       pattern: "versions.yml"
   - results:
       type: file
-      description: A text file containing the results of the benchmark
-      pattern: "*.txt"
+      description: A folder containing all results of the evaluation
+      pattern: "*"
 
 authors:
   - "@nvnieuwk"

@@ -11,19 +11,21 @@ process RTGTOOLS_VCFEVAL {
     tuple val(meta), path(query_vcf), path(query_vcf_tbi)
     tuple path(truth_vcf), path(truth_vcf_tbi)
     path(truth_regions)
+    path(evaluation_regions)
     path(sdf)
 
     output:
-    tuple val(meta), path("*.txt"), emit: results
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${task.ext.prefix ?: meta.id}/*")    , emit: results
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = truth_regions ? "--bed-regions=$truth_regions" : ""
+    def bed_regions = truth_regions ? "--bed-regions=$truth_regions" : ""
+    def eval_regions = evaluation_regions ? "--evaluation-regions=$evaluation_regions" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
 
@@ -34,12 +36,12 @@ process RTGTOOLS_VCFEVAL {
     rtg vcfeval \\
         $args \\
         --baseline=$truth_vcf \\
-        $regions \\
+        $bed_regions \\
+        $eval_regions \\
         --calls=$query_vcf \\
         --output=$prefix \\
         --template=$sdf \\
         --threads=$task.cpus \\
-        > ${prefix}_results.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
