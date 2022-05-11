@@ -48,7 +48,7 @@ process BOWTIE2_ALIGN {
         -x \$INDEX \\
         ${reads_args} \\
         --threads $task.cpus \\
-        ${unaligned} \\
+        $unaligned \\
         $args \\
         2> ${prefix}.bowtie2.log \\
         | ${samtools}
