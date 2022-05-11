@@ -36,7 +36,7 @@ process BOWTIE2_ALIGN {
         reads_args = "-1 ${reads[0]} -2 ${reads[1]}"
     }
 
-    def samtools_command = "samtools view -@ $task.cpus --fast --with-header ${args2} > ${prefix}.bam"
+    def samtools_command = "samtools view -@ $task.cpus --bam --with-header ${args2} > ${prefix}.bam"
 
 
     """
