@@ -2,18 +2,18 @@
 
 nextflow.enable.dsl = 2
 
-include { SRATOOLS_NCBISETTINGS } from '../../../../modules/sratools/ncbisettings/main.nf'
+include { CUSTOM_SRATOOLSNCBISETTINGS } from '../../../../modules/custom/sratoolsncbisettings/main.nf'
 
-workflow test_sratools_ncbisettings_with_good_existing {
+workflow test_sratoolsncbisettings_with_good_existing {
 
     file(params.settings_path).mkdirs()
     def settings = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
     settings.copyTo(params.settings_file)
 
-    SRATOOLS_NCBISETTINGS()
+    CUSTOM_SRATOOLSNCBISETTINGS()
 }
 
-workflow test_sratools_ncbisettings_with_bad_existing {
+workflow test_sratoolsncbisettings_with_bad_existing {
 
     file(params.settings_path).mkdirs()
     def settings = file(params.settings_file)
@@ -33,9 +33,9 @@ workflow test_sratools_ncbisettings_with_bad_existing {
     /repository/user/default-path = "/root/ncbi"
     '''.stripIndent()
 
-    SRATOOLS_NCBISETTINGS()
+    CUSTOM_SRATOOLSNCBISETTINGS()
 }
 
-workflow test_sratools_ncbisettings_with_nonexisting {
-    SRATOOLS_NCBISETTINGS()
+workflow test_sratoolsncbisettings_with_nonexisting {
+    CUSTOM_SRATOOLSNCBISETTINGS()
 }
