@@ -13,7 +13,8 @@
     - path: output/antismash/test/genome.gbk
       contains: ['/tool="antismash"']
     - path: output/antismash/test/genome.json
-      contains: ['{"version": "6.0.1", "input_file": "genome.fna.gz", "records": [{"id": "NZ_CP069563.1", "seq": {"data":']
+      contains:
+        ['{"version": "6.0.1", "input_file": "genome.fna.gz", "records": [{"id": "NZ_CP069563.1", "seq": {"data":']
     - path: output/antismash/test/genome.zip
     - path: output/antismash/test/index.html
       md5sum: de787e865c3a1eec143a19d2facb4de4
