@@ -51,7 +51,7 @@ process BOWTIE2_ALIGN {
         $unaligned \\
         $args \\
         2> ${prefix}.bowtie2.log \\
-        | ${samtools}
+        | $samtools_command
 
     if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
         mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
