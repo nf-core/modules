@@ -10,7 +10,7 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["US-Government-Work"]
+      licence: ["Public Domain"]
 
 input:
   - meta:
@@ -22,6 +22,11 @@ input:
       type: directory
       description: Directory containing ETL data for the given SRA.
       pattern: "*/*.sra"
+  - ncbi_settings:
+      type: file
+      description: >
+        An NCBI user settings file.
+      pattern: "*.mkfg"
 
 output:
   - meta:
