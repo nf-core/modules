@@ -25,9 +25,8 @@ input:
   - ncbi_settings:
       type: file
       description: >
-        Either a proper NCBI settings file or in case an existing file should be used,
-        a file with name EXISTS.
-      pattern: "*.mkfg | EXISTS"
+        An NCBI user settings file.
+      pattern: "*.mkfg"
 
 output:
   - meta:
