@@ -49,3 +49,7 @@ This category covers data created during the assembly pipelines.
 This category corresponds to other inputs and outputs for software.
 
 - `*_longranger_mkref_targz`: archive of the output of `longranger mkref` on an assembly
+
+## Adding new data
+
+The directory on disk `/lustre/scratch123/tol/resources/nextflow/test_data` can be written to by anyone in the `tolengine` group. Feel free to add your own data there, and use those in your modules. However, to get the module merged in, we require that you update the [`test_data.config`](test_data.config) file as well in your pull-request. The ToL-IT team can upload the data files to the S3 server for a final test before merging the pull-request.
