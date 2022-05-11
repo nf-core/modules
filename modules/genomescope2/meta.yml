@@ -37,7 +37,31 @@ output:
   - linear_plot_png:
       type: file
       description: A genomescope2 linear plot in PNG format
-      pattern: "*.png"
+      pattern: "*_linear_plot.png"
+  - linear_plot_png:
+      type: file
+      description: A genomescope2 linear plot in PNG format
+      pattern: "*_linear_plot.png"
+  - transformed_linear_plot_png:
+      type: file
+      description: A genomescope2 transformed linear plot in PNG format
+      pattern: "*_transformed_linear_plot.png"
+  - log_plot_png:
+      type: file
+      description: A genomescope2 log plot in PNG format
+      pattern: "*_log_plot.png"
+  - transformed_log_plot_png:
+      type: file
+      description: A genomescope2 transformed log plot in PNG format
+      pattern: "*_transformed_log_plot.png"
+  - model:
+      type: file
+      description: Genomescope2 model fit summary
+      pattern: "*_model.txt"
+  - summary:
+      type: file
+      description: Genomescope2 histogram summary
+      pattern: "*_summary.txt"
 
 authors:
   - "@mahesh-panchal"
