@@ -7,8 +7,8 @@ include { SRATOOLS_NCBISETTINGS } from '../../../../modules/sratools/ncbisetting
 workflow test_sratools_ncbisettings_with_good_existing {
 
     file(params.settings_path).mkdirs()
-    def settings = file(params.settings_file)
-    settings.text = "/LIBS/GUID = \"5b0d4b7d-88c7-4802-98fd-e3afd06feb32\"\n/libs/cloud/report_instance_identity = \"true\"\n"
+    def settings = file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true)
+    settings.copyTo(params.settings_file)
 
     SRATOOLS_NCBISETTINGS()
 }
