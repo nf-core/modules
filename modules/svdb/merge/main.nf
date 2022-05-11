@@ -2,10 +2,10 @@ process SVDB_MERGE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::svdb=2.6.0" : null)
+    conda (params.enable_conda ? "bioconda::svdb=2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdb:2.6.0--py39h5371cbf_0':
-        'quay.io/biocontainers/svdb:2.6.0--py39h5371cbf_0' }"
+        'https://depot.galaxyproject.org/singularity/svdb:2.6.1--py39h5371cbf_0':
+        'quay.io/biocontainers/svdb:2.6.1--py39h5371cbf_0' }"
 
     input:
     tuple val(meta), path(vcfs)

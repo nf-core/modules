@@ -69,3 +69,15 @@
       md5sum: fc6ea14ca2da346babe78161beea28c9
     - path: output/gatk4/test.vcf.gz.tbi
     - path: output/gatk4/versions.yml
+
+- name: gatk4 mutect2 test_gatk4_mutect2_tumor_normal_pair_f1r2_stubs
+  command: nextflow run ./tests/modules/gatk4/mutect2 -entry test_gatk4_mutect2_tumor_normal_pair_f1r2_stubs -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/mutect2/nextflow.config -stub-run
+  tags:
+    - gatk4
+    - gatk4/mutect2
+  files:
+    - path: output/gatk4/test.f1r2.tar.gz
+    - path: output/gatk4/test.vcf.gz
+    - path: output/gatk4/test.vcf.gz.stats
+    - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
