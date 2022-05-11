@@ -35,10 +35,6 @@ input:
       type: file
       description: nucleotide sequence file (annotated)
       pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
-  - gff:
-      type: file
-      description: GFF3 file to extract annotated features from (only needed if sequence_input is in FASTA format)
-      pattern: "*.{gff, GFF}"
   - databases:
       type: directory
       description: downloaded AntiSMASH databases e.g. data/databases
@@ -53,6 +49,9 @@ input:
         directory needs to be mounted (including all modified files from the downloading step)
         to the container as a workaround.
       pattern: "*"
+  - gff:
+    type: file
+    pattern: "*.gff"
 
 output:
   - meta:
