@@ -23,9 +23,9 @@ process MOTUS_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = "$reads[0]".getExtension() == 'bam' ?
+    def inputs = reads[0].getExtension() == 'bam' ?
                     "-i ${reads}" :
-                    "$reads[0]".getExtension() == 'mgc' ? "-m $reads" :
+                    $reads[0].getExtension() == 'mgc' ? "-m $reads" :
                         meta.single_end ?
                             "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
     def refdb = db ? "-db ${db}" : ""
