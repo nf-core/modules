@@ -25,7 +25,7 @@ process LONGRANGER_MKREF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        longranger: \$(echo \$(longranger mkref --version) | grep longranger | sed 's/.*(//' | sed 's/).*//')
+        longranger: \$(longranger mkref --version | grep longranger | sed 's/.*(//' | sed 's/).*//')
     END_VERSIONS
     """
 }
