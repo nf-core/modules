@@ -8,8 +8,8 @@ workflow test_sratools_prefetch {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        'ERR2815334'
+        'DRR000774'
     ]
 
-    SRATOOLS_PREFETCH ( input )
+    SRATOOLS_PREFETCH(input, file(params.test_data['generic']['config']['ncbi_user_settings'], checkIfExists: true))
 }
