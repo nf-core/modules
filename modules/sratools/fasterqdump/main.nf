@@ -9,7 +9,7 @@ process SRATOOLS_FASTERQDUMP {
 
     input:
     tuple val(meta), path(sra)
-    path(ncbi_settings)
+    path ncbi_settings
 
     output:
     tuple val(meta), path(output), emit: reads
@@ -26,9 +26,7 @@ process SRATOOLS_FASTERQDUMP {
     // for unpaired reads which we ignore here.
     output = meta.single_end ? '*.fastq.gz' : '*_{1,2}.fastq.gz'
     """
-    if [[ "${ncbi_settings.name}" != "EXISTS" ]]; then
-        export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
-    fi
+    export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
     fasterq-dump \\
         $args \\
