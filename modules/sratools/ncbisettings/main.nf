@@ -8,8 +8,8 @@ process SRATOOLS_NCBISETTINGS {
         'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
 
     output:
-    path('user-settings.mkfg'), optional: true, emit: ncbi_settings
-    path 'versions.yml'       , emit: versions
+    path('*.mkfg')     , emit: ncbi_settings
+    path 'versions.yml', emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -31,6 +31,12 @@ else
         echo "$(printf '!{config}')" >&2
         exit 1
     fi
+    if [[ "${NCBI_SETTINGS}" != *.mkfg ]]; then
+        echo "The detected settings '${NCBI_SETTINGS}' do not have the required"\
+        "file extension '.mkfg'." >&2
+        exit 1
+    fi
+    cp "${NCBI_SETTINGS}" ./
 fi
 
 cat <<-END_VERSIONS > versions.yml
