@@ -1,17 +1,17 @@
 - name: "sratools ncbisettings test_sratools_ncbisettings_with_good_existing"
-  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_good_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow.config
+  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_good_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow_mount.config
   tags:
     - "sratools"
     - "sratools/ncbisettings"
   files:
     - path: "output/sratools/user-settings.mkfg"
-      should_exist: false
+      md5sum: 955e27aff2c277c2f1f0943a098888c1
     - path: output/sratools/versions.yml
       contains:
         - "sratools: 2.11.0"
 
 - name: "sratools ncbisettings test_sratools_ncbisettings_with_bad_existing"
-  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_bad_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow.config
+  command: nextflow run ./tests/modules/sratools/ncbisettings -entry test_sratools_ncbisettings_with_bad_existing -c ./tests/config/nextflow.config -c ./tests/modules/sratools/ncbisettings/nextflow_mount.config
   tags:
     - "sratools"
     - "sratools/ncbisettings"

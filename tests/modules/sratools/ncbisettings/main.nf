@@ -37,10 +37,5 @@ workflow test_sratools_ncbisettings_with_bad_existing {
 }
 
 workflow test_sratools_ncbisettings_with_nonexisting {
-
-    file(params.settings_path).mkdirs()
-    def settings = file(params.settings_file)
-    settings.delete()
-
     SRATOOLS_NCBISETTINGS()
 }
