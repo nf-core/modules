@@ -46,7 +46,7 @@ process BOWTIE2_ALIGN {
 
     bowtie2 \\
         -x \$INDEX \\
-        ${reads_args} \\
+        $reads_args \\
         --threads $task.cpus \\
         $unaligned \\
         $args \\
