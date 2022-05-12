@@ -65,7 +65,9 @@ workflow test_gatk4_genotypegvcfs_gz_input_intervals {
     input = [ [ id:'test' ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
-            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true) ]
+            file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true) ,
+            []
+            ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
