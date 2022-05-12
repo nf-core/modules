@@ -48,10 +48,10 @@ input:
         be done in immutable docker/singularity containers. Therefore, a local installation
         directory needs to be mounted (including all modified files from the downloading step)
         to the container as a workaround.
-      pattern: "*"
+      pattern: "*/"
   - gff:
-    type: file
-    pattern: "*.gff"
+      type: file
+      pattern: "*.gff"
 
 output:
   - meta:
@@ -89,11 +89,11 @@ output:
       pattern: "svg/knownclusterblast*.svg"
   - gbk_input:
       type: file
-      description: Nucleotide sequence + annotations in GenBank format; converted from input file
+      description: Nucleotide sequence and annotations in GenBank format; converted from input file
       pattern: "*.gbk"
   - json_results:
       type: file
-      description: Nucleotide sequence + annotations in JSON format; converted from GenBank file (gbk_input)
+      description: Nucleotide sequence and annotations in JSON format; converted from GenBank file (gbk_input)
       pattern: "*.json"
   - log:
       type: file
@@ -105,7 +105,7 @@ output:
       pattern: "*.zip"
   - gbk_results:
       type: file
-      description: Nucleotide sequence + annotations in GenBank format; one file per antiSMASH hit
+      description: Nucleotide sequence and annotations in GenBank format; one file per antiSMASH hit
       pattern: "*region*.gbk"
   - clusterblastoutput:
       type: file
