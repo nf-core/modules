@@ -1,5 +1,5 @@
 name: gatk4_mutect2
-description:  Call somatic SNVs and indels via local assembly of haplotypes.
+description: Call somatic SNVs and indels via local assembly of haplotypes.
 keywords:
   - gatk4
   - mutect2
@@ -14,7 +14,7 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
-      licence: ['Apache-2.0']
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
@@ -30,26 +30,10 @@ input:
       type: list
       description: list of BAM file indexes, also able to take CRAM indexes as an input
       pattern: "*.{bam.bai/cram.crai}"
-  - which_norm:
-      type: list
-      description: optional list of sample headers contained in the normal sample bam files (these are required for tumor_normal_pair mode)
-      pattern: "testN"
-  - run_single:
-      type: boolean
-      description: Specify whether or not to run in tumor_single mode instead of tumor_normal_pair mode (will be ignored if run_pon is also true)
-      pattern: "true/false"
-  - run_pon:
-      type: boolean
-      description: Specify whether or not to run in panel_of_normal mode instead of tumor_normal_pair mode
-      pattern: "true/false"
-  - run_mito:
-      type: boolean
-      description: Specify whether or not to run in mitochondria-mode instead of tumor_normal_pair mode
-      pattern: "true/false"
-  - interval_label:
-      type: string
-      description: Specify the label used for mitochondrial chromosome when mutect2 is run in mitochondria mode.
-      pattern: "chrM"
+  - intervals:
+      type: File/string
+      description: Specify region the tools is run on.
+      pattern: ".{bed,interval_list}/chrM"
   - fasta:
       type: file
       description: The reference fasta file

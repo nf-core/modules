@@ -1,0 +1,42 @@
+name: mafft
+description: Multiple sequence alignment using MAFFT
+keywords:
+  - msa
+  - multiple sequence alignment
+tools:
+  - mafft:
+      description: Multiple alignment program for amino acid or nucleotide sequences based on fast Fourier transform
+      homepage: https://mafft.cbrc.jp/alignment/software/
+      documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
+      tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
+      doi: "10.1093/nar/gkf436"
+      licence: ["BSD"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file containing the sequences to align
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fas:
+      type: file
+      description: Aligned sequences in FASTA format
+      pattern: "*.{fas}"
+
+authors:
+  - "@MillironX"

@@ -12,10 +12,15 @@ process KRONA_KRONADB {
     path 'taxonomy/taxonomy.tab', emit: db
     path "versions.yml"         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
-    ktUpdateTaxonomy.sh taxonomy
+    ktUpdateTaxonomy.sh \\
+        $args \\
+        taxonomy/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

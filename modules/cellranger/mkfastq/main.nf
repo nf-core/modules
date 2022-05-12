@@ -15,6 +15,9 @@ process CELLRANGER_MKFASTQ {
     path "versions.yml", emit: versions
     path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """

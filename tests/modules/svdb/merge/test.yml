@@ -1,0 +1,14 @@
+- name: svdb merge
+  command: nextflow run ./tests/modules/svdb/merge -entry test_svdb_merge -c ./tests/config/nextflow.config -c ./tests/modules/svdb/merge/nextflow.config
+  tags:
+    - svdb
+    - svdb/merge
+  files:
+    - path: output/svdb/test_sv_merge.vcf
+- name: svdb merge noprio
+  command: nextflow run ./tests/modules/svdb/merge -entry test_svdb_merge_noprio -c ./tests/config/nextflow.config -c ./tests/modules/svdb/merge/nextflow.config
+  tags:
+    - svdb
+    - svdb/merge
+  files:
+    - path: output/svdb/test_sv_merge.vcf

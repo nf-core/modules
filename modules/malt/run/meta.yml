@@ -16,9 +16,14 @@ tools:
       documentation: https://software-ab.informatik.uni-tuebingen.de/download/malt/manual.pdf
       tool_dev_url: None
       doi: "10.1038/s41559-017-0446-6"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fastqs:
       type: file
       description: Input FASTQ files
@@ -26,11 +31,11 @@ input:
   - mode:
       type: string
       description: Program mode
-      pattern: 'Unknown|BlastN|BlastP|BlastX|Classifier'
+      pattern: "Unknown|BlastN|BlastP|BlastX|Classifier"
   - index:
       type: directory
       description: Index/database directory from malt-build
-      pattern: '*/'
+      pattern: "*/"
 output:
   - versions:
       type: file
@@ -47,7 +52,7 @@ output:
   - log:
       type: file
       description: Log of verbose MALT stdout
-      pattern: "malt-run.log"
+      pattern: "*-malt-run.log"
 
 authors:
   - "@jfy133"
