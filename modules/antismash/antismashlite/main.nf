@@ -23,9 +23,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     output:
     tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")                 , optional: true, emit: clusterblast_file
-    tuple val(meta), path("${prefix}/css/*.css")                             , emit: css_file
-    tuple val(meta), path("${prefix}/images")                                , emit: image_directory
-    tuple val(meta), path("${prefix}/js/*.js")                               , emit: javascript
+    tuple val(meta), path("${prefix}/{css,images,js}")                       , emit: html_accessory_files
     tuple val(meta), path("${prefix}/knownclusterblast/region*/ctg*.html")   , optional: true, emit: knownclusterblast_html
     tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt")            , optional: true, emit: knownclusterblast_txt
     tuple val(meta), path("${prefix}/svg/clusterblast*.svg")                 , optional: true, emit: svg_files_clusterblast

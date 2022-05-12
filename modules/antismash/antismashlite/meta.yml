@@ -67,18 +67,10 @@ output:
       type: file
       description: Output of ClusterBlast algorithm
       pattern: "clusterblast/*_c*.txt"
-  - css_file:
-      type: file
-      description: Style sheet containing the formatting of HTML output
-      pattern: "css/*.css"
-  - image_directory:
+  - html_accessory_files:
       type: directory
-      description: image files for web view of antiSMASH results
-      pattern: "images"
-  - javascript:
-      type: file
-      description: JavaScript files
-      pattern: "js/*.js"
+      description: Accessory files for the HTML output
+      pattern: "{css/,images/,js/}"
   - knownclusterblast_html:
       type: file
       description: Tables with MIBiG hits in HTML format

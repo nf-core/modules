@@ -36,7 +36,6 @@ workflow test_antismashlite {
         file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
     ]
 
-
     GUNZIP1 ( genome_fna )
     GUNZIP2 ( genome_gff )
     UNTAR1 ( antismash_db1 )
@@ -44,6 +43,4 @@ workflow test_antismashlite {
     UNTAR3 ( antismash_db3 )
     ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES ( UNTAR1.out.untar.map{ it[1] },  UNTAR2.out.untar.map{ it[1] }, UNTAR3.out.untar.map{ it[1] } )
     ANTISMASH_ANTISMASHLITE ( GUNZIP1.out.gunzip, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database, ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir, GUNZIP2.out.gunzip.map{ it[1] } )
-    // ANTISMASH_ANTISMASHLITE ( GUNZIP1.out.gunzip, input_db, input_dir, GUNZIP2.out.gunzip.map{ it[1] } )
-
 }
