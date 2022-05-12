@@ -17,6 +17,9 @@ process UCSC_WIGTOBIGWIG {
     tuple val(meta), path("*.bw"), emit: bw
     path "versions.yml"          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -26,6 +29,17 @@ process UCSC_WIGTOBIGWIG {
         $wig \\
         $sizes \\
         ${prefix}.bw
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ucsc: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bw
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

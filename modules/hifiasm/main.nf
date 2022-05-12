@@ -25,6 +25,9 @@ process HIFIASM {
     tuple val(meta), path("*.hap2.p_ctg.gfa")  , emit: maternal_contigs , optional: true
     path  "versions.yml"                       , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
