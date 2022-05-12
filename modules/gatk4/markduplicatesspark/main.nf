@@ -2,10 +2,10 @@ process GATK4_MARKDUPLICATES_SPARK {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
+        'broadinstitute/gatk:4.2.3.0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -22,7 +22,7 @@ process GATK4_MARKDUPLICATES_SPARK {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3
@@ -32,6 +32,10 @@ process GATK4_MARKDUPLICATES_SPARK {
         avail_mem = task.memory.giga
     }
     """
+    export SPARK_USER=spark3
+
+
+
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\
