@@ -1,11 +1,14 @@
 name: sra_fastq
 description: Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).
 keywords:
+  - SRA
+  - NCBI
   - sequencing
   - FASTQ
   - prefetch
-  - dump
+  - fasterq-dump
 modules:
+  - custom/sratoolsncbisettings
   - sratools/prefetch
   - sratools/fasterqdump
 input:
@@ -17,7 +20,7 @@ input:
   - id:
       type: string
       description: >
-        SRA identifier.
+        SRA run identifier.
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - meta:
