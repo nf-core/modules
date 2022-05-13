@@ -69,4 +69,3 @@ process BOWTIE2_ALIGN {
     END_VERSIONS
     """
 }
-
