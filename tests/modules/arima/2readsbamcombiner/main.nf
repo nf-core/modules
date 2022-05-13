@@ -9,8 +9,8 @@ workflow test_arima_2readsbamcombiner {
     data = [
         [ id:'test'], // meta map
         [
-           file('https://tol-testdata.cog.sanger.ac.uk/test.single_end_1.bam', checkIfExists: true),
-           file('https://tol-testdata.cog.sanger.ac.uk/test.single_end_2.bam', checkIfExists: true)
+           file('https://tolit.cog.sanger.ac.uk/test-data/Impatiens_glandulifera/genomic_data/dImpGla2/hic-dnazoo/subset_aligned/dImpGla2_SRR11908461.single_end_1.bam', checkIfExists: true),
+           file('https://tolit.cog.sanger.ac.uk/test-data/Impatiens_glandulifera/genomic_data/dImpGla2/hic-dnazoo/subset_aligned/dImpGla2_SRR11908461.single_end_2.bam', checkIfExists: true),
         ],
     ]
 
