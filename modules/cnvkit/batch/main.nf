@@ -33,6 +33,9 @@ process CNVKIT_BATCH {
     if (args.contains("--method wgs") || args.contains("-m wgs")) {
         target_args = targets ? "--targets $targets" : ""
     }
+    else if(normal_args == "") {
+        target_args = ""
+    }
     else {
         target_args = "--targets $targets"
     }
