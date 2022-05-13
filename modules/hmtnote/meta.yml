@@ -1,0 +1,37 @@
+name: hmtnote
+## TODO nf-core: Add a description of the module and list keywords
+description: Human mitochondrial variants annotation using HmtVar.
+keywords:
+  - sort
+tools:
+  - hmtnote:
+      ## TODO nf-core: Add a description and other details for the software below
+      description: Human mitochondrial variants annotation using HmtVar.
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ['MIT']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  ## TODO nf-core: Delete / customise this example input
+  - vcf:
+      type: file
+      description: vcf file
+      pattern: "*.{vcf}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - vcf:
+      type: file
+      description: annotated vcf
+      pattern: "*_annotated.vcf"
+
+authors:
+  - "@sysbiocoder"

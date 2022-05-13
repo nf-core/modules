@@ -1,0 +1,9 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml hmtnote
+- name: hmtnote
+  command: nextflow run ./tests/modules/hmtnote -entry test_hmtnote -c ./tests/config/nextflow.config -c ./tests/modules/hmtnote/nextflow.config
+  tags:
+    - hmtnote
+  files:
+    - path: output/vcfanno/test_annotated.vcf
+      md5sum: 90ceb2fd2e06e781846d69c3981db665
