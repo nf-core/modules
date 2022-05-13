@@ -35,12 +35,13 @@ process RTGTOOLS_VCFEVAL {
     def eval_regions = evaluation_regions ? "--evaluation-regions=$evaluation_regions" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index $truth_vcf"
     def query_index = query_vcf_tbi ? "" : "rtg index $query_vcf"
+    def avail_mem = task.memory.toGiga() + "G"
 
     """
     $truth_index
     $query_index
 
-    rtg vcfeval \\
+    rtg RTG_MEM=$avail_mem vcfeval \\
         $args \\
         --baseline=$truth_vcf \\
         $bed_regions \\
