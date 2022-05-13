@@ -27,7 +27,7 @@ process GATK4_SPLITINTERVALS {
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK IntervalListToBed] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK SplitIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
