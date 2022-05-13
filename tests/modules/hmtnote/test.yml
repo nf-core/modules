@@ -1,7 +1,6 @@
-- name: hmtnote
+- name: hmtnote test_hmtnote
   command: nextflow run ./tests/modules/hmtnote -entry test_hmtnote -c ./tests/config/nextflow.config -c ./tests/modules/hmtnote/nextflow.config
   tags:
     - hmtnote
   files:
     - path: output/hmtnote/test_annotated.vcf
-      md5sum: fda76b88198b4a54abc018309600b171
