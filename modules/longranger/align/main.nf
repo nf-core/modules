@@ -34,7 +34,7 @@ process LONGRANGER_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    longranger: \$(echo \$(longranger mkref --version) | grep longranger | sed 's/.*(//' | sed 's/).*//')
+        longranger: \$(longranger align --version | grep longranger | sed 's/.*(//' | sed 's/).*//')
     END_VERSIONS
     """
 }
