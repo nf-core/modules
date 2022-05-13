@@ -1,0 +1,9 @@
+- name: markduplicates parallel
+  command: nextflow run ./tests/subworkflows/nf-core/markdup_parallel -entry test_markdup_parallel -c tests/config/nextflow.config -c ./tests/subworkflows/nf-core/markdup_parallel/nextflow.config
+  tags:
+    - subworkflows
+    - subworkflows/markdup_parallel
+  files:
+    - path: ./output/test.bam
+    - path: ./output/test.metrics.txt
+    - path: ./output/versions.yml
