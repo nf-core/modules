@@ -33,6 +33,8 @@ process CNVKIT_BATCH {
     if (args.contains("--method wgs") || args.contains("-m wgs")) {
         target_args = targets ? "--targets $targets" : ""
     }
+    // valid for tumor-only mode (without normal samples)
+    // in this case no target_args should be provided
     else if(normal_args == "") {
         target_args = ""
     }
