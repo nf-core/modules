@@ -15,7 +15,7 @@ process GATK4_SPLITINTERVALS {
 
     output:
     tuple val(meta), path("**.interval_list"), emit: split_intervals
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,6 +37,7 @@ process GATK4_SPLITINTERVALS {
         --output ${prefix} \\
         --intervals $intervals \\
         $reference \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
