@@ -37,7 +37,7 @@ process GATK4_SPLITINTERVALS {
         --output ${prefix} \\
         --intervals $intervals \\
         $reference \\
-        $args 
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
