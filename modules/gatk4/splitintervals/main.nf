@@ -11,7 +11,7 @@ process GATK4_SPLITINTERVALS {
     tuple val(meta), path(intervals)
     path(fasta)
     path(fasta_fai)
-    path(fasta_dict)
+    path(dict)
 
     output:
     tuple val(meta), path("**.interval_list"), emit: split_intervals

@@ -21,6 +21,18 @@ input:
       type: file
       description: Interval list or BED
       pattern: "*.{interval,interval_list,bed}"
+  - fasta:
+      type: file
+      description: Reference FASTA
+      pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: Reference FASTA index
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: Reference sequence dictionary
+      pattern: "*.dict"
 
 output:
   - meta:
