@@ -10,5 +10,5 @@ workflow test_hmtnote {
               file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
             ]
 
-    HMTNOTE ( input )
+    HMTNOTE ( input, [] )
 }
