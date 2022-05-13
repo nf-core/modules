@@ -13,7 +13,7 @@ process DOWNLOAD_READS {
     for f in pEimTen1_S10_L007_R1_001.fastq.gz pEimTen1_S10_L007_R2_001.fastq.gz; do
         if [ ! -f  ${workDir}/10x/\$f ]
         then
-            wget -P ${workDir}/10x https://darwin.cog.sanger.ac.uk/longranger_nf_test/10x/\$f
+            wget -P ${workDir}/10x https://tolit.cog.sanger.ac.uk/test-data/Eimeria_tenella/genomic_data/pEimTen1/10x/subset/\$f
         fi
     done
     """
@@ -23,7 +23,7 @@ process DOWNLOAD_REF {
     script:
     """
     cd ${workDir}/
-    wget https://darwin.cog.sanger.ac.uk/longranger_nf_test/refdata-pEimTen1.contigs.tar.gz
+    wget https://tolit.cog.sanger.ac.uk/test-data/Eimeria_tenella/working/pEimTen1.canu.20190919/refdata-pEimTen1.contigs.tar.gz
     tar -xzvf refdata-pEimTen1.contigs.tar.gz
     """
 }
