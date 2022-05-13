@@ -1,4 +1,7 @@
 process LONGRANGER_ALIGN {
+    // To use in cluster mode, some extra configurations is needed.
+    // Visit tests/modules/longranger/align/nextflow.config for an example.
+
     tag "$meta.id"
     label 'process_medium'
 
