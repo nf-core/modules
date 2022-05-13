@@ -1,0 +1,38 @@
+name: markdup_parallel
+description: Parallelize MarkDuplicate calls
+keywords:
+  - markduplicates
+  - parallel
+modules:
+  - bamtools/split
+  - biobambam/bammarkduplicates2
+  - samtools/merge
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: List of (sorted) bam files to be merged and duplicate marked
+      pattern: "*.bam"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Merged and duplicate marked bam file
+      pattern: "*.bam"
+  - metrics:
+      type: file
+      description: MarkDuplicate metrics file
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"
