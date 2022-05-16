@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_APPLYVQSR } from '../../../../modules/gatk4/applyvqsr/main.nf'
+include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_NO_ALLELSPECIFICITY } from '../../../../modules/gatk4/applyvqsr/main.nf'
+include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_WITH_ALLELSPECIFICITY} from '../../../../modules/gatk4/applyvqsr/main.nf'
 
 workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map
@@ -15,11 +16,8 @@ workflow test_gatk4_applyvqsr {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    allelespecific = false
-    truthsensitivity = '99.0'
-    mode = 'SNP'
 
-    GATK4_APPLYVQSR ( input, fasta, fai, dict, allelespecific, truthsensitivity, mode )
+    GATK4_APPLYVQSR_NO_ALLELSPECIFICITY ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_applyvqsr_allele_specific {
@@ -33,9 +31,6 @@ workflow test_gatk4_applyvqsr_allele_specific {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
-    allelespecific = true
-    truthsensitivity = '99.0'
-    mode = 'SNP'
 
-    GATK4_APPLYVQSR ( input, fasta, fai, dict, allelespecific, truthsensitivity, mode )
+    GATK4_APPLYVQSR_WITH_ALLELSPECIFICITY ( input, fasta, fai, dict)
 }

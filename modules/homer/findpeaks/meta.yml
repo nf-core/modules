@@ -7,9 +7,11 @@ tools:
   - homer:
       description: |
         HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
-      documentation: http://homer.ucsd.edu/homer/
+      homepage: "http://homer.ucsd.edu/homer/index.html"
+      documentation: "http://homer.ucsd.edu/homer/"
+      tool_dev_url: "http://homer.ucsd.edu/homer/ngs/peaks.html"
       doi: 10.1016/j.molcel.2010.05.004.
-      licence: ['GPL-3.0-or-later']
+      licence: ["GPL-3.0-or-later"]
 input:
   - meta:
       type: map
@@ -29,7 +31,7 @@ output:
   - peaks:
       type: file
       description: The found peaks
-      pattern: "*peaks.txt"
+      pattern: "*.peaks.txt"
   - versions:
       type: file
       description: File containing software versions
