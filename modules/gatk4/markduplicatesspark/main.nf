@@ -34,8 +34,6 @@ process GATK4_MARKDUPLICATES_SPARK {
     """
     export SPARK_USER=spark3
 
-
-
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\
