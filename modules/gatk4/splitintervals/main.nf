@@ -1,4 +1,4 @@
-process GATK4_GATHERPILEUPSUMMARIES {
+process GATK4_SPLITINTERVALS {
     tag "$meta.id"
     label 'process_low'
 
@@ -7,14 +7,15 @@ process GATK4_GATHERPILEUPSUMMARIES {
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
-
     input:
-    tuple val(meta), path(pileup)
-    path  dict
+    tuple val(meta), path(intervals)
+    path(fasta)
+    path(fasta_fai)
+    path(dict)
 
     output:
-    tuple val(meta), path("*.pileupsummaries.table"), emit: table
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("**.interval_list"), emit: split_intervals
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,19 +23,20 @@ process GATK4_GATHERPILEUPSUMMARIES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = pileup.collect{ "--I $it" }.join(' ')
+    def reference = fasta ? "--reference $fasta" : ""
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK GatherPileupSummaries] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK SplitIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
+
     """
-    gatk --java-options "-Xmx${avail_mem}g" GatherPileupSummaries \\
-        $input_list \\
-        --O ${prefix}.pileupsummaries.table \\
-        --sequence-dictionary $dict \\
+    gatk --java-options "-Xmx${avail_mem}g" SplitIntervals \\
+        --output ${prefix} \\
+        --intervals $intervals \\
+        $reference \\
         --tmp-dir . \\
         $args
 
