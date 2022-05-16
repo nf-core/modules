@@ -28,6 +28,7 @@ process BWA_MEM {
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
+
     bwa mem \\
         $args \\
         $read_group \\
