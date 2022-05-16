@@ -1,0 +1,8 @@
+- name: biobambam bammerge test_biobambam_bammerge
+  command: nextflow run ./tests/modules/biobambam/bammerge -entry test_biobambam_bammerge -c ./tests/config/nextflow.config  -c ./tests/modules/biobambam/bammerge/nextflow.config
+  tags:
+    - biobambam/bammerge
+    - biobambam
+  files:
+    - path: output/biobambam/test.bam
+      md5sum: 676157f300c774a58dd3b7b554e00f11

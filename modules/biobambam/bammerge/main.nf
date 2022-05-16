@@ -1,0 +1,37 @@
+process BIOBAMBAM_BAMMERGE {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda (params.enable_conda ? "bioconda::biobambam=2.0.183" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1':
+        'quay.io/biocontainers/biobambam:2.0.183--h9f5acd7_1' }"
+
+    input:
+    tuple val(meta), path(bam)
+
+    output:
+    tuple val(meta), path("${prefix}.bam")    ,emit: bam
+    tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
+    path "versions.yml"                         ,emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def input_string = bam.join(" I=")
+
+    """
+    bammerge \\
+        I=${input_string} \\
+        $args \\
+        > ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bammerge: \$(echo \$(bammerge --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+    END_VERSIONS
+    """
+}
