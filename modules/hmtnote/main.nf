@@ -11,6 +11,7 @@ process HMTNOTE {
     tuple val(meta), path(vcf)
 
     output:
+    tuple val(meta), path("*_annotated.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
