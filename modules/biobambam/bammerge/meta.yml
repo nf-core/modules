@@ -33,7 +33,11 @@ output:
   - bam_index:
       type: file
       description: BAM index file
-      pattern: "*.{bai}"
+      pattern: "*"
+  - checksum:
+      type: file
+      description: Checksum file
+      pattern: "*"
   - versions:
       type: file
       description: File containing software versions
