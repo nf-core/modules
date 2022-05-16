@@ -1,0 +1,27 @@
+- name: umitools extract test_umitools_extract_single_end
+  command: nextflow run tests/modules/umitools/extract -entry test_umitools_extract_single_end -c tests/config/nextflow.config
+  tags:
+    - umitools/extract
+    - umitools
+  files:
+    - path: output/umitools/test.umi_extract.fastq.gz
+      should_exist: true
+    - path: output/umitools/test.umi_extract.log
+      contains: ["job finished in"]
+    - path: output/umitools/versions.yml
+      md5sum: 397e6972343f9d7b8eae387fc18c12c7
+
+- name: umitools extract test_umitools_extract_paired_end
+  command: nextflow run tests/modules/umitools/extract -entry test_umitools_extract_paired_end -c tests/config/nextflow.config
+  tags:
+    - umitools/extract
+    - umitools
+  files:
+    - path: output/umitools/test.umi_extract.log
+      contains: ["job finished in"]
+    - path: output/umitools/test.umi_extract_1.fastq.gz
+      should_exist: true
+    - path: output/umitools/test.umi_extract_2.fastq.gz
+      should_exist: true
+    - path: output/umitools/versions.yml
+      md5sum: 0aec6f919d62b7b79f6d0c5d79411464

@@ -1,0 +1,45 @@
+name: hamronization_summarize
+description: Tool to summarize and combine all hAMRonization reports into a single file
+keywords:
+  - amr
+  - antimicrobial resistance
+  - reporting
+tools:
+  - hamronization:
+      description: Tool to convert and summarize AMR gene detection outputs using the hAMRonization specification
+      homepage: https://github.com/pha4ge/hAMRonization/blob/master/README.md
+      documentation: https://github.com/pha4ge/hAMRonization/blob/master/README.md
+      tool_dev_url: https://github.com/pha4ge/hAMRonization
+      doi: ""
+      licence: ["GNU Lesser General Public v3 (LGPL v3)"]
+
+input:
+  - reports:
+      type: file
+      description: List of multiple hAMRonization reports in either JSON or TSV format
+      pattern: "*.{json,tsv}"
+  - format:
+      type: value
+      description: Type of final combined report file to be produced
+      pattern: "tsv|json|interactive"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: hAMRonised summary in JSON format
+      pattern: "*.json"
+  - tsv:
+      type: file
+      description: hAMRonised summary in TSV format
+      pattern: "*.json"
+  - html:
+      type: file
+      description: hAMRonised summary in HTML format
+      pattern: "*.html"
+
+authors:
+  - "@jfy133"
