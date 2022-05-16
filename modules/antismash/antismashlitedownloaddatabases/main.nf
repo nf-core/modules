@@ -1,10 +1,10 @@
 process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
+    conda (params.enable_conda ? "bioconda::antismash-lite=6.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
-        'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.0--pyhdfd78af_1' :
+        'quay.io/biocontainers/antismash-lite:6.1.0--pyhdfd78af_1' }"
 
     /*
     These files are normally downloaded/created by download-antismash-databases itself, and must be retrieved for input by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines. This is solely for use for CI tests of the nf-core/module version of antiSMASH.
