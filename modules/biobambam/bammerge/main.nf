@@ -12,7 +12,9 @@ process BIOBAMBAM_BAMMERGE {
 
     output:
     tuple val(meta), path("${prefix}.bam")    ,emit: bam
-    tuple val(meta), path("*.bam.bai")        ,optional:true, emit: bam_index
+    tuple val(meta), path("${indexfilename}") ,optional:true, emit: bam_index
+    tuple val(meta), path("${md5filename}")   ,optional:true, emit: checksum
+
     path "versions.yml"                       ,emit: versions
 
     when:
@@ -21,6 +23,8 @@ process BIOBAMBAM_BAMMERGE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    indexfilename = args.contains("indexfilename=") ? args =~ /indexfilename=([^\s]+)/ : ""
+    md5filename = args.contains("md5filename=") ? args =~ /md5filename=([^\s]+)/ : ""
     def input_string = bam.join(" I=")
 
     """
@@ -31,7 +35,7 @@ process BIOBAMBAM_BAMMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bammerge: \$( bammerge --version |& sed '1!d; s/.*version //; s/.$//' )
+        bammerge: \$( bammerge --version |& sed '1!d; s/.*version //; s/.\$//' )
     END_VERSIONS
     """
 }
