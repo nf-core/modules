@@ -11,7 +11,7 @@ process LONGRANGER_ALIGN {
         exit 1, "Conda environments cannot be used when using longranger. Please use docker or singularity containers."
     }
     if ( workflow.containerEngine != 'singularity' ) {
-        exit 1, "Longranger is not configured to run in docker environment"
+        exit 1, "The only container environment Longranger is configured for is docker"
     }
     container "gitlab-registry.internal.sanger.ac.uk/tol-it/software/docker-images/longranger:${version}"
 
