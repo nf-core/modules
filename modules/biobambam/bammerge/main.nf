@@ -31,7 +31,7 @@ process BIOBAMBAM_BAMMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bammerge: \$(echo \$(bammerge --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+        bammerge: \$( bammerge --version |& sed '1!d; s/.*version //; s/.$//' )
     END_VERSIONS
     """
 }
