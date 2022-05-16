@@ -21,31 +21,34 @@ process CAT_FASTQ {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def readList = reads.collect{ it.toString() }
+    // Groovy gotcha: files are iterable, so we can't check for a single file
+    // using reads.length or something similar. The way we *can* tell if we are
+    // iterating through a file is to check if the first object is a file.
+    // If iterating a file, the first object will not be a file, and will
+    // instead represent the directory. In that case, use a path separator when
+    // joining the list in the commands.
+    def joiner = !reads.first().isFile() ? '/' : ' '
     if (meta.single_end) {
-        if (readList.size > 1) {
-            """
-            cat ${readList.join(' ')} > ${prefix}.merged.fastq.gz
+        """
+        cat ${readList.join(joiner)} > ${prefix}.merged.fastq.gz
 
-            cat <<-END_VERSIONS > versions.yml
-            "${task.process}":
-                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
-            END_VERSIONS
-            """
-        }
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        END_VERSIONS
+        """
     } else {
-        if (readList.size > 2) {
-            def read1 = []
-            def read2 = []
-            readList.eachWithIndex{ v, ix -> ( ix & 1 ? read2 : read1 ) << v }
-            """
-            cat ${read1.join(' ')} > ${prefix}_1.merged.fastq.gz
-            cat ${read2.join(' ')} > ${prefix}_2.merged.fastq.gz
+        def read1 = []
+        def read2 = []
+        readList.eachWithIndex{ v, ix -> ( ix & 1 ? read2 : read1 ) << v }
+        """
+        cat ${read1.join(joiner)} > ${prefix}_1.merged.fastq.gz
+        cat ${read2.join(joiner)} > ${prefix}_2.merged.fastq.gz
 
-            cat <<-END_VERSIONS > versions.yml
-            "${task.process}":
-                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
-            END_VERSIONS
-            """
-        }
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+        END_VERSIONS
+        """
     }
 }
