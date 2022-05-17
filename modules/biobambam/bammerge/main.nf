@@ -14,7 +14,6 @@ process BIOBAMBAM_BAMMERGE {
     tuple val(meta), path("${prefix}.bam")       ,emit: bam
     tuple val(meta), path("${indexfilename}")    ,optional:true, emit: bam_index
     tuple val(meta), path("${md5filename}")      ,optional:true, emit: checksum
-
     path "versions.yml"                       ,emit: versions
 
     when:
