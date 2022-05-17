@@ -1,13 +1,19 @@
 process LONGRANGER_ALIGN {
+    // To use in cluster mode, some extra configurations is needed.
+    // Visit tests/modules/longranger/align/nextflow.config for an example.
+
     tag "$meta.id"
     label 'process_medium'
 
+    def version = '2.2.2-c1'
+
     if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using longranger"
+        exit 1, "Conda environments cannot be used when using longranger. Please use singularity."
     }
-    if ( workflow.containerEngine == 'singularity' || \
-            workflow.containerEngine == 'docker' ) {
-        exit 1, "Longranger can not be run in container environment"
+    if ( workflow.containerEngine == 'singularity' ) {
+        container "gitlab-registry.internal.sanger.ac.uk/tol-it/software/docker-images/longranger:${version}"
+    } else {
+        exit 1, "Longranger is only configured to run with singularity"
     }
 
     input:
@@ -35,7 +41,7 @@ process LONGRANGER_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-    longranger: \$(echo \$(longranger mkref --version) | grep longranger | sed 's/.*(//' | sed 's/).*//')
+        longranger: \$(longranger align --version | grep longranger | sed 's/.*(//' | sed 's/).*//')
     END_VERSIONS
     """
 }
