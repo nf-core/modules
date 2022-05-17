@@ -8,16 +8,17 @@ process GATK4_FILTERVARIANTTRANCHES {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(intervals)
-    path ressources
+    tuple val(meta), path(vcf), path(tbi),path(intervals)
+    path resources
+    path resources_index
     path fasta
     path fai
     path dict
 
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,7 @@ process GATK4_FILTERVARIANTTRANCHES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def ressources = ressources.collect{"--ressources $it"}.join(' ')
+    def resources = resources.collect{"--resource $it"}.join(' ')
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK FilterVariantTranches] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -36,7 +37,7 @@ process GATK4_FILTERVARIANTTRANCHES {
     """
     gatk --java-options "-Xmx${avail_mem}g" FilterVariantTranches \\
         --variant $vcf \\
-        $ressources \\
+        $resources \\
         --output ${prefix}.filtered.vcf.gz \\
         --tmp-dir . \\
         $args
