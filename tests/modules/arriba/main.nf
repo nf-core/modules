@@ -20,7 +20,7 @@ workflow test_arriba_single_end {
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
-    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
+    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf , [], [], [], [], [])
 }
 
 workflow test_arriba_paired_end {
@@ -38,5 +38,5 @@ workflow test_arriba_paired_end {
 
     STAR_GENOMEGENERATE ( fasta, gtf )
     STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
-    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf )
+    ARRIBA ( STAR_ALIGN.out.bam, fasta, gtf, [], [], [], [], [])
 }
