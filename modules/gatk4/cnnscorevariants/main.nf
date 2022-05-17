@@ -3,7 +3,7 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
-    container 'broadinstitute/gatk:4.2.6.1'
+    container 'broadinstitute/gatk:4.2.6.1' //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(vcf), path(aligned_input), path(intervals)
