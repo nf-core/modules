@@ -1,51 +1,64 @@
 name: "gatk4_filtervarianttranches"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Apply tranche filtering
 keywords:
-  - sort
+  - gatk4
+  - filtervarianttranches
+
 tools:
   - "gatk4":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Genome Analysis Toolkit (GATK4)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "https://github.com/broadinstitute/gatk"
-      doi: ""
-      licence: "['BSD-3-clause']"
+      description: Genome Analysis Toolkit (GATK4)
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ["BSD-3-clause"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: a VCF file containing variants, must have info key:CNN_2D
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: tbi file matching with -vcf
+      pattern: "*.vcf.gz.tbi"
+  - resources:
+      type: list
+      description: resource A VCF containing known SNP and or INDEL sites. Can be supplied as many times as necessary
+      pattern: "*.vcf.gz"
+  - resources_index:
+      type: list
+      description: Index of resource VCF containing known SNP and or INDEL sites. Can be supplied as many times as necessary
+      pattern: "*.vcf.gz"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "fasta.fai"
+  - dict:
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF file
+      pattern: "*.vcf.gz"
 
 authors:
   - "@FriederikeHanssen"
