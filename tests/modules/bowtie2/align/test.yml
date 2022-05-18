@@ -1,4 +1,4 @@
-- name: bowtie2 align single-end
+- name: bowtie2 align test_bowtie2_align_single_end
   command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config
   tags:
     - bowtie2
@@ -6,78 +6,44 @@
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
-    - path: ./output/bowtie2/bowtie2/genome.3.bt2
-      md5sum: 4ed93abba181d8dfab2e303e33114777
-    - path: ./output/bowtie2/bowtie2/genome.2.bt2
-      md5sum: 47b153cd1319abc88dda532462651fcf
-    - path: ./output/bowtie2/bowtie2/genome.1.bt2
-      md5sum: cbe3d0bbea55bc57c99b4bfa25b5fbdf
-    - path: ./output/bowtie2/bowtie2/genome.4.bt2
-      md5sum: c25be5f8b0378abf7a58c8a880b87626
-    - path: ./output/bowtie2/bowtie2/genome.rev.1.bt2
-      md5sum: 52be6950579598a990570fbcf5372184
-    - path: ./output/bowtie2/bowtie2/genome.rev.2.bt2
-      md5sum: e3b4ef343dea4dd571642010a7d09597
+    - path: ./output/bowtie2/versions.yml
 
-- name: bowtie2 align paired-end
-  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config
+- name: bowtie2 align test_bowtie2_align_single_end_sorted
+  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end_sorted -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config
   tags:
     - bowtie2
     - bowtie2/align
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
-    - path: ./output/bowtie2/bowtie2/genome.3.bt2
-      md5sum: 4ed93abba181d8dfab2e303e33114777
-    - path: ./output/bowtie2/bowtie2/genome.2.bt2
-      md5sum: 47b153cd1319abc88dda532462651fcf
-    - path: ./output/bowtie2/bowtie2/genome.1.bt2
-      md5sum: cbe3d0bbea55bc57c99b4bfa25b5fbdf
-    - path: ./output/bowtie2/bowtie2/genome.4.bt2
-      md5sum: c25be5f8b0378abf7a58c8a880b87626
-    - path: ./output/bowtie2/bowtie2/genome.rev.1.bt2
-      md5sum: 52be6950579598a990570fbcf5372184
-    - path: ./output/bowtie2/bowtie2/genome.rev.2.bt2
-      md5sum: e3b4ef343dea4dd571642010a7d09597
+    - path: ./output/bowtie2/versions.yml
 
-- name: bowtie2 align single-end large-index
-  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config --force_large_index
+- name: bowtie2 align test_bowtie2_align_paired_end
+  command: nextflow run tests/modules/bowtie2/align -entry test_bowtie2_align_paired_end -c tests/config/nextflow.config -c tests/modules/bowtie2/align/nextflow.config
   tags:
     - bowtie2
     - bowtie2/align
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
-    - path: ./output/bowtie2/bowtie2/genome.3.bt2l
-      md5sum: 8952b3e0b1ce9a7a5916f2e147180853
-    - path: ./output/bowtie2/bowtie2/genome.2.bt2l
-      md5sum: 22c284084784a0720989595e0c9461fd
-    - path: ./output/bowtie2/bowtie2/genome.1.bt2l
-      md5sum: 07d811cd4e350d56267183d2ac7023a5
-    - path: ./output/bowtie2/bowtie2/genome.4.bt2l
-      md5sum: c25be5f8b0378abf7a58c8a880b87626
-    - path: ./output/bowtie2/bowtie2/genome.rev.1.bt2l
-      md5sum: fda48e35925fb24d1c0785f021981e25
-    - path: ./output/bowtie2/bowtie2/genome.rev.2.bt2l
-      md5sum: 802c26d32b970e1b105032b7ce7348b4
+    - path: ./output/bowtie2/versions.yml
 
-- name: bowtie2 align paired-end large-index
-  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config --force_large_index
+- name: bowtie2 align test_bowtie2_align_single_end_large_index
+  command: nextflow run tests/modules/bowtie2/align -entry test_bowtie2_align_single_end_large_index -c tests/config/nextflow.config -c tests/modules/bowtie2/align/nextflow.config --force_large_index
   tags:
     - bowtie2
     - bowtie2/align
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
-    - path: ./output/bowtie2/bowtie2/genome.3.bt2l
-      md5sum: 8952b3e0b1ce9a7a5916f2e147180853
-    - path: ./output/bowtie2/bowtie2/genome.2.bt2l
-      md5sum: 22c284084784a0720989595e0c9461fd
-    - path: ./output/bowtie2/bowtie2/genome.1.bt2l
-      md5sum: 07d811cd4e350d56267183d2ac7023a5
-    - path: ./output/bowtie2/bowtie2/genome.4.bt2l
-      md5sum: c25be5f8b0378abf7a58c8a880b87626
-    - path: ./output/bowtie2/bowtie2/genome.rev.1.bt2l
-      md5sum: fda48e35925fb24d1c0785f021981e25
-    - path: ./output/bowtie2/bowtie2/genome.rev.2.bt2l
-      md5sum: 802c26d32b970e1b105032b7ce7348b4
+    - path: ./output/bowtie2/versions.yml
+
+- name: bowtie2 align test_bowtie2_align_paired_end_large_index
+  command: nextflow run tests/modules/bowtie2/align -entry test_bowtie2_align_paired_end_large_index -c tests/config/nextflow.config -c tests/modules/bowtie2/align/nextflow.config --force_large_index
+  tags:
+    - bowtie2
+    - bowtie2/align
+  files:
+    - path: ./output/bowtie2/test.bam
+    - path: ./output/bowtie2/test.bowtie2.log
+    - path: ./output/bowtie2/versions.yml
