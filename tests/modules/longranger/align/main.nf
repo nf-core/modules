@@ -10,12 +10,8 @@ process DOWNLOAD_READS {
     script:
     """
     mkdir -p ${workDir}/10x
-    for f in pEimTen1_S10_L007_R1_001.fastq.gz pEimTen1_S10_L007_R2_001.fastq.gz; do
-        if [ ! -f  ${workDir}/10x/\$f ]
-        then
-            wget -P ${workDir}/10x https://tolit.cog.sanger.ac.uk/test-data/Eimeria_tenella/genomic_data/pEimTen1/10x/subset/\$f
-        fi
-    done
+    wget -P ${workDir}/10x -c ${params.tol_test_data['test']['pEimTen1']['genomic_data']['tenx_r1_fastq_gz']}
+    wget -P ${workDir}/10x -c ${params.tol_test_data['test']['pEimTen1']['genomic_data']['tenx_r2_fastq_gz']}
     """
 }
 
@@ -23,7 +19,7 @@ process DOWNLOAD_REF {
     script:
     """
     cd ${workDir}/
-    wget https://tolit.cog.sanger.ac.uk/test-data/Eimeria_tenella/working/pEimTen1.canu.20190919/refdata-pEimTen1.contigs.tar.gz
+    wget -c ${params.tol_test_data['small_genome']['pEimTen1']['assembly']['canu_contigs_longranger_mkref_targz']}
     tar -xzvf refdata-pEimTen1.contigs.tar.gz
     """
 }
