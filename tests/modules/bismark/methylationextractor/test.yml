@@ -1,16 +1,56 @@
-- name: bismark methylation extractor test workflow
-  command: nextflow run ./tests/modules/bismark/methylationextractor -entry test_bismark_methylationextractor -c ./tests/config/nextflow.config -c ./tests/modules/bismark/methylationextractor/nextflow.config
+- name: bismark methylationextractor test_bismark_methylationextractor
+  command: nextflow run ./tests/modules/bismark/methylationextractor -entry test_bismark_methylationextractor -c ./tests/config/nextflow.config  -c ./tests/modules/bismark/methylationextractor/nextflow.config
   tags:
     - bismark
     - bismark/methylationextractor
   files:
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.1.bt2
+      md5sum: 10a8854e5eeb95629f46d24b0d8da70c
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.2.bt2
+      md5sum: bc5d407e6fce3e1cdb4b23ab2a20f707
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.3.bt2
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.4.bt2
+      md5sum: 6c4f549575e5882ff3a97ae10ae2e7be
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.1.bt2
+      md5sum: d37d586b41b6a36efb25839961d242cb
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.2.bt2
+      md5sum: 48bf400de85cd7324fbf6bf38fe2dc95
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/CT_conversion/genome_mfa.CT_conversion.fa
+      md5sum: 903b9f357eea4a5f36e21e78e0fe1dfa
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.1.bt2
+      md5sum: a6fa4068ed10872568f32568c66cb600
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.2.bt2
+      md5sum: fc5b634e2f5137801e3801d62ad05f74
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.3.bt2
+      md5sum: 4ed93abba181d8dfab2e303e33114777
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.4.bt2
+      md5sum: b1e855685ed634daa7df8e180c9b2fc4
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.1.bt2
+      md5sum: 17f51e65f44477962226a83b369b2bc4
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.2.bt2
+      md5sum: d36044c5dfe37af0411f60d446585bc6
+    - path: output/bismark/BismarkIndex/Bisulfite_Genome/GA_conversion/genome_mfa.GA_conversion.fa
+      md5sum: e529375ec2039112161465b5169fcd59
+    - path: output/bismark/BismarkIndex/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
     - path: output/bismark/CHG_OB_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/CHG_OT_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/CHH_OB_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/CHH_OT_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/CpG_OB_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/CpG_OT_test.paired_end.methylated.txt.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/test.paired_end.methylated.M-bias.txt
-      md5sum: 0b100924d46b3c35115f1206f34c4a59
+      md5sum: c51589e98227e5aa532fb84c6cf08b97
+    - path: output/bismark/test.paired_end.methylated.bedGraph.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/bismark/test.paired_end.methylated.bismark.cov.gz
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bismark/test.paired_end.methylated_splitting_report.txt
-      md5sum: f28a9dd8de8c42b8900b190b8f79647a
+      md5sum: 82dbeec8e59afb5e768a61d1aee29a55
