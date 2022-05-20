@@ -35,8 +35,8 @@ workflow test_cnvkit_cram {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
@@ -53,5 +53,18 @@ workflow test_cnvkit_tumoronly {
     fasta     = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     reference = file(params.test_data['generic']['cnn']['reference'], checkIfExists: true)
 
-    CNVKIT_TUMORONLY ( input, [], [], reference )
+    CNVKIT_TUMORONLY ( input, fasta, [], reference )
+}
+
+workflow test_cnvkit_tumoronly_cram {
+
+    input = [
+        [ id:'test'], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true),
+        []
+    ]
+    fasta     = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    reference = file(params.test_data['generic']['cnn']['reference'], checkIfExists: true)
+
+    CNVKIT_TUMORONLY ( input, fasta, [], reference )
 }
