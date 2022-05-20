@@ -27,7 +27,7 @@ process CNVKIT_BATCH {
 
     script:
     def args = task.ext.args ?: ''
-    // execute samtools only when cram files are input
+    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow 
     // input pair is assumed to have same extension if both exist
     def is_cram = tumor.Extension == "cram" ? true : false
     def tumor_out = is_cram ? tumor.BaseName + ".bam" : "${tumor}"
