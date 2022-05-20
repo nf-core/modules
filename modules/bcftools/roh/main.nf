@@ -39,7 +39,7 @@ process BCFTOOLS_ROH {
         $reg_file \\
         $samp_file \\
         $targ_file \\
-        -o ${prefix}.roh.gz \\
+        -o ${prefix}.roh \\
         $vcf
 
     cat <<-END_VERSIONS > versions.yml
