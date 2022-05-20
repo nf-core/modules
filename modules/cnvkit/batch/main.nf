@@ -31,7 +31,7 @@ process CNVKIT_BATCH {
     // input pair is assumed to have same extension if both exist
     def is_cram = tumor.Extension == "cram" ? true : false
     def tumor_out = is_cram ? tumor.BaseName + ".bam" : "${tumor}"
-    // do not run samtools on normal samples in tumor_only
+    // do not run samtools on normal samples in tumor_only mode
     def normal_exists = normal ? true: false
     // tumor_only mode does not need fasta & target
     // instead it requires a pre-computed reference which is built from fasta & target
