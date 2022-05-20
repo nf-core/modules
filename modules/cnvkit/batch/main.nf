@@ -2,9 +2,9 @@ process CNVKIT_BATCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? 'bioconda::cnvkit=0.9.9' : null)
+    conda (params.enable_conda ? 'bioconda::cnvkit=0.9.9 bioconda::samtools=1.15.1' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvkit:0.9.9--pyhdfd78af_0' :
+        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:304d1c5ab610f216e77c61420ebe85f1e7c5968a-0' :
         'quay.io/biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:304d1c5ab610f216e77c61420ebe85f1e7c5968a-0' }"
 
     input:
