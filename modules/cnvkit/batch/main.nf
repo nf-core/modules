@@ -27,17 +27,17 @@ process CNVKIT_BATCH {
 
     script:
     def args = task.ext.args ?: ''
+
     // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
     // input pair is assumed to have same extension if both exist
     def is_cram = tumor.Extension == "cram" ? true : false
     def tumor_out = is_cram ? tumor.BaseName + ".bam" : "${tumor}"
+
     // do not run samtools on normal samples in tumor_only mode
     def normal_exists = normal ? true: false
     // tumor_only mode does not need fasta & target
     // instead it requires a pre-computed reference.cnn which is built from fasta & target
     def (normal_out, normal_args, fasta_args) = ["", "", ""]
-    def target_args = targets ? "--targets $targets" : ""
-    def reference_args = reference ? "--reference $reference" : ""
 
     if (normal_exists){
         def normal_prefix = normal.BaseName
@@ -45,6 +45,9 @@ process CNVKIT_BATCH {
         normal_args = normal_prefix ? "--normal $normal_out" : ""
         fasta_args = fasta ? "--fasta $fasta" : ""
     }
+
+    def target_args = targets ? "--targets $targets" : ""
+    def reference_args = reference ? "--reference $reference" : ""
 
     """
     if $is_cram; then
