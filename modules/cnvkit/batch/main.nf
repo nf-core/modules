@@ -34,7 +34,7 @@ process CNVKIT_BATCH {
     // do not run samtools on normal samples in tumor_only mode
     def normal_exists = normal ? true: false
     // tumor_only mode does not need fasta & target
-    // instead it requires a pre-computed reference which is built from fasta & target
+    // instead it requires a pre-computed reference.cnn which is built from fasta & target
     def (normal_out, normal_args, fasta_args, target_args) = ["", "", "", ""]
     def reference_args = reference ? "--reference $reference" : ""
 
