@@ -21,6 +21,7 @@ process PICARD_COLLECTWGSMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard CollectWgsMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -34,7 +35,7 @@ process PICARD_COLLECTWGSMETRICS {
         $args \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectWgsMetrics.coverage_metrics \\
-        --REFERENCE_SEQUENCE $fasta
+        $reference
 
 
     cat <<-END_VERSIONS > versions.yml
