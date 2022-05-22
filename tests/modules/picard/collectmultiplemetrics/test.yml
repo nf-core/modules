@@ -5,25 +5,15 @@
     - picard/collectmultiplemetrics
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle.pdf
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_nofasta
   command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_nofasta -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
