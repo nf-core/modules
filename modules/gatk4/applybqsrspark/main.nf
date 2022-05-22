@@ -7,6 +7,7 @@ process GATK4_APPLYBQSR_SPARK {
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
+
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
     path  fasta
