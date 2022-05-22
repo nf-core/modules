@@ -8,7 +8,7 @@ process GATK4_FILTERVARIANTTRANCHES {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi),path(intervals)
+    tuple val(meta), path(vcf), path(tbi), path(intervals)
     path resources
     path resources_index
     path fasta
@@ -17,8 +17,9 @@ process GATK4_FILTERVARIANTTRANCHES {
 
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
