@@ -3,7 +3,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
-    container 'broadinstitute/gatk:4.2.3.0'
+    container "broadinstitute/gatk:4.2.6.1"
 
     input:
     tuple val(meta), path(bam)
@@ -30,7 +30,6 @@ process GATK4_MARKDUPLICATES_SPARK {
         avail_mem = task.memory.giga
     }
     """
-    export SPARK_USER=spark3
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\

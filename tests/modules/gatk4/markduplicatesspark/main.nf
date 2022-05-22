@@ -6,23 +6,23 @@ include { GATK4_MARKDUPLICATES_SPARK } from '../../../../modules/gatk4/markdupli
 
 workflow test_gatk4_markduplicates_spark {
     input = [ [ id:'test', single_end:false ], // meta map
-              file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true)
             ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_MARKDUPLICATES_SPARK ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_markduplicates_spark_multiple_bams {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)
+              [ file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
+                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
             ] ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-    dict = file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
     GATK4_MARKDUPLICATES_SPARK ( input, fasta, fai, dict )
 }
