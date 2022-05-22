@@ -2,7 +2,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'broadinstitute/gatk:4.2.6.1' }"
 
