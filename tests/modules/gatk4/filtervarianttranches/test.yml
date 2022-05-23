@@ -1,14 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml gatk4/filtervarianttranches
-- name: "gatk4 filtervarianttranches"
-  command: nextflow run ./tests/modules/gatk4/filtervarianttranches -entry test_gatk4_filtervarianttranches -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/filtervarianttranches/nextflow.config
+- name: gatk4 filtervarianttranches test_gatk4_filtervarianttranches
+  command: nextflow run ./tests/modules/gatk4/filtervarianttranches -entry test_gatk4_filtervarianttranches -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/filtervarianttranches/nextflow.config
   tags:
-    - "gatk4"
-    #
-    - "gatk4/filtervarianttranches"
-    #
+    - gatk4/filtervarianttranches
+    - gatk4
   files:
-    - path: "output/gatk4/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/gatk4/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/gatk4/test.filtered.vcf.gz
+    - path: output/gatk4/test.filtered.vcf.gz.tbi
+      md5sum: a7736ea2cea26420b1a86413adeefda8
