@@ -10,7 +10,7 @@
 //                 bwa mem | samtools view -B -T ref.fasta
 
 process VSEARCH_USEARCHGLOBAL {
-    tag '$queryfasta'
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::vsearch=2.21.1" : null)
@@ -19,29 +19,53 @@ process VSEARCH_USEARCHGLOBAL {
         'quay.io/biocontainers/vsearch:2.21.1--h95f258a_0' }"
 
     input:
-    path queryfasta
+    tuple val(meta), path(queryfasta)
     path db
-    val  outprefix
+    val outoption
+    val user_columns
 
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
 
     output:
-    path ("*.tsv")        , emit: tsv
-    path "versions.yml"   , emit: versions
-
+    tuple val(meta), path('*.aln')  , optional: true, emit: aln
+    tuple val(meta), path('*.biom') , optional: true, emit: biom
+    tuple val(meta), path('*.sam')  , optional: true, emit: sam
+    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
+    tuple val(meta), path('*.uc')   , optional: true, emit: uc
+    path "versions.yml"                             , emit: versions
+    
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def columns = user_columns ? "--userfields ${user_columns}" : ''
+    switch ( outoption ) {
+        case "alnout": outfmt = "--alnout"; out_ext = 'aln'; break
+        case "biomout": outfmt = "--biomout"; out_ext = 'biom'; break
+	case "blast6out": outfmt = "--blast6out"; out_ext = 'blast6out.tsv'; break
+        case "mothur_shared_out": outfmt = "--mothur_shared_out"; out_ext = 'mothur.tsv'; break
+	case "otutabout": outfmt = "--otutabout"; out_ext = 'otu.tsv'; break
+	case "samout": outfmt = "--samout"; out_ext = 'sam'; break
+	case "uc": outfmt = "--uc"; out_ext = 'uc'; break
+	case "userout": outfmt = "--userout"; out_ext = 'user.tsv'; break
+	case "lcaout": outfmt = "--lcaout"; out_ext = 'lca.tsv'; break
+        default:
+            outfmt = "--alnout";
+            out_ext = 'aln';
+            log.warn("Unknown output file format provided (${outoption}): selectingpairwise alignments (alnout)");
+            break
+    }
     """
     vsearch \\
         --usearch_global $queryfasta \\
         --db $db \\
         --threads $task.cpus \\
         $args \\
-        --blast6out ${outprefix}.tsv
+        ${columns} \\
+        ${outfmt} ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
