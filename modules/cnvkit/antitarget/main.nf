@@ -8,7 +8,6 @@ process CNVKIT_ANTITARGET {
         'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
 
     input:
-
     tuple val(meta), path(targets)
 
     output:
