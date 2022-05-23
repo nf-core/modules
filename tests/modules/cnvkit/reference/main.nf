@@ -8,7 +8,7 @@ workflow test_cnvkit_reference {
 
     fasta       = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     targets     = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
-    antitargets = file("/Users/susanne/Documents/repos/forks/modules/test_antitarget/output/cnvkit/test.antitarget.bed", checkIfExists: true)
+    antitargets = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_antitarget_bed'], checkIfExists: true)
 
     CNVKIT_REFERENCE ( fasta, targets, antitargets )
 }
