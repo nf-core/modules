@@ -8,5 +8,17 @@ workflow test_vsearch_usearchglobal {
     
     query = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
     db = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    VSEARCH_USEARCHGLOBAL ( query, db, "blast6out_results" )
+    
+    outoption = "xcfert"  // Nonsense text to check default case.
+    columns = "" 
+    VSEARCH_USEARCHGLOBAL ( [ [id:'test'], query ], db, outoption, columns )
+}
+
+workflow test_vsearch_usearchglobal_userout {
+    
+    query = file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)
+    db = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    outoption = "userout"
+    columns = "query+target+id" 
+    VSEARCH_USEARCHGLOBAL ( [ [id:'test'], query ], db, outoption, columns )
 }
