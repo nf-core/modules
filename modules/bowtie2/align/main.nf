@@ -11,6 +11,7 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path(reads)
     path  index
     val   save_unaligned
+    val   sort_bam
 
     output:
     tuple val(meta), path("*.bam")    , emit: bam
@@ -36,8 +37,7 @@ process BOWTIE2_ALIGN {
         reads_args = "-1 ${reads[0]} -2 ${reads[1]}"
     }
 
-    def samtools_command = "samtools view -@ $task.cpus --bam --with-header ${args2} > ${prefix}.bam"
-
+    def samtools_command = sort_bam ? 'sort' : 'view'
 
     """
     INDEX=`find -L ./ -name "*.rev.1.bt2" | sed "s/.rev.1.bt2//"`
@@ -51,7 +51,7 @@ process BOWTIE2_ALIGN {
         $unaligned \\
         $args \\
         2> ${prefix}.bowtie2.log \\
-        | $samtools_command
+        | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq.1.gz ]; then
         mv ${prefix}.unmapped.fastq.1.gz ${prefix}.unmapped_1.fastq.gz
@@ -69,4 +69,3 @@ process BOWTIE2_ALIGN {
     END_VERSIONS
     """
 }
-
