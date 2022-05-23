@@ -45,7 +45,7 @@ process GATK4_FILTERVARIANTTRANCHES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gatk4: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
 }
