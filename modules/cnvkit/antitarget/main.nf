@@ -11,7 +11,6 @@ process CNVKIT_ANTITARGET {
     tuple val(meta), path(targets)
 
     output:
-
     tuple val(meta), path("*.bed"), emit: bed
 
     path "versions.yml"           , emit: versions
