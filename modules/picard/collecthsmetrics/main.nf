@@ -24,7 +24,7 @@ process PICARD_COLLECTHSMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "-R $fasta" : ""
+    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
