@@ -1,4 +1,3 @@
-
 process CNVKIT_ANTITARGET {
     tag "$meta.id"
     label 'process_low'
