@@ -7,7 +7,8 @@ include { GATK4_CNNSCOREVARIANTS } from '../../../../modules/gatk4/cnnscorevaria
 workflow test_gatk4_cnnscorevariants {
 
     input     = [ [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
                     [],
                     []
                 ]
