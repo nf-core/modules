@@ -1,0 +1,7 @@
+- name: vsearch usearchglobal test_vsearch_usearchglobal
+  command: nextflow run ./tests/modules/vsearch/usearchglobal -entry test_vsearch_usearchglobal -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/usearchglobal/nextflow.config
+  tags:
+    - vsearch/usearchglobal
+  files:
+    - path: output/vsearch/blast6out_results.tsv
+      md5sum: 09733131643f1d951321a6e17a35eb8c
