@@ -9,7 +9,7 @@ workflow test_sexdeterrmine {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test3.single_end.markduplicates.sorted.bam'], checkIfExists: true) ]
+        file(params.test_data['homo_sapiens']['illumina']['test3_single_end_markduplicates_sorted_bam'], checkIfExists: true) ]
 
     SAMTOOLS_DEPTH ( input )
     SEXDETERRMINE ( SAMTOOLS_DEPTH.out.tsv, [] )
