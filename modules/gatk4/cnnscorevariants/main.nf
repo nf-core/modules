@@ -9,7 +9,7 @@ process GATK4_CNNSCOREVARIANTS {
     container 'broadinstitute/gatk:4.2.6.1' //Biocontainers is missing a package
 
     input:
-    tuple val(meta), path(vcf), path(aligned_input), path(intervals)
+    tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
     path fasta
     path fai
     path dict
@@ -17,8 +17,9 @@ process GATK4_CNNSCOREVARIANTS {
     path weights
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*cnn.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*cnn.vcf.gz.tbi"), emit: tbi
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +41,7 @@ process GATK4_CNNSCOREVARIANTS {
     """
     gatk --java-options "-Xmx${avail_mem}g" CNNScoreVariants \\
         --variant $vcf \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.cnn.vcf.gz \\
         --reference $fasta \\
         $interval_command \\
         $aligned_input \\
