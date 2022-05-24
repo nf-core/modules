@@ -23,10 +23,11 @@ process VARDICTJAVA {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    vardict-java \\
+    vardict-java JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g" $args3' \\
         $args \\
         -c 1 -S 2 -E 3 \\
         -b $bam \\
