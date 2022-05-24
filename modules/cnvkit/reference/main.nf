@@ -21,13 +21,15 @@ process CNVKIT_REFERENCE {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: targets.BaseName
+
     """
     cnvkit.py \\
         reference \\
         --fasta $fasta \\
         --targets $targets \\
         --antitargets $antitargets \\
-        --output reference.cnn \\
+        --output ${prefix}.reference.cnn \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
