@@ -1,6 +1,6 @@
 def VERSION = '2.1' // Version information not provided by tool on CLI
 
-process GAMMA {
+process GAMMA_GAMMA {
     tag "$meta.id"
     label 'process_low'
 
