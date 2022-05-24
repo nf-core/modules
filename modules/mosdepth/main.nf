@@ -31,6 +31,9 @@ process MOSDEPTH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
+    if (bed && ext.args.contains("--by")) {
+        exit 1, "--by can only be specified once."
+    }
 
     """
     mosdepth \\
