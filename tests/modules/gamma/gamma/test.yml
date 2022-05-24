@@ -1,0 +1,29 @@
+- name: gamma gamma test_unzip
+  command: nextflow run tests/modules/gamma/gamma -entry test_unzip -c tests/config/nextflow.config
+  tags:
+    - gamma/gamma
+    - gamma
+  files:
+    - path: /tmp/tmppm1ybfln/gamma/test.fasta
+      md5sum: 5b3b831d863fffaa3410a9ee7bfa12ce
+    - path: /tmp/tmppm1ybfln/gamma/test.gamma
+      md5sum: 46165a89e10b7315d3a9b0aa6c561626
+    - path: /tmp/tmppm1ybfln/gamma/test.psl
+      md5sum: f489ce4602ddbcb692d5781ee3fbf449
+    - path: /tmp/tmppm1ybfln/gamma/versions.yml
+      md5sum: ad23c3ec60663598543cbe8bc74bc4ab
+
+- name: gamma gamma test_gamma
+  command: nextflow run tests/modules/gamma/gamma -entry test_gamma -c tests/config/nextflow.config
+  tags:
+    - gamma/gamma
+    - gamma
+  files:
+    - path: /tmp/tmpw3chm6da/gamma/test.fasta
+      md5sum: df37b48466181311e0a679f3c5878484
+    - path: /tmp/tmpw3chm6da/gamma/test.gamma
+      md5sum: 3256708fa517a65ed01d99e0e3c762ae
+    - path: /tmp/tmpw3chm6da/gamma/test.psl
+      md5sum: 162a2757ed3b167ae1e0cdb24213f940
+    - path: /tmp/tmpw3chm6da/gamma/versions.yml
+      md5sum: 3fefb5b46c94993362243c5f9a472057

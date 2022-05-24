@@ -26,13 +26,24 @@ process GAMMA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    GAMMA.py \\
+    if [[ ${fasta} == *.gz ]]
+    then
+        FNAME=\$(basename ${fasta} .gz)
+        gunzip -f ${fasta}
+        GAMMA.py \\
+        $args \\
+        "\${FNAME}" \\
+        $db \\
+        $prefix
+    else
+        GAMMA.py \\
         $args \\
         $fasta \\
         $db \\
         $prefix
-
+    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gamma: $VERSION
