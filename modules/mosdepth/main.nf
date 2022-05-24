@@ -10,13 +10,13 @@ process MOSDEPTH {
     input:
     tuple val(meta), path(bam), path(bai)
     path  bed
-    val   window_size
+    path  fasta
 
     output:
     tuple val(meta), path('*.global.dist.txt')    , emit: global_txt
     tuple val(meta), path('*.region.dist.txt')    , emit: regions_txt , optional:true
     tuple val(meta), path('*.summary.txt')        , emit: summary_txt
-    tuple val(meta), path('*.per-base.d4')        , emit: d4          , optional:true
+    tuple val(meta), path('*.per-base.d4')        , emit: per_base_d4 , optional:true
     tuple val(meta), path('*.per-base.bed.gz')    , emit: per_base_bed, optional:true
     tuple val(meta), path('*.per-base.bed.gz.csi'), emit: per_base_csi, optional:true
     tuple val(meta), path('*.regions.bed.gz')     , emit: regions_bed , optional:true
@@ -29,19 +29,21 @@ process MOSDEPTH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (window_size) {
-        interval = "--by ${window_size}"
-    } else if ( bed ) {
-        interval = "--by ${bed}"
-    } else {
-        interval = ""
+    def reference = fasta ? "--fasta ${fasta}" : ""
+    def interval = bed ? "--by ${bed}" : ""
+    if (bed && args.contains("--by")) {
+        exit 1, "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
+
     """
     mosdepth \\
+        --threads ${task.cpus} \\
         $interval \\
+        $reference \\
         $args \\
         $prefix \\
         $bam
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
