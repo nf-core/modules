@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GAMMA } from '../../../../modules/gamma/gamma/main.nf'
+include { GAMMA_GAMMA } from '../../../../modules/gamma/gamma/main.nf'
 
 workflow test_unzip {
 
@@ -13,7 +13,7 @@ workflow test_unzip {
 
     db = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/srst2/ResGANNCBI_20210507_srst2.fasta", checkIfExists: true), ]
 
-    GAMMA ( input, db )
+    GAMMA_GAMMA ( input, db )
 }
 
 workflow test_gamma {
@@ -25,5 +25,5 @@ workflow test_gamma {
 
     db = [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
 
-    GAMMA ( input, db )
+    GAMMA_GAMMA ( input, db )
 }
