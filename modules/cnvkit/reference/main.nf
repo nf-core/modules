@@ -1,5 +1,5 @@
 process CNVKIT_REFERENCE {
-    tag "$reference"
+    tag "$fasta"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.9" : null)
@@ -8,20 +8,19 @@ process CNVKIT_REFERENCE {
         'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
 
     input:
-    path    fasta
-    path    targets
-    path    antitargets
+    path fasta
+    path targets
+    path antitargets
 
     output:
-    path("*.cnn")                 , emit: cnn
-    path "versions.yml"           , emit: versions
+    path "*.cnn"       , emit: cnn
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-
     """
     cnvkit.py \\
         reference \\
