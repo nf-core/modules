@@ -25,6 +25,10 @@ input:
       type: file
       description: VCF file
       pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: VCF index file
+      pattern: "*.vcf.gz.tbi"
   - aligned_input:
       type: file
       description: BAM/CRAM file from alignment (optional)
@@ -67,6 +71,10 @@ output:
       type: file
       description: Annotated VCF file
       pattern: "*.vcf"
+  - tbi:
+      type: file
+      description: VCF index file
+      pattern: "*.vcf.gz.tbi"
 
 authors:
   - "@FriederikeHanssen"
