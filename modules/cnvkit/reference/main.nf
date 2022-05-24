@@ -1,5 +1,5 @@
 process CNVKIT_REFERENCE {
-    tag "$reference"
+    tag "$fasta"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.9" : null)
