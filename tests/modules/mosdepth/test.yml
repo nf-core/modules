@@ -65,3 +65,9 @@
       md5sum: 5d398caf7171ec4406278e2add3009ae
     - path: output/mosdepth/test.regions.bed.gz.csi
       md5sum: 47669cfe41f3e222e74d81e1b1be191f
+
+- name: mosdepth test_mosdepth_fail
+  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_fail -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  tags:
+    - mosdepth
+  exitcode: 1
