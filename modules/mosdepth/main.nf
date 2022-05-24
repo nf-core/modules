@@ -32,7 +32,7 @@ process MOSDEPTH {
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
     if (bed && args.contains("--by")) {
-        exit 1, "--by can only be specified once."
+        exit 1, "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
 
     """
