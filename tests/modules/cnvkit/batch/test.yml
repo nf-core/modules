@@ -1,15 +1,14 @@
 - name: cnvkit batch test_cnvkit_hybrid
-  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_hybrid -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_hybrid -c ./tests/config/nextflow.config  -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
-    - cnvkit/batch
     - cnvkit
+    - cnvkit/batch
   files:
     - path: output/cnvkit/baits.antitarget.bed
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/cnvkit/baits.target.bed
       md5sum: 26d25ff2d6c45b6d92169b3559c6acdb
     - path: output/cnvkit/reference.cnn
-      md5sum: ac99c1ad8b917b96ae15119146c91ab9
+      md5sum: 035d031f54c5f1b43b903da96559b475
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.bintest.cns
@@ -28,19 +27,18 @@
       md5sum: aa8a018b1d4d1e688c9f9f6ae01bf4d7
 
 - name: cnvkit batch test_cnvkit_wgs
-  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_wgs -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_wgs -c ./tests/config/nextflow.config  -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
-    - cnvkit/batch
     - cnvkit
+    - cnvkit/batch
   files:
     - path: output/cnvkit/genome.antitarget.bed
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/cnvkit/genome.bed
       md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/cnvkit/genome.target.bed
       md5sum: a13353ae9c8405e701390c069255bbd2
     - path: output/cnvkit/reference.cnn
-      md5sum: 05c6211e0179885b8a83e44fd21d5f86
+      md5sum: 1606a85410bfaa79464be6e98699aa83
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.targetcoverage.cnn
@@ -59,19 +57,18 @@
       md5sum: 6ae6b3fce7299eedca6133d911c38fe1
 
 - name: cnvkit batch test_cnvkit_cram
-  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_cram -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_cram -c ./tests/config/nextflow.config  -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
-    - cnvkit/batch
     - cnvkit
+    - cnvkit/batch
   files:
     - path: output/cnvkit/genome.antitarget.bed
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/cnvkit/genome.bed
       md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/cnvkit/genome.target.bed
       md5sum: a13353ae9c8405e701390c069255bbd2
     - path: output/cnvkit/reference.cnn
-      md5sum: 05c6211e0179885b8a83e44fd21d5f86
+      md5sum: 1606a85410bfaa79464be6e98699aa83
     - path: output/cnvkit/test.paired_end.sorted.antitargetcoverage.cnn
       md5sum: 203caf8cef6935bb50b4138097955cb8
     - path: output/cnvkit/test.paired_end.sorted.targetcoverage.cnn
@@ -90,12 +87,21 @@
       md5sum: 6ae6b3fce7299eedca6133d911c38fe1
 
 - name: cnvkit batch test_cnvkit_tumoronly
-  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_tumoronly -c ./tests/config/nextflow.config -c ./tests/modules/cnvkit/batch/nextflow.config
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_tumoronly -c ./tests/config/nextflow.config  -c ./tests/modules/cnvkit/batch/nextflow.config
   tags:
-    - cnvkit/batch
     - cnvkit
+    - cnvkit/batch
   files:
     - path: output/cnvkit/reference.antitarget-tmp.bed
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/cnvkit/reference.target-tmp.bed
+      md5sum: 26d25ff2d6c45b6d92169b3559c6acdb
+
+- name: cnvkit batch test_cnvkit_tumoronly_cram
+  command: nextflow run ./tests/modules/cnvkit/batch -entry test_cnvkit_tumoronly_cram -c ./tests/config/nextflow.config  -c ./tests/modules/cnvkit/batch/nextflow.config
+  tags:
+    - cnvkit
+    - cnvkit/batch
+  files:
+    - path: output/cnvkit/reference.antitarget-tmp.bed
     - path: output/cnvkit/reference.target-tmp.bed
       md5sum: 26d25ff2d6c45b6d92169b3559c6acdb
