@@ -41,7 +41,7 @@ process VARDICTJAVA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vardict-java: \$(readlink -f /usr/local/share/vardict-java-* | sed 's/\\/usr\\/local\\/share\\/vardict-java-//')
+        vardict-java: \$(realpath \$(which vardict-java) | awk '{n=split(\$0,a,"/"); split(a[n-2],b,"-"); print b[3]}')
         var2vcf_valid.pl: \$(echo \$(var2vcf_valid.pl -h | sed -n 2p | awk '{ print \$2 }'))
     END_VERSIONS
     """
