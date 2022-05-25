@@ -14,17 +14,17 @@ process MOSDEPTH {
 
     output:
     tuple val(meta), path('*.global.dist.txt')      , emit: global_txt
-    tuple val(meta), path('*.region.dist.txt')      , emit: regions_txt , optional:true
     tuple val(meta), path('*.summary.txt')          , emit: summary_txt
-    tuple val(meta), path('*.per-base.d4')          , emit: per_base_d4 , optional:true
-    tuple val(meta), path('*.per-base.bed.gz')      , emit: per_base_bed, optional:true
-    tuple val(meta), path('*.per-base.bed.gz.csi')  , emit: per_base_csi, optional:true
-    tuple val(meta), path('*.regions.bed.gz')       , emit: regions_bed , optional:true
-    tuple val(meta), path('*.regions.bed.gz.csi')   , emit: regions_csi , optional:true
-    tuple val(meta), path('*.quantized.bed.gz')     , emit: quantized_bed , optional:true
-    tuple val(meta), path('*.quantized.bed.gz.csi') , emit: quantized_csi , optional:true
-    tuple val(meta), path('*.thresholds.bed.gz')    , emit: thresholds_bed , optional:true
-    tuple val(meta), path('*.thresholds.bed.gz.csi'), emit: thresholds_csi , optional:true
+    tuple val(meta), path('*.region.dist.txt')      , optional:true, emit: regions_txt
+    tuple val(meta), path('*.per-base.d4')          , optional:true, emit: per_base_d4
+    tuple val(meta), path('*.per-base.bed.gz')      , optional:true, emit: per_base_bed
+    tuple val(meta), path('*.per-base.bed.gz.csi')  , optional:true, emit: per_base_csi
+    tuple val(meta), path('*.regions.bed.gz')       , optional:true, emit: regions_bed
+    tuple val(meta), path('*.regions.bed.gz.csi')   , optional:true, emit: regions_csi
+    tuple val(meta), path('*.quantized.bed.gz')     , optional:true, emit: quantized_bed
+    tuple val(meta), path('*.quantized.bed.gz.csi') , optional:true, emit: quantized_csi
+    tuple val(meta), path('*.thresholds.bed.gz')    , optional:true, emit: thresholds_bed
+    tuple val(meta), path('*.thresholds.bed.gz.csi'), optional:true, emit: thresholds_csi
     path  "versions.yml"                            , emit: versions
 
     when:
@@ -44,7 +44,7 @@ process MOSDEPTH {
 
     """
     mosdepth \\
-        --threads ${task.cpus} \\
+        --threads $task.cpus \\
         $interval \\
         $reference \\
         $args \\
