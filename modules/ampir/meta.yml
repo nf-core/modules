@@ -1,0 +1,55 @@
+name: "ampir"
+description: A fast and user-friendly method to predict antimicrobial peptides (AMPs) from any given size protein dataset. ampir uses a supervised statistical machine learning approach to predict AMPs.
+keywords:
+  - ampir
+  - amp
+  - antimicrobial peptide prediction
+tools:
+  - "ampir":
+      description: "A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale."
+      homepage: "https://github.com/Legana/ampir"
+      documentation: "https://github.com/Legana/ampir"
+      tool_dev_url: "https://github.com/Legana/ampir"
+      doi: "10.1093/bioinformatics/btaa653"
+      licence: ["GPL v2"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - faa:
+      type: file
+      description: FASTA file containing amino acid sequences
+      pattern: "*.{faa,fasta}"
+  - model:
+      type: value
+      description: Model for AMP prediction
+      pattern: "{precursor,mature}"
+  - cut_off:
+      type: value
+      description: Cut-off for AMP prediction
+      pattern: "[0-9][0-9]"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - amps:
+      type: file
+      description: File containing AMP predictions
+      pattern: "prediction.fasta"
+  - output_name:
+      type: value
+      description: File name of the FASTA output file
+      pattern: "*.{faa,fasta}"
+
+authors:
+  - "@jasmezz"

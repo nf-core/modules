@@ -1,0 +1,9 @@
+- name: "ampir"
+  command: nextflow run ./tests/modules/ampir -entry test_ampir -c ./tests/config/nextflow.config -c ./tests/modules/ampir/nextflow.config
+  tags:
+    - "ampir"
+  files:
+    - path: output/ampir/prediction.fasta
+      md5sum: e605d38752fd90261c924d51f7007189
+    - path: output/ampir/versions.yml
+      md5sum: 4a11d25b8a904a7ffb34ae88f6826888
