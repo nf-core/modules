@@ -1,5 +1,3 @@
-def VERSION = '1.8.3'
-
 process VARDICTJAVA {
     tag "$meta.id"
     label 'process_medium'
@@ -43,7 +41,7 @@ process VARDICTJAVA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vardict-java: $VERSION
+        vardict-java: \$(readlink -f /usr/local/share/vardict-java-* | sed 's/\\/usr\\/local\\/share\\/vardict-java-//')
         var2vcf_valid.pl: \$(echo \$(var2vcf_valid.pl -h | sed -n 2p | awk '{ print \$2 }'))
     END_VERSIONS
     """
