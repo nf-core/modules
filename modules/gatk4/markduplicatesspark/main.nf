@@ -25,6 +25,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"--input $it"}.join(' ')
 
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK MarkDuplicatesSpark] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -32,7 +33,6 @@ process GATK4_MARKDUPLICATES_SPARK {
         avail_mem = task.memory.giga
     }
     """
-    export SPARK_USER=spark3
 
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
