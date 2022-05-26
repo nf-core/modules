@@ -1,60 +1,51 @@
-name: unicycler
-description: Assembles bacterial genomes
+name: "unicycler"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
 keywords:
-  - genome
-  - assembly
-  - genome assembler
-  - small genome
+  - sort
 tools:
-  - unicycler:
-      description: Hybrid assembly pipeline for bacterial genomes
-      homepage: https://github.com/rrwick/Unicycler
-      documentation: https://github.com/rrwick/Unicycler
-      tool_dev_url: https://github.com/rrwick/Unicycler
-      doi: 10.1371/journal.pcbi.1005595
-      licence: ["GPL v3"]
+  - "unicycler":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Hybrid assembly pipeline for bacterial genomes"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: "['GPL v3']"
+
+## TODO nf-core: Add a description of all of the variables used as input
 input:
+  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - shortreads:
+  # 
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
       type: file
-      description: |
-        List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - longreads:
-      type: file
-      description: |
-        List of input FastQ files of size 1, PacBio or Nanopore long reads.
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
 output:
+  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - scaffolds:
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
       type: file
-      description: Fasta file containing scaffolds
-      pattern: "*.{scaffolds.fa.gz}"
-  - gfa:
-      type: file
-      description: gfa file containing assembly
-      pattern: "*.{assembly.gfa.gz}"
-  - log:
-      type: file
-      description: unicycler log file
-      pattern: "*.{log}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
 authors:
-  - "@JoseEspinosa"
-  - "@drpatelh"
-  - "@d4straub"
+  - "@DSchreyer"
