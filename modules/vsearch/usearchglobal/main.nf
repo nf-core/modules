@@ -1,39 +1,31 @@
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-
 process VSEARCH_USEARCHGLOBAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::vsearch=2.21.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--hf1761c0_1':
+        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
         'quay.io/biocontainers/vsearch:2.21.1--h95f258a_0' }"
 
     input:
-    tuple val(meta), path(queryfasta)
+    val(meta)
+    path(queryfasta)
     path db
+    val idcutoff
     val outoption
     val user_columns
 
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-
     output:
-    tuple val(meta), path('*.aln')  , optional: true, emit: aln
-    tuple val(meta), path('*.biom') , optional: true, emit: biom
-    tuple val(meta), path('*.sam')  , optional: true, emit: sam
-    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
-    tuple val(meta), path('*.uc')   , optional: true, emit: uc
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path('*.aln')    , optional: true, emit: aln
+    tuple val(meta), path('*.biom')   , optional: true, emit: biom
+    tuple val(meta), path('*.lca')    , optional: true, emit: lca
+    tuple val(meta), path('*.mothur') , optional: true, emit: mothur
+    tuple val(meta), path('*.otu')    , optional: true, emit: otu
+    tuple val(meta), path('*.sam')    , optional: true, emit: sam
+    tuple val(meta), path('*.tsv')    , optional: true, emit: tsv
+    tuple val(meta), path('*.txt')    , optional: true, emit: txt
+    tuple val(meta), path('*.uc')     , optional: true, emit: uc
+    path "versions.yml"                               , emit: versions
     
     when:
     task.ext.when == null || task.ext.when
@@ -45,13 +37,13 @@ process VSEARCH_USEARCHGLOBAL {
     switch ( outoption ) {
         case "alnout": outfmt = "--alnout"; out_ext = 'aln'; break
         case "biomout": outfmt = "--biomout"; out_ext = 'biom'; break
-	case "blast6out": outfmt = "--blast6out"; out_ext = 'blast6out.tsv'; break
-        case "mothur_shared_out": outfmt = "--mothur_shared_out"; out_ext = 'mothur.tsv'; break
-	case "otutabout": outfmt = "--otutabout"; out_ext = 'otu.tsv'; break
-	case "samout": outfmt = "--samout"; out_ext = 'sam'; break
-	case "uc": outfmt = "--uc"; out_ext = 'uc'; break
-	case "userout": outfmt = "--userout"; out_ext = 'user.tsv'; break
-	case "lcaout": outfmt = "--lcaout"; out_ext = 'lca.tsv'; break
+        case "blast6out": outfmt = "--blast6out"; out_ext = 'txt'; break
+        case "mothur_shared_out": outfmt = "--mothur_shared_out"; out_ext = 'mothur'; break
+        case "otutabout": outfmt = "--otutabout"; out_ext = 'otu'; break
+        case "samout": outfmt = "--samout"; out_ext = 'sam'; break
+        case "uc": outfmt = "--uc"; out_ext = 'uc'; break
+        case "userout": outfmt = "--userout"; out_ext = 'tsv'; break
+        case "lcaout": outfmt = "--lcaout"; out_ext = 'lca'; break
         default:
             outfmt = "--alnout";
             out_ext = 'aln';
@@ -62,6 +54,7 @@ process VSEARCH_USEARCHGLOBAL {
     vsearch \\
         --usearch_global $queryfasta \\
         --db $db \\
+        --id $idcutoff \\
         --threads $task.cpus \\
         $args \\
         ${columns} \\

@@ -1,17 +1,17 @@
 - name: vsearch usearchglobal test_vsearch_usearchglobal
   command: nextflow run ./tests/modules/vsearch/usearchglobal -entry test_vsearch_usearchglobal -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/usearchglobal/nextflow.config
   tags:
-    - vsearch
     - vsearch/usearchglobal
+    - vsearch
   files:
     - path: output/vsearch/test.aln
-      md5sum: 7b7479c16e0ecb503913da8bde48d6c5
+      md5sum: 2543c4147530dcb1ba4550d3fdb1502a
 
 - name: vsearch usearchglobal test_vsearch_usearchglobal_userout
   command: nextflow run ./tests/modules/vsearch/usearchglobal -entry test_vsearch_usearchglobal_userout -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/usearchglobal/nextflow.config
   tags:
-    - vsearch
     - vsearch/usearchglobal
+    - vsearch
   files:
-    - path: output/vsearch/test.user.tsv
+    - path: output/vsearch/test.tsv
       md5sum: b6cc50f7c8d18cb82e74dab70ed4baab
