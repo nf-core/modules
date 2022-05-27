@@ -1,0 +1,44 @@
+name: reads_qc
+description: |
+  This workflow uses FASTQC to generate QC reports from either untrimmed and trimmed
+  fastqc reads.
+keywords:
+  - fastqc
+modules:
+  - fastqc
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - untrimmed_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - trimmed_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively, resulting from trimming by quality and / or adapters.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastqc_untrimmed:
+      type: file
+      description: FastQC report archive from untrimmed reads
+      pattern: "*_{fastqc.zip}"
+  - fastqc_trimmed:
+      type: file
+      description: FastQC report archive from trimmed reads
+      pattern: "*_{fastqc.zip}"
+authors:
+  - "@lescai"

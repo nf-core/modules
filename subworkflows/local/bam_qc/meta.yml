@@ -1,0 +1,62 @@
+name: bam_qc
+description: |
+  This workflow uses either samtools stats functionalities or qualimap bamqc module to
+  generate a number of different statistics from an input bam file.
+keywords:
+  - samtools
+  - flagstats
+  - qualimap
+modules:
+  - samtools/sort
+  - samtools/index
+  - samtools/idxstats
+  - samtools/flagstats
+  - qualimap/bamqc
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: |
+        a bam file which can either be a direct input of the workflow
+        or resulting from reads pre-processing sub-workflow
+      pattern: "[ *.bam ]"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - gff:
+      type: file
+      description: Feature file with regions of interest
+      pattern: "*.{gff,gtf,bed}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - stats:
+      type: file
+      description: File containing samtools stats output
+      pattern: "*.{stats}"
+  - flagstat:
+      type: file
+      description: File containing samtools flagstat output
+      pattern: "*.{flagstat}"
+  - idxstats:
+      type: file
+      description: File containing samtools idxstats output
+      pattern: "*.{idxstats}"
+  - qualimap:
+      type: dir
+      description: Qualimap results dir
+      pattern: "*/*"
+authors:
+  - "@lescai"
