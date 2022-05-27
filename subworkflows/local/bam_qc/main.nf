@@ -1,12 +1,12 @@
 // runs SAMPLE_QC from either reads or bam files
 // or both after alignment
 
-include { SAMTOOLS_SORT     } from '../../../modules/nf-core/modules/samtools/sort/main'
-include { SAMTOOLS_INDEX    } from '../../../modules/nf-core/modules/samtools/index/main'
-include { SAMTOOLS_STATS    } from '../../../modules/nf-core/modules/samtools/stats/main'
-include { SAMTOOLS_IDXSTATS } from '../../../modules/nf-core/modules/samtools/idxstats/main'
-include { SAMTOOLS_FLAGSTAT } from '../../../modules/nf-core/modules/samtools/flagstat/main'
-include { QUALIMAP_BAMQC    } from '../../../modules/nf-core/modules/qualimap/bamqc/main'
+include { SAMTOOLS_SORT     } from '../../../modules/samtools/sort/main'
+include { SAMTOOLS_INDEX    } from '../../../modules/samtools/index/main'
+include { SAMTOOLS_STATS    } from '../../../modules/samtools/stats/main'
+include { SAMTOOLS_IDXSTATS } from '../../../modules/samtools/idxstats/main'
+include { SAMTOOLS_FLAGSTAT } from '../../../modules/samtools/flagstat/main'
+include { QUALIMAP_BAMQC    } from '../../../modules/qualimap/bamqc/main'
 
 
 

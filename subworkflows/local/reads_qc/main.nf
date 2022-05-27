@@ -3,8 +3,8 @@
 // original and trimmed reads.
 
 
-include { FASTQC as FASTQC_UNTRIMMED } from '../../../modules/nf-core/modules/fastqc/main'
-include { FASTQC as FASTQC_TRIMMED   } from '../../../modules/nf-core/modules/fastqc/main'
+include { FASTQC as FASTQC_UNTRIMMED } from '../../../modules/fastqc/main'
+include { FASTQC as FASTQC_TRIMMED   } from '../../../modules/fastqc/main'
 
 
 workflow READS_QC {
