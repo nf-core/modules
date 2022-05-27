@@ -1,4 +1,5 @@
 #!/usr/bin/env nextflow
+nextflow.enable.dsl = 2
 
 include { READS_QC } from '../../../../subworkflows/local/reads_qc/main'
 
