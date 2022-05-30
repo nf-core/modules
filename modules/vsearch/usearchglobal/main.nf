@@ -47,7 +47,7 @@ process VSEARCH_USEARCHGLOBAL {
         default:
             outfmt = "--alnout";
             out_ext = 'aln';
-            log.warn("Unknown output file format provided (${outoption}): selectingpairwise alignments (alnout)");
+            log.warn("Unknown output file format provided (${outoption}): selecting pairwise alignments (alnout)");
             break
     }
     """
