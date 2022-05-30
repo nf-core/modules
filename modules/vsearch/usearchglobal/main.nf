@@ -26,7 +26,7 @@ process VSEARCH_USEARCHGLOBAL {
     tuple val(meta), path('*.txt')    , optional: true, emit: txt
     tuple val(meta), path('*.uc')     , optional: true, emit: uc
     path "versions.yml"                               , emit: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
