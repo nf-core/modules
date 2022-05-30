@@ -5,9 +5,8 @@
     - gatk4/applybqsr
   files:
     - path: output/gatk4/test.bam
-      md5sum: d088422be886dc8507ff97fcc7dd968a
+      md5sum: e11b7eaf2034740a953626518e3c3d6e
     - path: output/gatk4/versions.yml
-      md5sum: d5c6455d8a77aecc63f87c795fc3443e
 
 - name: gatk4 applybqsr test_gatk4_applybqsr_intervals
   command: nextflow run tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_intervals -c tests/config/nextflow.config -c ./tests/modules/gatk4/applybqsr/nextflow.config
@@ -16,9 +15,8 @@
     - gatk4/applybqsr
   files:
     - path: output/gatk4/test.bam
-      md5sum: 4bfa18d651abd945e240b05e70107716
+      md5sum: e9e9aa753c106e43f936ad573e23d2e6
     - path: output/gatk4/versions.yml
-      md5sum: cb4cb8a62e117b4adc643ae47883d53c
 
 - name: gatk4 applybqsr test_gatk4_applybqsr_cram
   command: nextflow run tests/modules/gatk4/applybqsr -entry test_gatk4_applybqsr_cram -c tests/config/nextflow.config -c ./tests/modules/gatk4/applybqsr/nextflow.config
@@ -27,6 +25,5 @@
     - gatk4/applybqsr
   files:
     - path: output/gatk4/test.cram
-      md5sum: 2e0bca197af4f043a4a85152e6edbe04
+      md5sum: bca9d234a5d484ce2a6f4826ca2ea308
     - path: output/gatk4/versions.yml
-      md5sum: 1efaa18be943bab4e4c54191d6eaa260

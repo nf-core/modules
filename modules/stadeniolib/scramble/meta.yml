@@ -1,0 +1,58 @@
+name: "stadeniolib_scramble"
+description: Advanced sequence file format conversions
+keywords:
+  - sam
+  - bam
+  - cram
+  - compression
+tools:
+  - "scramble":
+      description: "Staden Package 'io_lib' (sometimes referred to as libstaden-read by distributions). This contains code for reading and writing a variety of Bioinformatics / DNA Sequence formats."
+      homepage: "https://github.com/jkbonfield/io_lib"
+      documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
+      tool_dev_url: "https://github.com/jkbonfield/io_lib"
+      licence: "['BSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - fasta:
+      type: file
+      description: Reference genome in FASTA format
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: FASTA index file from samtools faidx
+      pattern: "*.{fai}"
+  - gzi:
+      type: file
+      description: Optional gzip index file for BAM inputs
+      pattern: "*.gzi"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Converted reads
+      pattern: "*.{sam, bam, cram}"
+  - gzi:
+      type: Optional file
+      description: gzip index file for BAM outputs
+      pattern: ".{bam.gzi}"
+authors:
+  - "@matthdsm"
