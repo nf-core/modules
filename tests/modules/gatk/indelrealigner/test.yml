@@ -1,0 +1,14 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml gatk/indelrealigner
+- name: "gatk indelrealigner"
+  command: nextflow run ./tests/modules/gatk/indelrealigner -entry test_gatk_indelrealigner -c ./tests/config/nextflow.config -c ./tests/modules/gatk/indelrealigner/nextflow.config
+  tags:
+    - "gatk"
+    #
+    - "gatk/indelrealigner"
+    #
+  files:
+    - path: "output/gatk/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/gatk/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
