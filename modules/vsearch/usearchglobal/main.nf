@@ -8,8 +8,7 @@ process VSEARCH_USEARCHGLOBAL {
         'quay.io/biocontainers/vsearch:2.21.1--h95f258a_0' }"
 
     input:
-    val(meta)
-    path(queryfasta)
+    tuple val(meta), path(queryfasta)
     path db
     val idcutoff
     val outoption

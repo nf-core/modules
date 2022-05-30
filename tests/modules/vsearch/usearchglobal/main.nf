@@ -11,7 +11,7 @@ workflow test_vsearch_usearchglobal {
     idcutoff = 0.985
     outoption = "xcfert"  // Nonsense text to check default case.
     columns = "" 
-    VSEARCH_USEARCHGLOBAL ( [id:'test'], query, db, idcutoff, outoption, columns )
+    VSEARCH_USEARCHGLOBAL ( [[id:'test'], query], db, idcutoff, outoption, columns )
 }
 
 workflow test_vsearch_usearchglobal_userout {
@@ -21,5 +21,5 @@ workflow test_vsearch_usearchglobal_userout {
     idcutoff = 0.985
     outoption = "userout"
     columns = "query+target+id" 
-    VSEARCH_USEARCHGLOBAL ( [id:'test'], query, db, idcutoff, outoption, columns )
+    VSEARCH_USEARCHGLOBAL ( [[id:'test'], query], db, idcutoff, outoption, columns )
 }
