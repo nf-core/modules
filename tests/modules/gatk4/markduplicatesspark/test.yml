@@ -25,7 +25,8 @@
     - path: output/gatk4/test.bam
       md5sum: 898cb0a6616897d8ada90bab53bf0837
     - path: output/gatk4/test.metrics
-      contains: '[ ## METRICS CLASS        org.broadinstitute.hellbender.utils.read.markduplicates.GATKDuplicationMetrics
-                  LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES        READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATESPERCENT_DUPLICATION      ESTIMATED_LIBRARY_SIZE
-                  testN   0       2820    2       2       0       828     0       0.293617        3807
-                  testT   0       2718    0       0       0       716     0       0.263429        4206 ]'
+      contains:
+        "[ ## METRICS CLASS        org.broadinstitute.hellbender.utils.read.markduplicates.GATKDuplicationMetrics
+        LIBRARY UNPAIRED_READS_EXAMINED READ_PAIRS_EXAMINED     SECONDARY_OR_SUPPLEMENTARY_RDS  UNMAPPED_READS  UNPAIRED_READ_DUPLICATES        READ_PAIR_DUPLICATES    READ_PAIR_OPTICAL_DUPLICATESPERCENT_DUPLICATION      ESTIMATED_LIBRARY_SIZE
+        testN   0       2820    2       2       0       828     0       0.293617        3807
+        testT   0       2718    0       0       0       716     0       0.263429        4206 ]"
