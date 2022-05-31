@@ -33,7 +33,6 @@ process MALT_RUN {
 
     """
     malt-run \\
-        -J-Xmx${avail_mem}g \\
         -t $task.cpus \\
         -v \\
         -o . \\

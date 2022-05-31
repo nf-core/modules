@@ -10,8 +10,9 @@ process MALT_BUILD {
     input:
     path fastas
     val seq_type
-    path gff
-    path map_db
+    path mapping_file
+    val mapping_type
+    val mapping_db
 
     output:
     path "malt_index/"   , emit: index
@@ -29,19 +30,24 @@ process MALT_BUILD {
     } else {
         avail_mem = task.memory.giga
     }
-    def igff = gff ? "-igff ${gff}" : ""
+
+    def valid_types = ['gi', 'ref', 'syn']
+    def valid_dbs = ['eggnog', 'interpro2go', 'kegg', 'seed', 'taxonomy']
+
+    !valid_types.contains(mapping_type) error "Unrecognised mapping_type value for MALT_BUILD. Options: gi, ref, syn"
+    !valid_types.contains(mapping_db) error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy"
+
+    def mapping = "--${valid_types}2${valid_dbs} ${mapping_file}"
 
     """
     malt-build \\
-        -J-Xmx${avail_mem}g \\
         -v \\
         --input ${fastas.join(' ')} \\
         -s $seq_type \\
-        $igff \\
         -d 'malt_index/' \\
         -t $task.cpus \\
         $args \\
-        -mdb ${map_db}/*.db |&tee malt-build.log
+        $mapping |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
