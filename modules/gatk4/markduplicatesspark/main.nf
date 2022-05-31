@@ -14,15 +14,16 @@ process GATK4_MARKDUPLICATES_SPARK {
     path  dict
 
     output:
-    tuple val(meta), path("${prefix}"), emit: output
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.bam"),         emit: bam
+    tuple val(meta), path("*.metrics"),     emit: metrics, optional: true
+    path "versions.yml"               ,     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" + ".bam"
     def input_list = bam.collect{"--input $it"}.join(' ')
 
 
