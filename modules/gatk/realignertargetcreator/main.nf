@@ -8,13 +8,13 @@ process GATK_REALIGNERTARGETCREATOR {
         'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta), path(reference)
-    tuple val(meta), path(known_vcf)
+    tuple val(meta), path(bam), path(bai)
+    tuple path(fasta), path(fasta_fai), path(fasta_dict)
+    path(known_vcf)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.intervals"), emit: intervals
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,16 +22,16 @@ process GATK_REALIGNERTARGETCREATOR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def known = known_vcf ? "-known ${known_vcf}" ? ""
+    def known = known_vcf ? "-known ${known_vcf}" : ""
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     gatk3 \\
-        -T RealigerTargetCreator \\
-        -nt ${task.cpus}
+        -T RealignerTargetCreator \\
+        -nt ${task.cpus} \\
         -I ${bam} \\
-        -R ${reference} \\
-        -o ${prefix}.bam \\
+        -R ${fasta} \\
+        -o ${prefix}.intervals \\
         ${known} \\
         $args
 
