@@ -2,10 +2,10 @@ process KALLISTO_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::kallisto=0.46.2" : null)
+    conda (params.enable_conda ? "bioconda::kallisto=0.48.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1' :
-        'quay.io/biocontainers/kallisto:0.46.2--h4f7b962_1' }"
+        'https://depot.galaxyproject.org/singularity/kallisto:0.48.0--h0d531b0_1' :
+        'quay.io/biocontainers/kallisto:0.48.0--h0d531b0_1' }"
 
     input:
     path fasta
