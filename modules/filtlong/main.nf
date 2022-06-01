@@ -11,7 +11,7 @@ process FILTLONG {
     tuple val(meta), path(shortreads), path(longreads)
 
     output:
-    tuple val(meta), path("${meta.id}_lr_filtlong.fastq.gz"), emit: reads
+    tuple val(meta), path("*.fastq.gz"), emit: reads
     path "versions.yml"                                     , emit: versions
 
     when:
@@ -21,12 +21,13 @@ process FILTLONG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def short_reads = !shortreads ? "" : meta.single_end ? "-1 $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}"
+    if ("$longreads" == "${prefix}.fastq.gz") error "Longread FASTQ input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     filtlong \\
         $short_reads \\
         $args \\
         $longreads \\
-        | gzip -n > ${prefix}_lr_filtlong.fastq.gz
+        | gzip -n > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
