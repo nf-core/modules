@@ -28,34 +28,48 @@ process CNVKIT_BATCH {
     script:
     def args = task.ext.args ?: ''
 
-    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
-    // input pair is assumed to have same extension if both exist
-    def is_cram = tumor.Extension == "cram" ? true : false
-    def tumor_out = is_cram ? tumor.BaseName + ".bam" : "${tumor}"
+    def tumor_exists = tumor ? true : false
+    def normal_exists = normal ? true : false
 
-    // do not run samtools on normal samples in tumor_only mode
-    def normal_exists = normal ? true: false
+    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
+    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
+
+    def tumor_out = tumor_cram ? tumor.BaseName + ".bam" : "${tumor}"
+
     // tumor_only mode does not need fasta & target
     // instead it requires a pre-computed reference.cnn which is built from fasta & target
     def (normal_out, normal_args, fasta_args) = ["", "", ""]
 
     if (normal_exists){
         def normal_prefix = normal.BaseName
-        normal_out = is_cram ? "${normal_prefix}" + ".bam" : "${normal}"
-        normal_args = normal_prefix ? "--normal $normal_out" : ""
+        normal_out = normal_cram ? "${normal_prefix}" + ".bam" : "${normal}"
         fasta_args = fasta ? "--fasta $fasta" : ""
+
+        // germline mode
+        // normal samples must be input without a flag
+        // requires flag --normal to be empty
+        if(!tumor_exists){
+            tumor_out = normal.BaseName + ".bam"
+            normal_args = "--normal "
+        }
+        // somatic mode
+        else {
+            normal_args = normal_prefix ? "--normal $normal_out" : ""
+        }
     }
 
     def target_args = targets ? "--targets $targets" : ""
     def reference_args = reference ? "--reference $reference" : ""
 
     """
-    if $is_cram; then
+    if $tumor_cram; then
         samtools view -T $fasta $tumor -@ $task.cpus -o $tumor_out
-        if $normal_exists; then
-            samtools view -T $fasta $normal -@ $task.cpus -o $normal_out
-        fi
     fi
+    if $normal_cram; then
+        samtools view -T $fasta $normal -@ $task.cpus -o $normal_out
+    fi
+
 
     cnvkit.py \\
         batch \\

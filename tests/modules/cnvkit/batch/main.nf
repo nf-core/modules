@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { CNVKIT_BATCH as CNVKIT_HYBRID    } from '../../../../modules/cnvkit/batch/main.nf'
 include { CNVKIT_BATCH as CNVKIT_WGS       } from '../../../../modules/cnvkit/batch/main.nf'
 include { CNVKIT_BATCH as CNVKIT_TUMORONLY } from '../../../../modules/cnvkit/batch/main.nf'
+include { CNVKIT_BATCH as CNVKIT_GERMLINE } from '../../../../modules/cnvkit/batch/main.nf'
 
 workflow test_cnvkit_hybrid {
 
@@ -47,10 +48,10 @@ workflow test_cnvkit_tumoronly {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
         []
     ]
-    reference = file(params.test_data['generic']['cnn']['reference'], checkIfExists: true)
+    reference = file(params.test_data['homo_sapiens']['genome']['genome_21_reference_cnn'], checkIfExists: true)
 
     CNVKIT_TUMORONLY ( input, [], [], reference )
 }
@@ -59,11 +60,24 @@ workflow test_cnvkit_tumoronly_cram {
 
     input = [
         [ id:'test'], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
         []
     ]
     fasta     = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    reference = file(params.test_data['generic']['cnn']['reference'], checkIfExists: true)
+    reference = file(params.test_data['homo_sapiens']['genome']['genome_21_reference_cnn'], checkIfExists: true)
 
     CNVKIT_TUMORONLY ( input, fasta, [], reference )
+}
+
+workflow test_cnvkit_germline_cram {
+
+    input = [
+        [ id:'test'], // meta map
+        [],
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_cram'], checkIfExists: true)
+    ]
+    fasta     = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    targets = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+
+    CNVKIT_GERMLINE ( input, fasta, targets,  [])
 }
