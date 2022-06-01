@@ -8,7 +8,9 @@ process GATK4_COMPOSESTRTABLEFILE {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple path(fasta), path(fasta_fai), path(dict)
+   path(fasta)
+   path(fasta_fai)
+   path(dict)
 
     output:
     path "*.zip"            , emit: str_table
