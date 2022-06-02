@@ -1,0 +1,52 @@
+name: skesa
+description: |
+  Strategic Kmer Extension for Scrupulous Assemblies (SKESA): 
+  A de-novo sequence read assembler for microbial genomes. 
+  It uses conservative heuristics and is designed to create breaks at repeat regions in the genome. 
+  This leads to excellent sequence quality without significantly compromising contiguity.
+keywords:
+  - assembly
+  - de novo
+  - short reads
+  - microbial genomes
+tools:
+  - skesa:
+      description: |
+        Strategic Kmer Extension for Scrupulous Assemblies (SKESA): 
+        A de-novo sequence read assembler for microbial genomes. 
+        It uses conservative heuristics and is designed to create breaks at repeat regions in the genome. 
+        This leads to excellent sequence quality without significantly compromising contiguity.
+      homepage: https://github.com/ncbi/SKESA
+      documentation: https://github.com/ncbi/SKESA
+      tool_dev_url: None
+      doi: "doi.org/10.1186/s13059-018-1540-z"
+      licence: ['Public Domain']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: Gzip-compressed FASTQ file(s)
+      pattern: "*.{fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - contigs:
+      type: file
+      description: Gzip-compressed FASTA file containing assembled contigs
+      pattern: "*.contigs.fasta.gz"
+
+authors:
+  - "@hseabolt"

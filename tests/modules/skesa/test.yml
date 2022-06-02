@@ -1,0 +1,15 @@
+- name: skesa test_skesa_single_end
+  command: nextflow run ./tests/modules/skesa -entry test_skesa_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/skesa/nextflow.config
+  tags:
+    - skesa
+  files:
+    - path: output/skesa/test.contigs.fasta.gz
+      md5sum: bf0e2d9dcb9d529eb1cceeb73167df1e
+
+- name: skesa test_seqtk_sample_paired_end
+  command: nextflow run ./tests/modules/skesa -entry test_seqtk_sample_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/skesa/nextflow.config
+  tags:
+    - skesa
+  files:
+    - path: output/skesa/test.contigs.fasta.gz
+      md5sum: 322b98614cea8f4ec471c554c7f052d6
