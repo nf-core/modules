@@ -34,7 +34,6 @@ process GATK4_MARKDUPLICATES_SPARK {
         avail_mem = task.memory.giga
     }
     """
-
     gatk --java-options "-Xmx${avail_mem}g" MarkDuplicatesSpark \\
         $input_list \\
         --output $prefix \\
