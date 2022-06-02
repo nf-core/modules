@@ -11,26 +11,24 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("**_S*_L00?_R?_00?.fastq.gz")           ,emit: fastq
-    tuple val(meta), path("**_S*_L00?_I?_00?.fastq.gz")           ,optional:true ,emit: fastq_idx
-    tuple val(meta), path("Undetermined_S0_L00?_R?_00?.fastq.gz") ,emit: undetermined
-    tuple val(meta), path("Undetermined_S0_L00?_I?_00?.fastq.gz") ,optional:true, emit: undetermined_idx
-    path("Reports/*.{csv,xml}")                                   ,emit: reports
-    path("Logs/*.{log,txt}")                                      ,emit: logs
-    path("**.bin")                                                ,emit: interop
-    path("versions.yml")                                          ,emit: versions
+    tuple val(meta), path("**[!Undetermined]_S*_L00?_R?_00?.fastq.gz")  ,emit: fastq
+    tuple val(meta), path("**_S*_L00?_I?_00?.fastq.gz")                 ,optional:true ,emit: fastq_idx
+    tuple val(meta), path("Undetermined_S0_L00?_R?_00?.fastq.gz")       ,emit: undetermined
+    tuple val(meta), path("Undetermined_S0_L00?_I?_00?.fastq.gz")       ,optional:true, emit: undetermined_idx
+    tuple val(meta), path("Reports/*.{csv,xml}")                        ,emit: reports
+    tuple val(meta), path("Logs/*.{log,txt}")                           ,emit: logs
+    tuple val(meta), path("**.bin")                                     ,emit: interop
+    path("versions.yml")                                                ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def select_lane = meta.lane ? "--bcl-only-lane ${meta.lane}" : ""
 
     """
     bcl-convert \\
         $args \\
-        $select_lane \\
         --output-directory . \\
         --bcl-input-directory ${run_dir} \\
         --sample-sheet ${samplesheet} \\
