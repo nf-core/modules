@@ -1,6 +1,6 @@
-process GATK4_HAPLOTYPECALLER {
+process GATK4_CALIBRATEDRAGSTRMODEL {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,16 +8,14 @@ process GATK4_HAPLOTYPECALLER {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model)
+    tuple val(meta), path(bam), path(bam_index)
     path  fasta
-    path  fai
+    path  fasta_fai
     path  dict
-    path  dbsnp
-    path  dbsnp_tbi
+    path  strtablefile
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , optional:true, emit: tbi
+    tuple val(meta), path("*.txt")   , emit: dragstr_model
     path "versions.yml"              , emit: versions
 
     when:
@@ -26,24 +24,19 @@ process GATK4_HAPLOTYPECALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
-    def interval_command = intervals ? "--intervals $intervals" : ""
-    def dragstr_command = dragstr_model ? "--dragstr-params-path $dragstr_model" : ""
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK CalibrateDragstrModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" HaplotypeCaller \\
-        --input $input \\
-        --output ${prefix}.vcf.gz \\
+    gatk --java-options "-Xmx${avail_mem}g" CalibrateDragstrModel \\
+        --input $bam \\
+        --output ${prefix}.txt \\
         --reference $fasta \\
-        $dbsnp_command \\
-        $interval_command \\
-        $dragstr_command \\
+        --str-table-path $strtablefile \\
         --tmp-dir . \\
         $args
 
