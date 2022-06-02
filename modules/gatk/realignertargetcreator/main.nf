@@ -9,7 +9,7 @@ process GATK_REALIGNERTARGETCREATOR {
 
     input:
     tuple val(meta), path(input), path(index)
-    path path(fasta)
+    path(fasta)
     path(fai)
     path(dict)
     path(known_vcf)
@@ -25,7 +25,7 @@ process GATK_REALIGNERTARGETCREATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -39,7 +39,7 @@ process GATK_REALIGNERTARGETCREATOR {
         -Xmx${avail_mem}g \\
         -T RealignerTargetCreator \\
         -nt ${task.cpus} \\
-        -I ${bam} \\
+        -I ${input} \\
         -R ${fasta} \\
         -o ${prefix}.intervals \\
         ${known} \\
