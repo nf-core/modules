@@ -1,4 +1,4 @@
-process GATK4_CALIBRATEDRAGSTRMODEL{
+process GATK4_CALIBRATEDRAGSTRMODEL {
     tag "$meta.id"
     label 'process_low'
 
