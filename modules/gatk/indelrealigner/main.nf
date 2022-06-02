@@ -9,20 +9,20 @@ process GATK_INDELREALIGNER {
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
-    path path(fasta)
+    path(fasta)
     path(fai)
     path(dict)
     path(known_vcf)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam"), path("*.bai"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
@@ -36,10 +36,11 @@ process GATK_INDELREALIGNER {
 
     """
     gatk3 \\
+        -Xmx${avail_mem}g \\
         -T IndelRealigner \\
         -R ${fasta} \\
         -nt ${task.cpus}
-        -I ${bam} \\
+        -I ${input} \\
         -targetIntervals ${intervals} \\
         ${known} \\
         -o ${prefix}.bam \\
