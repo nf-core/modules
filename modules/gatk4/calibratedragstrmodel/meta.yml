@@ -33,6 +33,10 @@ input:
       type: file
       description: index of the BAM/CRAM/SAM file
       pattern: "*.{bai,crai,sai}"
+  - intervals:
+      type: file
+      description: BED file or interval list containing regions (optional)
+      pattern: "*.{bed,interval_list}"
   - fasta:
       type: file
       description: The reference FASTA file
