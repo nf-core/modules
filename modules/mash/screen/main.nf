@@ -8,8 +8,8 @@ process MASH_SCREEN {
         'quay.io/biocontainers/mash:2.3--he348c14_1' }"
 
     input:
-    tuple val(meta), path(query_sketch)
-    path fastx_db
+    tuple val(meta), path(query)
+    path sequences_sketch
 
     output:
     tuple val(meta), path("*.screen"), emit: screen
@@ -26,8 +26,8 @@ process MASH_SCREEN {
         screen \\
         $args \\
         -p $task.cpus \\
-        $query_sketch \\
-        $fastx_db \\
+        $sequences_sketch \\
+        $query \\
         > ${prefix}.screen
 
     cat <<-END_VERSIONS > versions.yml
