@@ -12,15 +12,14 @@ process GATK_UNIFIEDGENOTYPER {
     path(fasta)
     path(fai)
     path(dict)
-    path(known_vcf)
     path(intervals)
     path(contamination)
-    path(dbsnps)
+    path(dbsnp)
     path(comp)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +28,7 @@ process GATK_UNIFIEDGENOTYPER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def contamination_file = contamination ? "-contaminationFile ${contamination}" : ""
-    def dbsnps_file = dbsnps ? "--dbsnp ${dbsnps}" : ""
+    def dbsnp_file = dbsnp ? "--dbsnp ${dbsnp}" : ""
     def comp_file = comp ? "--comp ${comp}" : ""
     def intervals_file = intervals ? "--intervals ${intervals}" : ""
 
@@ -48,9 +47,9 @@ process GATK_UNIFIEDGENOTYPER {
         -I ${input} \\
         -R ${fasta} \\
         ${contamination_file} \\
-        ${dbsnps_file} \\
+        ${dbsnp_file} \\
         ${comp_file} \\
-        ${intervals_file}
+        ${intervals_file} \\
         -o ${prefix}.vcf \\
         $args
 
@@ -58,7 +57,7 @@ process GATK_UNIFIEDGENOTYPER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gatk: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        gatk: \$(echo \$(gatk3 --version))
     END_VERSIONS
     """
 }

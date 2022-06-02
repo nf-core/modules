@@ -3,9 +3,6 @@ keywords:
   - bam
   - vcf
   - variant calling
-  - indel
-  - realignment
-  - targets
 tools:
   - "gatk":
       description: "The full Genome Analysis Toolkit (GATK) framework, license restricted."
@@ -39,10 +36,22 @@ input:
       type: file
       description: GATK dict file for reference
       pattern: ".dict"
-  - known_vcf:
+  - intervals:
       type: file
-      description: Optional input VCF file(s) with known indels
-      pattern: ".vcf"
+      description: Bed file with the genomic regions included in the library (optional)
+      pattern: "*.intervals"
+  - contamination:
+      type: file
+      description: Tab-separated file containing fraction of contamination in sequencing data (per sample) to aggressively remove
+      pattern: "*"
+  - dbsnps:
+      type: file
+      description: VCF file containing known sites (optional)
+      pattern: "*"
+  - comp:
+      type: file
+      description: Comparison VCF file (optional)
+      pattern: "*"
 
 output:
   - meta:
