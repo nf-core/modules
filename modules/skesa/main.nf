@@ -1,7 +1,7 @@
 process SKESA {
     tag "$meta.id"
     label 'process_low'
-    
+
     conda (params.enable_conda ? "bioconda::skesa=2.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/skesa:2.4.0--he1c1bb9_0':
@@ -16,13 +16,13 @@ process SKESA {
 
     when:
     task.ext.when == null || task.ext.when
-    
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def maxmem = task.memory
     def illumina_reads = meta.single_end ? "${reads}" : "${reads[0]},${reads[1]}"
-    if (meta.single_end == false) { 
+    if (meta.single_end == false) {
         args += " --use_paired_ends"
     }
     """
