@@ -13,9 +13,13 @@ process GATK_UNIFIEDGENOTYPER {
     path(fai)
     path(dict)
     path(known_vcf)
+    path(intervals)
+    path(contamination)
+    path(dbsnps)
+    path(comp)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,6 +28,10 @@ process GATK_UNIFIEDGENOTYPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def contamination_file = contamination ? "-contaminationFile ${contamination}" : ""
+    def dbsnps_file = dbsnps ? "--dbsnp ${dbsnps}" : ""
+    def comp_file = comp ? "--comp ${comp}" : ""
+    def intervals_file = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -39,8 +47,14 @@ process GATK_UNIFIEDGENOTYPER {
         -T UnifiedGenotyper \\
         -I ${input} \\
         -R ${fasta} \\
+        ${contamination_file} \\
+        ${dbsnps_file} \\
+        ${comp_file} \\
+        ${intervals_file}
         -o ${prefix}.vcf \\
         $args
+
+    gzip -n *.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
