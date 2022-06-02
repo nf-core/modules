@@ -8,8 +8,10 @@ process GATK_REALIGNERTARGETCREATOR {
         'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    tuple path(fasta), path(fasta_fai), path(fasta_dict)
+    tuple val(meta), path(input), path(index)
+    path path(fasta)
+    path(fai)
+    path(dict)
     path(known_vcf)
 
     output:
@@ -25,8 +27,16 @@ process GATK_REALIGNERTARGETCREATOR {
     def known = known_vcf ? "-known ${known_vcf}" : ""
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
+
     """
     gatk3 \\
+        -Xmx${avail_mem}g \\
         -T RealignerTargetCreator \\
         -nt ${task.cpus} \\
         -I ${bam} \\
