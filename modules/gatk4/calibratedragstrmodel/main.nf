@@ -8,7 +8,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bam_index)
+    tuple val(meta), path(bam), path(bam_index), path(intervals)
     path  fasta
     path  fasta_fai
     path  dict
@@ -24,6 +24,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def intervals_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -37,6 +38,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         --output ${prefix}.txt \\
         --reference $fasta \\
         --str-table-path $strtablefile \\
+        $intervals_command \\
         --tmp-dir . \\
         $args
 

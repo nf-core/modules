@@ -1,8 +1,8 @@
 - name: gatk4 calibratedragstrmodel test_gatk4_calibratedragstrmodel_bam
   command: nextflow run ./tests/modules/gatk4/calibratedragstrmodel -entry test_gatk4_calibratedragstrmodel_bam -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/calibratedragstrmodel/nextflow.config
   tags:
-    - gatk4
     - gatk4/calibratedragstrmodel
+    - gatk4
   files:
     - path: output/gatk4/test.txt
       md5sum: 0a1a1583b157fa2251dd931ed165da4f
@@ -10,8 +10,17 @@
 - name: gatk4 calibratedragstrmodel test_gatk4_calibratedragstrmodel_cram
   command: nextflow run ./tests/modules/gatk4/calibratedragstrmodel -entry test_gatk4_calibratedragstrmodel_cram -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/calibratedragstrmodel/nextflow.config
   tags:
-    - gatk4
     - gatk4/calibratedragstrmodel
+    - gatk4
   files:
     - path: output/gatk4/test.txt
       md5sum: 1aa7ab38023f724877b3323c5e6b9a4e
+
+- name: gatk4 calibratedragstrmodel test_gatk4_calibratedragstrmodel_beds
+  command: nextflow run ./tests/modules/gatk4/calibratedragstrmodel -entry test_gatk4_calibratedragstrmodel_beds -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/calibratedragstrmodel/nextflow.config
+  tags:
+    - gatk4/calibratedragstrmodel
+    - gatk4
+  files:
+    - path: output/gatk4/test.txt
+      md5sum: def8baccad7bd59006f08fcb0a6721bf
