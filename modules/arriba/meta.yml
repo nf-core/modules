@@ -30,6 +30,26 @@ input:
       type: file
       description: Annotation GTF file
       pattern: "*.{gtf}"
+  - blacklist:
+      type: file
+      description: Blacklist file
+      pattern: "*.{tsv}"
+  - known_fusions:
+      type: file
+      description: Known fusions file
+      pattern: "*.{tsv}"
+  - structural_variants:
+      type: file
+      description: Structural variants file
+      pattern: "*.{tsv}"
+  - tags:
+      type: file
+      description: Tags file
+      pattern: "*.{tsv}"
+  - protein_domains:
+      type: file
+      description: Protein domains file
+      pattern: "*.{gff3}"
 
 output:
   - meta:
@@ -51,4 +71,4 @@ output:
       pattern: "*.{fusions.discarded.tsv}"
 
 authors:
-  - "@praveenraj2018"
+  - "@praveenraj2018,@rannick"
