@@ -9,10 +9,10 @@ process GATK_REALIGNERTARGETCREATOR {
 
     input:
     tuple val(meta), path(input), path(index)
-    path(fasta)
-    path(fai)
-    path(dict)
-    path(known_vcf)
+    path fasta
+    path fai
+    path dict
+    path known_vcf
 
     output:
     tuple val(meta), path("*.intervals"), emit: intervals
