@@ -8,16 +8,15 @@ process TIDDIT_SV {
         'quay.io/biocontainers/tiddit:3.0.0--py39h59fae87_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index)
     path  fasta
     path  fai
     path  bwa_index
 
     output:
-    tuple val(meta), path("*.vcf")        , emit: vcf
-    tuple val(meta), path("*.ploidy.tab") , emit: ploidy
-    tuple val(meta), path("*.signals.tab"), emit: signals
-    path  "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.vcf")         , emit: vcf
+    tuple val(meta), path("*.ploidies.tab"), emit: ploidy
+    path  "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +26,11 @@ process TIDDIT_SV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref $fasta" : ""
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    for i in `ls ${bwa_index}`
+    do
+        ln -s ${bwa_index}/\$i ${fasta}.\${i##*.}
+    done
+
 
     tiddit \\
         --sv \\
@@ -38,7 +41,7 @@ process TIDDIT_SV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
+        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*tiddit-//; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -51,7 +54,7 @@ process TIDDIT_SV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*TIDDIT-//; s/ .*\$//')
+        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*tiddit-//; s/ .*\$//')
     END_VERSIONS
     """
 }
