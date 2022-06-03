@@ -10,7 +10,6 @@ process TIDDIT_SV {
     input:
     tuple val(meta), path(input), path(index)
     path  fasta
-    path  fai
     path  bwa_index
 
     output:
@@ -24,7 +23,6 @@ process TIDDIT_SV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--ref $fasta" : ""
     """
     [[ -d $bwa_index ]] && for i in `ls $bwa_index`; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s $bwa_index/\$i ${fasta}.\${i##*.} || ln -s $bwa_index/\$i \$i; done
 
@@ -32,7 +30,7 @@ process TIDDIT_SV {
         --sv \\
         $args \\
         --bam $input \\
-        $reference \\
+        --ref $fasta \\
         -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
@@ -45,8 +43,7 @@ process TIDDIT_SV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
-    touch ${prefix}.ploidy.tab
-    touch ${prefix}.signals.tab
+    touch ${prefix}.ploidies.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
