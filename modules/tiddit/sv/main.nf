@@ -26,11 +26,7 @@ process TIDDIT_SV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref $fasta" : ""
     """
-    for i in `ls ${bwa_index}`
-    do
-        ln -s ${bwa_index}/\$i ${fasta}.\${i##*.}
-    done
-
+    [[ -d $bwa_index ]] && for i in `ls $bwa_index`; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s $bwa_index/\$i ${fasta}.\${i##*.} || ln -s $bwa_index/\$i \$i; done
 
     tiddit \\
         --sv \\
