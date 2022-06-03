@@ -9,13 +9,13 @@ process GATK_UNIFIEDGENOTYPER {
 
     input:
     tuple val(meta), path(input), path(index)
-    path(fasta)
-    path(fai)
-    path(dict)
-    path(intervals)
-    path(contamination)
-    path(dbsnp)
-    path(comp)
+    path  fasta
+    path  fai
+    path  dict
+    path  intervals
+    path  contamination
+    path  dbsnp
+    path  comp
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
