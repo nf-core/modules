@@ -2,15 +2,16 @@ process TIDDIT_SV {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::tiddit=2.12.1" : null)
+    conda (params.enable_conda ? "bioconda::tiddit=3.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tiddit:2.12.1--py38h1773678_0' :
-        'quay.io/biocontainers/tiddit:2.12.1--py38h1773678_0' }"
+        'https://depot.galaxyproject.org/singularity/tiddit:3.0.0--py39h59fae87_1' :
+        'quay.io/biocontainers/tiddit:3.0.0--py39h59fae87_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input)
     path  fasta
     path  fai
+    path  bwa_index
 
     output:
     tuple val(meta), path("*.vcf")        , emit: vcf
@@ -26,10 +27,12 @@ process TIDDIT_SV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref $fasta" : ""
     """
+    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+
     tiddit \\
         --sv \\
         $args \\
-        --bam $bam \\
+        --bam $input \\
         $reference \\
         -o $prefix
 
