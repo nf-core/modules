@@ -11,10 +11,10 @@ process SHASTA {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("ShastaRun/Assembly.fasta.gz"), emit: assembly
-    tuple val(meta), path("ShastaRun/Assembly.gfa.gz")  , emit: gfa
-    tuple val(meta), path("ShastaRun/")                 , emit: results
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("ShastaRun/${meta.id}_Assembly.fasta.gz"), emit: assembly
+    tuple val(meta), path("ShastaRun/${meta.id}_Assembly.gfa.gz")  , emit: gfa
+    tuple val(meta), path("ShastaRun/")                            , emit: results
+    path "versions.yml"                                            , emit: versions
 
     script:
     def args   = task.ext.args   ?: ''
@@ -32,8 +32,8 @@ process SHASTA {
         --threads $task.cpus
 
     # compress results
-    gzip -c ShastaRun/Assembly.fasta > ShastaRun/Assembly.fasta.gz
-    gzip -c ShastaRun/Assembly.gfa   > ShastaRun/Assembly.gfa.gz
+    gzip -c ShastaRun/Assembly.fasta > ShastaRun/${meta.id}_Assembly.fasta.gz
+    gzip -c ShastaRun/Assembly.gfa   > ShastaRun/${meta.id}_Assembly.gfa.gz
 
     # cleanup temp files
     rm reads.fq

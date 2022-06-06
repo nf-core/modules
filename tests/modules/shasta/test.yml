@@ -1,7 +1,57 @@
 - name: shasta test_shasta
-  command: nextflow run ./tests/modules/shasta -entry test_shasta -c ./tests/config/nextflow.config -c ./tests/modules/shasta/nextflow.config
+  command: nextflow run ./tests/modules/shasta -entry test_shasta -c ./tests/config/nextflow.config  -c ./tests/modules/shasta/nextflow.config
   tags:
     - shasta
   files:
-    - path: output/shasta/versions.yml
-      md5sum: 99bb7d9eaaa47570a6a6b42a984fbbc4
+    - path: output/shasta/ShastaRun/AlignedFractionHistogram.csv
+      md5sum: a2c08c3dd757119efb0a0db17349b141
+    - path: output/shasta/ShastaRun/AlignmentDriftHistogram.csv
+      md5sum: 90cd541e72e30a628bacd11fb89c8561
+    - path: output/shasta/ShastaRun/AlignmentMarkerCountHistogram.csv
+      md5sum: 1023d2a2b67c3ac18a035a67002faf09
+    - path: output/shasta/ShastaRun/AlignmentSkipHistogram.csv
+      md5sum: 90cd541e72e30a628bacd11fb89c8561
+    - path: output/shasta/ShastaRun/AlignmentTrimHistogram.csv
+      md5sum: 90cd541e72e30a628bacd11fb89c8561
+    - path: output/shasta/ShastaRun/Assembly-BothStrands-NoSequence.gfa
+      md5sum: 0252437812850e413bf7cbe4f9f9bfb1
+    - path: output/shasta/ShastaRun/Assembly-BothStrands.gfa
+      md5sum: 0252437812850e413bf7cbe4f9f9bfb1
+    - path: output/shasta/ShastaRun/Assembly.fasta
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/shasta/ShastaRun/Assembly.gfa
+      md5sum: 0252437812850e413bf7cbe4f9f9bfb1
+    - path: output/shasta/ShastaRun/AssemblySummary.csv
+      md5sum: 57f2c9702684e782f011967f1be8ef66
+    - path: output/shasta/ShastaRun/AssemblySummary.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/shasta/ShastaRun/AssemblySummary.json
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/shasta/ShastaRun/Binned-ReadLengthHistogram.csv
+      md5sum: c4bcd2c47488bc2486e76ba2740f78b9
+    - path: output/shasta/ShastaRun/DisjointSetsHistogram.csv
+      md5sum: effaa5965b55d67f8dc823b5896e4405
+    - path: output/shasta/ShastaRun/LowHashBucketHistogram.csv
+      md5sum: f889215eeb77c718c03e6a15e11b23d8
+    - path: output/shasta/ShastaRun/MarkerGraphEdgeCoverageHistogram.csv
+      md5sum: fe6f967e6b4ac03ee3242194b60fe06d
+    - path: output/shasta/ShastaRun/MarkerGraphVertexCoverageHistogram.csv
+      md5sum: fe6f967e6b4ac03ee3242194b60fe06d
+    - path: output/shasta/ShastaRun/ReadGraphComponents.csv
+      md5sum: e8279d6d68c09c3cc79a1c57579ac99b
+    - path: output/shasta/ShastaRun/ReadLengthHistogram.csv
+      md5sum: 913d84422303ccb5e435f59aa9a245fb
+    - path: output/shasta/ShastaRun/ReadLowHashStatistics.csv
+      md5sum: 2dbf13a134253af54ac00ad194dcd231
+    - path: output/shasta/ShastaRun/ReadSummary.csv
+      md5sum: 08ec35c195c0fc07dcab0cab47deda8f
+    - path: output/shasta/ShastaRun/SuppressedAlignmentCandidates.csv
+      md5sum: bdcbd3c4a3e0b9fc6c00bffe6f416e7a
+    - path: output/shasta/ShastaRun/index.html
+      md5sum: c493e50f3de9bab42726aae7e19c9cb5
+    - path: output/shasta/ShastaRun/shasta.conf
+      md5sum: 4d7508fdf1dfe23a69281329c0f3087e
+    - path: output/shasta/ShastaRun/test_Assembly.fasta.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/shasta/ShastaRun/test_Assembly.gfa.gz
+      md5sum: eeb9796b611742c4b47c050608a92b53
