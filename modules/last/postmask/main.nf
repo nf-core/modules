@@ -14,10 +14,13 @@ process LAST_POSTMASK {
     tuple val(meta), path("*.maf.gz"), emit: maf
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use the suffix option to disambiguate"
+    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz
 

@@ -1,0 +1,45 @@
+name: picard_createsequencedictionary
+description: Creates a sequence dictionary for a reference sequence.
+keywords:
+  - sequence
+  - dictionary
+  - picard
+tools:
+  - picard:
+      description: |
+        Creates a sequence dictionary file (with ".dict" extension) from a reference sequence provided in FASTA format, which is required by many processing and analysis tools. The output file contains a header but no SAMRecords, and the header contains only sequence records.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036712531-CreateSequenceDictionary-Picard-
+      tool_dev_url: https://github.com/broadinstitute/picard
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - dict:
+    type: file
+    description: picard dictionary file
+    pattern: "*.{dict}"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"

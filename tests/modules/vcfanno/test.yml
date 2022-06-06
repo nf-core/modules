@@ -1,0 +1,23 @@
+- name: vcfanno test_vcfanno
+  command: nextflow run tests/modules/vcfanno -entry test_vcfanno -c tests/config/nextflow.config
+  tags:
+    - vcfanno
+  files:
+    - path: output/untar/versions.yml
+      md5sum: 6de038155bccbe4d264d09529bf9f4d8
+    - path: output/vcfanno/test_compressed_annotated.vcf
+      md5sum: 90ceb2fd2e06e781846d69c3981db665
+    - path: output/vcfanno/versions.yml
+      md5sum: 62d13540503b22f04a2280c91942cb03
+
+- name: vcfanno test_vcfanno_uncompressed
+  command: nextflow run tests/modules/vcfanno -entry test_vcfanno_uncompressed -c tests/config/nextflow.config
+  tags:
+    - vcfanno
+  files:
+    - path: output/untar/versions.yml
+      md5sum: a0de70274caac0cca31b077a1e7172d9
+    - path: output/vcfanno/test_uncompressed_annotated.vcf
+      md5sum: 90ceb2fd2e06e781846d69c3981db665
+    - path: output/vcfanno/versions.yml
+      md5sum: 300218dad68c3ffcc4783daa4f7c5a43
