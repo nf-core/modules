@@ -8,7 +8,7 @@ workflow test_shasta {
     
     input = [ 
         [ id:'test', model:'Nanopore-Oct2021' ], // meta map
-        [ file('https://github.com/nf-core/test-datasets/raw/bacass/nanopore/subset15000.fq.gz') ],
+        [ file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz']) ],
     ]
 
     SHASTA ( input )
