@@ -34,6 +34,9 @@ process SHASTA {
     # compress results
     gzip -c ShastaRun/Assembly.fasta > ShastaRun/Assembly.fasta.gz
     gzip -c ShastaRun/Assembly.gfa   > ShastaRun/Assembly.gfa.gz
+
+    # cleanup temp files
+    rm reads.fq
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
