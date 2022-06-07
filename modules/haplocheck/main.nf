@@ -8,7 +8,6 @@ process HAPLOCHECK {
         'quay.io/biocontainers/haplocheck:1.3.3--h4a94de4_0' }"
 
     input:
-
     tuple val(meta), path(vcf)
 
     output:
