@@ -8,7 +8,7 @@ process BCFTOOLS_CONCAT {
         'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
 
     input:
-    tuple val(meta), path(vcfs)
+    tuple val(meta), path(vcfs), path(tbi)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
