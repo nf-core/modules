@@ -25,7 +25,7 @@ input:
   - profile_version_yml:
       type: file
       description: |
-        The versions.yml file output from motus/profile. motus/merge cannot reconstruct
+        A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
         this itself without having the motus database present and configured with the tool
         so here we take it from what is already reported by the upstream module.
       pattern: "versions.yml"
