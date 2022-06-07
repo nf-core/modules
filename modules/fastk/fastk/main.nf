@@ -1,4 +1,4 @@
-process FASTK {
+process FASTK_FASTK {
     tag "$meta.id"
     label 'process_medium'
 

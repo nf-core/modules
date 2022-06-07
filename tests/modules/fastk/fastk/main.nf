@@ -2,19 +2,19 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK } from '../../../../modules/fastk/fastk/main.nf'
+include { FASTK_FASTK } from '../../../../modules/fastk/fastk/main.nf'
 
-workflow test_fastk_single_end {
+workflow test_fastk_fastk_single_end {
 
     input = [
         [ id:'test' , single_end: true ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
     ]
 
-    FASTK ( input )
+    FASTK_FASTK ( input )
 }
 
-workflow test_fastk_paired_end {
+workflow test_fastk_fastk_paired_end {
 
     input = [
         [ id:'test' , single_end: false ], // meta map
@@ -24,5 +24,5 @@ workflow test_fastk_paired_end {
         ]
     ]
 
-    FASTK ( input )
+    FASTK_FASTK ( input )
 }
