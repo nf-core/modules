@@ -13,15 +13,19 @@ process MOSDEPTH {
     path  fasta
 
     output:
-    tuple val(meta), path('*.global.dist.txt')    , emit: global_txt
-    tuple val(meta), path('*.region.dist.txt')    , emit: regions_txt , optional:true
-    tuple val(meta), path('*.summary.txt')        , emit: summary_txt
-    tuple val(meta), path('*.per-base.d4')        , emit: per_base_d4 , optional:true
-    tuple val(meta), path('*.per-base.bed.gz')    , emit: per_base_bed, optional:true
-    tuple val(meta), path('*.per-base.bed.gz.csi'), emit: per_base_csi, optional:true
-    tuple val(meta), path('*.regions.bed.gz')     , emit: regions_bed , optional:true
-    tuple val(meta), path('*.regions.bed.gz.csi') , emit: regions_csi , optional:true
-    path  "versions.yml"                          , emit: versions
+    tuple val(meta), path('*.global.dist.txt')      , emit: global_txt
+    tuple val(meta), path('*.summary.txt')          , emit: summary_txt
+    tuple val(meta), path('*.region.dist.txt')      , optional:true, emit: regions_txt
+    tuple val(meta), path('*.per-base.d4')          , optional:true, emit: per_base_d4
+    tuple val(meta), path('*.per-base.bed.gz')      , optional:true, emit: per_base_bed
+    tuple val(meta), path('*.per-base.bed.gz.csi')  , optional:true, emit: per_base_csi
+    tuple val(meta), path('*.regions.bed.gz')       , optional:true, emit: regions_bed
+    tuple val(meta), path('*.regions.bed.gz.csi')   , optional:true, emit: regions_csi
+    tuple val(meta), path('*.quantized.bed.gz')     , optional:true, emit: quantized_bed
+    tuple val(meta), path('*.quantized.bed.gz.csi') , optional:true, emit: quantized_csi
+    tuple val(meta), path('*.thresholds.bed.gz')    , optional:true, emit: thresholds_bed
+    tuple val(meta), path('*.thresholds.bed.gz.csi'), optional:true, emit: thresholds_csi
+    path  "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,10 +38,13 @@ process MOSDEPTH {
     if (bed && args.contains("--by")) {
         exit 1, "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
+    if (!bed && args.contains("--thresholds")) {
+        exit 1, "'--thresholds' can only be specified in conjunction with '--by'"
+    }
 
     """
     mosdepth \\
-        --threads ${task.cpus} \\
+        --threads $task.cpus \\
         $interval \\
         $reference \\
         $args \\
@@ -61,6 +68,10 @@ process MOSDEPTH {
     touch ${prefix}.per-base.bed.gz.csi
     touch ${prefix}.regions.bed.gz
     touch ${prefix}.regions.bed.gz.csi
+    touch ${prefix}.quantized.bed.gz
+    touch ${prefix}.quantized.bed.gz.csi
+    touch ${prefix}.thresholds.bed.gz
+    touch ${prefix}.thresholds.bed.gz.csi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
