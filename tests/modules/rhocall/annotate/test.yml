@@ -1,14 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml rhocall/annotate
 - name: "rhocall annotate"
   command: nextflow run ./tests/modules/rhocall/annotate -entry test_rhocall_annotate -c ./tests/config/nextflow.config -c ./tests/modules/rhocall/annotate/nextflow.config
   tags:
     - "rhocall"
-    #
     - "rhocall/annotate"
-    #
   files:
-    - path: "output/rhocall/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/rhocall/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: "output/rhocall/test_rhocall.vcf"
+    - path: "output/rhocall/versions.yml"
+
+- name: "rhocall annotate stub"
+  command: nextflow run ./tests/modules/rhocall/annotate -entry test_rhocall_annotate_stub -c ./tests/config/nextflow.config -c ./tests/modules/rhocall/annotate/nextflow.config -stub-run
+  tags:
+    - "rhocall"
+    - "rhocall/annotate"
+  files:
+    - path: "output/rhocall/test_rhocall.vcf"
+    - path: "output/rhocall/versions.yml"
