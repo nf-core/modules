@@ -9,8 +9,10 @@ process MOTUS_MERGE {
         'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
 
     input:
-    path(input)
-    val(biom_format)
+    path input
+    path profile_version_yml, stageAs: 'profile_version.yml'
+    val dir_input
+    val biom_format
 
     output:
     path("*.txt") , optional: true, emit: txt
@@ -23,17 +25,22 @@ process MOTUS_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = 'motus_merged'
+    def cmd_input = dir_input ? "-d ${input}" : "-i ${input.join(',')}"
     def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
     """
     motus \\
         merge \\
         $args \\
-        -i ${input.join(',')} \\
+        $cmd_input \\
         ${output}
+
+    ## Take version from the mOTUs/profile module output, as cannot reconstruct
+    ## version without having database staged in this directory.
+    VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus:$VERSION
+        motus: \$VERSION
     END_VERSIONS
     """
 }

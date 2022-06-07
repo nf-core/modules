@@ -33,7 +33,7 @@ process MOTUS_DOWNLOADDB {
     ## mOTUs will check the database version is same version as exec version.
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mOTUs: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
+        motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
     END_VERSIONS
     """
 }

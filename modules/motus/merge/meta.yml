@@ -22,6 +22,16 @@ input:
       type: file
       description: List of output files (more than one) from motus profile
       pattern: "*.{bam,cram,sam}"
+  - profile_version_yml:
+      type: file
+      description: |
+        The versions.yml file output from motus/profile. motus/merge cannot reconstruct
+        this itself without having the motus database present and configured with the tool
+        so here we take it from what is already reported by the upstream module.
+      pattern: "versions.yml"
+  - dir_input:
+      type: boolean
+      description: Specify true to indicate input is a directory
   - biom_format:
       type: boolean
       description: Whether to save output OTU table in biom format
