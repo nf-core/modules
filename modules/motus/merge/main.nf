@@ -28,7 +28,7 @@ process MOTUS_MERGE {
     motus \\
         merge \\
         $args \\
-        -i ${input}.join(",") \\
+        -i ${input.join(',')} \\
         ${output}
 
     cat <<-END_VERSIONS > versions.yml
