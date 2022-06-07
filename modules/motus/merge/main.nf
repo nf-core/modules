@@ -22,7 +22,7 @@ process MOTUS_MERGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = 'motus_merged'
     def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
     """
     motus \\
