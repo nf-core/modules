@@ -25,7 +25,7 @@ workflow test_samtools_view_cram {
 
 workflow test_samtools_view_stubs {
     input = [ [ id:'test', single_end:false ], // meta map
-                "foo_paired_end.bam",
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
                 []
             ]
 
