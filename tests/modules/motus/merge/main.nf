@@ -24,5 +24,5 @@ workflow test_motus_merge {
 
     MOTUS_PROFILE ( input,  MOTUS_DOWNLOADDB.out.db )
 
-    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{it[1]}.collect(), MOTUS_PROFILE.out.version.first(), false, false )
+    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{it[1]}.collect(), MOTUS_PROFILE.out.versions.first(), false, false )
 }
