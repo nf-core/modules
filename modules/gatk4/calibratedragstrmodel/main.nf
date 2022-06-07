@@ -38,6 +38,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         --output ${prefix}.txt \\
         --reference $fasta \\
         --str-table-path $strtablefile \\
+        --threads $task.cpus \\
         $intervals_command \\
         --tmp-dir . \\
         $args
