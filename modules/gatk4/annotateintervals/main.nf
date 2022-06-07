@@ -1,5 +1,5 @@
-process GATK4_COLLECTREADCOUNTS {
-    tag "$meta.id"
+process GATK4_ANNOTATEINTERVALS {
+    tag "$fasta"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.0" : null)
@@ -8,38 +8,33 @@ process GATK4_COLLECTREADCOUNTS {
         'quay.io/biocontainers/gatk4:4.2.6.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
-    path  intervals
+    path  processed_intervals
     path  fasta
     path  fai
     path  dict
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    path  "versions.yml"          , emit: versions
+    path  "*.tsv"                 , emit: tsv
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK CollectReadCounts] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK AnnotateIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" CollectReadCounts \\
-        --input $input \\
+    gatk --java-options "-Xmx${avail_mem}g" AnnotateIntervals \\
+        --intervals $processed_intervals \\
         --reference $fasta \\
-        $interval_command \\
         -imr OVERLAPPING_ONLY \\
-        --format TSV \\
-        -O ${meta.id}.tsv \\
+        --output annotated_intervals.tsv \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

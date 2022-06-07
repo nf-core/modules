@@ -1,0 +1,10 @@
+- name: gatk4 annotateintervals test_gatk4_annotateintervals
+  command: nextflow run tests/modules/gatk4/annotateintervals -entry test_gatk4_annotateintervals -c tests/config/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/annotateintervals
+  files:
+    - path: output/gatk4/annotated_intervals.tsv
+      md5sum: 37ca018a12bb32b409ed139edc6fca73
+    - path: output/gatk4/versions.yml
+      md5sum: 14e1c68107bd2240f656acafb322d555

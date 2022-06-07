@@ -1,8 +1,8 @@
-name: "gatk4_collectreadcounts"
-description: Collects read counts at specified intervals. The count for each interval is calculated by counting the number of read starts that lie in the interval.
+name: "gatk4_annotateintervals"
+description: Annotates intervals with GC content, mappability, and segmental-duplication content.
 keywords:
   - gatk4
-  - gatk4_collectreadcounts
+  - gatk4_annotateintervals
 tools:
   - "gatk4":
       description:
@@ -20,17 +20,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - interval_list:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - input_index:
-      type: file
-      description: BAI/CRAI file from alignment
-      pattern: "*.{bai,crai}"
-  - intervals:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
+      description: Processed interval list file (processed_intervals.interval_list)
       pattern: "*.{bed, interval_list}"
   - fasta:
       type: file
@@ -57,7 +49,7 @@ output:
       pattern: "versions.yml"
   - tsv:
       type: file
-      description: Read counts TSV file
+      description: Annotated intervals TSV file
       pattern: "*.tsv"
 
 authors:
