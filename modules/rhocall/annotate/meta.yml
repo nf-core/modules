@@ -1,11 +1,10 @@
 name: "rhocall_annotate"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: "Markup VCF file using rho-calls."
 keywords:
-  - sort
+  - roh
+  - rhocall
 tools:
   - "rhocall":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Call regions of homozygosity and make tentative UPD calls."
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
@@ -13,39 +12,43 @@ tools:
       doi: ""
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: vcf file
+      pattern: "*.{vcf,vcf.gz}"
+  - tbi:
+      type: file
+      description: vcf index file
+      pattern: "*.{tbi}"
+  - roh:
+      type: file
+      description: Bcftools roh style TSV file with CHR,POS,AZ,QUAL
+      pattern: "*.{roh}"
+  - bed:
+      type: file
+      description: BED file with AZ windows.
+      pattern: "*.{bed}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
+  - vcf:
+      type: file
+      description: vcf file
+      pattern: "*.{vcf,vcf.gz}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@ramprasadn"
