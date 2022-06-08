@@ -33,8 +33,8 @@ process HAPLOCHECK {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch $prefix.txt
-    touch $prefix.html
+    touch ${prefix}.txt
+    touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
