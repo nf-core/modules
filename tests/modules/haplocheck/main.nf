@@ -8,7 +8,7 @@ workflow test_haplocheck {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['vcf']['test_mito_vcf'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test_mito_vcf'], checkIfExists: true)
     ]
 
     HAPLOCHECK ( input )
