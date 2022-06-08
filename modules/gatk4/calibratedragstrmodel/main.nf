@@ -1,6 +1,6 @@
 process GATK4_CALIBRATEDRAGSTRMODEL {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -38,6 +38,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         --output ${prefix}.txt \\
         --reference $fasta \\
         --str-table-path $strtablefile \\
+        --threads $task.cpus \\
         $intervals_command \\
         --tmp-dir . \\
         $args
