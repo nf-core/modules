@@ -11,7 +11,7 @@ workflow test_rhocall_annotate {
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
 
-    af_file = []
+    af_file = [[],[]]
     gen_map = []
     regions = []
     targets = []
@@ -28,7 +28,7 @@ workflow test_rhocall_annotate_stub {
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
 
-    af_file = []
+    af_file = [[],[]]
     gen_map = []
     regions = []
     targets = []
