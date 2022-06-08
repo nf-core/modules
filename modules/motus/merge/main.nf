@@ -11,7 +11,6 @@ process MOTUS_MERGE {
     input:
     path input
     path profile_version_yml, stageAs: 'profile_version.yml'
-    val dir_input
     val biom_format
 
     output:
@@ -25,7 +24,7 @@ process MOTUS_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = 'motus_merged'
-    def cmd_input = dir_input ? "-d ${input}" : "-i ${input.join(',')}"
+    def cmd_input = input.isDirectory() ? "-d ${input}" : "-i ${input.join(',')}"
     def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
     """
     motus \\
