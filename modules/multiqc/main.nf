@@ -21,7 +21,7 @@ process MULTIQC {
 
     script:
     def args = task.ext.args ?: ''
-    def config = multiqc_config ?: '--config $multiqc_config'
+    def config = multiqc_config ?: "--config $multiqc_config"
     """
     multiqc \
         --force \
