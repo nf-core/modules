@@ -16,9 +16,10 @@ workflow test_multiqc {
 }
 
 workflow test_multiqc_fn_collision {
-    fqc_input = [ [ id: 'test', single_end: false ],
-                    [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
-                ]
+    fqc_input = [ 
+        [ id: 'test', single_end: false ],
+        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
+    ]
     mqc_input = Channel.empty()
 
     FASTQC  ( fqc_input  )
