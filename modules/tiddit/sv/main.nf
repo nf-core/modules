@@ -8,7 +8,7 @@ process TIDDIT_SV {
         'quay.io/biocontainers/tiddit:3.0.0--py39h59fae87_1' }"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input), path(input_index)
     path  fasta
     path  bwa_index
 
@@ -24,7 +24,7 @@ process TIDDIT_SV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    [[ -d $bwa_index ]] && for i in `ls $bwa_index`; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s $bwa_index/\$i ${fasta}.\${i##*.} || ln -s $bwa_index/\$i \$i; done
+    [[ -d $bwa_index ]] && for i in $bwa_index/*; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s $bwa_index/\$i ${fasta}.\${i##*.} || ln -s $bwa_index/\$i \$i; done
 
     tiddit \\
         --sv \\
