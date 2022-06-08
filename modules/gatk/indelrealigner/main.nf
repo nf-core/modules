@@ -22,10 +22,11 @@ process GATK_INDELREALIGNER {
     task.ext.when == null || task.ext.when
 
     script:
-    if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
+
+    if ("$input" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -39,9 +40,8 @@ process GATK_INDELREALIGNER {
         -Xmx${avail_mem}g \\
         -T IndelRealigner \\
         -R ${fasta} \\
-        -nt ${task.cpus}
         -I ${input} \\
-        -targetIntervals ${intervals} \\
+        --targetIntervals ${intervals} \\
         ${known} \\
         -o ${prefix}.bam \\
         $args
