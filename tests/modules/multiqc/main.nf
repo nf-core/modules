@@ -7,16 +7,17 @@ include { FASTQC as FASTQC2 } from '../../../modules/fastqc/main.nf'
 include { MULTIQC           } from '../../../modules/multiqc/main.nf'
 
 workflow test_multiqc {
-    input = [ [ id: 'test', single_end: false ],
-                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
-            ]
+    input = [
+        [ id: 'test', single_end: false ],
+        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
+    ]
 
     FASTQC  ( input )
     MULTIQC ( FASTQC.out.zip.collect { it[1] }, [[],[]] )
 }
 
 workflow test_multiqc_fn_collision {
-    fqc_input = [ 
+    fqc_input = [
         [ id: 'test', single_end: false ],
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
     ]
