@@ -11,9 +11,9 @@ process HAPLOCHECK {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.txt") , emit: txt
     tuple val(meta), path("*.html"), emit: html
-    path "versions.yml"           , emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,6 +23,18 @@ process HAPLOCHECK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     haplocheck --raw --out $prefix $vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        haplocheck: \$(echo \$(haplocheck --version 2>&1) | cut -f 2 -d " " )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.txt
+    touch $prefix.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
