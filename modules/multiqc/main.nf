@@ -7,7 +7,8 @@ process MULTIQC {
         'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0' }"
 
     input:
-    path "*/*"
+    path  multiqc_files, stageAs: "?/*"
+    tuple path(mqc_config), path(mqc_logo)
 
     output:
     path "*multiqc_report.html", emit: report
