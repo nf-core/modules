@@ -12,7 +12,7 @@ workflow test_multiqc {
             ]
 
     FASTQC  ( input )
-    MULTIQC ( FASTQC.out.zip.collect { it[1] } )
+    MULTIQC ( FASTQC.out.zip.collect { it[1] }, [[],[]] )
 }
 
 workflow test_multiqc_fn_collision {
@@ -27,5 +27,5 @@ workflow test_multiqc_fn_collision {
     FASTQC2  ( fqc_input )
     mqc_input = mqc_input.mix(FASTQC2.out.zip.collect { it[1] })
 
-    MULTIQC ( mqc_input )
+    MULTIQC ( mqc_input, [[],[]] )
 }
