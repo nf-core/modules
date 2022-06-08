@@ -23,10 +23,10 @@ process MULTIQC {
     def args = task.ext.args ?: ''
     def config = multiqc_config ? "--config $multiqc_config" : ''
     """
-    multiqc \
-        --force \
-        $config \
-        $args \
+    multiqc \\
+        --force \\
+        $config \\
+        $args \\
         .
 
     cat <<-END_VERSIONS > versions.yml
