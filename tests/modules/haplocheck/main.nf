@@ -8,8 +8,7 @@ workflow test_haplocheck {
 
     input = [
         [ id:'test' ], // meta map
-        // TODO: change to "params.test_data[]"
-        file("https://github.com/nf-core/test-datasets/raw/5101234ce48c3eb08adeed922e30a6e57e4fe5fb/testdata/NA12878_chrM.vcf.gz", checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['vcf']['test_mito_vcf'], checkIfExists: true)
     ]
 
     HAPLOCHECK ( input )
