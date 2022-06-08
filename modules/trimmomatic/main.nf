@@ -50,7 +50,7 @@ process TRIMMOMATIC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def trimmed  = meta.single_end ? "-o ${prefix}.trim.fastq.gz" : "-o ${prefix}_1.trim.fastq.gz -p ${prefix}_2.trim.fastq.gz"
+    def trimmed  = meta.single_end ? "SE ${prefix}.trim.fastq.gz" : "PE ${prefix}_1.trim.fastq.gz ${prefix}_2.trim.fastq.gz"
     """
     trimmomatic \\
         --cores $task.cpus \\
