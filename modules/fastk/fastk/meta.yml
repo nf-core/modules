@@ -39,6 +39,14 @@ output:
       type: file
       description: Histogram of k-mers
       pattern: "*.hist"
+  - ktab:
+      type: file
+      description: A sorted table of all canonical k‑mers along with their counts.
+      pattern: "*.ktab"
+  - prof:
+      type: file
+      description: A k‑mer count profile of each sequence in the input data set.
+      pattern: "*.prof"
 
 authors:
   - "@mahesh-panchal"

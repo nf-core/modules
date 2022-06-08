@@ -14,6 +14,8 @@ process FASTK_FASTK {
 
     output:
     tuple val(meta), path("*.hist"), emit: hist
+    tuple val(meta), path("*.ktab"), emit: ktab, optional: true
+    tuple val(meta), path("*.prof"), emit: prof, optional: true
     path "versions.yml"            , emit: versions
 
     when:
