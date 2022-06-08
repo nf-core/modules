@@ -24,7 +24,7 @@ process TIDDIT_SV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    [[ -d $bwa_index ]] && for i in $bwa_index/*; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s $bwa_index/\$i ${fasta}.\${i##*.} || ln -s $bwa_index/\$i \$i; done
+    [[ -d $bwa_index ]] && for i in $bwa_index/*; do [[ -f $fasta && ! "\$i" =~ .*"$fasta".* ]] && ln -s \$i ${fasta}.\${i##*.} || ln -s \$i .; done
 
     tiddit \\
         --sv \\
