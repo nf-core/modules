@@ -20,8 +20,9 @@ tools:
 input:
   - input:
       type: file
-      description: List of output files (more than one) from motus profile
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        List of output files (more than one) from motus profile,
+        or a single directory containing motus output files.
   - profile_version_yml:
       type: file
       description: |
@@ -29,9 +30,6 @@ input:
         this itself without having the motus database present and configured with the tool
         so here we take it from what is already reported by the upstream module.
       pattern: "versions.yml"
-  - dir_input:
-      type: boolean
-      description: Specify true to indicate input is a directory
   - biom_format:
       type: boolean
       description: Whether to save output OTU table in biom format
