@@ -15,7 +15,7 @@ process BCLCONVERT {
     tuple val(meta), path("**_S*_L00?_I?_00?.fastq.gz")                 ,optional:true ,emit: fastq_idx
     tuple val(meta), path("Undetermined_S0_L00?_R?_00?.fastq.gz")       ,emit: undetermined
     tuple val(meta), path("Undetermined_S0_L00?_I?_00?.fastq.gz")       ,optional:true, emit: undetermined_idx
-    tuple val(meta), path("Reports").                                   ,emit: reports
+    tuple val(meta), path("Reports")                                    ,emit: reports
     tuple val(meta), path("Logs")                                       ,emit: logs
     tuple val(meta), path("**.bin")                                     ,emit: interop
     path("versions.yml")                                                ,emit: versions
