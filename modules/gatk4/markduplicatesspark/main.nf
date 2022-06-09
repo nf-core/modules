@@ -3,9 +3,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1 conda-forge::openjdk=8.0.312" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'broadinstitute/gatk:4.2.6.1' }"
+    container 'broadinstitute/gatk:4.2.6.1'
 
     input:
     tuple val(meta), path(bam)
