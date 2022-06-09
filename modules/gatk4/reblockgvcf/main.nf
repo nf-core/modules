@@ -16,7 +16,7 @@ process GATK4_REBLOCKGVCF {
     path dbsnp_tbi
 
     output:
-    tuple val(meta), path("*.rb.g.vcf.gz"), path("*.tbi")  , emit: bam
+    tuple val(meta), path("*.rb.g.vcf.gz"), path("*.tbi")  , emit: vcf
     path "versions.yml"                                    , emit: versions
 
     when:
