@@ -8,7 +8,7 @@ tools:
   - "ampir":
       description: "A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale."
       homepage: "https://github.com/Legana/ampir"
-      documentation: "https://github.com/Legana/ampir"
+      documentation: "https://cran.r-project.org/web/packages/ampir/index.html"
       tool_dev_url: "https://github.com/Legana/ampir"
       doi: "10.1093/bioinformatics/btaa653"
       licence: ["GPL v2"]
@@ -42,14 +42,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - amps:
+  - amps_faa:
       type: file
-      description: File containing AMP predictions
-      pattern: "prediction.fasta"
-  - output_name:
-      type: value
-      description: File name of the FASTA output file
+      description: File containing AMP predictions in amino acid FASTA format
       pattern: "*.{faa,fasta}"
+  - amps_csv:
+      type: file
+      description: File containing AMP predictions in CSV format
+      pattern: "*.csv"
 
 authors:
   - "@jasmezz"

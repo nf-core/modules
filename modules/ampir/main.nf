@@ -11,11 +11,11 @@ process AMPIR {
     tuple val(meta), path(faa)
     val cut_off
     val model
-    val output_name
 
     output:
-    tuple val(meta), path(output_name)  , emit: amps
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.faa"), emit: amps_faa
+    tuple val(meta), path("*.csv"), emit: amps_csv
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,11 @@ process AMPIR {
     #!/usr/bin/env Rscript
     library(ampir)
 
-    protein_seqs <- read_faa("${faa}")
-    prediction <- predict_amps(protein_seqs, model = '$model')
-    prediction <- protein_seqs[which(prediction\$prob_AMP >= as.integer($cut_off)), ]
-    df_to_faa(protein_seqs, '$output_name')
+    protein_seqs <- read_faa('${faa}')
+    prediction <- predict_amps(protein_seqs, model = '${model}')
+    prediction <- protein_seqs[which(prediction\$prob_AMP >= as.integer(${cut_off})), ]
+    df_to_faa(protein_seqs, "${prefix}.faa")
+    write.table(prediction, file = "${prefix}.csv", row.names = FALSE, quote = FALSE, dec = '.')
 
     version_file_path <- "versions.yml"
     version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
