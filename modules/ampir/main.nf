@@ -9,8 +9,9 @@ process AMPIR {
 
     input:
     tuple val(meta), path(faa)
-    val cut_off
     val model
+    val min_length
+    val min_probability
 
     output:
     tuple val(meta), path("*.faa"), emit: amps_faa
@@ -23,15 +24,17 @@ process AMPIR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    min_length = ("${min_length}" == "[]") ? "": " min_len = as.integer(${min_length})," // Fall back to AMPir default value if none specified
     """
     #!/usr/bin/env Rscript
     library(ampir)
 
-    protein_seqs <- read_faa('${faa}')
-    prediction <- predict_amps(protein_seqs, model = '${model}')
-    prediction <- protein_seqs[which(prediction\$prob_AMP >= as.integer(${cut_off})), ]
-    df_to_faa(protein_seqs, "${prefix}.faa")
-    write.table(prediction, file = "${prefix}.csv", row.names = FALSE, quote = FALSE, dec = '.')
+    input_seqs <- read_faa('${faa}')
+    prediction <- predict_amps(input_seqs,${min_length} model = '${model}')
+    prediction <- prediction[which(prediction\$prob_AMP >= as.numeric(${min_probability})), ]
+    output_seqs <- input_seqs[row.names(prediction), ]
+    write.table(prediction, file = "${prefix}.csv", row.names = FALSE, sep = ";", quote = FALSE, dec = '.')
+    df_to_faa(output_seqs, "${prefix}.faa")
 
     version_file_path <- "versions.yml"
     version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")

@@ -10,9 +10,11 @@ workflow test_ampir {
               file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['proteome_fasta'], checkIfExists: true),
     ]
 
-    cut_off = "80"
-
     model = "precursor"
 
-    AMPIR ( fasta, cut_off, model )
+    min_length = []
+
+    min_probability = "0.7"
+
+    AMPIR ( fasta, model, min_length, min_probability )
 }
