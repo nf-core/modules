@@ -1,0 +1,103 @@
+name: Nightly update module version
+on:
+  pull_request:
+    branches: [master]
+  schedule:
+    # https://crontab.guru/every-night-at-midnight
+    - cron: "0 0 * * *"
+
+jobs:
+  update_modules:
+    name: update modules
+    if: >
+      github.repository == 'nf-core/modules'
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Set up JDK 11
+        uses: actions/Setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install nf-core tools  development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Install Nextflow
+        env:
+          CAPSULE_LOG: none
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      - name: Update modules version
+        run: nf-core modules lint --all --fix-version
+
+      - uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/nextflow
+          key: ${{ runner.os }}
+          restore-keys: |
+            ${{ runner.os }}
+
+  changes:
+    name: Check for changes
+    runs-on: ubuntu-latest
+    needs: update_modules
+    outputs:
+      # Expose matched filters as job 'modules' output variable
+      modules: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: "tests/config/pytest_modules.yml"
+
+  push_changes:
+    runs-on: ubuntu-latest
+    name: Update module ${{ matrix.tags }} version
+    needs: changes
+    if: needs.changes.outputs.modules != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
+    steps:
+      # Use the @nf-core-bot token to check out so we can push later
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.nf_core_bot_auth_token }}
+      - uses: gr2m/create-or-update-pull-request-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+        with:
+          title: "Update module ${{ matrix.tags }} version"
+          #body: "My pull request body"
+          branch: "${{ matrix.tags }}"
+          path: "lib/"
+          commit-message: "Update module ${{ matrix.tags }} version"
+          author: "nf-core bot"
+          #labels: label1, label2
+          #assignees: user1, user2
+          #reviewers: user1, user2
+          #team_reviewers: team1, team2
+          #auto-merge: squash
+          update-pull-request-title-and-body: false
