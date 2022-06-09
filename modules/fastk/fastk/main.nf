@@ -6,8 +6,8 @@ process FASTK_FASTK {
         error "Conda environments cannot be used when using the FastK tool. Please use docker or singularity containers."
     }
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/nbisweden/fastk:f18a4e6d2207539f7b84461daebc54530a9559b0':
-        'ghcr.io/nbisweden/fastk:f18a4e6d2207539f7b84461daebc54530a9559b0' }"
+        'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0':
+        'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,7 +24,7 @@ process FASTK_FASTK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0'
+    def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0'
     """
     FastK \\
         $args \\
@@ -34,7 +34,7 @@ process FASTK_FASTK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastk: $VERSION
+        fastk: $FASTK_VERSION
     END_VERSIONS
     """
 }
