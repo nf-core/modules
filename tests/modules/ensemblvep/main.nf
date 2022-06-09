@@ -21,7 +21,5 @@ workflow test_ensemblvep_no_fasta {
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    fasta = []
-
-    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
+    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], [], [] )
 }
