@@ -6,7 +6,6 @@
   files:
     - path: output/gatk4/test.reblock.g.vcf.gz
     - path: output/gatk4/test.reblock.g.vcf.gz.tbi
-      md5sum: e1aab7d826a151828fd0671ec5aed2e0
 
 - name: gatk4 reblockgvcf test_gatk4_reblockgvcf_intervals
   command: nextflow run ./tests/modules/gatk4/reblockgvcf -entry test_gatk4_reblockgvcf_intervals -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/reblockgvcf/nextflow.config
@@ -16,7 +15,6 @@
   files:
     - path: output/gatk4/test.reblock.g.vcf.gz
     - path: output/gatk4/test.reblock.g.vcf.gz.tbi
-      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
 
 - name: gatk4 reblockgvcf test_gatk4_reblockgvcf_dbsnp
   command: nextflow run ./tests/modules/gatk4/reblockgvcf -entry test_gatk4_reblockgvcf_dbsnp -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/reblockgvcf/nextflow.config
@@ -26,4 +24,3 @@
   files:
     - path: output/gatk4/test.reblock.g.vcf.gz
     - path: output/gatk4/test.reblock.g.vcf.gz.tbi
-      md5sum: 017edea27a253eb51cc4505d00dcb295
