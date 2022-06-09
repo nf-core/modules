@@ -14,7 +14,5 @@ workflow test_ampir {
 
     model = "precursor"
 
-    output_name = "prediction.fasta"
-
-    AMPIR ( fasta, cut_off, model, output_name )
+    AMPIR ( fasta, cut_off, model )
 }
