@@ -10,5 +10,7 @@ workflow test_ensemblvep {
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], [] )
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+
+    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
 }
