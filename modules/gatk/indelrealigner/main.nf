@@ -8,7 +8,7 @@ process GATK_INDELREALIGNER {
         'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
-    tuple val(meta), path(input), path(index), path(intervals)
+    tuple val(meta), path(bam), path(bai), path(intervals)
     path(fasta)
     path(fai)
     path(dict)
