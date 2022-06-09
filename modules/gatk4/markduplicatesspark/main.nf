@@ -2,7 +2,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.3.0 conda-forge::openjdk=8.0.312" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.3.0--hdfd78af_0' :
         'broadinstitute/gatk:4.2.3.0' }"
@@ -45,6 +45,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+        openjdk: \$(echo \$(java -version 2>&1) | grep version | sed 's/\"//g' | cut -f3 -d ' ')
     END_VERSIONS
     """
 }
