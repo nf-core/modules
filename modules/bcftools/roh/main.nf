@@ -9,7 +9,7 @@ process BCFTOOLS_ROH {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path af_file
+    tuple path(af_file), path(af_file_tbi)
     path genetic_map
     path regions_file
     path samples_file
