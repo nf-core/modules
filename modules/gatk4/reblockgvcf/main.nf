@@ -16,8 +16,8 @@ process GATK4_REBLOCKGVCF {
     path dbsnp_tbi
 
     output:
-    tuple val(meta), path("*.reblock.g.vcf.gz"), path("*.tbi")  , emit: bam
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("*.rb.g.vcf.gz"), path("*.tbi")  , emit: bam
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +37,7 @@ process GATK4_REBLOCKGVCF {
     """
     gatk --java-options "-Xmx${avail_mem}g" ReblockGVCF \\
         --variant $gvcf \\
-        --output ${prefix}.reblock.g.vcf.gz \\
+        --output ${prefix}.rb.g.vcf.gz \\
         --reference $fasta \\
         $dbsnp_command \\
         $interval_command \\
