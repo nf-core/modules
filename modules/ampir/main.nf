@@ -15,7 +15,7 @@ process AMPIR {
 
     output:
     tuple val(meta), path("*.faa"), emit: amps_faa
-    tuple val(meta), path("*.tsv"), emit: amps_csv
+    tuple val(meta), path("*.tsv"), emit: amps_tsv
     path "versions.yml"           , emit: versions
 
     when:
