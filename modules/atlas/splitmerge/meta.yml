@@ -1,7 +1,7 @@
 name: "atlas_splitmerge"
 description: split single end read groups by length and merge paired end reads
 keywords:
-  - split 
+  - split
   - merge
   - bam
   - read group
@@ -23,7 +23,7 @@ input:
 
   - bam:
       type: file
-      description: The one and only BAM file. 
+      description: The one and only BAM file.
       pattern: "*.{bam}"
 
   - bai:
@@ -33,7 +33,7 @@ input:
 
   - read_group_setting:
       type: file
-      description: | 
+      description: |
         TXT file containing the split and merge settings for 
         each readgroup. Each line consist of one readgroup, 
         single/double identifier and the maximum cycle number 
@@ -66,7 +66,7 @@ output:
 
   - filelist:
       type: file
-      description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz 
+      description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz
       pattern: "*.{txt.gz}"
 
 authors:
