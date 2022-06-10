@@ -1,9 +1,10 @@
 name: "sexdeterrmine"
 description: Calculate the relative coverage on the Gonosomes vs Autosomes from the output of samtools depth, with error bars.
 keywords:
-  - "sex determination"
-  - "genetic sex"
-  - "relative coverage"
+  - sex determination
+  - genetic sex
+  - relative coverage
+  - ancient dna
 tools:
   - "sexdeterrmine":
       description: "A python script carry out calculate the relative coverage of X and Y chromosomes, and their associated error bars, out of capture data."
@@ -19,10 +20,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - depth:
       type: file
-      description: output from samtools depth (with header)
+      description: Output from samtools depth (with header)
       pattern: "*"
 
 output:

@@ -9,7 +9,7 @@ process SEXDETERRMINE {
 
     input:
     tuple val(meta), path(depth)
-    path(sample_list_file)
+    path sample_list_file
 
     output:
     tuple val(meta), path("*.json"), emit: json
@@ -23,7 +23,7 @@ process SEXDETERRMINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_list = sample_list_file ? '-f ${sample_list_file}' : ''
-    if ("$depth" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$depth" == "${prefix}.tsv") error "Input depth and output TSV names are the same, set prefix in module configuration to disambiguate!"
 
     """
     sexdeterrmine \\
