@@ -50,14 +50,14 @@ process TRIMMOMATIC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def trimmed  = meta.single_end ? "SE ${prefix}.trim.fastq.gz" : "PE ${prefix}_1.trim.fastq.gz ${prefix}_2.trim.fastq.gz"
+    def trimmed  = meta.single_end ? "SE ${reads}" : "PE ${reads}"
     """
     trimmomatic \\
         --cores $task.cpus \\
         $args \\
         $trimmed \\
-        $reads \\
         > ${prefix}.trimmomatic.log
+        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trimmomatic: \$(trimmomatic --version)
