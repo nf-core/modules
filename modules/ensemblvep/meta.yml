@@ -36,6 +36,11 @@ input:
       type: file
       description: |
         path to VEP cache (optional)
+  - fasta:
+      type: file
+      description: |
+        reference FASTA file (optional)
+      pattern: "*.{fasta,fa}"
   - extra_files:
       type: tuple
       description: |
