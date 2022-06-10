@@ -1,6 +1,6 @@
-process GATK4_CALIBRATEDRAGSTRMODEL {
+process GATK4_REBLOCKGVCF {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,15 +8,16 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bam_index), path(intervals)
-    path  fasta
-    path  fasta_fai
-    path  dict
-    path  strtablefile
+    tuple val(meta), path(gvcf), path(tbi), path(intervals)
+    path fasta
+    path fai
+    path dict
+    path dbsnp
+    path dbsnp_tbi
 
     output:
-    tuple val(meta), path("*.txt")   , emit: dragstr_model
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.rb.g.vcf.gz"), path("*.tbi")  , emit: vcf
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,22 +25,22 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_command = intervals ? "--intervals $intervals" : ""
+    def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK CalibrateDragstrModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK ReblockGVCF] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" CalibrateDragstrModel \\
-        --input $bam \\
-        --output ${prefix}.txt \\
+    gatk --java-options "-Xmx${avail_mem}g" ReblockGVCF \\
+        --variant $gvcf \\
+        --output ${prefix}.rb.g.vcf.gz \\
         --reference $fasta \\
-        --str-table-path $strtablefile \\
-        --threads $task.cpus \\
-        $intervals_command \\
+        $dbsnp_command \\
+        $interval_command \\
         --tmp-dir . \\
         $args
 
