@@ -10,6 +10,7 @@ process MALT_BUILD {
     input:
     path fastas
     val seq_type
+    val classification_type
     path mapping_file
     val mapping_type
     val mapping_db
@@ -37,7 +38,8 @@ process MALT_BUILD {
     !valid_types.contains(mapping_type) error "Unrecognised mapping_type value for MALT_BUILD. Options: gi, ref, syn"
     !valid_types.contains(mapping_db) error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy"
 
-    def mapping = "--${valid_types}2${valid_dbs} ${mapping_file}"
+    def classification_type = "${mapping_db}" == "taxonomy" ? "Taxonomy" : mapping_db.capitalize()
+    def mapping = "--${mapping_type}2${mapping_db} ${mapping_file}"
 
     """
     malt-build \\
@@ -46,6 +48,7 @@ process MALT_BUILD {
         -s $seq_type \\
         -d 'malt_index/' \\
         -t $task.cpus \\
+        -c $classification_type \\
         $args \\
         $mapping |&tee malt-build.log
 
