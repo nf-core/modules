@@ -56,5 +56,5 @@ def test_ensure_valid_version_yml(workflow_dir):
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
         assert re.match(
-            r"(^\d+.*|^[a-f0-9]{40}$)", str(version)
-        ), f"Version number for {tool} must start with a number. "
+            r"^\d.*|^[a-f0-9]{40}$", str(version)
+        ), f"Version number for {tool} must start with a number, or be a Git SHA. "
