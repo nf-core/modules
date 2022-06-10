@@ -57,4 +57,4 @@ def test_ensure_valid_version_yml(workflow_dir):
     for tool, version in software_versions.items():
         assert re.match(
             r"^\d.*|^[a-f0-9]{40}$", str(version)
-        ), f"Version number for {tool} must start with a number, or be a Git SHA. "
+        ), f"Version number for {tool} must start with a number, or be a Git SHA commit id. "
