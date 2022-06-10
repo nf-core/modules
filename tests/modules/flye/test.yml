@@ -1,12 +1,101 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml flye
-- name: "flye"
-  command: nextflow run ./tests/modules/flye -entry test_flye -c ./tests/config/nextflow.config -c ./tests/modules/flye/nextflow.config
+- name: flye test_flye_pacbio_raw
+  command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
   tags:
-    - "flye"
-    #
+    - flye
   files:
-    - path: "output/flye/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/flye/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/flye/test.assembly.fasta.gz
+      md5sum: 7befaec8e82d1f326f5e66ee8f7bd209
+    - path: output/flye/test.assembly_graph.gfa.gz
+      md5sum: ef2d1450be46d54fb4896cb44fa4174e
+    - path: output/flye/test.assembly_graph.gv.gz
+      md5sum: 4afa5c1dbb3e786abeec0d3462eaf5ba
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 99dafd3c5c75807adc0ac063d8092e92
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+# According to the issue https://github.com/fenderglass/Flye/issues/164
+# Some fluctuations are expected because of the heuristics
+# Here we check the statistics of the main contig
+- name: flye test_flye_pacbio_corr
+  command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_corr -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta.gz
+    - path: output/flye/test.assembly_graph.gfa.gz
+    - path: output/flye/test.assembly_graph.gv.gz
+    - path: output/flye/test.assembly_info.txt
+      contains: '[ contig_1        212866  6       N       N       1       *       *,1,* ]'
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+# According to the issue https://github.com/fenderglass/Flye/issues/164
+# Some fluctuations are expected because of the heuristics
+# Here we check the statistics of the main contig
+- name: flye test_flye_pacbio_hifi
+  command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_hifi -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta.gz
+    - path: output/flye/test.assembly_graph.gfa.gz
+    - path: output/flye/test.assembly_graph.gv.gz
+    - path: output/flye/test.assembly_info.txt
+      contains: '[ contig_1      58065   7       N       N       1       *       *,1,* ]'
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_raw
+  command: nextflow run ./tests/modules/flye -entry test_flye_nano_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta.gz
+      md5sum: ed9e8ce56d575e80ecc04467a38b2b26
+    - path: output/flye/test.assembly_graph.gfa.gz
+      md5sum: 49747ab939255afdacea6735647d76d0
+    - path: output/flye/test.assembly_graph.gv.gz
+      md5sum: 4994f5182ff851ef60b3c18119477734
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 33a6aa564cea95176253caeb3beb4b72
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_corr
+  command: nextflow run ./tests/modules/flye -entry test_flye_nano_corr -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta.gz
+      md5sum: 6cf0a6faf69e6ceb97a22ee6bc6e589f
+    - path: output/flye/test.assembly_graph.gfa.gz
+      md5sum: 35bb512339fb406f3116f71ef7151967
+    - path: output/flye/test.assembly_graph.gv.gz
+      md5sum: e372467945890d6e4687f0ee55b71ecb
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 9791a3af96936b69910dc043dbb3ac27
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
+
+- name: flye test_flye_nano_hq
+  command: nextflow run ./tests/modules/flye -entry test_flye_nano_hq -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  tags:
+    - flye
+  files:
+    - path: output/flye/test.assembly.fasta.gz
+      md5sum: 7e6393d4813a871c7eaf3eb4f92b34ee
+    - path: output/flye/test.assembly_graph.gfa.gz
+      md5sum: 2b52fea95c58a9a90ceffeeafadbe16d
+    - path: output/flye/test.assembly_graph.gv.gz
+      md5sum: d8054c85c216ec4022b5298eeae468ea
+    - path: output/flye/test.assembly_info.txt
+      md5sum: 26f699b25ab84ef7b1bf48c89e04e353
+    - path: output/flye/test.flye.log
+    - path: output/flye/test.params.json
+      md5sum: 54b576cb6d4d27656878a7fd3657bde9
