@@ -15,7 +15,7 @@ process AMPIR {
 
     output:
     tuple val(meta), path("*.faa"), emit: amps_faa
-    tuple val(meta), path("*.csv"), emit: amps_csv
+    tuple val(meta), path("*.tsv"), emit: amps_csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,6 +25,7 @@ process AMPIR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     min_length = ("${min_length}" == "[]") ? "": " min_len = as.integer(${min_length})," // Fall back to AMPir default value if none specified
+    if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     #!/usr/bin/env Rscript
     library(ampir)
@@ -33,7 +34,7 @@ process AMPIR {
     prediction <- predict_amps(input_seqs,${min_length} model = '${model}')
     prediction <- prediction[which(prediction\$prob_AMP >= as.numeric(${min_probability})), ]
     output_seqs <- input_seqs[row.names(prediction), ]
-    write.table(prediction, file = "${prefix}.csv", row.names = FALSE, sep = ";", quote = FALSE, dec = '.')
+    write.table(prediction, file = "${prefix}.tsv", row.names = FALSE, sep = "\t", quote = FALSE, dec = '.')
     df_to_faa(output_seqs, "${prefix}.faa")
 
     version_file_path <- "versions.yml"
