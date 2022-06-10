@@ -1,7 +1,10 @@
 name: "atlas_splitmerge"
 description: split single end read groups by length and merge paired end reads
 keywords:
-  - split, merge
+  - split 
+  - merge
+  - bam
+  - read group
 tools:
   - "atlas":
       description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
@@ -12,7 +15,6 @@ tools:
       licence: "['GPL v3']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
