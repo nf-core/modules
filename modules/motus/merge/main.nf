@@ -24,7 +24,7 @@ process MOTUS_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = 'motus_merged'
-    def cmd_input = input.isDirectory() ? "-d ${input}" : "-i ${input.join(',')}"
+    def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
     def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
     """
     motus \\
