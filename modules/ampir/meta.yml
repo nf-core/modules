@@ -49,11 +49,11 @@ output:
   - amps_faa:
       type: file
       description: File containing AMP predictions in amino acid FASTA format
-      pattern: "*.{faa,fasta}"
+      pattern: "*.{faa}"
   - amps_csv:
       type: file
-      description: File containing AMP predictions in CSV format
-      pattern: "*.csv"
+      description: File containing AMP predictions in TSV format
+      pattern: "*.tsv"
 
 authors:
   - "@jasmezz"
