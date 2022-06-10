@@ -1,14 +1,14 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml atlas/pmd
-- name: "atlas pmd"
-  command: nextflow run ./tests/modules/atlas/pmd -entry test_atlas_pmd -c ./tests/config/nextflow.config -c ./tests/modules/atlas/pmd/nextflow.config
+- name: atlas pmd test_atlas_pmd
+  command: nextflow run ./tests/modules/atlas/pmd -entry test_atlas_pmd -c ./tests/config/nextflow.config  -c ./tests/modules/atlas/pmd/nextflow.config
   tags:
-    - "atlas"
-    #
-    - "atlas/pmd"
-    #
+    - atlas/pmd
+    - atlas
   files:
-    - path: "output/atlas/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/atlas/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/atlas/test.paired_end.sorted_PMD_Table.txt
+      md5sum: 3a85ef4a2508f4271d762e0dc542250a
+    - path: output/atlas/test.paired_end.sorted_PMD_Table_counts.txt
+      md5sum: a859be91e159bba343eca7953e03973a
+    - path: output/atlas/test.paired_end.sorted_PMD_input_Empiric.txt
+      md5sum: ffc8adb86aa609745b674b4ac1ea5f3a
+    - path: output/atlas/test.paired_end.sorted_PMD_input_Exponential.txt
+      md5sum: 27c2b8d5aa9a263233dc3cb6b2abd817
