@@ -1,18 +1,18 @@
 process GATK4_MARKDUPLICATES {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam")    , emit: bam
-    tuple val(meta), path("*.bai")    , emit: bai
+    tuple val(meta), path("*.bai")    , optional:true, emit: bai
     tuple val(meta), path("*.metrics"), emit: metrics
     path "versions.yml"               , emit: versions
 

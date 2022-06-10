@@ -30,10 +30,10 @@ input:
       type: file
       description: BED file with intersected intervals
       pattern: "*.{bed}"
-  - window_size:
-      type: integer
-      description: Window size
-      pattern: "[0-9]+"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
 output:
   - meta:
       type: map
@@ -60,6 +60,10 @@ output:
       type: file
       description: Index file for BED file with per-base coverage
       pattern: "*.{per-base.bed.gz.csi}"
+  - per_base_d4:
+      type: file
+      description: D4 file with per-base coverage
+      pattern: "*.{per-base.d4}"
   - regions_bed:
       type: file
       description: BED file with per-region coverage
@@ -68,6 +72,22 @@ output:
       type: file
       description: Index file for BED file with per-region coverage
       pattern: "*.{regions.bed.gz.csi}"
+  - quantized_bed:
+      type: file
+      description: BED file with binned coverage
+      pattern: "*.{quantized.bed.gz}"
+  - quantized_csi:
+      type: file
+      description: Index file for BED file with binned coverage
+      pattern: "*.{quantized.bed.gz.csi}"
+  - thresholds_bed:
+      type: file
+      description: BED file with the number of bases in each region that are covered at or above each threshold
+      pattern: "*.{thresholds.bed.gz}"
+  - thresholds_csi:
+      type: file
+      description: Index file for BED file with threshold coverage
+      pattern: "*.{thresholds.bed.gz.csi}"
   - versions:
       type: file
       description: File containing software versions
@@ -76,3 +96,4 @@ authors:
   - "@joseespinosa"
   - "@drpatelh"
   - "@ramprasadn"
+  - "@matthdsm"

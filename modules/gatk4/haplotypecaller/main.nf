@@ -2,13 +2,13 @@ process GATK4_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals)
+    tuple val(meta), path(input), path(input_index), path(intervals), path(dragstr_model)
     path  fasta
     path  fai
     path  dict
@@ -17,7 +17,7 @@ process GATK4_HAPLOTYPECALLER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
+    tuple val(meta), path("*.tbi")   , optional:true, emit: tbi
     path "versions.yml"              , emit: versions
 
     when:
@@ -28,6 +28,7 @@ process GATK4_HAPLOTYPECALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
     def interval_command = intervals ? "--intervals $intervals" : ""
+    def dragstr_command = dragstr_model ? "--dragstr-params-path $dragstr_model" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -42,6 +43,7 @@ process GATK4_HAPLOTYPECALLER {
         --reference $fasta \\
         $dbsnp_command \\
         $interval_command \\
+        $dragstr_command \\
         --tmp-dir . \\
         $args
 
