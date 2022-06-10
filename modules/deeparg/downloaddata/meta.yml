@@ -1,0 +1,33 @@
+name: deeparg_downloaddata
+description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+keywords:
+  - download
+  - database
+  - deeparg
+  - antimicrobial resistance genes
+  - deep learning
+  - prediction
+tools:
+  - deeparg:
+      description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+      homepage: https://bench.cs.vt.edu/deeparg
+      documentation: https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
+      tool_dev_url: https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
+      doi: "10.1186/s40168-018-0401-z"
+      licence: ["MIT"]
+
+input:
+  - none: No input required for download module.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: directory
+      description: Directory containing database required for deepARG.
+      pattern: "db/"
+
+authors:
+  - "@jfy133"

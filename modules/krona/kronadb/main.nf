@@ -8,16 +8,19 @@ process KRONA_KRONADB {
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
         'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
 
-    input:
-
     output:
     path 'taxonomy/taxonomy.tab', emit: db
     path "versions.yml"         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
-    ktUpdateTaxonomy.sh taxonomy
+    ktUpdateTaxonomy.sh \\
+        $args \\
+        taxonomy/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -21,13 +21,17 @@ process MAXBIN2 {
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def associate_files = reads ? "-reads $reads" : "-abund $abund"
     """
+    mkdir input/ && mv $contigs input/
     run_MaxBin.pl \\
-        -contig $contigs \\
+        -contig input/$contigs \\
         $associate_files \\
         -thread $task.cpus \\
         $args \\

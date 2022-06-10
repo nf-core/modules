@@ -1,0 +1,90 @@
+- name: bamtools convert test_bamtools_convert_ext_error
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_ext_error -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  exit_code: 1
+
+- name: bamtools convert test_bamtools_convert_noext_error
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_noext_error -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  exit_code: 1
+
+- name: bamtools convert test_bamtools_convert_bed
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_bed -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.bed
+      md5sum: 4e34cc15bf31e700f5f3a9f8fffb6c81
+    - path: output/bamtools/versions.yml
+      md5sum: eb7a144b8a97965d3482f6f96b8a8243
+
+- name: bamtools convert test_bamtools_convert_fasta
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_fasta -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.fasta
+      md5sum: 52aeacf78571862b7e97c7d44ac8f827
+    - path: output/bamtools/versions.yml
+      md5sum: 42d19a2b2b07f05edb82b34369dfd754
+
+- name: bamtools convert test_bamtools_convert_fastq
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_fastq -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.fastq
+      md5sum: e591c48daad2c56638e5d6f21f1f71c5
+    - path: output/bamtools/versions.yml
+      md5sum: 13f0bf8a3e1f8f527f96dabaa5c8051e
+
+- name: bamtools convert test_bamtools_convert_json
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_json -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.json
+      md5sum: 04afed696f9f14da85a460353645d1f5
+    - path: output/bamtools/versions.yml
+      md5sum: 33d633dbd6209cb93c9b071f8c0ed3b3
+
+- name: bamtools convert test_bamtools_convert_pileup
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_pileup -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.pileup
+      md5sum: e5a3cb4a3e1bf980a575fafce6a2826f
+    - path: output/bamtools/versions.yml
+      md5sum: fd3ad0edd1e085b1a002e0593d1d5814
+
+- name: bamtools convert test_bamtools_convert_sam
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_sam -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.sam
+      md5sum: 61ab3d0de16a9da8b651f9c692e19d5e
+    - path: output/bamtools/versions.yml
+      md5sum: 4be470ce3cc0143ae5ae415b612a4965
+
+- name: bamtools convert test_bamtools_convert_yaml
+  command: nextflow run tests/modules/bamtools/convert -entry test_bamtools_convert_yaml -c tests/config/nextflow.config
+  tags:
+    - bamtools
+    - bamtools/convert
+  files:
+    - path: output/bamtools/test.yaml
+      md5sum: 68b56f198da036fef33e150eb773dc3b
+    - path: output/bamtools/versions.yml
+      md5sum: 1116abc088c5edf11bee393961c18b3e

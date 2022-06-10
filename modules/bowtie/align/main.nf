@@ -2,10 +2,10 @@ process BOWTIE_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::bowtie=1.3.0 bioconda::samtools=1.11' : null)
+    conda (params.enable_conda ? 'bioconda::bowtie=1.3.0 bioconda::samtools=1.15.1' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:9e14e16c284d6860574cf5b624bbc44c793cb024-0' :
-        'quay.io/biocontainers/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:9e14e16c284d6860574cf5b624bbc44c793cb024-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' :
+        'quay.io/biocontainers/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,6 +16,9 @@ process BOWTIE_ALIGN {
     tuple val(meta), path('*.out'), emit: log
     path  "versions.yml"          , emit: versions
     tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
