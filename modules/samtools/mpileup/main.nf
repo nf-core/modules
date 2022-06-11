@@ -11,7 +11,7 @@ process SAMTOOLS_MPILEUP {
     path  fasta
 
     output:
-    tuple val(meta), path("*.mpileup"), emit: mpileup
+    tuple val(meta), path("*.mpileup.gz"), emit: mpileup
     path  "versions.yml"              , emit: versions
 
     when:
@@ -27,6 +27,7 @@ process SAMTOOLS_MPILEUP {
         --output ${prefix}.mpileup \\
         $args \\
         $input
+    bgzip ${prefix}.mpileup
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
