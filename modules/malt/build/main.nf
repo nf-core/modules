@@ -31,13 +31,42 @@ process MALT_BUILD {
         avail_mem = task.memory.giga
     }
 
-    def valid_types = ['gi', 'ref', 'syn']
+    switch ( "${mapping_type}" ) {
+        case "no-preset":
+        sensitivity = ""; break
+        case "very-fast":
+        sensitivity = "--very-fast"; break
+        case "fast":
+        sensitivity = "--fast"; break
+        case "sensitive":
+        sensitivity = "--sensitive"; break
+        case "very-sensitive":
+        sensitivity = "--very-sensitive"; break
+        default:
+        sensitivity = ""; break
+    }
+
+    /*
+    switch ( "${mapping_type}" ) {
+        case "ref":
+        def type_command = "-r2"; break
+        case: "gi":
+        def type_command = "-g2"; break
+        case "syn":
+        def type_command = "-s2"; break
+    }
+
+    if ( mapping_type == "ref" && mapping_db == "taxonomy" ) {
+        def type_command = "-a2"
+    }
+    */
+
     def valid_dbs = ['eggnog', 'interpro2go', 'kegg', 'seed', 'taxonomy']
 
-    !valid_types.contains(mapping_type) error "Unrecognised mapping_type value for MALT_BUILD. Options: gi, ref, syn"
-    !valid_types.contains(mapping_db) error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy"
+    //!valid_types.contains(mapping_type) error "Unrecognised mapping_type value for MALT_BUILD. Options: gi, ref, syn"
+    //!valid_types.contains(mapping_db) error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy"
 
-    def mapping = "--${valid_types}2${valid_dbs} ${mapping_file}"
+    def type_flag = type_command + mapping_db + " " + mapping_file
 
     """
     malt-build \\
@@ -47,7 +76,7 @@ process MALT_BUILD {
         -d 'malt_index/' \\
         -t $task.cpus \\
         $args \\
-        $mapping |&tee malt-build.log
+        $type_flag |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
