@@ -32,15 +32,15 @@ input:
   - read_group_setting:
       type: file
       description: |
-        TXT file containing the split and merge settings for 
-        each readgroup. Each line consist of one readgroup, 
-        single/double identifier and the maximum cycle number 
+        TXT file containing the split and merge settings for
+        each readgroup. Each line consist of one readgroup,
+        single/double identifier and the maximum cycle number
         of the sequencer. e.g. "RG1 single 100"
       pattern: "*.txt"
   - blacklist:
       type: file
       description: |
-        blacklist.txt (optional), A txt file with blacklisted read names 
+        blacklist.txt (optional), A txt file with blacklisted read names
         that should be ignored and just written to file, each on a new line
       pattern: "*.txt"
 

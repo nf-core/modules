@@ -1,7 +1,7 @@
 process ATLAS_SPLITMERGE {
     tag "$meta.id"
     label 'process_low'
-    
+
     conda (params.enable_conda ? "bioconda::atlas=0.9.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
