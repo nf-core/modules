@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { MANTA_CONVERTINVERSION } from '../../../../modules/manta/convertinversion/main.nf'
-include { MANTA_TUMORONLY } from '../../../../modules/manta/tumoronly/main.nf'
+include { MANTA_TUMORONLY        } from '../../../../modules/manta/tumoronly/main.nf'
 
 workflow test_manta_convertinversion {
 
