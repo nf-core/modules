@@ -4,8 +4,8 @@ process FLYE {
 
     conda (params.enable_conda ? "bioconda::flye=2.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/flye:2.9--py38h69e0bdc_0':
-        'quay.io/biocontainers/flye:2.9--py38h69e0bdc_0' }"
+        'https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1':
+        'quay.io/biocontainers/flye:2.9--py39h6935b12_1' }"
 
     input:
     tuple val(meta), path(reads)
