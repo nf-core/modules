@@ -1,7 +1,7 @@
 ## TODO nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml trimmomatic
 - name: "trimmomatic"
-  command: nextflow run ./tests/modules/trimmomatic -entry test_trimmomatic -c ./tests/config/nextflow.config -c ./tests/modules/trimmomatic/nextflow.config
+  command: nextflow run ./tests/modules/trimmomatic -entry test_trimmomatic_single_end -c ./tests/config/nextflow.config -c ./tests/modules/trimmomatic/nextflow.config
   tags:
     - "trimmomatic"
     #
