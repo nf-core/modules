@@ -6,8 +6,8 @@
     - path: output/plasmidfinder/test-hit_in_genome_seq.fsa
     - path: output/plasmidfinder/test-plasmid_seqs.fsa
     - path: output/plasmidfinder/test.json
-      md5sum: ["plasmidfinder", "filename", "results", "Rep_trans"]
+      contains: ["plasmidfinder", "filename", "results", "Rep_trans"]
     - path: output/plasmidfinder/test.tsv
-      md5sum: ["Database", "Accession", "Query"]
+      contains: ["Database", "Accession", "Query"]
     - path: output/plasmidfinder/test.txt
-      md5sum: ["plasmidfinder", "Results", "Contig", "found"]
+      contains: ["plasmidfinder", "Results", "Contig", "found"]
