@@ -10,6 +10,7 @@ process MOTUS_MERGE {
 
     input:
     path input
+    path db // to stop docker saying it can't find it... would have to have the module in upstream steps anyway
     path profile_version_yml, stageAs: 'profile_version.yml'
     val biom_format
 
