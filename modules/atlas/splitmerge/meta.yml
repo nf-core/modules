@@ -23,14 +23,12 @@ input:
 
   - bam:
       type: file
-      description: The one and only BAM file.
-      pattern: "*.{bam}"
-
+      description: Single input BAM file.
+      pattern: "*.bam"
   - bai:
       type: file
       description: The BAI file for the input BAM file
       pattern: "*.{bai}"
-
   - read_group_setting:
       type: file
       description: |
@@ -39,7 +37,6 @@ input:
         single/double identifier and the maximum cycle number 
         of the sequencer. e.g. "RG1 single 100"
       pattern: "*.{txt}"
-
   - blacklist:
       type: file
       description: |
@@ -62,7 +59,7 @@ output:
   - bam:
       type: file
       description: A BAM file with suffix_mergedReads.bam
-      pattern: "*.{bam}"
+      pattern: "*_mergedReads.bam"
 
   - filelist:
       type: file

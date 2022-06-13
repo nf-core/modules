@@ -11,7 +11,7 @@ process ATLAS_SPLITMERGE {
     tuple val(meta), path(bam), path(bai), path(read_group_settings), path(blacklist)
 
     output:
-    tuple val(meta), path("*.bam"), path("*.txt.gz"), emit: data
+    tuple val(meta), path("*_mergedReads.bam"), path("*.txt.gz"), emit: data
     path "versions.yml", emit: versions
 
     when:
