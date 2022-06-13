@@ -28,7 +28,7 @@ input:
   - bai:
       type: file
       description: The BAI file for the input BAM file
-      pattern: "*.{bai}"
+      pattern: "*.bai"
   - read_group_setting:
       type: file
       description: |
@@ -36,13 +36,13 @@ input:
         each readgroup. Each line consist of one readgroup, 
         single/double identifier and the maximum cycle number 
         of the sequencer. e.g. "RG1 single 100"
-      pattern: "*.{txt}"
+      pattern: "*.txt"
   - blacklist:
       type: file
       description: |
         blacklist.txt (optional), A txt file with blacklisted read names 
         that should be ignored and just written to file, each on a new line
-      pattern: "*.{txt}"
+      pattern: "*.txt"
 
 output:
   - meta:
@@ -64,7 +64,7 @@ output:
   - filelist:
       type: file
       description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz
-      pattern: "*.{txt.gz}"
+      pattern: "*.txt.gz"
 
 authors:
   - "@merszym"
