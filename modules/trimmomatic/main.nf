@@ -26,8 +26,8 @@ process TRIMMOMATIC {
     def output = meta.single_end ?
         "${prefix}.SE.paired.trim.fastq.gz" // HACK to avoid unpaired and paired in the trimmed_reads output
         : "${prefix}.paired.trim_1.fastq.gz ${prefix}.unpaired.trim_1.fastq.gz ${prefix}.paired.trim_2.fastq.gz ${prefix}.unpaired.trim_2.fastq.gz"
-    // FIXME Handle SE defaults
-    def qual_trim = task.ext.args2 ?: "ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36"
+    // TODO Give better error output
+    def qual_trim = task.ext.args2 ?: ''
     """
     trimmomatic \\
         $trimmed \\
@@ -37,7 +37,7 @@ process TRIMMOMATIC {
         $output \\
         $qual_trim \\
         $args
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trimmomatic: \$(trimmomatic -version)
