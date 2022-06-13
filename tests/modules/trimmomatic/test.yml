@@ -1,12 +1,20 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml trimmomatic
-- name: "trimmomatic"
+- name: trimmomatic single-end
   command: nextflow run ./tests/modules/trimmomatic -entry test_trimmomatic_single_end -c ./tests/config/nextflow.config -c ./tests/modules/trimmomatic/nextflow.config
   tags:
     - "trimmomatic"
-    #
   files:
-    - path: "output/trimmomatic/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/trimmomatic/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: "output/trimmomatic/test.SE.paired.trim.fastq.gz"
+    - path: "output/trimmomatic/test.log"
+      md5sum: e4c3f619e9b0e26847f8f3e3d9af319b
+
+- name: trimmomatic paired-end
+  command: nextflow run ./tests/modules/trimmomatic -entry test_trimmomatic_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/trimmomatic/nextflow.config
+  tags:
+    - "trimmomatic"
+  files:
+    - path: "output/trimmomatic/test.log"
+      md5sum: 9629761761a34576b3484bf4174f681f
+    - path: "output/trimmomatic/test.paired.trim_1.fastq.gz"
+    - path: "output/trimmomatic/test.unpaired.trim_1.fastq.gz"
+    - path: "output/trimmomatic/test.paired.trim_2.fastq.gz"
+    - path: "output/trimmomatic/test.unpaired.trim_2.fastq.gz"
