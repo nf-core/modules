@@ -11,10 +11,10 @@ process TRIMMOMATIC {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.paired.trim*.fastq.gz")   , emit: paired_reads
-    tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), emit: unpaired_reads
-    tuple val(meta), path("*.log")                   , emit: log
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("*.trim*.fastq.gz")          , emit: trimmed_reads
+    tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), optional:true, emit: unpaired_reads
+    tuple val(meta), path("*.log")                     , emit: log
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
