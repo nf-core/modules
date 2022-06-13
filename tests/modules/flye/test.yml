@@ -1,6 +1,6 @@
 # According to the issue https://github.com/fenderglass/Flye/issues/164
 # Some fluctuations are expected because of the heuristics
-# Here we check the statistics of the main contig
+# Here we check the that test.assembly_info.txt contains at least one contig
 
 - name: flye test_flye_pacbio_raw
   command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
@@ -11,8 +11,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +212586 +6 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
@@ -26,8 +25,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +212866 +6 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
@@ -41,8 +39,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +58065 +7 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
@@ -56,8 +53,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +212702 +6 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
@@ -71,8 +67,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +212956 +6 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
@@ -86,8 +81,7 @@
     - path: output/flye/test.assembly_graph.gfa.gz
     - path: output/flye/test.assembly_graph.gv.gz
     - path: output/flye/test.assembly_info.txt
-      contains_regex:
-      - "contig_1 +212953 +6 +N +N +1 +\\* +\\*,1,\\*"
+      contains: "contig_1"
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
