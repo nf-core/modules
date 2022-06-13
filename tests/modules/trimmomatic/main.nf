@@ -1,6 +1,9 @@
 nextflow.enable.dsl = 2
 
-include { TRIMMOMATIC } from '../../../modules/trimmomatic/main.nf'
+include {
+    TRIMMOMATIC as TRIMMOMATIC_SE
+    TRIMMOMATIC as TRIMMOMATIC_PE
+} from '../../../modules/trimmomatic/main.nf'
 
 //
 // Test with single-end data
@@ -10,7 +13,7 @@ workflow test_trimmomatic_single_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
-    TRIMMOMATIC ( input )
+    TRIMMOMATIC_SE ( input )
 }
 
 //
@@ -22,5 +25,5 @@ workflow test_trimmomatic_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    TRIMMOMATIC ( input )
+    TRIMMOMATIC_PE ( input )
 }
