@@ -5,10 +5,13 @@ nextflow.enable.dsl = 2
 include { PEAR } from '../../../modules/pear/main.nf'
 
 workflow test_pear {
-    
+
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test' ], // meta map
+        [
+            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
     ]
 
     PEAR ( input )
