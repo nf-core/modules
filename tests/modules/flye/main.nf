@@ -9,6 +9,8 @@ workflow test_flye_pacbio_raw {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+            .splitFastq( by: 100, file:true, decompress: true, compress: true )
+            .first() // splitting fastq as the tests were running out of memory
     ]
     mode = "--pacbio-raw"
 
@@ -42,6 +44,8 @@ workflow test_flye_nano_raw {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+            .splitFastq( by: 100, file:true, decompress: true, compress: true )
+            .first() // splitting fastq as the tests were running out of memory
     ]
     mode = "--nano-raw"
 
