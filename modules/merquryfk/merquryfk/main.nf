@@ -1,6 +1,6 @@
 process MERQURYFK_MERQURYFK {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     if (params.enable_conda) {
         error "Conda environments cannot be used when using the FastK tool. Please use docker or singularity containers."
