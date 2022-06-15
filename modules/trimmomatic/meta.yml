@@ -1,51 +1,53 @@
 name: "trimmomatic"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Performs quality and adapter trimming on paired end and single end reads
 keywords:
-  - sort
+  - trimming
+  - adapter trimming
+  - quality trimming
+
 tools:
   - "trimmomatic":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A flexible read trimming tool for Illumina NGS data"
-      homepage: "None"
-      documentation: "None"
+      homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
+      documentation: "https://github.com/usadellab/Trimmomatic"
       tool_dev_url: "None"
-      doi: ""
+      doi: "10.1093/bioinformatics/btu170"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - reads:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
+      pattern: "*.fastq.gz"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
+  - trimmed_reads:
+      type: file
+      description: The trimmed/modified paired end fastq reads
+      pattern: "*.paired.trim*.fastq.gz"
+  - unpaired_reads:
+      type: file
+      description: The trimmed/modified unpaired end fastq reads
+      pattern: "*.unpaired.trim_*.fastq.gz"
+  - log:
+      type: file
+      description: trimmomatic log file
+      pattern: "*.log"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@alyssa-ab"
