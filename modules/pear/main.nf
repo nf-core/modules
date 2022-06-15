@@ -23,18 +23,18 @@ process PEAR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gunzip ${reads[0]}
-    gunzip ${reads[1]}
+    gunzip -f ${reads[0]}
+    gunzip -f ${reads[1]}
     pear \\
         -f ${reads[0].baseName} \\
         -r ${reads[1].baseName} \\
         -o $prefix \\
         -j $task.cpus \\
         $args
-    gzip ${prefix}.assembled.fastq
-    gzip ${prefix}.unassembled.forward.fastq
-    gzip ${prefix}.unassembled.reverse.fastq
-    gzip ${prefix}.discarded.fastq
+    gzip -f ${prefix}.assembled.fastq
+    gzip -f ${prefix}.unassembled.forward.fastq
+    gzip -f ${prefix}.unassembled.reverse.fastq
+    gzip -f ${prefix}.discarded.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
