@@ -17,25 +17,26 @@ process ENSEMBLVEP {
     path  extra_files
 
     output:
-    tuple val(meta), path("*.ann.vcf"), emit: vcf
-    path "*.summary.html"             , emit: report
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.ann.vcf")  , optional:true, emit: vcf
+    tuple val(meta), path("*.ann.tab")  , optional:true, emit: tab
+    tuple val(meta), path("*.ann.json") , optional:true, emit: json
+    path "*.summary.html"               , emit: report
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def file_extension = args.contains("--vcf") ? 'vcf' : args.contains("--json")? 'json' : args.contains("--tab")? 'tab' : 'vcf'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     def reference = fasta ? "--fasta $fasta" : ""
 
     """
-    mkdir $prefix
-
     vep \\
         -i $vcf \\
-        -o ${prefix}.ann.vcf \\
+        -o ${prefix}.ann.${file_extension} \\
         $args \\
         $reference \\
         --assembly $genome \\
@@ -44,10 +45,8 @@ process ENSEMBLVEP {
         --cache_version $cache_version \\
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
-        --vcf \\
-        --stats_file ${prefix}.summary.html
+        --stats_file ${prefix}.summary.html \\
 
-    rm -rf $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
