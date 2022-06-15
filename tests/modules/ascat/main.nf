@@ -38,23 +38,24 @@ workflow test_ascat_with_ploidy_and_purity {
          file("/mnt/volume/ascat/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true),
          file("/mnt/volume/ascat/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam", checkIfExists: true),
          file("/mnt/volume/ascat/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai", checkIfExists: true)
-     ]
+    ]
 
-    allele_path = file("/mnt/volume/repos/modules/test_ascat2/G1000_alleles_hg19.zip", checkIfExists: true)   
-    allele_files = [[id: allele_path.BaseName + "_chr"], allele_path  ]
+    allele_path  = file("/mnt/volume/repos/modules/test_ascat2/G1000_alleles_hg19.zip", checkIfExists: true)   
+    allele_files = [[ id: allele_path.BaseName ], allele_path  ]
 
-    loci_path = file("/mnt/volume/repos/modules/test_ascat2/G1000_loci_hg19.zip", checkIfExists: true)   
-    loci_files = [[id: loci_path.BaseName + "_chr"], loci_path  ]
+    loci_path    = file("/mnt/volume/repos/modules/test_ascat2/G1000_loci_hg19.zip", checkIfExists: true)   
+    loci_files   = [[ id: loci_path.BaseName ], loci_path  ]
 
+    // nextflow run ../tests/modules/ascat -entry test_ascat_with_ploidy_and_purity -c ../tests/config/nextflow.config ../tests/ascat/nextflow.config
     //loci_files   = "https://www.dropbox.com/s/l3m0yvyca86lpwb/G1000_loci_hg19.zip"
-
     //"/mnt/volume/ascat/alleles/G1000_alleles_hg19_chr"
     //"/mnt/volume/ascat/loci/G1000_loci_hg19_chr"
 
     UNZIP_ALLELES(allele_files)
     UNZIP_LOCI(loci_files)
-    UNZIP_ALLELES.out.unzipped_archive.view()
-    ASCAT_PLOIDY_AND_PURITY ( input , UNZIP_ALLELES.out.unzipped_archive , UNZIP_LOCI.out.unzipped_archive )
+    //UNZIP_ALLELES.out.unzipped_archive.view()
+    //UNZIP_LOCI.out.unzipped_archive.view()
+    ASCAT_PLOIDY_AND_PURITY ( input , UNZIP_ALLELES.out.unzipped_archive.map{ it[1] } , UNZIP_LOCI.out.unzipped_archive.map{ it[1] } )
 
 }
 
