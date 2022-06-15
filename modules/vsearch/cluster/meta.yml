@@ -1,51 +1,90 @@
 name: "vsearch_cluster"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Cluster sequences using a single-pass, greedy centroid-based clustering algorithm.
 keywords:
-  - sort
+  - vsearch
+  - clustering
 tools:
   - "vsearch":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "a versatile open source tool for metagenomics (USEARCH alternative)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      description: "VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)"
+      homepage: "https://github.com/torognes/vsearch"
+      documentation: "https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf"
+      tool_dev_url: "https://github.com/torognes/vsearch"
+      doi: "doi: 10.7717/peerj.2584"
       licence: "['GPL v3-or-later OR BSD-2-clause']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+      description: Groovy Map containing sample information e.g. [ id:'test' ]
+  - fasta:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Sequences to cluster in FASTA format
+      pattern: "*.{fasta,fa}"
+  - idcutoff:
+      type: real
+      description: Do not add the target to the cluster if the pairwise identity with the centroid is lower than real (value ranging from 0.0 to 1.0 included).
+  - clusteroption:
+      type: string
+      description: Select type of clustering.
+      pattern: "fast|size|smallmem|unoise"
+  - outoption:
+      type: string
+      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
+      pattern: "alnout|biomout|blast6out|centroids|clusters|mothur_shared_out|msaout|otutabout|profile|samout|uc|userout"
+  - user_columns:
+      type: string
+      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
+        e.g. [ id:'test' ]
+
+
+out
+uc
+centroids
+clusters
+profile
+msa
+  - aln:
+      type: file
+      description: Results in pairwise alignment format
+      pattern: "*.aln"
+  - biom:
+      type: file
+      description: Results in an OTU table in the biom version 1.0 file format
+      pattern: "*.biom"
+  - mothur:
+      type: file
+      description: Results in an OTU table in the mothur ’shared’ tab-separated plain text file format
+      pattern: "*.mothur.tsv"
+  - otu:
+      type: file
+      description: Results in an OTU table in the classic tab-separated plain text format
+      pattern: "*.otu.tsv"
+  - sam:
+      type: file
+      description: Results written in sam format
+      pattern: "*.sam"
+  - out:
+      type: file
+      description: Results in tab-separated output, columns defined by user
+      pattern: "*.out.tsv"
+  - blast:
+      type: file
+      description: Tab delimited results in blast-like tabular format
+      pattern: "*.blast.tsv"
+  - uc:
+      type: file
+      description: Tab delimited results in a uclust-like format with 10 columns
+      pattern: "*.uc"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@mirpedrol"
