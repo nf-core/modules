@@ -1,0 +1,12 @@
+- name: "goalign cleanseqs"
+  command: nextflow run ./tests/modules/goalign/cleanseqs -entry test_goalign_cleanseqs -c ./tests/config/nextflow.config -c ./tests/modules/goalign/cleanseqs/nextflow.config
+  tags:
+    - "goalign"
+    #
+    - "goalign/cleanseqs"
+    #
+  files:
+    - path: "output/goalign/all_sites.fas_clean.fas"
+      md5sum: f7b946d6d5000f83baa401addd7bb26a
+    - path: output/goalign/versions.yml
+      md5sum: 2dc17f26bc12547017e2a7eb66ae503f
