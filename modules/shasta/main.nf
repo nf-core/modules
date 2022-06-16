@@ -1,7 +1,7 @@
 process SHASTA {
     tag "$meta.id"
     label 'process_medium'
-    
+
     conda (params.enable_conda ? "bioconda::shasta=0.8.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shasta:0.8.0--h7d875b9_0':
@@ -37,7 +37,7 @@ process SHASTA {
 
     # cleanup temp files
     rm reads.fq
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         shasta: \$(shasta --version | head -n 1 | cut -f 3 -d " ")
