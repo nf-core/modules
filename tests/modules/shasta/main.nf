@@ -7,8 +7,8 @@ include { SHASTA } from '../../../modules/shasta/main.nf'
 workflow test_shasta {
     
     input = [ 
-        [ id:'test', model:'Nanopore-Oct2021' ], // meta map
-        [ file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz']) ],
+        [ id:'test', model:'Nanopore-Dec2019' ], // meta map
+        [ file(params.test_data['candidatus_portiera_aleyrodidarum']['nanopore']['test_fastq_gz']) ],
     ]
 
     SHASTA ( input )

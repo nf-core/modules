@@ -11,10 +11,10 @@ process SHASTA {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}_Assembly.fasta.gz")           , emit: assembly
-    tuple val(meta), path("${prefix}_Assembly.gfa.gz")             , emit: gfa
-    tuple val(meta), path("ShastaRun/")                            , emit: results
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path("*_Assembly.fasta.gz"), emit: assembly
+    tuple val(meta), path("*_Assembly.gfa.gz")  , emit: gfa
+    tuple val(meta), path("ShastaRun/")                 , emit: results
+    path "versions.yml"                                 , emit: versions
 
     script:
     def args   = task.ext.args   ?: ''
