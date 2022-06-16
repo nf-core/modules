@@ -32,8 +32,8 @@ process SHASTA {
         --threads $task.cpus
 
     # compress results
-    gzip -c ShastaRun/Assembly.fasta > ShastaRun/${meta.id}_Assembly.fasta.gz
-    gzip -c ShastaRun/Assembly.gfa   > ShastaRun/${meta.id}_Assembly.gfa.gz
+    gzip -c ShastaRun/Assembly.fasta > ${prefix}_Assembly.fasta.gz
+    gzip -c ShastaRun/Assembly.gfa   > ${prefix}_Assembly.gfa.gz
 
     # cleanup temp files
     rm reads.fq
