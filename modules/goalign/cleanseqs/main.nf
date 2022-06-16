@@ -24,6 +24,7 @@ process GOALIGN_CLEANSEQS {
     goalign \\
         clean \\
         seqs \\
+        -t ${task.cpus} \\
         $args \\
         -o ${prefix}.${aln.getExtension()} \\
         -i $aln
