@@ -19,7 +19,7 @@
     - path: "output/trimmomatic/test.paired.trim_2.fastq.gz"
     - path: "output/trimmomatic/test.unpaired.trim_2.fastq.gz"
 
-- name: trimmomatic
+- name: trimmomatic no adapter specified
   command: nextflow run ./tests/modules/trimmomatic -entry test_trimmomatic_no_adaptor -c ./tests/config/nextflow.config -c ./tests/modules/trimmomatic/nextflow.config
   tags:
     - "trimmomatic"
