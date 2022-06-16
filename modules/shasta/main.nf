@@ -11,8 +11,8 @@ process SHASTA {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("ShastaRun/${meta.id}_Assembly.fasta.gz"), emit: assembly
-    tuple val(meta), path("ShastaRun/${meta.id}_Assembly.gfa.gz")  , emit: gfa
+    tuple val(meta), path("${prefix}_Assembly.fasta.gz")           , emit: assembly
+    tuple val(meta), path("${prefix}_Assembly.gfa.gz")             , emit: gfa
     tuple val(meta), path("ShastaRun/")                            , emit: results
     path "versions.yml"                                            , emit: versions
 
