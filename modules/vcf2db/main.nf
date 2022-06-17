@@ -21,7 +21,7 @@ process VCF2DB {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    python /usr/local/bin/vcf2db.py \\
+    vcf2db.py \\
         $vcf \\
         $ped \\
         ${prefix}.db \\
