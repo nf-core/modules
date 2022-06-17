@@ -25,7 +25,6 @@ process BAMTOOLS_CONVERT {
     m = args =~ /-format ([a-z]+)/
     ext = m[0][1]
 
-
     """
     bamtools \\
         convert \\
