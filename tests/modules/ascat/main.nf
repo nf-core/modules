@@ -7,7 +7,8 @@ include { ASCAT as ASCAT_PLOIDY_AND_PURITY } from '../../../modules/ascat/main.n
 include { ASCAT as ASCAT_CRAM }              from '../../../modules/ascat/main.nf'
 include { UNZIP as UNZIP_ALLELES }           from '../../../modules/unzip/main.nf'
 include { UNZIP as UNZIP_LOCI }              from '../../../modules/unzip/main.nf'
-
+include { UNZIP as UNZIP_GC }                from '../../../modules/unzip/main.nf'
+include { UNZIP as UNZIP_RT }                from '../../../modules/unzip/main.nf'
 
 
 
@@ -46,6 +47,12 @@ workflow test_ascat_with_ploidy_and_purity {
     loci_path    = file("/mnt/volume/repos/modules/test_ascat2/G1000_loci_hg19.zip", checkIfExists: true)   
     loci_files   = [[ id: loci_path.BaseName ], loci_path  ]
 
+    gc_path      = file("/mnt/volume/repos/modules/test_ascat2/GC_G1000_hg19.zip", checkIfExists: true)   
+    gc_file      = [[ id: gc_path.BaseName ], gc_path  ]
+
+    rt_path     = file("/mnt/volume/repos/modules/test_ascat2/RT_G1000_hg19.zip", checkIfExists: true)   
+    rt_file     = [[ id: rt_path.BaseName ], rt_path  ]
+
     // nextflow run ../tests/modules/ascat -entry test_ascat_with_ploidy_and_purity -c ../tests/config/nextflow.config ../tests/ascat/nextflow.config
     //loci_files   = "https://www.dropbox.com/s/l3m0yvyca86lpwb/G1000_loci_hg19.zip"
     //"/mnt/volume/ascat/alleles/G1000_alleles_hg19_chr"
@@ -53,9 +60,15 @@ workflow test_ascat_with_ploidy_and_purity {
 
     UNZIP_ALLELES(allele_files)
     UNZIP_LOCI(loci_files)
+    UNZIP_GC(gc_file)
+    //UNZIP_RT(rt_file)
+    //UNZIP_GC.out.unzipped_archive.map{ it[1] }, UNZIP_RT.out.unzipped_archive.map{ it[1] }
+    //UNZIP_GC.out.unzipped_archive.view()
+    //UNZIP_RT.out.unzipped_archive.view()
     //UNZIP_ALLELES.out.unzipped_archive.view()
     //UNZIP_LOCI.out.unzipped_archive.view()
-    ASCAT_PLOIDY_AND_PURITY ( input , UNZIP_ALLELES.out.unzipped_archive.map{ it[1] } , UNZIP_LOCI.out.unzipped_archive.map{ it[1] } )
+    ASCAT_PLOIDY_AND_PURITY ( input , UNZIP_ALLELES.out.unzipped_archive.map{ it[1] } , UNZIP_LOCI.out.unzipped_archive.map{ it[1] },
+                              UNZIP_GC.out.unzipped_archive.map{ it[1] }, [])
 
 }
 
@@ -64,17 +77,35 @@ workflow test_ascat_with_ploidy_and_purity {
 // wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/HG00145/alignment/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram
 // wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/HG00146/alignment/HG00146.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram.crai
 // wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/HG00146/alignment/HG00146.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram
-//workflow test_ascat_with_crams {
-//    input = [
-//        [ id:'test', single_end:false ], // meta map
-//        file("/home/ec2-user/input_files/crams/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram", checkIfExists: true),
-//        file("/home/ec2-user/input_files/crams/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram.crai", checkIfExists: true),
-//        file("/home/ec2-user/input_files/crams/duplicate_test.cram", checkIfExists: true),
-//        file("/home/ec2-user/input_files/crams/duplicate_test.cram.crai", checkIfExists: true)
-//    ]
-//
-//    ASCAT_CRAM ( input , "/home/ec2-user/input_files/allele_files/G1000_alleles_hg19_chr", "/home/ec2-user/input_files/loci_files/G1000_alleles_hg19_chr")
-//}
+workflow test_ascat_with_crams {
+   input = [
+       [ id:'test', single_end:false ], // meta map
+       file("/mnt/volume/ascat/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram", checkIfExists: true),
+       file("/mnt/volume/ascat/HG00145.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram.crai", checkIfExists: true),
+       file("/mnt/volume/ascat/HG00146.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram", checkIfExists: true),
+       file("/mnt/volume/ascat/HG00146.mapped.ILLUMINA.bwa.GBR.low_coverage.20120522.bam.cram.crai", checkIfExists: true)
+   ]
+
+    allele_path  = file("/mnt/volume/repos/modules/test_ascat2/G1000_alleles_hg19.zip", checkIfExists: true)   
+    allele_files = [[ id: allele_path.BaseName ], allele_path  ]
+
+    loci_path    = file("/mnt/volume/repos/modules/test_ascat2/G1000_loci_hg19.zip", checkIfExists: true)   
+    loci_files   = [[ id: loci_path.BaseName ], loci_path  ]
+
+    gc_path      = file("/mnt/volume/repos/modules/test_ascat2/GC_G1000_hg19.zip", checkIfExists: true)   
+    gc_file      = [[ id: gc_path.BaseName ], gc_path  ]
+
+    rt_path     = file("/mnt/volume/repos/modules/test_ascat2/RT_G1000_hg19.zip", checkIfExists: true)   
+    rt_file     = [[ id: rt_path.BaseName ], rt_path  ]
+
+    UNZIP_ALLELES(allele_files)
+    UNZIP_LOCI(loci_files)
+    UNZIP_GC(gc_file)
+    UNZIP_RT(rt_file)
+
+   ASCAT_CRAM ( input , UNZIP_ALLELES.out.unzipped_archive.map{ it[1] } , UNZIP_LOCI.out.unzipped_archive.map{ it[1] },
+                UNZIP_GC.out.unzipped_archive.map{ it[1] },  UNZIP_RT.out.unzipped_archive.map{ it[1] })
+}
 
 
 
