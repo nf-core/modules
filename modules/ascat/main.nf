@@ -9,8 +9,10 @@ process ASCAT {
     
     input:
     tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
-    path(allele_files)   // needs to be a partially absolute path <path_to_alleles_folder/prefix_without_chr_num_and_ext>
-    path(loci_files)  
+    path(allele_files)   
+    path(loci_files)
+    path(gc_file)  
+    path(rt_file)  // optional
 
     output:
     tuple val(meta), path("*png"),               emit: png
@@ -24,15 +26,16 @@ process ASCAT {
 
     script:
     def args           = task.ext.args        ?: ''
-    def processName    =  "'" + "${task.process}" + "'"
     def prefix         = task.ext.prefix      ?: "${meta.id}"
     def gender         = args.gender          ?  "$args.gender" :        "NULL"
     def genomeVersion  = args.genomeVersion   ?  "$args.genomeVersion" : "NULL"
     def purity         = args.purity          ?  "$args.purity" :        "NULL"
     def ploidy         = args.ploidy          ?  "$args.ploidy" :        "NULL"
-    def gc_files       = args.gc_files        ?  "$args.gc_files" :      "NULL"
+    def gc_input       = gc_file              ?  "$gc_file" :            "NULL"
+    def rt_input       = rt_file              ?  "$rt_file" :            "NULL"
 
     def minCounts_arg                    = args.minCounts                     ?  ",minCounts = $args.minCounts" : ""
+    def bed_file_arg                     = args.bed_file                      ?  ", BED_file = $args.BED_file": ""
     def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
     def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
     def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
@@ -48,6 +51,7 @@ process ASCAT {
     library(ASCAT)
     options(bitmapType='cairo')
  
+    #build prefixes: <abspath_to_files/prefix_chr>
     allele_path = normalizePath("$allele_files")
     allele_prefix = paste0(allele_path, "/", "$allele_files", "_chr") 
  
@@ -68,6 +72,7 @@ process ASCAT {
         genomeVersion = "$genomeVersion",
         nthreads = $task.cpus
         $minCounts_arg
+        $bed_file_arg
         $chrom_names_arg
         $min_base_qual_arg
         $min_map_qual_arg
@@ -87,13 +92,25 @@ process ASCAT {
         gender = "$gender"
     )
 
-    #optional GC wave correction
-    if(!is.null($gc_files)){
-        ascat.bc = ascat.GCcorrect(ascat.bc, $gc_files)
-    }
-
     #Plot the raw data
-    ascat.plotRawData(ascat.bc)
+    ascat.plotRawData(ascat.bc, img.prefix = "Before_correction_")
+
+    # optional LogRCorrection
+    if("$gc_input" != "NULL") {
+        gc_input = paste0(normalizePath("$gc_input"), "/", "$gc_input", ".txt")
+        print(gc_input)
+
+        if("$rt_input" != "NULL"){
+            rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
+            ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)            
+        }  
+        else {
+            ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = $rt_input)
+        }        
+    } 
+
+    #Plot raw data after correction
+    ascat.plotRawData(ascat.bc, img.prefix = "After_correction_")
 
     #Segment the data
     ascat.bc = ascat.aspcf(ascat.bc)
@@ -113,6 +130,9 @@ process ASCAT {
         ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }
 
+    #Extract metrics from ASCAT profiles
+    QC = ascat.metrics(ascat.bc,ascat.output)
+
     #Write out segmented regions (including regions with one copy of each allele)
     write.table(ascat.output[["segments"]], file=paste0("$prefix", ".segments.txt"), sep="\t", quote=F, row.names=F)
 
@@ -131,10 +151,12 @@ process ASCAT {
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
     write.table(summary, file=paste0("$prefix",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
-    #version export  
+    write.table(QC, file=paste0("$prefix", ".metrics.txt"), sep="\t", quote=F, row.names=F)
+
+    # version export  
     f <- file("versions.yml","w")
     ascat_version = sessionInfo()\$otherPkgs\$ASCAT\$Version
-    writeLines("$processName:", f)
+    writeLines(paste0('"', "$task.process", ':"'), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
     """
