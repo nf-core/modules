@@ -1,13 +1,14 @@
 name: ascat
 description: copy number profiles of tumour cells.
 keywords:
-  - sort
+  - bam
+  - copy number
 tools:
   - ascat:
       description: ASCAT is a method to derive copy number profiles of tumour cells, accounting for normal cell admixture and tumour aneuploidy. ASCAT infers tumour purity (the fraction of tumour cells) and ploidy (the amount of DNA per tumour cell), expressed as multiples of haploid genomes from SNP array or massively parallel sequencing data, and calculates whole-genome allele-specific copy number profiles (the number of copies of both parental alleles for all SNP loci across the genome).
       homepage: None
-      documentation: None
-      tool_dev_url: https://github.com/Crick-CancerGenomics/ascat
+      documentation: https://github.com/VanLoo-lab/ascat/tree/master/man
+      tool_dev_url: https://github.com/VanLoo-lab/ascat
       doi: "10.1093/bioinformatics/btaa538"
       licence: ["GPL v3"]
 
@@ -26,6 +27,7 @@ input:
             "ploidy": (optional),
             "gc_files": (optional),
             "minCounts": (optional),
+            "BED_file": (optional) but recommended for WES, 
             "chrom_names": (optional),
             "min_base_qual": (optional),
             "min_map_qual": (optional),
@@ -43,50 +45,61 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input_normal:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
   - index_normal:
       type: file
-      description: index for normal_bam
-      pattern: "*.{bai}"
+      description: index for normal_bam/cram
+      pattern: "*.{bai,crai}"
   - input_tumor:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
   - index_tumor:
       type: file
-      description: index for tumor_bam
-      pattern: "*.{bai}"
+      description: index for tumor_bam/cram
+      pattern: "*.{bai,crai}"
   - allele_files:
       type: file
-      description: allele files for ASCAT. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+      description: allele files for ASCAT WGS. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
   - loci_files:
       type: file
-      description: loci files for ASCAT. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+      description: loci files for ASCAT WGS. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+  - gc_file:
+      type: file
+      description: GC correction file (optional) - Used to do logR correction of the tumour sample(s) with genomic GC content 
+  - rt_file:
+      type: file
+      description: replication timing correction file (optional)
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - versions:
+  - metrics:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: File containing quality metrics
+      pattern: "*.{metrics.txt}"
   - png:
       type: file
       description: ASCAT plots
       pattern: "*.{png}"
   - purityploidy:
       type: file
-      description: purity and ploidy data
-      pattern: "*.purityploidy.txt"
+      description: File with purity and ploidy data
+      pattern: "*.{purityploidy.txt}"
   - segments:
       type: file
-      description: segments data
-      pattern: "*.segments.txt"
+      description: File with segments data
+      pattern: "*.{segments.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@aasNGC"
   - "@lassefolkersen"
   - "@FriederikeHanssen"
   - "@maxulysse"
+  - "@SusiJo"
