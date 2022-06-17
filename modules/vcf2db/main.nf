@@ -1,3 +1,5 @@
+VERSION = "2020.02.24"
+
 process VCF2DB {
     tag "$meta.id"
     label 'process_medium'
@@ -29,7 +31,7 @@ process VCF2DB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vcf2db: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        vcf2db: $VERSION
     END_VERSIONS
     """
 }
