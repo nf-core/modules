@@ -1,0 +1,52 @@
+name: Bug report
+description: Report something that is broken or incorrect
+labels: bug
+body:
+  - type: checkboxes
+    attributes:
+      label: Have you checked the docs?
+      description: I have checked the following places for my error
+      options:
+        - label: "[nf-core website: troubleshooting](https://nf-co.re/usage/troubleshooting)"
+          required: true
+        - label: "[nf-core modules documentation](https://nf-co.re/docs/contributing/modules)"
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: command_used
+    attributes:
+      label: Command used and terminal output
+      description: Steps to reproduce the behaviour. Please paste the command you used to launch the pipeline and the output from your terminal.
+      render: console
+      placeholder: |
+        $ nextflow run ...
+
+        Some output where something broke
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Relevant files
+      description: |
+        Please drag and drop the relevant files here. Create a `.zip` archive if the extension is not allowed.
+        Your verbose log file `.nextflow.log` is often useful _(this is a hidden file in the directory where you launched the pipeline)_ as well as custom Nextflow configuration files.
+
+  - type: textarea
+    id: system
+    attributes:
+      label: System information
+      description: |
+        * Nextflow version _(eg. 21.10.3)_
+        * Hardware _(eg. HPC, Desktop, Cloud)_
+        * Executor _(eg. slurm, local, awsbatch)_
+        * Container engine and version: _(e.g. Docker 1.0.0, Singularity, Conda, Podman, Shifter or Charliecloud)_
+        * OS and version: _(eg. CentOS Linux, macOS, Ubuntu 22.04)_
+        * Image tag: <!-- [e.g. nfcore/cellranger:2.6] -->

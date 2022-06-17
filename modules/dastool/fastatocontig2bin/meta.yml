@@ -1,0 +1,56 @@
+name: dastool_fastatocontig2bin
+description: Helper script to convert a set of bins in fasta format to tabular scaffolds2bin format
+keywords:
+  - binning
+  - das tool
+  - table
+  - de novo
+  - bins
+  - contigs
+  - assembly
+  - das_tool
+tools:
+  - dastool:
+      description: |
+        DAS Tool is an automated method that integrates the results
+        of a flexible number of binning algorithms to calculate an optimized, non-redundant
+        set of bins from a single assembly.
+
+      homepage: https://github.com/cmks/DAS_Tool
+      documentation: https://github.com/cmks/DAS_Tool
+      tool_dev_url: https://github.com/cmks/DAS_Tool
+      doi: "10.1038/s41564-018-0171-1"
+      licence: ["BSD"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Fasta of list of fasta files recommended to be gathered via with .collect() of bins
+      pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
+  - extension:
+      type: val
+      description: Fasta file extension (fa | fas | fasta | ...), without .gz suffix, if gzipped input.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastatocontig2bin:
+      type: file
+      description: tabular contig2bin file for DAS tool input
+      pattern: "*.tsv"
+
+authors:
+  - "@maxibor"
+  - "@jfy133"

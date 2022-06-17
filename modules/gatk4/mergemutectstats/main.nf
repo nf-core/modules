@@ -2,13 +2,14 @@ process GATK4_MERGEMUTECTSTATS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(stats)
+
     output:
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     path "versions.yml"                    , emit: versions
@@ -19,7 +20,7 @@ process GATK4_MERGEMUTECTSTATS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def input = stats.collect{ " -stats ${it} "}.join()
+    def input_list = stats.collect{ "--stats ${it}"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -29,8 +30,9 @@ process GATK4_MERGEMUTECTSTATS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeMutectStats \\
-        ${input} \\
-        -output ${meta.id}.vcf.gz.stats \\
+        $input_list \\
+        --output ${prefix}.vcf.gz.stats \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
