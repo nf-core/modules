@@ -1,8 +1,32 @@
-- name: malt run
-  command: nextflow run ./tests/modules/malt/run -entry test_malt_run -c ./tests/config/nextflow.config -c ./tests/modules/malt/run/nextflow.config
+- name: malt run test_malt_run
+  command: nextflow run ./tests/modules/malt/run -entry test_malt_run -c ./tests/config/nextflow.config  -c ./tests/modules/malt/run/nextflow.config
   tags:
-    - malt
     - malt/run
+    - malt
   files:
-    - path: output/malt/test_1.rma6
+    - path: output/malt/malt-build.log
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/malt/malt_index/index0.idx
+      md5sum: 1954f2c00b418d00112829b0a6adb8ce
+    - path: output/malt/malt_index/ref.db
+      md5sum: 1fb74eccd5400fb23454454da1bd4c0c
+    - path: output/malt/malt_index/ref.idx
+      md5sum: 7dea362b3fac8e00956a4952a3d4f474
+    - path: output/malt/malt_index/ref.inf
+      md5sum: b146842067cf278ef1d23e6c2e7c0c35
+    - path: output/malt/malt_index/table0.db
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/malt/malt_index/table0.idx
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/malt/malt_index/taxonomy.idx
+      md5sum: 13aa81314892b5537319fca2a63a2c31
+    - path: output/malt/malt_index/taxonomy.map
+      md5sum: 1e972302ae6d705b8abb377cfafd380a
+    - path: output/malt/malt_index/taxonomy.tre
+      md5sum: 79c2322475a8eebc57607ff36c1e4728
     - path: output/malt/test-malt-run.log
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/malt/test_1.rma6
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/unzip/nucl_acc2tax-Jul2019.abin/nucl_acc2tax-Jul2019.abin
+      md5sum: b2deb1df50ebcec4de71a6beec6226d7

@@ -10,7 +10,6 @@ process MALT_BUILD {
     input:
     path fastas
     val seq_type
-    val classification_type
     path mapping_file
     val mapping_type
     val mapping_db
@@ -32,14 +31,25 @@ process MALT_BUILD {
         avail_mem = task.memory.giga
     }
 
-    def valid_types = ['gi', 'ref', 'syn']
-    def valid_dbs = ['eggnog', 'interpro2go', 'kegg', 'seed', 'taxonomy']
+    def valid_db = ['eggnog', 'interpro2go', 'kegg', 'seed', 'taxonomy']
+    if ( !valid_db.contains(mapping_db) )  { error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy" }
 
-    !valid_types.contains(mapping_type) error "Unrecognised mapping_type value for MALT_BUILD. Options: gi, ref, syn"
-    !valid_types.contains(mapping_db) error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy"
+    switch ( "${mapping_type}" ) {
+        case "gi":
+        mapping_prefix = "-g"; break
+        case "ref":
+        if ( mapping_db == "taxonomy" ) {
+            mapping_prefix = '-a'
+        } else {
+            mapping_prefix = "-r"
+        };break
+        case "syn":
+        mapping_prefix = "-s"; break
+        default:
+        error '[MALT_BUILD] Mapping type not recognised. Options: gi, ref, syn'; break
+    }
 
-    def classification_type = "${mapping_db}" == "taxonomy" ? "Taxonomy" : mapping_db.capitalize()
-    def mapping = "--${mapping_type}2${mapping_db} ${mapping_file}"
+    type_flag = mapping_prefix + '2' + mapping_db + " " + mapping_file
 
     """
     malt-build \\
@@ -48,9 +58,8 @@ process MALT_BUILD {
         -s $seq_type \\
         -d 'malt_index/' \\
         -t $task.cpus \\
-        -c $classification_type \\
         $args \\
-        $mapping |&tee malt-build.log
+        $type_flag |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
