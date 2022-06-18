@@ -5,7 +5,8 @@
     - malt/build
   files:
     - path: output/malt/malt-build.log
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - "Peak memory"
     - path: output/malt/malt_index/index0.idx
       md5sum: 1954f2c00b418d00112829b0a6adb8ce
     - path: output/malt/malt_index/ref.db
@@ -15,9 +16,7 @@
     - path: output/malt/malt_index/ref.inf
       md5sum: b146842067cf278ef1d23e6c2e7c0c35
     - path: output/malt/malt_index/table0.db
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/malt/malt_index/table0.idx
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/malt/malt_index/taxonomy.idx
       md5sum: 13aa81314892b5537319fca2a63a2c31
     - path: output/malt/malt_index/taxonomy.map
