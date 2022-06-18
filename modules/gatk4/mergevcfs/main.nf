@@ -2,10 +2,10 @@ process GATK4_MERGEVCFS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -13,6 +13,7 @@ process GATK4_MERGEVCFS {
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
     path  "versions.yml"             , emit: versions
 
     when:
