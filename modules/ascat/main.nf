@@ -2,7 +2,7 @@ process ASCAT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ascat=3.0.0 bioconda::cancerit-allelecount-4.3.0 bioconda::samtools=1.15.1": null)
+    conda (params.enable_conda ? "bioconda::ascat=3.0.0 bioconda::cancerit-allelecount=4.3.0": null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0':
         'quay.io/biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0' }"
@@ -43,7 +43,7 @@ process ASCAT {
     def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = '$args.ref_fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
-    // # if [[ "$(samtools view test2.paired_end.sorted.bam |head -n1 |cut -f3)" == *"chr"* ]]; then echo "bla"; fi
+    //  system(paste0("if [[ \"$(samtools view ", $input_tumor, " | head -n1 | cut -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' ", loci_prefix, "${i}.txt; done; fi"))
 
 
     """
@@ -58,7 +58,6 @@ process ASCAT {
  
     loci_path = normalizePath("$loci_files")
     loci_prefix = paste0(loci_path, "/", "$loci_files", "_chr")
-
 
     #prepare from BAM files
     ascat.prepareHTS(

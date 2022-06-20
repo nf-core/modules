@@ -45,7 +45,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input_normal:
       type: file
-      description: BAM/CRAM file
+      description: BAM/CRAM file, must adhere to chr1, chr2, ...chrX notation |
+                   For modifying chromosome notation please follow https://josephcckuo.wordpress.com/2016/11/17/modify-chromosome-notation-in-bam-file/.  
       pattern: "*.{bam,cram}"
   - index_normal:
       type: file
@@ -53,7 +54,7 @@ input:
       pattern: "*.{bai,crai}"
   - input_tumor:
       type: file
-      description: BAM/CRAM file
+      description: BAM/CRAM file, must adhere to chr1, chr2, ...chrX notation
       pattern: "*.{bam,cram}"
   - index_tumor:
       type: file
