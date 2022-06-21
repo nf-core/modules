@@ -1,0 +1,54 @@
+name: "tmb"
+description: This tool was designed to calculate a Tumor Mutational Burden (TMB) score from a VCF file.
+keywords:
+  - tmb
+  - mutation burden
+tools:
+  - "tmb":
+      description: "This tool was designed to calculate a Tumor Mutational Burden (TMB) score from a VCF file."
+      homepage: "https://github.com/bioinfo-pf-curie/TMB"
+      documentation: "https://github.com/bioinfo-pf-curie/TMB"
+      tool_dev_url: "https://github.com/bioinfo-pf-curie/TMB"
+      doi: ""
+      licence: "['CeCILL FREE SOFTWARE LICENSE AGREEMENT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: vcf file
+      pattern: "*.vcf.gz"
+  - dbconfig:
+      type: file
+      description: "Databases config file (default ./config/databases.yml)"
+      pattern: "*.yml"
+  - varconfig:
+      type: file
+      description: Variant calling config file (default ./config/calling.yml)
+      pattern: "*.yml"
+  - target_bed:
+      type: file
+      description: Capture kit bed file
+      pattern: "*.bed"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@FriederikeHanssen"
