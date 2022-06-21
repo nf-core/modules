@@ -6,13 +6,15 @@ process ASCAT {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0':
         'quay.io/biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0' }"
-    
+
     input:
     tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
-    path(allele_files)   
+    path(allele_files)
     path(loci_files)
-    path(gc_file)  
-    path(rt_file)  // optional
+    path(gc_file)   // optional
+    path(rt_file)   // optional
+    path(bed_file)  // optional
+    path(ref_fasta) // optional
 
     output:
     tuple val(meta), path("*png"),                             emit: png
@@ -36,26 +38,27 @@ process ASCAT {
     def rt_input       = rt_file              ?  "$rt_file" :            "NULL"
 
     def minCounts_arg                    = args.minCounts                     ?  ",minCounts = $args.minCounts" : ""
-    def bed_file_arg                     = args.bed_file                      ?  ",BED_file = $args.BED_file": ""
+    def bed_file_arg                     = bed_file                           ?  ",BED_file = '$bed_file'": ""
     def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
     def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
     def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
-    def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = '$args.ref_fasta'" : ""
+    def ref_fasta_arg                    = ref_fasta                          ?  ",ref.fasta = '$ref_fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
     //  system(paste0("if [[ \"$(samtools view ", $input_tumor, " | head -n1 | cut -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' ", loci_prefix, "${i}.txt; done; fi"))
-
+    //def bed_file_arg                     = args.bed_file                      ?  ",BED_file = '$args.bed_file'": ""
+    //def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = '$args.ref_fasta'" : ""
 
     """
     #!/usr/bin/env Rscript
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
- 
+
     #build prefixes: <abspath_to_files/prefix_chr>
     allele_path = normalizePath("$allele_files")
-    allele_prefix = paste0(allele_path, "/", "$allele_files", "_chr") 
- 
+    allele_prefix = paste0(allele_path, "/", "$allele_files", "_chr")
+
     loci_path = normalizePath("$loci_files")
     loci_prefix = paste0(loci_path, "/", "$loci_files", "_chr")
 
@@ -67,7 +70,7 @@ process ASCAT {
         normalname = "Normal",
         allelecounter_exe = "alleleCounter",
         alleles.prefix = allele_prefix,
-        loci.prefix = loci_prefix, 
+        loci.prefix = loci_prefix,
         gender = "$gender",
         genomeVersion = "$genomeVersion",
         nthreads = $task.cpus
@@ -102,15 +105,16 @@ process ASCAT {
 
         if("$rt_input" != "NULL"){
             rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
-            ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)            
-        }  
+            ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)
+            #Plot raw data after correction
+            ascat.plotRawData(ascat.bc, img.prefix = "After_correction_GC_")
+        }
         else {
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = $rt_input)
-        }        
-    } 
-
-    #Plot raw data after correction
-    ascat.plotRawData(ascat.bc, img.prefix = "After_correction_")
+            #Plot raw data after correction
+            ascat.plotRawData(ascat.bc, img.prefix = "After_correction_GC_RT_")
+        }
+    }
 
     #Segment the data
     ascat.bc = ascat.aspcf(ascat.bc)
@@ -153,7 +157,7 @@ process ASCAT {
 
     write.table(QC, file=paste0("$prefix", ".metrics.txt"), sep="\t", quote=F, row.names=F)
 
-    # version export  
+    # version export
     f <- file("versions.yml","w")
     alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
     ascat_version = sessionInfo()\$otherPkgs\$ASCAT\$Version
@@ -174,11 +178,11 @@ process ASCAT {
     echo stub > Tumour.ASCATprofile.png
     echo stub > Tumour.ASPCF.png
     echo stub > Before_correction_Tumour.germline.png
-    echo stub > After_correction_Tumour.germline.png
+    echo stub > After_correction_GC_Tumour.germline.png
     echo stub > Tumour.rawprofile.png
     echo stub > Tumour.sunrise.png
     echo stub > Before_correction_Tumour.tumour.png
-    echo stub > After_correction_Tumour.tumour.png
+    echo stub > After_correction_GC_Tumour.tumour.png
     echo stub > Tumour_alleleFrequencies_chr21.txt
     echo stub > Tumour_alleleFrequencies_chr22.txt
     echo stub > Normal_alleleFrequencies_chr21.txt
@@ -188,7 +192,6 @@ process ASCAT {
     echo ' alleleCounter: 4.3.0' >> versions.yml
     echo ' ascat: 3.0.0' >> versions.yml
 
-    
     """
 
 
