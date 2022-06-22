@@ -13,7 +13,7 @@ process FASTP {
     val   save_merged
 
     output:
-    tuple val(meta), path('*.trim.fastq.gz')  , optional:true, emit: reads
+    tuple val(meta), path('*.fastp.fastq.gz')       , optional:true, emit: reads
     tuple val(meta), path('*.json')           , emit: json
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
@@ -34,7 +34,7 @@ process FASTP {
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
         fastp \\
             --in1 ${prefix}.fastq.gz \\
-            --out1 ${prefix}.trim.fastq.gz \\
+            --out1 ${prefix}.fastp.fastq.gz \\
             --thread $task.cpus \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
@@ -55,8 +55,8 @@ process FASTP {
         fastp \\
             --in1 ${prefix}_1.fastq.gz \\
             --in2 ${prefix}_2.fastq.gz \\
-            --out1 ${prefix}_1.trim.fastq.gz \\
-            --out2 ${prefix}_2.trim.fastq.gz \\
+            --out1 ${prefix}_1.fastp.fastq.gz \\
+            --out2 ${prefix}_2.fastp.fastq.gz \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $fail_fastq \\
