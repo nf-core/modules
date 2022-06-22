@@ -8,8 +8,8 @@ keywords:
 tools:
   - "gecco":
       description: "Biosynthetic Gene Cluster prediction with Conditional Random Fields."
-      homepage: "https://gecco.embl.de/"
-      documentation: "https://gecco.embl.de/"
+      homepage: "https://gecco.embl.de"
+      documentation: "https://gecco.embl.de"
       tool_dev_url: "https://github.com/zellerlab/GECCO"
       doi: "10.1101/2021.05.03.442509"
       licence: "['GPL v3']"
@@ -30,7 +30,7 @@ input:
       pattern: "*.hmm"
   - model_dir:
       file: directory
-      description: Path to an alternative CRF module to use
+      description: Path to an alternative CRF (Conditional Random Fields) module to use
 
 output:
   - meta:
@@ -38,14 +38,13 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
   - genes:
       type: file
-      description: TSV file containing detected/predicted genes with BGC probabability scores
+      description: TSV file containing detected/predicted genes with BGC probability scores
       pattern: "*.genes.tsv"
   - features:
       type: file
@@ -53,7 +52,7 @@ output:
       pattern: "*.features.tsv"
   - clusters:
       type: file
-      description: TSV file containing coorindates of preducted clustes and BGC type
+      description: TSV file containing coordinates of predicted clusters and BGC types
       pattern: "*.clusters.tsv"
   - gbk:
       type: file

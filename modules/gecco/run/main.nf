@@ -15,11 +15,11 @@ process GECCO_RUN {
     output:
     tuple val(meta), path("*.genes.tsv")           , emit: genes
     tuple val(meta), path("*.features.tsv")        , emit: features
-    tuple val(meta), path("*.clusters.tsv")        , emit: clusters
-    tuple val(meta), path("*_cluster_*.gbk") , optional: true, emit: gbk
-    tuple val(meta), path("*.json"), optional: true, emit: json
+    tuple val(meta), path("*.clusters.tsv") , emit: clusters
+    tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
+    tuple val(meta), path("*.json")         , optional: true, emit: json
 
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,7 +41,7 @@ process GECCO_RUN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' ))
+        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
     END_VERSIONS
     """
 }
