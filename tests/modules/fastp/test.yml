@@ -12,7 +12,6 @@
     - path: output/fastp/test.fastp.json
       md5sum: 7ee735cefb67f549dc857eefb9e7f123
     - path: output/fastp/test.fastp.log
-      md5sum: 732e06b17fd8a3f5dd7fa0a21c9af254
 
 - name: fastp test_fastp_paired_end
   command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
@@ -48,7 +47,6 @@
     - path: output/fastp/test.fastp.json
       md5sum: feafc4181a2a61b4b52d9c2b59b419ad
     - path: output/fastp/test.fastp.log
-      md5sum: c996c3321c09122e7b5381104b2682d9
 
 - name: fastp test_fastp_paired_end_trim_fail
   command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
