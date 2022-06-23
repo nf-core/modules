@@ -31,7 +31,7 @@ process FASTP {
     if (meta.single_end) {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
+        [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
         fastp \\
             --in1 ${prefix}.fastq.gz \\
             --out1 ${prefix}.fastp.fastq.gz \\
