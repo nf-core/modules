@@ -72,7 +72,18 @@
         - "Missing BUSCOs"
         - "Dependencies and versions"
     - path: output/busco/test-bacteria_odb10-busco.batch_summary.txt
-      md5sum: 5360dfe83bec1f5741ee115e53e6b517
+      contains:
+        - "Input_file"
+        - "Dataset"
+        - "Complete"
+        - "Single"
+        - "Duplicated"
+        - "Fragmented"
+        - "Missing"
+        - "n_markers"
+        - "genome.fasta"
+        - "genome.fna"
+        - "bacteria_odb10"
     - path: output/busco/versions.yml
       md5sum: 9a959eb0a1f765777dff1ea2f5c139c0
 
