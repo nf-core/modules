@@ -11,10 +11,12 @@ process ASCAT {
     tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
     path(allele_files)
     path(loci_files)
+    path(bed_file)  // optional
+    path(fasta)     // optional
     path(gc_file)   // optional
     path(rt_file)   // optional
-    path(bed_file)  // optional
-    path(ref_fasta) // optional
+
+
 
     output:
     tuple val(meta), path("*png"),                             emit: png
@@ -43,7 +45,7 @@ process ASCAT {
     def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
     def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
     def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
-    def ref_fasta_arg                    = ref_fasta                          ?  ",ref.fasta = '$ref_fasta'" : ""
+    def fasta_arg                        = fasta                              ?  ",ref.fasta = '$fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
     //  R command to rename loci column
@@ -79,7 +81,7 @@ process ASCAT {
         $chrom_names_arg
         $min_base_qual_arg
         $min_map_qual_arg
-        $ref_fasta_arg
+        $fasta_arg
         $skip_allele_counting_tumour_arg
         $skip_allele_counting_normal_arg
     )

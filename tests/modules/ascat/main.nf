@@ -57,10 +57,12 @@ workflow test_ascat {
 //     ASCAT_PLOIDY_AND_PURITY ( input ,
 //                                 UNZIP_ALLELES.out.unzipped_archive.map{ it[1] },
 //                                 UNZIP_LOCI.out.unzipped_archive.map{ it[1] },
+//                                 [],                                             // optional bed_file for WES
+//                                 [],                                             // optional fasta
 //                                 UNZIP_GC.out.unzipped_archive.map{ it[1] },     // optional GC_correction
-//                                 [],     // optional RT_correction
-//                                 [],     // optional bed_file for WES
-//                                 [])     // optional ref_fasta
+//                                 [])     // optional RT_correction
+
+//
 
 // }
 
@@ -90,7 +92,7 @@ workflow test_ascat {
 //     rt_path     = file("/mnt/volume/repos/modules/test_ascat2/RT_G1000_hg19.zip", checkIfExists: true)
 //     rt_file     = [[ id: rt_path.BaseName ], rt_path  ]
 
-//     ref_fasta   = file("/mnt/volume/ascat/human_g1k_v37.fasta", checkIfExists: true)
+//     fasta   = file("/mnt/volume/ascat/human_g1k_v37.fasta", checkIfExists: true)
 
 //     UNZIP_ALLELES(allele_files)
 //     UNZIP_LOCI(loci_files)
@@ -100,10 +102,11 @@ workflow test_ascat {
 //     ASCAT_CRAM ( input ,
 //                 UNZIP_ALLELES.out.unzipped_archive.map{ it[1] },
 //                 UNZIP_LOCI.out.unzipped_archive.map{ it[1] },
-//                 UNZIP_GC.out.unzipped_archive.map{ it[1] },
-//                 UNZIP_RT.out.unzipped_archive.map{ it[1] },
 //                 [],
-//                 ref_fasta)
+//                 fasta,
+//                 UNZIP_GC.out.unzipped_archive.map{ it[1] },
+//                 UNZIP_RT.out.unzipped_archive.map{ it[1] })
+
 // }
 
 
