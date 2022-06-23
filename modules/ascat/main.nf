@@ -188,11 +188,9 @@ process ASCAT {
     echo stub > Normal_alleleFrequencies_chr21.txt
     echo stub > Normal_alleleFrequencies_chr22.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-    echo ' alleleCounter: 4.3.0'
-    echo ' ascat: 3.0.0'
-    END_VERSIONS
+    echo "${task.process}:" > versions.yml
+    echo ' alleleCounter: 4.3.0' >> versions.yml
+    echo ' ascat: 3.0.0' >> versions.yml
 
     """
 
