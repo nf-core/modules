@@ -66,7 +66,8 @@ input:
       description: allele files for ASCAT WGS. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
   - loci_files:
       type: file
-      description: loci files for ASCAT WGS. Loci files without chromosome notation can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+      description:
+        loci files for ASCAT WGS. Loci files without chromosome notation can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
         Make sure the chromosome notation matches the bam/cram input files. To add the chromosome notation to loci files (hg19/hg38) if necessary, you can run this command
         `if [[ $(samtools view <your_bam_file.bam> | head -n1 | cut -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' G1000_loci_hg19_chr_${i}.txt; done; fi`
   - bed_file:
