@@ -101,7 +101,6 @@ process ASCAT {
     # optional LogRCorrection
     if("$gc_input" != "NULL") {
         gc_input = paste0(normalizePath("$gc_input"), "/", "$gc_input", ".txt")
-        print(gc_input)
 
         if("$rt_input" != "NULL"){
             rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
