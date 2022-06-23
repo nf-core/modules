@@ -49,8 +49,8 @@ workflow test_fastp_single_end_trim_fail {
 //
 workflow test_fastp_paired_end_trim_fail {
     input = [ [ id:'test', single_end:false ], // meta map
-              [ file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
     save_trimmed_fail = true
     save_merged       = false
