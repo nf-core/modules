@@ -12,6 +12,9 @@
     - path: output/fastp/test.fastp.json
       md5sum: 7ee735cefb67f549dc857eefb9e7f123
     - path: output/fastp/test.fastp.log
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end
   command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
@@ -23,9 +26,12 @@
         - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
         - "The input has little adapter percentage (~0.000000%), probably it's trimmed before."
     - path: output/fastp/test.fastp.json
-      md5sum: cfc3e8b871b9bc770f1dc16432d64e67
+      contains:
+        - '"passed_filter_reads": 198'
     - path: output/fastp/test.fastp.log
-      md5sum: 8b1e318b1ae7b1bc23da61d4b4904bf7
+      contains:
+        - "No adapter detected for read1"
+        - "Q30 bases: 12281(88.3716%)"
     - path: output/fastp/test_1.fastp.fastq.gz
       md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test_2.fastp.fastq.gz
@@ -47,6 +53,9 @@
     - path: output/fastp/test.fastp.json
       md5sum: feafc4181a2a61b4b52d9c2b59b419ad
     - path: output/fastp/test.fastp.log
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end_trim_fail
   command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
@@ -57,10 +66,13 @@
       contains:
         - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
         - "The input has little adapter percentage (~0.000000%), probably it's trimmed before."
-    - path: output/fastp/test.fastp.json
-      md5sum: 5750c4e642f2473af496cfc3387c2874
     - path: output/fastp/test.fastp.log
-      md5sum: d23a9c475354690af8d2b63e28fbd910
+      contains:
+        - "No adapter detected for read1"
+        - "Q30 bases: 12281(88.3716%)"
+    - path: output/fastp/test.fastp.json
+      contains:
+        - '"passed_filter_reads": 198'
     - path: output/fastp/test_1.fail.fastq.gz
       md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/fastp/test_1.fastp.fastq.gz
@@ -79,9 +91,15 @@
       contains:
         - "<div id='After_filtering__merged__quality'>"
     - path: output/fastp/test.fastp.json
-      md5sum: 045785e81e3327920c88e6948b8e077f
+      contains:
+        - '"merged_and_filtered": {'
+        - '"total_reads": 75'
+        - '"total_bases": 13683'
     - path: output/fastp/test.fastp.log
-      md5sum: fe113b1e870469511016b3ed5e8ed710
+      contains:
+        - "Merged and filtered:"
+        - "total reads: 75"
+        - "total bases: 13683"
     - path: output/fastp/test.merged.fastq.gz
       md5sum: 4955ca2c899729b17bd526d2626a8d73
     - path: output/fastp/test_1.fastp.fastq.gz
