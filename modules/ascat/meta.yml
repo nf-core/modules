@@ -27,7 +27,7 @@ input:
             "ploidy": (optional),
             "gc_files": (optional),
             "minCounts": (optional),
-            "BED_file": (optional) but recommended for WES, 
+            "BED_file": (optional) but recommended for WES,
             "chrom_names": (optional),
             "min_base_qual": (optional),
             "min_map_qual": (optional),
@@ -46,7 +46,7 @@ input:
   - input_normal:
       type: file
       description: BAM/CRAM file, must adhere to chr1, chr2, ...chrX notation |
-                   For modifying chromosome notation please follow https://josephcckuo.wordpress.com/2016/11/17/modify-chromosome-notation-in-bam-file/.  
+        For modifying chromosome notation please follow https://josephcckuo.wordpress.com/2016/11/17/modify-chromosome-notation-in-bam-file/.
       pattern: "*.{bam,cram}"
   - index_normal:
       type: file
@@ -68,16 +68,26 @@ input:
       description: loci files for ASCAT WGS. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
   - gc_file:
       type: file
-      description: GC correction file (optional) - Used to do logR correction of the tumour sample(s) with genomic GC content 
+      description: GC correction file (optional) - Used to do logR correction of the tumour sample(s) with genomic GC content
   - rt_file:
       type: file
       description: replication timing correction file (optional)
+  - bed_file:
+      type: file
+      description: Bed file for ASCAT WES (optional)
+  - ref_fasta:
+      type: file
+      description: Reference fasta file (optional)
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - allelefreqs:
+      type: file
+      description: Files containing allee frequencies per chromosome
+      pattern: "*{alleleFrequencies_chr*.txt}"
   - metrics:
       type: file
       description: File containing quality metrics

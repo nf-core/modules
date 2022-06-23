@@ -19,6 +19,7 @@ process ASCAT {
     output:
     tuple val(meta), path("*png"),                             emit: png
     tuple val(meta), path("*cnvs.txt"),                        emit: cnvs
+    tuple val(meta), path("*metrics.txt"),                     emit: metrics
     tuple val(meta), path("*purityploidy.txt"),                emit: purityploidy
     tuple val(meta), path("*segments.txt"),                    emit: segments
     tuple val(meta), path("*alleleFrequencies_chr*.txt"),      emit: allelefreqs
@@ -45,9 +46,8 @@ process ASCAT {
     def ref_fasta_arg                    = ref_fasta                          ?  ",ref.fasta = '$ref_fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
+    //  R command to rename loci column
     //  system(paste0("if [[ \"$(samtools view ", $input_tumor, " | head -n1 | cut -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' ", loci_prefix, "${i}.txt; done; fi"))
-    //def bed_file_arg                     = args.bed_file                      ?  ",BED_file = '$args.bed_file'": ""
-    //def ref_fasta_arg                    = args.ref_fasta                     ?  ",ref.fasta = '$args.ref_fasta'" : ""
 
     """
     #!/usr/bin/env Rscript
@@ -161,7 +161,7 @@ process ASCAT {
     f <- file("versions.yml","w")
     alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
     ascat_version = sessionInfo()\$otherPkgs\$ASCAT\$Version
-    writeLines(paste0('"', "$task.process", ':"'), f)
+    writeLines(paste0('"', "$task.process", '"', ":"), f)
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
