@@ -2,7 +2,7 @@ process ASCAT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ascat=3.0.0 bioconda::cancerit-allelecount=4.3.0": null)
+    conda (params.enable_conda ? "bioconda::ascat=3.0.0 bioconda::cancerit-allelecount=4.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0':
         'quay.io/biocontainers/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0' }"
@@ -164,6 +164,7 @@ process ASCAT {
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
+
     """
 
 
@@ -187,9 +188,11 @@ process ASCAT {
     echo stub > Normal_alleleFrequencies_chr21.txt
     echo stub > Normal_alleleFrequencies_chr22.txt
 
-    echo "${task.process}" > versions.yml
-    echo ' alleleCounter: 4.3.0' >> versions.yml
-    echo ' ascat: 3.0.0' >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+    echo ' alleleCounter: 4.3.0'
+    echo ' ascat: 3.0.0'
+    END_VERSIONS
 
     """
 
