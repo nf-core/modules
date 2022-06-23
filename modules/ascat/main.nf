@@ -16,8 +16,6 @@ process ASCAT {
     path(gc_file)   // optional
     path(rt_file)   // optional
 
-
-
     output:
     tuple val(meta), path("*png"),                             emit: png
     tuple val(meta), path("*cnvs.txt"),                        emit: cnvs
@@ -48,8 +46,6 @@ process ASCAT {
     def fasta_arg                        = fasta                              ?  ",ref.fasta = '$fasta'" : ""
     def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
     def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
-    //  R command to rename loci column
-    //  system(paste0("if [[ \"$(samtools view ", $input_tumor, " | head -n1 | cut -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' ", loci_prefix, "${i}.txt; done; fi"))
 
     """
     #!/usr/bin/env Rscript
