@@ -14,6 +14,5 @@ workflow test_atlas_pmd {
         file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true),
         []
     ]
-
     ATLAS_PMD ( input )
 }

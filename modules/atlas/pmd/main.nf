@@ -4,11 +4,11 @@ process ATLAS_PMD {
 
     conda (params.enable_conda ? "bioconda::atlas=0.9.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
+        'quay.io/biocontainers/atlas:0.9.9--h082e891_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(read_group_settings)
+    tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(pool_rg_txt)
 
     output:
     tuple val(meta), path("*_PMD_input_Empiric.txt")    , emit: empiric
@@ -23,18 +23,18 @@ process ATLAS_PMD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_group_settings = read_group_settings ? "${read_group_settings}" : ""
+    def pool_rg_txt = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
     """
     atlas \\
-        $read_group_settings \\
+        $pool_rg_txt \\
         task=PMD \\
-        bam=$bam \\
-        fasta=$fasta \\
+        bam=${bam} \\
+        fasta=${fasta} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        atlas: \$(echo \$(atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
+        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
     END_VERSIONS
     """
 }

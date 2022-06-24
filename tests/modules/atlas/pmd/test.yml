@@ -1,14 +1,14 @@
-- name: atlas pmd test_atlas_pmd
-  command: nextflow run ./tests/modules/atlas/pmd -entry test_atlas_pmd -c ./tests/config/nextflow.config  -c ./tests/modules/atlas/pmd/nextflow.config
-  tags:
-    - atlas/pmd
-    - atlas
-  files:
-    - path: output/atlas/test.paired_end.sorted_PMD_Table.txt
-      md5sum: 3a85ef4a2508f4271d762e0dc542250a
-    - path: output/atlas/test.paired_end.sorted_PMD_Table_counts.txt
-      md5sum: a859be91e159bba343eca7953e03973a
-    - path: output/atlas/test.paired_end.sorted_PMD_input_Empiric.txt
-      md5sum: ffc8adb86aa609745b674b4ac1ea5f3a
-    - path: output/atlas/test.paired_end.sorted_PMD_input_Exponential.txt
-      md5sum: 27c2b8d5aa9a263233dc3cb6b2abd817
+- name: atlas pmd test_atlas_pmd                                                                                                                                                             
+  command: nextflow run ./tests/modules/atlas/pmd -entry test_atlas_pmd -c ./tests/config/nextflow.config  -c ./tests/modules/atlas/pmd/nextflow.config                                      
+  tags:                                                                                                                                                                                      
+    - atlas/pmd                                                                                                                                                                              
+    - atlas                                                                                                                                                                                  
+  files:                                                                                                                                                                                     
+    - path: output/atlas/test.paired_end.sorted_PMD_Table.txt                                                                                                                                
+      md5sum: b28a9f4784f30a711046708eb7d94642                                                                                                                                               
+    - path: output/atlas/test.paired_end.sorted_PMD_Table_counts.txt                                                                                                                         
+      md5sum: 1aabfb83cfff6e0413f52d016c943e3e                                                                                                                                               
+    - path: output/atlas/test.paired_end.sorted_PMD_input_Empiric.txt                                                                                                                        
+      md5sum: 8ff876f50ce05dc9aac0646a31682df0                                                                                                                                               
+    - path: output/atlas/test.paired_end.sorted_PMD_input_Exponential.txt                                                                                                                    
+      md5sum: 2421450ef643316f4eacf5cb811e4df7
