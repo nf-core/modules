@@ -31,6 +31,9 @@ input:
       description: |
         Index of the vcf file to be normalized
         e.g. 'file1.vcf.gz.tbi'
+  - intervals:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
   - fasta:
       type: file
       description: The reference fasta file
