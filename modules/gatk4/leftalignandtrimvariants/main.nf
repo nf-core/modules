@@ -8,7 +8,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(tbi), path(intervals)
     path  fasta
     path  fai
     path  dict
@@ -22,8 +22,9 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args             = task.ext.args   ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def interval_command = intervals       ? "--intervals $intervals" : ""
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK LeftAlignAndTrimVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -32,6 +33,7 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}G" LeftAlignAndTrimVariants \\
+        $interval_command \\
         --variant $vcf \\
         --output ${prefix}.vcf.gz \\
         --reference $fasta \\
