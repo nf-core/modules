@@ -8,7 +8,9 @@ process ATLAS_PMD {
         'quay.io/biocontainers/atlas:0.9.9--h082e891_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(pool_rg_txt)
+    tuple val(meta), path(bam), path(bai), path(pool_rg_txt)
+    path(fasta)
+    path(fai)
 
     output:
     tuple val(meta), path("*_PMD_input_Empiric.txt")    , emit: empiric

@@ -1,11 +1,9 @@
 name: "atlas_pmd"
 description: Estimate the post-mortem damage patterns of DNA
 keywords:
-  - ancient
-  - DNA
-  - damage
+  - ancient DNA
+  - post mortem damage
   - bam
-  - read group
 tools:
   - "atlas":
       description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
@@ -41,7 +39,7 @@ input:
   - pool_rg_txt:
       type: file
       description: |
-        (optional)! Provide the names of read groups that should be merged for PMD estimation.
+        Optional. Provide the names of read groups that should be merged for PMD estimation.
         All read groups that should be pooled listed on one line, separated by any white space.
         Other read groups will be recalibrated separately.
       pattern: "*.txt"
