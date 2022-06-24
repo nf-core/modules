@@ -41,8 +41,8 @@ input:
   - pool_rg_txt:
       type: file
       description: |
-        (optional)! Provide the names of read groups that should be merged for PMD estimation. 
-        All read groups that should be pooled listed on one line, separated by any white space. 
+        (optional)! Provide the names of read groups that should be merged for PMD estimation.
+        All read groups that should be pooled listed on one line, separated by any white space.
         Other read groups will be recalibrated separately.
       pattern: "*.txt"
 
@@ -69,14 +69,14 @@ output:
   - counts:
       type: file
       description: |
-        The counts of all possible transitions for each read position 
+        The counts of all possible transitions for each read position
         (or up to a certain position, see specific command length)
       pattern: "*_PMD_Table_counts.txt"
   - table:
       type: file
       description: |
-        For all possible transitions the ratio of the transition counts, 
-        which are taken from the _counts.txt table, over the total amount 
+        For all possible transitions the ratio of the transition counts,
+        which are taken from the _counts.txt table, over the total amount
         of the base that was mutated, for each position and readgroup
       pattern: "*_PMD_Table.txt"
 
