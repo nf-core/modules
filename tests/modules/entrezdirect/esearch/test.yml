@@ -1,0 +1,17 @@
+- name: entrezdirect esearch test_entrezdirect_esearch_pubmed
+  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_pubmed -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
+  tags:
+    - entrezdirect/esearch
+    - entrezdirect
+  files:
+    - path: output/test_pubmed.esearch.xml.txt
+      md5sum: 8b302771daddfabff406bc73488a393d
+
+- name: entrezdirect esearch test_entrezdirect_esearch_genome
+  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
+  tags:
+    - entrezdirect/esearch
+    - entrezdirect
+  files:
+    - path: output/test_genome.esearch.xml.txt
+      md5sum: 9edb0ea96a456b2d80f756e47f0276d1
