@@ -1,0 +1,83 @@
+name: "atlas_pmd"
+description: Estimate the post-mortem damage patterns of DNA
+keywords:
+  - ancient DNA
+  - post mortem damage
+  - bam
+tools:
+  - "atlas":
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
+      homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
+      documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
+      tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
+      doi: "10.1101/105346"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - bam:
+      type: file
+      description: Single input BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: The BAI file for the input BAM file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: The reference genome provided as FASTA file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: The FAI file for the reference genome FASTA file
+      pattern: "*.fai"
+  - pool_rg_txt:
+      type: file
+      description: |
+        Optional. Provide the names of read groups that should be merged for PMD estimation.
+        All read groups that should be pooled listed on one line, separated by any white space.
+        Other read groups will be recalibrated separately.
+      pattern: "*.txt"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - empiric:
+      type: file
+      description: A list of pmd patterns estimated with the empirical method for each readgroup
+      pattern: "*_PMD_input_Empiric.txt"
+  - exponential:
+      type: file
+      description: A list of pmd patterns estimated with the exponential method for each readgroup
+      pattern: "*_PMD_input_Exponential.txt"
+  - counts:
+      type: file
+      description: |
+        The counts of all possible transitions for each read position
+        (or up to a certain position, see specific command length)
+      pattern: "*_PMD_Table_counts.txt"
+  - table:
+      type: file
+      description: |
+        For all possible transitions the ratio of the transition counts,
+        which are taken from the _counts.txt table, over the total amount
+        of the base that was mutated, for each position and readgroup
+      pattern: "*_PMD_Table.txt"
+
+authors:
+  - "@maxibor"
+  - "@merszym"
