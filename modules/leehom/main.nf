@@ -1,9 +1,8 @@
-def VERSION = '1.2.15' // Version information not provided by tool on CLI
-
 process LEEHOM {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::leehom=1.2.15" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
@@ -29,7 +28,7 @@ process LEEHOM {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-
+    def VERSION = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     if (reads.toString().endsWith('.bam')) {
         """
         leeHom \\
