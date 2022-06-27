@@ -13,8 +13,7 @@ process SEROBA_RUN {
     output:
     tuple val(meta), path("${prefix}/${prefix}.tsv")                              , emit: tsv
     tuple val(meta), path("${prefix}/detailed_serogroup_info.txt"), optional: true, emit: txt
-    
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
