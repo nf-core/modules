@@ -1,7 +1,7 @@
-def VERSION = '2.2'
 process BAMCMP {
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::bamcmp=2.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0' :
@@ -21,6 +21,7 @@ process BAMCMP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bamcmp \\
         -1 $sample \\
