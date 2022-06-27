@@ -1,9 +1,8 @@
-def VERSION = '1.0.4' // Version information not provided by tool on CLI
-
 process MCRONI {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::mcroni=1.0.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mcroni%3A1.0.4--pyh5e36f6f_0':
@@ -25,6 +24,7 @@ process MCRONI {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
+    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
