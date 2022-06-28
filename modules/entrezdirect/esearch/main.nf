@@ -16,7 +16,7 @@ process ENTREZDIRECT_ESEARCH {
     val spell_check
 
     output:
-    tuple val(meta), path('*.esearch.xml.txt') , emit: result_xml
+    tuple val(meta), path(xml_output) , emit: result_xml
     path "versions.yml"                        , emit: versions
 
     when:
@@ -30,12 +30,13 @@ process ENTREZDIRECT_ESEARCH {
     def max_date = max_date ? "-maxdate ${max_date}" : ''
     def spell_check = spell_check ? "-spell" : ''
     def args = task.ext.args ?: "${sort_by} ${date_type} ${min_date} ${max_date} ${spell_check}"
+    xml_output = "${prefix}.esearch.xml.txt"
     """
     esearch \\
         -db $database \\
         -query $term \\
         ${args} \\
-        > ${prefix}.esearch.xml.txt 2> ${prefix}.esearch.log
+        > ${xml_output} 2> ${prefix}.esearch.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
