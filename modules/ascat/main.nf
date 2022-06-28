@@ -119,18 +119,18 @@ process ASCAT {
     ascat.bc = ascat.aspcf(ascat.bc)
 
     #Plot the segmented data
-    ascat.plotSegmentedData(ascat.bc, img.prefix = paste0("$prefix", "_"))
+    ascat.plotSegmentedData(ascat.bc)
 
     #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
     #If psi and rho are manually set:
     if (!is.null($purity) && !is.null($ploidy)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy, img.prefix = paste0("$prefix", "_"))
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
     } else if(!is.null($purity) && is.null($ploidy)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, img.prefix = paste0("$prefix", "_"))
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
     } else if(!is.null($ploidy) && is.null($purity)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy, img.prefix = paste0("$prefix", "_"))
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
     } else {
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, img.prefix = paste0("$prefix", "_"))
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }
 
     #Extract metrics from ASCAT profiles
@@ -170,8 +170,8 @@ process ASCAT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub > ${prefix}.after_correction_gc_rt_test_tumour.germline.png
-    echo stub > ${prefix}.after_correction_gc_rt_test_tumour.tumour.png
+    echo stub > ${prefix}_after_correction_gc_rt_test_tumour.germline.png
+    echo stub > ${prefix}_after_correction_gc_rt_test_tumour.tumour.png
     echo stub > ${prefix}_before_correction_test_tumour.germline.png
     echo stub > ${prefix}_before_correction_test_tumour.tumour.png
     echo stub > ${prefix}_cnvs.txt
@@ -180,8 +180,8 @@ process ASCAT {
     echo stub > ${prefix}_normal_alleleFrequencies_chr22.txt
     echo stub > ${prefix}_purityploidy.txt
     echo stub > ${prefix}_segments.txt
-    echo stub > ${prefix}_test_tumour.ASPCF.png
-    echo stub > ${prefix}_test_tumour.sunrise.png
+    echo stub > ${prefix}_tumour.ASPCF.png
+    echo stub > ${prefix}_tumour.sunrise.png
     echo stub > ${prefix}_tumour_alleleFrequencies_chr21.txt
     echo stub > ${prefix}_tumour_alleleFrequencies_chr22.txt
     echo stub > ${prefix}_tumour_normalBAF.txt
