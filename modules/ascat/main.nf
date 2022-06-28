@@ -66,8 +66,8 @@ process ASCAT {
     ascat.prepareHTS(
         tumourseqfile = "$input_tumor",
         normalseqfile = "$input_normal",
-        tumourname = paste0("$prefix", "_tumour"),
-        normalname = paste0("$prefix", "_normal"),
+        tumourname = paste0("$prefix", ".tumour"),
+        normalname = paste0("$prefix", ".normal"),
         allelecounter_exe = "alleleCounter",
         alleles.prefix = allele_prefix,
         loci.prefix = loci_prefix,
@@ -87,16 +87,16 @@ process ASCAT {
 
     #Load the data
     ascat.bc = ascat.loadData(
-        Tumor_LogR_file = paste0("$prefix", "_tumour_tumourLogR.txt"),
-        Tumor_BAF_file = paste0("$prefix", "_tumour_tumourBAF.txt"),
-        Germline_LogR_file = paste0("$prefix", "_tumour_normalLogR.txt"),
-        Germline_BAF_file = paste0("$prefix", "_tumour_normalBAF.txt"),
+        Tumor_LogR_file = paste0("$prefix", ".tumour_tumourLogR.txt"),
+        Tumor_BAF_file = paste0("$prefix", ".tumour_tumourBAF.txt"),
+        Germline_LogR_file = paste0("$prefix", ".tumour_normalLogR.txt"),
+        Germline_BAF_file = paste0("$prefix", ".tumour_normalBAF.txt"),
         genomeVersion = "$genomeVersion",
         gender = "$gender"
     )
 
     #Plot the raw data
-    ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_before_correction_"))
+    ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".before_correction."))
 
     # optional LogRCorrection
     if("$gc_input" != "NULL") {
@@ -106,12 +106,12 @@ process ASCAT {
             rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)
             #Plot raw data after correction
-            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_after_correction_gc_rt_"))
+            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".after_correction_gc_rt."))
         }
         else {
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = $rt_input)
             #Plot raw data after correction
-            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_after_correction_gc_"))
+            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".after_correction_gc."))
         }
     }
 
@@ -137,11 +137,11 @@ process ASCAT {
     QC = ascat.metrics(ascat.bc,ascat.output)
 
     #Write out segmented regions (including regions with one copy of each allele)
-    write.table(ascat.output[["segments"]], file=paste0("$prefix", "_segments.txt"), sep="\t", quote=F, row.names=F)
+    write.table(ascat.output[["segments"]], file=paste0("$prefix", ".segments.txt"), sep="\t", quote=F, row.names=F)
 
     #Write out CNVs in bed format
     cnvs=ascat.output[["segments"]][2:6]
-    write.table(cnvs, file=paste0("$prefix","_cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(cnvs, file=paste0("$prefix",".cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     #Write out purity and ploidy info
     summary <- tryCatch({
@@ -152,9 +152,9 @@ process ASCAT {
         }
     )
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
-    write.table(summary, file=paste0("$prefix","_purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(summary, file=paste0("$prefix",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
-    write.table(QC, file=paste0("$prefix", "_metrics.txt"), sep="\t", quote=F, row.names=F)
+    write.table(QC, file=paste0("$prefix", ".metrics.txt"), sep="\t", quote=F, row.names=F)
 
     # version export
     f <- file("versions.yml","w")
@@ -170,24 +170,24 @@ process ASCAT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub > ${prefix}_after_correction_gc_rt_test_tumour.germline.png
-    echo stub > ${prefix}_after_correction_gc_rt_test_tumour.tumour.png
-    echo stub > ${prefix}_before_correction_test_tumour.germline.png
-    echo stub > ${prefix}_before_correction_test_tumour.tumour.png
-    echo stub > ${prefix}_cnvs.txt
-    echo stub > ${prefix}_metrics.txt
-    echo stub > ${prefix}_normal_alleleFrequencies_chr21.txt
-    echo stub > ${prefix}_normal_alleleFrequencies_chr22.txt
-    echo stub > ${prefix}_purityploidy.txt
-    echo stub > ${prefix}_segments.txt
-    echo stub > ${prefix}_tumour.ASPCF.png
-    echo stub > ${prefix}_tumour.sunrise.png
-    echo stub > ${prefix}_tumour_alleleFrequencies_chr21.txt
-    echo stub > ${prefix}_tumour_alleleFrequencies_chr22.txt
-    echo stub > ${prefix}_tumour_normalBAF.txt
-    echo stub > ${prefix}_tumour_normalLogR.txt
-    echo stub > ${prefix}_tumour_tumourBAF.txt
-    echo stub > ${prefix}_tumour_tumourLogR.txt
+    echo stub > ${prefix}.after_correction.gc_rt.test.tumour.germline.png
+    echo stub > ${prefix}.after_correction.gc_rt.test.tumour.tumour.png
+    echo stub > ${prefix}.before_correction.test.tumour.germline.png
+    echo stub > ${prefix}.before_correction.test.tumour.tumour.png
+    echo stub > ${prefix}.cnvs.txt
+    echo stub > ${prefix}.metrics.txt
+    echo stub > ${prefix}.normal_alleleFrequencies_chr21.txt
+    echo stub > ${prefix}.normal_alleleFrequencies_chr22.txt
+    echo stub > ${prefix}.purityploidy.txt
+    echo stub > ${prefix}.segments.txt
+    echo stub > ${prefix}.tumour.ASPCF.png
+    echo stub > ${prefix}.tumour.sunrise.png
+    echo stub > ${prefix}.tumour_alleleFrequencies_chr21.txt
+    echo stub > ${prefix}.tumour_alleleFrequencies_chr22.txt
+    echo stub > ${prefix}.tumour_normalBAF.txt
+    echo stub > ${prefix}.tumour_normalLogR.txt
+    echo stub > ${prefix}.tumour_tumourBAF.txt
+    echo stub > ${prefix}.tumour_tumourLogR.txt
 
     echo "${task.process}:" > versions.yml
     echo ' alleleCounter: 4.3.0' >> versions.yml
