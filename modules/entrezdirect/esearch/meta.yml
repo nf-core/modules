@@ -31,32 +31,6 @@ input:
       description: |
         Entrez text query. All special characters must be URL encoded.
         Spaces may be replaced by '+' signs.
-  - sort_by:
-      type: value
-      description: |
-        Result presentation order. Specifies the method used to sort
-        UIDs in the ESearch output. The available values vary by database.
-        Example values are 'relevance' and ‘name’ for Gene and 'first+author'
-        and 'pub+date' for PubMed.
-  - date_type:
-      type: value
-      description: |
-        Date field abbreviation. The allowed values vary between
-        Entrez databases, but common values are 'mdat' (modification date),
-        'pdat' (publication date) and 'edat' (Entrez date).
-  - min_date:
-      type: value
-      description: |
-        Start of date range. Formats = YYYY/MM/DD, YYYY, YYYY/MM.
-        Should be specicified along with max_date.
-  - max_date:
-      type: value
-      description: |
-        End of date range. Formats = YYYY/MM/DD, YYYY, YYYY/MM.
-        Should be specicified along with min_date.
-  - spell_check:
-      type: value
-      description: Correct misspellings in query, boolean.
 
 output:
   - meta:
@@ -70,7 +44,7 @@ output:
       pattern: "versions.yml"
   - result_xml:
       type: value
-      description: Query result text file in XML format
+      description: Query result text in XML format
 
 authors:
   - "@alxndrdiaz"
