@@ -164,6 +164,7 @@ process ASCAT {
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
+
     """
 
     stub:
