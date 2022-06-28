@@ -1,10 +1,9 @@
-def VERSION = '1.6.21'
-
 process VCF2MAF {
 
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::vcf2maf=1.6.21 bioconda::ensembl-vep=106.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-b6fc09bed47d0dc4d8384ce9e04af5806f2cc91b:305092c6f8420acd17377d2cc8b96e1c3ccb7d26-0':
@@ -26,9 +25,9 @@ process VCF2MAF {
     def args          = task.ext.args   ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def vep_cache_cmd = vep_cache       ? "--vep-data $vep_cache" : ""
-
     // If VEP is present, it will find it and add it to commands.
     // If VEP is not present they will be blank
+    def VERSION = '1.6.21' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     if command -v vep &> /dev/null
     then

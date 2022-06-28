@@ -1,9 +1,8 @@
-def VERSION = '0.05'
-
 process ADAPTERREMOVALFIXPREFIX {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::adapterremovalfixprefix=0.0.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
@@ -23,7 +22,7 @@ process ADAPTERREMOVALFIXPREFIX {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$fastq" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
+    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     AdapterRemovalFixPrefix \\
         $fastq \\
