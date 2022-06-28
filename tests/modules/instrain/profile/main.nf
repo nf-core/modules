@@ -2,17 +2,17 @@
 
 nextflow.enable.dsl = 2
 
-include { INSTRAIN_PROFILE } from '../../../modules/instrain/profile/main.nf'
+include { INSTRAIN_PROFILE } from '../../../../modules/instrain/profile/main.nf'
 
 workflow test_instrain_profile {
     
     input = [
         [ id:'test', single_end:true ], // meta map
         [
-            file(params.test_data['bacteroides_fragilis']['illumina']['test1_paired_end_sorted_bam'], checkIfExists: true)
+            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
         ]
     ]
-    genome_fasta = file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+    genome_fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    INSTRAIN_PROFILE ( input )
+    INSTRAIN_PROFILE ( input , genome_fasta , [] , [] )
 }
