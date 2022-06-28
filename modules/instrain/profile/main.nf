@@ -40,7 +40,7 @@ process INSTRAIN_PROFILE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        instrain: \$(echo \$(inStrain profile --version 2>&1) | sed 's/^.*inStrain //; s/Using.*\$//' ))
+        instrain: \$(echo \$(inStrain profile --version 2>&1) | awk 'NF{ print \$NF }')
     END_VERSIONS
     """
 }
