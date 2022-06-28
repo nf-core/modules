@@ -1,0 +1,7 @@
+- name: "instrain"
+  command: nextflow run ./tests/modules/instrain/profile -entry test_instrain -c ./tests/config/nextflow.config -c ./tests/modules/instrain/profile/nextflow.config
+  tags:
+    - instrain
+    - instrain/profile
+  files:
+    - path: output/instrain/versions.yml
