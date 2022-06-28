@@ -4,8 +4,8 @@
     - entrezdirect/esearch
     - entrezdirect
   files:
-    - path: output/test1_pubmed_entrezdirect_esearch.txt
-      md5sum: 40190c565c23974cc184a82ec092b976
+    - path: output/test_pubmed.esearch.xml.txt
+      md5sum: 4ec2e1134c1d790831b5c74c5b91ce90
 
 - name: entrezdirect esearch test_entrezdirect_esearch_genome
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -13,8 +13,8 @@
     - entrezdirect/esearch
     - entrezdirect
   files:
-    - path: output/test2_genome_entrezdirect_esearch.txt
-      md5sum: ad37cfd5bd8452f0362fcff18826154f
+    - path: output/test_genome.esearch.xml.txt
+      md5sum: f2aefcf99e63bd03a197d8cc8cf8ead1
 
 - name: entrezdirect esearch test_entrezdirect_esearch_assembly
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -22,5 +22,5 @@
     - entrezdirect/esearch
     - entrezdirect
   files:
-    - path: output/test3_assembly_entrezdirect_esearch.txt
-      md5sum: a50322794de7e884408f706108ddf71c
+    - path: output/test_assembly.esearch.xml.txt
+      md5sum: dd1b6b943f6adc01dfaaf184f910d289
