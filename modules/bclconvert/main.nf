@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag "$meta.id"
+    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
     if (params.enable_conda) {
