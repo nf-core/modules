@@ -17,12 +17,14 @@ process ASCAT {
     path(rt_file)   // optional
 
     output:
-    tuple val(meta), path("*png"),                             emit: png
+    tuple val(meta), path("*alleleFrequencies_chr*.txt"),      emit: allelefreqs
+    tuple val(meta), path("*BAF.txt"),                         emit: bafs
     tuple val(meta), path("*cnvs.txt"),                        emit: cnvs
+    tuple val(meta), path("*LogR.txt"),                        emit: logrs
     tuple val(meta), path("*metrics.txt"),                     emit: metrics
+    tuple val(meta), path("*png"),                             emit: png
     tuple val(meta), path("*purityploidy.txt"),                emit: purityploidy
     tuple val(meta), path("*segments.txt"),                    emit: segments
-    tuple val(meta), path("*alleleFrequencies_chr*.txt"),      emit: allelefreqs
     path "versions.yml",                                       emit: versions
 
     when:
@@ -64,8 +66,8 @@ process ASCAT {
     ascat.prepareHTS(
         tumourseqfile = "$input_tumor",
         normalseqfile = "$input_normal",
-        tumourname = "Tumour",
-        normalname = "Normal",
+        tumourname = paste0("$prefix", "_tumour"),
+        normalname = paste0("$prefix", "_normal"),
         allelecounter_exe = "alleleCounter",
         alleles.prefix = allele_prefix,
         loci.prefix = loci_prefix,
@@ -85,16 +87,16 @@ process ASCAT {
 
     #Load the data
     ascat.bc = ascat.loadData(
-        Tumor_LogR_file = "Tumour_tumourLogR.txt",
-        Tumor_BAF_file = "Tumour_normalBAF.txt",
-        Germline_LogR_file = "Tumour_normalLogR.txt",
-        Germline_BAF_file = "Tumour_normalBAF.txt",
+        Tumor_LogR_file = paste0("$prefix", "_tumour_tumourLogR.txt"),
+        Tumor_BAF_file = paste0("$prefix", "_tumour_tumourBAF.txt"),
+        Germline_LogR_file = paste0("$prefix", "_tumour_normalLogR.txt"),
+        Germline_BAF_file = paste0("$prefix", "_tumour_normalBAF.txt"),
         genomeVersion = "$genomeVersion",
         gender = "$gender"
     )
 
     #Plot the raw data
-    ascat.plotRawData(ascat.bc, img.prefix = "Before_correction_")
+    ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_before_correction_"))
 
     # optional LogRCorrection
     if("$gc_input" != "NULL") {
@@ -104,12 +106,12 @@ process ASCAT {
             rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)
             #Plot raw data after correction
-            ascat.plotRawData(ascat.bc, img.prefix = "After_correction_GC_")
+            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_after_correction_gc_rt_"))
         }
         else {
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = $rt_input)
             #Plot raw data after correction
-            ascat.plotRawData(ascat.bc, img.prefix = "After_correction_GC_RT_")
+            ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", "_after_correction_gc_"))
         }
     }
 
@@ -117,29 +119,29 @@ process ASCAT {
     ascat.bc = ascat.aspcf(ascat.bc)
 
     #Plot the segmented data
-    ascat.plotSegmentedData(ascat.bc)
+    ascat.plotSegmentedData(ascat.bc, img.prefix = paste0("$prefix", "_"))
 
     #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
     #If psi and rho are manually set:
     if (!is.null($purity) && !is.null($ploidy)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy, img.prefix = paste0("$prefix", "_"))
     } else if(!is.null($purity) && is.null($ploidy)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, img.prefix = paste0("$prefix", "_"))
     } else if(!is.null($ploidy) && is.null($purity)){
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, psi_manual=$ploidy, img.prefix = paste0("$prefix", "_"))
     } else {
-        ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma=1, img.prefix = paste0("$prefix", "_"))
     }
 
     #Extract metrics from ASCAT profiles
     QC = ascat.metrics(ascat.bc,ascat.output)
 
     #Write out segmented regions (including regions with one copy of each allele)
-    write.table(ascat.output[["segments"]], file=paste0("$prefix", ".segments.txt"), sep="\t", quote=F, row.names=F)
+    write.table(ascat.output[["segments"]], file=paste0("$prefix", "_segments.txt"), sep="\t", quote=F, row.names=F)
 
     #Write out CNVs in bed format
     cnvs=ascat.output[["segments"]][2:6]
-    write.table(cnvs, file=paste0("$prefix",".cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(cnvs, file=paste0("$prefix","_cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     #Write out purity and ploidy info
     summary <- tryCatch({
@@ -150,9 +152,9 @@ process ASCAT {
         }
     )
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
-    write.table(summary, file=paste0("$prefix",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
+    write.table(summary, file=paste0("$prefix","_purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
-    write.table(QC, file=paste0("$prefix", ".metrics.txt"), sep="\t", quote=F, row.names=F)
+    write.table(QC, file=paste0("$prefix", "_metrics.txt"), sep="\t", quote=F, row.names=F)
 
     # version export
     f <- file("versions.yml","w")
@@ -162,29 +164,29 @@ process ASCAT {
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
-
     """
-
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub > ${prefix}.cnvs.txt
-    echo stub > ${prefix}.metrics.txt
-    echo stub > ${prefix}.purityploidy.txt
-    echo stub > ${prefix}.segments.txt
-    echo stub > Tumour.ASCATprofile.png
-    echo stub > Tumour.ASPCF.png
-    echo stub > Before_correction_Tumour.germline.png
-    echo stub > After_correction_GC_Tumour.germline.png
-    echo stub > Tumour.rawprofile.png
-    echo stub > Tumour.sunrise.png
-    echo stub > Before_correction_Tumour.tumour.png
-    echo stub > After_correction_GC_Tumour.tumour.png
-    echo stub > Tumour_alleleFrequencies_chr21.txt
-    echo stub > Tumour_alleleFrequencies_chr22.txt
-    echo stub > Normal_alleleFrequencies_chr21.txt
-    echo stub > Normal_alleleFrequencies_chr22.txt
+    echo stub > ${prefix}.after_correction_gc_rt_test_tumour.germline.png
+    echo stub > ${prefix}.after_correction_gc_rt_test_tumour.tumour.png
+    echo stub > ${prefix}_before_correction_test_tumour.germline.png
+    echo stub > ${prefix}_before_correction_test_tumour.tumour.png
+    echo stub > ${prefix}_cnvs.txt
+    echo stub > ${prefix}_metrics.txt
+    echo stub > ${prefix}_normal_alleleFrequencies_chr21.txt
+    echo stub > ${prefix}_normal_alleleFrequencies_chr22.txt
+    echo stub > ${prefix}_purityploidy.txt
+    echo stub > ${prefix}_segments.txt
+    echo stub > ${prefix}_test_tumour.ASPCF.png
+    echo stub > ${prefix}_test_tumour.sunrise.png
+    echo stub > ${prefix}_tumour_alleleFrequencies_chr21.txt
+    echo stub > ${prefix}_tumour_alleleFrequencies_chr22.txt
+    echo stub > ${prefix}_tumour_normalBAF.txt
+    echo stub > ${prefix}_tumour_normalLogR.txt
+    echo stub > ${prefix}_tumour_tumourBAF.txt
+    echo stub > ${prefix}_tumour_tumourLogR.txt
 
     echo "${task.process}:" > versions.yml
     echo ' alleleCounter: 4.3.0' >> versions.yml
