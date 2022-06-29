@@ -6,13 +6,12 @@
   files:
     - path: output/entrezdirect/test_pubmed.esearch.xml.txt
       contains:
-        - '<ENTREZ_DIRECT>'
-        - '  <Db>pubmed</Db>'
-        - '  <WebEnv>'
-        - '  <QueryKey>'
-        - '  <Count>'
-        - '  <Step>'
-        - '</ENTREZ_DIRECT>'
+             - '  <Db>pubmed</Db>'
+             - '  <WebEnv>'
+             - '  <QueryKey>'
+             - '  <Count>'
+             - '  <Step>'
+             - '</ENTREZ_DIRECT>'
 
 - name: entrezdirect esearch test_entrezdirect_esearch_genome
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -22,13 +21,13 @@
   files:
     - path: output/entrezdirect/test_genome.esearch.xml.txt
       contains:
-        - '<ENTREZ_DIRECT>'
-        - '  <Db>genome</Db>'
-        - '  <WebEnv>'
-        - '  <QueryKey>'
-        - '  <Count>'
-        - '  <Step>'
-        - '</ENTREZ_DIRECT>'
+             - '<ENTREZ_DIRECT>'
+             - '  <Db>genome</Db>'
+             - '  <WebEnv>'
+             - '  <QueryKey>'
+             - '  <Count>'
+             - '  <Step>'
+             - '</ENTREZ_DIRECT>'
 
 - name: entrezdirect esearch test_entrezdirect_esearch_assembly
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -38,10 +37,10 @@
   files:
     - path: output/entrezdirect/test_assembly.esearch.xml.txt
       contains:
-        - '<ENTREZ_DIRECT>'
-        - '  <Db>assembly</Db>'
-        - '  <WebEnv>'
-        - '  <QueryKey>'
-        - '  <Count>'
-        - '  <Step>'
-        - '</ENTREZ_DIRECT>'
+             - '<ENTREZ_DIRECT>'
+             - '  <Db>assembly</Db>'
+             - '  <WebEnv>'
+             - '  <QueryKey>'
+             - '  <Count>'
+             - '  <Step>'
+             - '</ENTREZ_DIRECT>'
