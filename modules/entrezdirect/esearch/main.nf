@@ -16,7 +16,7 @@ process ENTREZDIRECT_ESEARCH {
     val spell_check
 
     output:
-    tuple val(meta), path(xml_output) , emit: result_xml
+    tuple val(meta), path(xml_output)          , emit: result_xml
     path "versions.yml"                        , emit: versions
 
     when:
