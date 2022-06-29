@@ -3,7 +3,7 @@
 # Here we check the that test.assembly_info.txt contains at least one contig
 
 - name: flye test_flye_pacbio_raw
-  command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config -stub-run
   tags:
     - flye
   files:
@@ -45,7 +45,7 @@
       md5sum: 54b576cb6d4d27656878a7fd3657bde9
 
 - name: flye test_flye_nano_raw
-  command: nextflow run ./tests/modules/flye -entry test_flye_nano_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
+  command: nextflow run ./tests/modules/flye -entry test_flye_nano_raw -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config -stub-run
   tags:
     - flye
   files:

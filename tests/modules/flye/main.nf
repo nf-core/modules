@@ -8,7 +8,7 @@ workflow test_flye_pacbio_raw {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
     ]
     mode = "--pacbio-raw"
 
@@ -41,7 +41,7 @@ workflow test_flye_nano_raw {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true)
+        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
     ]
     mode = "--nano-raw"
 
