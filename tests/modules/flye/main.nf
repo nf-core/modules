@@ -3,19 +3,16 @@
 nextflow.enable.dsl = 2
 
 include { FLYE } from '../../../modules/flye/main.nf'
-include { FLYE as FLYE_LOW_MEM } from '../../../modules/flye/main.nf'
 
 workflow test_flye_pacbio_raw {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
-            .splitFastq( by: 100, file:true, decompress: true, compress: true )
-            .first() // splitting fastq as the tests were running out of memory
+        file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
     mode = "--pacbio-raw"
 
-    FLYE_LOW_MEM ( input, mode )
+    FLYE ( input, mode )
 }
 
 workflow test_flye_pacbio_corr {
@@ -44,13 +41,11 @@ workflow test_flye_nano_raw {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
-            .splitFastq( by: 100, file:true, decompress: true, compress: true )
-            .first() // splitting fastq as the tests were running out of memory
+        file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true)
     ]
     mode = "--nano-raw"
 
-    FLYE_LOW_MEM ( input, mode )
+    FLYE ( input, mode )
 }
 
 workflow test_flye_nano_corr {
