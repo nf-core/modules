@@ -14,7 +14,6 @@
       contains: ["contig_1"]
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
-      md5sum: 54b576cb6d4d27656878a7fd3657bde9
 
 - name: flye test_flye_pacbio_corr
   command: nextflow run ./tests/modules/flye -entry test_flye_pacbio_corr -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
@@ -56,7 +55,6 @@
       contains: ["contig_1"]
     - path: output/flye/test.flye.log
     - path: output/flye/test.params.json
-      md5sum: 54b576cb6d4d27656878a7fd3657bde9
 
 - name: flye test_flye_nano_corr
   command: nextflow run ./tests/modules/flye -entry test_flye_nano_corr -c ./tests/config/nextflow.config  -c ./tests/modules/flye/nextflow.config
