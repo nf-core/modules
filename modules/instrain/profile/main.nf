@@ -25,7 +25,7 @@ process INSTRAIN_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def genes_args = genes_fasta != [] ? "-g ${genes_fasta}": ''
+    def genes_args = genes_fasta ? "-g ${genes_fasta}": ''
     def stb_args = stb_file != [] ? "-s ${stb_file}": ''
     """
     inStrain \\
