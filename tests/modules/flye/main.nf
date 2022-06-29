@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { FLYE } from '../../../modules/flye/main.nf'
+include { FLYE_LOW_MEM } from '../../../modules/flye/main.nf'
 
 workflow test_flye_pacbio_raw {
 
@@ -14,7 +15,7 @@ workflow test_flye_pacbio_raw {
     ]
     mode = "--pacbio-raw"
 
-    FLYE ( input, mode )
+    FLYE_LOW_MEM ( input, mode )
 }
 
 workflow test_flye_pacbio_corr {
@@ -49,7 +50,7 @@ workflow test_flye_nano_raw {
     ]
     mode = "--nano-raw"
 
-    FLYE ( input, mode )
+    FLYE_LOW_MEM ( input, mode )
 }
 
 workflow test_flye_nano_corr {
