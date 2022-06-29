@@ -1,4 +1,4 @@
-process FASTK_FASTK {
+process FASTK_MERGE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -9,7 +9,7 @@ process FASTK_FASTK {
     container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0'
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(hist), path(ktab), path(prof)
 
     output:
     tuple val(meta), path("*.hist")                      , emit: hist
@@ -25,11 +25,12 @@ process FASTK_FASTK {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    FastK \\
+    ls -la $hist $ktab $prof
+    Fastmerge \\
         $args \\
         -T$task.cpus \\
-        -N${prefix}_fk \\
-        $reads
+        ${prefix} \\
+        $hist
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
