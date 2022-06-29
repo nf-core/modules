@@ -32,7 +32,7 @@ process INSTRAIN_PROFILE {
         profile \\
         $bam \\
         $genome_fasta \\
-        -o ${meta.id}.IS \\
+        -o ${prefix}.IS \\
         -p $task.cpus \\
         $genes_args \\
         $stb_args \\
