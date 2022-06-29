@@ -1,8 +1,6 @@
 process INSTRAIN_PROFILE {
     tag "$meta.id"
     label 'process_high'
-    label 'error_retry'
-    label 'process_long'
 
     conda (params.enable_conda ? "bioconda::instrain=1.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
