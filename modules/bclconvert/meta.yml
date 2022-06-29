@@ -12,6 +12,10 @@ tools:
       licence: "ILLUMINA"
 
 input:
+  - meta:
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - samplesheet:
       type: file
       description: "Input samplesheet"
@@ -27,8 +31,20 @@ output:
       pattern: "versions.yml"
   - fastq:
       type: file
-      description: Demultiplexed FASTQ files
-      pattern: "*.{fastq.gz}"
+      description: Demultiplexed sample FASTQ files
+      pattern: "**_S*_L00?_R?_00?.fastq.gz"
+  - fastq_idx:
+      type: file
+      description: Optional demultiplexed index FASTQ files
+      pattern: "**_S*_L00?_I?_00?.fastq.gz"
+  - undetermined:
+      type: file
+      description: Optional undetermined sample FASTQ files
+      pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
+  - undetermined_idx:
+      type: file
+      description: Optional undetermined index FASTQ files
+      pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
   - reports:
       type: file
       description: Demultiplexing Reports
@@ -40,6 +56,6 @@ output:
   - interop:
       type: file
       description: Interop files
-      pattern: "Interop/*.{bin}"
+      pattern: "*.{bin}"
 authors:
   - "@matthdsm"

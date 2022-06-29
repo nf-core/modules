@@ -1,52 +1,44 @@
 - name: bclconvert test_bclconvert
-  command: nextflow run tests/modules/bclconvert -entry test_bclconvert -c tests/config/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/bclconvert -entry test_bclconvert -c ./tests/config/nextflow.config  -c ./tests/modules/bclconvert/nextflow.config
   tags:
     - bclconvert
   files:
-    - path: output/bclconvert/InterOp/InterOp.bin
-      md5sum: d3dea0bb4ab1c8754af324f40b001481
     - path: output/bclconvert/Logs/Errors.log
-      md5sum: 334645f09074b2597a692e395b716a9c
     - path: output/bclconvert/Logs/FastqComplete.txt
-      md5sum: a4c4c6ce2d0de67d3b7ac7d1fcb512e4
     - path: output/bclconvert/Logs/Info.log
-      md5sum: d238822d379f2277cac950ca986cb660
     - path: output/bclconvert/Logs/Warnings.log
-      md5sum: aeefd2d631817e170f88f25ecaaf4664
     - path: output/bclconvert/Reports/Adapter_Metrics.csv
-      md5sum: af62e9c7b44940cfd8ea11064a1f42ae
+      md5sum: 989240b8840b2169ac1061f952c90f6c
     - path: output/bclconvert/Reports/Demultiplex_Stats.csv
-      md5sum: d11313931fcaabb5ce159462ad3dd1da
+      md5sum: 93949a8cd96f907d83e0808c1ec2a04b
     - path: output/bclconvert/Reports/IndexMetricsOut.bin
-      md5sum: 6bcee11c8145e3b1059ceaa91d2f5be7
+      md5sum: 9e688c58a5487b8eaf69c9e1005ad0bf
     - path: output/bclconvert/Reports/Index_Hopping_Counts.csv
-      md5sum: 697e40e0c0d48b4bd25f138ef60b0bde
+      md5sum: 1059369e375fd8f8423c0f6c934be978
     - path: output/bclconvert/Reports/Quality_Metrics.csv
-      md5sum: 3902fd38f6b01f1ce0f0e8724238f8f2
+      md5sum: 6614accb1bb414fe312b17b81f5521f7
     - path: output/bclconvert/Reports/RunInfo.xml
-      md5sum: 5bef7c7e76360231b0c4afdfc915fd44
+      md5sum: 03038959f4dd181c86bc97ae71fe270a
     - path: output/bclconvert/Reports/SampleSheet.csv
-      md5sum: c579e7d2c9c917c4cfb875a0373c0936
+      md5sum: dc0dffd39541dd6cc5b4801d768a8d2b
     - path: output/bclconvert/Reports/Top_Unknown_Barcodes.csv
-      md5sum: 39a5e7f6d21c12d6051afdc8261b6330
+      md5sum: 2e2faba761137f228e56bd3428453ccc
     - path: output/bclconvert/Reports/fastq_list.csv
-      md5sum: 32c51ab10e013fd547928de57361ffcb
-    - path: output/bclconvert/sample1_S1_L001_R1_001.fastq.gz
-      md5sum: 9b831a39755935333f86f167527a094d
-    - path: output/bclconvert/sample1_S1_L001_R2_001.fastq.gz
-      md5sum: 082f4f767b7619f409ca7e752ef482bf
-    - path: output/bclconvert/sample1_S1_L002_R1_001.fastq.gz
-      md5sum: 837764c89db93dfb53cd663c4f26f3d7
-    - path: output/bclconvert/sample1_S1_L002_R2_001.fastq.gz
-      md5sum: 1a42cf6ba0bb8fc7770f278e6d1ab676
-    - path: output/bclconvert/sample2_S2_L001_R1_001.fastq.gz
-      md5sum: 475bc426b7cc48d0551d40e31457dc78
-    - path: output/bclconvert/sample2_S2_L001_R2_001.fastq.gz
-      md5sum: f670ccd7d9352e0e67fe1c1232429d94
-    - path: output/bclconvert/sample2_S2_L002_R1_001.fastq.gz
-      md5sum: ebd5ff6fa5603e7d704b5a10598de58c
-    - path: output/bclconvert/sample2_S2_L002_R2_001.fastq.gz
-      md5sum: 2f83b460f52620d2548c7ef8845b31d7
-    - path: output/stub/SampleSheet.csv
-      md5sum: c579e7d2c9c917c4cfb875a0373c0936
-    - path: output/bclconvert/versions.yml
+      md5sum: 05bc84f51840f5754cfb8381b36f2cb0
+    - path: output/bclconvert/Sample1_S1_L001_R1_001.fastq.gz
+      md5sum: 57d2f3b389656245f923351d3e3d2d65
+    - path: output/bclconvert/Undetermined_S0_L001_R1_001.fastq.gz
+      md5sum: a4745abc5e7fdb89cc6df3069f3c6e69
+    - path: output/bclconvert/flowcell/InterOp/ControlMetricsOut.bin
+      md5sum: 6d77b38d0793a6e1ce1e85706e488953
+    - path: output/bclconvert/flowcell/InterOp/CorrectedIntMetricsOut.bin
+      md5sum: 2bbf84d3be72734addaa2fe794711434
+    - path: output/bclconvert/flowcell/InterOp/ErrorMetricsOut.bin
+      md5sum: 38c88def138e9bb832539911affdb286
+    - path: output/bclconvert/flowcell/InterOp/ExtractionMetricsOut.bin
+      md5sum: 7497c3178837eea8f09350b5cd252e99
+    - path: output/bclconvert/flowcell/InterOp/IndexMetricsOut.bin
+    - path: output/bclconvert/flowcell/InterOp/QMetricsOut.bin
+      md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
+    - path: output/bclconvert/flowcell/InterOp/TileMetricsOut.bin
+      md5sum: 83891751ec1c91a425a524b476b6ca3c
