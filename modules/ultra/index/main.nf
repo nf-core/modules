@@ -1,5 +1,5 @@
 process ULTRA_INDEX {
-    tag '$fasta'
+    tag "$gtf"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4" : null)
@@ -20,7 +20,7 @@ process ULTRA_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
     uLTRA \\
         index \\
