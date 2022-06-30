@@ -6,7 +6,6 @@ include { GUNZIP        } from '../../../../modules/gunzip/main.nf'
 include { GFFREAD       } from '../../../../modules/gffread/main.nf'
 include { ULTRA_INDEX   } from '../../../../modules/ultra/index/main.nf'
 include { ULTRA_ALIGN   } from '../../../../modules/ultra/align/main.nf'
-include { SAMTOOLS_SORT } from '../../../../modules/samtools/sort/main.nf'
 
 workflow test_ultra_align {
 
@@ -22,5 +21,4 @@ workflow test_ultra_align {
     GFFREAD ( gtf )
     ULTRA_INDEX ( genome, GFFREAD.out.gtf )
     ULTRA_ALIGN ( GUNZIP.out.gunzip, genome, ULTRA_INDEX.out.index )
-    SAMTOOLS_SORT ( ULTRA_ALIGN.out.sam )
 }
