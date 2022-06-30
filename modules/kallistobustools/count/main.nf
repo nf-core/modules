@@ -15,7 +15,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2c
     val   use_t1c
     val   use_t2c
-    val     sc_workflow
+    val   sc_workflow
     val   technology
 
     output:
