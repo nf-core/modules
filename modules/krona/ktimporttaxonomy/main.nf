@@ -26,7 +26,7 @@ process KRONA_KTIMPORTTAXONOMY {
     ktImportTaxonomy \\
         $args \\
         -tax taxonomy/ \\
-        "$report"
+        $report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
