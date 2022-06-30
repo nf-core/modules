@@ -12,7 +12,7 @@ tools:
       homepage: "https://github.com/fenderglass/Flye"
       documentation: "https://github.com/fenderglass/Flye/blob/flye/docs/USAGE.md"
       tool_dev_url: "https://github.com/fenderglass/Flye"
-      doi: "doi:s41592-020-00971-x"
+      doi: "10.1038/s41592-020-00971-x"
       licence: "['BSD-3-clause']"
 
 input:
@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test' ]
   - reads:
       type: file
-      description: Input file in FASTA/FASTQ format.
+      description: Input reads from Oxford Nanopore or PacBio data in FASTA/FASTQ format.
       pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
 
 output:
@@ -42,15 +42,15 @@ output:
       pattern: "*.fasta.gz"
   - gfa:
       type: file
-      description: Repeat graph
+      description: Repeat graph in gfa format
       pattern: "*.gfa.gz"
   - gv:
       type: file
-      description: Repeat graph
+      description: Repeat graph in gv format
       pattern: "*.gv.gz"
   - txt:
       type: file
-      description: Extra contig information
+      description: Extra information and statistics about resulting contigs
       pattern: "*.txt"
   - log:
       type: file

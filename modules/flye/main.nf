@@ -35,6 +35,7 @@ process FLYE {
     mv assembly_info.txt ${prefix}.assembly_info.txt
     mv flye.log ${prefix}.flye.log
     mv params.json ${prefix}.params.json
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         flye: \$(echo \$(flye --version | sed 's/-b1768//' ))
