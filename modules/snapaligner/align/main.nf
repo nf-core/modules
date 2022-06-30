@@ -25,7 +25,7 @@ process SNAPALIGNER_ALIGN {
     def subcmd = meta.single_end ? "single" : "paired"
 
     """
-    INDEX=`dirname $(find -L ./ -name "OverflowTable*")`
+    INDEX=`dirname \$(find -L ./ -name "OverflowTable*")`
     [ -z "\$INDEX" ] && echo "Snap index files not found" 1>&2 && exit 1
 
     snap-aligner ${subcmd} \\
