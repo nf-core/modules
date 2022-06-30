@@ -13,7 +13,9 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2g
     path  t1c
     path  t2c
-    val   workflow_mode
+    val   use_t1c
+    val   use_t2c
+    val     sc_workflow
     val   technology
 
     output:
@@ -26,8 +28,8 @@ process KALLISTOBUSTOOLS_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def cdna     = t1c ? "-c1 $t1c" : ''
-    def introns  = t2c ? "-c2 $t2c" : ''
+    def cdna     = use_t1c ? "-c1 $t1c" : ''
+    def introns  = use_t2c ? "-c2 $t2c" : ''
     """
     kb \\
         count \\
@@ -36,12 +38,11 @@ process KALLISTOBUSTOOLS_COUNT {
         -g $t2g \\
         $cdna \\
         $introns \\
-        --workflow $workflow_mode \\
+        --workflow $sc_workflow \\
         -x $technology \\
         $args \\
         -o ${prefix}.count \\
-        ${reads[0]} \\
-        ${reads[1]}
+        ${reads.join( " " )}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
