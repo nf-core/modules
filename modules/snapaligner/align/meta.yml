@@ -43,6 +43,9 @@ output:
       type: file
       description: Aligned BAM file
       pattern: "*.{bam}"
-
+  - bai:
+      type: file
+      description: Optional aligned BAM file index
+      pattern: "*.{bai}"
 authors:
   - "@matthdsm"

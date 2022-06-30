@@ -1,9 +1,8 @@
-def VERSION = '0.3.2' // Version information not provided by tool on CLI
-
 process ICHORCNA_RUN {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::r-ichorcna=0.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
@@ -23,14 +22,14 @@ process ICHORCNA_RUN {
     path "versions.yml"                   , emit: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def pon = panel_of_normals ? "--normalPanel ${panel_of_normals}" : ''
     def centro = centromere ? "--centromere ${centromere}" : ''
-
+    def VERSION = '0.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     runIchorCNA.R --id ${prefix} \\
         $args \\

@@ -1,9 +1,8 @@
-def VERSION = '2.8' // Version information not provided by tool on CLI
-
 process KRONA_KTIMPORTTAXONOMY {
     tag "${meta.id}"
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::krona=2.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.8--pl5262hdfd78af_2' :
@@ -22,6 +21,7 @@ process KRONA_KTIMPORTTAXONOMY {
 
     script:
     def args = task.ext.args ?: ''
+    def VERSION = '2.8' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     ktImportTaxonomy \\
         $args \\
