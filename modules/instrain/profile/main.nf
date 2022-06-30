@@ -14,7 +14,7 @@ process INSTRAIN_PROFILE {
     path stb_file
 
     output:
-    tuple val(meta), path("*.IS/") , emit: profile
+    tuple val(meta), path("*.IS") , emit: profile
     path "versions.yml"           , emit: versions
 
     when:
