@@ -60,7 +60,7 @@ process FLYE {
     echo stub > ${prefix}.flye.log
     echo stub > ${prefix}.params.json
 
-    echo 'FLYE:' > versions.yml
+    echo "${task.process}:"  > versions.yml
     echo ' flye: 2.9' >> versions.yml
     """
 }
