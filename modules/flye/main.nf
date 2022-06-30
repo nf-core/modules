@@ -26,8 +26,16 @@ process FLYE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def valid_mode = ["--pacbio-raw", "--pacbio-corr", "--pacbio-hifi", "--nano-raw", "--nano-corr", "--nano-hq"]
+    if ( !valid_mode.contains(mode) )  { error "Unrecognised mode to run Flye. Options: --pacbio-raw, --pacbio-corr, --pacbio-hifi, --nano-raw, --nano-corr, --nano-hq" }
     """
-    flye $mode $reads --out-dir . --threads $task.cpus $args
+    flye \\
+        $mode \\
+        $reads \\
+        --out-dir . \\
+        --threads \\
+        $task.cpus \\
+        $args
 
     gzip -c assembly.fasta > ${prefix}.assembly.fasta.gz
     gzip -c assembly_graph.gfa > ${prefix}.assembly_graph.gfa.gz
@@ -38,7 +46,7 @@ process FLYE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        flye: \$(echo \$(flye --version | sed 's/-b1768//' ))
+        flye: \$( flye --version )
     END_VERSIONS
     """
 
