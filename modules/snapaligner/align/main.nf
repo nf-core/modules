@@ -1,5 +1,5 @@
 process SNAPALIGNER_ALIGN {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
