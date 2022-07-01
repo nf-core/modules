@@ -26,7 +26,7 @@ process ATLAS_CALL {
     script:
     def args               = task.ext.args ?: ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
-    def recal_file         =  recal ? "recal=${recal}" : ""
+    def recal_file         = recal ? "recal=${recal}" : ""
     def pmd_file           = pmd ? "pmdFile=${pmd}" : ""
     def known_alleles_file = known_alleles ? "pmdFile=${known_alleles}" : ""
 
