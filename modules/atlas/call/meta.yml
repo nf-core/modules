@@ -1,0 +1,72 @@
+name: "atlas_call"
+description: generate VCF file from a BAM file using various calling methods
+keywords:
+  - atlas
+  - variant calling
+  - vcf
+  - population genetics
+tools:
+  - "atlas":
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
+      homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
+      documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
+      tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
+      doi: "10.1101/105346"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: A BAM/ file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: The BAI file for the input BAM file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: The reference FASTA file used to generate the BAM file
+      pattern: "*.{fasta,fna,fa}"
+  - fai:
+      type: file
+      description: The index of the FASTA file used for to generate the BAM file
+      pattern: "*.fai"
+  - recal:
+      type: file
+      description: Optional recalibration file from atlas recal function in text format
+      pattern: "*.txt"
+  - pmd:
+      type: file
+      description: Optional PMD file from atlas pmd function in text format
+      pattern: "*.txt"
+  - known_alleles:
+      type: file
+      description: Optional tab separated text file containing 1-based list of known alleles. See atlas call documentation.
+      pattern: "*.{txt.tsv}"
+  - method:
+      type: character
+      description: Which variant calling algorithm to use. Some may require additional parameters supplied via ext.args. Check atlas documentation.
+      pattern: "MLE|Bayesian|allelePresence|randomBase|majorityBase"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: VCF file with variant calls
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@jfy133"
