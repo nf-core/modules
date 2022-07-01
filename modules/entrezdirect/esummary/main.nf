@@ -20,13 +20,12 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    esummary_output = "${prefix}.esummary.xml.txt"
     """
     esummary \\
         -db $database \\
         -id $uid \\
         $args \\
-        > ${esummary_output} 2> ${prefix}.esearch.log
+        > ${prefix}.esummary.xml.txt 2> ${prefix}.esearch.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
