@@ -34,7 +34,7 @@ process ENTREZDIRECT_ESEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        entrezdirect: \$(echo \$(esearch -version 2>&1) | sed 's/^esearch //; s/Using.*\$//' ))
+        entrezdirect: \$(esearch -version 2>&1 | sed 's/^esearch //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
