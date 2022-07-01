@@ -66,7 +66,7 @@ process MULTIVCFANALYZER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        multivcfanalyzer: \$(echo \$(multivcfanalyzer --help | head -n 1) )
+        multivcfanalyzer: \$(echo \$(multivcfanalyzer --help | head -n 1) | cut -f 3 -d ' ' )
     END_VERSIONS
     """
 }
