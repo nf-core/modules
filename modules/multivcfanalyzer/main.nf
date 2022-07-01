@@ -38,7 +38,7 @@ process MULTIVCFANALYZER {
     task.ext.when == null || task.ext.when
 
     script:
-    // def args = task.ext.args ?: '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivate $args to prevent breakage of input 
+    // def args = task.ext.args ?: '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivating $args to prevent breakage of input
     def args2 = task.ext.args2 ?: ''
 
     def cmd_snpeff_results = snpeff_results ? "${snpeff_results}" : "NA"
