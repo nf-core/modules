@@ -11,8 +11,8 @@ process ENTREZDIRECT_ESUMMARY {
     tuple val(meta), val(database), val(uid)
 
     output:
-    tuple val(meta), path(esummary_output), emit: xml_esummary
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path(*.esummary.xml.txt), emit: xml_esummary
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process ENTREZDIRECT_ESUMMARY {
         -db $database \\
         -id $uid \\
         $args \\
-        > ${prefix}.esummary.xml.txt 2> ${prefix}.esearch.log
+        > ${prefix}.esummary.xml.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
