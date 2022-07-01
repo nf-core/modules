@@ -10,7 +10,7 @@ process KRONA_KTIMPORTTAXONOMY {
 
     input:
     tuple val(meta), path(report)
-    path taxonomy
+    path taxonomy, stageAs: 'taxonomy.tab'
 
     output:
     tuple val(meta), path ('*.html'), emit: html
@@ -24,12 +24,13 @@ process KRONA_KTIMPORTTAXONOMY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.8' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    TAXONOMY=$(find -L . -name '*.tab' -exec dirname {} \;)
-    
+    TAXONOMY=\$(find -L . -name '*.tab' -exec dirname {} \\;)
+    echo \$TAXONOMY
+
     ktImportTaxonomy \\
         $args \\
         -o ${prefix}.html \\
-        -tax \$TAXONOMY \\
+        -tax \$TAXONOMY/ \\
         $report
 
     cat <<-END_VERSIONS > versions.yml
