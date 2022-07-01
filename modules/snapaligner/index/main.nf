@@ -1,5 +1,5 @@
 process SNAPALIGNER_INDEX {
-    tag '$fasta'
+    tag "$fasta"
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
