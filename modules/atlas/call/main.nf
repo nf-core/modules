@@ -24,10 +24,10 @@ process ATLAS_CALL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def recal_file = recal ? "recal=${recal}" : ""
-    def pmd_file = pmd ? "pmdFile=${pmd}" : ""
+    def args               = task.ext.args ?: ''
+    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def recal_file         =  recal ? "recal=${recal}" : ""
+    def pmd_file           = pmd ? "pmdFile=${pmd}" : ""
     def known_alleles_file = known_alleles ? "pmdFile=${known_alleles}" : ""
 
     def valid_method = ['MLE', 'Bayesian', 'allelePresence', 'randomBase', 'majorityBase']

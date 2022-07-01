@@ -4,6 +4,7 @@ keywords:
   - atlas
   - variant calling
   - vcf
+  - population genetics
 tools:
   - "atlas":
       description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
@@ -21,7 +22,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: A BAM/CRAM/SAM file
+      description: A BAM/ file
       pattern: "*.bam"
   - bai:
       type: file
