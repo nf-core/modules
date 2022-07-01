@@ -1,0 +1,28 @@
+- name: multivcfanalyzer test_multivcfanalyzer
+  command: nextflow run ./tests/modules/multivcfanalyzer -entry test_multivcfanalyzer -c ./tests/config/nextflow.config  -c ./tests/modules/multivcfanalyzer/nextflow.config
+  tags:
+    - multivcfanalyzer
+  files:
+    - path: output/multivcfanalyzer/MultiVCFAnalyzer.json
+      md5sum: c841c9f04c6114911f308ea09a08980e
+    - path: output/multivcfanalyzer/fullAlignment.fasta.gz
+      md5sum: 8c2e7dad0c3030fcde6df5febd018413
+    - path: output/multivcfanalyzer/info.txt
+      contains:
+        - "Run finished"
+    - path: output/multivcfanalyzer/snpAlignment.fasta.gz
+      md5sum: bfe2dd6552fd9dd8b2defb6d9010ae99
+    - path: output/multivcfanalyzer/snpAlignmentIncludingRefGenome.fasta.gz
+      md5sum: 44417fafd39ab29c21c2bd5881b8e9db
+    - path: output/multivcfanalyzer/snpStatistics.tsv
+      md5sum: 8bec0f958c4485153b1db3b34e4c2bbd
+    - path: output/multivcfanalyzer/snpTable.tsv
+      md5sum: 1812cf4e49f64a28865bd627db64e876
+    - path: output/multivcfanalyzer/snpTableForSnpEff.tsv
+      md5sum: 8d7ab4ec98a89d290e301d6feae461aa
+    - path: output/multivcfanalyzer/snpTableWithUncertaintyCalls.tsv
+      md5sum: 1812cf4e49f64a28865bd627db64e876
+    - path: output/multivcfanalyzer/structureGenotypes.tsv
+      md5sum: 7d29ee394c863e862e556ae7bc745d4c
+    - path: output/multivcfanalyzer/structureGenotypes_noMissingData-Columns.tsv
+      md5sum: 6e8f8e18a298c94cc2b0774094dacc97
