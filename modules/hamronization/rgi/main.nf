@@ -25,7 +25,6 @@ process HAMRONIZATION_RGI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     hamronize \\
         rgi \\
