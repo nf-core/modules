@@ -45,11 +45,12 @@ process ANTISMASH_ANTISMASHLITE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    gff_flag = "--genefinding-gff3 ${gff}"
+    gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
 
     """
-    ## We specifically do not include annotations (--genefinding-tool none) as
+    ## We specifically do not include on-the-fly annotations (--genefinding-tool none) as
     ## this should be run as a separate module for versioning purposes
+
     antismash \\
         $args \\
         $gff_flag \\
