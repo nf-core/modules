@@ -24,12 +24,12 @@ process KRONA_KTIMPORTTAXONOMY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.8' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    TAXONOMY=`find -L . -name "*.tab"
+    TAXONOMY=$(find -L . -name '*.tab' -exec dirname {} \;)
     
     ktImportTaxonomy \\
         $args \\
         -o ${prefix}.html \\
-        -tax \$(dirname \$TAXONOMY) \\
+        -tax \$TAXONOMY \\
         $report
 
     cat <<-END_VERSIONS > versions.yml
