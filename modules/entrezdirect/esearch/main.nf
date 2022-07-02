@@ -19,17 +19,12 @@ process ENTREZDIRECT_ESEARCH {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sort_by = sort_by ? "-sort ${sort_by}" : ''
-    def date_type = date_type ? "-datetype ${date_type}" : ''
-    def min_date = min_date ? "-mindate ${min_date}" : ''
-    def max_date = max_date ? "-maxdate ${max_date}" : ''
-    def spell_check = spell_check ? "-spell" : ''
-    def args = task.ext.args ?: "${sort_by} ${date_type} ${min_date} ${max_date} ${spell_check}"
+    def args = task.ext.args ?: ''
     """
     esearch \\
+        ${args} \\
         -db $database \\
         -query $term \\
-        ${args} \\
         > ${prefix}.esearch.xml
 
     cat <<-END_VERSIONS > versions.yml
