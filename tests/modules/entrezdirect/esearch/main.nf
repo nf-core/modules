@@ -2,10 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { ENTREZDIRECT_ESEARCH } from '../../../../modules/entrezdirect/esearch/main.nf'
+include { ENTREZDIRECT_ESEARCH as ENTREZDIRECT_ESEARCHP  } from '../../../../modules/entrezdirect/esearch/main.nf'
+include { ENTREZDIRECT_ESEARCH                           } from '../../../../modules/entrezdirect/esearch/main.nf'
 
 //
-// Test with PubMed database, using date range and spell check
+// Test with PubMed database, using date range and spell check,
+// see nextflow.config file for optional definition(ext.args)
 //
 workflow test_entrezdirect_esearch_pubmed {
     input = [
@@ -13,13 +15,8 @@ workflow test_entrezdirect_esearch_pubmed {
         database = 'pubmed',
         term = 'GABA+receptor'
     ]
-    sort_by     =  'pub+date'
-    date_type   =  'pdat'
-    min_date    =  '2021/06/20'
-    max_date    =  '2022/06/20'
-    spell_check =  true
 
-    ENTREZDIRECT_ESEARCH ( input, sort_by, date_type, min_date, max_date, spell_check )
+    ENTREZDIRECT_ESEARCHP ( input )
 }
 
 //
@@ -31,12 +28,8 @@ workflow test_entrezdirect_esearch_genome {
         database = 'genome',
         term = 'Danio+rerio'
     ]
-    sort_by     =  ''
-    date_type   =  ''
-    min_date    =  ''
-    max_date    =  ''
-    spell_check =  false
-    ENTREZDIRECT_ESEARCH ( input, sort_by, date_type, min_date, max_date, spell_check )
+
+    ENTREZDIRECT_ESEARCH ( input )
 }
 
 //
@@ -48,10 +41,6 @@ workflow test_entrezdirect_esearch_assembly {
         database = 'assembly',
         term = 'GCA_000001635.9'
     ]
-    sort_by     =  ''
-    date_type   =  ''
-    min_date    =  ''
-    max_date    =  ''
-    spell_check =  false
-    ENTREZDIRECT_ESEARCH ( input, sort_by, date_type, min_date, max_date, spell_check )
+
+    ENTREZDIRECT_ESEARCH ( input )
 }
