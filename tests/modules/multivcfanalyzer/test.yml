@@ -18,14 +18,14 @@
       contains:
         - ">Reference_MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome"
     - path: output/multivcfanalyzer/snpStatistics.tsv
-      md5sum: 8bec0f958c4485153b1db3b34e4c2bbd
+      contains: ["statistics", "test.vcf", "test2.vcf"]
     - path: output/multivcfanalyzer/snpTable.tsv
-      md5sum: 1812cf4e49f64a28865bd627db64e876
+      contains: ["Position", "test.vcf", "test2.vcf"]
     - path: output/multivcfanalyzer/snpTableForSnpEff.tsv
       md5sum: 8d7ab4ec98a89d290e301d6feae461aa
     - path: output/multivcfanalyzer/snpTableWithUncertaintyCalls.tsv
-      md5sum: 1812cf4e49f64a28865bd627db64e876
+      contains: ["Position", "test.vcf", "test2.vcf"]
     - path: output/multivcfanalyzer/structureGenotypes.tsv
-      md5sum: 7d29ee394c863e862e556ae7bc745d4c
+      contains: ["test.vcf", "test2.vcf"]
     - path: output/multivcfanalyzer/structureGenotypes_noMissingData-Columns.tsv
-      md5sum: 6e8f8e18a298c94cc2b0774094dacc97
+      contains: ["test.vcf", "test2.vcf"]
