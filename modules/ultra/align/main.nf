@@ -21,6 +21,7 @@ process ULTRA_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     uLTRA \\
@@ -38,6 +39,7 @@ process ULTRA_ALIGN {
         --threads $task.cpus \\
         -o ${prefix}.bam \\
         -O BAM \\
+        $args2 \\
         ${prefix}.sam
 
     rm ${prefix}.sam
