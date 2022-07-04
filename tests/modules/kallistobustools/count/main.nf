@@ -16,11 +16,17 @@ workflow test_kallistobustools_count {
 
     fasta       = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf         = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-    sc_workflow    = "standard"
-    technology = "10XV3"
-    use_t1c    = true
-    use_t2c    = true
+    sc_workflow = "standard"
+    technology  = "10XV3"
 
     KALLISTOBUSTOOLS_REF(fasta, gtf, sc_workflow)
-    KALLISTOBUSTOOLS_COUNT ( input, KALLISTOBUSTOOLS_REF.out.index, KALLISTOBUSTOOLS_REF.out.t2g, KALLISTOBUSTOOLS_REF.out.cdna_t2c, KALLISTOBUSTOOLS_REF.out.intron_t2c, use_t1c, use_t2c, sc_workflow, technology )
+    KALLISTOBUSTOOLS_COUNT ( 
+      input, 
+      KALLISTOBUSTOOLS_REF.out.index, 
+      KALLISTOBUSTOOLS_REF.out.t2g, 
+      KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }, // when empty the module doesn't run unless something is passed. 
+      KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }, // when empty the module doesn't run unless something is passed.
+      sc_workflow, 
+      technology 
+    )
 }

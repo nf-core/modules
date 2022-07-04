@@ -13,8 +13,6 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2g
     path  t1c
     path  t2c
-    val   use_t1c
-    val   use_t2c
     val   sc_workflow
     val   technology
 
@@ -26,10 +24,10 @@ process KALLISTOBUSTOOLS_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def cdna     = use_t1c ? "-c1 $t1c" : ''
-    def introns  = use_t2c ? "-c2 $t2c" : ''
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def cdna    = (t1c =~ /input.*/) ? "-c1 $t1c" : ''
+    def introns = (t2c =~ /input.*/) ? "-c2 $t2c" : ''
     """
     kb \\
         count \\
