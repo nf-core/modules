@@ -15,6 +15,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2c
     val   use_t1c
     val   use_t2c
+    val   sc_workflow
     val   technology
 
     output:
@@ -37,6 +38,7 @@ process KALLISTOBUSTOOLS_COUNT {
         -g $t2g \\
         $cdna \\
         $introns \\
+        --workflow $sc_workflow \\
         -x $technology \\
         $args \\
         -o ${prefix}.count \\
