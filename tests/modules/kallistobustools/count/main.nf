@@ -24,8 +24,8 @@ workflow test_kallistobustools_count {
       input, 
       KALLISTOBUSTOOLS_REF.out.index, 
       KALLISTOBUSTOOLS_REF.out.t2g, 
-      KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }, // when empty the module doesn't run unless something is passed. 
-      KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }, // when empty the module doesn't run unless something is passed.
+      KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] },   // when empty the module doesn't run unless something is passed. 
+      KALLISTOBUSTOOLS_REF.out.intron_t2c.ifEmpty{ [] }, // when empty the module doesn't run unless something is passed.
       technology 
     )
 }
