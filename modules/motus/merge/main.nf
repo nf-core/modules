@@ -30,6 +30,7 @@ process MOTUS_MERGE {
     """
     motus \\
         merge \\
+        -db $db
         $args \\
         $cmd_input \\
         ${output}
