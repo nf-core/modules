@@ -10,6 +10,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     input:
     tuple val(meta), path(bam)
     path  fasta
+    path  fai
 
     output:
     tuple val(meta), path("*_metrics"), emit: metrics

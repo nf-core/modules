@@ -5,14 +5,31 @@
     - picard/collectmultiplemetrics
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
+      contains:
+        - "## METRICS CLASS\tpicard.analysis.AlignmentSummaryMetrics"
+        - "CATEGORY\tTOTAL_READS\tPF_READS\tPCT_PF_READS\tPF_NOISE_READS\tPF_READS_ALIGNED\tPCT_PF_READS_ALIGNED\tPF_ALIGNED_BASES\tPF_HQ_ALIGNED_READS\tPF_HQ_ALIGNED_BASES\tPF_HQ_ALIGNED_Q20_BASES\tPF_HQ_MEDIAN_MISMATCHES\tPF_MISMATCH_RATE\tPF_HQ_ERROR_RATE\tPF_INDEL_RATE\tMEAN_READ_LENGTH\tSD_READ_LENGTH\tMEDIAN_READ_LENGTH\tMAD_READ_LENGTH\tMIN_READ_LENGTH\tMAX_READ_LENGTH\tREADS_ALIGNED_IN_PAIRS\tPCT_READS_ALIGNED_IN_PAIRS\tPF_READS_IMPROPER_PAIRS\tPCT_PF_READS_IMPROPER_PAIRS\tBAD_CYCLES\tSTRAND_BALANCE\tPCT_CHIMERAS\tPCT_ADAPTER\tPCT_SOFTCLIP\tPCT_HARDCLIP\tAVG_POS_3PRIME_SOFTCLIP_LENGTH\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "FIRST_OF_PAIR\t100\t100\t1\t0\t100\t1\t13884\t99\t13735\t12777\t0\t0.004249\t0.004296\t0.000432\t138.97\t22.059357\t150\t1\t72\t151\t97\t0.97\t4\t0.04\t0\t0.48\t0\t0\t0.000935\t0\t6.5"
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle.pdf
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
+      contains:
+        - "READ_END\tCYCLE\tPCT_A\tPCT_C\tPCT_G\tPCT_T\tPCT_N"
+        - "1\t1\t20\t26\t32\t22\t0"
     - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
     - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
+      contains:
+        - "MEDIAN_INSERT_SIZE\tMODE_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_95_PERCENT\tWIDTH_OF_99_PERCENT\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "209\t159\t46\t77\t364\t207.659794\t66.769018\t97\tFR\t25\t49\t59\t77\t93\t123\t145\t183\t223\t255\t311"
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
+      contains:
+        - "CYCLE\tMEAN_QUALITY"
+        - "1\t32"
+        - "2\t31.35"
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
+      contains:
+        - "QUALITY\tCOUNT_OF_Q"
+        - "14\t1926"
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_nofasta
@@ -22,12 +39,64 @@
     - picard/collectmultiplemetrics
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
+      contains:
+        - "## METRICS CLASS\tpicard.analysis.AlignmentSummaryMetrics"
+        - "CATEGORY\tTOTAL_READS\tPF_READS\tPCT_PF_READS\tPF_NOISE_READS\tPF_READS_ALIGNED\tPCT_PF_READS_ALIGNED\tPF_ALIGNED_BASES\tPF_HQ_ALIGNED_READS\tPF_HQ_ALIGNED_BASES\tPF_HQ_ALIGNED_Q20_BASES\tPF_HQ_MEDIAN_MISMATCHES\tPF_MISMATCH_RATE\tPF_HQ_ERROR_RATE\tPF_INDEL_RATE\tMEAN_READ_LENGTH\tSD_READ_LENGTH\tMEDIAN_READ_LENGTH\tMAD_READ_LENGTH\tMIN_READ_LENGTH\tMAX_READ_LENGTH\tREADS_ALIGNED_IN_PAIRS\tPCT_READS_ALIGNED_IN_PAIRS\tPF_READS_IMPROPER_PAIRS\tPCT_PF_READS_IMPROPER_PAIRS\tBAD_CYCLES\tSTRAND_BALANCE\tPCT_CHIMERAS\tPCT_ADAPTER\tPCT_SOFTCLIP\tPCT_HARDCLIP\tAVG_POS_3PRIME_SOFTCLIP_LENGTH\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "FIRST_OF_PAIR\t100\t100\t1\t0\t100\t1\t13884\t99\t13735\t12777\t0\t0\t0\t0.000432\t138.97\t22.059357\t150\t1\t72\t151\t97\t0.97\t4\t0.04\t0\t0.48\t0\t0\t0.000935\t0\t6.5"
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle.pdf
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
+      contains:
+        - "READ_END\tCYCLE\tPCT_A\tPCT_C\tPCT_G\tPCT_T\tPCT_N"
+        - "1\t1\t20\t26\t32\t22\t0"
     - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
     - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
+      contains:
+        - "MEDIAN_INSERT_SIZE\tMODE_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_95_PERCENT\tWIDTH_OF_99_PERCENT\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "209\t159\t46\t77\t364\t207.659794\t66.769018\t97\tFR\t25\t49\t59\t77\t93\t123\t145\t183\t223\t255\t311"
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
+      contains:
+        - "CYCLE\tMEAN_QUALITY"
+        - "1\t32"
+        - "2\t31.35"
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
+      contains:
+        - "QUALITY\tCOUNT_OF_Q"
+        - "14\t1926"
+    - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
+
+- name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_cram
+  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_cram -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
+  tags:
+    - picard
+    - picard/collectmultiplemetrics
+  files:
+    - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
+      contains:
+        - "## METRICS CLASS\tpicard.analysis.AlignmentSummaryMetrics"
+        - "CATEGORY\tTOTAL_READS\tPF_READS\tPCT_PF_READS\tPF_NOISE_READS\tPF_READS_ALIGNED\tPCT_PF_READS_ALIGNED\tPF_ALIGNED_BASES\tPF_HQ_ALIGNED_READS\tPF_HQ_ALIGNED_BASES\tPF_HQ_ALIGNED_Q20_BASES\tPF_HQ_MEDIAN_MISMATCHES\tPF_MISMATCH_RATE\tPF_HQ_ERROR_RATE\tPF_INDEL_RATE\tMEAN_READ_LENGTH\tSD_READ_LENGTH\tMEDIAN_READ_LENGTH\tMAD_READ_LENGTH\tMIN_READ_LENGTH\tMAX_READ_LENGTH\tREADS_ALIGNED_IN_PAIRS\tPCT_READS_ALIGNED_IN_PAIRS\tPF_READS_IMPROPER_PAIRS\tPCT_PF_READS_IMPROPER_PAIRS\tBAD_CYCLES\tSTRAND_BALANCE\tPCT_CHIMERAS\tPCT_ADAPTER\tPCT_SOFTCLIP\tPCT_HARDCLIP\tAVG_POS_3PRIME_SOFTCLIP_LENGTH\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "FIRST_OF_PAIR\t2821\t2821\t1\t0\t2820\t0.999646\t335612\t2820\t335612\t331243\t0\t0.002568\t0.002568\t0.000018\t119.086849\t22.904827\t123\t20\t30\t143\t2820\t1\t1\t0.000355\t0\t0.497518\t0.000355\t0\t0.000586\t0\t19"
+    - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle.pdf
+    - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
+      contains:
+        - "READ_END\tCYCLE\tPCT_A\tPCT_C\tPCT_G\tPCT_T\tPCT_N"
+        - "1\t1\t34.065934\t15.242822\t16.093584\t34.526764\t0.070897"
+    - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
+    - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
+      contains:
+        - "MEDIAN_INSERT_SIZE\tMODE_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_95_PERCENT\tWIDTH_OF_99_PERCENT\tSAMPLE\tLIBRARY\tREAD_GROUP"
+        - "123\t96\t23\t32\t300\t125.684397\t32.447863\t2820\tFR\t11\t17\t27\t37\t47\t57\t69\t83\t103\t125\t169"
+    - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
+    - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
+      contains:
+        - "CYCLE\tMEAN_QUALITY"
+        - "1\t41.018079"
+        - "2\t40.981921"
+    - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
+    - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
+      contains:
+        - "QUALITY\tCOUNT_OF_Q"
+        - "3\t2"
+        - "4\t44"
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
