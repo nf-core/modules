@@ -1,5 +1,5 @@
 name: "megan_daa2info"
-description: Analyses an DAA file and exports information in text format
+description: Analyses a DAA file and exports information in text format
 keywords:
   - megan
   - diamond
@@ -27,7 +27,7 @@ input:
       pattern: "*.daa"
   - megan_summary:
       type: boolean
-      description: Specify whether to generate an MEGAN summary file
+      description: Specify whether to generate a MEGAN summary file
 
 output:
   - meta:
@@ -39,11 +39,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - txt:
+  - txt_gz:
       type: file
       description: Compressed text file
       pattern: "*.txt.gz"
-  - megan_summary:
+  - megan:
       type: file
       description: Optionally generated MEGAN summary file
       pattern: "*.megan"

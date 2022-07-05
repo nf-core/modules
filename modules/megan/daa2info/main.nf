@@ -12,8 +12,8 @@ process MEGAN_DAA2INFO {
     val(megan_summary)
 
     output:
-    tuple val(meta), path("*.txt.gz")               , emit: txt
-    tuple val(meta), path("*.megan"), optional: true, emit: megan_summary
+    tuple val(meta), path("*.txt.gz")               , emit: txt_gz
+    tuple val(meta), path("*.megan"), optional: true, emit: megan
     path "versions.yml"                             , emit: versions
 
     when:
