@@ -30,9 +30,9 @@ process MOTUS_MERGE {
     """
     motus \\
         merge \\
-        -db $db
+        -db $db \\
+        ${cmd_input} \\
         $args \\
-        $cmd_input \\
         ${output}
 
     ## Take version from the mOTUs/profile module output, as cannot reconstruct
