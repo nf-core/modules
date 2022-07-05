@@ -25,7 +25,8 @@ process SEROBA_RUN {
     seroba \\
         runSerotyping \\
         $reads \\
-        $prefix $args
+        $prefix \\
+        $args
 
     # Avoid name collisions
     mv ${prefix}/pred.tsv ${prefix}/${prefix}.tsv
