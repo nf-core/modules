@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag "$meta.id"
+    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
     if (params.enable_conda) {
@@ -17,7 +17,7 @@ process BCLCONVERT {
     tuple val(meta), path("Undetermined_S0_L00?_I?_00?.fastq.gz")       ,optional:true, emit: undetermined_idx
     tuple val(meta), path("Reports")                                    ,emit: reports
     tuple val(meta), path("Logs")                                       ,emit: logs
-    tuple val(meta), path("**.bin")                                     ,emit: interop
+    tuple val(meta), path("**/InterOp/*.bin")                           ,emit: interop
     path("versions.yml")                                                ,emit: versions
 
     when:
