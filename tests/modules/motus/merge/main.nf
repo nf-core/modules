@@ -21,9 +21,9 @@ workflow test_motus_merge {
         ]
     )
 
-    //MOTUS_DOWNLOADDB(file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py'))
-    MOTUS_PROFILE ( input, file("/home/jfellows/.conda/envs/motus/share/motus-3.0.1/db_mOTU/"))  //MOTUS_DOWNLOADDB.out.db )
-    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{it[1]}.collect(), file("/home/jfellows/.conda/envs/motus/share/motus-3.0.1/db_mOTU/"), MOTUS_PROFILE.out.versions.first(), false )
+    MOTUS_DOWNLOADDB ( file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py') )
+    MOTUS_PROFILE ( input, MOTUS_DOWNLOADDB.out.db )
+    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{it[1]}.collect(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first(), false )
 
 }
 
