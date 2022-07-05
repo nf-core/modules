@@ -8,7 +8,7 @@ process BCFTOOLS_NORM {
         'quay.io/biocontainers/bcftools:1.14--h88f3f91_0' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(tbi)
     path(fasta)
 
     output:
