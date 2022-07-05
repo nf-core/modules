@@ -10,14 +10,14 @@ workflow test_motus_merge {
 
     input = Channel.fromList(
         [
-        [
-        [ id:'test', single_end:true ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-        ],
-        [
-        [ id:'test2', single_end:true ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-        ]
+            [
+                [ id:'test', single_end:true ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            ],
+            [
+                [ id:'test2', single_end:true ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            ]
         ]
     )
 
