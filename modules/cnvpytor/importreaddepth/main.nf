@@ -32,7 +32,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
     END_VERSIONS
     """
 }

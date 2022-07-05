@@ -2,9 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SNAPALIGNER_INDEX                       } from '../../../../modules/snapaligner/index/main.nf'
-include { SNAPALIGNER_ALIGN as SNAPALIGNER_SINGLE } from '../../../../modules/snapaligner/align/main.nf'
-include { SNAPALIGNER_ALIGN as SNAPALIGNER_PAIRED } from '../../../../modules/snapaligner/align/main.nf'
+include { SNAPALIGNER_INDEX } from '../../../../modules/snapaligner/index/main.nf'
+include { SNAPALIGNER_ALIGN } from '../../../../modules/snapaligner/align/main.nf'
 
 workflow test_snapaligner_single {
 
@@ -14,7 +13,7 @@ workflow test_snapaligner_single {
     ]
 
     SNAPALIGNER_INDEX ( file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),[],[],[])
-    SNAPALIGNER_SINGLE ( input, SNAPALIGNER_INDEX.out.index )
+    SNAPALIGNER_ALIGN ( input, SNAPALIGNER_INDEX.out.index )
 }
 
 workflow test_snapaligner_paired {
@@ -25,5 +24,5 @@ workflow test_snapaligner_paired {
     ]
 
     SNAPALIGNER_INDEX ( file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),[],[],[])
-    SNAPALIGNER_PAIRED ( input, SNAPALIGNER_INDEX.out.index )
+    SNAPALIGNER_ALIGN ( input, SNAPALIGNER_INDEX.out.index )
 }
