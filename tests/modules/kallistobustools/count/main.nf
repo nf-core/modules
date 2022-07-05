@@ -9,7 +9,8 @@ workflow test_kallistobustools_count {
 
     input   = [
         [id:'test'], // meta map
-        [ file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
+        [ 
+          file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
           file(params.test_data['homo_sapiens']['illumina']['test_10x_2_fastq_gz'], checkIfExists: true)
         ]
     ]
