@@ -15,6 +15,6 @@ workflow test_snippy_core {
 
     SNIPPY_RUN ( input, reference )
     SNIPPY_RUN.out.vcf.join( SNIPPY_RUN.out.aligned_fa ).map{ meta, vcf, aln -> [[id:'snippy-core'], vcf, aln] }.set{ ch_snippy_core }
-    SNIPPY_CORE(ch_snippy_core, reference)
+    SNIPPY_CORE( ch_snippy_core, reference )
 
 }
