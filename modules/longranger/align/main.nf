@@ -10,11 +10,7 @@ process LONGRANGER_ALIGN {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using longranger. Please use singularity."
     }
-    if ( workflow.containerEngine == 'singularity' ) {
-        container "gitlab-registry.internal.sanger.ac.uk/tol-it/software/docker-images/longranger:${version}"
-    } else {
-        exit 1, "Longranger is only configured to run with singularity"
-    }
+    container "gitlab-registry.internal.sanger.ac.uk/tol-it/software/docker-images/longranger:${version}"
 
     input:
     tuple val(meta), path(reference)
@@ -31,12 +27,10 @@ process LONGRANGER_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def jobmode = task.executor ?: "local"
     def sample = "${meta.id}"
     """
     longranger align --id=$sample --fastqs=$fastqs \
         --sample=$sample --reference=$reference \
-        --jobmode=${jobmode} \
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
