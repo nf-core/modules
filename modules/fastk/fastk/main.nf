@@ -12,10 +12,10 @@ process FASTK_FASTK {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.hist")               , emit: hist
-    tuple val(meta), path("*.ktab*", hidden: true), emit: ktab, optional: true
-    tuple val(meta), path("*.prof*", hidden: true), emit: prof, optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.hist")                      , emit: hist
+    tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
+    tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
