@@ -14,7 +14,9 @@ workflow test_snippy_core {
     reference = file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
 
     SNIPPY_RUN ( input, reference )
-    SNIPPY_RUN.out.vcf.join( SNIPPY_RUN.out.aligned_fa ).map{ meta, vcf, aln -> [[id:'snippy-core'], vcf, aln] }.set{ ch_snippy_core }
+    SNIPPY_RUN.out.vcf.collect{meta, vcf -> vcf}.map{ vcf -> [[id:'snippy-core'], vcf]}.set{ ch_merge_vcf }
+    SNIPPY_RUN.out.aligned_fa.collect{meta, aligned_fa -> aligned_fa}.map{ aligned_fa -> [[id:'snippy-core'], aligned_fa]}.set{ ch_merge_aligned_fa }
+    ch_merge_vcf.join( ch_merge_aligned_fa ).set{ ch_snippy_core }
     SNIPPY_CORE( ch_snippy_core, reference )
 
 }
