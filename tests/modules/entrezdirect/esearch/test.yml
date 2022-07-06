@@ -5,7 +5,14 @@
     - entrezdirect
   files:
     - path: output/entrezdirect/test_pubmed.esearch.xml
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - "<ENTREZ_DIRECT>"
+        - "<Db>pubmed</Db>"
+        - "<WebEnv>"
+        - "<QueryKey>"
+        - "<Count>"
+        - "<Step>"
+        - "</ENTREZ_DIRECT>"
 
 - name: entrezdirect esearch test_entrezdirect_esearch_genome
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -14,7 +21,14 @@
     - entrezdirect
   files:
     - path: output/entrezdirect/test_genome.esearch.xml
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+        - "<ENTREZ_DIRECT>"
+        - "<Db>genome</Db>"
+        - "<WebEnv>"
+        - "<QueryKey>"
+        - "<Count>"
+        - "<Step>"
+        - "</ENTREZ_DIRECT>"
 
 - name: entrezdirect esearch test_entrezdirect_esearch_assembly
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
@@ -23,4 +37,11 @@
     - entrezdirect
   files:
     - path: output/entrezdirect/test_assembly.esearch.xml
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      contains:
+          - "<ENTREZ_DIRECT>"
+          - "<Db>assembly</Db>"
+          - "<WebEnv>"
+          - "<QueryKey>"
+          - "<Count>"
+          - "<Step>"
+          - "</ENTREZ_DIRECT>"
