@@ -5,9 +5,9 @@
     - snapaligner
   files:
     - path: output/snapaligner/test.bam
-      md5sum: 2dea536f28c041c1108add3523879243
+      md5sum: 9958e511fe759012cd11b7ef1f097639
     - path: output/snapaligner/test.bam.bai
-      md5sum: 3f5cd1e8379b06554778a59b179ccc10
+      md5sum: f180c68a77445b317a22e3f1d6e6e114
 
 - name: snapaligner align test_snapaligner_paired
   command: nextflow run ./tests/modules/snapaligner/align -entry test_snapaligner_paired -c ./tests/config/nextflow.config  -c ./tests/modules/snapaligner/align/nextflow.config
@@ -16,6 +16,6 @@
     - snapaligner
   files:
     - path: output/snapaligner/test.bam
-      md5sum: 941bf870355dd34ebe2ef43ea41abcc4
+      md5sum: cf656d5f18afa6a97825a685e1b2b141
     - path: output/snapaligner/test.bam.bai
-      md5sum: ce7fd5bc6f0196e6ad70d3710e17e559
+      md5sum: fa2226d7f5b0b4b15d014332f94a8b84
