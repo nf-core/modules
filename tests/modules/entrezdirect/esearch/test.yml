@@ -14,7 +14,6 @@
         - "<Step>"
         - "</ENTREZ_DIRECT>"
 
-
 - name: entrezdirect esearch test_entrezdirect_esearch_genome
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
   tags:
@@ -30,7 +29,6 @@
         - "<Count>"
         - "<Step>"
         - "</ENTREZ_DIRECT>"
-
 
 - name: entrezdirect esearch test_entrezdirect_esearch_assembly
   command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
