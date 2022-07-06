@@ -1,0 +1,11 @@
+- name: amrfinderplus run test_amrfinderplus_run
+  command: nextflow run tests/modules/amrfinderplus/run -entry test_amrfinderplus_run -c tests/config/nextflow.config
+  tags:
+    - amrfinderplus/run
+    - amrfinderplus
+  files:
+    - path: output/amrfinderplus/amrfinderdb.tar.gz
+    - path: output/amrfinderplus/test.tsv
+      md5sum: b4d261ace9be7d013c19d1f5c0005bfe
+    - path: output/amrfinderplus/versions.yml
+      md5sum: 642ca04a07d79fe4c4d02348562e3961

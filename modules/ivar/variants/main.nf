@@ -10,6 +10,7 @@ process IVAR_VARIANTS {
     input:
     tuple val(meta), path(bam)
     path  fasta
+    path  fai
     path  gff
     val   save_mpileup
 

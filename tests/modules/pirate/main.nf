@@ -14,10 +14,6 @@ workflow test_pirate {
             file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['test3_gff'], checkIfExists: true)
         ]
     ]
-    //           [ file("https://github.com/bactopia/bactopia-tests/raw/main/data/reference/gff/GCF_000292685.gff", checkIfExists: true),
-    //             file("https://github.com/bactopia/bactopia-tests/raw/main/data/reference/gff/GCF_000298385.gff", checkIfExists: true),
-    //             file("https://github.com/bactopia/bactopia-tests/raw/main/data/reference/gff/GCF_002849995.gff", checkIfExists: true) ]
-    // ]
 
     PIRATE ( input )
 }

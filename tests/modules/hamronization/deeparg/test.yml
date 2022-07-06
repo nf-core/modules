@@ -1,0 +1,8 @@
+- name: hamronization deeparg test_hamronization_deeparg
+  command: nextflow run tests/modules/hamronization/deeparg -entry test_hamronization_deeparg -c tests/config/nextflow.config
+  tags:
+    - hamronization
+    - hamronization/deeparg
+  files:
+    - path: output/hamronization/test.tsv
+      md5sum: 3c315605aca0c5964796bb5fd4cdd522

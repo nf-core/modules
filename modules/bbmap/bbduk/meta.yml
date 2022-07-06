@@ -12,7 +12,7 @@ tools:
       documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
       tool_dev_url: None
       doi: ""
-      licence: ['UC-LBL license (see package)']
+      licence: ["UC-LBL license (see package)"]
 
 input:
   - meta:
@@ -21,14 +21,14 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - reads:
-        type: file
-        description: |
-          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively.
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
   - contaminants:
-        type: file
-        description: |
-          Reference files containing adapter and/or contaminant sequences for sequence kmer matching
+      type: file
+      description: |
+        Reference files containing adapter and/or contaminant sequences for sequence kmer matching
 
 output:
   - meta:

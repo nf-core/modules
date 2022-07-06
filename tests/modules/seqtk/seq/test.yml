@@ -1,0 +1,21 @@
+- name: seqtk seq test_seqtk_seq
+  command: nextflow run tests/modules/seqtk/seq -entry test_seqtk_seq -c tests/config/nextflow.config
+  tags:
+    - seqtk/seq
+    - seqtk
+  files:
+    - path: output/seqtk/test.seqtk-seq.fasta.gz
+      md5sum: 50d73992c8c7e56dc095ef47ec52a754
+    - path: output/seqtk/versions.yml
+      md5sum: 6555e1061080c44f828de0b40b299e41
+
+- name: seqtk seq test_seqtk_seq_fq
+  command: nextflow run tests/modules/seqtk/seq -entry test_seqtk_seq_fq -c tests/config/nextflow.config
+  tags:
+    - seqtk/seq
+    - seqtk
+  files:
+    - path: output/seqtk/test.seqtk-seq.fasta.gz
+      md5sum: 2f009f1647971a97b4edec726a99dc1a
+    - path: output/seqtk/versions.yml
+      md5sum: feb70feb3165d5c19fa50c16e46e6772

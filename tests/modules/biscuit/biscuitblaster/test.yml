@@ -1,0 +1,57 @@
+- name: biscuit biscuitblaster test_biscuit_blaster_single
+  command: nextflow run tests/modules/biscuit/biscuitblaster -entry test_biscuit_blaster_single -c tests/config/nextflow.config
+  tags:
+    - biscuit/biscuitblaster
+    - biscuit
+  files:
+    - path: output/biscuit/BiscuitIndex/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.amb
+      md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.ann
+      md5sum: c32e11f6c859f166c7525a9c1d583567
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.pac
+      md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.bwt
+      md5sum: a11bc31775f7b7a4f9cd3bc4f981661a
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.sa
+      md5sum: 9c9e07fa1c75ef32d764274579c89b08
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.bwt
+      md5sum: 62eb83cd557a47b59589713d98024fc2
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
+      md5sum: 55bcd97d7059bf73dc0d221e36e8e901
+    - path: output/biscuit/test.bam
+      md5sum: 9ece50b67349382d38b20c2702e65675
+    - path: output/biscuit/test.bam.bai
+      md5sum: 8f14bb42fd38cc7ce4a3c3a9d7133ea4
+    - path: output/biscuit/versions.yml
+      md5sum: bfb660b5b0d92dde6817a1c6a2a302bb
+
+- name: biscuit biscuitblaster test_biscuit_blaster_paired
+  command: nextflow run tests/modules/biscuit/biscuitblaster -entry test_biscuit_blaster_paired -c tests/config/nextflow.config
+  tags:
+    - biscuit/biscuitblaster
+    - biscuit
+  files:
+    - path: output/biscuit/BiscuitIndex/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.amb
+      md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.ann
+      md5sum: c32e11f6c859f166c7525a9c1d583567
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.pac
+      md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.bwt
+      md5sum: a11bc31775f7b7a4f9cd3bc4f981661a
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.sa
+      md5sum: 9c9e07fa1c75ef32d764274579c89b08
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.bwt
+      md5sum: 62eb83cd557a47b59589713d98024fc2
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
+      md5sum: 55bcd97d7059bf73dc0d221e36e8e901
+    - path: output/biscuit/test.bam
+      md5sum: 0c6de35f38003df6ea5dd036170df91b
+    - path: output/biscuit/test.bam.bai
+      md5sum: 0d76977b2e36046cc176112776c5fa4e
+    - path: output/biscuit/versions.yml
+      md5sum: 82160a7ad29ccc3a21e59b1869399c04

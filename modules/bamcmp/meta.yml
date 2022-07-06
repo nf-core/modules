@@ -10,14 +10,15 @@ keywords:
 
 tools:
   - bamcmp:
-      description: Bamcmp is a tool for deconvolving host and graft reads, using two bam files. Reads should be mapped to two genomes, and the mapped,
-                    sorted bam files supplied to the tool. It is highly recommended to use the "-s as" option not the "-s mapq" option, else
-                    reads which multimap to the contamination genome will be spuriously kept.
+      description:
+        Bamcmp is a tool for deconvolving host and graft reads, using two bam files. Reads should be mapped to two genomes, and the mapped,
+        sorted bam files supplied to the tool. It is highly recommended to use the "-s as" option not the "-s mapq" option, else
+        reads which multimap to the contamination genome will be spuriously kept.
       homepage: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       documentation: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       tool_dev_url: https://github.com/CRUKMI-ComputationalBiology/bamcmp
       doi: "10.1158/1541-7786.MCR-16-0431"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 
 input:
   - meta:

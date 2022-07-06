@@ -1,0 +1,9 @@
+- name: amrfinderplus update test_amrfinderplus_update
+  command: nextflow run tests/modules/amrfinderplus/update -entry test_amrfinderplus_update -c tests/config/nextflow.config
+  tags:
+    - amrfinderplus
+    - amrfinderplus/update
+  files:
+    - path: output/amrfinderplus/amrfinderdb.tar.gz
+    - path: output/amrfinderplus/versions.yml
+      md5sum: 4db18fa509309db4da0920a7eeaba86c

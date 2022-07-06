@@ -14,3 +14,13 @@ workflow test_svdb_merge {
 
     SVDB_MERGE ( input, priority )
 }
+
+workflow test_svdb_merge_noprio {
+
+    input = [ [ id:'test' ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
+            ]
+
+    SVDB_MERGE ( input, [] )
+}

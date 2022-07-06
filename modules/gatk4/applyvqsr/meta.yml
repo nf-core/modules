@@ -17,7 +17,7 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
-      licence: ['Apache-2.0']
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
@@ -29,20 +29,20 @@ input:
       type: file
       description: VCF file to be recalibrated, this should be the same file as used for the first stage VariantRecalibrator.
       pattern: "*.vcf"
-  - tbi:
+  - vcf_tbi:
       type: file
-      description: Tbi index for the input vcf file.
+      description: tabix index for the input vcf file.
       pattern: "*.vcf.tbi"
   - recal:
       type: file
       description: Recalibration file produced when the input vcf was run through VariantRecalibrator in stage 1.
       pattern: "*.recal"
-  - recalidx:
+  - recal_index:
       type: file
       description: Index file for the recalibration file.
       pattern: ".recal.idx"
   - tranches:
-      type: boolean
+      type: file
       description: Tranches file produced when the input vcf was run through VariantRecalibrator in stage 1.
       pattern: ".tranches"
   - fasta:
@@ -57,18 +57,6 @@ input:
       type: file
       description: GATK sequence dictionary
       pattern: "*.dict"
-  - allelespecific:
-      type: boolean
-      description: Whether or not to run ApplyVQSR in allele specific mode, this should be kept the same as the stage 1 VariantRecalibrator run.
-      pattern: "{true,false}"
-  - truthsensitivity:
-      type: double
-      description: Value to be used as the truth sensitivity cutoff score.
-      pattern: "99.0"
-  - mode:
-      type: String
-      description: Specifies which recalibration mode to employ, should be the same as the stage 1 VariantRecalibrator run. (SNP is default, BOTH is intended for testing only)
-      pattern: "{SNP,INDEL,BOTH}"
 
 output:
   - vcf:

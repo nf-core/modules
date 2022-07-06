@@ -2,10 +2,10 @@ process BAKTA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bakta=1.2.2" : null)
+    conda (params.enable_conda ? "bioconda::bakta=1.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.2.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/bakta:1.2.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.4.0--pyhdfd78af_1' :
+        'quay.io/biocontainers/bakta:1.4.0--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,6 +23,7 @@ process BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.tsv"), emit: hypotheticals_tsv
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv")              , emit: tsv
+    tuple val(meta), path("${prefix}.txt")              , emit: txt
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -61,6 +62,7 @@ process BAKTA {
     touch ${prefix}.hypotheticals.tsv
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

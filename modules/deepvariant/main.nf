@@ -17,8 +17,8 @@ process DEEPVARIANT {
     path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz") ,  emit: vcf
-    tuple val(meta), path("*g.vcf.gz"),  emit: gvcf
+    tuple val(meta), path("${prefix}.vcf.gz") ,  emit: vcf
+    tuple val(meta), path("${prefix}.g.vcf.gz"),  emit: gvcf
     path "versions.yml"               ,  emit: versions
 
     when:
@@ -26,7 +26,7 @@ process DEEPVARIANT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions ${intervals}" : ""
 
     """
@@ -38,6 +38,18 @@ process DEEPVARIANT {
         ${args} \\
         ${regions} \\
         --num_shards=${task.cpus}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.g.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

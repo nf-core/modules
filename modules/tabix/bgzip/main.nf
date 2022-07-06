@@ -11,17 +11,20 @@ process TABIX_BGZIP {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.gz"), emit: gz
-    path  "versions.yml"         , emit: versions
+    tuple val(meta), path("${prefix}*"), emit: output
+    path  "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    in_bgzip = input.toString().endsWith(".gz")
+    command1 = in_bgzip ? '-d' : '-c'
+    command2 = in_bgzip ? ''   : " > ${prefix}.${input.getExtension()}.gz"
     """
-    bgzip -c $args $input > ${prefix}.${input.getExtension()}.gz
+    bgzip $command1 $args -@${task.cpus} $input $command2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -21,13 +21,11 @@ process HMMER_HMMALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fastacmd = fasta.getExtension() == 'gz' ? "gunzip -c $fasta" : "cat $fasta"
     """
-    $fastacmd | \\
-        hmmalign \\
+    hmmalign \\
         $args \\
         $hmm \\
-        - | gzip -c > ${meta.id}.sthlm.gz
+        $fasta | gzip -c > ${meta.id}.sthlm.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

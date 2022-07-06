@@ -1,0 +1,19 @@
+- name: bcftools annotate test_bcftools_annotate_out_vcf
+  command: nextflow run tests/modules/bcftools/annotate -entry test_bcftools_annotate_out_vcf -c tests/config/nextflow.config
+  tags:
+    - bcftools/annotate
+    - bcftools
+  files:
+    - path: output/bcftools/test_compressed_vcf_annotated.vcf.gz
+    - path: output/bcftools/versions.yml
+      md5sum: de86d4d411baef1aaee0e72f519dbe1f
+
+- name: bcftools annotate test_bcftools_annotate_out_bcf
+  command: nextflow run tests/modules/bcftools/annotate -entry test_bcftools_annotate_out_bcf -c tests/config/nextflow.config
+  tags:
+    - bcftools/annotate
+    - bcftools
+  files:
+    - path: output/bcftools/test_compressed_bcf_annotated.bcf
+    - path: output/bcftools/versions.yml
+      md5sum: a57e62a5a189fe85aabd52c010d88ca6

@@ -1,23 +1,26 @@
 - name: filtlong test_filtlong
-  command: nextflow run ./tests/modules/filtlong -entry test_filtlong -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong -c ./tests/config/nextflow.config  -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:
-    - path: output/filtlong/test_lr_filtlong.fastq.gz
-      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/filtlong/test_lr.fastq.gz
+      contains:
+        - "@00068f7a-51b3-4933-8fc6-7d6e29181ff9"
 
 - name: filtlong test_filtlong_illumina_se
-  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_se -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_se -c ./tests/config/nextflow.config  -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:
-    - path: output/filtlong/test_lr_filtlong.fastq.gz
-      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/filtlong/test_lr.fastq.gz
+      contains:
+        - "@00068f7a-51b3-4933-8fc6-7d6e29181ff9"
 
 - name: filtlong test_filtlong_illumina_pe
-  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_pe -c ./tests/config/nextflow.config -c ./tests/modules/filtlong/nextflow.config
+  command: nextflow run ./tests/modules/filtlong -entry test_filtlong_illumina_pe -c ./tests/config/nextflow.config  -c ./tests/modules/filtlong/nextflow.config
   tags:
     - filtlong
   files:
-    - path: output/filtlong/test_lr_filtlong.fastq.gz
-      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/filtlong/test_lr.fastq.gz
+      contains:
+        - "@00068f7a-51b3-4933-8fc6-7d6e29181ff9"

@@ -2,18 +2,18 @@ process GATK4_MERGEVCFS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.4.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.4.1--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.4.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcfs)
-    path  ref_dict
-    val   use_ref_dict
+    tuple val(meta), path(vcf)
+    path  dict
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
+    tuple val(meta), path("*.tbi")   , emit: tbi
     path  "versions.yml"             , emit: versions
 
     when:
@@ -22,13 +22,9 @@ process GATK4_MERGEVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_list = vcf.collect{ "--INPUT $it"}.join(' ')
+    def reference_command = dict ? "--SEQUENCE_DICTIONARY $dict" : ""
 
-    // Make list of VCFs to merge
-    def input = ""
-    for (vcf in vcfs) {
-        input += " I=${vcf}"
-    }
-    def ref = use_ref_dict ? "D=${ref_dict}" : ""
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK MergeVcfs] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -37,9 +33,10 @@ process GATK4_MERGEVCFS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" MergeVcfs \\
-        $input \\
-        O=${prefix}.vcf.gz \\
-        $ref \\
+        $input_list \\
+        --OUTPUT ${prefix}.vcf.gz \\
+        $reference_command \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

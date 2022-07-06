@@ -2,18 +2,35 @@
 
 nextflow.enable.dsl = 2
 
+include { UNTAR } from '../../../modules/untar/main.nf'
 include { VCFANNO } from '../../../modules/vcfanno/main.nf'
 
 workflow test_vcfanno {
-    
-    input = [ 
-        [ id:'test', single_end:false ], // meta map
+
+    input = [
+        [ id:'test_compressed', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    toml = file("https://raw.githubusercontent.com/nf-core/test-datasets/8fbd9f99a2feb3f9e39cd3bcdc4a9176a5835673/data/delete_me/vcfanno.toml", 
-                checkIfExists: true)
+    toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+    resource_dir = [[], file(params.test_data['homo_sapiens']['genome']['vcfanno_tar_gz'], checkIfExists: true) ]
 
-    VCFANNO ( input, toml )
+    UNTAR ( resource_dir )
+    VCFANNO ( input, toml, UNTAR.out.untar.map{ it[1] } )
+}
+
+workflow test_vcfanno_uncompressed {
+
+    input = [ 
+        [ id:'test_uncompressed', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+        [] 
+    ]
+
+    toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+    resource_dir = [[], file(params.test_data['homo_sapiens']['genome']['vcfanno_tar_gz'], checkIfExists: true) ]
+
+    UNTAR ( resource_dir )
+    VCFANNO ( input, toml, UNTAR.out.untar.map{ it[1] } )
 }

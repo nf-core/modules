@@ -5,6 +5,8 @@ keywords:
   - bed
   - annotate
   - variant
+  - lua
+  - toml
 tools:
   - vcfanno:
       description: annotate a VCF with other VCFs/BEDs/tabixed files
@@ -23,19 +25,21 @@ input:
   - vcf:
       type: file
       description: query VCF file
-      pattern: "*.{vcf.gz}"
-  - vcf.tbi:
+      pattern: "*.{vcf, vcf.gz}"
+  - vcf_tabix:
       type: file
-      description: query VCF file index
-      pattern: "*.{vcf.gz.tbi}"
-  - vcfanno_config:
+      description: tabix index of query VCF - only needed if vcf is compressed
+      pattern: "*.vcf.gz.tbi"
+  - toml:
+      type: file
+      description: configuration file
+      pattern: "*.toml"
+  - resource_dir:
       type: file
       description: |
-        A simple configuration file is used to specify both the source files
-        and the set of attributes (in the case of VCF)
-        or columns (in the case of BED or other tab-delimited formats)
-        that should be added to the query file.
-      pattern: "*.{toml}"
+        This directory contains referenced files in the TOML config,
+        and the corresponding indicies e.g. exac.vcf.gz + exac.vcf.gz.tbi,
+        with exception to the lua file.
 
 output:
   - meta:
@@ -50,7 +54,7 @@ output:
   - vcf:
       type: file
       description: Annotated VCF file
-      pattern: "*.{vcf}"
+      pattern: "*.vcf"
 
 authors:
   - "@projectoriented"

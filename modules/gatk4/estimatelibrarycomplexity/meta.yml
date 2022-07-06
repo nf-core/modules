@@ -12,7 +12,7 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: "10.1158/1538-7445.AM2017-3590"
-      licence: ['Apache-2.0']
+      licence: ["Apache-2.0"]
 
 input:
   - meta:
@@ -20,7 +20,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - cram:
+  - input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
@@ -54,3 +54,4 @@ output:
 
 authors:
   - "@FriederikeHanssen"
+  - "@maxulysse"
