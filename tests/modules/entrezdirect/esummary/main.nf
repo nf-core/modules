@@ -31,7 +31,7 @@ workflow test_entrezdirect_esummary_genome {
 }
 
 //
-// Test with Assembly database 
+// Test with Assembly database
 //
 workflow test_entrezdirect_esummary_assembly {
     input = [
