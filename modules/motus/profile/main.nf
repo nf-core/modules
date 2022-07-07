@@ -48,7 +48,7 @@ process MOTUS_PROFILE {
     fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mOTUs: \$VERSION
+        motus: \$VERSION
     END_VERSIONS
     """
 }
