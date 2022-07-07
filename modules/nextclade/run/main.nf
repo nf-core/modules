@@ -2,21 +2,26 @@ process NEXTCLADE_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::nextclade=1.10.2" : null)
+    conda (params.enable_conda ? "bioconda::nextclade=2.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:1.10.2--h9ee0642_0' :
-        'quay.io/biocontainers/nextclade:1.10.2--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:2.2.0--h9ee0642_0' :
+        'quay.io/biocontainers/nextclade:2.2.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)
     path dataset
 
     output:
-    tuple val(meta), path("${prefix}.csv")      , emit: csv
-    tuple val(meta), path("${prefix}.tsv")      , emit: tsv
-    tuple val(meta), path("${prefix}.json")     , emit: json
-    tuple val(meta), path("${prefix}.tree.json"), emit: json_tree
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.csv")           , optional:true, emit: csv
+    tuple val(meta), path("${prefix}.errors.csv")    , optional:true, emit: csv_errors
+    tuple val(meta), path("${prefix}.insertions.csv"), optional:true, emit: csv_insertions
+    tuple val(meta), path("${prefix}.tsv")           , optional:true, emit: tsv
+    tuple val(meta), path("${prefix}.json")          , optional:true, emit: json
+    tuple val(meta), path("${prefix}.auspice.json")  , optional:true, emit: json_auspice
+    tuple val(meta), path("${prefix}.ndjson")        , optional:true, emit: ndjson
+    tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
+    tuple val(meta), path("*.translation.fasta")     , optional:true, emit: fasta_translation
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,17 +34,14 @@ process NEXTCLADE_RUN {
         run \\
         $args \\
         --jobs $task.cpus \\
-        --input-fasta $fasta \\
         --input-dataset $dataset \\
-        --output-csv ${prefix}.csv \\
-        --output-tsv ${prefix}.tsv \\
-        --output-json ${prefix}.json \\
-        --output-tree ${prefix}.tree.json \\
-        --output-basename ${prefix}
+        --output-all ./ \\
+        --output-basename ${prefix} \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nextclade: \$(nextclade --version 2>&1)
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
 }
