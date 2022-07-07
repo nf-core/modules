@@ -25,7 +25,7 @@ process ENTREZDIRECT_ESUMMARY {
         -db $database \\
         -id $uid \\
         $args \\
-        > ${prefix}.esummary.xml
+        > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
