@@ -13,7 +13,7 @@ process ENTREZDIRECT_ESUMMARY {
 
     output:
     tuple val(meta), path("*.xml"), emit: xml_esummary
-    path "versions.yml"                    , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
