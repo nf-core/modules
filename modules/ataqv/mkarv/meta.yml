@@ -14,7 +14,7 @@ tools:
 input:
   - json:
       type: file
-      description: The JSON file with metrics
+      description: The JSON file with ataqv metrics
       pattern: "*.json"
 
 output:
@@ -23,8 +23,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - html:
-      type: file
-      description: HTML file
+      type: directory
+      description: Web application to visualize results in HTML format
       pattern: "*.html"
 
 authors:

@@ -4,14 +4,14 @@ process ATAQV_MKARV {
     conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.0--py39hccc85d7_2':
-        'quay.io/biocontainers/ataqv:1.3.0--py27hca85b04_1' }"
+        'quay.io/biocontainers/ataqv:1.3.0--py39hccc85d7_2' }"
 
     input:
     path json
 
     output:
-    path "html"                          , emit: html
-    path "versions.yml"                  , emit: versions
+    path "html"        , emit: html
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
