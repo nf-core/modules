@@ -2,10 +2,10 @@ process ARTIC_GUPPYPLEX {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::artic=1.2.1" : null)
+    conda (params.enable_conda ? "bioconda::artic=1.2.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0' :
-        'quay.io/biocontainers/artic:1.2.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/artic:1.2.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/artic:1.2.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq_dir)
