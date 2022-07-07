@@ -11,7 +11,7 @@ process ENTREZDIRECT_ESUMMARY {
     tuple val(meta), val(database), val(uid)
 
     output:
-    tuple val(meta), path("*.esummary.xml"), emit: xml_esummary
+    tuple val(meta), path("*.xml"), emit: xml_esummary
     path "versions.yml"                    , emit: versions
 
     when:
