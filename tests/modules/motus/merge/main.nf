@@ -1,0 +1,29 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+include { MOTUS_DOWNLOADDB } from '../../../../modules/motus/downloaddb/main.nf'
+include { MOTUS_PROFILE    } from '../../../../modules/motus/profile/main.nf'
+include { MOTUS_MERGE } from '../../../../modules/motus/merge/main.nf'
+
+workflow test_motus_merge {
+
+    input = Channel.fromList(
+        [
+            [
+                [ id:'test', single_end:true ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            ],
+            [
+                [ id:'test2', single_end:true ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+            ]
+        ]
+    )
+
+    MOTUS_DOWNLOADDB ( file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py') )
+    MOTUS_PROFILE ( input, MOTUS_DOWNLOADDB.out.db )
+    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{it[1]}.collect(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first(), false )
+
+}
+
