@@ -36,7 +36,7 @@ process NEXTCLADE_DATASETGET {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nextclade: \$(nextclade --version 2>&1)
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
 }
