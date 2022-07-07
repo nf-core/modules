@@ -37,7 +37,9 @@ input:
       pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
   - databases:
       type: directory
-      description: downloaded AntiSMASH databases e.g. data/databases
+      description: |
+        Downloaded AntiSMASH databases (e.g. in the AntiSMASH installation directory
+        "data/databases")
       pattern: "*/"
   - antismash_dir:
       type: directory
@@ -51,6 +53,7 @@ input:
       pattern: "*/"
   - gff:
       type: file
+      description: Annotations in GFF3 format (only if sequence_input is in FASTA format)
       pattern: "*.gff"
 
 output:
