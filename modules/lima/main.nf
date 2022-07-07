@@ -1,6 +1,6 @@
 process LIMA {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
