@@ -2,10 +2,10 @@ process PICARD_MARKDUPLICATES {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.2" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.2--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.2--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
