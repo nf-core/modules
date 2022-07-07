@@ -8,7 +8,8 @@ process ENTREZDIRECT_ESUMMARY {
         'quay.io/biocontainers/entrez-direct:13.9--pl526h375a9b1_1' }"
 
     input:
-    tuple val(meta), val(database), val(uid)
+    tuple val(meta), val(uid)
+    val database
 
     output:
     tuple val(meta), path("*.xml"), emit: xml_esummary
