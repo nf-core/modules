@@ -23,6 +23,9 @@ jobs:
   test:
     runs-on: ubuntu-20.04
 
+    permissions:
+      packages: read
+
     name: ${{ matrix.tags }} ${{ matrix.profile }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
