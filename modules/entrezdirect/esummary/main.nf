@@ -8,7 +8,7 @@ process ENTREZDIRECT_ESUMMARY {
         'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
-    tuple val(meta)
+    val meta
     val uid
     val database
 
