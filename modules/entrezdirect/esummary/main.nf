@@ -21,16 +21,14 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input = uid ? "-id ${uid}" : "-file ${uids_file}"
     if ( uid && uids_file )  error "Cannot supply both a uid and file of uids at the same time. Check input"
     if ( !uid && !uids_file )  error "Must supply either a uid or uids file. Check input"
-    def input = uid ? "-id ${uid}" : "-file ${uids_file}"
-    // std_input: single uid
-    if( std_input != null )
     """
     esummary \\
         $args \\
         -db $database \\
-        $std_input | cat | grep '<' > ${prefix}.xml
+        $input | cat | grep '<' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
