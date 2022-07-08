@@ -4,11 +4,12 @@ process ENTREZDIRECT_ESUMMARY {
 
     conda (params.enable_conda ? "bioconda::entrez-direct=13.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/entrez-direct:13.9--pl526h375a9b1_1':
-        'quay.io/biocontainers/entrez-direct:13.9--pl526h375a9b1_1' }"
+        'https://depot.galaxyproject.org/singularity/entrez-direct:13.9--pl5262he881be0_2':
+        'quay.io/biocontainers/entrez-direct:13.9--pl5262he881be0_2' }"
 
     input:
-    tuple val(meta), val(uid)
+    tuple val(meta)
+    val uid
     val database
 
     output:
@@ -21,10 +22,13 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def std_input = uid ? "-id ${uid}" : null
+    // std_input: single uid
+    if( std_input != null )
     """
     esummary \\
         -db $database \\
-        -id $uid \\
+        $std_input \\
         $args \\
         > ${prefix}.xml
 
