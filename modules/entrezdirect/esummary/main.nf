@@ -8,7 +8,7 @@ process ENTREZDIRECT_ESUMMARY {
         'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
-    val meta
+    tuple val(meta)
     val uid
     val database
 
@@ -27,10 +27,9 @@ process ENTREZDIRECT_ESUMMARY {
     if( std_input != null )
     """
     esummary \\
-        -db $database \\
-        $std_input \\
         $args \\
-        > ${prefix}.xml
+        -db $database \\
+        $std_input | cat | grep '<' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
