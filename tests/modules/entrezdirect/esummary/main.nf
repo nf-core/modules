@@ -9,13 +9,12 @@ include { ENTREZDIRECT_ESUMMARY } from '../../../../modules/entrezdirect/esummar
 //
 workflow test_entrezdirect_esummary_sra {
     input = [
-        [ id:'test_sra' ], // meta map
-        uid = '5135484'
+        [ id:'test_sra' ] // meta map
     ]
 
+    uid = '5135484'
     database = 'sra'
-
-    ENTREZDIRECT_ESUMMARY ( input, database )
+    ENTREZDIRECT_ESUMMARY ( input, uid, database )
 }
 
 //
@@ -23,13 +22,13 @@ workflow test_entrezdirect_esummary_sra {
 //
 workflow test_entrezdirect_esummary_genome {
     input = [
-        [ id:'test_genome' ], // meta map
-        uid = '768',
+        [ id:'test_genome' ] // meta map
     ]
 
+    uid = '768'
     database = 'genome'
 
-    ENTREZDIRECT_ESUMMARY ( input, database )
+    ENTREZDIRECT_ESUMMARY ( input, uid, database )
 }
 
 //
@@ -37,11 +36,11 @@ workflow test_entrezdirect_esummary_genome {
 //
 workflow test_entrezdirect_esummary_assembly {
     input = [
-        [ id:'test_assembly' ], // meta map
-        uid = '191021',
+        [ id:'test_assembly' ] // meta map
     ]
 
+    uid = '191021'
     database = 'assembly'
 
-    ENTREZDIRECT_ESUMMARY ( input, database )
+    ENTREZDIRECT_ESUMMARY ( input, uid, database )
 }
