@@ -36,6 +36,7 @@ workflow test_entrezdirect_esummary_assembly {
         [ id:'test_assembly' ] // meta map
     ]
     uid = '191021'
+    ids = ""
     database = 'assembly'
     ENTREZDIRECT_ESUMMARY ( input, uid, database )
 }

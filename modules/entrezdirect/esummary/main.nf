@@ -10,7 +10,6 @@ process ENTREZDIRECT_ESUMMARY {
     input:
     tuple val(meta)
     val uid
-    path ids
     val database
 
     output:
@@ -24,9 +23,8 @@ process ENTREZDIRECT_ESUMMARY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def std_input = uid ? "-id ${uid}" : null
-    def file_input = ids ? "-input ${ids}" : null
     // std_input: single uid
-    if( std_input != null && file_input == null)
+    if( std_input != null )
     """
     esummary \\
         $args \\
@@ -38,19 +36,4 @@ process ENTREZDIRECT_ESUMMARY {
         esummary: \$(echo \$(esummary --help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^esummary //; s/Using.*\$//' ))
     END_VERSIONS
     """
-    // file_input: list of ids, one id per line
-    else if( file_input != null &&  std_input == null)
-    """
-    esummary \\
-        $args \\
-        -db $database \\
-        $file_input | cat | grep '<' > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        esummary: \$(echo \$(esummary --help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^esummary //; s/Using.*\$//' ))
-    END_VERSIONS
-    """
-    else
-       error "Invalid input: provide a single unique identifier or a file of identifiers."
 }
