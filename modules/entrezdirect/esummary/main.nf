@@ -8,7 +8,7 @@ process ENTREZDIRECT_ESUMMARY {
         'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
-    tuple val(meta), val(uid), file(uids_file)
+    tuple val(meta), val(uid), path(uids_file)
     val database
 
     output:
@@ -21,14 +21,12 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = uid ? "-id ${uid}" : "-file ${uids_file}"
-    if ( uid && uids_file )  error "Cannot supply both a uid and file of uids at the same time. Check input"
-    if ( !uid && !uids_file )  error "Must supply either a uid or uids file. Check input"
+    def input_file = uids_file.name != 'NO_FILE' ? "-input $uids_file" : ''
     """
     esummary \\
         $args \\
         -db $database \\
-        $input | cat | grep '<' > ${prefix}.xml
+        -id $uid | cat | grep '<' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
