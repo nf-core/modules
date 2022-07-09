@@ -21,16 +21,32 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_id = uid ? "-id ${uid}" : ''
     def input_file = uids_file.name != 'NO_FILE' ? "-input $uids_file" : ''
+    if(input_id && !input_file)
     """
     esummary \\
         $args \\
         -db $database \\
-        -id $uid | cat | grep '<' > ${prefix}.xml
+        $input_id | cat | grep '<' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         esummary: \$(echo \$(esummary --help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^esummary //; s/Using.*\$//' ))
     END_VERSIONS
     """
+    else if(input_file && !input_id)
+    """
+    esummary \\
+        $args \\
+        -db $database \\
+        $input_file | cat | grep '<' > ${prefix}.xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        esummary: \$(echo \$(esummary --help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^esummary //; s/Using.*\$//' ))
+    END_VERSIONS
+    """
+    else
+        error "Invalid input: provide an unique identifier or a file with identifiers."
 }
