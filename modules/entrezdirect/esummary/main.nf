@@ -21,12 +21,9 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // def input_id = uid ? "-id ${uid}" : ''
-    // def input_file = uids_file.name != 'NO_FILE' ? "-input $uids_file" : ''
-    // define single input:
     input = uids_file.name != 'NO_FILE' ? "-input $uids_file" : "-id ${uid}"
-    // conditionals: if for each error scenario
-    // error "Invalid input: provide an unique identifier or a file with identifiers."
+    if (!uid && uids_file.name == 'NO_FILE') error "No input. Valid input: an identifier or a .txt file with identifiers"
+    if (uid && uids_file.name != 'NO_FILE') error "Only one input is required: a single identifier or a .txt file with identifiers"
     """
     esummary \\
         $args \\
