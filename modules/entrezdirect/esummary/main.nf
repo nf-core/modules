@@ -28,7 +28,7 @@ process ENTREZDIRECT_ESUMMARY {
     esummary \\
         $args \\
         -db $database \\
-        $input | cat | grep '<' > ${prefix}.xml
+        $input | grep '<' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
