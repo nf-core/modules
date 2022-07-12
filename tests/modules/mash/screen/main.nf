@@ -14,8 +14,11 @@ workflow test_mash_screen {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fastx_db = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    sars_db = [
+        [ id: 'sars_db' ],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
-    MASH_SKETCH ( input )
-    MASH_SCREEN ( MASH_SKETCH.out.mash, fastx_db )
+    MASH_SKETCH ( sars_db )
+    MASH_SCREEN ( input, MASH_SKETCH.out.mash.map { meta, sketch -> sketch } )
 }

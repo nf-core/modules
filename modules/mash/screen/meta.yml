@@ -20,13 +20,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - query_sketch:
+  - query:
       type: file
-      description: MinHash sketch of query sequences
-      pattern: "*.msh"
-  - fastx_db:
+      description: Query sequences
+      pattern: "*.fastq.gz"
+  - sequence_sketch:
       type: file
       description: Sequence files to match against
+      pattern: "*.msh"
 
 output:
   - meta:
