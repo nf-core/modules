@@ -1,14 +1,44 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml vsearch/cluster
-- name: "vsearch cluster"
-  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster -c ./tests/config/nextflow.config -c ./tests/modules/vsearch/cluster/nextflow.config
+- name: vsearch cluster test_vsearch_cluster_fast
+  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_fast -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
   tags:
-    - "vsearch"
-    #
-    - "vsearch/cluster"
-    #
+    - vsearch
+    - vsearch/cluster
   files:
-    - path: "output/vsearch/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/vsearch/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/vsearch/test.centroids.fasta
+      md5sum: 7ce841a7bba1c14ced4e1322d73a2d1f
+
+- name: vsearch cluster test_vsearch_cluster_size
+  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_size -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
+  tags:
+    - vsearch
+    - vsearch/cluster
+  files:
+    - path: output/vsearch/test.centroids.fasta
+      md5sum: 60cbcb66817e8c4d76586d2674b82047
+
+- name: vsearch cluster test_vsearch_cluster_smallmem
+  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_smallmem -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
+  tags:
+    - vsearch
+    - vsearch/cluster
+  files:
+    - path: output/vsearch/test.centroids.fasta
+      md5sum: f8a6497f29c55465df843da5c5af39ca
+
+- name: vsearch cluster test_vsearch_cluster_unoise
+  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_unoise -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
+  tags:
+    - vsearch
+    - vsearch/cluster
+  files:
+    - path: output/vsearch/test.centroids.fasta
+      md5sum: e84ed4c7d22e1b8a05400c3751c29efc
+
+- name: vsearch cluster test_vsearch_cluster_userout
+  command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_userout -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
+  tags:
+    - vsearch
+    - vsearch/cluster
+  files:
+    - path: output/vsearch/test.out.tsv
+      md5sum: fb3256dd2327bf3dd4b9695394f5d5a8

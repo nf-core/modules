@@ -42,7 +42,7 @@ process VSEARCH_CLUSTER {
         case "smallmem": clustering = "--cluster_smallmem"; break
         case "unoise": clustering = "--cluster_unoise"; break
         default:
-            clustering = "--centroids";
+            clustering = "--cluster_fast";
             log.warn("Unknown clustering option provided (${clusteroption}): selecting fast option (--cluster_fast)");
             break
     }
