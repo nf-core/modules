@@ -15,7 +15,7 @@ process MOTUS_PROFILE {
     tuple val(meta), path("*.out"), emit: out
     tuple val(meta), path("*.bam"), optional: true, emit: bam
     tuple val(meta), path("*.mgc"), optional: true, emit: mgc
-    tuple val(meta), path("*.log"),               , emit: log
+    tuple val(meta), path("*.log")                , emit: log
     path "versions.yml"           , emit: versions
 
     when:
