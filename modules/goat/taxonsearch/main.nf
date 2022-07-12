@@ -20,9 +20,9 @@ process GOAT_TAXONSEARCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    input = taxa_file.name != 'NO_FILE' ? "-f $taxa_file" : "-t ${taxon}"
-    if (!uid && uids_file.name == 'NO_FILE') error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
-    if (uid && uids_file.name != 'NO_FILE') error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
+    input = taxa_file.name != 'NO_FILE' ? "-f ${taxa_file}" : "-t ${taxon}"
+    if (!taxon && taxa_file.name == 'NO_FILE') error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
+    if (taxon && taxa_file.name != 'NO_FILE') error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
     """
     goat-cli taxon search \\
         $args \\
