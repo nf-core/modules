@@ -2,20 +2,25 @@
 
 nextflow.enable.dsl = 2
 
-include { MERYL_COUNT } from '../../../modules/meryl/count/main.nf'
-include { MERQURY     } from '../../../modules/merqury/main.nf'
+include { MERYL_COUNT    } from '../../../modules/meryl/count/main.nf'
+include { MERYL_UNIONSUM } from '../../../modules/meryl/unionsum/main.nf'
+include { MERQURY        } from '../../../modules/merqury/main.nf'
 
 workflow test_merqury {
 
     input = [
-        [ id:'test', single_end:true ], // meta map
-        file(params.test_data['bacteroides_fragilis']['illumina']['test1_1_fastq_gz'], checkIfExists: true)
+        [ id:'test', single_end:false ], // meta map
+        [
+            file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+            file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+        ]
     ]
     assembly = [
-        [ id:'test', single_end:true ], // meta map
-        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     MERYL_COUNT ( input )
-    MERQURY ( MERYL_COUNT.out.meryl_db.join( Channel.value( assembly ) ) )
+    MERYL_UNIONSUM ( MERYL_COUNT.out.meryl_db )
+    MERQURY ( MERYL_UNIONSUM.out.meryl_db.join( Channel.value( assembly ) ) )
 }

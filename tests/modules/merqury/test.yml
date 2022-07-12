@@ -1,39 +1,35 @@
 - name: merqury test_merqury
-  command: nextflow run tests/modules/merqury -entry test_merqury -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/merqury -entry test_merqury -c ./tests/config/nextflow.config  -c ./tests/modules/merqury/nextflow.config
   tags:
     - merqury
   files:
-    - path: output/merqury/genome.fna.gz_only.bed
-      md5sum: fb1eae86317853ded7400a0f44ce21a3
-    - path: output/merqury/genome.fna.gz_only.wig
-      md5sum: 203a738e2b126b559fea01530cd544dd
-    - path: output/merqury/read.test1_1db.hist.ploidy
-      md5sum: f6904468b41a495c7ce255a7a5f3a302
+    - path: output/merqury/genome_only.bed
+      md5sum: b611f22cde0e410a2ca07c1eefd042d3
+    - path: output/merqury/genome_only.wig
+      md5sum: 19cf44989af72af597ef80d3489b4882
     - path: output/merqury/test.completeness.stats
-      # md5sum removed to pass linting. Needs full size dataset to be non-empty
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/merqury/test.dist_only.hist
-      md5sum: 384ee63204b387604ea11040d05b1979
-    - path: output/merqury/test.genome.fna.gz.qv
-      md5sum: 04e421973888be4bc31fe3fccbad9693
-    - path: output/merqury/test.genome.fna.gz.spectra-cn.fl.png
-      md5sum: 1d1f8792139cb9403bc1cef142f6d410
-    - path: output/merqury/test.genome.fna.gz.spectra-cn.hist
-      md5sum: 874ee77711e14a5a80564393190aa736
-    - path: output/merqury/test.genome.fna.gz.spectra-cn.ln.png
-      md5sum: 2c6f45a850de93b7d5e805b8bc9eb4ca
-    - path: output/merqury/test.genome.fna.gz.spectra-cn.st.png
-      md5sum: 871fcc65c21b8a6029a191f92803ac64
+      md5sum: e2e6b54b0febef1f0fcf24cd2afd0b7a
+    - path: output/merqury/test.genome.qv
+      md5sum: c554315aabcc4207c367805cf3090da3
+    - path: output/merqury/test.genome.spectra-cn.fl.png
+      md5sum: 3265701cbb1ddaed6d5cb6b4560564fd
+    - path: output/merqury/test.genome.spectra-cn.hist
+      md5sum: 6140a138ba47cb2b97814c93f80b2575
+    - path: output/merqury/test.genome.spectra-cn.ln.png
+      md5sum: 6386b604a8f0fbc43a1e3473ad9a779e
+    - path: output/merqury/test.genome.spectra-cn.st.png
+      md5sum: d5af80c91d23b182589b0ec131047f00
     - path: output/merqury/test.qv
-      md5sum: 99f3001f90b0f14483f72ec92145718b
+      md5sum: 6e04952bc182221c8b9e242dc3298808
     - path: output/merqury/test.spectra-asm.fl.png
-      md5sum: e80a16dfa02ae3030b5c5bdeb13fbc5f
+      md5sum: 60920481d988018a4f36a9be5b10c4ec
     - path: output/merqury/test.spectra-asm.hist
-      md5sum: 094cfd8a9b5a0cc1529433d7a304ffd2
+      md5sum: 541c9d1f87ab5c44df5e9e0acc440f8d
     - path: output/merqury/test.spectra-asm.ln.png
-      md5sum: feca5591a7d273e4b0a8261f31f3db44
+      md5sum: 54790dd54b5d8948d3676d32da1972df
     - path: output/merqury/test.spectra-asm.st.png
-      md5sum: cc0479b60b300eb9d7be813767d7c07c
-    - path: output/merqury/versions.yml
-      md5sum: f29402d5fbbbebbc09cccf762f13d723
-    - path: output/meryl/versions.yml
-      md5sum: c0c1091c7cdcfae9658d07c8095040a6
+      md5sum: 010e013b5411ab2790e9a93ee70a574a
+    - path: output/merqury/test.unionsumdb.hist.ploidy
+      md5sum: f6904468b41a495c7ce255a7a5f3a302
