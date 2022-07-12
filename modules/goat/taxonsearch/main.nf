@@ -8,10 +8,10 @@ process GOAT_TAXONSEARCH {
         'quay.io/biocontainers/goat:0.2.0--h92d785c_0' }"
 
     input:
-    tuple val(meta), val(taxon)
+    tuple val(meta), val(taxon), path(taxa_file)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: taxonsearch_results
+    tuple val(meta), path("*.tsv"), emit: taxonsearch
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,10 +20,13 @@ process GOAT_TAXONSEARCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    input = taxa_file.name != 'NO_FILE' ? "-f $taxa_file" : "-t ${taxon}"
+    if (!uid && uids_file.name == 'NO_FILE') error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
+    if (uid && uids_file.name != 'NO_FILE') error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
     """
     goat-cli taxon search \\
         $args \\
-        -t ${taxon} > ${prefix}.tsv
+        $input > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
