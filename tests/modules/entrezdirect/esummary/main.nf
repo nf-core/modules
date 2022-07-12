@@ -9,7 +9,7 @@ include { ENTREZDIRECT_ESUMMARY } from '../../../../modules/entrezdirect/esummar
 //
 workflow test_entrezdirect_esummary_sra {
 
-    input_file = file('NO_FILE')
+    input_file = []
 
     input = [
         [ id:'test_sra' ], // meta map
@@ -27,7 +27,7 @@ workflow test_entrezdirect_esummary_sra {
 //
 workflow test_entrezdirect_esummary_genome {
 
-    input_file = file('NO_FILE')
+    input_file = []
 
     input = [
         [ id:'test_genome' ], // meta map
@@ -45,7 +45,7 @@ workflow test_entrezdirect_esummary_genome {
 //
 workflow test_entrezdirect_esummary_assembly {
 
-    input_file = file('NO_FILE')
+    input_file = []
 
     input = [
         [ id:'test_assembly' ], // meta map
