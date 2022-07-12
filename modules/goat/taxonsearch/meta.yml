@@ -1,52 +1,51 @@
 name: "goat_taxonsearch"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Query metadata for any taxon across the tree of life.
 keywords:
-  - sort
+  - public datasets
+  - ncbi
+  - genomes on a tree
+  - tree of life
 tools:
-  - "goat":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Query metadata for any taxon across the tree of life.
-"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['MIT']"
+  - goat:
+       goat-cli is a command line interface to query the Genomes on a Tree Open API
+      description:
+      homepage: https://github.com/genomehubs/goat-cli
+      documentation: https://github.com/genomehubs/goat-cli/wiki
+      tool_dev_url: https://genomehubs.github.io/goat-cli/goat_cli/
+      doi: "None"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test']
+  - taxon:
+      type: val
+      description: |
+        The taxon to search. An NCBI taxon ID, or the name of a taxon at any rank.
+  - taxa_file:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        A file of NCBI taxonomy ID's (tips) and/or binomial names. Each line
+        should contain a single entry.File size is limited to 500 entries.
+      pattern: "*.txt"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - taxonsearch:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TSV file containing search results.
+      pattern: "*.tsv"
 
 authors:
   - "@alxndrdiaz"
