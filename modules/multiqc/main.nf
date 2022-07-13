@@ -7,7 +7,8 @@ process MULTIQC {
         'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0' }"
 
     input:
-    path multiqc_files
+    path  multiqc_files, stageAs: "?/*"
+    tuple path(multiqc_config), path(multiqc_logo)
 
     output:
     path "*multiqc_report.html", emit: report
@@ -20,8 +21,13 @@ process MULTIQC {
 
     script:
     def args = task.ext.args ?: ''
+    def config = multiqc_config ? "--config $multiqc_config" : ''
     """
-    multiqc -f $args .
+    multiqc \\
+        --force \\
+        $config \\
+        $args \\
+        .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

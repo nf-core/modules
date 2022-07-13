@@ -23,6 +23,9 @@ input:
   - af_file:
       type: file
       description: "Read allele frequencies from a tab-delimited file containing the columns: CHROM\tPOS\tREF,ALT\tAF."
+  - af_file_tbi:
+      type: file
+      description: "tbi index of af_file."
   - genetic_map:
       type: file
       description: "Genetic map in the format required also by IMPUTE2."

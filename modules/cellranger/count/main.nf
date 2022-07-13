@@ -5,7 +5,7 @@ process CELLRANGER_COUNT {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger:6.1.2"
+    container "nfcore/cellranger:7.0.0"
 
     input:
     tuple val(meta), path(reads)
