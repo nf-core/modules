@@ -27,6 +27,7 @@ process KALLISTOBUSTOOLS_COUNT {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def cdna    = t1c ? "-c1 $t1c" : ''
     def introns = t2c ? "-c2 $t2c" : ''
+    def memory  = task.memory.toGiga() - 1
     """
     kb \\
         count \\
@@ -39,7 +40,7 @@ process KALLISTOBUSTOOLS_COUNT {
         $args \\
         -o ${prefix}.count \\
         ${reads.join( " " )} \\
-        -m ${task.memory.toGiga()}G
+        -m ${memory}G
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
