@@ -4,13 +4,13 @@ keywords:
   - vsearch
   - clustering
 tools:
-  - "vsearch":
-      description: "VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)"
-      homepage: "https://github.com/torognes/vsearch"
-      documentation: "https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf"
-      tool_dev_url: "https://github.com/torognes/vsearch"
-      doi: "doi: 10.7717/peerj.2584"
-      licence: "['GPL v3-or-later OR BSD-2-clause']"
+  - vsearch:
+      description: VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)
+      homepage: https://github.com/torognes/vsearch
+      documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
+      tool_dev_url: https://github.com/torognes/vsearch
+      doi: doi: 10.7717/peerj.2584
+      licence: ['GPL v3-or-later OR BSD-2-clause']
 
 input:
   - meta:
@@ -19,7 +19,7 @@ input:
   - fasta:
       type: file
       description: Sequences to cluster in FASTA format
-      pattern: "*.{fasta,fa}"
+      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
   - idcutoff:
       type: real
       description: Do not add the target to the cluster if the pairwise identity with the centroid is lower than real (value ranging from 0.0 to 1.0 included).
