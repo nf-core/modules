@@ -12,7 +12,8 @@ process FILTLONG {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,6 +28,7 @@ process FILTLONG {
         $short_reads \\
         $args \\
         $longreads \\
+        2> ${prefix}.log \\
         | gzip -n > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml

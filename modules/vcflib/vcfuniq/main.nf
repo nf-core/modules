@@ -3,10 +3,10 @@ process VCFLIB_VCFUNIQ {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::vcflib=1.0.2" : null)
+    conda (params.enable_conda ? "bioconda::vcflib=1.0.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcflib:1.0.2--h3198e80_5':
-        'quay.io/biocontainers/vcflib:1.0.2--h3198e80_5' }"
+        'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
+        'quay.io/biocontainers/vcflib:1.0.3--hecb563c_1' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
