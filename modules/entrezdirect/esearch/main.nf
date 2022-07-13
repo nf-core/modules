@@ -2,16 +2,16 @@ process ENTREZDIRECT_ESEARCH {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::entrez-direct=13.9" : null)
+    conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/entrez-direct:13.9--pl526h375a9b1_1':
-        'quay.io/biocontainers/entrez-direct:13.9--pl526h375a9b1_1' }"
+        'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
+        'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
     tuple val(meta), val(database), val(term)
 
     output:
-    tuple val(meta), path("*.esearch.xml")     , emit: result_xml
+    tuple val(meta), path("*.xml")     , emit: result_xml
     path "versions.yml"                        , emit: versions
 
     when:
