@@ -33,7 +33,7 @@ process ENTREZDIRECT_ESUMMARY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        esummary: \$(echo \$(esummary --help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^esummary //; s/Using.*\$//' ))
+        esummary: \$(esummary -version)
     END_VERSIONS
     """
 }
