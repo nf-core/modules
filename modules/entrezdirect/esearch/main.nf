@@ -29,7 +29,7 @@ process ENTREZDIRECT_ESEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        esearch: \$(echo \$(esearch -version 2>&1) | sed 's/^esearch //; s/Using.*\$//' ))
+        esearch: \$(esearch -version)
     END_VERSIONS
     """
 }
