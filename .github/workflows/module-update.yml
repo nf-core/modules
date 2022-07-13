@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install nf-core tools  development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@refs/pull/1671/head
 
       - name: Install Nextflow
         env:
