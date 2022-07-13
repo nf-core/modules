@@ -7,7 +7,7 @@ include { LONGRANGER_ALIGN } from '../../../../modules/longranger/align/main.nf'
 process DOWNLOAD_READS {
     input:
     output:
-    path("10x/"), emit: folder
+    path("10x/"), emit: download_folder
     path("10x/*fastq.gz"), emit: reads
     script:
     """
@@ -31,10 +31,8 @@ process DOWNLOAD_REF {
 workflow test_longranger_align {
     DOWNLOAD_READS ()
     DOWNLOAD_REF ()
-    DOWNLOAD_READS.out.folder.view()
-    DOWNLOAD_REF.out.contigs.view()
     LONGRANGER_ALIGN (
         DOWNLOAD_REF.out.contigs.map{ it -> [ [id : "pEimTen1"], it ]},
-        DOWNLOAD_READS.out.folder,
+        DOWNLOAD_READS.out.download_folder,
     )
 }
