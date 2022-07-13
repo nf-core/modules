@@ -45,6 +45,11 @@ output:
       type: file
       description: Filtered (compressed) fastq file
       pattern: "*.fastq.gz"
+  - log:
+      type: file
+      description: Standard error logging file containing summary statistics
+      pattern: "*.log"
 
 authors:
   - "@d4straub"
+  - "@sofstam"
