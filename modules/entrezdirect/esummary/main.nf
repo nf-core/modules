@@ -29,7 +29,7 @@ process ENTREZDIRECT_ESUMMARY {
     esummary \\
         $args \\
         -db $database \\
-        $input | grep '<' > ${prefix}.xml
+        $input | grep -v '^Can.t locate Time/HiRes.pm in @INC' | grep -Fx 'BEGIN failed--compilation aborted.' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
