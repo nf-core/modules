@@ -30,7 +30,7 @@ process GOAT_TAXONSEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        goat: \$(echo \$( goat-cli --version | cut -d' ' -f2 | head -1 2>&1) | sed 's/^.*goat //; s/Using.*\$//' ))
+        goat: \$(goat-cli --version | cut -d' ' -f2)
     END_VERSIONS
     """
 }
