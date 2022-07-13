@@ -24,12 +24,12 @@ process ENTREZDIRECT_ESUMMARY {
     input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
     if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
     if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
-    // use of grep is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
+    // use of 'tail -n+3' is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
     """
     esummary \\
         $args \\
         -db $database \\
-        $input | grep -v '^Can.t locate Time/HiRes.pm in @INC' | grep -Fx 'BEGIN failed--compilation aborted.' > ${prefix}.xml
+        $input | tail -n+3 > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
