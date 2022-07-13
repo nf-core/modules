@@ -9,7 +9,7 @@ tools:
       homepage: https://github.com/torognes/vsearch
       documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
       tool_dev_url: https://github.com/torognes/vsearch
-      doi: doi: 10.7717/peerj.2584
+      doi: 10.7717/peerj.2584
       licence: ['GPL v3-or-later OR BSD-2-clause']
 
 input:
@@ -44,35 +44,35 @@ output:
   - aln:
       type: file
       description: Results in pairwise alignment format
-      pattern: "*.aln"
+      pattern: "*.aln.gz"
   - biom:
       type: file
       description: Results in an OTU table in the biom version 1.0 file format
-      pattern: "*.biom"
+      pattern: "*.biom.gz"
   - mothur:
       type: file
       description: Results in an OTU table in the mothur ’shared’ tab-separated plain text file format
-      pattern: "*.mothur.tsv"
+      pattern: "*.mothur.tsv.gz"
   - otu:
       type: file
       description: Results in an OTU table in the classic tab-separated plain text format
-      pattern: "*.otu.tsv"
-  - sam:
+      pattern: "*.otu.tsv.gz"
+  - bam:
       type: file
-      description: Results written in sam format
-      pattern: "*.sam"
+      description: Results written in bam format
+      pattern: "*.bam"
   - out:
       type: file
       description: Results in tab-separated output, columns defined by user
-      pattern: "*.out.tsv"
+      pattern: "*.out.tsv.gz"
   - blast:
       type: file
       description: Tab delimited results in blast-like tabular format
-      pattern: "*.blast.tsv"
+      pattern: "*.blast.tsv.gz"
   - uc:
       type: file
       description: Tab delimited results in a uclust-like format with 10 columns
-      pattern: "*.uc"
+      pattern: "*.uc.gz"
   - versions:
       type: file
       description: File containing software versions

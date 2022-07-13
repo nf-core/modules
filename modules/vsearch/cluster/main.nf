@@ -15,19 +15,19 @@ process VSEARCH_CLUSTER {
     val user_columns
 
     output:
-    tuple val(meta), path('*.aln')                , optional: true, emit: aln
-    tuple val(meta), path('*.biom')               , optional: true, emit: biom
-    tuple val(meta), path('*.mothur.tsv')         , optional: true, emit: mothur
-    tuple val(meta), path('*.otu.tsv')            , optional: true, emit: otu
-    tuple val(meta), path('*.sam')                , optional: true, emit: sam
-    tuple val(meta), path('*.out.tsv')            , optional: true, emit: out
-    tuple val(meta), path('*.blast.tsv')          , optional: true, emit: blast
-    tuple val(meta), path('*.uc.tsv')             , optional: true, emit: uc
-    tuple val(meta), path('*.centroids.fasta')    , optional: true, emit: centroids
-    tuple val(meta), path('*.clusters.fasta')     , optional: true, emit: clusters
-    tuple val(meta), path('*.profile.txt')        , optional: true, emit: profile
-    tuple val(meta), path('*.msa.fasta')          , optional: true, emit: msa
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
+    tuple val(meta), path('*.biom.gz')               , optional: true, emit: biom
+    tuple val(meta), path('*.mothur.tsv.gz')         , optional: true, emit: mothur
+    tuple val(meta), path('*.otu.tsv.gz')            , optional: true, emit: otu
+    tuple val(meta), path('*.bam')                   , optional: true, emit: bam
+    tuple val(meta), path('*.out.tsv.gz')            , optional: true, emit: out
+    tuple val(meta), path('*.blast.tsv.gz')          , optional: true, emit: blast
+    tuple val(meta), path('*.uc.tsv.gz')             , optional: true, emit: uc
+    tuple val(meta), path('*.centroids.fasta.gz')    , optional: true, emit: centroids
+    tuple val(meta), path('*.clusters.fasta.gz')     , optional: true, emit: clusters
+    tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
+    tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -73,6 +73,13 @@ process VSEARCH_CLUSTER {
         --threads $task.cpus \\
         $args \\
         ${columns}
+
+    if [[ ${outfmt} != "--samout" ]]
+    then
+        gzip ${prefix}.${out_ext}
+    else
+        samtools view -S -b ${prefix}.${out_ext} > ${prefix}.bam
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

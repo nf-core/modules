@@ -29,7 +29,7 @@ workflow test_vsearch_cluster_size {
     ]
     clusteroption = "size"
     idcutoff = 0.8
-    outoption = "abcd"  // Nonsense text to check default case.
+    outoption = "samout"  // Test also sam to bam conversion
     user_columns = ""
 
     VSEARCH_CLUSTER ( input, clusteroption, idcutoff, outoption, user_columns )
