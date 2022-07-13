@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
+        tags: ["${{ fromJson(needs.modules_to_check.outputs.modules) }}"]
     steps:
       - uses: actions/checkout@v2
 
