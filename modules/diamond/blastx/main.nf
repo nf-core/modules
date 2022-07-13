@@ -21,6 +21,7 @@ process DIAMOND_BLASTX {
     tuple val(meta), path('*.sam')  , optional: true, emit: sam
     tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
     tuple val(meta), path('*.paf')  , optional: true, emit: paf
+    tuple val(meta), path("*.log")                  , emit: log
     path "versions.yml"                               , emit: versions
 
     when:
@@ -54,7 +55,11 @@ process DIAMOND_BLASTX {
         --query $fasta \\
         --outfmt ${outfmt} ${columns} \\
         $args \\
-        --out ${prefix}.${out_ext}
+        --out ${prefix}.${out_ext} \\
+        --log \\
+        2> ${prefix}.diamond.log
+
+    rm diamond.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
