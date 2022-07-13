@@ -21,11 +21,11 @@ process ENTREZDIRECT_ESUMMARY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    input = uids_file ? "-input $uids_file" : "-id ${uid}"
-    if (!uid && uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
+    input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
+    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
     if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    // use of grep is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
     """
-   // use of grep is to ensure clean XML file. Otherwise irrelevent perl compilation error ends up in the XML
     esummary \\
         $args \\
         -db $database \\
