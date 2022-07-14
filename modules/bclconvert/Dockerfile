@@ -11,5 +11,7 @@ RUN apt-get update \
     && apt-get install -y \
     procps \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+# Link hostname cmd to fix hardcoded path
+RUN ln -s /bin/hostname /usr/bin/hostname
 COPY bcl-convert /usr/local/bin/bcl-convert
 RUN chmod +x /usr/local/bin/bcl-convert

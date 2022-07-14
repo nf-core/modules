@@ -22,20 +22,24 @@ tools:
 input:
   - fastas:
       type: file
-      description: Directory of, or FASTA reference files for indexing
+      description: Directory of, or list of FASTA reference files for indexing
       pattern: "*/|*.fasta"
   - seq_type:
       type: string
       description: Type of input data
       pattern: "DNA|Protein"
-  - gff:
+  - mapping_file:
       type: file
-      description: Directory of, or GFF3 files of input FASTA files
-      pattern: "*/|*.gff|*.gff3"
-  - map_db:
-      type: file
-      description: MEGAN .db file from https://software-ab.informatik.uni-tuebingen.de/download/megan6/welcome.html
-      pattern:
+      description: An unzipped MEGAN mapping file in .abin format (pre-2020), downloadable from https://software-ab.informatik.uni-tuebingen.de/download/megan6/old.html
+      pattern: "*.abin"
+  - mapping_type:
+      type: value
+      description: What type of accession to use for database construction.
+      pattern: "gi|ref|syn"
+  - mapping_type:
+      type: value
+      description: Which database the mapping file is derived from.
+      pattern: "eggnog|interpro2go|kegg|seed|taxonomy"
 
 output:
   - versions:
