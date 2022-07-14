@@ -7,29 +7,11 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  modules_to_check:
-    name: list modules to check
+  update_modules:
+    name: update modules
     if: >
       github.repository == 'nf-core/modules'
     runs-on: ubuntu-20.04
-    outputs:
-      modules: ${{ steps.filter.outputs.modules_to_check }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: "tests/config/pytest_modules.yml"
-
-  update_modules:
-    name: update modules
-    runs-on: ubuntu-20.04
-    needs: modules_to_check
-    strategy:
-      fail-fast: false
-      matrix:
-        tags: ["${{ fromJson(needs.modules_to_check.outputs.modules) }}"]
     steps:
       - uses: actions/checkout@v2
 
@@ -54,7 +36,6 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-        # TODO: Remove this when nf-core modules lint stabilizes and install stable release
       - name: Install nf-core tools  development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@refs/pull/1671/head
 
@@ -65,9 +46,9 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      - name: Update module ${{ matrix.tags }} version
-        run: nf-core modules lint ${{ matrix.tags }} --fix-version
-        if: startsWith( matrix.tags, 'subworkflow' ) != true
+      - name: Update modules version
+        continue-on-error: true
+        run: nf-core modules lint --all --fix-version
 
       - uses: actions/cache@v2
         with:
