@@ -11,8 +11,8 @@ process ENTREZDIRECT_ESEARCH {
     tuple val(meta), val(database), val(term)
 
     output:
-    tuple val(meta), path("*.xml")     , emit: result_xml
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.xml") , emit: result_xml
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
