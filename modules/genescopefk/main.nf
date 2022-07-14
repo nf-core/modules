@@ -5,6 +5,7 @@ process GENESCOPEFK {
     if (params.enable_conda) {
         error "Conda environments cannot be used when using the GeneScope tool. Please use docker or singularity containers."
     }
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0'
 
     input:
@@ -25,7 +26,7 @@ process GENESCOPEFK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def GENESCOPE_VERSION = '380815c420f50171f9234a0fd1ff426b39829b91' // Git commit id is used instead of GeneScopeFK.R -v as software is not release versioned.
+    def GENESCOPE_VERSION = '380815c420f50171f9234a0fd1ff426b39829b91' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     GeneScopeFK.R \\
         $args \\

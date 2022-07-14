@@ -1,0 +1,54 @@
+name: "instrain_profile"
+description: inStrain is python program for analysis of co-occurring genome populations from metagenomes that allows highly accurate genome comparisons, analysis of coverage, microdiversity, and linkage, and sensitive SNP detection with gene localization and synonymous non-synonymous identification
+keywords:
+  - instrain
+  - metagenomics
+  - population genomics
+  - profile
+tools:
+  - instrain:
+      description: Calculation of strain-level metrics
+      homepage: https://github.com/MrOlm/instrain
+      documentation: https://instrain.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/MrOlm/instrain
+      doi: 10.1038/s41587-020-00797-0
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'test']
+  - bam:
+      type: path
+      description: Path to .bam file to be profiled
+      pattern: "*.{bam,sam}"
+  - genome_fasta:
+      type: path
+      description: Path to .fasta file to be profiled; MUST be the .fasta file that was mapped to to create the .bam file
+      pattern: "*.{fasta,fna,fa}"
+  - genes_fasta:
+      type: path
+      description: Path to .fna file of genes to be profiled (OPTIONAL)
+      pattern: "*.{fasta,fna,fa}"
+  - stb_file:
+      type: path
+      description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
+      pattern: "*.stb"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - profile:
+      type: path
+      description: InStrain profile folder
+      pattern: "*.IS/"
+
+authors:
+  - "@mrolm"
