@@ -37,4 +37,15 @@ process EXPANSIONHUNTER {
         expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+    END_VERSIONS
+    """
 }

@@ -12,6 +12,7 @@ process PORECHOP {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.log")     , emit: log
     path "versions.yml"                , emit: versions
 
     when:
@@ -25,7 +26,8 @@ process PORECHOP {
         -i $reads \\
         -t $task.cpus \\
         $args \\
-        -o ${prefix}.fastq.gz
+        -o ${prefix}.fastq.gz \\
+        > ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

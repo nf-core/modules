@@ -2,10 +2,10 @@ process GATK4_APPLYBQSR {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
@@ -14,9 +14,9 @@ process GATK4_APPLYBQSR {
     path  dict
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam, optional: true
+    tuple val(meta), path("*.bam") , emit: bam,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml"           ,  emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,7 @@ process GATK4_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def interval = intervals ? "-L ${intervals}" : ""
-    def file_type = input.getExtension()
+    def interval_command = intervals ? "--intervals $intervals" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -35,12 +34,12 @@ process GATK4_APPLYBQSR {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" ApplyBQSR \\
-        -R $fasta \\
-        -I $input \\
+        --input $input \\
+        --output ${prefix}.${input.getExtension()} \\
+        --reference $fasta \\
         --bqsr-recal-file $bqsr_table \\
-        $interval \\
+        $interval_command \\
         --tmp-dir . \\
-        -O ${prefix}.${file_type} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

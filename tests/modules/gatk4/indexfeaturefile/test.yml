@@ -5,6 +5,7 @@
     - gatk4/indexfeaturefile
   files:
     - path: output/gatk4/genome.bed.idx
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 indexfeaturefile test_gatk4_indexfeaturefile_bed_gz
   command: nextflow run tests/modules/gatk4/indexfeaturefile -entry test_gatk4_indexfeaturefile_bed_gz -c tests/config/nextflow.config -c ./tests/modules/gatk4/indexfeaturefile/nextflow.config
@@ -15,7 +16,6 @@
     - path: output/gatk4/genome.bed.gz.tbi
       md5sum: 4bc51e2351a6e83f20e13be75861f941
     - path: output/gatk4/versions.yml
-      md5sum: e5003204702f83aabdb4141272c704d2
 
 - name: gatk4 indexfeaturefile test_gatk4_indexfeaturefile_vcf
   command: nextflow run tests/modules/gatk4/indexfeaturefile -entry test_gatk4_indexfeaturefile_vcf -c tests/config/nextflow.config -c ./tests/modules/gatk4/indexfeaturefile/nextflow.config
@@ -25,7 +25,6 @@
   files:
     - path: output/gatk4/test.genome.vcf.idx
     - path: output/gatk4/versions.yml
-      md5sum: 08cd7c49cfb752fc2905f600106a0345
 
 - name: gatk4 indexfeaturefile test_gatk4_indexfeaturefile_vcf_gz
   command: nextflow run tests/modules/gatk4/indexfeaturefile -entry test_gatk4_indexfeaturefile_vcf_gz -c tests/config/nextflow.config
@@ -36,4 +35,3 @@
     - path: output/gatk4/test.genome.vcf.gz.tbi
       md5sum: fedd68eaddf8d31257853d9da8325bd3
     - path: output/gatk4/versions.yml
-      md5sum: b388d1681831a40264a7a27f67a8b247

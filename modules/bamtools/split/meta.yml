@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: A BAM file to split
+      description: A list of one or more BAM files to merge and then split
       pattern: "*.bam"
 
 output:
@@ -43,3 +43,4 @@ output:
 
 authors:
   - "@sguizard"
+  - "@matthdsm"

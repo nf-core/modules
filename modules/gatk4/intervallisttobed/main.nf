@@ -2,13 +2,13 @@ process GATK4_INTERVALLISTTOBED {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(interval)
+    tuple val(meta), path(intervals)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -29,8 +29,9 @@ process GATK4_INTERVALLISTTOBED {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" IntervalListToBed \\
-        --INPUT ${interval} \\
+        --INPUT $intervals \\
         --OUTPUT ${prefix}.bed \\
+        --TMP_DIR . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

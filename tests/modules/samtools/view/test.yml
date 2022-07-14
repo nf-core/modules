@@ -14,3 +14,11 @@
     - samtools
   files:
     - path: output/samtools/test.cram
+
+- name: samtools view test_samtools_view_stubs
+  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_stubs -c ./tests/config/nextflow.config -c ./tests/modules/samtools/view/nextflow.config -stub-run
+  tags:
+    - samtools/view
+    - samtools
+  files:
+    - path: output/samtools/test.bam

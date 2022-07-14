@@ -2,7 +2,9 @@ name: bowtie2_align
 description: Align reads to a reference genome using bowtie2
 keywords:
   - align
+  - map
   - fasta
+  - fastq
   - genome
   - reference
 tools:
@@ -29,6 +31,15 @@ input:
       type: file
       description: Bowtie2 genome index files
       pattern: "*.ebwt"
+  - save_unaligned:
+      type: boolean
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - sort_bam:
+      type: boolean
+      description: use samtools sort (true) or samtools view (false)
+      pattern: "true or false"
 output:
   - bam:
       type: file

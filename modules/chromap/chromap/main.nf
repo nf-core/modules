@@ -2,10 +2,10 @@ process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::chromap=0.2.0 bioconda::samtools=1.14" : null)
+    conda (params.enable_conda ? "bioconda::chromap=0.2.1 bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' :
-        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:ed3529ef5253d7ccbc688b6a4c5c447152685757-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:963e4fe6a85c548a4018585660aed79780a175d3-0' :
+        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:963e4fe6a85c548a4018585660aed79780a175d3-0' }"
 
     input:
     tuple val(meta), path(reads)

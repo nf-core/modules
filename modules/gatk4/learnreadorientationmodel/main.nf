@@ -2,10 +2,10 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.5.0" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.5.0--hdfd78af_0' :
-        'quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(f1r2)
@@ -20,8 +20,8 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs_list = []
-    f1r2.each() { a -> inputs_list.add(" -I " + a) }
+    def input_list = f1r2.collect{"--input $it"}.join(' ')
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK LearnReadOrientationModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -29,10 +29,10 @@ process GATK4_LEARNREADORIENTATIONMODEL {
         avail_mem = task.memory.giga
     }
     """
-    gatk --java-options "-Xmx${avail_mem}g" \\
-        LearnReadOrientationModel \\
-        ${inputs_list.join(' ')} \\
-        -O ${prefix}.tar.gz \\
+    gatk --java-options "-Xmx${avail_mem}g" LearnReadOrientationModel \\
+        $input_list \\
+        --output ${prefix}.tar.gz \\
+        --tmp-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
