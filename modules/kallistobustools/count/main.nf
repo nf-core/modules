@@ -18,7 +18,7 @@ process KALLISTOBUSTOOLS_COUNT {
     output:
     tuple val(meta), path ("*.count"), emit: count
     path "versions.yml"              , emit: versions
-    path "*.count/*/*.mtx" //Ensure that kallisto finished and produced outputs
+    path "*.count/*/*.mtx"           , emit: matrix //Ensure that kallisto finished and produced outputs
 
     when:
     task.ext.when == null || task.ext.when
