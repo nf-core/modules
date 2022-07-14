@@ -22,10 +22,9 @@ process ENTREZDIRECT_ESEARCH {
     def args = task.ext.args ?: ''
     """
     esearch \\
-        ${args} \\
+        $args \\
         -db $database \\
-        -query $term \\
-        > ${prefix}.esearch.xml
+        -query $term > | tail -n+3 ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
