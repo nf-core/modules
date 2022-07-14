@@ -5,7 +5,7 @@ process ENTREZDIRECT_ESEARCH {
     conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
-        'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
+        'quay.io/biocontainers/entrez-direct:16.2--he881be0_1'}"
 
     input:
     tuple val(meta), val(database), val(term)
@@ -24,7 +24,7 @@ process ENTREZDIRECT_ESEARCH {
     esearch \\
         $args \\
         -db $database \\
-        -query $term > | tail -n+3 ${prefix}.xml
+        -query $term | tail -n+3 > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
