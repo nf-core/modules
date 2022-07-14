@@ -4,13 +4,13 @@
     - fastp
   files:
     - path: output/fastp/test.fastp.fastq.gz
-      md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
+      md5sum: 85eb8be9981f7889df75835535d3e596
     - path: output/fastp/test.fastp.html
       contains:
         - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
         - "single end (151 cycles)"
     - path: output/fastp/test.fastp.json
-      md5sum: 7ee735cefb67f549dc857eefb9e7f123
+      md5sum: 803a024342be986f76486f6ffea15909
     - path: output/fastp/test.fastp.log
       contains:
         - "Q20 bases: 12922(92.9841%)"
@@ -37,13 +37,31 @@
     - path: output/fastp/test_2.fastp.fastq.gz
       md5sum: 532b190fb4dc7b2277ee5cf1464e598c
 
+- name: fastp test_fastp_interleaved
+  command: nextflow run ./tests/modules/fastp -entry test_fastp_interleaved -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  tags:
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.fastq.gz
+      md5sum: 15be99b04788f88f2dc477baa74216b6
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
+        - "paired end (151 cycles + 151 cycles)"
+    - path: output/fastp/test.fastp.json
+      md5sum: 5b70f43f33778d278a84b3e9270fa114
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 198"
+
 - name: fastp test_fastp_single_end_trim_fail
   command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
   tags:
     - fastp
   files:
     - path: output/fastp/test.fail.fastq.gz
-      md5sum: b57f2026eb259a0b0c0b3960c270258d
+      md5sum: 85eb8be9981f7889df75835535d3e596
     - path: output/fastp/test.fastp.fastq.gz
       md5sum: 4ce5c2b4db68a743cb0635ce7da3b9a4
     - path: output/fastp/test.fastp.html
@@ -51,7 +69,7 @@
         - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
         - "single end (151 cycles)"
     - path: output/fastp/test.fastp.json
-      md5sum: feafc4181a2a61b4b52d9c2b59b419ad
+      md5sum: b647fa752d3fe7956d17429bfe27d72c
     - path: output/fastp/test.fastp.log
       contains:
         - "Q20 bases: 12922(92.9841%)"
