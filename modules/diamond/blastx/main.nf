@@ -56,10 +56,9 @@ process DIAMOND_BLASTX {
         --outfmt ${outfmt} ${columns} \\
         $args \\
         --out ${prefix}.${out_ext} \\
-        --log \\
-        2> ${prefix}.diamond.log
+        --log
 
-    rm diamond.log
+    mv diamond.log ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
