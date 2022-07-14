@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { BCL2FASTQ } from '../../../modules/bcl2fastq/main.nf'
 include { UNTAR      } from '../../../modules/untar/main.nf'
 
-workflow test_bclconvert {
+workflow test_bcl2fastq {
     ch_flowcell = Channel.value([
             [id:'test', lane:1 ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
