@@ -33,7 +33,7 @@ process FASTP {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
-        zcat ${prefix}.fastq.gz \\
+        cat ${prefix}.fastq.gz \\
         | fastp \\
             --stdin \\
             --stdout \\
