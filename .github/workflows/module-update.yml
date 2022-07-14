@@ -70,6 +70,8 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
+          # Detect staged and unstaged local changes
+          base: HEAD
           filters: "tests/config/pytest_modules.yml"
 
   push_changes:
