@@ -2,10 +2,10 @@ process VSEARCH_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::vsearch=2.21.1" : null)
+    conda (params.enable_conda ? "bioconda::vsearch=2.21.1 bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
-        'quay.io/biocontainers/vsearch:2.21.1--h95f258a_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:6e91f82b987ac1c6b6a24e292a934ae41b17311d-0':
+        'quay.io/biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:6e91f82b987ac1c6b6a24e292a934ae41b17311d-0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -78,7 +78,7 @@ process VSEARCH_CLUSTER {
     then
         gzip ${prefix}.${out_ext}
     else
-        samtools view -S -b ${prefix}.${out_ext} > ${prefix}.bam
+        samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
 
     cat <<-END_VERSIONS > versions.yml

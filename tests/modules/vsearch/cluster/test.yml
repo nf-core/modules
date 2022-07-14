@@ -13,8 +13,8 @@
     - vsearch
     - vsearch/cluster
   files:
-    - path: output/vsearch/test.centroids.fasta.gz
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/vsearch/test.bam
+      md5sum: 8ebc67d515ebb26f974d9c85fa828614
 
 - name: vsearch cluster test_vsearch_cluster_smallmem
   command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_smallmem -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
