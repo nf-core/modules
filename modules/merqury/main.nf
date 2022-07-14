@@ -43,6 +43,8 @@ process MERQURY {
         . "/usr/local/env-activate.sh"
         set -u
     fi
+    # limit meryl to use the assigned number of cores.
+    export OMP_NUM_THREADS=$task.cpus
 
     merqury.sh \\
         $meryl_db \\
