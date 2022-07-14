@@ -12,8 +12,8 @@ include { ENTREZDIRECT_ESEARCH                           } from '../../../../mod
 workflow test_entrezdirect_esearch_pubmed {
     input = [
         [ id:'test_pubmed' ], // meta map
-        database = 'pubmed',
-        term = 'GABA+receptor'
+        database = "pubmed",
+        term = "selective serotonin reuptake inhibitor"
     ]
 
     ENTREZDIRECT_ESEARCHP ( input )
@@ -25,8 +25,8 @@ workflow test_entrezdirect_esearch_pubmed {
 workflow test_entrezdirect_esearch_genome {
     input = [
         [ id:'test_genome' ], // meta map
-        database = 'genome',
-        term = 'Danio+rerio'
+        database = "genome",
+        term = "Danio rerio"
     ]
 
     ENTREZDIRECT_ESEARCH ( input )
@@ -38,8 +38,8 @@ workflow test_entrezdirect_esearch_genome {
 workflow test_entrezdirect_esearch_assembly {
     input = [
         [ id:'test_assembly' ], // meta map
-        database = 'assembly',
-        term = 'GCA_000001635.9'
+        database = "assembly",
+        term = "GCA_000001635.9"
     ]
 
     ENTREZDIRECT_ESEARCH ( input )
