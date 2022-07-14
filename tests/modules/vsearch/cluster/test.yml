@@ -5,7 +5,7 @@
     - vsearch/cluster
   files:
     - path: output/vsearch/test.centroids.fasta.gz
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      md5sum: 4acd0b939d32d7639f81ad1f789d1381
 
 - name: vsearch cluster test_vsearch_cluster_size
   command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_size -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
@@ -23,7 +23,7 @@
     - vsearch/cluster
   files:
     - path: output/vsearch/test.centroids.fasta.gz
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      md5sum: 495e2c490bf60981b4649c90e3eb008f
 
 - name: vsearch cluster test_vsearch_cluster_unoise
   command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_unoise -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
@@ -32,7 +32,7 @@
     - vsearch/cluster
   files:
     - path: output/vsearch/test.centroids.fasta.gz
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      md5sum: b33972cebcf76a62d4bb9f76db8dd208
 
 - name: vsearch cluster test_vsearch_cluster_userout
   command: nextflow run ./tests/modules/vsearch/cluster -entry test_vsearch_cluster_userout -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/cluster/nextflow.config
@@ -41,4 +41,4 @@
     - vsearch/cluster
   files:
     - path: output/vsearch/test.out.tsv.gz
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+      md5sum: a77ba6b4f962983afc3cef3038dc867e

@@ -76,7 +76,7 @@ process VSEARCH_CLUSTER {
 
     if [[ ${outfmt} != "--samout" ]]
     then
-        gzip ${prefix}.${out_ext}
+        gzip -n ${prefix}.${out_ext}
     else
         samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
