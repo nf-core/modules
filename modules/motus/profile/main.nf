@@ -15,6 +15,7 @@ process MOTUS_PROFILE {
     tuple val(meta), path("*.out"), emit: out
     tuple val(meta), path("*.bam"), optional: true, emit: bam
     tuple val(meta), path("*.mgc"), optional: true, emit: mgc
+    tuple val(meta), path("*.log")                , emit: log
     path "versions.yml"           , emit: versions
 
     when:
@@ -36,7 +37,8 @@ process MOTUS_PROFILE {
         $refdb \\
         -t $task.cpus \\
         -n $prefix \\
-        -o ${prefix}.out
+        -o ${prefix}.out \\
+        2> ${prefix}.log
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
@@ -48,7 +50,7 @@ process MOTUS_PROFILE {
     fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mOTUs: \$VERSION
+        motus: \$VERSION
     END_VERSIONS
     """
 }

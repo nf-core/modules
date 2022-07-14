@@ -1,9 +1,8 @@
-def VERSION = '3.23' // Version information not provided by tool on CLI
-
 process MUMMER {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
@@ -27,6 +26,7 @@ process MUMMER {
 
     def is_compressed_query = query.getName().endsWith(".gz") ? true : false
     def fasta_name_query = query.getName().replace(".gz", "")
+    def VERSION = '3.23' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     if [ "$is_compressed_ref" == "true" ]; then
         gzip -c -d $ref > $fasta_name_ref
