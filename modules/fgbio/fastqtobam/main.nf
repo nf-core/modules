@@ -22,7 +22,6 @@ process FGBIO_FASTQTOBAM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir tmp
 
     fgbio \\
         --tmp-dir=. \\
