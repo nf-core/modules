@@ -12,8 +12,5 @@ workflow test_hamronization_amrfinderplus {
         file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)
     ]
 
-    //AMRFINDERPLUS_UPDATE ( )
-    //AMRFINDERPLUS_RUN ( input, AMRFINDERPLUS_UPDATE.out.db)
-    //HAMRONIZATION_AMRFINDERPLUS ( AMRFINDERPLUS_RUN.out.report, 'tsv', AMRFINDERPLUS_RUN.out.versions, '2022-05-26.1' )
     HAMRONIZATION_AMRFINDERPLUS ( input, 'tsv', '3.10.30', '2022-05-26.1' )
 }
