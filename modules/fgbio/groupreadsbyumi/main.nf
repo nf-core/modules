@@ -24,7 +24,6 @@ process FGBIO_GROUPREADSBYUMI {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir tmp
 
     fgbio \\
         --tmp-dir=. \\
