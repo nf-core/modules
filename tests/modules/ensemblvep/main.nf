@@ -16,7 +16,7 @@ workflow test_ensemblvep_fasta_json {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    ENSEMBLVEP_JSON ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
+    ENSEMBLVEP_JSON ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
 }
 
 workflow test_ensemblvep_fasta_tab {
@@ -27,7 +27,7 @@ workflow test_ensemblvep_fasta_tab {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    ENSEMBLVEP_TAB ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
+    ENSEMBLVEP_TAB ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
 }
 
 workflow test_ensemblvep_fasta_vcf {
@@ -38,7 +38,7 @@ workflow test_ensemblvep_fasta_vcf {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    ENSEMBLVEP_VCF ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
+    ENSEMBLVEP_VCF ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
 }
 
 workflow test_ensemblvep_fasta {
@@ -49,7 +49,7 @@ workflow test_ensemblvep_fasta {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], fasta, [] )
+    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
 }
 
 workflow test_ensemblvep_no_fasta {
@@ -58,5 +58,5 @@ workflow test_ensemblvep_no_fasta {
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], [], [] )
+    ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "106", [], [], [] )
 }
