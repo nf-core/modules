@@ -1,0 +1,47 @@
+name: "makecmap_makecmap"
+
+description: Transform fasta file to BioNano cmap file format (Color-aware)
+keywords:
+  - BioNano
+tools:
+  - "makecmap":
+      description: Scripts for repairing (stitching) across fragile sites breaks in BioNano genome maps
+      homepage: https://github.com/ekfchan/BNG-FragileSiteRepair/blob/master/fa2cmap_multi_color.pl
+      documentation: https://github.com/ekfchan/BNG-FragileSiteRepair
+      tool_dev_url: https://github.com/ekfchan/BNG-FragileSiteRepair/blob/master/fa2cmap_multi_color.pl
+      licence: Research Department, BioNano Genomics Inc
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fasta}"
+  - enzyme:
+      type: value
+      description: bionnano restriction enzyme name
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - cmapkey:
+      type: file
+      description: bionano cmap key file
+      pattern: "*_key.txt"
+  - cmap:
+      type: file
+      description: bionano cmap key file
+      pattern: "*.cmap"
+
+authors:
+  - "@yumisims"

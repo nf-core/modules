@@ -1,0 +1,12 @@
+- name: "makecmap makecmap"
+  command: nextflow run ./tests/modules/makecmap/makecmap -entry test_makecmap_makecmap -c ./tests/config/nextflow.config -c ./tests/modules/makecmap/makecmap/nextflow.config
+  tags:
+    - "makecmap"
+    - "makecmap/makecmap"
+  files:
+    - path: "output/makecmap/genome_BSPQI_0kb_0labels.cmap"
+      md5sum: 729454daee6f853d52cfaacb27040e7f
+    - path: "output/makecmap/genome_BSPQI_0kb_0labels_key.txt"
+      md5sum: fd992831be819d52bc94b35b6b010c5f
+    - path: output/makecmap/versions.yml
+      md5sum: c3dcb725ddd8e9466617173bee418804
