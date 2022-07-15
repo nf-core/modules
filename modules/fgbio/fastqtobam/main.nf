@@ -25,7 +25,7 @@ process FGBIO_FASTQTOBAM {
     mkdir tmp
 
     fgbio \\
-        --tmp-dir=${PWD}/tmp \\
+        --tmp-dir=. \\
         FastqToBam \\
         -i $reads \\
         -o "${prefix}_umi_converted.bam" \\
