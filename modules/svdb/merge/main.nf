@@ -1,7 +1,7 @@
 process SVDB_MERGE {
     tag "$meta.id"
     label 'process_medium'
-
+    TODO container!
     conda (params.enable_conda ? "bioconda::svdb=2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svdb:2.6.1--py39h5371cbf_0':
@@ -12,7 +12,7 @@ process SVDB_MERGE {
     val (priority)
 
     output:
-    tuple val(meta), path("*_sv_merge.vcf"), emit: vcf
+    tuple val(meta), path("*_sv_merge.vcf.gz"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -37,6 +37,7 @@ process SVDB_MERGE {
         $prio \\
         --vcf $input \\
         > ${prefix}_sv_merge.vcf
+    bgzip ${prefix}_sv_merge.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -48,6 +49,7 @@ process SVDB_MERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_sv_merge.vcf
+    bgzip ${prefix}_sv_merge.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
