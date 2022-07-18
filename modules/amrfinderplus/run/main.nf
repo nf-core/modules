@@ -50,7 +50,7 @@ process AMRFINDERPLUS_RUN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         amrfinderplus: \$(amrfinder --version)
-        amrfinderplus-database: \$(echo \$(amrfinder --database_version 2> stdout) | grep -oP '(?<=Database version: )[^ ]*')
+        amrfinderplus-database: \$(echo \$(amrfinder --database_version 2> stdout) | rev | cut -f 1 -d ' ' | rev)
     END_VERSIONS
     """
 }
