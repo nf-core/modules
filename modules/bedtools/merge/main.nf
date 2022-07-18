@@ -8,7 +8,7 @@ process BEDTOOLS_MERGE {
         'quay.io/biocontainers/bedtools:2.30.0--hc088bd4_0' }"
 
     input:
-    tuple val(meta), path(bed)
+    tuple val(meta), path(bed, stageAs: "?/*")
 
     output:
     tuple val(meta), path('*.bed'), emit: bed
