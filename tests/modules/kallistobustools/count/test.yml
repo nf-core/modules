@@ -1,8 +1,8 @@
 - name: kallistobustools count test_kallistobustools_count
   command: nextflow run ./tests/modules/kallistobustools/count -entry test_kallistobustools_count -c ./tests/config/nextflow.config  -c ./tests/modules/kallistobustools/count/nextflow.config
   tags:
-    - kallistobustools
     - kallistobustools/count
+    - kallistobustools
   files:
     - path: output/kallistobustools/cdna.fa
     - path: output/kallistobustools/kb_ref_out.idx
