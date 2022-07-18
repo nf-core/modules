@@ -1,14 +1,41 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml emboss/seqret
-- name: "emboss seqret"
-  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret -c ./tests/config/nextflow.config -c ./tests/modules/emboss/seqret/nextflow.config
+- name: emboss seqret test_emboss_seqret_gb2embl
+  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2embl -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
   tags:
-    - "emboss"
-    #
-    - "emboss/seqret"
-    #
+    - emboss
+    - emboss/seqret
   files:
-    - path: "output/emboss/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/emboss/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/emboss/test.embl
+      md5sum: 4810933b1b2174f7067d9afa1da8b01b
+      contains: ["ID   NZ_CP069563;"] # Human-readable test for correct format and sequence
+
+- name: emboss seqret test_emboss_seqret_gb2gff
+  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2gff -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  tags:
+    - emboss
+    - emboss/seqret
+  files:
+    - path: output/emboss/test.gff
+      md5sum: 65720c327927edbabc63f9e76afbeb31
+      contains:
+        - "##gff-version 3" # Human-readable test for correct format
+        - ">NZ_CP069563" # Human-readable test for correct sequence
+
+- name: emboss seqret test_emboss_seqret_gb2pir
+  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2pir -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  tags:
+    - emboss
+    - emboss/seqret
+  files:
+    - path: output/emboss/test.pir
+      md5sum: 49f4a28533e970aa2438d8adf55a26bb
+      contains: [">D1;NZ_CP069563"] # Human-readable test for correct format and sequence
+
+- name: emboss seqret test_emboss_seqret_gb2fasta
+  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2fasta -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  tags:
+    - emboss
+    - emboss/seqret
+  files:
+    - path: output/emboss/test.fasta
+      md5sum: 0694275f05780aeb0b54d46687603f44
+      contains: [">NZ_CP069563"] # Human-readable test for correct format and sequence
