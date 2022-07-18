@@ -21,12 +21,13 @@ process EMBOSS_SEQRET {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def osformat = args.contains('-osformat') ? '' : "-osformat ${out_ext}"
     """
     seqret \\
         ${args} \\
         -sequence ${sequence} \\
+        ${osformat} \\
         -outseq ${prefix}.${out_ext}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
