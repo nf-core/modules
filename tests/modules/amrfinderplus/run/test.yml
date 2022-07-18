@@ -1,8 +1,8 @@
 - name: amrfinderplus run test_amrfinderplus_run
   command: nextflow run ./tests/modules/amrfinderplus/run -entry test_amrfinderplus_run -c ./tests/config/nextflow.config  -c ./tests/modules/amrfinderplus/run/nextflow.config
   tags:
-    - amrfinderplus/run
     - amrfinderplus
+    - amrfinderplus/run
   files:
     - path: output/amrfinderplus/amrfinderdb.tar.gz
       contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
