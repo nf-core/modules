@@ -28,7 +28,7 @@ process BCFTOOLS_CONVERT {
 
     def regions = bed ? "--regions-file $bed" : ""
     def reference = fasta ?  "--fasta-ref $fasta" : ""
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" : 
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
