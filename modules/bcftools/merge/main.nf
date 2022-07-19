@@ -38,7 +38,7 @@ process BCFTOOLS_MERGE {
     bcftools merge \\
         $regions \\
         --threads $task.cpus \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.${extension} \\
         $args \\
         *.vcf.gz
 
