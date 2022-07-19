@@ -20,14 +20,14 @@ process TAILFINDR {
     script:
     def args = task.ext.args ? ", ${task.ext.args}": ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
-	R --vanilla --slave -e "library(tailfindr); 
+    R --vanilla --slave -e "library(tailfindr); 
     find_tails(fast5_dir = './' , 
     save_dir = './' ${args}, 
-	csv_filename = \'${meta.id}.csv\', 
-	num_cores = ${task.cpus})";
-	gzip ${meta.id}.csv
+    csv_filename = \'${meta.id}.csv\', 
+    num_cores = ${task.cpus})";
+    gzip ${meta.id}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
