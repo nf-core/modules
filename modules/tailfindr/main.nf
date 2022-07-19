@@ -25,8 +25,8 @@ process TAILFINDR {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda (params.enable_conda ? "bioconda::r-tailfindr=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-tailfindr:1.3--r41h9f5acd7_1':
-        'quay.io/biocontainers/r-tailfindr:1.3--r41h7d875b9_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0':
+        'quay.io/biocontainers/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
