@@ -1,8 +1,8 @@
 - name: bcftools merge test_bcftools_merge
   command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/merge/nextflow.config
   tags:
-    - bcftools
     - bcftools/merge
+    - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
       md5sum: 744b28bef1469aabdcfd354293ef725d
@@ -10,8 +10,8 @@
 - name: bcftools merge test_bcftools_merge_bed
   command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge_bed -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/merge/nextflow.config
   tags:
-    - bcftools
     - bcftools/merge
+    - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
       md5sum: 9597e71ae1706f76f00707687be43240
@@ -19,8 +19,8 @@
 - name: bcftools merge test_bcftools_merge_gvcf
   command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge_gvcf -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/merge/nextflow.config
   tags:
-    - bcftools
     - bcftools/merge
+    - bcftools
   files:
     - path: output/bcftools/test.vcf.gz
       md5sum: 8aef4d860228cb651e0cb920376f5118
