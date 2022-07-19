@@ -8,7 +8,8 @@ process BCFTOOLS_CONVERT {
         'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(bed)
+    tuple val(meta), path(input), path(input_index)
+    path(bed)
     path fasta
 
     output:
