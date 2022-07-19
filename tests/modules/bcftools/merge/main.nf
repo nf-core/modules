@@ -11,15 +11,14 @@ workflow test_bcftools_merge {
               [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true) ],
               [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ]
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ],
+              []
             ]
-
-    bed = []
 
     fasta = []
     fasta_fai = []
 
-    BCFTOOLS_MERGE ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE ( input, fasta, fasta_fai )
 }
 
 workflow test_bcftools_merge_bed {
@@ -27,15 +26,14 @@ workflow test_bcftools_merge_bed {
               [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true) ],
               [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ]
+                file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ],
+              file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
             ]
-
-    bed = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
     fasta = []
     fasta_fai = []
 
-    BCFTOOLS_MERGE ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE ( input, fasta, fasta_fai )
 }
 
 workflow test_bcftools_merge_gvcf {
@@ -43,13 +41,12 @@ workflow test_bcftools_merge_gvcf {
               [ file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true) ],
               [ file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'], checkIfExists: true) ]
+                file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz_tbi'], checkIfExists: true) ],
+              []
             ]
-
-    bed = []
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    BCFTOOLS_MERGE_GVCF ( input, bed, fasta, fasta_fai )
+    BCFTOOLS_MERGE_GVCF ( input, fasta, fasta_fai )
 }
