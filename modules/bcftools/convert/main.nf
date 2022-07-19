@@ -27,6 +27,7 @@ process BCFTOOLS_CONVERT {
 
     """
     bcftools convert \\
+        $args \\
         $regions \\
         --output ${prefix}.vcf.gz \\
         --threads $task.cpus \\
