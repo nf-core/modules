@@ -6,7 +6,7 @@ process BIOBAMBAM_BAMSORMADUP {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'quay.io/biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
-    tuple val(meta), path(bams)
+    tuple val(meta), path(bams, stageAs: "?/*")
     path(fasta)
 
     output:
@@ -39,7 +39,7 @@ process BIOBAMBAM_BAMSORMADUP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bamcat: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+        bamcat: \$(echo \$(bamcat --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
         bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
     END_VERSIONS
     """
