@@ -1,0 +1,17 @@
+- name: bcftools convert test_bcftools_convert_gvcf
+  command: nextflow run ./tests/modules/bcftools/convert -entry test_bcftools_convert_gvcf -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/convert/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/convert
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: c20f410b3eba456abf92da2923bca1ed
+
+- name: bcftools convert test_bcftools_convert_gvcf_bed
+  command: nextflow run ./tests/modules/bcftools/convert -entry test_bcftools_convert_gvcf_bed -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/convert/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/convert
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: c20f410b3eba456abf92da2923bca1ed
