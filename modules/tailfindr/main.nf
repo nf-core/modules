@@ -32,7 +32,7 @@ process TAILFINDR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tailfindr: \$(Rscript -e "library('tailfindr'); packageVersion('tailfindr')")
+        tailfindr: \$(Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))")
         END_VERSIONS
     """
 }
