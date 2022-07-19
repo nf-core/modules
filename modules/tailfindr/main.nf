@@ -32,7 +32,7 @@ process TAILFINDR {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tailfindr: \$(Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))")
-        ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print $2}')
-        END_VERSIONS
+        ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print \$2}')
+    END_VERSIONS
     """
 }
