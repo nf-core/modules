@@ -9,12 +9,15 @@ process BCFTOOLS_CONVERT {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path(bed)
+    path bed
     path fasta
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
+    tuple val(meta), path("*.vcf")   , optional:true , emit: vcf
+    tuple val(meta), path("*.bcf.gz"), optional:true , emit: bcf_gz
+    tuple val(meta), path("*.bcf")   , optional:true , emit: bcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,12 +28,17 @@ process BCFTOOLS_CONVERT {
 
     def regions = bed ? "--regions-file $bed" : ""
     def reference = fasta ?  "--fasta-ref $fasta" : ""
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" : 
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                    "vcf.gz"
 
     """
     bcftools convert \\
         $args \\
         $regions \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.${extension} \\
         --threads $task.cpus \\
         $reference \\
         $input
