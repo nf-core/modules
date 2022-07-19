@@ -18,22 +18,21 @@ process TAILFINDR {
     task.ext.when == null || task.ext.when
 
     script:
-	  def args = task.ext.args ? ", ${task.ext.args}": ''
+    def args = task.ext.args ? ", ${task.ext.args}": ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     
     """
-	  R --vanilla --slave -e "library(tailfindr); 
-	  find_tails(fast5_dir = './' , 
-	  save_dir = './' ${args}, 
-	  csv_filename = \'${meta.id}.csv\', 
-	  num_cores = ${task.cpus})";
-	  gzip ${meta.id}.csv
-	
+	R --vanilla --slave -e "library(tailfindr); 
+    find_tails(fast5_dir = './' , 
+    save_dir = './' ${args}, 
+	csv_filename = \'${meta.id}.csv\', 
+	num_cores = ${task.cpus})";
+	gzip ${meta.id}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tailfindr: \$(Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))")
-      ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print $2}')
+        ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print $2}')
         END_VERSIONS
     """
 }
