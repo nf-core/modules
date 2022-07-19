@@ -11,7 +11,7 @@ process TAILFINDR {
     tuple val(meta), path(fast5)
 
     output:
-    tuple val(meta), path("*.csv.gz"), emit: csv
+    tuple val(meta), path("*.csv.gz"), emit: csv_gz
     path("versions.yml"), emit: versions
 
     when:
