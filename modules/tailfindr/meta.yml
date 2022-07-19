@@ -1,11 +1,9 @@
 name: "tailfindr"
-## TODO nf-core: Add a description of the module and list keywords
 description: Estimating poly(A)-tail lengths from basecalled fast5 files
 keywords:
   - sort
 tools:
   - "tailfindr":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "An R package for estimating poly(A)-tail lengths in Oxford Nanopore RNA and DNA reads."
       homepage: "https://github.com/adnaniazi/tailfindr"
       documentation: "https://github.com/adnaniazi/tailfindr/blob/master/README.md"
@@ -13,39 +11,33 @@ tools:
       doi: "10.1261/rna.071332.119"
       licence: "['AGPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - fast5:
       type: file
       description: fast5 file
       pattern: "*.fast5"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - csv:
       type: file
       description: csv file
-      pattern: "*.csv"
+      pattern: "*.csv.gz"
 
 authors:
   - "@lucacozzuto"
