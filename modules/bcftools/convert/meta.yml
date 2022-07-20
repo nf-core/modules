@@ -53,10 +53,22 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - vcf_gz:
+      type: file
+      description: VCF merged output file (bgzipped) => when `--output-type z` is used
+      pattern: "*.vcf.gz"
   - vcf:
       type: file
-      description: The converted VCF file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF merged output file => when `--output-type v` is used
+      pattern: "*.vcf"
+  - bcf_gz:
+      type: file
+      description: BCF merged output file (bgzipped) => when `--output-type b` is used
+      pattern: "*.bcf.gz"
+  - bcf:
+      type: file
+      description: BCF merged output file => when `--output-type u` is used
+      pattern: "*.bcf"
 
 authors:
   - "@nvnieuwk"
