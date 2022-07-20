@@ -1,4 +1,4 @@
-process BCFTOOLS_MERGE {
+process BCFTOOLS_CONVERT {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,35 +8,40 @@ process BCFTOOLS_MERGE {
         'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
 
     input:
-    tuple val(meta), path(vcfs), path(tbis)
+    tuple val(meta), path(input), path(input_index)
     path bed
     path fasta
-    path fasta_fai
 
     output:
-    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: merged_variants
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
+    tuple val(meta), path("*.vcf")   , optional:true , emit: vcf
+    tuple val(meta), path("*.bcf.gz"), optional:true , emit: bcf_gz
+    tuple val(meta), path("*.bcf")   , optional:true , emit: bcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def regions = bed ? "--regions-file $bed" : ""
+    def reference = fasta ?  "--fasta-ref $fasta" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
 
     """
-    bcftools merge \\
-        $regions \\
-        --threads $task.cpus \\
-        --output ${prefix}.${extension} \\
+    bcftools convert \\
         $args \\
-        *.vcf.gz
+        $regions \\
+        --output ${prefix}.${extension} \\
+        --threads $task.cpus \\
+        $reference \\
+        $input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
