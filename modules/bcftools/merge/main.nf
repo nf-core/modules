@@ -13,11 +13,8 @@ process BCFTOOLS_MERGE {
     path fasta_fai
 
     output:
-    tuple val(meta), path("*.vcf.gz"), optional:true , emit: vcf_gz
-    tuple val(meta), path("*.vcf")   , optional:true , emit: vcf
-    tuple val(meta), path("*.bcf.gz"), optional:true , emit: bcf_gz
-    tuple val(meta), path("*.bcf")   , optional:true , emit: bcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: merged_variants
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
