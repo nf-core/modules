@@ -24,3 +24,12 @@
   files:
     - path: output/bcftools/test.vcf.gz
       md5sum: 8aef4d860228cb651e0cb920376f5118
+
+- name: bcftools merge test_bcftools_merge_bcf
+  command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge_bcf -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/merge/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/merge
+  files:
+    - path: output/bcftools/test.bcf.gz
+      md5sum: 3ca1ab0d9a6ede049c6eeadf88177eb9
