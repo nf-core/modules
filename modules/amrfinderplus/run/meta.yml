@@ -46,6 +46,14 @@ output:
       type: file
       description: Report of organism-specific point-mutations
       pattern: "*-mutations.tsv"
+  - VER:
+      type: string
+      description: Version of AMRfinder stored in variable to be used as input in the hAMRonization tool
+      pattern: "[0-9].[0-9].[0-9]"
+  - DBVER:
+      type: string
+      description: Database version of ncbi-AMRfinder stored in variable to be used as input in the hAMRonization tool
+      pattern: "[0-9]-[0-9]-[0-9].[0-9]"
 
 authors:
   - "@rpetit3"

@@ -15,6 +15,8 @@ process AMRFINDERPLUS_RUN {
     tuple val(meta), path("${prefix}.tsv")          , emit: report
     tuple val(meta), path("${prefix}-mutations.tsv"), emit: mutation_report, optional: true
     path "versions.yml"                             , emit: versions
+    env VER                                         , emit: tool_version
+    env DBVER                            , emit: db_version
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,6 +48,8 @@ process AMRFINDERPLUS_RUN {
         --database amrfinderdb \\
         --threads $task.cpus > ${prefix}.tsv
 
+    VER=\$(amrfinder --version)
+    DBVER=\$(echo \$(amrfinder --database amrfinderdb --database_version 2> stdout) | rev | cut -f 1 -d ' ' | rev)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
