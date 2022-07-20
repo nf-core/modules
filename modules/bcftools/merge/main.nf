@@ -9,7 +9,7 @@ process BCFTOOLS_MERGE {
 
     input:
     tuple val(meta), path(vcfs), path(tbis)
-    path(bed)
+    path bed
     path fasta
     path fasta_fai
 
