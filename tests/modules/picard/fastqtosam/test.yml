@@ -1,14 +1,26 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml picard/fastqtosam
-- name: "picard fastqtosam"
-  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam -c ./tests/config/nextflow.config -c ./tests/modules/picard/fastqtosam/nextflow.config
+- name: picard fastqtosam test_picard_fastqtosam_single
+  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_single -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
   tags:
-    - "picard"
-    #
-    - "picard/fastqtosam"
-    #
+    - picard/fastqtosam
+    - picard
   files:
-    - path: "output/picard/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/picard/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/picard/test.bam
+      md5sum: fe2882efe8f13a8da20fcc63469ed0aa
+
+- name: picard fastqtosam test_picard_fastqtosam_paired
+  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_paired -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
+  tags:
+    - picard/fastqtosam
+    - picard
+  files:
+    - path: output/picard/test.bam
+      md5sum: 90e4f59f9d942f96c3f3c41160f3fd5d
+
+- name: picard fastqtosam test_picard_fastqtosam_paired_custom_samplename
+  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_paired_custom_samplename -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
+  tags:
+    - picard/fastqtosam
+    - picard
+  files:
+    - path: output/picard/test.bam
+      md5sum: 90e4f59f9d942f96c3f3c41160f3fd5d
