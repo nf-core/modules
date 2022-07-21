@@ -1,8 +1,8 @@
 - name: kallistobustools count test_kallistobustools_count
   command: nextflow run ./tests/modules/kallistobustools/count -entry test_kallistobustools_count -c ./tests/config/nextflow.config  -c ./tests/modules/kallistobustools/count/nextflow.config
   tags:
-    - kallistobustools
     - kallistobustools/count
+    - kallistobustools
   files:
     - path: output/kallistobustools/cdna.fa
     - path: output/kallistobustools/kb_ref_out.idx
@@ -25,7 +25,6 @@
       md5sum: b853330f160e06fc8af170a837384ef5
     - path: output/kallistobustools/test.count/kb_info.json
     - path: output/kallistobustools/test.count/matrix.ec
-      md5sum: 44eb94feb333b70cd3e55b6f4c0a43db
     - path: output/kallistobustools/test.count/output.bus
       md5sum: f5d8efa83f107826824292cbbdb4e37b
     - path: output/kallistobustools/test.count/output.unfiltered.bus
