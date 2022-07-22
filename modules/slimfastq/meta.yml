@@ -1,0 +1,41 @@
+name: "slimfastq"
+description: Fast, efficient, lossless compression of FASTQ files.
+keywords:
+  - FASTQ
+  - compression
+  - lossless
+tools:
+  - "slimfastq":
+      description: "slimfastq efficiently compresses/decompresses FASTQ files"
+      homepage: "https://github.com/Infinidat/slimfastq"
+      tool_dev_url: "https://github.com/Infinidat/slimfastq"
+      licence: "['BSD-3-clause']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Either a single-end FASTQ file or paired-end files.
+      pattern: "*.{fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sfq:
+      type: file
+      description: Either one or two sequence files in slimfastq compressed format.
+      pattern: "*.{sfq}"
+
+authors:
+  - "@Midnighter"

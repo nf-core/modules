@@ -22,3 +22,12 @@ workflow test_samtools_view_cram {
 
     SAMTOOLS_VIEW ( input, fasta )
 }
+
+workflow test_samtools_view_stubs {
+    input = [ [ id:'test', single_end:false ], // meta map
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                []
+            ]
+
+    SAMTOOLS_VIEW ( input, [] )
+}

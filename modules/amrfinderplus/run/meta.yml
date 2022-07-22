@@ -46,6 +46,14 @@ output:
       type: file
       description: Report of organism-specific point-mutations
       pattern: "*-mutations.tsv"
+  - tool_version:
+      type: string
+      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+  - db_version:
+      type: string
+      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
 
 authors:
   - "@rpetit3"
+  - "@louperelo"
+  - "@jfy133"

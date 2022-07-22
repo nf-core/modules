@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE       } from '../../../../modules/stringtie/stringtie/main.nf'
-include { STRINGTIE_MERGE } from '../../../../modules/stringtie/merge/main.nf'
+include { STRINGTIE_STRINGTIE } from '../../../../modules/stringtie/stringtie/main.nf'
+include { STRINGTIE_MERGE     } from '../../../../modules/stringtie/merge/main.nf'
 
 /*
  * Test with forward strandedness
@@ -15,8 +15,8 @@ workflow test_stringtie_forward_merge {
     ]
     annotation_gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
-    STRINGTIE ( input, annotation_gtf )
-    STRINGTIE
+    STRINGTIE_STRINGTIE ( input, annotation_gtf )
+    STRINGTIE_STRINGTIE
         .out
         .transcript_gtf
         .map { it -> it[1] }
@@ -35,8 +35,8 @@ workflow test_stringtie_reverse_merge {
     ]
     annotation_gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
-    STRINGTIE ( input, annotation_gtf )
-    STRINGTIE
+    STRINGTIE_STRINGTIE ( input, annotation_gtf )
+    STRINGTIE_STRINGTIE
         .out
         .transcript_gtf
         .map { it -> it[1] }
