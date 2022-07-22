@@ -32,7 +32,7 @@ process ENTREZDIRECT_XTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        entrezdirect: \$(echo \$(xtract -help | head -1 | cut -d' ' -f2 2>&1) | sed 's/^xtract //; s/Using.*\$//' ))
+        xtract: \$(xtract -version)
     END_VERSIONS
     """
 }
