@@ -15,7 +15,7 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information. Use 'single_end: true' to specify single ended or interleaved FASTQs. Use 'single_end: false' for paired-end reads.
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
@@ -38,7 +38,7 @@ output:
   - reads:
       type: file
       description: The trimmed/modified/unmerged fastq reads
-      pattern: "*trim.fastq.gz"
+      pattern: "*fastp.fastq.gz"
   - json:
       type: file
       description: Results in JSON format

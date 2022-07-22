@@ -1,8 +1,15 @@
-- name: bcftools norm
-  command: nextflow run ./tests/modules/bcftools/norm -entry test_bcftools_norm -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/norm/nextflow.config
+- name: bcftools norm test_bcftools_norm_no_tbi
+  command: nextflow run ./tests/modules/bcftools/norm -entry test_bcftools_norm_no_tbi -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/norm/nextflow.config
   tags:
     - bcftools
     - bcftools/norm
   files:
     - path: output/bcftools/test2.vcf.gz
-      md5sum: 2b1cac07d1875b8adcd7a85346890f07
+
+- name: bcftools norm test_bcftools_norm_tbi
+  command: nextflow run ./tests/modules/bcftools/norm -entry test_bcftools_norm_tbi -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/norm/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/norm
+  files:
+    - path: output/bcftools/test2.vcf.gz

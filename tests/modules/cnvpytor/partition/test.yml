@@ -5,9 +5,7 @@
     - cnvpytor/partition
   files:
     - path: output/cnvpytor/test.pytor
-      md5sum: aa03a8fa15b39f77816705a48e10312a
     - path: output/cnvpytor/versions.yml
-      md5sum: 7fd6ec952a316463bcd324f176b46b64
 
 - name: cnvpytor partition test_cnvpytor_partition stub
   command: nextflow run tests/modules/cnvpytor/partition -entry test_cnvpytor_partition -c tests/config/nextflow.config -stub-run
@@ -17,4 +15,3 @@
   files:
     - path: output/cnvpytor/test.pytor
     - path: output/cnvpytor/versions.yml
-      md5sum: 7fd6ec952a316463bcd324f176b46b64

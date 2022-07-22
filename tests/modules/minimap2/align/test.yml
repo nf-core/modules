@@ -1,17 +1,17 @@
-- name: minimap2 align single-end
-  command: nextflow run ./tests/modules/minimap2/align -entry test_minimap2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/minimap2/align/nextflow.config
+- name: minimap2 align test_minimap2_align_single_end
+  command: nextflow run tests/modules/minimap2/align -entry test_minimap2_align_single_end -c tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align
   files:
-    - path: ./output/minimap2/test.paf
-      md5sum: 70e8cf299ee3ecd33e629d10c1f588ce
+    - path: output/minimap2/test.bam
+    - path: output/minimap2/versions.yml
 
-- name: minimap2 align paired-end
-  command: nextflow run ./tests/modules/minimap2/align -entry test_minimap2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/minimap2/align/nextflow.config
+- name: minimap2 align test_minimap2_align_paired_end
+  command: nextflow run tests/modules/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align
   files:
-    - path: ./output/minimap2/test.paf
-      md5sum: 5e7b55a26bf0ea3a2843423d3e0b9a28
+    - path: output/minimap2/test.bam
+    - path: output/minimap2/versions.yml
