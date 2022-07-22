@@ -22,10 +22,10 @@ process TAILFINDR {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    R --vanilla --slave -e "library(tailfindr); 
-    find_tails(fast5_dir = './' , 
-    save_dir = './' ${args}, 
-    csv_filename = \'${meta.id}.csv\', 
+    R --vanilla --slave -e "library(tailfindr);
+    find_tails(fast5_dir = './' ,
+    save_dir = './' ${args},
+    csv_filename = \'${meta.id}.csv\',
     num_cores = ${task.cpus})";
     gzip ${meta.id}.csv
 
