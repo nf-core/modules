@@ -14,7 +14,7 @@ process ENTREZDIRECT_XTRACT {
 
     output:
     tuple val(meta), path("*.xtract.csv"), emit: xtract_table
-    path "versions.yml"                        , emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
