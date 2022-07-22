@@ -2,24 +2,27 @@
 
 nextflow.enable.dsl = 2
 
+include { ATLAS_PMD } from '../../../../modules/atlas/pmd/main.nf'
 include { ATLAS_RECAL } from '../../../../modules/atlas/recal/main.nf'
 
 workflow test_atlas_recal {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
-    //file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    file("/mnt/archgen/DAG_GL/s_m/PYL004_mergedReads.bam", checkIfExists:true), 
-    file("/mnt/archgen/DAG_GL/s_m/PYL004_mergedReads.bam.bai", checkIfExists:true), 
-    file("/mnt/archgen/DAG_GL/infos/PYL004_PMD_input_Empiric.txt", checkIfExists:true)
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        [],
+        []
     ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    alleles = []
+    invariant_sites = []
 
-    input2 = [
-    file("/mnt/archgen/Reference_Genomes/Human/hs37d5/hs37d5.fa", checkIfExists:true), 
-    file("/mnt/archgen/users/gnecchi/Jena/HISTOGENES/analysis/88_mammals.epo_low_coverage.10M_GRCh37.masked.bed", checkIfExists:true)
-    ]
 
-    ATLAS_RECAL ( input, input2 )
+    ATLAS_PMD ( input, fasta, fai )
+
+    ATLAS_RECAL ( input, alleles, invariant_sites )
 }
 
 

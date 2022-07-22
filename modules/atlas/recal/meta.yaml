@@ -20,8 +20,12 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAI file
+      pattern: "*.bai"
   - empiric:
       type: file
       description: txt file from PMD estimations
