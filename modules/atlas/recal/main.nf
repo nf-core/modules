@@ -35,7 +35,6 @@ process ATLAS_RECAL {
         $READGROUPS \\
         $ALLELES \\
         $INVARIANTS \\
-        regions=$alleles \\
         out=$prefix \\
         $args
 

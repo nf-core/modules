@@ -2,7 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLAS_PMD } from '../../../../modules/atlas/pmd/main.nf'
 include { ATLAS_RECAL } from '../../../../modules/atlas/recal/main.nf'
 
 workflow test_atlas_recal {
@@ -14,13 +13,8 @@ workflow test_atlas_recal {
         [],
         []
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    fai   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     alleles = []
     invariant_sites = []
-
-
-    ATLAS_PMD ( input, fasta, fai )
 
     ATLAS_RECAL ( input, alleles, invariant_sites )
 }
