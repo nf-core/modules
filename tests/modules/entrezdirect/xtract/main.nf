@@ -9,16 +9,18 @@ include { ENTREZDIRECT_XTRACT   } from '../../../../modules/entrezdirect/xtract/
 // Test with Assembly database
 //
 workflow test_entrezdirect_xtract_assembly {
+
     input = [
         [ id:'test_assembly' ], // meta map
-        database = 'assembly',
-        uid = '191021'
+        uid = '191021',
+        []
     ]
+    database = 'assembly'
 
     pattern_in = 'DocumentSummary'
     element_in = 'SpeciesName BioprojectAccn FtpPath_GenBank'
 
-    ENTREZDIRECT_ESUMMARY ( input )
+    ENTREZDIRECT_ESUMMARY ( input, database )
     ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in )
 }
 
@@ -26,15 +28,17 @@ workflow test_entrezdirect_xtract_assembly {
 // Test with Genome database
 //
 workflow test_entrezdirect_xtract_genome {
+
     input = [
         [ id:'test_genome' ], // meta map
-        database = 'genome',
-        uid = '768'
+        uid = '768',
+        []
     ]
+    database = 'genome'
 
     pattern_in = 'DocumentSummary'
     element_in = 'TaxId Organism_Name Project_Accession Assembly_Accession'
 
-    ENTREZDIRECT_ESUMMARY ( input )
+    ENTREZDIRECT_ESUMMARY ( input, database )
     ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in )
 }
