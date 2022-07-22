@@ -33,7 +33,7 @@ process ENDORSPY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        endorspy: \$(echo \$(endors.py --version 2>&1) | sed 's/^endorS.py //' ))
+        endorspy: \$(echo \$(endorspy --version 2>&1) | sed 's/^endorS.py //' ))
     END_VERSIONS
     """
 }
