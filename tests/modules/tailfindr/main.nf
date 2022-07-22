@@ -8,7 +8,7 @@ workflow test_tailfindr {
     
     input = [
         [ id: 'test' ], // meta map
-        file(params.test_data, checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/tailfindr/test.fast5', checkIfExists: true)
     ]
 
     TAILFINDR ( input )
