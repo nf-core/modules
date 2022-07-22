@@ -1,5 +1,5 @@
 name: "atlas_recal"
-description: gives an estimation of the sequencing bias based on known invariant sites 
+description: gives an estimation of the sequencing bias based on known invariant sites
 keywords:
   - sequencing_bias
   - ATLAS
@@ -26,13 +26,13 @@ input:
       type: file
       description: txt file from PMD estimations
       pattern: "*.txt"
-  - fasta: 
+  - fasta:
       type: file
       description: fasta reference file
       pattern: "*.{fasta,fa}"
   -alleles:
       type: file
-      descrition: A bed file with invariant site coordinates created by user 
+      descrition: A bed file with invariant site coordinates created by user
       pattern: "*.bed"
 
 
@@ -48,7 +48,7 @@ output:
       pattern: "versions.yml"
   - recal_patterns:
       type: file
-      description: file containing the sequencing bias for each of the Read Group pools 
+      description: file containing the sequencing bias for each of the Read Group pools
       pattern: "*.txt
 
 authors:
