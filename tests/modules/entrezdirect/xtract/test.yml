@@ -1,21 +1,21 @@
 - name: entrezdirect xtract test_entrezdirect_xtract_assembly
   command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
   tags:
-    - entrezdirect/xtract
     - entrezdirect
+    - entrezdirect/xtract
   files:
-    - path: output/entrezdirect/test_assembly.esummary.xml.txt
-      md5sum: cfd4a654b2ff848590507de395210770
-    - path: output/entrezdirect/test_assembly.xtract.table.txt
-      md5sum: c3384a6d383f726b4f26ef5134d34947
+    - path: output/entrezdirect/test_assembly.xml
+      md5sum: fe13df4dc2ccc66f1322653bffe784a0
+    - path: output/entrezdirect/test_assembly.xtract.csv
+      md5sum: 17073db7c14890aef30f5e3f2d003d32
 
 - name: entrezdirect xtract test_entrezdirect_xtract_genome
   command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
   tags:
-    - entrezdirect/xtract
     - entrezdirect
+    - entrezdirect/xtract
   files:
-    - path: output/entrezdirect/test_genome.esummary.xml.txt
-      md5sum: fcacd2a9674588acd5264158ae1e2d79
-    - path: output/entrezdirect/test_genome.xtract.table.txt
-      md5sum: bc60a5d9d53d9a8274e0670844cf3acc
+    - path: output/entrezdirect/test_genome.xml
+      md5sum: 5f75c2d80a5b9c6f650058903f7fc2ad
+    - path: output/entrezdirect/test_genome.xtract.csv
+      md5sum: 931279db7c80c5bb9ed523815898a9cd
