@@ -1,7 +1,12 @@
 name: "entrezdirect_esummary"
-description: Queries an NCBI database using an UID
+description: Queries an NCBI database using Unique Identifier(s)
 keywords:
   - public datasets
+  - ncbi
+  - entrez
+  - metadata
+  - query
+  - database
 tools:
   - entrezdirect:
       description: |
@@ -25,10 +30,13 @@ input:
         e.g. [ id:'test', single_end:false ]
   - database:
       type: value
-      description: Value must be a valid Entrez database name (assembly, etc).
+      description: Value must be a valid Entrez database name ('assembly', etc).
   - uid:
       type: value
-      description: Unique Identifier of record in NCBI database.
+      description: Unique Identifier (UID) of record in NCBI database. Cannot be used at the same time as uids_file
+  - uids_file:
+      type: file
+      description: Text file containing multiple UIDs. Cannot be used at the same time as uid.
 
 output:
   - meta:
@@ -42,8 +50,8 @@ output:
       pattern: "versions.yml"
   - xml_esummary:
       type: file
-      description: Query result text in XML format
-      pattern: "*.{txt}"
+      description: Query result in XML format
+      pattern: "*.xml"
 
 authors:
   - "@alxndrdiaz"
