@@ -15,10 +15,18 @@
     - path: ./output/tabix/genome.gff3.gz.tbi
       md5sum: f79a67d95a98076e04fbe0455d825926
 - name: tabix tabix vcf
-  command: nextflow run ./tests/modules/tabix/tabix -entry test_tabix_tabix_vcf -c ./tests/config/nextflow.config -c ./tests/modules/tabix/tabix/nextflow.config
+  command: nextflow run ./tests/modules/tabix/tabix -entry test_tabix_tabix_vcf_tbi -c ./tests/config/nextflow.config -c ./tests/modules/tabix/tabix/nextflow.config
   tags:
     - tabix
     - tabix/tabix
   files:
     - path: output/tabix/test.vcf.gz.tbi
       md5sum: 36e11bf96ed0af4a92caa91a68612d64
+- name: tabix tabix vcf csi
+  command: nextflow run ./tests/modules/tabix/tabix -entry test_tabix_tabix_vcf_csi -c ./tests/config/nextflow.config -c ./tests/modules/tabix/tabix/nextflow.config
+  tags:
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/tabix/test.vcf.gz.csi
+      md5sum: 5f930522d2b9dcdba2807b7da4dfa3fd

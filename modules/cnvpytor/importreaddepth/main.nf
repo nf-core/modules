@@ -2,10 +2,10 @@ process CNVPYTOR_IMPORTREADDEPTH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::cnvpytor=1.0" : null)
+    conda (params.enable_conda ? "bioconda::cnvpytor=1.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.0--py39h6a678da_2':
-        'quay.io/biocontainers/cnvpytor:1.0--py39h6a678da_2' }"
+        'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
+        'quay.io/biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_file), path(index)
@@ -32,7 +32,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/^.*pyCNVnator //; s/Using.*\$//' ))
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
     END_VERSIONS
     """
 }

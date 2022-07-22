@@ -28,16 +28,40 @@ input:
       description: |
         List containing the tbi index files corresponding to the vcfs input files
         e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+  - bed:
+      type: file
+      description: "(Optional) The bed regions to merge on"
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: "(Optional) The fasta reference file (only necessary for the `--gvcf FILE` parameter)"
+      pattern: "*.{fasta,fa}"
+  - fasta:
+      type: file
+      description: "(Optional) The fasta reference file index (only necessary for the `--gvcf FILE` parameter)"
+      pattern: "*.fai"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - vcf_gz:
+      type: file
+      description: VCF merged output file (bgzipped) => when `--output-type z` is used
+      pattern: "*.vcf.gz"
   - vcf:
       type: file
-      description: VCF merged output file
-      pattern: "*.{vcf.gz}"
+      description: VCF merged output file => when `--output-type v` is used
+      pattern: "*.vcf"
+  - bcf_gz:
+      type: file
+      description: BCF merged output file (bgzipped) => when `--output-type b` is used
+      pattern: "*.bcf.gz"
+  - bcf:
+      type: file
+      description: BCF merged output file => when `--output-type u` is used
+      pattern: "*.bcf"
   - versions:
       type: file
       description: File containing software versions
@@ -45,3 +69,4 @@ output:
 authors:
   - "@joseespinosa"
   - "@drpatelh"
+  - "@nvnieuwk"
