@@ -28,17 +28,16 @@ input:
       pattern: "*.bai"
   - empiric:
       type: file
-      description: txt file from PMD estimations
+      description: Optional txt file from PMD estimations (atlas/pmd)
       pattern: "*.txt"
-  - fasta:
+  - alleles:
       type: file
-      description: fasta reference file
-      pattern: "*.{fasta,fa}"
-  -alleles:
-      type: file
-      descrition: A bed file with invariant site coordinates created by user
+      descrition: Optional bed file with known alleles
       pattern: "*.bed"
-
+  - invariant_sites:
+      type: file
+      descrition: Optional bed file with invariant site coordinates
+      pattern: "*.bed"
 
 output:
   - meta:
@@ -53,7 +52,7 @@ output:
   - recal_patterns:
       type: file
       description: file containing the sequencing bias for each of the Read Group pools
-      pattern: "*.txt
+      pattern: "*.txt"
 
 authors:
   - "@ltcrod"
