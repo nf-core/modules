@@ -22,6 +22,7 @@ process SAMTOOLS_FAIDX {
     """
     samtools \\
         faidx \\
+        $args \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
