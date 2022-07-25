@@ -19,10 +19,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - target_bed:
-      type: file
-      description: target bed file
-      pattern: "*.{bed}"
   - vcf:
       type: file
       description: VCF input file
@@ -44,4 +40,3 @@ output:
 authors:
   - "@joseespinosa"
   - "@drpatelh"
-  - "@SusiJo"

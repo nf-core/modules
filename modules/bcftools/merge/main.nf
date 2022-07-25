@@ -9,35 +9,22 @@ process BCFTOOLS_MERGE {
 
     input:
     tuple val(meta), path(vcfs), path(tbis)
-    path bed
-    path fasta
-    path fasta_fai
 
     output:
-    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: merged_variants
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.gz"), emit: vcf
+    path  "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
-
-    def regions = bed ? "--regions-file $bed" : ""
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
-
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    bcftools merge \\
-        $regions \\
-        --threads $task.cpus \\
-        --output ${prefix}.${extension} \\
+    bcftools merge -Oz \\
+        --output ${prefix}.vcf.gz \\
         $args \\
         *.vcf.gz
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
