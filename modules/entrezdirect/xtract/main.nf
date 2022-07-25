@@ -1,6 +1,6 @@
 process ENTREZDIRECT_XTRACT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -14,7 +14,7 @@ process ENTREZDIRECT_XTRACT {
 
     output:
     tuple val(meta), path("*.csv"), emit: xtract_table
-    path "versions.yml"                  , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
