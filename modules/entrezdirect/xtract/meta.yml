@@ -32,6 +32,9 @@ input:
   - element:
       type: value
       description: Space-delimited strings that will be converted to columns.
+  - sep:
+      type: value
+      description: Separator/delimiter between columns (for instance "," or "\t").
 
 output:
   - meta:
@@ -45,8 +48,8 @@ output:
       pattern: "versions.yml"
   - xtract_table:
       type: file
-      description: CSV file containing columns searched from element.
-      pattern: "*.{csv}"
+      description: TXT file containing columns searched from element.
+      pattern: "*.txt"
 
 authors:
   - "@alxndrdiaz"
