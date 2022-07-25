@@ -13,3 +13,13 @@ workflow test_gvcftools_extractvariants {
 
     GVCFTOOLS_EXTRACTVARIANTS ( input )
 }
+
+workflow test_gvcftools_extractvariants_uncompressed {
+    
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
+    ]
+
+    GVCFTOOLS_EXTRACTVARIANTS ( input )
+}

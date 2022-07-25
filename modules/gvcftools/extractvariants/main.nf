@@ -20,9 +20,10 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def open_gvcf = gvcf.extension == "gz" ? "gzip -dc $gvcf" : "cat $gvcf"
 
     """
-    gzip -dcf $gvcf |
+    $open_gvcf |
     extract_variants \\
         $args \\
         $gvcf |
