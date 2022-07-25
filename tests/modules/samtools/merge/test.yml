@@ -4,7 +4,7 @@
     - samtools
     - samtools/merge
   files:
-    - path: output/samtools/test_merged.bam
+    - path: output/samtools/test.bam
 
 - name: samtools merge test_samtools_merge_cram
   command: nextflow run ./tests/modules/samtools/merge -entry test_samtools_merge_cram -c ./tests/config/nextflow.config -c ./tests/modules/samtools/merge/nextflow.config
@@ -12,4 +12,4 @@
     - samtools
     - samtools/merge
   files:
-    - path: output/samtools/test_merged.cram
+    - path: output/samtools/test.cram
