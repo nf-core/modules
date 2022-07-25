@@ -21,13 +21,18 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information (about the reads)
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information (about the reference genome)
+        e.g. [ id:'mus_musculus', assembly:'GRCm38' ]
   - index:
       type: file
       description: BWA genome index files
@@ -37,6 +42,11 @@ input:
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
 output:
+  - merged_meta:
+      type: map
+      description: |
+        Groovy Map containing sample information, combined from the reads and index parameters
+        e.g. [ id:'test', single_end:false, assembly:'GRCm38' ]
   - bam:
       type: file
       description: Output BAM file containing read alignments
