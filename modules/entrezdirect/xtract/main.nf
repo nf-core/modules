@@ -13,7 +13,7 @@ process ENTREZDIRECT_XTRACT {
     val element
 
     output:
-    tuple val(meta), path("*.xtract.csv"), emit: xtract_table
+    tuple val(meta), path("*.csv"), emit: xtract_table
     path "versions.yml"                  , emit: versions
 
     when:
