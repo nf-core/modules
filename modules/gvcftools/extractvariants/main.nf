@@ -22,7 +22,7 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    gzip -dc $gvcf |
+    gzip -dcf $gvcf |
     extract_variants \\
         $args \\
         $gvcf |
