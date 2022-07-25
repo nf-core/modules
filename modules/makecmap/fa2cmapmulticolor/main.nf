@@ -14,7 +14,7 @@ process MAKECMAP_FA2CMAPMULTICOLOR {
     val enzyme
 
     output:
-    tuple val(meta), path("*.cmap"), emit: bam
+    tuple val(meta), path("*.cmap"), emit: cmap
     path("*key.txt")               , emit: cmapkey
     path "versions.yml"            , emit: versions
 
