@@ -12,11 +12,12 @@ include { ENTREZDIRECT_ESEARCH                           } from '../../../../mod
 workflow test_entrezdirect_esearch_pubmed {
     input = [
         [ id:'test_pubmed' ], // meta map
-        database = 'pubmed',
         term = 'selective serotonin reuptake inhibitor'
     ]
 
-    ENTREZDIRECT_ESEARCHP ( input )
+    database = 'pubmed'
+
+    ENTREZDIRECT_ESEARCHP ( input, database )
 }
 
 //
@@ -24,12 +25,13 @@ workflow test_entrezdirect_esearch_pubmed {
 //
 workflow test_entrezdirect_esearch_genome {
     input = [
-        [ id:'test_genome' ], // meta map
-        database = 'genome',
+        [ id:'test_genome' ], // meta map,
         term = 'Danio+rerio'
     ]
 
-    ENTREZDIRECT_ESEARCH ( input )
+    database = 'genome'
+
+    ENTREZDIRECT_ESEARCH ( input, database  )
 }
 
 //
@@ -38,9 +40,10 @@ workflow test_entrezdirect_esearch_genome {
 workflow test_entrezdirect_esearch_assembly {
     input = [
         [ id:'test_assembly' ], // meta map
-        database = 'assembly',
         term = 'GCA_000001635.9'
     ]
 
-    ENTREZDIRECT_ESEARCH ( input )
+    database = 'assembly'
+
+    ENTREZDIRECT_ESEARCH ( input, database )
 }
