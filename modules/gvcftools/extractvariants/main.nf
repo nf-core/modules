@@ -25,7 +25,7 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     gzip -dc $gvcf |
     extract_variants \\
         $args \\
-        $gvcf | 
+        $gvcf |
     gzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
