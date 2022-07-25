@@ -1,9 +1,9 @@
 name: Pytest-workflow
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   changes:
@@ -23,6 +23,9 @@ jobs:
   test:
     runs-on: ubuntu-20.04
 
+    permissions:
+      packages: read
+
     name: ${{ matrix.tags }} ${{ matrix.profile }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
@@ -35,6 +38,13 @@ jobs:
       NXF_ANSI_LOG: false
     steps:
       - uses: actions/checkout@v2
+
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
