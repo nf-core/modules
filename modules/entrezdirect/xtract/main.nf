@@ -11,9 +11,10 @@ process ENTREZDIRECT_XTRACT {
     tuple val(meta), path(xml_input)
     val pattern
     val element
+    val sep
 
     output:
-    tuple val(meta), path("*.csv"), emit: xtract_table
+    tuple val(meta), path("*.txt"), emit: xtract_table
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,10 +26,10 @@ process ENTREZDIRECT_XTRACT {
     """
     cat $xml_input | xtract \\
         -pattern $pattern \\
-        -tab "," \\
+        -tab $sep \\
         -element $element \\
         $args \\
-        > ${prefix}.csv
+        > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
