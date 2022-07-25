@@ -9,7 +9,6 @@ include { ENTREZDIRECT_ESUMMARY } from '../../../../modules/entrezdirect/esummar
 //
 workflow test_entrezdirect_esummary_sra {
 
-
     input = [
         [ id:'test_sra' ], // meta map
         uid = '5135484',
