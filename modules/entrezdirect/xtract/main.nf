@@ -28,7 +28,7 @@ process ENTREZDIRECT_XTRACT {
         -tab "," \\
         -element $element \\
         $args \\
-        > ${prefix}.xtract.csv
+        > ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
