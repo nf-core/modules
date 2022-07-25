@@ -14,7 +14,6 @@ workflow test_entrezdirect_esearch_pubmed {
         [ id:'test_pubmed' ], // meta map
         term = 'selective serotonin reuptake inhibitor'
     ]
-
     database = 'pubmed'
 
     ENTREZDIRECT_ESEARCHP ( input, database )
@@ -28,9 +27,8 @@ workflow test_entrezdirect_esearch_genome {
         [ id:'test_genome' ], // meta map,
         term = 'Danio+rerio'
     ]
-
     database = 'genome'
-
+    
     ENTREZDIRECT_ESEARCH ( input, database  )
 }
 
@@ -42,7 +40,6 @@ workflow test_entrezdirect_esearch_assembly {
         [ id:'test_assembly' ], // meta map
         term = 'GCA_000001635.9'
     ]
-
     database = 'assembly'
 
     ENTREZDIRECT_ESEARCH ( input, database )
