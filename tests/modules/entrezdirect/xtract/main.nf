@@ -19,9 +19,10 @@ workflow test_entrezdirect_xtract_assembly {
 
     pattern_in = 'DocumentSummary'
     element_in = 'SpeciesName BioprojectAccn FtpPath_GenBank'
+    delim = ","
 
     ENTREZDIRECT_ESUMMARY ( input, database )
-    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in )
+    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in, delim )
 }
 
 //
@@ -38,7 +39,8 @@ workflow test_entrezdirect_xtract_genome {
 
     pattern_in = 'DocumentSummary'
     element_in = 'TaxId Organism_Name Project_Accession Assembly_Accession'
+    delim = ","
 
     ENTREZDIRECT_ESUMMARY ( input, database )
-    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in )
+    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in, delim )
 }
