@@ -8,7 +8,8 @@ process ENTREZDIRECT_ESEARCH {
         'quay.io/biocontainers/entrez-direct:16.2--he881be0_1'}"
 
     input:
-    tuple val(meta), val(database), val(term)
+    tuple val(meta), val(term)
+    val database
 
     output:
     tuple val(meta), path("*.xml") , emit: result_xml
