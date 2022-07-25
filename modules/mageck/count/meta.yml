@@ -1,0 +1,56 @@
+name: "mageck_count"
+## TODO nf-core: Add a description of the module and list keywords
+description: mageck count for functional genomics, reads are usually mapped
+to a specific sgRNA
+keywords:
+  - sort
+tools:
+  - "mageck":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
+      homepage: "https://sourceforge.net/p/mageck/wiki/Home/"
+      documentation: "https://sourceforge.net/p/mageck/wiki/demo/#step-4-run-the-mageck-count-command"
+      tool_dev_url: "None"
+      doi: ""
+      licence: "['BSD License']"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - library:
+      type: file
+      description: library file containing the sgRNA and gene name
+      pattern: "*.{csv,txt,tsv}"
+  - reads:
+      type: file
+      description: library file containing the sgRNA and gene name
+      pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - norm:
+      type: file
+      description: File containing normalized read counts
+      pattern: "*.count_normalized.txt"
+  - count:
+      type: file
+      description: File containing read counts
+      pattern: "*.countsummary.txt"
+
+
+
+authors:
+  - "@LaurenceKuhl"
