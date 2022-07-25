@@ -14,6 +14,11 @@ tools:
       documentation: https://github.com/bwa-mem2/bwa-mem2#usage
       licence: ["MIT"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Input genome fasta file
