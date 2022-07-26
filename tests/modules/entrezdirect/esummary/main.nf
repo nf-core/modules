@@ -14,7 +14,6 @@ workflow test_entrezdirect_esummary_sra {
         uid = '5135484',
         []
     ]
-
     database = 'sra'
 
     ENTREZDIRECT_ESUMMARY ( input, database )
@@ -30,7 +29,6 @@ workflow test_entrezdirect_esummary_genome {
         uid = '768',
         []
     ]
-
     database = 'genome'
 
     ENTREZDIRECT_ESUMMARY ( input, database )
@@ -46,7 +44,6 @@ workflow test_entrezdirect_esummary_assembly {
         uid = '191021',
         []
     ]
-
     database = 'assembly'
 
     ENTREZDIRECT_ESUMMARY ( input, database )
