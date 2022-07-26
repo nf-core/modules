@@ -42,5 +42,5 @@ workflow test_entrezdirect_xtract_genome {
     delim = ","
 
     ENTREZDIRECT_ESUMMARY ( input, database )
-    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml_esummary, pattern_in, element_in, delim )
+    ENTREZDIRECT_XTRACT ( ENTREZDIRECT_ESUMMARY.out.xml, pattern_in, element_in, delim )
 }
