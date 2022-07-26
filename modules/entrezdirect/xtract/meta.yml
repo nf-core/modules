@@ -1,51 +1,55 @@
 name: "entrezdirect_xtract"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Queries an NCBI database using an UID
 keywords:
-  - sort
+  - public datasets
 tools:
-  - "entrezdirect":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: ""
+  - entrezdirect:
+      description: |
+        Entrez Direct (EDirect) is a method for accessing the NCBI's set of
+        interconnected databases (publication, sequence, structure, gene,
+        variation, expression, etc.) from a UNIX terminal window. Functions
+        take search terms from command line arguments. Individual operations
+        are combined to build multi-step queries. Record retrieval and
+        formatting normally complete the process.
+      homepage: https://www.ncbi.nlm.nih.gov/books/NBK179288/
+      documentation: https://www.ncbi.nlm.nih.gov/books/NBK25501/
+      tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
+      doi: 10.1016/S0076-6879(96)66012-1
+      licence: ["PUBLIC DOMAIN"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - xml_input:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: XML text file containing query results from database.
+  - pattern:
+      type: value
+      description: String in xml_input that encloses element to search.
+  - element:
+      type: value
+      description: Space-delimited strings that will be converted to columns.
+  - sep:
+      type: value
+      description: Separator/delimiter between columns (for instance "," or "\t").
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - xtract_table:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TXT file containing columns searched from element.
+      pattern: "*.txt"
 
 authors:
   - "@alxndrdiaz"
