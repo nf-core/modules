@@ -1,4 +1,4 @@
-process ENTREZDIRECT_ESUMMARY {
+process ENTREZDIRECT_ESEARCH {
     tag "$meta.id"
     label 'process_low'
 
@@ -8,31 +8,28 @@ process ENTREZDIRECT_ESUMMARY {
         'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
 
     input:
-    tuple val(meta), val(uid), path(uids_file)
+    tuple val(meta), val(term)
     val database
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml") , emit: xml
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
-    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
-    if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    def args = task.ext.args ?: ''
     """
-    esummary \\
-        $args \\
+    esearch \\
         -db $database \\
-        $input > ${prefix}.xml
+        -query $term \\
+        $args > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        esummary: \$(esummary -version)
+        esearch: \$(esearch -version)
     END_VERSIONS
     """
 }
