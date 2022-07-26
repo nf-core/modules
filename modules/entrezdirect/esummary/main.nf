@@ -12,7 +12,7 @@ process ENTREZDIRECT_ESUMMARY {
     val database
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml_esummary
+    tuple val(meta), path("*.xml"), emit: xml
     path "versions.yml"           , emit: versions
 
     when:
