@@ -1,14 +1,21 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml entrezdirect/xtract
-- name: "entrezdirect xtract"
-  command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract -c ./tests/config/nextflow.config -c ./tests/modules/entrezdirect/xtract/nextflow.config
+- name: entrezdirect xtract test_entrezdirect_xtract_assembly
+  command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
   tags:
-    - "entrezdirect"
-    #
-    - "entrezdirect/xtract"
-    #
+    - entrezdirect/xtract
+    - entrezdirect
   files:
-    - path: "output/entrezdirect/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/entrezdirect/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/entrezdirect/test_assembly.txt
+      md5sum: 17073db7c14890aef30f5e3f2d003d32
+    - path: output/entrezdirect/test_assembly.xml
+      md5sum: ddbf36702303ef805a19f81754eb9c92
+
+- name: entrezdirect xtract test_entrezdirect_xtract_genome
+  command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
+  tags:
+    - entrezdirect/xtract
+    - entrezdirect
+  files:
+    - path: output/entrezdirect/test_genome.txt
+      md5sum: 931279db7c80c5bb9ed523815898a9cd
+    - path: output/entrezdirect/test_genome.xml
+      md5sum: b094f8628accc177eda5f669ac984de5
