@@ -24,7 +24,6 @@ process ENTREZDIRECT_ESUMMARY {
     input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
     if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
     if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
-    // use of 'tail -n+3' is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
     """
     esummary \\
         $args \\
