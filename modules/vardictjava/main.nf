@@ -9,7 +9,7 @@ process VARDICTJAVA {
 
     input:
     tuple val(meta), path(bam), path(bai), path(bed)
-    path(fasta) 
+    path(fasta)
     path(fasta_fai)
 
     output:
