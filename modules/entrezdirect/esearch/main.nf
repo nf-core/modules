@@ -21,12 +21,11 @@ process ENTREZDIRECT_ESEARCH {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
-    // use of 'tail -n+3' is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
     """
     esearch \\
         -db $database \\
         -query $term \\
-        $args | tail -n+3 > ${prefix}.xml
+        $args > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
