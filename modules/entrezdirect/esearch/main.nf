@@ -24,9 +24,9 @@ process ENTREZDIRECT_ESEARCH {
     // use of 'tail -n+3' is to ensure a clean XML file. Otherwise an irrelevant Perl compilation error ends up in the XML
     """
     esearch \\
-        $args \\
         -db $database \\
-        -query $term | tail -n+3 > ${prefix}.xml
+        -query $term \\
+        $args | tail -n+3 > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
