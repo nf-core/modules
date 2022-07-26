@@ -12,7 +12,7 @@ process ENTREZDIRECT_ESEARCH {
     val database
 
     output:
-    tuple val(meta), path("*.xml") , emit: result_xml
+    tuple val(meta), path("*.xml") , emit: xml
     path "versions.yml"            , emit: versions
 
     when:
