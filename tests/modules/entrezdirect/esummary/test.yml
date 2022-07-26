@@ -5,7 +5,7 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_sra.xml
-      md5sum: aeb7f5710a5447a8de89b9e6fc464606
+      md5sum: bc4bc7f3c53af5961bc8592225959363
 
 - name: entrezdirect esummary test_entrezdirect_esummary_genome
   command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
@@ -14,7 +14,7 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_genome.xml
-      md5sum: 2abea497bcef9312105b23ed78b72f62
+      md5sum: af6242f231bdc147d6197edfd0954585
 
 - name: entrezdirect esummary test_entrezdirect_esummary_assembly
   command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
@@ -23,4 +23,4 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_assembly.xml
-      md5sum: 01c962bc82d3b3bcb9d4da5b0b6b408a
+      md5sum: 32f81147eea61df5814e87c2df1092a9
