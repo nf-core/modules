@@ -8,7 +8,7 @@ workflow test_hamronization_deeparg {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['bacteroides_fragilis']['genome']['genome_mapping_potential_arg'], checkIfExists: true),
+        file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),
     ]
 
     HAMRONIZATION_DEEPARG ( input, 'tsv', '1.0.2', '2'  )
