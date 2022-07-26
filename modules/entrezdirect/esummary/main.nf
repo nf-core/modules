@@ -29,7 +29,7 @@ process ENTREZDIRECT_ESUMMARY {
     esummary \\
         $args \\
         -db $database \\
-        $input | tail -n+3 > ${prefix}.xml
+        $input > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
