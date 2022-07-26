@@ -1,14 +1,47 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml entrezdirect/esearch
-- name: "entrezdirect esearch"
-  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch -c ./tests/config/nextflow.config -c ./tests/modules/entrezdirect/esearch/nextflow.config
+- name: entrezdirect esearch test_entrezdirect_esearch_pubmed
+  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_pubmed -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
   tags:
-    - "entrezdirect"
-    #
-    - "entrezdirect/esearch"
-    #
+    - entrezdirect
+    - entrezdirect/esearch
   files:
-    - path: "output/entrezdirect/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/entrezdirect/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/entrezdirect/test_pubmed.xml
+      contains:
+        - "<ENTREZ_DIRECT>"
+        - "<Db>pubmed</Db>"
+        - "<WebEnv>"
+        - "<QueryKey>"
+        - "<Step>"
+        - "<Count>"
+        - "</ENTREZ_DIRECT>"
+
+- name: entrezdirect esearch test_entrezdirect_esearch_genome
+  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
+  tags:
+    - entrezdirect
+    - entrezdirect/esearch
+  files:
+    - path: output/entrezdirect/test_genome.xml
+      contains:
+        - "<ENTREZ_DIRECT>"
+        - "<Db>genome</Db>"
+        - "<WebEnv>"
+        - "<QueryKey>"
+        - "<Count>"
+        - "<Step>"
+        - "</ENTREZ_DIRECT>"
+
+- name: entrezdirect esearch test_entrezdirect_esearch_assembly
+  command: nextflow run ./tests/modules/entrezdirect/esearch -entry test_entrezdirect_esearch_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esearch/nextflow.config
+  tags:
+    - entrezdirect
+    - entrezdirect/esearch
+  files:
+    - path: output/entrezdirect/test_assembly.xml
+      contains:
+        - "<ENTREZ_DIRECT>"
+        - "<Db>assembly</Db>"
+        - "<WebEnv>"
+        - "<QueryKey>"
+        - "<Count>"
+        - "<Step>"
+        - "</ENTREZ_DIRECT>"
