@@ -28,6 +28,10 @@ input:
   - fasta:
       type: file
       description: Genome fasta file
+  - fai:
+      type: file
+      description: Index of FASTA file. Only needed when fasta is supplied.
+      pattern: "*.fai"
 output:
   - meta:
       type: map

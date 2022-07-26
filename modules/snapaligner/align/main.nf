@@ -1,5 +1,5 @@
 process SNAPALIGNER_ALIGN {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
@@ -13,6 +13,7 @@ process SNAPALIGNER_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), optional: true, emit: bai
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,11 +25,11 @@ process SNAPALIGNER_ALIGN {
     def subcmd = meta.single_end ? "single" : "paired"
 
     """
-    mkdir -p index
-    mv $index index/
+    INDEX=`dirname \$(find -L ./ -name "OverflowTable*")`
+    [ -z "\$INDEX" ] && echo "Snap index files not found" 1>&2 && exit 1
 
     snap-aligner ${subcmd} \\
-        index \\
+        \$INDEX \\
         ${reads.join(" ")} \\
         -o ${prefix}.bam \\
         -t ${task.cpus} \\

@@ -10,7 +10,7 @@ workflow test_bcftools_roh {
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
 
-    af_file = []
+    af_file = [[],[]]
     gen_map = []
     regions = []
     targets = []
@@ -25,7 +25,7 @@ workflow test_bcftools_roh_stub {
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
              file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
 
-    af_file = []
+    af_file = [[],[]]
     gen_map = []
     regions = []
     targets = []

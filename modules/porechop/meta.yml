@@ -38,6 +38,10 @@ output:
       type: file
       description: Demultiplexed and/or adapter-trimmed fastq.gz file
       pattern: "*.{fastq.gz}"
+  - log:
+      type: file
+      description: Log file containing stdout information
+      pattern: "*.log"
 
 authors:
   - "@ggabernet"
@@ -48,3 +52,4 @@ authors:
   - "@jonasscheid"
   - "@jonoave"
   - "@GokceOGUZ"
+  - "@jfy133"
