@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ENTREZDIRECT_ESEARCH as ENTREZDIRECT_ESEARCHP  } from '../../../../modules/entrezdirect/esearch/main.nf'
-include { ENTREZDIRECT_ESEARCH                           } from '../../../../modules/entrezdirect/esearch/main.nf'
+include { ENTREZDIRECT_ESEARCH as ENTREZDIRECT_ESEARCHP  } from "../../../../modules/entrezdirect/esearch/main.nf"
+include { ENTREZDIRECT_ESEARCH                           } from "../../../../modules/entrezdirect/esearch/main.nf"
 
 //
 // Test with PubMed database, using date range and spell check,
@@ -12,9 +12,9 @@ include { ENTREZDIRECT_ESEARCH                           } from '../../../../mod
 workflow test_entrezdirect_esearch_pubmed {
     input = [
         [ id:'test_pubmed' ], // meta map
-        term = 'selective serotonin reuptake inhibitor'
+        term = "selective serotonin reuptake inhibitor"
     ]
-    database = 'pubmed'
+    database = "pubmed"
 
     ENTREZDIRECT_ESEARCHP ( input, database )
 }
@@ -25,9 +25,9 @@ workflow test_entrezdirect_esearch_pubmed {
 workflow test_entrezdirect_esearch_genome {
     input = [
         [ id:'test_genome' ], // meta map,
-        term = 'Danio+rerio'
+        term = "Danio+rerio"
     ]
-    database = 'genome'
+    database = "genome"
 
     ENTREZDIRECT_ESEARCH ( input, database  )
 }
@@ -38,9 +38,9 @@ workflow test_entrezdirect_esearch_genome {
 workflow test_entrezdirect_esearch_assembly {
     input = [
         [ id:'test_assembly' ], // meta map
-        term = 'GCA_000001635.9'
+        term = "GCA_000001635.9"
     ]
-    database = 'assembly'
+    database = "assembly"
 
     ENTREZDIRECT_ESEARCH ( input, database )
 }
