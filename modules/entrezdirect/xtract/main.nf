@@ -14,7 +14,7 @@ process ENTREZDIRECT_XTRACT {
     val sep
 
     output:
-    tuple val(meta), path("*.txt"), emit: xtract_table
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml"           , emit: versions
 
     when:
