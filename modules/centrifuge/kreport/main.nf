@@ -8,7 +8,7 @@ process CENTRIFUGE_KREPORT {
         'quay.io/biocontainers/centrifuge:1.0.4_beta--h9a82719_6' }"
 
     input:
-    tuple val(meta), path(results)
+    tuple val(meta), path(report)
     path db
 
     output:
@@ -23,7 +23,7 @@ process CENTRIFUGE_KREPORT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
-    centrifuge-kreport -x \$db_name ${results} > ${prefix}.txt
+    centrifuge-kreport -x \$db_name ${report} > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
