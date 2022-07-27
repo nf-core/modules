@@ -11,24 +11,20 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bam")                 , emit: bam
+    tuple val(meta), path("*.bai"), optional: true , emit: bai
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args        ?: ''
-    def prefix = task.ext.prefix    ?: "${meta.id}"
-    def ID = task.ext.id            ?: "id"
-    def LIBRARY= task.ext.library   ?: "library"
-    def PLATFORM= task.ext.platform ?: "illumina"
-    def BARCODE= task.ext.barcode   ?: "barcode"
-    def SAMPLE= task.ext.sample     ?: "sample"
-    def INDEX= task.ext.index       ?: "index"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[Picard AddOrReplaceReadGroups] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[Picard AddOrReplaceReadGroups] Available memory not known '+
+        '- defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
@@ -38,12 +34,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         -Xmx${avail_mem}g \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        --RGID ${ID} \\
-        --RGLB ${LIBRARY} \\
-        --RGPL ${PLATFORM} \\
-        --RGPU ${BARCODE} \\
-        --RGSM ${SAMPLE} \\
-        --CREATE_INDEX true
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
