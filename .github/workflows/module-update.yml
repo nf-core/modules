@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      modules: ${{ steps.filter.outputs.update_modules }}
     steps:
       - uses: actions/checkout@v2
 
@@ -71,12 +71,12 @@ jobs:
   push_changes:
     runs-on: ubuntu-latest
     name: Update module ${{ matrix.tags }} version
-    needs: changes
-    if: needs.changes.outputs.modules != '[]'
+    needs: update_modules
+    if: needs.update_modules.outputs.modules != '[]'
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
+        tags: ["${{ fromJson(needs.update_modules.outputs.modules) }}"]
     steps:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v2
