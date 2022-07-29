@@ -15,9 +15,12 @@ process MINIASM {
     tuple val(meta), path("*.fasta.gz"), emit: assembly
     path "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     miniasm \\
         $args \\

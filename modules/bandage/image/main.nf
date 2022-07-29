@@ -15,9 +15,12 @@ process BANDAGE_IMAGE {
     tuple val(meta), path('*.svg'), emit: svg
     path  "versions.yml"          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     Bandage image $gfa ${prefix}.png $args
     Bandage image $gfa ${prefix}.svg $args

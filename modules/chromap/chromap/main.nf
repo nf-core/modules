@@ -1,13 +1,11 @@
-def VERSION = '0.1' // Version information not provided by tool on CLI
-
 process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::chromap=0.1 bioconda::samtools=1.13" : null)
+    conda (params.enable_conda ? "bioconda::chromap=0.2.1 bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' :
-        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:2cad7c5aa775241887eff8714259714a39baf016-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:963e4fe6a85c548a4018585660aed79780a175d3-0' :
+        'quay.io/biocontainers/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:963e4fe6a85c548a4018585660aed79780a175d3-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -25,10 +23,13 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
     path "versions.yml"                                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
 
     def file_extension = args.contains("--SAM") ? 'sam' : args.contains("--TagAlign")? 'tagAlign' : args.contains("--pairs")? 'pairs' : 'bed'
@@ -45,7 +46,7 @@ process CHROMAP_CHROMAP {
         args_list << "--pairs-natural-chr-order $pairs_chr_order"
     }
     def final_args = args_list.join(' ')
-    def compression_cmds = "gzip ${prefix}.${file_extension}"
+    def compression_cmds = "gzip -n ${prefix}.${file_extension}"
     if (args.contains("--SAM")) {
         compression_cmds = """
         samtools view $args2 -@ $task.cpus -bh \\
@@ -67,7 +68,8 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            chromap: $VERSION
+            chromap: \$(echo \$(chromap --version 2>&1))
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     } else {
@@ -85,7 +87,8 @@ process CHROMAP_CHROMAP {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            chromap: $VERSION
+            chromap: \$(echo \$(chromap --version 2>&1))
+            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
         END_VERSIONS
         """
     }

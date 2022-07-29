@@ -11,3 +11,11 @@ workflow test_gatk4_revertsam {
 
     GATK4_REVERTSAM ( input )
 }
+
+workflow test_gatk4_revertsam_stubs {
+    input = [ [ id:'test' ], // meta map
+              file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+            ]
+
+    GATK4_REVERTSAM ( input )
+}

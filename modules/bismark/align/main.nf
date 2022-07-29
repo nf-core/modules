@@ -17,9 +17,12 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*fq.gz")     , optional:true, emit: unmapped
     path "versions.yml"                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def fastq      = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     bismark \\

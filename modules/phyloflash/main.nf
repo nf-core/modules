@@ -16,9 +16,12 @@ process PHYLOFLASH {
     tuple val(meta), path("${meta.id}*/*"), emit: results
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
         phyloFlash.pl \\
@@ -58,7 +61,7 @@ process PHYLOFLASH {
     }
 
     stub:
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     touch ${prefix}/${prefix}.SSU.collection.fasta

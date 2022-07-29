@@ -9,7 +9,7 @@ process JUPYTERNOTEBOOK {
     //ipykernel, jupytext, papermill and nbconvert Python packages.
     conda (params.enable_conda ? "ipykernel=6.0.3 jupytext=1.11.4 nbconvert=6.1.0 papermill=2.3.3 matplotlib=3.4.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963%3A879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' :
+        'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' :
         'quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' }"
 
     input:
@@ -22,9 +22,12 @@ process JUPYTERNOTEBOOK {
     tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
     path "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params

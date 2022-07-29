@@ -16,9 +16,12 @@ process GUNC_RUN {
     tuple val(meta), path("*all_levels.tsv")    , optional: true, emit: all_levels_tsv
     path "versions.yml"                                         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gunc \\
         run \\

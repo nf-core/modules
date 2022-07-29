@@ -1,0 +1,12 @@
+- name: biobambam bammarkduplicates2 test_biobambam_bammarkduplicates2
+  command: nextflow run tests/modules/biobambam/bammarkduplicates2 -entry test_biobambam_bammarkduplicates2 -c tests/config/nextflow.config
+  tags:
+    - biobambam/bammarkduplicates2
+    - biobambam
+  files:
+    - path: output/biobambam/test.bam
+      md5sum: 603edff09029096ddf2bb8a3f12d7aa7
+    - path: output/biobambam/test.metrics.txt
+      md5sum: 30d6e7d90bb5df46329d4bc0144ce927
+    - path: output/biobambam/versions.yml
+      md5sum: dfdf2b084655d124acac0bfb4eda86cc

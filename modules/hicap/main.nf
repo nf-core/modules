@@ -18,9 +18,12 @@ process HICAP {
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def database_args = database_dir ? "--database_dir ${database_dir}" : ""
     def model_args = model_fp ? "--model_fp ${model_fp}" : ""
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false

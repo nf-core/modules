@@ -1,0 +1,23 @@
+- name: deepvariant test_deepvariant
+  command: nextflow run tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: output/deepvariant/test_out.g.vcf.gz
+      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+    - path: output/deepvariant/test_out.vcf.gz
+      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+    - path: output/deepvariant/versions.yml
+      md5sum: 51572055ca5c07fc4001b25a9c273bf8
+
+- name: deepvariant test_deepvariant_cram_intervals
+  command: nextflow run tests/modules/deepvariant -entry test_deepvariant_cram_intervals -c tests/config/nextflow.config
+  tags:
+    - deepvariant
+  files:
+    - path: output/deepvariant/test_out.g.vcf.gz
+      md5sum: c4c65a3eaf62d6fbe0aba0a414318c8d
+    - path: output/deepvariant/test_out.vcf.gz
+      md5sum: ad964f68ac1d1b2720a9a4e0b6a3a389
+    - path: output/deepvariant/versions.yml
+      md5sum: 7d9293db0d44423b114abc7116feb967

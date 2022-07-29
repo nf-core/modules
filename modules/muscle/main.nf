@@ -21,9 +21,12 @@ process MUSCLE {
     path "*.log"                                   , emit: log
     path "versions.yml"                            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_out = args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
     def clw_out   = args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''
     def msf_out   = args.contains('-msf') ? "-msfout ${prefix}_muscle_msa.msf" : ''

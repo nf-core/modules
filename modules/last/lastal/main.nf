@@ -15,9 +15,12 @@ process LAST_LASTAL {
     tuple val(meta), path("*.maf.gz"), emit: maf
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

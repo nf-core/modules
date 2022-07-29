@@ -16,9 +16,12 @@ process UNICYCLER {
     tuple val(meta), path('*.log')            , emit: log
     path  "versions.yml"                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def short_reads = shortreads ? ( meta.single_end ? "-s $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}" ) : ""
     def long_reads  = longreads ? "-l $longreads" : ""
     """

@@ -2,10 +2,10 @@ process MINIA {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::minia=3.2.4" : null)
+    conda (params.enable_conda ? "bioconda::minia=3.2.6" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minia:3.2.4--he513fc3_0' :
-        'quay.io/biocontainers/minia:3.2.4--he513fc3_0' }"
+        'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0' :
+        'quay.io/biocontainers/minia:3.2.6--h9a82719_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,9 +16,12 @@ process MINIA {
     tuple val(meta), path('*.h5')        , emit: h5
     path  "versions.yml"                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def read_list = reads.join(",")
     """
     echo "${read_list}" | sed 's/,/\\n/g' > input_files.txt

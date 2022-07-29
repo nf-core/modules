@@ -14,9 +14,12 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     tuple val(meta), path("*.txt.gz"), emit: depth
     path "versions.yml"                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export OMP_NUM_THREADS=$task.cpus
 

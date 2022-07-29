@@ -1,9 +1,8 @@
-def VERSION = '1.2.2' // Version information not provided by tool on CLI
-
 process PHANTOMPEAKQUALTOOLS {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::phantompeakqualtools=1.2.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0' :
@@ -18,12 +17,17 @@ process PHANTOMPEAKQUALTOOLS {
     tuple val(meta), path("*.Rdata"), emit: rdata
     path  "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     RUN_SPP=`which run_spp.R`
-    Rscript -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" -p=$task.cpus
+    Rscript $args -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -17,9 +17,12 @@ process DAMAGEPROFILER {
     tuple val(meta), path("${prefix}"), emit: results
     path  "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def reference    = fasta ? "-r $fasta" : ""
     def species_list = specieslist ? "-sf $specieslist" : ""
     """

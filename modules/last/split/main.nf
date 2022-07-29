@@ -14,9 +14,12 @@ process LAST_SPLIT {
     tuple val(meta), path("*.maf.gz"), emit: maf
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz
 

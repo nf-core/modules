@@ -16,9 +16,12 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     tuple val(meta), path("*.qcmetrics.txt"), emit: metrics
     path  "versions.yml"                    , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def extend   = (meta.single_end && params.fragment_size > 0) ? "--extendReads ${params.fragment_size}" : ''
     """
     plotFingerprint \\

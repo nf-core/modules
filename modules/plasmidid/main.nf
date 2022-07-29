@@ -22,9 +22,12 @@ process PLASMIDID {
     tuple val(meta), path("${prefix}/kmer/")              , emit: kmer
     path "versions.yml"                                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     plasmidID \\
         -d $fasta \\

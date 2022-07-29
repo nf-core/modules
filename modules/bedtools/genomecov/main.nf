@@ -16,6 +16,9 @@ process BEDTOOLS_GENOMECOV {
     tuple val(meta), path("*.${extension}"), emit: genomecov
     path  "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args_list = args.tokenize()
@@ -24,7 +27,7 @@ process BEDTOOLS_GENOMECOV {
         args += " -bg"
     }
 
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
         """
         bedtools \\

@@ -15,9 +15,12 @@ process LOFREQ_INDELQUAL {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     lofreq indelqual \\
         $args \\

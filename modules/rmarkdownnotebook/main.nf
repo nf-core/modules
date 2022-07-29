@@ -9,7 +9,7 @@ process RMARKDOWNNOTEBOOK {
     //yaml and rmarkdown R packages.
     conda (params.enable_conda ? "r-base=4.1.0 r-rmarkdown=2.9 r-yaml=2.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5%3A0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
+        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
         'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
 
     input:
@@ -23,9 +23,12 @@ process RMARKDOWNNOTEBOOK {
     tuple val(meta), path ("session_info.log"), emit: session_info
     path  "versions.yml"                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params

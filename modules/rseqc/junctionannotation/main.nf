@@ -21,9 +21,12 @@ process RSEQC_JUNCTIONANNOTATION {
     tuple val(meta), path("*events.pdf")   , optional:true, emit: events_pdf
     path  "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     junction_annotation.py \\
         -i $bam \\

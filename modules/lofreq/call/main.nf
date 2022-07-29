@@ -15,9 +15,12 @@ process LOFREQ_CALL {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     lofreq \\
         call \\

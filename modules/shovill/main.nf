@@ -18,6 +18,9 @@ process SHOVILL {
     tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
     path "versions.yml"                                         , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def memory = task.memory.toGiga()

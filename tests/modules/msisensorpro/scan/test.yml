@@ -1,0 +1,10 @@
+- name: msisensorpro scan test_msisensorpro_scan
+  command: nextflow run tests/modules/msisensorpro/scan -entry test_msisensorpro_scan -c tests/config/nextflow.config
+  tags:
+    - msisensorpro
+    - msisensorpro/scan
+  files:
+    - path: output/msisensorpro/test.msisensor_scan.list
+      md5sum: 309d41b136993db24a9f3dade877753b
+    - path: output/msisensorpro/versions.yml
+      md5sum: ed713232c854bce5c74d10097101ed06

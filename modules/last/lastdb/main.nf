@@ -14,9 +14,12 @@ process LAST_LASTDB {
     tuple val(meta), path("lastdb"), emit: index
     path "versions.yml"            , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir lastdb
     lastdb \\

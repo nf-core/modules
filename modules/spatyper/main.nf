@@ -4,7 +4,7 @@ process SPATYPER {
 
     conda (params.enable_conda ? "bioconda::spatyper=0.3.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spatyper%3A0.3.3--pyhdfd78af_3' :
+        'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
         'quay.io/biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
 
     input:
@@ -16,9 +16,12 @@ process SPATYPER {
     tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """
     spaTyper \\

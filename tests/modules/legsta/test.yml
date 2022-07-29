@@ -1,0 +1,9 @@
+- name: legsta test_legsta
+  command: nextflow run tests/modules/legsta -entry test_legsta -c tests/config/nextflow.config
+  tags:
+    - legsta
+  files:
+    - path: output/legsta/test.tsv
+      md5sum: c493bdd19335de4828aa8b4e3ce7e1f8
+    - path: output/legsta/versions.yml
+      md5sum: d16c5f6fd68d2bcc2c71954e3342aabe

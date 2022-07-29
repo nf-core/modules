@@ -5,7 +5,7 @@ process CUTADAPT {
     conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1' :
-        'quay.io/biocontainers/cutadapt:3.4--py37h73a75cf_1' }"
+        'quay.io/biocontainers/cutadapt:3.4--py39h38f01e4_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -15,9 +15,12 @@ process CUTADAPT {
     tuple val(meta), path('*.log')          , emit: log
     path "versions.yml"                     , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def trimmed  = meta.single_end ? "-o ${prefix}.trim.fastq.gz" : "-o ${prefix}_1.trim.fastq.gz -p ${prefix}_2.trim.fastq.gz"
     """
     cutadapt \\

@@ -1,0 +1,9 @@
+- name: deeparg downloaddata test_deeparg_downloaddata
+  command: nextflow run tests/modules/deeparg/downloaddata -entry test_deeparg_downloaddata -c tests/config/nextflow.config
+  tags:
+    - deeparg
+    - deeparg/downloaddata
+  files:
+    - path: output/deeparg/db/
+    - path: output/deeparg/db/data/gg13/dataset.rev.2.bt2
+      md5sum: 99d90f132fc2795d5a527ce31f1c4d30

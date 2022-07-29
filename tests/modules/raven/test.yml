@@ -1,0 +1,9 @@
+- name: raven test_raven
+  command: nextflow run ./tests/modules/raven -entry test_raven -c ./tests/config/nextflow.config -c ./tests/modules/raven/nextflow.config
+  tags:
+    - raven
+  files:
+    - path: output/raven/test.fasta.gz
+      md5sum: b026b6aba793a9f2bbfb17f732c91926
+    - path: output/raven/test.gfa.gz
+      md5sum: 09053490495f6deb7a3941e559cda626

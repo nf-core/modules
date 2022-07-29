@@ -32,9 +32,12 @@ process MAPDAMAGE2 {
     tuple val(meta), path("*/"), optional: true                                           ,emit: folder
     path "versions.yml",emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mapDamage \\
             $args \\

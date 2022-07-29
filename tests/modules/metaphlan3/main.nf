@@ -12,10 +12,10 @@ workflow test_metaphlan3_single_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
 
-    db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
+    db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
-    METAPHLAN3 ( input, UNTAR.out.untar )
+    METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
 }
 
 workflow test_metaphlan3_paired_end {
@@ -25,11 +25,10 @@ workflow test_metaphlan3_paired_end {
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
 
-    db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
-
+    db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
-    METAPHLAN3 ( input, UNTAR.out.untar )
+    METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
 }
 
 workflow test_metaphlan3_sam {
@@ -38,12 +37,11 @@ workflow test_metaphlan3_sam {
               [ file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true) ]
             ]
 
-    db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
-
+    db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
     SAMTOOLS_VIEW ( input, [] )
-    METAPHLAN3 ( SAMTOOLS_VIEW.out.bam, UNTAR.out.untar )
+    METAPHLAN3 ( SAMTOOLS_VIEW.out.bam, UNTAR.out.untar.map{ it[1] } )
 }
 
 workflow test_metaphlan3_fasta {
@@ -52,8 +50,8 @@ workflow test_metaphlan3_fasta {
               [ file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true) ]
             ]
 
-    db    = channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', type: 'dir', checkIfExists: true)
+    db    = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', checkIfExists: true) ]
 
     UNTAR ( db )
-    METAPHLAN3 ( input, UNTAR.out.untar )
+    METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
 }

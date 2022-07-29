@@ -14,9 +14,12 @@ process PAIRTOOLS_SORT {
     tuple val(meta), path("*.pairs.gz"), emit: sorted
     path "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def mem      = task.memory.toString().replaceAll(/(\s|\.|B)+/, '')
     """
     pairtools \\

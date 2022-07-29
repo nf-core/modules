@@ -8,11 +8,9 @@ process MANTA_TUMORONLY {
         'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta), path(input), path(input_index), path(target_bed), path(target_bed_tbi)
     path fasta
     path fai
-    path target_bed
-    path target_bed_tbi
 
     output:
     tuple val(meta), path("*candidate_small_indels.vcf.gz")    , emit: candidate_small_indels_vcf
@@ -23,9 +21,12 @@ process MANTA_TUMORONLY {
     tuple val(meta), path("*tumor_sv.vcf.gz.tbi")              , emit: tumor_sv_vcf_tbi
     path "versions.yml"                                        , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def options_manta = target_bed ? "--exome --callRegions $target_bed" : ""
     """
     configManta.py \

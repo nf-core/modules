@@ -16,9 +16,12 @@ process SEQUENZAUTILS_BAM2SEQZ {
     tuple val(meta), path("*.gz"), emit: seqz
     path "versions.yml"          , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sequenza-utils \\
         bam2seqz \\

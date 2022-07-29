@@ -9,7 +9,7 @@ tools:
       documentation: http://hmmer.org/documentation.html
       tool_dev_url: None
       doi: "http://dx.doi.org/10.1371/journal.pcbi.1002195"
-      licence: ['BSD-3-Clause']
+      licence: ["BSD-3-Clause"]
 
 input:
   - meta:
@@ -19,12 +19,12 @@ input:
         e.g. [ id:'test' ]
   - fasta:
       type: file
-      description: Amino acid or nucleotide fasta file, gzipped or not
-      pattern: "*.{fna,fna.gz,faa,faa.gz,fasta,fasta.gz,fa,fa.gz}"
+      description: Amino acid or nucleotide gzipped compressed fasta file
+      pattern: "*.{fna.gz,faa.gz,fasta.gz,fa.gz}"
   - hmm:
       type: file
-      description: HMM file
-      pattern: "*.hmm"
+      description: A gzipped HMM file
+      pattern: "*.hmm.gz"
 
 output:
   - meta:
@@ -43,3 +43,4 @@ output:
 
 authors:
   - "@erikrikarddaniel"
+  - "@jfy133"

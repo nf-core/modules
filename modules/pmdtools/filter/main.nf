@@ -16,13 +16,16 @@ process PMDTOOLS_FILTER {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"               , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def split_cpus = Math.floor(task.cpus/2)
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use the suffix option to disambiguate!"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$bam" == "${prefix}.bam") error "[pmdtools/filter] Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     //threshold and header flags activate filtering function of pmdtools
     """
     samtools \\

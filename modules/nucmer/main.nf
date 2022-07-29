@@ -15,9 +15,12 @@ process NUCMER {
     tuple val(meta), path("*.coords"), emit: coords
     path "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed_ref   = ref.getName().endsWith(".gz")   ? true : false
     def is_compressed_query = query.getName().endsWith(".gz") ? true : false
     def fasta_name_ref      = ref.getName().replace(".gz", "")

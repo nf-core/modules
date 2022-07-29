@@ -15,9 +15,12 @@ process SUBREAD_FEATURECOUNTS {
     tuple val(meta), path("*featureCounts.txt.summary"), emit: summary
     path "versions.yml"                                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-p'
 
     def strandedness = 0

@@ -14,14 +14,17 @@ process KLEBORATE {
     tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     kleborate \\
         $args \\
         --outfile ${prefix}.results.txt \\
-        --assemblies *.fasta
+        --assemblies $fastas
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

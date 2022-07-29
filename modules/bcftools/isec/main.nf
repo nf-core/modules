@@ -2,10 +2,10 @@ process BCFTOOLS_ISEC {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::bcftools=1.13' : null)
+    conda (params.enable_conda ? "bioconda::bcftools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.13--h3a49de5_0' :
-        'quay.io/biocontainers/bcftools:1.13--h3a49de5_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.15.1--h0ea216a_0':
+        'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
 
     input:
     tuple val(meta), path(vcfs), path(tbis)
@@ -14,9 +14,12 @@ process BCFTOOLS_ISEC {
     tuple val(meta), path("${prefix}"), emit: results
     path  "versions.yml"              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     bcftools isec  \\
         $args \\

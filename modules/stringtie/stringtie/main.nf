@@ -1,11 +1,11 @@
-process STRINGTIE {
+process STRINGTIE_STRINGTIE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::stringtie=2.1.7" : null)
+    conda (params.enable_conda ? "bioconda::stringtie=2.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stringtie:2.1.7--h978d192_0' :
-        'quay.io/biocontainers/stringtie:2.1.7--h978d192_0' }"
+        'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2' :
+        'quay.io/biocontainers/stringtie:2.2.1--hecb563c_2' }"
 
     input:
     tuple val(meta), path(bam)
@@ -18,9 +18,12 @@ process STRINGTIE {
     tuple val(meta), path("*.ballgown")       , emit: ballgown
     path  "versions.yml"                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {

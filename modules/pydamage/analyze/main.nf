@@ -2,10 +2,10 @@ process PYDAMAGE_ANALYZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::pydamage=0.62" : null)
+    conda (params.enable_conda ? "bioconda::pydamage=0.70" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pydamage:0.62--pyhdfd78af_0' :
-        'quay.io/biocontainers/pydamage:0.62--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
+        'quay.io/biocontainers/pydamage:0.70--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -14,9 +14,12 @@ process PYDAMAGE_ANALYZE {
     tuple val(meta), path("pydamage_results/pydamage_results.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pydamage \\
         analyze \\

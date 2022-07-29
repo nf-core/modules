@@ -2,10 +2,10 @@ process PICARD_FILTERSAMREADS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? 'bioconda::picard=2.25.7' : null)
+    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.25.7--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.25.7--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(readlist)
@@ -15,9 +15,12 @@ process PICARD_FILTERSAMREADS {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
