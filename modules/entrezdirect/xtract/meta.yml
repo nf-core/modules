@@ -1,11 +1,10 @@
-name: "entrezdirect_esummary"
-description: Queries an NCBI database using Unique Identifier(s)
+name: "entrezdirect_xtract"
+description: Queries an NCBI database using an UID
 keywords:
   - public datasets
-  - ncbi
   - entrez
-  - metadata
-  - query
+  - search
+  - ncbi
   - database
 tools:
   - entrezdirect:
@@ -28,15 +27,18 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - database:
-      type: value
-      description: Value must be a valid Entrez database name ('assembly', etc).
-  - uid:
-      type: value
-      description: Unique Identifier (UID) of record in NCBI database. Cannot be used at the same time as uids_file
-  - uids_file:
+  - xml_input:
       type: file
-      description: Text file containing multiple UIDs. Cannot be used at the same time as uid.
+      description: XML text file containing query results from database.
+  - pattern:
+      type: value
+      description: String in xml_input that encloses element to search.
+  - element:
+      type: value
+      description: Space-delimited strings that will be converted to columns.
+  - sep:
+      type: value
+      description: Separator/delimiter between columns (for instance "," or "\t").
 
 output:
   - meta:
@@ -48,10 +50,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - xml:
+  - xtract_table:
       type: file
-      description: Query result in XML format
-      pattern: "*.xml"
+      description: TXT file containing columns searched from element.
+      pattern: "*.txt"
 
 authors:
   - "@alxndrdiaz"
