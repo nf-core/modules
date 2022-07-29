@@ -26,8 +26,6 @@ process FARGENE {
     tuple val(meta), path("${prefix}/retrievedFragments/all_retrieved_*.fastq")                  , optional: true, emit: fragments
     tuple val(meta), path("${prefix}/retrievedFragments/retrievedFragments/trimmedReads/*.fasta"), optional: true, emit: trimmed
     tuple val(meta), path("${prefix}/spades_assembly/*")                                         , optional: true, emit: spades
-    tuple val(meta), path("${prefix}/tmpdir/*.fasta")                                            , optional: true, emit: metagenome
-    tuple val(meta), path("${prefix}/tmpdir/*.out")                                              , optional: true, emit: tmp
     path "versions.yml"                                                                          , emit: versions
 
     when:
