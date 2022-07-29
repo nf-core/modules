@@ -1,9 +1,8 @@
-def VERSION = '2.04'
-
 process SLIMFASTQ {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::slimfastq=2.04" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/slimfastq:2.04--h87f3376_2':
@@ -22,6 +21,7 @@ process SLIMFASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     if (meta.single_end) {
         """
         gzip -d -c '${fastq}' | slimfastq \\
