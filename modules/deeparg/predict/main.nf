@@ -6,13 +6,13 @@ process DEEPARG_PREDICT {
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity//deeparg:1.0.2--pyhdfd78af_1' :
+        'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
     /*
-    We have to force singularity to run with --fakeroot to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
-    This flag may not be available on all systems and may be considered a security problem. so please document and /or warn for this in your pipeline!
+    We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
+        Original report: https://github.com/nf-core/funcscan/issues/23
     */
-    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '--fakeroot' : '' }
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
 
     input:
     tuple val(meta), path(fasta), val(model)

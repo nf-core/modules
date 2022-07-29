@@ -12,15 +12,14 @@ process ADAPTERREMOVAL {
     path(adapterlist)
 
     output:
-    tuple val(meta), path("${prefix}.truncated.gz")            , optional: true, emit: singles_truncated
-    tuple val(meta), path("${prefix}.discarded.gz")            , optional: true, emit: discarded
-    tuple val(meta), path("${prefix}.pair1.truncated.gz")      , optional: true, emit: pair1_truncated
-    tuple val(meta), path("${prefix}.pair2.truncated.gz")      , optional: true, emit: pair2_truncated
-    tuple val(meta), path("${prefix}.collapsed.gz")            , optional: true, emit: collapsed
-    tuple val(meta), path("${prefix}.collapsed.truncated.gz")  , optional: true, emit: collapsed_truncated
-    tuple val(meta), path("${prefix}.paired.gz")               , optional: true, emit: paired_interleaved
-    tuple val(meta), path('*.log')                             , emit: log
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("${prefix}.truncated.fastq.gz")            , optional: true, emit: singles_truncated
+    tuple val(meta), path("${prefix}.discarded.fastq.gz")            , optional: true, emit: discarded
+    tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq.gz")  , optional: true, emit: paired_truncated
+    tuple val(meta), path("${prefix}.collapsed.fastq.gz")            , optional: true, emit: collapsed
+    tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz")  , optional: true, emit: collapsed_truncated
+    tuple val(meta), path("${prefix}.paired.fastq.gz")               , optional: true, emit: paired_interleaved
+    tuple val(meta), path('*.settings')                              , emit: settings
+    path "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,9 +37,18 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads ${task.cpus} \\
-            --settings ${prefix}.log \\
             --seed 42 \\
             --gzip
+
+        ensure_fastq() {
+            if [ -f "\${1}" ]; then
+                mv "\${1}" "\${1::-3}.fastq.gz"
+            fi
+
+        }
+
+        ensure_fastq '${prefix}.truncated.gz'
+        ensure_fastq '${prefix}.discarded.gz'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -56,9 +64,23 @@ process ADAPTERREMOVAL {
             $adapterlist \\
             --basename ${prefix} \\
             --threads $task.cpus \\
-            --settings ${prefix}.log \\
             --seed 42 \\
             --gzip
+
+        ensure_fastq() {
+            if [ -f "\${1}" ]; then
+                mv "\${1}" "\${1::-3}.fastq.gz"
+            fi
+
+        }
+
+        ensure_fastq '${prefix}.truncated.gz'
+        ensure_fastq '${prefix}.discarded.gz'
+        ensure_fastq '${prefix}.pair1.truncated.gz'
+        ensure_fastq '${prefix}.pair2.truncated.gz'
+        ensure_fastq '${prefix}.collapsed.gz'
+        ensure_fastq '${prefix}.collapsed.truncated.gz'
+        ensure_fastq '${prefix}.paired.gz'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

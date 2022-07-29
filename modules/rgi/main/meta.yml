@@ -11,7 +11,7 @@ tools:
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
-      licence: ['https://card.mcmaster.ca/about']
+      licence: ["https://card.mcmaster.ca/about"]
 
 input:
   - meta:
@@ -42,6 +42,12 @@ output:
       type: file
       description: Tab-delimited file with RGI results
       pattern: "*.{txt}"
-
+  - tool_version:
+      type: string
+      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+  - db_version:
+      type: string
+      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
 authors:
   - "@rpetit3"
+  - "@jfy133"

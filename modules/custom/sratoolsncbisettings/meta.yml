@@ -1,0 +1,28 @@
+name: "sratoolsncbisettings"
+description: Test for the presence of suitable NCBI settings or create them on the fly.
+keywords:
+  - NCBI
+  - settings
+  - sra-tools
+  - prefetch
+  - fasterq-dump
+tools:
+  - "sratools":
+      description: "SRA Toolkit and SDK from NCBI"
+      homepage: https://github.com/ncbi/sra-tools
+      documentation: https://github.com/ncbi/sra-tools/wiki
+      tool_dev_url: https://github.com/ncbi/sra-tools
+      licence: "['Public Domain']"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - ncbi_settings:
+      type: file
+      description: An NCBI user settings file.
+      pattern: "*.mkfg"
+
+authors:
+  - "@Midnighter"
