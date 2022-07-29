@@ -23,12 +23,12 @@ process COOLER_BALANCE {
     suffix = resolution ? "::$resolution" : ""
     extension = cool.getExtension()
     """
+    cp ${cool} ${prefix}.${extension}
+
     cooler balance \\
         $args \\
         -p ${task.cpus} \\
-        ${cool}${suffix}
-
-    cp ${cool} ${prefix}.${extension}
+        ${prefix}.${extension}${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
