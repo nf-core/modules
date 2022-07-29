@@ -1,26 +1,23 @@
 - name: cooler cload test_cooler_cload_pairix
   command: nextflow run ./tests/modules/cooler/cload -entry test_cooler_cload_pairix -c ./tests/config/nextflow.config  -c ./tests/modules/cooler/cload/nextflow.config
   tags:
-    - cooler
     - cooler/cload
+    - cooler
   files:
     - path: output/cooler/test_pairix.2000000.cool
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: cooler cload test_cooler_cload_pairs
   command: nextflow run ./tests/modules/cooler/cload -entry test_cooler_cload_pairs -c ./tests/config/nextflow.config  -c ./tests/modules/cooler/cload/nextflow.config
   tags:
-    - cooler
     - cooler/cload
+    - cooler
   files:
     - path: output/cooler/test_pairs.2000000.cool
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: cooler cload test_cooler_cload_tabix
   command: nextflow run ./tests/modules/cooler/cload -entry test_cooler_cload_tabix -c ./tests/config/nextflow.config  -c ./tests/modules/cooler/cload/nextflow.config
   tags:
-    - cooler
     - cooler/cload
+    - cooler
   files:
     - path: output/cooler/test_tabix.2000000.cool
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
