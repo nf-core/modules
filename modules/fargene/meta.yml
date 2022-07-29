@@ -91,10 +91,6 @@ output:
       type: file
       description: The FASTQ to FASTA converted input files from metagenomic reads.
       pattern: "*.{fasta}"
-  - tmp:
-      type: file
-      description: The from FASTQ to FASTA converted input files and their translated input sequences. Are only saved if option --store-peptides is used.
-      pattern: "*.{fasta}"
 
 authors:
   - "@louperelo"
