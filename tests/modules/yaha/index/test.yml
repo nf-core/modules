@@ -1,0 +1,10 @@
+- name: yaha index test_yaha_index
+  command: nextflow run ./tests/modules/yaha/index -entry test_yaha_index -c ./tests/config/nextflow.config  -c ./tests/modules/yaha/index/nextflow.config
+  tags:
+    - yaha/index
+    - yaha
+  files:
+    - path: output/yaha/genome.X15_01_65525S
+      md5sum: 854cdbf066488c50e3d8b1230e8a79a2
+    - path: output/yaha/genome.nib2
+      md5sum: 210517c6f1f57c5d5abfa8887a9a21ba
