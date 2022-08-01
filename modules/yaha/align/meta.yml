@@ -1,0 +1,47 @@
+name: yaha_align
+description: Performs fastq alignment to a fasta reference using YAHA
+keywords:
+  - long
+  - alignment
+  - map
+  - fastq
+  - bam
+  - sam
+tools:
+  - yaha:
+      description: "fast and flexible long-read alignment with optimal breakpoint detection"
+      homepage: "https://github.com/GregoryFaust/yaha"
+      documentation: "https://www.dropbox.com/s/7j758vpbaskcq20/YAHA_User_Guide.0.1.83.pdf?dl=0"
+      tool_dev_url: "https://github.com/GregoryFaust/yaha"
+      doi: "10.1093/bioinformatics/bts456"
+      licence: "['MIT']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: a fastq or fasta file of reads to align
+      pattern: "*.{fastq,fq,fasta,fa}"
+  - index:
+      type: file
+      description: YAHA genome index file
+      pattern: "*.X15_01_65525S"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Output BAM file containing read alignments
+      pattern: "*.{bam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@cmatkhan"
