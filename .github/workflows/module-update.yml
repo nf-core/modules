@@ -79,22 +79,28 @@ jobs:
         tags: ["${{ fromJson(needs.update_modules.outputs.modules) }}"]
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
-      - uses: gr2m/create-or-update-pull-request-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+          #persist-credentials: false
+
+      - uses: peter-evans/create-pull-request@v4
         with:
-          title: "Update module ${{ matrix.tags }} version"
-          #body: "My pull request body"
+          token: ${{ secrets.nf_core_bot_auth_token }}
+          title: "[AUTO UPDATE] Update module ${{ matrix.tags }} version"
+          body: "Created by GitHub action 'Nightly update module version'"
           branch: "${{ matrix.tags }}"
-          path: "lib/"
-          commit-message: "Update module ${{ matrix.tags }} version"
-          author: "nf-core bot"
-          labels: update module
-          #assignees: user1, user2
-          #reviewers: user1, user2
-          #team_reviewers: team1, team2
-          #auto-merge: squash
-          update-pull-request-title-and-body: false
+          add-paths: "${{ matrix.tags }}/*"
+          delete-branch: true
+      # - uses: gr2m/create-or-update-pull-request-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+      #   with:
+      #     title: "[AUTO UPDATE] Update module ${{ matrix.tags }} version"
+      #     body: "Created by GitHub action 'Nightly update module version'"
+      #     branch: "${{ matrix.tags }}"
+      #     path: "${{ matrix.tags }}"
+      #     commit-message: "Update module ${{ matrix.tags }} version"
+      #     author: "nf-core-bot"
+      #     labels: update module
+      #     update-pull-request-title-and-body: false
