@@ -37,7 +37,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard AddOrReplaceReadGroups: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o -E '[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+')
+        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o -E '[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+')
     END_VERSIONS
     """
 }
