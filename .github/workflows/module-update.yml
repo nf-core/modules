@@ -81,6 +81,7 @@ jobs:
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@v3
         with:
+          ref: 'master'
           token: ${{ secrets.nf_core_bot_auth_token }}
           persist-credentials: false
 
