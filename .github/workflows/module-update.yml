@@ -79,6 +79,8 @@ jobs:
         tags: ["${{ needs.update_modules.outputs.modules && fromJson(needs.update_modules.outputs.modules) }}"]
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: 'master'
 
       - uses: peter-evans/create-pull-request@v4
         with:
