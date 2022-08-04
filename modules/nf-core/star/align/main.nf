@@ -11,6 +11,7 @@ process STAR_ALIGN {
     tuple val(meta), path(reads)
     path index
     path gtf
+    path junctions
     val star_ignore_sjdbgtf
     val seq_platform
     val seq_center
@@ -36,6 +37,7 @@ process STAR_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def junctions_db    = junctions==[] ? '' : "--sjdbFileChrStartEnd $junctions"
     def ignore_gtf      = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
     def seq_platform    = seq_platform ? "'PL:$seq_platform'" : ""
     def seq_center      = seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$seq_center' 'SM:$prefix' $seq_platform " : "--outSAMattrRGline ID:$prefix 'SM:$prefix' $seq_platform "
@@ -48,6 +50,7 @@ process STAR_ALIGN {
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
         $out_sam_type \\
+        $junctions_db \\
         $ignore_gtf \\
         $seq_center \\
         $args
