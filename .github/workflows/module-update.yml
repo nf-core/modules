@@ -78,13 +78,13 @@ jobs:
       matrix:
         tags: ["${{ needs.update_modules.outputs.modules && fromJson(needs.update_modules.outputs.modules) }}"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           ref: 'master'
 
       - uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.NF_CORE_BOT_AUTH_TOKEN }}
+          token: ${{ secrets.nf_core_bot_auth_token }}
           title: "[AUTO UPDATE] Update module ${{ matrix.tags }} version"
           body: "Created by GitHub action 'Nightly update module version'"
           base: master
