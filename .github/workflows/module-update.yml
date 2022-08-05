@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.update_modules }}
+      modules: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v2
 
