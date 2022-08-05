@@ -86,7 +86,7 @@ jobs:
 
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+          GITHUB_TOKEN: ${{ secrets.NF_CORE_BOT_AUTH_TOKEN }}
         with:
           title: "[AUTO UPDATE] Update module ${{ matrix.tags }} version"
           body: "Created by GitHub action 'Nightly update module version'"
