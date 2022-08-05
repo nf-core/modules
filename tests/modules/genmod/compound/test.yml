@@ -1,0 +1,14 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml genmod/compound
+- name: "genmod compound"
+  command: nextflow run ./tests/modules/genmod/compound -entry test_genmod_compound -c ./tests/config/nextflow.config -c ./tests/modules/genmod/compound/nextflow.config
+  tags:
+    - "genmod"
+    #
+    - "genmod/compound"
+    #
+  files:
+    - path: "output/genmod/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/genmod/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
