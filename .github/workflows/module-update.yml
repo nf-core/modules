@@ -92,7 +92,7 @@ jobs:
           title: "[AUTO UPDATE] Update module ${{ matrix.tags }} version"
           body: "Created by GitHub action 'Nightly update module version'"
           branch: "${{ matrix.tags }}"
-          path: "${{ matrix.tags }}"
+          path: "modules/${{ matrix.tags }}/*"
           commit-message: "Update module ${{ matrix.tags }} version"
           author: "nf-core-bot"
           labels: update module
