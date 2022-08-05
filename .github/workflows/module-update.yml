@@ -85,6 +85,15 @@ jobs:
           token: ${{ secrets.NF_CORE_BOT_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
           persist-credentials: false
 
+      - name: Commit changes
+        run: |
+          git config user.email "core@nf-co.re"
+          git config user.name "nf-core-bot"
+          git config push.default upstream
+          git add .
+          git status
+          git commit -m "[automated] Update module version"
+
       - uses: gr2m/create-or-update-pull-request-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.NF_CORE_BOT_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
