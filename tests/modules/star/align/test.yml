@@ -175,3 +175,21 @@
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
     - path: output/star/test.SJ.out.tab
+
+- name: star align test_star_alignment_single_end stub
+  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_single_end -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config -stub-run
+  tags:
+    - star/align
+    - star
+  files:
+    - path: output/star/test.Aligned.unsort.out.bam
+    - path: output/star/test.Xd.out.bam
+    - path: output/star/test.Log.final.out
+    - path: output/star/test.Log.out
+    - path: output/star/test.Log.progress.out
+    - path: output/star/test.SJ.out.tab
+    - path: output/star/test.Chimeric.out.junction
+    - path: output/star/test.unmapped_1.fastq.gz
+    - path: output/star/test.unmapped_2.fastq.gz
+    - path: output/star/test.tab
+    - path: output/star/test.out.sam
