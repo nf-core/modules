@@ -1,51 +1,41 @@
 name: "genmod_annotate"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: for annotating regions, frequencies, cadd scores
 keywords:
-  - sort
+  - annotate
+  - genmod
 tools:
   - "genmod":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Annotate genetic inheritance models in variant files"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
+      homepage: "https://github.com/Clinical-Genomics/genmod"
+      documentation: "https://github.com/Clinical-Genomics/genmod"
+      tool_dev_url: "https://github.com/moonso"
       doi: ""
       licence: "['MIT']"
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - input_vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: VCF file
+      pattern: "*.{vcf}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - vcf:
+      type: vcf
+      description: Annotated VCF file
+      pattern: "*.{vcf}"
 
 authors:
   - "@ramprasadn"
