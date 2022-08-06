@@ -11,7 +11,7 @@ process GENMOD_ANNOTATE {
     tuple val(meta), path(input_vcf)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*_annotate.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,7 +24,7 @@ process GENMOD_ANNOTATE {
     genmod \\
         annotate \\
         $args \\
-        --outfile ${prefix}.vcf \\
+        --outfile ${prefix}_annotate.vcf \\
         $input_vcf
 
     cat <<-END_VERSIONS > versions.yml
@@ -36,7 +36,7 @@ process GENMOD_ANNOTATE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    touch ${prefix}_annotate.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

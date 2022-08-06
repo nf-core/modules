@@ -11,7 +11,7 @@ process GENMOD_COMPOUND {
     tuple val(meta), path(input_vcf)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*_compound.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,7 +24,7 @@ process GENMOD_COMPOUND {
     genmod \\
         compound \\
         $args \\
-        --outfile ${prefix}.vcf \\
+        --outfile ${prefix}_compound.vcf \\
         $input_vcf
 
     cat <<-END_VERSIONS > versions.yml
@@ -36,7 +36,7 @@ process GENMOD_COMPOUND {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    touch ${prefix}_compound.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

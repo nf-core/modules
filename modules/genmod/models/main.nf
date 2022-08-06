@@ -13,7 +13,7 @@ process GENMOD_MODELS {
     path (reduced_penetrance)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*_models.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,7 +24,6 @@ process GENMOD_MODELS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def family_file =  fam ?: ""
     def pen_file = reduced_penetrance ?: ""
-
     """
     genmod \\
         models \\
@@ -32,7 +31,7 @@ process GENMOD_MODELS {
         --reduced_penetrance $pen_file \\
         --family_file $family_file \\
         --processes $task.cpus \\
-        -o ${prefix}.vcf \\
+        --outfile ${prefix}_models.vcf \\
         $input_vcf
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,12 +43,11 @@ process GENMOD_MODELS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    touch ${prefix}_models.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
     END_VERSIONS
     """
-
 }
