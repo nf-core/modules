@@ -1,51 +1,49 @@
 name: "genmod_models"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: annotate models of inheritance
 keywords:
-  - sort
+  - models
+  - genmod
 tools:
   - "genmod":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Annotate genetic inheritance models in variant files"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
+      homepage: "https://github.com/Clinical-Genomics/genmod"
+      documentation: "https://github.com/Clinical-Genomics/genmod"
+      tool_dev_url: "https://github.com/moonso"
       doi: ""
       licence: "['MIT']"
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - input_vcf:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: vcf file
+      pattern: "*.{vcf}"
+  - reduced_penetrance:
+      type: file
+      description: file with gene ids that have reduced penetrance
+      pattern: "*.{tsv}"
+  - family_file:
+      type: file
+      description: ped file
+      pattern: "*.{ped}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Output VCF file
+      pattern: "*.{vcf}"
 
 authors:
   - "@ramprasadn"

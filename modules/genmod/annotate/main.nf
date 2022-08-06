@@ -24,8 +24,19 @@ process GENMOD_ANNOTATE {
     genmod \\
         annotate \\
         $args \\
-        --outfile ${prefix}.bam \\
-        $vcf
+        --outfile ${prefix}.vcf \\
+        $input_vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
