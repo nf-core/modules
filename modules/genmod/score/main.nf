@@ -21,24 +21,24 @@ process GENMOD_SCORE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def family_file =  fam ?: ""
-    def pen_file = reduced_penetrance ?: ""
-    def score_config_file = score_config ?: ""
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def family_file = fam ? "--family_file ${fam}" : ""
+    def pen_file    = reduced_penetrance ? "--reduced_penetrance ${reduced_penetrance}" : ""
+    def config_file = score_config ? "--score_config ${score_config}" : ""
     """
     genmod \\
         score \\
         $args \\
-        --reduced_penetrance $pen_file \\
-        --family_file $family_file \\
-        --score_config $score_config_file \\
-        --output ${prefix}_score.vcf \\
+        $pen_file \\
+        $family_file \\
+        $config_file \\
+        --outfile ${prefix}_score.vcf \\
         $input_vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmod: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
     END_VERSIONS
     """
 

@@ -20,16 +20,16 @@ process GENMOD_MODELS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def family_file =  fam ?: ""
-    def pen_file = reduced_penetrance ?: ""
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def family_file =  fam ? "--family_file ${fam}" : ""
+    def pen_file    = reduced_penetrance ? "--reduced_penetrance ${reduced_penetrance}" : ""
     """
     genmod \\
         models \\
         $args \\
-        --reduced_penetrance $pen_file \\
-        --family_file $family_file \\
+        $pen_file \\
+        $family_file \\
         --processes $task.cpus \\
         --outfile ${prefix}_models.vcf \\
         $input_vcf
