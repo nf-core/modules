@@ -2,7 +2,7 @@ process GENMOD_MODELS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
+    conda (params.enable_conda ? "bioconda::genmod=3.7.4 conda-forge::python=3.4.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
         'quay.io/biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
@@ -30,7 +30,6 @@ process GENMOD_MODELS {
         $args \\
         $pen_file \\
         $family_file \\
-        --processes $task.cpus \\
         --outfile ${prefix}_models.vcf \\
         $input_vcf
 
