@@ -8,7 +8,7 @@
     - path: output/genmod/versions.yml
 
 - name: "genmod models stub"
-  command: nextflow run ./tests/modules/genmod/models -entry test_genmod_models_stub -c ./tests/config/nextflow.config -c ./tests/modules/genmod/models/nextflow.config --stub-run
+  command: nextflow run ./tests/modules/genmod/models -entry test_genmod_models_stub -c ./tests/config/nextflow.config -c ./tests/modules/genmod/models/nextflow.config -stub-run
   tags:
     - "genmod"
     - "genmod/models"

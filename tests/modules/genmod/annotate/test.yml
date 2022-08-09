@@ -8,7 +8,7 @@
     - path: output/genmod/versions.yml
 
 - name: "genmod annotate stub"
-  command: nextflow run ./tests/modules/genmod/annotate -entry test_genmod_annotate_stub -c ./tests/config/nextflow.config -c ./tests/modules/genmod/annotate/nextflow.config --stub-run
+  command: nextflow run ./tests/modules/genmod/annotate -entry test_genmod_annotate_stub -c ./tests/config/nextflow.config -c ./tests/modules/genmod/annotate/nextflow.config -stub-run
   tags:
     - "genmod"
     - "genmod/annotate"
