@@ -43,7 +43,6 @@ process VARDICTJAVA {
     "${task.process}":
         vardict-java: \$( realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//' )
         var2vcf_valid.pl: \$( var2vcf_valid.pl -h | sed '2!d;s/.* //' )
-        var2vcf_valid.pl: \$(echo \$(var2vcf_valid.pl -h | sed -n 2p | awk '{ print \$2 }'))
     END_VERSIONS
     """
 }
