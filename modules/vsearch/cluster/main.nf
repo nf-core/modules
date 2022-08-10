@@ -10,9 +10,7 @@ process VSEARCH_CLUSTER {
     input:
     tuple val(meta), path(fasta)
     val clusteroption
-    val idcutoff
     val outoption
-    val user_columns
 
     output:
     tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
@@ -35,7 +33,7 @@ process VSEARCH_CLUSTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def columns = user_columns ? "--userfields ${user_columns}" : ''
+
     switch ( clusteroption ) {
         case "fast": clustering = "--cluster_fast"; break
         case "size": clustering = "--cluster_size"; break
@@ -69,10 +67,8 @@ process VSEARCH_CLUSTER {
     vsearch \\
         ${clustering} $fasta \\
         ${outfmt} ${prefix}.${out_ext} \\
-        --id $idcutoff \\
         --threads $task.cpus \\
-        $args \\
-        ${columns}
+        $args
 
     if [[ ${outfmt} != "--samout" ]]
     then

@@ -20,9 +20,6 @@ input:
       type: file
       description: Sequences to cluster in FASTA format
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - idcutoff:
-      type: real
-      description: Do not add the target to the cluster if the pairwise identity with the centroid is lower than real (value ranging from 0.0 to 1.0 included).
   - clusteroption:
       type: string
       description: Select type of clustering.
@@ -31,9 +28,6 @@ input:
       type: string
       description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
       pattern: "alnout|biomout|blast6out|centroids|clusters|mothur_shared_out|msaout|otutabout|profile|samout|uc|userout"
-  - user_columns:
-      type: string
-      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
 
 output:
   - meta:
