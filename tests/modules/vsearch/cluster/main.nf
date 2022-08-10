@@ -5,6 +5,7 @@ nextflow.enable.dsl = 2
 include { VSEARCH_CLUSTER } from '../../../../modules/vsearch/cluster/main.nf'
 include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SMALLMEM } from '../../../../modules/vsearch/cluster/main.nf'
 include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_UNOISE } from '../../../../modules/vsearch/cluster/main.nf'
+include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_USEROUT } from '../../../../modules/vsearch/cluster/main.nf'
 
 workflow test_vsearch_cluster_fast {
 
@@ -15,7 +16,7 @@ workflow test_vsearch_cluster_fast {
     clusteroption = "abcd" // Nonsense text to check default case.
     outoption = "abcd"  // Nonsense text to check default case.
 
-    VSEARCH_CLUSTER ( input, clusteroption, idcutoff, outoption, user_columns )
+    VSEARCH_CLUSTER ( input, clusteroption, outoption )
 
 }
 
@@ -28,7 +29,7 @@ workflow test_vsearch_cluster_size {
     clusteroption = "size"
     outoption = "samout"  // Test also sam to bam conversion
 
-    VSEARCH_CLUSTER ( input, clusteroption, idcutoff, outoption, user_columns )
+    VSEARCH_CLUSTER ( input, clusteroption, outoption )
 
 }
 
@@ -41,7 +42,7 @@ workflow test_vsearch_cluster_smallmem {
     clusteroption = "smallmem"
     outoption = "abcd"  // Nonsense text to check default case.
 
-    VSEARCH_CLUSTER_SMALLMEM ( input, clusteroption, idcutoff, outoption, user_columns )
+    VSEARCH_CLUSTER_SMALLMEM ( input, clusteroption, outoption )
 
 }
 
@@ -54,7 +55,7 @@ workflow test_vsearch_cluster_unoise {
     clusteroption = "unoise"
     outoption = "abcd"
 
-    VSEARCH_CLUSTER_UNOISE ( input, clusteroption, idcutoff, outoption, user_columns )
+    VSEARCH_CLUSTER_UNOISE ( input, clusteroption, outoption )
 
 }
 
@@ -67,5 +68,5 @@ workflow test_vsearch_cluster_userout {
     clusteroption = "abcd" // Nonsense text to check default case.
     outoption = "userout"
 
-    VSEARCH_CLUSTER ( input, clusteroption, idcutoff, outoption, user_columns )
+    VSEARCH_CLUSTER_USEROUT ( input, clusteroption, outoption )
 }
