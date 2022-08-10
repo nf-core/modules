@@ -9,6 +9,10 @@ process VSEARCH_CLUSTER {
 
     input:
     tuple val(meta), path(fasta)
+    val clusteroption
+    val idcutoff
+    val outoption
+    val user_columns
 
     output:
     tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
@@ -29,42 +33,48 @@ process VSEARCH_CLUSTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args      ?: ''
-    def prefix        = task.ext.prefix    ?: "${meta.id}"
-
-    def cluster_possible = ["--cluster_fast", "--cluster_size", "--cluster_smallmem", "--cluster_unoise"]
-    def out_possible = ["--alnout", "--biomout", "--blast6out", "--centroids", "--clusters", "--mothur_shared_out", "--msaout", "--otutabout", "--profile", "--samout", "--uc", "--userout"]
-
-    def cluster_option = args.cluster_option in cluster_possible ? "$args.cluster_option" : '--cluster_fast'
-    def out_option     = args.out_option in out_possible         ? "$args.out_option"     : '--centroids'
-    def id_cutoff      = args.id_cutoff                          ? "$args.id_cutoff"      : '1'
-    def user_columns   = args.user_columns                       ? "$args.user_columns"   : ''
-    def options        = args.options                            ? "$args.options"        : ''
-
-    switch ( out_option ) {
-        case "--alnout"            : out_ext = 'aln'; break
-        case "--biomout"           : out_ext = 'biom'; break
-        case "--blast6out"         : out_ext = 'blast.tsv'; break
-        case "--centroids"         : out_ext = 'centroids.fasta'; break
-        case "--clusters"          : out_ext = 'clusters.fasta'; break
-        case "--mothur_shared_out" : out_ext = 'mothur.tsv'; break
-        case "--msaout"            : out_ext = 'msa.fasta'; break
-        case "--otutabout"         : out_ext = 'otu.tsv'; break
-        case "--profile"           : out_ext = 'profile.txt'; break
-        case "--samout"            : out_ext = 'sam'; break
-        case "--uc"                : out_ext = 'uc.tsv'; break
-        case "--userout"           : out_ext = 'out.tsv'; break
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def columns = user_columns ? "--userfields ${user_columns}" : ''
+    switch ( clusteroption ) {
+        case "fast": clustering = "--cluster_fast"; break
+        case "size": clustering = "--cluster_size"; break
+        case "smallmem": clustering = "--cluster_smallmem"; break
+        case "unoise": clustering = "--cluster_unoise"; break
+        default:
+            clustering = "--cluster_fast";
+            log.warn("Unknown clustering option provided (${clusteroption}): selecting fast option (--cluster_fast)");
+            break
+    }
+    switch ( outoption ) {
+        case "alnout": outfmt = "--alnout"; out_ext = 'aln'; break
+        case "biomout": outfmt = "--biomout"; out_ext = 'biom'; break
+        case "blast6out": outfmt = "--blast6out"; out_ext = 'blast.tsv'; break
+        case "centroids": outfmt = "--centroids"; out_ext = 'centroids.fasta'; break
+        case "clusters": outfmt = "--clusters"; out_ext = 'clusters.fasta'; break
+        case "mothur_shared_out": outfmt = "--mothur_shared_out"; out_ext = 'mothur.tsv'; break
+        case "msaout": outfmt = "--msaout"; out_ext = 'msa.fasta'; break
+        case "otutabout": outfmt = "--otutabout"; out_ext = 'otu.tsv'; break
+        case "profile": outfmt = "--profile"; out_ext = 'profile.txt'; break
+        case "samout": outfmt = "--samout"; out_ext = 'sam'; break
+        case "uc": outfmt = "--uc"; out_ext = 'uc.tsv'; break
+        case "userout": outfmt = "--userout"; out_ext = 'out.tsv'; break
+        default:
+            outfmt = "--centroids";
+            out_ext = 'centroids.fasta';
+            log.warn("Unknown output file format provided (${outoption}): selecting centroids option (--centroids)");
+            break
     }
     """
     vsearch \\
-        ${cluster_option} $fasta \\
-        ${out_option} ${prefix}.${out_ext} \\
-        --id $id_cutoff \\
+        ${clustering} $fasta \\
+        ${outfmt} ${prefix}.${out_ext} \\
+        --id $idcutoff \\
         --threads $task.cpus \\
-        $options \\
-        ${user_columns}
+        $args \\
+        ${columns}
 
-    if [[ ${out_option} != "--samout" ]]
+    if [[ ${outfmt} != "--samout" ]]
     then
         gzip -n ${prefix}.${out_ext}
     else

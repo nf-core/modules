@@ -13,28 +13,6 @@ tools:
       licence: ["GPL v3-or-later OR BSD-2-clause"]
 
 input:
-  - args:
-      type: map
-      description: |
-        Groovy Map containing tool parameters. MUST follow the structure/keywords below and be provided via modules.config.
-        Parameters must be set between quotes. All parameters can be removed from the map, if they are not set.
-
-        ```
-        {
-          [
-            'cluster_option': '--cluster_fast',
-            'out_option': '--centroids'
-            'id_cutoff': '1',
-            'user_columns': '',
-            'options': '',
-          ]
-        }
-        ```
-        id_cutoff:      (real)   Do not add the target to the cluster if the pairwise identity with the centroid is lower than real (value ranging from 0.0 to 1.0 included).
-        cluster_option: (string) Select type of clustering. ["--cluster_fast", "--cluster_size", "--cluster_smallmem", "--cluster_unoise"]
-        out_option:     (string) Output type. ["--alnout", "--biomout", "--blast6out";, "--centroids", "--clusters", "--mothur_shared_out", "--msaout", "--otutabout", "--profile", "--samout", "--uc", "--userout"]
-        user_columns:   (string) If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. --userfields query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
-
   - meta:
       type: map
       description: Groovy Map containing sample information e.g. [ id:'test' ]
@@ -42,6 +20,20 @@ input:
       type: file
       description: Sequences to cluster in FASTA format
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - idcutoff:
+      type: real
+      description: Do not add the target to the cluster if the pairwise identity with the centroid is lower than real (value ranging from 0.0 to 1.0 included).
+  - clusteroption:
+      type: string
+      description: Select type of clustering.
+      pattern: "fast|size|smallmem|unoise"
+  - outoption:
+      type: string
+      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
+      pattern: "alnout|biomout|blast6out|centroids|clusters|mothur_shared_out|msaout|otutabout|profile|samout|uc|userout"
+  - user_columns:
+      type: string
+      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
 
 output:
   - meta:
