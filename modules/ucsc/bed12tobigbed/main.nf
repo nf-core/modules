@@ -27,6 +27,7 @@ process UCSC_BED12TOBIGBED {
     bedToBigBed \\
         $bed \\
         $sizes \\
+        $args \\
         ${prefix}.bigBed
 
     cat <<-END_VERSIONS > versions.yml
