@@ -8,8 +8,10 @@ process BCFTOOLS_STATS {
         'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    path(target_bed)
+    tuple val(meta), path(vcf), path(tbi)
+    path regions
+    path targets
+    path samples
 
     output:
     tuple val(meta), path("*stats.txt"), emit: stats
@@ -21,11 +23,15 @@ process BCFTOOLS_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def target = target_bed ? "--regions-file ${target_bed}" : ""
+    def regions_file = regions ? "--regions-file ${regions}" : ""
+    def targets_file = targets ? "--targets-file ${targets}" : ""
+    def samples_file =  samples ? "--samples-file ${samples}" : ""
     """
     bcftools stats \\
         $args \\
-        $target \\
+        $regions_file \\
+        $targets_file \\
+        $samples_file \\
         $vcf > ${prefix}.bcftools_stats.txt
 
     cat <<-END_VERSIONS > versions.yml
