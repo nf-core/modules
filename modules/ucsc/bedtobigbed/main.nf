@@ -1,4 +1,4 @@
-process UCSC_BED12TOBIGBED {
+process UCSC_BEDTOBIGBED {
     tag "$meta.id"
     label 'process_medium'
 
