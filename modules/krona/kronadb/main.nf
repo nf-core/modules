@@ -18,7 +18,9 @@ process KRONA_KRONADB {
     script:
     def args = task.ext.args ?: ''
     """
-    ktUpdateTaxonomy.sh taxonomy
+    ktUpdateTaxonomy.sh \\
+        $args \\
+        taxonomy/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -2,10 +2,10 @@ process YARA_MAPPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::yara=1.0.2 bioconda::samtools=1.12" : null)
+    conda (params.enable_conda ? "bioconda::yara=1.0.2 bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:f794a548b8692f29264c8984ff116c2141b90d9e-0' :
-        'quay.io/biocontainers/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:f794a548b8692f29264c8984ff116c2141b90d9e-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0' :
+        'quay.io/biocontainers/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0' }"
 
     input:
     tuple val(meta), path(reads)

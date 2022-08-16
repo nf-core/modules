@@ -26,8 +26,7 @@ input:
       pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
   - adapterlist:
       type: file
-      description:
-        Optional text file containing list of adapters to look for for removal
+      description: Optional text file containing list of adapters to look for for removal
         with one adapter per line. Otherwise will look for default adapters (see
         AdapterRemoval man page), or can be modified to remove user-specified
         adapters via ext.args.
@@ -44,43 +43,43 @@ output:
         Adapter trimmed FastQ files of either single-end reads, or singleton
         'orphaned' reads from merging of paired-end data (i.e., one of the pair
         was lost due to filtering thresholds).
-      pattern: "*.truncated.gz"
+      pattern: "*.truncated.fastq.gz"
   - discarded:
       type: file
       description: |
         Adapter trimmed FastQ files of reads that did not pass filtering
         thresholds.
-      pattern: "*.discarded.gz"
+      pattern: "*.discarded.fastq.gz"
   - pair1_truncated:
       type: file
       description: |
         Adapter trimmed R1 FastQ files of paired-end reads that did not merge
         with their respective R2 pair due to long templates. The respective pair
         is stored in 'pair2_truncated'.
-      pattern: "*.pair1.truncated.gz"
+      pattern: "*.pair1.truncated.fastq.gz"
   - pair2_truncated:
       type: file
       description: |
         Adapter trimmed R2 FastQ files of paired-end reads that did not merge
         with their respective R1 pair due to long templates. The respective pair
         is stored in 'pair1_truncated'.
-      pattern: "*.pair2.truncated.gz"
+      pattern: "*.pair2.truncated.fastq.gz"
   - collapsed:
       type: file
       description: |
         Collapsed FastQ of paired-end reads that successfully merged with their
         respective R1 pair but were not trimmed.
-      pattern: "*.collapsed.gz"
+      pattern: "*.collapsed.fastq.gz"
   - collapsed_truncated:
       type: file
       description: |
         Collapsed FastQ of paired-end reads that successfully merged with their
         respective R1 pair and were trimmed of adapter due to sufficient overlap.
-      pattern: "*.collapsed.truncated.gz"
+      pattern: "*.collapsed.truncated.fastq.gz"
   - log:
       type: file
       description: AdapterRemoval log file
-      pattern: "*.log"
+      pattern: "*.settings"
   - versions:
       type: file
       description: File containing software versions

@@ -2,16 +2,15 @@ process STAR_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    // Note: 2.7X indices incompatible with AWS iGenomes.
-    conda (params.enable_conda ? 'bioconda::star=2.7.9a' : null)
+    conda (params.enable_conda ? "bioconda::star=2.7.10a bioconda::samtools=1.15.1 conda-forge::gawk=5.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/star:2.7.9a--h9ee0642_0' :
-        'quay.io/biocontainers/star:2.7.9a--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:afaaa4c6f5b308b4b6aa2dd8e99e1466b2a6b0cd-0' :
+        'quay.io/biocontainers/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:afaaa4c6f5b308b4b6aa2dd8e99e1466b2a6b0cd-0' }"
 
     input:
     tuple val(meta), path(reads)
-    path  index
-    path  gtf
+    path index
+    path gtf
     val star_ignore_sjdbgtf
     val seq_platform
     val seq_center
@@ -29,6 +28,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*fastq.gz')               , optional:true, emit: fastq
     tuple val(meta), path('*.tab')                   , optional:true, emit: tab
     tuple val(meta), path('*.out.junction')          , optional:true, emit: junction
+    tuple val(meta), path('*.out.sam')               , optional:true, emit: sam
 
     when:
     task.ext.when == null || task.ext.when
@@ -66,6 +66,32 @@ process STAR_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(STAR --version | sed -e "s/STAR_//g")
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}Xd.out.bam
+    touch ${prefix}.Log.final.out
+    touch ${prefix}.Log.out
+    touch ${prefix}.Log.progress.out
+    touch ${prefix}.sortedByCoord.out.bam
+    touch ${prefix}.toTranscriptome.out.bam
+    touch ${prefix}.Aligned.unsort.out.bam
+    touch ${prefix}.unmapped_1.fastq.gz
+    touch ${prefix}.unmapped_2.fastq.gz
+    touch ${prefix}.tab
+    touch ${prefix}.Chimeric.out.junction
+    touch ${prefix}.out.sam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        star: \$(STAR --version | sed -e "s/STAR_//g")
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
     END_VERSIONS
     """
 }

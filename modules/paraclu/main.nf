@@ -1,9 +1,8 @@
-def VERSION = '10' // Version information not provided by tool on CLI
-
 process PARACLU {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::paraclu=10" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1' :
@@ -23,6 +22,7 @@ process PARACLU {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '10' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P

@@ -4,8 +4,8 @@ process CAT_FASTQ {
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
-        'biocontainers/biocontainers:v1.2.0_cv1' }"
+        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
+        'ubuntu:20.04' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
@@ -48,4 +48,33 @@ process CAT_FASTQ {
             """
         }
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def readList = reads.collect{ it.toString() }
+    if (meta.single_end) {
+        if (readList.size > 1) {
+            """
+            touch ${prefix}.merged.fastq.gz
+
+            cat <<-END_VERSIONS > versions.yml
+            "${task.process}":
+                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+            END_VERSIONS
+            """
+        }
+    } else {
+        if (readList.size > 2) {
+            """
+            touch ${prefix}_1.merged.fastq.gz
+            touch ${prefix}_2.merged.fastq.gz
+
+            cat <<-END_VERSIONS > versions.yml
+            "${task.process}":
+                cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+            END_VERSIONS
+            """
+        }
+    }
+
 }

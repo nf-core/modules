@@ -27,25 +27,40 @@ input:
   - db:
       type: directory
       description: Kraken2 database
+  - save_output_fastqs:
+      type: boolean
+      description: |
+        If true, optional commands are added to save classified and unclassified reads
+        as fastq files
+  - save_reads_assignment:
+      type: boolean
+      description: |
+        If true, an optional command is added to save a file reporting the taxonomic
+        classification of each input read
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - classified:
+  - classified_reads_fastq:
       type: file
       description: |
-        Reads classified to belong to any of the taxa
+        Reads classified as belonging to any of the taxa
         on the Kraken2 database.
       pattern: "*{fastq.gz}"
-  - unclassified:
+  - unclassified_reads_fastq:
       type: file
       description: |
-        Reads not classified to belong to any of the taxa
+        Reads not classified to any of the taxa
         on the Kraken2 database.
       pattern: "*{fastq.gz}"
-  - txt:
+  - classified_reads_assignment:
+      type: file
+      description: |
+        Kraken2 output file indicating the taxonomic assignment of
+        each input read
+  - report:
       type: file
       description: |
         Kraken2 report containing stats about classified

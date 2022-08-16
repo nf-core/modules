@@ -1,0 +1,53 @@
+name: "picard_crosscheckfingerprints"
+description: Checks that all data in the set of input files appear to come from the same individual
+keywords:
+  - alignment
+  - metrics
+  - statistics
+  - fingerprint
+  - bam
+tools:
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      tool_dev_url: https://github.com/broadinstitute/picard/
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input1:
+      type: file
+      description: List containing 1 or more bam/vcf files or a file containing filepaths
+      pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - input2:
+      type: file
+      description: Optional list containing 1 or more bam/vcf files or a file containing filepaths
+      pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+  - haplotype_map:
+      type: file
+      description: Haplotype map file
+      pattern: "*.{txt,vcf,vcf.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - crosscheck_metrics:
+      type: file
+      description: Metrics created by crosscheckfingerprints
+      pattern: "*.{crosscheck_metrics.txt}"
+
+authors:
+  - "@matthdsm"

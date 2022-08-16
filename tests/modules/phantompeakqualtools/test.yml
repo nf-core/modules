@@ -1,0 +1,23 @@
+- name: phantompeakqualtools test_phantompeakqualtools_single_end
+  command: nextflow run tests/modules/phantompeakqualtools -entry test_phantompeakqualtools_single_end -c tests/config/nextflow.config
+  tags:
+    - phantompeakqualtools
+  files:
+    - path: output/phantompeakqualtools/test.spp.Rdata
+    - path: output/phantompeakqualtools/test.spp.out
+      md5sum: b01d976506b6fe45b66c821b1e8a1d15
+    - path: output/phantompeakqualtools/test.spp.pdf
+    - path: output/phantompeakqualtools/versions.yml
+      md5sum: 6c2ede1aac4c574e3c72fbe09f15c03f
+
+- name: phantompeakqualtools test_phantompeakqualtools_paired_end
+  command: nextflow run tests/modules/phantompeakqualtools -entry test_phantompeakqualtools_paired_end -c tests/config/nextflow.config
+  tags:
+    - phantompeakqualtools
+  files:
+    - path: output/phantompeakqualtools/test.spp.Rdata
+    - path: output/phantompeakqualtools/test.spp.out
+      md5sum: eed46e75eab119224f397a7a8b5924e6
+    - path: output/phantompeakqualtools/test.spp.pdf
+    - path: output/phantompeakqualtools/versions.yml
+      md5sum: 383d2dd583fcb40451bde0d3840bdb72
