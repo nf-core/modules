@@ -1,11 +1,11 @@
-name: ucsc_bed12tobigbed
-description: Convert file from bed12 to bigBed format
+name: ucsc_bedtobigbed
+description: Convert file from bed to bigBed format
 keywords:
-  - bed12
+  - bed
   - bigbed
 tools:
   - ucsc:
-      description: Convert file from bed12 to bigBed format
+      description: Convert file from bed to bigBed format
       homepage: None
       documentation: None
       tool_dev_url: None
@@ -20,8 +20,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bed:
       type: file
-      description: bed12 file
-      pattern: "*.{bed,bed12}"
+      description: bed file
+      pattern: "*.{bed}"
   - sizes:
       type: file
       description: chromosome sizes file
