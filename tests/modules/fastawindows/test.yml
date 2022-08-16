@@ -1,0 +1,13 @@
+- name: fastawindows test_fastawindows
+  command: nextflow run ./tests/modules/fastawindows -entry test_fastawindows -c ./tests/config/nextflow.config  -c ./tests/modules/fastawindows/nextflow.config
+  tags:
+    - fastawindows
+  files:
+    - path: output/fastawindows/fw_out/test_fw_dinuc_windows.tsv
+      md5sum: aadb771536cbd766d1dad438d2ed665f
+    - path: output/fastawindows/fw_out/test_fw_tetranuc_windows.tsv
+      md5sum: a11b53a35782a79518d2d848e30461b8
+    - path: output/fastawindows/fw_out/test_fw_trinuc_windows.tsv
+      md5sum: cabe413fb25d9cb6efa45368fe1f4ae3
+    - path: output/fastawindows/fw_out/test_fw_windows.tsv
+      md5sum: 52e7c07f2f95c9919b7049e3a52a818f

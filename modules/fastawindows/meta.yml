@@ -1,0 +1,53 @@
+name: "fastawindows"
+description: Quickly compute statistics over a fasta file in windows.
+keywords:
+  - genome
+  - fasta
+  - tsv
+  - bed
+tools:
+  - "fastawindows":
+      description: "fasta_windows is a tool written for Darwin Tree of Life chromosomal level genome assemblies. The executable takes a fasta formatted file and calculates some statistics of interest in windows"
+      homepage: "https://github.com/tolkit/fasta_windows"
+      documentation: "None"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file
+      pattern: "*.{fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - mononuc:
+      type: file
+      description: TSV file with mononucleotide counts and statistics
+      pattern: "*.{tsv}"
+  - dinuc:
+      type: file
+      description: TSV file with dinucleotide counts and statistics
+      pattern: "*.{tsv}"
+  - trinuc:
+      type: file
+      description: TSV file with trinucleotide counts and statistics
+      pattern: "*.{tsv}"
+  - tetranuc:
+      type: file
+      description: TSV file with tetranucleotide counts and statistics
+      pattern: "*.{tsv}"
+authors:
+  - "@muffato"
