@@ -1,4 +1,4 @@
-process UCSC_BED12TOBIGBED {
+process UCSC_BEDTOBIGBED {
     tag "$meta.id"
     label 'process_medium'
 
@@ -27,6 +27,7 @@ process UCSC_BED12TOBIGBED {
     bedToBigBed \\
         $bed \\
         $sizes \\
+        $args \\
         ${prefix}.bigBed
 
     cat <<-END_VERSIONS > versions.yml
