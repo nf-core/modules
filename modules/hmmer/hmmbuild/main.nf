@@ -11,8 +11,8 @@ process HMMER_HMMBUILD {
     tuple val(meta), path(alignment)
 
     output:
-    path "*.hmm"       , emit: hmm
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.hmm"), emit: hmm
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
