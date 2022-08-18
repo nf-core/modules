@@ -32,6 +32,19 @@ workflow test_fastp_paired_end {
 }
 
 //
+// Test with intereleaved data
+//
+workflow test_fastp_interleaved {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
+            ]
+    save_trimmed_fail = false
+    save_merged       = false
+
+    FASTP ( input, save_trimmed_fail, save_merged )
+}
+
+//
 // Test with single-end data with saving trimming fails
 //
 workflow test_fastp_single_end_trim_fail {
