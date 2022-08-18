@@ -30,6 +30,7 @@ process GENMOD_MODELS {
         $args \\
         $pen_file \\
         $family_file \\
+        --processes ${task.cpus} \\
         --outfile ${prefix}_models.vcf \\
         $input_vcf
 

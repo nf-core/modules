@@ -24,6 +24,7 @@ process GENMOD_COMPOUND {
     genmod \\
         compound \\
         $args \\
+        --processes ${task.cpus} \\
         --outfile ${prefix}_compound.vcf \\
         $input_vcf
 
