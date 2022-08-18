@@ -4,5 +4,9 @@
     - hmmer
     - hmmer/hmmbuild
   files:
-    - path: output/hmmer/PF14720_seed.hmm
-      contains: '[ LENG  80 ]'
+    - path: output/hmmer/PF14720.hmm
+      contains: 
+      - 'LENG  80'
+    - path: output/hmmer/versions.yml
+      contains:
+      - 'hmmer:'
