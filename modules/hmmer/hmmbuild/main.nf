@@ -19,7 +19,7 @@ process HMMER_HMMBUILD {
 
     script:
     def args = task.ext.args ?: ''
-    
+ 
     """
     hmmbuild \\
         $args \\
