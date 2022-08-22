@@ -11,7 +11,7 @@ process BWA_INDEX {
     path fasta
 
     output:
-    path "bwa"         , emit: index
+    path "bwa/*"         , emit: index
     path "versions.yml", emit: versions
 
     when:
