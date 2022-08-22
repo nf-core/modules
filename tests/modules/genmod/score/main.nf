@@ -13,10 +13,10 @@ config = file(params.test_data['homo_sapiens']['illumina']['rank_model'], checkI
 
 workflow test_genmod_score {
 
-    GENMOD_SCORE    ( input, fam, [], config)
+    GENMOD_SCORE    ( input, fam, config)
 }
 
 workflow test_genmod_score_stub {
 
-    GENMOD_SCORE    ( input, fam, [], config)
+    GENMOD_SCORE    ( input, fam, config)
 }
