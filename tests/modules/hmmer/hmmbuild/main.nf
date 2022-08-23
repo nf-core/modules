@@ -11,5 +11,5 @@ workflow test_hmmer_hmmbuild {
         file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true)
     ]
 
-    HMMER_HMMBUILD ( input )
+    HMMER_HMMBUILD ( input, [] )
 }

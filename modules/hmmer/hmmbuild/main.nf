@@ -9,6 +9,7 @@ process HMMER_HMMBUILD {
 
     input:
     tuple val(meta), path(alignment)
+    path mxfile
 
     output:
     tuple val(meta), path("*.hmm"), emit: hmm
@@ -19,8 +20,9 @@ process HMMER_HMMBUILD {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def mxfileopt = mxfile ? "--mxfile ${mxfile}" : ""
 
     """
     hmmbuild \\
@@ -28,6 +30,7 @@ process HMMER_HMMBUILD {
         --cpu $task.cpus \\
         -n ${prefix}  \\
         -o ${prefix}.hmmbuild.txt \\
+        ${mxfileopt} \\
         ${prefix}.hmm \\
         $alignment
 
