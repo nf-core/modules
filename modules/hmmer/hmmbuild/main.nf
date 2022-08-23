@@ -12,19 +12,23 @@ process HMMER_HMMBUILD {
 
     output:
     tuple val(meta), path("*.hmm"), emit: hmm
+    path "*.hmmbuild.txt",          emit: hmmbuildout
     path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     hmmbuild \\
         $args \\
         --cpu $task.cpus \\
-        ${meta.id}.hmm \\
+        -n ${prefix}  \\
+        -o ${prefix}.hmmbuild.txt \\
+        ${prefix}.hmm \\
         $alignment
 
     cat <<-END_VERSIONS > versions.yml
