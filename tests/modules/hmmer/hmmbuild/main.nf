@@ -8,7 +8,7 @@ workflow test_hmmer_hmmbuild {
     
     input = [
         [ id: 'PF14720' ],      // meta map
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
     ]
 
     HMMER_HMMBUILD ( input, [] )
