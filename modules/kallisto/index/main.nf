@@ -31,4 +31,14 @@ process KALLISTO_INDEX {
         kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch kallisto
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
+    END_VERSIONS
+    """
 }
