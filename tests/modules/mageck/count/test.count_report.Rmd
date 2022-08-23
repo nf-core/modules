@@ -1,0 +1,362 @@
+---
+title: "MAGeCK Count Report"
+output: html_notebook
+---
+
+<!-- 
+
+This is a template file for R markdown used in MAGeCK 
+ 
+-->
+
+Author: Wei Li, weililab.org
+
+
+
+
+## Parameters
+
+comparison_name is the prefix of your output file, defined by the "-n" parameter in your "mageck test" command. The system will look for the following files to generate this report:
+
+* comparison_name.countsummary.txt
+* comparison_name.count_normalized.txt
+* comparison_name.log
+
+
+
+```{r}
+# define the comparison_name here; for example,
+# comparison_name='demo'
+comparison_name='test'
+```
+
+*Note*: if the sample labels are too long, they may cause issues in some figures. If this is the case, set the following variable to "TRUE", and a numbered label will be shown instead of the original label.
+
+```{r}
+REPLACE_LABEL=FALSE
+```
+
+
+## Preprocessing
+
+
+
+```{r echo=FALSE}
+
+count_summary_file=paste(comparison_name,'.countsummary.txt',sep='')
+normalized_cnt_file=paste(comparison_name,'.count_normalized.txt',sep='')
+log_file=paste(comparison_name,'.log',sep='')
+
+```
+
+
+Reading input files. If any of these files are problematic, an error message will be shown below.
+
+```{r}
+cstable=read.table(count_summary_file,header = T,as.is = T)
+nc_table=read.table(normalized_cnt_file,header = T,as.is = T)
+
+
+
+```
+
+## Summary
+
+
+```{r echo=FALSE}
+
+# function definition
+
+library(knitr)
+
+library(pheatmap)
+
+
+colors=c( "#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00",  "#A65628", "#F781BF",
+          "#999999", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3", 
+          "#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5",
+          "#D9D9D9", "#BC80BD", "#CCEBC5", "#FFED6F");
+
+
+
+
+genboxplot<-function(filename,isfile=T,...){
+  #slmed=read.table(filename,header=T)
+  if(isfile){
+    slmed=read.table(filename,header=T)
+  }else{
+    slmed=filename;
+  }
+  slmat=as.matrix(slmed[,c(-1,-2)])
+  slmat_log=log2(slmat+1)
+
+  boxplot(slmat_log,pch='.',las=2,ylab='log2(read counts)',cex.axis=0.8,...)
+}
+
+
+genviolinplot<-function(filename,...){
+  #slmed=read.table(filename,header=T)
+  slmed=read.table(filename,header=T,as.is = T)
+  slmat=as.matrix(slmed[,c(-1,-2)])
+  slmat_log=log2(slmat+1)
+  #samplecol=colors[((1:ncol(tabsmat)) %% length(colors)) ]
+
+  sl2=gather(as.data.frame(slmat_log),key='sample',value='normcount')
+  p<-ggplot(sl2,aes(x=sample,y=normcount,label=sample,color=sample))+
+    geom_violin()+
+    geom_boxplot(width=0.1)+
+    theme_bw()
+  print(p)
+
+}
+
+
+
+genhistplot<-function(filename,isfile=T,...){
+  if(isfile){
+    slmed=read.table(filename,header=T)
+  }else{
+    slmed=filename;
+  }
+  tabsmat=as.matrix(log2(slmed[,c(-1,-2)]+1))
+  colnames(tabsmat)=colnames(slmed)[c(-1,-2)]
+  samplecol=colors[((1:ncol(tabsmat)) %% length(colors)) ]
+  tgz=hist(tabsmat,breaks = 40)
+  if(ncol(tabsmat)>=1){
+    histlist=lapply(1:ncol(tabsmat),function(X){ return (hist(tabsmat[,X],plot=F,breaks=tgz$breaks)) })
+    xrange=range(unlist(lapply(histlist,function(X){X$mids})))
+    yrange=range(unlist(lapply(histlist,function(X){X$counts})))
+    hst1=histlist[[1]]
+    plot(hst1$mids,hst1$counts,type='b',pch=20,xlim=c(0,xrange[2]*1.2),ylim=c(0,yrange[2]*1.2),xlab='log2(counts)',ylab='Frequency',main='Distribution of read counts',col = samplecol[1], ... )
+  }
+  if(ncol(tabsmat)>=2){ 
+    for(i in 2:ncol(tabsmat)){
+      hstn=histlist[[i]]
+      lines(hstn$mids,hstn$counts,type='b',pch=20,col=samplecol[i])
+    }
+  }
+  legend('topright',colnames(tabsmat),pch=20,lwd=1,col=samplecol)
+}
+
+
+
+genclustering<-function(filename,...){
+  #slmed=read.table(filename,header=T)
+  slmed=read.table(filename,header=T)
+  slmat=as.matrix(slmed[,c(-1,-2)])
+  slmat_log=log2(slmat+1)
+
+  if(ncol(slmat_log)>1){
+    pheatmap(cor(slmat_log))
+  }else{
+    print('Skip Clustering plot as there is only one sample.')
+  }
+  
+}
+
+
+
+#ctfit_tx=0;
+
+
+panel.plot<-function(x,y,textnames=names(x),...){
+  par(new=TRUE)
+  m<-cbind(x,y)
+  plot(m,pch=20,xlim = range(x)*1.1,ylim=range(y)*1.1,...)
+  text(x,y,textnames,...)
+}
+
+
+genpcaplot<-function(filename,isfile=T,...){
+  #slmed=read.table(filename,header=T)
+  if(isfile){
+    slmed=read.table(filename,header=T)
+  }else{
+    slmed=filename;
+  }
+  slmat=as.matrix(slmed[,c(-1,-2)])
+  slmat_log=log2(slmat+1)
+  ctfit_tx<<-prcomp(t(slmat_log),center=TRUE)
+  
+  # par(mfrow=c(2,1));
+  samplecol=colors[((1:ncol(slmat)) %% length(colors)) ]
+  # first 2 PCA
+  #plot(ctfit_tx$x[,1],ctfit_tx$x[,2],xlab='PC1',ylab='PC2',main='First 2 PCs',col=samplecol,xlim=1.1*range(ctfit_tx$x[,1]),ylim=1.1*range(ctfit_tx$x[,2]));
+  #text(ctfit_tx$x[,1],ctfit_tx$x[,2],rownames(ctfit_tx$x),col=samplecol);
+  # par(mfrow=c(1,1));
+  if(length(samplecol)>2){
+      #pairs(ctfit_tx$x[,1:3],panel=panel.plot,textnames=rownames(ctfit_tx$x),main='First 3 principle components',col=samplecol)
+  }else{
+    if(length(samplecol)>1){
+      #pairs(ctfit_tx$x[,1:2],panel=panel.plot,textnames=rownames(ctfit_tx$x),main='First 2 principle components',col=samplecol)
+   }
+  }
+  library(ggplot2)
+  if(ncol(slmat)>1){
+    pcareport=data.frame(PC1=ctfit_tx$x[,1],PC2=ctfit_tx$x[,2],sample=rownames(ctfit_tx$x))
+    p<-ggplot(pcareport,aes(x=PC1,y=PC2,label=sample)) +
+       geom_point(aes(colour=sample)) +
+       geom_text(vjust='inward',hjust='inward') + 
+       theme_bw()
+    print(p)
+    if(ncol(slmat)>2){
+      pcareport$PC3=ctfit_tx$x[,3]
+      p<-ggplot(pcareport,aes(x=PC1,y=PC3,label=sample)) +
+         geom_point(aes(colour=sample)) +
+         geom_text(vjust='inward',hjust='inward') + 
+         theme_bw()
+      print(p)
+      p<-ggplot(pcareport,aes(x=PC2,y=PC3,label=sample)) +
+         geom_point(aes(colour=sample)) +
+         geom_text(vjust='inward',hjust='inward') + 
+         theme_bw()
+      print(p)
+    }
+  }
+
+  return (ctfit_tx)
+
+}
+
+
+
+genpcavar<-function(ctfit_tx){
+  # % variance
+  if(length(ctfit_tx$sdev)==1){
+    print('Skip PCA plot as there is only one sample.')
+    return (0)
+  }
+  varpca=ctfit_tx$sdev^2
+  varpca=varpca/sum(varpca)*100;
+  if(length(varpca)>10){
+    varpca=varpca[1:10];
+  }
+  plot(varpca,type='b',lwd=2,pch=20,xlab='PCs',ylab='% Variance explained');
+}
+
+```
+
+
+The summary of the count command is as follows.
+
+
+
+```{r echo=FALSE,results='asis'}
+
+kable(cstable[,1:8],caption='Count command summary')
+```
+
+
+
+
+The meanings of the columns are as follows.
+
+
+
+* File: The filename of fastq file;
+* Label: Assigned label;
+* Reads: The total read count in the fastq file;
+* Mapped: Reads that can be mapped to gRNA library;
+* Percentage: The percentage of mapped reads;
+* TotalsgRNAs: The number of sgRNAs in the library; 
+* ZeroCounts: The number of sgRNA with 0 read counts;
+* GiniIndex: The Gini Index of the read count distribution. Gini index can be used to measure the evenness of the read counts, and a smaller value means a more even distribution of the read counts.
+
+If --day0label and --gmt-file options are provided, the following metrics will display the degree of negative selections of essential genes (provided by --gmt-file).
+
+
+
+```{r echo=FALSE,results='asis'}
+
+kable(cstable[,c(1,2,9:ncol(cstable))],caption='Count command summary')
+```
+
+
+The meanings of the columns are as follows.
+
+* NegSelQC: the enrichment score (ES) of essential genes in the negative selection list. The score is calculated using GSEA;
+* NegSelQCPval: the associated p value of the enrichment score;
+* NegSelQCPvalPermutation: the permutated p value of the enrichment score;
+* NegSelQCPvalPermutationFDR: the adjusted permutated p value;
+* NegSelQCGene: the number of genes used for the analysis.
+
+
+
+## Normalized read count distribution of all samples
+The following figure shows the distribution of median-normalized read counts in all samples.
+
+
+```{r echo=FALSE,results='asis'}
+
+
+if(REPLACE_LABEL){
+    cstable[,'Order']=1:nrow(cstable)
+    sample_order=cstable[,c('Label','Order')]
+    for(si in 1:ncol(nc_table)){
+      cl=colnames(nc_table)[si]
+      if(cl %in% sample_order[,'Label']){
+        cl2=sample_order[ which(sample_order$Label==cl)[1] ,'Order']
+        colnames(nc_table)[si]=cl2
+      }
+    }
+    kable(sample_order,caption='Sample order')
+}
+```
+
+
+
+```{r echo=FALSE}
+
+
+genboxplot(nc_table,isfile = F)
+
+
+```
+
+
+```{r echo=FALSE}
+
+genviolinplot(normalized_cnt_file)
+
+
+```
+
+
+
+The following figure shows the histogram of median-normalized read counts in all samples.
+
+
+```{r echo=FALSE}
+genhistplot(nc_table,isfile = F)
+```
+
+
+## Principle Component Analysis
+The following figure shows the first 2 principle components (PCs) from the Principle Component Analysis (PCA), and the percentage of variances explained by the top PCs.
+
+
+```{r echo=FALSE}
+ctfit_tx=genpcaplot(nc_table,isfile = F)
+
+#
+```
+
+The variance of the PCs
+
+```{r echo=FALSE}
+genpcavar(ctfit_tx)
+```
+
+
+## Sample clustering
+The following figure shows the sample clustering result.
+
+
+```{r echo=FALSE}
+genclustering(nc_table,isfile = F)
+```
+
+
+
+
+

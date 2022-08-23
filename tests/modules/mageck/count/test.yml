@@ -1,14 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml mageck/count
-- name: "mageck count"
-  command: nextflow run ./tests/modules/mageck/count -entry test_mageck_count -c ./tests/config/nextflow.config -c ./tests/modules/mageck/count/nextflow.config
+- name: mageck count test_mageck_count
+  command: nextflow run ./tests/modules/mageck/count -entry test_mageck_count -c ./tests/config/nextflow.config  -c ./tests/modules/mageck/count/nextflow.config
   tags:
-    - "mageck"
-    #
-    - "mageck/count"
-    #
+    - mageck/count
+    - mageck
   files:
-    - path: "output/mageck/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/mageck/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/mageck/test.count.txt
+      md5sum: 9f1ccba19b30987636ceb4d9394bf32a
+    - path: output/mageck/test.count_normalized.txt
+      md5sum: b2a4ebfb5b77c5b973ec5d24088d8930

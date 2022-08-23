@@ -1,12 +1,12 @@
 name: "mageck_count"
-## TODO nf-core: Add a description of the module and list keywords
-description: mageck count for functional genomics, reads are usually mapped
-to a specific sgRNA
+description: mageck count for functional genomics, reads are usually mapped to a specific sgRNA
 keywords:
   - sort
+  - functional genomics
+  - sgRNA
+  - CRISPR-Cas9
 tools:
   - "mageck":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
       homepage: "https://sourceforge.net/p/mageck/wiki/Home/"
       documentation: "https://sourceforge.net/p/mageck/wiki/demo/#step-4-run-the-mageck-count-command"
@@ -14,7 +14,6 @@ tools:
       doi: ""
       licence: "['BSD License']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -27,9 +26,13 @@ input:
       description: library file containing the sgRNA and gene name
       pattern: "*.{csv,txt,tsv}"
   - reads:
-      type: file
+      type: files
       description: library file containing the sgRNA and gene name
       pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
+  - name:
+      type: string
+      description: name of the output data
+      pattern: "*"
 
 output:
   - meta:
