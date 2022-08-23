@@ -41,7 +41,7 @@ process MAGECK_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mageck -v
+        mageck: \$(mageck -v)
     END_VERSIONS
     """
 }
