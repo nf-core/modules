@@ -12,9 +12,9 @@ process HMMER_HMMBUILD {
     path mxfile
 
     output:
-    tuple val(meta), path("*.hmm"), emit: hmm
-    path "*.hmmbuild.txt",          emit: hmmbuildout
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.hmm.gz"), emit: hmm
+    path "*.hmmbuild.txt",             emit: hmmbuildout
+    path "versions.yml",               emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,6 +33,8 @@ process HMMER_HMMBUILD {
         ${mxfileopt} \\
         ${prefix}.hmm \\
         $alignment
+
+    gzip ${prefix}.hmm
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
