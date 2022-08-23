@@ -11,8 +11,8 @@ process FQ_LINT {
     tuple val(meta), path(fastq)
 
     output:
-    path "*.fq_lint.txt", emit: lint
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.fq_lint.txt"), emit: lint
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
