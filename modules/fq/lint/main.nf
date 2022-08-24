@@ -4,7 +4,7 @@ process FQ_LINT {
 
     conda (params.enable_conda ? "bioconda::fq=0.9.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'quay.io/biocontainers/fq:0.9.1--h9ee0642_0':
+        'https://depot.galaxyproject.org/singularity/fq:0.9.1--h9ee0642_0':
         'quay.io/biocontainers/fq:0.9.1--h9ee0642_0' }"
 
     input:
