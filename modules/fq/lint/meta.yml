@@ -1,0 +1,32 @@
+name: "fq_lint"
+description: write your description here
+keywords:
+  - sort
+tools:
+  - "fq":
+      description: "fq is a library to generate and validate FASTQ file pairs."
+      homepage: "https://github.com/stjude-rust-labs/fq"
+      documentation: "https://github.com/stjude-rust-labs/fq"
+      tool_dev_url: "https://github.com/stjude-rust-labs/fq"
+      doi: ""
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: FASTQ file list
+      pattern: "*.fastq{,.gz}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@adamrtalbot"
