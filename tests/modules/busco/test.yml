@@ -436,8 +436,7 @@
     - path: output/busco/test-eukaryota_odb10-busco/logs/busco.log
       contains:
         - "DEBUG:busco.run_BUSCO"
-        - "Results from dataset"
-        - "how to cite BUSCO"
+        - "Running Augustus gene predictor"
 
 - name: busco test_busco_protein
   command: nextflow run ./tests/modules/busco -entry test_busco_protein -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
