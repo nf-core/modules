@@ -25,6 +25,10 @@ input:
       type: file
       description: multiple sequence alignment in fasta, clustal, stockholm or phylip format
       pattern: "*"
+  - mxfile:
+      type: file
+      description: read substitution score matrix, for use when building profiles from single sequences (--singlemx option)
+      pattern: "*"
 
 output:
   - versions:
