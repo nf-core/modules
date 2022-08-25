@@ -33,7 +33,10 @@
       md5sum: bc2440f8a68d7fbf931ff911c1c3fdfa
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_out.log
-      md5sum: 9caf1a1434414c78562eb0bbb9c0e53f
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_out.log
       contains:
@@ -94,7 +97,10 @@
       md5sum: 5ad8ecfbf4058b059e5edeb9170fc683
     - path: output/busco/test-bacteroidetes_odb10-busco/genome.fna/logs/bbtools_err.log
     - path: output/busco/test-bacteroidetes_odb10-busco/genome.fna/logs/bbtools_out.log
-      md5sum: 9caf1a1434414c78562eb0bbb9c0e53f
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-bacteroidetes_odb10-busco/genome.fna/logs/hmmsearch_err.log
     - path: output/busco/test-bacteroidetes_odb10-busco/genome.fna/logs/hmmsearch_out.log
       contains:
@@ -184,10 +190,17 @@
         - "Missing BUSCOs"
         - "Dependencies and versions"
     - path: output/busco/test-bacteria_odb10-busco.batch_summary.txt
-      md5sum: 8c64c1a28b086ef2ee444f99cbed5f7d
+      contains:
+        - "Input_file"
+        - "genome.fna"
+        - "genome.fasta"
+        - "bacteria_odb10"
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/bbtools_out.log
-      md5sum: 8f047bdb33264d22a83920bc2c63f29a
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fasta/logs/hmmsearch_out.log
       contains:
@@ -249,7 +262,10 @@
         - "busco:"
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/bbtools_out.log
-      md5sum: 9caf1a1434414c78562eb0bbb9c0e53f
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_err.log
     - path: output/busco/test-bacteria_odb10-busco/genome.fna/logs/hmmsearch_out.log
       contains:
@@ -329,7 +345,10 @@
       md5sum: ff6d8277e452a83ce9456bbee666feb6
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_out.log
-      md5sum: e63debaa653f18f7405d936050abc093
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/hmmsearch_out.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/metaeuk_run1_err.log
@@ -409,7 +428,10 @@
       md5sum: 33cdeccccebe80329f1fdbee7f5874cb
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/bbtools_out.log
-      md5sum: e63debaa653f18f7405d936050abc093
+      contains:
+        - "IUPAC"
+        - "genome scaffold"
+        - "Coverage"
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/makeblastdb_err.log
     - path: output/busco/test-eukaryota_odb10-busco/genome.fasta/logs/makeblastdb_out.log
       contains:
