@@ -34,8 +34,9 @@ process PICARD_ADDORREPLACEREADGROUPS {
     }
     """
     picard \\
-        AddOrReplaceReadGroups \\
         -Xmx${avail_mem}g \\
+        AddOrReplaceReadGroups \\
+        $args \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
         --RGID ${ID} \\
