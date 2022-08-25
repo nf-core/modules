@@ -16,9 +16,12 @@ process CSVTK_CONCAT {
     tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
     path "versions.yml"                                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
     out_extension = out_format == "tsv" ? 'tsv' : 'csv'

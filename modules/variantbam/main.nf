@@ -1,9 +1,8 @@
-def VERSION = '1.4.4a' // Version information not provided by tool on CLI
-
 process VARIANTBAM {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::variantbam=1.4.4a" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5' :
@@ -16,9 +15,13 @@ process VARIANTBAM {
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.4.4a' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     variant \\
         $bam \\

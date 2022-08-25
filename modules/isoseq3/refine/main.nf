@@ -1,6 +1,6 @@
 process ISOSEQ3_REFINE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -18,6 +18,9 @@ process ISOSEQ3_REFINE {
     tuple val(meta), path("*.filter_summary.json") , emit: summary
     tuple val(meta), path("*.report.csv")          , emit: report
     path  "versions.yml"                           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

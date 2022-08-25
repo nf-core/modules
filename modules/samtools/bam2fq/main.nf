@@ -2,18 +2,21 @@ process SAMTOOLS_BAM2FQ {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::samtools=1.14" : null)
+    conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.14--hb421002_0' :
-        'quay.io/biocontainers/samtools:1.14--hb421002_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h1170115_0' :
+        'quay.io/biocontainers/samtools:1.15.1--h1170115_0' }"
 
     input:
     tuple val(meta), path(inputbam)
-    val(split)
+    val split
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: reads
-    path "versions.yml"          , emit: versions
+    path "versions.yml"             , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -42,7 +45,7 @@ process SAMTOOLS_BAM2FQ {
             bam2fq \\
             $args \\
             -@ $task.cpus \\
-            $inputbam >${prefix}_interleaved.fq.gz
+            $inputbam | gzip --no-name > ${prefix}_interleaved.fq.gz
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -50,5 +53,4 @@ process SAMTOOLS_BAM2FQ {
         END_VERSIONS
         """
     }
-
 }

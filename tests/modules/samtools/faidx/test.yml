@@ -1,8 +1,9 @@
-- name: samtools faidx test workflow
-  command: nextflow run ./tests/modules/samtools/faidx -entry test_samtools_faidx -c ./tests/config/nextflow.config -c ./tests/modules/samtools/faidx/nextflow.config
+- name: samtools faidx test_samtools_faidx
+  command: nextflow run tests/modules/samtools/faidx -entry test_samtools_faidx -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/faidx
   files:
     - path: output/samtools/genome.fasta.fai
       md5sum: 9da2a56e2853dc8c0b86a9e7229c9fe5
+    - path: output/samtools/versions.yml

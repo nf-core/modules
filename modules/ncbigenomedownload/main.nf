@@ -2,10 +2,10 @@ process NCBIGENOMEDOWNLOAD {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::ncbi-genome-download=0.3.0" : null)
+    conda (params.enable_conda ? "bioconda::ncbi-genome-download=0.3.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.0--pyh864c0ab_1' :
-        'quay.io/biocontainers/ncbi-genome-download:0.3.0--pyh864c0ab_1' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.1--pyh5e36f6f_0' :
+        'quay.io/biocontainers/ncbi-genome-download:0.3.1--pyh5e36f6f_0' }"
 
     input:
     val meta
@@ -26,6 +26,9 @@ process NCBIGENOMEDOWNLOAD {
     tuple val(meta), path("*_assembly_report.txt")    , emit: report  , optional: true
     tuple val(meta), path("*_assembly_stats.txt")     , emit: stats   , optional: true
     path "versions.yml"                               , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

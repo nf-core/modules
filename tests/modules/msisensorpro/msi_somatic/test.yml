@@ -1,0 +1,18 @@
+- name: msisensorpro msi_somatic test_msisensorpro_msi
+  command: nextflow run tests/modules/msisensorpro/msi_somatic -entry test_msisensorpro_msi -c tests/config/nextflow.config
+  tags:
+    - msisensorpro/msi_somatic
+    - msisensorpro
+  files:
+    - path: output/msisensorpro/test
+      md5sum: db7f2cc99ea79f79b0ba011c4bcbb43d
+    - path: output/msisensorpro/test.msisensor_scan.list
+      md5sum: 309d41b136993db24a9f3dade877753b
+    - path: output/msisensorpro/test_dis
+      md5sum: fc3e205b7ca50c9ecf3f70c87781e96f
+    - path: output/msisensorpro/test_germline
+      md5sum: ba585b355c08877b8bca4901f49d9311
+    - path: output/msisensorpro/test_somatic
+      md5sum: 836e617ddded07ec1e39089fd595c3d8
+    - path: output/msisensorpro/versions.yml
+      md5sum: b57279502ca6863c5406ed46e6b42994

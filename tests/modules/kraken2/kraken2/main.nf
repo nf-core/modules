@@ -9,10 +9,10 @@ workflow test_kraken2_kraken2_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
-    db    = file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
+    db    = [ [], file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true) ]
 
     UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )
+    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar.map{ it[1] }, true, false )
 }
 
 workflow test_kraken2_kraken2_paired_end {
@@ -20,8 +20,18 @@ workflow test_kraken2_kraken2_paired_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
-    db    = file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true)
-    
+    db    = [ [], file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true) ]
+
     UNTAR ( db )
-    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar )   
+    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar.map{ it[1] }, true, false )
+}
+
+workflow test_kraken2_kraken2_classifyreads {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+    db    = [ [], file(params.test_data['sarscov2']['genome']['kraken2_tar_gz'], checkIfExists: true) ]
+
+    UNTAR ( db )
+    KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar.map{ it[1] }, false, true )
 }

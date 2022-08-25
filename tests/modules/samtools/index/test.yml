@@ -14,7 +14,7 @@
     - samtools/index
   files:
     - path: output/samtools/test.paired_end.recalibrated.sorted.cram.crai
-      md5sum: 537e3d8c937bcc4e34e1cf47cd71d484
+      md5sum: 14bc3bd5c89cacc8f4541f9062429029
 
 - name: samtools index test_samtools_index_csi
   command: nextflow run ./tests/modules/samtools/index -entry test_samtools_index_csi -c ./tests/config/nextflow.config -c ./tests/modules/samtools/index/nextflow.config
@@ -23,4 +23,4 @@
     - samtools/index
   files:
     - path: output/samtools/test.paired_end.sorted.bam.csi
-      md5sum: 3dd9e3ed959fca075b88bb8dc3cf7dbd
+      md5sum: 8d63373007553e74d823fc2b9cbcf84d

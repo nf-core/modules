@@ -1,0 +1,11 @@
+- name: bamcmp test_bamcmp
+  command: nextflow run tests/modules/bamcmp -entry test_bamcmp -c tests/config/nextflow.config
+  tags:
+    - bamcmp
+  files:
+    - path: output/bamcmp/test_contamination.bam
+      md5sum: 1fe730936d489c637479c1e51dd8ca55
+    - path: output/bamcmp/test_primary.bam
+      md5sum: 80b9abd8ef83e63548a9b8b82be2a034
+    - path: output/bamcmp/versions.yml
+      md5sum: 34d569665ff0459e84114e966dd3483b

@@ -1,0 +1,25 @@
+- name: ichorcna run test_ichorcna_run_no_panel
+  command: nextflow run tests/modules/ichorcna/run -entry test_ichorcna_run_no_panel -c tests/config/nextflow.config
+  tags:
+    - ichorcna
+    - ichorcna/run
+  files:
+    - path: output/ichorcna/test.cna.seg
+      contains: ["Corrected_Copy_Number"]
+    - path: output/ichorcna/test.params.txt
+      md5sum: e39a579cdcc9576679f06dc5c22605a7
+    - path: output/ichorcna/versions.yml
+      md5sum: effb37e19bec3609417aaccad4b6a294
+
+- name: ichorcna run test_ichorcna_run_inc_panel
+  command: nextflow run tests/modules/ichorcna/run -entry test_ichorcna_run_inc_panel -c tests/config/nextflow.config
+  tags:
+    - ichorcna
+    - ichorcna/run
+  files:
+    - path: output/ichorcna/test.cna.seg
+      contains: ["Corrected_Copy_Number"]
+    - path: output/ichorcna/test.params.txt
+      md5sum: 0b97e0269cd0b571f5a85890f6ddb181
+    - path: output/ichorcna/versions.yml
+      md5sum: fc9d96de0a1c15cea59208305b14e535

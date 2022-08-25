@@ -1,0 +1,17 @@
+- name: deeparg predict test_deeparg_predict
+  command: nextflow run tests/modules/deeparg/predict -entry test_deeparg_predict -c tests/config/nextflow.config
+  tags:
+    - deeparg/predict
+    - deeparg
+  files:
+    - path: output/deeparg/test.align.daa
+      md5sum: c52d0af8362244f214da25bc45f2bf42
+    - path: output/deeparg/test.align.daa.tsv
+      md5sum: a4aa1da2db98274ede2b927fa8227e5a
+    - path: output/deeparg/test.mapping.ARG
+      md5sum: 0e049e99eab4c55666062df21707d5b9
+    - path: output/deeparg/test.mapping.potential.ARG
+      contains:
+        - "#ARG"
+    - path: output/deeparg/versions.yml
+      md5sum: e848ddab324e8c6fd18eaa6b2656f195

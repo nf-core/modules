@@ -16,9 +16,12 @@ process CHECKM_LINEAGEWF {
     tuple val(meta), path("${prefix}.tsv"), emit: checkm_tsv
     path "versions.yml"                   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     checkm \\
         lineage_wf \\

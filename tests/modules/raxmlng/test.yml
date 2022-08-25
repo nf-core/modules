@@ -5,10 +5,10 @@
   files:
     - path: output/raxmlng/output.raxml.bestTree
       contains:
-        - 'sample1:0.359'
-        - 'sample2:1.50'
-        - 'sample3:0.000001'
-        - 'sample4:0.111'
+        - "sample1:0.359"
+        - "sample2:1.50"
+        - "sample3:0.000001"
+        - "sample4:0.111"
 
 - name: raxmlng bootstrap
   command: nextflow run ./tests/modules/raxmlng -entry test_raxmlng_bootstrap -c ./tests/config/nextflow.config -c ./tests/modules/raxmlng/nextflow.config
@@ -17,15 +17,15 @@
   files:
     - path: output/raxmlng/output.raxml.bestTree
       contains:
-        - 'sample1:0.359'
-        - 'sample2:1.50'
-        - 'sample3:0.000001'
-        - 'sample4:0.111'
+        - "sample1:0.359"
+        - "sample2:1.50"
+        - "sample3:0.000001"
+        - "sample4:0.111"
     - path: output/raxmlng/output.raxml.support
       contains:
-        - 'sample1:0.359'
-        - 'sample2:1.50'
-        - 'sample3:0.000001'
-        - 'sample4:0.111'
+        - "sample1:0.359"
+        - "sample2:1.50"
+        - "sample3:0.000001"
+        - "sample4:0.111"
       contains_regex:
         - '\)[89]\d:'

@@ -1,0 +1,8 @@
+- name: hamronization amrfinderplus test_hamronization_amrfinderplus
+  command: nextflow run ./tests/modules/hamronization/amrfinderplus -entry test_hamronization_amrfinderplus -c ./tests/config/nextflow.config  -c ./tests/modules/hamronization/amrfinderplus/nextflow.config
+  tags:
+    - hamronization
+    - hamronization/amrfinderplus
+  files:
+    - path: output/hamronization/test.tsv
+      md5sum: 6ed7f74659df7bce285ca80fd531e138

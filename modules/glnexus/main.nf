@@ -14,6 +14,9 @@ process GLNEXUS {
     tuple val(meta), path("*.bcf"), emit: bcf
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -33,6 +36,17 @@ process GLNEXUS {
         $args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
