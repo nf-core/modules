@@ -71,7 +71,7 @@ jobs:
         with:
           singularity-version: 3.7.1
 
-      - name: Setup miniconda
+      - name: Set up miniconda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
