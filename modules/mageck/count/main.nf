@@ -25,8 +25,6 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // def label = echo $meta.id | sed 's/ /,/g'
-        //fastq=`echo $meta.id | sed 's/ //g' | sed 's/\]//g' | sed 's/\[//g'`
 
     """
 
