@@ -1,7 +1,42 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml msisensor2/msi
-- name: "msisensor2 msi"
-  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi -c ./tests/config/nextflow.config -c ./tests/modules/msisensor2/msi/nextflow.config
+- name: msisensor2 msi test_msisensor2_msi_tumour_only
+  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumour_only -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
   tags:
-    - "msisensor2"
-    - "msisensor2/msi"
+    - msisensor2
+    - msisensor2/msi
+  files:
+    - path: output/msisensor2/outputfile
+      md5sum: b1fa373ada56fd5027b705d5e2faa374
+    - path: output/msisensor2/test
+      md5sum: a3290f7539dbbf83777e8590156c0e28
+    - path: output/msisensor2/test_dis
+      md5sum: 236e814ddeb95e21a17b48250f92250d
+    - path: output/msisensor2/test_somatic
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+
+- name: msisensor2 msi test_msisensor2_msi_tumour_normal
+  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumour_normal -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
+  tags:
+    - msisensor2
+    - msisensor2/msi
+  files:
+    - path: output/msisensor2/outputfile
+      md5sum: b1fa373ada56fd5027b705d5e2faa374
+    - path: output/msisensor2/test
+      md5sum: a3290f7539dbbf83777e8590156c0e28
+    - path: output/msisensor2/test_dis
+      md5sum: d47b22c13092707ed64645f118e82cc1
+    - path: output/msisensor2/test_somatic
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+
+- name: msisensor2 msi test_msisensor2_msi_tumour_only_ml
+  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumour_only_ml -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
+  tags:
+    - msisensor2
+    - msisensor2/msi
+  files:
+    - path: output/msisensor2/test
+      md5sum: a3290f7539dbbf83777e8590156c0e28
+    - path: output/msisensor2/test_dis
+      md5sum: 85205504ea8652ebdee46ac07ee1a8f6
+    - path: output/msisensor2/test_somatic
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
