@@ -1,0 +1,10 @@
+- name: mageck count test_mageck_count
+  command: nextflow run ./tests/modules/mageck/count -entry test_mageck_count -c ./tests/config/nextflow.config  -c ./tests/modules/mageck/count/nextflow.config
+  tags:
+    - mageck/count
+    - mageck
+  files:
+    - path: output/mageck/test.count.txt
+      md5sum: 9f1ccba19b30987636ceb4d9394bf32a
+    - path: output/mageck/test.count_normalized.txt
+      md5sum: b2a4ebfb5b77c5b973ec5d24088d8930
