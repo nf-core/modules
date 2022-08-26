@@ -12,7 +12,7 @@ process MSISENSOR2_SCAN {
     val output
 
     output:
-    path output, emit: scan
+    path output_path   , emit: scan
     path "versions.yml", emit: versions
 
     when:
@@ -21,11 +21,12 @@ process MSISENSOR2_SCAN {
     script:
     def args        = task.ext.args ?: ''
     def inputs      = fasta.collect{ "-d $it"}.join(" ")
+    output_path = output ?: "output.scan"
     """
     msisensor2 scan \\
         $args \\
         $inputs \\
-        -o $output
+        -o $output_path
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

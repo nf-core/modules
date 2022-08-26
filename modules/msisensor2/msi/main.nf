@@ -31,6 +31,7 @@ process MSISENSOR2_MSI {
     def interval_command  = intervals  ? "-e $intervals"  : ""
     """
     msisensor2 msi \\
+        -b ${task.cpus} \\
         $args \\
         $model_cmd \\
         $scan_cmd \\
