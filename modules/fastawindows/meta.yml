@@ -33,21 +33,25 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - freq:
+      type: file
+      description: TSV file with frequencies and statistics
+      pattern: "*.{tsv}"
   - mononuc:
       type: file
-      description: TSV file with mononucleotide counts and statistics
+      description: TSV file with mononucleotide counts
       pattern: "*.{tsv}"
   - dinuc:
       type: file
-      description: TSV file with dinucleotide counts and statistics
+      description: TSV file with dinucleotide counts
       pattern: "*.{tsv}"
   - trinuc:
       type: file
-      description: TSV file with trinucleotide counts and statistics
+      description: TSV file with trinucleotide counts
       pattern: "*.{tsv}"
   - tetranuc:
       type: file
-      description: TSV file with tetranucleotide counts and statistics
+      description: TSV file with tetranucleotide counts
       pattern: "*.{tsv}"
 authors:
   - "@muffato"
