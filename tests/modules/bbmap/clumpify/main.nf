@@ -13,7 +13,7 @@ workflow test_bbmap_clumpify_single_end {
     BBMAP_CLUMPIFY ( input )
 }
 
-workflow test_bbmap_bbduk_clumpify_paired_end {
+workflow test_bbmap_clumpify_paired_end {
 
     input = [ [ id:'test', single_end:false ], // meta map
               [  file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
