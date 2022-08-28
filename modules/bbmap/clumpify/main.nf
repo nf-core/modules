@@ -1,6 +1,6 @@
 process BBMAP_CLUMPIFY {
     tag "$meta.id"
-    label 'process_large'
+    label 'process_high_memory'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.98" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,7 +9,6 @@ process BBMAP_CLUMPIFY {
 
     input:
     tuple val(meta), path(reads)
-    path contaminants
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
@@ -23,14 +22,12 @@ process BBMAP_CLUMPIFY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def raw      = meta.single_end ? "in=${reads[0]}" : "in1=${reads[0]} in2=${reads[1]}"
-    def clumped  = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"    
+    def clumped  = meta.single_end ? "out=${prefix}.clumped.fastq.gz" : "out1=${prefix}_1.clumped.fastq.gz out2=${prefix}_2.clumped.fastq.gz"
     """
-    maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     clumpify.sh \\
-        -Xmx\$maxmem \\
         $raw \\
-        $clumped \\        
-        $args \\        
+        $clumped \\
+        $args \\
         &> ${prefix}.clumpify.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
