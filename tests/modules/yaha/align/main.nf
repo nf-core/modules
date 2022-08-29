@@ -29,5 +29,4 @@ workflow test_yaha_align {
             .map{ meta, nib2 -> nib2 },
         YAHA_INDEX.out.index
             .map{ meta, index -> index } )
-
 }
