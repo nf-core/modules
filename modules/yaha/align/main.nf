@@ -1,5 +1,5 @@
 process YAHA_ALIGN {
-    tag "$meta_reads.id"
+    tag "$meta.id"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::yaha=0.1.83 bioconda::samtools=1.15.1" : null)
@@ -8,12 +8,12 @@ process YAHA_ALIGN {
         'quay.io/biocontainers/mulled-v2-f3d7bae608c81b0a9427122d41c428d8c9696105:b765610227f847a2565270e300496a62199e0e31-0' }"
 
     input:
-    tuple val(meta_reads), path(reads)
-    tuple val(meta_compressed_genome), path(compressed_genome)
-    tuple val(meta_index), path(index)
+    tuple val(meta), path(reads)
+    tuple path(compressed_genome)
+    tuple path(index)
 
     output:
-    tuple val(meta_reads), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process YAHA_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta_reads.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def threads = task.cpus
     """
     yaha \\

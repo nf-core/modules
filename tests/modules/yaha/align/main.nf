@@ -20,7 +20,14 @@ workflow test_yaha_align {
 
 
     YAHA_INDEX ( fasta )
+
     GUNZIP( input )
-    YAHA_ALIGN ( GUNZIP.out.gunzip, YAHA_INDEX.out.nib2, YAHA_INDEX.out.index )
+
+    YAHA_ALIGN (
+        GUNZIP.out.gunzip,
+        YAHA_INDEX.out.nib2
+            .map{ meta, nib2 -> nib2 },
+        YAHA_INDEX.out.index
+            .map{ meta, index -> index } )
 
 }
