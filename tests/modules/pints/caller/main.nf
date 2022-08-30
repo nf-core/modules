@@ -15,3 +15,7 @@ workflow test_pints_caller {
 
     PINTS_CALLER ( input )
 }
+
+// TODO Test single bam input
+// TODO Test single bigwig input
+// TODO Test multiple bigwig input
