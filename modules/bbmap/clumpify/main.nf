@@ -1,5 +1,6 @@
 process BBMAP_CLUMPIFY {
     tag "$meta.id"
+    label 'process_single'
     label 'process_high_memory'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.98" : null)
