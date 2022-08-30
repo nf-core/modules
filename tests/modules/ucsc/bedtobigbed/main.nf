@@ -10,5 +10,5 @@ workflow test_ucsc_bedtobigbed {
             ]
     sizes = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
 
-    UCSC_BEDTOBIGBED ( input, sizes )
+    UCSC_BEDTOBIGBED ( input, sizes, [] )
 }
