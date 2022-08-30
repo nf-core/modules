@@ -22,7 +22,7 @@ process BBMAP_CLUMPIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def raw      = meta.single_end ? "in=${reads[0]}" : "in1=${reads[0]} in2=${reads[1]}"
+    def raw      = meta.single_end ? "in=$reads" : "in1=${reads[0]} in2=${reads[1]}"
     def clumped  = meta.single_end ? "out=${prefix}.clumped.fastq.gz" : "out1=${prefix}_1.clumped.fastq.gz out2=${prefix}_2.clumped.fastq.gz"
     """
     clumpify.sh \\
