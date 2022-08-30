@@ -37,7 +37,7 @@ process PICARD_FASTQTOSAM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard FastqToSam --version 2>&1 | sed 's/^Version://')
+        picard: \$(picard FastqToSam --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
