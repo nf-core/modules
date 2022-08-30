@@ -22,9 +22,9 @@ process FGBIO_FASTQTOBAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_name = args.contains("--sample") ? "" : "--sample ${prefix}"
     def library_name = args.contains("--library") ? "" : "--library ${prefix}"
-    def output = prefix.endsWith(".bam") ? ${prefix} :
-                 prefix.endsWith(".cram")? ${prefix} :
-                 "${prefix}.bam"
+    def output =    prefix.endsWith(".bam") ? ${prefix} :
+                    prefix.endsWith(".cram")? ${prefix} :
+                    "${prefix}.bam"
     """
 
     fgbio \\
