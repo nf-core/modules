@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { MSISENSOR2_SCAN } from '../../../../modules/msisensor2/scan/main.nf'
 include { MSISENSOR2_MSI } from '../../../../modules/msisensor2/msi/main.nf'
 
-workflow test_msisensor2_msi_tumour_only {
+workflow test_msisensor2_msi_tumor_only {
 
     reference = [
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -26,7 +26,7 @@ workflow test_msisensor2_msi_tumour_only {
 }
 
 
-workflow test_msisensor2_msi_tumour_normal {
+workflow test_msisensor2_msi_tumor_normal {
 
     reference = [
         file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -46,7 +46,7 @@ workflow test_msisensor2_msi_tumour_normal {
     MSISENSOR2_MSI ( input, MSISENSOR2_SCAN.out.scan, [] )
 }
 
-workflow test_msisensor2_msi_tumour_only_ml {
+workflow test_msisensor2_msi_tumor_only_ml {
 
     input = [
         [ id:'test' ],

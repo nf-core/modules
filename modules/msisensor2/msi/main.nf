@@ -8,7 +8,7 @@ process MSISENSOR2_MSI {
         'biocontainers/msisensor2:0.1_cv1' }"
 
     input:
-    tuple val(meta), path(tumour_bam), path(tumour_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)
+    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)
     path scan
     path(models, stageAs: "models/*")
 
@@ -26,7 +26,7 @@ process MSISENSOR2_MSI {
     prefix = task.ext.prefix ?: "${meta.id}"
     def scan_cmd          = scan       ? "-d $scan"       : ""
     def model_cmd         = models     ? "-M models/"     : ""
-    def tumour_bam_cmd    = tumour_bam ? "-t $tumour_bam" : ""
+    def tumor_bam_cmd     = tumor_bam  ? "-t $tumor_bam"  : ""
     def normal_bam_cmd    = normal_bam ? "-n $normal_bam" : ""
     def interval_command  = intervals  ? "-e $intervals"  : ""
     """
@@ -36,7 +36,7 @@ process MSISENSOR2_MSI {
         $model_cmd \\
         $scan_cmd \\
         $interval_command \\
-        $tumour_bam_cmd \\
+        $tumor_bam_cmd \\
         $normal_bam_cmd \\
         -o $prefix
 
