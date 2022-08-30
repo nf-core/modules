@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { PICARD_FASTQTOSAM } from '../../../../modules/picard/fastqtosam/main.nf'
+include { PICARD_FASTQTOSAM as PICARD_FQTS_CUSTOM_SAMPLENAME} from '../../../../modules/picard/fastqtosam/main.nf'
 
 workflow test_picard_fastqtosam_single {
 
@@ -39,5 +40,5 @@ workflow test_picard_fastqtosam_paired_custom_samplename {
         ]
     ]
 
-    PICARD_FASTQTOSAM ( input )
+    PICARD_FQTS_CUSTOM_SAMPLENAME ( input )
 }

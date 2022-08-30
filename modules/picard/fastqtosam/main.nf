@@ -31,7 +31,7 @@ process PICARD_FASTQTOSAM {
     """
     picard \\
         -Xmx${avail_mem}g \\
-        FastqToSam  \\
+        FastqToSam \\
         ${args} \\
         ${input} \\
         ${sample_name} \\
