@@ -1,6 +1,6 @@
 name: fgbio_fastqtobam
 description: |
-  Using the fgbio tools, converts FASTQ files sequenced into BAM files possibly moving the UMI barcode into the RX field of the BAM file
+  Using the fgbio tools, converts FASTQ files sequenced into unaligned BAM or CRAM files possibly moving the UMI barcode into the RX field of the reads
 keywords:
   - fastqtobam
   - fgbio
@@ -33,6 +33,10 @@ output:
       type: file
       description: Unaligned, unsorted BAM file
       pattern: "*.{bam}"
+  - cram:
+      type: file
+      description: Unaligned, unsorted CRAM file
+      pattern: "*.{cram}"
 
 authors:
   - "@lescai"
