@@ -20,12 +20,10 @@ process PICARD_FASTQTOSAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = 3
     if (!task.memory) {
-        log.info '[Picard FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = task.memory.giga
+        log.warn '[Picard FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     }
+    def avail_mem = task.memory ? task.memory.giga : 3
     def input = meta.single_end ? "--FASTQ ${reads}" : "--FASTQ ${reads[0]} --FASTQ2 ${reads[1]}"
     def sample_name = args.contains("--SAMPLE_NAME") || args.contains("-SM") ? "" : "--SAMPLE_NAME ${prefix}"
     """
