@@ -1,51 +1,59 @@
 name: "pints_caller"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Main caller script for peak calling
 keywords:
-  - sort
+  - peak-calling
+  - CoPRO
+  - GRO-cap
+  - PRO-cap
+  - CAGE
+  - NETCAGE
+  - RAMPAGE
+  - csRNA-seq
+  - STRIPE-seq
+  - PRO-seq
+  - GRO-seq
 tools:
   - "pints":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Peak Identifier for Nascent Transcripts Starts (PINTS)"
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://pints.yulab.org/"
+      documentation: "https://github.com/hyulab/PINTS/blob/main/README.md"
       tool_dev_url: "https://github.com/hyulab/PINTS"
-      doi: ""
+      doi: "https://doi.org/10.1038/s41587-022-01211-7"
       licence: "['GPL']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - bams:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/ file
+      pattern: "*.{bam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - divergent_TREs:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Divergent TREs
+      pattern: "*_divergent_peaks.bed"
+  - bidirectional_TREs:
+      type: file
+      description: Divergent TREs and convergent TREs
+      pattern: "*_bidirectional_peaks.bed"
+  - unidirectional_TREs:
+      type: file
+      description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers (e-lncRNAs)
+      pattern: "*_unidirectional_peaks.bed"
 
 authors:
   - "@Emiller88"
