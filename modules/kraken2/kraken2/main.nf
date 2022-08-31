@@ -14,11 +14,11 @@ process KRAKEN2_KRAKEN2 {
     val save_reads_assignment
 
     output:
-    tuple val(meta), path('*classified{.,_}*.fastq.gz')     , optional:true, emit: classified_reads_fastq
-    tuple val(meta), path('*unclassified{.,_}*.fastq.gz')   , optional:true, emit: unclassified_reads_fastq
-    tuple val(meta), path('*classifiedreads.txt')           , optional:true, emit: classified_reads_assignment
-    tuple val(meta), path('*report.txt')                                   , emit: report
-    path "versions.yml"                                                    , emit: versions
+    tuple val(meta), path('*.classified{.,_}*')     , optional:true, emit: classified_reads_fastq
+    tuple val(meta), path('*.unclassified{.,_}*')   , optional:true, emit: unclassified_reads_fastq
+    tuple val(meta), path('*classifiedreads.txt')   , optional:true, emit: classified_reads_assignment
+    tuple val(meta), path('*report.txt')                           , emit: report
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
