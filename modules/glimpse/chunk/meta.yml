@@ -13,7 +13,6 @@ tools:
       licence: "['MIT']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -23,24 +22,24 @@ input:
   - input:
       type: file
       description: |
-          Target dataset in VCF/BCF format defined at all variable positions.
-          The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Target dataset in VCF/BCF format defined at all variable positions.
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
       pattern: "*.{vcf,bcf}"
-  
+
   - region:
       type: string
       description: |
-          Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-          For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
-  
+        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
+
   - window-size:
       type: int
       description: Minimal size of the imputation region in basepairs.
-  
+
   - window-count:
       type: int
       description: Minimal number of variants present in the imputation region.
-  
+
   - buffer-size:
       type: int
       description: Minimal size of the buffer region in basepairs.
@@ -48,15 +47,15 @@ input:
   - buffer-count:
       type: int
       description: Minimal number of variants present in the buffer region.
-  
+
   - output:
       type: string
       description: Name of the output txt file containing buffer and imputation regions..
-  
+
   - log:
       type: string
       description: Name of the log file.
-  
+
   - help:
       description: Produces an help message with a short description of the command options.
 
@@ -65,7 +64,6 @@ input:
       description: Seed for random number generator.
 
 output:
-
   - meta:
       type: map
       description: |
