@@ -1,0 +1,12 @@
+- name: somalier relate test_somalier_relate
+  command: nextflow run ./tests/modules/somalier/relate/main.nf -c ./tests/config/nextflow.config -c ./tests/modules/somalier/relate/nextflow.config --inputCsv ./tests/modules/somalier/relate/inputFiles.csv -entry test_somalier_relate
+  tags:
+    - somalier/relate
+    - somalier
+  files:
+    - path: output/somalier/somalier.res.html
+      md5sum: 40eae386a076cfd30494b645782a3ea4
+    - path: output/somalier/somalier.res.pairs.tsv
+      md5sum: 4a0988fc3c0fe5cfd5dd205fe6755595
+    - path: output/somalier/somalier.res.samples.tsv
+      md5sum: 19ede659a3690378b85d5d24bf524975
