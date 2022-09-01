@@ -8,7 +8,7 @@ process GLIMPSE_CHUNK {
         'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(reference_panel)
+    tuple val(meta), path(input)
     val region
 
     output:
@@ -19,20 +19,16 @@ process GLIMPSE_CHUNK {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix          = task.ext.prefix ?: "${meta.id}"
-    def thread_command  =                    "--thread $task.cpus"
-
-    def input_command   = reference_panel ? "--input $reference_panel" : ""
-    def region_command  = region          ? "--region $region"         : ""
-
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ""
     def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     GLIMPSE_chunk \\
         $args \\
-        $input_command \\
-        $region_command \\
-        $thread_command \\
+        --input $input \\
+        --region $region \\
+        --thread $task.cpus \\
         --output ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
