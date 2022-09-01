@@ -34,7 +34,7 @@ process SOMALIER_EXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        somalier: \$(echo \$(somalier_dbg4 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
+        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
     END_VERSIONS
     """
 
