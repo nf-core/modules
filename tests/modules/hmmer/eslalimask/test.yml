@@ -1,14 +1,8 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml hmmer/eslalimask
-- name: "hmmer eslalimask"
-  command: nextflow run ./tests/modules/hmmer/eslalimask -entry test_hmmer_eslalimask -c ./tests/config/nextflow.config -c ./tests/modules/hmmer/eslalimask/nextflow.config
+- name: hmmer eslalimask test_rfmask
+  command: nextflow run ./tests/modules/hmmer/eslalimask -entry test_rfmask -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslalimask/nextflow.config
   tags:
-    - "hmmer"
-    #
-    - "hmmer/eslalimask"
-    #
+  - hmmer
+  - hmmer/eslalimask
   files:
-    - path: "output/hmmer/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/hmmer/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/rfmask/test.masked.sthlm.gz
+    md5sum: 84ee7764f0456fba24cc659b53a4f3b8

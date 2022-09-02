@@ -1,51 +1,52 @@
 name: "hmmer_eslalimask"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Mask multiple sequence alignments
 keywords:
-  - sort
+  - hmmer
+  - alignment
+  - mask
 tools:
   - "hmmer":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Biosequence analysis using profile hidden Markov models"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: "['BSD']"
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: None
+      doi: "http://dx.doi.org/10.1371/journal.pcbi.1002195"
+      licence: ["BSD-3-Clause"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test' ]
+   
+  - unmaskedaln:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: multiple sequence alignment, Stockholm or other formats
+      pattern: "*"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - maskfile:
+      type: file
+      description: mask file, see program documentation
+      pattern: "*"
+
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
+   
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - maskedaln:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Masked alignment in gzipped Stockholm format
+      pattern: "*.sthlm.gz"
 
 authors:
   - "@erikrikarddaniel"
