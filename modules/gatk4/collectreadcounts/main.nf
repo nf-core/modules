@@ -8,7 +8,7 @@ process GATK4_COLLECTREADCOUNTS {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(intervals)
+    tuple val(meta), path(input), path(input_index), path(intervals)
     path(fasta)
     path(fai)
     path(dict)
