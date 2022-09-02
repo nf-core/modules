@@ -11,10 +11,10 @@ process PASTY {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")       , emit: tsv
-    tuple val(meta), path("${prefix}.blastn.tsv"), emit: blast
+    tuple val(meta), path("${prefix}.tsv")        , emit: tsv
+    tuple val(meta), path("${prefix}.blastn.tsv") , emit: blast
     tuple val(meta), path("${prefix}.details.tsv"), emit: details
-    path "versions.yml"                          , emit: versions
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
