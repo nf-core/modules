@@ -1,9 +1,21 @@
-- name: delly call test_delly_call
-  command: nextflow run ./tests/modules/delly/call -entry test_delly_call -c ./tests/config/nextflow.config -c ./tests/modules/delly/call/nextflow.config
+- name: delly call test_delly_call_bam
+  command: nextflow run ./tests/modules/delly/call -entry test_delly_call_bam -c ./tests/config/nextflow.config -c ./tests/modules/delly/call/nextflow.config
   tags:
-    - delly
     - delly/call
+    - delly
   files:
     - path: output/delly/test.bcf
+      md5sum: 9d036b140c1bdeab08b7ee6781940fb4
+    - path: output/delly/test.bcf.csi
+      md5sum: c198abfc14584c5ac69c004057927e0b
+
+- name: delly call test_delly_call_cram
+  command: nextflow run ./tests/modules/delly/call -entry test_delly_call_cram -c ./tests/config/nextflow.config -c ./tests/modules/delly/call/nextflow.config
+  tags:
+    - delly/call
+    - delly
+  files:
+    - path: output/delly/test.bcf
+      md5sum: 6c1ec4cfb05ffe9fd93316d2209608ae
     - path: output/delly/test.bcf.csi
       md5sum: 19e0cdf06c415f4942f6d4dbd5fb7271
