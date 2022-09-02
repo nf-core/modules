@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include { HMMER_HMMALIGN             } from '../../../../modules/hmmer/hmmalign/main.nf'
 include { HMMER_ESLALIMASK as RFMASK } from '../../../../modules/hmmer/eslalimask/main.nf'
 
-workflow test_rfmask {
+workflow test_hmmer_rfmask {
     
     input = [
         [ id:'test' ], // meta map
