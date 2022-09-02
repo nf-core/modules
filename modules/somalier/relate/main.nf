@@ -26,7 +26,7 @@ process SOMALIER_RELATE {
     def input_list = extract.collect{"$it"}.join(' ')
     def prefix = task.ext.prefix ?: ""
     def sample_groups_command = sample_groups ? "-g $sample_groups" : ""
-    def ped_command = ped ? "- $ped" : ""
+    def ped_command = ped ? "-p $ped" : ""
 
 	"""
     somalier relate \

@@ -22,7 +22,7 @@ workflow test_somalier_relate_ped_groups {
         file("./tests/modules/somalier/relate/tumour.somalier", checkIfExists: true)]
     ]
     groups = file("./tests/modules/somalier/relate/groups.txt", checkIfExists: true)
-    ped = file("./tests/modules/somalier/relate/families.ped", checkIfExists: true)
+    ped = file("./tests/modules/somalier/relate/family.ped", checkIfExists: true)
 
     SOMALIER_RELATE (input,groups,ped)
 }
