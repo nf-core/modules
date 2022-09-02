@@ -1,8 +1,13 @@
-- name: hmmer eslalimask test_rfmask
+- name: hmmer eslalimask test_hmmer_rfmask
   command: nextflow run ./tests/modules/hmmer/eslalimask -entry test_hmmer_rfmask -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslalimask/nextflow.config
   tags:
   - hmmer
   - hmmer/eslalimask
   files:
   - path: output/rfmask/test.masked.sthlm.gz
-    md5sum: 84ee7764f0456fba24cc659b53a4f3b8
+    contains:
+      - 'GS CP025268.1:223601-225154 DE Escherichia coli'
+      - '=GC RF'
+  - path: output/rfmask/versions.yml
+    contains:
+      - 'hmmer:'
