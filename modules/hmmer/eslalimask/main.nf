@@ -27,12 +27,12 @@ process HMMER_ESLALIMASK {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fmask_rfarg  = fmask_rf  ? "--fmask-rf ${meta.id}.fmask-rf"   : ""
-    def fmask_allarg = fmask_all ? "--fmask-all ${meta.id}.fmask-all" : ""
-    def gmask_rfarg  = gmask_rf  ? "--gmask-rf ${meta.id}.gmask-rf"   : ""
-    def gmask_allarg = gmask_all ? "--gmask-all ${meta.id}.gmask-all" : ""
-    def pmask_rfarg  = pmask_rf  ? "--pmask-rf ${meta.id}.pmask-rf"   : ""
-    def pmask_allarg = pmask_all ? "--pmask-all ${meta.id}.pmask-all" : ""
+    def fmask_rfarg  = fmask_rf  ? "--fmask-rf ${prefix}.fmask-rf"   : ""
+    def fmask_allarg = fmask_all ? "--fmask-all ${prefix}.fmask-all" : ""
+    def gmask_rfarg  = gmask_rf  ? "--gmask-rf ${prefix}.gmask-rf"   : ""
+    def gmask_allarg = gmask_all ? "--gmask-all ${prefix}.gmask-all" : ""
+    def pmask_rfarg  = pmask_rf  ? "--pmask-rf ${prefix}.pmask-rf"   : ""
+    def pmask_allarg = pmask_all ? "--pmask-all ${prefix}.pmask-all" : ""
     """
     esl-alimask \\
         $args \\
@@ -46,7 +46,7 @@ process HMMER_ESLALIMASK {
         $unmaskedaln \\
         $maskfile
 
-    gzip ${meta.id}.*mask*
+    gzip ${prefix}.*mask*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
