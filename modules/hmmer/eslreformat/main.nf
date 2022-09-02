@@ -8,10 +8,10 @@ process HMMER_ESLREFORMAT {
         'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
 
     input:
-    tuple val(meta), val(format), path(alignment)
+    tuple val(meta), val(format), path(seqfile)
 
     output:
-    tuple val(meta), path("*.aln.gz"), emit: aln
+    tuple val(meta), path("*.sequences.gz"), emit: seqreformated
     path "versions.yml"              , emit: versions
 
     when:
@@ -22,18 +22,16 @@ process HMMER_ESLREFORMAT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     esl-reformat \\
-        $format \\
-        $alignment \\
         $args \\
-        -o ${prefix}.aln \\
-        -T $prefix \\
-        $bam
+        -o ${prefix}.sequences \\
+        $format \\
+        $seqfile
 
-    gzip ${prefix}.aln
+    gzip ${prefix}.sequences
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hmmer: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        hmmer/easel: \$(esl-reformat -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
     END_VERSIONS
     """
 }
