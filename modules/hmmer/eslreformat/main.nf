@@ -8,11 +8,12 @@ process HMMER_ESLREFORMAT {
         'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
 
     input:
-    tuple val(meta), val(format), path(seqfile)
+    tuple val(meta), path(seqfile)
+    val   format
 
     output:
     tuple val(meta), path("*.sequences.gz"), emit: seqreformated
-    path "versions.yml"              , emit: versions
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

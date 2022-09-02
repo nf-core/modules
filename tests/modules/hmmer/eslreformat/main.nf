@@ -2,14 +2,19 @@
 
 nextflow.enable.dsl = 2
 
+include { HMMER_HMMALIGN    } from '../../../../modules/hmmer/hmmalign/main.nf'
 include { HMMER_ESLREFORMAT } from '../../../../modules/hmmer/eslreformat/main.nf'
 
-workflow test_hmmer_eslreformat {
+workflow test_hmmer_eslreformat_afa {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test' ], // meta map
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz')      // Change to params.test_data syntax after the data is included in tests/config/test_data.config
     ]
 
-    HMMER_ESLREFORMAT ( input )
+    hmm   = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz')
+
+    HMMER_HMMALIGN ( input, hmm )
+
+    HMMER_ESLREFORMAT ( HMMER_HMMALIGN.out.sthlm, 'afa' )
 }
