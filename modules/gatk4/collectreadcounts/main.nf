@@ -38,7 +38,7 @@ process GATK4_COLLECTREADCOUNTS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" CollectReadCounts \\
-        --input $bam \\
+        --input $input \\
         --intervals $intervals \\
         --output ${prefix}.$extension \\
         $reference \\
