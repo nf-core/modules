@@ -27,12 +27,10 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram}"
+      description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
   - bai:
       type: file
-      description: BAM index file
-      pattern: "*.{bam.bai,cram.crai}"
+      description: index file of the input data, e.g., bam.bai, cram.crai
   - fasta:
       type: file
       description: The reference fasta file

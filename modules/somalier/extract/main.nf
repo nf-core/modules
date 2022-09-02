@@ -30,7 +30,7 @@ process SOMALIER_EXTRACT {
     somalier extract ${args} -d ${prefix}.somalier.extract \
     --sites ${sites} \
     -f ${ref} \
-    ${bam}
+    ${bam} ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
