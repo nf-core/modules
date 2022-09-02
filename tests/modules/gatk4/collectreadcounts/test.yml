@@ -1,16 +1,16 @@
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_hdf5
   command: nextflow run ./tests/modules/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_hdf5 -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/collectreadcounts/nextflow.config
   tags:
-    - gatk4
     - gatk4/collectreadcounts
+    - gatk4
   files:
     - path: output/crc/test.hdf5
 
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_tsv
   command: nextflow run ./tests/modules/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_tsv -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/collectreadcounts/nextflow.config
   tags:
-    - gatk4
     - gatk4/collectreadcounts
+    - gatk4
   files:
     - path: output/crc/test.tsv
       md5sum: cc83da7a7d9135fa17cbd80437a74702
@@ -18,15 +18,15 @@
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_fasta
   command: nextflow run ./tests/modules/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_fasta -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/collectreadcounts/nextflow.config
   tags:
-    - gatk4
     - gatk4/collectreadcounts
+    - gatk4
   files:
     - path: output/crc/test.hdf5
 
 - name: gatk4 collectreadcounts test_gatk4_collectreadcounts_cram
   command: nextflow run ./tests/modules/gatk4/collectreadcounts -entry test_gatk4_collectreadcounts_cram -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/collectreadcounts/nextflow.config
   tags:
-    - gatk4
     - gatk4/collectreadcounts
+    - gatk4
   files:
     - path: output/crc/test.hdf5
