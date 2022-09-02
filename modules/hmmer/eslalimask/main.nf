@@ -46,7 +46,7 @@ process HMMER_ESLALIMASK {
         $unmaskedaln \\
         $maskfile
 
-    gzip ${meta.id}.*
+    gzip ${meta.id}.*mask*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
