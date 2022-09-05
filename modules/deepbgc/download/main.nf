@@ -22,7 +22,7 @@ process DEEPBGC_DOWNLOAD {
     export DEEPBGC_DOWNLOADS_DIR='./deepbgc_db'
 
     deepbgc \\
-        download \\
+        download
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
