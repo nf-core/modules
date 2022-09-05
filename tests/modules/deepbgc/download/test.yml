@@ -1,0 +1,14 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml deepbgc/download
+- name: "deepbgc download"
+  command: nextflow run ./tests/modules/deepbgc/download -entry test_deepbgc_download -c ./tests/config/nextflow.config -c ./tests/modules/deepbgc/download/nextflow.config
+  tags:
+    - "deepbgc"
+    #
+    - "deepbgc/download"
+    #
+  files:
+    - path: "output/deepbgc/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/deepbgc/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
