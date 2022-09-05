@@ -17,7 +17,7 @@ process DEEPBGC_DOWNLOAD {
     script:
     def args = task.ext.args ?: ''
 
-    //To specify a downloads directory different to the default: set DEEPBGC_DOWNLOADS_DIR env variable
+    
     """
     export DEEPBGC_DOWNLOADS_DIR='./deepbgc_db'
 
