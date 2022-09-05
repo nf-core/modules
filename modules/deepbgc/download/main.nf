@@ -7,9 +7,6 @@ process DEEPBGC_DOWNLOAD {
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
         'quay.io/biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
 
-    //input:
-    //path db_folder
-
     output:
     path "deepbgc_db"             , emit: db
     path "versions.yml"           , emit: versions
