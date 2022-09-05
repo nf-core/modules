@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMALIGN    } from '../../../../modules/hmmer/hmmalign/main.nf'
-include { HMMER_ESLREFORMAT } from '../../../../modules/hmmer/eslreformat/main.nf'
+include { HMMER_HMMALIGN        } from '../../../../modules/hmmer/hmmalign/main.nf'
+include { HMMER_ESLREFORMAT_AFA } from '../../../../modules/hmmer/eslreformat/main.nf'
 
 workflow test_hmmer_eslreformat_afa {
     
@@ -16,5 +16,5 @@ workflow test_hmmer_eslreformat_afa {
 
     HMMER_HMMALIGN ( input, hmm )
 
-    HMMER_ESLREFORMAT ( HMMER_HMMALIGN.out.sthlm, 'afa' )
+    HMMER_ESLREFORMAT_AFA ( HMMER_HMMALIGN.out.sthlm )
 }

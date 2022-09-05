@@ -9,7 +9,6 @@ process HMMER_ESLREFORMAT {
 
     input:
     tuple val(meta), path(seqfile)
-    val   format
 
     output:
     tuple val(meta), path("*.sequences.gz"), emit: seqreformated
@@ -25,7 +24,6 @@ process HMMER_ESLREFORMAT {
     esl-reformat \\
         $args \\
         -o ${prefix}.sequences \\
-        $format \\
         $seqfile
 
     gzip ${prefix}.sequences
