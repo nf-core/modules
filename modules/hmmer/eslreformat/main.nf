@@ -22,8 +22,8 @@ process HMMER_ESLREFORMAT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     esl-reformat \\
-        $args \\
         -o ${prefix}.sequences \\
+        $args \\
         $seqfile
 
     gzip ${prefix}.sequences
