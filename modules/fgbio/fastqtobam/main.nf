@@ -11,7 +11,7 @@ process FGBIO_FASTQTOBAM {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.bam") , emit: bam, optional: true
+    tuple val(meta), path("*.bam") , emit: bam , optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
     path "versions.yml"            , emit: versions
 
@@ -23,9 +23,7 @@ process FGBIO_FASTQTOBAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_name = args.contains("--sample") ? "" : "--sample ${prefix}"
     def library_name = args.contains("--library") ? "" : "--library ${prefix}"
-    def output =    prefix.endsWith(".bam") ? ${prefix} :
-                    prefix.endsWith(".cram")? ${prefix} :
-                    "${prefix}.bam"
+    def output = prefix =~ /\.(bam|cram)$/ ? prefix : "${prefix}.bam"
     """
 
     fgbio \\
