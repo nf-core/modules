@@ -10,10 +10,11 @@ workflow test_delly_call_bam {
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
                 ]
 
+    exclude_regions = []
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
 
-    DELLY_CALL ( input, fasta, fai )
+    DELLY_CALL ( input, exclude_regions, fasta, fai )
 }
 
 workflow test_delly_call_cram {
@@ -22,8 +23,22 @@ workflow test_delly_call_cram {
                     file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
                 ]
 
+    exclude_regions = []
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
 
-    DELLY_CALL ( input, fasta, fai )
+    DELLY_CALL ( input, exclude_regions, fasta, fai )
+}
+
+workflow test_delly_call_exclude_regions {
+    input     = [ [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                ]
+
+    exclude_regions = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    DELLY_CALL ( input, exclude_regions, fasta, fai )
 }
