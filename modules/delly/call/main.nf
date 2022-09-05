@@ -8,8 +8,7 @@ process DELLY_CALL {
         'quay.io/biocontainers/delly:1.1.3--h358d541_0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
-    path exclude_bed
+    tuple val(meta), path(input), path(input_index), path(exclude_bed)
     path fasta
     path fai
 
