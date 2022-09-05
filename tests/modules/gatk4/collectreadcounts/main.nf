@@ -2,8 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTREADCOUNTS as CRC_HDF5 } from '../../../../modules/gatk4/collectreadcounts/main.nf'
-include { GATK4_COLLECTREADCOUNTS as CRC_TSV } from '../../../../modules/gatk4/collectreadcounts/main.nf'
+include { GATK4_COLLECTREADCOUNTS } from '../../../../modules/gatk4/collectreadcounts/main.nf'
 
 workflow test_gatk4_collectreadcounts_hdf5 {
     
@@ -18,7 +17,7 @@ workflow test_gatk4_collectreadcounts_hdf5 {
     fai = []
     dict = []
 
-    CRC_HDF5 ( input, fasta, fai, dict )
+    GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_collectreadcounts_tsv {
@@ -34,7 +33,7 @@ workflow test_gatk4_collectreadcounts_tsv {
     fai = []
     dict = []
 
-    CRC_TSV ( input, fasta, fai, dict )
+    GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }
 
 workflow test_gatk4_collectreadcounts_cram {
@@ -50,6 +49,6 @@ workflow test_gatk4_collectreadcounts_cram {
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
 
-    CRC_TSV ( input, fasta, fai, dict )
+    GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
 }
 
