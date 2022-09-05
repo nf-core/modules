@@ -11,7 +11,6 @@
     - path: output/msisensor2/test_dis
       md5sum: 236e814ddeb95e21a17b48250f92250d
     - path: output/msisensor2/test_somatic
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
 
 - name: msisensor2 msi test_msisensor2_msi_tumor_normal
   command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumor_normal -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
@@ -26,7 +25,6 @@
     - path: output/msisensor2/test_dis
       md5sum: d47b22c13092707ed64645f118e82cc1
     - path: output/msisensor2/test_somatic
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
 
 - name: msisensor2 msi test_msisensor2_msi_tumor_only_ml
   command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumor_only_ml -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
@@ -39,4 +37,3 @@
     - path: output/msisensor2/test_dis
       md5sum: 85205504ea8652ebdee46ac07ee1a8f6
     - path: output/msisensor2/test_somatic
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
