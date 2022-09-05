@@ -21,16 +21,26 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
-      description: BAM file from alignment must be sorted, indexed, and duplicate marked
-      pattern: "*.{bam}"
+      description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate marked
+      pattern: "*.{bam,cram}"
+  - bai:
+      type: file
+      description: Index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - exclude_bed:
+      type: file
+      description: A bed file containing regions to exclude from the called VCF
+      pattern: "*.bed"
   - fasta:
       type: file
       description: The reference fasta file
+      pattern: "*.{fasta,fa}"
   - fai:
       type: file
       description: Index of reference fasta file to identify split-reads
+      pattern: "*.fai"
 
 output:
   - meta:
@@ -44,7 +54,7 @@ output:
       pattern: "versions.yml"
   - bcf:
       type: file
-      description: BCF format
+      description: Called variants in BCF format
       pattern: "*.{bcf}"
   - csi:
     type: file
@@ -53,3 +63,4 @@ output:
 
 authors:
   - "@projectoriented"
+  - "@nvnieuwk"
