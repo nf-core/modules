@@ -22,7 +22,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    
+
     def reference = fasta ? "wget https://raw.githubusercontent.com/samtools/samtools/master/misc/seq_cache_populate.pl && perl seq_cache_populate.pl -root ./md5_ref ${fasta} && export REF_PATH=`pwd`/md5_ref/%2s/%2s/%s" : ""
     """
     ${reference}
