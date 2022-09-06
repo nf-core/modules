@@ -8,7 +8,7 @@ process DELLY_CALL {
         'quay.io/biocontainers/delly:1.1.3--h358d541_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index), path(exclude_bed)
     path fasta
     path fai
 
@@ -23,13 +23,15 @@ process DELLY_CALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
     """
     delly \\
         call \\
-        $args \\
-        -o ${prefix}.bcf \\
-        -g  $fasta \\
-        $bam \\
+        ${args} \\
+        --outfile ${prefix}.bcf \\
+        --genome ${fasta} \\
+        ${exclude} \\
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
