@@ -13,10 +13,12 @@ process GATK4_MARKDUPLICATES {
     path  fasta_fai
 
     output:
-    tuple val(meta), path("${prefix}"), emit: output
-    tuple val(meta), path("*.bai")    , emit: index
+    tuple val(meta), path("*cram"),     emit: cram,  optional: true
+    tuple val(meta), path("*bam"),      emit: bam,   optional: true
+    tuple val(meta), path("*.crai"),    emit: crai,  optional: true
+    tuple val(meta), path("*.bai"),     emit: bai,   optional: true
     tuple val(meta), path("*.metrics"), emit: metrics
-    path "versions.yml"               , emit: versions
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,6 +43,11 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         ${reference} \\
         $args
+
+    if [ ${prefix} == *cram]
+    then
+        mv ${prefix}.bai ${prefix}.crai
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
