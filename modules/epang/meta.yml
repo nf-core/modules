@@ -1,51 +1,59 @@
 name: "epang"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: phylogenetic placement of query sequences in a reference tree
 keywords:
-  - sort
+  - phylogeny
+  - phylogenetic placement
+  - sequences
 tools:
   - "epang":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Massively parallel phylogenetic placement of genetic sequences"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/Pbdas/epa-ng"
+      documentation: "https://github.com/Pbdas/epa-ng/wiki/Full-Stack-Example"
+      tool_dev_url: "https://github.com/Pbdas/epa-ng"
+      doi: "https://doi.org/10.1093/sysbio/syy054"
       licence: "['GNU Affero General Public License v3.0']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test' ]
+  - queryaln:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: aligned query sequences in any supported format including phylip and fasta, may be gzipped
+      pattern: "*"
+  - referencealn:
+      type: file
+      description: reference alignment in any supported format including phylip and fasta, may be gzipped
+      pattern: "*"
+  - referencetree:
+      type: file
+      description: newick file containing the reference tree in which query sequences will be placed
+      pattern: "*"
+  - model:
+      type: string
+      description: newick file containing the reference tree in which query sequences will be placed
+      pattern: "*"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - jplace:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: file with placement information
+      pattern: "*.jplace"
+  - log:
+      type: file
+      description: log file from placement
+      pattern: "*.log"
 
 authors:
   - "@erikrikarddaniel"

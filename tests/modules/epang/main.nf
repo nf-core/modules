@@ -7,8 +7,11 @@ include { EPANG } from '../../../modules/epang/main.nf'
 workflow test_epang {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        [ id:'test' ], // meta map
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/query.alnfaa.gz', checkIfExists: true),
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.alnfaa.gz', checkIfExists: true),
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true),
+        'LG'
     ]
 
     EPANG ( input )
