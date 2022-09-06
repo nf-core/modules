@@ -24,7 +24,7 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     """
     combine_kreports.py \\
         -r ${kreports} \\
-        -o ${prefix}.txt \\
+        -o ${prefix} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
