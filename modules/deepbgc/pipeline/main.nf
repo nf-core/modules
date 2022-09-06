@@ -9,7 +9,7 @@ process DEEPBGC_PIPELINE {
 
     input:
     tuple val(meta), path(genome)
-    path deepgbc_db
+    path(db)
 
     output:
     tuple val(meta), path("${genome.baseName}/README.txt")                                   ,   optional: true, emit: readme
@@ -32,7 +32,7 @@ process DEEPBGC_PIPELINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export DEEPBGC_DOWNLOADS_DIR="${deepbgc_db}"
+    export DEEPBGC_DOWNLOADS_DIR=${db}
 
     deepbgc \\
         pipeline \\

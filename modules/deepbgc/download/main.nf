@@ -8,7 +8,7 @@ process DEEPBGC_DOWNLOAD {
         'quay.io/biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
 
     output:
-    path "./deepbgc_db"             , emit: db
+    path "deepbgc_db/"             , emit: db
     path "versions.yml"           , emit: versions
 
     when:
