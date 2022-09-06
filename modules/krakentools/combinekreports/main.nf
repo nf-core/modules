@@ -20,7 +20,6 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "kreports_combined.txt"
     def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     combine_kreports.py \\
         -r ${kreports} \\
