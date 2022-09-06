@@ -1,0 +1,8 @@
+- name: krakentools combinekreports test_krakentools_combinekreports
+  command: nextflow run ./tests/modules/krakentools/combinekreports -entry test_krakentools_combinekreports -c ./tests/config/nextflow.config  -c ./tests/modules/krakentools/combinekreports/nextflow.config
+  tags:
+    - krakentools/combinekreports
+    - krakentools
+  files:
+    - path: output/krakentools/kreports_combined.txt.txt
+      md5sum: e958e7ff52b8cadf749682a47a9c59c7
