@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml epang
+- name: "epang"
+  command: nextflow run ./tests/modules/epang -entry test_epang -c ./tests/config/nextflow.config -c ./tests/modules/epang/nextflow.config
+  tags:
+    - "epang"
+    #
+  files:
+    - path: "output/epang/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/epang/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
