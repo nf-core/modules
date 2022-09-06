@@ -1,38 +1,37 @@
 - name: gatk4 markduplicates test_gatk4_markduplicates
   command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
-    - gatk4/markduplicates
     - gatk4
+    - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
       md5sum: 4ac375b5288501c832bc3e4773f06d39
     - path: output/gatk4/test.bam
       md5sum: c1a0d25c5f65514e72aa490326557a88
     - path: output/gatk4/test.bam.metrics
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
   command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
-    - gatk4/markduplicates
     - gatk4
+    - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
       md5sum: 832fbc6b3c3266d024fc7131ffd1b45d
     - path: output/gatk4/test.bam
       md5sum: 36909e80bde1aa547fae6382fd35764d
     - path: output/gatk4/test.bam.metrics
-      contains: "testN   0       2820    2 "
+      contains: "[ testN   0       2820 ]"
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output
   command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
-    - gatk4/markduplicates
     - gatk4
+    - gatk4/markduplicates
   files:
     - path: output/gatk4/test.cram
       md5sum: 623850aa543b01964d522d6e151a6729
-    - path: output/gatk4/test.crai
+    - path: output/gatk4/test.cram.crai
       md5sum: 53a329f0828210e317ad81b0e6ca4bc5
     - path: output/gatk4/test.cram.metrics
-      contains: "testN   0       2820    2"
+      contains: "[ testN   0       2820 ]"

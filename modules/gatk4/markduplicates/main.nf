@@ -44,8 +44,8 @@ process GATK4_MARKDUPLICATES {
         ${reference} \\
         $args
 
-    if [ ${prefix} == *cram]
-    then
+
+    if  [[ ${prefix} == *.cram ]]; then
         mv ${prefix}.bai ${prefix}.crai
     fi
 

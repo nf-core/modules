@@ -26,6 +26,14 @@ input:
       type: file
       description: Sorted BAM file
       pattern: "*.{bam}"
+  - fasta:
+      type: file
+      description: Fasta file
+      pattern: "*.{fasta}"
+  - fasta_fai:
+      type: file
+      description: Fasta index file
+      pattern: "*.{fai}"
 
 output:
   - meta:
