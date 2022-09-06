@@ -1,4 +1,4 @@
-name: "epang"
+name: "epang_place"
 description: phylogenetic placement of query sequences in a reference tree
 keywords:
   - phylogeny
@@ -33,7 +33,7 @@ input:
       pattern: "*"
   - model:
       type: string
-      description: newick file containing the reference tree in which query sequences will be placed
+      description: string specifying the phylogenetic model to be used
       pattern: "*"
 
 output:

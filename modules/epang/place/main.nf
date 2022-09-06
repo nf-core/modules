@@ -1,4 +1,4 @@
-process EPANG {
+process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
 
@@ -34,7 +34,7 @@ process EPANG {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        epang: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
     END_VERSIONS
     """
 }

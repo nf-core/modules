@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { EPANG } from '../../../modules/epang/main.nf'
+include { EPANG_PLACE } from '../../../../modules/epang/place/main.nf'
 
-workflow test_epang {
+workflow test_epang_place {
     
     input = [
         [ id:'test' ], // meta map
@@ -14,5 +14,5 @@ workflow test_epang {
         'LG'
     ]
 
-    EPANG ( input )
+    EPANG_PLACE ( input )
 }
