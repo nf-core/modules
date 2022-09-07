@@ -18,7 +18,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test' ]
+        e.g. [ id:'test', model:'LG' ]
   - queryaln:
       type: file
       description: aligned query sequences in any supported format including phylip and fasta, may be gzipped
@@ -30,10 +30,6 @@ input:
   - referencetree:
       type: file
       description: newick file containing the reference tree in which query sequences will be placed
-      pattern: "*"
-  - model:
-      type: string
-      description: string specifying the phylogenetic model to be used
       pattern: "*"
 
 output:
