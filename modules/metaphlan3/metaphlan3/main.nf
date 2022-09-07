@@ -28,15 +28,18 @@ process METAPHLAN3 {
     def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
 
     """
+    BT2_DB=`find -L "${metaphlan_db}" -name "*rev.1.bt2" -exec dirname {} \\;`
+
     metaphlan \\
         --nproc $task.cpus \\
         $input_type \\
         $input_data \\
         $args \\
         $bowtie2_out \\
-        --bowtie2db ${metaphlan_db} \\
+        --bowtie2db \$BT2_DB \\
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
