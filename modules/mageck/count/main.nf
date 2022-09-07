@@ -1,7 +1,7 @@
 
 process MAGECK_COUNT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
 
     conda (params.enable_conda ? "bioconda::mageck=0.5.9" : null)
@@ -10,12 +10,12 @@ process MAGECK_COUNT {
         'quay.io/biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
 
     input:
-    tuple val(meta), file(reads)
+    tuple val(meta), path(inptfile)
     path(library)
     val(name)
 
     output:
-    tuple val(meta), path("*.count.txt"), emit: count
+    tuple val(meta), path("*count*.txt"), emit: count
     path "versions.yml"           , emit: versions
     path("*.count_normalized.txt"), emit: norm
 
@@ -25,7 +25,10 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def input_file = ("$inptfile".endsWith(".fastq.gz")) ? "--fastq ${inptfile}" :
+        ("$inptfile".endsWith(".txt")) ? "-k ${inptfile}" : ("$inptfile".endsWith(".csv")) ? "-k ${inptfile}" :
+        ("$inptfile".endsWith(".tsv")) ? "-k ${inptfile}"  : ''
+    def sample_label = ("$inptfile".endsWith(".fastq.gz")) ? "--sample-label ${meta.id}" : ''
     """
 
     mageck \\
@@ -33,8 +36,8 @@ process MAGECK_COUNT {
         $args \\
         -l $library \\
         -n $name \\
-        --sample-label ${meta.id} \\
-        --fastq $reads \\
+        $sample_label \\
+        $input_file \\
 
 
     cat <<-END_VERSIONS > versions.yml
