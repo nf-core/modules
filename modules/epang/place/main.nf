@@ -24,6 +24,7 @@ process EPANG_PLACE {
     """
     epa-ng \\
         $args \\
+        --threads $task.cpus \\
         --query $queryaln \\
         --ref-msa $referencealn \\
         --tree $referencetree \\
