@@ -1,6 +1,6 @@
 process PBPTYPER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::pbptyper=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,6 +9,7 @@ process PBPTYPER {
 
     input:
     tuple val(meta), path(fasta)
+    path(db)
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
@@ -20,9 +21,11 @@ process PBPTYPER {
 
     script:
     def args = task.ext.args ?: ''
+    def db_args = db ? '--db ${db}' : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     pbptyper \\
+        $db_args \\
         $args \\
         --prefix $prefix \\
         --assembly $fasta
