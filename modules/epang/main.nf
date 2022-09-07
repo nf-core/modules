@@ -13,9 +13,10 @@ process EPANG {
     path referencetree
 
     output:
-    tuple val(meta), path("*.epa_result.jplace"), emit: jplace
-    path "*.epa_info.log"                       , emit: log
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("./."), emit: epang   , optional: true
+    path "*.epa_result.jplace"  , emit: jplace  , optional: true
+    path "*.epa_info.log"       , emit: log
+    path "versions.yml"         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
