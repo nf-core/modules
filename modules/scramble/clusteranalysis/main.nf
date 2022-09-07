@@ -28,6 +28,8 @@ process SCRAMBLE_CLUSTERANALYSIS {
 
     def blastdb = args.contains("--eval-dels") ? "makeblastdb -in ${fasta} -parse_seqids -title ${fasta} -dbtype nucl -out ${fasta}" : ""
     def reference = fasta ? "--ref `pwd`/${fasta}" : ""
+
+    // The default file for the MEI reference is a file that's inside the container
     def mei_reference = mei_ref ? "`pwd`/${mei_ref}" : "/usr/local/share/scramble/resources/MEI_consensus_seqs.fa"
 
     def blastdb_version = args.contains("--eval-dels") ? "makeblastdb: \$(echo \$(makeblastdb -version 2>&1) | head -n 1 | sed 's/^makeblastdb: //; s/+ Package.*\$//')" : ""
