@@ -10,8 +10,8 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     path input
 
     output:
-    path "*.txt", emit: txt
-    path "versions.yml"           , emit: versions
+    path "*.txt"       , emit: txt
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
