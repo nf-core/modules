@@ -22,16 +22,20 @@ process EPANG {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def queryarg   = queryaln        ? "--query $queryaln"       : ""
+    def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
+    def reftreearg = referencetree   ? "--tree $referencetree"   : ""
+    def modelarg   = meta.model      ? "--model $meta.model"     : ""
     """
     epa-ng \\
         $args \\
         --threads $task.cpus \\
-        --query $queryaln \\
-        --ref-msa $referencealn \\
-        --tree $referencetree \\
-        --model $meta.model
+        $queryarg \\
+        $refalnarg \\
+        $reftreearg \\
+        $modelarg
 
     mv epa_result.jplace ${prefix}.epa_result.jplace
     mv epa_info.log ${prefix}.epa_info.log
