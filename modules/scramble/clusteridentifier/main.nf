@@ -23,11 +23,11 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    // The tool does not contain a way to specify the reference file when using CRAM files. 
+    // The tool does not contain a way to specify the reference file when using CRAM files.
     // It just looks in the header of the CRAM file where the reference file is located,
-    // but that reference can't always be fetched since most test data is created on 
-    // another machine. I had to find another way to specify the reference and I 
-    // found that I could create an md5 cache of a specified fasta and supply it to 
+    // but that reference can't always be fetched since most test data is created on
+    // another machine. I had to find another way to specify the reference and I
+    // found that I could create an md5 cache of a specified fasta and supply it to
     // the REF_PATH environment variable. This way the tool uses the correct reference.
     // An issue has been made about this: https://github.com/GeneDx/scramble/issues/27
     // The reference code is a placeholder until this issue has been fixed.
