@@ -31,6 +31,18 @@ input:
       type: file
       description: newick file containing the reference tree in which query sequences will be placed
       pattern: "*"
+  - bfastfile:
+      type: file
+      description: file argument to the --bfast parameter
+      pattern: "*"
+  - splitfile:
+      type: file
+      description: file argument to the --split parameter
+      pattern: "*"
+  - binaryfile:
+      type: file
+      description: file argument to the --binary parameter
+      pattern: "*"
 
 output:
   - meta:

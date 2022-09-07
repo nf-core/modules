@@ -14,6 +14,9 @@ workflow test_epang {
     EPANG ( 
         input,
         file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.alnfaa.gz', checkIfExists: true),
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true),
+        [],
+        [],
+        []
     )
 }

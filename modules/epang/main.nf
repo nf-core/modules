@@ -11,6 +11,9 @@ process EPANG {
     tuple val(meta), path(queryaln)
     path referencealn
     path referencetree
+    path bfastfile
+    path splitfile
+    path binaryfile
 
     output:
     tuple val(meta), path("./."), emit: epang   , optional: true
@@ -28,6 +31,9 @@ process EPANG {
     def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
     def reftreearg = referencetree   ? "--tree $referencetree"   : ""
     def modelarg   = meta.model      ? "--model $meta.model"     : ""
+    def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
+    def splitarg   = splitfile       ? "--split $splitfile"      : ""
+    def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
     """
     epa-ng \\
         $args \\
@@ -35,10 +41,13 @@ process EPANG {
         $queryarg \\
         $refalnarg \\
         $reftreearg \\
+        $bfastarg \\
+        $splitarg \\
+        $binaryarg \\
         $modelarg
 
-    mv epa_result.jplace ${prefix}.epa_result.jplace
-    mv epa_info.log ${prefix}.epa_info.log
+    [ -e epa_result.jplace ] && mv epa_result.jplace ${prefix}.epa_result.jplace
+    [ -e epa_info.log ]      && mv epa_info.log      ${prefix}.epa_info.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
