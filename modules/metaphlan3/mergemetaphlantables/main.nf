@@ -1,5 +1,5 @@
 process METAPHLAN3_MERGEMETAPHLANTABLES {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::metaphlan=3.0.12' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
