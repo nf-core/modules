@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { EPANG_PLACE } from '../../../../modules/epang/place/main.nf'
+include { EPANG } from '../../../modules/epang/main.nf'
 
-workflow test_epang_place {
+workflow test_epang {
     
     input = [
         [ id:'test', model:'LG' ], // meta map
@@ -13,5 +13,5 @@ workflow test_epang_place {
         file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true)
     ]
 
-    EPANG_PLACE ( input )
+    EPANG ( input )
 }

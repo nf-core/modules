@@ -1,4 +1,4 @@
-process EPANG_PLACE {
+process EPANG {
     tag "$meta.id"
     label 'process_high'
 

@@ -1,8 +1,7 @@
-- name: epang_place test_epang_place
-  command: nextflow run ./tests/modules/epang/place -entry test_epang_place -c ./tests/config/nextflow.config  -c ./tests/modules/epang/place/nextflow.config
+- name: epang test_epang
+  command: nextflow run ./tests/modules/epang -entry test_epang -c ./tests/config/nextflow.config  -c ./tests/modules/epang/nextflow.config
   tags:
     - epang
-    - epang/place
   files:
     - path: output/epang/test.epa_info.log
       contains:
