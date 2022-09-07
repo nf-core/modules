@@ -26,7 +26,9 @@ input:
       pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
   - metaphlan_db:
       type: file
-      description: Optional directory containing pre-downloaded and uncompressed MetaPhlAn3 database
+      description: |
+        Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
+        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
       pattern: "*/"
 
 output:

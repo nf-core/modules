@@ -17,6 +17,16 @@ workflow test_metaphlan3_single_end {
     METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
 }
 
+workflow test_metaphlan3_single_end_nodb {
+
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+
+    UNTAR ( db )
+    METAPHLAN3 ( input, [] )
+}
+
 workflow test_metaphlan3_paired_end {
 
     input = [ [ id:'test', single_end:false ], // meta map
