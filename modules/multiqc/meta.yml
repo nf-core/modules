@@ -22,6 +22,10 @@ input:
       type: file
       description: Optional config yml for MultiQC
       pattern: "*.{yml,yaml}"
+  - multiqc_logo:
+      type: file
+      description: Optional logo file for MultiQC
+      pattern: "*.{png}"
 
 output:
   - report:
