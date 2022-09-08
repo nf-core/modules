@@ -27,7 +27,7 @@ process SVTK_STANDARDIZE {
 
     def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def contigs = fasta_fai ? "--contigs ${fasta_fai}" : ""    
+    def contigs = fasta_fai ? "--contigs ${fasta_fai}" : ""
 
     """
     svtk standardize \\
