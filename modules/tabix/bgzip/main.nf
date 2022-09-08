@@ -12,6 +12,7 @@ process TABIX_BGZIP {
 
     output:
     tuple val(meta), path("${prefix}*"), emit: output
+    tuple val(meta), path("index/*gzi"), emit: gzi, optional: true
     path  "versions.yml"               , emit: versions
 
     when:
@@ -23,8 +24,10 @@ process TABIX_BGZIP {
     in_bgzip = input.toString().endsWith(".gz")
     command1 = in_bgzip ? '-d' : '-c'
     command2 = in_bgzip ? ''   : " > ${prefix}.${input.getExtension()}.gz"
+    gzi_args = args.matches("(^| )-i\\b") ? "-I index/${prefix}.${input.getExtension()}.gz.gzi" : ''
     """
-    bgzip $command1 $args -@${task.cpus} $input $command2
+    mkdir -p index
+    bgzip $command1 $args $gzi_args -@${task.cpus} $input $command2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
