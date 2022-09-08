@@ -1,14 +1,12 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml gappa/examinegraft
-- name: "gappa examinegraft"
-  command: nextflow run ./tests/modules/gappa/examinegraft -entry test_gappa_examinegraft -c ./tests/config/nextflow.config -c ./tests/modules/gappa/examinegraft/nextflow.config
+- name: gappa examinegraft test_gappa_examinegraft
+  command: nextflow run ./tests/modules/gappa/examinegraft -entry test_gappa_examinegraft -c ./tests/config/nextflow.config  -c ./tests/modules/gappa/examinegraft/nextflow.config
   tags:
-    - "gappa"
-    #
-    - "gappa/examinegraft"
-    #
+  - gappa
+  - gappa/examinegraft
   files:
-    - path: "output/gappa/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/gappa/test.epa_result.newick
+      md5sum: 97e54b6a9576a78b774fd63a050e5474
+  files:
     - path: output/gappa/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      contains: 
+        - "0.8.0"
