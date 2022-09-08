@@ -24,6 +24,12 @@ input:
       type: file
       description: Metaphlan 3.0 can classify the metagenome from a variety of input data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced SAM files (produced from alignments to the MetaPHlAn marker database) and intermediate bowtie2 alignment files (bowtie2out)
       pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
+  - metaphlan_db:
+      type: file
+      description: |
+        Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
+        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
+      pattern: "*/"
 
 output:
   - meta:
