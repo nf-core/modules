@@ -1,22 +1,19 @@
-- name: "haplogrep2 classify"
+- name: haplogrep2 classify
   command: nextflow run ./tests/modules/haplogrep2/classify -entry test_haplogrep2_classify -c ./tests/config/nextflow.config -c ./tests/modules/haplogrep2/classify/nextflow.config
   tags:
-    - "haplogrep2"
-    #
-    - "haplogrep2/classify"
-    #
-  files:
-    - path: "output/haplogrep2/test.txt"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/haplogrep2/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - haplogrep2
+    - haplogrep2/classify
 
-- name: "haplogrep2 classify stubs"
+  files:
+    - path: output/haplogrep2/test.txt
+    - path: output/haplogrep2/versions.yml
+
+- name: haplogrep2 classify stubs
   command: nextflow run ./tests/modules/haplogrep2/classify -entry test_haplogrep2_classify_stubs -c ./tests/config/nextflow.config -c ./tests/modules/haplogrep2/classify/nextflow.config -stub-run
   tags:
-    - "haplogrep2"
-    #
-    - "haplogrep2/classify"
-    #
+    - haplogrep2
+    - haplogrep2/classify
+
   files:
-    - path: "output/haplogrep2/test.txt"
+    - path: output/haplogrep2/test.txt
+    - path: output/haplogrep2/versions.yml
