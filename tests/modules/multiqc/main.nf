@@ -13,7 +13,7 @@ workflow test_multiqc {
     ]
 
     FASTQC  ( input )
-    MULTIQC ( FASTQC.out.zip.collect { it[1] }, [[],[]] )
+    MULTIQC ( FASTQC.out.zip.collect { it[1] }, [],[] )
 }
 
 workflow test_multiqc_fn_collision {
@@ -29,5 +29,17 @@ workflow test_multiqc_fn_collision {
     FASTQC2  ( fqc_input )
     mqc_input = mqc_input.mix(FASTQC2.out.zip.collect { it[1] })
 
-    MULTIQC ( mqc_input, [[],[]] )
+    MULTIQC ( mqc_input, [],[] )
+}
+
+workflow test_multiqc_config {
+    fqc_input = [
+        [ id: 'test', single_end: false ],
+        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
+    ]
+    mqc_config = file("https://github.com/nf-core/tools/raw/dev/nf_core/pipeline-template/assets/multiqc_config.yml", checkIfExists: true)
+    mqc_input = Channel.empty()
+
+    FASTQC  ( input )
+    MULTIQC ( FASTQC.out.zip.collect { it[1] }, mqc_config,[] )
 }
