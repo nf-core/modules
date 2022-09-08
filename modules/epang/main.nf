@@ -30,7 +30,6 @@ process EPANG {
     def queryarg   = queryaln        ? "--query $queryaln"       : ""
     def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
     def reftreearg = referencetree   ? "--tree $referencetree"   : ""
-    def modelarg   = meta.model      ? "--model $meta.model"     : ""
     def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
     def splitarg   = splitfile       ? "--split $splitfile"      : ""
     def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
@@ -44,8 +43,7 @@ process EPANG {
         $reftreearg \\
         $bfastarg \\
         $splitarg \\
-        $binaryarg \\
-        $modelarg
+        $binaryarg
 
     [ -e epa_result.jplace ] && mv epa_result.jplace ${prefix}.epa_result.jplace
     [ -e epa_info.log ]      && mv epa_info.log      ${prefix}.epa_info.log
