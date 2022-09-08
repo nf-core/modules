@@ -8,7 +8,7 @@ workflow test_gappa_examinegraft {
     
     input = [
         [ id:'test' ], // meta map
-        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
     ]
 
     GAPPA_EXAMINEGRAFT ( input )
