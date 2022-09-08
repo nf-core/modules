@@ -9,7 +9,6 @@ process MULTIQC {
     input:
     path  multiqc_files, stageAs: "?/*"
     path(multiqc_config)
-    path(multiqc_logo)
 
     output:
     path "*multiqc_report.html", emit: report
