@@ -50,10 +50,9 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  - epang:
+      type: directory
+      description: directory in which EPA-NG was run
   - jplace:
       type: file
       description: file with placement information
@@ -62,6 +61,10 @@ output:
       type: file
       description: log file from placement
       pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@erikrikarddaniel"
