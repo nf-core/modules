@@ -34,6 +34,7 @@ process EPANG {
     def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
     def splitarg   = splitfile       ? "--split $splitfile"      : ""
     def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
+    if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
     """
     epa-ng \\
         $args \\
