@@ -33,9 +33,8 @@ process FASTP {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
-        cat ${prefix}.fastq.gz \\
-        | fastp \\
-            --stdin \\
+
+        fastp \\
             --stdout \\
             --in1 ${prefix}.fastq.gz \\
             --thread $task.cpus \\
@@ -45,6 +44,7 @@ process FASTP {
             $args \\
             2> ${prefix}.fastp.log \\
         | gzip -c > ${prefix}.fastp.fastq.gz
+
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
