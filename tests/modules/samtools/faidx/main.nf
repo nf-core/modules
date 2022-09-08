@@ -11,3 +11,11 @@ workflow test_samtools_faidx {
 
     SAMTOOLS_FAIDX ( input )
 }
+
+workflow test_samtools_faidx_bgzip {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+              file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
+
+    SAMTOOLS_FAIDX ( input )
+}
