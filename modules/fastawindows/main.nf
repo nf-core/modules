@@ -30,7 +30,7 @@ process FASTAWINDOWS {
     fasta_windows \\
         $args \\
         --fasta $fasta \\
-        --output ${prefix}_fw
+        --output ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
