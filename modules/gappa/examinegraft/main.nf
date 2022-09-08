@@ -26,7 +26,7 @@ process GAPPA_EXAMINEGRAFT {
         graft \\
         $args \\
         --threads $task.cpus \\
-        --file-prefix $prefix \\
+        --file-prefix ${prefix}. \\
         --jplace-path $jplace
 
     cat <<-END_VERSIONS > versions.yml
