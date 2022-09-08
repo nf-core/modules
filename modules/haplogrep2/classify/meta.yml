@@ -1,11 +1,9 @@
 name: "haplogrep2_classify"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - sort
 tools:
   - "haplogrep2":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A tool for mtDNA haplogroup classification."
       homepage: "https://github.com/seppinho/haplogrep-cmd"
       documentation: "https://github.com/seppinho/haplogrep-cmd"
@@ -13,9 +11,7 @@ tools:
       doi: ""
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -30,14 +26,7 @@ input:
   - format:
       type: stringformat of file either vcf fasta or hsd
 
-#  - outpath:
-#      type: string
-#      description: Please provide an output filename
-
-
-
 output:
-
   - meta:
       type: map
       description: |

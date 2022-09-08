@@ -10,7 +10,18 @@ workflow test_haplogrep2_classify {
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_mito_vcf'], checkIfExists: true)
     ]
-    format = ["vcf"]
+    format = 'vcf'
 
-    HAPLOGREP2_CLASSIFY ( input, format )
+    HAPLOGREP2_CLASSIFY ( input,format )
+}
+
+workflow test_haplogrep2_classify_stubs {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_mito_vcf'], checkIfExists: true)
+    ]
+    format = 'vcf'
+
+    HAPLOGREP2_CLASSIFY ( input,format )
 }
