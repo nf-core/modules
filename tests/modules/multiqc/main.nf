@@ -33,7 +33,7 @@ workflow test_multiqc_fn_collision {
 }
 
 workflow test_multiqc_config {
-    fqc_input = [
+    input = [
         [ id: 'test', single_end: false ],
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
     ]
