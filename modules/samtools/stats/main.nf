@@ -1,6 +1,6 @@
 process SAMTOOLS_STATS {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,7 +8,7 @@ process SAMTOOLS_STATS {
         'quay.io/biocontainers/samtools:1.15.1--h1170115_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     path fasta
 
     output:
@@ -25,9 +25,9 @@ process SAMTOOLS_STATS {
     """
     samtools \\
         stats \\
-        --threads ${task.cpus-1} \\
+        --threads ${task.cpus} \\
         ${reference} \\
-        ${bam} \\
+        ${input} \\
         > ${prefix}.stats
 
     cat <<-END_VERSIONS > versions.yml

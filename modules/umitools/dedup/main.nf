@@ -29,7 +29,7 @@ process UMITOOLS_DEDUP {
 
     if (!(args ==~ /.*--random-seed.*/)) {args += " --random-seed=100"}
     """
-    umi_tools \\
+    PYTHONHASHSEED=0 umi_tools \\
         dedup \\
         -I $bam \\
         -S ${prefix}.bam \\
