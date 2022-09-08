@@ -34,7 +34,7 @@ process HAPLOGREP2_CLASSIFY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        haplogrep2: \$(echo \$(haplogrep --version 2>&1) | sed 's/^.*haplogrep //; s/Using.*\$//' ))
+        haplogrep2: \$(echo \$(haplogrep --version 2>&1) | sed 's/^.*Classifiction //; s/Classifiction.*\$//' ))
     END_VERSIONS
     """
 }
