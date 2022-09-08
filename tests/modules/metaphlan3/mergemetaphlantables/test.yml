@@ -1,0 +1,8 @@
+- name: metaphlan3 mergemetaphlantables test_metaphlan3_mergemetaphlantables
+  command: nextflow run ./tests/modules/metaphlan3/mergemetaphlantables -entry test_metaphlan3_mergemetaphlantables -c ./tests/config/nextflow.config  -c ./tests/modules/metaphlan3/mergemetaphlantables/nextflow.config
+  tags:
+    - metaphlan3
+    - metaphlan3/mergemetaphlantables
+  files:
+    - path: output/metaphlan3/merged_abundance_table.txt
+      contains: ["clade_name	NCBI_tax_id	"]
