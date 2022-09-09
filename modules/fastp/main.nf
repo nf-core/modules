@@ -29,7 +29,7 @@ process FASTP {
     // Added soft-links to original fastqs for consistent naming in MultiQC
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Use single ended for interleaved. Add --interleaved_in in config.
-    if (meta.single_end) {
+    if ( task.ext.args?.contains('--interleaved_in') ) {
         def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
@@ -50,8 +50,29 @@ process FASTP {
             fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
         END_VERSIONS
         """
+    } else if (meta.single_end) {
+        def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
+        """
+        [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
+
+        fastp \\
+            --stdout \\
+            --in1 ${prefix}.fastq.gz \\
+            --out1  ${prefix}.fastp.fastq.gz \\
+            --thread $task.cpus \\
+            --json ${prefix}.fastp.json \\
+            --html ${prefix}.fastp.html \\
+            $fail_fastq \\
+            $args \\
+            2> ${prefix}.fastp.log
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
+        END_VERSIONS
+        """
     } else {
-        def fail_fastq  = save_trimmed_fail ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
+        def fail_fastq_pe  = save_trimmed_fail ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
         def merge_fastq = save_merged ? "-m --merged_out ${prefix}.merged.fastq.gz" : ''
         """
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -sf ${reads[0]} ${prefix}_1.fastq.gz
@@ -63,7 +84,7 @@ process FASTP {
             --out2 ${prefix}_2.fastp.fastq.gz \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
-            $fail_fastq \\
+            $fail_fastq_pe \\
             $merge_fastq \\
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
