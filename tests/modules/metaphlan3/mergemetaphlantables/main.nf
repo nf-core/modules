@@ -17,6 +17,6 @@ workflow test_metaphlan3_mergemetaphlantables {
 
     UNTAR ( db )
     METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
-    METAPHLAN3_MERGEMETAPHLANTABLES ( METAPHLAN3.out.profile.map{ [[id:"test"], it[1]] } )
+    METAPHLAN3_MERGEMETAPHLANTABLES ( METAPHLAN3.out.profile.map{ [[id:"test"], it[1]] }.groupTuple() )
 
 }
