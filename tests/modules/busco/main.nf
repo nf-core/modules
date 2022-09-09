@@ -15,7 +15,7 @@ workflow test_busco_genome_single_fasta {
         input,
         ['bacteria_odb10', 'bacteroidetes_odb10'],  // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
@@ -63,84 +63,6 @@ workflow test_busco_genome_single_fasta {
     │       └── busco.log
     ├── test-bacteroidetes_odb10-busco.batch_summary.txt -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/test-bacteroidetes_odb10-busco.batch_summary.txt
     └── versions.yml -> /tmp/tmpza_0dth3/6a/e95a0cd21785ce33d63b8f73a68a51/versions.yml
-
-    Former Output tree -w 'auto':
-    /tmp/tmp846crjv2/busco/
-    ├── short_summary.generic.bacteria_odb10.genome.fna.json -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.generic.bacteria_odb10.genome.fna.json
-    ├── short_summary.generic.bacteria_odb10.genome.fna.txt -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.generic.bacteria_odb10.genome.fna.txt
-    ├── short_summary.specific.bacteria_odb10.genome.fna.json -> /tmp/tmpi6af66j1/45/107812e983a8e695c380ebc215e7d9/short_summary.specific.bacteria_odb10.genome.fna.json
-    ├── short_summary.specific.bacteria_odb10.genome.fna.txt -> /tmp/tmpi6af66j1/45/107812e983a8e695c380ebc215e7d9/short_summary.specific.bacteria_odb10.genome.fna.txt
-    ├── short_summary.specific.bacteroidales_odb10.genome.fna.json -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.specific.bacteroidales_odb10.genome.fna.json
-    ├── short_summary.specific.bacteroidales_odb10.genome.fna.txt -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/short_summary.specific.bacteroidales_odb10.genome.fna.txt
-    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.json -> /tmp/tmpi6af66j1/a2/eb4a34894f3ac5554759ad6c9f652b/short_summary.specific.bacteroidetes_odb10.genome.fna.json
-    ├── short_summary.specific.bacteroidetes_odb10.genome.fna.txt -> /tmp/tmpi6af66j1/a2/eb4a34894f3ac5554759ad6c9f652b/short_summary.specific.bacteroidetes_odb10.genome.fna.txt
-    ├── test-auto-busco -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/test-auto-busco/
-    │   ├── genome.fna/
-    │   │   ├── auto_lineage/
-    │   │   │   ├── run_archaea_odb10/
-    │   │   │   ├── run_bacteria_odb10/
-    │   │   │   └── run_eukaryota_odb10/
-    │   │   ├── logs/
-    │   │   │   ├── hmmsearch_err.log
-    │   │   │   ├── hmmsearch_out.log
-    │   │   │   ├── metaeuk_err.log
-    │   │   │   ├── metaeuk_out.log
-    │   │   │   ├── prodigal_err.log
-    │   │   │   ├── prodigal_out.log
-    │   │   │   ├── sepp_err.log
-    │   │   │   └── sepp_out.log
-    │   │   ├── prodigal_output/
-    │   │   │   └── predicted_genes/
-    │   │   ├── run_bacteria_odb10 -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/test-auto-busco/genome.fna/auto_lineage/run_bacteria_odb10/  [recursive, not followed]
-    │   │   └── run_bacteroidales_odb10/
-    │   │       ├── busco_sequences/
-    │   │       ├── full_table.tsv
-    │   │       ├── hmmer_output/
-    │   │       ├── missing_busco_list.tsv
-    │   │       ├── short_summary.json
-    │   │       └── short_summary.txt
-    │   └── logs/
-    │       └── busco.log
-    ├── test-auto-busco.batch_summary.txt -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/test-auto-busco.batch_summary.txt
-    ├── test-bacteria_odb10-busco -> /tmp/tmpi6af66j1/45/107812e983a8e695c380ebc215e7d9/test-bacteria_odb10-busco/
-    │   ├── genome.fna/
-    │   │   ├── logs/
-    │   │   │   ├── hmmsearch_err.log
-    │   │   │   ├── hmmsearch_out.log
-    │   │   │   ├── prodigal_err.log
-    │   │   │   └── prodigal_out.log
-    │   │   ├── prodigal_output/
-    │   │   │   └── predicted_genes/
-    │   │   └── run_bacteria_odb10/
-    │   │       ├── busco_sequences/
-    │   │       ├── full_table.tsv
-    │   │       ├── hmmer_output/
-    │   │       ├── missing_busco_list.tsv
-    │   │       ├── short_summary.json
-    │   │       └── short_summary.txt
-    │   └── logs/
-    │       └── busco.log
-    ├── test-bacteria_odb10-busco.batch_summary.txt -> /tmp/tmpi6af66j1/45/107812e983a8e695c380ebc215e7d9/test-bacteria_odb10-busco.batch_summary.txt
-    ├── test-bacteroidetes_odb10-busco -> /tmp/tmpi6af66j1/a2/eb4a34894f3ac5554759ad6c9f652b/test-bacteroidetes_odb10-busco/
-    │   ├── genome.fna/
-    │   │   ├── logs/
-    │   │   │   ├── hmmsearch_err.log
-    │   │   │   ├── hmmsearch_out.log
-    │   │   │   ├── prodigal_err.log
-    │   │   │   └── prodigal_out.log
-    │   │   ├── prodigal_output/
-    │   │   │   └── predicted_genes/
-    │   │   └── run_bacteroidetes_odb10/
-    │   │       ├── busco_sequences/
-    │   │       ├── full_table.tsv
-    │   │       ├── hmmer_output/
-    │   │       ├── missing_busco_list.tsv
-    │   │       ├── short_summary.json
-    │   │       └── short_summary.txt
-    │   └── logs/
-    │       └── busco.log
-    ├── test-bacteroidetes_odb10-busco.batch_summary.txt -> /tmp/tmpi6af66j1/a2/eb4a34894f3ac5554759ad6c9f652b/test-bacteroidetes_odb10-busco.batch_summary.txt
-    └── versions.yml -> /tmp/tmpi6af66j1/18/8be22ecd7a71471ff5082bd512972b/versions.yml
     */
 
 }
@@ -159,7 +81,7 @@ workflow test_busco_genome_multi_fasta {
         input,
         'bacteria_odb10',
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
@@ -218,7 +140,7 @@ workflow test_busco_eukaryote_metaeuk {
         input,
         'eukaryota_odb10',
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
@@ -259,7 +181,7 @@ workflow test_busco_eukaryote_augustus {
         input,
         'eukaryota_odb10',
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
@@ -303,7 +225,7 @@ workflow test_busco_protein {
         input,
         'bacteria_odb10',
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
@@ -339,7 +261,7 @@ workflow test_busco_transcriptome {
         input,
         'bacteria_odb10',
         [], // Download busco lineage
-        [], // No config
+        [] // No config
     )
 
     /* Output tree:
