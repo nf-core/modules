@@ -45,8 +45,11 @@ process EPANG {
         $splitarg \\
         $binaryarg
 
-    [ -e epa_result.jplace ] && mv epa_result.jplace ${prefix}.epa_result.jplace
-    [ -e epa_info.log ]      && mv epa_info.log      ${prefix}.epa_info.log
+    if [ -e epa_result.jplace ]; then
+        gzip epa_result.jplace
+        cp epa_result.jplace.gz ${prefix}.epa_result.jplace.gz
+    fi
+    [ -e epa_info.log ]      && cp epa_info.log ${prefix}.epa_info.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
