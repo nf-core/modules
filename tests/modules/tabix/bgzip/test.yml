@@ -6,7 +6,7 @@
   files:
     - path: ./output/tabix/test.vcf.gz
       md5sum: fc178eb342a91dc0d1d568601ad8f8e2
-    - path: ./output/tabix/index/test.vcf.gz.gzi
+    - path: ./output/tabix/test.vcf.gz.gzi
       should_exist: false
 - name: tabix bgzip compress gzi
   command: nextflow run ./tests/modules/tabix/bgzip -entry test_tabix_bgzip_compress_gzi -c ./tests/config/nextflow.config -c ./tests/modules/tabix/bgzip/nextflow.config
@@ -16,7 +16,7 @@
   files:
     - path: ./output/tabix/test.vcf.gz
       md5sum: fc178eb342a91dc0d1d568601ad8f8e2
-    - path: ./output/tabix/index/test.vcf.gz.gzi
+    - path: ./output/tabix/test.vcf.gz.gzi
       md5sum: 7dea362b3fac8e00956a4952a3d4f474
 - name: tabix bgzip decompress
   command: nextflow run ./tests/modules/tabix/bgzip -entry test_tabix_bgzip_decompress -c ./tests/config/nextflow.config -c ./tests/modules/tabix/bgzip/nextflow.config
