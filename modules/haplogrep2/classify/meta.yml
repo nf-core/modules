@@ -1,7 +1,7 @@
 name: "haplogrep2_classify"
-description: write your description here
+description: classification into haplogroups
 keywords:
-  - sort
+  - haplogroups.
 tools:
   - "haplogrep2":
       description: "A tool for mtDNA haplogroup classification."
@@ -20,7 +20,7 @@ input:
 
   - inputfile:
       type: file
-      description: input format of your data, valid options are hsd, vcf, or fasta files
+      description: valid options are hsd, vcf, or fasta files
       pattern: "*.{vcf,vcf.gz,fasta,hsd}"
 
   - format:
