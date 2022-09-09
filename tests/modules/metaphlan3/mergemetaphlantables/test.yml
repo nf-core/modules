@@ -1,8 +1,38 @@
 - name: metaphlan3 mergemetaphlantables test_metaphlan3_mergemetaphlantables
   command: nextflow run ./tests/modules/metaphlan3/mergemetaphlantables -entry test_metaphlan3_mergemetaphlantables -c ./tests/config/nextflow.config  -c ./tests/modules/metaphlan3/mergemetaphlantables/nextflow.config
   tags:
-    - metaphlan3
-    - metaphlan3/mergemetaphlantables
+  - metaphlan3/mergemetaphlantables
+  - metaphlan3
   files:
-    - path: output/metaphlan3/merged_abundance_table.txt
-      contains: ["clade_name	NCBI_tax_id	"]
+  - path: output/metaphlan3/test.biom
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/metaphlan3/test.bowtie2out.txt
+    md5sum: ef46a9c6a8ce9cae26fbfd5527116fd5
+  - path: output/metaphlan3/test.txt
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/metaphlan3/test2.biom
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/metaphlan3/test2.bowtie2out.txt
+    md5sum: ef46a9c6a8ce9cae26fbfd5527116fd5
+  - path: output/metaphlan3/test2_profile.txt
+    md5sum: aefb167bcb043b71b8d74aedbe2a2b43
+  - path: output/metaphlan3/test_profile.txt
+    md5sum: 2e81c6a817d16fe81c172bb74e21c054
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_latest
+    md5sum: b1337362f607000384563a56a6ff4790
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.1.bt2
+    md5sum: d52a98fe273742ade7c744b819a7c5c1
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.2.bt2
+    md5sum: b14cc7faf3a4fae792160c917aebfe03
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.3.bt2
+    md5sum: 1bca5df879f2c6fad0c54984d0651bfb
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.4.bt2
+    md5sum: 249ee1c672d52d50cee41cb94b6adc42
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.fasta
+    md5sum: d3efe201c9eb449e877ead36656abf5f
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.pkl
+    md5sum: b208bb15eaef50d91cc7d5e35a1518ee
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.rev.1.bt2
+    md5sum: ed05be063280e8629193e52903b07591
+  - path: output/untar/metaphlan_database/metaphlan_database/mpa_v30_CHOCOPhlAn_201901.rev.2.bt2
+    md5sum: 1ca16b905abf657b88ca2bc12e7ad404
