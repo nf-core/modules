@@ -1,12 +1,12 @@
 - name: angsd docounts test_angsd_docounts
   command: nextflow run ./tests/modules/angsd/docounts -entry test_angsd_docounts -c ./tests/config/nextflow.config  -c ./tests/modules/angsd/docounts/nextflow.config
   tags:
-  - angsd/docounts
-  - angsd
+    - angsd/docounts
+    - angsd
   files:
-  - path: output/angsd/test.counts.gz
-    md5sum: c1d296252105cce5f4a891985d98f3db
-  - path: output/angsd/test.icnts.gz
-    md5sum: de524782a29d647d4a358fb98756665b
-  - path: output/angsd/test.pos.gz
-    md5sum: 2ac40e7f6bf7e5735c8267b892b99368
+    - path: output/angsd/test.counts.gz
+      md5sum: c1d296252105cce5f4a891985d98f3db
+    - path: output/angsd/test.icnts.gz
+      md5sum: de524782a29d647d4a358fb98756665b
+    - path: output/angsd/test.pos.gz
+      md5sum: 2ac40e7f6bf7e5735c8267b892b99368
