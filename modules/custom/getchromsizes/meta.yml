@@ -14,12 +14,22 @@ tools:
       licence: ["MIT"]
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: FASTA file
       pattern: "*.{fasta}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - sizes:
       type: file
       description: File containing chromosome lengths
