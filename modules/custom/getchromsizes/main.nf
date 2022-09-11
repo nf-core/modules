@@ -13,6 +13,7 @@ process CUSTOM_GETCHROMSIZES {
     output:
     tuple val(meta), path ("*.sizes"), emit: sizes
     tuple val(meta), path ("*.fai")  , emit: fai
+    tuple val(meta), path ("*.gzi")  , emit: gzi, optional: true
     path  "versions.yml"             , emit: versions
 
     when:
