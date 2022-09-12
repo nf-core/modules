@@ -33,6 +33,10 @@ output:
       type: file
       description: FASTA index file
       pattern: "*.{fai}"
+  - gzi:
+      type: file
+      description: Optional gzip index file for compressed inputs
+      pattern: "*.gzi"
   - versions:
       type: file
       description: File containing software versions

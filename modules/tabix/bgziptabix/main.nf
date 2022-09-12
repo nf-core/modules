@@ -1,6 +1,6 @@
 process TABIX_BGZIPTABIX {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -22,8 +22,8 @@ process TABIX_BGZIPTABIX {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    bgzip  --threads ${task.cpus} -c $args $input > ${prefix}.gz
-    tabix $args2 ${prefix}.gz
+    bgzip  --threads ${task.cpus} -c $args $input > ${prefix}.${input.getExtension()}.gz
+    tabix $args2 ${prefix}.${input.getExtension()}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

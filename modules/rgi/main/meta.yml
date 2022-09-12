@@ -42,6 +42,12 @@ output:
       type: file
       description: Tab-delimited file with RGI results
       pattern: "*.{txt}"
-
+  - tool_version:
+      type: string
+      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+  - db_version:
+      type: string
+      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
 authors:
   - "@rpetit3"
+  - "@jfy133"

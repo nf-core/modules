@@ -1,6 +1,6 @@
 process ISOSEQ3_REFINE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

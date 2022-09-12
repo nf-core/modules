@@ -24,6 +24,12 @@ input:
       description: |
         The vcf file to be normalized
         e.g. 'file1.vcf'
+      pattern: "*.{vcf,vcf.gz}"
+  - tbi:
+      type: file
+      description: |
+        An optional index of the VCF file (for when the VCF is compressed)
+      pattern: "*.vcf.gz.tbi"
   - fasta:
       type: file
       description: FASTA reference file
@@ -37,7 +43,7 @@ output:
   - vcf:
       type: file
       description: VCF normalized output file
-      pattern: "*.{vcf.gz}"
+      pattern: "*.vcf.gz"
   - versions:
       type: file
       description: File containing software versions

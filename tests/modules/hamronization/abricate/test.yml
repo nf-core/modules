@@ -1,0 +1,8 @@
+- name: hamronization abricate test_hamronization_abricate
+  command: nextflow run ./tests/modules/hamronization/abricate -entry test_hamronization_abricate -c ./tests/config/nextflow.config  -c ./tests/modules/hamronization/abricate/nextflow.config
+  tags:
+    - hamronization/abricate
+    - hamronization
+  files:
+    - path: output/hamronization/test.tsv
+      md5sum: 1c774f024872da954126d0ff77b77ea7
