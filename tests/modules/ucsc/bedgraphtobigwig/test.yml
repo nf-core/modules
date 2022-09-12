@@ -1,6 +1,7 @@
 - name: ucsc bedgraphtobigwig
   command: nextflow run ./tests/modules/ucsc/bedgraphtobigwig -entry test_ucsc_bedgraphtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/ucsc/bedgraphtobigwig/nextflow.config
   tags:
+    - ucsc
     - ucsc/bedgraphtobigwig
   files:
     - path: output/ucsc/test.bigWig
