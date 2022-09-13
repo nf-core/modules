@@ -27,14 +27,16 @@ process MOTUS_MERGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
-    def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
+    def output = biom_format ? "-B" : ""
+    def suffix = biom_format ? ".biom" : ".txt"
     """
     motus \\
         merge \\
         -db $db \\
         ${cmd_input} \\
         $args \\
-        ${output}
+        $biom \\
+        -o ${prefix}.${suffix}
 
     ## Take version from the mOTUs/profile module output, as cannot reconstruct
     ## version without having database staged in this directory.
