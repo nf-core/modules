@@ -22,7 +22,7 @@ process EIDO_VALIDATE {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "validation"
     """
-    eido validate $args --st-index sample $samplesheet -s $schema -e > validation.log
+    eido validate $args $samplesheet -s $schema -e > ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
