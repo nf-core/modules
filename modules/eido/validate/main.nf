@@ -12,7 +12,7 @@ process EIDO_VALIDATE {
     path schema
 
     output:
-    path "versions.yml"           , emit: versions
+    path "versions.yml"  , emit: versions
     path "*.log"         , emit: log
 
     when:
