@@ -1,0 +1,41 @@
+name: "hmmer_unalign"
+description: removes gap characters from an alignment file and outputs a fasta file
+keywords:
+  - sort
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: None
+      doi: "http://dx.doi.org/10.1371/journal.pcbi.1002195"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - alignment:
+      type: file
+      description: Aligned sequences
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Unaligned sequences in fasta format
+      pattern: "*.fa.gz"
+
+authors:
+  - "@erikrikarddaniel"
