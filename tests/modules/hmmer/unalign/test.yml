@@ -1,10 +1,10 @@
 - name: hmmer unalign test_hmmer_unalign
   command: nextflow run ./tests/modules/hmmer/unalign -entry test_hmmer_unalign -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/unalign/nextflow.config
   tags:
-  - hmmer/unalign
-  - hmmer
+    - hmmer/unalign
+    - hmmer
   files:
-  - path: output/hmmer/test.fa.gz
-    md5sum: 05c03658eb3199da38fa6aae80347526
-  - path: output/hmmer/versions.yml
-    md5sum: e7545e3e885212b68ef5df622eaefed5
+    - path: output/hmmer/test.fa.gz
+      md5sum: 05c03658eb3199da38fa6aae80347526
+    - path: output/hmmer/versions.yml
+      md5sum: e7545e3e885212b68ef5df622eaefed5
