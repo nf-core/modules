@@ -12,7 +12,7 @@ process EIDO_CONVERT {
 
     output:
     path "versions.yml"           , emit: versions
-    path "*.csv"                  , emit: samplesheet_validated
+    path "*.csv"                  , emit: samplesheet_converted
 
     when:
     task.ext.when == null || task.ext.when
