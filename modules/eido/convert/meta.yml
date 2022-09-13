@@ -19,16 +19,18 @@ input:
       type: file
       description: Nextflow samplesheet or PEP project
       pattern: "*.{yaml,yml,csv}"
+  - format:
+      type: value
+      description: Extension of an output file
 
 output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - samplesheet_converted:
       type: file
       description: PEP project or samplesheet converted to csv file
-      pattern: "*.csv"
 
 authors:
   - "@rafalstepien"

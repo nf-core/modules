@@ -9,21 +9,25 @@ process EIDO_CONVERT {
 
     input:
     path samplesheet
+    val format
 
     output:
     path "versions.yml"           , emit: versions
-    path "*.csv"                  , emit: samplesheet_converted
+    path "${prefix}.${format}"    , emit: samplesheet_converted
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "samplesheet_converted"
     """
     eido \\
         convert \\
+        -f $format \\
         $samplesheet \\
-        $args
+        $args \\
+        -p samples=${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
