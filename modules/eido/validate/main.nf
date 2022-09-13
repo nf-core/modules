@@ -22,17 +22,11 @@ process EIDO_VALIDATE {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "validation"
     """
-    if [[ $samplesheet = "https://" || $samplesheet = "http://" ]]; then
-        SAMPLESHEET_PATH=$samplesheet
-    else
-        SAMPLESHEET_PATH=\$(readlink -f $samplesheet)
-    fi
-
-    eido validate $args --st-index sample \$SAMPLESHEET_PATH -s $schema -e > conversion.out
+    eido validate $args --st-index sample $samplesheet -s $schema -e > validation.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//'' ))
+        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//' ))
     END_VERSIONS
     """
 }

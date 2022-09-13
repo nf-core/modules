@@ -14,7 +14,7 @@ workflow test_eido_validate_on_nextflow_samplesheet {
 
 workflow test_eido_validate_on_pep_config {
 
-    samplesheet = file("https://github.com/nf-core/test-datasets/blob/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
+    samplesheet = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
     schema = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
 
     EIDO_VALIDATE ( samplesheet, schema )
