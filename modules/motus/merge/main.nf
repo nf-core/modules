@@ -1,6 +1,7 @@
 VERSION = '3.0.1'
 
 process MOTUS_MERGE {
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
@@ -9,13 +10,13 @@ process MOTUS_MERGE {
         'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
 
     input:
-    path input
+    tuple val(meta), path(input)
     path db // to stop docker saying it can't find it... would have to have the module in upstream steps anyway
     path profile_version_yml, stageAs: 'profile_version.yml'
     val biom_format
 
     output:
-    path("*.txt") , optional: true, emit: txt
+    tuple val(meta), path("*.txt") , optional: true, emit: txt
     path("*.biom"), optional: true, emit: biom
     path "versions.yml" , emit: versions
 
@@ -24,7 +25,7 @@ process MOTUS_MERGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = 'motus_merged'
+    prefix = task.ext.prefix ?: "${meta.id}"
     def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
     def output = biom_format ? "-B -o ${prefix}.biom" : "-o ${prefix}.txt"
     """
