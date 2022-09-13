@@ -29,10 +29,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - conversion:
+  - log:
       type: file
-      description: File containing conversion log.
-      pattern: "conversion.out"
+      description: File containing validation log.
+      pattern: "*.log"
 
 authors:
   - "@rafalstepien"

@@ -1,8 +1,8 @@
 process EIDO_VALIDATE {
     tag '$samplesheet'
-    label 'process_low'
+    label 'process_single'
 
-    conda (params.enable_conda ? "conda-forge::eido=0.1.8" : null)
+    conda (params.enable_conda ? "conda-forge::eido=0.1.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
         'biocontainers/eido:0.1.9_cv1' }"
@@ -13,13 +13,14 @@ process EIDO_VALIDATE {
 
     output:
     path "versions.yml"           , emit: versions
-    path "conversion.out"         , emit: conversion
+    path "*.log"         , emit: log
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "validation"
     """
     if [[ $samplesheet = "https://" || $samplesheet = "http://" ]]; then
         SAMPLESHEET_PATH=$samplesheet
@@ -31,7 +32,7 @@ process EIDO_VALIDATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //' ))
+        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//'' ))
     END_VERSIONS
     """
 }
