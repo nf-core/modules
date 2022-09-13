@@ -12,11 +12,21 @@ tools:
       documentation: https://github.com/lh3/minimap2#uguide
       licence: ["MIT"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: |
         Reference database in FASTA format.
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - mmi:
       type: file
       description: Minimap2 fasta index.
