@@ -8,7 +8,7 @@ fasta       = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta']
 
 fasta_fai   = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
 
-sites       = file(params.sites, checkIfExists: true)
+sites       = file("https://github.com/nf-core/test-datasets/blob/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz", checkIfExists: true)
 
 
 workflow test_somalier_extract {
