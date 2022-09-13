@@ -20,7 +20,10 @@ process EIDO_CONVERT {
     script:
     def args = task.ext.args ?: ''
     """
-    eido convert $samplesheet $args
+    eido \\
+        convert \\
+        $samplesheet \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
