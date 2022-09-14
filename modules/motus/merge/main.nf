@@ -13,11 +13,10 @@ process MOTUS_MERGE {
     tuple val(meta), path(input)
     path db // to stop docker saying it can't find it... would have to have the module in upstream steps anyway
     path profile_version_yml, stageAs: 'profile_version.yml'
-    val biom_format
 
     output:
-    tuple val(meta), path("*.txt") , optional: true, emit: txt
-    path("*.biom"), optional: true, emit: biom
+    tuple val(meta), path("*.txt"), optional: true, emit: txt
+    tuple val(meta), path("*.biom"), optional: true, emit: biom
     path "versions.yml" , emit: versions
 
     when:
@@ -27,15 +26,13 @@ process MOTUS_MERGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
-    def output = biom_format ? "-B" : ""
-    def suffix = biom_format ? ".biom" : ".txt"
+    def suffix = task.ext.args?.contains("-B") ? "biom" : "txt"
     """
     motus \\
         merge \\
         -db $db \\
         ${cmd_input} \\
         $args \\
-        $biom \\
         -o ${prefix}.${suffix}
 
     ## Take version from the mOTUs/profile module output, as cannot reconstruct
