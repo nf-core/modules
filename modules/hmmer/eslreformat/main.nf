@@ -21,7 +21,7 @@ process HMMER_ESLREFORMAT {
     def args     = task.ext.args ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
     // Use for any postprocessing of the sequence file, e.g. removal of gap characters
-    def postproc = task.postprocessing ?: ""
+    def postproc = task.ext.postprocessing ?: ""
     """
     esl-reformat \\
         $args \\
