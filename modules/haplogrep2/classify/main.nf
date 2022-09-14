@@ -37,4 +37,16 @@ process HAPLOGREP2_CLASSIFY {
         haplogrep2: \$(echo \$(haplogrep --version 2>&1) | (sed 's/htt.*//') | (sed 's/.*v//'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        haplogrep2: \$(echo \$(haplogrep --version 2>&1) | (sed 's/htt.*//') | (sed 's/.*v//'))
+    END_VERSIONS
+    """
+
 }

@@ -14,14 +14,3 @@ workflow test_haplogrep2_classify {
 
     HAPLOGREP2_CLASSIFY ( input,format )
 }
-
-workflow test_haplogrep2_classify_stub {
-
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_mito_vcf'], checkIfExists: true)
-    ]
-    format = 'vcf'
-
-    HAPLOGREP2_CLASSIFY ( input,format )
-}
