@@ -4,8 +4,8 @@ process EIDO_VALIDATE {
 
     conda (params.enable_conda ? "conda-forge::eido=0.1.9" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
-        'biocontainers/eido:0.1.9_cv1' }"
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv2/eido_0.1.9_cv2.sif' :
+        'biocontainers/eido:0.1.9_cv2' }"
 
     input:
     path samplesheet
