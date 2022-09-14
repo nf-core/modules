@@ -25,12 +25,23 @@ process UNTAR {
     """
     mkdir output
 
-    tar \\
-        -C output --strip-components 1 \\
-        -xzvf \\
-        $args \\
-        $archive \\
-        $args2
+    ## Ensures --strip-components only applied when top level of tar contents is a directory
+    ## If just files or multiple directories, place all in output
+    if [[ $(tar -tzf testdb-kraken2.tar.gz | grep "/$ | wc -l") -eq 1 ]]; then
+        tar \\
+            -C output --strip-components 1 \\
+            -xzvf \\
+            $args \\
+            $archive \\
+            $args2
+    else
+        tar \\
+            -C output \\
+            -xzvf \\
+            $args \\
+            $archive \\
+            $args2
+    fi
 
     mv output ${untar}
 
