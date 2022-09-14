@@ -1,4 +1,3 @@
-
 process HAPLOGREP2_CLASSIFY {
     tag "$meta.id"
     label 'process_low'
@@ -22,8 +21,6 @@ process HAPLOGREP2_CLASSIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
     haplogrep \\
         classify \\

@@ -17,12 +17,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - inputfile:
       type: file
       description: valid options are hsd, vcf, or fasta files
       pattern: "*.{vcf,vcf.gz,fasta,hsd}"
-
   - format:
       type: stringformat of file either vcf fasta or hsd
 
