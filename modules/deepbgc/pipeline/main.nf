@@ -42,7 +42,7 @@ process DEEPBGC_PIPELINE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         deepbgc: \$(echo \$(deepbgc info 2>&1 /dev/null/ | grep 'version' | cut -d " " -f3) )
-        prodigal in deepbgc: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
+        prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
     END_VERSIONS
     """
 }
