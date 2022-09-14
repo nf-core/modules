@@ -2,9 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR          } from '../../../modules/untar/main.nf'
-include { SAMTOOLS_VIEW  } from '../../../modules/samtools/view/main.nf'
-include { METAPHLAN3     } from '../../../modules/metaphlan3/main.nf'
+include { UNTAR          } from '../../../../modules/untar/main.nf'
+include { METAPHLAN3     } from '../../../../modules/metaphlan3/metaphlan3/main.nf'
 
 workflow test_metaphlan3_single_end {
 
@@ -16,6 +15,16 @@ workflow test_metaphlan3_single_end {
 
     UNTAR ( db )
     METAPHLAN3 ( input, UNTAR.out.untar.map{ it[1] } )
+}
+
+workflow test_metaphlan3_single_end_nodb {
+
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+
+    UNTAR ( db )
+    METAPHLAN3 ( input, [] )
 }
 
 workflow test_metaphlan3_paired_end {

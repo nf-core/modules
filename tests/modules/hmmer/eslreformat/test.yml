@@ -1,0 +1,12 @@
+- name: hmmer eslreformat test_hmmer_eslreformat_afa
+  command: nextflow run ./tests/modules/hmmer/eslreformat -entry test_hmmer_eslreformat_afa -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslreformat/nextflow.config
+  tags:
+    - hmmer/eslreformat
+    - hmmer
+  files:
+    - path: output/hmmer/test.sequences.gz
+      contains:
+        - ">CP025268.1"
+    - path: output/hmmer/versions.yml
+      contains:
+        - "easel:"
