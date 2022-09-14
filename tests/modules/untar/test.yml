@@ -3,11 +3,11 @@
   tags:
     - untar
   files:
-    - path: output/untar/kraken2/hash.k2d
+    - path: output/untar/kraken2/kraken2/hash.k2d
       md5sum: 8b8598468f54a7087c203ad0190555d9
-    - path: output/untar/kraken2/opts.k2d
+    - path: output/untar/kraken2/kraken2/opts.k2d
       md5sum: a033d00cf6759407010b21700938f543
-    - path: output/untar/kraken2/taxo.k2d
+    - path: output/untar/kraken2/kraken2/taxo.k2d
       md5sum: 094d5891cdccf2f1468088855c214b2c
 
 - name: untar test_untar_different_output_path
@@ -15,5 +15,13 @@
   tags:
     - untar
   files:
-    - path: output/untar/flowcell/RunInfo.xml
+    - path: output/untar/flowcell/220422_M11111_0222_000000000-K9H97/RunInfo.xml
       md5sum: 03038959f4dd181c86bc97ae71fe270a
+
+- name: untar test_untar_onlyfiles
+  command: nextflow run ./tests/modules/untar -entry test_untar_onlyfiles -c ./tests/config/nextflow.config  -c ./tests/modules/untar/nextflow.config
+  tags:
+    - untar
+  files:
+    - path: output/untar/hello/hello.txt
+      md5sum: e59ff97941044f85df5297e1c302d260
