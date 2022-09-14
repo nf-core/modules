@@ -12,8 +12,8 @@ process DEEPBGC_PIPELINE {
     path(db)
 
     output:
-    tuple val(meta), path("${genome.baseName}/README.txt")                                   ,   optional: true, emit: readme
-    tuple val(meta), path("${genome.baseName}/LOG.txt")                                      ,   emit: log
+    tuple val(meta), path("${genome.baseName}/README.txt")                                 ,   optional: true, emit: readme
+    tuple val(meta), path("${genome.baseName}/LOG.txt")                                    ,   emit: log
     tuple val(meta), path("${genome.baseName}/${genome.baseName}.antismash.json")          ,   optional: true, emit: json
     tuple val(meta), path("${genome.baseName}/${genome.baseName}.bgc.gbk")                 ,   optional: true, emit: bgc_gbk
     tuple val(meta), path("${genome.baseName}/${genome.baseName}.bgc.tsv")                 ,   optional: true, emit: bgc_tsv
@@ -23,7 +23,7 @@ process DEEPBGC_PIPELINE {
     tuple val(meta), path("${genome.baseName}/evaluation/${genome.baseName}.pr.png")       ,   optional: true, emit: pr_png
     tuple val(meta), path("${genome.baseName}/evaluation/${genome.baseName}.roc.png")      ,   optional: true, emit: roc_png
     tuple val(meta), path("${genome.baseName}/evaluation/${genome.baseName}.score.png")    ,   optional: true, emit: score_png
-    path "versions.yml"                                                                        ,   emit: versions
+    path "versions.yml"                                                                    ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
