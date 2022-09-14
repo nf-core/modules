@@ -22,3 +22,13 @@ workflow test_untar_different_output_path {
 
     UNTAR ( input )
 }
+
+
+workflow test_untar_onlyfiles {
+    input = [
+        [],
+        file(params.test_data['generic']['tar']['tar_gz'], checkIfExists: true)
+    ]
+
+    UNTAR ( input )
+}
