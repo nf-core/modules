@@ -1,13 +1,13 @@
 name: "deepbgc_download"
-description: database to detect BGCs in bacterial and fungal genomes using deep learning
+description: Database download module for DeepBGC which detects BGCs in bacterial and fungal genomes using deep learning.
 keywords:
   - database
   - download
   - BGC
-  - Biosynthetic Gene Cluster
+  - biosynthetic gene cluster
   - deep learning
   - neural network
-  - random forrest
+  - random forest
   - genomes
   - bacteria
   - fungi
@@ -27,8 +27,8 @@ output:
       pattern: "versions.yml"
   - deepbgc_db:
       type: directory
-      description: contains files of reference db from 'deepbgc download'
-      pattern: "*db"
+      description: Contains reference database files
+      pattern: "deepbgc_db"
 
 authors:
   - "@louperelo"
