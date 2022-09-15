@@ -37,5 +37,4 @@ process SOMALIER_EXTRACT {
         somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
     END_VERSIONS
     """
-
 }
