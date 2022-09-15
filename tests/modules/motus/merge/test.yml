@@ -5,7 +5,8 @@
     - motus/merge
   files:
     - path: output/motus/test.txt
-      md5sum: ["consensus_taxonomy	test	test2"]
+      md5sum: 
+        - "consensus_taxonomy	test	test2"
 
 - name: motus merge test_motus_merge_biom
   command: nextflow run ./tests/modules/motus/merge -entry test_motus_merge_biom -c ./tests/config/nextflow.config  -c ./tests/modules/motus/merge/nextflow.config
@@ -14,4 +15,5 @@
     - motus/merge
   files:
     - path: output/motus/test.biom
-      contains: ["Biological Observation Matrix 1.0.0"]
+      contains: 
+        - "Biological Observation Matrix 1.0.0"
