@@ -4,8 +4,8 @@ process SOMALIER_RELATE {
 
     conda (params.enable_conda ? "bioconda::somalier=0.2.15" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-          'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
-          'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
+        'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
+        'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
     tuple val(meta), path(extract)
@@ -28,7 +28,7 @@ process SOMALIER_RELATE {
     def sample_groups_command = sample_groups ? "-g $sample_groups" : ""
     def ped_command = ped ? "-p $ped" : ""
 
-	"""
+    """
     somalier relate \
     -o ${prefix}somalier.res ${input_list} ${args} \
     ${sample_groups_command} \
@@ -39,6 +39,6 @@ process SOMALIER_RELATE {
     "${task.process}":
         somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
     END_VERSIONS
-	"""
+    """
 
 }
