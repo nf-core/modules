@@ -18,15 +18,16 @@ process HMMER_ESLREFORMAT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    // Use for any postprocessing of the sequence file, e.g. removal of gap characters
+    def postproc = task.ext.postprocessing ?: ""
     """
     esl-reformat \\
-        -o ${prefix}.sequences \\
         $args \\
-        $seqfile
-
-    gzip ${prefix}.sequences
+        $seqfile \\
+        $postproc \\
+        | gzip -c > ${prefix}.sequences.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
