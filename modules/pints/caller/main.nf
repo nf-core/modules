@@ -32,6 +32,7 @@ process PINTS_CALLER {
         --save-to . \\
         --file-prefix $prefix \\
         --thread $task.cpus \\
+        --dont-check-updates \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

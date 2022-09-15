@@ -8,5 +8,5 @@ workflow test_minimap2_index {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    MINIMAP2_INDEX ( fasta )
+    MINIMAP2_INDEX ( [ [id:'test'], fasta ] )
 }
