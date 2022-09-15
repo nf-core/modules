@@ -23,6 +23,9 @@ input:
       type: file
       description: Schema that the samplesheet will be validated against
       pattern: "*.{yaml,yml}"
+  - pep_input_base_dir:
+      type: file
+      description: A path to the directory where PEP files are stored
 
 output:
   - versions:
