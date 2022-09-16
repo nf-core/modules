@@ -25,7 +25,7 @@ process HMMER_HMMALIGN {
     hmmalign \\
         $args \\
         $hmm \\
-        $fasta | gzip -c > ${meta.id}.sthlm.gz
+        $fasta | gzip -c > ${prefix}.sthlm.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
