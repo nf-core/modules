@@ -29,9 +29,11 @@ process SOMALIER_RELATE {
     def ped_command = ped ? "-p $ped" : ""
 
     """
-    somalier relate \
-    -o ${prefix}somalier.res ${input_list} ${args} \
-    ${sample_groups_command} \
+    somalier relate \\
+    -o ${prefix}somalier.res \\
+    ${input_list} \\
+    ${args} \\
+    ${sample_groups_command} \\
     ${ped_command}
 
 
