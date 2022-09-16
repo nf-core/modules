@@ -24,7 +24,7 @@ workflow test_motus_merge {
 
     MOTUS_DOWNLOADDB ( file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py') )
     MOTUS_PROFILE ( input, MOTUS_DOWNLOADDB.out.db )
-    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first(), false )
+    MOTUS_MERGE ( MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first() )
 
 }
 
@@ -45,7 +45,7 @@ workflow test_motus_merge_biom {
 
     MOTUS_DOWNLOADDB ( file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py') )
     MOTUS_PROFILE ( input, MOTUS_DOWNLOADDB.out.db )
-    MOTUS_MERGE_BIOM ( MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first(), false )
+    MOTUS_MERGE_BIOM ( MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple(), MOTUS_DOWNLOADDB.out.db, MOTUS_PROFILE.out.versions.first() )
 
 }
 
