@@ -2,7 +2,7 @@ VERSION = '3.0.1'
 
 process MOTUS_MERGE {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
