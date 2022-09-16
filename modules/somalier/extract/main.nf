@@ -10,8 +10,7 @@ process SOMALIER_EXTRACT {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(ref)
-    path(refidx)
+    path(ref), path(refidx)
     path(sites)
 
     output:
