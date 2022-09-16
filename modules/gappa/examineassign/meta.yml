@@ -1,51 +1,52 @@
 name: "gappa_examineassign"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: assigns taxonomy to query sequences in phylogenetic placement output
 keywords:
   - sort
 tools:
   - "gappa":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Genesis Applications for Phylogenetic Placement Analysis"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/lczech/gappa"
+      documentation: "https://github.com/lczech/gappa/wiki"
+      tool_dev_url: "https://github.com/lczech/gappa"
+      doi: "https://doi.org/10.1093/bioinformatics/btaa070"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test' ]
+  - jplace:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
+      pattern: "*.{jplace,jplace.gz}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
+        e.g. [ id:'test' ]
+  - examineassign:
+      type: directory
+      description: Execution directory
+  - profile:
+      type: file
+      description: profile tsv file
+      pattern: "*profile.tsv"
+  - labelled_tree:
+      type: file
+      description: labelled tree in newick format
+      pattern: "*labelled_tree.newick"
+  - per_query:
+      type: file
+      description: per query taxonomy assignments in tsv format
+      pattern: "*per_query.tsv"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@erikrikarddaniel"
