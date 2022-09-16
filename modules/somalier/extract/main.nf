@@ -25,10 +25,11 @@ process SOMALIER_EXTRACT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    somalier extract ${args} -d ${prefix}.somalier.extract \
-    --sites ${sites} \
-    -f ${ref} \
-    ${bam} ${args}
+    somalier extract \\
+        --sites ${sites} \\
+        -f ${ref} \\
+        ${bam} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
