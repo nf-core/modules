@@ -14,8 +14,8 @@ process SOMALIER_EXTRACT {
     path(sites)
 
     output:
-    tuple val(meta), path("*.somalier"),             emit: extract
-    path "versions.yml",                                                emit: versions
+    tuple val(meta), path("*.somalier"), emit: extract
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
