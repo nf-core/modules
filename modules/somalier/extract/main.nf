@@ -10,7 +10,7 @@ process SOMALIER_EXTRACT {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(ref), path(refidx)
+    tuple path(ref), path(refidx)
     path(sites)
 
     output:
@@ -26,10 +26,10 @@ process SOMALIER_EXTRACT {
 
     """
     somalier extract \\
-        --sites ${sites} \\
-        -f ${ref} \\
-        ${bam} \\
-        ${args}
+    --sites ${sites} \\
+    -f ${ref} \\
+    ${bam} \\
+    ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -27,10 +27,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
       description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
-  - bai:
+  - input_index:
       type: file
       description: index file of the input data, e.g., bam.bai, cram.crai
   - fasta:
