@@ -19,5 +19,5 @@ workflow test_somalier_extract {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam_bai'], checkIfExists: true)
     ]
 
-    SOMALIER_EXTRACT ( input, fasta, fasta_fai, sites )
+    SOMALIER_EXTRACT ( input, [fasta, fasta_fai], sites )
 }
