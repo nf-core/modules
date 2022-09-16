@@ -8,7 +8,6 @@ process SOMALIER_EXTRACT {
         'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     path(ref)
