@@ -10,6 +10,7 @@ process EIDO_VALIDATE {
     input:
     path samplesheet
     path schema
+    path pep_input_base_dir
 
     output:
     path "versions.yml"  , emit: versions
