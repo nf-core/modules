@@ -19,7 +19,7 @@ process GAPPA_EXAMINEASSIGN {
     path "versions.yml"                           , emit: versions
 
     when:
-    taxonomy && ( task.ext.when == null || task.ext.when )
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
