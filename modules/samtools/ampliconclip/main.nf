@@ -31,6 +31,7 @@ process SAMTOOLS_AMPLICONCLIP {
     """
     samtools \\
         ampliconclip \\
+        --threads ${task.cpus-1} \\
         $args \\
         $rejects \\
         $stats \\
