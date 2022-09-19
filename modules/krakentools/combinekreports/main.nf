@@ -1,5 +1,5 @@
 process KRAKENTOOLS_COMBINEKREPORTS {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krakentools=1.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
