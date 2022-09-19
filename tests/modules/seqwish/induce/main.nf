@@ -15,7 +15,7 @@ workflow test_seqwish_induce {
 
     // test with pangenome input
     input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['pangenome']['pangenome_paf'], checkIfExists: true)],
-              [ file(params.test_data['pangenome']['pangenome_fasta'], checkIfExists: true) ]
+              [ file(params.test_data['homo_sapiens']['pangenome']['pangenome_paf'], checkIfExists: true)],
+              [ file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa'], checkIfExists: true) ]
             ]
 }
