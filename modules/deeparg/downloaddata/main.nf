@@ -1,7 +1,5 @@
-def VERSION='1.0.2'
-
 process DEEPARG_DOWNLOADDATA {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -25,6 +23,7 @@ process DEEPARG_DOWNLOADDATA {
 
     script:
     def args = task.ext.args ?: ''
+    def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     deeparg \\
         download_data \\
