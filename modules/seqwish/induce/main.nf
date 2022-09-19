@@ -25,7 +25,7 @@ process SEQWISH_INDUCE {
     """
     seqwish \\
         --threads $task.cpus \\
-        --paf-alns=$paf \\
+        --paf-alns=$input \\
         --seqs=$fasta \\
         --gfa=${prefix}.gfa \\
         $args
