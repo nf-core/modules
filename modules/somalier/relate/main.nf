@@ -13,9 +13,9 @@ process SOMALIER_RELATE {
     path(ped)
 
     output:
-    tuple val(meta), path("*somalier.res.html"),          emit: html
-    tuple val(meta), path("*somalier.res.pairs.tsv"),     emit: pairsTSV
-    tuple val(meta), path("*somalier.res.samples.tsv"),   emit: samplesTSV
+    tuple val(meta), path("*.html"),          emit: html
+    tuple val(meta), path("*.pairs.tsv"),     emit: pairs_tsv
+    tuple val(meta), path("*.samples.tsv"),   emit: samples_tsv
     path "versions.yml",                                  emit: versions
 
     when:
