@@ -31,7 +31,7 @@ process GAPPA_EXAMINEASSIGN {
         --threads $task.cpus \\
         --jplace-path $jplace \\
         --taxon-file $taxonomy \\
-        --file-prefix $prefix
+        --file-prefix ${prefix}.
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
