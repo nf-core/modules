@@ -36,7 +36,6 @@ process SOMALIER_RELATE {
     ${sample_groups_command} \\
     ${ped_command}
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
