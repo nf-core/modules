@@ -1,5 +1,5 @@
 process SOMALIER_RELATE {
-    tag "somalier_relate_all"
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::somalier=0.2.15" : null)
