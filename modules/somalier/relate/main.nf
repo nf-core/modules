@@ -30,7 +30,7 @@ process SOMALIER_RELATE {
 
     """
     somalier relate \\
-    -o ${prefix}somalier.res \\
+    -o ${prefix} \\
     ${input_list} \\
     ${args} \\
     ${sample_groups_command} \\
