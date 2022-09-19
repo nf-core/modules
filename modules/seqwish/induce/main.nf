@@ -6,7 +6,7 @@ process SEQWISH_INDUCE {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqwish:0.7.6--h5b5514e_1' :
-        'quay.io/biocontainers/seqwish: 0.7.6--h5b5514e_1' }"
+        'quay.io/biocontainers/seqwish:0.7.6--h5b5514e_1' }"
 
     input:
     tuple val(meta), path(paf), path(fasta)
