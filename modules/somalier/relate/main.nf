@@ -1,3 +1,4 @@
+
 process SOMALIER_RELATE {
     tag "$meta.id"
     label 'process_low'
@@ -16,11 +17,7 @@ process SOMALIER_RELATE {
     tuple val(meta), path("*.html"),          emit: html
     tuple val(meta), path("*.pairs.tsv"),     emit: pairs_tsv
     tuple val(meta), path("*.samples.tsv"),   emit: samples_tsv
-<<<<<<< HEAD
-    path "versions.yml",                                  emit: versions
-=======
     path "versions.yml",                      emit: versions
->>>>>>> 6c915826 (requested changes)
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,19 +31,11 @@ process SOMALIER_RELATE {
 
     """
     somalier relate \\
-<<<<<<< HEAD
-    -o ${prefix} \\
-    ${input_list} \\
-    ${args} \\
-    ${sample_groups_command} \\
-    ${ped_command}
-=======
         -o ${prefix} \\
         ${input_list} \\
         ${args} \\
         ${sample_groups_command} \\
         ${ped_command}
->>>>>>> 6c915826 (requested changes)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
