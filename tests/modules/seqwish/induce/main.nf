@@ -18,4 +18,6 @@ workflow test_seqwish_induce {
               [ file(params.test_data['homo_sapiens']['pangenome']['pangenome_paf'], checkIfExists: true)],
               [ file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa'], checkIfExists: true) ]
             ]
+
+    SEQWISH_INDUCE ( input )
 }
