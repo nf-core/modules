@@ -22,8 +22,8 @@ input:
             e.g. [ id:'test', single_end:false ]
     - paf:
         type: file
-        description: PAF file of alignments
-        pattern: "*.{paf,paf.gz}"
+        description: comma-separated PAF file(s) of alignments
+        pattern: "*.{paf,paf.gz},*.{paf,paf.gz},..."
     - fasta:
         type: file
         description: FASTA file used to generate alignments
