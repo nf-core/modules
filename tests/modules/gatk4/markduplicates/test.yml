@@ -1,23 +1,40 @@
 - name: gatk4 markduplicates test_gatk4_markduplicates
-  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
-    - gatk4/markduplicates
     - gatk4
+    - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
-      md5sum: e9c125e82553209933883b4fe2b8d7c2
+      md5sum: 4ac375b5288501c832bc3e4773f06d39
     - path: output/gatk4/test.bam
-      md5sum: f94271007c1ec8e56adfdd8e45a07bd0
-    - path: output/gatk4/test.metrics
+      md5sum: c1a0d25c5f65514e72aa490326557a88
+    - path: output/gatk4/test.bam.metrics
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
-  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
-    - gatk4/markduplicates
     - gatk4
+    - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
-      md5sum: bad71df9c876e72a5bc0a3e0fd755f92
+      md5sum: 832fbc6b3c3266d024fc7131ffd1b45d
     - path: output/gatk4/test.bam
-      md5sum: e0462bd4fe2cf4beda71e1bd2c66235b
-    - path: output/gatk4/test.metrics
+      md5sum: 36909e80bde1aa547fae6382fd35764d
+    - path: output/gatk4/test.bam.metrics
+      contains:
+        - "testN"
+        - "2820"
+
+- name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/markduplicates
+  files:
+    - path: output/gatk4/test.cram
+    - path: output/gatk4/test.cram.crai
+      md5sum: 53a329f0828210e317ad81b0e6ca4bc5
+    - path: output/gatk4/test.cram.metrics
+      contains:
+        - "testN"
+        - "2820"

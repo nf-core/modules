@@ -16,6 +16,9 @@ process EXPANSIONHUNTER {
     tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -28,6 +31,17 @@ process EXPANSIONHUNTER {
         --reference $fasta \\
         --variant-catalog $variant_catalog \\
         --sex $gender
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

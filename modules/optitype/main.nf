@@ -8,11 +8,14 @@ process OPTITYPE {
         'quay.io/biocontainers/optitype:1.3.5--0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path("${prefix}"), emit: output
     path "versions.yml"               , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args  = task.ext.args   ?: ''

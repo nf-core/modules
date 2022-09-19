@@ -1,0 +1,45 @@
+name: bcftools_annotate
+description: Add or remove annotations.
+keywords:
+  - bcftools
+  - annotate
+  - vcf
+  - remove
+  - add
+tools:
+  - annotate:
+      description: Add or remove annotations.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: https://samtools.github.io/bcftools/bcftools.html#annotate
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: files
+      description: Query VCF or BCF file, can be either uncompressed or compressed
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Compressed annotated VCF file
+      pattern: "*_annotated.vcf.gz"
+  - bcf:
+      type: file
+      description: Compressed annotated BCF file
+      pattern: "*_annotated.bcf"
+authors:
+  - "@projectoriented"

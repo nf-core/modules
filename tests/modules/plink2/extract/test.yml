@@ -1,0 +1,20 @@
+- name: plink2 extract test_plink2_extract
+  command: nextflow run tests/modules/plink2/extract -entry test_plink2_extract -c tests/config/nextflow.config
+  tags:
+    - plink2/extract
+    - plink2
+  files:
+    - path: output/plink2/test.extract.pgen
+      md5sum: 785e729a293ecabb0d39394865316bda
+    - path: output/plink2/test.extract.psam
+      md5sum: e6c714488754cb8448c3dfda08c4c0ea
+    - path: output/plink2/test.extract.pvar.zst
+      md5sum: 076767e6695e681115eabb924a447ee9
+    - path: output/plink2/test.pgen
+      md5sum: fac12ca9041d6950f6b7d60ac2120721
+    - path: output/plink2/test.psam
+      md5sum: e6c714488754cb8448c3dfda08c4c0ea
+    - path: output/plink2/test.pvar
+      md5sum: ff9e44f8e5f4035d8cf2bfe7be6755b3
+    - path: output/plink2/versions.yml
+      md5sum: c477b7c9f6e39b89710fe1a0bceee50d

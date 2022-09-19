@@ -2,21 +2,25 @@ process MALT_BUILD {
 
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::malt=0.53" : null)
+    conda (params.enable_conda ? "bioconda::malt=0.41" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.53--hdfd78af_0' :
-        'quay.io/biocontainers/malt:0.53--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
+        'quay.io/biocontainers/malt:0.41--1' }"
 
     input:
     path fastas
     val seq_type
-    path gff
-    path map_db
+    path mapping_file
+    val mapping_type
+    val mapping_db
 
     output:
     path "malt_index/"   , emit: index
     path "versions.yml"  , emit: versions
     path "malt-build.log", emit: log
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -26,19 +30,36 @@ process MALT_BUILD {
     } else {
         avail_mem = task.memory.giga
     }
-    def igff = gff ? "-igff ${gff}" : ""
+
+    def valid_db = ['eggnog', 'interpro2go', 'kegg', 'seed', 'taxonomy']
+    if ( !valid_db.contains(mapping_db) )  { error "Unrecognised mapping database value for MALT_BUILD. Options: eggnog, interpro2go, kegg, seed, taxonomy" }
+
+    switch ( "${mapping_type}" ) {
+        case "gi":
+        mapping_prefix = "-g"; break
+        case "ref":
+        if ( mapping_db == "taxonomy" ) {
+            mapping_prefix = '-a'
+        } else {
+            mapping_prefix = "-r"
+        };break
+        case "syn":
+        mapping_prefix = "-s"; break
+        default:
+        error '[MALT_BUILD] Mapping type not recognised. Options: gi, ref, syn'; break
+    }
+
+    type_flag = mapping_prefix + '2' + mapping_db + " " + mapping_file
 
     """
     malt-build \\
-        -J-Xmx${avail_mem}g \\
         -v \\
         --input ${fastas.join(' ')} \\
         -s $seq_type \\
-        $igff \\
         -d 'malt_index/' \\
         -t $task.cpus \\
         $args \\
-        -mdb ${map_db}/*.db |&tee malt-build.log
+        $type_flag |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

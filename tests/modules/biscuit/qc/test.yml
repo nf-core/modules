@@ -1,0 +1,38 @@
+- name: biscuit qc test_biscuit_qc
+  command: nextflow run tests/modules/biscuit/qc -entry test_biscuit_qc -c tests/config/nextflow.config
+  tags:
+    - biscuit/qc
+    - biscuit
+  files:
+    - path: output/biscuit/BiscuitIndex/genome.fasta
+      md5sum: 6e9fe4042a72f2345f644f239272b7e6
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.amb
+      md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.ann
+      md5sum: c32e11f6c859f166c7525a9c1d583567
+    - path: output/biscuit/BiscuitIndex/genome.fasta.bis.pac
+      md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.bwt
+      md5sum: a11bc31775f7b7a4f9cd3bc4f981661a
+    - path: output/biscuit/BiscuitIndex/genome.fasta.dau.sa
+      md5sum: 9c9e07fa1c75ef32d764274579c89b08
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.bwt
+      md5sum: 62eb83cd557a47b59589713d98024fc2
+    - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
+      md5sum: 55bcd97d7059bf73dc0d221e36e8e901
+    - path: output/biscuit/test_CpGRetentionByReadPos.txt
+      md5sum: 498b6c0af196fb34c8835371b9e9b68a
+    - path: output/biscuit/test_CpHRetentionByReadPos.txt
+      md5sum: a266942c5719cecab7f60f63cbe7335d
+    - path: output/biscuit/test_dup_report.txt
+      md5sum: 65bddf4fbe9e40d7c6c976060df53e3b
+    - path: output/biscuit/test_isize_table.txt
+      md5sum: aadf6f2e271abc334b6146cf164bdda3
+    - path: output/biscuit/test_mapq_table.txt
+      md5sum: c8adaac84bb8db3b7f48e1ed4fccad00
+    - path: output/biscuit/test_strand_table.txt
+      md5sum: 27068382ba6b2dbf313169a85c9dbb3a
+    - path: output/biscuit/test_totalReadConversionRate.txt
+      md5sum: 8f0c1fceaebfa74f2757720e3bc85fed
+    - path: output/biscuit/versions.yml
+      md5sum: a730fa4888e6882cf1b8ba92645b04ee

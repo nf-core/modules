@@ -1,0 +1,16 @@
+- name: "pints caller"
+  command: nextflow run ./tests/modules/pints/caller -entry test_pints_caller -c ./tests/config/nextflow.config -c ./tests/modules/pints/caller/nextflow.config
+  tags:
+    - "pints"
+    - "pints/caller"
+  files:
+    - path: output/pints/test_1_bidirectional_peaks.bed
+      md5sum: 8c69305ab896bd772e450e938ddf45f0
+    - path: output/pints/test_1_divergent_peaks.bed
+      md5sum: 2078c643951071f5836d365e5dc7ba1c
+    - path: output/pints/test_1_unidirectional_peaks.bed
+    - path: output/pints/test_2_bidirectional_peaks.bed
+      md5sum: c4efa0f297ba4cdb00659c5e6700ebe5
+    - path: output/pints/test_2_divergent_peaks.bed
+      md5sum: 213a2ba5d9930768d76bf2a7d8c3f7fb
+    - path: output/pints/test_2_unidirectional_peaks.bed

@@ -24,6 +24,9 @@ process GSTAMA_COLLAPSE {
     tuple val(meta), path("*_varcov.txt")             , emit: varcov  , optional: true
     tuple val(meta), path("*_variants.txt")           , emit: variants, optional: true
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

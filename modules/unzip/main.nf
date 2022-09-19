@@ -1,6 +1,6 @@
 process UNZIP {
     tag "$archive"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::p7zip=15.09" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,11 +8,14 @@ process UNZIP {
         'quay.io/biocontainers/p7zip:15.09--h2d50403_4' }"
 
     input:
-    path archive
+    tuple val(meta), path(archive)
 
     output:
-    path "${archive.baseName}/", emit: unzipped_archive
-    path "versions.yml"        , emit: versions
+    tuple val(meta), path("${archive.baseName}/"), emit: unzipped_archive
+    path "versions.yml"                          , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

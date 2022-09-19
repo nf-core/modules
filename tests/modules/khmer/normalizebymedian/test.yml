@@ -6,9 +6,9 @@
     - khmer/normalizebymedian
   files:
     - path: output/khmer/only_pe.fastq.gz
-      # md5sum not stable even locally with docker (gzip done by tool)
-      #md5sum: 75e05f2e80cf4bd0b534d4b73f7c059c
-      
+    # md5sum not stable even locally with docker (gzip done by tool)
+    # md5sum: 75e05f2e80cf4bd0b534d4b73f7c059c
+
 - name: khmer normalizebymedian only se reads
   command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian_only_se -c ./tests/config/nextflow.config -c ./tests/modules/khmer/normalizebymedian/nextflow.config
   tags:
@@ -16,7 +16,7 @@
     - khmer/normalizebymedian
   files:
     - path: output/khmer/only_se.fastq.gz
-      
+
 - name: khmer normalizebymedian mixed reads
   command: nextflow run ./tests/modules/khmer/normalizebymedian -entry test_khmer_normalizebymedian_mixed -c ./tests/config/nextflow.config -c ./tests/modules/khmer/normalizebymedian/nextflow.config
   tags:

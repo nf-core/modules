@@ -16,7 +16,7 @@ tools:
       documentation: "https://github.com/grenaud/leeHom"
       tool_dev_url: "https://github.com/grenaud/leeHom"
       doi: "10.1093/nar/gku699"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 
 input:
   - meta:
@@ -61,17 +61,16 @@ output:
       pattern: "*.r1.fail.fq.gz"
   - unmerged_r2_fq_pass:
       type: file
-      description: Passed unmerged R1 FASTQs
+      description: Passed unmerged R2 FASTQs
       pattern: "*.r2.fq.gz"
   - unmerged_r2_fq_pass:
       type: file
-      description: Failed unmerged R1 FASTQs
+      description: Failed unmerged R2 FASTQs
       pattern: "*.r2.fail.fq.gz"
   - log:
       type: file
       description: Log file of command
       pattern: "*.log"
-
 
 authors:
   - "@jfy133"

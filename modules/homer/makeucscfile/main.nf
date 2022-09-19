@@ -1,9 +1,8 @@
-def VERSION = '4.11' // Version information not provided by tool on CLI
-
 process HOMER_MAKEUCSCFILE {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::homer=4.11=pl526hc9558a2_3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
@@ -13,16 +12,20 @@ process HOMER_MAKEUCSCFILE {
     tuple val(meta), path(tagDir)
 
     output:
-    tuple val(meta), path("tag_dir/*ucsc.bedGraph.gz"), emit: bedGraph
-    path  "versions.yml"                              , emit: versions
+    tuple val(meta), path("*.bedGraph.gz"), emit: bedGraph
+    path  "versions.yml"                  , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     makeUCSCfile \\
         $tagDir \\
-        -o auto \\
+        -o ${prefix}.bedGraph \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

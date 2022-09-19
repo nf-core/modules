@@ -18,6 +18,9 @@ process AMPS {
     path "results/pdf_candidate_profiles/"     , emit: candidate_pdfs
     path "versions.yml"                        , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """

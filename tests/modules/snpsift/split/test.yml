@@ -1,0 +1,32 @@
+- name: snpsift split test_snpsift_split_base
+  command: nextflow run tests/modules/snpsift/split -entry test_snpsift_split_base -c tests/config/nextflow.config
+  tags:
+    - snpsift/split
+    - snpsift
+  files:
+    - path: output/snpsift/test.rnaseq.chr22.vcf
+      md5sum: 1bb8724dcbe6fa3101a814c0be51d1ea
+    - path: output/snpsift/versions.yml
+      md5sum: 2b9f6b788db6c4fcbf258db763d8fab7
+
+- name: snpsift split test_snpsift_split_gz
+  command: nextflow run tests/modules/snpsift/split -entry test_snpsift_split_gz -c tests/config/nextflow.config
+  tags:
+    - snpsift/split
+    - snpsift
+  files:
+    - path: output/snpsift/test.MT192765.1.vcf
+      md5sum: 9d491cfa84067450342ba8e66c75e5b8
+    - path: output/snpsift/versions.yml
+      md5sum: 6bd63376670d6c1445caea2f31a3f579
+
+- name: snpsift split test_snpsift_join
+  command: nextflow run tests/modules/snpsift/split -entry test_snpsift_join -c tests/config/nextflow.config
+  tags:
+    - snpsift/split
+    - snpsift
+  files:
+    - path: output/snpsift/test.joined.vcf
+      md5sum: c400c7458524d889e0967b06ed72534f
+    - path: output/snpsift/versions.yml
+      md5sum: be54682a73d3b91a17eacc0e533448f5

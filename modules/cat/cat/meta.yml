@@ -10,15 +10,17 @@ tools:
       homepage: None
       documentation: https://man7.org/linux/man-pages/man1/cat.1.html
       tool_dev_url: None
-      licence: ['GPL-3.0-or-later']
+      licence: ["GPL-3.0-or-later"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - files_in:
       type: file
       description: List of compressed / uncompressed files
       pattern: "*"
-  - file_out:
-      type: value
-      description: Full name of output file with or without .gz extension
 
 output:
   - versions:
@@ -32,3 +34,4 @@ output:
 
 authors:
   - "@erikrikarddaniel"
+  - "@FriederikeHanssen"

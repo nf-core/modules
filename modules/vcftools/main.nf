@@ -1,6 +1,6 @@
 process VCFTOOLS {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::vcftools=0.1.16" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -80,6 +80,9 @@ process VCFTOOLS {
     tuple val(meta), path("*.diff.discordance.matrix"), optional:true, emit: diff_discd_matrix
     tuple val(meta), path("*.diff.switch")            , optional:true, emit: diff_switch_error
     path "versions.yml"                               , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

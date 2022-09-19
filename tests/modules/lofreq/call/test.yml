@@ -5,4 +5,7 @@
     - lofreq/call
   files:
     - path: output/lofreq/test.vcf.gz
-      contains: ['##INFO=<ID=CONSVAR,Number=0,Type=Flag,Description="Indicates that the variant is a consensus variant (as opposed to a low frequency variant).">']
+      contains:
+        [
+          '##INFO=<ID=CONSVAR,Number=0,Type=Flag,Description="Indicates that the variant is a consensus variant (as opposed to a low frequency variant).">',
+        ]
