@@ -32,7 +32,7 @@ process SEQWISH_INDUCE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqwish: \$(echo \$(seqwish --version 2>&1 | cut -f 1 -d '-' | cut -f 2 -d 'v'))
+        seqwish: \$(echo \$(seqwish --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
 }
