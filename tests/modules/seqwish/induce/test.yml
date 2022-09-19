@@ -1,5 +1,5 @@
-- name: seqwish induce
-  command: nextflow run ./tests/modules/seqwish/induce -entry test_seqwish_induce -c ./tests/config/nextflow.config -c ./tests/modules/seqwish/induce/nextflow.config
+- name: seqwish induce transcriptome
+  command: nextflow run ./tests/modules/seqwish/induce -entry test_seqwish_induce_transcriptome -c ./tests/config/nextflow.config -c ./tests/modules/seqwish/induce/nextflow.config
   tags:
     - seqwish
     - seqwish/induce
