@@ -7,7 +7,7 @@
     - path: output/seqwish/test.gfa
       md5sum: 216a02d3aca322a457c31a62c628548e
 
-- name: seqwish induce pangenomce
+- name: seqwish induce pangenome
   command: nextflow run ./tests/modules/seqwish/induce -entry test_seqwish_induce_pangenome -c ./tests/config/nextflow.config -c ./tests/modules/seqwish/induce/nextflow.config
   tags:
     - seqwish
