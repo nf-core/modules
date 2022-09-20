@@ -1,4 +1,4 @@
-name: "VerifyBamID2"
+name: "VERIFYBAMID_VERIFYBAMID2"
 description: Detecting and estimating inter-sample DNA contamination became a crucial quality assessment step to ensure high quality sequence reads and reliable downstream analysis.
 keywords:
   - contamination
@@ -30,7 +30,7 @@ input:
       pattern: "*.{bam,cram,sam}"
   - Reference:
       type: file
-      description: [String] reference file [Required]
+      description: reference file [Required]
       pattern: "*.fasta"
   ## Optional options
   - Seed:
@@ -39,9 +39,6 @@ input:
   - NumPC:
       type: int
       description: Number of Principal Components used in estimation [Optional]
-  - NumThread :
-      type: init
-      description: Set number of threads in likelihood calculation [default:4] [Optional]
   - FixPC:
       type: file
       description: Specify known PC coordinates for the sample[format PC1:PC2:PC3...] [Optional]
@@ -109,7 +106,7 @@ output:
   - ancenstry:
       type: file
       description: PC coordinates for both intended sample and contaminating sample, with each row being one PC.
-      pattern: "*.Ancestry”
+      pattern: "*.Ancestry"
 
 authors:
   - "@manifestoso"
