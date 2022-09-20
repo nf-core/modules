@@ -1,6 +1,6 @@
 process SEQTK_SUBSEQ {
     tag '$sequences'
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

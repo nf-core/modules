@@ -1,6 +1,6 @@
 process AMPIR {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::r-ampir=1.1.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
