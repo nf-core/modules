@@ -1,6 +1,6 @@
 process HMMER_ESLREFORMAT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,8 +11,8 @@ process HMMER_ESLREFORMAT {
     tuple val(meta), path(seqfile)
 
     output:
-    tuple val(meta), path("*.sequences.gz"), emit: seqreformated
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.*.gz"), emit: seqreformated
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +20,7 @@ process HMMER_ESLREFORMAT {
     script:
     def args     = task.ext.args ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
+    def suffix   = args ? args.trim().tokenize(" ")[-1] : "sequences"
     // Use for any postprocessing of the sequence file, e.g. removal of gap characters
     def postproc = task.ext.postprocessing ?: ""
     """
@@ -27,7 +28,7 @@ process HMMER_ESLREFORMAT {
         $args \\
         $seqfile \\
         $postproc \\
-        | gzip -c > ${prefix}.sequences.gz
+        | gzip -c > ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

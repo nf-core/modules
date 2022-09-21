@@ -1,6 +1,6 @@
 process AMRFINDERPLUS_UPDATE {
     tag "update"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
