@@ -5,7 +5,7 @@
     - bcftools
   files:
     - path: output/bcftools/test.bcftools_stats.txt
-      md5sum: 1fcb6c611146539106032e8a817e404e
+      contains: ["This file was produced by bcftools stats"]
 
 - name: bcftools stats test_bcftools_stats_regions
   command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats_regions -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/stats/nextflow.config
@@ -14,7 +14,7 @@
     - bcftools
   files:
     - path: output/bcftools/test.bcftools_stats.txt
-      md5sum: 50d8b60f5bbf3bbee949ad3318679051
+      contains: ["This file was produced by bcftools stats"]
 
 - name: bcftools stats test_bcftools_stats_targets
   command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats_targets -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/stats/nextflow.config
@@ -23,4 +23,4 @@
     - bcftools
   files:
     - path: output/bcftools/test.bcftools_stats.txt
-      md5sum: 1e341bd83e64b30c780fd176e8532c7b
+      contains: ["This file was produced by bcftools stats"]
