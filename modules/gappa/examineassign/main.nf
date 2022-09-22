@@ -16,6 +16,8 @@ process GAPPA_EXAMINEASSIGN {
     tuple val(meta), path("*profile.tsv")         , emit: profile
     tuple val(meta), path("*labelled_tree.newick"), emit: labelled_tree
     tuple val(meta), path("*per_query.tsv")       , emit: per_query, optional: true
+    tuple val(meta), path("*krona.profile")       , emit: krona    , optional: true
+    tuple val(meta), path("*sativa.tsv")          , emit: sativa   , optional: true
     path "versions.yml"                           , emit: versions
 
     when:
