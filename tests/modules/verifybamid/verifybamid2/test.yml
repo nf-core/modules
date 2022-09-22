@@ -1,14 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml verifybamid/verifybamid2
-- name: "verifybamid verifybamid2"
-  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2 -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
+- name: verifybamid verifybamid2 test_verifybamid_verifybamid2_panel
+  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_panel -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
   tags:
-    - "verifybamid"
-    #
-    - "verifybamid/verifybamid2"
-    #
-  files:
-    - path: "output/verifybamid/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/verifybamid/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - verifybamid/verifybamid2
+    - verifybamid
+  # files:
+  #   - path: output/verifybamid/verifybamid2/vb_contamination.log
+  #     md5sum: b5bbd6d97e907501313132c0763e4317
+
+- name: verifybamid verifybamid2 test_verifybamid_verifybamid2_refvcf
+  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_refvcf -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
+  tags:
+    - verifybamid/verifybamid2
+    - verifybamid
+  # files:
+  #   - path: output/verifybamid/verifybamid2/vb_contamination.log
+  #     md5sum: b5bbd6d97e907501313132c0763e4317

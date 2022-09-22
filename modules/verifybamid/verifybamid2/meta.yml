@@ -77,10 +77,10 @@ input:
   ## Below are deprecated but still available
   - UDPath:
       type: file
-      description: .UD matrix file from SVD result of genotype matrix [Required]
+      description: .UD matrix file from SVD result of genotype matrix
   - MeanPath:
       type: file
-      description: .mu matrix file of genotype matrix [Required]
+      description: .mu matrix file of genotype matrix
   - BedPath:
       type: file
       description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
@@ -91,6 +91,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - mu:
+      type: file
+      description: .mu matrix file of genotype matrix from customized reference vcf input
+      pattern: "*.mu"
+  - UD:
+      type: file
+      description: .UD matrix file from customized reference vcf input
+      pattern: "*.UD" 
+  - bed:
+      type: file
+      description: .Bed file from customized reference marker vcf input
+      pattern: "*.bed"
   - versions:
       type: file
       description: File containing software versions

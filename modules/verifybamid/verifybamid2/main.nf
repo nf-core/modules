@@ -21,10 +21,14 @@ process VERIFYBAMID_VERIFYBAMID2 {
     // we do not exhaustively list all possible options. Instead we leave that to the user.
     tuple val(meta), path(bam), path(bai)
     tuple path(svd_ud), path(svd_mu), path(svd_bed)
+    path refvcf
     path references 
 
     output:
     tuple val(meta), path("*.log")             , optional:true, emit: log
+    tuple val(meta), path("*.UD")              , optional:true, emit: UD 
+    tuple val(meta), path("*.bed")             , optional:true, emit: bed
+    tuple val(meta), path("*.mu")              , optional:true, emit: mu
     tuple val(meta), path("*.selfSM")          , optional:true, emit: self_SM
     tuple val(meta), path("*.Ancestry")        , optional:true, emit: ancestry
     path "versions.yml"                                       , emit: versions
@@ -38,11 +42,19 @@ process VERIFYBAMID_VERIFYBAMID2 {
     def args_list = args.tokenize()
     
     def bam_file = ("$bam".endsWith('.bam')) ? "--BamFile ${bam}" : 
-        ("$bam".endsWith(".cram")) ? "--BamFile ${bam}" : ""
+        ("$bam".endsWith(".cram")) ? "--BamFile ${bam}" : ''
     args_list.removeIf { it.contains('--BamFile') }
 
-    def svd_args = ( svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName) ) ? 
-        "--SVDPrefix ${svd_ud.baseName}" : "${svd_ud.baseName}, ${svd_mu.baseName}, ${svd_bed.baseName}"
+    def svd_args = ""
+    def refvcf_args = ""
+    if ("$refvcf".endsWith('.vcf') && args.contains('--RefVCF')) {
+        refvcf_args = "--RefVCF ${refvcf}" 
+        args_list.removeIf { it.contains('--RefVCF') }
+        // svd_args = "--SVDPrefix ${svd_ud.baseName}" // a bug in Griffan/verifybamid2#44, a work-around in the intrim
+        svd_args = ""    // with expected verifybamid2 behavour
+    } else if (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) {
+        svd_args = "--SVDPrefix ${svd_ud.baseName}"
+    }
 
     if (args.contains('--UDPath') && args.contains('--MeanPath') && args.contains('--BedPath')) {
         svd_args = svd_args + "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
@@ -52,7 +64,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
     args_list.removeIf { it.contains('--BedPath') }
 
     def reference_args = ("$references".endsWith('.fasta')) ? 
-        "--Reference ${references}" : ""
+        "--Reference ${references}" : ''
 
     // Enable generating customized reference stack
     if (args.contains('--RefVCF')) {
@@ -67,6 +79,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
         --NumThread $task.cpus \\
         ${svd_args} \\
         ${bam_file} \\
+        ${refvcf_args} \\
         ${reference_args}  \\
         ${args_list.join(' ')} \\
         > vb_contamination.log

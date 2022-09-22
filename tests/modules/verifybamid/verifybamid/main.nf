@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VERIFYBAMID } from '../../../modules/verifybamid/main.nf'
+include { VERIFYBAMID } from '../../../modules/verifybamid/verifybamid/main.nf'
 
 workflow test_verifybamid {
     
