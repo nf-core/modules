@@ -1,8 +1,8 @@
 /*
 ========================================================================================
-   VerifyBamID2 module
+    VerifyBamID2 module
 ========================================================================================
-   Website: http://griffan.github.io/VerifyBamID/
+    Website: http://griffan.github.io/VerifyBamID/
 ========================================================================================
 */
 
@@ -16,17 +16,17 @@ process VERIFYBAMID_VERIFYBAMID2 {
         'quay.io/biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
 
     input:
-    // Owing to the nature of verifybamid we here provide solutions to working with bam files and optional 
-    // alternative variant files. Other optional input files & flags can be utilised in a similar way to below but 
+    // Owing to the nature of verifybamid we here provide solutions to working with bam files and optional
+    // alternative variant files. Other optional input files & flags can be utilised in a similar way to below but
     // we do not exhaustively list all possible options. Instead we leave that to the user.
     tuple val(meta), path(bam), path(bai)
     tuple path(svd_ud), path(svd_mu), path(svd_bed)
     path refvcf
-    path references 
+    path references
 
     output:
     tuple val(meta), path("*.log")             , optional:true, emit: log
-    tuple val(meta), path("*.UD")              , optional:true, emit: UD 
+    tuple val(meta), path("*.UD")              , optional:true, emit: UD
     tuple val(meta), path("*.bed")             , optional:true, emit: bed
     tuple val(meta), path("*.mu")              , optional:true, emit: mu
     tuple val(meta), path("*.selfSM")          , optional:true, emit: self_SM
@@ -40,15 +40,15 @@ process VERIFYBAMID_VERIFYBAMID2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
-    
-    def bam_file = ("$bam".endsWith('.bam')) ? "--BamFile ${bam}" : 
+
+    def bam_file = ("$bam".endsWith('.bam')) ? "--BamFile ${bam}" :
         ("$bam".endsWith(".cram")) ? "--BamFile ${bam}" : ''
     args_list.removeIf { it.contains('--BamFile') }
 
     def svd_args = ""
     def refvcf_args = ""
     if ("$refvcf".endsWith('.vcf') && args.contains('--RefVCF')) {
-        refvcf_args = "--RefVCF ${refvcf}" 
+        refvcf_args = "--RefVCF ${refvcf}"
         args_list.removeIf { it.contains('--RefVCF') }
         // svd_args = "--SVDPrefix ${svd_ud.baseName}" // a bug in Griffan/verifybamid2#44, a work-around in the intrim
         svd_args = ""    // with expected verifybamid2 behavour
@@ -63,7 +63,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
     args_list.removeIf { it.contains('--MeanPath') }
     args_list.removeIf { it.contains('--BedPath') }
 
-    def reference_args = ("$references".endsWith('.fasta')) ? 
+    def reference_args = ("$references".endsWith('.fasta')) ?
         "--Reference ${references}" : ''
 
     // Enable generating customized reference stack
