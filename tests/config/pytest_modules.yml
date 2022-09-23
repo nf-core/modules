@@ -2310,9 +2310,9 @@ subread/featurecounts:
 subworkflows/bam_stats_samtools: &subworkflows_bam_stats_samtools
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
-  - *samtools_stats
-  - *samtools_idxstats
-  - *samtools_flagstat
+  # - *samtools_stats
+  # - *samtools_idxstats
+  # - *samtools_flagstat
 
 svdb/merge:
   - modules/svdb/merge/**
