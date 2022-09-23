@@ -51,6 +51,19 @@ output:
       type: file
       description: optional filtered/converted SAM file
       pattern: "*.{sam}"
+  # bai, csi, and crai are created with `--write-index`
+  - bai:
+      type: file
+      description: optional BAM file index
+      pattern: "*.{bai}"
+  - csi:
+      type: file
+      description: optional tabix BAM file index
+      pattern: "*.{csi}"
+  - crai:
+      type: file
+      description: optional CRAM file index
+      pattern: "*.{crai}"
   - versions:
       type: file
       description: File containing software versions
