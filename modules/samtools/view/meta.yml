@@ -41,21 +41,22 @@ output:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: filtered/converted BAM/SAM file
-      pattern: "*.{bam,sam}"
+      description: optional filtered/converted BAM file
+      pattern: "*.{bam}"
   - cram:
       type: file
-      description: filtered/converted CRAM file
-      pattern: "*.cram"
+      description: optional filtered/converted CRAM file
+      pattern: "*.{cram}"
+  - sam:
+      type: file
+      description: optional filtered/converted SAM file
+      pattern: "*.{sam}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - csi:
-      type: file
-      description: BAM index file (optional)
-      pattern: "*.csi"
 authors:
   - "@drpatelh"
   - "@joseespinosa"
   - "@FriederikeHanssen"
+  - "@priyanka-surana"
