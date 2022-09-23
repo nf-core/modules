@@ -1,6 +1,6 @@
 process SAMTOOLS_VIEW {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -14,6 +14,7 @@ process SAMTOOLS_VIEW {
     output:
     tuple val(meta), path("*.bam") , emit: bam , optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.csi") , emit: csi,  optional: true
     path  "versions.yml"           , emit: versions
 
     when:

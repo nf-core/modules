@@ -1,6 +1,6 @@
 process SAMTOOLS_FAIDX {
     tag "$fasta"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,6 +12,7 @@ process SAMTOOLS_FAIDX {
 
     output:
     tuple val(meta), path ("*.fai"), emit: fai
+    tuple val(meta), path ("*.gzi"), emit: gzi, optional: true
     path "versions.yml"            , emit: versions
 
     when:
@@ -22,6 +23,7 @@ process SAMTOOLS_FAIDX {
     """
     samtools \\
         faidx \\
+        $args \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
