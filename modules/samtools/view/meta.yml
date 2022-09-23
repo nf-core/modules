@@ -39,23 +39,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - output:
       type: file
-      description: filtered/converted BAM/SAM file
-      pattern: "*.{bam,sam}"
-  - cram:
-      type: file
-      description: filtered/converted CRAM file
-      pattern: "*.cram"
+      description: filtered/converted BAM/SAM/CRAM file
+      pattern: "*.{bam,sam,cram}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - csi:
-      type: file
-      description: BAM index file (optional)
-      pattern: "*.csi"
 authors:
   - "@drpatelh"
   - "@joseespinosa"
   - "@FriederikeHanssen"
+  - "@priyanka-surana"
