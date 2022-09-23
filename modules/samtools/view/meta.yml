@@ -39,10 +39,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - output:
+  - bam:
       type: file
-      description: filtered/converted BAM/SAM/CRAM file
-      pattern: "*.{bam,sam,cram}"
+      description: optional filtered/converted BAM file
+      pattern: "*.{bam}"
+  - cram:
+      type: file
+      description: optional filtered/converted CRAM file
+      pattern: "*.{cram}"
+  - sam:
+      type: file
+      description: optional filtered/converted SAM file
+      pattern: "*.{sam}"
   - versions:
       type: file
       description: File containing software versions
