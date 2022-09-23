@@ -10,7 +10,7 @@ process VSEARCH_SINTAX {
     input:
     tuple val(meta), path(queryfasta)
     path db
-   
+
     output:
     tuple val(meta), path('*.tsv')   , optional: true, emit: tsv
     path "versions.yml"              , emit: versions
@@ -21,7 +21,7 @@ process VSEARCH_SINTAX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-   
+
     """
     vsearch \\
         --sintax $queryfasta \\
