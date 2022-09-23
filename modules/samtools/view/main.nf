@@ -15,7 +15,6 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path("*.bam") , emit: bam , optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
     tuple val(meta), path("*.sam") , emit: sam , optional: true
-    tuple val(meta), path("*.csi"),  emit: csi,  optional: true
     path  "versions.yml"           , emit: versions
 
     when:
