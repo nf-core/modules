@@ -33,6 +33,16 @@ workflow test_samtools_view_convert {
     SAMTOOLS_VIEW ( input, fasta )
 }
 
+workflow test_samtools_view_index {
+    input = [ [ id: 'test' ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                []
+            ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    SAMTOOLS_VIEW ( input, fasta )
+}
+
 workflow test_samtools_view_stubs {
     input = [ [ id:'test', single_end:false ], // meta map
                 file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
