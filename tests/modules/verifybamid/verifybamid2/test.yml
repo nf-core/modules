@@ -5,7 +5,6 @@
     - verifybamid
   files:
     - path: output/verifybamid/vb_contamination.log
-      md5sum: 32a9811d143450f9f5b99c21b6ecff61
 
 - name: verifybamid verifybamid2 test_verifybamid_verifybamid2_refvcf
   command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_refvcf -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
