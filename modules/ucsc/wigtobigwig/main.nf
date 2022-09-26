@@ -1,6 +1,6 @@
 process UCSC_WIGTOBIGWIG {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-wigtobigwig=377" : null)
@@ -38,6 +38,7 @@ process UCSC_WIGTOBIGWIG {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bw
 

@@ -1,9 +1,9 @@
 - name: krakentools combinekreports test_krakentools_combinekreports
   command: nextflow run ./tests/modules/krakentools/combinekreports -entry test_krakentools_combinekreports -c ./tests/config/nextflow.config  -c ./tests/modules/krakentools/combinekreports/nextflow.config
   tags:
-    - krakentools/combinekreports
     - krakentools
+    - krakentools/combinekreports
   files:
-    - path: output/krakentools/kreports_combined.txt
+    - path: output/krakentools/test.txt
       contains:
         - "#Number of Samples: 2"
