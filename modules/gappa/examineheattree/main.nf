@@ -1,6 +1,6 @@
-process GAPPA_EXAMINEASSIGN {
+process GAPPA_EXAMINEHEATTREE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gappa=0.8.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,16 +9,15 @@ process GAPPA_EXAMINEASSIGN {
 
     input:
     tuple val(meta), path(jplace)
-    path  taxonomy
 
     output:
-    tuple val(meta), path("./.")                  , emit: examineassign
-    tuple val(meta), path("*profile.tsv")         , emit: profile
-    tuple val(meta), path("*labelled_tree.newick"), emit: labelled_tree
-    tuple val(meta), path("*per_query.tsv")       , emit: per_query, optional: true
-    tuple val(meta), path("*krona.profile")       , emit: krona    , optional: true
-    tuple val(meta), path("*sativa.tsv")          , emit: sativa   , optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.newick")     , emit: newick  , optional: true
+    tuple val(meta), path("*.nexus")      , emit: nexus   , optional: true
+    tuple val(meta), path("*.phyloxml")   , emit: phyloxml, optional: true
+    tuple val(meta), path("*.svg")        , emit: svg     , optional: true
+    tuple val(meta), path("*.colours.txt"), emit: colours
+    tuple val(meta), path("*.log")        , emit: log
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,12 +27,15 @@ process GAPPA_EXAMINEASSIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gappa \\
-        examine assign \\
-        $args \\
+        examine \\
+        heat-tree \\
         --threads $task.cpus \\
+        --file-prefix ${prefix}. \\
         --jplace-path $jplace \\
-        --taxon-file $taxonomy \\
-        --file-prefix ${prefix}.
+        $args \\
+        --log-file ${prefix}.log
+
+    grep '^ *At' ${prefix}.log > ${prefix}.colours.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

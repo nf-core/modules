@@ -12,20 +12,25 @@ process SAMTOOLS_VIEW {
     path fasta
 
     output:
-    tuple val(meta), path("*.bam") , emit: bam , optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    tuple val(meta), path("*.csi") , emit: csi,  optional: true
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bam"),  emit: bam,     optional: true
+    tuple val(meta), path("*.cram"), emit: cram,    optional: true
+    tuple val(meta), path("*.sam"),  emit: sam,     optional: true
+    tuple val(meta), path("*.bai"),  emit: bai,     optional: true
+    tuple val(meta), path("*.csi"),  emit: csi,     optional: true
+    tuple val(meta), path("*.crai"), emit: crai,    optional: true
+    path  "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--reference ${fasta} -C" : ""
-    def file_type = input.getExtension()
+    def reference = fasta ? "--reference ${fasta}" : ""
+    def file_type = args.contains("--output-fmt sam") ? "sam" :
+                    args.contains("--output-fmt bam") ? "bam" :
+                    args.contains("--output-fmt cram") ? "cram" :
+                    input.getExtension()
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
@@ -33,9 +38,8 @@ process SAMTOOLS_VIEW {
         --threads ${task.cpus-1} \\
         ${reference} \\
         $args \\
-        $input \\
-        $args2 \\
-        > ${prefix}.${file_type}
+        -o ${prefix}.${file_type} \\
+        $input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
