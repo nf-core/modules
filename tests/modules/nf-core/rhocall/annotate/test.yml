@@ -1,5 +1,5 @@
 - name: "rhocall annotate"
-  command: nextflow run ./tests/modules/rhocall/annotate -entry test_rhocall_annotate -c ./tests/config/nextflow.config -c ./tests/modules/rhocall/annotate/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rhocall/annotate -entry test_rhocall_annotate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rhocall/annotate/nextflow.config
   tags:
     - "rhocall"
     - "rhocall/annotate"
@@ -8,7 +8,7 @@
     - path: "output/rhocall/versions.yml"
 
 - name: "rhocall annotate stub"
-  command: nextflow run ./tests/modules/rhocall/annotate -entry test_rhocall_annotate_stub -c ./tests/config/nextflow.config -c ./tests/modules/rhocall/annotate/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/rhocall/annotate -entry test_rhocall_annotate_stub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rhocall/annotate/nextflow.config -stub-run
   tags:
     - "rhocall"
     - "rhocall/annotate"

@@ -1,5 +1,5 @@
 - name: svdb query
-  command: nextflow run ./tests/modules/svdb/query -entry test_svdb_query -c ./tests/config/nextflow.config -c ./tests/modules/svdb/query/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/svdb/query -entry test_svdb_query -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svdb/query/nextflow.config
   tags:
     - svdb
     - svdb/query
@@ -7,7 +7,7 @@
     - path: output/svdb/test_query.vcf
 
 - name: svdb query multiple
-  command: nextflow run ./tests/modules/svdb/query -entry test_svdb_query_multiple -c ./tests/config/nextflow.config -c ./tests/modules/svdb/query/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/svdb/query -entry test_svdb_query_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svdb/query/nextflow.config
   tags:
     - svdb
     - svdb/query

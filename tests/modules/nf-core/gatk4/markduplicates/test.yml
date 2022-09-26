@@ -1,5 +1,5 @@
 - name: gatk4 markduplicates test_gatk4_markduplicates
-  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicates
@@ -11,7 +11,7 @@
     - path: output/gatk4/test.bam.metrics
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
-  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicates
@@ -26,7 +26,7 @@
         - "2820"
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output
-  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicates

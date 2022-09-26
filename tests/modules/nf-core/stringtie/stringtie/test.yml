@@ -1,5 +1,5 @@
 - name: stringtie stringtie forward
-  command: nextflow run ./tests/modules/stringtie/stringtie/ -entry test_stringtie_forward -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/stringtie/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stringtie/stringtie/ -entry test_stringtie_forward -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/stringtie/nextflow.config
   tags:
     - stringtie
     - stringtie/stringtie
@@ -20,7 +20,7 @@
       md5sum: e981c0038295ae54b63cedb1083f1540
 
 - name: stringtie stringtie reverse
-  command: nextflow run ./tests/modules/stringtie/stringtie/ -entry test_stringtie_reverse -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/stringtie/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stringtie/stringtie/ -entry test_stringtie_reverse -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/stringtie/nextflow.config
   tags:
     - stringtie
     - stringtie/stringtie
@@ -41,7 +41,7 @@
       md5sum: e981c0038295ae54b63cedb1083f1540
 
 - name: stringtie stringtie forward stub
-  command: nextflow run ./tests/modules/stringtie/stringtie/ -entry test_stringtie_forward -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/stringtie/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/stringtie/stringtie/ -entry test_stringtie_forward -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/stringtie/nextflow.config -stub-run
   tags:
     - stringtie
     - stringtie/stringtie
@@ -52,7 +52,7 @@
     - path: ./output/stringtie/test.ballgown
 
 - name: stringtie stringtie reverse stub
-  command: nextflow run ./tests/modules/stringtie/stringtie/ -entry test_stringtie_reverse -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/stringtie/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/stringtie/stringtie/ -entry test_stringtie_reverse -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/stringtie/nextflow.config -stub-run
   tags:
     - stringtie
     - stringtie/stringtie

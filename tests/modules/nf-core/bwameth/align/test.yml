@@ -1,5 +1,5 @@
 - name: bwameth align single-end test workflow
-  command: nextflow run ./tests/modules/bwameth/align -entry test_bwameth_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bwameth/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwameth/align -entry test_bwameth_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwameth/align/nextflow.config
   tags:
     - bwameth
     - bwameth/align
@@ -7,7 +7,7 @@
     - path: output/bwameth/test.bam
 
 - name: bwameth align paired-end test workflow
-  command: nextflow run ./tests/modules/bwameth/align -entry test_bwameth_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bwameth/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwameth/align -entry test_bwameth_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwameth/align/nextflow.config
   tags:
     - bwameth
     - bwameth/align

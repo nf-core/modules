@@ -1,5 +1,5 @@
 - name: picard fastqtosam test_picard_fastqtosam_single
-  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_single -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/fastqtosam -entry test_picard_fastqtosam_single -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/fastqtosam/nextflow.config
   tags:
     - picard
     - picard/fastqtosam
@@ -8,7 +8,7 @@
       md5sum: fe2882efe8f13a8da20fcc63469ed0aa
 
 - name: picard fastqtosam test_picard_fastqtosam_paired
-  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_paired -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/fastqtosam -entry test_picard_fastqtosam_paired -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/fastqtosam/nextflow.config
   tags:
     - picard
     - picard/fastqtosam
@@ -17,7 +17,7 @@
       md5sum: 90e4f59f9d942f96c3f3c41160f3fd5d
 
 - name: picard fastqtosam test_picard_fastqtosam_paired_custom_samplename
-  command: nextflow run ./tests/modules/picard/fastqtosam -entry test_picard_fastqtosam_paired_custom_samplename -c ./tests/config/nextflow.config  -c ./tests/modules/picard/fastqtosam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/fastqtosam -entry test_picard_fastqtosam_paired_custom_samplename -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/fastqtosam/nextflow.config
   tags:
     - picard
     - picard/fastqtosam

@@ -1,5 +1,5 @@
 - name: salmon quant single-end
-  command: nextflow run ./tests/modules/salmon/quant -entry test_salmon_quant_single_end -c ./tests/config/nextflow.config -c ./tests/modules/salmon/quant/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/salmon/quant -entry test_salmon_quant_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/salmon/quant/nextflow.config
   tags:
     - salmon
     - salmon/quant
@@ -50,7 +50,7 @@
     - path: ./output/salmon/salmon/seq.bin
 
 - name: salmon quant paired end
-  command: nextflow run ./tests/modules/salmon/quant -entry test_salmon_quant_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/salmon/quant/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/salmon/quant -entry test_salmon_quant_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/salmon/quant/nextflow.config
   tags:
     - salmon
     - salmon/quant
@@ -102,7 +102,7 @@
     - path: ./output/salmon/salmon/seq.bin
 
 - name: salmon quant test_salmon_quant_single_end_lib_type_A
-  command: nextflow run ./tests/modules/salmon/quant -entry test_salmon_quant_single_end_lib_type_A -c ./tests/config/nextflow.config -c ./tests/modules/salmon/quant/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/salmon/quant -entry test_salmon_quant_single_end_lib_type_A -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/salmon/quant/nextflow.config
   tags:
     - salmon/quant
     - salmon

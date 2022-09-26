@@ -1,5 +1,5 @@
 - name: vsearch usearchglobal test_vsearch_usearchglobal
-  command: nextflow run ./tests/modules/vsearch/usearchglobal -entry test_vsearch_usearchglobal -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/usearchglobal/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vsearch/usearchglobal -entry test_vsearch_usearchglobal -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/vsearch/usearchglobal/nextflow.config
   tags:
     - vsearch/usearchglobal
     - vsearch
@@ -17,7 +17,7 @@
         - "21291 cols, 21290 ids (100.0%), 1 gaps (0.0%)"
 
 - name: vsearch usearchglobal test_vsearch_usearchglobal_userout
-  command: nextflow run ./tests/modules/vsearch/usearchglobal -entry test_vsearch_usearchglobal_userout -c ./tests/config/nextflow.config  -c ./tests/modules/vsearch/usearchglobal/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vsearch/usearchglobal -entry test_vsearch_usearchglobal_userout -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/vsearch/usearchglobal/nextflow.config
   tags:
     - vsearch/usearchglobal
     - vsearch

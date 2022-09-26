@@ -1,5 +1,5 @@
 - name: ensemblvep test_ensemblvep_fasta_json
-  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_json -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ensemblvep -entry test_ensemblvep_fasta_json -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ensemblvep/nextflow.config
   tags:
     - ensemblvep
   files:
@@ -7,7 +7,7 @@
     - path: output/ensemblvep/test.summary.html
 
 - name: ensemblvep test_ensemblvep_fasta_tab
-  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_tab -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ensemblvep -entry test_ensemblvep_fasta_tab -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ensemblvep/nextflow.config
   tags:
     - ensemblvep
   files:
@@ -15,7 +15,7 @@
     - path: output/ensemblvep/test.summary.html
 
 - name: ensemblvep test_ensemblvep_fasta_vcf
-  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_vcf -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ensemblvep -entry test_ensemblvep_fasta_vcf -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ensemblvep/nextflow.config
   tags:
     - ensemblvep
   files:
@@ -23,7 +23,7 @@
     - path: output/ensemblvep/test.summary.html
 
 - name: ensemblvep test_ensemblvep_fasta
-  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ensemblvep -entry test_ensemblvep_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ensemblvep/nextflow.config
   tags:
     - ensemblvep
   files:
@@ -31,7 +31,7 @@
     - path: output/ensemblvep/test.summary.html
 
 - name: ensemblvep test_ensemblvep_no_fasta
-  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ensemblvep -entry test_ensemblvep_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ensemblvep/nextflow.config
   tags:
     - ensemblvep
   files:

@@ -1,5 +1,5 @@
 - name: deepbgc pipeline test_deepbgc_pipeline_gbk
-  command: nextflow run ./tests/modules/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config  -c ./tests/modules/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
   tags:
     - deepbgc/pipeline
     - deepbgc
@@ -47,7 +47,7 @@
       md5sum: 8fe56fcf4d9e839e83be7523cd3efa02
 
 - name: deepbgc pipeline test_deepbgc_pipeline_fa
-  command: nextflow run ./tests/modules/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config  -c ./tests/modules/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
   tags:
     - deepbgc/pipeline
     - deepbgc

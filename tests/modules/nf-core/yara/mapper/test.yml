@@ -1,5 +1,5 @@
 - name: yara mapper test_yara_single_end
-  command: nextflow run ./tests/modules/yara/mapper -entry test_yara_single_end -c ./tests/config/nextflow.config -c ./tests/modules/yara/mapper/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/yara/mapper -entry test_yara_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/yara/mapper/nextflow.config
   tags:
     - yara/mapper
     - yara
@@ -34,7 +34,7 @@
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
 
 - name: yara mapper test_yara_paired_end
-  command: nextflow run ./tests/modules/yara/mapper -entry test_yara_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/yara/mapper/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/yara/mapper -entry test_yara_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/yara/mapper/nextflow.config
   tags:
     - yara/mapper
     - yara

@@ -1,5 +1,5 @@
 - name: megahit
-  command: nextflow run ./tests/modules/megahit -entry test_megahit -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/megahit/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/megahit -entry test_megahit -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/nf-core/megahit/nextflow.config
   tags:
     - megahit
   files:
@@ -31,7 +31,7 @@
       md5sum: 7029066c27ac6f5ef18d660d5741979a
 
 - name: megahit_single
-  command: nextflow run ./tests/modules/megahit -entry test_megahit_single -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/megahit/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/megahit -entry test_megahit_single -c ./tests/config/nextflow.config -process.cpus 1 -c ./tests/modules/nf-core/megahit/nextflow.config
   tags:
     - megahit
   files:

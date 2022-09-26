@@ -1,5 +1,5 @@
 - name: tabix bgzip compress
-  command: nextflow run ./tests/modules/tabix/bgzip -entry test_tabix_bgzip_compress -c ./tests/config/nextflow.config -c ./tests/modules/tabix/bgzip/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/tabix/bgzip -entry test_tabix_bgzip_compress -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tabix/bgzip/nextflow.config
   tags:
     - tabix
     - tabix/bgzip
@@ -7,7 +7,7 @@
     - path: ./output/tabix/test.vcf.gz
       md5sum: fc178eb342a91dc0d1d568601ad8f8e2
 - name: tabix bgzip decompress
-  command: nextflow run ./tests/modules/tabix/bgzip -entry test_tabix_bgzip_decompress -c ./tests/config/nextflow.config -c ./tests/modules/tabix/bgzip/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/tabix/bgzip -entry test_tabix_bgzip_decompress -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tabix/bgzip/nextflow.config
   tags:
     - tabix
     - tabix/bgzip

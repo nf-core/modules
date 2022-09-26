@@ -1,5 +1,5 @@
 - name: staphopiasccmec test_staphopiasccmec
-  command: nextflow run ./tests/modules/staphopiasccmec -entry test_staphopiasccmec -c ./tests/config/nextflow.config -c ./tests/modules/staphopiasccmec/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/staphopiasccmec -entry test_staphopiasccmec -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staphopiasccmec/nextflow.config
   tags:
     - staphopiasccmec
   files:
@@ -7,7 +7,7 @@
       md5sum: e6460d4164f3af5b290c5ccdb11343bf
 
 - name: staphopiasccmec test_staphopiasccmec_hamming
-  command: nextflow run ./tests/modules/staphopiasccmec -entry test_staphopiasccmec_hamming -c ./tests/config/nextflow.config -c ./tests/modules/staphopiasccmec/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/staphopiasccmec -entry test_staphopiasccmec_hamming -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/staphopiasccmec/nextflow.config
   tags:
     - staphopiasccmec
   files:

@@ -1,5 +1,5 @@
 - name: stringtie merge forward-strand
-  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/merge/nextflow.config
   tags:
     - stringtie
     - stringtie/merge
@@ -23,7 +23,7 @@
       md5sum: a914bd55b68a4b5f607738b17861e362
 
 - name: stringtie merge test_stringtie_reverse_merge
-  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/merge/nextflow.config
   tags:
     - stringtie
     - stringtie/merge
@@ -47,7 +47,7 @@
       md5sum: 9dcdc9577c0fdbb25089eda210267546
 
 - name: stringtie merge forward-strand stub
-  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/merge/nextflow.config -stub-run
   tags:
     - stringtie
     - stringtie/merge
@@ -58,7 +58,7 @@
     - path: output/stringtie/test.transcripts.gtf
 
 - name: stringtie merge test_stringtie_reverse_merge stub
-  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stringtie/merge/nextflow.config -stub-run
   tags:
     - stringtie
     - stringtie/merge

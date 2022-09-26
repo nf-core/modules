@@ -1,5 +1,5 @@
 - name: msisensor2 msi test_msisensor2_msi_tumor_only
-  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumor_only -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/msisensor2/msi -entry test_msisensor2_msi_tumor_only -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/msisensor2/msi/nextflow.config
   tags:
     - msisensor2
     - msisensor2/msi
@@ -13,7 +13,7 @@
     - path: output/msisensor2/test_somatic
 
 - name: msisensor2 msi test_msisensor2_msi_tumor_normal
-  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumor_normal -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/msisensor2/msi -entry test_msisensor2_msi_tumor_normal -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/msisensor2/msi/nextflow.config
   tags:
     - msisensor2
     - msisensor2/msi
@@ -27,7 +27,7 @@
     - path: output/msisensor2/test_somatic
 
 - name: msisensor2 msi test_msisensor2_msi_tumor_only_ml
-  command: nextflow run ./tests/modules/msisensor2/msi -entry test_msisensor2_msi_tumor_only_ml -c ./tests/config/nextflow.config  -c ./tests/modules/msisensor2/msi/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/msisensor2/msi -entry test_msisensor2_msi_tumor_only_ml -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/msisensor2/msi/nextflow.config
   tags:
     - msisensor2
     - msisensor2/msi

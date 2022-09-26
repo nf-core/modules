@@ -1,5 +1,5 @@
 - name: bbmap align paired end fasta ref
-  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_fasta_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/align -entry test_bbmap_align_paired_end_fasta_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/align/nextflow.config
   tags:
     - bbmap
     - bbmap/align
@@ -9,7 +9,7 @@
     - path: output/bbmap/test.bbmap.log
 
 - name: bbmap align paired end index ref
-  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/align -entry test_bbmap_align_paired_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/align/nextflow.config
   tags:
     - bbmap
     - bbmap/align
@@ -19,7 +19,7 @@
     - path: output/bbmap/test.bbmap.log
 
 - name: bbmap align single end index ref
-  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_single_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/align -entry test_bbmap_align_single_end_index_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/align/nextflow.config
   tags:
     - bbmap
     - bbmap/align
@@ -29,7 +29,7 @@
     - path: output/bbmap/test.bbmap.log
 
 - name: bbmap align paired end index ref pigz
-  command: nextflow run ./tests/modules/bbmap/align -entry test_bbmap_align_paired_end_index_ref_pigz -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/align -entry test_bbmap_align_paired_end_index_ref_pigz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/align/nextflow.config
   tags:
     - bbmap
     - bbmap/align

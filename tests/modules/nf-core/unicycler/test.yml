@@ -1,5 +1,5 @@
 - name: unicycler test_unicycler_single_end
-  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_single_end -c ./tests/config/nextflow.config -c ./tests/modules/unicycler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/unicycler -entry test_unicycler_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/unicycler/nextflow.config
   tags:
     - unicycler
   files:
@@ -10,7 +10,7 @@
         - "Assembly complete"
 
 - name: unicycler test_unicycler_paired_end
-  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/unicycler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/unicycler -entry test_unicycler_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/unicycler/nextflow.config
   tags:
     - unicycler
   files:
@@ -21,7 +21,7 @@
         - "Assembly complete"
 
 - name: unicycler test_unicycler_shortreads_longreads
-  command: nextflow run ./tests/modules/unicycler -entry test_unicycler_shortreads_longreads -c ./tests/config/nextflow.config -c ./tests/modules/unicycler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/unicycler -entry test_unicycler_shortreads_longreads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/unicycler/nextflow.config
   tags:
     - unicycler
   files:

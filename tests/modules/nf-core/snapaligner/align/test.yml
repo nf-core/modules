@@ -1,5 +1,5 @@
 - name: snapaligner align test_snapaligner_single
-  command: nextflow run ./tests/modules/snapaligner/align -entry test_snapaligner_single -c ./tests/config/nextflow.config  -c ./tests/modules/snapaligner/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_single -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
   tags:
     - snapaligner/align
     - snapaligner
@@ -10,7 +10,7 @@
       md5sum: f180c68a77445b317a22e3f1d6e6e114
 
 - name: snapaligner align test_snapaligner_paired
-  command: nextflow run ./tests/modules/snapaligner/align -entry test_snapaligner_paired -c ./tests/config/nextflow.config  -c ./tests/modules/snapaligner/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snapaligner/align -entry test_snapaligner_paired -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/snapaligner/align/nextflow.config
   tags:
     - snapaligner/align
     - snapaligner

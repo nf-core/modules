@@ -1,5 +1,5 @@
 - name: last lastdb test_last_lastdb
-  command: nextflow run ./tests/modules/last/lastdb -entry test_last_lastdb -c ./tests/config/nextflow.config -c ./tests/modules/last/lastdb/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/last/lastdb -entry test_last_lastdb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/last/lastdb/nextflow.config
   tags:
     - last/lastdb
     - last
@@ -20,7 +20,7 @@
       md5sum: b7c40f06b1309dc6f37849eeb86dfd22
 
 - name: last lastdb test_last_lastdb_gzipped_input
-  command: nextflow run ./tests/modules/last/lastdb -entry test_last_lastdb_gzipped_input -c ./tests/config/nextflow.config -c ./tests/modules/last/lastdb/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/last/lastdb -entry test_last_lastdb_gzipped_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/last/lastdb/nextflow.config
   tags:
     - last/lastdb
     - last

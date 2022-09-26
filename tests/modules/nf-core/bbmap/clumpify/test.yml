@@ -1,5 +1,5 @@
 - name: bbmap clumpify test_bbmap_clumpify_single_end
-  command: nextflow run ./tests/modules/bbmap/clumpify -entry test_bbmap_clumpify_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/bbmap/clumpify/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/clumpify -entry test_bbmap_clumpify_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bbmap/clumpify/nextflow.config
   tags:
     - bbmap/clumpify
     - bbmap
@@ -8,7 +8,7 @@
     - path: output/bbmap/test.clumpify.log
 
 - name: bbmap clumpify test_bbmap_clumpify_paired_end
-  command: nextflow run ./tests/modules/bbmap/clumpify -entry test_bbmap_clumpify_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/bbmap/clumpify/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/clumpify -entry test_bbmap_clumpify_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bbmap/clumpify/nextflow.config
   tags:
     - bbmap/clumpify
     - bbmap

@@ -1,5 +1,5 @@
 - name: svtk standardize test_svtk_standardize
-  command: nextflow run ./tests/modules/svtk/standardize -entry test_svtk_standardize -c ./tests/config/nextflow.config -c ./tests/modules/svtk/standardize/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/svtk/standardize -entry test_svtk_standardize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svtk/standardize/nextflow.config
   tags:
     - svtk
     - svtk/standardize
@@ -17,7 +17,7 @@
       md5sum: f7530f3bc7e6020e758cc996adc8ae35
 
 - name: svtk standardize test_svtk_standardize_no_contigs
-  command: nextflow run ./tests/modules/svtk/standardize -entry test_svtk_standardize_no_contigs -c ./tests/config/nextflow.config -c ./tests/modules/svtk/standardize/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/svtk/standardize -entry test_svtk_standardize_no_contigs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/svtk/standardize/nextflow.config
   tags:
     - svtk
     - svtk/standardize

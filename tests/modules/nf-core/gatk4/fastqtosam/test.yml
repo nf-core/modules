@@ -1,5 +1,5 @@
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_single_end
-  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config  -c ./tests/modules/gatk4/fastqtosam/nextflow.config
+  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_single_end -c tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/fastqtosam/nextflow.config
   tags:
     - gatk4
     - gatk4/fastqtosam
@@ -8,7 +8,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_paired_end
-  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config  -c ./tests/modules/gatk4/fastqtosam/nextflow.config
+  command: nextflow run tests/modules/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/fastqtosam/nextflow.config
   tags:
     - gatk4
     - gatk4/fastqtosam

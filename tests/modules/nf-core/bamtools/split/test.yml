@@ -1,5 +1,5 @@
 - name: bamtools split test_bamtools_split_single_input
-  command: nextflow run ./tests/modules/bamtools/split -entry test_bamtools_split_single_input -c ./tests/config/nextflow.config -c ./tests/modules/bamtools/split/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bamtools/split -entry test_bamtools_split_single_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bamtools/split/nextflow.config
   tags:
     - bamtools
     - bamtools/split
@@ -11,7 +11,7 @@
     - path: output/bamtools/versions.yml
 
 - name: bamtools split test_bamtools_split_multiple
-  command: nextflow run ./tests/modules/bamtools/split -entry test_bamtools_split_multiple -c ./tests/config/nextflow.config -c ./tests/modules/bamtools/split/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bamtools/split -entry test_bamtools_split_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bamtools/split/nextflow.config
   tags:
     - bamtools
     - bamtools/split

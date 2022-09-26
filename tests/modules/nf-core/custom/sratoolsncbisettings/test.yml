@@ -1,5 +1,5 @@
 - name: "custom sratoolsncbisettings test_sratoolsncbisettings_with_good_existing"
-  command: nextflow run ./tests/modules/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_good_existing -c ./tests/config/nextflow.config -c ./tests/modules/custom/sratoolsncbisettings/nextflow_mount.config
+  command: nextflow run ./tests/modules/nf-core/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_good_existing -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/sratoolsncbisettings/nextflow_mount.config
   tags:
     - "custom"
     - "custom/sratoolsncbisettings"
@@ -11,7 +11,7 @@
         - "sratools: 2.11.0"
 
 - name: "custom sratoolsncbisettings test_sratoolsncbisettings_with_bad_existing"
-  command: nextflow run ./tests/modules/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_bad_existing -c ./tests/config/nextflow.config -c ./tests/modules/custom/sratoolsncbisettings/nextflow_mount.config
+  command: nextflow run ./tests/modules/nf-core/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_bad_existing -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/sratoolsncbisettings/nextflow_mount.config
   tags:
     - "custom"
     - "custom/sratoolsncbisettings"
@@ -30,7 +30,7 @@
       should_exist: false
 
 - name: "custom sratoolsncbisettings test_sratoolsncbisettings_with_nonexisting"
-  command: nextflow run ./tests/modules/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_nonexisting -c ./tests/config/nextflow.config -c ./tests/modules/custom/sratoolsncbisettings/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/custom/sratoolsncbisettings -entry test_sratoolsncbisettings_with_nonexisting -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/sratoolsncbisettings/nextflow.config
   tags:
     - "custom"
     - "custom/sratoolsncbisettings"

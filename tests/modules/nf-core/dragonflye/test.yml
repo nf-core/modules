@@ -1,5 +1,5 @@
 - name: dragonflye with miniasm
-  command: nextflow run ./tests/modules/dragonflye -entry test_dragonflye -c ./tests/config/nextflow.config -c ./tests/modules/dragonflye/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/dragonflye -entry test_dragonflye -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragonflye/nextflow.config
   tags:
     - dragonflye
   files:
@@ -12,7 +12,7 @@
     - path: output/dragonflye/dragonflye.log
 
 - name: dragonflye with raven
-  command: nextflow run ./tests/modules/dragonflye -entry test_dragonflye_raven -c ./tests/config/nextflow.config -c ./tests/modules/dragonflye/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/dragonflye -entry test_dragonflye_raven -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragonflye/nextflow.config
   tags:
     - dragonflye
   files:

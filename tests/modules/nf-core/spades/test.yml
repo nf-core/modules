@@ -1,5 +1,5 @@
 - name: spades test_spades_single_end
-  command: nextflow run ./tests/modules/spades -entry test_spades_single_end -c ./tests/config/nextflow.config -c ./tests/modules/spades/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
   tags:
     - spades
   files:
@@ -12,7 +12,7 @@
     - path: output/spades/test.spades.log
 
 - name: spades test_spades_paired_end
-  command: nextflow run ./tests/modules/spades -entry test_spades_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/spades/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
   tags:
     - spades
   files:
@@ -24,7 +24,7 @@
     - path: output/spades/warnings.log
 
 - name: spades test_spades_illumina_nanopore
-  command: nextflow run ./tests/modules/spades -entry test_spades_illumina_nanopore -c ./tests/config/nextflow.config -c ./tests/modules/spades/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_illumina_nanopore -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
   tags:
     - spades
   files:
@@ -38,7 +38,7 @@
     - path: output/spades/warnings.log
 
 - name: spades test_spades_illumina_pacbio
-  command: nextflow run ./tests/modules/spades -entry test_spades_illumina_pacbio -c ./tests/config/nextflow.config -c ./tests/modules/spades/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_illumina_pacbio -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
   tags:
     - spades
   files:

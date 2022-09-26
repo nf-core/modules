@@ -1,5 +1,5 @@
 - name: bowtie2 align test_bowtie2_align_single_end
-  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
   tags:
     - bowtie2
     - bowtie2/align
@@ -9,7 +9,7 @@
     - path: ./output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_single_end_sorted
-  command: nextflow run ./tests/modules/bowtie2/align -entry test_bowtie2_align_single_end_sorted -c ./tests/config/nextflow.config -c ./tests/modules/bowtie2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_sorted -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
   tags:
     - bowtie2
     - bowtie2/align

@@ -1,5 +1,5 @@
 - name: hisat2 align test_hisat2_align_single_end
-  command: nextflow run ./tests/modules/hisat2/align -entry test_hisat2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/hisat2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hisat2/align -entry test_hisat2_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hisat2/align/nextflow.config
   tags:
     - hisat2
     - hisat2/align
@@ -27,7 +27,7 @@
       md5sum: c25be5f8b0378abf7a58c8a880b87626
 
 - name: hisat2 align test_hisat2_align_paired_end
-  command: nextflow run ./tests/modules/hisat2/align -entry test_hisat2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/hisat2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hisat2/align -entry test_hisat2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hisat2/align/nextflow.config
   tags:
     - hisat2
     - hisat2/align

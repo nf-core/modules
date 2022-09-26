@@ -1,5 +1,5 @@
 - name: star genomegenerate test_star_genomegenerate
-  command: nextflow run ./tests/modules/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/star/genomegenerate/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/genomegenerate/nextflow.config
   tags:
     - star
     - star/genomegenerate
@@ -37,7 +37,7 @@
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
 
 - name: star genomegenerate test_star_genomegenerate stub
-  command: nextflow run ./tests/modules/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/star/genomegenerate/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/genomegenerate/nextflow.config -stub-run
   tags:
     - star
     - star/genomegenerate

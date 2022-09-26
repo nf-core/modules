@@ -1,5 +1,5 @@
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator
-  command: nextflow run ./tests/modules/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/baserecalibrator/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/baserecalibrator/nextflow.config
   tags:
     - gatk4
     - gatk4/baserecalibrator
@@ -9,7 +9,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator_cram
-  command: nextflow run ./tests/modules/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_cram -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/baserecalibrator/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/baserecalibrator/nextflow.config
   tags:
     - gatk4
     - gatk4/baserecalibrator
@@ -19,7 +19,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator_intervals
-  command: nextflow run ./tests/modules/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_intervals -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/baserecalibrator/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/baserecalibrator/nextflow.config
   tags:
     - gatk4
     - gatk4/baserecalibrator
@@ -29,7 +29,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 baserecalibrator test_gatk4_baserecalibrator_multiple_sites
-  command: nextflow run ./tests/modules/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_multiple_sites -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/baserecalibrator/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/baserecalibrator -entry test_gatk4_baserecalibrator_multiple_sites -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/baserecalibrator/nextflow.config
   tags:
     - gatk4
     - gatk4/baserecalibrator

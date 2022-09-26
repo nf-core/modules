@@ -1,5 +1,5 @@
 - name: ucsc wigtobigwig test_ucsc_wigtobigwig
-  command: nextflow run ./tests/modules/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/ucsc/wigtobigwig/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ucsc/wigtobigwig/nextflow.config
   tags:
     - ucsc
     - ucsc/wigtobigwig
@@ -10,7 +10,7 @@
       md5sum: 7e14421c65faf5165389f34806acdb12
 
 - name: ucsc wigtobigwig test_ucsc_wigtobigwig stub
-  command: nextflow run ./tests/modules/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/ucsc/wigtobigwig/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/ucsc/wigtobigwig -entry test_ucsc_wigtobigwig -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ucsc/wigtobigwig/nextflow.config -stub
   tags:
     - ucsc
     - ucsc/wigtobigwig

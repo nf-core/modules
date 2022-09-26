@@ -1,5 +1,5 @@
 - name: jupyternotebook test_jupyternotebook
-  command: nextflow run ./tests/modules/jupyternotebook -entry test_jupyternotebook -c ./tests/config/nextflow.config -c ./tests/modules/jupyternotebook/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/jupyternotebook -entry test_jupyternotebook -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jupyternotebook/nextflow.config
   tags:
     - jupyternotebook
   files:
@@ -8,7 +8,7 @@
         - "n_iter = 10"
 
 - name: jupyternotebook test_jupyternotebook_parametrize
-  command: nextflow run ./tests/modules/jupyternotebook -entry test_jupyternotebook_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/jupyternotebook/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/jupyternotebook -entry test_jupyternotebook_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jupyternotebook/nextflow.config
   tags:
     - jupyternotebook
   files:
@@ -19,7 +19,7 @@
         - "n_iter = 12"
 
 - name: jupyternotebook test_jupyternotebook_parametrize_ipynb
-  command: nextflow run ./tests/modules/jupyternotebook -entry test_jupyternotebook_parametrize_ipynb -c ./tests/config/nextflow.config -c ./tests/modules/jupyternotebook/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/jupyternotebook -entry test_jupyternotebook_parametrize_ipynb -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jupyternotebook/nextflow.config
   tags:
     - jupyternotebook
   files:

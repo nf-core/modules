@@ -1,5 +1,5 @@
 - name: fastp test_fastp_single_end
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -23,7 +23,7 @@
         - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -56,7 +56,7 @@
         - "AAAAA6EEAEEEEEAEEAEEAEEEEEEA6EEEEAEEAEEEEE6EEEEEEAEEEEA///A<<EEEEEEEEEAEEEEEE"
 
 - name: fastp test_fastp_interleaved
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_interleaved -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_interleaved -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -80,7 +80,7 @@
         - "reads passed filter: 198"
 
 - name: fastp test_fastp_single_end_trim_fail
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -109,7 +109,7 @@
         - "reads passed filter: 99"
 
 - name: fastp test_fastp_paired_end_trim_fail
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_trim_fail -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:
@@ -148,7 +148,7 @@
         - "A//AA6EEAEEEEE6EEE/EEA/EA///AAE/EAEEEAE6AE/E/E/EEAAE/EAA/E/E/<EA//E/6"
 
 - name: fastp test_fastp_paired_end_merged
-  command: nextflow run ./tests/modules/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config  -c ./tests/modules/fastp/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_merged -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastp/nextflow.config
   tags:
     - fastp
   files:

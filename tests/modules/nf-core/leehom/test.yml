@@ -1,5 +1,5 @@
 - name: leehom test_leehom_bam
-  command: nextflow run ./tests/modules/leehom -entry test_leehom_bam -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/leehom -entry test_leehom_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/leehom/nextflow.config
   tags:
     - leehom
   files:
@@ -9,7 +9,7 @@
       md5sum: d1f5da273eb69f41babda510797c7671
 
 - name: leehom test_leehom_se_fq
-  command: nextflow run ./tests/modules/leehom -entry test_leehom_se_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/leehom -entry test_leehom_se_fq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/leehom/nextflow.config
   tags:
     - leehom
   files:
@@ -21,7 +21,7 @@
       md5sum: 59aa280cb72dfbea05ba913cb89db143
 
 - name: leehom test_leehom_pe_fq
-  command: nextflow run ./tests/modules/leehom -entry test_leehom_pe_fq -c ./tests/config/nextflow.config -c ./tests/modules/leehom/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/leehom -entry test_leehom_pe_fq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/leehom/nextflow.config
   tags:
     - leehom
   files:

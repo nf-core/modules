@@ -1,5 +1,5 @@
 - name: shovill with spades
-  command: nextflow run ./tests/modules/shovill -entry test_shovill -c ./tests/config/nextflow.config -c ./tests/modules/shovill/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shovill -entry test_shovill -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shovill/nextflow.config
   tags:
     - shovill
   files:
@@ -13,7 +13,7 @@
     - path: output/shovill/shovill.log
 
 - name: shovill with megahit
-  command: nextflow run ./tests/modules/shovill -entry test_shovill_megahit -c ./tests/config/nextflow.config -c ./tests/modules/shovill/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shovill -entry test_shovill_megahit -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shovill/nextflow.config
   tags:
     - shovill
   files:
@@ -26,7 +26,7 @@
     - path: output/shovill/shovill.log
 
 - name: shovill with skesa
-  command: nextflow run ./tests/modules/shovill -entry test_shovill_skesa -c ./tests/config/nextflow.config -c ./tests/modules/shovill/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shovill -entry test_shovill_skesa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shovill/nextflow.config
   tags:
     - shovill
   files:
@@ -39,7 +39,7 @@
     - path: output/shovill/shovill.log
 
 - name: shovill with velvet
-  command: nextflow run ./tests/modules/shovill -entry test_shovill_velvet -c ./tests/config/nextflow.config -c ./tests/modules/shovill/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shovill -entry test_shovill_velvet -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shovill/nextflow.config
   tags:
     - shovill
   files:

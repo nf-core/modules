@@ -1,5 +1,5 @@
 - name: bwa mem single-end
-  command: nextflow run ./tests/modules/bwa/mem -entry test_bwa_mem_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/mem/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config
   tags:
     - bwa
     - bwa/mem
@@ -17,7 +17,7 @@
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
 
 - name: bwa mem single-end sort
-  command: nextflow run ./tests/modules/bwa/mem -entry test_bwa_mem_single_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/bwa/mem/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_single_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config
   tags:
     - bwa
     - bwa/mem
@@ -35,7 +35,7 @@
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
 
 - name: bwa mem paired-end
-  command: nextflow run ./tests/modules/bwa/mem -entry test_bwa_mem_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/mem/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config
   tags:
     - bwa
     - bwa/mem
@@ -53,7 +53,7 @@
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
 
 - name: bwa mem paired-end sort
-  command: nextflow run ./tests/modules/bwa/mem -entry test_bwa_mem_paired_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/bwa/mem/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/mem -entry test_bwa_mem_paired_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/mem/nextflow.config
   tags:
     - bwa
     - bwa/mem

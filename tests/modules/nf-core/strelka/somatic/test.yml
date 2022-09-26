@@ -1,5 +1,5 @@
 - name: strelka somatic test_strelka_somatic
-  command: nextflow run ./tests/modules/strelka/somatic -entry test_strelka_somatic -c ./tests/config/nextflow.config -c ./tests/modules/strelka/somatic/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/strelka/somatic -entry test_strelka_somatic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/strelka/somatic/nextflow.config
   tags:
     - strelka
     - strelka/somatic
@@ -10,7 +10,7 @@
     - path: output/strelka/test.somatic_snvs.vcf.gz.tbi
 
 - name: strelka somatic test_strelka_best_practices_somatic
-  command: nextflow run ./tests/modules/strelka/somatic -entry test_strelka_best_practices_somatic -c ./tests/config/nextflow.config -c ./tests/modules/strelka/somatic/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/strelka/somatic -entry test_strelka_best_practices_somatic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/strelka/somatic/nextflow.config
   tags:
     - strelka
     - strelka/somatic

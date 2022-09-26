@@ -1,5 +1,5 @@
 - name: bcftools reheader test_bcftools_reheader_update_sequences
-  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/reheader -entry test_bcftools_reheader_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/reheader/nextflow.config
   tags:
     - bcftools/reheader
     - bcftools
@@ -8,7 +8,7 @@
       md5sum: c8a732976911c0c0815d973d5974769a
 
 - name: bcftools reheader test_bcftools_reheader_new_header
-  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_new_header -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/reheader -entry test_bcftools_reheader_new_header -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/reheader/nextflow.config
   tags:
     - bcftools/reheader
     - bcftools
@@ -17,7 +17,7 @@
       md5sum: aba91c9ec58e38d73657f02df8457b66
 
 - name: bcftools reheader test_bcftools_reheader_new_header_update_sequences
-  command: nextflow run ./tests/modules/bcftools/reheader -entry test_bcftools_reheader_new_header_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/reheader/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/reheader -entry test_bcftools_reheader_new_header_update_sequences -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/reheader/nextflow.config
   tags:
     - bcftools/reheader
     - bcftools

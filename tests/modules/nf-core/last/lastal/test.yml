@@ -1,5 +1,5 @@
 - name: last lastal test_last_lastal_with_dummy_param_file
-  command: nextflow run ./tests/modules/last/lastal -entry test_last_lastal_with_dummy_param_file -c ./tests/config/nextflow.config -c ./tests/modules/last/lastal/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/last/lastal -entry test_last_lastal_with_dummy_param_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/last/lastal/nextflow.config
   tags:
     - last
     - last/lastal
@@ -22,7 +22,7 @@
       md5sum: b7c40f06b1309dc6f37849eeb86dfd22
 
 - name: last lastal test_last_lastal_with_real_param_file
-  command: nextflow run ./tests/modules/last/lastal -entry test_last_lastal_with_real_param_file -c ./tests/config/nextflow.config -c ./tests/modules/last/lastal/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/last/lastal -entry test_last_lastal_with_real_param_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/last/lastal/nextflow.config
   tags:
     - last
     - last/lastal

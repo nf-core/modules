@@ -1,5 +1,5 @@
 - name: ffq test_ffq_single_id
-  command: nextflow run ./tests/modules/ffq -entry test_ffq_single_id -c ./tests/config/nextflow.config  -c ./tests/modules/ffq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ffq -entry test_ffq_single_id -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ffq/nextflow.config
   tags:
     - ffq
   files:
@@ -7,7 +7,7 @@
       md5sum: 68db6114ef348f721c139cd4c9534f73
 
 - name: ffq test_ffq_multiple_ids
-  command: nextflow run ./tests/modules/ffq -entry test_ffq_multiple_ids -c ./tests/config/nextflow.config  -c ./tests/modules/ffq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ffq -entry test_ffq_multiple_ids -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/ffq/nextflow.config
   tags:
     - ffq
   files:

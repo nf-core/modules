@@ -1,5 +1,5 @@
 - name: idr test_idr_narrowpeak
-  command: nextflow run ./tests/modules/idr -entry test_idr_narrowpeak -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/idr -entry test_idr_narrowpeak -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/idr/nextflow.config
   tags:
     - idr
   files:
@@ -11,7 +11,7 @@
       md5sum: 6443507ac66b9d3b64bc56b78328083e
 
 - name: idr test_idr_broadpeak
-  command: nextflow run ./tests/modules/idr -entry test_idr_broadpeak -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/idr -entry test_idr_broadpeak -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/idr/nextflow.config
   tags:
     - idr
   files:
@@ -23,7 +23,7 @@
       md5sum: e6917133112b5cec135c182ffac19237
 
 - name: idr test_idr_noprefix
-  command: nextflow run ./tests/modules/idr -entry test_idr_noprefix -c ./tests/config/nextflow.config -c ./tests/modules/idr/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/idr -entry test_idr_noprefix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/idr/nextflow.config
   tags:
     - idr
   files:

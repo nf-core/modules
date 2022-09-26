@@ -1,5 +1,5 @@
 - name: bcftools query
-  command: nextflow run ./tests/modules/bcftools/query -entry test_bcftools_query -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/query/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/query -entry test_bcftools_query -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/query/nextflow.config
   tags:
     - bcftools
     - bcftools/query
@@ -8,7 +8,7 @@
       md5sum: c32a6d28f185822d8fe1eeb7e42ec155
 
 - name: bcftools query with optional files
-  command: nextflow run ./tests/modules/bcftools/query -entry test_bcftools_query_with_optional_files -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/query/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bcftools/query -entry test_bcftools_query_with_optional_files -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/query/nextflow.config
   tags:
     - bcftools
     - bcftools/query

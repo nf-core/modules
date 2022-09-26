@@ -1,5 +1,5 @@
 - name: star align test_star_alignment_single_end
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_single_end -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
   tags:
     - star/align
     - star
@@ -43,7 +43,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: star align test_star_alignment_paired_end
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
   tags:
     - star/align
     - star
@@ -87,7 +87,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: star align test_star_alignment_paired_end_for_fusion
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_paired_end_for_fusion -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end_for_fusion -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
   tags:
     - star/align
     - star
@@ -131,7 +131,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: star align test_star_alignment_paired_end_for_starfusion
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_paired_end_for_starfusion -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end_for_starfusion -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
   tags:
     - star/align
     - star
@@ -177,7 +177,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: star align test_star_alignment_single_end stub
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_single_end -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config -stub-run
   tags:
     - star/align
     - star

@@ -1,5 +1,5 @@
 - name: damageprofiler test_damageprofiler
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler -c ./tests/config/nextflow.config  -c ./tests/modules/damageprofiler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/damageprofiler -entry test_damageprofiler -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:
@@ -34,7 +34,7 @@
       md5sum: 25119c0fcc8839fdbb3ed10922fb07f4
 
 - name: damageprofiler test_damageprofiler_reference
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_reference -c ./tests/config/nextflow.config  -c ./tests/modules/damageprofiler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/damageprofiler -entry test_damageprofiler_reference -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:
@@ -69,7 +69,7 @@
       md5sum: 25119c0fcc8839fdbb3ed10922fb07f4
 
 - name: damageprofiler test_damageprofiler_specieslist
-  command: nextflow run ./tests/modules/damageprofiler -entry test_damageprofiler_specieslist -c ./tests/config/nextflow.config  -c ./tests/modules/damageprofiler/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/damageprofiler -entry test_damageprofiler_specieslist -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/damageprofiler/nextflow.config
   tags:
     - damageprofiler
   files:

@@ -1,5 +1,5 @@
 - name: bbmap bbduk test_bbmap_bbduk_single_end
-  command: nextflow run ./tests/modules/bbmap/bbduk -entry test_bbmap_bbduk_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/bbduk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
   tags:
     - bbmap/bbduk
   files:
@@ -10,7 +10,7 @@
       md5sum: a87d0cbd5ced7df8bf1751e4cb407482
 
 - name: bbmap bbduk test_bbmap_bbduk_paired_end
-  command: nextflow run ./tests/modules/bbmap/bbduk -entry test_bbmap_bbduk_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/bbduk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
   tags:
     - bbmap/bbduk
   files:
@@ -23,7 +23,7 @@
       md5sum: 406e068fbe198f02b48e7e210cc0c69f
 
 - name: bbmap bbduk test_bbmap_bbduk_se_ref
-  command: nextflow run ./tests/modules/bbmap/bbduk -entry test_bbmap_bbduk_se_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/bbduk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_se_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
   tags:
     - bbmap/bbduk
   files:
@@ -34,7 +34,7 @@
       md5sum: 3970e82605c7d109bb348fc94e9eecc0
 
 - name: bbmap bbduk test_bbmap_bbduk_pe_ref
-  command: nextflow run ./tests/modules/bbmap/bbduk -entry test_bbmap_bbduk_pe_ref -c ./tests/config/nextflow.config -c ./tests/modules/bbmap/bbduk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bbmap/bbduk -entry test_bbmap_bbduk_pe_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/bbduk/nextflow.config
   tags:
     - bbmap/bbduk
   files:

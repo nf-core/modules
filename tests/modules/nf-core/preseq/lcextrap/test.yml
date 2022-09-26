@@ -1,5 +1,5 @@
 - name: preseq lcextrap single-end
-  command: nextflow run ./tests/modules/preseq/lcextrap -entry test_preseq_single_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/lcextrap/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/preseq/lcextrap -entry test_preseq_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/preseq/lcextrap/nextflow.config
   tags:
     - preseq
     - preseq/lcextrap
@@ -9,7 +9,7 @@
     - path: output/preseq/test.command.log
 
 - name: preseq lcextrap paired-end
-  command: nextflow run ./tests/modules/preseq/lcextrap -entry test_preseq_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/lcextrap/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/preseq/lcextrap -entry test_preseq_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/preseq/lcextrap/nextflow.config
   tags:
     - preseq
     - preseq/lcextrap

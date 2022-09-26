@@ -1,5 +1,5 @@
 - name: bwa aln single-end
-  command: nextflow run ./tests/modules/bwa/aln -entry test_bwa_aln_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/aln/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/aln -entry test_bwa_aln_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/aln/nextflow.config
   tags:
     - bwa
     - bwa/aln
@@ -18,7 +18,7 @@
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
 
 - name: bwa aln paired-end
-  command: nextflow run ./tests/modules/bwa/aln -entry test_bwa_aln_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/bwa/aln/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bwa/aln -entry test_bwa_aln_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bwa/aln/nextflow.config
   tags:
     - bwa
     - bwa/aln
