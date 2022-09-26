@@ -41,12 +41,29 @@ output:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: filtered/converted BAM/SAM file
-      pattern: "*.{bam,sam}"
+      description: optional filtered/converted BAM file
+      pattern: "*.{bam}"
   - cram:
       type: file
-      description: filtered/converted CRAM file
-      pattern: "*.cram"
+      description: optional filtered/converted CRAM file
+      pattern: "*.{cram}"
+  - sam:
+      type: file
+      description: optional filtered/converted SAM file
+      pattern: "*.{sam}"
+  # bai, csi, and crai are created with `--write-index`
+  - bai:
+      type: file
+      description: optional BAM file index
+      pattern: "*.{bai}"
+  - csi:
+      type: file
+      description: optional tabix BAM file index
+      pattern: "*.{csi}"
+  - crai:
+      type: file
+      description: optional CRAM file index
+      pattern: "*.{crai}"
   - versions:
       type: file
       description: File containing software versions
@@ -55,3 +72,4 @@ authors:
   - "@drpatelh"
   - "@joseespinosa"
   - "@FriederikeHanssen"
+  - "@priyanka-surana"

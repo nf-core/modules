@@ -1,6 +1,6 @@
 process UCSC_BEDTOBIGBED {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-bedtobigbed=377" : null)
@@ -11,6 +11,7 @@ process UCSC_BEDTOBIGBED {
     input:
     tuple val(meta), path(bed)
     path  sizes
+    path  autosql
 
     output:
     tuple val(meta), path("*.bigBed"), emit: bigbed
@@ -22,11 +23,13 @@ process UCSC_BEDTOBIGBED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def as_option = autosql ? "-as=${autosql}" : ""
     def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedToBigBed \\
         $bed \\
         $sizes \\
+        $as_option \\
         $args \\
         ${prefix}.bigBed
 
