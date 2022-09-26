@@ -1,6 +1,6 @@
 process PYDAMAGE_FILTER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::pydamage=0.70" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

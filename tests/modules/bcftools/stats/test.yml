@@ -1,8 +1,26 @@
 - name: bcftools stats test_bcftools_stats
-  command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/stats/nextflow.config
+  command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/stats/nextflow.config
   tags:
-    - bcftools
     - bcftools/stats
+    - bcftools
   files:
     - path: output/bcftools/test.bcftools_stats.txt
-      md5sum: 1f948177196b09806782e1ee801463a2
+      contains: ["TSTV	0	6	2	3.00	6	2	3.00", "DP	0	1	0	0.000000	5	55.555556"]
+
+- name: bcftools stats test_bcftools_stats_regions
+  command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats_regions -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/stats/nextflow.config
+  tags:
+    - bcftools/stats
+    - bcftools
+  files:
+    - path: output/bcftools/test.bcftools_stats.txt
+      contains: ["TSTV	0	5	1	5.00	5	1	5.00", "DP	0	1	0	0.000000	3	42.857143"]
+
+- name: bcftools stats test_bcftools_stats_targets
+  command: nextflow run ./tests/modules/bcftools/stats -entry test_bcftools_stats_targets -c ./tests/config/nextflow.config  -c ./tests/modules/bcftools/stats/nextflow.config
+  tags:
+    - bcftools/stats
+    - bcftools
+  files:
+    - path: output/bcftools/test.bcftools_stats.txt
+      contains: ["TSTV	0	6	2	3.00	6	2	3.00", "DP	0	1	0	0.000000	5	55.555556"]

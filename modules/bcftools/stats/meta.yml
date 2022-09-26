@@ -23,6 +23,24 @@ input:
       type: file
       description: VCF input file
       pattern: "*.{vcf}"
+  - tbi:
+      type: file
+      description: |
+        The tab index for the VCF file to be inspected. Optional: only required when parameter regions is chosen.
+      pattern: "*.tbi"
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file. (VCF, BED or tab-delimited)
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon tbi index files)
+  - samples:
+      type: file
+      description: |
+        Optional, file of sample names to be included or excluded.
+        e.g. 'file.tsv'
 output:
   - meta:
       type: map
@@ -40,3 +58,4 @@ output:
 authors:
   - "@joseespinosa"
   - "@drpatelh"
+  - "@SusiJo"

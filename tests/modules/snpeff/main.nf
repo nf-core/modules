@@ -10,5 +10,5 @@ workflow test_snpeff {
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    SNPEFF ( input, "WBcel235.99", [] )
+    SNPEFF ( input, "WBcel235.105", [] )
 }

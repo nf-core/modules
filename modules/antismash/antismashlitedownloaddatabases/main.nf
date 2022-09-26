@@ -1,5 +1,5 @@
 process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

@@ -28,6 +28,10 @@ input:
       type: file
       description: Index of the BAM file
       pattern: "*.bai"
+  - bed:
+      type: file
+      description: BED with the regions of interest
+      pattern: "*.bed"
   - fasta:
       type: file
       description: FASTA of the reference genome
@@ -36,10 +40,6 @@ input:
       type: file
       description: The index of the FASTA of the reference genome
       pattern: "*.fai"
-  - bed:
-      type: file
-      description: BED with the regions of interest
-      pattern: "*.bed"
 
 output:
   - meta:
