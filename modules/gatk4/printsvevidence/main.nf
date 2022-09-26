@@ -36,7 +36,7 @@ process GATK4_PRINTSVEVIDENCE {
                     file_name =~ ".baf.txt" ? "baf" :
                     file_name =~ ".rd.txt" ? "rd" :
                     false
-                    
+
     if(!file_type){
         error("The input file name should contain one of the following: '.sr.txt', '.pe.txt', '.baf.txt', '.rd.txt'")
     }
