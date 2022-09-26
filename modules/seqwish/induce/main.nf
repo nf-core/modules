@@ -21,7 +21,12 @@ process SEQWISH_INDUCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = paf.join(',') // this ensures that we can actually input a comma-separated list of PAF files as required by https://github.com/nf-core/pangenome. If one wants to use this, ensure that you put a ".collect()" behind your channel. See https://github.com/nf-core/pangenome/blob/34149c6cdc19bce3a7b99f97c769d8986a8d429b/main.nf#L543 for an example.
+    def input = paf.join(',') // this ensures that we can actually input a
+        // comma-separated list of PAF files as required by
+        // https://github.com/nf-core/pangenome. If one wants to use this,
+        // ensure that you put a ".collect()" behind your channel.
+        // See https://github.com/nf-core/pangenome/blob/34149c6cdc19bce3a7b99f97c769d8986a8d429b/main.nf#L543
+        // for an example.
     """
     seqwish \\
         --threads $task.cpus \\
