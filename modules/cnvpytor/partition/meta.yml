@@ -22,6 +22,9 @@ input:
       type: file
       description: pytor file containing read depth data
       pattern: "*.{pytor}"
+  - bin_sizes:
+      type: string
+      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
 
 output:
   - meta:
@@ -40,3 +43,4 @@ output:
 
 authors:
   - "@sima-r"
+  - "@ramprasadn"

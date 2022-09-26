@@ -1,0 +1,72 @@
+name: srst2_srst2
+description: |
+  Short Read Sequence Typing for Bacterial Pathogens is a program designed to take Illumina sequence data,
+  a MLST database and/or a database of gene sequences (e.g. resistance genes, virulence genes, etc)
+  and report the presence of STs and/or reference genes.
+keywords:
+  - mlst
+  - typing
+  - illumina
+tools:
+  - srst2:
+      description: "Short Read Sequence Typing for Bacterial Pathogens"
+      homepage: "http://katholt.github.io/srst2/"
+      documentation: "https://github.com/katholt/srst2/blob/master/README.md"
+      tool_dev_url: "https://github.com/katholt/srst2"
+      doi: "10.1186/s13073-014-0090-6"
+      licence: ["BSD"]
+
+input:
+  - meta:
+      type: map0.2.0-4
+      description: |
+        Groovy Map containing sample information
+        id: should be the identification number or sample name
+        single_end: should be true for single end data and false for paired in data
+        db: should be either 'gene' to use the --gene_db option or "mlst" to use the --mlst_db option
+        e.g. [ id:'sample', single_end:false , db:'gene']
+  - fasta:
+      type: file
+      description: |
+        gzipped fasta file. If files are NOT in
+        MiSeq format sample_S1_L001_R1_001.fastq.gz uses --forward and --reverse parameters; otherwise
+        default is _1, i.e. expect forward reads as sample_1.fastq.gz).
+      pattern: "*.fastq.gz"
+  - db:
+      type: file
+      description: Database in FASTA format
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'sample', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: A detailed report, with one row per gene per sample described here github.com/katholt/srst2#gene-typing
+      pattern: "*_fullgenes_*_results.txt"
+  - txt:
+      type: file
+      description: A tabulated summary report of samples x genes.
+      pattern: "*_genes_*_results.txt"
+  - txt:
+      type: file
+      description: A tabulated summary report of mlst subtyping.
+      pattern: "*_mlst_*_results.txt"
+  - bam:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.sorted.bam"
+  - pileup:
+      type: file
+      description: SAMtools pileup file
+      pattern: "*.pileup"
+
+authors:
+  - "@jvhagey"

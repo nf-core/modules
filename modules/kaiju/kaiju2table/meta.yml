@@ -1,0 +1,50 @@
+name: "kaiju_kaiju2table"
+description: write your description here
+keywords:
+  - classify
+  - metagenomics
+tools:
+  - kaiju:
+      description: Fast and sensitive taxonomic classification for metagenomics
+      homepage: https://kaiju.binf.ku.dk/
+      documentation: https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
+      tool_dev_url: https://github.com/bioinformatics-centre/kaiju
+      doi: "10.1038/ncomms11257"
+      licence: ["GNU GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - results:
+      type: file
+      description: File containing the kaiju classification results
+      pattern: "*.{txt}"
+  - taxon_rank:
+      type: string
+      description: |
+        Taxonomic rank to display in report
+        pattern: "phylum|class|order|family|genus|species"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - results:
+      type: file
+      description: |
+        Summary table for a given taxonomic rank
+      pattern: "*.{tsv}"
+
+authors:
+  - "@sofstam"
+  - "@talnor"
+  - "@jfy133"

@@ -1,11 +1,11 @@
 process GUNZIP {
     tag "$archive"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
-        'biocontainers/biocontainers:v1.2.0_cv1' }"
+        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
+        'ubuntu:20.04' }"
 
     input:
     tuple val(meta), path(archive)
@@ -26,6 +26,16 @@ process GUNZIP {
         $args \\
         $archive
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    gunzip = archive.toString() - '.gz'
+    """
+    touch $gunzip
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')

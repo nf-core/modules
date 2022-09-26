@@ -1,9 +1,8 @@
-def VERSION = '2.8' // Version information not provided by tool on CLI
-
 process KRONA_KTIMPORTTAXONOMY {
     tag "${meta.id}"
-    label 'process_high'
+    label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::krona=2.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.8--pl5262hdfd78af_2' :
@@ -11,7 +10,7 @@ process KRONA_KTIMPORTTAXONOMY {
 
     input:
     tuple val(meta), path(report)
-    path  "taxonomy/taxonomy.tab"
+    path taxonomy, stageAs: 'taxonomy.tab'
 
     output:
     tuple val(meta), path ('*.html'), emit: html
@@ -22,8 +21,17 @@ process KRONA_KTIMPORTTAXONOMY {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.8' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    ktImportTaxonomy "$report" -tax taxonomy
+    TAXONOMY=\$(find -L . -name '*.tab' -exec dirname {} \\;)
+    echo \$TAXONOMY
+
+    ktImportTaxonomy \\
+        $args \\
+        -o ${prefix}.html \\
+        -tax \$TAXONOMY/ \\
+        $report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
