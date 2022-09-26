@@ -1,6 +1,6 @@
 process SAMTOOLS_MPILEUP {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -26,6 +26,7 @@ process SAMTOOLS_MPILEUP {
         --fasta-ref $fasta \\
         --output ${prefix}.mpileup \\
         $args \\
+        $intervals \\
         $input
     bgzip ${prefix}.mpileup
     cat <<-END_VERSIONS > versions.yml

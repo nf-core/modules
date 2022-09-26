@@ -56,6 +56,10 @@ output:
       type: file
       description: Optional intermediate mgc read count table file saved with `-M`.
       pattern: "*.{mgc}"
+  - log:
+      type: file
+      description: Standard error logging file containing summary statistics
+      pattern: "*.log"
 
 authors:
   - "@jianhong"
