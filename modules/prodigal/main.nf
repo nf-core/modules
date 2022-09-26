@@ -1,6 +1,6 @@
 process PRODIGAL {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "prodigal=2.6.3 pigz=2.6" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

@@ -7,11 +7,11 @@ include { GOAT_TAXONSEARCH } from '../../../../modules/goat/taxonsearch/main.nf'
 //
 // Test with genus name (Canis)
 //
-workflow test_goat_taxonsearch_genus_name {
+workflow test_goat_taxonsearch_single_species {
 
     input = [
-      [ id:'test_genus_name' ], // meta map
-      taxon = 'Canis',
+      [ id:'test_single_species' ], // meta map
+      taxon = 'Meles meles',
       []
   ]
     GOAT_TAXONSEARCH ( input )

@@ -1,8 +1,6 @@
-def VERSION="1.0.2"
-
 process DEEPARG_PREDICT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -31,6 +29,7 @@ process DEEPARG_PREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     deeparg \\
         predict \\
