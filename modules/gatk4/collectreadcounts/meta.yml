@@ -1,24 +1,11 @@
 name: "gatk4_collectreadcounts"
 description: Collects read counts at specified intervals. The count for each interval is calculated by counting the number of read starts that lie in the interval.
 keywords:
-<<<<<<< HEAD
-  - gatk4
-  - gatk4_collectreadcounts
-tools:
-  - "gatk4":
-      description:
-        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
-        with a primary focus on variant discovery and genotyping. Its powerful processing engine
-        and high-performance computing features make it capable of taking on projects of any size.
-      homepage: https://gatk.broadinstitute.org/hc/en-us
-      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: "10.1158/1538-7445.AM2017-3590"
-=======
-  - bam
-  - cram
-  - CollectReadCounts
   - gatk
   - gatk4
+  - gatk4_collectreadcounts
+  - bam
+  - cram
 tools:
   - gatk4:
       description:
@@ -29,7 +16,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593911-CombineGVCFs
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
->>>>>>> master
       licence: ["Apache-2.0"]
 
 input:
@@ -38,31 +24,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-<<<<<<< HEAD
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - input_index:
-      type: file
-      description: BAI/CRAI file from alignment
-      pattern: "*.{bai,crai}"
-  - intervals:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
-      pattern: "*.{bed, interval_list}"
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-=======
   - bam:
       type: file
       description: BAM/CRAM/SAM file
@@ -86,7 +47,6 @@ input:
   - dict:
       type: file
       description: Optional - Sequence dictionary of the reference FASTA file
->>>>>>> master
       pattern: "*.dict"
 
 output:
@@ -99,16 +59,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-<<<<<<< HEAD
-  - tsv:
-      type: file
-      description: Read counts TSV file
-      pattern: "*.tsv"
-
-authors:
-  - "@ryanjameskennedy"
-  - "@ViktorHy"
-=======
   - hdf5:
       type: file
       description: The read counts in hdf5 format
@@ -120,4 +70,3 @@ authors:
 
 authors:
   - "@nvnieuwk"
->>>>>>> master

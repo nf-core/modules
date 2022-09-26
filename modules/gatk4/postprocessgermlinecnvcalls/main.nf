@@ -12,9 +12,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
 
     output:
     tuple val(meta), \
-          file("genotyped-intervals-${group}-vs-cohort.vcf.gz"), \
-          file("genotyped-segments-${group}-vs-cohort.vcf.gz"), \
-          file("denoised-${group}-vs-cohort.vcf.gz"), emit: vcf
+        file("genotyped-intervals-${group}-vs-cohort.vcf.gz"), \
+        file("genotyped-segments-${group}-vs-cohort.vcf.gz"), \
+        file("denoised-${group}-vs-cohort.vcf.gz"), emit: vcf
     path  "versions.yml"           , emit: versions
 
     when:
@@ -27,7 +27,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     def modelshards = shard.join(' --model-shard-path ') // join each reference shard
     def caseshards = []
     for (n = 1; n <= i.size(); n++) { // join each shard(n) that's been called
-        tmp = group+'_'+i[n-1]+'/'+group+'_'+i[n-1]+'-calls' 
+        tmp = group+'_'+i[n-1]+'/'+group+'_'+i[n-1]+'-calls'
         caseshards = caseshards + tmp
     }
     caseshards = caseshards.join( ' --calls-shard-path ')
