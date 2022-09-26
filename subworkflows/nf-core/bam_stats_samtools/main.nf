@@ -4,9 +4,9 @@
 
 params.options = [:]
 
-include { SAMTOOLS_STATS    } from '../../../modules/samtools/stats/main'    addParams( options: params.options )
-include { SAMTOOLS_IDXSTATS } from '../../../modules/samtools/idxstats/main' addParams( options: params.options )
-include { SAMTOOLS_FLAGSTAT } from '../../../modules/samtools/flagstat/main' addParams( options: params.options )
+include { SAMTOOLS_STATS    } from '../../../modules/nf-core/samtools/stats/main'    addParams( options: params.options )
+include { SAMTOOLS_IDXSTATS } from '../../../modules/nf-core/samtools/idxstats/main' addParams( options: params.options )
+include { SAMTOOLS_FLAGSTAT } from '../../../modules/nf-core/samtools/flagstat/main' addParams( options: params.options )
 
 workflow BAM_STATS_SAMTOOLS {
     take:
