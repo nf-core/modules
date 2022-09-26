@@ -1,6 +1,5 @@
 process DEEPBGC_DOWNLOAD {
-    tag "download"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,8 +7,8 @@ process DEEPBGC_DOWNLOAD {
         'quay.io/biocontainers/deepbgc:0.1.30--pyhb7b1952_1' }"
 
     output:
-    path "deepbgc_db/"             , emit: db
-    path "versions.yml"           , emit: versions
+    path "deepbgc_db/"  , emit: db
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
