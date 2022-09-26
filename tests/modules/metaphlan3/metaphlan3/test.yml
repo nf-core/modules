@@ -1,5 +1,5 @@
 - name: metaphlan3 test_metaphlan3_single_end
-  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_single_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3/metaphlan3 -entry test_metaphlan3_single_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
@@ -30,7 +30,7 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_paired_end
-  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3/metaphlan3 -entry test_metaphlan3_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
@@ -61,7 +61,7 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_sam
-  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_sam -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3/metaphlan3 -entry test_metaphlan3_sam -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:
@@ -92,7 +92,7 @@
       md5sum: 1ca16b905abf657b88ca2bc12e7ad404
 
 - name: metaphlan3 test_metaphlan3_fasta
-  command: nextflow run ./tests/modules/metaphlan3 -entry test_metaphlan3_fasta -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/nextflow.config
+  command: nextflow run ./tests/modules/metaphlan3/metaphlan3 -entry test_metaphlan3_fasta -c ./tests/config/nextflow.config -c ./tests/modules/metaphlan3/metaphlan3/nextflow.config
   tags:
     - metaphlan3
   files:

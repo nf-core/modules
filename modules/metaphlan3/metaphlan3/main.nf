@@ -1,4 +1,4 @@
-process METAPHLAN3 {
+process METAPHLAN3_METAPHLAN3 {
     tag "$meta.id"
     label 'process_high'
 

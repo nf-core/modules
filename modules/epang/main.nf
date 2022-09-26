@@ -16,10 +16,10 @@ process EPANG {
     path binaryfile
 
     output:
-    tuple val(meta), path("./."), emit: epang   , optional: true
-    path "*.epa_result.jplace"  , emit: jplace  , optional: true
-    path "*.epa_info.log"       , emit: log
-    path "versions.yml"         , emit: versions
+    tuple val(meta), path("./.")                   , emit: epang   , optional: true
+    tuple val(meta), path("*.epa_result.jplace.gz"), emit: jplace  , optional: true
+    path "*.epa_info.log"                          , emit: log
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,8 +45,11 @@ process EPANG {
         $splitarg \\
         $binaryarg
 
-    [ -e epa_result.jplace ] && mv epa_result.jplace ${prefix}.epa_result.jplace
-    [ -e epa_info.log ]      && mv epa_info.log      ${prefix}.epa_info.log
+    if [ -e epa_result.jplace ]; then
+        gzip epa_result.jplace
+        cp epa_result.jplace.gz ${prefix}.epa_result.jplace.gz
+    fi
+    [ -e epa_info.log ]      && cp epa_info.log ${prefix}.epa_info.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

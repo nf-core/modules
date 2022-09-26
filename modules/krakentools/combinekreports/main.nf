@@ -1,5 +1,5 @@
 process KRAKENTOOLS_COMBINEKREPORTS {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krakentools=1.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -7,10 +7,10 @@ process KRAKENTOOLS_COMBINEKREPORTS {
         'quay.io/biocontainers/krakentools:1.2--pyh5e36f6f_0' }"
 
     input:
-    path kreports
+    tuple val(meta), path(kreports)
 
     output:
-    path "*.txt", emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml", emit: versions
 
     when:
@@ -18,12 +18,12 @@ process KRAKENTOOLS_COMBINEKREPORTS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "kreports_combined.txt"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     combine_kreports.py \\
         -r ${kreports} \\
-        -o ${prefix} \\
+        -o ${prefix}.txt \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
