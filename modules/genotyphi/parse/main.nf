@@ -1,14 +1,14 @@
-process MLST {
+process GENOTYPHI_PARSE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::mlst=2.19.0" : null)
+    conda (params.enable_conda ? "bioconda::genotyphi=1.9.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1' :
-        'quay.io/biocontainers/mlst:2.19.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1':
+        'quay.io/biocontainers/genotyphi:1.9.1--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(json)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
@@ -21,16 +21,13 @@ process MLST {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mlst \\
-        $args \\
-        --threads $task.cpus \\
-        $fasta \\
-        > ${prefix}.tsv
+    parse_typhi_mykrobe.py \\
+        --jsons $json \\
+        --prefix ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mlst: \$( echo \$(mlst --version 2>&1) | sed 's/mlst //' )
+        genotyphi: \$(echo \$(genotyphi --version 2>&1) | sed 's/^.*GenoTyphi v//;' )
     END_VERSIONS
     """
-
 }
