@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PEDDY } from '../../../modules/peddy/main.nf'
+include { PEDDY } from '../../../modules/nf-core/peddy/main.nf'
 
 workflow test_peddy {
 

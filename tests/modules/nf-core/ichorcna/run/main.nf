@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { ICHORCNA_RUN } from '../../../../modules/ichorcna/run/main.nf'
-include { HMMCOPY_READCOUNTER } from '../../../../modules/hmmcopy/readcounter/main.nf'
-include { HMMCOPY_GCCOUNTER } from '../../../../modules/hmmcopy/gccounter/main.nf'
-include { HMMCOPY_MAPCOUNTER } from '../../../../modules/hmmcopy/mapcounter/main.nf'
-include { HMMCOPY_GENERATEMAP } from '../../../../modules/hmmcopy/generatemap/main.nf'
+include { ICHORCNA_RUN } from '../../../../modules/nf-core/ichorcna/run/main.nf'
+include { HMMCOPY_READCOUNTER } from '../../../../modules/nf-core/hmmcopy/readcounter/main.nf'
+include { HMMCOPY_GCCOUNTER } from '../../../../modules/nf-core/hmmcopy/gccounter/main.nf'
+include { HMMCOPY_MAPCOUNTER } from '../../../../modules/nf-core/hmmcopy/mapcounter/main.nf'
+include { HMMCOPY_GENERATEMAP } from '../../../../modules/nf-core/hmmcopy/generatemap/main.nf'
 
 workflow test_ichorcna_run_no_panel {
 

@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_FILTERVARIANTTRANCHES } from '../../../../modules/gatk4/filtervarianttranches/main.nf'
-include { GATK4_CNNSCOREVARIANTS } from '../../../../modules/gatk4/cnnscorevariants/main.nf'
-include { GATK4_HAPLOTYPECALLER  } from '../../../../modules/gatk4/haplotypecaller/main.nf'
+include { GATK4_FILTERVARIANTTRANCHES } from '../../../../modules/nf-core/gatk4/filtervarianttranches/main.nf'
+include { GATK4_CNNSCOREVARIANTS } from '../../../../modules/nf-core/gatk4/cnnscorevariants/main.nf'
+include { GATK4_HAPLOTYPECALLER  } from '../../../../modules/nf-core/gatk4/haplotypecaller/main.nf'
 workflow test_gatk4_filtervarianttranches {
 
     resources = [ file(params.test_data['homo_sapiens']['genome']['dbsnp_146_hg38_vcf_gz'], checkIfExists: true) ]

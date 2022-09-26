@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STADENIOLIB_SCRAMBLE } from '../../../../modules/stadeniolib/scramble/main.nf'
+include { STADENIOLIB_SCRAMBLE } from '../../../../modules/nf-core/stadeniolib/scramble/main.nf'
 
 workflow test_stadeniolib {
 

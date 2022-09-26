@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_ADDORREPLACEREADGROUPS } from '../../../../modules/picard/addorreplacereadgroups/main.nf'
+include { PICARD_ADDORREPLACEREADGROUPS } from '../../../../modules/nf-core/picard/addorreplacereadgroups/main.nf'
 
 workflow test_picard_addorreplacereadgroups {
     

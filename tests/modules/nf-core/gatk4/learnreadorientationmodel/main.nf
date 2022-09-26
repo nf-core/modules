@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_LEARNREADORIENTATIONMODEL } from '../../../../modules/gatk4/learnreadorientationmodel/main.nf'
+include { GATK4_LEARNREADORIENTATIONMODEL } from '../../../../modules/nf-core/gatk4/learnreadorientationmodel/main.nf'
 
 workflow test_gatk4_learnreadorientationmodel {
 

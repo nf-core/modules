@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 params.fragment_size = 1000
 
-include { DEEPTOOLS_PLOTFINGERPRINT } from '../../../../modules/deeptools/plotfingerprint/main.nf'
+include { DEEPTOOLS_PLOTFINGERPRINT } from '../../../../modules/nf-core/deeptools/plotfingerprint/main.nf'
 
 workflow test_deeptools_plotfingerprint {
 

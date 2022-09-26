@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_INNERDISTANCE }   from '../../../../modules/rseqc/innerdistance/main.nf'
+include { RSEQC_INNERDISTANCE }   from '../../../../modules/nf-core/rseqc/innerdistance/main.nf'
 
 workflow test_rseqc_innerdistance {
     input = [ [ id:'test', single_end: false ], // meta map

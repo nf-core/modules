@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { STAPHOPIASCCMEC } from '../../../modules/staphopiasccmec/main.nf'
-include { STAPHOPIASCCMEC as STAPHOPIASCCMEC_HAMMING } from '../../../modules/staphopiasccmec/main.nf'
+include { STAPHOPIASCCMEC } from '../../../modules/nf-core/staphopiasccmec/main.nf'
+include { STAPHOPIASCCMEC as STAPHOPIASCCMEC_HAMMING } from '../../../modules/nf-core/staphopiasccmec/main.nf'
 
 workflow test_staphopiasccmec {
     

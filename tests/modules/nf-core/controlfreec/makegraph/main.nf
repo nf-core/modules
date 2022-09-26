@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CONTROLFREEC_MAKEGRAPH } from '../../../../modules/controlfreec/makegraph/main.nf'
-include { CONTROLFREEC_FREEC     } from '../../../../modules/controlfreec/freec/main.nf'
-include { UNTAR                  } from '../../../../modules/untar/main.nf'
+include { CONTROLFREEC_MAKEGRAPH } from '../../../../modules/nf-core/controlfreec/makegraph/main.nf'
+include { CONTROLFREEC_FREEC     } from '../../../../modules/nf-core/controlfreec/freec/main.nf'
+include { UNTAR                  } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_controlfreec_makegraph {
 

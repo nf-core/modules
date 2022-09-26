@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../../modules/untar/main'
-include { KRAKEN2_KRAKEN2 } from '../../../../modules/kraken2/kraken2/main'
-include { KRAKENTOOLS_COMBINEKREPORTS } from '../../../../modules/krakentools/combinekreports/main.nf'
+include { UNTAR } from '../../../../modules/nf-core/untar/main'
+include { KRAKEN2_KRAKEN2 } from '../../../../modules/nf-core/kraken2/kraken2/main'
+include { KRAKENTOOLS_COMBINEKREPORTS } from '../../../../modules/nf-core/krakentools/combinekreports/main.nf'
 
 workflow test_krakentools_combinekreports {
 

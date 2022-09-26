@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NCBIGENOMEDOWNLOAD } from '../../../modules/ncbigenomedownload/main.nf'
+include { NCBIGENOMEDOWNLOAD } from '../../../modules/nf-core/ncbigenomedownload/main.nf'
 
 workflow test_ncbigenomedownload {
     

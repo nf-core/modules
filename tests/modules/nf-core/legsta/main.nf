@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LEGSTA } from '../../../modules/legsta/main.nf'
+include { LEGSTA } from '../../../modules/nf-core/legsta/main.nf'
 
 workflow test_legsta {
     

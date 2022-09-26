@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_CROSSCHECKFINGERPRINTS } from '../../../../modules/picard/crosscheckfingerprints/main.nf'
+include { PICARD_CROSSCHECKFINGERPRINTS } from '../../../../modules/nf-core/picard/crosscheckfingerprints/main.nf'
 
 workflow test_picard_crosscheckfingerprints {
 

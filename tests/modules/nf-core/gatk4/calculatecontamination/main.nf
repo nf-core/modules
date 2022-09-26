@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_CALCULATECONTAMINATION                                              } from '../../../../modules/gatk4/calculatecontamination/main.nf'
-include { GATK4_CALCULATECONTAMINATION as GATK4_CALCULATECONTAMINATION_SEGMENTATION } from '../../../../modules/gatk4/calculatecontamination/main.nf'
+include { GATK4_CALCULATECONTAMINATION                                              } from '../../../../modules/nf-core/gatk4/calculatecontamination/main.nf'
+include { GATK4_CALCULATECONTAMINATION as GATK4_CALCULATECONTAMINATION_SEGMENTATION } from '../../../../modules/nf-core/gatk4/calculatecontamination/main.nf'
 
 workflow test_gatk4_calculatecontamination_tumor_only {
 

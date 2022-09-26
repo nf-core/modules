@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EPANG } from '../../../modules/epang/main.nf'
+include { EPANG } from '../../../modules/nf-core/epang/main.nf'
 
 workflow test_epang {
     

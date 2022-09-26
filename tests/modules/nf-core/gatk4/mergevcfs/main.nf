@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MERGEVCFS } from '../../../../modules/gatk4/mergevcfs/main.nf'
+include { GATK4_MERGEVCFS } from '../../../../modules/nf-core/gatk4/mergevcfs/main.nf'
 
 workflow test_gatk4_mergevcfs {
     def input = []

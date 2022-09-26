@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GTDBTK_CLASSIFYWF } from '../../../../modules/gtdbtk/classifywf/main.nf'
+include { GTDBTK_CLASSIFYWF } from '../../../../modules/nf-core/gtdbtk/classifywf/main.nf'
 
 process STUB_GTDBTK_DATABASE {
     output:

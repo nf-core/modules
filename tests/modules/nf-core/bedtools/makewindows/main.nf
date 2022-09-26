@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/bedtools/makewindows/main.nf'
+include { BEDTOOLS_MAKEWINDOWS } from '../../../../modules/nf-core/bedtools/makewindows/main.nf'
 
 workflow test_bedtools_makewindows {
 

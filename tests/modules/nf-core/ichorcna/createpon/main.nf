@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ICHORCNA_CREATEPON } from '../../../../modules/ichorcna/createpon/main.nf'
+include { ICHORCNA_CREATEPON } from '../../../../modules/nf-core/ichorcna/createpon/main.nf'
 
 workflow test_ichorcna_createpon {
 

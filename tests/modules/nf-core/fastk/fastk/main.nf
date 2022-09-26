@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK } from '../../../../modules/fastk/fastk/main.nf'
+include { FASTK_FASTK } from '../../../../modules/nf-core/fastk/fastk/main.nf'
 
 workflow test_fastk_fastk_single_end {
 

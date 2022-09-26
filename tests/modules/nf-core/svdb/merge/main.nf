@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SVDB_MERGE } from '../../../../modules/svdb/merge/main.nf'
+include { SVDB_MERGE } from '../../../../modules/nf-core/svdb/merge/main.nf'
 
 workflow test_svdb_merge {
 

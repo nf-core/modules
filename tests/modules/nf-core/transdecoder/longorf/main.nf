@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TRANSDECODER_LONGORF } from '../../../../modules/transdecoder/longorf/main.nf'
+include { TRANSDECODER_LONGORF } from '../../../../modules/nf-core/transdecoder/longorf/main.nf'
 
 workflow test_transdecoder_longorf {
     

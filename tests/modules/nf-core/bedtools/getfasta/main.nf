@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_GETFASTA } from '../../../../modules/bedtools/getfasta/main.nf'
+include { BEDTOOLS_GETFASTA } from '../../../../modules/nf-core/bedtools/getfasta/main.nf'
 
 workflow test_bedtools_getfasta {
     bed   = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)

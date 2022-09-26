@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMOD_MODELS   } from '../../../../modules/genmod/models/main.nf'
+include { GENMOD_MODELS   } from '../../../../modules/nf-core/genmod/models/main.nf'
 
 input = [
     [ id:'test', single_end:false ], // meta map

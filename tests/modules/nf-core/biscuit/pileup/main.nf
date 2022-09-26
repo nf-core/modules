@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX  } from '../../../../modules/biscuit/index/main.nf'
-include { BISCUIT_PILEUP } from '../../../../modules/biscuit/pileup/main.nf'
+include { BISCUIT_INDEX  } from '../../../../modules/nf-core/biscuit/index/main.nf'
+include { BISCUIT_PILEUP } from '../../../../modules/nf-core/biscuit/pileup/main.nf'
 
 workflow test_biscuit_pileup {
 

@@ -2,15 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_EXT_ERROR }   from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_NOEXT_ERROR } from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_BED }         from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_FASTA }       from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_FASTQ }       from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_JSON }        from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_PILEUP }      from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_SAM }         from '../../../../modules/bamtools/convert/main.nf'
-include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_YAML }        from '../../../../modules/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_EXT_ERROR }   from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_NOEXT_ERROR } from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_BED }         from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_FASTA }       from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_FASTQ }       from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_JSON }        from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_PILEUP }      from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_SAM }         from '../../../../modules/nf-core/bamtools/convert/main.nf'
+include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_YAML }        from '../../../../modules/nf-core/bamtools/convert/main.nf'
 
 workflow test_bamtools_convert_ext_error {
 

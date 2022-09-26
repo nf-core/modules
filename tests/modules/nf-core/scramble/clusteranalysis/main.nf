@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SCRAMBLE_CLUSTERANALYSIS   } from '../../../../modules/scramble/clusteranalysis/main.nf'
-include { SCRAMBLE_CLUSTERIDENTIFIER } from '../../../../modules/scramble/clusteridentifier/main.nf'
+include { SCRAMBLE_CLUSTERANALYSIS   } from '../../../../modules/nf-core/scramble/clusteranalysis/main.nf'
+include { SCRAMBLE_CLUSTERIDENTIFIER } from '../../../../modules/nf-core/scramble/clusteridentifier/main.nf'
 
 workflow test_scramble_clusteranalysis {
     

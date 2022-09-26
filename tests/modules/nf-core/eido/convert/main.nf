@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EIDO_CONVERT } from '../../../../modules/eido/convert/main.nf'
+include { EIDO_CONVERT } from '../../../../modules/nf-core/eido/convert/main.nf'
 
 workflow test_eido_convert_nextflow_samplesheet {
 

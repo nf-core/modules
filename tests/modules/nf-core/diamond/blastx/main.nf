@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DIAMOND_MAKEDB } from '../../../../modules/diamond/makedb/main.nf'
-include { DIAMOND_BLASTX } from '../../../../modules/diamond/blastx/main.nf'
+include { DIAMOND_MAKEDB } from '../../../../modules/nf-core/diamond/makedb/main.nf'
+include { DIAMOND_BLASTX } from '../../../../modules/nf-core/diamond/blastx/main.nf'
 
 workflow test_diamond_blastx {
 

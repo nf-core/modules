@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVPYTOR_IMPORTREADDEPTH } from '../../../../modules/cnvpytor/importreaddepth/main.nf'
+include { CNVPYTOR_IMPORTREADDEPTH } from '../../../../modules/nf-core/cnvpytor/importreaddepth/main.nf'
 
 
 workflow test_cnvpytor_importreaddepth {

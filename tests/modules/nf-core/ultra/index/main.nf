@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ULTRA_INDEX } from '../../../../modules/ultra/index/main.nf'
-include { GFFREAD     } from '../../../../modules/gffread/main.nf'
+include { ULTRA_INDEX } from '../../../../modules/nf-core/ultra/index/main.nf'
+include { GFFREAD     } from '../../../../modules/nf-core/gffread/main.nf'
 
 workflow test_ultra_index {
 

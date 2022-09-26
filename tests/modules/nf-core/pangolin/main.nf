@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PANGOLIN } from '../../../modules/pangolin/main.nf'
+include { PANGOLIN } from '../../../modules/nf-core/pangolin/main.nf'
 
 workflow test_pangolin {
     input = [ [ id:'test' ], // meta map

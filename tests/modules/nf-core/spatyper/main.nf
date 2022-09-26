@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SPATYPER } from '../../../modules/spatyper/main.nf'
-include { SPATYPER as SPATYPER_ENRICH } from '../../../modules/spatyper/main.nf'
+include { SPATYPER } from '../../../modules/nf-core/spatyper/main.nf'
+include { SPATYPER as SPATYPER_ENRICH } from '../../../modules/nf-core/spatyper/main.nf'
 
 workflow test_spatyper {
     input = [ [ id:'test' ],

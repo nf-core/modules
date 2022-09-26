@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_LIFTOVERVCF } from '../../../../modules/picard/liftovervcf/main.nf'
+include { PICARD_LIFTOVERVCF } from '../../../../modules/nf-core/picard/liftovervcf/main.nf'
 
 workflow test_picard_liftovervcf {
 

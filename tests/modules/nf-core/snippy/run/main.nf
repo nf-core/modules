@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNIPPY_RUN } from '../../../../modules/snippy/run/main.nf'
+include { SNIPPY_RUN } from '../../../../modules/nf-core/snippy/run/main.nf'
 
 workflow test_snippy_run {
     

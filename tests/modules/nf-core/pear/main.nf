@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PEAR } from '../../../modules/pear/main.nf'
+include { PEAR } from '../../../modules/nf-core/pear/main.nf'
 
 workflow test_pear {
 

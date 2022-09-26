@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX  } from '../../../../modules/biscuit/index/main.nf'
-include { BISCUIT_QC } from '../../../../modules/biscuit/qc/main.nf'
+include { BISCUIT_INDEX  } from '../../../../modules/nf-core/biscuit/index/main.nf'
+include { BISCUIT_QC } from '../../../../modules/nf-core/biscuit/qc/main.nf'
 
 workflow test_biscuit_qc {
 

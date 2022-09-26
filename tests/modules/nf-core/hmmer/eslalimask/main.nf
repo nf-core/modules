@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMALIGN             } from '../../../../modules/hmmer/hmmalign/main.nf'
-include { HMMER_ESLALIMASK as RFMASK } from '../../../../modules/hmmer/eslalimask/main.nf'
+include { HMMER_HMMALIGN             } from '../../../../modules/nf-core/hmmer/hmmalign/main.nf'
+include { HMMER_ESLALIMASK as RFMASK } from '../../../../modules/nf-core/hmmer/eslalimask/main.nf'
 
 workflow test_hmmer_rfmask {
     

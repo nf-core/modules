@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CHECKM_LINEAGEWF } from '../../../../modules/checkm/lineagewf/main.nf'
+include { CHECKM_LINEAGEWF } from '../../../../modules/nf-core/checkm/lineagewf/main.nf'
 
 workflow test_checkm_lineagewf {
 

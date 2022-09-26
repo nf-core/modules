@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP as UNZIP_MALT        } from '../../../modules/unzip/main.nf'
-include { UNZIP as UNZIP_MALTEXTRACT }  from '../../../modules/unzip/main.nf'
-include { MALT_BUILD                 } from  '../../../modules/malt/build/main.nf'
-include { MALT_RUN                   } from '../../../modules/malt/run/main.nf'
-include { MALTEXTRACT                } from '../../../modules/maltextract/main.nf'
+include { UNZIP as UNZIP_MALT        } from '../../../modules/nf-core/unzip/main.nf'
+include { UNZIP as UNZIP_MALTEXTRACT }  from '../../../modules/nf-core/unzip/main.nf'
+include { MALT_BUILD                 } from  '../../../modules/nf-core/malt/build/main.nf'
+include { MALT_RUN                   } from '../../../modules/nf-core/malt/run/main.nf'
+include { MALTEXTRACT                } from '../../../modules/nf-core/maltextract/main.nf'
 
 workflow test_maltextract {
 

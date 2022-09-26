@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CHROMAP_INDEX                           } from '../../../../modules/chromap/index/main.nf'
-include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_BASE } from '../../../../modules/chromap/chromap/main.nf'
-include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_SAM  } from '../../../../modules/chromap/chromap/main.nf'
+include { CHROMAP_INDEX                           } from '../../../../modules/nf-core/chromap/index/main.nf'
+include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_BASE } from '../../../../modules/nf-core/chromap/chromap/main.nf'
+include { CHROMAP_CHROMAP as CHROMAP_CHROMAP_SAM  } from '../../../../modules/nf-core/chromap/chromap/main.nf'
 
 workflow test_chromap_chromap_single_end {
 

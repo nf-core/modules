@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CSVTK_CONCAT } from '../../../../modules/csvtk/concat/main.nf'
+include { CSVTK_CONCAT } from '../../../../modules/nf-core/csvtk/concat/main.nf'
 
 workflow test_csvtk_concat {
 

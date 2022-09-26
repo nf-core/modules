@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CONTROLFREEC_ASSESSSIGNIFICANCE } from '../../../../modules/controlfreec/assesssignificance/main.nf'
-include { CONTROLFREEC_FREEC              } from '../../../../modules/controlfreec/freec/main.nf'
-include { UNTAR                           }        from '../../../../modules/untar/main.nf'
+include { CONTROLFREEC_ASSESSSIGNIFICANCE } from '../../../../modules/nf-core/controlfreec/assesssignificance/main.nf'
+include { CONTROLFREEC_FREEC              } from '../../../../modules/nf-core/controlfreec/freec/main.nf'
+include { UNTAR                           }        from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_controlfreec_assesssignificance {
 

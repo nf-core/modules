@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_FIXMATEINFORMATION } from '../../../../modules/picard/fixmateinformation/main.nf'
+include { PICARD_FIXMATEINFORMATION } from '../../../../modules/nf-core/picard/fixmateinformation/main.nf'
 
 workflow test_picard_fixmateinformation {
     

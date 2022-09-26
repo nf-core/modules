@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMSEARCH } from '../../../../modules/hmmer/hmmsearch/main.nf'
+include { HMMER_HMMSEARCH } from '../../../../modules/nf-core/hmmer/hmmsearch/main.nf'
 
 workflow test_hmmer_hmmsearch {
 

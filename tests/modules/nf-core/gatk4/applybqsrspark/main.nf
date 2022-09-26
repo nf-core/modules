@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_APPLYBQSR_SPARK } from '../../../../modules/gatk4/applybqsrspark/main.nf'
+include { GATK4_APPLYBQSR_SPARK } from '../../../../modules/nf-core/gatk4/applybqsrspark/main.nf'
 
 workflow test_gatk4_applybqsr_spark {
     input = [ [ id:'test' ], // meta map

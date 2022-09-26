@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GAPPA_EXAMINEGRAFT } from '../../../../modules/gappa/examinegraft/main.nf'
+include { GAPPA_EXAMINEGRAFT } from '../../../../modules/nf-core/gappa/examinegraft/main.nf'
 
 workflow test_gappa_examinegraft {
     

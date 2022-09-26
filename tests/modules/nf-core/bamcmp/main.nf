@@ -2,15 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX } from '../../../modules/bwa/index/main.nf'
-include { BWA_MEM   } from '../../../modules/bwa/mem/main.nf'
-include { BWA_INDEX as BWA_INDEX_COV2 } from '../../../modules/bwa/index/main.nf'
-include { BWA_MEM as BWA_MEM_COV2   } from '../../../modules/bwa/mem/main.nf'
+include { BWA_INDEX } from '../../../modules/nf-core/bwa/index/main.nf'
+include { BWA_MEM   } from '../../../modules/nf-core/bwa/mem/main.nf'
+include { BWA_INDEX as BWA_INDEX_COV2 } from '../../../modules/nf-core/bwa/index/main.nf'
+include { BWA_MEM as BWA_MEM_COV2   } from '../../../modules/nf-core/bwa/mem/main.nf'
 
-include { SAMTOOLS_SORT } from '../../../modules/samtools/sort/main.nf'
-include { SAMTOOLS_SORT as SAMTOOLS_SORT_COV2   } from '../../../modules/samtools/sort/main.nf'
+include { SAMTOOLS_SORT } from '../../../modules/nf-core/samtools/sort/main.nf'
+include { SAMTOOLS_SORT as SAMTOOLS_SORT_COV2   } from '../../../modules/nf-core/samtools/sort/main.nf'
 
-include { BAMCMP } from '../../../modules/bamcmp/main.nf'
+include { BAMCMP } from '../../../modules/nf-core/bamcmp/main.nf'
 
 workflow test_bamcmp {
 

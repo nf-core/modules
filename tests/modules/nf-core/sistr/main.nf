@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SISTR } from '../../../modules/sistr/main.nf'
+include { SISTR } from '../../../modules/nf-core/sistr/main.nf'
 
 workflow test_sistr {
     

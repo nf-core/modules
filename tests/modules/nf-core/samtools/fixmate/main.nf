@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FIXMATE } from '../../../../modules/samtools/fixmate/main.nf'
+include { SAMTOOLS_FIXMATE } from '../../../../modules/nf-core/samtools/fixmate/main.nf'
 
 workflow test_samtools_fixmate {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MASH_SKETCH } from '../../../../modules/mash/sketch/main.nf'
+include { MASH_SKETCH } from '../../../../modules/nf-core/mash/sketch/main.nf'
 
 workflow test_mash_sketch {
     

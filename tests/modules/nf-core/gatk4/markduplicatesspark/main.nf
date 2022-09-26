@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MARKDUPLICATES_SPARK } from '../../../../modules/gatk4/markduplicatesspark/main.nf'
-include { GATK4_MARKDUPLICATES_SPARK as GATK4_MARKDUPLICATES_SPARK_CRAM } from '../../../../modules/gatk4/markduplicatesspark/main.nf'
-include { GATK4_MARKDUPLICATES_SPARK as GATK4_MARKDUPLICATES_SPARK_METRICS } from '../../../../modules/gatk4/markduplicatesspark/main.nf'
+include { GATK4_MARKDUPLICATES_SPARK } from '../../../../modules/nf-core/gatk4/markduplicatesspark/main.nf'
+include { GATK4_MARKDUPLICATES_SPARK as GATK4_MARKDUPLICATES_SPARK_CRAM } from '../../../../modules/nf-core/gatk4/markduplicatesspark/main.nf'
+include { GATK4_MARKDUPLICATES_SPARK as GATK4_MARKDUPLICATES_SPARK_METRICS } from '../../../../modules/nf-core/gatk4/markduplicatesspark/main.nf'
 
 workflow test_gatk4_markduplicates_spark {
     input = [ [ id:'test', single_end:false ], // meta map

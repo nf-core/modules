@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NUCMER } from '../../../modules/nucmer/main.nf'
+include { NUCMER } from '../../../modules/nf-core/nucmer/main.nf'
 
 workflow test_nucmer {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_FASTQTOBAM } from '../../../../modules/fgbio/fastqtobam/main.nf'
+include { FGBIO_FASTQTOBAM } from '../../../../modules/nf-core/fgbio/fastqtobam/main.nf'
 
 workflow test_fgbio_fastqtobam_paired_default {
 

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ARIBA_GETREF } from '../../../../modules/ariba/getref/main.nf'
-include { ARIBA_RUN } from '../../../../modules/ariba/run/main.nf'
+include { ARIBA_GETREF } from '../../../../modules/nf-core/ariba/getref/main.nf'
+include { ARIBA_RUN } from '../../../../modules/nf-core/ariba/run/main.nf'
 
 workflow test_ariba_run {
     

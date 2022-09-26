@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { STAR_GENOMEGENERATE               } from '../../../../modules/star/genomegenerate/main.nf'
-include { STAR_ALIGN                        } from '../../../../modules/star/align/main.nf'
-include { STAR_ALIGN as STAR_FOR_ARRIBA     } from '../../../../modules/star/align/main.nf'
-include { STAR_ALIGN as STAR_FOR_STARFUSION } from '../../../../modules/star/align/main.nf'
+include { STAR_GENOMEGENERATE               } from '../../../../modules/nf-core/star/genomegenerate/main.nf'
+include { STAR_ALIGN                        } from '../../../../modules/nf-core/star/align/main.nf'
+include { STAR_ALIGN as STAR_FOR_ARRIBA     } from '../../../../modules/nf-core/star/align/main.nf'
+include { STAR_ALIGN as STAR_FOR_STARFUSION } from '../../../../modules/nf-core/star/align/main.nf'
 
 workflow test_star_alignment_single_end {
     input = [

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ENTREZDIRECT_ESUMMARY } from '../../../../modules/entrezdirect/esummary/main.nf'
+include { ENTREZDIRECT_ESUMMARY } from '../../../../modules/nf-core/entrezdirect/esummary/main.nf'
 
 //
 // Test with SRA database

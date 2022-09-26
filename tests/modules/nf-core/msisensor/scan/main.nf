@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MSISENSOR_SCAN } from '../../../../modules/msisensor/scan/main.nf'
+include { MSISENSOR_SCAN } from '../../../../modules/nf-core/msisensor/scan/main.nf'
 
 workflow test_msisensor_scan {
 

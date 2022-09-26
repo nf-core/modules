@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MANTA_SOMATIC } from '../../../../modules/manta/somatic/main.nf'
+include { MANTA_SOMATIC } from '../../../../modules/nf-core/manta/somatic/main.nf'
 
 workflow test_manta_somatic {
 

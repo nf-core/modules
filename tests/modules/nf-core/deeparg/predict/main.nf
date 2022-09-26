@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPARG_DOWNLOADDATA } from '../../../../modules/deeparg/downloaddata/main.nf'
-include { DEEPARG_PREDICT      } from '../../../../modules/deeparg/predict/main.nf'
+include { DEEPARG_DOWNLOADDATA } from '../../../../modules/nf-core/deeparg/downloaddata/main.nf'
+include { DEEPARG_PREDICT      } from '../../../../modules/nf-core/deeparg/predict/main.nf'
 
 workflow test_deeparg_predict {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { AMRFINDERPLUS_UPDATE } from '../../../../modules/amrfinderplus/update/main.nf'
+include { AMRFINDERPLUS_UPDATE } from '../../../../modules/nf-core/amrfinderplus/update/main.nf'
 
 workflow test_amrfinderplus_update {
 

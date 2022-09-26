@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOLYSE } from '../../../modules/nanolyse/main.nf'
+include { NANOLYSE } from '../../../modules/nf-core/nanolyse/main.nf'
 
 workflow test_nanolyse {
     input = [ 

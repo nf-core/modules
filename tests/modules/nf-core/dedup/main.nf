@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEDUP } from '../../../modules/dedup/main.nf'
+include { DEDUP } from '../../../modules/nf-core/dedup/main.nf'
 
 workflow test_dedup {
 

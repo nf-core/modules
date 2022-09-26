@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_REBLOCKGVCF } from '../../../../modules/gatk4/reblockgvcf/main.nf'
+include { GATK4_REBLOCKGVCF } from '../../../../modules/nf-core/gatk4/reblockgvcf/main.nf'
 
 workflow test_gatk4_reblockgvcf {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_INDEXFEATUREFILE } from '../../../../modules/gatk4/indexfeaturefile/main.nf'
+include { GATK4_INDEXFEATUREFILE } from '../../../../modules/nf-core/gatk4/indexfeaturefile/main.nf'
 
 workflow test_gatk4_indexfeaturefile_bed {
     

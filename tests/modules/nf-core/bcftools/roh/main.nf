@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_ROH } from '../../../../modules/bcftools/roh/main.nf'
+include { BCFTOOLS_ROH } from '../../../../modules/nf-core/bcftools/roh/main.nf'
 
 workflow test_bcftools_roh {
 

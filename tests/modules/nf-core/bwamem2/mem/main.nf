@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BWAMEM2_INDEX } from '../../../../modules/bwamem2/index/main.nf'
-include { BWAMEM2_MEM   } from '../../../../modules/bwamem2/mem/main.nf'
+include { BWAMEM2_INDEX } from '../../../../modules/nf-core/bwamem2/index/main.nf'
+include { BWAMEM2_MEM   } from '../../../../modules/nf-core/bwamem2/mem/main.nf'
 
 //
 // Test with single-end data

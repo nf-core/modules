@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HIFIASM } from '../../../modules/hifiasm/main.nf'
+include { HIFIASM } from '../../../modules/nf-core/hifiasm/main.nf'
 
 /*
  * Test with long reads only

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_HAPLOTYPECALLER } from '../../../../modules/gatk4/haplotypecaller/main.nf'
+include { GATK4_HAPLOTYPECALLER } from '../../../../modules/nf-core/gatk4/haplotypecaller/main.nf'
 
 workflow test_gatk4_haplotypecaller {
     input     = [ [ id:'test' ], // meta map

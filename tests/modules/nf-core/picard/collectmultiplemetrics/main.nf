@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../../modules/picard/collectmultiplemetrics/main.nf'
+include { PICARD_COLLECTMULTIPLEMETRICS } from '../../../../modules/nf-core/picard/collectmultiplemetrics/main.nf'
 
 workflow test_picard_collectmultiplemetrics {
     input = [

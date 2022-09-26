@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_SAMTOFASTQ } from '../../../../modules/gatk4/samtofastq/main.nf'
+include { GATK4_SAMTOFASTQ } from '../../../../modules/nf-core/gatk4/samtofastq/main.nf'
 
 workflow test_gatk4_samtofastq_single_end {
     input = [ [ id:'test', single_end: true ], // meta map

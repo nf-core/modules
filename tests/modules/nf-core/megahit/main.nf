@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MEGAHIT } from '../../../modules/megahit/main.nf'
+include { MEGAHIT } from '../../../modules/nf-core/megahit/main.nf'
 
 workflow test_megahit {
 

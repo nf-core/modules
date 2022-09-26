@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_DUMP } from '../../../../modules/cooler/dump/main.nf'
+include { COOLER_DUMP } from '../../../../modules/nf-core/cooler/dump/main.nf'
 
 workflow test_cooler_dump {
 

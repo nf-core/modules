@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQUENZAUTILS_BAM2SEQZ } from '../../../../modules/sequenzautils/bam2seqz/main.nf'
+include { SEQUENZAUTILS_BAM2SEQZ } from '../../../../modules/nf-core/sequenzautils/bam2seqz/main.nf'
 
 workflow test_sequenzautils_bam2seqz {
 
