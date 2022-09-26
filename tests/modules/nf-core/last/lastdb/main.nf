@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_LASTDB } from '../../../../modules/nf-core/last/lastdb/main.nf'
+include { LAST_LASTDB } from '../../../../../modules/nf-core/last/lastdb/main.nf'
 
 workflow test_last_lastdb {
 

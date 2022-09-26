@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP } from '../../../modules/nf-core/gunzip/main.nf'
-include { PRODIGAL } from '../../../modules/nf-core/prodigal/main.nf'
-include { DEEPBGC_DOWNLOAD } from '../../../../modules/nf-core/deepbgc/download/main.nf'
-include { DEEPBGC_PIPELINE } from '../../../../modules/nf-core/deepbgc/pipeline/main.nf'
+include { GUNZIP } from '../../../../modules/nf-core/gunzip/main.nf'
+include { PRODIGAL } from '../../../../modules/nf-core/prodigal/main.nf'
+include { DEEPBGC_DOWNLOAD } from '../../../../../modules/nf-core/deepbgc/download/main.nf'
+include { DEEPBGC_PIPELINE } from '../../../../../modules/nf-core/deepbgc/pipeline/main.nf'
 
 workflow test_deepbgc_pipeline_gbk {
 

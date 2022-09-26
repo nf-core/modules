@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SRATOOLS_PREFETCH } from '../../../../modules/nf-core/sratools/prefetch/main.nf'
+include { SRATOOLS_PREFETCH } from '../../../../../modules/nf-core/sratools/prefetch/main.nf'
 
 workflow test_sratools_prefetch {
 

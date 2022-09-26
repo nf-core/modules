@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PBCCS } from '../../../modules/nf-core/pbccs/main.nf'
+include { PBCCS } from '../../../../modules/nf-core/pbccs/main.nf'
 
 workflow test_pbccs {
 

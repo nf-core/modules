@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FASTQ } from '../../../../modules/nf-core/samtools/fastq/main.nf'
+include { SAMTOOLS_FASTQ } from '../../../../../modules/nf-core/samtools/fastq/main.nf'
 
 workflow test_samtools_fastq {
     input = [ [ id:'test', single_end:false ], // meta map

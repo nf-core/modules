@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GECCO_RUN } from '../../../../modules/nf-core/gecco/run/main.nf'
+include { GECCO_RUN } from '../../../../../modules/nf-core/gecco/run/main.nf'
 
 workflow test_gecco_run {
 

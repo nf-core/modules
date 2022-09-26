@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FFQ } from '../../../modules/nf-core/ffq/main.nf'
+include { FFQ } from '../../../../modules/nf-core/ffq/main.nf'
 
 workflow test_ffq_single_id {
 

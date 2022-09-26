@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NEXTCLADE_DATASETGET } from '../../../../modules/nf-core/nextclade/datasetget/main.nf'
+include { NEXTCLADE_DATASETGET } from '../../../../../modules/nf-core/nextclade/datasetget/main.nf'
 
 workflow test_nextclade_datasetget {
 

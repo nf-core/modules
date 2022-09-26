@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { AGRVATE } from '../../../modules/nf-core/agrvate/main.nf'
+include { AGRVATE } from '../../../../modules/nf-core/agrvate/main.nf'
 
 workflow test_agrvate {
     

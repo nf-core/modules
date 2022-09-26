@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_PILEUP } from '../../../../modules/nf-core/bbmap/pileup/main.nf'
+include { BBMAP_PILEUP } from '../../../../../modules/nf-core/bbmap/pileup/main.nf'
 
 workflow test_bbmap_pileup {
     

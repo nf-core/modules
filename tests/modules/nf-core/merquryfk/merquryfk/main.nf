@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK         } from '../../../../modules/nf-core/fastk/fastk/main.nf'
-include { MERQURYFK_MERQURYFK } from '../../../../modules/nf-core/merquryfk/merquryfk/main.nf'
+include { FASTK_FASTK         } from '../../../../../modules/nf-core/fastk/fastk/main.nf'
+include { MERQURYFK_MERQURYFK } from '../../../../../modules/nf-core/merquryfk/merquryfk/main.nf'
 
 workflow test_merquryfk_merquryfk_png {
 

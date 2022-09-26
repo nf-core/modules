@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HICAP } from '../../../modules/nf-core/hicap/main.nf'
+include { HICAP } from '../../../../modules/nf-core/hicap/main.nf'
 
 workflow test_hicap {
 

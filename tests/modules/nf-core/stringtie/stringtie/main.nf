@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STRINGTIE_STRINGTIE } from '../../../../modules/nf-core/stringtie/stringtie/main.nf'
+include { STRINGTIE_STRINGTIE } from '../../../../../modules/nf-core/stringtie/stringtie/main.nf'
 //
 // Test with forward strandedness
 //

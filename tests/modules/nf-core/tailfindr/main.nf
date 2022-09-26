@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TAILFINDR } from '../../../modules/nf-core/tailfindr/main.nf'
+include { TAILFINDR } from '../../../../modules/nf-core/tailfindr/main.nf'
 
 workflow test_tailfindr {
     

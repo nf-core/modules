@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FILTLONG } from '../../../modules/nf-core/filtlong/main.nf'
+include { FILTLONG } from '../../../../modules/nf-core/filtlong/main.nf'
 
 workflow test_filtlong {
     

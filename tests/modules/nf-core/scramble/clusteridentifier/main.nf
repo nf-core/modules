@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SCRAMBLE_CLUSTERIDENTIFIER } from '../../../../modules/nf-core/scramble/clusteridentifier/main.nf'
+include { SCRAMBLE_CLUSTERIDENTIFIER } from '../../../../../modules/nf-core/scramble/clusteridentifier/main.nf'
 
 workflow test_scramble_clusteridentifier_bam {
     

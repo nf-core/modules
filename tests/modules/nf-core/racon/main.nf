@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RACON } from '../../../modules/nf-core/racon/main.nf'
+include { RACON } from '../../../../modules/nf-core/racon/main.nf'
 
 workflow test_racon {
     input = [ [ id:'test', single_end:true ], // meta map

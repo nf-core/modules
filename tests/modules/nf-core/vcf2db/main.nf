@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VCF2DB } from '../../../modules/nf-core/vcf2db/main.nf'
+include { VCF2DB } from '../../../../modules/nf-core/vcf2db/main.nf'
 
 workflow test_vcf2db {
     

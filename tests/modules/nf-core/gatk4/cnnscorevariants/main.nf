@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_CNNSCOREVARIANTS } from '../../../../modules/nf-core/gatk4/cnnscorevariants/main.nf'
+include { GATK4_CNNSCOREVARIANTS } from '../../../../../modules/nf-core/gatk4/cnnscorevariants/main.nf'
 
 workflow test_gatk4_cnnscorevariants {
 

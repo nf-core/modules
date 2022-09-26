@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COMPOSESTRTABLEFILE } from '../../../../modules/nf-core/gatk4/composestrtablefile/main.nf'
+include { GATK4_COMPOSESTRTABLEFILE } from '../../../../../modules/nf-core/gatk4/composestrtablefile/main.nf'
 
 workflow test_gatk4_composestrtablefile {
     

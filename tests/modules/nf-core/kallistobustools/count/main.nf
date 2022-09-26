@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTOBUSTOOLS_REF   } from '../../../../modules/nf-core/kallistobustools/ref/main.nf'
-include { KALLISTOBUSTOOLS_COUNT } from '../../../../modules/nf-core/kallistobustools/count/main.nf'
+include { KALLISTOBUSTOOLS_REF   } from '../../../../../modules/nf-core/kallistobustools/ref/main.nf'
+include { KALLISTOBUSTOOLS_COUNT } from '../../../../../modules/nf-core/kallistobustools/count/main.nf'
 
 workflow test_kallistobustools_count {
 

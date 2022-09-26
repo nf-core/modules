@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PBBAM_PBMERGE } from '../../../../modules/nf-core/pbbam/pbmerge/main.nf'
+include { PBBAM_PBMERGE } from '../../../../../modules/nf-core/pbbam/pbmerge/main.nf'
 
 workflow test_pbbam_pbmerge {
 

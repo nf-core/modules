@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX                         } from '../../../../modules/nf-core/biscuit/index/main.nf'
-include { BISCUIT_BLASTER as BISCUIT_BLASTER_SE } from '../../../../modules/nf-core/biscuit/biscuitblaster/main.nf'
-include { BISCUIT_BLASTER as BISCUIT_BLASTER_PE } from '../../../../modules/nf-core/biscuit/biscuitblaster/main.nf'
+include { BISCUIT_INDEX                         } from '../../../../../modules/nf-core/biscuit/index/main.nf'
+include { BISCUIT_BLASTER as BISCUIT_BLASTER_SE } from '../../../../../modules/nf-core/biscuit/biscuitblaster/main.nf'
+include { BISCUIT_BLASTER as BISCUIT_BLASTER_PE } from '../../../../../modules/nf-core/biscuit/biscuitblaster/main.nf'
 
 // Single-end test
 workflow test_biscuit_blaster_single {

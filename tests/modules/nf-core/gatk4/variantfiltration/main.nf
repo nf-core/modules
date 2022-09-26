@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_VARIANTFILTRATION } from '../../../../modules/nf-core/gatk4/variantfiltration/main.nf'
+include { GATK4_VARIANTFILTRATION } from '../../../../../modules/nf-core/gatk4/variantfiltration/main.nf'
 
 // Basic parameters with uncompressed VCF input
 workflow test_gatk4_variantfiltration_vcf_input {

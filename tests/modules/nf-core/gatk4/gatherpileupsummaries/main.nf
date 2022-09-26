@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_GATHERPILEUPSUMMARIES } from '../../../../modules/nf-core/gatk4/gatherpileupsummaries/main.nf'
+include { GATK4_GATHERPILEUPSUMMARIES } from '../../../../../modules/nf-core/gatk4/gatherpileupsummaries/main.nf'
 
 workflow test_gatk4_gatherpileupsummaries {
 

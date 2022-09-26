@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CUSTOM_SRATOOLSNCBISETTINGS } from '../../../../modules/nf-core/custom/sratoolsncbisettings/main.nf'
+include { CUSTOM_SRATOOLSNCBISETTINGS } from '../../../../../modules/nf-core/custom/sratoolsncbisettings/main.nf'
 
 workflow test_sratoolsncbisettings_with_good_existing {
 

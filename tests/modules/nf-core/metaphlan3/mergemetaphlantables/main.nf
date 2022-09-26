@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR                           } from '../../../../modules/nf-core/untar/main.nf'
-include { METAPHLAN3                      } from '../../../../modules/nf-core/metaphlan3/metaphlan3/main.nf'
-include { METAPHLAN3_MERGEMETAPHLANTABLES } from '../../../../modules/nf-core/metaphlan3/mergemetaphlantables/main.nf'
+include { UNTAR                           } from '../../../../../modules/nf-core/untar/main.nf'
+include { METAPHLAN3                      } from '../../../../../modules/nf-core/metaphlan3/metaphlan3/main.nf'
+include { METAPHLAN3_MERGEMETAPHLANTABLES } from '../../../../../modules/nf-core/metaphlan3/mergemetaphlantables/main.nf'
 
 workflow test_metaphlan3_mergemetaphlantables {
 

@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_GENOMEPREPARATION         } from '../../../../modules/nf-core/bismark/genomepreparation/main.nf'
-include { BISMARK_ALIGN as BISMARK_ALIGN_SE } from '../../../../modules/nf-core/bismark/align/main.nf'
-include { BISMARK_ALIGN as BISMARK_ALIGN_PE } from '../../../../modules/nf-core/bismark/align/main.nf'
+include { BISMARK_GENOMEPREPARATION         } from '../../../../../modules/nf-core/bismark/genomepreparation/main.nf'
+include { BISMARK_ALIGN as BISMARK_ALIGN_SE } from '../../../../../modules/nf-core/bismark/align/main.nf'
+include { BISMARK_ALIGN as BISMARK_ALIGN_PE } from '../../../../../modules/nf-core/bismark/align/main.nf'
 
 //
 // Test with single-end data

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RGI_MAIN } from '../../../../modules/nf-core/rgi/main/main.nf'
+include { RGI_MAIN } from '../../../../../modules/nf-core/rgi/main/main.nf'
 
 workflow test_rgi_main {
 

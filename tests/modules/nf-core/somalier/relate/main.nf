@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SOMALIER_RELATE } from '../../../../modules/nf-core/somalier/relate/main.nf'
+include { SOMALIER_RELATE } from '../../../../../modules/nf-core/somalier/relate/main.nf'
 
 
 workflow test_somalier_relate {

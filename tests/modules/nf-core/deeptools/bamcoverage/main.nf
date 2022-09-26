@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPTOOLS_BAMCOVERAGE } from '../../../../modules/nf-core/deeptools/bamcoverage/main.nf'
+include { DEEPTOOLS_BAMCOVERAGE } from '../../../../../modules/nf-core/deeptools/bamcoverage/main.nf'
 
 workflow test_deeptools_bamcoverage_bam {
 

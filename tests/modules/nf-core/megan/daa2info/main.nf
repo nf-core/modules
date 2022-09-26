@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { DIAMOND_MAKEDB } from '../../../../modules/nf-core/diamond/makedb/main.nf'
-include { DIAMOND_BLASTX } from '../../../../modules/nf-core/diamond/blastx/main.nf'
-include { MEGAN_DAA2INFO } from '../../../../modules/nf-core/megan/daa2info/main.nf'
+include { DIAMOND_MAKEDB } from '../../../../../modules/nf-core/diamond/makedb/main.nf'
+include { DIAMOND_BLASTX } from '../../../../../modules/nf-core/diamond/blastx/main.nf'
+include { MEGAN_DAA2INFO } from '../../../../../modules/nf-core/megan/daa2info/main.nf'
 
 workflow test_megan_daa2info {
 

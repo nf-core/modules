@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PINTS_CALLER } from '../../../../modules/nf-core/pints/caller/main.nf'
+include { PINTS_CALLER } from '../../../../../modules/nf-core/pints/caller/main.nf'
 
 workflow test_pints_caller {
     

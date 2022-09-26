@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ARTIC_GUPPYPLEX } from '../../../../modules/nf-core/artic/guppyplex/main.nf'
+include { ARTIC_GUPPYPLEX } from '../../../../../modules/nf-core/artic/guppyplex/main.nf'
 
 process STAGE_FASTQ_DIR {
     input:

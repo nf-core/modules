@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMOD_SCORE    } from '../../../../modules/nf-core/genmod/score/main.nf'
+include { GENMOD_SCORE    } from '../../../../../modules/nf-core/genmod/score/main.nf'
 
 input = [
     [ id:'test', single_end:false ], // meta map

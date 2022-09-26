@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR                 } from '../../../../modules/nf-core/untar/main.nf'
-include { CENTRIFUGE_CENTRIFUGE } from '../../../../modules/nf-core/centrifuge/centrifuge/main.nf'
+include { UNTAR                 } from '../../../../../modules/nf-core/untar/main.nf'
+include { CENTRIFUGE_CENTRIFUGE } from '../../../../../modules/nf-core/centrifuge/centrifuge/main.nf'
 
 workflow test_centrifuge_centrifuge_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

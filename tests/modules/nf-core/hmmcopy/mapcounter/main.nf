@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMCOPY_MAPCOUNTER } from '../../../../modules/nf-core/hmmcopy/mapcounter/main.nf'
-include { HMMCOPY_GENERATEMAP } from '../../../../modules/nf-core/hmmcopy/generatemap/main.nf'
+include { HMMCOPY_MAPCOUNTER } from '../../../../../modules/nf-core/hmmcopy/mapcounter/main.nf'
+include { HMMCOPY_GENERATEMAP } from '../../../../../modules/nf-core/hmmcopy/generatemap/main.nf'
 workflow test_hmmcopy_mapcounter {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_LIFTOVER } from '../../../../modules/nf-core/ucsc/liftover/main.nf'
+include { UCSC_LIFTOVER } from '../../../../../modules/nf-core/ucsc/liftover/main.nf'
 
 workflow test_ucsc_liftover {
     

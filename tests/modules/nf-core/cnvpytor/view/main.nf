@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVPYTOR_VIEW } from '../../../../modules/nf-core/cnvpytor/view/main.nf'
+include { CNVPYTOR_VIEW } from '../../../../../modules/nf-core/cnvpytor/view/main.nf'
 
 workflow test_cnvpytor_view {
 

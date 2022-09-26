@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_SUBSEQ } from '../../../../modules/nf-core/seqtk/subseq/main.nf'
+include { SEQTK_SUBSEQ } from '../../../../../modules/nf-core/seqtk/subseq/main.nf'
 
 workflow test_seqtk_subseq {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTAWINDOWS } from '../../../modules/nf-core/fastawindows/main.nf'
+include { FASTAWINDOWS } from '../../../../modules/nf-core/fastawindows/main.nf'
 
 workflow test_fastawindows {
     

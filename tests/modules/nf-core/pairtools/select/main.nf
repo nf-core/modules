@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_SELECT } from '../../../../modules/nf-core/pairtools/select/main.nf'
+include { PAIRTOOLS_SELECT } from '../../../../../modules/nf-core/pairtools/select/main.nf'
 
 workflow test_pairtools_select {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { INSTRAIN_PROFILE } from '../../../../modules/nf-core/instrain/profile/main.nf'
+include { INSTRAIN_PROFILE } from '../../../../../modules/nf-core/instrain/profile/main.nf'
 
 workflow test_instrain_profile {
     

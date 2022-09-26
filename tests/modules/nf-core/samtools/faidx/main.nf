@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FAIDX } from '../../../../modules/nf-core/samtools/faidx/main.nf'
+include { SAMTOOLS_FAIDX } from '../../../../../modules/nf-core/samtools/faidx/main.nf'
 
 workflow test_samtools_faidx {
 

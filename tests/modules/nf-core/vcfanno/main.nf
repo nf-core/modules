@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../modules/nf-core/untar/main.nf'
-include { VCFANNO } from '../../../modules/nf-core/vcfanno/main.nf'
+include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
+include { VCFANNO } from '../../../../modules/nf-core/vcfanno/main.nf'
 
 workflow test_vcfanno {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PYDAMAGE_ANALYZE } from '../../../../modules/nf-core/pydamage/analyze/main.nf'
+include { PYDAMAGE_ANALYZE } from '../../../../../modules/nf-core/pydamage/analyze/main.nf'
 
 workflow test_pydamage {
 

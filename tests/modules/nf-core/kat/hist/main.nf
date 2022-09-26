@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KAT_HIST } from '../../../../modules/nf-core/kat/hist/main.nf'
+include { KAT_HIST } from '../../../../../modules/nf-core/kat/hist/main.nf'
 
 workflow test_kat_hist_single_end {
 

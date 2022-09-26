@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MSISENSOR2_SCAN } from '../../../../modules/nf-core/msisensor2/scan/main.nf'
-include { MSISENSOR2_MSI } from '../../../../modules/nf-core/msisensor2/msi/main.nf'
+include { MSISENSOR2_SCAN } from '../../../../../modules/nf-core/msisensor2/scan/main.nf'
+include { MSISENSOR2_MSI } from '../../../../../modules/nf-core/msisensor2/msi/main.nf'
 
 workflow test_msisensor2_msi_tumor_only {
 

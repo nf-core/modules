@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LIMA } from '../../../modules/nf-core/lima/main.nf'
+include { LIMA } from '../../../../modules/nf-core/lima/main.nf'
 
 workflow test_lima_bam {
 

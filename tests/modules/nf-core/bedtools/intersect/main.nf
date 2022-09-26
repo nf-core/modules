@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_INTERSECT } from '../../../../modules/nf-core/bedtools/intersect/main.nf'
+include { BEDTOOLS_INTERSECT } from '../../../../../modules/nf-core/bedtools/intersect/main.nf'
 
 workflow test_bedtools_intersect {
     input = [

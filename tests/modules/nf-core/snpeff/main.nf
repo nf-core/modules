@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPEFF } from '../../../modules/nf-core/snpeff/main.nf'
+include { SNPEFF } from '../../../../modules/nf-core/snpeff/main.nf'
 
 workflow test_snpeff {
     input = [

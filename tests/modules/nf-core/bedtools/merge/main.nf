@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_MERGE } from '../../../../modules/nf-core/bedtools/merge/main.nf'
+include { BEDTOOLS_MERGE } from '../../../../../modules/nf-core/bedtools/merge/main.nf'
 
 workflow test_bedtools_merge {
     input = [ [ id:'test'],

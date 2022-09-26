@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SLIMFASTQ } from '../../../modules/nf-core/slimfastq/main.nf'
+include { SLIMFASTQ } from '../../../../modules/nf-core/slimfastq/main.nf'
 
 workflow test_slimfastq_single_end {
 

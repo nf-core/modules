@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_SORTVCF } from '../../../../modules/nf-core/picard/sortvcf/main.nf'
+include { PICARD_SORTVCF } from '../../../../../modules/nf-core/picard/sortvcf/main.nf'
 
 workflow test_picard_sortvcf {
 

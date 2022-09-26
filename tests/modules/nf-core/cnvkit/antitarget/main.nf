@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT_ANTITARGET } from '../../../../modules/nf-core/cnvkit/antitarget/main.nf'
+include { CNVKIT_ANTITARGET } from '../../../../../modules/nf-core/cnvkit/antitarget/main.nf'
 
 workflow test_cnvkit_antitarget {
 

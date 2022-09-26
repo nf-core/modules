@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_POSTMASK } from '../../../../modules/nf-core/last/postmask/main.nf'
+include { LAST_POSTMASK } from '../../../../../modules/nf-core/last/postmask/main.nf'
 
 workflow test_last_postmask {
 

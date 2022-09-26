@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { TIDDIT_COV as TIDDIT_COV_BED } from '../../../../modules/nf-core/tiddit/cov/main.nf'
-include { TIDDIT_COV as TIDDIT_COV_WIG } from '../../../../modules/nf-core/tiddit/cov/main.nf'
+include { TIDDIT_COV as TIDDIT_COV_BED } from '../../../../../modules/nf-core/tiddit/cov/main.nf'
+include { TIDDIT_COV as TIDDIT_COV_WIG } from '../../../../../modules/nf-core/tiddit/cov/main.nf'
 
 workflow test_tiddit_cov_cram_bed {
 

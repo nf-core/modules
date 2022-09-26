@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BISMARK_GENOMEPREPARATION } from '../../../../modules/nf-core/bismark/genomepreparation/main.nf'
+include { BISMARK_GENOMEPREPARATION } from '../../../../../modules/nf-core/bismark/genomepreparation/main.nf'
 
 workflow test_bismark_genomepreparation {
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

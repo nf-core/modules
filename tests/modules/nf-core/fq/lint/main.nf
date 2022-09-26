@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FQ_LINT } from '../../../../modules/nf-core/fq/lint/main.nf'
+include { FQ_LINT } from '../../../../../modules/nf-core/fq/lint/main.nf'
 
 workflow test_fq_lint_success {
 

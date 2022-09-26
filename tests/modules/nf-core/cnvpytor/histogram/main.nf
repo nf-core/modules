@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVPYTOR_HISTOGRAM } from '../../../../modules/nf-core/cnvpytor/histogram/main.nf'
+include { CNVPYTOR_HISTOGRAM } from '../../../../../modules/nf-core/cnvpytor/histogram/main.nf'
 
 workflow test_cnvpytor_histogram {
 

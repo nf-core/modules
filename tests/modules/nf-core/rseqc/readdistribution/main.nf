@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_READDISTRIBUTION }   from '../../../../modules/nf-core/rseqc/readdistribution/main.nf'
+include { RSEQC_READDISTRIBUTION }   from '../../../../../modules/nf-core/rseqc/readdistribution/main.nf'
 
 workflow test_rseqc_readdistribution {
     input = [ [ id:'test', single_end: false ], // meta map

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_CONSENSUS } from '../../../../modules/nf-core/bcftools/consensus/main.nf'
+include { BCFTOOLS_CONSENSUS } from '../../../../../modules/nf-core/bcftools/consensus/main.nf'
 
 workflow test_bcftools_consensus {
 

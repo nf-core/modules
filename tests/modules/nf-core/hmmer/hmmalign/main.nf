@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMALIGN as HMMER_HMMALIGN        } from '../../../../modules/nf-core/hmmer/hmmalign/main.nf'
-include { HMMER_HMMALIGN as HMMER_HMMALIGN_PREFIX } from '../../../../modules/nf-core/hmmer/hmmalign/main.nf'
+include { HMMER_HMMALIGN as HMMER_HMMALIGN        } from '../../../../../modules/nf-core/hmmer/hmmalign/main.nf'
+include { HMMER_HMMALIGN as HMMER_HMMALIGN_PREFIX } from '../../../../../modules/nf-core/hmmer/hmmalign/main.nf'
 
 workflow test_hmmer_hmmalign {
 

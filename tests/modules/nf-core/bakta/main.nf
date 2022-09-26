@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAKTA } from '../../../modules/nf-core/bakta/main.nf'
+include { BAKTA } from '../../../../modules/nf-core/bakta/main.nf'
 
 workflow test_bakta {
 

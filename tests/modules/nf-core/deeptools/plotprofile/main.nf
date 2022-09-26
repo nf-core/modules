@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPTOOLS_PLOTPROFILE } from '../../../../modules/nf-core/deeptools/plotprofile/main.nf'
+include { DEEPTOOLS_PLOTPROFILE } from '../../../../../modules/nf-core/deeptools/plotprofile/main.nf'
 
 workflow test_deeptools_plotprofile {
 

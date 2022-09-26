@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_BAMSTAT }   from '../../../../modules/nf-core/rseqc/bamstat/main.nf'
+include { RSEQC_BAMSTAT }   from '../../../../../modules/nf-core/rseqc/bamstat/main.nf'
 
 workflow test_rseqc_bamstat {
     input = [ [ id:'test' ], // meta map

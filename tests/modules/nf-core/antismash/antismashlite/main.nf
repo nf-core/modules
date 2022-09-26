@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { ANTISMASH_ANTISMASHLITE                  } from '../../../../modules/nf-core/antismash/antismashlite/main.nf'
-include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from '../../../modules/nf-core/antismash/antismashlitedownloaddatabases/main.nf'
-include { GUNZIP as GUNZIP1 } from '../../../../modules/nf-core/gunzip/main.nf'
-include { GUNZIP as GUNZIP2 } from '../../../../modules/nf-core/gunzip/main.nf'
-include { UNTAR as UNTAR1 } from '../../../../modules/nf-core/untar/main.nf'
-include { UNTAR as UNTAR2 } from '../../../../modules/nf-core/untar/main.nf'
-include { UNTAR as UNTAR3 } from '../../../../modules/nf-core/untar/main.nf'
+include { ANTISMASH_ANTISMASHLITE                  } from '../../../../../modules/nf-core/antismash/antismashlite/main.nf'
+include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from '../../../../modules/nf-core/antismash/antismashlitedownloaddatabases/main.nf'
+include { GUNZIP as GUNZIP1 } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { GUNZIP as GUNZIP2 } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { UNTAR as UNTAR1 } from '../../../../../modules/nf-core/untar/main.nf'
+include { UNTAR as UNTAR2 } from '../../../../../modules/nf-core/untar/main.nf'
+include { UNTAR as UNTAR3 } from '../../../../../modules/nf-core/untar/main.nf'
 
 workflow test_antismashlite {
     genome_fna = [

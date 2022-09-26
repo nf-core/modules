@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_SORTSAM        } from '../../../../modules/nf-core/picard/sortsam/main.nf'
-include { PICARD_FILTERSAMREADS } from '../../../../modules/nf-core/picard/filtersamreads/main.nf'
+include { PICARD_SORTSAM        } from '../../../../../modules/nf-core/picard/sortsam/main.nf'
+include { PICARD_FILTERSAMREADS } from '../../../../../modules/nf-core/picard/filtersamreads/main.nf'
 
 workflow test_picard_filtersamreads {
 

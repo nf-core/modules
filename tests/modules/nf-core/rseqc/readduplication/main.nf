@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_READDUPLICATION }   from '../../../../modules/nf-core/rseqc/readduplication/main.nf'
+include { RSEQC_READDUPLICATION }   from '../../../../../modules/nf-core/rseqc/readduplication/main.nf'
 
 workflow test_rseqc_readduplication {
     input = [ [ id:'test', single_end: false ], // meta map

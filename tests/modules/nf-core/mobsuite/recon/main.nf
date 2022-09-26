@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MOBSUITE_RECON } from '../../../../modules/nf-core/mobsuite/recon/main.nf'
+include { MOBSUITE_RECON } from '../../../../../modules/nf-core/mobsuite/recon/main.nf'
 
 workflow test_mobsuite_recon {
 

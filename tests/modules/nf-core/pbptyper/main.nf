@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PBPTYPER } from '../../../modules/nf-core/pbptyper/main.nf'
+include { PBPTYPER } from '../../../../modules/nf-core/pbptyper/main.nf'
 
 workflow test_pbptyper {
     

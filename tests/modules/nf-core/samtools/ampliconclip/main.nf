@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_AMPLICONCLIP } from '../../../../modules/nf-core/samtools/ampliconclip/main.nf'
+include { SAMTOOLS_AMPLICONCLIP } from '../../../../../modules/nf-core/samtools/ampliconclip/main.nf'
 
 workflow test_samtools_ampliconclip_no_stats_no_rejects {
 

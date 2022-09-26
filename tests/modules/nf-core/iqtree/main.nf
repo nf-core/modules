@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IQTREE } from '../../../modules/nf-core/iqtree/main.nf'
+include { IQTREE } from '../../../../modules/nf-core/iqtree/main.nf'
 
 workflow test_iqtree {
     

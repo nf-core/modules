@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PRINSEQPLUSPLUS } from '../../../modules/nf-core/prinseqplusplus/main.nf'
+include { PRINSEQPLUSPLUS } from '../../../../modules/nf-core/prinseqplusplus/main.nf'
 
 workflow test_prinseqplusplus_single_end {
 

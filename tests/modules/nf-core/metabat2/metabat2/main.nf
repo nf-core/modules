@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { METABAT2_METABAT2 } from '../../../../modules/nf-core/metabat2/metabat2/main.nf'
-include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf'
+include { METABAT2_METABAT2 } from '../../../../../modules/nf-core/metabat2/metabat2/main.nf'
+include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from '../../../../../modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf'
 
 workflow test_metabat2_no_depth {
 

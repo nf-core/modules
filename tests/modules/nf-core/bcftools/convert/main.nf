@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_GVCF } from '../../../../modules/nf-core/bcftools/convert/main.nf'
-include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_BCF  } from '../../../../modules/nf-core/bcftools/convert/main.nf'
+include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_GVCF } from '../../../../../modules/nf-core/bcftools/convert/main.nf'
+include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_BCF  } from '../../../../../modules/nf-core/bcftools/convert/main.nf'
 
 workflow test_bcftools_convert_gvcf {
     

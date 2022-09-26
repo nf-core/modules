@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ABACAS } from '../../../modules/nf-core/abacas/main.nf'
+include { ABACAS } from '../../../../modules/nf-core/abacas/main.nf'
 
 workflow test_abacas {
 

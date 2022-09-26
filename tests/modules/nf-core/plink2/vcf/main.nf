@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLINK2_VCF } from '../../../../modules/nf-core/plink2/vcf/main.nf'
+include { PLINK2_VCF } from '../../../../../modules/nf-core/plink2/vcf/main.nf'
 
 workflow test_plink2_vcf {
 

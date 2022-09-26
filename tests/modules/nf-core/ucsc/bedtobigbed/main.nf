@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BEDTOBIGBED } from '../../../../modules/nf-core/ucsc/bedtobigbed/main.nf'
-include { UCSC_BEDTOBIGBED as UCSC_BEDTOBIGBED_AS } from '../../../../modules/nf-core/ucsc/bedtobigbed/main.nf'
+include { UCSC_BEDTOBIGBED } from '../../../../../modules/nf-core/ucsc/bedtobigbed/main.nf'
+include { UCSC_BEDTOBIGBED as UCSC_BEDTOBIGBED_AS } from '../../../../../modules/nf-core/ucsc/bedtobigbed/main.nf'
 
 workflow test_ucsc_bedtobigbed {
     input = [ [ id: 'test' ], // meta map 

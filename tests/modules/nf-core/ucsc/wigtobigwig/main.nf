@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_WIGTOBIGWIG } from '../../../../modules/nf-core/ucsc/wigtobigwig/main.nf'
+include { UCSC_WIGTOBIGWIG } from '../../../../../modules/nf-core/ucsc/wigtobigwig/main.nf'
 
 workflow test_ucsc_wigtobigwig {
 
