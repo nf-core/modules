@@ -1,6 +1,6 @@
 process DEEPBGC_PIPELINE {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -42,6 +42,7 @@ process DEEPBGC_PIPELINE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         deepbgc: \$(echo \$(deepbgc info 2>&1 /dev/null/ | grep 'version' | cut -d " " -f3) )
+        prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
     END_VERSIONS
     """
 }

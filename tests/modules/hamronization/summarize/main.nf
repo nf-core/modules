@@ -10,12 +10,12 @@ workflow test_hamronization_summarize {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['bacteroides_fragilis']['genome']['genome_mapping_potential_arg'], checkIfExists: true),
+        file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),
     ]
 
     input2 = [
         [ id:'test2', single_end:false ], // meta map
-        file(params.test_data['bacteroides_fragilis']['genome']['genome_mapping_potential_arg'], checkIfExists: true),
+        file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),
     ]
 
     HAMRONIZATION_DEEPARG ( input, 'tsv', '1.0.2', '2'  )
