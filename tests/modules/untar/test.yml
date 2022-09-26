@@ -17,3 +17,11 @@
   files:
     - path: output/untar/flowcell/RunInfo.xml
       md5sum: 03038959f4dd181c86bc97ae71fe270a
+
+- name: untar test_untar_onlyfiles
+  command: nextflow run ./tests/modules/untar -entry test_untar_onlyfiles -c ./tests/config/nextflow.config  -c ./tests/modules/untar/nextflow.config
+  tags:
+    - untar
+  files:
+    - path: output/untar/hello/hello.txt
+      md5sum: e59ff97941044f85df5297e1c302d260

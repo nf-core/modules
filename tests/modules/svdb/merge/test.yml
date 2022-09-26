@@ -12,3 +12,10 @@
     - svdb/merge
   files:
     - path: output/svdb/test_sv_merge.vcf.gz
+- name: svdb merge test_svdb_merge_noprio stub
+  command: nextflow run ./tests/modules/svdb/merge -entry test_svdb_merge_noprio -c ./tests/config/nextflow.config -c ./tests/modules/svdb/merge/nextflow.config -stub
+  tags:
+    - svdb
+    - svdb/merge
+  files:
+    - path: output/svdb/test_sv_merge.vcf.gz
