@@ -15,7 +15,9 @@ process SAMTOOLS_MERGE {
     output:
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
+    tuple val(meta), path("*.csi")         , optional:true, emit: csi
     path  "versions.yml"                                  , emit: versions
+
 
     when:
     task.ext.when == null || task.ext.when
