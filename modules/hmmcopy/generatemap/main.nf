@@ -1,5 +1,5 @@
 process HMMCOPY_GENERATEMAP {
-    tag '$bam'
+    tag "$bam"
     label 'process_long'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.

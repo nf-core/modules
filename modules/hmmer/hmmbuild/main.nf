@@ -1,5 +1,5 @@
 process HMMER_HMMBUILD {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
