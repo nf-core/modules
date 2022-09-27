@@ -17,7 +17,6 @@ process ANGSD_DOCOUNTS {
     tuple val(meta), path("*.pos.gz")     , optional: true, emit: pos
     tuple val(meta), path("*.counts.gz")  , optional: true, emit: counts
     tuple val(meta), path("*.icnts.gz")   , optional: true, emit: icounts
-
     path "versions.yml"           , emit: versions
 
     when:
