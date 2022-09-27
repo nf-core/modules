@@ -33,10 +33,11 @@ process VERIFYBAMID_VERIFYBAMID2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
 
-    def bam_file = "${bam}.endsWith(".bam|.cram")" ? "--BamFile ${bam}" : ""
+    def bam_file = "${bam}.endsWith('.bam|.cram')" ? "--BamFile ${bam}" : ""
 
     def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) ? "--SVDPrefix ${svd_ud.baseName}" : ""
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
+    args_list.removeIf { it.contains('--RefVCF') }
 
     if (args.contains('--UDPath') && args.contains('--MeanPath') && args.contains('--BedPath')) {
         svd_args = svd_args + "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
@@ -61,7 +62,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
         ${refvcf_args} \\
         ${reference_args}  \\
         ${args_list.join(' ')} \\
-        > {prefix}.log
+        > ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
