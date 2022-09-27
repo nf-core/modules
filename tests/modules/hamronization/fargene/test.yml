@@ -1,0 +1,8 @@
+- name: hamronization fargene test_hamronization_fargene
+  command: nextflow run ./tests/modules/hamronization/fargene -entry test_hamronization_fargene -c ./tests/config/nextflow.config  -c ./tests/modules/hamronization/fargene/nextflow.config
+  tags:
+    - hamronization
+    - hamronization/fargene
+  files:
+    - path: output/hamronization/test.json
+      md5sum: 58e0494c51d30eb3494f7c9198986bb9
