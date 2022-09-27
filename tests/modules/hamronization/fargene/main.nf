@@ -15,5 +15,5 @@ workflow test_hamronization_fargene {
     GUNZIP ( input )
     FARGENE ( GUNZIP.out.gunzip, hmm_model )
 
-    HAMRONIZATION_FARGENE ( FARGENE.out.hmm, 'json', '0.1', '0.1' )
+    HAMRONIZATION_FARGENE ( FARGENE.out.hmm, 'tsv', '0.1', '0.1' )
 }
