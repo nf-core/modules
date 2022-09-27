@@ -58,6 +58,8 @@ process ENSEMBLVEP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ann.vcf
+    touch ${prefix}.ann.tab
+    touch ${prefix}.ann.json
     touch ${prefix}.summary.html
 
     cat <<-END_VERSIONS > versions.yml
