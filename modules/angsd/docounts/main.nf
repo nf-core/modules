@@ -11,8 +11,8 @@ process ANGSD_DOCOUNTS {
     tuple val(meta), path(bam), path(bai), path(minqfile)
 
     output:
-    tuple val(meta), path("*.depthSample"), optional: true, emit: depthsample
-    tuple val(meta), path("*.depthGlobal"), optional: true, emit: depthglobal
+    tuple val(meta), path("*.depthSample"), optional: true, emit: depth_sample
+    tuple val(meta), path("*.depthGlobal"), optional: true, emit: depth_global
     tuple val(meta), path("*.qs")         , optional: true, emit: qs
     tuple val(meta), path("*.pos.gz")     , optional: true, emit: pos
     tuple val(meta), path("*.counts.gz")  , optional: true, emit: counts
