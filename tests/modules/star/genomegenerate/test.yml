@@ -35,3 +35,26 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
+
+- name: star genomegenerate test_star_genomegenerate stub
+  command: nextflow run ./tests/modules/star/genomegenerate -entry test_star_genomegenerate -c ./tests/config/nextflow.config -c ./tests/modules/star/genomegenerate/nextflow.config -stub-run
+  tags:
+    - star
+    - star/genomegenerate
+  files:
+    - path: output/star/star/Genome
+    - path: output/star/star/Log.out
+    - path: output/star/star/SA
+    - path: output/star/star/SAindex
+    - path: output/star/star/chrLength.txt
+    - path: output/star/star/chrName.txt
+    - path: output/star/star/chrNameLength.txt
+    - path: output/star/star/chrStart.txt
+    - path: output/star/star/exonGeTrInfo.tab
+    - path: output/star/star/exonInfo.tab
+    - path: output/star/star/geneInfo.tab
+    - path: output/star/star/genomeParameters.txt
+    - path: output/star/star/sjdbInfo.txt
+    - path: output/star/star/sjdbList.fromGTF.out.tab
+    - path: output/star/star/sjdbList.out.tab
+    - path: output/star/star/transcriptInfo.tab

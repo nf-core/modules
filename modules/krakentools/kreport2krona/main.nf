@@ -1,6 +1,6 @@
 process KRAKENTOOLS_KREPORT2KRONA {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::krakentools=1.2" : null)

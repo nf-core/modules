@@ -5,7 +5,8 @@
     - seqtk/sample
   files:
     - path: output/seqtk/test.sampled.fastq.gz
-      md5sum: 73c3e8f113860244f3ed3866a8b9d555
+      contains:
+        - "@ERR5069949"
 
 - name: seqtk sample test_seqtk_sample_paired_end
   command: nextflow run ./tests/modules/seqtk/sample -entry test_seqtk_sample_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/sample/nextflow.config
@@ -14,6 +15,8 @@
     - seqtk/sample
   files:
     - path: output/seqtk/test.sampled_1.fastq.gz
-      md5sum: 73c3e8f113860244f3ed3866a8b9d555
+      contains:
+        - "@ERR5069949"
     - path: output/seqtk/test.sampled_2.fastq.gz
-      md5sum: 75457ddceea3a5688d05438cdbffba24
+      contains:
+        - "@ERR5069949"

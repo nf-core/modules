@@ -48,7 +48,7 @@ process SVDB_MERGE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_sv_merge.vcf
+    touch ${prefix}_sv_merge.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
