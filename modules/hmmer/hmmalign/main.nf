@@ -1,6 +1,6 @@
 process HMMER_HMMALIGN {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -15,16 +15,17 @@ process HMMER_HMMALIGN {
     tuple val(meta), path("*.sthlm.gz"), emit: sthlm
     path "versions.yml"                , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fastacmd = fasta.getExtension() == 'gz' ? "gunzip -c $fasta" : "cat $fasta"
     """
-    $fastacmd | \\
-        hmmalign \\
+    hmmalign \\
         $args \\
         $hmm \\
-        - | gzip -c > ${meta.id}.sthlm.gz
+        $fasta | gzip -c > ${prefix}.sthlm.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

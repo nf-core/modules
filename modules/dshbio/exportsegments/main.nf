@@ -2,17 +2,20 @@ process DSHBIO_EXPORTSEGMENTS {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::dsh-bio=2.0.6" : null)
+    conda (params.enable_conda ? "bioconda::dsh-bio=2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.0.6--hdfd78af_0' :
-        'quay.io/biocontainers/dsh-bio:2.0.6--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
+        'quay.io/biocontainers/dsh-bio:2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("*.fa"), emit: fasta
+    tuple val(meta), path("*.fa.gz"), emit: fasta
     path "versions.yml"              , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -22,7 +25,7 @@ process DSHBIO_EXPORTSEGMENTS {
         export-segments \\
         $args \\
         -i $gfa \\
-        -o ${prefix}.fa
+        -o ${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

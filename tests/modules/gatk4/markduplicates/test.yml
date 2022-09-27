@@ -1,27 +1,40 @@
 - name: gatk4 markduplicates test_gatk4_markduplicates
-  command: nextflow run tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c tests/config/nextflow.config -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
-      md5sum: c8f7a9e426c768577f88f59cb1336bf3
+      md5sum: 4ac375b5288501c832bc3e4773f06d39
     - path: output/gatk4/test.bam
-      md5sum: fba0c99a0b087c90113a210e4465f91b
-    - path: output/gatk4/test.metrics
-    - path: output/gatk4/versions.yml
-      md5sum: dacbab0e112d2403b09df138d4e62895
+      md5sum: c1a0d25c5f65514e72aa490326557a88
+    - path: output/gatk4/test.bam.metrics
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
-  command: nextflow run tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c tests/config/nextflow.config -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicates
   files:
     - path: output/gatk4/test.bai
-      md5sum: 325932c51f6898b02dfec469c984ba28
+      md5sum: 832fbc6b3c3266d024fc7131ffd1b45d
     - path: output/gatk4/test.bam
-      md5sum: f7cba8104e3a7024a5e00c02304f7dea
-    - path: output/gatk4/test.metrics
-    - path: output/gatk4/versions.yml
-      md5sum: 14d0d085df7d2f9e770578d92c329299
+      md5sum: 36909e80bde1aa547fae6382fd35764d
+    - path: output/gatk4/test.bam.metrics
+      contains:
+        - "testN"
+        - "2820"
+
+- name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output
+  command: nextflow run ./tests/modules/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicates/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/markduplicates
+  files:
+    - path: output/gatk4/test.cram
+    - path: output/gatk4/test.cram.crai
+      md5sum: 53a329f0828210e317ad81b0e6ca4bc5
+    - path: output/gatk4/test.cram.metrics
+      contains:
+        - "testN"
+        - "2820"

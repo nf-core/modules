@@ -16,6 +16,9 @@ process COOLER_CLOAD {
     tuple val(meta), val(cool_bin), path("*.cool"), emit: cool
     path "versions.yml"                           , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

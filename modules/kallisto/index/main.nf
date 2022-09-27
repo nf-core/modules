@@ -14,6 +14,9 @@ process KALLISTO_INDEX {
     path "kallisto" , emit: idx
     path "versions.yml" , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
@@ -22,6 +25,16 @@ process KALLISTO_INDEX {
         $args \\
         -i kallisto \\
         $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch kallisto
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

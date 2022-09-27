@@ -1,6 +1,6 @@
 process MUSCLE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::muscle=3.8.1551" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -20,6 +20,9 @@ process MUSCLE {
     tuple val(meta), path("*.tree"), optional: true, emit: tree
     path "*.log"                                   , emit: log
     path "versions.yml"                            , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

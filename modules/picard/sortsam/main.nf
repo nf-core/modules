@@ -2,10 +2,10 @@ process PICARD_SORTSAM {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::picard=2.26.10" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.26.10--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.26.10--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,6 +14,9 @@ process PICARD_SORTSAM {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"                  , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

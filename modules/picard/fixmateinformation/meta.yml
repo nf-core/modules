@@ -1,0 +1,44 @@
+name: picard_fixmateinformation
+description: Verify mate-pair information between mates and fix if needed
+keywords:
+  - mate-pair
+tools:
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036713471-FixMateInformation-Picard-
+      tool_dev_url: https://github.com/broadinstitute/picard
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: mate-pair verified BAM file
+      pattern: "*.{bam}"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"

@@ -20,6 +20,9 @@ process MACS2_CALLPEAK {
     tuple val(meta), path("*.bed")       , optional:true, emit: bed
     tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

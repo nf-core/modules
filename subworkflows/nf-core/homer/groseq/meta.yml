@@ -1,0 +1,48 @@
+name: homer_groseq
+description: Perform variant calling on a set of normal samples using mutect2 panel of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then use this to create a panel of normals using createsomaticpanelofnormals.
+keywords:
+  - homer
+  - groseq
+  - nascent
+modules:
+  - homer/maketagdirectory
+  - homer/makeucscfile
+  - homer/findpeaks
+  - homer/pos2bed
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input:
+      type: list
+      description: list of BAM files, also able to take SAM and BED as input
+      pattern: "[ *.{bam/sam/bed} ]"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+output:
+  - tagdir:
+      type: directory
+      description: The "Tag Directory"
+      pattern: "*_tagdir"
+  - bedGraph:
+      type: file
+      description: The UCSC bed graph
+      pattern: "*.bedGraph.gz"
+  - peaks:
+      type: file
+      description: The found peaks
+      pattern: "*.peaks.txt"
+  - bed:
+      type: file
+      description: A BED file of the found peaks
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Emiller88"

@@ -1,9 +1,8 @@
-def VERSION = '1.5.0' // Version information not provided by tool on CLI
-
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::gtdbtk=1.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gtdbtk:1.5.0--pyhdfd78af_0' :
@@ -25,9 +24,13 @@ process GTDBTK_CLASSIFYWF {
     path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
     path "versions.yml"                                             , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
+    def VERSION = '1.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     export GTDBTK_DATA_PATH="\${PWD}/database"
     if [ ${pplacer_scratch} != "" ] ; then

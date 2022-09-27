@@ -1,8 +1,8 @@
 - name: cellranger mkref test_cellranger_mkref
-  command: nextflow run ./tests/modules/cellranger/mkref -entry test_cellranger_mkref -c ./tests/config/nextflow.config -c ./tests/modules/cellranger/mkref/nextflow.config
+  command: nextflow run ./tests/modules/cellranger/mkref -entry test_cellranger_mkref -c ./tests/config/nextflow.config  -c ./tests/modules/cellranger/mkref/nextflow.config
   tags:
-    - cellranger
     - cellranger/mkref
+    - cellranger
   files:
     - path: output/cellranger/homo_sapiens_chr22_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
@@ -11,7 +11,7 @@
     - path: output/cellranger/homo_sapiens_chr22_reference/genes/genes.gtf.gz
       md5sum: 6d9b5f409bfea95022bc25b9590e194e
     - path: output/cellranger/homo_sapiens_chr22_reference/reference.json
-      md5sum: a4e2b9bbf016c55b0d4d7bc1fa53896f
+      md5sum: 6cc817f0923062e780e6573806840cea
     - path: output/cellranger/homo_sapiens_chr22_reference/star/Genome
       md5sum: 22102926fadf5890e905ca71b2da3f35
     - path: output/cellranger/homo_sapiens_chr22_reference/star/SA

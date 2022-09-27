@@ -1,6 +1,6 @@
 process DAMAGEPROFILER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,6 +16,9 @@ process DAMAGEPROFILER {
     output:
     tuple val(meta), path("${prefix}"), emit: results
     path  "versions.yml"              , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

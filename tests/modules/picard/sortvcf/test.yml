@@ -1,0 +1,7 @@
+- name: picard sortvcf
+  command: nextflow run ./tests/modules/picard/sortvcf -entry test_picard_sortvcf -c ./tests/config/nextflow.config -c ./tests/modules/picard/sortvcf/nextflow.config
+  tags:
+    - picard
+    - picard/sortvcf
+  files:
+    - path: output/picard/test_sorted.vcf.gz

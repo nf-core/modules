@@ -13,7 +13,7 @@ tools:
       documentation: https://github.com/pezmaster31/bamtools/wiki
       tool_dev_url: http://github.com/pezmaster31/bamtools
       doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
 
 input:
   - meta:
@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: A BAM file to split
+      description: A list of one or more BAM files to merge and then split
       pattern: "*.bam"
 
 output:
@@ -43,3 +43,4 @@ output:
 
 authors:
   - "@sguizard"
+  - "@matthdsm"

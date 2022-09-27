@@ -1,6 +1,6 @@
 process BEDTOOLS_MERGE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,6 +13,9 @@ process BEDTOOLS_MERGE {
     output:
     tuple val(meta), path('*.bed'), emit: bed
     path  "versions.yml"          , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

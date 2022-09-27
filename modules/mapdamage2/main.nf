@@ -1,6 +1,6 @@
 process MAPDAMAGE2 {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::mapdamage2=2.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -31,6 +31,9 @@ process MAPDAMAGE2 {
     tuple val(meta), path("results_*/*.fasta"), optional: true                            ,emit: fasta
     tuple val(meta), path("*/"), optional: true                                           ,emit: folder
     path "versions.yml",emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

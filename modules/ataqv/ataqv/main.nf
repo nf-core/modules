@@ -2,10 +2,10 @@ process ATAQV_ATAQV {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ataqv=1.2.1" : null)
+    conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ataqv:1.2.1--py39ha23c084_2' :
-        'quay.io/biocontainers/ataqv:1.2.1--py39ha23c084_2' }"
+        'https://depot.galaxyproject.org/singularity/ataqv:1.3.0--py39hccc85d7_2' :
+        'quay.io/biocontainers/ataqv:1.3.0--py39hccc85d7_2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
@@ -18,6 +18,9 @@ process ATAQV_ATAQV {
     tuple val(meta), path("*.ataqv.json"), emit: json
     tuple val(meta), path("*.problems")  , emit: problems, optional: true
     path "versions.yml"                  , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

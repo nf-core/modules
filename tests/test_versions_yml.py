@@ -16,7 +16,10 @@ def _get_workflow_names():
         # test_config = yaml.safe_load(f.read_text())
         test_config = yaml.load(f.read_text(), Loader=yaml.BaseLoader)
         for workflow in test_config:
-            yield workflow["name"]
+            # https://github.com/nf-core/modules/pull/1242 - added to cover tests
+            # that expect an error and therefore will not generate a versions.yml
+            if 'exit_code' not in workflow:
+                yield workflow["name"]
 
 
 @pytest.mark.workflow(*_get_workflow_names())
@@ -53,5 +56,5 @@ def test_ensure_valid_version_yml(workflow_dir):
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
         assert re.match(
-            r"^\d+.*", str(version)
-        ), f"Version number for {tool} must start with a number. "
+            r"^\d.*|^[a-f0-9]{40}$", str(version)
+        ), f"Version number for {tool} must start with a number, or be a Git SHA commit id. "

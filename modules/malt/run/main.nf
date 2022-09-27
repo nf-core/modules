@@ -1,24 +1,29 @@
 process MALT_RUN {
+    tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::malt=0.53" : null)
+    conda (params.enable_conda ? "bioconda::malt=0.41" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.53--hdfd78af_0' :
-        'quay.io/biocontainers/malt:0.53--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
+        'quay.io/biocontainers/malt:0.41--1' }"
 
     input:
-    path fastqs
+    tuple val(meta), path(fastqs)
     val mode
     path index
 
     output:
-    path "*.rma6"                          , emit: rma6
-    path "*.{tab,text,sam}",  optional:true, emit: alignments
-    path "*.log"                           , emit: log
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.rma6")                          , emit: rma6
+    tuple val(meta), path("*.{tab,text,sam}"),  optional:true, emit: alignments
+    tuple val(meta), path("*.log")                           , emit: log
+    path "versions.yml"                                      , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 6
     if (!task.memory) {
         log.info '[MALT_RUN] Available memory not known - defaulting to 6GB. Specify process memory requirements to change this.'
@@ -28,14 +33,13 @@ process MALT_RUN {
 
     """
     malt-run \\
-        -J-Xmx${avail_mem}g \\
         -t $task.cpus \\
         -v \\
         -o . \\
         $args \\
         --inFile ${fastqs.join(' ')} \\
         -m $mode \\
-        --index $index/ |&tee malt-run.log
+        --index $index/ |&tee ${prefix}-malt-run.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

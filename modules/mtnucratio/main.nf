@@ -1,6 +1,6 @@
 process MTNUCRATIO {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::mtnucratio=0.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -15,6 +15,9 @@ process MTNUCRATIO {
     tuple val(meta), path("*.mtnucratio"), emit: mtnucratio
     tuple val(meta), path("*.json")      , emit: json
     path "versions.yml"                  , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

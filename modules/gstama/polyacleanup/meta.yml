@@ -1,0 +1,55 @@
+name: gstama_polyacleanup
+description: Helper script, remove remaining polyA sequences from Full Length Non Chimeric reads (Pacbio isoseq3)
+keywords:
+  - gstama
+  - gstama/polyacleanup
+  - long-read
+  - isoseq
+  - tama
+  - trancriptome
+  - annotation
+tools:
+  - gstama:
+      description: Gene-Switch Transcriptome Annotation by Modular Algorithms
+      homepage: https://github.com/sguizard/gs-tama
+      documentation: https://github.com/GenomeRIK/tama/wiki
+      tool_dev_url: https://github.com/sguizard/gs-tama
+      doi: "https://doi.org/10.1186/s12864-020-07123-7"
+      licence: ["GPL v3 License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Full Length Non Chimeric reads in fasta format
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: The Full Length Non Chimeric reads clened from remaining polyA tails. The sequences are in FASTA format compressed with gzip.
+      pattern: "*_tama.fa.gz"
+  - report:
+      type: file
+      description: A text file describing the number of polyA tails removed and their length. Compressed with gzip.
+      pattern: "*_tama_polya_flnc_report.txt.gz"
+  - tails:
+      type: file
+      description: A gzip compressed FASTA file of trimmed polyA tails.
+      pattern: "*_tama_tails.fa.gz"
+
+authors:
+  - "@sguizard"

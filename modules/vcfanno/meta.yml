@@ -1,0 +1,60 @@
+name: vcfanno
+description: quickly annotate your VCF with any number of INFO fields from any number of VCFs or BED files
+keywords:
+  - vcf
+  - bed
+  - annotate
+  - variant
+  - lua
+  - toml
+tools:
+  - vcfanno:
+      description: annotate a VCF with other VCFs/BEDs/tabixed files
+      homepage: None
+      documentation: https://github.com/brentp/vcfanno#vcfanno
+      tool_dev_url: https://github.com/brentp/vcfanno
+      doi: "10.1186/s13059-016-0973-5"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: query VCF file
+      pattern: "*.{vcf, vcf.gz}"
+  - vcf_tabix:
+      type: file
+      description: tabix index of query VCF - only needed if vcf is compressed
+      pattern: "*.vcf.gz.tbi"
+  - toml:
+      type: file
+      description: configuration file
+      pattern: "*.toml"
+  - resource_dir:
+      type: file
+      description: |
+        This directory contains referenced files in the TOML config,
+        and the corresponding indicies e.g. exac.vcf.gz + exac.vcf.gz.tbi,
+        with exception to the lua file.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Annotated VCF file
+      pattern: "*.vcf"
+
+authors:
+  - "@projectoriented"

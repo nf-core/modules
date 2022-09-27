@@ -1,6 +1,6 @@
 process DEDUP {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::dedup=0.12.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,6 +16,9 @@ process DEDUP {
     tuple val(meta), path("*.hist")     , emit: hist
     tuple val(meta), path("*log")       , emit: log
     path "versions.yml"                 , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args   ?: ''

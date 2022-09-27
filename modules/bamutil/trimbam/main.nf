@@ -1,6 +1,6 @@
 process BAMUTIL_TRIMBAM {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bamutil=1.0.15" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,6 +13,9 @@ process BAMUTIL_TRIMBAM {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

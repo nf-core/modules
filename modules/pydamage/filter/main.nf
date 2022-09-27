@@ -1,11 +1,11 @@
 process PYDAMAGE_FILTER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::pydamage=0.62" : null)
+    conda (params.enable_conda ? "bioconda::pydamage=0.70" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pydamage:0.62--pyhdfd78af_0' :
-        'quay.io/biocontainers/pydamage:0.62--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
+        'quay.io/biocontainers/pydamage:0.70--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(csv)
@@ -13,6 +13,9 @@ process PYDAMAGE_FILTER {
     output:
     tuple val(meta), path("pydamage_results/pydamage_filtered_results.csv"), emit: csv
     path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

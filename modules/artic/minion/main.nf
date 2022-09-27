@@ -2,10 +2,10 @@ process ARTIC_MINION {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::artic=1.2.1" : null)
+    conda (params.enable_conda ? "bioconda::artic=1.2.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.2.1--py_0' :
-        'quay.io/biocontainers/artic:1.2.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/artic:1.2.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/artic:1.2.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,7 +13,8 @@ process ARTIC_MINION {
     path  sequencing_summary
     path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta")
     path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.scheme.bed")
-    path  medaka_model
+    path  medaka_model_file
+    val   medaka_model_string
     val   scheme
     val   scheme_version
 
@@ -31,6 +32,9 @@ process ARTIC_MINION {
     tuple val(meta), path("*.json"), optional:true                    , emit: json
     path  "versions.yml"                                              , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
@@ -41,9 +45,10 @@ process ARTIC_MINION {
     if (args.tokenize().contains('--medaka')) {
         fast5   = ""
         summary = ""
-        model = file(medaka_model).exists() ? "--medaka-model ./$medaka_model" : "--medaka-model $medaka_model"
+        model   = medaka_model_file ? "--medaka-model ./$medaka_model_file" : "--medaka-model $medaka_model_string"
     }
     def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+    def VERSION = '1.2.2' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     $hd5_plugin_path
 
@@ -62,7 +67,7 @@ process ARTIC_MINION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        artic: \$(artic --version 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+        artic: $VERSION
     END_VERSIONS
     """
 }

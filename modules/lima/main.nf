@@ -1,6 +1,6 @@
 process LIMA {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lima=2.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -27,6 +27,9 @@ process LIMA {
     tuple val(meta), path("*.json")             , optional: true, emit: json
     tuple val(meta), path("*.clips")            , optional: true, emit: clips
     tuple val(meta), path("*.guess")            , optional: true, emit: guess
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

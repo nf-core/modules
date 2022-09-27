@@ -15,6 +15,9 @@ process BLAST_BLASTN {
     tuple val(meta), path('*.blastn.txt'), emit: txt
     path "versions.yml"                  , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

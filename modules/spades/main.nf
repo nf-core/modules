@@ -2,10 +2,10 @@ process SPADES {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::spades=3.15.3' : null)
+    conda (params.enable_conda ? 'bioconda::spades=3.15.4' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0' :
-        'quay.io/biocontainers/spades:3.15.3--h95f258a_0' }"
+        'https://depot.galaxyproject.org/singularity/spades:3.15.4--h95f258a_0' :
+        'quay.io/biocontainers/spades:3.15.4--h95f258a_0' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
@@ -19,6 +19,9 @@ process SPADES {
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
     tuple val(meta), path('*.log')                , emit: log
     path  "versions.yml"                          , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
