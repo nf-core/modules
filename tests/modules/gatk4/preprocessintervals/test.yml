@@ -1,10 +1,8 @@
 - name: gatk4 preprocessintervals test_gatk4_preprocessintervals
-  command: nextflow run tests/modules/gatk4/preprocessintervals -entry test_gatk4_preprocessintervals -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/gatk4/preprocessintervals -entry test_gatk4_preprocessintervals -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/preprocessintervals/nextflow.config
   tags:
     - gatk4
     - gatk4/preprocessintervals
   files:
     - path: output/gatk4/preprocessed_intervals.interval_list
       md5sum: ce14b8fb47a60483fe44473ba40e1583
-    - path: output/gatk4/versions.yml
-      md5sum: a36536b8cc1c451f2cf1e9a37af25742
