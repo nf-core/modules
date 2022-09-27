@@ -37,7 +37,6 @@ process VERIFYBAMID_VERIFYBAMID2 {
 
     def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) ? "--SVDPrefix ${svd_ud.baseName}" : ""
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
-    args_list.removeIf { it.contains('--RefVCF') }
 
     if (args.contains('--UDPath') && args.contains('--MeanPath') && args.contains('--BedPath')) {
         svd_args = svd_args + "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
@@ -48,11 +47,6 @@ process VERIFYBAMID_VERIFYBAMID2 {
 
     def reference_args = ("$references".endsWith('.fasta')) ?
         "--Reference ${references}" : ''
-
-    // Enable generating customized reference stack
-    if (args.contains('--RefVCF')) {
-        svd_args = ""
-    }
 
     """
     verifybamid2 \\
