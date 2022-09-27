@@ -34,8 +34,9 @@ process PICARD_ADDORREPLACEREADGROUPS {
     }
     """
     picard \\
-        AddOrReplaceReadGroups \\
         -Xmx${avail_mem}g \\
+        AddOrReplaceReadGroups \\
+        $args \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
         --RGID ${ID} \\
@@ -44,6 +45,17 @@ process PICARD_ADDORREPLACEREADGROUPS {
         --RGPU ${BARCODE} \\
         --RGSM ${SAMPLE} \\
         --CREATE_INDEX true
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix    ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

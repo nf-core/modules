@@ -1,0 +1,34 @@
+name: "deepbgc_download"
+description: Database download module for DeepBGC which detects BGCs in bacterial and fungal genomes using deep learning.
+keywords:
+  - database
+  - download
+  - BGC
+  - biosynthetic gene cluster
+  - deep learning
+  - neural network
+  - random forest
+  - genomes
+  - bacteria
+  - fungi
+tools:
+  - "deepbgc":
+      description: "DeepBGC - Biosynthetic Gene Cluster detection and classification"
+      homepage: "https://github.com/Merck/deepbgc"
+      documentation: "https://github.com/Merck/deepbgc"
+      tool_dev_url: "https://github.com/Merck/deepbgc"
+      doi: "10.1093/nar/gkz654"
+      licence: "['MIT']"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - deepbgc_db:
+      type: directory
+      description: Contains reference database files
+      pattern: "deepbgc_db"
+
+authors:
+  - "@louperelo"
