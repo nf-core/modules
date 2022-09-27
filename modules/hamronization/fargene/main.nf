@@ -1,4 +1,5 @@
-process HAMRONIZATION_SUMMARIZE {
+process HAMRONIZATION_FARGENE {
+    tag "$meta.id"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hamronization=1.1.1" : null)
@@ -7,28 +8,32 @@ process HAMRONIZATION_SUMMARIZE {
         'quay.io/biocontainers/hamronization:1.1.1--pyhdfd78af_0' }"
 
     input:
-    path(reports)
+    tuple val(meta), path(report)
     val(format)
+    val(software_version)
+    val(reference_db_version)
 
     output:
-    path("hamronization_combined_report.json"), optional: true, emit: json
-    path("hamronization_combined_report.tsv") , optional: true, emit: tsv
-    path("hamronization_combined_report.html"), optional: true, emit: html
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.json") , optional: true, emit: json
+    tuple val(meta), path("*.tsv")  , optional: true, emit: tsv
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def outformat = format == 'interactive' ? 'html' : format
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     hamronize \\
-        summarize \\
-        ${reports.join(' ')} \\
-        -t ${format} \\
+        fargene \\
+        ${report} \\
         $args \\
-        -o hamronization_combined_report.${outformat}
+        --format ${format} \\
+        --analysis_software_version ${software_version} \\
+        --reference_database_version ${reference_db_version} \\
+        --input_file_name ${prefix} \\
+        > ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
