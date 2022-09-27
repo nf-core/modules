@@ -1,5 +1,5 @@
 process EIDO_VALIDATE {
-    tag '$samplesheet'
+    tag "$samplesheet"
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::eido=0.1.9" : null)
