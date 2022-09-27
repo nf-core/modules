@@ -1,5 +1,5 @@
 name: "hamronization_fargene"
-description: Tool to convert and summarize fARGene outputs using the hAMRonization specification.
+description: Tool to convert and summarize fARGene outputs using the hAMRonization specification
 keywords:
   - amr
   - antimicrobial resistance
@@ -24,7 +24,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - report:
       type: file
-      description: Output .txt file from RGI
+      description: Output .txt file from fARGene
       pattern: "*.txt"
   - format:
       type: value
@@ -32,11 +32,11 @@ input:
       pattern: "tsv|json"
   - software_version:
       type: value
-      description: Version of DeepARG used
+      description: Version of fARGene used
       pattern: "[0-9].[0-9].[0-9]"
   - reference_db_version:
       type: value
-      description: Database version of DeepARG used
+      description: Database version of fARGene used
       pattern: "[0-9].[0-9].[0-9]"
 
 output:
