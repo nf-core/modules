@@ -1,6 +1,6 @@
 process AMPLIFY_PREDICT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::amplify=1.0.3" : null)

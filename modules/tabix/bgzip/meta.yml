@@ -32,6 +32,10 @@ output:
       type: file
       description: Output compressed/decompressed file
       pattern: "*."
+  - gzi:
+      type: file
+      description: Optional gzip index file for compressed inputs
+      pattern: "*.gzi"
   - versions:
       type: file
       description: File containing software versions

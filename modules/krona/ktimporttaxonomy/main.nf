@@ -1,6 +1,6 @@
 process KRONA_KTIMPORTTAXONOMY {
     tag "${meta.id}"
-    label 'process_high'
+    label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::krona=2.8" : null)
