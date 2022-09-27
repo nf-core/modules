@@ -1,5 +1,5 @@
 process MULTIVCFANALYZER {
-    tag '$fasta'
+    tag "$fasta"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::multivcfanalyzer=0.85.2" : null)
