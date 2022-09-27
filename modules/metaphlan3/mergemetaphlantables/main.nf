@@ -7,10 +7,10 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
         'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
 
     input:
-    path(profiles)
+    tuple val(meta), path(profiles)
 
     output:
-    tuple path("${prefix}.txt") , emit: txt
+    tuple val(meta), path("${prefix}.txt") , emit: txt
     path "versions.yml" , emit: versions
 
     when:
@@ -18,7 +18,7 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "merged_abundance_table"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     merge_metaphlan_tables.py \\
         $args \\

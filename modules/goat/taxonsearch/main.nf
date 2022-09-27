@@ -1,6 +1,6 @@
 process GOAT_TAXONSEARCH {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::goat=0.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -20,7 +20,7 @@ process GOAT_TAXONSEARCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    input = taxa_file ? "-f ${taxa_file}" : "-t ${taxon}"
+    input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
     if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
     if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
     """

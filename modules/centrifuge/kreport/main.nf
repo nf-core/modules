@@ -1,6 +1,6 @@
 process CENTRIFUGE_KREPORT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::centrifuge=1.0.4_beta" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
