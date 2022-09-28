@@ -31,6 +31,6 @@ workflow test_endorspy {
             [meta, bam, bai]
        }
     SAMTOOLS_FLAGSTAT2 ( input2 )
-    ch_input_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat.mix(SAMTOOLS_FLAGSTAT2.out.flagstat).groupTuple()
+    ch_input_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat.join(SAMTOOLS_FLAGSTAT2.out.flagstat)
     ENDORSPY ( ch_input_flagstat )
 }
