@@ -19,12 +19,14 @@ process STRINGTIE_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args      = task.ext.args ?: ''
+    def reference = annotation_gtf ? "-G $annotation_gtf" : ""
     """
     stringtie \\
         --merge $stringtie_gtf \\
-        -G $annotation_gtf \\
-        -o stringtie.merged.gtf
+        $reference \\
+        -o stringtie.merged.gtf \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

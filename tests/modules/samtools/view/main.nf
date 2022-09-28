@@ -10,7 +10,7 @@ workflow test_samtools_view {
                 []
             ]
 
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
 }
 
 workflow test_samtools_view_cram {
@@ -20,7 +20,7 @@ workflow test_samtools_view_cram {
             ]
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, fasta )
+    SAMTOOLS_VIEW ( input, fasta, [] )
 }
 
 workflow test_samtools_view_convert {
@@ -30,7 +30,29 @@ workflow test_samtools_view_convert {
             ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, fasta )
+    SAMTOOLS_VIEW ( input, fasta, [] )
+}
+
+workflow test_samtools_view_index {
+    input = [ [ id: 'test' ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                []
+            ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    SAMTOOLS_VIEW ( input, fasta, [] )
+}
+
+workflow test_samtools_view_filter {
+    input = [ [ id: 'test' ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                []
+            ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    qname = Channel.of("testN:2817", "testN:2814").collectFile(name: "readnames.list", newLine: true)
+
+    SAMTOOLS_VIEW ( input, fasta, qname )
 }
 
 workflow test_samtools_view_stubs {
@@ -39,5 +61,5 @@ workflow test_samtools_view_stubs {
                 []
             ]
 
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
 }

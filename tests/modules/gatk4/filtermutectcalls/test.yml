@@ -33,3 +33,14 @@
       md5sum: 95cc3e37705bd3b97a292c5d46ab82f3
     - path: output/gatk4/test.filtered.vcf.gz.tbi
     - path: output/gatk4/versions.yml
+
+- name: gatk4 filtermutectcalls test_gatk4_filtermutectcalls_base_stubs
+  command: nextflow run ./tests/modules/gatk4/filtermutectcalls -entry test_gatk4_filtermutectcalls_base_stubs -c ./tests/config/nextflow.config -c ./tests/modules/gatk4/filtermutectcalls/nextflow.config -stub-run
+  tags:
+    - gatk4
+    - gatk4/filtermutectcalls
+  files:
+    - path: output/gatk4/test.filtered.vcf.gz
+    - path: output/gatk4/test.filtered.vcf.gz.filteringStats.tsv
+    - path: output/gatk4/test.filtered.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
