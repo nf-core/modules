@@ -1,7 +1,7 @@
 def VERSION='2.7.1' // Version information not provided by tool on CLI
 
 process KRONA_KTUPDATETAXONOMY {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?

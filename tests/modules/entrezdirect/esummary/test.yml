@@ -5,7 +5,7 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_sra.xml
-      md5sum: bc4bc7f3c53af5961bc8592225959363
+      contains: ["WGS of ornithorhynchus anatinus"]
 
 - name: entrezdirect esummary test_entrezdirect_esummary_genome
   command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
@@ -14,7 +14,7 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_genome.xml
-      md5sum: af6242f231bdc147d6197edfd0954585
+      contains: ["Hypsibius dujardini"]
 
 - name: entrezdirect esummary test_entrezdirect_esummary_assembly
   command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
@@ -23,4 +23,4 @@
     - entrezdirect/esummary
   files:
     - path: output/entrezdirect/test_assembly.xml
-      md5sum: 32f81147eea61df5814e87c2df1092a9
+      contains: ["ContigN50"]
