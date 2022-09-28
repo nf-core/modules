@@ -1,0 +1,7 @@
+- name: endorspy test_endorspy
+  command: nextflow run ./tests/modules/endorspy -entry test_endorspy -c ./tests/config/nextflow.config  -c ./tests/modules/endorspy/nextflow.config
+  tags:
+    - endorspy
+  files:
+    - path: output/endorspy/test_endogenous_dna_mqc.json
+      md5sum: fe7bea111d966db321dcde7fbfb062b1
