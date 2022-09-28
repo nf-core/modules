@@ -40,11 +40,7 @@ retry_with_backoff() {
     echo "${output}"
 }
 
-eval "$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
-if [[ ! -f "${NCBI_SETTINGS}" ]]; then
-    mkdir -p "$(dirname "${NCBI_SETTINGS}")"
-    printf '!{config}' > "${NCBI_SETTINGS}"
-fi
+export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
 
 retry_with_backoff !{args2} \
     prefetch \

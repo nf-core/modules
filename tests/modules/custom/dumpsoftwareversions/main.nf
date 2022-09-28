@@ -42,7 +42,7 @@ workflow test_custom_dumpsoftwareversions {
     // cases where subworkflows have a module with the same name.
     fastqc1 ( input )
     fastqc2 ( input )
-    MULTIQC ( fastqc2.out.zip.collect { it[1] } )
+    MULTIQC ( fastqc2.out.zip.collect { it[1] }, [], [], [] )
 
     fastqc1
         .out

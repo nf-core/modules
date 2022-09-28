@@ -22,6 +22,7 @@ process MLST {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mlst \\
+        $args \\
         --threads $task.cpus \\
         $fasta \\
         > ${prefix}.tsv

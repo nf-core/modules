@@ -12,3 +12,23 @@ workflow test_untar {
 
     UNTAR ( input )
 }
+
+
+workflow test_untar_different_output_path {
+    input = [
+        [],
+        file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
+    ]
+
+    UNTAR ( input )
+}
+
+
+workflow test_untar_onlyfiles {
+    input = [
+        [],
+        file(params.test_data['generic']['tar']['tar_gz'], checkIfExists: true)
+    ]
+
+    UNTAR ( input )
+}

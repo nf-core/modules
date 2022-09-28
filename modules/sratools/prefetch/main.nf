@@ -9,10 +9,11 @@ process SRATOOLS_PREFETCH {
 
     input:
     tuple val(meta), val(id)
+    path ncbi_settings
 
     output:
     tuple val(meta), path(id), emit: sra
-    path "versions.yml"         , emit: versions
+    path 'versions.yml'      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +21,5 @@ process SRATOOLS_PREFETCH {
     shell:
     args = task.ext.args ?: ''
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
-    config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
-
     template 'retry_with_backoff.sh'
 }
