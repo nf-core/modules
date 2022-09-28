@@ -9,6 +9,9 @@ process SAMTOOLS_FASTQ {
 
     input:
     tuple val(meta), path(bam)
+    path(fasta)
+    val(interleave)
+
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
@@ -20,14 +23,28 @@ process SAMTOOLS_FASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def endedness = meta.single_end ? "-0 ${prefix}.fastq.gz" : "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz"
+    def reference = fasta ? "--reference ${fasta}" : ""
+    def endedness = meta.single_end || interleave ? "-0 ${prefix}_other.fastq.gz | gzip --no-name > ${prefix}.fastq.gz" : "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -0 ${prefix}_other.fastq.gz -s ${prefix}_singleton.fastq.gz"
+
+    // Interleaved / SE output
+    // -0 ${prefix}_other.fastq.gz | gzip --no-name > ${prefix}_interleaved.fastq.gz
+
+    // PE output
+    // -1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -0 ${prefix}_other.fastq.gz -s ${prefix}_singleton.fastq.gz
+
+    // NOTE: When outputting fastq for downstream alignment, the "-n" flag should be set to avoid editing the read names
     """
-    samtools \\
+    samtools collate \\
+        $args \\
+        --threads $task.cpus \\
+        $reference \\
+        -O -u \\
+        $bam \\
+    | samtools \\
         fastq \\
         $args \\
-        --threads ${task.cpus-1} \\
-        $endedness \\
-        $bam
+        --threads $task.cpus \\
+        $endedness
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
