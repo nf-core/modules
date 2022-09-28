@@ -10,7 +10,7 @@ workflow test_samtools_view {
                 []
             ]
 
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
 }
 
 workflow test_samtools_view_cram {
@@ -20,7 +20,7 @@ workflow test_samtools_view_cram {
             ]
     fasta   = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, fasta )
+    SAMTOOLS_VIEW ( input, fasta, [] )
 }
 
 workflow test_samtools_view_convert {
@@ -30,7 +30,7 @@ workflow test_samtools_view_convert {
             ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, fasta )
+    SAMTOOLS_VIEW ( input, fasta, [] )
 }
 
 workflow test_samtools_view_index {
@@ -40,7 +40,7 @@ workflow test_samtools_view_index {
             ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, fasta )
+    SAMTOOLS_VIEW ( input, fasta, [] )
 }
 
 workflow test_samtools_view_stubs {
@@ -49,5 +49,5 @@ workflow test_samtools_view_stubs {
                 []
             ]
 
-    SAMTOOLS_VIEW ( input, [] )
+    SAMTOOLS_VIEW ( input, [], [] )
 }
