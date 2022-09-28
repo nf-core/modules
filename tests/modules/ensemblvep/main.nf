@@ -7,6 +7,8 @@ include { ENSEMBLVEP } from '../../../modules/ensemblvep/main.nf'
 include { ENSEMBLVEP as ENSEMBLVEP_JSON } from '../../../modules/ensemblvep/main.nf'
 include { ENSEMBLVEP as ENSEMBLVEP_TAB } from '../../../modules/ensemblvep/main.nf'
 include { ENSEMBLVEP as ENSEMBLVEP_VCF } from '../../../modules/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_VCF_BGZIP } from '../../../modules/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_VCF_GZIP  } from '../../../modules/ensemblvep/main.nf'
 
 workflow test_ensemblvep_fasta_json {
     input = [
@@ -39,6 +41,28 @@ workflow test_ensemblvep_fasta_vcf {
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     ENSEMBLVEP_VCF ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
+}
+
+workflow test_ensemblvep_fasta_vcf_bgzip {
+    input = [
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
+    ]
+
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+
+    ENSEMBLVEP_VCF_BGZIP ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
+}
+
+workflow test_ensemblvep_fasta_vcf_gzip {
+    input = [
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
+    ]
+
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+
+    ENSEMBLVEP_VCF_GZIP ( input, "WBcel235", "caenorhabditis_elegans", "106", [], fasta, [] )
 }
 
 workflow test_ensemblvep_fasta {

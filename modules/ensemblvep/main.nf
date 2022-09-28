@@ -17,11 +17,14 @@ process ENSEMBLVEP {
     path  extra_files
 
     output:
-    tuple val(meta), path("*.ann.vcf")  , optional:true, emit: vcf
-    tuple val(meta), path("*.ann.tab")  , optional:true, emit: tab
-    tuple val(meta), path("*.ann.json") , optional:true, emit: json
-    path "*.summary.html"               , emit: report
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.ann.vcf")     , optional:true, emit: vcf
+    tuple val(meta), path("*.ann.tab")     , optional:true, emit: tab
+    tuple val(meta), path("*.ann.json")    , optional:true, emit: json
+    tuple val(meta), path("*.ann.vcf.gz")  , optional:true, emit: vcf_gz
+    tuple val(meta), path("*.ann.tab.gz")  , optional:true, emit: tab_gz
+    tuple val(meta), path("*.ann.json.gz") , optional:true, emit: json_gz
+    path "*.summary.html"                  , emit: report
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,6 +32,7 @@ process ENSEMBLVEP {
     script:
     def args = task.ext.args ?: ''
     def file_extension = args.contains("--vcf") ? 'vcf' : args.contains("--json")? 'json' : args.contains("--tab")? 'tab' : 'vcf'
+    def compress_out = args.contains("--compress_output") ? '.gz' : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dir_cache = cache ? "\${PWD}/${cache}" : "/.vep"
     def reference = fasta ? "--fasta $fasta" : ""
@@ -36,7 +40,7 @@ process ENSEMBLVEP {
     """
     vep \\
         -i $vcf \\
-        -o ${prefix}.ann.${file_extension} \\
+        -o ${prefix}.ann.${file_extension}${compress_out} \\
         $args \\
         $reference \\
         --assembly $genome \\
@@ -60,6 +64,9 @@ process ENSEMBLVEP {
     touch ${prefix}.ann.vcf
     touch ${prefix}.ann.tab
     touch ${prefix}.ann.json
+    touch ${prefix}.ann.vcf.gz
+    touch ${prefix}.ann.tab.gz
+    touch ${prefix}.ann.json.gz
     touch ${prefix}.summary.html
 
     cat <<-END_VERSIONS > versions.yml
