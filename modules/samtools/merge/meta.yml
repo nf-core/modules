@@ -29,6 +29,10 @@ input:
       type: optional file
       description: Reference file the CRAM was created with
       pattern: "*.{fasta,fa}"
+  - fai:
+      type: optional file
+      description: Index of the reference file the CRAM was created with
+      pattern: "*.fai"
 output:
   - meta:
       type: map
@@ -47,6 +51,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - csi:
+      type: file
+      description: BAM index file (optional)
+      pattern: "*.csi"
 authors:
   - "@drpatelh"
   - "@yuukiiwa "

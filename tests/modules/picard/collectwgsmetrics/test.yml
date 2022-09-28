@@ -5,3 +5,11 @@
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
+
+- name: picard collectwgsmetrics test_picard_collectwgsmetrics stub
+  command: nextflow run ./tests/modules/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectwgsmetrics/nextflow.config -stub-run
+  tags:
+    - picard/collectwgsmetrics
+    - picard
+  files:
+    - path: output/picard/test.CollectWgsMetrics.coverage_metrics

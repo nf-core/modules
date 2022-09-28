@@ -13,6 +13,8 @@ process RGI_MAIN {
     output:
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt") , emit: tsv
+    env VER                        , emit: tool_version
+    env DBVER                      , emit: db_version
     path "versions.yml"            , emit: versions
 
     when:
@@ -29,9 +31,13 @@ process RGI_MAIN {
         --output_file $prefix \\
         --input_sequence $fasta
 
+    VER=\$(rgi main --version)
+    DBVER=\$(rgi database --version)
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        rgi: \$(rgi main --version)
+        rgi: \$(echo \$VER)
+        rgi-database: \$(echo \$DBVER)
     END_VERSIONS
     """
 }
