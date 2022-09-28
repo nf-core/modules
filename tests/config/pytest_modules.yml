@@ -2307,12 +2307,9 @@ subread/featurecounts:
   - modules/subread/featurecounts/**
   - tests/modules/subread/featurecounts/**
 
-subworkflows/bam_stats_samtools: &subworkflows_bam_stats_samtools
+subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
-  # - *samtools_stats
-  # - *samtools_idxstats
-  # - *samtools_flagstat
 
 svdb/merge:
   - modules/svdb/merge/**
@@ -2474,6 +2471,3 @@ yara/index:
 yara/mapper:
   - modules/yara/mapper/**
   - tests/modules/yara/mapper/**
-
-__anchors__:
-  - *subworkflows_bam_stats_samtools
