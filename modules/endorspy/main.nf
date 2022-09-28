@@ -8,8 +8,7 @@ process ENDORSPY {
         'quay.io/biocontainers/endorspy:0.4--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(stats)
-    tuple val(meta), path(stats_optional)
+    tuple val(meta), path(stats), path(stats_optional)
 
     output:
     tuple val(meta), path("*_mqc.json"), emit: json
