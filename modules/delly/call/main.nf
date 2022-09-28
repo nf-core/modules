@@ -2,13 +2,13 @@ process DELLY_CALL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::delly=0.8.7" : null)
+    conda (params.enable_conda ? "bioconda::delly=1.1.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/delly:0.8.7--he03298f_1' :
-        'quay.io/biocontainers/delly:0.8.7--he03298f_1' }"
+        'https://depot.galaxyproject.org/singularity/delly:1.1.5--h358d541_0' :
+        'quay.io/biocontainers/delly:1.1.5--h358d541_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index), path(exclude_bed)
     path fasta
     path fai
 
@@ -23,13 +23,15 @@ process DELLY_CALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
     """
     delly \\
         call \\
-        $args \\
-        -o ${prefix}.bcf \\
-        -g  $fasta \\
-        $bam \\
+        ${args} \\
+        --outfile ${prefix}.bcf \\
+        --genome ${fasta} \\
+        ${exclude} \\
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

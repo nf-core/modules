@@ -44,7 +44,7 @@ output:
       pattern: "versions.yml"
   - genes:
       type: file
-      description: TSV file containing detected/predicted genes with BGC probability scores
+      description: TSV file containing detected/predicted genes with BGC probability scores. Will not be generated if no hits are found.
       pattern: "*.genes.tsv"
   - features:
       type: file
@@ -52,15 +52,15 @@ output:
       pattern: "*.features.tsv"
   - clusters:
       type: file
-      description: TSV file containing coordinates of predicted clusters and BGC types
+      description: TSV file containing coordinates of predicted clusters and BGC types.  Will not be generated if no hits are found.
       pattern: "*.clusters.tsv"
   - gbk:
       type: file
-      description: Per cluster GenBank file (if found) containing sequence with annotations
+      Description: Per cluster GenBank file (if found) containing sequence with annotations. Will not be generated if no hits are found.
       pattern: "*.gbk"
   - json:
       type: file
-      description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied
+      description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied. Will not be generated if no hits are found.
       pattern: "*.gbk"
 
 authors:

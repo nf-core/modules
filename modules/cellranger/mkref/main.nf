@@ -1,5 +1,5 @@
 process CELLRANGER_MKREF {
-    tag 'mkref'
+    tag "$fasta"
     label 'process_high'
 
     if (params.enable_conda) {

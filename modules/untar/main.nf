@@ -1,6 +1,6 @@
 process UNTAR {
     tag "$archive"
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -25,12 +25,23 @@ process UNTAR {
     """
     mkdir output
 
-    tar \\
-        -C output --strip-components 1 \\
-        -xzvf \\
-        $args \\
-        $archive \\
-        $args2
+    ## Ensures --strip-components only applied when top level of tar contents is a directory
+    ## If just files or multiple directories, place all in output
+    if [[ \$(tar -tzf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+        tar \\
+            -C output --strip-components 1 \\
+            -xzvf \\
+            $args \\
+            $archive \\
+            $args2
+    else
+        tar \\
+            -C output \\
+            -xzvf \\
+            $args \\
+            $archive \\
+            $args2
+    fi
 
     mv output ${untar}
 

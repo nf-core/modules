@@ -13,9 +13,9 @@ process GECCO_RUN {
 
 
     output:
-    tuple val(meta), path("*.genes.tsv")           , emit: genes
-    tuple val(meta), path("*.features.tsv")        , emit: features
-    tuple val(meta), path("*.clusters.tsv") , emit: clusters
+    tuple val(meta), path("*.genes.tsv")    , optional: true, emit: genes
+    tuple val(meta), path("*.features.tsv")                 , emit: features
+    tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
 
