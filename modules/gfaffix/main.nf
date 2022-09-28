@@ -1,6 +1,6 @@
 process GFAFFIX {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::gfaffix=0.1.4' : null)
 
