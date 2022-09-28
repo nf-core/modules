@@ -20,18 +20,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - stats:
       type: file
-      description: output of samtools flagstat in a txt file (at least one required).
-      pattern: "*.{flagstat}"
-
+      description: output of samtools flagstat in a text file 
   - stats_optional:
       type: file
       description: output of a second samtools flagstat run in a text file. If two files are supplied,
         the mapped reads of the second file is divided by the total reads in the first, since it
         assumes that the <samplefile.stats> are related to the same sample. Useful after BAM filtering.
-      pattern: "*.{flagstat}"
 
 output:
   - meta:
