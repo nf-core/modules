@@ -10,7 +10,7 @@ workflow test_checkm_lineagewf {
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     fasta_ext = 'fasta'
 
-    CHECKM_LINEAGEWF ( input, fasta_ext )
+    CHECKM_LINEAGEWF ( input, fasta_ext, [] )
 }
 
 workflow test_checkm_lineagewf_multi {
@@ -20,5 +20,5 @@ workflow test_checkm_lineagewf_multi {
                 file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)] ]
     fasta_ext = 'fasta'
 
-    CHECKM_LINEAGEWF ( input, fasta_ext )
+    CHECKM_LINEAGEWF ( input, fasta_ext, [] )
 }
