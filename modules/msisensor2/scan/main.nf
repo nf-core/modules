@@ -1,5 +1,5 @@
 process MSISENSOR2_SCAN {
-    tag '$fasta'
+    tag "$fasta"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::msisensor2=0.1" : null)

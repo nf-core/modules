@@ -1,5 +1,5 @@
 process GENMAP_MAPPABILITY {
-    tag '$index'
+    tag "$index"
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::genmap=1.3.0" : null)
