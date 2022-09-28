@@ -9,7 +9,7 @@ jobs:
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
       contains(github.event.comment.body, '@nf-core-bot fix linting') &&
-      github.repository == '{{ name }}' {%- raw %}
+      github.repository == 'nf-core/modules'
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
@@ -51,4 +51,4 @@ jobs:
           git add .
           git status
           git commit -m "[automated] Fix linting with Prettier"
-          git push {%- endraw %}
+          git push
