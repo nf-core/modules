@@ -35,6 +35,17 @@
     - path: output/samtools/test.bam.csi
       md5sum: 343a2085b436cab2123147dafd255607
 
+- name: samtools view test_samtools_view_filter
+  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_filter -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  tags:
+    - samtools/view
+    - samtools
+  files:
+    - path: output/samtools/test.bam
+      md5sum: d8e20876423cb1123a559e4347115249
+    - path: output/samtools/test.bam.csi
+      md5sum: b1d688576e59529271333aa50b3ad3ae
+
 - name: samtools view test_samtools_view_stubs
   command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_stubs -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
   tags:
