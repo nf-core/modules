@@ -47,3 +47,12 @@ workflow test_cat_fastq_paired_end_same_name {
 
     CAT_FASTQ ( input )
 }
+
+workflow test_cat_fastq_single_end_single_file {
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
+    ]
+
+    CAT_FASTQ ( input )
+}
