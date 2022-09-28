@@ -38,7 +38,7 @@ process SAMTOOLS_GETRG {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    echo -e "@RG\\tID:${prefix}\\tSM:${prefix}\\tPL:ILLUMINA"
+    echo -e "@RG\\tID:${prefix}\\tSM:${prefix}\\tPL:ILLUMINA" > readgroups.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
