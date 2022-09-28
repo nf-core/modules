@@ -27,3 +27,13 @@ workflow test_samtools_merge_cram {
     fai   = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     SAMTOOLS_MERGE ( input, fasta, fai )
 }
+
+workflow test_samtools_merge_single_file {
+    input = [ [ id: 'test' ], // meta map
+              [
+                file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
+              ]
+            ]
+
+    SAMTOOLS_MERGE ( input, [], [] )
+}
