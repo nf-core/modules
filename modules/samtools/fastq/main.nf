@@ -35,7 +35,7 @@ process SAMTOOLS_FASTQ {
     // NOTE: When outputting fastq for downstream alignment, the "-n" flag should be set to avoid editing the read names
     """
     samtools \\
-      collate \\
+        collate \\
         $args \\
         --threads $task.cpus \\
         $reference \\
