@@ -38,7 +38,6 @@ process UNIVERSC {
     tuple val(meta), path(reads)
     path  reference
 
-    output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     output:
     path("sample-${meta.id}/outs/*"), emit: outs

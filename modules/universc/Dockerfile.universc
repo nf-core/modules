@@ -26,7 +26,7 @@ RUN cd universc/test/cellranger_reference/cellranger-tiny-ref/ \
     && git lfs pull \
     && rm -rf 3.0.0 1.2.0 \
     && cellranger mkref --genome=3.0.0 --fasta=genome-3.0.0.fa --genes=genes-3.0.0.gtf \
-    && cellranger mkref --genome=1.2.0 --fasta=genome-1.2.0.fa --genes=genes-1.2.0.gtf 
+    && cellranger mkref --genome=1.2.0 --fasta=genome-1.2.0.fa --genes=genes-1.2.0.gtf
 
 COPY .version universc/.version
 COPY CHANGELOG universc/CHANGELOG
@@ -46,7 +46,7 @@ RUN mkdir -p /cellranger-3.0.2.9001/cellranger-tiny-fastq \
     && ln -s /universc/test/shared/cellranger-tiny-fastq/3.0.0 /cellranger-3.0.2.9001/cellranger-tiny-fastq
 
 RUN mkdir -p /cellranger-3.0.2.9001/cellranger-tiny-ref \
-    && ln -s /universc/test/cellranger_reference/cellranger-tiny-ref/1.2.0 /cellranger-3.0.2.9001/cellranger-tiny-ref \ 
+    && ln -s /universc/test/cellranger_reference/cellranger-tiny-ref/1.2.0 /cellranger-3.0.2.9001/cellranger-tiny-ref \
     && ln -s /universc/test/cellranger_reference/cellranger-tiny-ref/3.0.0 /cellranger-3.0.2.9001/cellranger-tiny-ref
 
 ENV PATH universc:$PATH

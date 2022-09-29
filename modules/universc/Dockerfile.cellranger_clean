@@ -111,7 +111,7 @@ RUN mkdir -p cellranger-3.0.2.9001 \
     && mkdir -p cellranger-cs/3.0.2.9001 \
     && cd /
 
-# Build cellranger itself 
+# Build cellranger itself
 RUN git clone https://github.com/TomKellyGenetics/cellranger.git cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001  \
     && cd cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001 \
     && make && make louvain-clean &&  make louvain \
@@ -124,7 +124,7 @@ COPY crconverter_open.sh /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/bin
 
 COPY crconverter_open.sh /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/bin/vlconverter
 
-RUN gunzip -k /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/python/cellranger/barcodes/3M-february-2018.txt.gz 
+RUN gunzip -k /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/python/cellranger/barcodes/3M-february-2018.txt.gz
 
 RUN curl -sL https://deb.nodesource.com/setup_13.x | bash - \
     && apt-get install -y nodejs
