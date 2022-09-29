@@ -1,0 +1,45 @@
+name: "famas_trim"
+description: trim fastq files using FAMAS version 0.0.7
+keywords:
+  - trimming
+  - adapters
+  - sequencing adapters
+  - fastq
+tools:
+  - "famas":
+      description: "FAMAS 0.0.7"
+      homepage: "https://github.com/andreas-wilm/famas"
+      documentation: "https://github.com/andreas-wilm/famas"
+      tool_dev_url: "https://github.com/andreas-wilm/famas"
+      doi: ""
+      licence: ""
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input adapter trimmed FastQ files of size 1 and 2 for
+        single-end and paired-end data, respectively.
+      pattern: "*.{trimmed.fastq.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@solyris83"
