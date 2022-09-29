@@ -42,8 +42,8 @@ process UNIVERSC {
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     output:
     path("sample-${meta.id}/outs/*"), emit: outs
+    path "versions.yml"     , emit: versions
     // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
