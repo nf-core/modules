@@ -34,6 +34,9 @@ input:
   - fasta_ext:
       type: value
       description: The file-type extension suffix of the input FASTA files (e.g., fasta, fna, fa, fas)
+  - db:
+      type: directory
+      description: Optional directory pointing to checkM database to prevent re-downloading
 
 output:
   - meta:

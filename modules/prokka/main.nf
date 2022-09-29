@@ -4,8 +4,8 @@ process PROKKA {
 
     conda (params.enable_conda ? "bioconda::prokka=1.14.6" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/prokka:1.14.6--pl526_0' :
-        'quay.io/biocontainers/prokka:1.14.6--pl526_0' }"
+        'https://depot.galaxyproject.org/singularity/prokka%3A1.14.6--pl5321hdfd78af_4' :
+        'quay.io/biocontainers/prokka:1.14.6--pl5321hdfd78af_4' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -34,7 +34,7 @@ process PROKKA {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
-    def prodigal_opt = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
+    def prodigal_tf = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
     """
     prokka \\
         $args \\

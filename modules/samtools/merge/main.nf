@@ -8,13 +8,16 @@ process SAMTOOLS_MERGE {
         'quay.io/biocontainers/samtools:1.15.1--h1170115_0' }"
 
     input:
-    tuple val(meta), path(input_files)
+    tuple val(meta), path(input_files, stageAs: "?/*")
     path fasta
+    path fai
 
     output:
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
+    tuple val(meta), path("*.csi")         , optional:true, emit: csi
     path  "versions.yml"                                  , emit: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +25,7 @@ process SAMTOOLS_MERGE {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def file_type = input_files[0].getExtension()
+    def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
     samtools \\
@@ -41,7 +44,7 @@ process SAMTOOLS_MERGE {
 
     stub:
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def file_type = input_files[0].getExtension()
+    def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     """
     touch ${prefix}.${file_type}
 

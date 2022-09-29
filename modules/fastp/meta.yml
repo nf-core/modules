@@ -15,13 +15,14 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information. Use 'single_end: true' to specify single ended or interleaved FASTQs. Use 'single_end: false' for paired-end reads.
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+        respectively. If you wish to run interleaved paired-end data,  supply as single-end data
+        but with `--interleaved_in` in your `modules.conf`'s `ext.args` for the module.
   - save_trimmed_fail:
       type: boolean
       description: Specify true to save files that failed to pass trimming thresholds ending in `*.fail.fastq.gz`
@@ -38,7 +39,7 @@ output:
   - reads:
       type: file
       description: The trimmed/modified/unmerged fastq reads
-      pattern: "*trim.fastq.gz"
+      pattern: "*fastp.fastq.gz"
   - json:
       type: file
       description: Results in JSON format

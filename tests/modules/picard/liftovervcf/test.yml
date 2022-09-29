@@ -9,3 +9,13 @@
         - "chr22"
     - path: output/picard/test.unlifted.vcf.gz
     - path: output/picard/versions.yml
+
+- name: picard liftovervcf test_picard_liftovervcf_stubs
+  command: nextflow run tests/modules/picard/liftovervcf -entry test_picard_liftovervcf_stubs -c tests/config/nextflow.config -stub-run
+  tags:
+    - picard/liftovervcf
+    - picard
+  files:
+    - path: output/picard/test.lifted.vcf.gz
+    - path: output/picard/test.unlifted.vcf.gz
+    - path: output/picard/versions.yml

@@ -1,0 +1,10 @@
+- name: samtools fasta test_samtools_fasta
+  command: nextflow run ./tests/modules/samtools/fasta -entry test_samtools_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/fasta/nextflow.config
+  tags:
+    - samtools
+    - samtools/fasta
+  files:
+    - path: output/samtools/test_1.fasta.gz
+      md5sum: 3abd682290bc7c75f1ce2b80db995237
+    - path: output/samtools/test_2.fasta.gz
+      md5sum: 6ada09ce66f68b8732985e14aac1bf1f

@@ -2,10 +2,10 @@ process PICARD_LIFTOVERVCF {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.1" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.1--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_vcf)
@@ -43,7 +43,19 @@ process PICARD_LIFTOVERVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard LiftoverVcf --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
+        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.lifted.vcf.gz
+    touch ${prefix}.unlifted.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
