@@ -1,0 +1,10 @@
+- name: famas trim test_famas_trim
+  command: nextflow run ./tests/modules/famas/trim -entry test_famas_trim -c ./tests/config/nextflow.config  -c ./tests/modules/famas/trim/nextflow.config
+  tags:
+  - famas/trim
+  - famas
+  files:
+  - path: output/famas/test.R1.trimmed.fastq.gz
+    md5sum: 1497038230769d3901d635cd23945d38
+  - path: output/famas/test.R2.trimmed.fastq.gz
+    md5sum: 4f3779390e9d6f8c55907e49a383f3cc
