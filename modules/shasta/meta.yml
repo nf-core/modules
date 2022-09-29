@@ -38,11 +38,11 @@ output:
   - assembly:
       type: file
       description: Assembled FASTA file
-      pattern: "ShastaRun/Assembly.fasta.gz"
+      pattern: "${prefix}_Assembly.fasta.gz"
   - gfa:
       type: file
       description: Repeat graph
-      pattern: "ShastaRun/Assembly.gfa.gz"
+      pattern: "${prefix}_Assembly.gfa.gz"
   - results:
       type: dir
       description: Resulting assembly directory
