@@ -35,15 +35,9 @@ process VERIFYBAMID_VERIFYBAMID2 {
 
     def bam_file = "${bam}.endsWith('.bam|.cram')" ? "--BamFile ${bam}" : ""
 
-    def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) ? "--SVDPrefix ${svd_ud.baseName}" : ""
+    def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) ?
+        "--SVDPrefix ${svd_ud.baseName}" : "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
-
-    if (args.contains('--UDPath') && args.contains('--MeanPath') && args.contains('--BedPath')) {
-        svd_args = svd_args + "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
-    }
-    args_list.removeIf { it.contains('--UDPath') }
-    args_list.removeIf { it.contains('--MeanPath') }
-    args_list.removeIf { it.contains('--BedPath') }
 
     def reference_args = ("$references".endsWith('.fasta')) ?
         "--Reference ${references}" : ''
