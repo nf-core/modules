@@ -1,4 +1,3 @@
-
 process VCFLIB_VCFBREAKMULTI {
     tag "$meta.id"
     label 'process_low'
