@@ -13,7 +13,9 @@ workflow test_checkm_qa {
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     fasta_ext = 'fasta'
 
-    ch_checkmqa_input = CHECKM_LINEAGEWF ( input, fasta_ext, [] )
+    CHECKM_LINEAGEWF ( input, fasta_ext, [] )
+
+    ch_checkmqa_input = CHECKM_LINEAGEWF.out.checkm_output
         .join(CHECKM_LINEAGEWF.out.marker_file)
         .map{
             meta, dir, marker ->
