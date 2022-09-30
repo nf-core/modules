@@ -8,11 +8,6 @@ include { CHECKM_QA as CHECKM_QA_FASTA  } from '../../../../modules/checkm/qa/ma
 
 workflow test_checkm_qa {
 
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
-
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     fasta_ext = 'fasta'
@@ -22,11 +17,6 @@ workflow test_checkm_qa {
 }
 
 workflow test_checkm_qa_fasta {
-
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
 
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
