@@ -12,7 +12,7 @@ process CHECKM_QA {
     path exclude_marker_file
 
     output:
-    tuple val(meta), path("${prefix}.txt") , optional: true, emit: output
+    tuple val(meta), path("${prefix}.txt")  , optional: true, emit: output
     tuple val(meta), path("${prefix}.fasta"), optional: true, emit: fasta
     path "versions.yml" , emit: versions
 
