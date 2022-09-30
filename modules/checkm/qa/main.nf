@@ -12,8 +12,8 @@ process CHECKM_QA {
     path exclude_marker_file
 
     output:
-    tuple val(meta), path("${prefix}.${suffix}"), optional: true, emit: output
-    tuple val(meta), path("${prefix}.${suffix}"), optional: true, emit: fasta
+    tuple val(meta), path("${prefix}.txt") , optional: true, emit: output
+    tuple val(meta), path("${prefix}.fasta"), optional: true, emit: fasta
     path "versions.yml" , emit: versions
 
     when:
@@ -22,7 +22,7 @@ process CHECKM_QA {
     script:
     def args     = task.ext.args ?: ''
     prefix       = task.ext.prefix ?: "${meta.id}"
-    suffix       = task.args?.contains("-o 9|--out_format 9") ? ".fasta"                            : ".txt"
+    suffix       = task.args?.contains("-o 9|--out_format 9") ? "fasta"                            : "txt"
     def coverage = coverage_file                              ? "--coverage_file ${coverage_file}"  : ""
     def exclude  = exclude_marker_file                        ? "--exclude_markers ${marker_filer}" : ""
     """
