@@ -13,7 +13,15 @@ workflow test_checkm_qa {
     fasta_ext = 'fasta'
 
     CHECKM_LINEAGEWF ( input, fasta_ext, [] )
-    CHECKM_QA ( CHECKM_LINEAGEWF.out.checkm_output, CHECK_LINEAGEWF.out.marker_file, [], [] )
+
+    ch_checkmqa_input = CHECKM_LINEAGEWF ( input, fasta_ext, [] )
+        .join(CHECKM_LINEAGEWF.out.marker_file)
+        .map{
+            meta, dir, marker ->
+            [ meta, dir, marker, []]
+        }
+
+    CHECKM_QA ( ch_checkmqa_input, [] )
 }
 
 workflow test_checkm_qa_fasta {
@@ -22,6 +30,12 @@ workflow test_checkm_qa_fasta {
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     fasta_ext = 'fasta'
 
-    CHECKM_LINEAGEWF ( input, fasta_ext, [] )
-    CHECKM_QA_FASTA ( CHECKM_LINEAGEWF.out.checkm_output, CHECK_LINEAGEWF.out.marker_file, [], [] )
+    ch_checkmqa_input = CHECKM_LINEAGEWF ( input, fasta_ext, [] )
+        .join(CHECKM_LINEAGEWF.out.marker_file)
+        .map{
+            meta, dir, marker ->
+            [ meta, dir, marker, []]
+        }
+
+    CHECKM_QA_FASTA ( ch_checkmqa_input, [] )
 }
