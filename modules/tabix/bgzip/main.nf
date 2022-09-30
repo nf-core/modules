@@ -11,9 +11,9 @@ process TABIX_BGZIP {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("${prefix}*"), emit: output
-    tuple val(meta), path("*gzi")      , emit: gzi, optional: true
-    path  "versions.yml"               , emit: versions
+    tuple val(meta), path("${output}")    , emit: output
+    tuple val(meta), path("${output}.gzi"), emit: gzi, optional: true
+    path  "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,12 +21,13 @@ process TABIX_BGZIP {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    in_bgzip = input.toString().endsWith(".gz")
+    in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
+    output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
     command1 = in_bgzip ? '-d' : '-c'
-    command2 = in_bgzip ? ''   : " > ${prefix}.${input.getExtension()}.gz"
+    command2 = in_bgzip ? ''   : " > ${output}"
     // Name the index according to $prefix, unless a name has been requested
     if ((args.matches("(^| )-i\\b") || args.matches("(^| )--index(\$| )")) && !args.matches("(^| )-I\\b") && !args.matches("(^| )--index-name\\b")) {
-        args = args + " -I ${prefix}.${input.getExtension()}.gz.gzi"
+        args = args + " -I ${output}.gzi"
     }
     """
     bgzip $command1 $args -@${task.cpus} $input $command2
