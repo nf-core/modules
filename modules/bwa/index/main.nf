@@ -1,6 +1,6 @@
 process BWA_INDEX {
     tag "$fasta"
-    label 'process_high'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
