@@ -22,9 +22,9 @@ process CHECKM_QA {
     script:
     def args     = task.ext.args ?: ''
     prefix       = task.ext.prefix ?: "${meta.id}"
-    suffix       = task.args?.matches(".*-o 9.*|.*--out_format 9.*") ? "fasta"                            : "txt"
-    def coverage = coverage_file                              ? "--coverage_file ${coverage_file}"  : ""
-    def exclude  = exclude_marker_file                        ? "--exclude_markers ${marker_filer}" : ""
+    suffix       = task.ext.args?.matches(".*-o 9.*|.*--out_file 9.*") ? "fasta" : "txt"
+    def coverage = coverage_file                                   ? "--coverage_file ${coverage_file}"  : ""
+    def exclude  = exclude_marker_file                             ? "--exclude_markers ${marker_filer}" : ""
     """
     checkm \\
         qa \\
@@ -33,7 +33,8 @@ process CHECKM_QA {
         $marker_file \\
         $analysis_dir \\
         $coverage \\
-        $exclude
+        $exclude \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
