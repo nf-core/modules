@@ -1,5 +1,5 @@
 process GUNC_DOWNLOADDB {
-    tag '$db_name'
+    tag "$db_name"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::gunc=1.0.5" : null)

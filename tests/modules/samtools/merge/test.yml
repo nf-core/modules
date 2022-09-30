@@ -13,3 +13,12 @@
     - samtools/merge
   files:
     - path: output/samtools/test.cram
+
+- name: samtools merge test_samtools_merge_single_file
+  command: nextflow run ./tests/modules/samtools/merge -entry test_samtools_merge_single_file -c ./tests/config/nextflow.config -c ./tests/modules/samtools/merge/nextflow.config
+  tags:
+    - samtools
+    - samtools/merge
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 6e38ae132fadae4cb4915814d6f872b2

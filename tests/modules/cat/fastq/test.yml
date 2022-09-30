@@ -38,6 +38,15 @@
     - path: ./output/cat/test_2.merged.fastq.gz
       md5sum: fe9f266f43a6fc3dcab690a18419a56e
 
+- name: cat fastq single-end-single-file
+  command: nextflow run ./tests/modules/cat/fastq -entry test_cat_fastq_single_end_single_file -c ./tests/config/nextflow.config -c ./tests/modules/cat/fastq/nextflow.config
+  tags:
+    - cat
+    - cat/fastq
+  files:
+    - path: ./output/cat/test.merged.fastq.gz
+      md5sum: e325ef7deb4023447a1f074e285761af
+
 - name: cat fastq single-end stub
   command: nextflow run ./tests/modules/cat/fastq -entry test_cat_fastq_single_end -c ./tests/config/nextflow.config -c ./tests/modules/cat/fastq/nextflow.config -stub-run
   tags:
