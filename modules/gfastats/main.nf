@@ -11,7 +11,7 @@ process GFASTATS {
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
     val genome_size                   // estimated genome size for NG* statistics (optional).
     val target                        // target specific sequence by header, optionally with coordinates (optional).
-    path agp                          // -a --agp-to-path <file> converts input agp to path and replaces existing paths.
+    path agpfile                      // -a --agp-to-path <file> converts input agp to path and replaces existing paths.
     path include_bed                  // -i --include-bed <file> generates output on a subset list of headers or coordinates in 0-based bed format.
     path exclude_bed                  // -e --exclude-bed <file> opposite of --include-bed. They can be combined (no coordinates).
     path instructions                 // -k --swiss-army-knife <file> set of instructions provided as an ordered list.
@@ -26,18 +26,18 @@ process GFASTATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def agpfile = agp ? "--agp-to-path $agp" : ""
-    def ibed    = include_bed ? "--include-bed $include_bed" : ""
-    def ebed    = exclude_bed ? "--exclude-bed $exclude_bed" : ""
-    def manipulations = instructions ? "--swiss-army-knife $instructions" : ""
+    def agp  = agpfile ? "--agp-to-path $agp" : ""
+    def ibed = include_bed ? "--include-bed $include_bed" : ""
+    def ebed = exclude_bed ? "--exclude-bed $exclude_bed" : ""
+    def sak  = instructions ? "--swiss-army-knife $instructions" : ""
     """
     gfastats \\
         $args \\
         --threads $task.cpus \\
-        $agpfile \\
+        $agp \\
         $ibed \\
         $ebed \\
-        $manipulations \\
+        $sak \\
         $assembly \\
         $genome_size \\
         $target \\
