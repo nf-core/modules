@@ -9,7 +9,7 @@ process BUSCO {
 
     input:
     tuple val(meta), path('tmp_input/*')
-    each lineage                          // Required:    lineage to check against, "auto" enables --auto-lineage instead
+    val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
     path config_file                      // Optional:    busco configuration file
 
