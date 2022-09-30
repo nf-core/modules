@@ -18,32 +18,35 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - SVDPrefix:
-      type: map
-      description: |
-        SVD related files prefix [Required if RefVCF is not present]
-        e.g parental path shared by .UD, .mu and .bed files
-  - BamFile:
+  - bam:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - Reference:
+  - bai:
+      type: file
+      description: BAI/CRAI/CSI index file
+      pattern: "*.{bai,crai,csi}"
+  - svd_ud:
+      type: file
+      description: .UD matrix file from SVD result of genotype matrix
+      pattern: "*.UD"
+  - svd_mu:
+      type: file
+      description: .mu matrix file of genotype matrix
+      pattern: "*.mu"
+  - svd_bed:
+      type: file
+      description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
+      pattern: "*.bed"
+  - references:
       type: file
       description: reference file [Required]
       pattern: "*.fasta"
   ## To construct SVDPrefix auxillary files
-  - RefVCF:
+  - refvcf:
       type: file
       description: Reference panel VCF with genotype information, for generation of .UD .mu .bed files [Optional]
-  - UDPath:
-      type: file
-      description: .UD matrix file from SVD result of genotype matrix
-  - MeanPath:
-      type: file
-      description: .mu matrix file of genotype matrix
-  - BedPath:
-      type: file
-      description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
+      pattern: "*.vcf"
 
 output:
   - meta:
