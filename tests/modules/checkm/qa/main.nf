@@ -33,7 +33,7 @@ workflow test_checkm_qa_fasta {
 
     CHECKM_LINEAGEWF ( input, fasta_ext, [] )
 
-    ch_checkmqa_input =  CHECKM_LINEAGEWF.out.checkm_output
+    ch_checkmqa_input =  CHECKM_LINEAGEWF_FASTA.out.checkm_output
         .join(CHECKM_LINEAGEWF_FASTA.out.marker_file)
         .map{
             meta, dir, marker ->
