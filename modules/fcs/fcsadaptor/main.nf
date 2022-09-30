@@ -6,7 +6,9 @@ process FCS_FCSADAPTOR {
         exit 1, "Conda environments cannot be used when using the FCS tool. Please use docker or singularity containers."
     }
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.2.3/fcs-adaptor.0.2.3.sif"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.2.3/fcs-adaptor.0.2.3.sif':
+        'ncbi/fcs-adaptor:0.2.3' }"
 
     input:
     tuple val(meta), path(assembly)
@@ -27,7 +29,7 @@ process FCS_FCSADAPTOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSADAPTOR_VERSION = '0.2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    av_screen_x \\
+    /app/fcs/bin/av_screen_x \\
         -o output/ \\
         $args \\
         $assembly
