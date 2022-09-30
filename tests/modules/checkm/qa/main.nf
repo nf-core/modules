@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { CHECKM_LINEAGEWF              } from '../../../../modules/checkm/lineagewf/main.nf'
+include { CHECKM_LINEAGEWF as CHECKM_LINEAGEWF_FASTA        } from '../../../../modules/checkm/lineagewf/main.nf'
 include { CHECKM_QA                     } from '../../../../modules/checkm/qa/main.nf'
 include { CHECKM_QA as CHECKM_QA_FASTA  } from '../../../../modules/checkm/qa/main.nf'
 
@@ -30,7 +31,7 @@ workflow test_checkm_qa_fasta {
               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
     fasta_ext = 'fasta'
 
-    ch_checkmqa_input = CHECKM_LINEAGEWF ( input, fasta_ext, [] )
+    ch_checkmqa_input = CHECKM_LINEAGEWF_FASTA ( input, fasta_ext, [] )
         .join(CHECKM_LINEAGEWF.out.marker_file)
         .map{
             meta, dir, marker ->
