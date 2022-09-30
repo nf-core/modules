@@ -38,7 +38,7 @@ process CHECKM_QA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        checkm: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        checkm: \$( checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
     END_VERSIONS
     """
 }
