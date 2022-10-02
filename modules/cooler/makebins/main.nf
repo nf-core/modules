@@ -19,11 +19,12 @@ process COOLER_MAKEBINS {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cooler makebins \\
         $args \\
         ${chromsizes} \\
-        ${cool_bin} > cooler_bins_${cool_bin}.bed
+        ${cool_bin} > ${prefix}_${cool_bin}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
