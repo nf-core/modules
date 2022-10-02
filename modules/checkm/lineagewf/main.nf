@@ -13,9 +13,10 @@ process CHECKM_LINEAGEWF {
     path db
 
     output:
-    tuple val(meta), path("${prefix}")    , emit: checkm_output
-    tuple val(meta), path("${prefix}.tsv"), emit: checkm_tsv
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}")           , emit: checkm_output
+    tuple val(meta), path("${prefix}/lineage.ms"), emit: marker_file
+    tuple val(meta), path("${prefix}.tsv")       , emit: checkm_tsv
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
