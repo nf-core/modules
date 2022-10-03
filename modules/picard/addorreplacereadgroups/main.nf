@@ -33,8 +33,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
         AddOrReplaceReadGroups \\
         $args \\
         --INPUT ${bam} \\
-        --OUTPUT ${prefix}.bam \\
-        $args
+        --OUTPUT ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
