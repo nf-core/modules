@@ -1,5 +1,5 @@
 - name: hifiasm test_hifiasm_hifi_only
-  command: nextflow run ./tests/modules/hifiasm -entry test_hifiasm_hifi_only -c ./tests/config/nextflow.config -c ./tests/modules/hifiasm/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_hifi_only -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
   tags:
     - hifiasm
   files:
@@ -16,7 +16,7 @@
     - path: output/hifiasm/test.asm.ovlp.source.bin
 
 - name: hifiasm test_hifiasm_with_parental_reads
-  command: nextflow run ./tests/modules/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config -c ./tests/modules/hifiasm/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hifiasm -entry test_hifiasm_with_parental_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hifiasm/nextflow.config
   tags:
     - hifiasm
   files:

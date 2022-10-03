@@ -1,5 +1,5 @@
 - name: checkm lineagewf
-  command: nextflow run ./tests/modules/checkm/lineagewf -entry test_checkm_lineagewf -c ./tests/config/nextflow.config -c ./tests/modules/checkm/lineagewf/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/checkm/lineagewf -entry test_checkm_lineagewf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/checkm/lineagewf/nextflow.config
   tags:
     - checkm
     - checkm/lineagewf
@@ -16,7 +16,7 @@
         - "UID1"
 
 - name: checkm lineagewf_multi
-  command: nextflow run ./tests/modules/checkm/lineagewf -entry test_checkm_lineagewf_multi -c ./tests/config/nextflow.config -c ./tests/modules/checkm/lineagewf/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/checkm/lineagewf -entry test_checkm_lineagewf_multi -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/checkm/lineagewf/nextflow.config
   tags:
     - checkm
     - checkm/lineagewf

@@ -1,5 +1,5 @@
 - name: haplocheck test_haplocheck
-  command: nextflow run ./tests/modules/haplocheck -entry test_haplocheck -c ./tests/config/nextflow.config -c ./tests/modules/haplocheck/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/haplocheck -entry test_haplocheck -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/haplocheck/nextflow.config
   tags:
     - haplocheck
   files:
@@ -11,7 +11,7 @@
       md5sum: 94e2fa3ceb3946487319f92cea08c942
 
 - name: haplocheck test_haplocheck using stubs
-  command: nextflow run ./tests/modules/haplocheck -entry test_haplocheck -c ./tests/config/nextflow.config -c ./tests/modules/haplocheck/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/haplocheck -entry test_haplocheck -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/haplocheck/nextflow.config -stub-run
   tags:
     - haplocheck
   files:

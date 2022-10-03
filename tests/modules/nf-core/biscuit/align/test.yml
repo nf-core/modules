@@ -1,5 +1,5 @@
 - name: biscuit align test_biscuit_align_single
-  command: nextflow run tests/modules/biscuit/align -entry test_biscuit_align_single -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/align -entry test_biscuit_align_single -c tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/align
@@ -26,7 +26,7 @@
       md5sum: a86c4170bbf90cc75b93eb59ea124acd
 
 - name: biscuit align test_biscuit_align_paired
-  command: nextflow run tests/modules/biscuit/align -entry test_biscuit_align_paired -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/align -entry test_biscuit_align_paired -c tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/align

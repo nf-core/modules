@@ -1,5 +1,5 @@
 - name: centrifuge centrifuge test_centrifuge_centrifuge_single_end
-  command: nextflow run tests/modules/centrifuge/centrifuge -entry test_centrifuge_centrifuge_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/centrifuge/centrifuge -entry test_centrifuge_centrifuge_single_end -c tests/config/nextflow.config
   tags:
     - centrifuge
     - centrifuge/centrifuge
@@ -10,7 +10,7 @@
     - path: output/centrifuge/versions.yml
 
 - name: centrifuge centrifuge test_centrifuge_centrifuge_paired_end
-  command: nextflow run tests/modules/centrifuge/centrifuge -entry test_centrifuge_centrifuge_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/centrifuge/centrifuge -entry test_centrifuge_centrifuge_paired_end -c tests/config/nextflow.config
   tags:
     - centrifuge
     - centrifuge/centrifuge

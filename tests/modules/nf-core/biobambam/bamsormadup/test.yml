@@ -1,5 +1,5 @@
 - name: biobambam bamsormadup test_biobambam_bamsormadup_multi_input
-  command: nextflow run ./tests/modules/biobambam/bamsormadup -entry test_biobambam_bamsormadup_multi_input -c ./tests/config/nextflow.config  -c ./tests/modules/biobambam/bamsormadup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biobambam/bamsormadup -entry test_biobambam_bamsormadup_multi_input -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/biobambam/bamsormadup/nextflow.config
   tags:
     - biobambam
     - biobambam/bamsormadup
@@ -10,7 +10,7 @@
       md5sum: 1721879bea1f3888ecd33b35e6ee0e72
 
 - name: biobambam bamsormadup test_biobambam_bamsormadup_single_input
-  command: nextflow run ./tests/modules/biobambam/bamsormadup -entry test_biobambam_bamsormadup_single_input -c ./tests/config/nextflow.config  -c ./tests/modules/biobambam/bamsormadup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biobambam/bamsormadup -entry test_biobambam_bamsormadup_single_input -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/biobambam/bamsormadup/nextflow.config
   tags:
     - biobambam
     - biobambam/bamsormadup

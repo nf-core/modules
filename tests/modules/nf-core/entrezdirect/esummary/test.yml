@@ -1,5 +1,5 @@
 - name: entrezdirect esummary test_entrezdirect_esummary_sra
-  command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_sra -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/entrezdirect/esummary -entry test_entrezdirect_esummary_sra -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/entrezdirect/esummary/nextflow.config
   tags:
     - entrezdirect
     - entrezdirect/esummary
@@ -8,7 +8,7 @@
       contains: ["WGS of ornithorhynchus anatinus"]
 
 - name: entrezdirect esummary test_entrezdirect_esummary_genome
-  command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/entrezdirect/esummary -entry test_entrezdirect_esummary_genome -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/entrezdirect/esummary/nextflow.config
   tags:
     - entrezdirect
     - entrezdirect/esummary
@@ -17,7 +17,7 @@
       contains: ["Hypsibius dujardini"]
 
 - name: entrezdirect esummary test_entrezdirect_esummary_assembly
-  command: nextflow run ./tests/modules/entrezdirect/esummary -entry test_entrezdirect_esummary_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/esummary/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/entrezdirect/esummary -entry test_entrezdirect_esummary_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/entrezdirect/esummary/nextflow.config
   tags:
     - entrezdirect
     - entrezdirect/esummary

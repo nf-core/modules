@@ -1,5 +1,5 @@
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics
-  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
     - picard
     - picard/collectmultiplemetrics
@@ -31,7 +31,7 @@
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_nofasta
-  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_nofasta -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_nofasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
     - picard
     - picard/collectmultiplemetrics
@@ -63,7 +63,7 @@
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_cram
-  command: nextflow run ./tests/modules/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_cram -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
     - picard
     - picard/collectmultiplemetrics

@@ -1,5 +1,5 @@
 - name: slimfastq test_slimfastq_single_end
-  command: nextflow run tests/modules/slimfastq -entry test_slimfastq_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/slimfastq -entry test_slimfastq_single_end -c tests/config/nextflow.config
   tags:
     - slimfastq
   files:
@@ -9,7 +9,7 @@
       md5sum: f52351f5c9e6259af02745c8eae5c780
 
 - name: slimfastq test_slimfastq_paired_end
-  command: nextflow run tests/modules/slimfastq -entry test_slimfastq_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/slimfastq -entry test_slimfastq_paired_end -c tests/config/nextflow.config
   tags:
     - slimfastq
   files:
@@ -21,7 +21,7 @@
       md5sum: 6239853705877651a4851c4cb6d62da4
 
 - name: slimfastq test_slimfastq_nanopore
-  command: nextflow run tests/modules/slimfastq -entry test_slimfastq_nanopore -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/slimfastq -entry test_slimfastq_nanopore -c tests/config/nextflow.config
   tags:
     - slimfastq
   files:
@@ -31,7 +31,7 @@
       md5sum: 33153f1103482a2bd35cb2f4c337c5e8
 
 - name: slimfastq test_slimfastq_pacbio
-  command: nextflow run tests/modules/slimfastq -entry test_slimfastq_pacbio -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/slimfastq -entry test_slimfastq_pacbio -c tests/config/nextflow.config
   tags:
     - slimfastq
   files:

@@ -1,5 +1,5 @@
 - name: fgbio fastqtobam test_fgbio_fastqtobam_paired_default
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_default -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_default -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam
@@ -8,7 +8,7 @@
       md5sum: 83cd60e01e5ab90ea3729431ce401add
 
 - name: fgbio fastqtobam test_fgbio_fastqtobam_paired_cram
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_cram -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam
@@ -16,7 +16,7 @@
     - path: output/fgbio/test.cram
 
 - name: fgbio fastqtobam test_fgbio_fastqtobam_paired_bam
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_bam -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_bam -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam
@@ -25,7 +25,7 @@
       md5sum: 83f879e3a302ca8a50dc9675be7a9216
 
 - name: fgbio fastqtobam test_fgbio_fastqtobam_single
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_single -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_single -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam
@@ -34,7 +34,7 @@
       md5sum: c08fe1b035b972808f05128e37e8e669
 
 - name: fgbio fastqtobam test_fgbio_fastqtobam_paired_umi
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_umi -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_umi -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam
@@ -43,7 +43,7 @@
       md5sum: 9510735554e5eff29244077a72075fb6
 
 - name: fgbio fastqtobam test_fgbio_fastqtobam_paired_custom_samplename
-  command: nextflow run ./tests/modules/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_custom_samplename -c ./tests/config/nextflow.config  -c ./tests/modules/fgbio/fastqtobam/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fgbio/fastqtobam -entry test_fgbio_fastqtobam_paired_custom_samplename -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fgbio/fastqtobam/nextflow.config
   tags:
     - fgbio
     - fgbio/fastqtobam

@@ -1,5 +1,5 @@
 - name: entrezdirect xtract test_entrezdirect_xtract_assembly
-  command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/entrezdirect/xtract -entry test_entrezdirect_xtract_assembly -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/entrezdirect/xtract/nextflow.config
   tags:
     - entrezdirect
     - entrezdirect/xtract
@@ -8,7 +8,7 @@
       md5sum: 17073db7c14890aef30f5e3f2d003d32
 
 - name: entrezdirect xtract test_entrezdirect_xtract_genome
-  command: nextflow run ./tests/modules/entrezdirect/xtract -entry test_entrezdirect_xtract_genome -c ./tests/config/nextflow.config  -c ./tests/modules/entrezdirect/xtract/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/entrezdirect/xtract -entry test_entrezdirect_xtract_genome -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/entrezdirect/xtract/nextflow.config
   tags:
     - entrezdirect
     - entrezdirect/xtract

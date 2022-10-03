@@ -1,5 +1,5 @@
 - name: stranger test_stranger
-  command: nextflow run tests/modules/stranger -entry test_stranger -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stranger -entry test_stranger -c tests/config/nextflow.config
   tags:
     - stranger
   files:
@@ -13,7 +13,7 @@
       md5sum: 5ec35fd835fb1be50bc3e7c004310fc0
 
 - name: stranger test_stranger_without_optional_variant_catalog
-  command: nextflow run tests/modules/stranger -entry test_stranger_without_optional_variant_catalog -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/stranger -entry test_stranger_without_optional_variant_catalog -c tests/config/nextflow.config
   tags:
     - stranger
   files:
@@ -27,7 +27,7 @@
       md5sum: 8558542a007e90ea5dcdceed3f12585d
 
 - name: stranger test_stranger_without_optional_variant_catalog_stubs
-  command: nextflow run tests/modules/stranger -entry test_stranger_without_optional_variant_catalog -c tests/config/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/stranger -entry test_stranger_without_optional_variant_catalog -c tests/config/nextflow.config -stub-run
   tags:
     - stranger
   files:

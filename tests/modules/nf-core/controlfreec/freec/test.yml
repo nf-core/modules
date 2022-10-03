@@ -1,5 +1,5 @@
 - name: controlfreec test_controlfreec_freec
-  command: nextflow run tests/modules/controlfreec/freec -entry test_controlfreec_freec -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/controlfreec/freec -entry test_controlfreec_freec -c tests/config/nextflow.config
   tags:
     - controlfreec
     - controlfreec/freec
@@ -22,7 +22,7 @@
     - path: output/controlfreec/versions.yml
 
 - name: controlfreec test_controlfreec_freec_single
-  command: nextflow run tests/modules/controlfreec/freec -entry test_controlfreec_freec_single -c tests/config/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/controlfreec/freec -entry test_controlfreec_freec_single -c tests/config/nextflow.config -stub-run
   tags:
     - controlfreec
     - controlfreec/freec

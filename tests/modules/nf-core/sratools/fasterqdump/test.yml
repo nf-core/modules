@@ -1,5 +1,5 @@
 - name: sratools fasterqdump test_sratools_fasterqdump_single_end
-  command: nextflow run ./tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_single_end -c ./tests/config/nextflow.config -c ./tests/modules/sratools/fasterqdump/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/sratools/fasterqdump -entry test_sratools_fasterqdump_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sratools/fasterqdump/nextflow.config
   tags:
     - sratools
     - sratools/fasterqdump
@@ -13,7 +13,7 @@
         - "sratools: 2.11.0"
 
 - name: sratools fasterqdump test_sratools_fasterqdump_paired_end
-  command: nextflow run ./tests/modules/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/sratools/fasterqdump/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/sratools/fasterqdump -entry test_sratools_fasterqdump_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sratools/fasterqdump/nextflow.config
   tags:
     - sratools
     - sratools/fasterqdump

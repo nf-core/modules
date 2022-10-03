@@ -1,5 +1,5 @@
 - name: csvtk split test_csvtk_split_tsv
-  command: nextflow run ./tests/modules/csvtk/split -entry test_csvtk_split_tsv -c ./tests/config/nextflow.config -c ./tests/modules/csvtk/split/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/csvtk/split -entry test_csvtk_split_tsv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/csvtk/split/nextflow.config
   tags:
     - csvtk/split
     - csvtk
@@ -12,7 +12,7 @@
       md5sum: 45ae6da8111096746d1736d34220a3ec
 
 - name: csvtk split test_csvtk_split_csv
-  command: nextflow run ./tests/modules/csvtk/split -entry test_csvtk_split_csv -c ./tests/config/nextflow.config -c ./tests/modules/csvtk/split/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/csvtk/split -entry test_csvtk_split_csv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/csvtk/split/nextflow.config
   tags:
     - csvtk/split
     - csvtk

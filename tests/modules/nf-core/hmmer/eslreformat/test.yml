@@ -1,5 +1,5 @@
 - name: hmmer eslreformat test_hmmer_eslreformat_afa
-  command: nextflow run ./tests/modules/hmmer/eslreformat -entry test_hmmer_eslreformat_afa -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslreformat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hmmer/eslreformat -entry test_hmmer_eslreformat_afa -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hmmer/eslreformat/nextflow.config
   tags:
     - hmmer/eslreformat
     - hmmer
@@ -12,7 +12,7 @@
       contains:
         - "easel:"
 - name: hmmer eslreformat test_hmmer_eslreformat_phylip
-  command: nextflow run ./tests/modules/hmmer/eslreformat -entry test_hmmer_eslreformat_phylip -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslreformat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hmmer/eslreformat -entry test_hmmer_eslreformat_phylip -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hmmer/eslreformat/nextflow.config
   tags:
     - hmmer/eslreformat
     - hmmer
@@ -24,7 +24,7 @@
       contains:
         - "easel:"
 - name: hmmer eslreformat test_hmmer_eslreformat_unalign
-  command: nextflow run ./tests/modules/hmmer/eslreformat -entry test_hmmer_eslreformat_unalign -c ./tests/config/nextflow.config  -c ./tests/modules/hmmer/eslreformat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hmmer/eslreformat -entry test_hmmer_eslreformat_unalign -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hmmer/eslreformat/nextflow.config
   tags:
     - hmmer/eslreformat
     - hmmer

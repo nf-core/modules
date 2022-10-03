@@ -1,5 +1,5 @@
 - name: gamma gamma test_unzip
-  command: nextflow run tests/modules/gamma/gamma -entry test_unzip -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gamma/gamma -entry test_unzip -c tests/config/nextflow.config
   tags:
     - gamma/gamma
     - gamma
@@ -14,7 +14,7 @@
       md5sum: 8baafec7b3b87f788f69e30d317c9722
 
 - name: gamma gamma test_gamma
-  command: nextflow run tests/modules/gamma/gamma -entry test_gamma -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gamma/gamma -entry test_gamma -c tests/config/nextflow.config
   tags:
     - gamma/gamma
     - gamma

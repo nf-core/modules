@@ -1,5 +1,5 @@
 - name: md5sum test_md5sum
-  command: nextflow run tests/modules/md5sum -entry test_md5sum -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/md5sum -entry test_md5sum -c tests/config/nextflow.config
   tags:
     - md5sum
   files:

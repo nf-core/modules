@@ -1,5 +1,5 @@
 - name: somalier relate test_somalier_relate
-  command: nextflow run ./tests/modules/somalier/relate/main.nf -c ./tests/config/nextflow.config -c ./tests/modules/somalier/relate/nextflow.config -entry test_somalier_relate
+  command: nextflow run ./tests/modules/nf-core/somalier/relate/main.nf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/somalier/relate/nextflow.config -entry test_somalier_relate
   tags:
     - somalier/relate
     - somalier
@@ -12,7 +12,7 @@
       md5sum: 97257d88886db1325c4d7d10cefa7169
 
 - name: somalier relate test_somalier_relate_ped_groups
-  command: nextflow run ./tests/modules/somalier/relate/main.nf -c ./tests/config/nextflow.config -c ./tests/modules/somalier/relate/nextflow.config -entry test_somalier_relate_ped_groups
+  command: nextflow run ./tests/modules/nf-core/somalier/relate/main.nf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/somalier/relate/nextflow.config -entry test_somalier_relate_ped_groups
   tags:
     - somalier/relate
     - somalier

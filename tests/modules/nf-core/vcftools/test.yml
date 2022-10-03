@@ -1,5 +1,5 @@
 - name: vcftools test_vcftools_vcf_base
-  command: nextflow run ./tests/modules/vcftools -entry test_vcftools_vcf_base -c ./tests/config/nextflow.config -c ./tests/modules/vcftools/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcftools -entry test_vcftools_vcf_base -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcftools/nextflow.config
   tags:
     - vcftools
   files:
@@ -7,7 +7,7 @@
       md5sum: 7f126655f17268fd1a338734f62868e9
 
 - name: vcftools test_vcftools_vcfgz_base
-  command: nextflow run ./tests/modules/vcftools -entry test_vcftools_vcfgz_base -c ./tests/config/nextflow.config -c ./tests/modules/vcftools/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcftools -entry test_vcftools_vcfgz_base -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcftools/nextflow.config
   tags:
     - vcftools
   files:
@@ -15,7 +15,7 @@
       md5sum: 7f126655f17268fd1a338734f62868e9
 
 - name: vcftools test_vcftools_vcf_optional
-  command: nextflow run ./tests/modules/vcftools -entry test_vcftools_vcf_optional -c ./tests/config/nextflow.config -c ./tests/modules/vcftools/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcftools -entry test_vcftools_vcf_optional -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcftools/nextflow.config
   tags:
     - vcftools
   files:
@@ -23,7 +23,7 @@
       md5sum: 7f126655f17268fd1a338734f62868e9
 
 - name: vcftools test_vcftools_vcfgz_optional
-  command: nextflow run ./tests/modules/vcftools -entry test_vcftools_vcfgz_optional -c ./tests/config/nextflow.config -c ./tests/modules/vcftools/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcftools -entry test_vcftools_vcfgz_optional -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcftools/nextflow.config
   tags:
     - vcftools
   files:

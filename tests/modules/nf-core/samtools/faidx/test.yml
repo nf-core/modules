@@ -1,5 +1,5 @@
 - name: samtools faidx test_samtools_faidx
-  command: nextflow run tests/modules/samtools/faidx -entry test_samtools_faidx -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/faidx -entry test_samtools_faidx -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/faidx
@@ -8,7 +8,7 @@
       md5sum: 9da2a56e2853dc8c0b86a9e7229c9fe5
     - path: output/samtools/versions.yml
 - name: samtools faidx test_samtools_faidx_bgzip
-  command: nextflow run tests/modules/samtools/faidx -entry test_samtools_faidx_bgzip -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/faidx -entry test_samtools_faidx_bgzip -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/faidx

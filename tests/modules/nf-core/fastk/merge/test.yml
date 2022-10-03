@@ -1,5 +1,5 @@
 - name: fastk merge test_fastk_merge_hist_only
-  command: nextflow run ./tests/modules/fastk/merge -entry test_fastk_merge_hist_only -c ./tests/config/nextflow.config  -c ./tests/modules/fastk/merge/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastk/merge -entry test_fastk_merge_hist_only -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastk/merge/nextflow.config
   tags:
     - fastk/merge
     - fastk
@@ -14,7 +14,7 @@
       md5sum: 7d882f4e3542df1a2f5cb0858b12dc03
 
 - name: fastk merge test_fastk_merge_all_files
-  command: nextflow run ./tests/modules/fastk/merge -entry test_fastk_merge_all_files -c ./tests/config/nextflow.config  -c ./tests/modules/fastk/merge/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastk/merge -entry test_fastk_merge_all_files -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastk/merge/nextflow.config
   tags:
     - fastk/merge
     - fastk

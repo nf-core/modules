@@ -1,5 +1,5 @@
 - name: fastqc single-end
-  command: nextflow run ./tests/modules/fastqc/ -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/fastqc/nextflow.config -c ./tests/modules/fastqc/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastqc/ -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
     - fastqc
   files:
@@ -7,7 +7,7 @@
     - path: ./output/fastqc/test_fastqc.zip
 
 - name: fastqc paired-end
-  command: nextflow run ./tests/modules/fastqc/ -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/fastqc/nextflow.config -c ./tests/modules/fastqc/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastqc/ -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
     - fastqc
   files:

@@ -1,5 +1,5 @@
 - name: ngscheckmate ncm test_ngscheckmate_ncm_bam
-  command: nextflow run tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm_bam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_bam -c tests/config/nextflow.config
   tags:
     - ngscheckmate/ncm
     - ngscheckmate
@@ -14,7 +14,7 @@
       md5sum: fbb2bebd65b4f4e1e93c6bf5c08a6829
 
 - name: ngscheckmate ncm test_ngscheckmate_ncm_vcf
-  command: nextflow run tests/modules/ngscheckmate/ncm -entry test_ngscheckmate_ncm_vcf -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ngscheckmate/ncm -entry test_ngscheckmate_ncm_vcf -c tests/config/nextflow.config
   tags:
     - ngscheckmate/ncm
     - ngscheckmate

@@ -1,5 +1,5 @@
 - name: phantompeakqualtools test_phantompeakqualtools_single_end
-  command: nextflow run tests/modules/phantompeakqualtools -entry test_phantompeakqualtools_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/phantompeakqualtools -entry test_phantompeakqualtools_single_end -c tests/config/nextflow.config
   tags:
     - phantompeakqualtools
   files:
@@ -11,7 +11,7 @@
       md5sum: 6c2ede1aac4c574e3c72fbe09f15c03f
 
 - name: phantompeakqualtools test_phantompeakqualtools_paired_end
-  command: nextflow run tests/modules/phantompeakqualtools -entry test_phantompeakqualtools_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/phantompeakqualtools -entry test_phantompeakqualtools_paired_end -c tests/config/nextflow.config
   tags:
     - phantompeakqualtools
   files:

@@ -1,5 +1,5 @@
 - name: preseq ccurve single-end
-  command: nextflow run ./tests/modules/preseq/ccurve -entry test_preseq_ccurve_single_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/ccurve/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/preseq/ccurve -entry test_preseq_ccurve_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/preseq/ccurve/nextflow.config
   tags:
     - preseq
     - preseq/ccurve
@@ -9,7 +9,7 @@
     - path: output/preseq/test.command.log
 
 - name: preseq ccurve paired-end
-  command: nextflow run ./tests/modules/preseq/ccurve -entry test_preseq_ccurve_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/preseq/ccurve/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/preseq/ccurve -entry test_preseq_ccurve_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/preseq/ccurve/nextflow.config
   tags:
     - preseq
     - preseq/ccurve

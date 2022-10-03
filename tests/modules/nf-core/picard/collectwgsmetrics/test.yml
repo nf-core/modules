@@ -1,5 +1,5 @@
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics
-  command: nextflow run ./tests/modules/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectwgsmetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectwgsmetrics/nextflow.config
   tags:
     - picard/collectwgsmetrics
     - picard
@@ -7,7 +7,7 @@
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
 
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics stub
-  command: nextflow run ./tests/modules/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/picard/collectwgsmetrics/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectwgsmetrics/nextflow.config -stub-run
   tags:
     - picard/collectwgsmetrics
     - picard

@@ -1,5 +1,5 @@
 - name: homer maketagdirectory bed
-  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_bed -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/homer/maketagdirectory -entry test_homer_maketagdirectory_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/homer/maketagdirectory/nextflow.config
   tags:
     - homer
     - homer/maketagdirectory
@@ -16,7 +16,7 @@
       md5sum: e5aa2b9843ca9c04ace297280aed6af4
 
 - name: homer maketagdirectory meta
-  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_meta -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/homer/maketagdirectory -entry test_homer_maketagdirectory_meta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/homer/maketagdirectory/nextflow.config
   tags:
     - homer
     - homer/maketagdirectory
@@ -33,7 +33,7 @@
       md5sum: e5aa2b9843ca9c04ace297280aed6af4
 
 - name: homer maketagdirectory bam
-  command: nextflow run ./tests/modules/homer/maketagdirectory -entry test_homer_maketagdirectory_bam -c ./tests/config/nextflow.config -c ./tests/modules/homer/maketagdirectory/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/homer/maketagdirectory -entry test_homer_maketagdirectory_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/homer/maketagdirectory/nextflow.config
   tags:
     - homer
     - homer/maketagdirectory

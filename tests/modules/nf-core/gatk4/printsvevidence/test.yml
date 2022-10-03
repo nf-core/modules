@@ -1,5 +1,5 @@
 - name: gatk4 printsvevidence test_gatk4_printsvevidence
-  command: nextflow run ./tests/modules/gatk4/printsvevidence -entry test_gatk4_printsvevidence -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/printsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
   tags:
     - gatk4/printsvevidence
     - gatk4
@@ -38,7 +38,7 @@
       md5sum: f2105270ba79ed645bac9842be79f411
 
 - name: gatk4 printsvevidence test_gatk4_printsvevidence_bed_no_fasta
-  command: nextflow run ./tests/modules/gatk4/printsvevidence -entry test_gatk4_printsvevidence_bed_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/printsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence_bed_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
   tags:
     - gatk4/printsvevidence
     - gatk4

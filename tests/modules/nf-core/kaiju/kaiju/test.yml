@@ -1,5 +1,5 @@
 - name: kaiju kaiju test_kaiju_kaiju_single_end
-  command: nextflow run tests/modules/kaiju/kaiju -entry test_kaiju_kaiju_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kaiju/kaiju -entry test_kaiju_kaiju_single_end -c tests/config/nextflow.config
   tags:
     - kaiju/kaiju
     - kaiju
@@ -10,7 +10,7 @@
       md5sum: 7e218c0ea00a71dd3a5ec5aaf28804f4
 
 - name: kaiju kaiju test_kaiju_kaiju_paired_end
-  command: nextflow run tests/modules/kaiju/kaiju -entry test_kaiju_kaiju_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kaiju/kaiju -entry test_kaiju_kaiju_paired_end -c tests/config/nextflow.config
   tags:
     - kaiju/kaiju
     - kaiju

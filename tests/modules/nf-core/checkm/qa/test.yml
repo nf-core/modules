@@ -1,5 +1,5 @@
 - name: checkm qa test_checkm_qa
-  command: nextflow run ./tests/modules/checkm/qa -entry test_checkm_qa -c ./tests/config/nextflow.config  -c ./tests/modules/checkm/qa/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/checkm/qa -entry test_checkm_qa -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/checkm/qa/nextflow.config
   tags:
     - checkm/qa
     - checkm
@@ -8,7 +8,7 @@
       md5sum: 645f4282569afb4b171396732b2d2582
 
 - name: checkm qa test_checkm_qa_fasta
-  command: nextflow run ./tests/modules/checkm/qa -entry test_checkm_qa_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/checkm/qa/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/checkm/qa -entry test_checkm_qa_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/checkm/qa/nextflow.config
   tags:
     - checkm/qa
     - checkm

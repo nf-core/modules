@@ -1,5 +1,5 @@
 - name: fastk fastk test_fastk_fastk_single_end
-  command: nextflow run ./tests/modules/fastk/fastk -entry test_fastk_fastk_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastk/fastk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastk/fastk -entry test_fastk_fastk_single_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastk/fastk/nextflow.config
   tags:
     - fastk
     - fastk/fastk
@@ -20,7 +20,7 @@
       md5sum: 43d426c95d277b8148406624d513bd40
 
 - name: fastk fastk test_fastk_fastk_paired_end
-  command: nextflow run ./tests/modules/fastk/fastk -entry test_fastk_fastk_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/fastk/fastk/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/fastk/fastk -entry test_fastk_fastk_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/fastk/fastk/nextflow.config
   tags:
     - fastk
     - fastk/fastk

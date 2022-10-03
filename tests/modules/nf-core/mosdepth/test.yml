@@ -1,5 +1,5 @@
 - name: mosdepth test_mosdepth
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -13,7 +13,7 @@
       md5sum: 9e649ac749ff6c6073bef5ab63e8aaa4
 
 - name: mosdepth test_mosdepth_bed
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_bed -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_bed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -33,7 +33,7 @@
       md5sum: 47669cfe41f3e222e74d81e1b1be191f
 
 - name: mosdepth test_mosdepth_cram
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_cram -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -47,7 +47,7 @@
       md5sum: 9e649ac749ff6c6073bef5ab63e8aaa4
 
 - name: mosdepth test_mosdepth_cram_bed
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_cram_bed -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_cram_bed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -67,7 +67,7 @@
       md5sum: 47669cfe41f3e222e74d81e1b1be191f
 
 - name: mosdepth test_mosdepth_window
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_window -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_window -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -87,7 +87,7 @@
       md5sum: 257d67678136963d9dd904330079609d
 
 - name: mosdepth test_mosdepth_quantized
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_quantized -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_quantized -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -105,7 +105,7 @@
       md5sum: be9617f551f19a33923f1e886eaefb93
 
 - name: mosdepth test_mosdepth_thresholds
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_thresholds -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_thresholds -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   files:
@@ -129,7 +129,7 @@
       md5sum: 912055ee9452229439df6fae95644196
 
 - name: mosdepth test_mosdepth_fail
-  command: nextflow run ./tests/modules/mosdepth -entry test_mosdepth_fail -c ./tests/config/nextflow.config  -c ./tests/modules/mosdepth/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mosdepth -entry test_mosdepth_fail -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/mosdepth/nextflow.config
   tags:
     - mosdepth
   exit_code: 1

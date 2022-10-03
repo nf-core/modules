@@ -1,5 +1,5 @@
 - name: bowtie align single-end
-  command: nextflow run ./tests/modules/bowtie/align -entry test_bowtie_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie/align -entry test_bowtie_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie/align/nextflow.config
   tags:
     - bowtie
     - bowtie/align
@@ -21,7 +21,7 @@
       md5sum: d9b76ecf9fd0413240173273b38d8199
 
 - name: bowtie align paired-end
-  command: nextflow run ./tests/modules/bowtie/align -entry test_bowtie_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/bowtie/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie/align -entry test_bowtie_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie/align/nextflow.config
   tags:
     - bowtie
     - bowtie/align

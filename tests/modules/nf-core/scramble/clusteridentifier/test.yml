@@ -1,5 +1,5 @@
 - name: scramble clusteridentifier test_scramble_clusteridentifier_bam
-  command: nextflow run ./tests/modules/scramble/clusteridentifier -entry test_scramble_clusteridentifier_bam -c ./tests/config/nextflow.config -c ./tests/modules/scramble/clusteridentifier/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/scramble/clusteridentifier -entry test_scramble_clusteridentifier_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/scramble/clusteridentifier/nextflow.config
   tags:
     - scramble/clusteridentifier
     - scramble
@@ -8,7 +8,7 @@
       md5sum: 9b2777a44bfbcff8fac1bf67c3985f1f
 
 - name: scramble clusteridentifier test_scramble_clusteridentifier_cram
-  command: nextflow run ./tests/modules/scramble/clusteridentifier -entry test_scramble_clusteridentifier_cram -c ./tests/config/nextflow.config -c ./tests/modules/scramble/clusteridentifier/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/scramble/clusteridentifier -entry test_scramble_clusteridentifier_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/scramble/clusteridentifier/nextflow.config
   tags:
     - scramble/clusteridentifier
     - scramble

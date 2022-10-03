@@ -1,5 +1,5 @@
 - name: deepvariant test_deepvariant
-  command: nextflow run tests/modules/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant -c tests/config/nextflow.config
   tags:
     - deepvariant
   files:
@@ -11,7 +11,7 @@
       md5sum: 51572055ca5c07fc4001b25a9c273bf8
 
 - name: deepvariant test_deepvariant_cram_intervals
-  command: nextflow run tests/modules/deepvariant -entry test_deepvariant_cram_intervals -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepvariant -entry test_deepvariant_cram_intervals -c tests/config/nextflow.config
   tags:
     - deepvariant
   files:

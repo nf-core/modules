@@ -1,5 +1,5 @@
 - name: meryl count test_meryl_count_single_end
-  command: nextflow run tests/modules/meryl/count -entry test_meryl_count_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/meryl/count -entry test_meryl_count_single_end -c tests/config/nextflow.config
   tags:
     - meryl/count
     - meryl
@@ -8,7 +8,7 @@
       md5sum: 5fe537d873925ccbcc4edf0983e9eda0
 
 - name: meryl count test_meryl_count_paired_end
-  command: nextflow run tests/modules/meryl/count -entry test_meryl_count_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/meryl/count -entry test_meryl_count_paired_end -c tests/config/nextflow.config
   tags:
     - meryl/count
     - meryl

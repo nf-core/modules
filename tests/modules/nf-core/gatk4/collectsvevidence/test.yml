@@ -1,5 +1,5 @@
 - name: gatk4 collectsvevidence test_gatk4_collectsvevidence_cram
-  command: nextflow run ./tests/modules/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_cram -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/collectsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectsvevidence/nextflow.config
   tags:
     - gatk4
     - gatk4/collectsvevidence
@@ -14,7 +14,7 @@
       md5sum: 3e7b04492c53765e3c84d76b59e1f2c5
 
 - name: gatk4 collectsvevidence test_gatk4_collectsvevidence_bam
-  command: nextflow run ./tests/modules/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_bam -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/collectsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_bam -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectsvevidence/nextflow.config
   tags:
     - gatk4
     - gatk4/collectsvevidence
@@ -29,7 +29,7 @@
       md5sum: 3e7b04492c53765e3c84d76b59e1f2c5
 
 - name: gatk4 collectsvevidence test_gatk4_collectsvevidence_allele_count
-  command: nextflow run ./tests/modules/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_allele_count -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/collectsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/collectsvevidence -entry test_gatk4_collectsvevidence_allele_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/collectsvevidence/nextflow.config
   tags:
     - gatk4
     - gatk4/collectsvevidence

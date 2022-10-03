@@ -1,5 +1,5 @@
 - name: samtools convert test_samtools_convert_bamtocram
-  command: nextflow run tests/modules/samtools/convert -entry test_samtools_convert_bamtocram -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/convert -entry test_samtools_convert_bamtocram -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/convert
@@ -9,7 +9,7 @@
     - path: output/samtools/versions.yml
 
 - name: samtools convert test_samtools_convert_cramtobam
-  command: nextflow run tests/modules/samtools/convert -entry test_samtools_convert_cramtobam -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/convert -entry test_samtools_convert_cramtobam -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/convert

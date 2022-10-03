@@ -1,5 +1,5 @@
 - name: seqtk seq test_seqtk_seq
-  command: nextflow run tests/modules/seqtk/seq -entry test_seqtk_seq -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/seq -entry test_seqtk_seq -c tests/config/nextflow.config
   tags:
     - seqtk/seq
     - seqtk
@@ -8,7 +8,7 @@
       md5sum: 50d73992c8c7e56dc095ef47ec52a754
 
 - name: seqtk seq test_seqtk_seq_fq
-  command: nextflow run tests/modules/seqtk/seq -entry test_seqtk_seq_fq -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/seq -entry test_seqtk_seq_fq -c tests/config/nextflow.config
   tags:
     - seqtk/seq
     - seqtk

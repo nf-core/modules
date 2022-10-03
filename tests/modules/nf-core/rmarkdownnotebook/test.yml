@@ -1,5 +1,5 @@
 - name: rmarkdownnotebook test_rmarkdown
-  command: nextflow run ./tests/modules/rmarkdownnotebook -entry test_rmarkdown -c ./tests/config/nextflow.config -c ./tests/modules/rmarkdownnotebook/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rmarkdownnotebook -entry test_rmarkdown -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rmarkdownnotebook/nextflow.config
   tags:
     - rmarkdownnotebook
   files:
@@ -12,7 +12,7 @@
         - "n_iter = 10"
 
 - name: rmarkdownnotebook test_rmarkdown_parametrize
-  command: nextflow run ./tests/modules/rmarkdownnotebook -entry test_rmarkdown_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/rmarkdownnotebook/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rmarkdownnotebook -entry test_rmarkdown_parametrize -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/rmarkdownnotebook/nextflow.config
   tags:
     - rmarkdownnotebook
   files:

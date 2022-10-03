@@ -1,5 +1,5 @@
 - name: rtgtools vcfeval test_rtgtools_vcfeval
-  command: nextflow run tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval -c tests/config/nextflow.config
   tags:
     - rtgtools
     - rtgtools/vcfeval
@@ -37,7 +37,7 @@
       md5sum: 270ed7a5a8e347b251eb4aa2198f98e8
 
 - name: rtgtools vcfeval test_rtgtools_vcfeval_no_optional_inputs
-  command: nextflow run tests/modules/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/rtgtools/vcfeval -entry test_rtgtools_vcfeval_no_optional_inputs -c tests/config/nextflow.config
   tags:
     - rtgtools
     - rtgtools/vcfeval

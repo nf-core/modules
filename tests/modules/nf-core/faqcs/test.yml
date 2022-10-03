@@ -1,5 +1,5 @@
 - name: faqcs test_fastp_single_end
-  command: nextflow run tests/modules/faqcs -entry test_fastp_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/faqcs -entry test_fastp_single_end -c tests/config/nextflow.config
   tags:
     - faqcs
   files:
@@ -26,7 +26,7 @@
       md5sum: 2a38d7e7ab5299336e9669c393c9da6c
 
 - name: faqcs test_fastp_paired_end
-  command: nextflow run tests/modules/faqcs -entry test_fastp_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/faqcs -entry test_fastp_paired_end -c tests/config/nextflow.config
   tags:
     - faqcs
   files:

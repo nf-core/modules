@@ -1,5 +1,5 @@
 - name: tbprofiler profile illumina
-  command: nextflow run ./tests/modules/tbprofiler/profile -entry test_tbprofiler_profile_illumina -c ./tests/config/nextflow.config -c ./tests/modules/tbprofiler/profile/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/tbprofiler/profile -entry test_tbprofiler_profile_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tbprofiler/profile/nextflow.config
   tags:
     - tbprofiler
     - tbprofiler/profile
@@ -10,7 +10,7 @@
     - path: output/tbprofiler/vcf/test.targets.csq.vcf.gz
 
 - name: tbprofiler profile nanopore
-  command: nextflow run ./tests/modules/tbprofiler/profile -entry test_tbprofiler_profile_nanopore -c ./tests/config/nextflow.config -c ./tests/modules/tbprofiler/profile/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/tbprofiler/profile -entry test_tbprofiler_profile_nanopore -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/tbprofiler/profile/nextflow.config
   tags:
     - tbprofiler
     - tbprofiler/profile

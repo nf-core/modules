@@ -1,5 +1,5 @@
 - name: ivar variants no gff no mpileup
-  command: nextflow run ./tests/modules/ivar/variants -entry test_ivar_variants_no_gff_no_mpileup -c ./tests/config/nextflow.config -c ./tests/modules/ivar/variants/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ivar/variants -entry test_ivar_variants_no_gff_no_mpileup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ivar/variants/nextflow.config
   tags:
     - ivar
     - ivar/variants
@@ -8,7 +8,7 @@
       md5sum: 728f1430f2402861396d9953465ac706
 
 - name: ivar variants no gff with mpileup
-  command: nextflow run ./tests/modules/ivar/variants -entry test_ivar_variants_no_gff_with_mpileup -c ./tests/config/nextflow.config --save_mpileup -c ./tests/modules/ivar/variants/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ivar/variants -entry test_ivar_variants_no_gff_with_mpileup -c ./tests/config/nextflow.config --save_mpileup -c ./tests/modules/nf-core/ivar/variants/nextflow.config
   tags:
     - ivar
     - ivar/variants
@@ -19,7 +19,7 @@
       md5sum: 56c4cd5a4ecb7d6364878818f46ae256
 
 - name: ivar variants with gff with mpileup
-  command: nextflow run ./tests/modules/ivar/variants -entry test_ivar_variants_with_gff_with_mpileup -c ./tests/config/nextflow.config --gff tests/data/gff/sarscov2/MN908947.3.gff3 --save_mpileup -c ./tests/modules/ivar/variants/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ivar/variants -entry test_ivar_variants_with_gff_with_mpileup -c ./tests/config/nextflow.config --gff tests/data/gff/sarscov2/MN908947.3.gff3 --save_mpileup -c ./tests/modules/nf-core/ivar/variants/nextflow.config
   tags:
     - ivar
     - ivar/variants

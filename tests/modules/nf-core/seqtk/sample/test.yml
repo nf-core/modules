@@ -1,5 +1,5 @@
 - name: seqtk sample test_seqtk_sample_single_end
-  command: nextflow run ./tests/modules/seqtk/sample -entry test_seqtk_sample_single_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/sample/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/sample -entry test_seqtk_sample_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/seqtk/sample/nextflow.config
   tags:
     - seqtk
     - seqtk/sample
@@ -9,7 +9,7 @@
         - "@ERR5069949"
 
 - name: seqtk sample test_seqtk_sample_paired_end
-  command: nextflow run ./tests/modules/seqtk/sample -entry test_seqtk_sample_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/seqtk/sample/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/sample -entry test_seqtk_sample_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/seqtk/sample/nextflow.config
   tags:
     - seqtk
     - seqtk/sample

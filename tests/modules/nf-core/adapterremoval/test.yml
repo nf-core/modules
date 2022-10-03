@@ -1,5 +1,5 @@
 - name: adapterremoval test_adapterremoval_single_end
-  command: nextflow run tests/modules/adapterremoval -entry test_adapterremoval_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/adapterremoval -entry test_adapterremoval_single_end -c tests/config/nextflow.config
   tags:
     - adapterremoval
   files:
@@ -12,7 +12,7 @@
       md5sum: ac5b46719719b7ee62739530b80869fc
 
 - name: adapterremoval test_adapterremoval_paired_end
-  command: nextflow run tests/modules/adapterremoval -entry test_adapterremoval_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/adapterremoval -entry test_adapterremoval_paired_end -c tests/config/nextflow.config
   tags:
     - adapterremoval
   files:
@@ -27,7 +27,7 @@
       md5sum: fa621c887897da5a379c719399c17db7
 
 - name: adapterremoval test_adapterremoval_paired_end_collapse
-  command: nextflow run tests/modules/adapterremoval -entry test_adapterremoval_paired_end_collapse -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/adapterremoval -entry test_adapterremoval_paired_end_collapse -c tests/config/nextflow.config
   tags:
     - adapterremoval
   files:

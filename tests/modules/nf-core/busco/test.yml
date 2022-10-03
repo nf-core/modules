@@ -1,5 +1,5 @@
 - name: busco test_busco_genome_single_fasta
-  command: nextflow run ./tests/modules/busco -entry test_busco_genome_single_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_single_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:
@@ -82,7 +82,7 @@
         - "how to cite BUSCO"
 
 - name: busco test_busco_genome_multi_fasta
-  command: nextflow run ./tests/modules/busco -entry test_busco_genome_multi_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_genome_multi_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:
@@ -247,7 +247,7 @@
         - "how to cite BUSCO"
 
 - name: busco test_busco_eukaryote_metaeuk
-  command: nextflow run ./tests/modules/busco -entry test_busco_eukaryote_metaeuk -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_metaeuk -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:
@@ -324,7 +324,7 @@
         - "how to cite BUSCO"
 
 - name: busco test_busco_eukaryote_augustus
-  command: nextflow run ./tests/modules/busco -entry test_busco_eukaryote_augustus -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_eukaryote_augustus -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:
@@ -384,7 +384,7 @@
         - "Running Augustus gene predictor"
 
 - name: busco test_busco_protein
-  command: nextflow run ./tests/modules/busco -entry test_busco_protein -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_protein -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:
@@ -435,7 +435,7 @@
         - "busco:"
 
 - name: busco test_busco_transcriptome
-  command: nextflow run ./tests/modules/busco -entry test_busco_transcriptome -c ./tests/config/nextflow.config  -c ./tests/modules/busco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/busco -entry test_busco_transcriptome -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/busco/nextflow.config
   tags:
     - busco
   files:

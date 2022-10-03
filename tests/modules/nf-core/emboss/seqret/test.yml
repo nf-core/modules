@@ -1,5 +1,5 @@
 - name: emboss seqret test_emboss_seqret_gb2embl
-  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2embl -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/emboss/seqret -entry test_emboss_seqret_gb2embl -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/emboss/seqret/nextflow.config
   tags:
     - emboss
     - emboss/seqret
@@ -9,7 +9,7 @@
       contains: ["ID   NZ_CP069563;"] # Human-readable test for correct format and sequence
 
 - name: emboss seqret test_emboss_seqret_gb2gff
-  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2gff -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/emboss/seqret -entry test_emboss_seqret_gb2gff -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/emboss/seqret/nextflow.config
   tags:
     - emboss
     - emboss/seqret
@@ -20,7 +20,7 @@
         - ">NZ_CP069563" # Human-readable test for correct sequence
 
 - name: emboss seqret test_emboss_seqret_gb2pir
-  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2pir -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/emboss/seqret -entry test_emboss_seqret_gb2pir -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/emboss/seqret/nextflow.config
   tags:
     - emboss
     - emboss/seqret
@@ -30,7 +30,7 @@
       contains: [">D1;NZ_CP069563"] # Human-readable test for correct format and sequence
 
 - name: emboss seqret test_emboss_seqret_gb2fasta
-  command: nextflow run ./tests/modules/emboss/seqret -entry test_emboss_seqret_gb2fasta -c ./tests/config/nextflow.config  -c ./tests/modules/emboss/seqret/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/emboss/seqret -entry test_emboss_seqret_gb2fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/emboss/seqret/nextflow.config
   tags:
     - emboss
     - emboss/seqret

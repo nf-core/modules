@@ -1,5 +1,5 @@
 - name: umitools extract test_umitools_extract_single_end
-  command: nextflow run tests/modules/umitools/extract -entry test_umitools_extract_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/extract -entry test_umitools_extract_single_end -c tests/config/nextflow.config
   tags:
     - umitools/extract
     - umitools
@@ -12,7 +12,7 @@
       md5sum: 397e6972343f9d7b8eae387fc18c12c7
 
 - name: umitools extract test_umitools_extract_paired_end
-  command: nextflow run tests/modules/umitools/extract -entry test_umitools_extract_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/extract -entry test_umitools_extract_paired_end -c tests/config/nextflow.config
   tags:
     - umitools/extract
     - umitools

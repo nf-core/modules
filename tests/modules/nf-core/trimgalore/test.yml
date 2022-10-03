@@ -1,5 +1,5 @@
 - name: trimgalore single-end
-  command: nextflow run ./tests/modules/trimgalore/ -entry test_trimgalore_single_end -c ./tests/config/nextflow.config -c ./tests/modules/trimgalore/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/trimgalore/ -entry test_trimgalore_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trimgalore/nextflow.config
   tags:
     - trimgalore
   files:
@@ -9,7 +9,7 @@
     - path: ./output/trimgalore/test_trimmed.fq.gz
 
 - name: trimgalore paired-end
-  command: nextflow run ./tests/modules/trimgalore/ -entry test_trimgalore_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/trimgalore/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/trimgalore/ -entry test_trimgalore_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trimgalore/nextflow.config
   tags:
     - trimgalore
   files:

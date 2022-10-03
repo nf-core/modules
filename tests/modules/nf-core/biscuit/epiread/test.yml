@@ -1,5 +1,5 @@
 - name: biscuit epiread test_biscuit_epiread_nosnp
-  command: nextflow run tests/modules/biscuit/epiread -entry test_biscuit_epiread_nosnp -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_nosnp -c tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/epiread
@@ -26,7 +26,7 @@
       md5sum: 674a77ac5ca8f4b42d30e58e30c3a9af
 
 - name: biscuit epiread test_biscuit_epiread_snp
-  command: nextflow run tests/modules/biscuit/epiread -entry test_biscuit_epiread_snp -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp -c tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/epiread
@@ -53,7 +53,7 @@
       md5sum: f2f7c4ff3c6a135b1c8a3aff24a44d81
 
 - name: biscuit epiread test_biscuit_epiread_snp_decompress
-  command: nextflow run tests/modules/biscuit/epiread -entry test_biscuit_epiread_snp_decompress -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/epiread -entry test_biscuit_epiread_snp_decompress -c tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/epiread

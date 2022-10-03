@@ -1,5 +1,5 @@
 - name: samtools mpileup test_samtools_mpileup
-  command: nextflow run tests/modules/samtools/mpileup -entry test_samtools_mpileup -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/mpileup -entry test_samtools_mpileup -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/mpileup
@@ -9,7 +9,7 @@
     - path: output/samtools/versions.yml
 
 - name: samtools mpileup test_samtools_mpileup_intervals
-  command: nextflow run tests/modules/samtools/mpileup -entry test_samtools_mpileup_intervals -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/mpileup -entry test_samtools_mpileup_intervals -c tests/config/nextflow.config
   tags:
     - samtools
     - samtools/mpileup

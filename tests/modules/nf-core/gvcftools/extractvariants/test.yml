@@ -1,5 +1,5 @@
 - name: gvcftools extractvariants test_gvcftools_extractvariants
-  command: nextflow run ./tests/modules/gvcftools/extractvariants -entry test_gvcftools_extractvariants -c ./tests/config/nextflow.config  -c ./tests/modules/gvcftools/extractvariants/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gvcftools/extractvariants -entry test_gvcftools_extractvariants -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gvcftools/extractvariants/nextflow.config
   tags:
     - gvcftools
     - gvcftools/extractvariants
@@ -7,7 +7,7 @@
     - path: output/gvcftools/test.vcf.gz
 
 - name: gvcftools extractvariants test_gvcftools_extractvariants_uncompressed
-  command: nextflow run ./tests/modules/gvcftools/extractvariants -entry test_gvcftools_extractvariants_uncompressed -c ./tests/config/nextflow.config  -c ./tests/modules/gvcftools/extractvariants/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gvcftools/extractvariants -entry test_gvcftools_extractvariants_uncompressed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gvcftools/extractvariants/nextflow.config
   tags:
     - gvcftools
     - gvcftools/extractvariants

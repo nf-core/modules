@@ -1,5 +1,5 @@
 - name: kallistobustools ref test_kallistobustools_ref_standard
-  command: nextflow run ./tests/modules/kallistobustools/ref -entry test_kallistobustools_ref_standard -c ./tests/config/nextflow.config -c ./tests/modules/kallistobustools/ref/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kallistobustools/ref -entry test_kallistobustools_ref_standard -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kallistobustools/ref/nextflow.config
   tags:
     - kallistobustools/ref
     - kallistobustools
@@ -9,7 +9,7 @@
     - path: output/kallistobustools/t2g.txt
 
 - name: kallistobustools ref test_kallistobustools_ref_lamanno
-  command: nextflow run ./tests/modules/kallistobustools/ref -entry test_kallistobustools_ref_lamanno -c ./tests/config/nextflow.config -c ./tests/modules/kallistobustools/ref/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kallistobustools/ref -entry test_kallistobustools_ref_lamanno -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kallistobustools/ref/nextflow.config
   tags:
     - kallistobustools/ref
     - kallistobustools
@@ -22,7 +22,7 @@
     - path: output/kallistobustools/t2g.txt
 
 - name: kallistobustools ref test_kallistobustools_ref_nucleus
-  command: nextflow run ./tests/modules/kallistobustools/ref -entry test_kallistobustools_ref_nucleus -c ./tests/config/nextflow.config -c ./tests/modules/kallistobustools/ref/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kallistobustools/ref -entry test_kallistobustools_ref_nucleus -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kallistobustools/ref/nextflow.config
   tags:
     - kallistobustools/ref
     - kallistobustools

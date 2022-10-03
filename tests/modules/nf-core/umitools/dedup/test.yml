@@ -1,5 +1,5 @@
 - name: umitools dedup test_umitools_dedup_no_umi
-  command: nextflow run ./tests/modules/umitools/dedup -entry test_umitools_dedup_no_umi -c ./tests/config/nextflow.config  -c ./tests/modules/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_no_umi -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -7,7 +7,7 @@
     - path: output/umitools/test.dedup.bam
 
 - name: umitools dedup test_umitools_dedup_single_end_no_stats
-  command: nextflow run ./tests/modules/umitools/dedup -entry test_umitools_dedup_single_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_single_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -31,7 +31,7 @@
     - path: output/umitools/test.umi_extract.log
 
 - name: umitools dedup test_umitools_dedup_paired_end_no_stats
-  command: nextflow run ./tests/modules/umitools/dedup -entry test_umitools_dedup_paired_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_no_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools
@@ -56,7 +56,7 @@
     - path: output/umitools/test.umi_extract_2.fastq.gz
 
 - name: umitools dedup test_umitools_dedup_paired_end_stats
-  command: nextflow run ./tests/modules/umitools/dedup -entry test_umitools_dedup_paired_end_stats -c ./tests/config/nextflow.config  -c ./tests/modules/umitools/dedup/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/umitools/dedup -entry test_umitools_dedup_paired_end_stats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/umitools/dedup/nextflow.config
   tags:
     - umitools/dedup
     - umitools

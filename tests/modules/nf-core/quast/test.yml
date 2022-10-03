@@ -1,5 +1,5 @@
 - name: quast with reference
-  command: nextflow run ./tests/modules/quast -entry test_quast_ref -c ./tests/config/nextflow.config -c ./tests/modules/quast/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/quast -entry test_quast_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/quast/nextflow.config
   tags:
     - quast
   files:
@@ -77,7 +77,7 @@
     - path: ./output/quast/quast/icarus_viewers/contig_size_viewer.html
 
 - name: quast without reference
-  command: nextflow run ./tests/modules/quast -entry test_quast_noref -c ./tests/config/nextflow.config -c ./tests/modules/quast/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/quast -entry test_quast_noref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/quast/nextflow.config
   tags:
     - quast
   files:

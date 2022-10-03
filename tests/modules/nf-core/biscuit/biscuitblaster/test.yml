@@ -1,5 +1,5 @@
 - name: biscuit biscuitblaster test_biscuit_blaster_single
-  command: nextflow run tests/modules/biscuit/biscuitblaster -entry test_biscuit_blaster_single -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_single -c tests/config/nextflow.config
   tags:
     - biscuit/biscuitblaster
     - biscuit
@@ -28,7 +28,7 @@
       md5sum: bfb660b5b0d92dde6817a1c6a2a302bb
 
 - name: biscuit biscuitblaster test_biscuit_blaster_paired
-  command: nextflow run tests/modules/biscuit/biscuitblaster -entry test_biscuit_blaster_paired -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_paired -c tests/config/nextflow.config
   tags:
     - biscuit/biscuitblaster
     - biscuit

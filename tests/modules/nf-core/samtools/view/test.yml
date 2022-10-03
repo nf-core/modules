@@ -1,5 +1,5 @@
 - name: samtools view test_samtools_view
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools
@@ -8,7 +8,7 @@
       md5sum: e6a9285be7b1c616dc4e17679fce5f1e
 
 - name: samtools view test_samtools_view_cram
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_cram -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools
@@ -16,7 +16,7 @@
     - path: output/samtools/test.cram
 
 - name: samtools view test_samtools_view_convert
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_convert -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_convert -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools
@@ -25,7 +25,7 @@
       md5sum: 4f4a97da17db79c78b1912da3cdc1d8f
 
 - name: samtools view test_samtools_view_index
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_index -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_index -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools
@@ -36,7 +36,7 @@
       md5sum: 343a2085b436cab2123147dafd255607
 
 - name: samtools view test_samtools_view_filter
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_filter -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_filter -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools
@@ -47,7 +47,7 @@
       md5sum: b1d688576e59529271333aa50b3ad3ae
 
 - name: samtools view test_samtools_view_stubs
-  command: nextflow run ./tests/modules/samtools/view -entry test_samtools_view_stubs -c ./tests/config/nextflow.config  -c ./tests/modules/samtools/view/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_stubs -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
   tags:
     - samtools/view
     - samtools

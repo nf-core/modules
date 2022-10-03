@@ -1,5 +1,5 @@
 - name: shigatyper test_shigatyper_pe
-  command: nextflow run tests/modules/shigatyper -entry test_shigatyper_pe -c tests/config/nextflow.config -c tests/modules/shigatyper/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shigatyper -entry test_shigatyper_pe -c tests/config/nextflow.config -c ./tests/modules/nf-core/shigatyper/nextflow.config
   tags:
     - shigatyper
   files:
@@ -9,7 +9,7 @@
       md5sum: d8ca45ed88dfba9bc570c01e4b49773b
 
 - name: shigatyper test_shigatyper_se
-  command: nextflow run tests/modules/shigatyper -entry test_shigatyper_se -c tests/config/nextflow.config -c tests/modules/shigatyper/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shigatyper -entry test_shigatyper_se -c tests/config/nextflow.config -c ./tests/modules/nf-core/shigatyper/nextflow.config
   tags:
     - shigatyper
   files:
@@ -19,7 +19,7 @@
       md5sum: 8bbf165da5a5df3b7771a33aad197eec
 
 - name: shigatyper test_shigatyper_ont
-  command: nextflow run tests/modules/shigatyper -entry test_shigatyper_ont -c tests/config/nextflow.config -c tests/modules/shigatyper/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/shigatyper -entry test_shigatyper_ont -c tests/config/nextflow.config -c ./tests/modules/nf-core/shigatyper/nextflow.config
   tags:
     - shigatyper
   files:

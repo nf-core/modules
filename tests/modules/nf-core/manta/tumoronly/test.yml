@@ -1,5 +1,5 @@
 - name: manta tumoronly
-  command: nextflow run ./tests/modules/manta/tumoronly -entry test_manta_tumoronly -c ./tests/config/nextflow.config -c ./tests/modules/manta/tumoronly/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/manta/tumoronly -entry test_manta_tumoronly -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/manta/tumoronly/nextflow.config
   tags:
     - manta
     - manta/tumoronly
@@ -11,7 +11,7 @@
     - path: output/manta/test.tumor_sv.vcf.gz
     - path: output/manta/test.tumor_sv.vcf.gz.tbi
 - name: manta tumoronly target bed
-  command: nextflow run ./tests/modules/manta/tumoronly -entry test_manta_tumoronly_target_bed -c ./tests/config/nextflow.config -c ./tests/modules/manta/tumoronly/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/manta/tumoronly -entry test_manta_tumoronly_target_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/manta/tumoronly/nextflow.config
   tags:
     - manta
     - manta/tumoronly

@@ -1,5 +1,5 @@
 - name: cat unzipped unzipped
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_unzipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_unzipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config
   tags:
     - cat
     - cat/cat
@@ -8,7 +8,7 @@
       md5sum: f44b33a0e441ad58b2d3700270e2dbe2
 
 - name: cat unzipped unzipped stub
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_unzipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_unzipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
   tags:
     - cat
     - cat/cat
@@ -16,7 +16,7 @@
     - path: output/cat/test.fasta
 
 - name: cat zipped zipped
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config
   tags:
     - cat
     - cat/cat
@@ -24,7 +24,7 @@
     - path: output/cat/test.gz
 
 - name: cat zipped zipped stub
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_zipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
   tags:
     - cat
     - cat/cat
@@ -32,7 +32,7 @@
     - path: output/cat/test.gz
 
 - name: cat zipped unzipped
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config
   tags:
     - cat
     - cat/cat
@@ -41,7 +41,7 @@
       md5sum: c439d3b60e7bc03e8802a451a0d9a5d9
 
 - name: cat zipped unzipped stub
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_zipped_unzipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
   tags:
     - cat
     - cat/cat
@@ -49,7 +49,7 @@
     - path: output/cat/cat.txt
 
 - name: cat unzipped zipped
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config
   tags:
     - cat
     - cat/cat
@@ -57,7 +57,7 @@
     - path: output/cat/cat.txt.gz
 
 - name: cat unzipped zipped stub
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
   tags:
     - cat
     - cat/cat
@@ -65,7 +65,7 @@
     - path: output/cat/cat.txt.gz
 
 - name: cat one file unzipped zipped
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config
   tags:
     - cat
     - cat/cat
@@ -73,7 +73,7 @@
     - path: output/cat/cat.txt.gz
 
 - name: cat one file unzipped zipped stub
-  command: nextflow run ./tests/modules/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/cat/cat/nextflow.config -stub-run
+  command: nextflow run ./tests/modules/nf-core/cat/cat -entry test_cat_one_file_unzipped_zipped -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cat/cat/nextflow.config -stub-run
   tags:
     - cat
     - cat/cat

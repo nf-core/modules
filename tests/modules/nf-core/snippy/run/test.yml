@@ -1,6 +1,6 @@
 - name: snippy run test_snippy_run
   command: |
-    nextflow run tests/modules/snippy/run -entry test_snippy_run -c tests/config/nextflow.config -c tests/modules/snippy/run/nextflow.config
+    nextflow run ./tests/modules/nf-core/snippy/run -entry test_snippy_run -c tests/config/nextflow.config -c ./tests/modules/nf-core/snippy/run/nextflow.config
   tags:
     - snippy/run
     - snippy

@@ -1,5 +1,5 @@
 - name: lima test_lima_bam
-  command: nextflow run ./tests/modules/lima -entry test_lima_bam -c ./tests/config/nextflow.config -c ./tests/modules/lima/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/lima -entry test_lima_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lima/nextflow.config
   tags:
     - lima
   files:
@@ -23,7 +23,7 @@
       md5sum: bcbcaaaca418bdeb91141c81715ca420
 
 - name: lima test_lima_fa
-  command: nextflow run ./tests/modules/lima -entry test_lima_fa -c ./tests/config/nextflow.config -c ./tests/modules/lima/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/lima -entry test_lima_fa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lima/nextflow.config
   tags:
     - lima
   files:
@@ -39,7 +39,7 @@
       md5sum: 03be2311ba4afb878d8e547ab38c11eb
 
 - name: lima test_lima_fa_gz
-  command: nextflow run ./tests/modules/lima -entry test_lima_fa_gz -c ./tests/config/nextflow.config -c ./tests/modules/lima/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/lima -entry test_lima_fa_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lima/nextflow.config
   tags:
     - lima
   files:
@@ -55,7 +55,7 @@
       md5sum: 03be2311ba4afb878d8e547ab38c11eb
 
 - name: lima test_lima_fq
-  command: nextflow run ./tests/modules/lima -entry test_lima_fq -c ./tests/config/nextflow.config -c ./tests/modules/lima/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/lima -entry test_lima_fq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lima/nextflow.config
   tags:
     - lima
   files:
@@ -73,7 +73,7 @@
       md5sum: e91d3c386aaf4effa63f33ee2eb7da2a
 
 - name: lima test_lima_fq_gz
-  command: nextflow run ./tests/modules/lima -entry test_lima_fq_gz -c ./tests/config/nextflow.config -c ./tests/modules/lima/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/lima -entry test_lima_fq_gz -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/lima/nextflow.config
   tags:
     - lima
   files:

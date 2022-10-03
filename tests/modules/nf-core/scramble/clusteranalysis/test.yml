@@ -1,5 +1,5 @@
 - name: scramble clusteranalysis test_scramble_clusteranalysis
-  command: nextflow run ./tests/modules/scramble/clusteranalysis -entry test_scramble_clusteranalysis -c ./tests/config/nextflow.config  -c ./tests/modules/scramble/clusteranalysis/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/scramble/clusteranalysis -entry test_scramble_clusteranalysis -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/scramble/clusteranalysis/nextflow.config
   tags:
     - scramble/clusteranalysis
     - scramble
@@ -10,7 +10,7 @@
       md5sum: a14c40c7e5f3630defde68ae1de51bca
 
 - name: scramble clusteranalysis test_scramble_clusteranalysis_fasta
-  command: nextflow run ./tests/modules/scramble/clusteranalysis -entry test_scramble_clusteranalysis_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/scramble/clusteranalysis/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/scramble/clusteranalysis -entry test_scramble_clusteranalysis_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/scramble/clusteranalysis/nextflow.config
   tags:
     - scramble/clusteranalysis
     - scramble

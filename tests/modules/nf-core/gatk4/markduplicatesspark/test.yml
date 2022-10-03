@@ -1,5 +1,5 @@
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark
-  command: nextflow run ./tests/modules/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicatesspark/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicatesspark
@@ -9,7 +9,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams
-  command: nextflow run ./tests/modules/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicatesspark/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicatesspark
@@ -19,7 +19,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_cram_out
-  command: nextflow run ./tests/modules/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_cram_out -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicatesspark/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_cram_out -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicatesspark
@@ -29,7 +29,7 @@
     - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_metrics
-  command: nextflow run ./tests/modules/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_metrics -c ./tests/config/nextflow.config  -c ./tests/modules/gatk4/markduplicatesspark/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_metrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
   tags:
     - gatk4
     - gatk4/markduplicatesspark

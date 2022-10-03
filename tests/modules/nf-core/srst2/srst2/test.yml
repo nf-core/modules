@@ -1,12 +1,12 @@
 - name: srst2 srst2 test_srst2_srst2_exit #Testing pipeline exit when not meta.db
-  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_exit -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/srst2/srst2 -entry test_srst2_srst2_exit -c tests/config/nextflow.config
   tags:
     - srst2/srst2
     - srst2
   exit_code: 1
 
 - name: srst2 srst2 test_srst2_srst2_mlst
-  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_mlst -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/srst2/srst2 -entry test_srst2_srst2_mlst -c tests/config/nextflow.config
   tags:
     - srst2/srst2
     - srst2
@@ -21,7 +21,7 @@
       md5sum: a0c256a2fd3636069710b8ef22ee5ea7
 
 - name: srst2 srst2 test_srst2_srst2_paired_end
-  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/srst2/srst2 -entry test_srst2_srst2_paired_end -c tests/config/nextflow.config
   tags:
     - srst2/srst2
     - srst2
@@ -35,7 +35,7 @@
       md5sum: b446a70f1a2b4f60757829bcd744a214
 
 - name: srst2 srst2 test_srst2_srst2_single_end
-  command: nextflow run tests/modules/srst2/srst2 -entry test_srst2_srst2_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/srst2/srst2 -entry test_srst2_srst2_single_end -c tests/config/nextflow.config
   tags:
     - srst2/srst2
     - srst2

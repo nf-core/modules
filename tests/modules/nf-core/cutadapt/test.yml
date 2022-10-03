@@ -1,5 +1,5 @@
 - name: cutadapt single-end
-  command: nextflow run ./tests/modules/cutadapt -entry test_cutadapt_single_end -c ./tests/config/nextflow.config -c ./tests/modules/cutadapt/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cutadapt -entry test_cutadapt_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cutadapt/nextflow.config
   tags:
     - cutadapt
   files:
@@ -7,7 +7,7 @@
     - path: ./output/cutadapt/test.trim.fastq.gz
 
 - name: cutadapt paired-end
-  command: nextflow run ./tests/modules/cutadapt -entry test_cutadapt_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/cutadapt/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cutadapt -entry test_cutadapt_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cutadapt/nextflow.config
   tags:
     - cutadapt
   files:

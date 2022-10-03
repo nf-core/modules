@@ -1,5 +1,5 @@
 - name: untar test_untar
-  command: nextflow run ./tests/modules/untar -entry test_untar -c ./tests/config/nextflow.config  -c ./tests/modules/untar/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/untar -entry test_untar -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/untar/nextflow.config
   tags:
     - untar
   files:
@@ -11,7 +11,7 @@
       md5sum: 094d5891cdccf2f1468088855c214b2c
 
 - name: untar test_untar_different_output_path
-  command: nextflow run ./tests/modules/untar -entry test_untar_different_output_path -c ./tests/config/nextflow.config  -c ./tests/modules/untar/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/untar -entry test_untar_different_output_path -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/untar/nextflow.config
   tags:
     - untar
   files:
@@ -19,7 +19,7 @@
       md5sum: 03038959f4dd181c86bc97ae71fe270a
 
 - name: untar test_untar_onlyfiles
-  command: nextflow run ./tests/modules/untar -entry test_untar_onlyfiles -c ./tests/config/nextflow.config  -c ./tests/modules/untar/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/untar -entry test_untar_onlyfiles -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/untar/nextflow.config
   tags:
     - untar
   files:

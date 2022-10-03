@@ -1,5 +1,5 @@
 - name: bedtools genomecov test_bedtools_genomecov_noscale
-  command: nextflow run ./tests/modules/bedtools/genomecov -entry test_bedtools_genomecov_noscale -c ./tests/config/nextflow.config -c ./tests/modules/bedtools/genomecov/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bedtools/genomecov -entry test_bedtools_genomecov_noscale -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/genomecov/nextflow.config
   tags:
     - bedtools
     - bedtools/genomecov
@@ -8,7 +8,7 @@
       md5sum: 66083198daca6c001d328ba9616e9b53
 
 - name: bedtools genomecov test_bedtools_genomecov_nonbam_noscale
-  command: nextflow run ./tests/modules/bedtools/genomecov -entry test_bedtools_genomecov_nonbam_noscale -c ./tests/config/nextflow.config -c ./tests/modules/bedtools/genomecov/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bedtools/genomecov -entry test_bedtools_genomecov_nonbam_noscale -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/genomecov/nextflow.config
   tags:
     - bedtools
     - bedtools/genomecov
@@ -17,7 +17,7 @@
       md5sum: f47b58840087426e5b643d8dfd155c1f
 
 - name: bedtools genomecov test_bedtools_genomecov_scale
-  command: nextflow run ./tests/modules/bedtools/genomecov -entry test_bedtools_genomecov_scale -c ./tests/config/nextflow.config -c ./tests/modules/bedtools/genomecov/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bedtools/genomecov -entry test_bedtools_genomecov_scale -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/genomecov/nextflow.config
   tags:
     - bedtools
     - bedtools/genomecov
@@ -26,7 +26,7 @@
       md5sum: 01291b6e1beab72e046653e709eb0e10
 
 - name: bedtools genomecov test_bedtools_genomecov_nonbam_scale
-  command: nextflow run ./tests/modules/bedtools/genomecov -entry test_bedtools_genomecov_nonbam_scale -c ./tests/config/nextflow.config -c ./tests/modules/bedtools/genomecov/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bedtools/genomecov -entry test_bedtools_genomecov_nonbam_scale -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/genomecov/nextflow.config
   tags:
     - bedtools
     - bedtools/genomecov

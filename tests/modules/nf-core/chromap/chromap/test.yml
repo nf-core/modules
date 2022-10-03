@@ -1,5 +1,5 @@
 - name: chromap chromap test_chromap_chromap_single_end
-  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_single_end -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chromap/chromap -entry test_chromap_chromap_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
@@ -10,7 +10,7 @@
     - path: output/chromap/versions.yml
 
 - name: chromap chromap test_chromap_chromap_paired_end
-  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chromap/chromap -entry test_chromap_chromap_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
@@ -21,7 +21,7 @@
     - path: output/chromap/versions.yml
 
 - name: chromap chromap test_chromap_chromap_paired_bam
-  command: nextflow run ./tests/modules/chromap/chromap -entry test_chromap_chromap_paired_bam -c ./tests/config/nextflow.config -c ./tests/modules/chromap/chromap/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/chromap/chromap -entry test_chromap_chromap_paired_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chromap/chromap/nextflow.config
   tags:
     - chromap/chromap
     - chromap
