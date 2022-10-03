@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_SEQ } from '../../../../modules/nf-core/seqtk/seq/main.nf'
+include { SEQTK_SEQ } from '../../../../../modules/nf-core/seqtk/seq/main.nf'
 
 workflow test_seqtk_seq {
     input = [ [ id:'test' ],   // meta map

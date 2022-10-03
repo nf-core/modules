@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TABIX_BGZIPTABIX } from '../../../../modules/nf-core/tabix/bgziptabix/main.nf'
+include { TABIX_BGZIPTABIX } from '../../../../../modules/nf-core/tabix/bgziptabix/main.nf'
 
 workflow test_tabix_bgziptabix {
     input = [ [ id:'test' ], // meta map

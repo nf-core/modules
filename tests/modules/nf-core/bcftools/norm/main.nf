@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_NORM } from '../../../../modules/nf-core/bcftools/norm/main.nf'
+include { BCFTOOLS_NORM } from '../../../../../modules/nf-core/bcftools/norm/main.nf'
 
 workflow test_bcftools_norm_no_tbi {
     

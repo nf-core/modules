@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MUSCLE } from '../../../modules/nf-core/muscle/main.nf'
-include { MUSCLE as MUSCLE_TREE } from '../../../modules/nf-core/muscle/main.nf'
+include { MUSCLE } from '../../../../modules/nf-core/muscle/main.nf'
+include { MUSCLE as MUSCLE_TREE } from '../../../../modules/nf-core/muscle/main.nf'
 
 workflow test_muscle {
 

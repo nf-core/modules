@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMER_HMMBUILD } from '../../../../modules/nf-core/hmmer/hmmbuild/main.nf'
+include { HMMER_HMMBUILD } from '../../../../../modules/nf-core/hmmer/hmmbuild/main.nf'
 
 workflow test_hmmer_hmmbuild {
     

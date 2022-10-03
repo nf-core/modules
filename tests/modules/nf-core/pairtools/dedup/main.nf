@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_DEDUP } from '../../../../modules/nf-core/pairtools/dedup/main.nf'
+include { PAIRTOOLS_DEDUP } from '../../../../../modules/nf-core/pairtools/dedup/main.nf'
 
 workflow test_pairtools_dedup {
 

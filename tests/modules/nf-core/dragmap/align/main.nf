@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DRAGMAP_HASHTABLE } from '../../../../modules/nf-core/dragmap/hashtable/main.nf'
-include { DRAGMAP_ALIGN     } from '../../../../modules/nf-core/dragmap/align/main.nf'
+include { DRAGMAP_HASHTABLE } from '../../../../../modules/nf-core/dragmap/hashtable/main.nf'
+include { DRAGMAP_ALIGN     } from '../../../../../modules/nf-core/dragmap/align/main.nf'
 
 workflow test_dragmap_align_single_end {
     input = [

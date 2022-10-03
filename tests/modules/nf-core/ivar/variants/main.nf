@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IVAR_VARIANTS } from '../../../../modules/nf-core/ivar/variants/main.nf'
+include { IVAR_VARIANTS } from '../../../../../modules/nf-core/ivar/variants/main.nf'
 
 workflow test_ivar_variants_no_gff_no_mpileup {
 

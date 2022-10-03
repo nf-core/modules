@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NGMASTER } from '../../../modules/nf-core/ngmaster/main.nf'
+include { NGMASTER } from '../../../../modules/nf-core/ngmaster/main.nf'
 
 workflow test_ngmaster {
     

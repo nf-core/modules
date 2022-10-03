@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_FASTA } from '../../../../modules/nf-core/samtools/fasta/main.nf'
+include { SAMTOOLS_FASTA } from '../../../../../modules/nf-core/samtools/fasta/main.nf'
 
 workflow test_samtools_fasta {
     

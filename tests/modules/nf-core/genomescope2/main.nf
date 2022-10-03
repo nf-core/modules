@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { MERYL_COUNT     } from '../../../modules/nf-core/meryl/count/main.nf'
-include { MERYL_HISTOGRAM } from '../../../modules/nf-core/meryl/histogram/main.nf'
-include { GENOMESCOPE2    } from '../../../modules/nf-core/genomescope2/main.nf'
+include { MERYL_COUNT     } from '../../../../modules/nf-core/meryl/count/main.nf'
+include { MERYL_HISTOGRAM } from '../../../../modules/nf-core/meryl/histogram/main.nf'
+include { GENOMESCOPE2    } from '../../../../modules/nf-core/genomescope2/main.nf'
 
 workflow test_genomescope2 {
 

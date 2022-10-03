@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../modules/nf-core/untar/main.nf'
-include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../../modules/nf-core/gatk4/createsomaticpanelofnormals/main.nf'
+include { UNTAR           } from '../../../../../modules/nf-core/untar/main.nf'
+include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../../../modules/nf-core/gatk4/createsomaticpanelofnormals/main.nf'
 
 workflow test_gatk4_createsomaticpanelofnormals {
     db    = [[], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]

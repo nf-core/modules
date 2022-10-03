@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_CLEANSAM } from '../../../../modules/nf-core/picard/cleansam/main.nf'
+include { PICARD_CLEANSAM } from '../../../../../modules/nf-core/picard/cleansam/main.nf'
 
 workflow test_picard_cleansam {
     

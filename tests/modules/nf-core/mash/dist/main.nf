@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MASH_DIST } from '../../../../modules/nf-core/mash/dist/main.nf'
+include { MASH_DIST } from '../../../../../modules/nf-core/mash/dist/main.nf'
 
 workflow test_mash_dist {
     

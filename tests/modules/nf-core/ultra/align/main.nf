@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP        } from '../../../../modules/nf-core/gunzip/main.nf'
-include { GFFREAD       } from '../../../../modules/nf-core/gffread/main.nf'
-include { ULTRA_INDEX   } from '../../../../modules/nf-core/ultra/index/main.nf'
-include { ULTRA_ALIGN   } from '../../../../modules/nf-core/ultra/align/main.nf'
+include { GUNZIP        } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { GFFREAD       } from '../../../../../modules/nf-core/gffread/main.nf'
+include { ULTRA_INDEX   } from '../../../../../modules/nf-core/ultra/index/main.nf'
+include { ULTRA_ALIGN   } from '../../../../../modules/nf-core/ultra/align/main.nf'
 
 workflow test_ultra_align {
 

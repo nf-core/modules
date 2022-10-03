@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK } from '../../../../modules/nf-core/fastk/fastk/main.nf'
-include { FASTK_MERGE } from '../../../../modules/nf-core/fastk/merge/main.nf'
+include { FASTK_FASTK } from '../../../../../modules/nf-core/fastk/fastk/main.nf'
+include { FASTK_MERGE } from '../../../../../modules/nf-core/fastk/merge/main.nf'
 
 workflow test_fastk_merge_hist_only {
 

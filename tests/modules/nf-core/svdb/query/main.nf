@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SVDB_QUERY } from '../../../../modules/nf-core/svdb/query/main.nf'
+include { SVDB_QUERY } from '../../../../../modules/nf-core/svdb/query/main.nf'
 
 workflow test_svdb_query {
 

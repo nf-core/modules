@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GLIMPSE_CHUNK } from '../../../../modules/nf-core/glimpse/chunk/main.nf'
+include { GLIMPSE_CHUNK } from '../../../../../modules/nf-core/glimpse/chunk/main.nf'
 
 workflow test_glimpse_chunk {
     input = [

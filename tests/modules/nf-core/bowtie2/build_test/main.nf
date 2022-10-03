@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE2_BUILD } from '../../../../modules/nf-core/bowtie2/build/main.nf'
+include { BOWTIE2_BUILD } from '../../../../../modules/nf-core/bowtie2/build/main.nf'
 
 workflow test_bowtie2_build {
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

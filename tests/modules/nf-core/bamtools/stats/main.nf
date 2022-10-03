@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAMTOOLS_STATS } from '../../../../modules/nf-core/bamtools/stats/main.nf'
+include { BAMTOOLS_STATS } from '../../../../../modules/nf-core/bamtools/stats/main.nf'
 
 workflow test_bamtools_stats {
     

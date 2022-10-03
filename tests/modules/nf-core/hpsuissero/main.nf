@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HPSUISSERO } from '../../../modules/nf-core/hpsuissero/main.nf'
+include { HPSUISSERO } from '../../../../modules/nf-core/hpsuissero/main.nf'
 
 workflow test_hpsuissero {
     

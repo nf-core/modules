@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GAPPA_EXAMINEHEATTREE } from '../../../../modules/nf-core/gappa/examineheattree/main.nf'
+include { GAPPA_EXAMINEHEATTREE } from '../../../../../modules/nf-core/gappa/examineheattree/main.nf'
 
 workflow test_gappa_examineheattree {
     

@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { ENDORSPY } from '../../../modules/nf-core/endorspy/main.nf'
-include { SAMTOOLS_FLAGSTAT } from '../../../modules/nf-core/samtools/flagstat/main.nf'
-include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT2 } from '../../../modules/nf-core/samtools/flagstat/main.nf'
-include { SAMTOOLS_VIEW } from '../../../modules/nf-core/samtools/view/main.nf'
-include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index/main.nf'
+include { ENDORSPY } from '../../../../modules/nf-core/endorspy/main.nf'
+include { SAMTOOLS_FLAGSTAT } from '../../../../modules/nf-core/samtools/flagstat/main.nf'
+include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT2 } from '../../../../modules/nf-core/samtools/flagstat/main.nf'
+include { SAMTOOLS_VIEW } from '../../../../modules/nf-core/samtools/view/main.nf'
+include { SAMTOOLS_INDEX } from '../../../../modules/nf-core/samtools/index/main.nf'
 
 workflow test_endorspy {
     

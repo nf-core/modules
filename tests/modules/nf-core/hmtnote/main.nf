@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMTNOTE } from '../../../modules/nf-core/hmtnote/main.nf'
+include { HMTNOTE } from '../../../../modules/nf-core/hmtnote/main.nf'
 
 workflow test_hmtnote {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMOD_ANNOTATE } from '../../../../modules/nf-core/genmod/annotate/main.nf'
+include { GENMOD_ANNOTATE } from '../../../../../modules/nf-core/genmod/annotate/main.nf'
 
 input = [
     [ id:'test', single_end:false ], // meta map

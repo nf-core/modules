@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_MPILEUP } from '../../../../modules/nf-core/bcftools/mpileup/main.nf'
+include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
 
 workflow test_bcftools_mpileup {
 

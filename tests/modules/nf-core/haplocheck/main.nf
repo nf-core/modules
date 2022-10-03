@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HAPLOCHECK } from '../../../modules/nf-core/haplocheck/main.nf'
+include { HAPLOCHECK } from '../../../../modules/nf-core/haplocheck/main.nf'
 
 workflow test_haplocheck {
 

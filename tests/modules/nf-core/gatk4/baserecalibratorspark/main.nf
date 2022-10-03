@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_BASERECALIBRATOR_SPARK } from '../../../../modules/nf-core/gatk4/baserecalibratorspark/main.nf'
+include { GATK4_BASERECALIBRATOR_SPARK } from '../../../../../modules/nf-core/gatk4/baserecalibratorspark/main.nf'
 
 workflow test_gatk4_baserecalibrator_spark {
     input     = [ [ id:'test' ], // meta map

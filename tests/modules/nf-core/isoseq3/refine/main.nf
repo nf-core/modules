@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ISOSEQ3_REFINE } from '../../../../modules/nf-core/isoseq3/refine/main'
+include { ISOSEQ3_REFINE } from '../../../../../modules/nf-core/isoseq3/refine/main'
 
 workflow test_isoseq3_refine {
 

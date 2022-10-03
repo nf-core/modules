@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { YARA_INDEX } from '../../../../modules/nf-core/yara/index/main.nf'
+include { YARA_INDEX } from '../../../../../modules/nf-core/yara/index/main.nf'
 
 workflow test_yara_index {
 

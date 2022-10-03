@@ -4,7 +4,7 @@ include {
     TRIMMOMATIC as TRIMMOMATIC_SE
     TRIMMOMATIC as TRIMMOMATIC_PE
     TRIMMOMATIC
-} from '../../../modules/nf-core/trimmomatic/main.nf'
+} from '../../../../modules/nf-core/trimmomatic/main.nf'
 
 //
 // Test with single-end data

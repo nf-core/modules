@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_UNIFIEDGENOTYPER } from '../../../../modules/nf-core/gatk/unifiedgenotyper/main.nf'
+include { GATK_UNIFIEDGENOTYPER } from '../../../../../modules/nf-core/gatk/unifiedgenotyper/main.nf'
 
 workflow test_gatk_unifiedgenotyper {
 

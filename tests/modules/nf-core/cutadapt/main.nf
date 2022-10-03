@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CUTADAPT } from '../../../modules/nf-core/cutadapt/main.nf'
+include { CUTADAPT } from '../../../../modules/nf-core/cutadapt/main.nf'
 
 //
 // Test with single-end data

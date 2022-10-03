@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_VIEW } from '../../../../modules/nf-core/bcftools/view/main.nf'
+include { BCFTOOLS_VIEW } from '../../../../../modules/nf-core/bcftools/view/main.nf'
 
 workflow test_bcftools_view {
 

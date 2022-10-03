@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../modules/nf-core/untar/main.nf'
+include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_untar {
     input = [

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_IDXSTATS } from '../../../../modules/nf-core/samtools/idxstats/main.nf'
+include { SAMTOOLS_IDXSTATS } from '../../../../../modules/nf-core/samtools/idxstats/main.nf'
 
 workflow test_samtools_idxstats {
     input = [ [ id:'test', single_end:false ], // meta map

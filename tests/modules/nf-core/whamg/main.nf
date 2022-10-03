@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { WHAMG } from '../../../modules/nf-core/whamg/main.nf'
+include { WHAMG } from '../../../../modules/nf-core/whamg/main.nf'
 
 workflow test_whamg_bam {
     

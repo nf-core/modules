@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MACREL_CONTIGS } from '../../../../modules/nf-core/macrel/contigs/main.nf'
+include { MACREL_CONTIGS } from '../../../../../modules/nf-core/macrel/contigs/main.nf'
 
 workflow test_macrel_contigs {
     

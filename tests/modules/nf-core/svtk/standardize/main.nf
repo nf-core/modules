@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SVTK_STANDARDIZE } from '../../../../modules/nf-core/svtk/standardize/main.nf'
-include { MANTA_GERMLINE   } from '../../../../modules/nf-core/manta/germline/main.nf'
+include { SVTK_STANDARDIZE } from '../../../../../modules/nf-core/svtk/standardize/main.nf'
+include { MANTA_GERMLINE   } from '../../../../../modules/nf-core/manta/germline/main.nf'
 
 workflow test_svtk_standardize {
     

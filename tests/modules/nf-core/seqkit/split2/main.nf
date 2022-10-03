@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_LENGTH } from '../../../../modules/nf-core/seqkit/split2/main.nf'
-include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_SIZE   } from '../../../../modules/nf-core/seqkit/split2/main.nf'
-include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_PART   } from '../../../../modules/nf-core/seqkit/split2/main.nf'
+include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_LENGTH } from '../../../../../modules/nf-core/seqkit/split2/main.nf'
+include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_SIZE   } from '../../../../../modules/nf-core/seqkit/split2/main.nf'
+include { SEQKIT_SPLIT2 as SEQKIT_SPLIT2_PART   } from '../../../../../modules/nf-core/seqkit/split2/main.nf'
 
 workflow test_seqkit_split2_single_end_length {
     input = [ [ id:'test', single_end:true ], // meta map

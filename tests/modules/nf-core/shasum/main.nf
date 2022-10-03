@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SHASUM } from '../../../modules/nf-core/shasum/main.nf'
+include { SHASUM } from '../../../../modules/nf-core/shasum/main.nf'
 
 workflow test_shasum {
     

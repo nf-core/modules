@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLASMIDID } from '../../../modules/nf-core/plasmidid/main.nf'
+include { PLASMIDID } from '../../../../modules/nf-core/plasmidid/main.nf'
 
 workflow test_plasmidid {
 

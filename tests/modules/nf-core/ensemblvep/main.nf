@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { ENSEMBLVEP } from '../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP } from '../../../../modules/nf-core/ensemblvep/main.nf'
 
-include { ENSEMBLVEP as ENSEMBLVEP_JSON } from '../../../modules/nf-core/ensemblvep/main.nf'
-include { ENSEMBLVEP as ENSEMBLVEP_TAB } from '../../../modules/nf-core/ensemblvep/main.nf'
-include { ENSEMBLVEP as ENSEMBLVEP_VCF } from '../../../modules/nf-core/ensemblvep/main.nf'
-include { ENSEMBLVEP as ENSEMBLVEP_VCF_BGZIP } from '../../../modules/nf-core/ensemblvep/main.nf'
-include { ENSEMBLVEP as ENSEMBLVEP_VCF_GZIP  } from '../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_JSON } from '../../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_TAB } from '../../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_VCF } from '../../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_VCF_BGZIP } from '../../../../modules/nf-core/ensemblvep/main.nf'
+include { ENSEMBLVEP as ENSEMBLVEP_VCF_GZIP  } from '../../../../modules/nf-core/ensemblvep/main.nf'
 
 workflow test_ensemblvep_fasta_json {
     input = [

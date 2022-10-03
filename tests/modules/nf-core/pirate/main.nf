@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PIRATE } from '../../../modules/nf-core/pirate/main.nf'
+include { PIRATE } from '../../../../modules/nf-core/pirate/main.nf'
 
 workflow test_pirate {
 

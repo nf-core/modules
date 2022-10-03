@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ASSEMBLYSCAN } from '../../../modules/nf-core/assemblyscan/main.nf'
+include { ASSEMBLYSCAN } from '../../../../modules/nf-core/assemblyscan/main.nf'
 
 workflow test_assemblyscan {
     

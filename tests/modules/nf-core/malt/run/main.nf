@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP      } from '../../../../modules/nf-core/unzip/main.nf'
-include { MALT_BUILD } from  '../../../../modules/nf-core/malt/build/main.nf'
-include { MALT_RUN   } from '../../../../modules/nf-core/malt/run/main.nf'
+include { UNZIP      } from '../../../../../modules/nf-core/unzip/main.nf'
+include { MALT_BUILD } from  '../../../../../modules/nf-core/malt/build/main.nf'
+include { MALT_RUN   } from '../../../../../modules/nf-core/malt/run/main.nf'
 
 workflow test_malt_run {
 

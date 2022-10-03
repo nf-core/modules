@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BIOBAMBAM_BAMMARKDUPLICATES2 } from '../../../../modules/nf-core/biobambam/bammarkduplicates2/main.nf'
+include { BIOBAMBAM_BAMMARKDUPLICATES2 } from '../../../../../modules/nf-core/biobambam/bammarkduplicates2/main.nf'
 
 workflow test_biobambam_bammarkduplicates2 {
 

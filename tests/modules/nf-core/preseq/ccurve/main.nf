@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PRESEQ_CCURVE } from '../../../../modules/nf-core/preseq/ccurve/main.nf'
+include { PRESEQ_CCURVE } from '../../../../../modules/nf-core/preseq/ccurve/main.nf'
 
 workflow test_preseq_ccurve_single_end {
 

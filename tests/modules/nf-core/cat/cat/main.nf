@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CAT_CAT                        } from '../../../../modules/nf-core/cat/cat/main.nf'
-include { CAT_CAT as CAT_UNZIPPED_ZIPPED } from '../../../../modules/nf-core/cat/cat/main.nf'
-include { CAT_CAT as CAT_ZIPPED_UNZIPPED } from '../../../../modules/nf-core/cat/cat/main.nf'
+include { CAT_CAT                        } from '../../../../../modules/nf-core/cat/cat/main.nf'
+include { CAT_CAT as CAT_UNZIPPED_ZIPPED } from '../../../../../modules/nf-core/cat/cat/main.nf'
+include { CAT_CAT as CAT_ZIPPED_UNZIPPED } from '../../../../../modules/nf-core/cat/cat/main.nf'
 
 workflow test_cat_unzipped_unzipped {
 

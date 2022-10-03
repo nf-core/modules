@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLAS_SPLITMERGE } from '../../../../modules/nf-core/atlas/splitmerge/main.nf'
+include { ATLAS_SPLITMERGE } from '../../../../../modules/nf-core/atlas/splitmerge/main.nf'
 
 //MAIN
 workflow test_atlas_splitmerge {

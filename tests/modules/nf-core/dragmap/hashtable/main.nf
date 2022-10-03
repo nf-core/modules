@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DRAGMAP_HASHTABLE } from '../../../../modules/nf-core/dragmap/hashtable/main.nf'
+include { DRAGMAP_HASHTABLE } from '../../../../../modules/nf-core/dragmap/hashtable/main.nf'
 
 workflow test_dragmap_hashtable {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_GETRG } from '../../../../modules/nf-core/samtools/getrg/main.nf'
+include { SAMTOOLS_GETRG } from '../../../../../modules/nf-core/samtools/getrg/main.nf'
 
 workflow test_samtools_getrg {
 

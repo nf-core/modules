@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_INDEX } from '../../../../modules/nf-core/bbmap/index/main.nf'
-include { BBMAP_ALIGN } from '../../../../modules/nf-core/bbmap/align/main.nf'
-include { BBMAP_ALIGN as BBMAP_ALIGN_PIGZ } from '../../../../modules/nf-core/bbmap/align/main.nf'
+include { BBMAP_INDEX } from '../../../../../modules/nf-core/bbmap/index/main.nf'
+include { BBMAP_ALIGN } from '../../../../../modules/nf-core/bbmap/align/main.nf'
+include { BBMAP_ALIGN as BBMAP_ALIGN_PIGZ } from '../../../../../modules/nf-core/bbmap/align/main.nf'
 
 workflow test_bbmap_align_paired_end_fasta_ref {
 

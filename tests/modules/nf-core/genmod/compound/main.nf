@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMOD_COMPOUND } from '../../../../modules/nf-core/genmod/compound/main.nf'
+include { GENMOD_COMPOUND } from '../../../../../modules/nf-core/genmod/compound/main.nf'
 
 input = [
     [ id:'test', single_end:false ], // meta map

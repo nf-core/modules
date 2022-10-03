@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_FASTQTOSAM } from '../../../../modules/nf-core/gatk4/fastqtosam/main.nf'
+include { GATK4_FASTQTOSAM } from '../../../../../modules/nf-core/gatk4/fastqtosam/main.nf'
 
 workflow test_gatk4_fastqtosam_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

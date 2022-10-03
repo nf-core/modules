@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { TRANSDECODER_PREDICT } from '../../../../modules/nf-core/transdecoder/predict/main.nf'
-include { TRANSDECODER_LONGORF } from '../../../../modules/nf-core/transdecoder/longorf/main.nf'
+include { TRANSDECODER_PREDICT } from '../../../../../modules/nf-core/transdecoder/predict/main.nf'
+include { TRANSDECODER_LONGORF } from '../../../../../modules/nf-core/transdecoder/longorf/main.nf'
 
 workflow test_transdecoder_predict {
     

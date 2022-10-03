@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_DEPTH } from '../../../modules/nf-core/samtools/depth/main.nf'
-include { SEXDETERRMINE } from '../../../modules/nf-core/sexdeterrmine/main.nf'
+include { SAMTOOLS_DEPTH } from '../../../../modules/nf-core/samtools/depth/main.nf'
+include { SEXDETERRMINE } from '../../../../modules/nf-core/sexdeterrmine/main.nf'
 
 workflow test_sexdeterrmine {
 

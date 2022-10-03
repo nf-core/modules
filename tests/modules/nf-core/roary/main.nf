@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ROARY } from '../../../modules/nf-core/roary/main.nf'
+include { ROARY } from '../../../../modules/nf-core/roary/main.nf'
 
 workflow test_roary {
 

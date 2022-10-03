@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EXPANSIONHUNTER } from '../../../modules/nf-core/expansionhunter/main.nf'
+include { EXPANSIONHUNTER } from '../../../../modules/nf-core/expansionhunter/main.nf'
 
 workflow test_expansionhunter {
 

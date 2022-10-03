@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEACR_CALLPEAK } from '../../../../modules/nf-core/seacr/callpeak/main.nf'
+include { SEACR_CALLPEAK } from '../../../../../modules/nf-core/seacr/callpeak/main.nf'
 
 workflow test_seacr_callpeak {
     input = [ [ id:'test_1'],

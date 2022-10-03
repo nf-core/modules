@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP                } from '../../../modules/nf-core/gunzip/main.nf'
-include { FARGENE               } from '../../../modules/nf-core/fargene/main.nf'
-include { HAMRONIZATION_FARGENE } from '../../../../modules/nf-core/hamronization/fargene/main.nf'
+include { GUNZIP                } from '../../../../modules/nf-core/gunzip/main.nf'
+include { FARGENE               } from '../../../../modules/nf-core/fargene/main.nf'
+include { HAMRONIZATION_FARGENE } from '../../../../../modules/nf-core/hamronization/fargene/main.nf'
 
 workflow test_hamronization_fargene {
 

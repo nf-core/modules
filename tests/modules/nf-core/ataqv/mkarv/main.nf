@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ATAQV_ATAQV } from '../../../../modules/nf-core/ataqv/ataqv/main.nf'
-include { ATAQV_MKARV } from '../../../../modules/nf-core/ataqv/mkarv/main.nf'
+include { ATAQV_ATAQV } from '../../../../../modules/nf-core/ataqv/ataqv/main.nf'
+include { ATAQV_MKARV } from '../../../../../modules/nf-core/ataqv/mkarv/main.nf'
 
 workflow test_ataqv_mkarv {
 

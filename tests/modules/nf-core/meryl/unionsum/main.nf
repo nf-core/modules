@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MERYL_COUNT    } from '../../../../modules/nf-core/meryl/count/main.nf'
-include { MERYL_UNIONSUM } from '../../../../modules/nf-core/meryl/unionsum/main.nf'
+include { MERYL_COUNT    } from '../../../../../modules/nf-core/meryl/count/main.nf'
+include { MERYL_UNIONSUM } from '../../../../../modules/nf-core/meryl/unionsum/main.nf'
 
 workflow test_meryl_unionsum_single_end {
 

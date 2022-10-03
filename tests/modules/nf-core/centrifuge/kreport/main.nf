@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR                } from '../../../../modules/nf-core/untar/main.nf'
-include { CENTRIFUGE_CENTRIFUGE } from '../../../../modules/nf-core/centrifuge/centrifuge/main.nf'
-include { CENTRIFUGE_KREPORT    } from '../../../../modules/nf-core/centrifuge/kreport/main.nf'
+include { UNTAR                } from '../../../../../modules/nf-core/untar/main.nf'
+include { CENTRIFUGE_CENTRIFUGE } from '../../../../../modules/nf-core/centrifuge/centrifuge/main.nf'
+include { CENTRIFUGE_KREPORT    } from '../../../../../modules/nf-core/centrifuge/kreport/main.nf'
 
 workflow test_centrifuge_kreport_single_end {
 

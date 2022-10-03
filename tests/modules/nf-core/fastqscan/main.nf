@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQSCAN } from '../../../modules/nf-core/fastqscan/main.nf'
+include { FASTQSCAN } from '../../../../modules/nf-core/fastqscan/main.nf'
 
 workflow test_fastqscan {
     

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK } from '../../../../modules/nf-core/fastk/fastk/main.nf'
-include { FASTK_HISTEX } from '../../../../modules/nf-core/fastk/histex/main.nf'
+include { FASTK_FASTK } from '../../../../../modules/nf-core/fastk/fastk/main.nf'
+include { FASTK_HISTEX } from '../../../../../modules/nf-core/fastk/histex/main.nf'
 
 workflow test_fastk_histex {
 

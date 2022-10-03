@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MEDAKA } from '../../../modules/nf-core/medaka/main.nf'
+include { MEDAKA } from '../../../../modules/nf-core/medaka/main.nf'
 
 workflow test_medaka {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_MERGEPE } from '../../../../modules/nf-core/seqtk/mergepe/main.nf'
+include { SEQTK_MERGEPE } from '../../../../../modules/nf-core/seqtk/mergepe/main.nf'
 
 //
 // Test with single-end data

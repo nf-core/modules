@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SHIGATYPER } from '../../../modules/nf-core/shigatyper/main.nf'
+include { SHIGATYPER } from '../../../../modules/nf-core/shigatyper/main.nf'
 
 workflow test_shigatyper_pe {
     

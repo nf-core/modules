@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_INTERVALLISTTOBED } from '../../../../modules/nf-core/gatk4/intervallisttobed/main.nf'
+include { GATK4_INTERVALLISTTOBED } from '../../../../../modules/nf-core/gatk4/intervallisttobed/main.nf'
 
 workflow test_gatk4_intervallisttobed {
 

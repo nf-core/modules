@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ADAPTERREMOVAL                            } from '../../../modules/nf-core/adapterremoval/main.nf'
-include { ADAPTERREMOVAL as ADAPTERREMOVAL_COLLAPSE } from '../../../modules/nf-core/adapterremoval/main.nf'
+include { ADAPTERREMOVAL                            } from '../../../../modules/nf-core/adapterremoval/main.nf'
+include { ADAPTERREMOVAL as ADAPTERREMOVAL_COLLAPSE } from '../../../../modules/nf-core/adapterremoval/main.nf'
 
 
 workflow test_adapterremoval_single_end {

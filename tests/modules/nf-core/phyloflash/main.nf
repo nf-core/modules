@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PHYLOFLASH } from '../../../modules/nf-core/phyloflash/main.nf'
+include { PHYLOFLASH } from '../../../../modules/nf-core/phyloflash/main.nf'
 
 process STUB_PHYLOFLASH_DATABASE {
     output:

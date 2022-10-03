@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_READS  } from '../../../../modules/nf-core/krona/ktimporttaxonomy/main.nf'
-include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_REPORT } from '../../../../modules/nf-core/krona/ktimporttaxonomy/main.nf'
+include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_READS  } from '../../../../../modules/nf-core/krona/ktimporttaxonomy/main.nf'
+include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_REPORT } from '../../../../../modules/nf-core/krona/ktimporttaxonomy/main.nf'
 
 workflow test_krona_ktimporttaxonomy_reads {
 

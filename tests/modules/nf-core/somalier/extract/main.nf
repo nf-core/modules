@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SOMALIER_EXTRACT } from '../../../../modules/nf-core/somalier/extract/main.nf'
+include { SOMALIER_EXTRACT } from '../../../../../modules/nf-core/somalier/extract/main.nf'
 
 fasta       = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
 

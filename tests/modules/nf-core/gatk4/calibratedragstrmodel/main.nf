@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_CALIBRATEDRAGSTRMODEL } from '../../../../modules/nf-core/gatk4/calibratedragstrmodel/main.nf'
+include { GATK4_CALIBRATEDRAGSTRMODEL } from '../../../../../modules/nf-core/gatk4/calibratedragstrmodel/main.nf'
 
 workflow test_gatk4_calibratedragstrmodel_bam {
     

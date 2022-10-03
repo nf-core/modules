@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GVCFTOOLS_EXTRACTVARIANTS } from '../../../../modules/nf-core/gvcftools/extractvariants/main.nf'
+include { GVCFTOOLS_EXTRACTVARIANTS } from '../../../../../modules/nf-core/gvcftools/extractvariants/main.nf'
 
 workflow test_gvcftools_extractvariants {
     

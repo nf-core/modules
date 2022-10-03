@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GLNEXUS } from '../../../modules/nf-core/glnexus/main.nf'
+include { GLNEXUS } from '../../../../modules/nf-core/glnexus/main.nf'
 
 workflow test_glnexus {
     input = [

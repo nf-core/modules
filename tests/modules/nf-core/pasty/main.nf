@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PASTY } from '../../../modules/nf-core/pasty/main.nf'
+include { PASTY } from '../../../../modules/nf-core/pasty/main.nf'
 
 workflow test_pasty {
     

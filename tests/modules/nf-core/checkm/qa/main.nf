@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { CHECKM_LINEAGEWF              } from '../../../../modules/nf-core/checkm/lineagewf/main.nf'
-include { CHECKM_LINEAGEWF as CHECKM_LINEAGEWF_FASTA        } from '../../../../modules/nf-core/checkm/lineagewf/main.nf'
-include { CHECKM_QA                     } from '../../../../modules/nf-core/checkm/qa/main.nf'
-include { CHECKM_QA as CHECKM_QA_FASTA  } from '../../../../modules/nf-core/checkm/qa/main.nf'
+include { CHECKM_LINEAGEWF              } from '../../../../../modules/nf-core/checkm/lineagewf/main.nf'
+include { CHECKM_LINEAGEWF as CHECKM_LINEAGEWF_FASTA        } from '../../../../../modules/nf-core/checkm/lineagewf/main.nf'
+include { CHECKM_QA                     } from '../../../../../modules/nf-core/checkm/qa/main.nf'
+include { CHECKM_QA as CHECKM_QA_FASTA  } from '../../../../../modules/nf-core/checkm/qa/main.nf'
 
 workflow test_checkm_qa {
 

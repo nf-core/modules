@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KLEBORATE } from '../../../modules/nf-core/kleborate/main.nf'
+include { KLEBORATE } from '../../../../modules/nf-core/kleborate/main.nf'
 
 workflow test_kleborate {
     

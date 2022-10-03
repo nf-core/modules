@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ADAPTERREMOVAL          } from '../../../modules/nf-core/adapterremoval/main.nf'
-include { ADAPTERREMOVALFIXPREFIX } from '../../../modules/nf-core/adapterremovalfixprefix/main.nf'
+include { ADAPTERREMOVAL          } from '../../../../modules/nf-core/adapterremoval/main.nf'
+include { ADAPTERREMOVALFIXPREFIX } from '../../../../modules/nf-core/adapterremovalfixprefix/main.nf'
 
 workflow test_adapterremovalfixprefix {
 

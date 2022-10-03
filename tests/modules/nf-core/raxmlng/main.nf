@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { RAXMLNG as RAXMLNG_NO_BOOTSTRAP } from '../../../modules/nf-core/raxmlng/main.nf'
-include { RAXMLNG as RAXMLNG_BOOTSTRAP    } from '../../../modules/nf-core/raxmlng/main.nf'
+include { RAXMLNG as RAXMLNG_NO_BOOTSTRAP } from '../../../../modules/nf-core/raxmlng/main.nf'
+include { RAXMLNG as RAXMLNG_BOOTSTRAP    } from '../../../../modules/nf-core/raxmlng/main.nf'
 
 //
 // Test without bootstrapping

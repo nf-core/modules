@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_REALIGNERTARGETCREATOR } from '../../../../modules/nf-core/gatk/realignertargetcreator/main.nf'
-include { GATK_INDELREALIGNER } from '../../../../modules/nf-core/gatk/indelrealigner/main.nf'
+include { GATK_REALIGNERTARGETCREATOR } from '../../../../../modules/nf-core/gatk/realignertargetcreator/main.nf'
+include { GATK_INDELREALIGNER } from '../../../../../modules/nf-core/gatk/indelrealigner/main.nf'
 
 
 workflow test_gatk_indelrealigner {

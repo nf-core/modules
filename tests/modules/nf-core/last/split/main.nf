@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_SPLIT } from '../../../../modules/nf-core/last/split/main.nf'
+include { LAST_SPLIT } from '../../../../../modules/nf-core/last/split/main.nf'
 
 workflow test_last_split {
     

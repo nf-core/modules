@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ECTYPER } from '../../../modules/nf-core/ectyper/main.nf'
+include { ECTYPER } from '../../../../modules/nf-core/ectyper/main.nf'
 
 workflow test_ectyper {
 

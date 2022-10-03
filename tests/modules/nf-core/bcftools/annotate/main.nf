@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_ANNOTATE } from '../../../../modules/nf-core/bcftools/annotate/main.nf'
+include { BCFTOOLS_ANNOTATE } from '../../../../../modules/nf-core/bcftools/annotate/main.nf'
 
 workflow test_bcftools_annotate_out_vcf {
 

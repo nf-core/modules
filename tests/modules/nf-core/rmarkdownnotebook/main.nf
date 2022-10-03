@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { RMARKDOWNNOTEBOOK } from '../../../modules/nf-core/rmarkdownnotebook/main.nf'
-include { RMARKDOWNNOTEBOOK as RMARKDOWNNOTEBOOK_PARAMETRIZE } from '../../../modules/nf-core/rmarkdownnotebook/main.nf'
+include { RMARKDOWNNOTEBOOK } from '../../../../modules/nf-core/rmarkdownnotebook/main.nf'
+include { RMARKDOWNNOTEBOOK as RMARKDOWNNOTEBOOK_PARAMETRIZE } from '../../../../modules/nf-core/rmarkdownnotebook/main.nf'
 
 workflow test_rmarkdown {
 

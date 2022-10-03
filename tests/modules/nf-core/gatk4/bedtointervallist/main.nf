@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_BEDTOINTERVALLIST } from '../../../../modules/nf-core/gatk4/bedtointervallist/main.nf'
+include { GATK4_BEDTOINTERVALLIST } from '../../../../../modules/nf-core/gatk4/bedtointervallist/main.nf'
 
 workflow test_gatk4_bedtointervallist {
     input = [ [ id:'test' ], // meta map

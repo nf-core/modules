@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_MPILEUP } from '../../../../modules/nf-core/samtools/mpileup/main.nf'
+include { SAMTOOLS_MPILEUP } from '../../../../../modules/nf-core/samtools/mpileup/main.nf'
 
 workflow test_samtools_mpileup {
     input = [ [ id:'test', single_end:false ], // meta map

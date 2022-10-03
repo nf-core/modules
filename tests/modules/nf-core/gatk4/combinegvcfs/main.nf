@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COMBINEGVCFS } from '../../../../modules/nf-core/gatk4/combinegvcfs/main.nf'
+include { GATK4_COMBINEGVCFS } from '../../../../../modules/nf-core/gatk4/combinegvcfs/main.nf'
 
 workflow test_gatk4_combinegvcfs {
     

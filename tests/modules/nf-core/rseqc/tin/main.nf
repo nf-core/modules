@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_TIN } from '../../../../modules/nf-core/rseqc/tin/main.nf'
+include { RSEQC_TIN } from '../../../../../modules/nf-core/rseqc/tin/main.nf'
 
 workflow test_rseqc_tin {
 

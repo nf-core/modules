@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PORECHOP } from '../../../modules/nf-core/porechop/main.nf'
+include { PORECHOP } from '../../../../modules/nf-core/porechop/main.nf'
 
 workflow test_porechop {
 

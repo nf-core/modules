@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { ULTRA_PIPELINE } from '../../../../modules/nf-core/ultra/pipeline/main.nf'
-include { GUNZIP         } from '../../../../modules/nf-core/gunzip/main.nf'
-include { GFFREAD        } from '../../../../modules/nf-core/gffread/main.nf'
+include { ULTRA_PIPELINE } from '../../../../../modules/nf-core/ultra/pipeline/main.nf'
+include { GUNZIP         } from '../../../../../modules/nf-core/gunzip/main.nf'
+include { GFFREAD        } from '../../../../../modules/nf-core/gffread/main.nf'
 
 workflow test_ultra_pipeline {
 

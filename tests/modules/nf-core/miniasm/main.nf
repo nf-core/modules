@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIASM } from '../../../modules/nf-core/miniasm/main.nf'
+include { MINIASM } from '../../../../modules/nf-core/miniasm/main.nf'
 
 workflow test_miniasm {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MLST } from '../../../modules/nf-core/mlst/main.nf'
+include { MLST } from '../../../../modules/nf-core/mlst/main.nf'
 
 workflow test_mlst {
     

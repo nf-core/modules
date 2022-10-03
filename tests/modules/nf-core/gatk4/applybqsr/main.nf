@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_APPLYBQSR } from '../../../../modules/nf-core/gatk4/applybqsr/main.nf'
+include { GATK4_APPLYBQSR } from '../../../../../modules/nf-core/gatk4/applybqsr/main.nf'
 
 workflow test_gatk4_applybqsr {
     input = [ [ id:'test' ], // meta map
