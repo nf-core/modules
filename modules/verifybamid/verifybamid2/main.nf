@@ -8,9 +8,6 @@ process VERIFYBAMID_VERIFYBAMID2 {
         'quay.io/biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
 
     input:
-    // Owing to the nature of verifybamid we here provide solutions to working with bam files and optional
-    // alternative variant files. Other optional input files & flags can be utilised in a similar way to below but
-    // we do not exhaustively list all possible options. Instead we leave that to the user.
     tuple val(meta), path(bam), path(bai)
     tuple path(svd_ud), path(svd_mu), path(svd_bed)
     path refvcf
