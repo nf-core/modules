@@ -1,5 +1,5 @@
 - name: kraken2 kraken2 test_kraken2_kraken2_single_end
-  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_single_end -c ./tests/config/nextflow.config
   tags:
     - kraken2
     - kraken2/kraken2
@@ -13,7 +13,7 @@
     - path: output/untar/versions.yml
 
 - name: kraken2 kraken2 test_kraken2_kraken2_paired_end
-  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_paired_end -c ./tests/config/nextflow.config
   tags:
     - kraken2
     - kraken2/kraken2
@@ -29,7 +29,7 @@
     - path: output/untar/versions.yml
 
 - name: kraken2 kraken2 test_kraken2_kraken2_classifyreads
-  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_classifyreads -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kraken2/kraken2 -entry test_kraken2_kraken2_classifyreads -c ./tests/config/nextflow.config
   tags:
     - kraken2
     - kraken2/kraken2

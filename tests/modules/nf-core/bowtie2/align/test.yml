@@ -19,7 +19,7 @@
     - path: ./output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_paired_end
-  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end -c tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config
   tags:
     - bowtie2
     - bowtie2/align
@@ -29,7 +29,7 @@
     - path: ./output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_single_end_large_index
-  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_large_index -c tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config --force_large_index
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_single_end_large_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config --force_large_index
   tags:
     - bowtie2
     - bowtie2/align
@@ -39,7 +39,7 @@
     - path: ./output/bowtie2/versions.yml
 
 - name: bowtie2 align test_bowtie2_align_paired_end_large_index
-  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end_large_index -c tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config --force_large_index
+  command: nextflow run ./tests/modules/nf-core/bowtie2/align -entry test_bowtie2_align_paired_end_large_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bowtie2/align/nextflow.config --force_large_index
   tags:
     - bowtie2
     - bowtie2/align

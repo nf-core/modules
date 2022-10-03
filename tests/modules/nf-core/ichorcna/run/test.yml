@@ -1,5 +1,5 @@
 - name: ichorcna run test_ichorcna_run_no_panel
-  command: nextflow run ./tests/modules/nf-core/ichorcna/run -entry test_ichorcna_run_no_panel -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ichorcna/run -entry test_ichorcna_run_no_panel -c ./tests/config/nextflow.config
   tags:
     - ichorcna
     - ichorcna/run
@@ -12,7 +12,7 @@
       md5sum: effb37e19bec3609417aaccad4b6a294
 
 - name: ichorcna run test_ichorcna_run_inc_panel
-  command: nextflow run ./tests/modules/nf-core/ichorcna/run -entry test_ichorcna_run_inc_panel -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/ichorcna/run -entry test_ichorcna_run_inc_panel -c ./tests/config/nextflow.config
   tags:
     - ichorcna
     - ichorcna/run

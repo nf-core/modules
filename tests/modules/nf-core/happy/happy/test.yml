@@ -1,5 +1,5 @@
 - name: happy happy test_happy_vcf
-  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_vcf -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_vcf -c ./tests/config/nextflow.config
   tags:
     - happy
     - happy/happy
@@ -13,7 +13,7 @@
       md5sum: 82243bf6dbdc71aa63211ee2a89f47f2
 
 - name: happy happy test_happy_gvcf
-  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_gvcf -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/happy/happy -entry test_happy_gvcf -c ./tests/config/nextflow.config
   tags:
     - happy
     - happy/happy

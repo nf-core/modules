@@ -1,5 +1,5 @@
 - name: freebayes test_freebayes
-  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes -c ./tests/config/nextflow.config
   tags:
     - freebayes
   files:
@@ -9,7 +9,7 @@
       md5sum: 53651eb835af65df829241257584a7d2
 
 - name: freebayes test_freebayes_bed
-  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_bed -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_bed -c ./tests/config/nextflow.config
   tags:
     - freebayes
   files:
@@ -19,7 +19,7 @@
       md5sum: becc93c8a0be580c09d55b955d60a5e1
 
 - name: freebayes test_freebayes_cram
-  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_cram -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_cram -c ./tests/config/nextflow.config
   tags:
     - freebayes
   files:
@@ -29,7 +29,7 @@
       md5sum: 2e5b266edfc6cab81353cfc72c00f67c
 
 - name: freebayes test_freebayes_somatic
-  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic -c ./tests/config/nextflow.config
   tags:
     - freebayes
   files:
@@ -39,7 +39,7 @@
       md5sum: 8fbdb4c052fb3e42b5508a966125fa05
 
 - name: freebayes test_freebayes_somatic_cram_intervals
-  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic_cram_intervals -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic_cram_intervals -c ./tests/config/nextflow.config
   tags:
     - freebayes
   files:

@@ -1,5 +1,5 @@
 - name: minimap2 align test_minimap2_align_single_end
-  command: nextflow run ./tests/modules/nf-core/minimap2/align -entry test_minimap2_align_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/minimap2/align -entry test_minimap2_align_single_end -c ./tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align
@@ -8,7 +8,7 @@
     - path: output/minimap2/versions.yml
 
 - name: minimap2 align test_minimap2_align_paired_end
-  command: nextflow run ./tests/modules/nf-core/minimap2/align -entry test_minimap2_align_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/minimap2/align -entry test_minimap2_align_paired_end -c ./tests/config/nextflow.config
   tags:
     - minimap2
     - minimap2/align

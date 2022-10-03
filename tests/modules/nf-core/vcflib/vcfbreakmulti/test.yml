@@ -1,5 +1,5 @@
 - name: vcflib vcfbreakmulti
-  command: nextflow run ./tests/modules/nf-core/vcflib/vcfbreakmulti -entry test_vcflib_vcfbreakmulti -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcflib/vcfbreakmulti -entry test_vcflib_vcfbreakmulti -c ./tests/config/nextflow.config
   tags:
     - vcflib/vcfbreakmulti
     - vcflib
@@ -8,7 +8,7 @@
       md5sum: 666d2d970399cf219dc1dc1eadff9170
 
 - name: vcflib vcfbreakmulti stub
-  command: nextflow run ./tests/modules/nf-core/vcflib/vcfbreakmulti -entry test_vcflib_vcfbreakmulti -c tests/config/nextflow.config -stub
+  command: nextflow run ./tests/modules/nf-core/vcflib/vcfbreakmulti -entry test_vcflib_vcfbreakmulti -c ./tests/config/nextflow.config -stub
   tags:
     - vcflib/vcfbreakmulti
     - vcflib

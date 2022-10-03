@@ -1,5 +1,5 @@
 - name: meryl unionsum test_meryl_unionsum_single_end
-  command: nextflow run ./tests/modules/nf-core/meryl/unionsum -entry test_meryl_unionsum_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/meryl/unionsum -entry test_meryl_unionsum_single_end -c ./tests/config/nextflow.config
   tags:
     - meryl
     - meryl/unionsum
@@ -8,7 +8,7 @@
       md5sum: 7de859c6d3a29d72f6c9c976609d0913
 
 - name: meryl unionsum test_meryl_unionsum_paired_end
-  command: nextflow run ./tests/modules/nf-core/meryl/unionsum -entry test_meryl_unionsum_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/meryl/unionsum -entry test_meryl_unionsum_paired_end -c ./tests/config/nextflow.config
   tags:
     - meryl
     - meryl/unionsum

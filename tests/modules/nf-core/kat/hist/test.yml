@@ -1,5 +1,5 @@
 - name: kat hist test_kat_hist_single_end
-  command: nextflow run ./tests/modules/nf-core/kat/hist -entry test_kat_hist_single_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kat/hist -entry test_kat_hist_single_end -c ./tests/config/nextflow.config
   tags:
     - kat/hist
     - kat
@@ -21,7 +21,7 @@
     - path: output/kat/versions.yml
 
 - name: kat hist test_kat_hist_paired_end
-  command: nextflow run ./tests/modules/nf-core/kat/hist -entry test_kat_hist_paired_end -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/kat/hist -entry test_kat_hist_paired_end -c ./tests/config/nextflow.config
   tags:
     - kat/hist
     - kat

@@ -1,5 +1,5 @@
 - name: biscuit pileup test_biscuit_pileup
-  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup -c ./tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/pileup
@@ -26,7 +26,7 @@
       md5sum: ae38b891fdbf9f7ff5c486408f949dc5
 
 - name: biscuit pileup test_biscuit_pileup_somatic
-  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup_somatic -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup_somatic -c ./tests/config/nextflow.config
   tags:
     - biscuit
     - biscuit/pileup

@@ -1,5 +1,5 @@
 - name: seqtk rename test_seqtk_rename
-  command: nextflow run ./tests/modules/nf-core/seqtk/rename -entry test_seqtk_rename -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/rename -entry test_seqtk_rename -c ./tests/config/nextflow.config
   tags:
     - seqtk
     - seqtk/rename
@@ -9,7 +9,7 @@
         - ">test1"
 
 - name: seqtk rename test_seqtk_rename_fq
-  command: nextflow run ./tests/modules/nf-core/seqtk/rename -entry test_seqtk_rename_fq -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/seqtk/rename -entry test_seqtk_rename_fq -c ./tests/config/nextflow.config
   tags:
     - seqtk
     - seqtk/rename

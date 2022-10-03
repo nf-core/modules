@@ -1,5 +1,5 @@
 - name: snpsift split test_snpsift_split_base
-  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_split_base -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_split_base -c ./tests/config/nextflow.config
   tags:
     - snpsift/split
     - snpsift
@@ -10,7 +10,7 @@
       md5sum: 2b9f6b788db6c4fcbf258db763d8fab7
 
 - name: snpsift split test_snpsift_split_gz
-  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_split_gz -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_split_gz -c ./tests/config/nextflow.config
   tags:
     - snpsift/split
     - snpsift
@@ -21,7 +21,7 @@
       md5sum: 6bd63376670d6c1445caea2f31a3f579
 
 - name: snpsift split test_snpsift_join
-  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_join -c tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snpsift/split -entry test_snpsift_join -c ./tests/config/nextflow.config
   tags:
     - snpsift/split
     - snpsift
