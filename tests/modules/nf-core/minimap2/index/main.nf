@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIMAP2_INDEX } from '../../../../modules/minimap2/index/main.nf'
+include { MINIMAP2_INDEX } from '../../../../modules/nf-core/minimap2/index/main.nf'
 
 workflow test_minimap2_index {
 

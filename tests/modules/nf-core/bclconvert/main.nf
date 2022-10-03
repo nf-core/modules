@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCLCONVERT } from '../../../modules/bclconvert/main.nf'
-include { UNTAR      } from '../../../modules/untar/main.nf'
+include { BCLCONVERT } from '../../../modules/nf-core/bclconvert/main.nf'
+include { UNTAR      } from '../../../modules/nf-core/untar/main.nf'
 
 workflow test_bclconvert {
     ch_flowcell = Channel.value([

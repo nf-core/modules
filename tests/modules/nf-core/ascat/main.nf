@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { ASCAT as ASCAT_SIMPLE }            from '../../../modules/ascat/main.nf'
-include { ASCAT as ASCAT_PLOIDY_AND_PURITY } from '../../../modules/ascat/main.nf'
-include { ASCAT as ASCAT_CRAM }              from '../../../modules/ascat/main.nf'
-include { UNZIP as UNZIP_ALLELES }           from '../../../modules/unzip/main.nf'
-include { UNZIP as UNZIP_LOCI }              from '../../../modules/unzip/main.nf'
-include { UNZIP as UNZIP_GC }                from '../../../modules/unzip/main.nf'
-include { UNZIP as UNZIP_RT }                from '../../../modules/unzip/main.nf'
+include { ASCAT as ASCAT_SIMPLE }            from '../../../modules/nf-core/ascat/main.nf'
+include { ASCAT as ASCAT_PLOIDY_AND_PURITY } from '../../../modules/nf-core/ascat/main.nf'
+include { ASCAT as ASCAT_CRAM }              from '../../../modules/nf-core/ascat/main.nf'
+include { UNZIP as UNZIP_ALLELES }           from '../../../modules/nf-core/unzip/main.nf'
+include { UNZIP as UNZIP_LOCI }              from '../../../modules/nf-core/unzip/main.nf'
+include { UNZIP as UNZIP_GC }                from '../../../modules/nf-core/unzip/main.nf'
+include { UNZIP as UNZIP_RT }                from '../../../modules/nf-core/unzip/main.nf'
 
 
 

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { TABIX_TABIX as TABIX_BED     } from '../../../../modules/tabix/tabix/main.nf'
-include { TABIX_TABIX as TABIX_GFF     } from '../../../../modules/tabix/tabix/main.nf'
-include { TABIX_TABIX as TABIX_VCF_TBI } from '../../../../modules/tabix/tabix/main.nf'
-include { TABIX_TABIX as TABIX_VCF_CSI } from '../../../../modules/tabix/tabix/main.nf'
+include { TABIX_TABIX as TABIX_BED     } from '../../../../modules/nf-core/tabix/tabix/main.nf'
+include { TABIX_TABIX as TABIX_GFF     } from '../../../../modules/nf-core/tabix/tabix/main.nf'
+include { TABIX_TABIX as TABIX_VCF_TBI } from '../../../../modules/nf-core/tabix/tabix/main.nf'
+include { TABIX_TABIX as TABIX_VCF_CSI } from '../../../../modules/nf-core/tabix/tabix/main.nf'
 
 workflow test_tabix_tabix_bed {
     input = [ [ id:'B.bed' ], // meta map

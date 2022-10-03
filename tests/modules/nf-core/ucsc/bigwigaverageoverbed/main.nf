@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UCSC_BIGWIGAVERAGEOVERBED } from '../../../../modules/ucsc/bigwigaverageoverbed/main.nf'
+include { UCSC_BIGWIGAVERAGEOVERBED } from '../../../../modules/nf-core/ucsc/bigwigaverageoverbed/main.nf'
 
 workflow test_ucsc_bigwigaverageoverbed {
     input = [

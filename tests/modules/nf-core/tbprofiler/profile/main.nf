@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TBPROFILER_PROFILE } from '../../../../modules/tbprofiler/profile/main.nf'
+include { TBPROFILER_PROFILE } from '../../../../modules/nf-core/tbprofiler/profile/main.nf'
 
 workflow test_tbprofiler_profile_illumina {
 

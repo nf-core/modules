@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMBLASTER } from '../../../modules/samblaster/main.nf'
+include { SAMBLASTER } from '../../../modules/nf-core/samblaster/main.nf'
 
 workflow test_samblaster {
 

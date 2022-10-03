@@ -1,8 +1,8 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-include { RGI_MAIN } from '../../../../modules/rgi/main/main.nf'
-include { HAMRONIZATION_RGI } from '../../../../modules/hamronization/rgi/main.nf'
+include { RGI_MAIN } from '../../../../modules/nf-core/rgi/main/main.nf'
+include { HAMRONIZATION_RGI } from '../../../../modules/nf-core/hamronization/rgi/main.nf'
 
 workflow test_hamronization_rgi {
 

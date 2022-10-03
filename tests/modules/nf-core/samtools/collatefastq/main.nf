@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_COLLATEFASTQ } from '../../../../modules/samtools/collatefastq/main.nf'
+include { SAMTOOLS_COLLATEFASTQ } from '../../../../modules/nf-core/samtools/collatefastq/main.nf'
 
 workflow test_samtools_collatefastq {
     input = [ [ id:'test', single_end:false ], // meta map

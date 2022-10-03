@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SRST2_SRST2 } from '../../../../modules/srst2/srst2/main.nf'
+include { SRST2_SRST2 } from '../../../../modules/nf-core/srst2/srst2/main.nf'
 
 workflow test_srst2_srst2_exit {
 

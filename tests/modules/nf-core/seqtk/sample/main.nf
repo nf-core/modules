@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_SAMPLE } from '../../../../modules/seqtk/sample/main.nf'
+include { SEQTK_SAMPLE } from '../../../../modules/nf-core/seqtk/sample/main.nf'
 
 //
 // Test with single-end data

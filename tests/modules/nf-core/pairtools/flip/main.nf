@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_FLIP } from '../../../../modules/pairtools/flip/main.nf'
+include { PAIRTOOLS_FLIP } from '../../../../modules/nf-core/pairtools/flip/main.nf'
 
 workflow test_pairtools_flip {
 

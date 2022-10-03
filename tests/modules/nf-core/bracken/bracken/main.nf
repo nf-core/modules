@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../modules/untar/main.nf'
-include { KRAKEN2_KRAKEN2 } from '../../../../modules/kraken2/kraken2/main.nf'
-include { BRACKEN_BRACKEN } from '../../../../modules/bracken/bracken/main.nf'
+include { UNTAR           } from '../../../../modules/nf-core/untar/main.nf'
+include { KRAKEN2_KRAKEN2 } from '../../../../modules/nf-core/kraken2/kraken2/main.nf'
+include { BRACKEN_BRACKEN } from '../../../../modules/nf-core/bracken/bracken/main.nf'
 
 workflow test_bracken_bracken_single_end_default_args {
     input = [ [ id:'test', single_end:true ], // meta map

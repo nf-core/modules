@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SUBREAD_FEATURECOUNTS } from '../../../../modules/subread/featurecounts/main.nf'
+include { SUBREAD_FEATURECOUNTS } from '../../../../modules/nf-core/subread/featurecounts/main.nf'
 
 workflow test_subread_featurecounts_forward {
     

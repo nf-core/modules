@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IDR } from '../../../modules/idr/main.nf'
+include { IDR } from '../../../modules/nf-core/idr/main.nf'
 
 workflow test_idr_narrowpeak {
 

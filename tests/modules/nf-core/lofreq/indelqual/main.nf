@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 
-include { LOFREQ_INDELQUAL } from '../../../../modules/lofreq/indelqual/main.nf'
+include { LOFREQ_INDELQUAL } from '../../../../modules/nf-core/lofreq/indelqual/main.nf'
 
 workflow test_lofreq_indelqual {
     

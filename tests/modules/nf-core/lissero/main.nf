@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LISSERO } from '../../../modules/lissero/main.nf'
+include { LISSERO } from '../../../modules/nf-core/lissero/main.nf'
 
 workflow test_lissero {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_GENOMECOV } from '../../../../modules/bedtools/genomecov/main.nf'
+include { BEDTOOLS_GENOMECOV } from '../../../../modules/nf-core/bedtools/genomecov/main.nf'
 
 workflow test_bedtools_genomecov_noscale {
     input = [

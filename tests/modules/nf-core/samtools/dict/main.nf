@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_DICT } from '../../../../modules/samtools/dict/main.nf'
+include { SAMTOOLS_DICT } from '../../../../modules/nf-core/samtools/dict/main.nf'
 
 workflow test_samtools_dict {
 

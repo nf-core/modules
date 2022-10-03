@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_INDEX } from '../../../../modules/bbmap/index/main.nf'
+include { BBMAP_INDEX } from '../../../../modules/nf-core/bbmap/index/main.nf'
 
 workflow test_bbmap_index {
     

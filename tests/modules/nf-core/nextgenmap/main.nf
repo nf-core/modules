@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NEXTGENMAP } from '../../../modules/nextgenmap/main.nf'
+include { NEXTGENMAP } from '../../../modules/nf-core/nextgenmap/main.nf'
 
 //
 // Test with single-end data

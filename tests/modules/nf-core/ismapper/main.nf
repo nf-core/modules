@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ISMAPPER } from '../../../modules/ismapper/main.nf'
+include { ISMAPPER } from '../../../modules/nf-core/ismapper/main.nf'
 
 workflow test_ismapper {
     

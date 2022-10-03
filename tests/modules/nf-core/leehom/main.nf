@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { LEEHOM } from '../../../modules/leehom/main.nf'
-include { SAMTOOLS_VIEW } from '../../../modules/samtools/view/main.nf'
+include { LEEHOM } from '../../../modules/nf-core/leehom/main.nf'
+include { SAMTOOLS_VIEW } from '../../../modules/nf-core/samtools/view/main.nf'
 
 workflow test_leehom_bam {
 

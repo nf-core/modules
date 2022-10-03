@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GAPPA_EXAMINEASSIGN } from '../../../../modules/gappa/examineassign/main.nf'
+include { GAPPA_EXAMINEASSIGN } from '../../../../modules/nf-core/gappa/examineassign/main.nf'
 
 workflow test_gappa_examineassign {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GOAT_TAXONSEARCH } from '../../../../modules/goat/taxonsearch/main.nf'
+include { GOAT_TAXONSEARCH } from '../../../../modules/nf-core/goat/taxonsearch/main.nf'
 
 //
 // Test with genus name (Canis)

@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC            } from '../../../modules/fastqc/main.nf'
-include { FASTQC as FASTQC2 } from '../../../modules/fastqc/main.nf'
-include { MULTIQC           } from '../../../modules/multiqc/main.nf'
+include { FASTQC            } from '../../../modules/nf-core/fastqc/main.nf'
+include { FASTQC as FASTQC2 } from '../../../modules/nf-core/fastqc/main.nf'
+include { MULTIQC           } from '../../../modules/nf-core/multiqc/main.nf'
 
 workflow test_multiqc {
     input = [

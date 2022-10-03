@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_LEFTALIGNANDTRIMVARIANTS } from '../../../../modules/gatk4/leftalignandtrimvariants/main.nf'
+include { GATK4_LEFTALIGNANDTRIMVARIANTS } from '../../../../modules/nf-core/gatk4/leftalignandtrimvariants/main.nf'
 
 workflow test_gatk4_leftalignandtrimvariants_interval {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FLYE } from '../../../modules/flye/main.nf'
+include { FLYE } from '../../../modules/nf-core/flye/main.nf'
 
 workflow test_flye_pacbio_raw {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLASMIDFINDER } from '../../../modules/plasmidfinder/main.nf'
+include { PLASMIDFINDER } from '../../../modules/nf-core/plasmidfinder/main.nf'
 
 workflow test_plasmidfinder {
     

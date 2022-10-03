@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UNICYCLER } from '../../../modules/unicycler/main.nf'
+include { UNICYCLER } from '../../../modules/nf-core/unicycler/main.nf'
 
 workflow test_unicycler_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

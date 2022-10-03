@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX                    } from '../../../../modules/bwa/index/main.nf'
-include { TIDDIT_SV                    } from '../../../../modules/tiddit/sv/main.nf'
-include { TIDDIT_SV as TIDDIT_SV_NOBWA } from '../../../../modules/tiddit/sv/main.nf'
+include { BWA_INDEX                    } from '../../../../modules/nf-core/bwa/index/main.nf'
+include { TIDDIT_SV                    } from '../../../../modules/nf-core/tiddit/sv/main.nf'
+include { TIDDIT_SV as TIDDIT_SV_NOBWA } from '../../../../modules/nf-core/tiddit/sv/main.nf'
 
 workflow test_tiddit_sv_bam {
     input = [

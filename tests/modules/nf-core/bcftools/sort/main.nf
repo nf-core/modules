@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_SORT } from '../../../../modules/bcftools/sort/main.nf'
+include { BCFTOOLS_SORT } from '../../../../modules/nf-core/bcftools/sort/main.nf'
 
 workflow test_bcftools_sort {
 

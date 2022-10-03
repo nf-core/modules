@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_COLLATE } from '../../../../modules/samtools/collate/main.nf'
-include { SAMTOOLS_FIXMATE } from '../../../../modules/samtools/fixmate/main.nf'
-include { SAMTOOLS_SORT    } from '../../../../modules/samtools/sort/main.nf'
-include { SAMTOOLS_MARKDUP } from '../../../../modules/samtools/markdup/main.nf'
+include { SAMTOOLS_COLLATE } from '../../../../modules/nf-core/samtools/collate/main.nf'
+include { SAMTOOLS_FIXMATE } from '../../../../modules/nf-core/samtools/fixmate/main.nf'
+include { SAMTOOLS_SORT    } from '../../../../modules/nf-core/samtools/sort/main.nf'
+include { SAMTOOLS_MARKDUP } from '../../../../modules/nf-core/samtools/markdup/main.nf'
 
 workflow test_samtools_markdup {
     

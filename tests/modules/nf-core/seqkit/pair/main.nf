@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQKIT_PAIR } from '../../../../modules/seqkit/pair/main.nf'
+include { SEQKIT_PAIR } from '../../../../modules/nf-core/seqkit/pair/main.nf'
 
 workflow test_seqkit_pair {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPBGC_DOWNLOAD } from '../../../../modules/deepbgc/download/main.nf'
+include { DEEPBGC_DOWNLOAD } from '../../../../modules/nf-core/deepbgc/download/main.nf'
 
 workflow test_deepbgc_download {
 

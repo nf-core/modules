@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VSEARCH_USEARCHGLOBAL } from '../../../../modules/vsearch/usearchglobal/main.nf'
+include { VSEARCH_USEARCHGLOBAL } from '../../../../modules/nf-core/vsearch/usearchglobal/main.nf'
 
 workflow test_vsearch_usearchglobal {
     

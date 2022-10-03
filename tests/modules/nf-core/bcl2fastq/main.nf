@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCL2FASTQ } from '../../../modules/bcl2fastq/main.nf'
-include { UNTAR      } from '../../../modules/untar/main.nf'
+include { BCL2FASTQ } from '../../../modules/nf-core/bcl2fastq/main.nf'
+include { UNTAR      } from '../../../modules/nf-core/untar/main.nf'
 
 workflow test_bcl2fastq {
     ch_flowcell = Channel.value([

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_ZOOMIFY } from '../../../../modules/cooler/zoomify/main.nf'
+include { COOLER_ZOOMIFY } from '../../../../modules/nf-core/cooler/zoomify/main.nf'
 
 workflow test_cooler_zoomify {
 

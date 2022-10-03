@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { QCAT } from '../../../modules/qcat/main.nf'
+include { QCAT } from '../../../modules/nf-core/qcat/main.nf'
 
 workflow test_qcat {
     input = [ [ id:'test' ], // meta map

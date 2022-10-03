@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VSEARCH_SINTAX } from '../../../../modules/vsearch/sintax/main.nf'
+include { VSEARCH_SINTAX } from '../../../../modules/nf-core/vsearch/sintax/main.nf'
 
 workflow test_vsearch_sintax {
     

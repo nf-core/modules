@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../../modules/unzip/main.nf'
-include { MALT_BUILD } from '../../../../modules/malt/build/main.nf'
+include { UNZIP } from '../../../../modules/nf-core/unzip/main.nf'
+include { MALT_BUILD } from '../../../../modules/nf-core/malt/build/main.nf'
 
 workflow test_malt_build {
     fastas        = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

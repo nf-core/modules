@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HAPPY_HAPPY } from '../../../../modules/happy/happy/main.nf'
+include { HAPPY_HAPPY } from '../../../../modules/nf-core/happy/happy/main.nf'
 
 workflow test_happy_vcf {
     

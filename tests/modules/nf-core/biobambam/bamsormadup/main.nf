@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BIOBAMBAM_BAMSORMADUP } from '../../../../modules/biobambam/bamsormadup/main.nf'
+include { BIOBAMBAM_BAMSORMADUP } from '../../../../modules/nf-core/biobambam/bamsormadup/main.nf'
 
 workflow test_biobambam_bamsormadup_multi_input {
 

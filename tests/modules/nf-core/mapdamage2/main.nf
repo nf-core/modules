@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MAPDAMAGE2 } from '../../../modules/mapdamage2/main.nf'
+include { MAPDAMAGE2 } from '../../../modules/nf-core/mapdamage2/main.nf'
 
 workflow test_mapdamage2 {
     

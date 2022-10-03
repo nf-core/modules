@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BANDAGE_IMAGE } from '../../../../modules/bandage/image/main.nf'
+include { BANDAGE_IMAGE } from '../../../../modules/nf-core/bandage/image/main.nf'
 
 workflow test_bandage_image {
     input = [

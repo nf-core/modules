@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTSVEVIDENCE } from '../../../../modules/gatk4/collectsvevidence/main.nf'
+include { GATK4_COLLECTSVEVIDENCE } from '../../../../modules/nf-core/gatk4/collectsvevidence/main.nf'
 
 workflow test_gatk4_collectsvevidence_cram {
     

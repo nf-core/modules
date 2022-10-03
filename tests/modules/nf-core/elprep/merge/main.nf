@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ELPREP_SPLIT } from '../../../../modules/elprep/split/main.nf'
-include { ELPREP_MERGE } from '../../../../modules/elprep/merge/main.nf'
+include { ELPREP_SPLIT } from '../../../../modules/nf-core/elprep/split/main.nf'
+include { ELPREP_MERGE } from '../../../../modules/nf-core/elprep/merge/main.nf'
 
 workflow test_elprep_merge {
 

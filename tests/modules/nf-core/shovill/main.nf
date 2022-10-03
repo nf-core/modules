@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SHOVILL                    } from '../../../modules/shovill/main.nf'
-include { SHOVILL as SHOVILL_SKESA   } from '../../../modules/shovill/main.nf'
-include { SHOVILL as SHOVILL_MEGAHIT } from '../../../modules/shovill/main.nf'
-include { SHOVILL as SHOVILL_VELVET  } from '../../../modules/shovill/main.nf'
+include { SHOVILL                    } from '../../../modules/nf-core/shovill/main.nf'
+include { SHOVILL as SHOVILL_SKESA   } from '../../../modules/nf-core/shovill/main.nf'
+include { SHOVILL as SHOVILL_MEGAHIT } from '../../../modules/nf-core/shovill/main.nf'
+include { SHOVILL as SHOVILL_VELVET  } from '../../../modules/nf-core/shovill/main.nf'
 
 workflow test_shovill {
     input = [ [ id:'test', single_end:false ], // meta map

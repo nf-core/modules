@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { CONTROLFREEC_FREEC2CIRCOS } from '../../../../modules/controlfreec/freec2circos/main.nf'
-include { CONTROLFREEC_FREEC     } from '../../../../modules/controlfreec/freec/main.nf'
-include { UNTAR                  } from '../../../../modules/untar/main.nf'
+include { CONTROLFREEC_FREEC2CIRCOS } from '../../../../modules/nf-core/controlfreec/freec2circos/main.nf'
+include { CONTROLFREEC_FREEC     } from '../../../../modules/nf-core/controlfreec/freec/main.nf'
+include { UNTAR                  } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_controlfreec_freec2circos {
 

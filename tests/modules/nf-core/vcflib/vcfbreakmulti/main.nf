@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VCFLIB_VCFBREAKMULTI } from '../../../../modules/vcflib/vcfbreakmulti/main.nf'
+include { VCFLIB_VCFBREAKMULTI } from '../../../../modules/nf-core/vcflib/vcfbreakmulti/main.nf'
 
 workflow test_vcflib_vcfbreakmulti {
 

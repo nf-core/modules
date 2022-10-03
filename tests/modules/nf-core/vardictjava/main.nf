@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VARDICTJAVA } from '../../../modules/vardictjava/main.nf'
+include { VARDICTJAVA } from '../../../modules/nf-core/vardictjava/main.nf'
 
 workflow test_vardictjava_bam {
     

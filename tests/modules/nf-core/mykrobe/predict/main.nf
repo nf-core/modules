@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MYKROBE_PREDICT } from '../../../../modules/mykrobe/predict/main.nf'
+include { MYKROBE_PREDICT } from '../../../../modules/nf-core/mykrobe/predict/main.nf'
 
 workflow test_mykrobe_predict {
     

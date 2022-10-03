@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEROBA_RUN } from '../../../../modules/seroba/run/main.nf'
+include { SEROBA_RUN } from '../../../../modules/nf-core/seroba/run/main.nf'
 
 workflow test_seroba_run {
     

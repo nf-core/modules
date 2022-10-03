@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ABRICATE_RUN } from '../../../../modules/abricate/run/main.nf'
+include { ABRICATE_RUN } from '../../../../modules/nf-core/abricate/run/main.nf'
 
 workflow test_abricate_run {
     

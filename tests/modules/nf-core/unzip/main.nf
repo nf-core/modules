@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UNZIP } from '../../../modules/unzip/main.nf'
+include { UNZIP } from '../../../modules/nf-core/unzip/main.nf'
 
 workflow test_unzip {
 

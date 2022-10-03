@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RTGTOOLS_PEDFILTER } from '../../../../modules/rtgtools/pedfilter/main.nf'
+include { RTGTOOLS_PEDFILTER } from '../../../../modules/nf-core/rtgtools/pedfilter/main.nf'
 
 workflow test_rtgtools_pedfilter {
     

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SPLIT } from '../../../../modules/bedtools/split/main.nf'
+include { BEDTOOLS_SPLIT } from '../../../../modules/nf-core/bedtools/split/main.nf'
 
 workflow test_bedtools_split {
     

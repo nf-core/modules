@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_SORT } from '../../../../modules/bedtools/sort/main.nf'
+include { BEDTOOLS_SORT } from '../../../../modules/nf-core/bedtools/sort/main.nf'
 
 workflow test_bedtools_sort {
     input = [ [ id:'test'],

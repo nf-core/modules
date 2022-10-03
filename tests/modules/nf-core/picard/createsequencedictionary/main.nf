@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_CREATESEQUENCEDICTIONARY } from '../../../../modules/picard/createsequencedictionary/main.nf'
+include { PICARD_CREATESEQUENCEDICTIONARY } from '../../../../modules/nf-core/picard/createsequencedictionary/main.nf'
 
 workflow test_picard_createsequencedictionary {
     

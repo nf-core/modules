@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_BBDUK } from '../../../../modules/bbmap/bbduk/main.nf'
+include { BBMAP_BBDUK } from '../../../../modules/nf-core/bbmap/bbduk/main.nf'
 
 workflow test_bbmap_bbduk_single_end {
 

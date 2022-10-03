@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FCS_FCSADAPTOR } from '../../../../modules/fcs/fcsadaptor/main.nf'
+include { FCS_FCSADAPTOR } from '../../../../modules/nf-core/fcs/fcsadaptor/main.nf'
 
 workflow test_fcs_fcsadaptor {
     

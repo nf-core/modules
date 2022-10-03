@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPSITES } from '../../../modules/snpsites/main.nf'
+include { SNPSITES } from '../../../modules/nf-core/snpsites/main.nf'
 
 workflow test_snpsites {
     

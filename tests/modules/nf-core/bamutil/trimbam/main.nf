@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAMUTIL_TRIMBAM } from '../../../../modules/bamutil/trimbam/main.nf'
+include { BAMUTIL_TRIMBAM } from '../../../../modules/nf-core/bamutil/trimbam/main.nf'
 
 workflow test_bamutil_trimbam {
 

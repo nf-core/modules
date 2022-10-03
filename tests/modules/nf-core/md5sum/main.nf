@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MD5SUM } from '../../../modules/md5sum/main.nf'
+include { MD5SUM } from '../../../modules/nf-core/md5sum/main.nf'
 
 workflow test_md5sum {
     

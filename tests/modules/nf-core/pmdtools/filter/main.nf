@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PMDTOOLS_FILTER } from '../../../../modules/pmdtools/filter/main.nf'
+include { PMDTOOLS_FILTER } from '../../../../modules/nf-core/pmdtools/filter/main.nf'
 
 workflow test_pmdtools_filter {
     

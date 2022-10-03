@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX   } from '../../../../modules/biscuit/index/main.nf'
-include { BISCUIT_MERGECG } from '../../../../modules/biscuit/mergecg/main.nf'
+include { BISCUIT_INDEX   } from '../../../../modules/nf-core/biscuit/index/main.nf'
+include { BISCUIT_MERGECG } from '../../../../modules/nf-core/biscuit/mergecg/main.nf'
 
 workflow test_biscuit_mergecg {
 

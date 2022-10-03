@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIA } from '../../../modules/minia/main.nf'
+include { MINIA } from '../../../modules/nf-core/minia/main.nf'
 
 workflow test_minia {
     input = [ [ id:'test' ], // meta map

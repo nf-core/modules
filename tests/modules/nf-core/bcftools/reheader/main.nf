@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_REHEADER } from '../../../../modules/bcftools/reheader/main.nf'
+include { BCFTOOLS_REHEADER } from '../../../../modules/nf-core/bcftools/reheader/main.nf'
 
 workflow test_bcftools_reheader_update_sequences {
 

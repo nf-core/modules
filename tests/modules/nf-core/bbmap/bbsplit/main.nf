@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_INDEX } from '../../../../modules/bbmap/bbsplit/main.nf'
-include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_SPLIT } from '../../../../modules/bbmap/bbsplit/main.nf'
+include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_INDEX } from '../../../../modules/nf-core/bbmap/bbsplit/main.nf'
+include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_SPLIT } from '../../../../modules/nf-core/bbmap/bbsplit/main.nf'
 
 workflow test_bbmap_bbsplit {
 

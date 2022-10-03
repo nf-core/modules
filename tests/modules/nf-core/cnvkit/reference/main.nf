@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT_REFERENCE } from '../../../../modules/cnvkit/reference/main.nf'
+include { CNVKIT_REFERENCE } from '../../../../modules/nf-core/cnvkit/reference/main.nf'
 
 workflow test_cnvkit_reference {
 

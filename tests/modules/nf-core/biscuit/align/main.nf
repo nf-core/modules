@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX }                     from '../../../../modules/biscuit/index/main.nf'
-include { BISCUIT_ALIGN as BISCUIT_ALIGN_SE } from '../../../../modules/biscuit/align/main.nf'
-include { BISCUIT_ALIGN as BISCUIT_ALIGN_PE } from '../../../../modules/biscuit/align/main.nf'
+include { BISCUIT_INDEX }                     from '../../../../modules/nf-core/biscuit/index/main.nf'
+include { BISCUIT_ALIGN as BISCUIT_ALIGN_SE } from '../../../../modules/nf-core/biscuit/align/main.nf'
+include { BISCUIT_ALIGN as BISCUIT_ALIGN_PE } from '../../../../modules/nf-core/biscuit/align/main.nf'
 
 
 // Single-end test

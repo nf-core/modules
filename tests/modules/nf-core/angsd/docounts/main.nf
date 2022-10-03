@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ANGSD_DOCOUNTS } from '../../../../modules/angsd/docounts/main.nf'
+include { ANGSD_DOCOUNTS } from '../../../../modules/nf-core/angsd/docounts/main.nf'
 
 workflow test_angsd_docounts {
 

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MYKROBE_PREDICT } from '../../../../modules/mykrobe/predict/main.nf'
-include { GENOTYPHI_PARSE } from '../../../../modules/genotyphi/parse/main.nf'
+include { MYKROBE_PREDICT } from '../../../../modules/nf-core/mykrobe/predict/main.nf'
+include { GENOTYPHI_PARSE } from '../../../../modules/nf-core/genotyphi/parse/main.nf'
 
 workflow test_mykrobe_predict {
     

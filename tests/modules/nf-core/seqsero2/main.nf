@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQSERO2 } from '../../../modules/seqsero2/main.nf'
+include { SEQSERO2 } from '../../../modules/nf-core/seqsero2/main.nf'
 
 workflow test_seqsero2 {
     

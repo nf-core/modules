@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { MOSDEPTH                       } from '../../../modules/mosdepth/main.nf'
-include { MOSDEPTH as MOSDEPTH_FAIL      } from '../../../modules/mosdepth/main.nf'
-include { MOSDEPTH as MOSDEPTH_WINDOW    } from '../../../modules/mosdepth/main.nf'
-include { MOSDEPTH as MOSDEPTH_THRESHOLD } from '../../../modules/mosdepth/main.nf'
-include { MOSDEPTH as MOSDEPTH_QUANTIZED } from '../../../modules/mosdepth/main.nf'
+include { MOSDEPTH                       } from '../../../modules/nf-core/mosdepth/main.nf'
+include { MOSDEPTH as MOSDEPTH_FAIL      } from '../../../modules/nf-core/mosdepth/main.nf'
+include { MOSDEPTH as MOSDEPTH_WINDOW    } from '../../../modules/nf-core/mosdepth/main.nf'
+include { MOSDEPTH as MOSDEPTH_THRESHOLD } from '../../../modules/nf-core/mosdepth/main.nf'
+include { MOSDEPTH as MOSDEPTH_QUANTIZED } from '../../../modules/nf-core/mosdepth/main.nf'
 
 workflow test_mosdepth {
     input = [

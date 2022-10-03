@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SHASTA } from '../../../modules/shasta/main.nf'
+include { SHASTA } from '../../../modules/nf-core/shasta/main.nf'
 
 workflow test_shasta {
     

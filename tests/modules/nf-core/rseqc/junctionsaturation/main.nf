@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_JUNCTIONSATURATION }   from '../../../../modules/rseqc/junctionsaturation/main.nf'
+include { RSEQC_JUNCTIONSATURATION }   from '../../../../modules/nf-core/rseqc/junctionsaturation/main.nf'
 
 workflow test_rseqc_junctionsaturation {
     input = [

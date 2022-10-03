@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_BAI  } from '../../../../modules/samtools/index/main.nf'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_CRAI } from '../../../../modules/samtools/index/main.nf'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_CSI  } from '../../../../modules/samtools/index/main.nf'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_BAI  } from '../../../../modules/nf-core/samtools/index/main.nf'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_CRAI } from '../../../../modules/nf-core/samtools/index/main.nf'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_CSI  } from '../../../../modules/nf-core/samtools/index/main.nf'
 
 workflow test_samtools_index_bai {
     input = [ [ id:'test', single_end:false ], // meta map

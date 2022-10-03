@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_CLUMPIFY } from '../../../../modules/bbmap/clumpify/main.nf'
+include { BBMAP_CLUMPIFY } from '../../../../modules/nf-core/bbmap/clumpify/main.nf'
 
 workflow test_bbmap_clumpify_single_end {
 

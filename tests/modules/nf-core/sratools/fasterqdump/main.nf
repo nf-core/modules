@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../../modules/untar/main.nf'
-include { SRATOOLS_FASTERQDUMP } from '../../../../modules/sratools/fasterqdump/main.nf'
+include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
+include { SRATOOLS_FASTERQDUMP } from '../../../../modules/nf-core/sratools/fasterqdump/main.nf'
 
 workflow test_sratools_fasterqdump_single_end {
 

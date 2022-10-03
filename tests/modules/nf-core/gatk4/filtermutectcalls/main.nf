@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/gatk4/filtermutectcalls/main.nf'
+include { GATK4_FILTERMUTECTCALLS } from '../../../../modules/nf-core/gatk4/filtermutectcalls/main.nf'
 
 workflow test_gatk4_filtermutectcalls_base {
 

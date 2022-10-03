@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RASUSA } from '../../../modules/rasusa/main.nf'
+include { RASUSA } from '../../../modules/nf-core/rasusa/main.nf'
 
 workflow test_rasusa {
     input = [ [ id:'test', single_end:false], // meta map

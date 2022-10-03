@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SNAPALIGNER_INDEX } from '../../../../modules/snapaligner/index/main.nf'
-include { SNAPALIGNER_ALIGN } from '../../../../modules/snapaligner/align/main.nf'
+include { SNAPALIGNER_INDEX } from '../../../../modules/nf-core/snapaligner/index/main.nf'
+include { SNAPALIGNER_ALIGN } from '../../../../modules/nf-core/snapaligner/align/main.nf'
 
 workflow test_snapaligner_single {
 

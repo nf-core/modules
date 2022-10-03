@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_MASKFASTA } from '../../../../modules/bedtools/maskfasta/main.nf'
+include { BEDTOOLS_MASKFASTA } from '../../../../modules/nf-core/bedtools/maskfasta/main.nf'
 
 workflow test_bedtools_maskfasta {
     bed   = [ [ id:'test'],

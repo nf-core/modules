@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { RSEQC_JUNCTIONANNOTATION }   from '../../../../modules/rseqc/junctionannotation/main.nf'
+include { RSEQC_JUNCTIONANNOTATION }   from '../../../../modules/nf-core/rseqc/junctionannotation/main.nf'
 
 workflow test_rseqc_junctionannotation {
     input = [ 

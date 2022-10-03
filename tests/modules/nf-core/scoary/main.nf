@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SCOARY } from '../../../modules/scoary/main.nf'
+include { SCOARY } from '../../../modules/nf-core/scoary/main.nf'
 
 workflow test_scoary {
     

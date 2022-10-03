@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { VCFTOOLS as VCFTOOLS_BASE     } from '../../../modules/vcftools/main.nf'
-include { VCFTOOLS as VCFTOOLS_OPTIONAL } from '../../../modules/vcftools/main.nf'
+include { VCFTOOLS as VCFTOOLS_BASE     } from '../../../modules/nf-core/vcftools/main.nf'
+include { VCFTOOLS as VCFTOOLS_OPTIONAL } from '../../../modules/nf-core/vcftools/main.nf'
 
 workflow test_vcftools_vcf_base {
     input = [ [ id:'test' ], // meta map

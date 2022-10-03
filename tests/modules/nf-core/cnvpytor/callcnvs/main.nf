@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVPYTOR_CALLCNVS } from '../../../../modules/cnvpytor/callcnvs/main.nf'
+include { CNVPYTOR_CALLCNVS } from '../../../../modules/nf-core/cnvpytor/callcnvs/main.nf'
 
 workflow test_cnvpytor_callcnvs {
 

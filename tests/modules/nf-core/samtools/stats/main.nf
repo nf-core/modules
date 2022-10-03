@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_STATS } from '../../../../modules/samtools/stats/main.nf'
+include { SAMTOOLS_STATS } from '../../../../modules/nf-core/samtools/stats/main.nf'
 
 workflow test_samtools_stats {
     input = [ [ id:'test', single_end:false ], // meta map

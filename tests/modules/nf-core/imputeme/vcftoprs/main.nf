@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IMPUTEME_VCFTOPRS } from '../../../../modules/imputeme/vcftoprs/main.nf'
+include { IMPUTEME_VCFTOPRS } from '../../../../modules/nf-core/imputeme/vcftoprs/main.nf'
 
 workflow test_imputeme_vcftoprs {
     

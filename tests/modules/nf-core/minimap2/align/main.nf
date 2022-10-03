@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MINIMAP2_ALIGN } from '../../../../modules/minimap2/align/main.nf'
+include { MINIMAP2_ALIGN } from '../../../../modules/nf-core/minimap2/align/main.nf'
 
 workflow test_minimap2_align_single_end {
     input = [ [ id:'test', single_end:true ], // meta map

@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { UMITOOLS_EXTRACT } from '../../../../modules/umitools/extract/main.nf'
-include { BWA_INDEX        } from '../../../../modules/bwa/index/main.nf'
-include { BWA_MEM          } from '../../../../modules/bwa/mem/main.nf'
-include { SAMTOOLS_INDEX   } from '../../../../modules/samtools/index/main.nf'
-include { UMITOOLS_DEDUP   } from '../../../../modules/umitools/dedup/main.nf'
+include { UMITOOLS_EXTRACT } from '../../../../modules/nf-core/umitools/extract/main.nf'
+include { BWA_INDEX        } from '../../../../modules/nf-core/bwa/index/main.nf'
+include { BWA_MEM          } from '../../../../modules/nf-core/bwa/mem/main.nf'
+include { SAMTOOLS_INDEX   } from '../../../../modules/nf-core/samtools/index/main.nf'
+include { UMITOOLS_DEDUP   } from '../../../../modules/nf-core/umitools/dedup/main.nf'
 
 //
 // Test with no UMI

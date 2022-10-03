@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTREADCOUNTS } from '../../../../modules/gatk4/collectreadcounts/main.nf'
+include { GATK4_COLLECTREADCOUNTS } from '../../../../modules/nf-core/gatk4/collectreadcounts/main.nf'
 
 workflow test_gatk4_collectreadcounts_hdf5 {
     

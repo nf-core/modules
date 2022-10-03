@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DSHBIO_EXPORTSEGMENTS } from '../../../../modules/dshbio/exportsegments/main.nf'
+include { DSHBIO_EXPORTSEGMENTS } from '../../../../modules/nf-core/dshbio/exportsegments/main.nf'
 
 workflow test_dshbio_exportsegments {
     input = [ [ id:'test' ], // meta map
