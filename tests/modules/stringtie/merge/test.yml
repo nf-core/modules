@@ -45,3 +45,25 @@
       md5sum: f289f41b3ba1b9f0aa05d14408f1a5da
     - path: output/stringtie/test.transcripts.gtf
       md5sum: 9dcdc9577c0fdbb25089eda210267546
+
+- name: stringtie merge forward-strand stub
+  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_forward_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config -stub-run
+  tags:
+    - stringtie
+    - stringtie/merge
+  files:
+    - path: output/stringtie/stringtie.merged.gtf
+    - path: output/stringtie/test.coverage.gtf
+    - path: output/stringtie/test.gene.abundance.txt
+    - path: output/stringtie/test.transcripts.gtf
+
+- name: stringtie merge test_stringtie_reverse_merge stub
+  command: nextflow run ./tests/modules/stringtie/merge -entry test_stringtie_reverse_merge -c ./tests/config/nextflow.config -c ./tests/modules/stringtie/merge/nextflow.config -stub-run
+  tags:
+    - stringtie
+    - stringtie/merge
+  files:
+    - path: output/stringtie/stringtie.merged.gtf
+    - path: output/stringtie/test.coverage.gtf
+    - path: output/stringtie/test.gene.abundance.txt
+    - path: output/stringtie/test.transcripts.gtf

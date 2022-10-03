@@ -2,10 +2,10 @@ process AMRFINDERPLUS_RUN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.23" : null)
+    conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus%3A3.10.23--h17dc2d4_0':
-        'quay.io/biocontainers/ncbi-amrfinderplus:3.10.23--h17dc2d4_0' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.30--h6e70893_0':
+        'quay.io/biocontainers/ncbi-amrfinderplus:3.10.30--h6e70893_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,6 +15,8 @@ process AMRFINDERPLUS_RUN {
     tuple val(meta), path("${prefix}.tsv")          , emit: report
     tuple val(meta), path("${prefix}-mutations.tsv"), emit: mutation_report, optional: true
     path "versions.yml"                             , emit: versions
+    env VER                                         , emit: tool_version
+    env DBVER                                       , emit: db_version
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +48,13 @@ process AMRFINDERPLUS_RUN {
         --database amrfinderdb \\
         --threads $task.cpus > ${prefix}.tsv
 
+    VER=\$(amrfinder --version)
+    DBVER=\$(echo \$(amrfinder --database amrfinderdb --database_version 2> stdout) | rev | cut -f 1 -d ' ' | rev)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         amrfinderplus: \$(amrfinder --version)
+        amrfinderplus-database: \$(echo \$(echo \$(amrfinder --database amrfinderdb --database_version 2> stdout) | rev | cut -f 1 -d ' ' | rev))
     END_VERSIONS
     """
 }

@@ -22,6 +22,22 @@
     - path: output/ensemblvep/test.ann.vcf
     - path: output/ensemblvep/test.summary.html
 
+- name: ensemblvep test_ensemblvep_fasta_vcf_bgzip
+  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_vcf_bgzip -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  tags:
+    - ensemblvep
+  files:
+    - path: output/ensemblvep/test.ann.vcf.gz
+    - path: output/ensemblvep/test.summary.html
+
+- name: ensemblvep test_ensemblvep_fasta_vcf_gzip
+  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_vcf_gzip -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  tags:
+    - ensemblvep
+  files:
+    - path: output/ensemblvep/test.ann.vcf.gz
+    - path: output/ensemblvep/test.summary.html
+
 - name: ensemblvep test_ensemblvep_fasta
   command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
   tags:
@@ -32,6 +48,14 @@
 
 - name: ensemblvep test_ensemblvep_no_fasta
   command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config
+  tags:
+    - ensemblvep
+  files:
+    - path: output/ensemblvep/test.ann.vcf
+    - path: output/ensemblvep/test.summary.html
+
+- name: ensemblvep test_ensemblvep_fasta_vcf_stub
+  command: nextflow run ./tests/modules/ensemblvep -entry test_ensemblvep_fasta_vcf -c ./tests/config/nextflow.config  -c ./tests/modules/ensemblvep/nextflow.config -stub
   tags:
     - ensemblvep
   files:

@@ -1,9 +1,8 @@
-def VERSION = '1.0.4' // Version information not provided by tool on CLI
-
 process CMSEQ_POLYMUT {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::cmseq=1.0.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cmseq:1.0.4--pyhb7b1952_0' :
@@ -24,6 +23,7 @@ process CMSEQ_POLYMUT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
     def sortindex = bai ? "" : "--sortindex"
+    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     polymut.py \\
         $args \\

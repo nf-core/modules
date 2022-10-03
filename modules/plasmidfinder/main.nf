@@ -1,9 +1,8 @@
-def VERSION = '2.1.6' // Version information not provided by tool on CLI
-
 process PLASMIDFINDER {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::plasmidfinder=2.1.6=py310hdfd78af_1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plasmidfinder:2.1.6--py310hdfd78af_1':
@@ -26,6 +25,7 @@ process PLASMIDFINDER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.1.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     plasmidfinder.py \\
         $args \\

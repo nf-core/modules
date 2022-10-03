@@ -2,14 +2,14 @@ process BUSCO {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::busco=5.3.2" : null)
+    conda (params.enable_conda ? "bioconda::busco=5.4.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.3.2--pyhdfd78af_0':
-        'quay.io/biocontainers/busco:5.3.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/busco:5.4.3--pyhdfd78af_0':
+        'quay.io/biocontainers/busco:5.4.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path('tmp_input/*')
-    each lineage                          // Required:    lineage to check against, "auto" enables --auto-lineage instead
+    val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead
     path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
     path config_file                      // Optional:    busco configuration file
 
