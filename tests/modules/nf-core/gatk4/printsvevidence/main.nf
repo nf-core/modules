@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_PRINTSVEVIDENCE     } from '../../../../modules/gatk4/printsvevidence/main.nf'
-include { GATK4_COLLECTSVEVIDENCE   } from '../../../../modules/gatk4/collectsvevidence/main.nf'
+include { GATK4_PRINTSVEVIDENCE     } from '../../../../../modules/nf-core/gatk4/printsvevidence/main.nf'
+include { GATK4_COLLECTSVEVIDENCE   } from '../../../../../modules/nf-core/gatk4/collectsvevidence/main.nf'
 
 workflow test_gatk4_printsvevidence {
 
