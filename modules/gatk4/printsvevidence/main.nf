@@ -1,5 +1,5 @@
 process GATK4_PRINTSVEVIDENCE {
-    tag "${meta.id}"
+    tag "printsvevidence"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
@@ -8,28 +8,28 @@ process GATK4_PRINTSVEVIDENCE {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(evidence), path(evidence_index)
+    tuple path(evidence_files), path(evidence_indices)
     path bed
     path fasta
     path fasta_fai
     path dict
 
-
     output:
-    tuple val(meta), path("*.txt.gz")       , emit: printed_evidence
-    tuple val(meta), path("*.txt.gz.tbi")   , emit: printed_evidence_index
-    path "versions.yml"                     , emit: versions
+    path "*.txt.gz"       , emit: printed_evidence
+    path "*.txt.gz.tbi"   , emit: printed_evidence_index
+    path "versions.yml"   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "printsvevidence"
     def intervals = bed ? "--intervals ${bed}" : ""
     def reference = fasta ? "--reference ${fasta}" : ""
+    def input_files = evidence_files.collect({"--evidence-file $it"})join(' ')
 
-    def file_name = evidence.getFileName()
+    def file_name = evidence_files[0].getFileName()
 
     def file_type = file_name =~ ".sr.txt" ? "sr" :
                     file_name =~ ".pe.txt" ? "pe" :
@@ -50,7 +50,7 @@ process GATK4_PRINTSVEVIDENCE {
 
     """
     gatk --java-options "-Xmx${avail_mem}g" PrintSVEvidence \\
-        --evidence-file ${evidence} \\
+        ${input_files} \\
         --sequence-dictionary ${dict} \\
         ${intervals} \\
         ${reference} \\
