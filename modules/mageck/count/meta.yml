@@ -28,10 +28,6 @@ input:
       type: files
       description: library fastq file containing the sgRNA and gene name
       pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
-  - count_table:
-      type: file
-      description: count table containing the sgRNA and number of reads to per sample
-      pattern: "*.{csv,txt,tsv}"
 
   - name:
       type: string
