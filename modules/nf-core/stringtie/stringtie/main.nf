@@ -9,7 +9,7 @@ process STRINGTIE_STRINGTIE {
 
     input:
     tuple val(meta), path(bam)
-    path  gtf
+    path  annotation_gtf
 
     output:
     tuple val(meta), path("*.coverage.gtf")   , emit: coverage_gtf
@@ -22,8 +22,9 @@ process STRINGTIE_STRINGTIE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def reference = annotation_gtf ? "-G $annotation_gtf" : ""
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -35,7 +36,7 @@ process STRINGTIE_STRINGTIE {
     stringtie \\
         $bam \\
         $strandedness \\
-        -G $gtf \\
+        $reference \\
         -o ${prefix}.transcripts.gtf \\
         -A ${prefix}.gene.abundance.txt \\
         -C ${prefix}.coverage.gtf \\
