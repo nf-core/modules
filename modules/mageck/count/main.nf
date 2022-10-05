@@ -1,3 +1,4 @@
+
 process MAGECK_COUNT {
     tag "$meta.id"
     label 'process_medium'
@@ -9,14 +10,14 @@ process MAGECK_COUNT {
         'quay.io/biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
 
     input:
-    tuple val(meta), path(inptfile)
+    tuple val(meta), path(inputfile)
     path(library)
-    val(name)
+
 
     output:
     tuple val(meta), path("*count*.txt"), emit: count
-    path "versions.yml"           , emit: versions
     path("*.count_normalized.txt"), emit: norm
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,17 +25,18 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ext = [".txt", ".csv", ".tsv"]
-    def input_file = ("$inptfile".endsWith(".fastq.gz")) ? "--fastq ${inptfile}" :
-        ("$inptfile".endsWith(tuple(ext)) ? "-k ${inptfile}" : ''
-    def sample_label = ("$inptfile".endsWith(".fastq.gz")) ? "--sample-label ${meta.id}" : ''
+    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" :
+        ("$inputfile".endsWith(".txt")) ? "-k ${inputfile}" : ("$inputfile".endsWith(".csv")) ? "-k ${inputfile}" :
+        ("$inputfile".endsWith(".tsv")) ? "-k ${inputfile}"  : ''
+    def sample_label = ("$inputfile".endsWith(".fastq.gz")) ? "--sample-label ${meta.id}" : ''
+
     """
 
     mageck \\
         count \\
         $args \\
         -l $library \\
-        -n $name \\
+        -n $prefix \\
         $sample_label \\
         $input_file \\
 
