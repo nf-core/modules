@@ -16,18 +16,6 @@ workflow test_multibamsummary_bam {
     DEEPTOOLS_MULTIBAMSUMMARY ( input ) 
 }
 
-workflow test_multibamsummary_cram {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
-        [ "test_cram" ]
-    ]
-
-    DEEPTOOLS_MULTIBAMSUMMARY ( input ) 
-}
-
 workflow test_multibamsummary_bam_no_label {
     input = [
         [ id:'test', single_end:false ], // meta map
