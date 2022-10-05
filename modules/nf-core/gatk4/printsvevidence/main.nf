@@ -27,7 +27,7 @@ process GATK4_PRINTSVEVIDENCE {
     def prefix = task.ext.prefix ?: "printsvevidence"
     def intervals = bed ? "--intervals ${bed}" : ""
     def reference = fasta ? "--reference ${fasta}" : ""
-    def input_files = evidence_files.collect({"--evidence-file $it"})join(' ')
+    def input_files = evidence_files.collect({"--evidence-file $it"}).join(' ')
 
     def file_name = evidence_files[0].getFileName()
 
