@@ -19,7 +19,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     input:
     tuple val(meta), path(bams), path(bais), val(labels)
-    
+
     output:
     tuple val(meta), path("*.npz") , emit: matrix
     path  "versions.yml"           , emit: versions
