@@ -2,15 +2,39 @@
 
 nextflow.enable.dsl = 2
 
-include { MULTIBAMSUMMARY } from '../../../modules/multibamsummary/main.nf'
+include { DEEPTOOLS_MULTIBAMSUMMARY } from '../../../../../modules/nf-core/deeptools/multibamsummary/main.nf'
 
-workflow test_multibamsummary {
+workflow test_multibamsummary_bam {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-        // add test_paired_end_sorted_bam and test_paired_end_sorted_bam_bai?
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+          file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        [ "test_bam" ]
     ]
 
-    MULTIBAMSUMMARY ( input )
+    DEEPTOOLS_MULTIBAMSUMMARY ( input ) 
+}
+
+workflow test_multibamsummary_cram {
+    
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+        [ "test_cram" ]
+    ]
+
+    DEEPTOOLS_MULTIBAMSUMMARY ( input ) 
+}
+
+workflow test_multibamsummary_bam_no_label {
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        [ ] // error
+    ]
+
+    DEEPTOOLS_MULTIBAMSUMMARY ( input ) 
 }
