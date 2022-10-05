@@ -8,12 +8,11 @@ process GATK4_PRINTSVEVIDENCE {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(evidence), path(evidence_index)
+    tuple val(meta), path(evidence_files), path(evidence_indices)
     path bed
     path fasta
     path fasta_fai
     path dict
-
 
     output:
     tuple val(meta), path("*.txt.gz")       , emit: printed_evidence
@@ -28,8 +27,9 @@ process GATK4_PRINTSVEVIDENCE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def intervals = bed ? "--intervals ${bed}" : ""
     def reference = fasta ? "--reference ${fasta}" : ""
+    def input_files = evidence_files.collect({"--evidence-file $it"}).join(' ')
 
-    def file_name = evidence.getFileName()
+    def file_name = evidence_files[0].getFileName()
 
     def file_type = file_name =~ ".sr.txt" ? "sr" :
                     file_name =~ ".pe.txt" ? "pe" :
@@ -50,7 +50,7 @@ process GATK4_PRINTSVEVIDENCE {
 
     """
     gatk --java-options "-Xmx${avail_mem}g" PrintSVEvidence \\
-        --evidence-file ${evidence} \\
+        ${input_files} \\
         --sequence-dictionary ${dict} \\
         ${intervals} \\
         ${reference} \\
