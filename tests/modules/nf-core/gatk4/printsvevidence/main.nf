@@ -41,12 +41,9 @@ workflow test_gatk4_printsvevidence {
     indices = GATK4_COLLECTSVEVIDENCE.out.paired_end_evidence_index
 
     input_svevidence = files.combine(indices, by:0).map({ meta, file, index ->
-                            [ [type:'pe'], file, index ]
+                            [ [id:'pe_files'], file, index ]
                         })
                         .groupTuple()
-                        .map({ meta, files, indices ->
-                            [ files, indices ]
-                        })
 
     GATK4_PRINTSVEVIDENCE(
         input_svevidence,
@@ -94,12 +91,9 @@ workflow test_gatk4_printsvevidence_bed_no_fasta {
     indices = GATK4_COLLECTSVEVIDENCE.out.paired_end_evidence_index
 
     input_svevidence = files.combine(indices, by:0).map({ meta, file, index ->
-                            [ [type:'pe'], file, index ]
+                            [ [id:'pe_files'], file, index ]
                         })
                         .groupTuple()
-                        .map({ meta, files, indices ->
-                            [ files, indices ]
-                        })
 
     GATK4_PRINTSVEVIDENCE(
         input_svevidence,

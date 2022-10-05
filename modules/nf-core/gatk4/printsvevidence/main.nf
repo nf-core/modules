@@ -8,7 +8,7 @@ process GATK4_PRINTSVEVIDENCE {
         'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
 
     input:
-    tuple path(evidence_files), path(evidence_indices)
+    tuple val(meta), path(evidence_files), path(evidence_indices)
     path bed
     path fasta
     path fasta_fai
@@ -24,7 +24,7 @@ process GATK4_PRINTSVEVIDENCE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "printsvevidence"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def intervals = bed ? "--intervals ${bed}" : ""
     def reference = fasta ? "--reference ${fasta}" : ""
     def input_files = evidence_files.collect({"--evidence-file $it"}).join(' ')

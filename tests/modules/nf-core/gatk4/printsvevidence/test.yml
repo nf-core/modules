@@ -1,5 +1,5 @@
 - name: gatk4 printsvevidence test_gatk4_printsvevidence
-  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
   tags:
     - gatk4/printsvevidence
     - gatk4
@@ -12,9 +12,9 @@
       md5sum: fb9ce52193a0db3a084890bd6bbf6a64
     - path: output/gatk4/normal.sr.txt.gz.tbi
       md5sum: 3e7b04492c53765e3c84d76b59e1f2c5
-    - path: output/gatk4/printsvevidence.pe.txt.gz
+    - path: output/gatk4/pe_files.pe.txt.gz
       md5sum: efb205d6cb0bebf16662c96e8f38bb5e
-    - path: output/gatk4/printsvevidence.pe.txt.gz.tbi
+    - path: output/gatk4/pe_files.pe.txt.gz.tbi
       md5sum: 92f40a84356ddfc962713bcd97e2ce95
     - path: output/gatk4/tumour.pe.txt.gz
       md5sum: 11fb8aeeea29370d9d1b49448456da81
@@ -26,7 +26,7 @@
       md5sum: f2105270ba79ed645bac9842be79f411
 
 - name: gatk4 printsvevidence test_gatk4_printsvevidence_bed_no_fasta
-  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence_bed_no_fasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence_bed_no_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
   tags:
     - gatk4/printsvevidence
     - gatk4
@@ -39,9 +39,9 @@
       md5sum: fb9ce52193a0db3a084890bd6bbf6a64
     - path: output/gatk4/normal.sr.txt.gz.tbi
       md5sum: 3e7b04492c53765e3c84d76b59e1f2c5
-    - path: output/gatk4/printsvevidence.pe.txt.gz
+    - path: output/gatk4/pe_files.pe.txt.gz
       md5sum: efb205d6cb0bebf16662c96e8f38bb5e
-    - path: output/gatk4/printsvevidence.pe.txt.gz.tbi
+    - path: output/gatk4/pe_files.pe.txt.gz.tbi
       md5sum: 92f40a84356ddfc962713bcd97e2ce95
     - path: output/gatk4/tumour.pe.txt.gz
       md5sum: 11fb8aeeea29370d9d1b49448456da81
