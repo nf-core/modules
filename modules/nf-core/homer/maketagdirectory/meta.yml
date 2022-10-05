@@ -1,0 +1,73 @@
+name: homer_maketagdirectory
+description: Create a tag directory with the HOMER suite
+keywords:
+  - peaks
+  - bed
+  - bam
+  - sam
+tools:
+  - homer:
+      description: |
+        HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
+      documentation: http://homer.ucsd.edu/homer/
+      doi: 10.1016/j.molcel.2010.05.004.
+      licence: ["GPL-3.0-or-later"]
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: hhttp://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+  - DESeq2:
+      description: |
+        Differential gene expression analysis based on the negative binomial distribution
+      homepage: "https://bioconductor.org/packages/DESeq2"
+      documentation: "https://bioconductor.org/packages/DESeq2"
+      tool_dev_url: "https://github.com/mikelove/DESeq2"
+      doi: 10.18129/B9.bioc.DESeq2
+      licence: ["LGPL-3.0-or-later"]
+  - edgeR:
+      description: |
+        Empirical Analysis of Digital Gene Expression Data in R
+      homepage: "https://bioinf.wehi.edu.au/edgeR"
+      documentation: "https://bioconductor.org/packages/edgeR"
+      tool_dev_url: " https://git.bioconductor.org/packages/edgeR"
+      doi: 10.18129/B9.bioc.edgeR
+      licence: ["GPL >=2"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/BED/SAM file
+      pattern: "*.{bam,bed,sam}"
+  - fasta:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tagdir:
+      type: directory
+      description: The "Tag Directory"
+      pattern: "*_tagdir"
+  - taginfo:
+      type: directory
+      description: The tagInfo.txt included to ensure there's proper output
+      pattern: "*_tagdir/tagInfo.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@EMiller88"

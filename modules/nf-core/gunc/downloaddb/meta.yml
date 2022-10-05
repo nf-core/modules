@@ -1,0 +1,36 @@
+name: gunc_downloaddb
+description: Download database for GUNC detection of Chimerism and Contamination in Prokaryotic Genomes
+keywords:
+  - download
+  - prokaryote
+  - assembly
+  - genome
+  - quality control
+  - chimeras
+tools:
+  - gunc:
+      description: Python package for detection of chimerism and contamination in prokaryotic genomes.
+      homepage: https://grp-bork.embl-community.io/gunc/
+      documentation: https://grp-bork.embl-community.io/gunc/
+      tool_dev_url: https://github.com/grp-bork/gunc
+      doi: "10.1186/s13059-021-02393-0"
+      licence: ["GNU General Public v3 or later (GPL v3+)"]
+
+input:
+  - db_name:
+      type: string
+      description: "Which database to download. Options: progenomes or gtdb"
+      pattern: "progenomes|gtdb"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: GUNC database file
+      pattern: "*.dmnd"
+
+authors:
+  - "@jfy133"

@@ -1,0 +1,46 @@
+name: bedtools_subtract
+description: Finds overlaps between two sets of regions (A and B), removes the overlaps from A and reports the remaining portion of A.
+keywords:
+  - bed
+  - gff
+  - vcf
+  - subtract
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/subtract.html
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - intervals1:
+      type: file
+      description: BED/GFF/VCF
+      pattern: "*.{bed|gff|vcf}"
+  - intervals2:
+      type: file
+      description: BED/GFF/VCF
+      pattern: "*.{bed|gff|vcf}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: File containing the difference between the two sets of features
+      patters: "*.bed"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sidorov-si"

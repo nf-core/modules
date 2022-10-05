@@ -1,0 +1,79 @@
+name: last_mafconvert
+description: Converts MAF alignments in another format.
+keywords:
+  - LAST
+  - convert
+  - alignment
+  - MAF
+tools:
+  - last:
+      description: LAST finds & aligns related regions of sequences.
+      homepage: https://gitlab.com/mcfrith/last
+      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
+      tool_dev_url: https://gitlab.com/mcfrith/last
+      doi: ""
+      licence: ["GPL v3-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - maf:
+      type: file
+      description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
+      pattern: "*.{maf.gz,maf}"
+  - format:
+      type: value
+      description: Output format (one of axt, blast, blasttab, chain, gff, html, psl, sam, or tab)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - axt_gz:
+      type: file
+      description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
+      pattern: "*.axt.gz"
+  - blast_gz:
+      type: file
+      description: Gzipped pairwise alignment in blast format (optional)
+      pattern: "*.blast.gz"
+  - blasttab_gz:
+      type: file
+      description: Gzipped pairwise alignment in blasttab format (optional)
+      pattern: "*.blasttab.gz"
+  - chain_gz:
+      type: file
+      description: Gzipped pairwise alignment in UCSC chain format (optional)
+      pattern: "*.chain.gz"
+  - gff_gz:
+      type: file
+      description: Gzipped pairwise alignment in GFF format (optional)
+      pattern: "*.gff.gz"
+  - html_gz:
+      type: file
+      description: Gzipped pairwise alignment in HTML format (optional)
+      pattern: "*.html.gz"
+  - psl_gz:
+      type: file
+      description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
+      pattern: "*.psl.gz"
+  - SAM:
+      type: file
+      description: Gzipped pairwise alignment in SAM format (optional)
+      pattern: "*.sam.gz"
+  - tab:
+      type: file
+      description: Gzipped pairwise alignment in TAB format (optional)
+      pattern: "*.tab.gz"
+
+authors:
+  - "@aleksandrabliznina"

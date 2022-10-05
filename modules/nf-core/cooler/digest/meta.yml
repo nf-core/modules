@@ -1,0 +1,39 @@
+name: cooler_digest
+description: Generate fragment-delimited genomic bins
+keywords:
+  - digest
+  - enzyme
+tools:
+  - cooler:
+      description: Sparse binary format for genomic interaction matrices
+      homepage: https://cooler.readthedocs.io/en/latest/index.html
+      documentation: https://cooler.readthedocs.io/en/latest/index.html
+      tool_dev_url: https://github.com/open2c/cooler
+      doi: "10.1093/bioinformatics/btz540"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - fasta:
+      type: file
+      description: Genome assembly FASTA file or folder containing FASTA files (uncompressed).
+      pattern: "*.{fasta,fa}"
+  - chromsizes:
+      type: file
+      description: Path to a chromsizes file.
+  - enzyme:
+      type: String
+      description: Name of restriction enzyme. e.g. CviQI.
+      documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: A genome segmentation of restriction fragments as a BED file.
+      pattern: "*.{bed}"
+
+authors:
+  - "@jianhong"

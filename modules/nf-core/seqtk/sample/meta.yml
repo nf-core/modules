@@ -1,0 +1,44 @@
+name: seqtk_sample
+description: Subsample reads from FASTQ files
+keywords:
+  - sample
+tools:
+  - seqtk:
+      description: Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. Seqtk sample command subsamples sequences.
+      homepage: https://github.com/lh3/seqtk
+      documentation: https://docs.csc.fi/apps/seqtk/
+      tool_dev_url: https://github.com/lh3/seqtk
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data,respectively.
+      pattern: "*.{fastq.gz}"
+  - sample_size:
+      type: value
+      description: Number of reads to sample.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Subsampled FastQ files, 1 for single-end data or 2 for paired-end data.
+      pattern: "*.{fastq.gz}"
+
+authors:
+  - "@kaurravneet4123"
+  - "@sidorov-si"

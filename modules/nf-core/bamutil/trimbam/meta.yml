@@ -1,0 +1,51 @@
+name: bamutil_trimbam
+description: trims the end of reads in a SAM/BAM file, changing read ends to ‘N’ and quality to ‘!’, or by soft clipping
+keywords:
+  - bam
+  - trim
+  - clipping
+  - bamUtil
+  - trimBam
+tools:
+  - bamutil:
+      description: Programs that perform operations on SAM/BAM files, all built into a single executable, bam.
+      homepage: https://genome.sph.umich.edu/wiki/BamUtil
+      documentation: https://genome.sph.umich.edu/wiki/BamUtil:_trimBam
+      tool_dev_url: https://github.com/statgen/bamUtil
+      doi: "10.1101/gr.176552.114"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - trim_left:
+      type: integer
+      description: Number of bases to trim off the right-hand side of a read. Reverse strands are reversed before trimming.
+  - trim_right:
+      type: integer
+      description: Number of bases to trim off the right-hand side of a read. Reverse strands are reversed before trimming.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Trimmed but unsorted BAM file
+      pattern: "*.bam"
+
+authors:
+  - "@jfy133"

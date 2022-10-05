@@ -1,0 +1,38 @@
+name: cellranger_mkfastq
+description: Module to create fastqs needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkfastq command.
+keywords:
+  - reference
+  - mkfastq
+  - fastq
+  - illumina
+  - bcl2fastq
+tools:
+  - cellranger:
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      doi: ""
+      licence: 10x Genomics EULA
+input:
+  - bcl:
+      type: file
+      description: Base call files
+      pattern: "*.bcl.bgzf"
+  - csv:
+      type: file
+      description: Sample sheet
+      pattern: "*.csv"
+output:
+  - fastq:
+      type: file
+      description: Unaligned FastQ files
+      pattern: "*.fastq.gz"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@ggabernet"
+  - "@Emiller88"
+  - "@RHReynolds"

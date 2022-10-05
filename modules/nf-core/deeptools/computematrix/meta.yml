@@ -1,0 +1,58 @@
+name: deeptools_computematrix
+description: calculates scores per genome regions for other deeptools plotting utilities
+keywords:
+  - genome
+  - regions
+  - scores
+  - matrix
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      homepage:
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bigwig:
+      type: file
+      description: bigwig file containing genomic scores
+      pattern: "*.{bw,bigwig}"
+  - bed:
+      type: file
+      description: bed file containing genomic regions
+      pattern: "*.{bed}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - matrix:
+      type: file
+      description: |
+        gzipped matrix file needed by the plotHeatmap and plotProfile
+        deeptools utilities
+      pattern: "*.{computeMatrix.mat.gz}"
+  - table:
+      type: file
+      description: |
+        tabular file containing the scores of the generated matrix
+      pattern: "*.{computeMatrix.vals.mat.tab}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jeremy1805"
+  - "@emiller88"
+  - "@drpatelh"
+  - "@joseespinosa"

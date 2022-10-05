@@ -1,0 +1,58 @@
+name: malt_run
+description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and analysis tool designed for processing high-throughput sequencing data, especially in the context of metagenomics.
+keywords:
+  - malt
+  - alignment
+  - metagenomics
+  - ancient DNA
+  - aDNA
+  - palaeogenomics
+  - archaeogenomics
+  - microbiome
+tools:
+  - malt:
+      description: A tool for mapping metagenomic data
+      homepage: https://www.wsi.uni-tuebingen.de/lehrstuehle/algorithms-in-bioinformatics/software/malt/
+      documentation: https://software-ab.informatik.uni-tuebingen.de/download/malt/manual.pdf
+      tool_dev_url: None
+      doi: "10.1038/s41559-017-0446-6"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastqs:
+      type: file
+      description: Input FASTQ files
+      pattern: "*.{fastq.gz,fq.gz}"
+  - mode:
+      type: string
+      description: Program mode
+      pattern: "Unknown|BlastN|BlastP|BlastX|Classifier"
+  - index:
+      type: directory
+      description: Index/database directory from malt-build
+      pattern: "*/"
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - rma6:
+      type: file
+      description: MEGAN6 RMA6 file
+      pattern: "*.rma6"
+  - sam:
+      type: file
+      description: Alignment files in Tab, Text or MEGAN-compatible SAM format
+      pattern: "*.{tab,txt,sam}"
+  - log:
+      type: file
+      description: Log of verbose MALT stdout
+      pattern: "*-malt-run.log"
+
+authors:
+  - "@jfy133"

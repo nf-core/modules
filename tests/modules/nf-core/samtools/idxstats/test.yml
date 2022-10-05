@@ -1,0 +1,8 @@
+- name: samtools idxstats test_samtools_idxstats
+  command: nextflow run ./tests/modules/nf-core/samtools/idxstats -entry test_samtools_idxstats -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/idxstats/nextflow.config
+  tags:
+    - samtools/idxstats
+    - samtools
+  files:
+    - path: output/samtools/test.idxstats
+      md5sum: df60a8c8d6621100d05178c93fb053a2

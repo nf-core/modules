@@ -1,0 +1,47 @@
+name: bedtools_intersect
+description: Allows one to screen for overlaps between two sets of genomic features.
+keywords:
+  - bed
+  - intersect
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - intervals1:
+      type: file
+      description: BAM/BED/GFF/VCF
+      pattern: "*.{bam|bed|gff|vcf}"
+  - intervals2:
+      type: file
+      description: BAM/BED/GFF/VCF
+      pattern: "*.{bam|bed|gff|vcf}"
+  - extension:
+      type: value
+      description: Extension of the output file. It is set by the user and corresponds to the file format which depends on arguments (e. g., ".bed", ".bam", ".txt", etc.).
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - intersect:
+      type: file
+      description: File containing the description of overlaps found between the two features
+      pattern: "*.${extension}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Emiller88"
+  - "@sruthipsuresh"
+  - "@drpatelh"
+  - "@sidorov-si"

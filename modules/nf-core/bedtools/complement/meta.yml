@@ -1,0 +1,43 @@
+name: bedtools_complement
+description: Returns all intervals in a genome that are not covered by at least one interval in the input BED/GFF/VCF file.
+keywords:
+  - bed
+  - complement
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/complement.html
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: Input BED file
+      pattern: "*.{bed}"
+  - sizes:
+      type: file
+      description: File which defines the chromosome lengths for a given genome
+      pattern: "*.{sizes}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: Bed file with all genomic intervals that are not covered by at least one record from the input file.
+      pattern: "*.{bed}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Emiller88"
+  - "@sruthipsuresh"
+  - "@drpatelh"

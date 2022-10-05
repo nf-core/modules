@@ -1,0 +1,61 @@
+name: cmseq_polymut
+description: Calculates polymorphic site rates over protein coding genes
+keywords:
+  - polymut
+  - polymorphic
+  - mags
+  - assembly
+  - polymorphic sites
+  - estimation
+  - protein coding genes
+  - cmseq
+  - bam
+  - coverage
+tools:
+  - cmseq:
+      description: Set of utilities on sequences and BAM files
+      homepage: https://github.com/SegataLab/cmseq
+      documentation: https://github.com/SegataLab/cmseq
+      tool_dev_url: https://github.com/SegataLab/cmseq
+      licence: ["MIT License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - gff:
+      type: file
+      description: GFF file used to extract protein-coding genes
+      pattern: "*.gff"
+  - fasta:
+      type: file
+      description: Optional fasta file to run on a subset of references in the BAM file.
+      pattern: .{fa,fasta,fas,fna}
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - polymut:
+      type: file
+      description: Polymut report in `.txt` format.
+      pattern: "*.txt"
+
+authors:
+  - "@maxibor"

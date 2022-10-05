@@ -1,0 +1,48 @@
+name: seqkit_pair
+description: match up paired-end reads from two fastq files
+keywords:
+  - seqkit
+  - pair
+tools:
+  - seqkit:
+      description: Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://bioinf.shenwei.me/seqkit/usage/
+      documentation: https://bioinf.shenwei.me/seqkit/usage/
+      tool_dev_url: https://github.com/shenwei356/seqkit/
+      doi: "10.1371/journal.pone.0163962"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input paired-end FastQ files.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Paired fastq reads
+      pattern: "*.paired.fastq.gz"
+  - unpaired_reads:
+      type: file
+      description: Unpaired reads (optional)
+      pattern: "*.unpaired.fastq.gz"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"

@@ -1,0 +1,58 @@
+name: dedup
+description: DeDup is a tool for read deduplication in paired-end read merging (e.g. for ancient DNA experiments).
+keywords:
+  - dedup
+  - deduplication
+  - pcr duplicates
+  - ancient DNA
+  - paired-end
+  - bam
+tools:
+  - dedup:
+      description: DeDup is a tool for read deduplication in paired-end read merging (e.g. for ancient DNA experiments).
+      homepage: https://github.com/apeltzer/DeDup
+      documentation: https://dedup.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/apeltzer/DeDup
+      doi: "10.1186/s13059-016-0918-z"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/SAM file
+      pattern: "*.{bam,sam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Deduplicated BAM file
+      pattern: "*_rmdup.bam"
+  - json:
+      type: file
+      description: JSON file for MultiQC
+      pattern: "*.json"
+  - hist:
+      type: file
+      description: Histogram data of amount of deduplication
+      pattern: "*.hist"
+  - log:
+      type: file
+      description: Dedup log information
+      pattern: "*log"
+
+authors:
+  - "@jfy133"

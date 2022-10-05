@@ -1,0 +1,43 @@
+name: pairtools_flip
+description: Flip pairs to get an upper-triangular matrix
+keywords:
+  - flip
+tools:
+  - pairtools:
+      description: CLI tools to process mapped Hi-C data
+      homepage: http://pairtools.readthedocs.io/
+      documentation: http://pairtools.readthedocs.io/
+      tool_dev_url: https://github.com/mirnylab/pairtools
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sam:
+      type: file
+      description: pair file
+  - chromsizes:
+      type: file
+      description: chromosome size file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - flip:
+      type: file
+      description: output file of flip
+      pattern: "*.{flip.gz}"
+
+authors:
+  - "@jianhong"

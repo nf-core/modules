@@ -1,0 +1,47 @@
+name: nanolyse
+description: DNA contaminant removal using NanoLyse
+keywords:
+  - contaminant_removal
+tools:
+  - nanolyse:
+      description: |
+        DNA contaminant removal using NanoLyse
+      homepage: https://github.com/wdecoster/nanolyse
+      documentation: https://github.com/wdecoster/nanolyse#nanolyse
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: |
+        Basecalled reads in FASTQ.GZ format
+      pattern: "*.fastq.gz"
+  - fasta:
+      type: file
+      description: |
+        A reference fasta file against which to filter.
+      pattern: "*.fasta"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Reads with contaminants removed in FASTQ format
+      pattern: "*.fastq.gz"
+  - log:
+      type: file
+      description: Log of the Nanolyse run.
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@yuukiiwa"

@@ -1,0 +1,58 @@
+name: bwa_sampe
+description: Convert paired-end bwa SA coordinate files to SAM format
+keywords:
+  - bwa
+  - aln
+  - short-read
+  - align
+  - reference
+  - fasta
+  - map
+  - sam
+  - bam
+tools:
+  - bwa:
+      description: |
+        BWA is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: http://bio-bwa.sourceforge.net/
+      documentation: http://bio-bwa.sourceforge.net/
+      doi: "10.1093/bioinformatics/btp324"
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information.
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTQ files specified alongside meta in input channel.
+      pattern: "*.{fastq,fq}.gz"
+  - sai:
+      type: file
+      description: SAI file specified alongside meta and reads in input channel.
+      pattern: "*.sai"
+  - index:
+      type: directory
+      description: Directory containing BWA index files (amb,ann,bwt,pac,sa) from BWA_INDEX
+      pattern: "bwa/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+
+authors:
+  - "@jfy133"

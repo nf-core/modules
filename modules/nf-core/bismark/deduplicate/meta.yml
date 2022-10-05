@@ -1,0 +1,52 @@
+name: bismark_deduplicate
+description: |
+  Removes alignments to the same position in the genome
+  from the Bismark mapping output.
+keywords:
+  - bismark
+  - 3-letter genome
+  - map
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bam
+tools:
+  - bismark:
+      description: |
+        Bismark is a tool to map bisulfite treated sequencing reads
+        and perform methylation calling in a quick and easy-to-use fashion.
+      homepage: https://github.com/FelixKrueger/Bismark
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      doi: 10.1093/bioinformatics/btr167
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file containing read alignments
+      pattern: "*.{bam}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Deduplicated output BAM file containing read alignments
+      pattern: "*.{deduplicated.bam}"
+  - report:
+      type: file
+      description: Bismark deduplication reports
+      pattern: "*.{deduplication_report.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@phue"

@@ -1,0 +1,75 @@
+name: gatk_create_som_pon
+description: Perform variant calling on a set of normal samples using mutect2 panel of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then use this to create a panel of normals using createsomaticpanelofnormals.
+keywords:
+  - gatk4
+  - mutect2
+  - genomicsdbimport
+  - createsomaticpanelofnormals
+  - variant_calling
+  - genomicsdb_workspace
+  - panel_of_normals
+modules:
+  - gatk4/mutect2
+  - gatk4/genomicsdbimport
+  - gatk4/createsomaticpanelofnormals
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - input:
+      type: list
+      description: list of BAM files, also able to take CRAM as an input
+      pattern: "[ *.{bam/cram} ]"
+  - input_index:
+      type: list
+      description: list of BAM file indexes, also able to take CRAM indexes as an input
+      pattern: "[ *.{bam.bai/cram.crai} ]"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
+  - pon_name:
+      type: String
+      Description: name to be used for the genomicsdb workspace and panel of normals as meta_id has the individual sample names and a name for the combined files is reuired here.
+      pattern: "example_name"
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - mutect2_vcf:
+      type: list
+      description: List of compressed vcf files to be used to make the gendb workspace
+      pattern: "[ *.vcf.gz ]"
+  - mutect2_index:
+      type: list
+      description: List of indexes of mutect2_vcf files
+      pattern: "[ *vcf.gz.tbi ]"
+  - mutect2_stats:
+      type: list
+      description: List of stats files that pair with mutect2_vcf files
+      pattern: "[ *vcf.gz.stats ]"
+  - genomicsdb:
+      type: directory
+      description: Directory containing the files that compose the genomicsdb workspace.
+      pattern: "path/name_of_workspace"
+  - pon_vcf:
+      type: file
+      description: Panel of normal as compressed vcf file
+      pattern: "*.vcf.gz"
+  - pon_index:
+      type: file
+      description: Index of pon_vcf file
+      pattern: "*vcf.gz.tbi"
+authors:
+  - "@GCJMackenzie"

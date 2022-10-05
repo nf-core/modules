@@ -1,0 +1,34 @@
+name: bedtools_getfasta
+description: extract sequences in a FASTA file based on intervals defined in a feature file.
+keywords:
+  - bed
+  - fasta
+  - getfasta
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+      licence: ["MIT"]
+input:
+  - bed:
+      type: file
+      description: Bed feature file
+      pattern: "*.{bed}"
+  - fasta:
+      type: file
+      description: Input fasta file
+      pattern: "*.{fa,fasta}"
+
+output:
+  - fasta:
+      type: file
+      description: Output fasta file with extracted sequences
+      pattern: "*.{fa}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"

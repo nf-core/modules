@@ -1,0 +1,77 @@
+name: lima
+description: lima - The PacBio Barcode Demultiplexer and Primer Remover
+keywords:
+  - sort
+tools:
+  - lima:
+      description: lima - The PacBio Barcode Demultiplexer and Primer Remover
+      homepage: https://github.com/PacificBiosciences/pbbioconda
+      documentation: https://lima.how/
+      tool_dev_url: https://github.com/pacificbiosciences/barcoding/
+      doi: ""
+      licence: ["BSD-3-Clause-Clear"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - ccs:
+      type: file
+      description: A BAM or fasta or fasta.gz or fastq or fastq.gz file of subreads or ccs
+      pattern: "*.{bam,fasta,fasta.gz,fastq,fastq.gz}"
+  - primers:
+      type: file
+      description: Fasta file, sequences of primers
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: A bam file of ccs purged of primers
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: Pacbio index file of ccs purged of primers
+      pattern: "*.bam"
+  - xml:
+      type: file
+      description: An XML file representing a set of a particular sequence data type such as subreads, references or aligned subreads.
+      pattern: "*.xml"
+  - json:
+      type: file
+      description: A metadata json file
+      pattern: "*.json"
+  - clips:
+      type: file
+      description: A fasta file of clipped primers
+      pattern: "*.clips"
+  - counts:
+      type: file
+      description: A tabulated file of describing pairs of primers
+      pattern: "*.counts"
+  - guess:
+      type: file
+      description: A second tabulated file of describing pairs of primers (no doc available)
+      pattern: "*.guess"
+  - report:
+      type: file
+      description: A tab-separated file about each ZMW, unfiltered
+      pattern: "*.report"
+  - summary:
+      type: file
+      description: This file shows how many ZMWs have been filtered, how ZMWs many are same/different, and how many reads have been filtered.
+      pattern: "*.summary"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sguizard"

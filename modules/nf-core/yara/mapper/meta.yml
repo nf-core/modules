@@ -1,0 +1,51 @@
+name: yara_mapper
+description: Align reads to a reference genome using YARA
+keywords:
+  - align
+  - genome
+  - reference
+tools:
+  - yara:
+      description: Yara is an exact tool for aligning DNA sequencing reads to reference genomes.
+      homepage: https://github.com/seqan/seqan
+      documentation: https://github.com/seqan/seqan
+      tool_dev_url: https://github.com/seqan/seqan
+      doi: ""
+      licence: ["https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - index:
+      type: file
+      description: YARA genome index files
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Sorted BAM file
+      pattern: "*.{bam}"
+  - bai:
+      type: file
+      description: Sorted BAM file index
+      pattern: "*.{bai}"
+
+authors:
+  - "@apeltzer"

@@ -1,0 +1,40 @@
+name: pairtools_sort
+description: Sort a .pairs/.pairsam file
+keywords:
+  - sort
+tools:
+  - pairtools:
+      description: CLI tools to process mapped Hi-C data
+      homepage: http://pairtools.readthedocs.io/
+      documentation: http://pairtools.readthedocs.io/
+      tool_dev_url: https://github.com/mirnylab/pairtools
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: A pairs file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sorted:
+      type: file
+      description: Sorted pairs file
+      pattern: "*.{pairs.gz}"
+
+authors:
+  - "@jianhong"

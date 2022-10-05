@@ -1,0 +1,38 @@
+name: raxmlng
+description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
+keywords:
+  - phylogeny
+  - newick
+  - maximum likelihood
+tools:
+  - raxmlng:
+      description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
+      homepage: https://github.com/amkozlov/raxml-ng
+      documentation: https://github.com/amkozlov/raxml-ng/wiki
+      tool_dev_url: https://github.com/amkozlov/raxml-ng
+      doi: doi.org/10.1093/bioinformatics/btz305
+      licence: ["GPL v2-or-later"]
+
+input:
+  - alignment:
+      type: file
+      description: A FASTA format multiple sequence alignment file
+      pattern: "*.{fasta,fas,fa,mfa}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - phylogeny:
+      type: file
+      description: A phylogeny in Newick format
+      pattern: "*.{raxml.bestTree}"
+  - phylogeny_bootstrapped:
+      type: file
+      description: A phylogeny in Newick format with bootstrap values
+      pattern: "*.{raxml.support}"
+
+authors:
+  - "@avantonder"
+  - "@aunderwo"
