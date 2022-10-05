@@ -16,7 +16,7 @@ workflow test_gatk4_printsvevidence {
             []
         ],
         [
-            [ id:'tumour' ], // meta map
+            [ id:'tumor' ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
             [],
@@ -65,7 +65,7 @@ workflow test_gatk4_printsvevidence_bed_no_fasta {
             []
         ],
         [
-            [ id:'tumour', single_end:false ], // meta map
+            [ id:'tumor', single_end:false ], // meta map
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
             [],
