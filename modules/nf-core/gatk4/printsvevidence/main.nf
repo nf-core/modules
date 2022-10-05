@@ -15,9 +15,9 @@ process GATK4_PRINTSVEVIDENCE {
     path dict
 
     output:
-    path "*.txt.gz"       , emit: printed_evidence
-    path "*.txt.gz.tbi"   , emit: printed_evidence_index
-    path "versions.yml"   , emit: versions
+    tuple val(meta), path("*.txt.gz")       , emit: printed_evidence
+    tuple val(meta), path("*.txt.gz.tbi")   , emit: printed_evidence_index
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
