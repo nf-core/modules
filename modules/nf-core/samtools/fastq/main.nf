@@ -12,7 +12,6 @@ process SAMTOOLS_FASTQ {
     path(fasta)
     val(interleave)
 
-
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     path  "versions.yml"               , emit: versions
@@ -46,6 +45,7 @@ process SAMTOOLS_FASTQ {
         $args \\
         --threads $task.cpus \\
         $endedness
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
