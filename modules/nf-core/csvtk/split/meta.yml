@@ -1,0 +1,51 @@
+name: csvtk_split
+description: Splits CSV/TSV into multiple files according to column values
+keywords:
+  - split
+  - csv
+  - tsv
+tools:
+  - csvtk:
+      description: CSVTK is a cross-platform, efficient and practical CSV/TSV toolkit
+        that allows rapid data investigation and manipulation.
+      homepage: https://bioinf.shenwei.me/csvtk/
+      documentation: https://bioinf.shenwei.me/csvtk/
+      tool_dev_url: https://github.com/shenwei356/csvtk
+      doi: ""
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - csv:
+      type: file
+      description: CSV/TSV file
+      pattern: "*.{csv,tsv}"
+  - in_format:
+      type: string
+      description: Input format (csv, tab, or a delimiting character)
+      pattern: "*"
+  - out_format:
+      type: string
+      description: Output format (csv, tab, or a delimiting character)
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - split_csv:
+      type: file
+      description: Split CSV/TSV file
+      pattern: "*.{csv,tsv}"
+
+authors:
+  - "@SusiJo"

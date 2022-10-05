@@ -1,0 +1,44 @@
+name: flash
+description: Perform merging of mate paired-end sequencing reads
+keywords:
+  - sort
+  - reads merging
+  - merge mate pairs
+tools:
+  - flash:
+      description: |
+        Merge mates from fragments that are shorter than twice the read length
+      homepage: https://ccb.jhu.edu/software/FLASH/
+      documentation: {}
+      doi: 10.1093/bioinformatics/btr507
+      licence: ["GPL v3+"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 2; i.e., paired-end data.
+      pattern: "*fastq.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: The merged fastq reads
+      pattern: "*fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@Erkison"

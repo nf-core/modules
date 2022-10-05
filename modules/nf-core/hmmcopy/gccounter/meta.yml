@@ -1,0 +1,32 @@
+name: hmmcopy_gccounter
+description: gcCounter function from HMMcopy utilities, used to generate GC content in non-overlapping windows from a fasta reference
+keywords:
+  - hmmcopy
+  - gccounter
+  - cnv
+tools:
+  - hmmcopy:
+      description: C++ based programs for analyzing BAM files and preparing read counts -- used with bioconductor-hmmcopy
+      homepage: https://github.com/shahcompbio/hmmcopy_utils
+      documentation: https://github.com/shahcompbio/hmmcopy_utils
+      tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
+      doi: ""
+      licence: ["GPL v3"]
+
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - wig:
+      type: file
+      description: wig file containing gc content of each window of the genome
+      pattern: "*.{gc.wig}"
+
+authors:
+  - "@sppearce"

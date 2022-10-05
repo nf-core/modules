@@ -1,18 +1,19 @@
 - name: align bowtie2 single-end
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_single_end -c tests/config/nextflow.config
   tags:
-    - subworkflows/align_bowtie2
-    - subworkflows/bam_sort_samtools
-    - subworkflows/bam_stats_samtools
+    - subworkflows
+    # - subworkflows/align_bowtie2
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
     # Modules
-    - bowtie2
-    - bowtie2/align
-    - samtools
-    - samtools/index
-    - samtools/sort
-    - samtools/stats
-    - samtools/idxstats
-    - samtools/flagstat
+    # - bowtie2
+    # - bowtie2/align
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
@@ -37,23 +38,24 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: e16eb632f7f462514b0873c7ac8ac905
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: 2d837cd72432cd856fca70d33f02ffb5
+      md5sum: d9eb909c2cde69d6ae83999a72d770d7
 
 - name: align bowtie2 paired-end
   command: nextflow run ./tests/subworkflows/nf-core/align_bowtie2 -entry test_align_bowtie2_paired_end -c tests/config/nextflow.config
   tags:
-    - subworkflows/align_bowtie2
-    - subworkflows/bam_sort_samtools
-    - subworkflows/bam_stats_samtools
+    - subworkflows
+    # - subworkflows/align_bowtie2
+    # - subworkflows/bam_sort_samtools
+    # - subworkflows/bam_stats_samtools
     # Modules
-    - bowtie2
-    - bowtie2/align
-    - samtools
-    - samtools/index
-    - samtools/sort
-    - samtools/stats
-    - samtools/idxstats
-    - samtools/flagstat
+    # - bowtie2
+    # - bowtie2/align
+    # - samtools
+    # - samtools/index
+    # - samtools/sort
+    # - samtools/stats
+    # - samtools/idxstats
+    # - samtools/flagstat
   files:
     - path: ./output/bowtie2/test.bam
     - path: ./output/bowtie2/test.bowtie2.log
@@ -78,4 +80,4 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: 29ff2fa56d35b2a47625b8f517f1a947
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: 98aa88a39d26244c89bd4e577953fb48
+      md5sum: d0c7a1a4fbd2c1aed437ca419a9e344f

@@ -1,0 +1,53 @@
+name: gunc_run
+description: Detection of Chimerism and Contamination in Prokaryotic Genomes
+keywords:
+  - prokaryote
+  - assembly
+  - genome
+  - quality control
+  - chimeras
+tools:
+  - gunc:
+      description: Python package for detection of chimerism and contamination in prokaryotic genomes.
+      homepage: https://grp-bork.embl-community.io/gunc/
+      documentation: https://grp-bork.embl-community.io/gunc/
+      tool_dev_url: https://github.com/grp-bork/gunc
+      doi: "10.1186/s13059-021-02393-0"
+      licence: ["GNU General Public v3 or later (GPL v3+)"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file containing contig (bins)
+      pattern: "*.fa"
+  - db:
+      type: file
+      description: GUNC database file
+      pattern: "*.dmnd"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - maxcss_levels_tsv:
+      type: file
+      description: Output file with scores for a taxonomic level with the highest CSS score
+      pattern: "*.tsv"
+  - all_levels_tsv:
+      type: file
+      description: Optional output file with results for each taxonomic level
+      pattern: "*.tsv"
+
+authors:
+  - "@jfy133"

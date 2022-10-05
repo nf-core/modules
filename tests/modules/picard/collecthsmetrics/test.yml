@@ -1,8 +1,0 @@
-- name: picard collecthsmetrics test_picard_collecthsmetrics
-  command: nextflow run tests/modules/picard/collecthsmetrics -entry test_picard_collecthsmetrics -c tests/config/nextflow.config
-  tags:
-    - picard
-    - picard/collecthsmetrics
-  files:
-    # The file can't be md5'd consistently
-    - path: output/picard/test_collecthsmetrics.txt

@@ -1,0 +1,42 @@
+name: genmap_mappability
+description: create mappability file for a genome
+keywords:
+  - mappability
+tools:
+  - genmap:
+      description: Ultra-fast computation of genome mappability.
+      homepage: https://github.com/cpockrandt/genmap
+      documentation: https://github.com/cpockrandt/genmap
+      tool_dev_url: https://github.com/cpockrandt/genmap
+      doi: "10.1093/bioinformatics/btaa222"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fasta,fa}"
+  - index:
+      type: file
+      description: index file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - wig:
+      type: file
+      description: genmap wig mappability file
+      pattern: "*.wig"
+  - bedgraph:
+      type: file
+      description: genmap bedgraph mappability file
+      pattern: "*.bedgraph"
+  - txt:
+      type: file
+      description: genmap text mappability file
+      pattern: "*.txt"
+
+authors:
+  - "@jianhong"

@@ -1,0 +1,76 @@
+name: leehom
+description: Bayesian reconstruction of ancient DNA fragments
+keywords:
+  - ancient DNA
+  - adapter removal
+  - clipping
+  - trimming
+  - merging
+  - collapsing
+  - preprocessing
+  - bayesian
+tools:
+  - leehom:
+      description: Bayesian reconstruction of ancient DNA fragments
+      homepage: "https://grenaud.github.io/leeHom/"
+      documentation: "https://github.com/grenaud/leeHom"
+      tool_dev_url: "https://github.com/grenaud/leeHom"
+      doi: "10.1093/nar/gku699"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: Unaligned BAM or one or two gzipped FASTQ file(s)
+      pattern: "*.{bam,fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - fq_pass:
+      type: file
+      description: Trimmed and merged FASTQ
+      pattern: "*.fq.gz"
+  - fq_fail:
+      type: file
+      description: Failed trimmed and merged FASTQs
+      pattern: "*.fail.fq.gz"
+  - unmerged_r1_fq_pass:
+      type: file
+      description: Passed unmerged R1 FASTQs
+      pattern: "*.r1.fq.gz"
+  - unmerged_r1_fq_fail:
+      type: file
+      description: Failed unmerged R1 FASTQs
+      pattern: "*.r1.fail.fq.gz"
+  - unmerged_r2_fq_pass:
+      type: file
+      description: Passed unmerged R2 FASTQs
+      pattern: "*.r2.fq.gz"
+  - unmerged_r2_fq_pass:
+      type: file
+      description: Failed unmerged R2 FASTQs
+      pattern: "*.r2.fail.fq.gz"
+  - log:
+      type: file
+      description: Log file of command
+      pattern: "*.log"
+
+authors:
+  - "@jfy133"

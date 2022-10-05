@@ -1,0 +1,51 @@
+name: bcftools_reheader
+description: Reheader a VCF file
+keywords:
+  - reheader
+  - vcf
+  - update header
+tools:
+  - reheader:
+      description: |
+        Modify header of VCF/BCF files, change sample names.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
+      doi: 10.1093/gigascience/giab008
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF/BCF file
+      pattern: "*.{vcf.gz,vcf,bcf}"
+  - fai:
+      type: file
+      description: Fasta index to update header sequences with
+      pattern: "*.{fai}"
+  - header:
+      type: file
+      description: New header to add to the VCF
+      pattern: "*.{header.txt}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: VCF with updated header
+      pattern: "*.{vcf.gz}"
+
+authors:
+  - "@bjohnnyd"

@@ -1,0 +1,32 @@
+name: hmmcopy_generatemap
+description: Perl script (generateMap.pl) generates the mappability of a genome given a certain size of reads, for input to hmmcopy mapcounter. Takes a very long time on large genomes, is not parallelised at all.
+keywords:
+  - hmmcopy
+  - mapcounter
+  - mappability
+tools:
+  - hmmcopy:
+      description: C++ based programs for analyzing BAM files and preparing read counts -- used with bioconductor-hmmcopy
+      homepage: https://github.com/shahcompbio/hmmcopy_utils
+      documentation: https://github.com/shahcompbio/hmmcopy_utils
+      tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
+      doi: ""
+      licence: ["GPL v3"]
+
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bigwig:
+      type: file
+      description: bigwig file containing the mappability of the genome
+      pattern: "*.{map.bw}"
+
+authors:
+  - "@sppearce"

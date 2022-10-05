@@ -1,0 +1,41 @@
+name: dshbio_exportsegments
+description: Export assembly segment sequences in GFA 1.0 format to FASTA format
+keywords:
+  - gfa
+  - assembly
+  - segment
+tools:
+  - dshbio:
+      description: |
+        Reads, features, variants, assemblies, alignments, genomic range trees, pangenome
+        graphs, and a bunch of random command line tools for bioinformatics. LGPL version 3
+        or later.
+      homepage: https://github.com/heuermh/dishevelled-bio
+      documentation: https://github.com/heuermh/dishevelled-bio
+      licence: ["LGPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gfa:
+      type: file
+      description: Assembly segments in uncompressed or compressed GFA 1.0 format
+      pattern: "*.{gfa|gfa.bgz|gfa.gz|gfa.zst}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Assembly segment sequences in gzipped FASTA format
+      pattern: "*.{fa.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@heuermh"

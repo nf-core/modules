@@ -1,0 +1,44 @@
+name: pairtools_select
+description: Select pairs according to given condition by options.args
+keywords:
+  - select
+tools:
+  - pairtools:
+      description: CLI tools to process mapped Hi-C data
+      homepage: http://pairtools.readthedocs.io/
+      documentation: http://pairtools.readthedocs.io/
+      tool_dev_url: https://github.com/mirnylab/pairtools
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: pairs file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - selected:
+      type: file
+      description: Selected pairs file
+      pattern: "*.{selected.pairs.gz}"
+  - unselected:
+      type: file
+      description: Rest pairs file.
+      pattern: "*.{unselected.pairs.gz}"
+
+authors:
+  - "@jianhong"

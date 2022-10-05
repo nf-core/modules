@@ -1,0 +1,7 @@
+- name: pangolin
+  command: nextflow run ./tests/modules/nf-core/pangolin -entry test_pangolin -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pangolin/nextflow.config
+  tags:
+    - pangolin
+  files:
+    - path: ./output/pangolin/test.pangolin.csv
+      md5sum: 3484156c2f2e2e638431be7934cfc5b7

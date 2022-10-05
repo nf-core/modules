@@ -1,0 +1,66 @@
+name: amps
+description: Post-processing script of the MaltExtract component of the HOPS package
+keywords:
+  - malt
+  - MaltExtract
+  - HOPS
+  - amps
+  - alignment
+  - metagenomics
+  - ancient DNA
+  - aDNA
+  - palaeogenomics
+  - archaeogenomics
+  - microbiome
+  - authentication
+  - damage
+  - edit distance
+  - post Post-processing
+  - visualisation
+tools:
+  - amps:
+      description: Post-processing script of the MaltExtract tool for ancient metagenomics
+      homepage: "https://github.com/rhuebler/HOPS"
+      documentation: "https://github.com/keyfm/amps"
+      tool_dev_url: "https://github.com/keyfm/amps"
+      doi: "10.1186/s13059-019-1903-0"
+      licence: ["GPL >=3"]
+
+input:
+  - maltextract_results:
+      type: directory
+      description: MaltExtract output directory
+      pattern: "results/"
+  - taxon_list:
+      type: file
+      description: List of target taxa to evaluate used in MaltExtract
+      pattern: "*.txt"
+  - filter:
+      type: string
+      description: The filter mode used in MaltExtract
+      pattern: "def_anc|default|scan|ancient|crawl"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: Candidate summary heatmap in MultiQC compatible JSON format
+      pattern: "heatmap_overview_Wevid.json"
+  - summary_pdf:
+      type: file
+      description: Candidate summary heatmap in PDF format
+      pattern: "heatmap_overview_Wevid.pdf"
+  - tsv:
+      type: file
+      description: Candidate summary heatmap in TSV format
+      pattern: "heatmap_overview_Wevid.tsv"
+  - candidate_pdfs:
+      type: directory
+      description: Directory of per sample output PDFs organised by reference
+      pattern: "pdf_candidate_profiles/"
+
+authors:
+  - "@jfy133"

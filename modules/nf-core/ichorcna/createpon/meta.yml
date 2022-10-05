@@ -1,0 +1,57 @@
+name: ichorcna_createpon
+description: ichorCNA is an R package for calculating copy number alteration from (low-pass) whole genome sequencing, particularly for use in cell-free DNA. This module generates a panel of normals
+keywords:
+  - ichorcna
+  - cnv
+  - cna
+  - cfDNA
+  - wgs
+  - panel_of_normals
+tools:
+  - ichorcna:
+      description: Estimating tumor fraction in cell-free DNA from ultra-low-pass whole genome sequencing.
+      homepage: https://github.com/broadinstitute/ichorCNA
+      documentation: https://github.com/broadinstitute/ichorCNA/wiki
+      tool_dev_url: https://github.com/broadinstitute/ichorCNA
+      doi: "10.1038/s41467-017-00965-y"
+      licence: ["GPL v3"]
+
+input:
+  - wigs:
+      type: file
+      description: Any number of hmmcopy/readCounter processed .wig files giving the number of reads in the sample, in each genomic window. These will be averaged over to generate the panel of normals.
+      pattern: "*.{wig}"
+
+  - gc_wig:
+      type: file
+      description: hmmcopy/gcCounter processed .wig file giving the gc content in the reference fasta, in each genomic window
+      pattern: "*.{wig}"
+
+  - map_wig:
+      type: file
+      description: hmmcopy/mapCounter processed .wig file giving the mapability in the reference fasta, in each genomic window
+      pattern: "*.{wig}"
+
+  - centromere:
+      type: file
+      description: Text file giving centromere locations of each genome, to exclude these windows
+      pattern: "*.{txt}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - rds:
+      type: file
+      description: R data file (.rds) containing panel of normals data, medians of each bin.
+      pattern: "*.rds"
+
+  - txt:
+      type: file
+      description: Text file containing panel of normals data, medians of each bin.
+      pattern: "*.txt"
+
+authors:
+  - "@sppearce"

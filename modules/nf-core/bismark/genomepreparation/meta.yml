@@ -1,0 +1,37 @@
+name: bismark_genomepreparation
+description: |
+  Converts a specified reference genome into two different bisulfite
+  converted versions and indexes them for alignments.
+keywords:
+  - bismark
+  - 3-letter genome
+  - index
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - fasta
+tools:
+  - bismark:
+      description: |
+        Bismark is a tool to map bisulfite treated sequencing reads
+        and perform methylation calling in a quick and easy-to-use fashion.
+      homepage: https://github.com/FelixKrueger/Bismark
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      doi: 10.1093/bioinformatics/btr167
+      licence: ["GPL-3.0-or-later"]
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+output:
+  - index:
+      type: dir
+      description: Bismark genome index directory
+      pattern: "BismarkIndex"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@phue"

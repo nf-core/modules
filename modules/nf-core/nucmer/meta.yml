@@ -1,0 +1,50 @@
+name: nucmer
+description: NUCmer is a pipeline for the alignment of multiple closely related nucleotide sequences.
+keywords:
+  - align
+  - nucleotide
+tools:
+  - nucmer:
+      description: NUCmer is a pipeline for the alignment of multiple closely related nucleotide sequences.
+      homepage: http://mummer.sourceforge.net/
+      documentation: http://mummer.sourceforge.net/
+      tool_dev_url: http://mummer.sourceforge.net/
+      doi: "https://doi.org/10.1186/gb-2004-5-2-r12"
+      licence: ["The Artistic License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ref:
+      type: file
+      description: FASTA file of the reference sequence
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+  - query:
+      type: file
+      description: FASTA file of the query sequence
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - delta:
+      type: file
+      description: File containing coordinates of matches between reference and query
+  - coords:
+      type: file
+      description: NUCmer1.1 coords output file
+      pattern: "*.{coords}"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"

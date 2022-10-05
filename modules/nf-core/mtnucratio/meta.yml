@@ -1,0 +1,54 @@
+name: mtnucratio
+description: A small Java tool to calculate ratios between MT and nuclear sequencing reads in a given BAM file.
+keywords:
+  - mtnucratio
+  - ratio
+  - reads
+  - bam
+  - mitochondrial to nuclear ratio
+  - mitochondria
+  - statistics
+tools:
+  - mtnucratio:
+      description: A small tool to determine MT to Nuclear ratios for NGS data.
+      homepage: https://github.com/apeltzer/MTNucRatioCalculator
+      documentation: https://github.com/apeltzer/MTNucRatioCalculator
+      tool_dev_url: https://github.com/apeltzer/MTNucRatioCalculator
+      doi: "10.1186/s13059-016-0918-z"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: (coordinate) sorted BAM/SAM file
+      pattern: "*.{bam,sam}"
+  - mt_id:
+      type: string
+      description: Identifier of the contig/chromosome of interest (e.g. chromosome, contig) as in the aligned against reference FASTA file, e.g. mt or chrMT for mitochondria
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - mtnucratio:
+      type: file
+      description: Text file containing metrics (mtreads, mt_cov_avg, nucreads, nuc_cov_avg, mt_nuc_ratio)
+      pattern: "*.mtnucratio"
+  - json:
+      type: file
+      description: JSON file, containing metadata map with sample name, tool name and version, and metrics as in txt file
+      pattern: "*.json"
+
+authors:
+  - "@louperelo"

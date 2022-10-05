@@ -1,0 +1,42 @@
+name: seqtk_seq
+description: Common transformation operations on FASTA or FASTQ files.
+keywords:
+  - seq
+tools:
+  - seqtk:
+      description: Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. The seqtk seq command enables common transformation operations on FASTA or FASTQ files.
+      homepage: https://github.com/lh3/seqtk
+      documentation: https://docs.csc.fi/apps/seqtk/
+      tool_dev_url: https://github.com/lh3/seqtk
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - sequences:
+      type: file
+      description: A FASTQ or FASTA file
+      pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz, fna, fna.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sequences:
+      type: file
+      description: FASTQ/FASTA file containing renamed sequences
+      pattern: "*.{fastq.gz, fasta.gz}"
+
+authors:
+  - "@hseabolt"
+  - "@mjcipriano"
+  - "@sateeshperi"
