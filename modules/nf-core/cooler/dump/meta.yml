@@ -1,0 +1,44 @@
+name: cooler_dump
+description: Dump a cooler’s data to a text stream.
+keywords:
+  - dump
+tools:
+  - cooler:
+      description: Sparse binary format for genomic interaction matrices
+      homepage: https://cooler.readthedocs.io/en/latest/index.html
+      documentation: https://cooler.readthedocs.io/en/latest/index.html
+      tool_dev_url: https://github.com/open2c/cooler
+      doi: "10.1093/bioinformatics/btz540"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - cool:
+      type: file
+      description: Path to COOL file
+      pattern: "*.{cool,mcool}"
+  - resolution:
+      type: value
+      description: Resolution
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bedpe:
+      type: file
+      description: Output text file
+      pattern: "*.bedpe"
+
+authors:
+  - "@jianhong"

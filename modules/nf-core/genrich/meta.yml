@@ -1,0 +1,79 @@
+name: genrich
+description: Peak-calling for ChIP-seq and ATAC-seq enrichment experiments
+keywords:
+  - peak-calling
+  - ChIP-seq
+  - ATAC-seq
+tools:
+  - genrich:
+      description: |
+        Genrich is a peak-caller for genomic enrichment assays (e.g. ChIP-seq, ATAC-seq).
+        It analyzes alignment files generated following the assay and produces a file
+        detailing peaks of significant enrichment.
+      homepage: https://github.com/jsh58/Genrich
+      documentation: https://github.com/jsh58/Genrich#readme
+      tool_dev_url: https://github.com/jsh58/Genrich
+      doi: ""
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - treatment_bam:
+      type: file
+      description: Coordinate sorted BAM/SAM file from treatment sample
+      pattern: "*.{bam,sam}"
+  - control_bam:
+      type: file
+      description: Coordinate sorted BAM/SAM file from control sample
+      pattern: "*.{bam,sam}"
+  - blacklist_bed:
+      type: file
+      description: Bed file containing genomic intervals to exclude from the analysis
+      pattern: "*.{bed}"
+  - save_pvalues:
+      type: boolean
+      description: Create bedgraph-ish file for p/q-values file
+  - save_pileup:
+      type: boolean
+      description: Create bedgraph-ish file for pileups and p-values
+  - save_bed:
+      type: boolean
+      description: Create BED file for reads/fragments/intervals
+  - save_duplicates:
+      type: boolean
+      description: Create PCR duplicates file (only works if -r option is set)
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - peaks:
+      type: file
+      description: Output file is in ENCODE narrowPeak format
+      pattern: "*.{narrowPeak}"
+  - bedgraph_pvalues:
+      type: file
+      description: bedGraph file containing p/q values
+      pattern: "*.{pvalues.bedGraph}"
+  - bedgraph_pileup:
+      type: file
+      description: bedGraph file containing pileups and p-values
+      pattern: "*.{pileup.bedGraph}"
+  - bed_intervals:
+      type: file
+      description: Bed file containing annotated intervals
+      pattern: "*.{intervals.bed}"
+  - duplicates:
+      type: file
+      description: Text output file containing intervals corresponding to PCR duplicates
+      pattern: "*.{intervals.txt}"
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+authors:
+  - "@JoseEspinosa"

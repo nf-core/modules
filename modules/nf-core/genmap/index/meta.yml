@@ -1,0 +1,31 @@
+name: genmap_index
+description: create index file for genmap
+keywords:
+  - index
+tools:
+  - genmap:
+      description: Ultra-fast computation of genome mappability.
+      homepage: https://github.com/cpockrandt/genmap
+      documentation: https://github.com/cpockrandt/genmap
+      tool_dev_url: https://github.com/cpockrandt/genmap
+      doi: "10.1093/bioinformatics/btaa222"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fasta,fa}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: index
+      description: Genmap index file
+      pattern: "{index}.*"
+
+authors:
+  - "@jianhong"

@@ -1,0 +1,50 @@
+name: metabat2_jgisummarizebamcontigdepths
+description: Depth computation per contig step of metabat2
+keywords:
+  - sort
+  - binning
+  - depth
+  - bam
+  - coverage
+  - de novo assembly
+tools:
+  - metabat2:
+      description: Metagenome binning
+      homepage: https://bitbucket.org/berkeleylab/metabat/src/master/
+      documentation: https://bitbucket.org/berkeleylab/metabat/src/master/
+      tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
+      doi: "10.7717/peerj.7359"
+      licence: ["BSD-3-clause-LBNL"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Sorted BAM file of reads aligned on the assembled contigs
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bam.bai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - depth:
+      type: file
+      description: Text file listing the coverage per contig
+      pattern: ".txt.gz"
+
+authors:
+  - "@maxibor"

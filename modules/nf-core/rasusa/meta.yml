@@ -1,0 +1,48 @@
+name: rasusa
+description: Randomly subsample sequencing reads to a specified coverage
+keywords:
+  - coverage
+  - depth
+  - subsampling
+tools:
+  - rasusa:
+      description: Randomly subsample sequencing reads to a specified coverage
+      homepage: https://github.com/mbhall88/rasusa
+      documentation: https://github.com/mbhall88/rasusa/blob/master/README.md
+      tool_dev_url: https://github.com/mbhall88/rasusa
+      doi: "10.5281/zenodo.3731394"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input paired-end FastQ files
+  - genome_size:
+      type: string
+      description: Genome size of the species
+  - depth_cutoff:
+      type: integer
+      description: Depth of coverage cutoff
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Reads with subsampled coverage
+      pattern: "*.fastq.gz"
+
+authors:
+  - "@thanhleviet"

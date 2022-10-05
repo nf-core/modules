@@ -1,8 +1,0 @@
-- name: snpeff test_snpeff
-  command: nextflow run ./tests/modules/snpeff -entry test_snpeff -c ./tests/config/nextflow.config -c ./tests/modules/snpeff/nextflow.config
-  tags:
-    - snpeff
-  files:
-    - path: output/snpeff/test.ann.vcf
-      md5sum: 42db84cb186e33c6992f9306627201ac
-    - path: output/snpeff/test.csv

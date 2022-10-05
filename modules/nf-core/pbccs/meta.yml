@@ -1,0 +1,67 @@
+name: pbccs
+description: Pacbio ccs - Generate Higly Accurate Single-Molecule Consensus Reads
+keywords:
+  - ccs
+tools:
+  - pbccs:
+      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads (HiFi Reads)
+      homepage: https://github.com/PacificBiosciences/pbbioconda
+      documentation: https://ccs.how/
+      tool_dev_url: https://github.com/PacificBiosciences/ccs
+      doi: ""
+      licence: ["BSD-3-Clause-Clear"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        id: id of the split file
+  - bam:
+      type: file
+      description: Raw subreads bam
+      pattern: "*.subreads.bam"
+  - pbi:
+      type: file
+      description: Pacbio BAM Index
+      pattern: "*.pbi"
+  - chunk_num:
+      -type: integer
+      -description: BAM part to process
+  - chunk_on:
+      -type: integer
+      -description: Total number of bam parts to process
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: CCS sequences in bam format
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: PacBio Index of CCS sequences
+      pattern: "*.pbi"
+  - report_txt:
+      type: file
+      description: Summary of CCS in txt format
+      pattern: ".txt"
+  - report_json:
+      type: file
+      description: Summary of CCS in txt json
+      pattern: ".json"
+  - metrics:
+      type: file
+      description: Metrics about zmws
+      pattern: "*.json.gz"
+
+authors:
+  - "@sguizard"

@@ -1,0 +1,61 @@
+name: bcftools_query
+description: Extracts fields from VCF or BCF files and outputs them in user-defined format.
+keywords:
+  - query
+  - variant calling
+  - bcftools
+  - VCF
+tools:
+  - query:
+      description: |
+        Extracts fields from VCF or BCF files and outputs them in user-defined format.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: |
+        The vcf file to be qeuried.
+      pattern: "*.{vcf.gz, vcf}"
+  - tbi:
+      type: file
+      description: |
+        The tab index for the VCF file to be inspected.
+      pattern: "*.tbi"
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+  - samples:
+      type: file
+      description: |
+        Optional, file of sample names to be included or excluded.
+        e.g. 'file.tsv'
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - txt:
+      type: file
+      description: BCFTools query output file
+      pattern: "*.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@abhi18av"
+  - "@drpatelh"

@@ -1,0 +1,43 @@
+name: assemblyscan
+description: Assembly summary statistics in JSON format
+keywords:
+  - assembly
+  - statistics
+tools:
+  - assemblyscan:
+      description: Assembly summary statistics in JSON format
+      homepage: https://github.com/rpetit3/assembly-scan
+      documentation: https://github.com/rpetit3/assembly-scan
+      tool_dev_url: https://github.com/rpetit3/assembly-scan
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - assembly:
+      type: file
+      description: FASTA file for a given assembly
+      pattern: "*.fasta"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: Assembly statistics in JSON format
+      pattern: "*.json"
+
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"

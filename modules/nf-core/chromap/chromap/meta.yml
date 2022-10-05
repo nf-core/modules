@@ -1,0 +1,88 @@
+name: chromap_chromap
+description: |
+  Performs preprocessing and alignment of chromatin fastq files to
+  fasta reference files using chromap.
+keywords:
+  - chromap
+  - alignment
+  - map
+  - fastq
+  - bam
+  - sam
+  - hi-c
+  - atac-seq
+  - chip-seq
+  - trimming
+  - duplicate removal
+tools:
+  - chromap:
+      description: Fast alignment and preprocessing of chromatin profiles
+      homepage: https://github.com/haowenz/chromap
+      documentation: https://github.com/haowenz/chromap
+      tool_dev_url: https://github.com/haowenz/chromap
+      doi: ""
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - fasta:
+      type: file
+      description: |
+        The fasta reference file.
+  - index:
+      type: file
+      description: |
+        Chromap genome index files (*.index)
+  - barcodes:
+      type: file
+      description: |
+        Cell barcode files
+  - whitelist:
+      type: file
+      description: |
+        Cell barcode whitelist file
+  - chr_order:
+      type: file
+      description: |
+        Custom chromosome order
+  - pairs_chr_order:
+      type: file
+      description: |
+        Natural chromosome order for pairs flipping
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: BED file
+      pattern: "*.bed.gz"
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - tagAlign:
+      type: file
+      description: tagAlign file
+      pattern: "*.tagAlign.gz"
+  - pairs:
+      type: file
+      description: pairs file
+      pattern: "*.pairs.gz"
+
+authors:
+  - "@mahesh-panchal"

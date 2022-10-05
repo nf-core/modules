@@ -1,0 +1,42 @@
+name: sourmash_sketch
+description: Create a signature (a hash sketch) of a sequence using sourmash
+keywords:
+  - hash sketch
+  - signature
+tools:
+  - sourmash:
+      description: Compute and compare MinHash signatures for DNA data sets.
+      homepage: https://sourmash.readthedocs.io/
+      documentation: https://sourmash.readthedocs.io/
+      tool_dev_url: https://github.com/dib-lab/sourmash
+      doi: "10.1186/s13059-016-0997-x"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sequence:
+      type: file
+      description: FastA file containing (genomic) sequence data
+      pattern: "*.{fna,fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - signatures:
+      type: file
+      description: MinHash signature of the given sequence
+      pattern: "*.{sig}"
+
+authors:
+  - "@Midnighter"

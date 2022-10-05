@@ -1,0 +1,55 @@
+name: prodigal
+description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial (bacterial and archaeal) gene finding program
+keywords:
+  - sort
+tools:
+  - prodigal:
+      description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial (bacterial and archaeal) gene finding program
+      homepage: https://github.com/hyattpd/Prodigal
+      documentation: https://github.com/hyattpd/prodigal/wiki
+      tool_dev_url: https://github.com/hyattpd/Prodigal
+      doi: "10.1186/1471-2105-11-119"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - genome:
+      type: file
+      description: fasta/fasta.gz file
+  - output_format:
+      type: string
+      description: Output format ("gbk"/"gff"/"sqn"/"sco")
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - nucleotide_fasta:
+      type: file
+      description: nucleotide sequences file
+      pattern: "*.{fna}"
+  - amino_acid_fasta:
+      type: file
+      description: protein translations file
+      pattern: "*.{faa}"
+  - all_gene_annotations:
+      type: file
+      description: complete starts file
+      pattern: "*.{_all.txt}"
+  - gene_annotations:
+      type: file
+      description: gene annotations in output_format given as input
+      pattern: "*.{output_format}"
+
+authors:
+  - "@grst"

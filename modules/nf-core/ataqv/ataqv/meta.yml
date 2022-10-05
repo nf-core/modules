@@ -1,0 +1,66 @@
+name: ataqv_ataqv
+description: ataqv function of a corresponding ataqv tool
+keywords:
+  - ataqv
+tools:
+  - ataqv:
+      description: ataqv is a toolkit for measuring and comparing ATAC-seq results. It was written to help understand how well ATAC-seq assays have worked, and to make it easier to spot differences that might be caused by library prep or sequencing.
+      homepage: https://github.com/ParkerLab/ataqv/blob/master/README.rst
+      documentation: https://github.com/ParkerLab/ataqv/blob/master/README.rst
+      tool_dev_url: https://github.com/ParkerLab/ataqv
+      doi: "https://doi.org/10.1016/j.cels.2020.02.009"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file with the same prefix as bam file. Required if tss_file input is provided.
+      pattern: "*.bam.bai"
+  - peak_file:
+      type: file
+      description: A BED file of peaks called for alignments in the BAM file
+      pattern: "*.bed"
+  - organism:
+      type: string
+      description: The subject of the experiment, which determines the list of autosomes (see "Reference Genome Configuration" section at https://github.com/ParkerLab/ataqv).
+  - tss_file:
+      type: file
+      description: A BED file of transcription start sites for the experiment organism. If supplied, a TSS enrichment score will be calculated according to the ENCODE data standards. This calculation requires that the BAM file of alignments be indexed.
+      pattern: "*.bed"
+  - excl_regs_file:
+      type: file
+      description: A BED file containing excluded regions. Peaks or TSS overlapping these will be ignored.
+      pattern: "*.bed"
+  - autosom_ref_file:
+      type: file
+      description: A file containing autosomal reference names, one per line. The names must match the reference names in the alignment file exactly, or the metrics based on counts of autosomal alignments will be wrong.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - json:
+      type: file
+      description: The JSON file to which metrics will be written.
+  - problems:
+      type: file
+      description: If given, problematic reads will be logged to a file per read group, with names derived from the read group IDs, with ".problems" appended. If no read groups are found, the reads will be written to one file named after the BAM file.
+      pattern: "*.problems"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@i-pletenev"

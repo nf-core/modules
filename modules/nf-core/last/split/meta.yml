@@ -1,0 +1,45 @@
+name: last_split
+description: Find split or spliced alignments in a MAF file
+keywords:
+  - LAST
+  - split
+  - spliced
+  - alignment
+  - MAF
+tools:
+  - last:
+      description: LAST finds & aligns related regions of sequences.
+      homepage: https://gitlab.com/mcfrith/last
+      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
+      tool_dev_url: https://gitlab.com/mcfrith/last
+      doi: ""
+      licence: ["GPL v3-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - maf:
+      type: file
+      description: Multiple Aligment Format (MAF) file, compressed with gzip
+      pattern: "*.{maf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - maf:
+      type: file
+      description: Multiple Aligment Format (MAF) file, compressed with gzip
+      pattern: "*.{maf.gz}"
+
+authors:
+  - "@aleksandrabliznina"

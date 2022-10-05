@@ -26,25 +26,25 @@ input:
   - index:
       type: file
       description: Bowtie2 genome index files
-      pattern: '*.ebwt'
+      pattern: "*.ebwt"
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - bam:
       type: file
       description: Output BAM file containing read alignments
-      pattern: '*.{bam}'
+      pattern: "*.{bam}"
   - versions:
       type: file
       description: File containing software versions
-      pattern: 'versions.yml'
+      pattern: "versions.yml"
   - fastq:
       type: file
       description: Unaligned FastQ files
-      pattern: '*.fastq.gz'
+      pattern: "*.fastq.gz"
   - log:
       type: file
       description: Alignment log
-      pattern: '*.log'
-  # TODO Add samtools outputs
+      pattern: "*.log"
+# TODO Add samtools outputs
 authors:
-  - '@drpatelh'
+  - "@drpatelh"

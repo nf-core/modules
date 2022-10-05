@@ -1,0 +1,51 @@
+name: miniasm
+description: A very fast OLC-based de novo assembler for noisy long reads
+keywords:
+  - assembly
+  - pacbio
+  - nanopore
+tools:
+  - miniasm:
+      description: Ultrafast de novo assembly for long noisy reads (though having no consensus step)
+      homepage: https://github.com/lh3/miniasm
+      documentation: https://github.com/lh3/miniasm
+      tool_dev_url: https://github.com/lh3/miniasm
+      doi: "10.1093/bioinformatics/btw152"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input PacBio/ONT FastQ files.
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - paf:
+      type: file
+      description: Alignment in PAF format
+      pattern: "*{.paf,.paf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - gfa:
+      type: file
+      description: Assembly graph
+      pattern: "*.gfa.gz"
+  - assembly:
+      type: file
+      description: Genome assembly
+      pattern: "*.fasta.gz"
+
+authors:
+  - "@avantonder"

@@ -1,0 +1,32 @@
+name: bowtie_build
+description: Create bowtie index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - bowtie:
+      description: |
+        bowtie is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: http://bowtie-bio.sourceforge.net/index.shtml
+      documentation: http://bowtie-bio.sourceforge.net/manual.shtml
+      arxiv: arXiv:1303.3997
+      licence: ["Artistic-2.0"]
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+output:
+  - index:
+      type: file
+      description: Bowtie genome index files
+      pattern: "*.ebwt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@kevinmenden"
+  - "@drpatelh"

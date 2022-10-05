@@ -1,0 +1,48 @@
+name: last_train
+description: Find suitable score parameters for sequence alignment
+keywords:
+  - LAST
+  - train
+  - fastq
+  - fasta
+tools:
+  - last:
+      description: LAST finds & aligns related regions of sequences.
+      homepage: https://gitlab.com/mcfrith/last
+      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
+      tool_dev_url: https://gitlab.com/mcfrith/last
+      doi: ""
+      licence: ["GPL v3-or-later"]
+
+input:
+  - index:
+      type: directory
+      description: Directory containing the files of the LAST index
+      pattern: "lastdb/"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastx:
+      type: file
+      description: FASTA/FASTQ file
+      pattern: "*.{fasta,fastq}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - param_file:
+      type: file
+      description: Trained parameter file
+      pattern: "*.par"
+
+authors:
+  - "@aleksandrabliznina"

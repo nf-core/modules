@@ -1,0 +1,44 @@
+name: artic_guppyplex
+description: Aggregates fastq files with demultiplexed reads
+keywords:
+  - artic
+  - aggregate
+  - demultiplexed reads
+tools:
+  - artic:
+      description: ARTIC pipeline - a bioinformatics pipeline for working with virus sequencing data sequenced with nanopore
+      homepage: https://artic.readthedocs.io/en/latest/
+      documentation: https://artic.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/artic-network/fieldbioinformatics
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq_dir:
+      type: directory
+      description: Directory containing the fastq files with demultiplexed reads
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Aggregated FastQ files
+      pattern: "*.{fastq.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"

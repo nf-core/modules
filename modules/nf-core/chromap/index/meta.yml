@@ -1,0 +1,33 @@
+name: chromap_index
+description: Indexes a fasta reference genome ready for chromatin profiling.
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - chromap:
+      description: Fast alignment and preprocessing of chromatin profiles
+      homepage: https://github.com/haowenz/chromap
+      documentation: https://github.com/haowenz/chromap
+      tool_dev_url: https://github.com/haowenz/chromap
+      doi: ""
+      licence: ["GPL v3"]
+
+input:
+  - fasta:
+      type: file
+      description: Fasta reference file.
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: file
+      description: Index file of the reference genome
+      pattern: "*.{index}"
+
+authors:
+  - "@mahesh-panchal"

@@ -1,0 +1,62 @@
+name: megahit
+description: An ultra-fast metagenomic assembler for large and complex metagenomics
+keywords:
+  - megahit
+  - denovo
+  - assembly
+  - debruijn
+  - metagenomics
+tools:
+  - megahit:
+      description: "An ultra-fast single-node solution for large and complex metagenomics assembly via succinct de Bruijn graph"
+      homepage: https://github.com/voutcn/megahit
+      documentation: https://github.com/voutcn/megahit
+      tool_dev_url: https://github.com/voutcn/megahit
+      doi: "10.1093/bioinformatics/btv033"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information and input single, or paired-end FASTA/FASTQ files (optionally decompressed)
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively in gzipped or uncompressed FASTQ or FASTA format.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - contigs:
+      type: file
+      description: Final final contigs result of the assembly in FASTA format.
+      pattern: "*.contigs.fa.gz"
+  - k_contigs:
+      type: file
+      description: Contigs assembled from the de Bruijn graph of order-K
+      pattern: "k*.contigs.fa.gz"
+  - addi_contigs:
+      type: file
+      description: Contigs assembled after iteratively removing local low coverage unitigs in the de Bruijn graph of order-K
+      pattern: "k*.addi.fa.gz"
+  - local_contigs:
+      type: file
+      description: Contigs of the locally assembled contigs for k=K
+      pattern: "k*.local.fa.gz"
+  - kfinal_contigs:
+      type: file
+      description: Stand-alone contigs for k=K; if local assembly is turned on, the file will be empty
+      pattern: "k*.final.contigs.fa.gz"
+
+authors:
+  - "@jfy133"
