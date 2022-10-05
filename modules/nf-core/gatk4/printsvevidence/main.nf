@@ -1,5 +1,5 @@
 process GATK4_PRINTSVEVIDENCE {
-    tag "printsvevidence"
+    tag "${meta.id}"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
