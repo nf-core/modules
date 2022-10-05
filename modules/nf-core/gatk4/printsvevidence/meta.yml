@@ -1,5 +1,5 @@
 name: "gatk4_printsvevidence"
-description: Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
+description: WARNING - this tool is still experimental and shouldn't be used in a production setting. Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
 keywords:
   - structural variants
   - gatk4
@@ -20,13 +20,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - evidence:
-      type: file
-      description: The evidence file created by CollectSVEvidence
+  - evidence_files:
+      type: files
+      description: The evidence files created by CollectSVEvidence. They all need to be of the same type to print the SV evidence.
       pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
-  - evidence_index:
-      type: file
-      description: The index of the evidence file created by CollectSVEvidence
+  - evidence_indices:
+      type: files
+      description: The indices of the evidence files created by CollectSVEvidence
       pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
   - bed:
       type: file
