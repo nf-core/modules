@@ -1,0 +1,46 @@
+name: pbbam_pbmerge
+description: The pbbam software package provides components to create, query, & edit PacBio BAM files and associated indices. These components include a core C++ library, bindings for additional languages, and command-line utilities.
+keywords:
+  - pbbam
+  - pbbam/pbmerge
+tools:
+  - pbbam:
+      description: PacBio BAM C++ library
+      homepage: https://github.com/PacificBiosciences/pbbioconda
+      documentation: https://pbbam.readthedocs.io/en/latest/tools/pbmerge.html
+      tool_dev_url: https://github.com/pacificbiosciences/pbbam/
+      doi: ""
+      licence: ["BSD-3-Clause-Clear"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM files to merge
+      pattern: "*.bam"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: The merged bam file
+      pattern: "*.bam"
+  - pbi:
+      type: file
+      description: BAM Pacbio index file
+      pattern: "*.bam.pbi"
+
+authors:
+  - "@sguizard"

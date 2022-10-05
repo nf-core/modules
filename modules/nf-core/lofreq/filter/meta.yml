@@ -1,0 +1,44 @@
+name: lofreq_filter
+description: Lofreq subcommand to remove variants with low coverage or strand bias potential
+keywords:
+  - variant calling
+  - low frequency variant calling
+  - filtering
+  - lofreq
+  - lofreq/filter
+tools:
+  - lofreq:
+      description: A fast and sensitive variant-caller for inferring SNVs and indels from next-generation sequencing data
+      homepage: https://csb5.github.io/lofreq/
+      documentation: https://csb5.github.io/lofreq/commands/
+      doi: "10.1093/nar/gks918 "
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF input file
+      pattern: "*.{vcf}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: VCF filtered output file
+      pattern: "*.{vcf}"
+
+authors:
+  - "@bjohnnyd"

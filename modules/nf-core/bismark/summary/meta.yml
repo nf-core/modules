@@ -1,0 +1,54 @@
+name: bismark_summary
+description: |
+  Uses Bismark report files of several samples in a run folder
+  to generate a graphical summary HTML report.
+keywords:
+  - bismark
+  - qc
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - report
+  - summary
+tools:
+  - bismark:
+      description: |
+        Bismark is a tool to map bisulfite treated sequencing reads
+        and perform methylation calling in a quick and easy-to-use fashion.
+      homepage: https://github.com/FelixKrueger/Bismark
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      doi: 10.1093/bioinformatics/btr167
+      licence: ["GPL-3.0-or-later"]
+input:
+  - bam:
+      type: file
+      description: Bismark alignment
+      pattern: "*.{bam}"
+  - align_report:
+      type: file
+      description: Bismark alignment reports
+      pattern: "*{report.txt}"
+  - dedup_report:
+      type: file
+      description: Bismark deduplication reports
+      pattern: "*.{deduplication_report.txt}"
+  - splitting_report:
+      type: file
+      description: Bismark splitting reports
+      pattern: "*{splitting_report.txt}"
+  - mbias:
+      type: file
+      description: Text file containing methylation bias information
+      pattern: "*.{txt}"
+output:
+  - summary:
+      type: file
+      description: Bismark summary
+      pattern: "*.{html,txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@phue"

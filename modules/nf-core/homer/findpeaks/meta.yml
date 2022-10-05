@@ -1,0 +1,40 @@
+name: homer_findpeaks
+description: Find peaks with HOMER suite
+keywords:
+  - annotations
+  - peaks
+tools:
+  - homer:
+      description: |
+        HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
+      homepage: "http://homer.ucsd.edu/homer/index.html"
+      documentation: "http://homer.ucsd.edu/homer/"
+      tool_dev_url: "http://homer.ucsd.edu/homer/ngs/peaks.html"
+      doi: 10.1016/j.molcel.2010.05.004.
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tagDir:
+      type: directory
+      description: "The 'Tag Directory'"
+      pattern: "tagDir"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - peaks:
+      type: file
+      description: The found peaks
+      pattern: "*.peaks.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@EMiller88"

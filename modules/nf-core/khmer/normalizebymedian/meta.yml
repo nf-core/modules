@@ -1,0 +1,39 @@
+name: khmer_normalizebymedian
+description: Module that calls normalize-by-median.py from khmer. The module can take a mix of paired end (interleaved) and single end reads. If both types are provided, only a single file with single ends is possible.
+keywords:
+  - digital normalization
+  - khmer
+tools:
+  - khmer:
+      description: khmer k-mer counting library
+      homepage: https://github.com/dib-lab/khmer
+      documentation: https://khmer.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/dib-lab/khmer
+      doi: "https://doi.org/10.12688/f1000research.6924.1"
+      licence: ["BSD License"]
+
+input:
+  - pe_reads:
+      type: files
+      description: Paired-end interleaved fastq files
+      pattern: "*.{fq,fastq}.gz"
+  - se_reads:
+      type: files
+      description: Single-end fastq files
+      pattern: "*.{fq,fastq}.gz"
+  - name:
+      type: string
+      description: filename for output file(s); ".fastq.gz" will be appended
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: Interleaved fastq files
+      pattern: "*.{fq,fastq}.gz"
+
+authors:
+  - "@erikrikarddaniel"

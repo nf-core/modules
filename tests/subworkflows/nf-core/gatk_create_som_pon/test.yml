@@ -1,0 +1,37 @@
+- name: gatk_create_som_pon
+  command: nextflow run ./tests/subworkflows/nf-core/gatk_create_som_pon -entry test_gatk_create_som_pon -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/gatk_create_som_pon
+    # - gatk4
+    # Modules
+    # - gatk4/genomicsdbimport
+    # - gatk4/createsomaticpanelofnormals
+  files:
+    # gatk4 mutect2
+    - path: output/gatk4/test1.vcf.gz
+    - path: output/gatk4/test1.vcf.gz.stats
+      md5sum: 4f77301a125913170b8e9e7828b4ca3f
+    - path: output/gatk4/test1.vcf.gz.tbi
+    - path: output/gatk4/test2.vcf.gz
+    - path: output/gatk4/test2.vcf.gz.stats
+      md5sum: 106c5828b02b906c97922618b6072169
+    - path: output/gatk4/test2.vcf.gz.tbi
+      # gatk4 genomicsdbimport
+    - path: output/gatk4/test_panel/__tiledb_workspace.tdb
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test_panel/callset.json
+      md5sum: 2ab411773b7267de61f8c04939de2a99
+    - path: output/gatk4/test_panel/chr22$1$40001/.__consolidation_lock
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
+    - path: output/gatk4/test_panel/chr22$1$40001/__array_schema.tdb
+    - path: output/gatk4/test_panel/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
+      md5sum: 2502f79658bc000578ebcfddfc1194c0
+    - path: output/gatk4/test_panel/vcfheader.vcf
+      contains:
+        - "FORMAT=<ID=AD,Number=R,Type=Integer,Description="
+    - path: output/gatk4/test_panel/vidmap.json
+      md5sum: ac4e96e03bbbc5c72fac77d487e73d9e
+      # gatk4 createsomaticpanelofnormals
+    - path: output/gatk4/test_panel.vcf.gz
+    - path: output/gatk4/test_panel.vcf.gz.tbi

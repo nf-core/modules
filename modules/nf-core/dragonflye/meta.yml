@@ -1,0 +1,57 @@
+name: dragonflye
+description: Assemble bacterial isolate genomes from Nanopore reads
+keywords:
+  - bacterial
+  - assembly
+  - nanopore
+
+tools:
+  - dragonflye:
+      description: Microbial assembly pipeline for Nanopore reads
+      homepage: https://github.com/rpetit3/dragonflye
+      documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
+      licence: ["GPL v2"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: Input Nanopore FASTQ file
+      pattern: "*.fastq.gz"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - contigs:
+      type: file
+      description: The final assembly produced by Dragonflye
+      pattern: "contigs.fa"
+  - log:
+      type: file
+      description: Full log file for bug reporting
+      pattern: "dragonflye.log"
+  - raw_contigs:
+      type: file
+      description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
+      pattern: "{flye,miniasm,raven}.fasta"
+  - txt:
+      type: file
+      description: Assembly information output by Flye
+      pattern: "flye-info.txt"
+  - gfa:
+      type: file
+      description: Assembly graph produced by Miniasm, or Raven
+      pattern: "{miniasm,raven}-unpolished.gfa"
+
+authors:
+  - "@rpetit3"

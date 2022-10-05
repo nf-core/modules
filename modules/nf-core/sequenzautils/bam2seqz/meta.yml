@@ -1,0 +1,50 @@
+name: sequenzautils_bam2seqz
+description: Sequenza-utils bam2seqz process BAM and Wiggle files to produce a seqz file
+keywords:
+  - bam2seqz
+tools:
+  - sequenzautils:
+      description: Sequenza-utils provides 3 main command line programs to transform common NGS file format - such as FASTA, BAM - to input files for the Sequenza R package. The program - bam2seqz - process a paired set of BAM/pileup files (tumour and matching normal), and GC-content genome-wide information, to extract the common positions with A and B alleles frequencies.
+      homepage: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      documentation: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      doi: 10.1093/annonc/mdu479
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - normalbam:
+      type: file
+      description: BAM file from the reference/normal sample
+      pattern: "*.{bam}"
+  - tumourbam:
+      type: file
+      description: BAM file from the tumour sample
+      pattern: "*.{bam}"
+  - fasta:
+      type: file
+      description: Reference FASTA file
+      pattern: "*.{fasta}"
+  - wigfile:
+      type: file
+      description: GC content wiggle file
+      pattern: "*.{wig.gz}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - seqz:
+      type: file
+      description: Seqz file
+      pattern: "*.{seqz.gz}"
+
+authors:
+  - "@kaurravneet4123"

@@ -1,0 +1,58 @@
+name: abacas
+description: contiguate draft genome assembly
+keywords:
+  - genome
+  - assembly
+  - contiguate
+tools:
+  - abacas:
+      description: |
+        ABACAS is intended to rapidly contiguate (align, order, orientate),
+        visualize and design primers to close gaps on shotgun assembled
+        contigs based on a reference sequence.
+      homepage: http://abacas.sourceforge.net/documentation.html
+      documentation: http://abacas.sourceforge.net/documentation.html
+      tool_dev_url: None
+      doi: "10.1093/bioinformatics/btp347"
+      licence: ["GPL v2-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - scaffold:
+      type: file
+      description: Fasta file containing scaffold
+      pattern: "*.{fasta,fa}"
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - results:
+      type: files
+      description: |
+        List containing abacas output files
+        [ 'test.abacas.bin', 'test.abacas.fasta', 'test.abacas.gaps',
+        'test.abacas.gaps.tab', 'test.abacas.nucmer.delta',
+        'test.abacas.nucmer.filtered.delta', 'test.abacas.nucmer.tiling',
+        'test.abacas.tab', 'test.abacas.unused.contigs.out',
+        'test.abacas.MULTIFASTA.fa' ]
+      pattern: "*.{abacas}*"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"

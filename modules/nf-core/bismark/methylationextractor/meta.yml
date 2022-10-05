@@ -1,0 +1,67 @@
+name: bismark_methylationextractor
+description: Extracts methylation information for individual cytosines from alignments.
+keywords:
+  - bismark
+  - consensus
+  - map
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bam
+  - bedGraph
+tools:
+  - bismark:
+      description: |
+        Bismark is a tool to map bisulfite treated sequencing reads
+        and perform methylation calling in a quick and easy-to-use fashion.
+      homepage: https://github.com/FelixKrueger/Bismark
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      doi: 10.1093/bioinformatics/btr167
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file containing read alignments
+      pattern: "*.{bam}"
+  - index:
+      type: dir
+      description: Bismark genome index directory
+      pattern: "BismarkIndex"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bedgraph:
+      type: file
+      description: Bismark output file containing coverage and methylation metrics
+      pattern: "*.{bedGraph.gz}"
+  - methylation_calls:
+      type: file
+      description: Bismark output file containing strand-specific methylation calls
+      pattern: "*.{txt.gz}"
+  - coverage:
+      type: file
+      description: Bismark output file containing coverage metrics
+      pattern: "*.{cov.gz}"
+  - report:
+      type: file
+      description: Bismark splitting reports
+      pattern: "*_{splitting_report.txt}"
+  - mbias:
+      type: file
+      description: Text file containing methylation bias information
+      pattern: "*.{M-bias.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@phue"

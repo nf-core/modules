@@ -1,0 +1,29 @@
+- name: gatk_tumor_only_somatic_variant_calling
+  command: nextflow run ./tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling -entry test_gatk_tumor_only_somatic_variant_calling -c tests/config/nextflow.config
+  tags:
+    - subworkflows
+    # - subworkflows/gatk_tumor_only_somatic_variant_calling
+    # Modules
+    # - gatk4/mutect2
+    # - gatk4/getpileupsummaries
+    # - gatk4/calculatecontamination
+    # - gatk4/filtermutectcalls
+  files:
+    # gatk4 mutect2
+    - path: ./output/mutect2/test.vcf.gz
+    - path: ./output/mutect2/test.vcf.gz.stats
+      md5sum: 106c5828b02b906c97922618b6072169
+    - path: ./output/mutect2/test.vcf.gz.tbi
+      # gatk4 getpileupsummaries
+    - path: ./output/getpileupsummaries/test.pileups.table
+      md5sum: 8b1b4c8ab831eca50ee9e940463a741f
+      # gatk4 calculatecontamination
+    - path: ./output/calculatecontamination/test.contamination.table
+      md5sum: 5fdcf1728cf98985ce31c038eb24e05c
+    - path: ./output/calculatecontamination/test.segmentation.table
+      md5sum: 91f28bfe4727a3256810927fc5eba92f
+      # gatk4 filtermutectcalls
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz.filteringStats.tsv
+      md5sum: 8731945490960546719ce4a71a151e4f
+    - path: ./output/filtermutectcalls/test_filtered.vcf.gz.tbi

@@ -1,0 +1,39 @@
+name: sequenzautils_gcwiggle
+description: Sequenza-utils gc_wiggle computes the GC percentage across the sequences, and returns a file in the UCSC wiggle format, given a fasta file and a window size.
+keywords:
+  - gc_wiggle
+tools:
+  - sequenzautils:
+      description: Sequenza-utils provides 3 main command line programs to transform common NGS file format - such as FASTA, BAM - to input files for the Sequenza R package. The program -gc_wiggle- takes fasta file as an input, computes GC percentage across the sequences and returns a file in the UCSC wiggle format.
+      homepage: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      documentation: https://sequenza-utils.readthedocs.io/en/latest/index.html
+      doi: 10.1093/annonc/mdu479
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: FASTA file
+      pattern: "*.{fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - wig:
+      type: file
+      description: GC Wiggle track file
+      pattern: "*.{wig.gz}"
+
+authors:
+  - "@kaurravneet4123"

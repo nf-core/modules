@@ -1,0 +1,30 @@
+name: graphmap2_index
+description: A versatile pairwise aligner for genomic and spliced nucleotide sequences
+keywords:
+  - index
+  - fasta
+  - reference
+tools:
+  - graphmap2:
+      description: |
+        A versatile pairwise aligner for genomic and spliced nucleotide sequences.
+      homepage: https://github.com/lbcb-sci/graphmap2
+      documentation: https://github.com/lbcb-sci/graphmap2#graphmap2---a-highly-sensitive-and-accurate-mapper-for-long-error-prone-reads
+      licence: ["MIT"]
+input:
+  - fasta:
+      type: file
+      description: |
+        Reference database in FASTA format.
+output:
+  - gmidx:
+      type: file
+      description: Graphmap2 fasta index in gmidx format
+      pattern: "*.gmidx"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@yuukiiwa"
+  - "@drpatelh"

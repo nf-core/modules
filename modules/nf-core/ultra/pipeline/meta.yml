@@ -1,0 +1,52 @@
+name: ultra_pipeline
+description: uLTRA aligner - A wrapper around minimap2 to improve small exon detection
+keywords:
+  - uLTRA
+  - minimap2
+tools:
+  - ultra:
+      description: Splice aligner of long transcriptomic reads to genome.
+      homepage: https://github.com/ksahlin/uLTRA
+      documentation: https://github.com/ksahlin/uLTRA
+      tool_dev_url: https://github.com/ksahlin/uLTRA
+      doi: "10.1093/bioinformatics/btab540"
+      licence: ["GNU GPLV3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: A fasta or fastq file of reads to align
+      pattern: "*.{fasta,fastq}"
+  - genome:
+      type: file
+      description: fasta file of reference genome
+      pattern: "*.fasta"
+  - gtf:
+      type: file
+      description: A annotation of use the genome
+      pattern: "*.gtf"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - sam:
+      type: file
+      description: The aligned reads in sam format
+      pattern: "*.sam"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@sguizard"
+  - "@lassefolkersen"
+  - "@ksahlin"

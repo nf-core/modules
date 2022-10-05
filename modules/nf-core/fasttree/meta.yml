@@ -1,0 +1,32 @@
+name: fasttree
+description: Produces a Newick format phylogeny from a multiple sequence alignment. Capable of bacterial genome size alignments.
+keywords:
+  - phylogeny
+  - newick
+tools:
+  - fasttree:
+      description: FastTree infers approximately-maximum-likelihood phylogenetic trees from alignments of nucleotide or protein sequences
+      homepage: http://www.microbesonline.org/fasttree/
+      documentation: http://www.microbesonline.org/fasttree/#Usage
+      tool_dev_url: None
+      doi: ""
+      licence: ["GPL v2"]
+
+input:
+  - alignment:
+      type: file
+      description: A FASTA format multiple sequence alignment file
+      pattern: "*.{fasta,fas,fa,mfa}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - phylogeny:
+      type: file
+      description: A phylogeny in Newick format
+      pattern: "*.{tre}"
+
+authors:
+  - "@aunderwo"

@@ -1,0 +1,55 @@
+name: deeptools_plotheatmap
+description: plots values produced by deeptools_computematrix as a heatmap
+keywords:
+  - plot
+  - heatmap
+  - scores
+  - matrix
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      homepage:
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - matrix:
+      type: file
+      description: |
+        gzipped matrix file produced by deeptools_
+        computematrix deeptools utility
+      pattern: "*.{mat.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pdf:
+      type: file
+      description: |
+        Output figure containing resulting plot
+      pattern: "*.{plotHeatmap.pdf}"
+  - matrix:
+      type: file
+      description: |
+        File containing the matrix of values
+        used to generate the heatmap
+      pattern: "*.{plotHeatmap.mat.tab}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@emiller88"
+  - "@drpatelh"
+  - "@joseespinosa"

@@ -1,0 +1,63 @@
+name: macs2_callpeak
+description: Peak calling of enriched genomic regions of ChIP-seq and ATAC-seq experiments
+keywords:
+  - alignment
+  - atac-seq
+  - chip-seq
+  - peak-calling
+tools:
+  - macs2:
+      description: Model Based Analysis for ChIP-Seq data
+      homepage: None
+      documentation: https://docs.csc.fi/apps/macs2/
+      tool_dev_url: https://github.com/macs3-project/MACS
+      doi: "https://doi.org/10.1101/496521"
+      licence: ["BSD"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ipbam:
+      type: file
+      description: The ChIP-seq treatment file
+  - controlbam:
+      type: file
+      description: The control file
+  - macs2_gsize:
+      type: string
+      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9),
+        'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8)
+
+output:
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+  - peak:
+      type: file
+      description: BED file containing annotated peaks
+      pattern: "*.gappedPeak,*.narrowPeak}"
+  - xls:
+      type: file
+      description: xls file containing annotated peaks
+      pattern: "*.xls"
+  - gapped:
+      type: file
+      description: Optional BED file containing gapped peak
+      pattern: "*.gappedPeak"
+  - bed:
+      type: file
+      description: Optional BED file containing peak summits locations for every peak
+      pattern: "*.bed"
+  - bdg:
+      type: file
+      description: Optional bedGraph files for input and treatment input samples
+      pattern: "*.bdg"
+
+authors:
+  - "@ntoda03"
+  - "@JoseEspinosa"
+  - "@jianhong"
