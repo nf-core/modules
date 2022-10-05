@@ -32,7 +32,7 @@ process ANTISMASH_ANTISMASHLITE {
     tuple val(meta), path("${prefix}/*.json")                                , emit: json_results
     tuple val(meta), path("${prefix}/*.log")                                 , emit: log
     tuple val(meta), path("${prefix}/*.zip")                                 , emit: zip
-    tuple val(meta), path("${prefix}/*region*.gbk")                          , emit: gbk_results
+    tuple val(meta), path("${prefix}/*region*.gbk")                          , optional: true, emit: gbk_results
     tuple val(meta), path("${prefix}/clusterblastoutput.txt")                , optional: true, emit: clusterblastoutput
     tuple val(meta), path("${prefix}/index.html")                            , emit: html
     tuple val(meta), path("${prefix}/knownclusterblastoutput.txt")           , optional: true, emit: knownclusterblastoutput
