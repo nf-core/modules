@@ -11,7 +11,7 @@ process YARA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${fasta}*")  , emit: index
+    tuple val(meta), path("${fasta}*")   , emit: index
     path "versions.yml"                  , emit: versions
 
     when:
