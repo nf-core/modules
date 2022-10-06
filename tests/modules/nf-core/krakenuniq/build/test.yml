@@ -1,0 +1,12 @@
+- name: "krakenuniq build"
+  command: nextflow run ./tests/modules/nf-core/krakenuniq/build -entry test_krakenuniq_build -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/krakenuniq/build/nextflow.config
+  tags:
+    - "krakenuniq"
+    - "krakenuniq/build"
+  files:
+    - path: output/krakenuniq/archaea/Complete_Genome/Vulcanisaeta_moutnovskia_768_28-tax985053-GCF_000190315.1_ASM19031v1_genomic.fna.map
+      md5sum: 5f5075fe39e6c75fd51494c96618ac81
+    - path: output/krakenuniq/archaea/assembly_summary.txt
+      md5sum: 06c3cac71e2a95739c4accec3cd8cd7d
+    - path: output/krakenuniq/archaea/assembly_summary_filtered.txt
+      md5sum: 759d77e7776126294b7e6a93dcd9daf3
