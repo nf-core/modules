@@ -43,16 +43,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - matrix:
-      type: file
-      description: |
-        Tab-separated file containing a matrix of pairwise correlations 
-      pattern: "*.{plotCorrelation.mat.tab}"
   - pdf:
       type: file
       description: |
         Output figure containing resulting plot
       pattern: "*.{plotCorrelation.pdf}"
+  - matrix:
+      type: file
+      description: |
+        Tab-separated file containing a matrix of pairwise correlations 
+      pattern: "*.{plotCorrelation.mat.tab}"
   - versions:
       type: file
       description: File containing software versions
