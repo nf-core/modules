@@ -6,7 +6,7 @@ on:
   issue_comment:
     types: [created]
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
 jobs:
   assign_one_project:
