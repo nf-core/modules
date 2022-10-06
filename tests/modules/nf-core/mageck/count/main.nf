@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MAGECK_COUNT } from '../../../../modules/mageck/count/main.nf'
+include { MAGECK_COUNT } from '../../../../../modules/nf-core/mageck/count/main.nf'
 
 workflow test_mageck_count_fastq {
     def input = []
