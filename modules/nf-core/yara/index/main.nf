@@ -1,5 +1,5 @@
 process YARA_INDEX {
-    tag "$fasta"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::yara=1.0.2" : null)
@@ -8,27 +8,24 @@ process YARA_INDEX {
         'quay.io/biocontainers/yara:1.0.2--2' }"
 
     input:
+    val(meta)
     path fasta
 
     output:
-    path "yara"        , emit: index
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}*")  , emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
+    prefix     = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir yara
-
     yara_indexer \\
         $fasta \\
-        -o "yara"
-
-    mv *.{lf,rid,sa,txt}.* yara
-    cp $fasta yara/yara.fasta
+        -o $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
