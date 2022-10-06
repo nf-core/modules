@@ -26,6 +26,16 @@ input:
         gzipped matrix file produced by 
         mutlibamsummary or multibigwigsummary
       pattern: "*.{npz}"
+  - method:
+      type: value
+      description: |
+        Correlation coefficient to use for heatmap or scatterplot generation
+      pattern: "{spearman,pearson}"
+  - plot_type:
+      type: value
+      description: |
+        Type of output plot to display sample correlation
+      pattern: "{heatmap,scatterplot}"
 
 output:
   - meta:
