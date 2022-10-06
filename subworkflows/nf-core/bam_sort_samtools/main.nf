@@ -8,14 +8,14 @@ include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
 workflow BAM_SORT_SAMTOOLS {
     take:
-    bam   // channel: [ val(meta), [ bam ] ]
-    fasta // channel: [ fasta ]
+    ch_bam   // channel: [ val(meta), [ bam ] ]
+    ch_fasta // channel: [ fasta ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    SAMTOOLS_SORT ( bam )
+    SAMTOOLS_SORT ( ch_bam )
     ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions.first())
 
     SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
@@ -34,7 +34,7 @@ workflow BAM_SORT_SAMTOOLS {
         }
         .set { ch_bam_bai }
 
-    BAM_STATS_SAMTOOLS ( ch_bam_bai, fasta )
+    BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
 
     emit:
