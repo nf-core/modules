@@ -29,11 +29,12 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     script:
     def args = task.ext.args ?: ''
+    def label = (labels != []) ? "--labels ${labels.join(' ')}" : ' '
     """
     multiBamSummary bins \\
         $args \\
+        $label \\
         --bamfiles ${bams.join(' ')} \\
-        --labels ${labels.join(' ')} \\
         --numberOfProcessors $task.cpus \\
         --outFileName all_bam.bamSummary.npz \\
 
