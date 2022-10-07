@@ -22,7 +22,7 @@ input:
   - counts:
       type: file
       description: |
-        Raw TSV-format expression matrix as output from the nf-core RNA-seq workflow 
+        Raw TSV-format expression matrix as output from the nf-core RNA-seq workflow
   - meta:
       type: map
       description: |
@@ -44,15 +44,15 @@ output:
       pattern: "dds.rld.RData"
   - sizefactors:
       type: file
-      description: Size factors  
+      description: Size factors
       pattern: "deseq2.sizefactors.tsv"
   - normalised_counts:
       type: file
-      description: TSV-format counts matrix, normalised to size factors 
+      description: TSV-format counts matrix, normalised to size factors
       pattern: "normalised_counts.tsv"
   - variance_stabilised_counts:
       type: file
-      description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied 
+      description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
       pattern: "variance_stabilised_counts.tsv"
   - versions:
       type: file
