@@ -1,7 +1,7 @@
 - name: crumble test_crumble
   command: nextflow run ./tests/modules/nf-core/crumble -entry test_crumble -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/crumble/nextflow.config
   tags:
-  - crumble
+    - crumble
   files:
-  - path: output/crumble/test.cram
-    md5sum: 946f4e5a405d143e6731147cfbdd2c79
+    - path: output/crumble/test.cram
+      md5sum: 946f4e5a405d143e6731147cfbdd2c79
