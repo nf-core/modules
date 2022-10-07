@@ -8,27 +8,22 @@ process YARA_INDEX {
         'quay.io/biocontainers/yara:1.0.2--2' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "yara"        , emit: index
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${fasta}*")   , emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
 
     """
-    mkdir yara
-
     yara_indexer \\
         $fasta \\
-        -o "yara"
-
-    mv *.{lf,rid,sa,txt}.* yara
-    cp $fasta yara/yara.fasta
+        -o ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
