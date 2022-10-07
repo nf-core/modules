@@ -31,4 +31,14 @@ process STRINGTIE_MERGE {
         stringtie: \$(stringtie --version 2>&1)
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch stringtie.merged.gtf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        stringtie: \$(stringtie --version 2>&1)
+    END_VERSIONS
+    """
 }

@@ -3,19 +3,7 @@
 - name: universc test_universc_10x
   command: nextflow run tests/modules/universc -entry test_universc_10x -c tests/config/nextflow.config
   tags:
-    - "universc"
-    - demultiplex
-    - cell-ranger
-    - single-cell
-    - 10x
-    - scRNA-Seq
-    - umi
-    - alignment
-    - quant
-    - RNA counts
-    - UMI counts
-    - RNA quantification
-    - STAR
+    - universc
   files:
     - path: output/main.nf
       md5sum: 216fbfe8b2f51de6e720c12043f95717

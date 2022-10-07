@@ -5,7 +5,7 @@
     - bcftools/view
   files:
     - path: output/bcftools/out.vcf.gz
-      md5sum: fc178eb342a91dc0d1d568601ad8f8e2
+      md5sum: c5f2a6a912964c45e8231140420561f9
 
 - name: bcftools view with optional files
   command: nextflow run ./tests/modules/bcftools/view -entry test_bcftools_view_with_optional_files -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/view/nextflow.config
@@ -14,4 +14,4 @@
     - bcftools/view
   files:
     - path: output/bcftools/out.vcf.gz
-      md5sum: 1d450e1c65b081ead0edbf5e4fa539ee
+      md5sum: 265a36d06f8ac3bf52086e4467e537f8

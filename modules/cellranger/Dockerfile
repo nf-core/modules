@@ -1,4 +1,4 @@
-# Dockerfile to create container with Cell Ranger v6.1.2
+# Dockerfile to create container with Cell Ranger v7.0.0
 # Push to nfcore/cellranger:<VER>
 
 FROM continuumio/miniconda3:4.8.2
