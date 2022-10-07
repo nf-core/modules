@@ -14,6 +14,7 @@ params.deseq_minmu = 0.5
 params.deseq_write_normalised = 'TRUE'
 params.deseq_write_variance_stabilised = 'TRUE'
 params.deseq_vs_method = 'vst'
+params.deseq_random_seed = 0
 
 process DESEQ2_DIFFERENTIAL {
     tag "$meta"

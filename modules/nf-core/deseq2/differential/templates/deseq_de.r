@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+if ($params.deseq_random_seed > 0){
+    set.seed($params.deseq_random_seed)
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
