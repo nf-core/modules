@@ -295,10 +295,10 @@ deseq2.version <- as.character(packageVersion('DESeq2'))
 
 writeLines(
     c(
-        '"${task.process}":', 
-        paste('    r-base:', r.version), 
+        '"${task.process}":',
+        paste('    r-base:', r.version),
         paste('    bioconductor-deseq2:', deseq2.version)
-    ), 
+    ),
 'versions.yml')
 
 ################################################
