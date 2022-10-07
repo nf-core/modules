@@ -11,5 +11,5 @@ workflow test_crumble {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
-    CRUMBLE ( input, [] )
+    CRUMBLE ( input )
 }
