@@ -102,7 +102,7 @@ process UNIVERSC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)/
+        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g'
         universc: bash /universc/launch_universc.sh --version | grep version | grep universc | sed 's/^.* //g'
     END_VERSIONS
     """
@@ -145,7 +145,7 @@ process CELLRANGER_COUNT_OS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)/
+        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g'
     END_VERSIONS
     """
 
@@ -156,7 +156,7 @@ process CELLRANGER_COUNT_OS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)/
+        cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g'
     END_VERSIONS
     """
 }
