@@ -30,6 +30,8 @@ process CRUMBLE {
                     "sam"
     def bed_output = bed ? "-b ${prefix}.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
+    def CRUMBLE_VERSION = '0.9.0' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     crumble \\
         $args \\
@@ -39,7 +41,7 @@ process CRUMBLE {
         
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crumble: \$(samtools | grep version | cut -f3 -d' ')
+        crumble: $CRUMBLE_VERSION
     END_VERSIONS
     """
 }
