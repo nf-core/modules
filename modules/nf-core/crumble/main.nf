@@ -38,7 +38,7 @@ process CRUMBLE {
         $bed_output \\
         $input \\
         ${prefix}.${extension}
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         crumble: $CRUMBLE_VERSION
