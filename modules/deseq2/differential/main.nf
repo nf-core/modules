@@ -21,8 +21,8 @@ process DESEQ2_DIFFERENTIAL {
 
     conda (params.enable_conda ? "bioconda::bioconductor-deseq2=1.28.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-deseq2%3A1.28.0--r40h5f743cb_0' :        
-        'quay.io/biocontainers/bioconductor-deseq2:1.28.0--r40h5f743cb_0' }"        
+        'https://depot.galaxyproject.org/singularity/bioconductor-deseq2%3A1.28.0--r40h5f743cb_0' :
+        'quay.io/biocontainers/bioconductor-deseq2:1.28.0--r40h5f743cb_0' }"
 
     input:
     path samplesheet

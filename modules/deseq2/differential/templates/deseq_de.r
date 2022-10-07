@@ -110,28 +110,28 @@ blocking.vars <- c()
 if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
   stop(
     paste0(
-      'Chosen contrast variable \"',
-      opt\$contrast_variable,
-      '\" not in sample sheet'
+    'Chosen contrast variable \"',
+    opt\$contrast_variable,
+    '\" not in sample sheet'
     )
   )
 } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[opt\$contrast_variable]])) {
   stop(
     paste(
-      'Please choose reference and treatment levels that are present in the',
-      opt\$contrast_variable,
-      'column of the sample sheet'
+    'Please choose reference and treatment levels that are present in the',
+    opt\$contrast_variable,
+    'column of the sample sheet'
     )
   )
 } else if (!is.null(opt\$blocking)) {
   blocking.vars = unlist(strsplit(opt\$blocking, split = ','))
   if (!all(blocking.vars %in% colnames(sample.sheet))) {
     stop(
-      paste0(
+    paste0(
         'One or more of the blocking variables specified (',
         opt\$blocking,
         ') do not correspond to sample sheet columns.'
-      )
+    )
     )
   }
 }
@@ -186,8 +186,8 @@ comp.results <-
     pAdjustMethod = opt\$p_adjust_method,
     minmu = opt\$minmu,
     contrast = c(
-      opt\$contrast_variable,
-      c(opt\$treatment_level, opt\$reference_level)
+    opt\$contrast_variable,
+    c(opt\$treatment_level, opt\$reference_level)
     )
   )
 
