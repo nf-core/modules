@@ -9,7 +9,7 @@ process YARA_MAPPER {
 
     input:
     tuple val(meta), path(reads)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.mapped.bam"), emit: bam
@@ -22,13 +22,14 @@ process YARA_MAPPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def index_prefix = index[0].baseName.substring(0,index[0].baseName.lastIndexOf('.'))
     if (meta.single_end) {
         """
         yara_mapper \\
             $args \\
             -t $task.cpus \\
             -f bam \\
-            ${index}/yara \\
+            ${index_prefix} \\
             $reads | samtools view -@ $task.cpus -hb -F4 | samtools sort -@ $task.cpus > ${prefix}.mapped.bam
 
         samtools index -@ $task.cpus ${prefix}.mapped.bam
@@ -45,7 +46,7 @@ process YARA_MAPPER {
             $args \\
             -t $task.cpus \\
             -f bam \\
-            ${index}/yara \\
+            ${index_prefix} \\
             ${reads[0]} \\
             ${reads[1]} > output.bam
 
