@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml sourmash/compare
+- name: "sourmash compare"
+  command: nextflow run ./tests/modules/nf-core/sourmash/compare -entry test_sourmash_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sourmash/compare/nextflow.config
+  tags:
+    - "sourmash"
+    - "sourmash/compare"
+  files:
+    - path: "output/sourmash/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/sourmash/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
