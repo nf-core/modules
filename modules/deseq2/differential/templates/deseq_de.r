@@ -32,8 +32,7 @@ opt <- list(
     'minmu' = $params.deseq_minmu,
     'write_normalised' = $params.deseq_write_normalised,
     'write_variance_stabilised' = $params.deseq_write_variance_stabilised,
-    'vs_method' = '$params.deseq_vs_method',
-    'outdir' = '.'
+    'vs_method' = '$params.deseq_vs_method'
 )
 
 for (file_input in c('count_file', 'sample_file')){
@@ -201,15 +200,11 @@ contrast.name <-
     paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
-if (!file.exists(opt\$outdir)) {
-    dir.create(opt\$outdir, recursive = TRUE)
-}
-
 # Differential expression table
 
 write.table(
     data.frame(gene_id = rownames(comp.results), comp.results),
-    file = file.path(opt\$outdir, 'deseq2.results.tsv'),
+    file = 'deseq2.results.tsv',
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -219,7 +214,7 @@ write.table(
 # Dispersion plot
 
 png(
-    file.path(opt\$outdir, 'deseq2.dispersion.png'),
+    'deseq2.dispersion.png',
     width = 600,
     height = 600
 )
@@ -228,7 +223,7 @@ dev.off()
 
 # R object for other processes to use
 
-save(dds, file = file.path(opt\$outdir, 'dds.rld.RData'))
+save(dds, file = 'dds.rld.RData')
 
 # Size factors
 
@@ -236,7 +231,7 @@ sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = file.path(opt\$outdir, 'deseq2.sizefactors.tsv'),
+    file = 'deseq2.sizefactors.tsv',
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -248,7 +243,7 @@ write.table(
 if (opt\$write_normalised){
     write.table(
         data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
-        file = file.path(opt\$outdir, 'normalised_counts.tsv'),
+        file = 'normalised_counts.tsv',
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -264,7 +259,7 @@ if (opt\$write_variance_stabilised){
     }
     write.table(
         data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))),
-        file = file.path(opt\$outdir, 'variance_stabilised_counts.tsv'),
+        file = 'variance_stabilised_counts.tsv',
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -278,9 +273,7 @@ if (opt\$write_variance_stabilised){
 ################################################
 ################################################
 
-RLogFile <- file.path(opt\$outdir, "R_sessionInfo.log")
-
-sink(RLogFile)
+sink("R_sessionInfo.log")
 print(sessionInfo())
 sink()
 
