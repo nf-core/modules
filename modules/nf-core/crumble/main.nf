@@ -33,7 +33,6 @@ process CRUMBLE {
     """
     crumble \\
         $args \\
-        $bed_output \\
         $input \\
         ${prefix}.${extension}
 
