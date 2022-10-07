@@ -284,9 +284,22 @@ sink(RLogFile)
 print(sessionInfo())
 sink()
 
-sink("versons.yml")
-cat(as.character(packageVersion("DESeq2")))
-sink()
+################################################
+################################################
+## VERSIONS FILE                              ##
+################################################
+################################################
+
+r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+deseq2.version <- as.character(packageVersion('DESeq2'))
+
+writeLines(
+    c(
+        '"${task.process}":', 
+        paste('    r-base:', r.version), 
+        paste('    bioconductor-deseq2:', deseq2.version)
+    ), 
+'versions.yml')
 
 ################################################
 ################################################
