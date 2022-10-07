@@ -19,22 +19,34 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
+    if (params.enable_conda) {
+        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+    }
+    conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //    'https://hub.docker.com/layers/tomkellygenetics/universc':
+    //    'docker.io/tomkellygenetics/universc:latest' }"
+    //container "${ workflow.containerEngine == 'podman' && !task.ext.singularity_pull_docker_container ?
+    //    'https://hub.docker.com/layers/tomkellygenetics/universc':
+    //    'docker.io/tomkellygenetics/universc:latest' }"
+    container "tomkellygenetics/universc:1.2.3"
+
     // TODO nf-core: List required Conda package(s).
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda (params.enable_conda ? "UniverSC" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://hub.docker.com/layers/tomkellygenetics/universc':
-        'docker.io/tomkellygenetics/universc:latest' }"
-
-    input:
+    //conda (params.enable_conda ? "UniverSC" : null)
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //    'https://hub.docker.com/layers/tomkellygenetics/universc':
+    //    'docker.io/tomkellygenetics/universc:latest' }"
+        
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
+    input:
     tuple val(meta), path(reads)
     path  reference
 
@@ -66,7 +78,7 @@ process UNIVERSC {
     bash /universc/launch_universc.sh \\
         --technology '${meta.technology}' \\
         --id 'sample-${meta.id}' \\
-        $input_reads \\
+        ${input_reads} \\
         --reference ${reference_name} \\
         --sample ${sample_arg} \\
         --jobmode "local" \\
@@ -93,6 +105,7 @@ process UNIVERSC {
         cellranger: cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)/
         universc: bash /universc/launch_universc.sh --version | grep version | grep universc | sed 's/^.* //g'
     END_VERSIONS
+    """
 }
 
 process CELLRANGER_COUNT_OS {
@@ -121,12 +134,12 @@ process CELLRANGER_COUNT_OS {
     def reference_name = reference.name
     """
     cellranger \\
-        count \\
+        count  \\
         --id='sample-${meta.id}' \\
         --fastqs=. \\
-        --transcriptome=$reference_name \\
-        --sample=$sample_arg \\
-        --localcores=$task.cpus \\
+        --transcriptome=${reference_name} \\
+        --sample=${sample_arg} \\
+        --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $args
 
