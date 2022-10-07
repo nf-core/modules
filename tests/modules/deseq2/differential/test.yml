@@ -1,0 +1,22 @@
+- name: deseq2 differential test_deseq2_differential
+  command: nextflow run ./tests/modules/deseq2/differential -entry test_deseq2_differential -c ./tests/config/nextflow.config  -c ./tests/modules/deseq2/differential/nextflow.config
+  tags:
+  - deseq2
+  - deseq2/differential
+  files:
+  - path: output/deseq2/R_sessionInfo.log
+    md5sum: 0947f977e5e63a4a07b6be6ea3d76f90
+  - path: output/deseq2/dds.rld.RData
+    md5sum: d77bab9025019f7741408dc73e225410
+  - path: output/deseq2/deseq2.dispersion.png
+    md5sum: 4f03189a15ddc552d24e655ed596fb21
+  - path: output/deseq2/deseq2.results.tsv
+    md5sum: 6ae73b67430a39e4efa9c1e405e88503
+  - path: output/deseq2/deseq2.sizefactors.tsv
+    md5sum: 6332f21889ecac387bb12eeb04f23849
+  - path: output/deseq2/normalised_counts.tsv
+    md5sum: 827cdf01f366d72d6e4b500e9862ba74
+  - path: output/deseq2/variance_stabilised_counts.tsv
+    md5sum: e0d785ed9fc38d375d0a75bff8efb6e6
+  - path: output/spoof/samplesheet.csv
+    md5sum: f81a2ce08cb150a440328d5b7091ab27
