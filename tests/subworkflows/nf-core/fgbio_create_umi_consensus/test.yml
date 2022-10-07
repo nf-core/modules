@@ -1,5 +1,5 @@
 - name: fgbio_create_umi_consensus_bwamem1
-  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem1 -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fgbio_create_umi_consensus/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem1 -c ./tests/config/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fgbio_create_umi_consensus
@@ -21,7 +21,7 @@
     - path: ./output/callumiconsensus/test_umiconsensus.bam
       md5sum: 24b48e3543de0ae7e8a95c116d5ca6a6
 - name: fgbio_create_umi_consensus_bwamem2
-  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem2 -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fgbio_create_umi_consensus/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem2 -c ./tests/config/nextflow.config
   tags:
     - subworkflows
     - subworkflows/fgbio_create_umi_consensus
