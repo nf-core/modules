@@ -202,7 +202,7 @@ contrast.name <-
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 if (!file.exists(opt\$outdir)) {
-  dir.create(opt\$outdir, recursive = TRUE)
+    dir.create(opt\$outdir, recursive = TRUE)
 }
 
 # Differential expression table
