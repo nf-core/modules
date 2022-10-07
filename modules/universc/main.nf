@@ -39,7 +39,7 @@ process UNIVERSC {
     //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //    'https://hub.docker.com/layers/tomkellygenetics/universc':
     //    'docker.io/tomkellygenetics/universc:latest' }"
-        
+
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
     //               This information may not be required in some instances e.g. indexing reference genome files:
