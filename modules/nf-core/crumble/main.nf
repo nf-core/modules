@@ -27,7 +27,6 @@ process CRUMBLE {
                     args.contains("-O bam") ? "bam" :
                     args.contains("-O cram") ? "cram" :
                     "sam"
-    def bed_output = args.contains("-b") ? "-b ${prefix}.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def CRUMBLE_VERSION = '0.9.0' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

@@ -49,7 +49,7 @@ output:
       pattern: "*.{sam}"
   - bed:
       type: file
-      description: use "ext.args = '-b'" to generate optional suspicious regions BED file
+      description: use 'ext.args = "-b ${meta.id}.bed"' to generate optional suspicious regions BED file
       pattern: "*{bed}"
 
 authors:
