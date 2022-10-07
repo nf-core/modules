@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 params.deseq_vs_method = 'rlog'
 
-include { DESEQ2_DIFFERENTIAL } from '../../../../modules/deseq2/differential/main.nf'
+include { DESEQ2_DIFFERENTIAL } from '../../../../../modules/nf-core/deseq2/differential/main.nf'
 
 process spoof_samplesheet {
 
