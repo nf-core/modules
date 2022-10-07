@@ -5,8 +5,8 @@
 FROM tomkellygenetics/cellranger_clean:3.0.2.9002
 
 RUN apt-get update \
-    && && apt-get upgrade -y \
-    && && apt-get install -y \
+    && apt-get upgrade -y \
+    && apt-get install -y \
     && git \
     && git-lfs \
     && make \
@@ -18,7 +18,7 @@ RUN apt-get install -y \
     && curl \
     && zsh \
     && nano \
-    && && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
+    && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
 
 RUN git clone "https://github.com/TomKellyGenetics/universc.git"
 
