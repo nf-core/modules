@@ -1,5 +1,4 @@
 # UniverSC
-
 ## Single-cell processing across technologies
 
 UniverSC is an open-source single-cell pipeline that runs across platforms on various technologies.
@@ -32,13 +31,11 @@ single-cell analysis tools available for 10X Genomics and Cell Ranger output for
 in Python and R packages.
 
 ## Disclaimer
-
 We are third party developers not affiliated with 10X Genomics or any other vendor of
 single-cell technologies. We are releasing this code on an open-source license which calls Cell Ranger
 as an external dependency.
 
 ## Licensing
-
 This package is provided open-source on a GPL-3 license. This means that you are free to use and
 modify this code provided that they also contain this license.
 
