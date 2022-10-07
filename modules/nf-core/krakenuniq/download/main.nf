@@ -11,8 +11,8 @@ process KRAKENUNIQ_DOWNLOAD {
     val pattern
 
     output:
-    path("${pattern}"), emit: output
-    path "versions.yml"           , emit: versions
+    path "${pattern}/"  , emit: output
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
