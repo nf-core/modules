@@ -200,6 +200,19 @@ comp.results <-
 ################################################
 ################################################
 
+# Common function to round numerics in data frames - mostly useful for testing,
+# since it doesn't seem to be possible to make outputs entirely reproducible
+# across machienes, even with set.seed(), but the differences are tiny.
+
+prepare_results <- function(x){
+    if ($params.deseq_round_results){
+        format(x, nsmall=8)
+    }else{
+        x
+    }
+}
+
+
 contrast.name <-
     paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
@@ -207,7 +220,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table
 
 write.table(
-    data.frame(gene_id = rownames(comp.results), comp.results),
+    prepare_results(data.frame(gene_id = rownames(comp.results), comp.results)),
     file = 'deseq2.results.tsv',
     col.names = TRUE,
     row.names = FALSE,
@@ -262,7 +275,7 @@ if (opt\$write_variance_stabilised){
         vs_func = rlog
     }
     write.table(
-        data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))),
+        prepare_results(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds)))),
         file = 'variance_stabilised_counts.tsv',
         col.names = TRUE,
         row.names = FALSE,
