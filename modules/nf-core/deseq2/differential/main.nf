@@ -18,7 +18,7 @@ params.deseq_random_seed = 0
 params.deseq_round_results = 'FALSE'
 
 process DESEQ2_DIFFERENTIAL {
-    tag "$meta"
+    tag "$contrast_meta"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bioconductor-deseq2=1.32.0" : null)
@@ -29,17 +29,17 @@ process DESEQ2_DIFFERENTIAL {
     input:
     path samplesheet
     path counts
-    val meta
+    val contrast_meta
 
     output:
-    tuple val(meta), path("deseq2.results.tsv")               , emit: results
-    tuple val(meta), path("deseq2.dispersion.png")            , emit: dispersion_plot
-    tuple val(meta), path("dds.rld.RData")                    , emit: rdata
-    tuple val(meta), path("deseq2.sizefactors.tsv")           , emit: size_factors
-    tuple val(meta), path("normalised_counts.tsv")            , emit: normalised_counts
-    tuple val(meta), path("variance_stabilised_counts.tsv")   , emit: variance_stabilised_counts
-    tuple val(meta), path("R_sessionInfo.log")                , emit: session_info
-    tuple val(meta), path("versions.yml")                     , emit: versions
+    tuple val(contrast_meta), path("deseq2.results.tsv")               , emit: results
+    tuple val(contrast_meta), path("deseq2.dispersion.png")            , emit: dispersion_plot
+    tuple val(contrast_meta), path("dds.rld.RData")                    , emit: rdata
+    tuple val(contrast_meta), path("deseq2.sizefactors.tsv")           , emit: size_factors
+    tuple val(contrast_meta), path("normalised_counts.tsv")            , emit: normalised_counts
+    tuple val(contrast_meta), path("variance_stabilised_counts.tsv")   , emit: variance_stabilised_counts
+    tuple val(contrast_meta), path("R_sessionInfo.log")                , emit: session_info
+    tuple val(contrast_meta), path("versions.yml")                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
