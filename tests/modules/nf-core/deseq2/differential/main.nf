@@ -2,10 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-params.deseq_vs_method = 'rlog'
-params.deseq_random_seed = 1234
-params.deseq_round_results = 'TRUE'
-
 include { DESEQ2_DIFFERENTIAL } from '../../../../../modules/nf-core/deseq2/differential/main.nf'
 
 process spoof_samplesheet {
