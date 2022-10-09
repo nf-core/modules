@@ -1,0 +1,8 @@
+- name: bcftools filter test_bcftools_filter
+  command: nextflow run ./tests/modules/nf-core/bcftools/filter -entry test_bcftools_filter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/filter/nextflow.config
+  tags:
+    - bcftools/filter
+    - bcftools
+  files:
+    - path: output/bcftools/test.vcf.gz
+      md5sum: c5f2a6a912964c45e8231140420561f9
