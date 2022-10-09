@@ -8,14 +8,14 @@
 
 #' Parse out options from a string without recourse to optparse
 #'
-#' @param x Long-form argument list like --opt1 val1 --opt2 val2 
+#' @param x Long-form argument list like --opt1 val1 --opt2 val2
 #'
 #' @return named list of options and values similar to optparse
 
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
     args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
-  
+ 
     as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
 }
 
