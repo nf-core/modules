@@ -15,7 +15,7 @@
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
     args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
- 
+
     as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
 }
 
