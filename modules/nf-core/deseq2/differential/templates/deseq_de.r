@@ -1,7 +1,22 @@
 #!/usr/bin/env Rscript
 
-if ($params.deseq_random_seed > 0){
-    set.seed($params.deseq_random_seed)
+################################################
+################################################
+## Functions                                  ##
+################################################
+################################################
+
+#' Parse out options from a string without recourse to optparse
+#'
+#' @param x Long-form argument list like --opt1 val1 --opt2 val2 
+#'
+#' @return named list of options and values similar to optparse
+
+parse_args <- function(x){
+  args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+  args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
+  
+  as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
 }
 
 ################################################
@@ -14,30 +29,48 @@ if ($params.deseq_random_seed > 0){
 # optparse-driven method in future with module bin/ directories, rather than
 # the template
 
+# Set defaults and classes
+
 opt <- list(
-    'count_file' = '$counts',
-    'sample_file' = '$samplesheet',
-    'contrast_variable' = '$contrast_meta.variable',
-    'reference_level' = '$contrast_meta.reference',
-    'treatment_level' = '$contrast_meta.target',
-    'blocking_variables' = '$contrast_meta.blocking',
-    'gene_id_col' = '$params.deseq_gene_id_col',
-    'sample_id_col' = '$params.deseq_sample_id_col',
-    'test' = '$params.deseq_test',
-    'fit_type' = '$params.deseq_fit_type',
-    'sf_type' = '$params.deseq_sf_type',
-    'min_replicates_for_replace' = $params.deseq_min_replicates_for_replace,
-    'use_t' = $params.deseq_use_t,
-    'lfc_threshold' = $params.deseq_lfc_threshold,
-    'alt_hypothesis' = '$params.deseq_alt_hypothesis',
-    'independent_filtering' = $params.deseq_independent_filtering,
-    'p_adjust_method' = '$params.deseq_p_adjust_method',
-    'alpha' = $params.deseq_alpha,
-    'minmu' = $params.deseq_minmu,
-    'write_normalised' = $params.deseq_write_normalised,
-    'write_variance_stabilised' = $params.deseq_write_variance_stabilised,
-    'vs_method' = '$params.deseq_vs_method'
+    count_file = '$counts',
+    sample_file = '$samplesheet',
+    contrast_variable = '$contrast_meta.variable',
+    reference_level = '$contrast_meta.reference',
+    treatment_level = '$contrast_meta.target',
+    blocking_variables = '$contrast_meta.blocking',
+    gene_id_col = "gene_id",
+    sample_id_col = "experiment_accession",
+    test = "Wald",
+    fit_type = "parametric",
+    sf_type = 'ratio',
+    min_replicates_for_replace = 7,
+    use_t = FALSE,
+    lfc_threshold = 0,
+    alt_hypothesis = 'greaterAbs',
+    independent_filtering = 'TRUE',
+    p_adjust_method = 'BH',
+    alpha = 0.1,
+    minmu = 0.5,
+    write_normalised = TRUE,
+    write_variance_stabilised = TRUE,
+    vs_method = 'vst',
+    random_seed = 0,
+    round_results = FALSE
 )
+opt_types <- lapply(opt, class)
+
+# Apply parameter overrides
+
+args_opt <- parse_args('$task.ext.args')
+for ( ao in names(args_opt)){
+    if (! ao %in% names(opt)){
+        stop(paste("Invalid option:", ao))
+    }else{
+        opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+    }
+}
+
+# Check file inputs are valid
 
 for (file_input in c('count_file', 'sample_file')){
     if (is.null(opt[[file_input]])) {
@@ -47,6 +80,10 @@ for (file_input in c('count_file', 'sample_file')){
     if (! file.exists(opt[[file_input]])){
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
+}
+
+if (opt\$random_seed > 0){
+    set.seed(opt\$random_seed)
 }
 
 
@@ -205,7 +242,7 @@ comp.results <-
 # across machienes, even with set.seed(), but the differences are tiny.
 
 prepare_results <- function(x){
-    if ($params.deseq_round_results){
+    if (opt\$round_results){
         format(x, nsmall=8)
     }else{
         x
