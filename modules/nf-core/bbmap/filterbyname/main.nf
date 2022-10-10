@@ -11,7 +11,6 @@ process BBMAP_FILTERBYNAME {
     tuple val(meta), path(reads)
     val output_extension
     val names
-    
 
     output:
     tuple val(meta), path("*${output_extension}"), emit: reads
