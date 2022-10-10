@@ -1,5 +1,5 @@
 - name: verifybamid verifybamid2 test_verifybamid_verifybamid2_panel
-  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_panel -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_panel -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/verifybamid/verifybamid2/nextflow.config
   tags:
     - verifybamid/verifybamid2
     - verifybamid
@@ -7,7 +7,7 @@
     - path: output/verifybamid/test.log
 
 - name: verifybamid verifybamid2 test_verifybamid_verifybamid2_refvcf
-  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_refvcf -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_refvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/verifybamid/verifybamid2/nextflow.config
   tags:
     - verifybamid/verifybamid2
     - verifybamid
@@ -19,7 +19,7 @@
       md5sum: 0810db02af2a176fa5ddc0f404911b66
 
 - name: verifybamid verifybamid2 test_verifybamid_verifybamid2_svd
-  command: nextflow run ./tests/modules/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_svd -c ./tests/config/nextflow.config -c ./tests/modules/verifybamid/verifybamid2/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/verifybamid/verifybamid2 -entry test_verifybamid_verifybamid2_svd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/verifybamid/verifybamid2/nextflow.config
   tags:
     - verifybamid/verifybamid2
     - verifybamid
