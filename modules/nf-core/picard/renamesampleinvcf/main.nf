@@ -39,7 +39,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(RenameSampleInVcf --version 2>&1) | sed 's/^.*RenameSampleInVcf //; s/Using.*\$//' ))
+        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 
@@ -50,7 +50,7 @@ process PICARD_RENAMESAMPLEINVCF {
     touch ${prefix}_renam.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(echo \$(RenameSampleInVcf --version 2>&1) | sed 's/^.*RenameSampleInVcf //; s/Using.*\$//' ))
+        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }

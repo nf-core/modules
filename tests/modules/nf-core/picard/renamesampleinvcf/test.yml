@@ -4,7 +4,8 @@
     - picard
     - picard/renamesampleinvcf
   files:
-    - path: ./output/picard/test_renam.vcf.gz
+    - path: output/picard/test_renam.vcf.gz
+    - path: output/picard/versions.yml
 
 - name: picard renamesampleinvcf test_picard_renamesampleinvcf_stub
   command: nextflow run ./tests/modules/nf-core/picard/renamesampleinvcf -entry test_picard_renamesampleinvcf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/renamesampleinvcf/nextflow.config -stub-run
@@ -12,4 +13,4 @@
     - picard
     - picard/renamesampleinvcf
   files:
-    - path: ./output/picard/test_renam.vcf.gz
+    - path: output/picard/test_renam.vcf.gz
