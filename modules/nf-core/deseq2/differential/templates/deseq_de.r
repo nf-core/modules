@@ -269,7 +269,7 @@ dev.off()
 
 # R object for other processes to use
 
-save(dds, file = 'dds.rld.RData')
+saveRDS(dds, file = 'dds.rld.rds')
 
 # Size factors
 

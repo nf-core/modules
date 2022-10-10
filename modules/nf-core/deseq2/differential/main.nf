@@ -15,7 +15,7 @@ process DESEQ2_DIFFERENTIAL {
     output:
     tuple val(contrast_meta), path("deseq2.results.tsv")               , emit: results
     tuple val(contrast_meta), path("deseq2.dispersion.png")            , emit: dispersion_plot
-    tuple val(contrast_meta), path("dds.rld.RData")                    , emit: rdata
+    tuple val(contrast_meta), path("dds.rld.rds")                    , emit: rdata
     tuple val(contrast_meta), path("deseq2.sizefactors.tsv")           , emit: size_factors
     tuple val(contrast_meta), path("normalised_counts.tsv")            , emit: normalised_counts
     tuple val(contrast_meta), path("variance_stabilised_counts.tsv")   , emit: variance_stabilised_counts
