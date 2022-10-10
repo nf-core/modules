@@ -54,7 +54,6 @@ opt <- list(
     write_normalised = TRUE,
     write_variance_stabilised = TRUE,
     vs_method = 'vst',
-    random_seed = 0,
     round_results = FALSE
 )
 opt_types <- lapply(opt, class)
@@ -81,11 +80,6 @@ for (file_input in c('count_file', 'sample_file')){
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
 }
-
-if (opt\$random_seed > 0){
-    set.seed(opt\$random_seed)
-}
-
 
 ################################################
 ################################################
