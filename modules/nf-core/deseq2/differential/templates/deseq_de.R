@@ -52,7 +52,8 @@ opt <- list(
     alpha = 0.1,
     minmu = 0.5,
     vs_method = 'vst',
-    round_results = FALSE
+    round_results = FALSE,
+    cores = 1
 )
 opt_types <- lapply(opt, class)
 
@@ -86,6 +87,7 @@ for (file_input in c('count_file', 'sample_file')){
 ################################################
 
 library(DESeq2)
+library(BiocParallel)
 
 ################################################
 ################################################
@@ -205,7 +207,8 @@ dds <- DESeq(
     fitType = opt\$fit_type,
     minReplicatesForReplace = opt\$min_replicates_for_replace,
     useT = opt\$use_t,
-    sfType = opt\$sf_type
+    sfType = opt\$sf_type,
+    parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
 )
 
 comp.results <-
