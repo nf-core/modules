@@ -1,19 +1,14 @@
 - name: bcl_demultiplex test_bcl_demultiplex_bclconvert
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bclconvert -c ./tests/config/nextflow.config
   tags:
-    - bcl2fastq
     - bclconvert
     - subworkflows
     - subworkflows/bcl_demultiplex
   files:
     - path: output/bclconvert/Logs/Errors.log
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/bclconvert/Logs/FastqComplete.txt
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bclconvert/Logs/Info.log
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bclconvert/Logs/Warnings.log
-      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
     - path: output/bclconvert/Reports/Adapter_Cycle_Metrics.csv
       md5sum: 5a0c88793b4a0885fe3dda16609b576e
     - path: output/bclconvert/Reports/Adapter_Metrics.csv
@@ -51,7 +46,6 @@
     - path: output/bclconvert/flowcell/InterOp/ExtractionMetricsOut.bin
       md5sum: 7497c3178837eea8f09350b5cd252e99
     - path: output/bclconvert/flowcell/InterOp/IndexMetricsOut.bin
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
     - path: output/bclconvert/flowcell/InterOp/QMetricsOut.bin
       md5sum: 7e9f198d53ebdfbb699a5f94cf1ed51c
     - path: output/bclconvert/flowcell/InterOp/TileMetricsOut.bin
@@ -61,7 +55,6 @@
   command: nextflow run ./tests/subworkflows/nf-core/bcl_demultiplex -entry test_bcl_demultiplex_bcl2fastq -c ./tests/config/nextflow.config
   tags:
     - bcl2fastq
-    - bclconvert
     - subworkflows
     - subworkflows/bcl_demultiplex
   files:
