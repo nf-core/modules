@@ -1,39 +1,39 @@
 - name: freebayes test_freebayes
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freebayes/nextflow.config
   tags:
-  - freebayes
+    - freebayes
   files:
-  - path: output/freebayes/test.vcf.gz
-    md5sum: 420e0069ef1533a049cd6edb557abc93
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 420e0069ef1533a049cd6edb557abc93
 
 - name: freebayes test_freebayes_bed
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_bed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freebayes/nextflow.config
   tags:
-  - freebayes
+    - freebayes
   files:
-  - path: output/freebayes/test.vcf.gz
-    md5sum: c9f34865cb1bfd1b0eb24eb8612568d0
+    - path: output/freebayes/test.vcf.gz
+      md5sum: c9f34865cb1bfd1b0eb24eb8612568d0
 
 - name: freebayes test_freebayes_cram
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freebayes/nextflow.config
   tags:
-  - freebayes
+    - freebayes
   files:
-  - path: output/freebayes/test.vcf.gz
-    md5sum: 4a2e58f7ba98ab325b62ad05afad58d9
+    - path: output/freebayes/test.vcf.gz
+      md5sum: 4a2e58f7ba98ab325b62ad05afad58d9
 
 - name: freebayes test_freebayes_somatic
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freebayes/nextflow.config
   tags:
-  - freebayes
+    - freebayes
   files:
-  - path: output/freebayes/test.vcf.gz
-    md5sum: f683aa153127cfed88af6eb016358c9d
+    - path: output/freebayes/test.vcf.gz
+      md5sum: f683aa153127cfed88af6eb016358c9d
 
 - name: freebayes test_freebayes_somatic_cram_intervals
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic_cram_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/freebayes/nextflow.config
   tags:
-  - freebayes
+    - freebayes
   files:
-  - path: output/freebayes/test.vcf.gz
-    md5sum: be930c4208feca7e74e023f5ca4b3ad7
+    - path: output/freebayes/test.vcf.gz
+      md5sum: be930c4208feca7e74e023f5ca4b3ad7
