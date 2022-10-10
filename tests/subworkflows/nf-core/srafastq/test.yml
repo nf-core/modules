@@ -1,12 +1,13 @@
 - name: srafastq single-end
-  command: nextflow run ./tests/subworkflows/nf-core/srafastq -entry test_srafastq_single_end -c tests/config/nextflow.config -c tests/subworkflows/nf-core/srafastq/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/srafastq -entry test_srafastq_single_end -c tests/config/nextflow.config
   tags:
     - subworkflows
-    # - subworkflows/srafastq
+    - subworkflows/srafastq
     # Modules
-    # - sratools
-    # - sratools/prefetch
-    # - sratools/fasterqdump
+    - sratools
+    - custom/sratoolsncbisettings
+    - sratools/prefetch
+    - sratools/fasterqdump
   files:
     - path: output/sratools/DRR000774.fastq.gz
       md5sum: 19029a1132115b55277a0d79ee089b49
@@ -14,14 +15,15 @@
       md5sum: 59ff24c86ecb260752668c059c2a1eaf
 
 - name: srafastq paired-end
-  command: nextflow run ./tests/subworkflows/nf-core/srafastq -entry test_srafastq_paired_end -c tests/config/nextflow.config -c tests/subworkflows/nf-core/srafastq/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/srafastq -entry test_srafastq_paired_end -c tests/config/nextflow.config
   tags:
     - subworkflows
-    # - subworkflows/srafastq
+    - subworkflows/srafastq
     # Modules
-    # - sratools
-    # - sratools/prefetch
-    # - sratools/fasterqdump
+    - sratools
+    - custom/sratoolsncbisettings
+    - sratools/prefetch
+    - sratools/fasterqdump
   files:
     - path: output/sratools/SRR11140744_1.fastq.gz
       md5sum: 193809c784a4ea132ab2a253fa4f55b6
