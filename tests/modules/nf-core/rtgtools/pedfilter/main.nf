@@ -32,4 +32,7 @@ workflow test_rtgtools_pedfilter_vcf_output {
     ]
 
     RTGTOOLS_PEDFILTER ( input )
+
+    emit:
+    vcf = RTGTOOLS_PEDFILTER.out.vcf
 }
