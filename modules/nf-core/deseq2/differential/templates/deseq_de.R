@@ -232,6 +232,9 @@ comp.results <-
 ################################################
 ################################################
 
+prefix_parts <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
+output_prefix = gsub(' ', '-', do.call(paste, lapply(c(prefix_parts), function(x) gsub("[^[:alnum:] ]", "_", x))))
+
 # Common function to round numerics in data frames - mostly useful for testing,
 # since it doesn't seem to be possible to make outputs entirely reproducible
 # across machienes, even with set.seed(), but the differences are tiny.
@@ -244,7 +247,6 @@ prepare_results <- function(x){
     }
 }
 
-
 contrast.name <-
     paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
@@ -253,7 +255,7 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 write.table(
     prepare_results(data.frame(gene_id = rownames(comp.results), comp.results)),
-    file = 'deseq2.results.tsv',
+    file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -263,7 +265,7 @@ write.table(
 # Dispersion plot
 
 png(
-    'deseq2.dispersion.png',
+    file = paste(output_prefix, 'deseq2.dispersion.png', sep = '.'),
     width = 600,
     height = 600
 )
@@ -272,7 +274,7 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(dds, file = 'dds.rld.rds')
+saveRDS(dds, file = file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
@@ -280,7 +282,7 @@ sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = 'deseq2.sizefactors.tsv',
+    file = file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -291,7 +293,7 @@ write.table(
 
 write.table(
     data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
-    file = 'normalised_counts.tsv',
+    file = file = paste(output_prefix, 'normalised_counts.tsv', sep = '.')
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -305,7 +307,7 @@ if (opt\$vs_method == 'vst'){
 }
 write.table(
     prepare_results(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds)))),
-    file = 'variance_stabilised_counts.tsv',
+    file = paste(output_prefix, 'variance_stabilised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -318,7 +320,7 @@ write.table(
 ################################################
 ################################################
 
-sink("R_sessionInfo.log")
+sink(paste(output_prefix, "R_sessionInfo.log", sep = '.')
 print(sessionInfo())
 sink()
 
