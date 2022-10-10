@@ -2,9 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCL_DEMULTIPLEX as BCL_BCLCONVERT } from '../../../../subworkflows/nf-core/bcl_demultiplex/main.nf'
-include { BCL_DEMULTIPLEX as BCL_BCL2FASTQ  } from '../../../../subworkflows/nf-core/bcl_demultiplex/main.nf'
-include { UNTAR                             } from '../../../../modules/nf-core/untar/main.nf'
+include { BCL_DEMULTIPLEX } from '../../../../subworkflows/nf-core/bcl_demultiplex/main.nf'
+include { UNTAR           } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_bcl_demultiplex_bclconvert {
 
@@ -21,7 +20,7 @@ workflow test_bcl_demultiplex_bclconvert {
 
     ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
 
-    BCL_BCLCONVERT ( ch_flowcell_untar, "bclconvert" )
+    BCL_DEMULTIPLEX ( ch_flowcell_untar, "bclconvert" )
 }
 
 workflow test_bcl_demultiplex_bcl2fastq {
@@ -39,5 +38,5 @@ workflow test_bcl_demultiplex_bcl2fastq {
 
     ch_flowcell_untar = ch_fc_split.samplesheet.join( UNTAR ( ch_fc_split.tar ).untar )
 
-    BCL_BCL2FASTQ ( ch_flowcell_untar, "bcl2fastq" )
+    BCL_DEMULTIPLEX ( ch_flowcell_untar, "bcl2fastq" )
 }
