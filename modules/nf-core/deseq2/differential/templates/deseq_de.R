@@ -52,7 +52,6 @@ opt <- list(
     alpha = 0.1,
     minmu = 0.5,
     vs_method = 'vst',
-    round_results = FALSE,
     cores = 1
 )
 opt_types <- lapply(opt, class)
@@ -235,26 +234,15 @@ comp.results <-
 prefix_parts <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
 output_prefix = gsub(' ', '-', do.call(paste, lapply(c(prefix_parts), function(x) gsub("[^[:alnum:] ]", "_", x))))
 
-# Common function to round numerics in data frames - mostly useful for testing,
-# since it doesn't seem to be possible to make outputs entirely reproducible
-# across machienes, even with set.seed(), but the differences are tiny.
-
-prepare_results <- function(x){
-    if (opt\$round_results){
-        format(x, nsmall=8)
-    }else{
-        x
-    }
-}
-
 contrast.name <-
     paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
-# Differential expression table
+# Differential expression table- note very limited rounding for consistency of
+# results
 
 write.table(
-    prepare_results(data.frame(gene_id = rownames(comp.results), comp.results)),
+    format(data.frame(gene_id = rownames(comp.results), comp.results), nsmall = 8),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -274,7 +262,7 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(dds, file = file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
+saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
@@ -282,7 +270,7 @@ sf_df = data.frame(sample = names(sizeFactors(dds)), data.frame(sizeFactors(dds)
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
+    file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -293,7 +281,7 @@ write.table(
 
 write.table(
     data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
-    file = file = paste(output_prefix, 'normalised_counts.tsv', sep = '.')
+    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -305,8 +293,11 @@ if (opt\$vs_method == 'vst'){
 }else{
     vs_func = rlog
 }
+
+# Note very limited rounding for consistency of results
+
 write.table(
-    prepare_results(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds)))),
+    format(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))), nsmall = 8),
     file = paste(output_prefix, 'variance_stabilised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -320,7 +311,7 @@ write.table(
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.')
+sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
 print(sessionInfo())
 sink()
 
