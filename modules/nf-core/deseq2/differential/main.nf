@@ -26,5 +26,5 @@ process DESEQ2_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'deseq_de.r'
+    template 'deseq_de.R'
 }
