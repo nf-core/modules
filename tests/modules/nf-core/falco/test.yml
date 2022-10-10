@@ -1,11 +1,29 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml falco
-- name: "falco"
-  command: nextflow run ./tests/modules/nf-core/falco -entry test_falco -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/falco/nextflow.config
+- name: falco test_fastqc_single_end
+  command: nextflow run ./tests/modules/nf-core/falco -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/falco/nextflow.config
   tags:
-    - "falco"
+    - falco
   files:
-    - path: "output/falco/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/falco/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/falco/fastqc_data.txt
+      md5sum: c5d0cd529d1d2f5a842bf3afd06a9567
+    - path: output/falco/fastqc_report.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/falco/summary.txt
+      md5sum: 3367c81d60e4b39c89b28acd0434c8aa
+
+- name: falco test_fastqc_paired_end
+  command: nextflow run ./tests/modules/nf-core/falco -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/falco/nextflow.config
+  tags:
+    - falco
+  files:
+    - path: output/falco/test_1.fastq.gz_fastqc_data.txt
+      md5sum: 36d989bb9e2d5a632e19452f4e6c2a4e
+    - path: output/falco/test_1.fastq.gz_fastqc_report.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/falco/test_1.fastq.gz_summary.txt
+      md5sum: a925aec214a83d2f6252847166f2ef3a
+    - path: output/falco/test_2.fastq.gz_fastqc_data.txt
+      md5sum: ad5c45dfc8f79754dd5d8029456b715b
+    - path: output/falco/test_2.fastq.gz_fastqc_report.html
+      contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/falco/test_2.fastq.gz_summary.txt
+      md5sum: d0cb642adefb5635a25e808f1f38780a

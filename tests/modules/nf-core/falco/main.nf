@@ -4,12 +4,25 @@ nextflow.enable.dsl = 2
 
 include { FALCO } from '../../../../modules/nf-core/falco/main.nf'
 
-workflow test_falco {
-    
-    input = [
-        [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
-    ]
+//
+// Test with single-end data
+//
+workflow test_fastqc_single_end {
+    input = [ [ id:'test', single_end:true ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+            ]
+
+    FALCO ( input )
+}
+
+//
+// Test with paired-end data
+//
+workflow test_fastqc_paired_end {
+    input = [ [id: 'test', single_end: false], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
 
     FALCO ( input )
 }
