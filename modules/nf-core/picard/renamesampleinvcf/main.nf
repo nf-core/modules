@@ -3,14 +3,14 @@ process PICARD_RENAMESAMPLEINVCF {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.1" : null)
+    conda (params.enable_conda ? "bioconda::picard=2.27.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:2.27.1--hdfd78af_0' :
-        'quay.io/biocontainers/picard:2.27.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:2.27.3--hdfd78af_0' :
+        'quay.io/biocontainers/picard:2.27.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
-    val(name)                       // text contsining new name for vcf sample
+    val(new_name)                       // text contsining new name for vcf sample
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -35,7 +35,7 @@ process PICARD_RENAMESAMPLEINVCF {
         -Xmx${avail_mem}g \\
         --INPUT $vcf \\
         --OUTPUT ${prefix}_renam.vcf.gz \\
-        --NEW_SAMPLE_NAME $name
+        --NEW_SAMPLE_NAME $new_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
