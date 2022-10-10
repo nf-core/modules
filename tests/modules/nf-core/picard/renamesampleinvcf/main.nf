@@ -9,7 +9,6 @@ workflow test_picard_renamesampleinvcf {
     input = [ [ id:'test' ],
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
             ]
-    new_name = 'sample'
 
-    PICARD_RENAMESAMPLEINVCF ( input, new_name )
+    PICARD_RENAMESAMPLEINVCF ( input )
 }
