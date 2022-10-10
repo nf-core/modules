@@ -1,5 +1,5 @@
 - name: bam stats samtools single-end
-  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_single_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_stats_samtools/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_single_end -c ./tests/config/nextflow.config
   tags:
     - subworkflows
     - subworkflows/bam_stats_samtools
@@ -17,7 +17,7 @@
     - path: ./output/samtools/test.single_end.sorted.bam.stats
 
 - name: bam stats samtools paired-end
-  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_paired_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_stats_samtools/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/bam_stats_samtools -entry test_bam_stats_samtools_paired_end -c ./tests/config/nextflow.config
   tags:
     - subworkflows
     - subworkflows/bam_stats_samtools
