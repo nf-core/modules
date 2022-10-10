@@ -51,8 +51,6 @@ opt <- list(
     p_adjust_method = 'BH',
     alpha = 0.1,
     minmu = 0.5,
-    write_normalised = TRUE,
-    write_variance_stabilised = TRUE,
     vs_method = 'vst',
     round_results = FALSE
 )
@@ -288,32 +286,28 @@ write.table(
 
 # Write specified matrices
 
-if (opt\$write_normalised){
-    write.table(
-        data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
-        file = 'normalised_counts.tsv',
-        col.names = TRUE,
-        row.names = FALSE,
-        sep = '\t',
-        quote = FALSE
-    )
-}
+write.table(
+    data.frame(gene_id=rownames(counts(dds)), counts(dds, normalized = TRUE)),
+    file = 'normalised_counts.tsv',
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
 
-if (opt\$write_variance_stabilised){
-    if (opt\$vs_method == 'vst'){
-        vs_func = vst
-    }else{
-        vs_func = rlog
-    }
-    write.table(
-        prepare_results(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds)))),
-        file = 'variance_stabilised_counts.tsv',
-        col.names = TRUE,
-        row.names = FALSE,
-        sep = '\t',
-        quote = FALSE
-    )
+if (opt\$vs_method == 'vst'){
+    vs_func = vst
+}else{
+    vs_func = rlog
 }
+write.table(
+    prepare_results(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds)))),
+    file = 'variance_stabilised_counts.tsv',
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
 
 ################################################
 ################################################
