@@ -1,0 +1,60 @@
+name: "presto_filterseq"
+## TODO nf-core: Add a description of the module and list keywords
+description: Filtering sequences based on quality.
+keywords:
+  - presto
+  - FilterSeq
+tools:
+  - "presto":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte receptor sequencing data."
+      homepage: "https://presto.readthedocs.io/en/stable/install.html"
+      documentation: "https://presto.readthedocs.io/en/stable/"
+      tool_dev_url: "https://bitbucket.org/kleinstein/presto/src/master/"
+      doi: "10.1093/bioinformatics/btu138"
+      licence: "['AGPL v3']"
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - R1:
+      type: file
+      description: fastq read pair 1
+      pattern: "*.fastq"
+  - R2:
+      type: file
+      description: fastq read pair 2
+      pattern: "*.fastq"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: R1 & R2 quality passed fastq files"
+      pattern: "*.fastq"
+  - logs:
+      type: files
+      escription: File containing log information
+      pattern: "*.log"
+  - log_tab:
+      type: files
+      escription: tab files
+      pattern: "*.tab"
+
+authors:
+  - "@snafees"
