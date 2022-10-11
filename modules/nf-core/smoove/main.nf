@@ -24,6 +24,7 @@ process SMOOVE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     smoove call \\
+        ${args} \\
         --outdir . \\
         --name ${prefix} \\
         --fasta ${fasta} \\
