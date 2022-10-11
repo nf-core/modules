@@ -24,5 +24,5 @@ workflow test_sourmash_gather {
     SOURMASH_SKETCH1 ( input )
     SOURMASH_SKETCH2 ( database )
 
-    // SOURMASH_GATHER ( SOURMASH_SKETCH1.out.signatures, SOURMASH_SKETCH2.out.signatures.map{it[1]} )
+    SOURMASH_GATHER ( SOURMASH_SKETCH1.out.signatures, SOURMASH_SKETCH2.out.signatures.map{it[1]} )
 }

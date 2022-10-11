@@ -30,11 +30,11 @@ process SOURMASH_GATHER {
     """
     sourmash gather \\
         $args \\
-        --output '${result}' \\
-        --output-unassigned '${unassigned}' \\
-        --save-matches '${matches}' \\
-        '${signature}' \\
-        '${database}'
+        --output ${result} \\
+        --output-unassigned ${unassigned} \\
+        --save-matches ${matches} \\
+        ${signature} \\
+        ${database}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
