@@ -47,11 +47,12 @@ opt <- list(
     use_t = FALSE,
     lfc_threshold = 0,
     alt_hypothesis = 'greaterAbs',
-    independent_filtering = 'TRUE',
+    independent_filtering = TRUE,
     p_adjust_method = 'BH',
     alpha = 0.1,
     minmu = 0.5,
     vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
+    shrink_lfc = TRUE,
     cores = 1
 )
 opt_types <- lapply(opt, class)
@@ -224,6 +225,16 @@ comp.results <-
             c(opt\$treatment_level, opt\$reference_level)
         )
     )
+
+if (opt\$shrink_lfc){
+    comp.results <- lfcShrink(dds, 
+        type = 'ashr',
+        contrast = c(
+            opt\$contrast_variable,
+            c(opt\$treatment_level, opt\$reference_level)
+        )
+    )
+}
 
 ################################################
 ################################################
