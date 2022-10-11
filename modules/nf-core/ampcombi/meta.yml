@@ -1,0 +1,73 @@
+name: "ampcombi"
+description: A tool to parse and suumarise results from antimicorbial peptides tools and provide the respective functional classification.
+keywords:
+  - antimicrobial peptides
+  - amps
+  - parsing
+  - reporting
+  - align
+  - macrel
+  - amplify
+  - hmmsearch
+  - neubi
+  - ampir
+  - DRAMP
+tools:
+  - "ampcombi":
+      description: "This tool parses the results of amp prediction tools into a single table and aligns the hits against a reference database of antimicrobial peptides for functional classifications."
+      homepage: "https://github.com/Darcy220606/AMPcombi"
+      documentation: "https://github.com/Darcy220606/AMPcombi"
+      tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
+      doi: ""
+      licence: "['MIT']"
+
+input:
+  - file_list: 
+      type: value
+      description: A list with the paths to the AMP output-files for each sample. The AMP output files are the table results from AMP tools i.e., Macrel, Ampir, Amplify, HMMsearch and Neubi. List example [''][''].
+     ## pattern: "[*]"
+  - faa_folder:
+      type: folder
+      description: The path to the folder containing the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
+      pattern: "*/"
+  - outdir:
+      type: value
+      description: The given path and name of the output directory
+      pattern: "*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: An alignment file containing the results from the Diamond alignment step done on all AMP hits.
+      pattern: "*_diamond_matches.txt"
+  - csv:
+      type: file
+      description: A file containing the summary report of all predicted AMP hits from all AMP tools given as input and the corresponding taxonomic and functional classification from teh alignment step. 
+      pattern: "*_ampcombi.csv"
+  - faa:
+      type: file
+      description: A fasta file containing the amino acid sequences of all predicted AMP hits.
+      pattern: "*_amp.faa"
+  - log:
+      type: file
+      description: A log file that captures the standard output ina log file. Can be activated by `--log`.
+      pattern: "*.log"
+  - results_dir:
+      type: folder
+      description: The main output directory that contains subdirectories organised by sample name.
+      pattern: "*/"
+  - results_subdir:
+      type: folder
+      description: The subdirectories created within the main result directory. These are named according to the sample names.
+      pattern: "*/*/*"
+  - results_subdir_db:
+      type: folder
+      description: If the AMP reference database is not provided by the user using the flag `--amp_database', by default the DRAMP database will be downloaded, filtered and stored in this folder.
+      pattern: "*/amp_ref_database"
+
+authors:
+  - "@darcy220606"
