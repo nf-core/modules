@@ -9,7 +9,6 @@ process BIOHANSEL {
 
     input:
     tuple val(meta), path(seqs)
-    val scheme
     path scheme_metadata
 
     output:
@@ -24,14 +23,14 @@ process BIOHANSEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def scheme_metadata_opt = scheme_metadata ? "--scheme-metadata ${scheme_metadata[0]}" : ""
+    def scheme_metadata_opt = scheme_metadata ? "--scheme-metadata ${scheme_metadata}" : ""
     def input_type = seqs[1] == null ? "" : "--paired-reads"
     """
     hansel \\
         $args \\
         $scheme_metadata_opt \\
         --threads $task.cpus \\
-        --scheme $scheme \\
+        --scheme ${meta.scheme} \\
         --output-summary ${prefix}-summary.txt \\
         --output-kmer-results ${prefix}-kmer-results.txt \\
         --output-simple-summary ${prefix}-simple-summary.txt \\
