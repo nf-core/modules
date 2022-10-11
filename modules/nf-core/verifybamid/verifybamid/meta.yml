@@ -26,6 +26,10 @@ input:
         It also requires to contain "@RG" header lines to annotation different readGroups (sequencing runs and lanes).
         The SM tag in the "@RG" header should match with one of the genotyped sample.
       pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file BAI
+      pattern: "*.{bai}"
   - refvcf:
       type: file
       description: |
