@@ -46,7 +46,6 @@ process FGBIO_ZIPPERBAMS {
         --input ${mbam} \\
         --ref ${fasta} \\
         ${args} \\
-        ${args2} \\
         --output ${prefix}.bam
 
 
