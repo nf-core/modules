@@ -13,7 +13,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
     val(min_baseq)
 
     output:
-    tuple val(meta), path("*_consensus.bam"), emit: bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     path "versions.yml"                     , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_consensus"
+    prefix = task.ext.prefix ?: "${meta.id}_consensus"
 
     def mem_gb = 8
     if (!task.memory) {
