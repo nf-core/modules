@@ -8,26 +8,26 @@ process HAPIBD {
         'ashotmarg/hap-ibd:ubuntu' }"
 
     input:
-    tuple val(meta), path(vcf)
-    path(map)
-    val(out)
-    path(exclude)
+        tuple val(meta), path(vcf)
+        path(map)
+        val(out)
+        path(exclude)
 
 
     output:
-    tuple val(meta), path("${outpref}.hbd.gz"), emit: hbd
-    tuple val(meta), path("${outpref}.ibd.gz"), emit: ibd
-    tuple val(meta), path("${outpref}.log"), emit: log
-    path "versions.yml"           , emit: versions
+        tuple val(meta), path("${outpref}.hbd.gz"),   emit: hbd
+        tuple val(meta), path("${outpref}.ibd.gz"),   emit: ibd
+        tuple val(meta), path("${outpref}.log"),      emit: log
+        path "versions.yml",                          emit: versions
 
     when:
-    task.ext.when == null || task.ext.when
+        task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    outpref = out ?: prefix
-    def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
+        def args = task.ext.args ?: ''
+        def prefix = task.ext.prefix ?: "${meta.id}"
+        outpref = out ?: prefix
+        def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
     def avail_mem = 3
     if (!task.memory) {
