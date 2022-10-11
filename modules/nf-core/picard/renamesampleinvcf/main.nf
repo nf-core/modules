@@ -24,7 +24,7 @@ process PICARD_RENAMESAMPLEINVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[Picard SoRenameSampleInVcfrtSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[Picard RenameSampleInVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
