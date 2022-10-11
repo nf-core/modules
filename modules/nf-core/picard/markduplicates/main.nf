@@ -9,6 +9,8 @@ process PICARD_MARKDUPLICATES {
 
     input:
     tuple val(meta), path(bam)
+    path fasta
+    path fai
 
     output:
     tuple val(meta), path("*.bam")        , emit: bam
@@ -29,12 +31,14 @@ process PICARD_MARKDUPLICATES {
         avail_mem = task.memory.giga
     }
     """
+    head $fasta
     picard \\
         -Xmx${avail_mem}g \\
         MarkDuplicates \\
         $args \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.bam \\
+        --REFERENCE_SEQUENCE $fasta \\
         --METRICS_FILE ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
