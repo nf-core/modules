@@ -1,12 +1,24 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml presto/filterseq
-- name: "presto filterseq"
+- name: presto filterseq test_presto_filterseq
   command: nextflow run ./tests/modules/nf-core/presto/filterseq -entry test_presto_filterseq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/presto/filterseq/nextflow.config
   tags:
-    - "presto"
-    - "presto/filterseq"
+  - presto
+  - presto/filterseq
   files:
-    - path: "output/presto/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/presto/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/gunzip/test_airrseq_R2.fastq
+    md5sum: 51220f557d95ab70c0819e9a3e8e593a
+  - path: output/gunzip/test_airrseq_umi_R1.fastq
+    md5sum: 7f98eefe4c7111d4632685680b6b9a4b
+  - path: output/presto/test_R1_quality-pass.fastq
+    contains: '@M04284:32:000000000-BFFCT:1:1101:17316:1005 2:N:0:4'
+  - path: output/presto/test_R2_quality-pass.fastq
+    contains: '@M04284:32:000000000-BFFCT:1:1101:9773:1006 1:N:0:4'
+  - path: output/presto/test_airrseq_R2_R1.log
+    contains: 'ID> M04284:32:000000000-BFFCT:1:1101:17316:1005'
+  - path: output/presto/test_airrseq_R2_R1_table.tab
+    contains: 'ID      QUALITY'
+  - path: output/presto/test_airrseq_umi_R1_R2.log
+    contains: 'ID> M04284:32:000000000-BFFCT:1:1101:11564:1005'
+  - path: output/presto/test_airrseq_umi_R1_R2_table.tab
+    contains: 'ID      QUALITY'
+  - path: output/presto/test_command_log.txt
+    contains: 'START> FilterSeq'
