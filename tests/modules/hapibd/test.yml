@@ -1,0 +1,23 @@
+- name: hapibd test_hapibd
+  command: nextflow run ./tests/modules/hapibd -entry test_hapibd -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
+  tags:
+    - hapibd
+  files:
+    - path: output/hapibd/hapIBDout.hbd.gz
+      md5sum: 709872fc2910431b1e8b7074bfe38c67
+    - path: output/hapibd/hapIBDout.ibd.gz
+      contains: ["*.ibd.gz"]
+    - path: output/hapibd/hapIBDout.log
+      contains: ["*.log"]
+
+- name: hapibd test_hapibd_excludesamples
+  command: nextflow run ./tests/modules/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
+  tags:
+    - hapibd
+  files:
+    - path: output/hapibd/hapIBDout.hbd.gz
+      md5sum: 709872fc2910431b1e8b7074bfe38c67
+    - path: output/hapibd/hapIBDout.ibd.gz
+      contains: ["*.ibd.gz"]
+    - path: output/hapibd/hapIBDout.log
+      contains: ["*.log"]
