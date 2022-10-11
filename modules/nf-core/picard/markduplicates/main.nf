@@ -31,7 +31,6 @@ process PICARD_MARKDUPLICATES {
         avail_mem = task.memory.giga
     }
     """
-    head $fasta
     picard \\
         -Xmx${avail_mem}g \\
         MarkDuplicates \\
