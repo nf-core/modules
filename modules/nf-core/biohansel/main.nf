@@ -30,7 +30,6 @@ process BIOHANSEL {
         $args \\
         $scheme_metadata_opt \\
         --threads $task.cpus \\
-        --scheme ${meta.scheme} \\
         --output-summary ${prefix}-summary.txt \\
         --output-kmer-results ${prefix}-kmer-results.txt \\
         --output-simple-summary ${prefix}-simple-summary.txt \\

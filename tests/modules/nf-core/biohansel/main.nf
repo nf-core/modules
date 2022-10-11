@@ -9,7 +9,7 @@ include { BIOHANSEL as BIOHANSEL_FASTA } from '../../../../modules/nf-core/bioha
 workflow test_biohansel_paired_end {
     
     input = [
-        [ id:'test', scheme: "typhi", single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         [
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
@@ -22,7 +22,7 @@ workflow test_biohansel_paired_end {
 workflow test_biohansel_single_end {
     
     input = [
-        [ id:'test', scheme: "typhi", single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
 
@@ -32,7 +32,7 @@ workflow test_biohansel_single_end {
 workflow test_biohansel_assembly {
     
     input = [
-        [ id:'test', scheme: "typhi", single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
     ]
 
