@@ -1,0 +1,10 @@
+- name: "bedgraph_bedclip_bedgraphtobigwig"
+  command: nextflow run ./tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig -entry test_bedgraph_bedclip_bedgraphtobigwig -c ./tests/config/nextflow.config
+  tags:
+    - "subworkflows"
+    - "subworkflows/bedgraph_bedclip_bedgraphtobigwig"
+  files:
+    - path: "output/bedgraph_bedclip_bedgraphtobigwig/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/bedgraph_bedclip_bedgraphtobigwig/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
