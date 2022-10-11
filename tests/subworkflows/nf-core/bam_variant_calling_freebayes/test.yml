@@ -5,16 +5,12 @@
     - bcftools/index
     - bcftools/sort
     - freebayes
-    - samtools
-    - samtools/faidx
     - subworkflows
     - subworkflows/bam_variant_calling_freebayes
   files:
-    - path: output/bcftools/test.sorted.vcf.gz
+    - path: output/bcftools/aligned.sorted.vcf.gz
       md5sum: 44ba74c530d398e66a0918e563e6f06d
-    - path: output/bcftools/test.sorted.vcf.gz.csi
+    - path: output/bcftools/aligned.sorted.vcf.gz.csi
       md5sum: 9f9b21580c85a6b2c5bd5b480dab769d
-    - path: output/freebayes/test.vcf.gz
+    - path: output/freebayes/aligned.vcf.gz
       md5sum: 86b5886d8c0fd091e874c412fffcc435
-    - path: output/samtools/genome.fasta.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685

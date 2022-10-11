@@ -20,7 +20,7 @@ input:
         e.g. [ id:'test' ]
   - input:
       type: file
-      description: BAM/CRAM/SAM file
+      description: BAM/CRAM/SAM file; the first one is for general usage, the second is to run variant calling with pair (normal vs tumor)
       pattern: "*.{bam,cram,sam}"
   - index:
       type: file
@@ -34,7 +34,7 @@ input:
       type: file
       description: reference fasta file
       pattern: ".{fa,fa.gz,fasta,fasta.gz}"
-  - fasta_fai:
+  - fai:
       type: file
       description: reference fasta file index
       pattern: "*.{fa,fasta}.fai"
@@ -74,7 +74,7 @@ output:
       pattern: "*.csi"
   - tbi:
       type: file
-      description: Alternative VCF file index file for larger files (activated with -t parameter)
+      description: Alternative VCF file index file (activated with -t parameter)
       pattern: "*.tbi"
 authors:
   - "@priyanka-surana"
