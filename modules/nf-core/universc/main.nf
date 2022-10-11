@@ -73,7 +73,7 @@ process CELLRANGER_COUNT_OS {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "tomkellygenetics/cellranger_clean:3.0.2.9001"
+    container "tomkellygenetics/universc:1.2.3"
 
     input:
     tuple val(meta), path(reads)
