@@ -3,11 +3,11 @@
   tags:
     - biohansel
   files:
-    - path: output/biohansel/kmer-results.txt
+    - path: output/biohansel/test-kmer-results.txt
       md5sum: 4e9343fca5019f076811045fb1802ba4
-    - path: output/biohansel/simple-summary.txt
+    - path: output/biohansel/test-simple-summary.txt
       md5sum: 692a52dc47639fa17d140de9869ebf05
-    - path: output/biohansel/summary.txt
+    - path: output/biohansel/test-summary.txt
       md5sum: 3d922546deef3a9de07bafdc23a1e771
 
 - name: biohansel test_biohansel_single_end
@@ -15,11 +15,11 @@
   tags:
     - biohansel
   files:
-    - path: output/biohansel/kmer-results.txt
+    - path: output/biohansel/test-kmer-results.txt
       md5sum: 024ecf05afbda6778d44cfa462e67ae7
-    - path: output/biohansel/simple-summary.txt
+    - path: output/biohansel/test-simple-summary.txt
       md5sum: 692a52dc47639fa17d140de9869ebf05
-    - path: output/biohansel/summary.txt
+    - path: output/biohansel/test-summary.txt
       md5sum: 69d9187e6834b31fe22d9fd4f1526ddf
 
 - name: biohansel test_biohansel_assembly
@@ -27,9 +27,9 @@
   tags:
     - biohansel
   files:
-    - path: output/biohansel/kmer-results.txt
+    - path: output/biohansel/test-kmer-results.txt
       contains: ["typhi", "genome", "N"]
-    - path: output/biohansel/simple-summary.txt
+    - path: output/biohansel/test-simple-summary.txt
       contains: ["sample", "kmers", "targets"]
-    - path: output/biohansel/summary.txt
+    - path: output/biohansel/test-summary.txt
       contains: ["sample", "typhi", "genome", "targets"]
