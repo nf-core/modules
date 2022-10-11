@@ -23,15 +23,15 @@ workflow BAM_VARIANT_CALLING_FREEBAYES {
 
     // Variant calling
     FREEBAYES ( ch_input, genome, SAMTOOLS_FAIDX.out.fai.map { meta, file -> file }, samples, populations, cnv )
-    ch_versions = ch_versions.mix(FREEBAYES.out.versions.first()) 
-    
+    ch_versions = ch_versions.mix(FREEBAYES.out.versions.first())
+
     // Sort VCF files
     BCFTOOLS_SORT ( FREEBAYES.out.vcf )
-    ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())  
+    ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
     // Index VCF files
     BCFTOOLS_INDEX ( BCFTOOLS_SORT.out.vcf )
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX.out.versions.first()) 
+    ch_versions = ch_versions.mix(BCFTOOLS_INDEX.out.versions.first())
 
     emit:
     vcf      = BCFTOOLS_SORT.out.vcf           // channel: [ val(meta), vcf ]
