@@ -46,8 +46,8 @@ process VERIFYBAMID_VERIFYBAMID {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
 
-    def bam_file = "${bam}.endsWith('.bam')" ? "--bam ${bam}" : ""
-    def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--vcf ${refvcf}" : ""
+    def bam_file = "${bam}.endsWith(".bam")" ? "--bam ${bam}" : ""
+    def refvcf_args = "${refvcf}".endsWith(".vcf|.vcf.gz") ? "--vcf ${refvcf}" : ""
     def out_args = "--out ${prefix}"
 
     """
