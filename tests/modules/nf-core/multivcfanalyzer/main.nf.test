@@ -6,11 +6,7 @@ nextflow_workflow {
 
     test("Should run without failures") {
 
-        when {
-
-        }
-
-        then {
+        then { // The `then` clause will have an alias called `expect` in the next release
             assert workflow.success
             assert path("${outputDir}/multivcfanalyzer/MultiVCFAnalyzer.json").md5 == "c841c9f04c6114911f308ea09a08980e"
             assert path("${outputDir}/multivcfanalyzer/fullAlignment.fasta.gz").linesGzip.contains(">Reference_MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome")

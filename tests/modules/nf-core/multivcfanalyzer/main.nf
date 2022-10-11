@@ -38,7 +38,4 @@ workflow test_multivcfanalyzer {
     gff_exclude             = []
 
     MULTIVCFANALYZER ( mva_vcf, fasta, snpeff_results, gff, allele_freqs, genotype_quality, coverage, homozygous_freq, heterozygous_freq, gff_exclude )
-
-    emit:
-    dummy_output = "dummy_output"
 }
