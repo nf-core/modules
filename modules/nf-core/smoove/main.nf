@@ -30,9 +30,6 @@ process SMOOVE {
         -p $task.cpus \\
         ${bam}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoove: \$(echo \$(smoove --version) | sed 's/^.*smoove //; s/ .*\$//' ))
-    END_VERSIONS
+    echo '0.2.8' > versions.yml
     """
 }
