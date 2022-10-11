@@ -25,11 +25,11 @@ process FALCO {
     if (meta.single_end) {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
-        falco $args --threads $task.cpus ${prefix}.fastq.gz
+        falco $args --threads $task.cpus ${prefix}.fastq.gz -D ${prefix}_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html 
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            falco: \$( falco --version | sed -e "s/falco v//g" )
+            falco:\$( falco --version | sed -e "s/falco//g" )
         END_VERSIONS
         """
     } else {
@@ -40,7 +40,7 @@ process FALCO {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            falco: \$( falco --version | sed -e "s/falco v//g" )
+            falco:\$( falco --version | sed -e "s/falco//g" )
         END_VERSIONS
         """
     }
