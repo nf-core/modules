@@ -58,6 +58,10 @@ antismash/antismashlitedownloaddatabases:
   - modules/nf-core/antismash/antismashlitedownloaddatabases/**
   - tests/modules/nf-core/antismash/antismashlitedownloaddatabases/**
 
+aria2:
+  - modules/nf-core/aria2/**
+  - tests/modules/nf-core/aria2/**
+
 ariba/getref:
   - modules/nf-core/ariba/getref/**
   - tests/modules/nf-core/ariba/getref/**
@@ -1891,6 +1895,10 @@ picard/mergesamfiles:
   - modules/nf-core/picard/mergesamfiles/**
   - tests/modules/nf-core/picard/mergesamfiles/**
 
+picard/renamesampleinvcf:
+  - modules/nf-core/picard/renamesampleinvcf/**
+  - tests/modules/nf-core/picard/renamesampleinvcf/**
+
 picard/sortsam:
   - modules/nf-core/picard/sortsam/**
   - tests/modules/nf-core/picard/sortsam/**
@@ -2403,9 +2411,17 @@ subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
 
+subworkflows/bcl_demultiplex:
+  - subworkflows/nf-core/bcl_demultiplex/**
+  - tests/subworkflows/nf-core/bcl_demultiplex/**
+
 subworkflows/bedgraph_bedclip_bedgraphtobigwig:
   - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
   - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
+
+subworkflows/fastq_align:
+  - subworkflows/nf-core/fastq_align/**
+  - tests/subworkflows/nf-core/fastq_align/**
 
 subworkflows/fgbio_create_umi_consensus:
   - subworkflows/nf-core/fgbio_create_umi_consensus/**
