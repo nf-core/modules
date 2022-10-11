@@ -7,7 +7,7 @@ process UNIVERSC {
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-           "tomkellygenetics/universc:1.2.3"
+        "tomkellygenetics/universc:1.2.3"
     container "${ workflow.containerEngine == 'podman' && !task.ext.singularity_pull_docker_container ?
         "tomkellygenetics/universc:1.2.3"
     container "${ workflow.containerEngine == 'docker' && !task.ext.singularity_pull_docker_container ?
