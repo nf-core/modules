@@ -8,7 +8,7 @@
     - path: output/hapibd/hapIBDout.ibd.gz
       contains: ["*.ibd.gz"]
     - path: output/hapibd/hapIBDout.log
-      contains: ["*.log"]
+      md5sum: 20b110fd90f3bafb309ed29ce0de5e6f
 
 - name: hapibd test_hapibd_excludesamples
   command: nextflow run ./tests/modules/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
@@ -20,4 +20,4 @@
     - path: output/hapibd/hapIBDout.ibd.gz
       contains: ["*.ibd.gz"]
     - path: output/hapibd/hapIBDout.log
-      contains: ["*.log"]
+      md5sum: 99f24eb7db8acd6e37d0af061f0bef55
