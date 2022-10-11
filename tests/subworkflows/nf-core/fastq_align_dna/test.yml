@@ -135,7 +135,6 @@
     - path: output/dragmap/test.bam
       md5sum: 5f08f3ca6ef2094fc4244966b2d28008
     - path: output/dragmap/test.dragmap.log
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
 
 - name: fastq_align_dna test_fastq_align_dragmap_PE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_dragmap_PE -c ./tests/config/nextflow.config
@@ -156,7 +155,6 @@
     - path: output/dragmap/test.bam
       md5sum: c3a3475e70c8f38ee80581947f507c54
     - path: output/dragmap/test.dragmap.log
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
 
 - name: fastq_align_dna test_fastq_align_snapaligner_SE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_snapaligner_SE -c ./tests/config/nextflow.config
