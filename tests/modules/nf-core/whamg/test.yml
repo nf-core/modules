@@ -1,0 +1,6 @@
+- name: whamg test_whamg_bam
+  command: nextflow run ./tests/modules/nf-core/whamg -entry test_whamg_bam -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/whamg/nextflow.config
+  tags:
+    - whamg
+  files:
+    - path: output/whamg/test.vcf.gz
