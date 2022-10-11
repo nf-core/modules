@@ -35,7 +35,8 @@ process BIOHANSEL {
         --output-summary ${prefix}-summary.txt \\
         --output-kmer-results ${prefix}-kmer-results.txt \\
         --output-simple-summary ${prefix}-simple-summary.txt \\
-        $input_type $seqs
+        $input_type \\
+        $seqs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
