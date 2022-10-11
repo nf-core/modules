@@ -39,9 +39,9 @@ process FGBIO_ZIPPERBAMS {
 
     """
     fgbio -Xmx${fgbio_mem_gb}g \\
-      --compression ${compression} \\
-      --async-io=true \\
-      ZipperBams \\
+        --compression ${compression} \\
+        --async-io=true \\
+        ZipperBams \\
         --unmapped ${ubam} \\
         --input ${mbam} \\
         --ref ${fasta} \\
