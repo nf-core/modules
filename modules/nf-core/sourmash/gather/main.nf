@@ -10,29 +10,38 @@ process SOURMASH_GATHER {
     input:
     tuple val(meta), path(signature)
     path(database)
+    val save_unassigned
+    val save_matches_sig
+    val save_prefetch
+    val save_prefetch_csv
 
     output:
     tuple val(meta), path('*.csv')           , optional:true, emit: result
     tuple val(meta), path('*_unassigned.sig'), optional:true, emit: unassigned
     tuple val(meta), path('*_matches.sig')   , optional:true, emit: matches
+    tuple val(meta), path('*_prefetch.sig')  , optional:true, emit: prefetch
+    tuple val(meta), path('*_prefetch.csv')  , optional:true, emit: prefetchcsv
     path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '--ksize 31'
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    result     = "${prefix}.csv"
-    matches    = "${prefix}_matches.sig"
-    unassigned = "${prefix}_unassigned.sig"
+    def unassigned  = save_unassigned   ? "--output-unassigned ${prefix}_unassigned.sig" : ''
+    def matches     = save_matches_sig  ? "--save-matches ${prefix}_matches.sig"         : ''
+    def prefetch    = save_prefetch     ? "--save-prefetch ${prefix}_prefetch.sig"       : ''
+    def prefetchcsv = save_prefetch_csv ? "--save-prefetch-csv ${prefix}_prefetch.csv"   : ''
 
     """
     sourmash gather \\
         $args \\
-        --output ${result} \\
-        --output-unassigned ${unassigned} \\
-        --save-matches ${matches} \\
+        --output ${prefix}.csv \\
+        ${unassigned} \\
+        ${matches} \\
+        ${prefetch} \\
+        ${prefetchcsv} \\
         ${signature} \\
         ${database}
 
