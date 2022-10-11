@@ -39,15 +39,15 @@ process FGBIO_ZIPPERBAMS {
 
     """
     fgbio -Xmx${fgbio_mem_gb}g \\
-    --compression ${compression} \\
-    --async-io=true \\
-    ZipperBams \\
-    --unmapped ${ubam} \\
-    --input ${mbam} \\
-    --ref ${fasta} \\
-    ${args} \\
-    ${args2} \\
-    --output ${prefix}.bam
+      --compression ${compression} \\
+      --async-io=true \\
+      ZipperBams \\
+        --unmapped ${ubam} \\
+        --input ${mbam} \\
+        --ref ${fasta} \\
+        ${args} \\
+        ${args2} \\
+        --output ${prefix}.bam
 
 
     cat <<-END_VERSIONS > versions.yml
