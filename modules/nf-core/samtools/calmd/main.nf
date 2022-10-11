@@ -8,7 +8,7 @@ process SAMTOOLS_CALMD {
         'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h6899075_1':
         'quay.io/biocontainers/samtools:1.15.1--h6899075_1' }"
 
-     input:
+    input:
     tuple val(meta), path(bam)
     path fasta
 
@@ -24,7 +24,7 @@ process SAMTOOLS_CALMD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    samtools calmd -@ $task.cpus $args $bam $fasta > ${prefix}.bam 
+    samtools calmd -@ $task.cpus $args $bam $fasta > ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
