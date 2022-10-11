@@ -1,0 +1,21 @@
+- name: bam_dedup_stats_samtools_umitools test_bam_dedup_stats_samtools_umitools
+  command: nextflow run ./tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools -entry test_bam_dedup_stats_samtools_umitools -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/index
+    - subworkflows
+    - subworkflows/bam_dedup_stats_samtools_umitools
+    - subworkflows/bam_stats_samtools
+    - umitools
+    - umitools/dedup
+  files:
+    - path: output/samtools/test.bam.bai
+      md5sum: 0729380b859ab90fd8c92a4ae5e1df8a
+    - path: output/samtools/test.flagstat
+      md5sum: 0bb716e40fae381b97484b58e0b16efe
+    - path: output/samtools/test.idxstats
+      md5sum: 1adb27b52d4d64b826f48b59d61dcd4d
+    - path: output/samtools/test.stats
+      md5sum: f6b4ed32b7b3b7b45514adc74570d1fa
+    - path: output/umitools/test.bam
+      md5sum: 53b4edc399db81b87d2343e78af73cf0
