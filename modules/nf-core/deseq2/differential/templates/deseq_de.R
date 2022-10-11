@@ -227,7 +227,7 @@ comp.results <-
     )
 
 if (opt\$shrink_lfc){
-    comp.results <- lfcShrink(dds, 
+    comp.results <- lfcShrink(dds,
         type = 'ashr',
         contrast = c(
             opt\$contrast_variable,
