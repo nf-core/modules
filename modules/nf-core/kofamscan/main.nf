@@ -24,7 +24,7 @@ process KOFAMSCAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def format_str = format ? "-f ${format[0]}" : ""
+    def format_str = format ? "-f ${format}" : ""
 
     switch( format ) {
         case "detail": ext = 'txt'; break
@@ -37,9 +37,9 @@ process KOFAMSCAN {
     }
     """
     exec_annotation \\
-        -p $profile
-        -k $ko_list
-        ${format_str}
+        -p $profile \\
+        -k $ko_list \\
+        ${format_str} \\
         $args \\
         --cpu $task.cpus \\
         -o ${prefix}.${ext} \\
@@ -47,7 +47,7 @@ process KOFAMSCAN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //; s/Using.*\$//' ))
+        kofamscan: \$(echo \$(exec_annotation --version 2>&1) | sed 's/^.*exec_annotation //;')
     END_VERSIONS
     """
 }
