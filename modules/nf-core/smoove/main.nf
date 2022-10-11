@@ -5,7 +5,7 @@ process SMOOVE {
     conda (params.enable_conda ? "bioconda::smoove=0.2.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_0':
-        'quay.io/biocontainers/smoove:0.2.8--h9ee0642_0' }"
+        'brentp/smoove' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
