@@ -49,7 +49,7 @@ process FALCO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.html
-    touch ${prefix}_fastqc_data.txt 
+    touch ${prefix}_fastqc_data.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
