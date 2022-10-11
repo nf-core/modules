@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 //
-// FASTQ_ALIGN: Align fastq files to a reference genome
+// FASTQ_ALIGN_DNA: Align fastq files to a reference genome
 //
 
 
@@ -13,7 +13,7 @@ include { SNAPALIGNER_ALIGN as SNAP_ALIGN   } from '../../../modules/nf-core/sna
 
 
 
-workflow FASTQ_ALIGN {
+workflow FASTQ_ALIGN_DNA {
     take:
         ch_reads            // channel: [mandatory] meta, reads
         ch_aligner_index    // channel: [mandatory] aligner index

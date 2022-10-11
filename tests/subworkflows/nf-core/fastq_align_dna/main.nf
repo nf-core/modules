@@ -6,7 +6,7 @@ include { BOWTIE2_BUILD     } from '../../../../modules/nf-core/bowtie2/build/ma
 include { BWA_INDEX         } from '../../../../modules/nf-core/bwa/index/main.nf'
 include { BWAMEM2_INDEX     } from '../../../../modules/nf-core/bwamem2/index/main.nf'
 include { DRAGMAP_HASHTABLE } from '../../../../modules/nf-core/dragmap/hashtable/main.nf'
-include { FASTQ_ALIGN       } from '../../../../subworkflows/nf-core/fastq_align/main.nf'
+include { FASTQ_ALIGN_DNA   } from '../../../../subworkflows/nf-core/fastq_align_dna/main.nf'
 include { SNAPALIGNER_INDEX } from '../../../../modules/nf-core/snapaligner/index/main.nf'
 
 workflow test_fastq_align_bowtie2_SE {
@@ -18,7 +18,7 @@ workflow test_fastq_align_bowtie2_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN ( input, BOWTIE2_BUILD.out.index, "bowtie2", true )
+    FASTQ_ALIGN_DNA ( input, BOWTIE2_BUILD.out.index, "bowtie2", true )
 }
 
 workflow test_fastq_align_bowtie2_PE {
@@ -32,7 +32,7 @@ workflow test_fastq_align_bowtie2_PE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN ( input, BOWTIE2_BUILD.out.index, "bowtie2", true )
+    FASTQ_ALIGN_DNA ( input, BOWTIE2_BUILD.out.index, "bowtie2", true )
 }
 
 workflow test_fastq_align_bwa_SE {
@@ -44,7 +44,7 @@ workflow test_fastq_align_bwa_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BWA_INDEX ( fasta )
-    FASTQ_ALIGN ( input, BWA_INDEX.out.index, "bwamem", true )
+    FASTQ_ALIGN_DNA ( input, BWA_INDEX.out.index, "bwamem", true )
 }
 
 workflow test_fastq_align_bwa_PE {
@@ -57,7 +57,7 @@ workflow test_fastq_align_bwa_PE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BWA_INDEX ( fasta )
-    FASTQ_ALIGN ( input, BWA_INDEX.out.index, "bwamem", true )
+    FASTQ_ALIGN_DNA ( input, BWA_INDEX.out.index, "bwamem", true )
 }
 
 workflow test_fastq_align_bwamem2_SE {
@@ -69,7 +69,7 @@ workflow test_fastq_align_bwamem2_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BWAMEM2_INDEX ( [ [:], fasta ] )
-    FASTQ_ALIGN ( input, BWAMEM2_INDEX.out.index, "bwamem2", true )
+    FASTQ_ALIGN_DNA ( input, BWAMEM2_INDEX.out.index, "bwamem2", true )
 }
 
 workflow test_fastq_align_bwamem2_PE {
@@ -82,7 +82,7 @@ workflow test_fastq_align_bwamem2_PE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BWAMEM2_INDEX ( [ [:], fasta ] )
-    FASTQ_ALIGN ( input, BWAMEM2_INDEX.out.index, "bwamem2", true )
+    FASTQ_ALIGN_DNA ( input, BWAMEM2_INDEX.out.index, "bwamem2", true )
 }
 
 workflow test_fastq_align_dragmap_SE {
@@ -94,7 +94,7 @@ workflow test_fastq_align_dragmap_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     DRAGMAP_HASHTABLE ( fasta )
-    FASTQ_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
+    FASTQ_ALIGN_DNA ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
 }
 
 workflow test_fastq_align_dragmap_PE {
@@ -107,7 +107,7 @@ workflow test_fastq_align_dragmap_PE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     DRAGMAP_HASHTABLE ( fasta )
-    FASTQ_ALIGN ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
+    FASTQ_ALIGN_DNA ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
 }
 
 workflow test_fastq_align_snapaligner_SE {
@@ -117,7 +117,7 @@ workflow test_fastq_align_snapaligner_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     SNAPALIGNER_INDEX (fasta,[],[],[])
-    FASTQ_ALIGN ( input, SNAPALIGNER_INDEX.out.index, "snap", true )
+    FASTQ_ALIGN_DNA ( input, SNAPALIGNER_INDEX.out.index, "snap", true )
 }
 
 workflow test_fastq_align_snapaligner_PE {
@@ -130,5 +130,5 @@ workflow test_fastq_align_snapaligner_PE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     SNAPALIGNER_INDEX ( fasta,[],[],[])
-    FASTQ_ALIGN ( input, SNAPALIGNER_INDEX.out.index, "snap", true )
+    FASTQ_ALIGN_DNA ( input, SNAPALIGNER_INDEX.out.index, "snap", true )
 }
