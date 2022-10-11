@@ -21,7 +21,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_consensus"
 
     def mem_gb = 8
     if (!task.memory) {
@@ -42,7 +42,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
         --compression=1 \\
         CallDuplexConsensusReads \\
         --input $bam \\
-        --output ${prefix}_consensus.bam \\
+        --output ${prefix}.bam \\
         --min-reads ${min_reads} \\
         --min-input-base-quality ${min_baseq} \\
         --threads ${task.cpus} \\
