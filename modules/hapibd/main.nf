@@ -15,9 +15,9 @@ process HAPIBD {
 
 
     output:
-        tuple val(meta), path("${outpref}.hbd.gz"),   emit: hbd
-        tuple val(meta), path("${outpref}.ibd.gz"),   emit: ibd
-        tuple val(meta), path("${outpref}.log"),      emit: log
+        tuple val(meta), path("*.hbd.gz"),   emit: hbd
+        tuple val(meta), path("*.ibd.gz"),   emit: ibd
+        tuple val(meta), path("*.log"),      emit: log
         path "versions.yml",                          emit: versions
 
     when:
@@ -26,7 +26,7 @@ process HAPIBD {
     script:
         def args = task.ext.args ?: ''
         def prefix = task.ext.prefix ?: "${meta.id}"
-        outpref = out ?: prefix
+        def outpref = out ?: prefix
         def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
     def avail_mem = 3
