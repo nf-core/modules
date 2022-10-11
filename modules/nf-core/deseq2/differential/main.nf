@@ -18,7 +18,8 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(contrast_meta), path("*.dds.rld.rds")                     , emit: rdata
     tuple val(contrast_meta), path("*.deseq2.sizefactors.tsv")          , emit: size_factors
     tuple val(contrast_meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
-    tuple val(contrast_meta), path("*.variance_stabilised_counts.tsv")  , emit: variance_stabilised_counts
+    tuple val(contrast_meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
+    tuple val(contrast_meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
     tuple val(contrast_meta), path("*.R_sessionInfo.log")               , emit: session_info
     tuple val(contrast_meta), path("versions.yml")                      , emit: versions
 

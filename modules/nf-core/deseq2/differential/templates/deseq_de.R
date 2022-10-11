@@ -51,7 +51,7 @@ opt <- list(
     p_adjust_method = 'BH',
     alpha = 0.1,
     minmu = 0.5,
-    vs_method = 'vst',
+    vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
     cores = 1
 )
 opt_types <- lapply(opt, class)
@@ -231,8 +231,9 @@ comp.results <-
 ################################################
 ################################################
 
-prefix_parts <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
-output_prefix = gsub(' ', '-', do.call(paste, lapply(c(prefix_parts), function(x) gsub("[^[:alnum:] ]", "_", x))))
+prefix_part_names <- c('contrast_variable', 'reference_level', 'treatment_level', 'blocking_variables')
+prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
+output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 contrast.name <-
     paste(opt\$treatment_level, opt\$reference_level, sep = "_vs_")
@@ -288,22 +289,19 @@ write.table(
     quote = FALSE
 )
 
-if (opt\$vs_method == 'vst'){
-    vs_func = vst
-}else{
-    vs_func = rlog
-}
-
 # Note very limited rounding for consistency of results
 
-write.table(
-    format(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))), nsmall = 8),
-    file = paste(output_prefix, 'variance_stabilised_counts.tsv', sep = '.'),
-    col.names = TRUE,
-    row.names = FALSE,
-    sep = '\t',
-    quote = FALSE
-)
+for (vs_method_name in strsplit(opt\$vs_method, ',')){
+    vs_func <- get(vs_method_name)
+    write.table(
+        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))), nsmall = 8),
+        file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
+        col.names = TRUE,
+        row.names = FALSE,
+        sep = '\t',
+        quote = FALSE
+    )
+}
 
 ################################################
 ################################################
