@@ -32,7 +32,7 @@ process SMOOVE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        smoove: \$(echo \$(smoove --version 2>&1) | sed 's/^.*smoove //; s/Using.*\$//' ))
+        smoove: \$(echo \$(smoove --version) | sed 's/^.*smoove //; s/ .*\$//' ))
     END_VERSIONS
     """
 }
