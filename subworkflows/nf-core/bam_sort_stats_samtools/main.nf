@@ -6,7 +6,7 @@ include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main
 include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
 include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
-workflow BAM_SORT_SAMTOOLS {
+workflow BAM_SORT_STATS_SAMTOOLS {
     take:
     ch_bam   // channel: [ val(meta), [ bam ] ]
     ch_fasta // channel: [ fasta ]
