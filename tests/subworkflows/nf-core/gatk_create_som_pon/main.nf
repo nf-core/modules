@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_CREATE_SOM_PON } from '../../../../subworkflows/nf-core/gatk_create_som_pon/main' addParams( [:]  )
+include { GATK_CREATE_SOM_PON } from '../../../../subworkflows/nf-core/gatk_create_som_pon/main'
 
 workflow test_gatk_create_som_pon {
     ch_mutect2_in = [
