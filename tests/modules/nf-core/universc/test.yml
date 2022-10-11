@@ -1,7 +1,7 @@
 ## nf-core: Please run the following command to build this file:
 #                nf-core modules create-test-yml universc
 - name: universc test_cellranger_10x
-  command: nextflow run tests/modules/universc -entry test_cellranger_10x -c tests/config/nextflow.config
+  command: nextflow run tests/modules/nf-core/universc -entry test_cellranger_10x -c tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
   tags:
     - universc
   files:
@@ -75,7 +75,7 @@
       md5sum: bdce94a51f16e22d40301724080b76ee
     - path: output/universc/sample-123/outs/web_summary.html
 - name: universc test_universc_10x
-  command: nextflow run tests/modules/universc -entry test_universc_10x -c tests/config/nextflow.config
+  command: nextflow run tests/modules/nf-core/universc -entry test_universc_10x -c tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
   tags:
     - universc
   files:
