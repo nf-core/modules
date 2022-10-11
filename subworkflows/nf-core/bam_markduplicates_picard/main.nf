@@ -23,17 +23,17 @@ workflow BAM_MARKDUPLICATES_PICARD {
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     PICARD_MARKDUPLICATES.out.bam
-         .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-         .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
-         .map {
-             meta, bam, bai, csi ->
-                 if (bai) {
-                     [ meta, bam, bai ]
-                 } else {
-                     [ meta, bam, csi ]
-                 }
-         }
-         .set { ch_bam_bai }
+        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
+        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
+        .map {
+            meta, bam, bai, csi ->
+                if (bai) {
+                    [ meta, bam, bai ]
+                } else {
+                    [ meta, bam, csi ]
+                }
+        }
+        .set { ch_bam_bai }
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai, fasta )
     ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)

@@ -1,10 +1,22 @@
-- name: "bam_markduplicates_picard"
+- name: bam markduplicates picard
   command: nextflow run ./tests/subworkflows/nf-core/bam_markduplicates_picard -entry test_bam_markduplicates_picard -c ./tests/config/nextflow.config
   tags:
     - "subworkflows"
     - "subworkflows/bam_markduplicates_picard"
   files:
-    - path: "output/bam_markduplicates_picard/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/bam_markduplicates_picard/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: ./output/picard/test.bam
+      md5sum: ba20ae1adc59d90bd24f86d4bbe5c1d7
+    - path: ./output/picard/test.MarkDuplicates.metrics.txt
+      md5sum: 3a89cd5b459d861bff9b92c02d4c91b4
+    - path: ./output/picard/versions.yml
+      md5sum: b65d78155f222abc2b0b36715692aad0
+    - path: ./output/samtools/test.flagstat
+      md5sum: 4f7ffd1e6a5e85524d443209ac97d783
+    - path: ./output/samtools/test.idxstats
+      md5sum: df60a8c8d6621100d05178c93fb053a2
+    - path: ./output/samtools/test.paired_end.sorted.bam.bai
+      md5sum: 704c10dd1326482448ca3073fdebc2f4
+    - path: ./output/samtools/test.stats
+      md5sum: 018ba6ab3136c916720e3ae432905f30
+    - path: ./output/samtools/versions.yml
+      md5sum: 723e892867142a044f9aa3df62c1a65d
