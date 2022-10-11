@@ -6,12 +6,12 @@ process UNIVERSC {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        "tomkellygenetics/universc:1.2.3"
-    container "${ workflow.containerEngine == 'podman' && !task.ext.singularity_pull_docker_container ?
-        "tomkellygenetics/universc:1.2.3"
-    container "${ workflow.containerEngine == 'docker' && !task.ext.singularity_pull_docker_container ?
-        "tomkellygenetics/universc:1.2.3"
+    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    //    "tomkellygenetics/universc:1.2.3"
+    //container "${ workflow.containerEngine == 'podman' && !task.ext.singularity_pull_docker_container ?
+    //    "tomkellygenetics/universc:1.2.3"
+    //container "${ workflow.containerEngine == 'docker' && !task.ext.singularity_pull_docker_container ?
+    //    "tomkellygenetics/universc:1.2.3"
     container "tomkellygenetics/universc:1.2.3"
 
     input:
@@ -72,6 +72,7 @@ process CELLRANGER_COUNT_OS {
 
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+        conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
     container "tomkellygenetics/universc:1.2.3"
 
