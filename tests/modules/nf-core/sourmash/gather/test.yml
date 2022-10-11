@@ -1,10 +1,10 @@
 - name: sourmash gather test_sourmash_gather
   command: nextflow run ./tests/modules/nf-core/sourmash/gather -entry test_sourmash_gather -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sourmash/gather/nextflow.config
   tags:
-  - sourmash
-  - sourmash/gather
+    - sourmash
+    - sourmash/gather
   files:
-  - path: output/sourmash/test.csv
-    md5sum: b5e7ec02bc17e548ccae9c4c0b0abb92
-  - path: output/sourmash/test_matches.sig
-    md5sum: 2f40c4a65e1da3283d850265d9f2065c
+    - path: output/sourmash/test.csv
+      md5sum: b5e7ec02bc17e548ccae9c4c0b0abb92
+    - path: output/sourmash/test_matches.sig
+      md5sum: 2f40c4a65e1da3283d850265d9f2065c
