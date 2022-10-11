@@ -28,15 +28,15 @@
     - path: output/pirate/results/co-ords/test3.co-ords.tab
       md5sum: 61f2c52ef77dc9a97a200c57b89b7d69
     - path: output/pirate/results/genome2loci.tab
-      md5sum: 2d9cdefd5b1a7f5e20b0a70a6e5fa588
+      contains: ["test3_00001", "test3", "oxidoreductase"]
     - path: output/pirate/results/genome_list.txt
-      md5sum: c19ac63da7949b15179f42093cbf95b8
+      contains: ["test1", "test2", "test3"]
     - path: output/pirate/results/link_clusters.log
       contains: ["parsing paralog file"]
     - path: output/pirate/results/loci_list.tab
       contains: ["test1_00242"]
     - path: output/pirate/results/loci_paralog_categories.tab
-      md5sum: f8c3d31f445c3cb66bd95ba77be0a7b8
+      contains: ["test1", "test2", "test3"]
     - path: output/pirate/results/modified_gffs/test1.gff
       md5sum: 5dc220e472165c3b693e1017f38fc0e3
     - path: output/pirate/results/modified_gffs/test2.gff
@@ -44,7 +44,7 @@
     - path: output/pirate/results/modified_gffs/test3.gff
       md5sum: a4735a5ac75ce82aadba8a3de6cabc2e
     - path: output/pirate/results/pan_sequences.fasta
-      md5sum: 0492833706f0f969b49a3555c16ec40d
+      contains: ["test1", "test2", "test3"]
     - path: output/pirate/results/pangenome.connected_blocks.tsv
       contains: ["block_number"]
     - path: output/pirate/results/pangenome.edges
@@ -73,7 +73,7 @@
     - path: output/pirate/results/pangenome_iterations/pan_sequences.98.reclustered.reinflated
       contains: ["test1_00242"]
     - path: output/pirate/results/pangenome_iterations/pan_sequences.blast.output
-      md5sum: ffb3b5bf1ba24bf2bd0be677500139a2
+      contains: ["test1", "test2", "test3"]
     - path: output/pirate/results/pangenome_iterations/pan_sequences.cdhit_clusters
       contains: ["test1_00081"]
     - path: output/pirate/results/pangenome_iterations/pan_sequences.core_clusters.tab
@@ -81,7 +81,7 @@
     - path: output/pirate/results/pangenome_iterations/pan_sequences.mcl_log.txt
       contains: ["chaos"]
     - path: output/pirate/results/pangenome_iterations/pan_sequences.representative.fasta
-      md5sum: 6e483c773ed90bd50b33f2bd569343e4
+      contains: ["test1", "test2", "test3"]
     - path: output/pirate/results/pangenome_iterations/pan_sequences.representative.fasta.pdb
     - path: output/pirate/results/pangenome_iterations/pan_sequences.representative.fasta.pot
     - path: output/pirate/results/pangenome_iterations/pan_sequences.representative.fasta.ptf
