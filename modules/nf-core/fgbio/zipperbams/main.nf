@@ -8,14 +8,14 @@ process FGBIO_ZIPPERBAMS {
         'quay.io/biocontainers/fgbio:2.0.2--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(ubam)
-    tuple val(meta), path(mbam)
+    tuple val(meta), path(unmapped_bam)
+    tuple val(meta), path(mapped_bam)
     path(fasta)
     path(dict)
 
     output:
-    tuple val(meta), path("*_zipped.bam"), emit: bam
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("${prefix}.bam"), emit: bam
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process FGBIO_ZIPPERBAMS {
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def compression = task.ext.compression ?: '0'
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_zipped"
     def fgbio_mem_gb = 4
 
     if (!task.memory) {
@@ -42,8 +42,8 @@ process FGBIO_ZIPPERBAMS {
         --compression ${compression} \\
         --async-io=true \\
         ZipperBams \\
-        --unmapped ${ubam} \\
-        --input ${mbam} \\
+        --unmapped ${unmapped_bam} \\
+        --input ${mapped_bam} \\
         --ref ${fasta} \\
         ${args} \\
         --output ${prefix}.bam
