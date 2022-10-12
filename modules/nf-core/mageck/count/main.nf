@@ -13,7 +13,6 @@ process MAGECK_COUNT {
     tuple val(meta), path(inputfile)
     path(library)
 
-
     output:
     tuple val(meta), path("*count*.txt"), emit: count
     path("*.count_normalized.txt"), emit: norm
