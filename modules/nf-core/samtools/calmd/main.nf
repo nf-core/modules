@@ -1,4 +1,3 @@
-
 process SAMTOOLS_CALMD {
     tag "$meta.id"
     label 'process_low'
