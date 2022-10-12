@@ -22,10 +22,9 @@ process FALCO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.single_end) {
+    if ( reads.toList().size() == 1 ) {
         """
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
-        falco $args --threads $task.cpus ${prefix}.fastq.gz -D ${prefix}_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
+        falco $args --threads $task.cpus ${reads} -D ${prefix}_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -34,9 +33,7 @@ process FALCO {
         """
     } else {
         """
-        [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
-        [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
-        falco $args --threads $task.cpus ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz
+        falco $args --threads $task.cpus ${reads}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -48,8 +45,9 @@ process FALCO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.html
-    touch ${prefix}_fastqc_data.txt
+    touch ${reads}_fastqc_data.html
+    touch ${reads}_data.txt
+    touch ${reads}_summary.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
