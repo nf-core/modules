@@ -1,0 +1,45 @@
+name: "abra2_realign"
+description: Assembly Based Re-Aligner 2
+keywords:
+  - ReAligner
+  - indel
+  - DNA
+  - RNA
+tools:
+  - "abra2":
+      description: "ABRA2 is an updated implementation of ABRA, an Assembly Based ReAligner and indel caller.  It can realign multiple DNA and RNA BAM files together"
+      homepage: "https://github.com/mozack/abra2"
+      documentation: "https://github.com/mozack/abra2#readme"
+      tool_dev_url: "https://github.com/mozack/abra2"
+      doi: "https://doi.org/10.1093/bioinformatics/btz033"
+      licence: "['MIT']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  #
+  - bam:
+      type: file
+      description: Aligned BAM file
+      pattern: "*.{bam}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: files
+      description: BAM files
+      pattern: "*.{bam}"
+
+authors:
+  - "@alanhoyle"
