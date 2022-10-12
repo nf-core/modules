@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { PRODIGAL } from '../../../../modules/nf-core/prodigal/main.nf' addParams( options: [:] )
-include { AMPLIFY_PREDICT } from '../../../../../modules/nf-core/amplify/predict/main.nf' addParams( options: [:] )
+include { PRODIGAL } from '../../../../modules/nf-core/prodigal/main.nf'
+include { AMPLIFY_PREDICT } from '../../../../../modules/nf-core/amplify/predict/main.nf'
 
 workflow amplify_predict {
     
