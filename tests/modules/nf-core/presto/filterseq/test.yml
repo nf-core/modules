@@ -9,16 +9,12 @@
     - path: output/gunzip/test_airrseq_umi_R1.fastq
       md5sum: 7f98eefe4c7111d4632685680b6b9a4b
     - path: output/presto/test_R1_quality-pass.fastq
-      contains: "@M04284:32:000000000-BFFCT:1:1101:17316:1005 2:N:0:4"
+      contains: ["@M04284:32:000000000-BFFCT:1:1101:9773:1006 1:N:0:4"]
     - path: output/presto/test_R2_quality-pass.fastq
-      contains: "@M04284:32:000000000-BFFCT:1:1101:9773:1006 1:N:0:4"
-    - path: output/presto/test_airrseq_R2_R1.log
-      contains: "ID> M04284:32:000000000-BFFCT:1:1101:17316:1005"
-    - path: output/presto/test_airrseq_R2_R1_table.tab
-      contains: "ID      QUALITY"
-    - path: output/presto/test_airrseq_umi_R1_R2.log
-      contains: "ID> M04284:32:000000000-BFFCT:1:1101:11564:1005"
-    - path: output/presto/test_airrseq_umi_R1_R2_table.tab
-      contains: "ID      QUALITY"
+      contains: ["@M04284:32:000000000-BFFCT:1:1101:17316:1005 2:N:0:4"]
+    - path: output/presto/test_airrseq_R2_R2_table.tab
+      contains: ["M04284:32:000000000-BFFCT:1:1101:11564:1005"]
+    - path: output/presto/test_airrseq_umi_R1_R1_table.tab
+      contains: ["M04284:32:000000000-BFFCT:1:1101:11564:1005"]
     - path: output/presto/test_command_log.txt
-      contains: "START> FilterSeq"
+      contains: ["START> FilterSeq"]

@@ -6,7 +6,6 @@ include { PRESTO_FILTERSEQ } from '../../../../../modules/nf-core/presto/filters
 include { GUNZIP as GUNZIP_R1 } from '../../../../../modules/nf-core/gunzip/main.nf'
 include { GUNZIP as GUNZIP_R2 } from '../../../../../modules/nf-core/gunzip/main.nf'
 
-
 workflow test_presto_filterseq {
 
     input_R1 = [
@@ -22,13 +21,11 @@ workflow test_presto_filterseq {
     GUNZIP_R2(input_R2)
 
     ch_gunzip_R1 = GUNZIP_R1.out.gunzip
-                        .map{ it -> [it[0].id, it[0], it[1] ]}
+                        .map{ it -> [it[0].id, [it[0], it[1]] ]}
     ch_gunzip_R2 = GUNZIP_R2.out.gunzip
-                                .map{ it -> [it[0].id, it[0], it[1] ]}
-    ch_merged = ch_gunzip_R2.mix(ch_gunzip_R1)
-                            .groupTuple()
-                            .dump()
-                            .map{ it -> [it[1][0], it[2][0], it[2][1]]}
+                                .map{ it -> [it[0].id, [it[0], it[1]] ]}
+    ch_merged = ch_gunzip_R1.join(ch_gunzip_R2)
+                            .map{ it -> [it[1][0], it[1][1], it[2][1]]}
 
     PRESTO_FILTERSEQ ( ch_merged )
 }
