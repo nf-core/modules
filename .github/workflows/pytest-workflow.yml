@@ -8,7 +8,7 @@ on:
 jobs:
   changes:
     name: Check for changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
