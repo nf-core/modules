@@ -33,7 +33,7 @@ process SMOOVE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        smoove:0.2.8
-    END_VERSION
+        smoove: 0.2.8
+    END_VERSIONS
     """
 }
