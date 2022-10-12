@@ -1,5 +1,5 @@
 include { HISAT2_ALIGN            } from '../../../modules/nf-core/hisat2/align/main'
-include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_samtools/main'
+include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 
 workflow FASTQ_ALIGN_HISAT2 {
 
@@ -28,17 +28,17 @@ workflow FASTQ_ALIGN_HISAT2 {
 
 
     emit:
-    orig_bam = HISAT2_ALIGN.out.bam           // channel: [ val(meta), bam   ]
-    summary  = HISAT2_ALIGN.out.summary       // channel: [ val(meta), log   ]
-    fastq    = HISAT2_ALIGN.out.fastq         // channel: [ val(meta), fastq ]
+    orig_bam = HISAT2_ALIGN.out.bam                 // channel: [ val(meta), bam   ]
+    summary  = HISAT2_ALIGN.out.summary             // channel: [ val(meta), log   ]
+    fastq    = HISAT2_ALIGN.out.fastq               // channel: [ val(meta), fastq ]
 
-    bam      = BAM_SORT_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
-    bai      = BAM_SORT_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
-    csi      = BAM_SORT_SAMTOOLS.out.csi      // channel: [ val(meta), [ csi ] ]
-    stats    = BAM_SORT_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
-    flagstat = BAM_SORT_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
-    idxstats = BAM_SORT_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
+    bam      = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]
+    bai      = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), [ bai ] ]
+    csi      = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), [ csi ] ]
+    stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
+    flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
+    idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions = ch_versions                          // channel: [ versions.yml ]
 }
 

@@ -18,7 +18,7 @@ workflow test_fastq_align_hisat2_single_end {
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
     HISAT2_BUILD ( fasta, gtf, HISAT2_EXTRACTSPLICESITES.out.txt )
-    FASTQ_ALIGN_HISAT2 ( input, HISAT2_BUILD.out.index, HISAT2_EXTRACTSPLICESITES.out.txt )
+    FASTQ_ALIGN_HISAT2 ( input, HISAT2_BUILD.out.index, HISAT2_EXTRACTSPLICESITES.out.txt, fasta )
 }
 
 workflow test_fastq_align_hisat2_paired_end {
@@ -34,5 +34,5 @@ workflow test_fastq_align_hisat2_paired_end {
 
     HISAT2_EXTRACTSPLICESITES ( gtf )
     HISAT2_BUILD ( fasta, gtf, HISAT2_EXTRACTSPLICESITES.out.txt )
-    FASTQ_ALIGN_HISAT2 ( input, HISAT2_BUILD.out.index, HISAT2_EXTRACTSPLICESITES.out.txt )
+    FASTQ_ALIGN_HISAT2 ( input, HISAT2_BUILD.out.index, HISAT2_EXTRACTSPLICESITES.out.txt, fasta )
 }
