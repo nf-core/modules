@@ -31,7 +31,6 @@ process FASTQC {
         fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
     END_VERSIONS
     """
-    }
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
