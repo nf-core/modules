@@ -1,0 +1,45 @@
+nextflow_workflow {
+
+    name "Test GATK4_PRINTSVEVIDENCE"
+    script "tests/modules/nf-core/gatk4/printsvevidence/main.nf"
+    config "tests/modules/nf-core/gatk4/printsvevidence/nextflow.config"
+
+    test("test_gatk4_printsvevidence") {
+        workflow "test_gatk4_printsvevidence"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/gatk4/normal.pe.txt.gz").md5 == "19f13dd0408204590b40239d14acbdde"
+            assert path("${outputDir}/gatk4/normal.pe.txt.gz.tbi").md5 == "876170d2727a467263cbacecbd9979ee"
+            assert path("${outputDir}/gatk4/normal.sr.txt.gz").md5 == "fb9ce52193a0db3a084890bd6bbf6a64"
+            assert path("${outputDir}/gatk4/normal.sr.txt.gz.tbi").md5 == "3e7b04492c53765e3c84d76b59e1f2c5"
+            assert path("${outputDir}/gatk4/pe_files.pe.txt.gz").md5 == "01af37919a5df7353096789fe526a33f"
+            assert path("${outputDir}/gatk4/pe_files.pe.txt.gz.tbi").md5 == "c10c041046d18c878fbb103105566e2e"
+            assert path("${outputDir}/gatk4/tumor.pe.txt.gz").md5 == "45be73eb7d52e901b6dd8a5e48bf2161"
+            assert path("${outputDir}/gatk4/tumor.pe.txt.gz.tbi").md5 == "b68891462e018abc9b4ac49cedd6b4b1"
+            assert path("${outputDir}/gatk4/tumor.sr.txt.gz").md5 == "afdf79e9b07035df28d6c8313661931b"
+            assert path("${outputDir}/gatk4/tumor.sr.txt.gz.tbi").md5 == "9db74c9c9c4f235a3aa83e9d8703a653"
+        }
+
+    }
+
+    test("test_gatk4_printsvevidence_bed_no_fasta") {
+        workflow "test_gatk4_printsvevidence_bed_no_fasta"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/gatk4/normal.pe.txt.gz").md5 == "19f13dd0408204590b40239d14acbdde"
+            assert path("${outputDir}/gatk4/normal.pe.txt.gz.tbi").md5 == "876170d2727a467263cbacecbd9979ee"
+            assert path("${outputDir}/gatk4/normal.sr.txt.gz").md5 == "fb9ce52193a0db3a084890bd6bbf6a64"
+            assert path("${outputDir}/gatk4/normal.sr.txt.gz.tbi").md5 == "3e7b04492c53765e3c84d76b59e1f2c5"
+            assert path("${outputDir}/gatk4/pe_files.pe.txt.gz").md5 == "01af37919a5df7353096789fe526a33f"
+            assert path("${outputDir}/gatk4/pe_files.pe.txt.gz.tbi").md5 == "c10c041046d18c878fbb103105566e2e"
+            assert path("${outputDir}/gatk4/tumor.pe.txt.gz").md5 == "45be73eb7d52e901b6dd8a5e48bf2161"
+            assert path("${outputDir}/gatk4/tumor.pe.txt.gz.tbi").md5 == "b68891462e018abc9b4ac49cedd6b4b1"
+            assert path("${outputDir}/gatk4/tumor.sr.txt.gz").md5 == "afdf79e9b07035df28d6c8313661931b"
+            assert path("${outputDir}/gatk4/tumor.sr.txt.gz.tbi").md5 == "9db74c9c9c4f235a3aa83e9d8703a653"
+        }
+
+    }
+
+}
