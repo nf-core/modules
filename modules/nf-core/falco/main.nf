@@ -1,6 +1,6 @@
 process FALCO {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
 
     conda (params.enable_conda ? "bioconda::falco=1.2.1" : null)
