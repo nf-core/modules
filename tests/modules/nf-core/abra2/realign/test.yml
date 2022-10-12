@@ -1,41 +1,41 @@
 - name: abra2 realign test_abra2_realign_single_end_sample
   command: nextflow run ./tests/modules/nf-core/abra2/realign -entry test_abra2_realign_single_end_sample -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/abra2/realign/nextflow.config
   tags:
-  - abra2/realign
-  - abra2
+    - abra2/realign
+    - abra2
   files:
-  - path: output/abra2/test-alone.abra.bam
-    md5sum: d6398bbe66b4c1e61f260df17324de2d
+    - path: output/abra2/test-alone.abra.bam
+      md5sum: d6398bbe66b4c1e61f260df17324de2d
 
 - name: abra2 realign test_abra2_realign_one_sample
   command: nextflow run ./tests/modules/nf-core/abra2/realign -entry test_abra2_realign_one_sample -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/abra2/realign/nextflow.config
   tags:
-  - abra2/realign
-  - abra2
+    - abra2/realign
+    - abra2
   files:
-  - path: output/abra2/test-alone.abra.bam
-    md5sum: d6398bbe66b4c1e61f260df17324de2d
+    - path: output/abra2/test-alone.abra.bam
+      md5sum: d6398bbe66b4c1e61f260df17324de2d
 
 - name: abra2 realign test_abra2_realign_two_samples
   command: nextflow run ./tests/modules/nf-core/abra2/realign -entry test_abra2_realign_two_samples -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/abra2/realign/nextflow.config
   tags:
-  - abra2/realign
-  - abra2
+    - abra2/realign
+    - abra2
   files:
-  - path: output/abra2/test-paired-samp.abra.bam
-    md5sum: 5fd4bf537bfbeb879ded2f0aa805388f
-  - path: output/abra2/test2-paired-samp.abra.bam
-    md5sum: ae063b52ca4b240722fa2a0f0789e449
+    - path: output/abra2/test-paired-samp.abra.bam
+      md5sum: 5fd4bf537bfbeb879ded2f0aa805388f
+    - path: output/abra2/test2-paired-samp.abra.bam
+      md5sum: ae063b52ca4b240722fa2a0f0789e449
 
 - name: abra2 realign test_abra2_realign_three_samples
   command: nextflow run ./tests/modules/nf-core/abra2/realign -entry test_abra2_realign_three_samples -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/abra2/realign/nextflow.config
   tags:
-  - abra2/realign
-  - abra2
+    - abra2/realign
+    - abra2
   files:
-  - path: output/abra2/test-paired-samp.abra.bam
-    md5sum: 59b92eb43192991e5fe7918251a37635
-  - path: output/abra2/test2-paired-samp.abra.bam
-    md5sum: 059b6ba3cf5c0aba455db2cda9509f3a
-  - path: output/abra2/test_rna.abra.bam
-    md5sum: 34725579403c33cda33642973ffb274f
+    - path: output/abra2/test-paired-samp.abra.bam
+      md5sum: 59b92eb43192991e5fe7918251a37635
+    - path: output/abra2/test2-paired-samp.abra.bam
+      md5sum: 059b6ba3cf5c0aba455db2cda9509f3a
+    - path: output/abra2/test_rna.abra.bam
+      md5sum: 34725579403c33cda33642973ffb274f
