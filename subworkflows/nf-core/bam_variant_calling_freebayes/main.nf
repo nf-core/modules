@@ -6,7 +6,7 @@ workflow BAM_VARIANT_CALLING_FREEBAYES {
 
     take:
     ch_input        // channel: [ val(meta), bam/cram, bai/crai, bam/cram, bai/crai, bed ]
-    ch_genome       // channel: [ val(meta), fasta, fai ]
+    ch_fasta_fai    // channel: [ val(meta), fasta, fai ]
     samples         // channel: /path/to/samples
     populations     // channel: /path/to/populations
     cnv             // channel: /path/to/cnv
@@ -17,7 +17,7 @@ workflow BAM_VARIANT_CALLING_FREEBAYES {
 
 
     // Variant calling
-    FREEBAYES ( ch_input, ch_genome.map{ meta, fasta, fai -> fasta }, ch_genome.map{ meta, fasta, fai -> fai },samples, populations, cnv )
+    FREEBAYES ( ch_input, ch_fasta_fai.map{ meta, fasta, fai -> fasta }, ch_fasta_fai.map{ meta, fasta, fai -> fai },samples, populations, cnv )
     ch_versions = ch_versions.mix(FREEBAYES.out.versions.first())
 
     // Sort VCF files
