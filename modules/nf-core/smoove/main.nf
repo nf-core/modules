@@ -1,6 +1,6 @@
 process SMOOVE {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
     conda (params.enable_conda ? "bioconda::smoove=0.2.8" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,12 +24,16 @@ process SMOOVE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     smoove call \\
+        ${args} \\
         --outdir . \\
         --name ${prefix} \\
         --fasta ${fasta} \\
         -p $task.cpus \\
         ${bam}
 
-    echo '0.2.8' > versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        smoove: 0.2.8
+    END_VERSION
     """
 }
