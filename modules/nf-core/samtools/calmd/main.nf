@@ -25,7 +25,7 @@ process SAMTOOLS_CALMD {
     """
     samtools calmd \\
         -@ $task.cpus \\
-        $args \\ 
+        $args \\
         $bam \\
         $fasta \\
         > ${prefix}.bam
