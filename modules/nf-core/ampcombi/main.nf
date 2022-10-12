@@ -9,7 +9,7 @@ process AMPCOMBI {
 
     input:
     // val(meta) // remove the meta 
-    val(file_list)
+    path(file_list)
     path(samplesheet)
     path(faa_folder)
     val(outdir)
@@ -41,14 +41,14 @@ process AMPCOMBI {
 
     ampcombi \\
         $args \\
-        --path_list $file_list \\
+        --path_list "[${file_list.collect { "'$it'" }.join(', ')}]" \\
         --sample_list "\$SAMPLE" \\
         --outdir $outdir \\
         --faa_folder $faa_folder
 
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
+    "${task.process}":AMPcombi interrupted: The path [ does not exist. Please check the --path_list input.
         ampcombi: $VERSION
     END_VERSIONS
     """
