@@ -22,7 +22,7 @@ process BIOHANSEL {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def scheme_metadata_opt = scheme_metadata ? "--scheme-metadata ${scheme_metadata}" : ""
     def input_type = seqs[1] == null ? "" : "--paired-reads"
     """
