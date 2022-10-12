@@ -839,6 +839,10 @@ fgbio/sortbam:
   - modules/nf-core/fgbio/sortbam/**
   - tests/modules/nf-core/fgbio/sortbam/**
 
+fgbio/zipperbams:
+  - modules/nf-core/fgbio/zipperbams/**
+  - tests/modules/nf-core/fgbio/zipperbams/**
+
 filtlong:
   - modules/nf-core/filtlong/**
   - tests/modules/nf-core/filtlong/**
@@ -2403,13 +2407,17 @@ subworkflows/annotation/snpeff:
   - subworkflows/nf-core/annotation/snpeff/**
   - tests/subworkflows/nf-core/annotation/snpeff/**
 
+subworkflows/bam_dedup_stats_samtools_umitools:
+  - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
+  - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
+
 subworkflows/bam_qc_picard:
   - subworkflows/nf-core/bam_qc_picard/**
   - tests/subworkflows/nf-core/bam_qc_picard/**
 
-subworkflows/bam_sort_samtools:
-  - subworkflows/nf-core/bam_sort_samtools/**
-  - tests/subworkflows/nf-core/bam_sort_samtools/**
+subworkflows/bam_sort_stats_samtools:
+  - subworkflows/nf-core/bam_sort_stats_samtools/**
+  - tests/subworkflows/nf-core/bam_sort_stats_samtools/**
 
 subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
