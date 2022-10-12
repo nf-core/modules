@@ -8,7 +8,7 @@ process BEDTOOLS_COVERAGE {
         'quay.io/biocontainers/bedtools:2.30.0--h468198e_3' }"
 
     input:
-    tuple val(meta), path(input_A), path(input_B) 
+    tuple val(meta), path(input_A), path(input_B)
     path fasta_fai
 
     output:
