@@ -28,7 +28,7 @@ process SMOOVE {
         --fasta ${fasta} \\
         -p $task.cpus \\
         ${input}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         smoove: \$(echo \$(smoove -v) | sed 's/^.*version: //; s/ .*\$//' )
