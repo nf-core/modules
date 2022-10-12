@@ -24,8 +24,8 @@ process PRETEXTMAP {
     """
     samtools \\
         view \\
-	-h \\
-	$bam | PretextMap \\
+        -h \\
+        $bam | PretextMap \\
         $args \\
         -o ${prefix}.pretext
 
