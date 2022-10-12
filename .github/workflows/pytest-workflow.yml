@@ -18,7 +18,7 @@ jobs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
         id: filter
@@ -39,7 +39,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -76,7 +76,7 @@ jobs:
         with:
           singularity-version: 3.7.1
 
-      - name: Setup miniconda
+      - name: Set up miniconda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -91,17 +91,13 @@ jobs:
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
         run: |
-          echo "======> log.out <======="
-          cat /home/runner/pytest_workflow_*/*/log.out
-          echo
-          echo
-          echo "======> log.err <======="
-          cat /home/runner/pytest_workflow_*/*/log.err
+          sudo apt install bat > /dev/null
+          batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
       - name: Upload logs on failure
         if: failure()
