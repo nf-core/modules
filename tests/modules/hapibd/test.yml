@@ -3,21 +3,19 @@
   tags:
     - hapibd
   files:
-    - path: output/hapibd/test.hbd.gz
-      md5sum: 709872fc2910431b1e8b7074bfe38c67
+    - path: output/hapibd/test.hbd.gz # this is an empty file for this test example
     - path: output/hapibd/test.ibd.gz
-      contains: ["*.ibd.gz"]
+      contains: ["I3019"]
     - path: output/hapibd/test.log
-      md5sum: 0279c01aeab3ffb9bab64fa766f34fd1
+      contains: ["hap-ibd.jar"]
 
 - name: hapibd test_hapibd_excludesamples
   command: nextflow run ./tests/modules/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
   tags:
     - hapibd
   files:
-    - path: output/hapibd/test.hbd.gz
-      md5sum: 709872fc2910431b1e8b7074bfe38c67
+    - path: output/hapibd/test.hbd.gz # this is an empty file for this test example
     - path: output/hapibd/test.ibd.gz
-      contains: ["*.ibd.gz"]
+      contains: ["I3019"]
     - path: output/hapibd/test.log
-      md5sum: de863d6d1f0ea4c14bdc5739cd519360
+      contains: ["hap-ibd.jar"]
