@@ -6,7 +6,7 @@ process SMOOVE {
     container "brentp/smoove"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(index)
     path(fasta)
     path(fai)
 
@@ -27,7 +27,7 @@ process SMOOVE {
         --name ${prefix} \\
         --fasta ${fasta} \\
         -p $task.cpus \\
-        ${bam}
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

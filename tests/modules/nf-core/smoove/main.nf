@@ -15,3 +15,15 @@ workflow test_smoove {
 
     SMOOVE ( bam_tuple_ch, fasta, fai )
 }
+
+workflow test_smoove_cram {
+
+    cram_tuple_ch = Channel.of([ [ id:'test' ], // meta map
+                               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                               file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_bai'], checkIfExists: true),
+                                ])
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    SMOOVE ( cram_tuple_ch, fasta, fai )
+}
