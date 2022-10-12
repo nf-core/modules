@@ -10,7 +10,6 @@ process HAPIBD {
     input:
         tuple val(meta), path(vcf)
         path(map)
-        val(out)
         path(exclude)
 
 
@@ -26,7 +25,6 @@ process HAPIBD {
     script:
         def args = task.ext.args ?: ''
         def prefix = task.ext.prefix ?: "${meta.id}"
-        def outpref = out ?: prefix
         def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
     def avail_mem = 3
@@ -40,7 +38,7 @@ process HAPIBD {
     java -Xmx${avail_mem}g -jar /bin/hap-ibd.jar \\
         gt=${vcf} \\
         map=${map} \\
-        out=${outpref} \\
+        out=${prefix} \\
         $args \\
         ${excludesamples_command}
 
