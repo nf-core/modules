@@ -10,7 +10,7 @@
       md5sum: 3367c81d60e4b39c89b28acd0434c8aa
 
 - name: falco test_fastqc_paired_end
-  command: nextflow run ./tests/modules/nf-core/falco -entry test_falco__paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/falco/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/falco -entry test_falco_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/falco/nextflow.config
   tags:
     - falco
   files:
