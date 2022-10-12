@@ -21,8 +21,6 @@ process FASTQC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = reads instanceof List ? reads : [reads]
-
     """
     printf "%s\\n" $reads | while read f; do ln -s \$f ${prefix}_\$f ; done
     fastqc $args --threads $task.cpus ${prefix}_*.gz
