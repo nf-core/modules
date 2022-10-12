@@ -31,7 +31,7 @@ process PRETEXTMAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pretextmap: PretextMap | grep "Version" | sed 's/PretextMap Version //g'
+        pretextmap: \$(PretextMap | grep "Version" | sed 's/PretextMap Version //g')
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
     END_VERSIONS
     """
