@@ -1,0 +1,50 @@
+name: "fastq_fastqc_umitools_trimgalore"
+description: Read QC, UMI extraction and trimming
+keywords:
+  - fastq
+  - fastqc
+  - qc
+  - UMI
+  - trimming
+  - trimgalore
+modules:
+  - fastqc
+  - umitools/extract
+  - trimgalore
+## TODO nf-core: List all of the variables used as input, including their types and descriptions
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+## TODO nf-core: List all of the variables used as output, including their types and descriptions
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM/CRAM/SAM samtools index
+      pattern: "*.{bai,crai,sai}"
+  - csi:
+      type: file
+      description: CSI samtools index
+      pattern: "*.csi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@drpatelh"
+  - "@KamilMaliszArdigen"
