@@ -34,19 +34,6 @@ workflow test_fastqc_paired_end {
 }
 
 //
-// Test with bam data
-//
-workflow test_fastqc_bam {
-    input = [
-                [id: 'test', single_end: false], // meta map
-                [
-                    file(params.test_data['sarscov2']['illumina']['test_unaligned_bam'], checkIfExists: true),
-                ]
-            ]
-
-    FASTQC ( input )
-}
-//
 // Test with interleaved data
 //
 workflow test_fastqc_interleaved {

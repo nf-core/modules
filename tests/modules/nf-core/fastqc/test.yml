@@ -1,17 +1,29 @@
-- name: fastqc single-end
-  command: nextflow run ./tests/modules/nf-core/fastqc/ -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+- name: fastqc test_fastqc_single_end
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
     - fastqc
   files:
-    - path: ./output/fastqc/test_fastqc.html
-    - path: ./output/fastqc/test_fastqc.zip
+    - path: output/fastqc/test_fastqc.html
+      md5sum: f9ee3494ad54695b6da24c3e00f6be0b
+    - path: output/fastqc/test_fastqc.zip
 
-- name: fastqc paired-end
-  command: nextflow run ./tests/modules/nf-core/fastqc/ -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+- name: fastqc test_fastqc_paired_end
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
     - fastqc
   files:
-    - path: ./output/fastqc/test_1_fastqc.html
-    - path: ./output/fastqc/test_2_fastqc.html
-    - path: ./output/fastqc/test_2_fastqc.zip
-    - path: ./output/fastqc/test_1_fastqc.zip
+    - path: output/fastqc/test_1_fastqc.html
+      md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
+    - path: output/fastqc/test_1_fastqc.zip
+    - path: output/fastqc/test_2_fastqc.html
+      md5sum: ab52924742430bbccf8a137c293aafb9
+    - path: output/fastqc/test_2_fastqc.zip
+
+- name: fastqc test_fastqc_interleaved
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+  tags:
+    - fastqc
+  files:
+    - path: output/fastqc/test_fastqc.html
+      md5sum: 2de4cf972cbb8bee828b6cf214950d41
+    - path: output/fastqc/test_fastqc.zip
