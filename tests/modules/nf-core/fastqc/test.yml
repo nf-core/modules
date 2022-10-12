@@ -1,29 +1,55 @@
 - name: fastqc test_fastqc_single_end
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_fastqc.html
-      md5sum: f9ee3494ad54695b6da24c3e00f6be0b
-    - path: output/fastqc/test_fastqc.zip
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
+  - path: output/fastqc/test_1_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: fastqc test_fastqc_paired_end
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
-    - path: output/fastqc/test_1_fastqc.zip
-    - path: output/fastqc/test_2_fastqc.html
-      md5sum: ab52924742430bbccf8a137c293aafb9
-    - path: output/fastqc/test_2_fastqc.zip
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
+  - path: output/fastqc/test_1_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/fastqc/test_2_fastqc.html
+    md5sum: ab52924742430bbccf8a137c293aafb9
+  - path: output/fastqc/test_2_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: fastqc test_fastqc_interleaved
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_fastqc.html
-      md5sum: 2de4cf972cbb8bee828b6cf214950d41
-    - path: output/fastqc/test_fastqc.zip
+  - path: output/fastqc/test_interleaved_fastqc.html
+    md5sum: b1a718883fcb54c9e8250d89fabb6208
+  - path: output/fastqc/test_interleaved_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+
+- name: fastqc test_fastqc_multiple
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+  tags:
+  - fastqc
+  files:
+  - path: output/fastqc/test2_1_fastqc.html
+    md5sum: 48d821a7ff42a2e04356db03633769f7
+  - path: output/fastqc/test2_1_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/fastqc/test2_2_fastqc.html
+    md5sum: 666eeaa918989bd2dbe0d6c2ec9ebba0
+  - path: output/fastqc/test2_2_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
+  - path: output/fastqc/test_1_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/fastqc/test_2_fastqc.html
+    md5sum: ab52924742430bbccf8a137c293aafb9
+  - path: output/fastqc/test_2_fastqc.zip
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'

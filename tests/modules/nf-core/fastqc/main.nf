@@ -51,14 +51,14 @@ workflow test_fastqc_interleaved {
 //
 // Test with multiple samples
 //
-workflow test_fastqc_interleaved {
+workflow test_fastqc_multiple {
     input = [
                 [id: 'test', single_end: false], // meta map
                 [
                     file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true),
                     file(params.test_data['sarscov2']['illumina']['test2_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test2_2_fastq_gz'], checkIfExists: true),
 
                 ]
             ]

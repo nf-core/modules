@@ -23,24 +23,14 @@ process FASTQC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = reads instanceof List ? reads : [reads]
 
-    if (input_list.size() == 1) {
-        """
-        fastqc $args --threads $task.cpus ${reads.join(' ')}
+    """
+    fastqc $args --threads $task.cpus ${reads.join(' ')}
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
-        END_VERSIONS
-        """
-    } else {
-        """
-        fastqc $args --threads $task.cpus ${reads.join(' ')}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
-        END_VERSIONS
-        """
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastqc: \$( fastqc --version | sed -e "s/FastQC v//g" )
+    END_VERSIONS
+    """
     }
 
     stub:
