@@ -19,7 +19,7 @@ workflow FASTQ_ALIGN_BOWTIE2 {
     //
     // Map reads with Bowtie2
     //
-    BOWTIE2_ALIGN ( reads, index, save_unaligned, sort_bam)
+    BOWTIE2_ALIGN ( reads, index, save_unaligned, sort_bam )
     ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions.first())
 
     //
