@@ -58,6 +58,10 @@ antismash/antismashlitedownloaddatabases:
   - modules/nf-core/antismash/antismashlitedownloaddatabases/**
   - tests/modules/nf-core/antismash/antismashlitedownloaddatabases/**
 
+aria2:
+  - modules/nf-core/aria2/**
+  - tests/modules/nf-core/aria2/**
+
 ariba/getref:
   - modules/nf-core/ariba/getref/**
   - tests/modules/nf-core/ariba/getref/**
@@ -834,6 +838,10 @@ fgbio/groupreadsbyumi:
 fgbio/sortbam:
   - modules/nf-core/fgbio/sortbam/**
   - tests/modules/nf-core/fgbio/sortbam/**
+
+fgbio/zipperbams:
+  - modules/nf-core/fgbio/zipperbams/**
+  - tests/modules/nf-core/fgbio/zipperbams/**
 
 filtlong:
   - modules/nf-core/filtlong/**
@@ -1891,6 +1899,10 @@ picard/mergesamfiles:
   - modules/nf-core/picard/mergesamfiles/**
   - tests/modules/nf-core/picard/mergesamfiles/**
 
+picard/renamesampleinvcf:
+  - modules/nf-core/picard/renamesampleinvcf/**
+  - tests/modules/nf-core/picard/renamesampleinvcf/**
+
 picard/sortsam:
   - modules/nf-core/picard/sortsam/**
   - tests/modules/nf-core/picard/sortsam/**
@@ -2395,17 +2407,33 @@ subworkflows/annotation/snpeff:
   - subworkflows/nf-core/annotation/snpeff/**
   - tests/subworkflows/nf-core/annotation/snpeff/**
 
+subworkflows/bam_dedup_stats_samtools_umitools:
+  - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
+  - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
+
 subworkflows/bam_qc_picard:
   - subworkflows/nf-core/bam_qc_picard/**
   - tests/subworkflows/nf-core/bam_qc_picard/**
 
-subworkflows/bam_sort_samtools:
-  - subworkflows/nf-core/bam_sort_samtools/**
-  - tests/subworkflows/nf-core/bam_sort_samtools/**
+subworkflows/bam_sort_stats_samtools:
+  - subworkflows/nf-core/bam_sort_stats_samtools/**
+  - tests/subworkflows/nf-core/bam_sort_stats_samtools/**
 
 subworkflows/bam_stats_samtools:
   - subworkflows/nf-core/bam_stats_samtools/**
   - tests/subworkflows/nf-core/bam_stats_samtools/**
+
+subworkflows/bcl_demultiplex:
+  - subworkflows/nf-core/bcl_demultiplex/**
+  - tests/subworkflows/nf-core/bcl_demultiplex/**
+
+subworkflows/bedgraph_bedclip_bedgraphtobigwig:
+  - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
+  - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
+
+subworkflows/fastq_align_dna:
+  - subworkflows/nf-core/fastq_align_dna/**
+  - tests/subworkflows/nf-core/fastq_align_dna/**
 
 subworkflows/fgbio_create_umi_consensus:
   - subworkflows/nf-core/fgbio_create_umi_consensus/**
