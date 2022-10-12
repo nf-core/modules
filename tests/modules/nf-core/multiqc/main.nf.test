@@ -6,7 +6,7 @@ nextflow_workflow {
     test("Test default") {
         workflow "test_multiqc"
 
-        then {
+        expect {
             assert workflow.success
             assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
             assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
@@ -19,7 +19,7 @@ nextflow_workflow {
     test("Test fn collision") {
         workflow "test_multiqc_fn_collision"
 
-        then {
+        expect {
             assert workflow.success
             assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
             assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
@@ -32,7 +32,7 @@ nextflow_workflow {
     test("Test config") {
         workflow "test_multiqc_config"
 
-        then {
+        expect {
             assert workflow.success
             assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
             assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
