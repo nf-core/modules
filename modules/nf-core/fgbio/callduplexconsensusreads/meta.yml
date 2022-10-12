@@ -26,6 +26,14 @@ input:
       description: BAM/SAM file
       pattern: "*.{bam,sam}"
 
+  - min_reads:
+      type: integer
+      description: The minimum number of input reads to a consensus read.
+
+  - min_baseq:
+      type: double
+      description: Ignore bases in raw reads that have Q below this value
+
 output:
   - meta:
       type: map
