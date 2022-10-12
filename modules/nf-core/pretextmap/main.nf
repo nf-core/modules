@@ -9,7 +9,7 @@ process PRETEXTMAP {
         'quay.io/biocontainers/mulled-v2-f3591ce8609c7b3b33e5715333200aa5c163aa61:c6242a6c1a522137de7a9e9ff90779ede11cf5c5-0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input)
 
     output:
     tuple val(meta), path("*.pretext"), emit: pretext
@@ -21,13 +21,20 @@ process PRETEXTMAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    samtools \\
-        view \\
-        -h \\
-        $bam | PretextMap \\
-        $args \\
-        -o ${prefix}.pretext
+    if [[ $input == *.pairs.gz ]]; then
+        zcat $input | PretextMap \\
+            $args \\
+            -o ${prefix}.pretext
+    else
+        samtools \\
+            view \\
+            -h \\
+            $input | PretextMap \\
+            $args \\
+            -o ${prefix}.pretext
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
