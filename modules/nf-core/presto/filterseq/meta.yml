@@ -1,12 +1,10 @@
 name: "presto_filterseq"
-## TODO nf-core: Add a description of the module and list keywords
 description: Filtering sequences based on quality.
 keywords:
   - presto
   - FilterSeq
 tools:
   - "presto":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A bioinformatics toolkit for processing high-throughput lymphocyte receptor sequencing data."
       homepage: "https://presto.readthedocs.io/en/stable/install.html"
       documentation: "https://presto.readthedocs.io/en/stable/"
@@ -14,9 +12,7 @@ tools:
       doi: "10.1093/bioinformatics/btu138"
       licence: "['AGPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -32,7 +28,6 @@ input:
       pattern: "*.fastq"
 
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -57,3 +52,4 @@ output:
 
 authors:
   - "@snafees"
+  - "@ggabernet"
