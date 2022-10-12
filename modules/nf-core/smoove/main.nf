@@ -3,9 +3,7 @@ process SMOOVE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::smoove=0.2.8" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_0':
-        'brentp/smoove' }"
+    container "brentp/smoove"
 
     input:
     tuple val(meta), path(bam), path(bai)
