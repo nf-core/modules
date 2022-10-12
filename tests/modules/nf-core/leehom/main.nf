@@ -8,7 +8,7 @@ include { SAMTOOLS_VIEW } from '../../../../modules/nf-core/samtools/view/main.n
 workflow test_leehom_bam {
 
     input = [ [ id:'test', single_end:false ], // meta map
-            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+              file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
             []
         ]
 
