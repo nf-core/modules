@@ -20,8 +20,8 @@ process BEDTOOLS_SUBTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$intervals1" == "${prefix}.${extension}" ||
-        "$intervals2" == "${prefix}.${extension}")
+    if ("$intervals1" == "${prefix}.bed" ||
+        "$intervals2" == "${prefix}.bed")
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     bedtools \\
