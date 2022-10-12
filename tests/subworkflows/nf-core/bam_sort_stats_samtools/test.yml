@@ -1,9 +1,9 @@
 - name: bam sort samtools single-end
-  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_samtools -entry test_bam_sort_samtools_single_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_sort_samtools/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_stats_samtools -entry test_bam_sort_stats_samtools_single_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_sort_stats_samtools/nextflow.config
   tags:
     # Subworkflows
     - subworkflows
-    - subworkflows/bam_sort_samtools
+    - subworkflows/bam_sort_stats_samtools
     - subworkflows/bam_stats_samtools
     # Modules
     - samtools
@@ -22,11 +22,11 @@
     - path: ./output/samtools/test.single_end.sorted.bam.stats
 
 - name: bam sort samtools paired-end
-  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_samtools -entry test_bam_sort_samtools_paired_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_sort_samtools/nextflow.config
+  command: nextflow run ./tests/subworkflows/nf-core/bam_sort_stats_samtools -entry test_bam_sort_stats_samtools_paired_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/bam_sort_stats_samtools/nextflow.config
   tags:
     # Subworkflows
     - subworkflows
-    - subworkflows/bam_sort_samtools
+    - subworkflows/bam_sort_stats_samtools
     - subworkflows/bam_stats_samtools
     # Modules
     - samtools
