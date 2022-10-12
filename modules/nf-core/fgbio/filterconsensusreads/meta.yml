@@ -25,6 +25,18 @@ input:
       description: BAM file
       pattern: "*.bam"
 
+  - min_reads:
+      type: integer
+      description: The minimum number of reads supporting a consensus base/read
+
+  - min_baseq:
+      type: double
+      description: Mask (make N) consensus bases with quality less than this threshold
+
+  - max_base_error_rate:
+      type: double
+      description: The maximum error rate for a single consensus base
+
 output:
   - meta:
       type: map
