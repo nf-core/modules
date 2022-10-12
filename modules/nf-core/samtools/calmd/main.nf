@@ -27,7 +27,7 @@ process SAMTOOLS_CALMD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        SAMTOOLS_CALMD: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
