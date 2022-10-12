@@ -45,9 +45,9 @@ process FALCO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${reads}_fastqc_data.html
-    touch ${reads}_fastqc_data.html
-    touch ${reads}_summary.txt
+    touch ${prefix}_data.txt
+    touch ${prefix}_fastqc_data.html
+    touch ${prefix}_summary.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
