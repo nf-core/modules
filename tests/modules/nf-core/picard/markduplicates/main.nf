@@ -35,3 +35,5 @@ workflow test_picard_markduplicates_sorted_cram  {
 
     PICARD_MARKDUPLICATES_SORTED_CRAM ( input, fasta, fai )
 }
+
+// TODO Add a test with PICARD_MARKDUPLICATES ( input, [], [] )
