@@ -10,6 +10,7 @@ process AMPCOMBI {
     input:
     // val(meta) // remove the meta 
     val(file_list)
+    path(samplesheet)
     path(faa_folder)
     val(outdir)
 
@@ -30,16 +31,20 @@ process AMPCOMBI {
     def args = task.ext.args ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def samplenames = file_list.flatten() // It joins the list of lists
-    for (i in samplenames) {i.take(i.lastIndexOf('.'))}
+    // def samplenames = file_list.flatten() // It joins the list of lists
+    // for (i in samplenames) {i.take(i.lastIndexOf('.'))}
+    // def csv_content = readCSV file: samplesheet
+    // def samplenames = samplesheet.split(",")[0]
+    // def samplenames = samplesheet.splitCsv ( header:true, sep:',' )
     """
+    SAMPLE=`tail -n +2 ${samplesheet} | awk -F ',' '{print \$1}'`
 
     ampcombi \\
         $args \\
-        --path-list ${file_list} \\
-        --sample_list ${samplenames} \\
-        --outdir ${outdir} \\
-        --faa_folder ${faa_folder}
+        --path_list $file_list \\
+        --sample_list "\$SAMPLE" \\
+        --outdir $outdir \\
+        --faa_folder $faa_folder
 
 
     cat <<-END_VERSIONS > versions.yml
