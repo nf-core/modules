@@ -24,7 +24,8 @@ process FASTQC {
     def input_list = reads instanceof List ? reads : [reads]
 
     """
-    fastqc $args --threads $task.cpus ${reads.join(' ')}
+    printf "%s\\n" $reads | while read f; do ln -s \$f ${prefix}_\$f ; done
+    fastqc $args --threads $task.cpus ${prefix}_*.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
