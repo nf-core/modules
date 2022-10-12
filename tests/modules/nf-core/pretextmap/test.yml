@@ -1,11 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml pretextmap
 - name: "pretextmap"
   command: nextflow run ./tests/modules/nf-core/pretextmap -entry test_pretextmap -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pretextmap/nextflow.config
   tags:
     - "pretextmap"
   files:
-    - path: "output/pretextmap/test.bam"
+    - path: "output/pretextmap/test.pretext"
       md5sum: e667c7caad0bc4b7ac383fd023c654fc
     - path: "output/pretextmap/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+      md5sum: 5e67370c2a398617f3f46bbbb7cb8864
