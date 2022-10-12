@@ -1,9 +1,7 @@
-- name: "smoove"
+- name: smoove test_smoove
   command: nextflow run ./tests/modules/nf-core/smoove -entry test_smoove -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoove/nextflow.config
   tags:
-    - "smoove"
+  - smoove
   files:
-  - path: "output/smoove/test-smoove.vcf.gz"
-      md5sum: bded0cb045209ee71e9b6d89780a7abe 
-  - path: "output/smoove/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/smoove/test-smoove.vcf.gz
+    md5sum: bded0cb045209ee71e9b6d89780a7abe  
