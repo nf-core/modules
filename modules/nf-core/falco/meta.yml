@@ -34,12 +34,16 @@ output:
         e.g. [ id:'test', single_end:false ]
   - html:
       type: file
-      description: FastQC report
+      description: FastQC like report
       pattern: "*_{fastqc_report.html}"
   - txt:
       type: file
-      description: falco report archive
-      pattern: "*_{fastqc_report.txt}"
+      description: falco report data
+      pattern: "*_{data.txt}"
+  - txt:
+      type: file
+      description: falco summary file
+      pattern: "*_{summary.txt}"
   - versions:
       type: file
       description: File containing software versions
