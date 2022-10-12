@@ -3,21 +3,21 @@
   tags:
     - hapibd
   files:
-    - path: output/hapibd/hapIBDout.hbd.gz
+    - path: output/hapibd/test.hbd.gz
       md5sum: 709872fc2910431b1e8b7074bfe38c67
-    - path: output/hapibd/hapIBDout.ibd.gz
+    - path: output/hapibd/test.ibd.gz
       contains: ["*.ibd.gz"]
-    - path: output/hapibd/hapIBDout.log
-      md5sum: 20b110fd90f3bafb309ed29ce0de5e6f
+    - path: output/hapibd/test.log
+      md5sum: 0279c01aeab3ffb9bab64fa766f34fd1
 
 - name: hapibd test_hapibd_excludesamples
   command: nextflow run ./tests/modules/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
   tags:
     - hapibd
   files:
-    - path: output/hapibd/hapIBDout.hbd.gz
+    - path: output/hapibd/test.hbd.gz
       md5sum: 709872fc2910431b1e8b7074bfe38c67
-    - path: output/hapibd/hapIBDout.ibd.gz
+    - path: output/hapibd/test.ibd.gz
       contains: ["*.ibd.gz"]
-    - path: output/hapibd/hapIBDout.log
-      md5sum: 99f24eb7db8acd6e37d0af061f0bef55
+    - path: output/hapibd/test.log
+      md5sum: de863d6d1f0ea4c14bdc5739cd519360
