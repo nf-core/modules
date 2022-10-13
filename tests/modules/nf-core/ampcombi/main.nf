@@ -6,7 +6,7 @@ include { AMPCOMBI } from '../../../../modules/nf-core/ampcombi/main.nf'
 
 workflow test_ampcombi {
 
-    input_dir = folder("https://github.com/nf-core/test-datasets/tree/modules/data/delete_me/ampcombi/test_faa/", checkIfExists: true)
+    input_dir = folder("https://github.com/nf-core/test-datasets/tree/modules/data/delete_me/ampcombi/test_files/", checkIfExists: true)
 
     faa_folder = folder("https://github.com/nf-core/test-datasets/tree/modules/data/delete_me/ampcombi/test_faa/", checkIfExists: true)
     

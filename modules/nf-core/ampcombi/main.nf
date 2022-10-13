@@ -10,7 +10,6 @@ process AMPCOMBI {
     input:
     // val(meta) // remove the meta 
     path(input_dir)
-    path(samplesheet)
     path(faa_folder)
     val(outdir)
 
