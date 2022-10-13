@@ -21,11 +21,19 @@ workflow test_cellranger_10x {
 
     CELLRANGER_MKGTF ( gtf )
 
+    print(CELLRANGER_MKGTF.out.gtf.view())
+
+    print("gtf created")
+
     CELLRANGER_MKREF (
         fasta,
         CELLRANGER_MKGTF.out.gtf,
         reference_name
     )
+
+    print(CELLRANGER_MKREF.out.reference.view())
+
+    print("reference created")
 
     CELLRANGER_COUNT_OS (
         input,
