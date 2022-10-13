@@ -22,14 +22,10 @@ tools:
       licence: "['MIT']"
 
 input:
-  - file_list: 
-      type: path
-      description: A list with the paths to the AMP output-files for each sample. The AMP output files are the table results from AMP tools i.e., Macrel, Ampir, Amplify, HMMsearch and Neubi. List example [['']['']].
-      ## pattern: "[*]"
-  - samplesheet:
-      type: value
-      description: A samplesheet given as `--input` to a pipeline, with sample names identified in the first column and is comma delimited.
-      ##pattern: "*.csv"           
+  - input_dir:
+      type: folder
+      description: The path to the directory containing the results for the AMP tools for each sample processed.
+      pattern: "*/"           
   - faa_folder:
       type: folder
       description: The path to the folder containing the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
