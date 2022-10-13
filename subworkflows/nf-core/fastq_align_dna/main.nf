@@ -16,7 +16,7 @@ include { SNAPALIGNER_ALIGN as SNAP_ALIGN   } from '../../../modules/nf-core/sna
 workflow FASTQ_ALIGN_DNA {
     take:
         ch_reads            // channel: [mandatory] meta, reads
-        ch_aligner_index    // channel: [mandatory] aligner index
+        ch_aligner_index    // channel: [mandatory] meta, aligner_index
         aligner             // string:  [mandatory] aligner [bowtie2, bwamem, bwamem2, dragmap, snap]
         sort                // boolean: [mandatory] true -> sort, false -> don't sort
 
@@ -40,8 +40,7 @@ workflow FASTQ_ALIGN_DNA {
                 ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
                 break
             case 'bwamem2':
-                // BWAMEM2_MEM index needs to be [meta, index]
-                BWAMEM2_MEM  (ch_reads, ch_aligner_index.map {it -> [[:], it]}, sort)  // If aligner is bwamem2
+                BWAMEM2_MEM  (ch_reads, ch_aligner_index, sort)                         // If aligner is bwamem2
                 ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
                 ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
                 break
