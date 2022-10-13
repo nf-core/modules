@@ -15,15 +15,15 @@ process FGBIO_FILTERCONSENSUSREADS {
     // make sure they are specified via ext.args in your config
 
     output:
-    tuple val(meta), path("*_consensus_filtered.bam"), emit: bam
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("${prefix}.bam"), emit: bam
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_consensus_filtered"
 
     def mem_gb = 8
     if (!task.memory) {
@@ -43,7 +43,7 @@ process FGBIO_FILTERCONSENSUSREADS {
         --compression=0 \\
         FilterConsensusReads \\
         --input $bam \\
-        --output ${prefix}_consensus_filtered.bam \\
+        --output ${prefix}.bam \\
         --ref ${fasta} \\
         $args
 
