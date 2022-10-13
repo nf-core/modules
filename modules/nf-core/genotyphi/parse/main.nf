@@ -5,7 +5,7 @@ process GENOTYPHI_PARSE {
     conda (params.enable_conda ? "bioconda::genotyphi=1.9.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/genotyphi:1.9.1--hdfd78af_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/genotyphi:1.9.1--hdfd78af_1" }
 
     input:
     tuple val(meta), path(json)

@@ -5,7 +5,7 @@ process TIDDIT_SV {
     conda (params.enable_conda ? "bioconda::tiddit=3.1.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiddit:3.1.0--py39h59fae87_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/tiddit:3.1.0--py39h59fae87_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/tiddit:3.1.0--py39h59fae87_1" }
 
     input:
     tuple val(meta), path(input), path(input_index)

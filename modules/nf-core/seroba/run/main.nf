@@ -5,7 +5,7 @@ process SEROBA_RUN {
     conda (params.enable_conda ? "bioconda::seroba=1.0.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seroba:1.0.2--pyhdfd78af_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/seroba:1.0.2--pyhdfd78af_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/seroba:1.0.2--pyhdfd78af_1" }
 
     input:
     tuple val(meta), path(reads)

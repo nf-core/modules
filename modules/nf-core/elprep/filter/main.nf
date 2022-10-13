@@ -5,7 +5,7 @@ process ELPREP_FILTER {
     conda (params.enable_conda ? "bioconda::elprep=5.1.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/elprep:5.1.2--he881be0_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/elprep:5.1.2--he881be0_0" }
 
     input:
     tuple val(meta), path(bam)

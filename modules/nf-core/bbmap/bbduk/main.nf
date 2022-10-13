@@ -5,7 +5,7 @@ process BBMAP_BBDUK {
     conda (params.enable_conda ? "bioconda::bbmap=38.90" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:38.90--he522d1c_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/bbmap:38.90--he522d1c_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/bbmap:38.90--he522d1c_1" }
 
     input:
     tuple val(meta), path(reads)

@@ -5,7 +5,7 @@ process BEDTOOLS_SLOP {
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--hc088bd4_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/bedtools:2.30.0--hc088bd4_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/bedtools:2.30.0--hc088bd4_0" }
 
     input:
     tuple val(meta), path(bed)

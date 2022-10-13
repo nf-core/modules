@@ -5,7 +5,7 @@ process PYCOQC {
     conda (params.enable_conda ? "bioconda::pycoqc=2.5.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pycoqc:2.5.2--py_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/pycoqc:2.5.2--py_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/pycoqc:2.5.2--py_0" }
 
     input:
     path summary

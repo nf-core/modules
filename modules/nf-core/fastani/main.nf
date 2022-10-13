@@ -5,7 +5,7 @@ process FASTANI {
     conda (params.enable_conda ? "bioconda::fastani=1.32" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/fastani:1.32--he1c1bb9_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/fastani:1.32--he1c1bb9_0" }
 
     input:
     tuple val(meta), path(query)

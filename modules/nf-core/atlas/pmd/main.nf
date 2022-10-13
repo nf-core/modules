@@ -5,7 +5,7 @@ process ATLAS_PMD {
     conda (params.enable_conda ? "bioconda::atlas=0.9.9" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/atlas:0.9.9--h082e891_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/atlas:0.9.9--h082e891_0" }
 
     input:
     tuple val(meta), path(bam), path(bai), path(pool_rg_txt)

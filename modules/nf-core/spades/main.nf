@@ -5,7 +5,7 @@ process SPADES {
     conda (params.enable_conda ? 'bioconda::spades=3.15.4' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spades:3.15.4--h95f258a_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/spades:3.15.4--h95f258a_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/spades:3.15.4--h95f258a_0" }
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)

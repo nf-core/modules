@@ -5,7 +5,7 @@ process MERQURY {
     conda (params.enable_conda ? "bioconda::merqury=1.3" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/merqury:1.3--hdfd78af_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/merqury:1.3--hdfd78af_1" }
 
     input:
     tuple val(meta), path(meryl_db), path(assembly)

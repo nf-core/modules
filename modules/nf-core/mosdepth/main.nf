@@ -5,7 +5,7 @@ process MOSDEPTH {
     conda (params.enable_conda ? 'bioconda::mosdepth=0.3.3' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mosdepth:0.3.3--hdfd78af_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/mosdepth:0.3.3--hdfd78af_1"}
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/mosdepth:0.3.3--hdfd78af_1"}
 
     input:
     tuple val(meta), path(bam), path(bai)

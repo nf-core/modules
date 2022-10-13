@@ -5,7 +5,7 @@ process PBBAM_PBMERGE {
     conda (params.enable_conda ? "bioconda::pbbam=1.7.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbbam:1.7.0--h058f120_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/pbbam:1.7.0--h058f120_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/pbbam:1.7.0--h058f120_1" }
 
     input:
     tuple val(meta), path(bam)

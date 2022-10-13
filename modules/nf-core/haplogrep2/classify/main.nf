@@ -5,7 +5,7 @@ process HAPLOGREP2_CLASSIFY {
     conda (params.enable_conda ? "bioconda::haplogrep=2.4.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/haplogrep:2.4.0--hdfd78af_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/haplogrep:2.4.0--hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/haplogrep:2.4.0--hdfd78af_0" }
 
     input:
     tuple val(meta), path(inputfile)

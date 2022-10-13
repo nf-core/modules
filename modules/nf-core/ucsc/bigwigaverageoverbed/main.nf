@@ -6,7 +6,7 @@ process UCSC_BIGWIGAVERAGEOVERBED {
     conda (params.enable_conda ? "bioconda::ucsc-bigwigaverageoverbed=377" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bigwigaverageoverbed:377--h0b8a92a_2' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/ucsc-bigwigaverageoverbed:377--h0b8a92a_2" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-bigwigaverageoverbed:377--h0b8a92a_2" }
 
     input:
     tuple val(meta), path(bed)

@@ -6,7 +6,7 @@ process ARIA2 {
     conda (params.enable_conda ? "conda-forge::aria2=1.36.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/aria2:1.36.0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/aria2:1.36.0" }
 
     input:
     val source_url

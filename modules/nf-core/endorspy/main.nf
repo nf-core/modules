@@ -5,7 +5,7 @@ process ENDORSPY {
     conda (params.enable_conda ? "bioconda::endorspy=0.4" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/endorspy:0.4--hdfd78af_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/endorspy:0.4--hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/endorspy:0.4--hdfd78af_0" }
 
     input:
     tuple val(meta), path(stats), path(stats_optional)

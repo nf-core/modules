@@ -4,7 +4,7 @@ process QUAST {
     conda (params.enable_conda ? 'bioconda::quast=5.2.0' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quast:5.2.0--py39pl5321h2add14b_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/quast:5.2.0--py39pl5321h2add14b_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/quast:5.2.0--py39pl5321h2add14b_1" }
 
     input:
     path consensus

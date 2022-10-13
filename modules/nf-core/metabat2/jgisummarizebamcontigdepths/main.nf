@@ -5,7 +5,7 @@ process METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS {
     conda (params.enable_conda ? "bioconda::metabat2=2.15" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabat2:2.15--h986a166_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/metabat2:2.15--h986a166_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/metabat2:2.15--h986a166_1" }
 
     input:
     tuple val(meta), path(bam), path(bai)

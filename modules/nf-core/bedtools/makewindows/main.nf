@@ -5,7 +5,7 @@ process BEDTOOLS_MAKEWINDOWS {
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h7d7f7ad_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/bedtools:2.30.0--h7d7f7ad_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/bedtools:2.30.0--h7d7f7ad_1" }
 
     input:
     tuple val(meta), path(regions)

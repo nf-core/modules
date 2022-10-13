@@ -5,7 +5,7 @@ process BWA_ALN {
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/bwa:0.7.17--h5bf99c6_8" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/bwa:0.7.17--h5bf99c6_8" }
 
     input:
     tuple val(meta), path(reads)

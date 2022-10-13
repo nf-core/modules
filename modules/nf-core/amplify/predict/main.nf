@@ -6,7 +6,7 @@ process AMPLIFY_PREDICT {
     conda (params.enable_conda ? "bioconda::amplify=1.0.3" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/amplify:1.0.3--py36hdfd78af_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/amplify:1.0.3--py36hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/amplify:1.0.3--py36hdfd78af_0" }
 
     input:
     tuple val(meta), path(faa)

@@ -6,7 +6,7 @@ process ICHORCNA_RUN {
     conda (params.enable_conda ? "bioconda::r-ichorcna=0.3.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/r-ichorcna:0.3.2--r41hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/r-ichorcna:0.3.2--r41hdfd78af_0" }
 
     input:
     tuple val(meta), path(wig)

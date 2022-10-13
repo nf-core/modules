@@ -5,7 +5,7 @@ process AMPIR {
     conda (params.enable_conda ? "conda-forge::r-ampir=1.1.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ampir:1.1.0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/r-ampir:1.1.0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/r-ampir:1.1.0" }
 
     input:
     tuple val(meta), path(faa)

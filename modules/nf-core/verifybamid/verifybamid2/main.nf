@@ -5,7 +5,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
     conda (params.enable_conda ? "bioconda::verifybamid2=2.0.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/verifybamid2:2.0.1--h19d48f6_8" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/verifybamid2:2.0.1--h19d48f6_8" }
 
     input:
     tuple val(meta), path(bam), path(bai)

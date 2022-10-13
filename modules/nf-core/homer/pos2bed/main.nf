@@ -6,7 +6,7 @@ process HOMER_POS2BED {
     conda (params.enable_conda ? "bioconda::homer=4.11" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/homer:4.11--pl526hc9558a2_3" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/homer:4.11--pl526hc9558a2_3" }
 
     input:
     tuple val(meta), path(peaks)

@@ -5,7 +5,7 @@ process PYDAMAGE_FILTER {
     conda (params.enable_conda ? "bioconda::pydamage=0.70" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/pydamage:0.70--pyhdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/pydamage:0.70--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(csv)

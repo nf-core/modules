@@ -5,7 +5,7 @@ process BCFTOOLS_QUERY {
     conda (params.enable_conda ? "bioconda::bcftools=1.15.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bcftools:1.15.1--h0ea216a_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/bcftools:1.15.1--h0ea216a_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/bcftools:1.15.1--h0ea216a_0" }
 
     input:
     tuple val(meta), path(vcf), path(tbi)

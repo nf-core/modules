@@ -6,7 +6,7 @@ process HPSUISSERO {
     conda (params.enable_conda ? "bioconda::hpsuissero=1.0.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hpsuissero%3A1.0.1--hdfd78af_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/hpsuissero:1.0.1--hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/hpsuissero:1.0.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

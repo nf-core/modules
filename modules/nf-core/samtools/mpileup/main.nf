@@ -5,7 +5,7 @@ process SAMTOOLS_MPILEUP {
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h1170115_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/samtools:1.15.1--h1170115_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/samtools:1.15.1--h1170115_0" }
     input:
     tuple val(meta), path(input), path(intervals)
     path  fasta

@@ -5,7 +5,7 @@ process SNPEFF {
     conda (params.enable_conda ? "bioconda::snpeff=5.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.1--hdfd78af_2' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/snpeff:5.1--hdfd78af_2" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/snpeff:5.1--hdfd78af_2" }
 
     input:
     tuple val(meta), path(vcf)

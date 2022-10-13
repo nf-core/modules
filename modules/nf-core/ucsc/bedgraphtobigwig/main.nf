@@ -6,7 +6,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
     conda (params.enable_conda ? "bioconda::ucsc-bedgraphtobigwig=377" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:377--h446ed27_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/ucsc-bedgraphtobigwig:377--h446ed27_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-bedgraphtobigwig:377--h446ed27_1" }
 
     input:
     tuple val(meta), path(bedgraph)

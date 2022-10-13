@@ -5,7 +5,7 @@ process CUTADAPT {
     conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/cutadapt:3.4--py39h38f01e4_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/cutadapt:3.4--py39h38f01e4_1" }
 
     input:
     tuple val(meta), path(reads)

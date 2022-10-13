@@ -5,7 +5,7 @@ process GATK4_MERGEBAMALIGNMENT {
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/gatk4:4.2.6.1--hdfd78af_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/gatk4:4.2.6.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(aligned), path(unmapped)

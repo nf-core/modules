@@ -5,7 +5,7 @@ process SCRAMBLE_CLUSTERANALYSIS {
     conda (params.enable_conda ? "bioconda::scramble=1.0.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/scramble:1.0.1--h779adbc_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/scramble:1.0.1--h779adbc_1" }
 
     input:
     tuple val(meta), path(clusters)

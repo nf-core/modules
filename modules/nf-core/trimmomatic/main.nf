@@ -5,7 +5,7 @@ process TRIMMOMATIC {
     conda (params.enable_conda ? "bioconda::trimmomatic=0.39" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/trimmomatic:0.39--hdfd78af_2" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/trimmomatic:0.39--hdfd78af_2" }
 
     input:
     tuple val(meta), path(reads)

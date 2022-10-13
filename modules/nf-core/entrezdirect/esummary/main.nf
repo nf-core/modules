@@ -5,7 +5,7 @@ process ENTREZDIRECT_ESUMMARY {
     conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/entrez-direct:16.2--he881be0_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/entrez-direct:16.2--he881be0_1" }
 
     input:
     tuple val(meta), val(uid), path(uids_file)

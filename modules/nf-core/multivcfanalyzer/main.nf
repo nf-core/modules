@@ -5,7 +5,7 @@ process MULTIVCFANALYZER {
     conda (params.enable_conda ? "bioconda::multivcfanalyzer=0.85.2" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/multivcfanalyzer:0.85.2--hdfd78af_1':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/multivcfanalyzer:0.85.2--hdfd78af_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/multivcfanalyzer:0.85.2--hdfd78af_1" }
 
     input:
     path vcfs

@@ -5,7 +5,7 @@ process PLINK_VCF {
     conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/plink:1.90b6.21--h779adbc_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/plink:1.90b6.21--h779adbc_1" }
 
     input:
     tuple val(meta), path(vcf)

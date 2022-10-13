@@ -5,7 +5,7 @@ process BLAST_BLASTN {
     conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/blast:2.12.0--pl5262h3289130_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/blast:2.12.0--pl5262h3289130_0" }
 
     input:
     tuple val(meta), path(fasta)

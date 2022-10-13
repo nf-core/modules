@@ -5,7 +5,7 @@ process MSISENSORPRO_SCAN {
     conda (params.enable_conda ? "bioconda::msisensor-pro=1.2.0" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/msisensor-pro:1.2.0--hfc31af2_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/msisensor-pro:1.2.0--hfc31af2_0" }
 
     input:
     tuple val(meta), path(fasta)

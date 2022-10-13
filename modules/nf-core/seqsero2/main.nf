@@ -5,7 +5,7 @@ process SEQSERO2 {
     conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/seqsero2:1.2.1--py_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/seqsero2:1.2.1--py_0" }
 
     input:
     tuple val(meta), path(seqs)

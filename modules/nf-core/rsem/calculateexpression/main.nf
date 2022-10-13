@@ -5,7 +5,7 @@ process RSEM_CALCULATEEXPRESSION {
     conda (params.enable_conda ? "bioconda::rsem=1.3.3 bioconda::star=2.7.10a" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0" }
 
     input:
     tuple val(meta), path(reads)

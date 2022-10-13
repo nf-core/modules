@@ -4,7 +4,7 @@ process AMPS {
     conda (params.enable_conda ? "bioconda::hops=0.35" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/hops:0.35--hdfd78af_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/hops:0.35--hdfd78af_1" }
 
     input:
     path maltextract_results

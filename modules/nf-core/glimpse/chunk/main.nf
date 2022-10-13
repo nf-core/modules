@@ -5,7 +5,7 @@ process GLIMPSE_CHUNK {
     conda (params.enable_conda ? "bioconda::glimpse-bio=1.1.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h2ce4488_2':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/glimpse-bio:1.1.1--hce55b13_1" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/glimpse-bio:1.1.1--hce55b13_1" }
 
     input:
     tuple val(meta), path(input)

@@ -4,7 +4,7 @@ process SVDB_MERGE {
     conda (params.enable_conda ? "bioconda::svdb=2.6.1 bioconda::samtools=1.15.1" : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-c8daa8f9d69d3c5a1a4ff08283a166c18edb0000:56d0a468970fbb474d92f0591abcf677757fb370-0':
-        "${params.docker_url ?: 'quay.io/biocontainers'}/mulled-v2-c8daa8f9d69d3c5a1a4ff08283a166c18edb0000:56d0a468970fbb474d92f0591abcf677757fb370-0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-c8daa8f9d69d3c5a1a4ff08283a166c18edb0000:56d0a468970fbb474d92f0591abcf677757fb370-0" }
 
     input:
     tuple val(meta), path(vcfs)

@@ -5,7 +5,7 @@ process SEQKIT_SPLIT2 {
     conda (params.enable_conda ? 'bioconda::seqkit=2.1.0' : null)
     container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seqkit:2.1.0--h9ee0642_0' :
-        "${params.docker_url ?: 'quay.io/biocontainers'}/seqkit:2.1.0--h9ee0642_0" }
+        "${params.docker_registry ?: 'quay.io/biocontainers'}/seqkit:2.1.0--h9ee0642_0" }
 
     input:
     tuple val(meta), path(reads)
