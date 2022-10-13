@@ -1,13 +1,14 @@
 - name: snapaligner index test_snapaligner_index
-  command: nextflow run ./tests/modules/nf-core/snapaligner/index -entry test_snapaligner_index -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/snapaligner/index -entry test_snapaligner_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/snapaligner/index/nextflow.config
   tags:
-    - snapaligner/index
     - snapaligner
+    - snapaligner/index
   files:
     - path: output/snapaligner/snap/Genome
       md5sum: 7e189c954142ba37460332b467e34ed4
     - path: output/snapaligner/snap/GenomeIndex
       md5sum: 298da8bcb1134f7b24379a792a7a46f8
     - path: output/snapaligner/snap/GenomeIndexHash
+      md5sum: 9e28b9a15d7c09c3ca3070206a0f12ee
     - path: output/snapaligner/snap/OverflowTable
-    - path: output/snapaligner/versions.yml
+      md5sum: d41d8cd98f00b204e9800998ecf8427e
