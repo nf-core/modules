@@ -1,0 +1,121 @@
+nextflow_workflow {
+
+    name "Test FASTQ_ALIGN_DNA"
+    script "tests/subworkflows/nf-core/fastq_align_dna/main.nf"
+    config "tests/subworkflows/nf-core/fastq_align_dna/nextflow.config"
+
+    test("test_fastq_align_bowtie2_SE") {
+        workflow "test_fastq_align_bowtie2_SE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bowtie2/test.bam").md5 == "8b1db3fba479c4558094a9ef802f66e9"
+            assert path("${outputDir}/bowtie2/test.bowtie2.log").md5 == "7b8a9e61b7646da1089b041333c41a87"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_bowtie2_PE") {
+        workflow "test_fastq_align_bowtie2_PE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bowtie2/test.bam").md5 == "e7ae5faecd94e5ff3d7959a11499974e"
+            assert path("${outputDir}/bowtie2/test.bowtie2.log").md5 == "bd89ce1b28c93bf822bae391ffcedd19"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_bwa_SE") {
+        workflow "test_fastq_align_bwa_SE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bwamem1/test.bam").md5 == "bfe0552bae0bc610f3035a3c8468ebdc"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_bwa_PE") {
+        workflow "test_fastq_align_bwa_PE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bwamem1/test.bam").md5 == "f057963b3eb6610569e9ecf580c0927a"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_bwamem2_SE") {
+        workflow "test_fastq_align_bwamem2_SE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bwamem2/test.bam").md5 == "bdd6c52c2ae1eff54833e0dc7870e1d3"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_bwamem2_PE") {
+        workflow "test_fastq_align_bwamem2_PE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/bwamem2/test.bam").md5 == "eacd3a8785a8f7a20ca36a9726351b1d"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_dragmap_SE") {
+        workflow "test_fastq_align_dragmap_SE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/dragmap/test.bam").md5 == "5f08f3ca6ef2094fc4244966b2d28008"
+            assert file("${outputDir}/dragmap/test.dragmap.log").exists()
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_dragmap_PE") {
+        workflow "test_fastq_align_dragmap_PE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/dragmap/test.bam").md5 == "c3a3475e70c8f38ee80581947f507c54"
+            assert file("${outputDir}/dragmap/test.dragmap.log").exists()
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_snapaligner_SE") {
+        workflow "test_fastq_align_snapaligner_SE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/snap/test.bam").md5 == "e837a5c09fbf4ad0c4bc890139fef555"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+    test("test_fastq_align_snapaligner_PE") {
+        workflow "test_fastq_align_snapaligner_PE"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/snap/test.bam").md5 == "d350152117ba70a1405d384eb2c6ef5b"
+            assert workflow.trace.succeeded().size() == 2
+        }
+
+    }
+
+}

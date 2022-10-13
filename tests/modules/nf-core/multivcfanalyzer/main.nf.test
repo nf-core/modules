@@ -1,0 +1,26 @@
+nextflow_workflow {
+
+    name "Test Workflow test_multivcfanalyzer"
+    script "tests/modules/nf-core/multivcfanalyzer/main.nf"
+    workflow "test_multivcfanalyzer"
+
+    test("Should run without failures") {
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/multivcfanalyzer/MultiVCFAnalyzer.json").md5 == "c841c9f04c6114911f308ea09a08980e"
+            assert path("${outputDir}/multivcfanalyzer/fullAlignment.fasta.gz").linesGzip.contains(">Reference_MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome")
+            assert file("${outputDir}/multivcfanalyzer/info.txt").text.contains("Run finished")
+            assert path("${outputDir}/multivcfanalyzer/snpAlignment.fasta.gz").linesGzip.contains(">test.vcf")
+            assert path("${outputDir}/multivcfanalyzer/snpAlignmentIncludingRefGenome.fasta.gz").linesGzip.contains(">Reference_MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome")
+            assert path("${outputDir}/multivcfanalyzer/snpStatistics.tsv").md5 == "8bec0f958c4485153b1db3b34e4c2bbd"
+            assert path("${outputDir}/multivcfanalyzer/snpTable.tsv").md5 == "1812cf4e49f64a28865bd627db64e876"
+            assert path("${outputDir}/multivcfanalyzer/snpTableForSnpEff.tsv").md5 == "8d7ab4ec98a89d290e301d6feae461aa"
+            assert path("${outputDir}/multivcfanalyzer/snpTableWithUncertaintyCalls.tsv").md5 == "1812cf4e49f64a28865bd627db64e876"
+            assert path("${outputDir}/multivcfanalyzer/structureGenotypes.tsv").md5 == "7d29ee394c863e862e556ae7bc745d4c"
+            assert path("${outputDir}/multivcfanalyzer/structureGenotypes_noMissingData-Columns.tsv").md5 == "6e8f8e18a298c94cc2b0774094dacc97"
+        }
+
+    }
+
+}

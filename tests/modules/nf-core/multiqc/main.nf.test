@@ -1,0 +1,45 @@
+nextflow_workflow {
+
+    name "Test MultiQC"
+    script "tests/modules/nf-core/multiqc/main.nf"
+
+    test("Test default") {
+        workflow "test_multiqc"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_data.json").text.contains("report_data_sources")
+            assert path("${outputDir}/multiqc/multiqc_report.html").text.contains("Abandon hope all ye who enter here..")
+        }
+
+    }
+
+    test("Test fn collision") {
+        workflow "test_multiqc_fn_collision"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_data.json").text.contains("report_data_sources")
+            assert path("${outputDir}/multiqc/multiqc_report.html").text.contains("Abandon hope all ye who enter here..")
+        }
+
+    }
+
+    test("Test config") {
+        workflow "test_multiqc_config"
+
+        expect {
+            assert workflow.success
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc.log").text.contains("MultiQC complete")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_citations.txt").text.contains("10.1093/bioinformatics/btw354")
+            assert path("${outputDir}/multiqc/multiqc_data/multiqc_data.json").text.contains("report_data_sources")
+            assert path("${outputDir}/multiqc/multiqc_report.html").text.contains("Abandon hope all ye who enter here..")
+        }
+
+    }
+
+}

@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Workflow test_rtgtools_pedfilter"
+    script "modules/nf-core/rtgtools/pedfilter/main.nf"
+    process "RTGTOOLS_PEDFILTER"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            with(process.out.vcf.get(0)){
+                assert path(get(1)) ==~ '^.*/test.vcf.gz$'
+                assert path(get(1)).linesGzip.size() == 10
+                assert path(get(1)).linesGzip.contains("##PEDIGREE=<Child=hugelymodelbat,Mother=slowlycivilbuck,Father=earlycasualcaiman>")
+            }
+        }
+
+    }
+
+}
