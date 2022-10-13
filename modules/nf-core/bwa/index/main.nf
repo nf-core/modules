@@ -8,7 +8,7 @@ process BWA_INDEX {
         'quay.io/biocontainers/bwa:0.7.17--hed695b0_7' }"
 
     input:
-    tuple val(meta), path index
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("bwa")    , emit: index
