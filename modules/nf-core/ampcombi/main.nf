@@ -13,11 +13,11 @@ process AMPCOMBI {
     val(outdir)
 
     output:
+    tuple val(meta), path("${outdir}")          , emit: results_dir
     path("${outdir}/*/*_diamond_matches.txt")   , emit: txt
     path("${outdir}/*/*_ampcombi.csv")          , emit: csv
     path("${outdir}/*/*_amp.faa")               , emit: faa
     path("${outdir}/*.log")                     , optional:true, emit: log
-    path("${outdir}")                           , emit: results_dir
     path("${outdir}/*")                         , emit: results_subdir
     path("${outdir}/amp_ref_database")          , optional:true, emit: results_subdir_db
     path "versions.yml"                         , emit: versions
