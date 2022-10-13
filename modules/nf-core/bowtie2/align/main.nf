@@ -9,7 +9,7 @@ process BOWTIE2_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta), path(index)
     val   save_unaligned
     val   sort_bam
 
