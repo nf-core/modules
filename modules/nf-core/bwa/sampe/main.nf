@@ -8,8 +8,8 @@ process BWA_SAMPE {
         'quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:8110a70be2bfe7f75a2ea7f2a89cda4cc7732095-0' }"
 
     input:
-    tuple val(meta), path(reads), path(sai)
-    tuple val(meta), path index
+    tuple val(meta) , path(reads), path(sai)
+    tuple val(meta2), path index
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
