@@ -16,7 +16,7 @@ workflow test_bowtie2_align_single_end {
         [ id:'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-        save_unaligned = false
+    save_unaligned = false
     sort = false
 
     BOWTIE2_BUILD ( fasta )
