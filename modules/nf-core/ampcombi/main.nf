@@ -30,7 +30,6 @@ process AMPCOMBI {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def fileoption = amp_input.isDirectory() ? "--amp_results $amp_input" : "--path_list $amp_input --sample_list ${prefix}"
-
     """
     ampcombi \\
         $args \\
