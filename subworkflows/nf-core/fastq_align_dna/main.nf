@@ -30,28 +30,29 @@ workflow FASTQ_ALIGN_DNA {
         // Align fastq files to reference genome and (optionally) sort
         switch (aligner) {
             case 'bowtie2':
-                BOWTIE2_ALIGN(ch_reads, ch_aligner_index, false, sort) // if aligner is bowtie2
+                BOWTIE2_ALIGN(ch_reads, ch_aligner_index, false, sort)                  // if aligner is bowtie2
                 ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
                 ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
                 break
             case 'bwamem':
-                BWAMEM1_MEM  (ch_reads, ch_aligner_index, sort)        // If aligner is bwa-mem
+                BWAMEM1_MEM  (ch_reads, ch_aligner_index, sort)                         // If aligner is bwamem
                 ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
                 ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
                 break
             case 'bwamem2':
-                BWAMEM2_MEM  (ch_reads, ch_aligner_index, sort)        // If aligner is bwa-mem2
+                // BWAMEM2_MEM index needs to be [meta, index]
+                BWAMEM2_MEM  (ch_reads, ch_aligner_index.map {it -> [[:], it]}, sort)  // If aligner is bwamem2
                 ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
                 ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
                 break
             case 'dragmap':
-                DRAGMAP_ALIGN(ch_reads, ch_aligner_index, sort)        // If aligner is dragmap
+                DRAGMAP_ALIGN(ch_reads, ch_aligner_index, sort)                        // If aligner is dragmap
                 ch_bam = ch_bam.mix(DRAGMAP_ALIGN.out.bam)
                 ch_reports = ch_reports.mix(DRAGMAP_ALIGN.out.log)
                 ch_versions = ch_versions.mix(DRAGMAP_ALIGN.out.versions)
                 break
             case 'snap':
-                SNAP_ALIGN   (ch_reads, ch_aligner_index)              // If aligner is snap
+                SNAP_ALIGN   (ch_reads, ch_aligner_index)                              // If aligner is snap
                 ch_bam = ch_bam.mix(SNAP_ALIGN.out.bam)
                 ch_bai.mix(SNAP_ALIGN.out.bai)
                 ch_versions = ch_versions.mix(SNAP_ALIGN.out.versions)

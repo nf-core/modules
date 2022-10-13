@@ -69,7 +69,7 @@ workflow test_fastq_align_bwamem2_SE {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     BWAMEM2_INDEX ( [ [:], fasta ] )
-    FASTQ_ALIGN_DNA ( input, BWAMEM2_INDEX.out.index, "bwamem2", true )
+    FASTQ_ALIGN_DNA ( input, BWAMEM2_INDEX.out.index.map {meta, index -> index}, "bwamem2", true )
 }
 
 workflow test_fastq_align_bwamem2_PE {
