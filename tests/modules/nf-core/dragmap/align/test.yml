@@ -1,35 +1,39 @@
-- name: dragmap align single-end
+- name: dragmap align test_dragmap_align_single_end
   command: nextflow run ./tests/modules/nf-core/dragmap/align -entry test_dragmap_align_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragmap/align/nextflow.config
   tags:
-    - dragmap
     - dragmap/align
+    - dragmap
   files:
     - path: output/dragmap/test.bam
+      md5sum: 2ba333401ac2527e300aaff85f76df23
     - path: output/dragmap/test.dragmap.log
 
-- name: dragmap align single-end_sort
+- name: dragmap align test_dragmap_align_single_end_sort
   command: nextflow run ./tests/modules/nf-core/dragmap/align -entry test_dragmap_align_single_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragmap/align/nextflow.config
   tags:
-    - dragmap
     - dragmap/align
+    - dragmap
   files:
     - path: output/dragmap/test.bam
+      md5sum: 5f08f3ca6ef2094fc4244966b2d28008
     - path: output/dragmap/test.dragmap.log
 
-- name: dragmap align paired-end
+- name: dragmap align test_dragmap_align_paired_end
   command: nextflow run ./tests/modules/nf-core/dragmap/align -entry test_dragmap_align_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragmap/align/nextflow.config
   tags:
-    - dragmap
     - dragmap/align
+    - dragmap
   files:
     - path: output/dragmap/test.bam
+      md5sum: 59dddd7f4a7ae7ba0be5a1fed3835b4a
     - path: output/dragmap/test.dragmap.log
 
-- name: dragmap align paired-end_sort
+- name: dragmap align test_dragmap_align_paired_end_sort
   command: nextflow run ./tests/modules/nf-core/dragmap/align -entry test_dragmap_align_paired_end_sort -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/dragmap/align/nextflow.config
   tags:
-    - dragmap
     - dragmap/align
+    - dragmap
   files:
     - path: output/dragmap/test.bam
+      md5sum: c3a3475e70c8f38ee80581947f507c54
     - path: output/dragmap/test.dragmap.log
