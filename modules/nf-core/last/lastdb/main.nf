@@ -3,7 +3,6 @@ process LAST_LASTDB {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::last=1250' : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/last:1250--h2e03b76_0" }
 

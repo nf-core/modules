@@ -3,7 +3,6 @@ process SOURMASH_SKETCH {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::sourmash=4.2.4" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sourmash:4.2.4--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/sourmash:4.2.4--hdfd78af_0" }
 

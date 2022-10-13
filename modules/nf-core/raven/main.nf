@@ -3,7 +3,6 @@ process RAVEN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::raven-assembler=1.6.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/raven-assembler:1.6.1--h2e03b76_0" }
 

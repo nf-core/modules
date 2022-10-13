@@ -3,7 +3,6 @@ process SVDB_QUERY {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::svdb=2.6.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svdb:2.6.1--py39h5371cbf_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/svdb:2.6.1--py39h5371cbf_0" }
 

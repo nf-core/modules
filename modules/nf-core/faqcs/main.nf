@@ -3,7 +3,6 @@ process FAQCS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/faqcs%3A2.10--r41h9a82719_2' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/faqcs:2.10--r41h9a82719_2" }
 

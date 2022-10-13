@@ -3,7 +3,6 @@ process AMRFINDERPLUS_UPDATE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.30--h6e70893_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ncbi-amrfinderplus:3.10.30--h6e70893_0" }
 

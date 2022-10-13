@@ -3,7 +3,6 @@ process CAT_CAT {
     label 'process_low'
 
     conda (params.enable_conda ? "conda-forge::pigz=2.3.4" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/pigz:2.3.4" }
 

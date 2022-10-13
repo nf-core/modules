@@ -3,7 +3,6 @@ process FREEBAYES {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::freebayes=1.3.5" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/freebayes:1.3.5--py38ha193a2f_3' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/freebayes:1.3.5--py38ha193a2f_3" }
 

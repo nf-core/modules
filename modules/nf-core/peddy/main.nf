@@ -3,7 +3,6 @@ process PEDDY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::peddy=0.4.8" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/peddy:0.4.8--pyh5e36f6f_0" }
 

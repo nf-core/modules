@@ -3,7 +3,6 @@ process PBPTYPER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::pbptyper=1.0.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbptyper:1.0.2--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/pbptyper:1.0.2--hdfd78af_0" }
 

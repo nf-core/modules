@@ -3,7 +3,6 @@ process NCBIGENOMEDOWNLOAD {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ncbi-genome-download=0.3.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ncbi-genome-download:0.3.1--pyh5e36f6f_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ncbi-genome-download:0.3.1--pyh5e36f6f_0" }
 

@@ -2,7 +2,6 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/antismash-lite:6.0.1--pyhdfd78af_1" }
 
@@ -13,9 +12,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     */
 
     containerOptions {
-        workflow.containerEngine == 'singularity' ?
         "-B $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
-        workflow.containerEngine == 'docker' ?
         "-v \$PWD/$database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
         ''
         }

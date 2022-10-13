@@ -3,7 +3,6 @@ process ARTIC_GUPPYPLEX {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::artic=1.2.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/artic:1.2.2--pyhdfd78af_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/artic:1.2.2--pyhdfd78af_0" }
 

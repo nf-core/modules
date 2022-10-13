@@ -2,7 +2,6 @@ process ATAQV_MKARV {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.0--py39hccc85d7_2':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ataqv:1.3.0--py39hccc85d7_2" }
 

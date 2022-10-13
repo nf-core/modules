@@ -3,7 +3,6 @@ process GSTAMA_POLYACLEANUP {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gs-tama=1.0.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/gs-tama:1.0.3--hdfd78af_0" }
 

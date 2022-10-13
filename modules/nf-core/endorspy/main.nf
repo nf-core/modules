@@ -3,7 +3,6 @@ process ENDORSPY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::endorspy=0.4" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/endorspy:0.4--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/endorspy:0.4--hdfd78af_0" }
 

@@ -3,7 +3,6 @@ process BAMTOOLS_SPLIT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hd03093a_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/bamtools:2.5.2--hd03093a_0" }
 

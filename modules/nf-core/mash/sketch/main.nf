@@ -2,7 +2,6 @@ process MASH_SKETCH {
     tag "$meta.id"
     label 'process_medium'
     conda (params.enable_conda ? "bioconda::mash=2.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/mash:2.3--he348c14_1" }
 

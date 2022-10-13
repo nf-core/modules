@@ -4,7 +4,6 @@ process UCSC_WIGTOBIGWIG {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-wigtobigwig=377" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-wigtobigwig:377--h0b8a92a_2' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-wigtobigwig:377--h0b8a92a_2" }
 

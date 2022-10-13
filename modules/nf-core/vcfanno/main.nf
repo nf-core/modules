@@ -3,7 +3,6 @@ process VCFANNO {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::vcfanno=0.3.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/vcfanno:0.3.3--h9ee0642_0" }
 

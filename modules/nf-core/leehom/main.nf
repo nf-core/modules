@@ -4,7 +4,6 @@ process LEEHOM {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::leehom=1.2.15" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/leehom:1.2.15--h29e30f7_1" }
 

@@ -3,7 +3,6 @@ process PRINSEQPLUSPLUS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::prinseq-plus-plus=1.2.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/prinseq-plus-plus:1.2.3--hc90279e_1':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/prinseq-plus-plus:1.2.3--hc90279e_1" }
 

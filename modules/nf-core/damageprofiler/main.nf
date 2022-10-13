@@ -3,7 +3,6 @@ process DAMAGEPROFILER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/damageprofiler:1.1--hdfd78af_2" }
 

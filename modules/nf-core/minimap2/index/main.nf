@@ -2,7 +2,6 @@ process MINIMAP2_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::minimap2=2.21' : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/minimap2:2.21--h5bf99c6_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/minimap2:2.21--h5bf99c6_0" }
 

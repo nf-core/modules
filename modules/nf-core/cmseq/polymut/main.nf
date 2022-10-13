@@ -4,7 +4,6 @@ process CMSEQ_POLYMUT {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::cmseq=1.0.4" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cmseq:1.0.4--pyhb7b1952_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/cmseq:1.0.4--pyhb7b1952_0" }
 

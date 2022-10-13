@@ -4,7 +4,6 @@ process PLASMIDFINDER {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::plasmidfinder=2.1.6=py310hdfd78af_1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plasmidfinder:2.1.6--py310hdfd78af_1':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/plasmidfinder:2.1.6--py310hdfd78af_1" }
 

@@ -3,7 +3,6 @@ process BISMARK_METHYLATIONEXTRACTOR {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.23.0--0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/bismark:0.23.0--0" }
 

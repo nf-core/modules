@@ -3,7 +3,6 @@ process IVAR_TRIM {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ivar=1.3.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ivar:1.3.1--h089eab3_0" }
 

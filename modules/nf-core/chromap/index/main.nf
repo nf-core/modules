@@ -3,7 +3,6 @@ process CHROMAP_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/chromap:0.2.1--hd03093a_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/chromap:0.2.1--hd03093a_0" }
 

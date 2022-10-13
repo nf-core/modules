@@ -3,7 +3,6 @@ process TRANSDECODER_PREDICT {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::transdecoder=5.5.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/transdecoder:5.5.0--pl5262hdfd78af_4':
         'quay.io/comp-bio-aging/transdecoder' }"
 

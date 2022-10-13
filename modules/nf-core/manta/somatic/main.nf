@@ -3,7 +3,6 @@ process MANTA_SOMATIC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/manta:1.6.0--h9ee0642_1" }
 

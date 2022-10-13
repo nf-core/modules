@@ -3,7 +3,6 @@ process SAMTOOLS_MARKDUP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h1170115_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/samtools:1.15.1--h1170115_0" }
 

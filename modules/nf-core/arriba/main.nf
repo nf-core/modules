@@ -3,7 +3,6 @@ process ARRIBA {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::arriba=2.3.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arriba:2.3.0--haa8aa89_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/arriba:2.3.0--haa8aa89_0" }
 

@@ -3,7 +3,6 @@ process LOFREQ_FILTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lofreq=2.1.5" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/lofreq:2.1.5--py38h588ecb2_4" }
 

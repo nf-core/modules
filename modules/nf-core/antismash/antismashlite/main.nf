@@ -3,14 +3,11 @@ process ANTISMASH_ANTISMASHLITE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/antismash-lite:6.0.1--pyhdfd78af_1" }
 
     containerOptions {
-        workflow.containerEngine == 'singularity' ?
         "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
-        workflow.containerEngine == 'docker' ?
         "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
         ''
         }

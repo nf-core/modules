@@ -3,7 +3,6 @@ process DRAGONFLYE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.11" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dragonflye:1.0.11--hdfd78af_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/dragonflye:1.0.11--hdfd78af_0" }
 

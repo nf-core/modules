@@ -3,7 +3,6 @@ process MOBSUITE_RECON {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::mob_suite=3.0.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/mob_suite:3.0.3--pyhdfd78af_0" }
 

@@ -3,7 +3,6 @@ process PIRATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::pirate=1.0.4 bioconda::perl-bioperl=1.7.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pirate:1.0.4--hdfd78af_2' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/pirate:1.0.4--hdfd78af_2" }
 

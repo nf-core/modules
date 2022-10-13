@@ -3,7 +3,6 @@ process NANOLYSE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::nanolyse=1.2.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/nanolyse:1.2.0--py_0" }
 

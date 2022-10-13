@@ -3,7 +3,6 @@ process COOLER_DIGEST {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/cooler:0.8.11--pyh3252c3a_0" }
 

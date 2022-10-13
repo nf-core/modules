@@ -3,7 +3,6 @@ process PINTS_CALLER {
     label 'process_medium'
 
     conda    (params.enable_conda ? "bioconda::pypints=1.1.6" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pypints:1.1.6--pyh5e36f6f_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/pypints:1.1.6--pyh5e36f6f_1" }
 

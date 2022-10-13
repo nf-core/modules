@@ -3,7 +3,6 @@ process RASUSA {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::rasusa=0.3.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/rasusa:0.3.0--h779adbc_1" }
 

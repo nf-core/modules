@@ -3,7 +3,6 @@ process NUCMER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/mummer:3.23--pl5262h1b792b2_12" }
 

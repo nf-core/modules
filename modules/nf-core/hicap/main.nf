@@ -3,7 +3,6 @@ process HICAP {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hicap=1.0.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/hicap:1.0.3--py_0" }
 

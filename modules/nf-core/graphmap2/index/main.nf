@@ -2,7 +2,6 @@ process GRAPHMAP2_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::graphmap=0.6.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/graphmap:0.6.3--he513fc3_0" }
 

@@ -3,7 +3,6 @@ process BISCUIT_INDEX {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/biscuit:1.0.2.20220113--h81a5ba2_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/biscuit:1.0.2.20220113--h81a5ba2_0" }
 

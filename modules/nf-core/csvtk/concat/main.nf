@@ -3,7 +3,6 @@ process CSVTK_CONCAT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::csvtk=0.23.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/csvtk:0.23.0--h9ee0642_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/csvtk:0.23.0--h9ee0642_0" }
 

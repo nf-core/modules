@@ -3,7 +3,6 @@ process CLONALFRAMEML {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::clonalframeml=1.12" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/clonalframeml:1.12--h7d875b9_1" }
 

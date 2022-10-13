@@ -4,7 +4,6 @@ process UCSC_LIFTOVER {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-liftover=377" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-liftover:377--h0b8a92a_3" }
 

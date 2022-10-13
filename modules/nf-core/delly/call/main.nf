@@ -3,7 +3,6 @@ process DELLY_CALL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::delly=1.1.5" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/delly:1.1.5--h358d541_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/delly:1.1.5--h358d541_0" }
 

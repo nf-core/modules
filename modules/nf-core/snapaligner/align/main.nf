@@ -3,7 +3,6 @@ process SNAPALIGNER_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.1--hd03093a_1':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/snap-aligner:2.0.1--hd03093a_1" }
 

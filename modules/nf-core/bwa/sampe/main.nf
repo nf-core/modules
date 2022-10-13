@@ -3,7 +3,6 @@ process BWA_SAMPE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17 bioconda::samtools=1.15.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:8110a70be2bfe7f75a2ea7f2a89cda4cc7732095-0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:8110a70be2bfe7f75a2ea7f2a89cda4cc7732095-0" }
 

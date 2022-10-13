@@ -3,7 +3,6 @@ process KAIJU_KAIJU2KRONA {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::kaiju=1.8.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/kaiju:1.8.2--h5b5514e_1" }
 

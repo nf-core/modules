@@ -3,7 +3,6 @@ process PASTY {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::pasty=1.0.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/pasty:1.0.0--hdfd78af_0" }
 

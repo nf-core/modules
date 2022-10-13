@@ -3,7 +3,6 @@ process ISMAPPER {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ismapper=2.0.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ismapper:2.0.2--pyhdfd78af_1' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/ismapper:2.0.2--pyhdfd78af_1" }
 

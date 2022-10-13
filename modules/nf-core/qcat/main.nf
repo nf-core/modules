@@ -3,7 +3,6 @@ process QCAT {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::qcat=1.1.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/qcat:1.1.0--py_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/qcat:1.1.0--py_0" }
 

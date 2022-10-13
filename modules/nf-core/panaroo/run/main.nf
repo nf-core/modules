@@ -3,7 +3,6 @@ process PANAROO_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::panaroo=1.2.9" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/panaroo:1.2.9--pyhdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/panaroo:1.2.9--pyhdfd78af_0" }
 

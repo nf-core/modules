@@ -3,7 +3,6 @@ process FGBIO_ZIPPERBAMS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::fgbio=2.0.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/fgbio:2.0.2--hdfd78af_0" }
 

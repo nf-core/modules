@@ -3,7 +3,6 @@ process SUBREAD_FEATURECOUNTS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::subread=2.0.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/subread:2.0.1--hed695b0_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/subread:2.0.1--hed695b0_0" }
 

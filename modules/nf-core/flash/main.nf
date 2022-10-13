@@ -2,7 +2,6 @@ process FLASH {
     tag "$meta.id"
     label 'process_medium'
 
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flash:1.2.11--hed695b0_5' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/flash:1.2.11--hed695b0_5" }
 

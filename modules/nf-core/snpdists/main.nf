@@ -3,7 +3,6 @@ process SNPDISTS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::snp-dists=0.8.2" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/snp-dists:0.8.2--h5bf99c6_0" }
 

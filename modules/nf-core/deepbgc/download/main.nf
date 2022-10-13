@@ -2,7 +2,6 @@ process DEEPBGC_DOWNLOAD {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/deepbgc:0.1.30--pyhb7b1952_1" }
 

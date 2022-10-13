@@ -2,7 +2,6 @@ process BBMAP_BBSPLIT {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.93" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:38.93--he522d1c_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/bbmap:38.93--he522d1c_0" }
 

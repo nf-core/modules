@@ -3,7 +3,6 @@ process VCFTOOLS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::vcftools=0.1.16" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/vcftools:0.1.16--he513fc3_4" }
 

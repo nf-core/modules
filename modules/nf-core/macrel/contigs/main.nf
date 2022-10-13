@@ -3,7 +3,6 @@ process MACREL_CONTIGS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::macrel=1.1.0" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macrel:1.1.0--py36hc5360cc_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/macrel:1.1.0--py36hc5360cc_0" }
 

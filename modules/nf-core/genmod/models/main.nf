@@ -3,7 +3,6 @@ process GENMOD_MODELS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::genmod=3.7.4 conda-forge::python=3.4.5" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/genmod:3.7.4--pyh5e36f6f_0" }
 

@@ -3,7 +3,6 @@ process SHIGATYPER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::shigatyper=2.0.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/shigatyper%3A2.0.1--pyhdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/shigatyper:2.0.1--pyhdfd78af_0" }
 

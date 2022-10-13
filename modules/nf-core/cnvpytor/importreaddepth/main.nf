@@ -3,7 +3,6 @@ process CNVPYTOR_IMPORTREADDEPTH {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.2.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/cnvpytor:1.2.1--pyhdfd78af_0" }
 

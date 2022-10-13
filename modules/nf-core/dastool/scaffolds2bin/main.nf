@@ -3,7 +3,6 @@ process DASTOOL_SCAFFOLDS2BIN {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.3" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/das_tool:1.1.3--r41hdfd78af_0" }
 

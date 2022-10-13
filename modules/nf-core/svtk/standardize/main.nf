@@ -3,7 +3,6 @@ process SVTK_STANDARDIZE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::svtk=0.0.20190615" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/svtk:0.0.20190615--py37h73a75cf_2" }
 

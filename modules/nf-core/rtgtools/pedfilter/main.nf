@@ -3,7 +3,6 @@ process RTGTOOLS_PEDFILTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::rtg-tools=3.12.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/rtg-tools:3.12.1--hdfd78af_0" }
 

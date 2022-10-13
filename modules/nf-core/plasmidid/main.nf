@@ -3,7 +3,6 @@ process PLASMIDID {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::plasmidid=1.6.5' : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plasmidid:1.6.5--hdfd78af_0' :
         "${params.docker_registry ?: 'quay.io/biocontainers'}/plasmidid:1.6.5--hdfd78af_0" }
 

@@ -5,7 +5,6 @@ process GAMMA_GAMMA {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::gamma=2.1" : null)
-    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gamma%3A2.1--hdfd78af_0':
         "${params.docker_registry ?: 'quay.io/biocontainers'}/gamma:2.1--hdfd78af_0" }
 
