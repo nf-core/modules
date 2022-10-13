@@ -5,7 +5,6 @@ process MANTA_GERMLINE {
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
     def container_image = "/manta:1.6.0--h9ee0642_1"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     //Matching the target bed with the input sample allows to parallelize the same sample run across different intervals or a single bed file

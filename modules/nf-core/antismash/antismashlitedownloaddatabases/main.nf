@@ -12,8 +12,10 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     */
 
     containerOptions {
-        "-B $database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
-        "-v \$PWD/$database_css:/usr/local/lib/python3.8/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.8/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.8/site-packages/antismash/modules" :
+        workflow.containerEngine == 'singularity' ?
+        "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        workflow.containerEngine == 'docker' ?
+        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
         ''
         }
 

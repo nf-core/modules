@@ -5,7 +5,6 @@ process STAPHOPIASCCMEC {
     conda (params.enable_conda ? "bioconda::staphopia-sccmec=1.0.0" : null)
     def container_image = "/staphopia-sccmec:1.0.0--hdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(fasta)

@@ -6,7 +6,6 @@ process PARACLU {
     conda (params.enable_conda ? "bioconda::paraclu=10" : null)
     def container_image = "/paraclu:10--h9a82719_1"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(bed)

@@ -5,7 +5,6 @@ process HMMER_HMMSEARCH {
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
     def container_image = "/hmmer:3.3.2--h1b792b2_1"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)

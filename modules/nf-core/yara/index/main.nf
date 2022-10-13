@@ -5,7 +5,6 @@ process YARA_INDEX {
     conda (params.enable_conda ? "bioconda::yara=1.0.2" : null)
     def container_image = "/yara:1.0.2--2"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(fasta)

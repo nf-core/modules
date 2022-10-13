@@ -5,7 +5,6 @@ process GFFREAD {
     conda (params.enable_conda ? "bioconda::gffread=0.12.1" : null)
     def container_image = "/gffread:0.12.1--h8b12597_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     path gff

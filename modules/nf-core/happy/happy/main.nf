@@ -6,7 +6,6 @@ process HAPPY_HAPPY {
     conda (params.enable_conda ? "bioconda::hap.py=0.3.14" : null)
     def container_image = "/hap.py:0.3.14--py27h5c5a3ab_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(truth_vcf), path(query_vcf), path(bed)

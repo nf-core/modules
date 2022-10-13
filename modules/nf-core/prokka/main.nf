@@ -3,7 +3,7 @@ process PROKKA {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::prokka=1.14.6" : null)
-    def container_image = "/prokka%3A1.14.6--pl5321hdfd78af_4"
+    def container_image = "/prokka:1.14.6--pl5321hdfd78af_4"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

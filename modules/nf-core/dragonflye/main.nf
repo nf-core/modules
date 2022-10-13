@@ -5,7 +5,6 @@ process DRAGONFLYE {
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.11" : null)
     def container_image = "/dragonflye:1.0.11--hdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(reads)

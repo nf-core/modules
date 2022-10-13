@@ -8,6 +8,7 @@ process DEEPARG_DOWNLOADDATA {
     We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
     Original report: https://github.com/nf-core/funcscan/issues/23
     */
+    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
 
 
     input:

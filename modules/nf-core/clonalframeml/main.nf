@@ -5,7 +5,6 @@ process CLONALFRAMEML {
     conda (params.enable_conda ? "bioconda::clonalframeml=1.12" : null)
     def container_image = "/clonalframeml:1.12--h7d875b9_1"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(newick), path(msa)

@@ -5,7 +5,6 @@ process ARIBA_RUN {
     conda (params.enable_conda ? "bioconda::ariba=2.14.6" : null)
     def container_image = "/ariba:2.14.6--py39h67e14b5_3"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(reads)

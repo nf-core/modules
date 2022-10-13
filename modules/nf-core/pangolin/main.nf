@@ -5,7 +5,6 @@ process PANGOLIN {
     conda (params.enable_conda ? 'bioconda::pangolin=4.1.1' : null)
     def container_image = "/pangolin:4.1.1--pyhdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(fasta)

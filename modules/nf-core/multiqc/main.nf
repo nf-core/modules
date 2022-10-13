@@ -4,7 +4,6 @@ process MULTIQC {
     conda (params.enable_conda ? 'bioconda::multiqc=1.13' : null)
     def container_image = "/multiqc:1.13--pyhdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     path  multiqc_files, stageAs: "?/*"

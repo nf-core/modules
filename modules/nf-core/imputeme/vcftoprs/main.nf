@@ -2,7 +2,11 @@ process IMPUTEME_VCFTOPRS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
+    if (params.enable_conda) {
+        exit 1, "Conda environments cannot be used when using bases2fastq. Please use docker or singularity containers."
+    }
+    // FIXME https://github.com/nf-core/modules/pull/2291
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img' :
         'biocontainers/imputeme:vv1.0.7_cv1' }"
 

@@ -5,7 +5,6 @@ process GATK4_SELECTVARIANTS {
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     def container_image = "/gatk4:4.2.6.1--hdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(vcf), path(vcf_idx)

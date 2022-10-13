@@ -7,7 +7,9 @@ process ANTISMASH_ANTISMASHLITE {
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     containerOptions {
+        workflow.containerEngine == 'singularity' ?
         "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        workflow.containerEngine == 'docker' ?
         "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
         ''
         }

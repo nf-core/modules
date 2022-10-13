@@ -5,7 +5,6 @@ process PAIRTOOLS_FLIP {
     conda (params.enable_conda ? "bioconda::pairtools=0.3.0" : null)
     def container_image = "/pairtools:0.3.0--py37hb9c2fc3_5"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(sam)

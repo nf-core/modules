@@ -5,7 +5,6 @@ process GENMOD_SCORE {
     conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
     def container_image = "/genmod:3.7.4--pyh5e36f6f_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path(input_vcf)

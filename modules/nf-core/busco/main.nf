@@ -5,7 +5,6 @@ process BUSCO {
     conda (params.enable_conda ? "bioconda::busco=5.4.3" : null)
     def container_image = "/busco:5.4.3--pyhdfd78af_0"
     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-n
 
     input:
     tuple val(meta), path('tmp_input/*')

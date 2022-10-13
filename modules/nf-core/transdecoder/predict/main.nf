@@ -4,8 +4,7 @@ process TRANSDECODER_PREDICT {
 
     conda (params.enable_conda ? "bioconda::transdecoder=5.5.0" : null)
     def container_image = "/transdecoder:5.5.0--pl5262hdfd78af_4"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
-        'quay.io/comp-bio-aging/transdecoder' }"
+    container { (params.container_registry ?: 'quay.io/comp-bio-aging' + container_image) }
 
     input:
     tuple val(meta), path(fasta)
