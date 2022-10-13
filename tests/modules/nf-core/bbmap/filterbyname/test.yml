@@ -7,7 +7,6 @@
   - path: output/bbmap/test.fasta
     md5sum: b03f20541df9eb3053f8fb507a6c124f
   - path: output/bbmap/test.filterbyname.log
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
 
 - name: bbmap filterbyname test_bbmap_filterbyname_single_end
   command: nextflow run ./tests/modules/nf-core/bbmap/filterbyname -entry test_bbmap_filterbyname_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/filterbyname/nextflow.config
@@ -18,4 +17,3 @@
   - path: output/bbmap/test.fastq.gz
     md5sum: ddc04fd7fd192c9c61aea553d50669e0
   - path: output/bbmap/test.filterbyname.log
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
