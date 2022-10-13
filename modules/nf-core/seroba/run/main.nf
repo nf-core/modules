@@ -3,7 +3,8 @@ process SEROBA_RUN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::seroba=1.0.2" : null)
-        'https://depot.galaxyproject.org/singularity/seroba:1.0.2--pyhdfd78af_1':
+        def container_image = "/seroba:1.0.2--pyhdfd78af_1"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

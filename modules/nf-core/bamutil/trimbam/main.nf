@@ -3,7 +3,8 @@ process BAMUTIL_TRIMBAM {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bamutil=1.0.15" : null)
-        'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
+        def container_image = "/bamutil:1.0.15--h2e03b76_1"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), val(trim_left), val(trim_right)

@@ -3,7 +3,8 @@ process DAMAGEPROFILER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
-        'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
+        def container_image = "/damageprofiler:1.1--hdfd78af_2"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

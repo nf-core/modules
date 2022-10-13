@@ -3,7 +3,8 @@ process RHOCALL_ANNOTATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::rhocall=0.5.1" : null)
-        'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
+        def container_image = "/rhocall:0.5.1--py39hbf8eff0_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf), path(tbi)

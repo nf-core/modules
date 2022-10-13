@@ -4,7 +4,8 @@ process UCSC_WIGTOBIGWIG {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-wigtobigwig=377" : null)
-        'https://depot.galaxyproject.org/singularity/ucsc-wigtobigwig:377--h0b8a92a_2' :
+        def container_image = "/ucsc-wigtobigwig:377--h0b8a92a_2"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(wig)

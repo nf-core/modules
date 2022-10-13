@@ -3,7 +3,8 @@ process BISCUIT_BSCONV {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
-        'https://depot.galaxyproject.org/singularity/biscuit:1.0.2.20220113--h81a5ba2_0':
+        def container_image = "/biscuit:1.0.2.20220113--h81a5ba2_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai)

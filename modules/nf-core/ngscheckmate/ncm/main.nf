@@ -2,7 +2,8 @@ process NGSCHECKMATE_NCM {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ngscheckmate=1.0.0" : null)
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_3':
+        def container_image = "/ngscheckmate:1.0.0--py27r41hdfd78af_3"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path files

@@ -3,7 +3,8 @@ process FFQ {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ffq=0.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0':
+        def container_image = "/ffq:0.2.1--pyhdfd78af_0"
+                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     val ids

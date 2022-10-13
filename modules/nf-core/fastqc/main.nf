@@ -3,7 +3,8 @@ process FASTQC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
-        'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
+        def container_image = "/fastqc:0.11.9--0"
+                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -3,7 +3,8 @@ process ATLAS_SPLITMERGE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::atlas=0.9.9" : null)
-        'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
+        def container_image = "/atlas:0.9.9--h082e891_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai), path(read_group_settings), path(blacklist)

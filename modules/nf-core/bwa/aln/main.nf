@@ -3,7 +3,8 @@ process BWA_ALN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
-        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8' :
+        def container_image = "/bwa:0.7.17--h5bf99c6_8"
+                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

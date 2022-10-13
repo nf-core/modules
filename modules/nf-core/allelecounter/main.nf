@@ -3,7 +3,8 @@ process ALLELECOUNTER {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::cancerit-allelecount=4.3.0' : null)
-        'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
+        def container_image = "/cancerit-allelecount:4.3.0--h41abebc_0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(input_index)

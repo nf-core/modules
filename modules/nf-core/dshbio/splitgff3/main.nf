@@ -3,7 +3,8 @@ process DSHBIO_SPLITGFF3 {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::dsh-bio=2.1" : null)
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
+        def container_image = "/dsh-bio:2.1--hdfd78af_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(gff3)

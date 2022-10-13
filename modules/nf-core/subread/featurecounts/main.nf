@@ -3,7 +3,8 @@ process SUBREAD_FEATURECOUNTS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::subread=2.0.1" : null)
-        'https://depot.galaxyproject.org/singularity/subread:2.0.1--hed695b0_0' :
+        def container_image = "/subread:2.0.1--hed695b0_0"
+                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bams), path(annotation)

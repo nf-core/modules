@@ -3,7 +3,8 @@ process GATK_UNIFIEDGENOTYPER {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gatk=3.5" : null)
-        'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
+        def container_image = "/gatk:3.5--hdfd78af_11"
+                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(index)

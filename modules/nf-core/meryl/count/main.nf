@@ -3,7 +3,8 @@ process MERYL_COUNT {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::meryl=1.3" : null)
-        'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
+        def container_image = "/meryl:1.3--h87f3376_1"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

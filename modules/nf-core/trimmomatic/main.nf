@@ -3,7 +3,8 @@ process TRIMMOMATIC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::trimmomatic=0.39" : null)
-        'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
+        def container_image = "/trimmomatic:0.39--hdfd78af_2"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

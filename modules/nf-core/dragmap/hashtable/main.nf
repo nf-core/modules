@@ -3,7 +3,8 @@ process DRAGMAP_HASHTABLE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::dragmap=1.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--hd4ca14e_0':
+        def container_image = "/dragmap:1.2.1--hd4ca14e_0"
+                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

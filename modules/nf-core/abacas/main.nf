@@ -3,7 +3,8 @@ process ABACAS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::abacas=1.3.1" : null)
-        'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
+        def container_image = "/abacas:1.3.1--pl526_0"
+                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(scaffold)

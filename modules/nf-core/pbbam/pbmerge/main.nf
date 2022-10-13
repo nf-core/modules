@@ -3,7 +3,8 @@ process PBBAM_PBMERGE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::pbbam=1.7.0" : null)
-        'https://depot.galaxyproject.org/singularity/pbbam:1.7.0--h058f120_1' :
+        def container_image = "/pbbam:1.7.0--h058f120_1"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

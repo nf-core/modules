@@ -3,7 +3,8 @@ process EMBOSS_SEQRET {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::emboss=6.6.0" : null)
-        'https://depot.galaxyproject.org/singularity/emboss:6.6.0--hf657eab_5':
+        def container_image = "/emboss:6.6.0--hf657eab_5"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(sequence)

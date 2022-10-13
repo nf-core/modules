@@ -3,7 +3,8 @@ process BAMTOOLS_STATS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
+        def container_image = "/bamtools:2.5.1--h9a82719_9"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

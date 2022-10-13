@@ -3,7 +3,8 @@ process NEXTGENMAP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::nextgenmap=0.5.5" : null)
-        'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
+        def container_image = "/nextgenmap%3A0.5.5--hc9558a2_4"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

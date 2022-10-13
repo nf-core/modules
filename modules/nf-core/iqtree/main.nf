@@ -3,7 +3,8 @@ process IQTREE {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
-        'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
+        def container_image = "/iqtree:2.1.4_beta--hdcc8f71_0"
+                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path alignment

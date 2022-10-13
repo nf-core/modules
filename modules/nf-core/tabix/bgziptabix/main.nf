@@ -3,7 +3,8 @@ process TABIX_BGZIPTABIX {
     label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
-        'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
+        def container_image = "/tabix:1.11--hdfd78af_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input)

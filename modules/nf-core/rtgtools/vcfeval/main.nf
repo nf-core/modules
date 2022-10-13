@@ -3,7 +3,8 @@ process RTGTOOLS_VCFEVAL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::rtg-tools=3.12.1" : null)
-        'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
+        def container_image = "/rtg-tools:3.12.1--hdfd78af_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi)

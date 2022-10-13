@@ -3,7 +3,8 @@ process DEEPBGC_PIPELINE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
-        'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
+        def container_image = "/deepbgc:0.1.30--pyhb7b1952_1"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(genome)

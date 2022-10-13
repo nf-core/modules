@@ -3,7 +3,8 @@ process MSISENSOR_MSI {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::msisensor=0.5" : null)
-        'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2' :
+        def container_image = "/msisensor:0.5--hb3646a4_2"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai), val(metascan), path(homopolymers)

@@ -3,7 +3,8 @@ process SVTK_STANDARDIZE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::svtk=0.0.20190615" : null)
-        'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
+        def container_image = "/svtk:0.0.20190615--py37h73a75cf_2"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf)

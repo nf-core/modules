@@ -3,7 +3,8 @@ process MULTIVCFANALYZER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::multivcfanalyzer=0.85.2" : null)
-        'https://depot.galaxyproject.org/singularity/multivcfanalyzer:0.85.2--hdfd78af_1':
+        def container_image = "/multivcfanalyzer:0.85.2--hdfd78af_1"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path vcfs

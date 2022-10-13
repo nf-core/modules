@@ -3,7 +3,8 @@ process KALLISTO_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::kallisto=0.46.2" : null)
-        'https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1' :
+        def container_image = "/kallisto:0.46.2--h4f7b962_1"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

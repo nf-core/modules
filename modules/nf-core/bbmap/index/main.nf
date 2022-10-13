@@ -3,7 +3,8 @@ process BBMAP_INDEX {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
-        'https://depot.galaxyproject.org/singularity/bbmap:38.92--he522d1c_0' :
+        def container_image = "/bbmap:38.92--he522d1c_0"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

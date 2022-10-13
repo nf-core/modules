@@ -5,7 +5,8 @@ process BRACKEN_BRACKEN {
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::bracken=2.7" : null)
-        'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
+        def container_image = "/bracken:2.7--py39hc16433a_0"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(kraken_report)

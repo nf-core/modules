@@ -3,7 +3,8 @@ process WHAMG {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::wham=1.8.0" : null)
-        'https://depot.galaxyproject.org/singularity/wham:1.8.0.1.2017.05.03--h8b12597_1':
+        def container_image = "/wham:1.8.0.1.2017.05.03--h8b12597_1"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai)

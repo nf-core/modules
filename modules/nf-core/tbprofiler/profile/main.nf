@@ -3,7 +3,8 @@ process TBPROFILER_PROFILE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::tb-profiler=3.0.8" : null)
-        'https://depot.galaxyproject.org/singularity/tb-profiler:3.0.8--pypyh5e36f6f_0' :
+        def container_image = "/tb-profiler:3.0.8--pypyh5e36f6f_0"
+                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

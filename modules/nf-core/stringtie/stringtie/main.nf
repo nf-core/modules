@@ -3,7 +3,8 @@ process STRINGTIE_STRINGTIE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::stringtie=2.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2' :
+        def container_image = "/stringtie:2.2.1--hecb563c_2"
+                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

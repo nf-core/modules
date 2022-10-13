@@ -3,7 +3,8 @@ process PLINK_VCF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
+        def container_image = "/plink:1.90b6.21--h779adbc_1"
+                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf)

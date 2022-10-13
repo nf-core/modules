@@ -3,7 +3,8 @@ process ABRICATE_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::abricate=1.0.1" : null)
-        'https://depot.galaxyproject.org/singularity/abricate%3A1.0.1--ha8f3691_1':
+        def container_image = "/abricate%3A1.0.1--ha8f3691_1"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(assembly)

@@ -3,7 +3,8 @@ process MAPDAMAGE2 {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::mapdamage2=2.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0' :
+        def container_image = "/mapdamage2:2.2.1--pyr40_0"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

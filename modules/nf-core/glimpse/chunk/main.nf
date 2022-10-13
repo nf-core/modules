@@ -3,7 +3,8 @@ process GLIMPSE_CHUNK {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::glimpse-bio=1.1.1" : null)
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h2ce4488_2':
+        def container_image = "/glimpse-bio:1.1.1--h2ce4488_2"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input)

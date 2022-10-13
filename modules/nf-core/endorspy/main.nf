@@ -3,7 +3,8 @@ process ENDORSPY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::endorspy=0.4" : null)
-        'https://depot.galaxyproject.org/singularity/endorspy:0.4--hdfd78af_0':
+        def container_image = "/endorspy:0.4--hdfd78af_0"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(stats), path(stats_optional)

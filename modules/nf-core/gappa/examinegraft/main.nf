@@ -3,7 +3,8 @@ process GAPPA_EXAMINEGRAFT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gappa=0.8.0" : null)
-        'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
+        def container_image = "/gappa:0.8.0--h9a82719_0"
+                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(jplace)

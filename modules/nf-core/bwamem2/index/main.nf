@@ -3,7 +3,8 @@ process BWAMEM2_INDEX {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bwa-mem2=2.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0' :
+        def container_image = "/bwa-mem2:2.2.1--he513fc3_0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

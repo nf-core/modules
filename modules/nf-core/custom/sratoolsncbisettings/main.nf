@@ -3,7 +3,8 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0' : null)
-        'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
+        def container_image = "/sra-tools:2.11.0--pl5321ha49a11a_3"
+                                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     output:
     path('*.mkfg')     , emit: ncbi_settings

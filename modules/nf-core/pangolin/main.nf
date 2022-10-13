@@ -3,7 +3,8 @@ process PANGOLIN {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::pangolin=4.1.1' : null)
-        'https://depot.galaxyproject.org/singularity/pangolin:4.1.1--pyhdfd78af_0' :
+        def container_image = "/pangolin:4.1.1--pyhdfd78af_0"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

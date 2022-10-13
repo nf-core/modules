@@ -3,7 +3,8 @@ process UNTAR {
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
+        def container_image = "/ubuntu:20.04"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
         'ubuntu:20.04' }"
 
     input:

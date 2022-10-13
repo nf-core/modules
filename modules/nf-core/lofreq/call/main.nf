@@ -3,7 +3,8 @@ process LOFREQ_CALL {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lofreq=2.1.5" : null)
-        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
+        def container_image = "/lofreq:2.1.5--py38h588ecb2_4"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

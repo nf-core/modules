@@ -3,7 +3,8 @@ process ELPREP_MERGE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::elprep=5.1.2" : null)
-        'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
+        def container_image = "/elprep:5.1.2--he881be0_0"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

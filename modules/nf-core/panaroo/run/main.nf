@@ -3,7 +3,8 @@ process PANAROO_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::panaroo=1.2.9" : null)
-        'https://depot.galaxyproject.org/singularity/panaroo:1.2.9--pyhdfd78af_0':
+        def container_image = "/panaroo:1.2.9--pyhdfd78af_0"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(gff)

@@ -3,7 +3,8 @@ process MOTUS_PROFILE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
-        'https://depot.galaxyproject.org/singularity/motus:3.0.1--pyhdfd78af_0':
+        def container_image = "/motus:3.0.1--pyhdfd78af_0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

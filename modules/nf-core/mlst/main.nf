@@ -3,7 +3,8 @@ process MLST {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mlst=2.19.0" : null)
-        'https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1' :
+        def container_image = "/mlst:2.19.0--hdfd78af_1"
+                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

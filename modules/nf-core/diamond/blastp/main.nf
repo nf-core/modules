@@ -3,7 +3,8 @@ process DIAMOND_BLASTP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::diamond=2.0.15" : null)
-        'https://depot.galaxyproject.org/singularity/diamond:2.0.15--hb97b32f_0' :
+        def container_image = "/diamond:2.0.15--hb97b32f_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

@@ -3,7 +3,8 @@ process CNVKIT_BATCH {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::cnvkit=0.9.9 bioconda::samtools=1.15.1' : null)
-        'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:304d1c5ab610f216e77c61420ebe85f1e7c5968a-0' :
+        def container_image = "/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:304d1c5ab610f216e77c61420ebe85f1e7c5968a-0"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(tumor), path(normal)

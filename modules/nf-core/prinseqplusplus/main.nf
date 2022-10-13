@@ -3,7 +3,8 @@ process PRINSEQPLUSPLUS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::prinseq-plus-plus=1.2.3" : null)
-        'https://depot.galaxyproject.org/singularity/prinseq-plus-plus:1.2.3--hc90279e_1':
+        def container_image = "/prinseq-plus-plus:1.2.3--hc90279e_1"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

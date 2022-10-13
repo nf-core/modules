@@ -3,7 +3,8 @@ process SVDB_QUERY {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::svdb=2.6.1" : null)
-        'https://depot.galaxyproject.org/singularity/svdb:2.6.1--py39h5371cbf_0':
+        def container_image = "/svdb:2.6.1--py39h5371cbf_0"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf)

@@ -3,7 +3,8 @@ process SALMON_QUANT {
     label "process_medium"
 
     conda (params.enable_conda ? 'bioconda::salmon=1.5.2' : null)
-        'https://depot.galaxyproject.org/singularity/salmon:1.5.2--h84f40af_0' :
+        def container_image = "/salmon:1.5.2--h84f40af_0"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

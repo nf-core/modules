@@ -3,7 +3,8 @@ process DRAGMAP_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::dragmap=1.2.1 bioconda::samtools=1.15.1 conda-forge::pigz=2.3.4" : null)
-        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0':
+        def container_image = "/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:5ebebbc128cd624282eaa37d2c7fe01505a91a69-0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

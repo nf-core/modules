@@ -3,7 +3,8 @@ process FASTAWINDOWS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::fasta_windows=0.2.4" : null)
-        'https://depot.galaxyproject.org/singularity/fasta_windows:0.2.4--hec16e2b_0':
+        def container_image = "/fasta_windows:0.2.4--hec16e2b_0"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

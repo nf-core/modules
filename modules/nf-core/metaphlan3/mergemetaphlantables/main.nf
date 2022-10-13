@@ -2,7 +2,8 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
     label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::metaphlan=3.0.12' : null)
-        'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
+        def container_image = "/metaphlan:3.0.12--pyhb7b1952_0"
+                                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(profiles)

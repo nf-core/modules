@@ -3,7 +3,8 @@ process FLYE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::flye=2.9" : null)
-        'https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1' :
+        def container_image = "/flye:2.9--py39h6935b12_1"
+                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

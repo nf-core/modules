@@ -2,7 +2,8 @@ process GRAPHMAP2_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::graphmap=0.6.3" : null)
-        'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
+        def container_image = "/graphmap:0.6.3--he513fc3_0"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

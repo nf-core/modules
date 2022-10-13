@@ -3,7 +3,8 @@ process KAT_HIST {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::kat=2.4.2" : null)
-        'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
+        def container_image = "/kat:2.4.2--py38hfc5f9d8_2"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -3,7 +3,8 @@ process BBMAP_BBDUK {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.90" : null)
-        'https://depot.galaxyproject.org/singularity/bbmap:38.90--he522d1c_1' :
+        def container_image = "/bbmap:38.90--he522d1c_1"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

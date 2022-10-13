@@ -4,7 +4,8 @@ process UCSC_LIFTOVER {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-liftover=377" : null)
-        'https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3' :
+        def container_image = "/ucsc-liftover:377--h0b8a92a_3"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bed)

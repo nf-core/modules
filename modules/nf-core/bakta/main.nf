@@ -3,7 +3,8 @@ process BAKTA {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bakta=1.5.0" : null)
-        'https://depot.galaxyproject.org/singularity/bakta:1.5.0--pyhdfd78af_0' :
+        def container_image = "/bakta:1.5.0--pyhdfd78af_0"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

@@ -3,7 +3,8 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fgbio=2.0.2" : null)
-        'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
+        def container_image = "/fgbio:2.0.2--hdfd78af_0"
+                                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

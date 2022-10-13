@@ -3,7 +3,8 @@ process VCFANNO {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::vcfanno=0.3.3" : null)
-        'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
+        def container_image = "/vcfanno:0.3.3--h9ee0642_0"
+                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf), path(tbi)

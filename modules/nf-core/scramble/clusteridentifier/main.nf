@@ -3,7 +3,8 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::scramble=1.0.1" : null)
-        'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
+        def container_image = "/scramble:1.0.1--h779adbc_1"
+                                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(input_index)

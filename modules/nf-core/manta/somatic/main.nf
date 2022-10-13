@@ -3,7 +3,8 @@ process MANTA_SOMATIC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
-        'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
+        def container_image = "/manta:1.6.0--h9ee0642_1"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor), path(target_bed), path(target_bed_tbi)

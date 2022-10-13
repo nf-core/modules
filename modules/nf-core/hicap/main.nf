@@ -3,7 +3,8 @@ process HICAP {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hicap=1.0.3" : null)
-        'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
+        def container_image = "/hicap:1.0.3--py_0"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

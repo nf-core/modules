@@ -3,7 +3,8 @@ process MEGAN_DAA2INFO {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::megan=6.21.7" : null)
-        'https://depot.galaxyproject.org/singularity/megan:6.21.7--h9ee0642_0':
+        def container_image = "/megan:6.21.7--h9ee0642_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(daa)

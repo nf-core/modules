@@ -3,7 +3,8 @@ process CNVKIT_REFERENCE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.9" : null)
-        'https://depot.galaxyproject.org/singularity/cnvkit:0.9.9--pyhdfd78af_0':
+        def container_image = "/cnvkit:0.9.9--pyhdfd78af_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

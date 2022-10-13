@@ -3,7 +3,8 @@ process RAVEN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::raven-assembler=1.6.1" : null)
-        'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0' :
+        def container_image = "/raven-assembler:1.6.1--h2e03b76_0"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -3,7 +3,8 @@ process ADAPTERREMOVAL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::adapterremoval=2.3.2" : null)
-        'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
+        def container_image = "/adapterremoval:2.3.2--hb7ba0dd_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

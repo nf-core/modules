@@ -3,7 +3,8 @@ process BWA_INDEX {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
-        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7' :
+        def container_image = "/bwa:0.7.17--hed695b0_7"
+                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

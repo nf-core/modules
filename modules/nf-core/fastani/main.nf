@@ -3,7 +3,8 @@ process FASTANI {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fastani=1.32" : null)
-        'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0' :
+        def container_image = "/fastani:1.32--he1c1bb9_0"
+                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(query)

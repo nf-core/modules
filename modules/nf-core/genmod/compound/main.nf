@@ -3,7 +3,8 @@ process GENMOD_COMPOUND {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
-        'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
+        def container_image = "/genmod:3.7.4--pyh5e36f6f_0"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input_vcf)

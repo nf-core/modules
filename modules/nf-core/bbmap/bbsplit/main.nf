@@ -2,7 +2,8 @@ process BBMAP_BBSPLIT {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.93" : null)
-        'https://depot.galaxyproject.org/singularity/bbmap:38.93--he522d1c_0' :
+        def container_image = "/bbmap:38.93--he522d1c_0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

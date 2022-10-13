@@ -3,7 +3,8 @@ process CONTROLFREEC_FREEC {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::control-freec=11.6" : null)
-        'https://depot.galaxyproject.org/singularity/control-freec:11.6--h1b792b2_1':
+        def container_image = "/control-freec:11.6--h1b792b2_1"
+                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)

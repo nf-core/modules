@@ -2,7 +2,8 @@ process FLASH {
     tag "$meta.id"
     label 'process_medium'
 
-        'https://depot.galaxyproject.org/singularity/flash:1.2.11--hed695b0_5' :
+        def container_image = "/flash:1.2.11--hed695b0_5"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

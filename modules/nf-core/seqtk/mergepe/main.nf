@@ -3,7 +3,8 @@ process SEQTK_MERGEPE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::seqtk=1.3" : null)
-        'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
+        def container_image = "/seqtk:1.3--h5bf99c6_3"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

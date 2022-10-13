@@ -3,7 +3,8 @@ process MINIA {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::minia=3.2.6" : null)
-        'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0' :
+        def container_image = "/minia:3.2.6--h9a82719_0"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

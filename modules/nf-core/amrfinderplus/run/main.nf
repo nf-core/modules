@@ -3,7 +3,8 @@ process AMRFINDERPLUS_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.30--h6e70893_0':
+        def container_image = "/ncbi-amrfinderplus:3.10.30--h6e70893_0"
+                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

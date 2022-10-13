@@ -3,7 +3,8 @@ process CHECKM_LINEAGEWF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::checkm-genome=1.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.1--pyhdfd78af_0' :
+        def container_image = "/checkm-genome:1.2.1--pyhdfd78af_0"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

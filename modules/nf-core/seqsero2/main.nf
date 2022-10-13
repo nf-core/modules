@@ -3,7 +3,8 @@ process SEQSERO2 {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
+        def container_image = "/seqsero2:1.2.1--py_0"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(seqs)

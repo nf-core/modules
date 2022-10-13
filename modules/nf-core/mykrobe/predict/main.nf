@@ -3,7 +3,8 @@ process MYKROBE_PREDICT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mykrobe=0.11.0" : null)
-        'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
+        def container_image = "/mykrobe:0.11.0--py39h2add14b_1"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(seqs)

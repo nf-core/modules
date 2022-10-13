@@ -3,7 +3,8 @@ process GUNC_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gunc=1.0.5" : null)
-        'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
+        def container_image = "/gunc:1.0.5--pyhdfd78af_0"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

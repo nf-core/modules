@@ -4,7 +4,8 @@ process MUMMER {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::mummer=3.23" : null)
-        'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
+        def container_image = "/mummer:3.23--pl5262h1b792b2_12"
+                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(ref), path(query)

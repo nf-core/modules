@@ -3,7 +3,8 @@ process FAQCS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
-        'https://depot.galaxyproject.org/singularity/faqcs%3A2.10--r41h9a82719_2' :
+        def container_image = "/faqcs%3A2.10--r41h9a82719_2"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

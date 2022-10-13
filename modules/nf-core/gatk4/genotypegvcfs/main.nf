@@ -3,7 +3,8 @@ process GATK4_GENOTYPEGVCFS {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
+        def container_image = "/gatk4:4.2.6.1--hdfd78af_0"
+                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(gvcf), path(gvcf_index), path(intervals), path(intervals_index)

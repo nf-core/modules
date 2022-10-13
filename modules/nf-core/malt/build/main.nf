@@ -3,7 +3,8 @@ process MALT_BUILD {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::malt=0.41" : null)
-        'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
+        def container_image = "/malt:0.41--1"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fastas

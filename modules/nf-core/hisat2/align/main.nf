@@ -4,7 +4,8 @@ process HISAT2_ALIGN {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hisat2=2.2.1 bioconda::samtools=1.15.1" : null)
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:38aed4501da19db366dc7c8d52d31d94e760cfaf-0' :
+        def container_image = "/mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:38aed4501da19db366dc7c8d52d31d94e760cfaf-0"
+                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

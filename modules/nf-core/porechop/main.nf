@@ -3,7 +3,8 @@ process PORECHOP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::porechop=0.2.4" : null)
-        'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
+        def container_image = "/porechop:0.2.4--py39h7cff6ad_2"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

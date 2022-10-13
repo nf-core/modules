@@ -3,7 +3,8 @@ process AGRVATE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::agrvate=1.0.2" : null)
-        'https://depot.galaxyproject.org/singularity/agrvate:1.0.2--hdfd78af_0' :
+        def container_image = "/agrvate:1.0.2--hdfd78af_0"
+                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

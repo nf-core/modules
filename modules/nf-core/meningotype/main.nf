@@ -3,7 +3,8 @@ process MENINGOTYPE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::meningotype=0.8.5" : null)
-        'https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0' :
+        def container_image = "/meningotype:0.8.5--pyhdfd78af_0"
+                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

@@ -3,7 +3,8 @@ process TRIMGALORE {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::trim-galore=0.6.7' : null)
-        'https://depot.galaxyproject.org/singularity/trim-galore:0.6.7--hdfd78af_0' :
+        def container_image = "/trim-galore:0.6.7--hdfd78af_0"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

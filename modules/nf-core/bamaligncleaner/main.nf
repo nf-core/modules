@@ -3,7 +3,8 @@ process BAMALIGNCLEANER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bamaligncleaner=0.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.1--pyhdfd78af_0' :
+        def container_image = "/bamaligncleaner:0.2.1--pyhdfd78af_0"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

@@ -3,7 +3,8 @@ process SAMTOOLS_GETRG {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
-        'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h1170115_0' :
+        def container_image = "/samtools:1.15.1--h1170115_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input)

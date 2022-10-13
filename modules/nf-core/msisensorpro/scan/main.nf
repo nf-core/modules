@@ -3,7 +3,8 @@ process MSISENSORPRO_SCAN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::msisensor-pro=1.2.0" : null)
-        'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
+        def container_image = "/msisensor-pro:1.2.0--hfc31af2_0"
+                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

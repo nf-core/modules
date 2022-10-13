@@ -3,7 +3,8 @@ process CHROMAP_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.1" : null)
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.1--hd03093a_0' :
+        def container_image = "/chromap:0.2.1--hd03093a_0"
+                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

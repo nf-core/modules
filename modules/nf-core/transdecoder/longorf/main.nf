@@ -3,7 +3,8 @@ process TRANSDECODER_LONGORF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::transdecoder=5.5.0" : null)
-    'https://depot.galaxyproject.org/singularity/transdecoder:5.5.0--pl5262hdfd78af_4' :
+    def container_image = "/transdecoder:5.5.0--pl5262hdfd78af_4"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
     'quay.io/comp-bio-aging/transdecoder' }"
 
     input:

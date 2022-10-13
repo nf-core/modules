@@ -3,7 +3,8 @@ process FREEBAYES {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::freebayes=1.3.5" : null)
-        'https://depot.galaxyproject.org/singularity/freebayes:1.3.5--py38ha193a2f_3' :
+        def container_image = "/freebayes:1.3.5--py38ha193a2f_3"
+                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)

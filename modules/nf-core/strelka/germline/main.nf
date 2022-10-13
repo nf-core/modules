@@ -3,7 +3,8 @@ process STRELKA_GERMLINE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::strelka=2.9.10" : null)
-        'https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1' :
+        def container_image = "/strelka:2.9.10--h9ee0642_1"
+                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(input_index), path (target_bed), path (target_bed_tbi)

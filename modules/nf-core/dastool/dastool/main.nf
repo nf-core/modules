@@ -3,7 +3,8 @@ process DASTOOL_DASTOOL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.4" : null)
-        'https://depot.galaxyproject.org/singularity/das_tool:1.1.4--r41hdfd78af_1' :
+        def container_image = "/das_tool:1.1.4--r41hdfd78af_1"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(contigs), path(bins)

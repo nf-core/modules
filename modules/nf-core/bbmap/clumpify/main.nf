@@ -4,7 +4,8 @@ process BBMAP_CLUMPIFY {
     label 'process_high_memory'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.98" : null)
-        'https://depot.galaxyproject.org/singularity/bbmap:38.98--h5c4e2a8_1' :
+        def container_image = "/bbmap:38.98--h5c4e2a8_1"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

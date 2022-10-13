@@ -2,7 +2,8 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krakentools=1.2" : null)
-        'https://depot.galaxyproject.org/singularity/krakentools:1.2--pyh5e36f6f_0':
+        def container_image = "/krakentools:1.2--pyh5e36f6f_0"
+                                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(kreports)

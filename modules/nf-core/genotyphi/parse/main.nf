@@ -3,7 +3,8 @@ process GENOTYPHI_PARSE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::genotyphi=1.9.1" : null)
-        'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1':
+        def container_image = "/genotyphi:1.9.1--hdfd78af_1"
+                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(json)

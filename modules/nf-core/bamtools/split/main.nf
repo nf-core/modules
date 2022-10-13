@@ -3,7 +3,8 @@ process BAMTOOLS_SPLIT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.2" : null)
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hd03093a_0' :
+        def container_image = "/bamtools:2.5.2--hd03093a_0"
+                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

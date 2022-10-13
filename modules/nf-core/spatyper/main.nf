@@ -3,7 +3,8 @@ process SPATYPER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::spatyper=0.3.3" : null)
-        'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
+        def container_image = "/spatyper:0.3.3--pyhdfd78af_3"
+                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

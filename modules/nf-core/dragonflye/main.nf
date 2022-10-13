@@ -3,7 +3,8 @@ process DRAGONFLYE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.11" : null)
-        'https://depot.galaxyproject.org/singularity/dragonflye:1.0.11--hdfd78af_0' :
+        def container_image = "/dragonflye:1.0.11--hdfd78af_0"
+                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -4,7 +4,8 @@ process ARIA2 {
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::aria2=1.36.0" : null)
-        'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
+        def container_image = "/aria2:1.36.0"
+                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     val source_url

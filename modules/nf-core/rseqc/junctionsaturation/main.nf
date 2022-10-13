@@ -3,7 +3,8 @@ process RSEQC_JUNCTIONSATURATION {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::rseqc=3.0.1 'conda-forge::r-base>=3.5'" : null)
-        'https://depot.galaxyproject.org/singularity/rseqc:3.0.1--py37h516909a_1' :
+        def container_image = "/rseqc:3.0.1--py37h516909a_1"
+                                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)
