@@ -14,6 +14,11 @@ tools:
       doi: "10.1101/2021.11.23.469039"
       licence: "['Apache v2']"
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: Input genome fasta file
@@ -27,6 +32,11 @@ input:
       type: file
       description: Optional file containing ALT-to-REF mappings (SAM format). e.g., hs38DH.fa.alt from bwa-kit.
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - index:
       type: file
       description: SNAP genome index files
