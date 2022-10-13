@@ -3,12 +3,9 @@ process BOWTIE_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::bowtie=1.3.0 bioconda::samtools=1.15.1' : null)
-    def docker_image = params.docker_url != null ?
-        '${params.docker_url}/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' :
-        'quay.io/biocontainers/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0'
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' :
-        ${docker_url ?: 'quay.io/biocontainers'}/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' }"
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        "https://depot.galaxyproject.org/singularity/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0" :
+        "${docker_url ?: 'quay.io/biocontainers'}/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0' }
 
     input:
     tuple val(meta), path(reads)
