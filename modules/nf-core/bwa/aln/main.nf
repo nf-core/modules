@@ -9,7 +9,7 @@ process BWA_ALN {
 
     input:
     tuple val(meta), path(reads)
-    path index
+    tuple val(meta), path index
 
     output:
     tuple val(meta), path("*.sai"), emit: sai

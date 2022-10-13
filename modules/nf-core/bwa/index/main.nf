@@ -8,11 +8,11 @@ process BWA_INDEX {
         'quay.io/biocontainers/bwa:0.7.17--hed695b0_7' }"
 
     input:
-    path fasta
+    tuple val(meta), path index
 
     output:
-    path "bwa"         , emit: index
-    path "versions.yml", emit: versions
+    tuple val(meta), path("bwa")    , emit: index
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
