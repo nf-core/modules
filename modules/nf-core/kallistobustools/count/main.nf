@@ -4,7 +4,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     conda (params.enable_conda ? 'bioconda::kb-python=0.27.2' : null)
     def container_image = "/kb-python:0.27.2--pyhdfd78af_0"
-                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

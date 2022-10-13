@@ -4,7 +4,7 @@ process SHOVILL {
 
     conda (params.enable_conda ? "bioconda::shovill=1.1.0" : null)
     def container_image = "/shovill:1.1.0--0"
-                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

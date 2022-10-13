@@ -4,7 +4,7 @@ process PRINSEQPLUSPLUS {
 
     conda (params.enable_conda ? "bioconda::prinseq-plus-plus=1.2.3" : null)
     def container_image = "/prinseq-plus-plus:1.2.3--hc90279e_1"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -4,7 +4,7 @@ process BAMCMP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::bamcmp=2.2" : null)
     def container_image = "/bamcmp:2.2--h05f6578_0"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(sample), path(contaminant)

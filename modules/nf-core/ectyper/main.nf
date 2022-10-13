@@ -4,7 +4,7 @@ process ECTYPER {
 
     conda (params.enable_conda ? "bioconda::ectyper=1.0.0" : null)
     def container_image = "/ectyper:1.0.0--pyhdfd78af_1"
-                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

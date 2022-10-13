@@ -4,7 +4,7 @@ process RGI_MAIN {
 
     conda (params.enable_conda ? "bioconda::rgi=5.2.1" : null)
     def container_image = "/rgi:5.2.1--pyha8f3691_2"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

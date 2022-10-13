@@ -4,7 +4,7 @@ process PYDAMAGE_ANALYZE {
 
     conda (params.enable_conda ? "bioconda::pydamage=0.70" : null)
     def container_image = "/pydamage:0.70--pyhdfd78af_0"
-                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai)

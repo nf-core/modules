@@ -4,7 +4,7 @@ process SVDB_QUERY {
 
     conda (params.enable_conda ? "bioconda::svdb=2.6.1" : null)
     def container_image = "/svdb:2.6.1--py39h5371cbf_0"
-                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf)

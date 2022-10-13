@@ -4,7 +4,7 @@ process GSTAMA_POLYACLEANUP {
 
     conda (params.enable_conda ? "bioconda::gs-tama=1.0.3" : null)
     def container_image = "/gs-tama:1.0.3--hdfd78af_0"
-                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

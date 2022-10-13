@@ -4,7 +4,7 @@ process PLINK_VCF {
 
     conda (params.enable_conda ? "bioconda::plink=1.90b6.21" : null)
     def container_image = "/plink:1.90b6.21--h779adbc_1"
-                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(vcf)

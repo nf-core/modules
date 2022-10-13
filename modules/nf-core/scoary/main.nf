@@ -4,7 +4,7 @@ process SCOARY {
 
     conda (params.enable_conda ? "bioconda::scoary=1.6.16" : null)
     def container_image = "/scoary:1.6.16--py_2"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

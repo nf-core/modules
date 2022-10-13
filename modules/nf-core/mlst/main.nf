@@ -4,7 +4,7 @@ process MLST {
 
     conda (params.enable_conda ? "bioconda::mlst=2.19.0" : null)
     def container_image = "/mlst:2.19.0--hdfd78af_1"
-                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

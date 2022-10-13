@@ -3,7 +3,7 @@ process MINIMAP2_INDEX {
 
     conda (params.enable_conda ? 'bioconda::minimap2=2.21' : null)
     def container_image = "/minimap2:2.21--h5bf99c6_0"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

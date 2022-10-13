@@ -4,7 +4,7 @@ process BWA_INDEX {
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
     def container_image = "/bwa:0.7.17--hed695b0_7"
-                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

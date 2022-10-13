@@ -4,7 +4,7 @@ process MEGAN_RMA2INFO {
 
     conda (params.enable_conda ? "bioconda::megan=6.21.7" : null)
     def container_image = "/megan:6.21.7--h9ee0642_0"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(rma6)

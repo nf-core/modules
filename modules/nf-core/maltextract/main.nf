@@ -4,7 +4,7 @@ process MALTEXTRACT {
 
     conda (params.enable_conda ? "bioconda::hops=0.35" : null)
     def container_image = "/hops:0.35--hdfd78af_1"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path rma6

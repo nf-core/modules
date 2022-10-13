@@ -4,7 +4,7 @@ process MSISENSORPRO_SCAN {
 
     conda (params.enable_conda ? "bioconda::msisensor-pro=1.2.0" : null)
     def container_image = "/msisensor-pro:1.2.0--hfc31af2_0"
-                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

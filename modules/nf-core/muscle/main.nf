@@ -4,7 +4,7 @@ process MUSCLE {
 
     conda (params.enable_conda ? "bioconda::muscle=3.8.1551" : null)
     def container_image = "/muscle:3.8.1551--h7d875b9_6"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

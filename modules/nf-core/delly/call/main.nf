@@ -4,7 +4,7 @@ process DELLY_CALL {
 
     conda (params.enable_conda ? "bioconda::delly=1.1.5" : null)
     def container_image = "/delly:1.1.5--h358d541_0"
-                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(input_index), path(exclude_bed)

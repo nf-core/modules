@@ -4,7 +4,7 @@ process PMDTOOLS_FILTER {
 
     conda (params.enable_conda ? "bioconda::pmdtools=0.60" : null)
     def container_image = "/pmdtools:0.60--hdfd78af_5"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path (bai)

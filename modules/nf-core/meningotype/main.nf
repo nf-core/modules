@@ -4,7 +4,7 @@ process MENINGOTYPE {
 
     conda (params.enable_conda ? "bioconda::meningotype=0.8.5" : null)
     def container_image = "/meningotype:0.8.5--pyhdfd78af_0"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

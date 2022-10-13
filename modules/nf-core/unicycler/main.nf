@@ -4,7 +4,7 @@ process UNICYCLER {
 
     conda (params.enable_conda ? 'bioconda::unicycler=0.4.8' : null)
     def container_image = "/unicycler:0.4.8--py38h8162308_3"
-                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(shortreads), path(longreads)

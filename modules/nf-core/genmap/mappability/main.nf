@@ -4,7 +4,7 @@ process GENMAP_MAPPABILITY {
 
     conda (params.enable_conda ? "bioconda::genmap=1.3.0" : null)
     def container_image = "/genmap:1.3.0--h1b792b2_1"
-                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path index

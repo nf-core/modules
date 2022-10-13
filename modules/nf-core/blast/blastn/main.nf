@@ -4,7 +4,7 @@ process BLAST_BLASTN {
 
     conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
     def container_image = "/blast:2.12.0--pl5262h3289130_0"
-                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

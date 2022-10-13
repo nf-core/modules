@@ -4,7 +4,7 @@ process CUTADAPT {
 
     conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
     def container_image = "/cutadapt:3.4--py39h38f01e4_1"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

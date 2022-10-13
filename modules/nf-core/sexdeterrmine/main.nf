@@ -4,7 +4,7 @@ process SEXDETERRMINE {
 
     conda (params.enable_conda ? "bioconda::sexdeterrmine=1.1.2" : null)
     def container_image = "/sexdeterrmine:1.1.2--hdfd78af_1"
-                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(depth)

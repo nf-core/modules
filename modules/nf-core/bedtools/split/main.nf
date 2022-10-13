@@ -4,7 +4,7 @@ process BEDTOOLS_SPLIT {
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
     def container_image = "/bedtools:2.30.0--h468198e_3"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bed)

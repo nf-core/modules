@@ -4,7 +4,7 @@ process QUALIMAP_BAMQCCRAM {
 
     conda (params.enable_conda ? "bioconda::qualimap=2.2.2d bioconda::samtools=1.15.1" : null)
     def container_image = "/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:61f6d4658ac88635fc37623af50bba77561988ab-0"
-                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(cram), path(crai)

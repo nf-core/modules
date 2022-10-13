@@ -4,7 +4,7 @@ process ATAQV_ATAQV {
 
     conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
     def container_image = "/ataqv:1.3.0--py39hccc85d7_2"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)

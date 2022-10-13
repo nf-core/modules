@@ -4,7 +4,7 @@ process ASSEMBLYSCAN {
 
     conda (params.enable_conda ? "bioconda::assembly-scan=0.4.1" : null)
     def container_image = "/assembly-scan:0.4.1--pyhdfd78af_0"
-                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(assembly)

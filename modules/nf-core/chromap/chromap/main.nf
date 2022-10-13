@@ -4,7 +4,7 @@ process CHROMAP_CHROMAP {
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.1 bioconda::samtools=1.15.1" : null)
     def container_image = "/mulled-v2-1f09f39f20b1c4ee36581dc81cc323c70e661633:963e4fe6a85c548a4018585660aed79780a175d3-0"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

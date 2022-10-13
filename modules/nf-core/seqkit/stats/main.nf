@@ -4,7 +4,7 @@ process SEQKIT_STATS {
 
     conda (params.enable_conda ? "bioconda::seqkit=2.2.0" : null)
     def container_image = "/seqkit:2.2.0--h9ee0642_0"
-                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

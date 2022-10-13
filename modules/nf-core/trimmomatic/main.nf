@@ -4,7 +4,7 @@ process TRIMMOMATIC {
 
     conda (params.enable_conda ? "bioconda::trimmomatic=0.39" : null)
     def container_image = "/trimmomatic:0.39--hdfd78af_2"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

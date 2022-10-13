@@ -4,7 +4,7 @@ process DRAGMAP_HASHTABLE {
 
     conda (params.enable_conda ? "bioconda::dragmap=1.2.1" : null)
     def container_image = "/dragmap:1.2.1--hd4ca14e_0"
-                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

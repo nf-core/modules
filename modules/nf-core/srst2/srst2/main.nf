@@ -4,7 +4,7 @@ process SRST2_SRST2 {
 
     conda (params.enable_conda ? "bioconda::srst2=0.2.0" : null)
     def container_image = "/srst2%3A0.2.0--py27_2"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fastq_s), path(db)

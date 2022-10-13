@@ -4,7 +4,7 @@ process SEQSERO2 {
 
     conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
     def container_image = "/seqsero2:1.2.1--py_0"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(seqs)

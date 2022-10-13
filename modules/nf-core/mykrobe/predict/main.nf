@@ -4,7 +4,7 @@ process MYKROBE_PREDICT {
 
     conda (params.enable_conda ? "bioconda::mykrobe=0.11.0" : null)
     def container_image = "/mykrobe:0.11.0--py39h2add14b_1"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(seqs)

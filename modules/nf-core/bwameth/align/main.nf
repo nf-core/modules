@@ -4,7 +4,7 @@ process BWAMETH_ALIGN {
 
     conda (params.enable_conda ? "bioconda::bwameth=0.2.2" : null)
     def container_image = "/bwameth:0.2.2--py_1"
-                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

@@ -4,7 +4,7 @@ process FGBIO_GROUPREADSBYUMI {
 
     conda (params.enable_conda ? "bioconda::fgbio=2.0.2" : null)
     def container_image = "/fgbio:2.0.2--hdfd78af_0"
-                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(taggedbam)

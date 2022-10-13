@@ -4,7 +4,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
 
     conda (params.enable_conda ? 'bioconda::deeptools=3.5.1' : null)
     def container_image = "/deeptools:3.5.1--py_0"
-                                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

@@ -4,7 +4,7 @@ process PYCOQC {
 
     conda (params.enable_conda ? "bioconda::pycoqc=2.5.2" : null)
     def container_image = "/pycoqc:2.5.2--py_0"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path summary

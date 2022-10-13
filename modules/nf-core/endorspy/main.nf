@@ -4,7 +4,7 @@ process ENDORSPY {
 
     conda (params.enable_conda ? "bioconda::endorspy=0.4" : null)
     def container_image = "/endorspy:0.4--hdfd78af_0"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

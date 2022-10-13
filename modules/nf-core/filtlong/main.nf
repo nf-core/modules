@@ -4,7 +4,7 @@ process FILTLONG {
 
     conda (params.enable_conda ? "bioconda::filtlong=0.2.1" : null)
     def container_image = "/filtlong:0.2.1--h9a82719_0"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(shortreads), path(longreads)

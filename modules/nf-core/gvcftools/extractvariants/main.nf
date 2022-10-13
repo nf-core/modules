@@ -4,7 +4,7 @@ process GVCFTOOLS_EXTRACTVARIANTS {
 
     conda (params.enable_conda ? "bioconda::gvcftools=0.17.0" : null)
     def container_image = "/gvcftools:0.17.0--he941832_3"
-                                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(gvcf)

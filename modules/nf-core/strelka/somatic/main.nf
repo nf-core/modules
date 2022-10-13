@@ -4,7 +4,7 @@ process STRELKA_SOMATIC {
 
     conda (params.enable_conda ? "bioconda::strelka=2.9.10" : null)
     def container_image = "/strelka:2.9.10--h9ee0642_1"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi), path(target_bed), path(target_bed_index)

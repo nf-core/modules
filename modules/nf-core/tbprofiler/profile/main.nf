@@ -4,7 +4,7 @@ process TBPROFILER_PROFILE {
 
     conda (params.enable_conda ? "bioconda::tb-profiler=3.0.8" : null)
     def container_image = "/tb-profiler:3.0.8--pypyh5e36f6f_0"
-                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

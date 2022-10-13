@@ -4,7 +4,7 @@ process IDR {
 
     conda (params.enable_conda ? "bioconda::idr=2.0.4.2" : null)
     def container_image = "/idr:2.0.4.2--py39hcbe4a3b_5"
-                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path peaks

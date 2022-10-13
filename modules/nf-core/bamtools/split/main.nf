@@ -4,7 +4,7 @@ process BAMTOOLS_SPLIT {
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.2" : null)
     def container_image = "/bamtools:2.5.2--hd03093a_0"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

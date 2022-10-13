@@ -4,7 +4,7 @@ process DASTOOL_FASTATOCONTIG2BIN {
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.4" : null)
     def container_image = "/das_tool:1.1.4--r41hdfd78af_1"
-                                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

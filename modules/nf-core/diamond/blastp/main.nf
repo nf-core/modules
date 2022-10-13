@@ -4,7 +4,7 @@ process DIAMOND_BLASTP {
 
     conda (params.enable_conda ? "bioconda::diamond=2.0.15" : null)
     def container_image = "/diamond:2.0.15--hb97b32f_0"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

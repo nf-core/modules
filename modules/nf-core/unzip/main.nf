@@ -4,7 +4,7 @@ process UNZIP {
 
     conda (params.enable_conda ? "bioconda::p7zip=15.09" : null)
     def container_image = "/p7zip:15.09--h2d50403_4"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

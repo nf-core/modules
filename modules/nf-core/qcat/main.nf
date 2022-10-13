@@ -4,7 +4,7 @@ process QCAT {
 
     conda (params.enable_conda ? "bioconda::qcat=1.1.0" : null)
     def container_image = "/qcat:1.1.0--py_0"
-                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

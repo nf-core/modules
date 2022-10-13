@@ -4,7 +4,7 @@ process BBMAP_INDEX {
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
     def container_image = "/bbmap:38.92--he522d1c_0"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

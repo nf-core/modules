@@ -4,7 +4,7 @@ process WGSIM {
 
     conda (params.enable_conda ? "bioconda::wgsim=1.0" : null)
     def container_image = "/wgsim:1.0--h5bf99c6_4"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

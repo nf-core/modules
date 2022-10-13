@@ -4,7 +4,7 @@ process NANOPLOT {
 
     conda (params.enable_conda ? 'bioconda::nanoplot=1.40.0' : null)
     def container_image = "/nanoplot:1.40.0--pyhdfd78af_0"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(ontfile)

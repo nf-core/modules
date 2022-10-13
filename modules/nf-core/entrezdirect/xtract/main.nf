@@ -4,7 +4,7 @@ process ENTREZDIRECT_XTRACT {
 
     conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
 def container_image = "/entrez-direct:16.2--he881be0_1"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(xml_input)

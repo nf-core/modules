@@ -5,7 +5,7 @@ process LEEHOM {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::leehom=1.2.15" : null)
     def container_image = "/leehom:1.2.15--h29e30f7_1"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

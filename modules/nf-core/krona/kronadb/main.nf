@@ -5,7 +5,7 @@ process KRONA_KRONADB {
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
     def container_image = "/krona:2.7.1--pl526_5"
-                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db

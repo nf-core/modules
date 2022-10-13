@@ -4,7 +4,7 @@ process TRIMGALORE {
 
     conda (params.enable_conda ? 'bioconda::trim-galore=0.6.7' : null)
     def container_image = "/trim-galore:0.6.7--hdfd78af_0"
-                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

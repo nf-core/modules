@@ -4,7 +4,7 @@ process VCFTOOLS {
 
     conda (params.enable_conda ? "bioconda::vcftools=0.1.16" : null)
     def container_image = "/vcftools:0.1.16--he513fc3_4"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     // Owing to the nature of vcftools we here provide solutions to working with optional bed files and optional

@@ -4,7 +4,7 @@ process FASTAWINDOWS {
 
     conda (params.enable_conda ? "bioconda::fasta_windows=0.2.4" : null)
     def container_image = "/fasta_windows:0.2.4--hec16e2b_0"
-                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

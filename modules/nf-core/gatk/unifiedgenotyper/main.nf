@@ -4,7 +4,7 @@ process GATK_UNIFIEDGENOTYPER {
 
     conda (params.enable_conda ? "bioconda::gatk=3.5" : null)
     def container_image = "/gatk:3.5--hdfd78af_11"
-                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input), path(index)

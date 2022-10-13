@@ -4,7 +4,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.2.1" : null)
     def container_image = "/cnvpytor:1.2.1--pyhdfd78af_0"
-                                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(input_file), path(index)

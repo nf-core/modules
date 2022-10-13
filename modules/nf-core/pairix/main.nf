@@ -4,7 +4,7 @@ process PAIRIX {
 
     conda (params.enable_conda ? "bioconda::pairix=0.3.7" : null)
     def container_image = "/pairix:0.3.7--py36h30a8e3e_3"
-                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(pair)

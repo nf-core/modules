@@ -4,7 +4,7 @@ process MACREL_CONTIGS {
 
     conda (params.enable_conda ? "bioconda::macrel=1.1.0" : null)
     def container_image = "/macrel:1.1.0--py36hc5360cc_0"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(fasta)

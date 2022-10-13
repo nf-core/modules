@@ -4,7 +4,7 @@ process LISSERO {
 
     conda (params.enable_conda ? "bioconda::lissero=0.4.9" : null)
     def container_image = "/lissero:0.4.9--py_0"
-                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

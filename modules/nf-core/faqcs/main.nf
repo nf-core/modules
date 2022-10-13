@@ -4,7 +4,7 @@ process FAQCS {
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
     def container_image = "/faqcs%3A2.10--r41h9a82719_2"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)
@@ -100,4 +100,3 @@ process FAQCS {
         """
     }
 }
-

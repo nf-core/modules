@@ -4,7 +4,7 @@ process CHROMAP_INDEX {
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.1" : null)
     def container_image = "/chromap:0.2.1--hd03093a_0"
-                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     path fasta

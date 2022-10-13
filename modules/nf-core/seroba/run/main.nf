@@ -4,7 +4,7 @@ process SEROBA_RUN {
 
     conda (params.enable_conda ? "bioconda::seroba=1.0.2" : null)
     def container_image = "/seroba:1.0.2--pyhdfd78af_1"
-                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads)

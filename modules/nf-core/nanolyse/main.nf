@@ -4,7 +4,7 @@ process NANOLYSE {
 
     conda (params.enable_conda ? "bioconda::nanolyse=1.2.0" : null)
     def container_image = "/nanolyse:1.2.0--py_0"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

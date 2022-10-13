@@ -4,7 +4,7 @@ process ROARY {
 
     conda (params.enable_conda ? "bioconda::roary=3.13.0" : null)
     def container_image = "/roary:3.13.0--pl526h516909a_0"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(gff)

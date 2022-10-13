@@ -5,7 +5,7 @@ process GTDBTK_CLASSIFYWF {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::gtdbtk=1.5.0" : null)
     def container_image = "/gtdbtk:1.5.0--pyhdfd78af_0"
-                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path("bins/*")

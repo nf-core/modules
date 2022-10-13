@@ -4,7 +4,7 @@ process FFQ {
 
     conda (params.enable_conda ? "bioconda::ffq=0.2.1" : null)
     def container_image = "/ffq:0.2.1--pyhdfd78af_0"
-                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

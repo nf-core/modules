@@ -4,7 +4,7 @@ process ISMAPPER {
 
     conda (params.enable_conda ? "bioconda::ismapper=2.0.2" : null)
     def container_image = "/ismapper:2.0.2--pyhdfd78af_1"
-                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(reads), path(reference), path(query)

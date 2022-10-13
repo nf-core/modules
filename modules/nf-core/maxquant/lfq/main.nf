@@ -2,7 +2,7 @@ process MAXQUANT_LFQ {
     tag "$meta.id"
     label 'process_long'
     conda (params.enable_conda ? "bioconda::maxquant=2.0.3.0=py310hdfd78af_1" : null)
-        container "https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1"
+    container "https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1"
     } else {
     }
 

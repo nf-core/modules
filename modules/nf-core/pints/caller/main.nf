@@ -4,7 +4,7 @@ process PINTS_CALLER {
 
     conda    (params.enable_conda ? "bioconda::pypints=1.1.6" : null)
     def container_image = "/pypints:1.1.6--pyh5e36f6f_1"
-                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bams)

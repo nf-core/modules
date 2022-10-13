@@ -4,7 +4,7 @@ process CAT_CAT {
 
     conda (params.enable_conda ? "conda-forge::pigz=2.3.4" : null)
     def container_image = "/pigz:2.3.4"
-                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(files_in)

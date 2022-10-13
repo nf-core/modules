@@ -4,7 +4,7 @@ process DEEPTOOLS_BAMCOVERAGE {
 
     conda (params.enable_conda ? "bioconda::deeptools=3.5.1 bioconda::samtools=1.15.1" : null)
     def container_image = "/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:2c687053c0252667cca265c9f4118f2c205a604c-0"
-                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

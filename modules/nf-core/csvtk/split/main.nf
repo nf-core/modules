@@ -4,7 +4,7 @@ process CSVTK_SPLIT {
 
     conda (params.enable_conda ? "bioconda::csvtk=0.23.0" : null)
     def container_image = "/csvtk:0.23.0--h9ee0642_0"
-                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(csv)

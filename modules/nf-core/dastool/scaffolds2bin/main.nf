@@ -4,7 +4,7 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.3" : null)
     def container_image = "/das_tool:1.1.3--r41hdfd78af_0"
-                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 n
 
     input:

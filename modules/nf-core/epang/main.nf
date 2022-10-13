@@ -4,7 +4,7 @@ process EPANG {
 
     conda (params.enable_conda ? "bioconda::epa-ng=0.3.8" : null)
     def container_image = "/epa-ng:0.3.8--h9a82719_1"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(queryaln)

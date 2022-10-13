@@ -4,7 +4,7 @@ process MACS2_CALLPEAK {
 
     conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
     def container_image = "/macs2:2.2.7.1--py38h4a8c8d9_3"
-                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)

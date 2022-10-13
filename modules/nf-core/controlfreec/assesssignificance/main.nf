@@ -4,7 +4,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
 
     conda (params.enable_conda ? "bioconda::control-freec=11.6" : null)
     def container_image = "/control-freec:11.6--h1b792b2_1"
-                                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(cnvs), path(ratio)

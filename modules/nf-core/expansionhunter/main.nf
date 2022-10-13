@@ -4,7 +4,7 @@ process EXPANSIONHUNTER {
 
     conda (params.enable_conda ? "bioconda::expansionhunter=4.0.2" : null)
     def container_image = "/expansionhunter:4.0.2--he785bd8_0"
-                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam), path(bai)
