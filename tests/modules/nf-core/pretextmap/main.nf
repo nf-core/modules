@@ -7,7 +7,7 @@ include { PRETEXTMAP } from '../../../../modules/nf-core/pretextmap/main.nf'
 workflow test_pretextmap_bam {
     
     input = [
-        [ id:'test_bam', single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
     ]
 
@@ -17,7 +17,7 @@ workflow test_pretextmap_bam {
 workflow test_pretextmap_cram {
 
     input = [
-        [ id:'test_cram', single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
     ]
 
@@ -27,7 +27,7 @@ workflow test_pretextmap_cram {
 workflow test_pretextmap_pairs_gz {
 
     input = [
-        [ id:'test_pairs_gz', single_end:false ], // meta map
+        [ id:'test', single_end:false ], // meta map
         file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/4dn.bsorted.chr21_22_only.nontriangle.pairs.gz", checkIfExists: true)
     ]
 
