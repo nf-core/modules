@@ -3,6 +3,9 @@ description: Uses FGBIO FilterConsensusReads to filter consensus reads generated
 keywords:
   - fgbio
   - filter
+  - consensus
+  - umi
+  - duplexumi
 tools:
   - "fgbio":
       description: "A set of tools for working with genomic and high throughput sequencing data, including UMIs"
@@ -13,18 +16,15 @@ tools:
       licence: "['MIT']"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - bam:
       type: file
       description: BAM file
       pattern: "*.bam"
-
 
 output:
   - meta:
