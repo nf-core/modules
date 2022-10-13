@@ -3,7 +3,7 @@ process HAPLOCHECK {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::haplocheck=1.3.3" : null)
-        def container_image = "/haplocheck:1.3.3--h4a94de4_0"
+    def container_image = "/haplocheck:1.3.3--h4a94de4_0"
                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

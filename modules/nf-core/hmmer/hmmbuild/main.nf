@@ -3,7 +3,7 @@ process HMMER_HMMBUILD {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
-        def container_image = "/hmmer:3.3.2--h87f3376_2"
+    def container_image = "/hmmer:3.3.2--h87f3376_2"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

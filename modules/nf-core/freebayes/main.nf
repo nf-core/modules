@@ -3,7 +3,7 @@ process FREEBAYES {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::freebayes=1.3.5" : null)
-        def container_image = "/freebayes:1.3.5--py38ha193a2f_3"
+    def container_image = "/freebayes:1.3.5--py38ha193a2f_3"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

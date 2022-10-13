@@ -3,7 +3,7 @@ process CNVPYTOR_PARTITION {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.2.1" : null)
-        def container_image = "/cnvpytor:1.2.1--pyhdfd78af_0"
+    def container_image = "/cnvpytor:1.2.1--pyhdfd78af_0"
                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

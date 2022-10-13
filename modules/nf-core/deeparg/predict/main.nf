@@ -3,7 +3,7 @@ process DEEPARG_PREDICT {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
-        def container_image = "/deeparg:1.0.2--pyhdfd78af_1"
+    def container_image = "/deeparg:1.0.2--pyhdfd78af_1"
                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
     /*
     We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).

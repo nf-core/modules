@@ -3,7 +3,7 @@ process MOBSUITE_RECON {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::mob_suite=3.0.3" : null)
-        def container_image = "/mob_suite%3A3.0.3--pyhdfd78af_0"
+    def container_image = "/mob_suite%3A3.0.3--pyhdfd78af_0"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

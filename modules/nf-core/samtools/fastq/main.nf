@@ -3,7 +3,7 @@ process SAMTOOLS_FASTQ {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
-        def container_image = "/samtools:1.15.1--h1170115_0"
+    def container_image = "/samtools:1.15.1--h1170115_0"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

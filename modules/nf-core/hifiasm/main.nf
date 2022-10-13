@@ -3,7 +3,7 @@ process HIFIASM {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::hifiasm=0.15.4" : null)
-        def container_image = "/hifiasm:0.15.4--h2e03b76_0"
+    def container_image = "/hifiasm:0.15.4--h2e03b76_0"
                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

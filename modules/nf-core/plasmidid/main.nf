@@ -3,7 +3,7 @@ process PLASMIDID {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::plasmidid=1.6.5' : null)
-        def container_image = "/plasmidid:1.6.5--hdfd78af_0"
+    def container_image = "/plasmidid:1.6.5--hdfd78af_0"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

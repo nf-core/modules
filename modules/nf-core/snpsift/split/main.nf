@@ -3,8 +3,9 @@ process SNPSIFT_SPLIT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::snpsift=4.3.1t" : null)
-        def container_image = "/snpsift:4.3.1t--hdfd78af_3"
+    def container_image = "/snpsift:4.3.1t--hdfd78af_3"
                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(vcf)

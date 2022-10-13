@@ -3,7 +3,7 @@ process HAMRONIZATION_DEEPARG {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hamronization=1.1.1" : null)
-        def container_image = "/hamronization:1.1.1--pyhdfd78af_0"
+    def container_image = "/hamronization:1.1.1--pyhdfd78af_0"
                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,8 +3,9 @@ process YARA_MAPPER {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::yara=1.0.2 bioconda::samtools=1.15.1" : null)
-        def container_image = "/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0"
+    def container_image = "/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0"
                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(reads)

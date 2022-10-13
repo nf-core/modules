@@ -3,7 +3,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::sequenza-utils=3.0.0" : null)
-        def container_image = "/sequenza-utils:3.0.0--py38h6ed170a_2"
+    def container_image = "/sequenza-utils:3.0.0--py38h6ed170a_2"
                                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

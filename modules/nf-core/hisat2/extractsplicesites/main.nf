@@ -4,7 +4,7 @@ process HISAT2_EXTRACTSPLICESITES {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? 'bioconda::hisat2=2.2.1' : null)
-        def container_image = "/hisat2:2.2.1--h1b792b2_3"
+    def container_image = "/hisat2:2.2.1--h1b792b2_3"
                                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

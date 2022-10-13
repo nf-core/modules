@@ -3,7 +3,7 @@ process MAFFT {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::mafft=7.490" : null)
-        def container_image = "/mafft:7.490--h779adbc_0"
+    def container_image = "/mafft:7.490--h779adbc_0"
                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

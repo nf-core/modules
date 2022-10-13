@@ -3,7 +3,7 @@ process KHMER_NORMALIZEBYMEDIAN {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::khmer=3.0.0a3" : null)
-        def container_image = "/khmer:3.0.0a3--py37haa7609a_2"
+    def container_image = "/khmer:3.0.0a3--py37haa7609a_2"
                                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

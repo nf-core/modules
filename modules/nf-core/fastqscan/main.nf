@@ -3,7 +3,7 @@ process FASTQSCAN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::fastq-scan=0.4.4" : null)
-        def container_image = "/fastq-scan:0.4.4--h7d875b9_0"
+    def container_image = "/fastq-scan:0.4.4--h7d875b9_0"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

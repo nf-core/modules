@@ -3,7 +3,7 @@ process EMMTYPER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::emmtyper=0.2.0" : null)
-        def container_image = "/emmtyper:0.2.0--py_0"
+    def container_image = "/emmtyper:0.2.0--py_0"
                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process ISOSEQ3_REFINE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
-        def container_image = "/isoseq3:3.4.0--0"
+    def container_image = "/isoseq3:3.4.0--0"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

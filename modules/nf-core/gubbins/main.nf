@@ -2,8 +2,9 @@ process GUBBINS {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::gubbins=3.0.0' : null)
-        def container_image = "/gubbins:3.0.0--py39h5bf99c6_0"
+    def container_image = "/gubbins:3.0.0--py39h5bf99c6_0"
                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     path alignment

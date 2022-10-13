@@ -3,7 +3,7 @@ process ULTRA_ALIGN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4 bioconda::samtools=1.15.1" : null)
-        def container_image = "/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:f63170074b42f54276c1f9b334e732a0f3bf28bd-0"
+    def container_image = "/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:f63170074b42f54276c1f9b334e732a0f3bf28bd-0"
                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

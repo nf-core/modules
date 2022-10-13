@@ -3,7 +3,7 @@ process HMMCOPY_GCCOUNTER {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
-        def container_image = "/hmmcopy:0.1.1--h2e03b76_7"
+    def container_image = "/hmmcopy:0.1.1--h2e03b76_7"
                                                     container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

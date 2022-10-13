@@ -3,7 +3,7 @@ process RGI_MAIN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::rgi=5.2.1" : null)
-        def container_image = "/rgi:5.2.1--pyha8f3691_2"
+    def container_image = "/rgi:5.2.1--pyha8f3691_2"
                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

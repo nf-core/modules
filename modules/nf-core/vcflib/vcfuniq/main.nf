@@ -4,7 +4,7 @@ process VCFLIB_VCFUNIQ {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::vcflib=1.0.3" : null)
-        def container_image = "/vcflib:1.0.3--hecb563c_1"
+    def container_image = "/vcflib:1.0.3--hecb563c_1"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

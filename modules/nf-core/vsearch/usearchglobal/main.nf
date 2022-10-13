@@ -3,7 +3,7 @@ process VSEARCH_USEARCHGLOBAL {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::vsearch=2.21.1" : null)
-        def container_image = "/vsearch:2.21.1--h95f258a_0"
+    def container_image = "/vsearch:2.21.1--h95f258a_0"
                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

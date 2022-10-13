@@ -3,8 +3,9 @@ process MASHTREE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::mashtree=1.2.0" : null)
-        def container_image = "/mashtree:1.2.0--pl526h516909a_0"
+    def container_image = "/mashtree:1.2.0--pl526h516909a_0"
                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(seqs)

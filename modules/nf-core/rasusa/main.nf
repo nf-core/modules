@@ -3,7 +3,7 @@ process RASUSA {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::rasusa=0.3.0" : null)
-        def container_image = "/rasusa:0.3.0--h779adbc_1"
+    def container_image = "/rasusa:0.3.0--h779adbc_1"
                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

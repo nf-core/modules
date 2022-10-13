@@ -2,7 +2,7 @@ process RAXMLNG {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::raxml-ng=1.0.3' : null)
-        def container_image = "/raxml-ng:1.0.3--h32fcf60_0"
+    def container_image = "/raxml-ng:1.0.3--h32fcf60_0"
                                           container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

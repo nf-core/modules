@@ -3,7 +3,7 @@ process BOWTIE_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::bowtie=1.3.0 bioconda::samtools=1.15.1' : null)
-    def container_image = "/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0"
+def container_image = "/mulled-v2-ffbf83a6b0ab6ec567a336cf349b80637135bca3:676c5bcfe34af6097728fea60fb7ea83f94a4a5f-0"
     container ((params.container_registry ?: 'quay.io/biocontainers') + container_image)
 
     input:

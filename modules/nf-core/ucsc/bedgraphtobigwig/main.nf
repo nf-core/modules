@@ -4,7 +4,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-bedgraphtobigwig=377" : null)
-        def container_image = "/ucsc-bedgraphtobigwig:377--h446ed27_1"
+    def container_image = "/ucsc-bedgraphtobigwig:377--h446ed27_1"
                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process SPADES {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::spades=3.15.4' : null)
-        def container_image = "/spades:3.15.4--h95f258a_0"
+    def container_image = "/spades:3.15.4--h95f258a_0"
                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

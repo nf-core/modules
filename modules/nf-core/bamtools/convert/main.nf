@@ -3,7 +3,7 @@ process BAMTOOLS_CONVERT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
-        def container_image = "/bamtools:2.5.1--h9a82719_9"
+    def container_image = "/bamtools:2.5.1--h9a82719_9"
                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

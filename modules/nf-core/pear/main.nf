@@ -3,7 +3,7 @@ process PEAR {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::pear=0.9.6" : null)
-        def container_image = "/pear:0.9.6--h67092d7_8"
+    def container_image = "/pear:0.9.6--h67092d7_8"
                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

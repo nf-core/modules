@@ -3,8 +3,9 @@ process MANTA_TUMORONLY {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
-        def container_image = "/manta:1.6.0--h9ee0642_1"
+    def container_image = "/manta:1.6.0--h9ee0642_1"
                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(input), path(input_index), path(target_bed), path(target_bed_tbi)

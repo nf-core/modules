@@ -3,7 +3,7 @@ process ENSEMBLVEP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ensembl-vep=106.1" : null)
-        def container_image = "/ensembl-vep:106.1--pl5321h4a94de4_0"
+    def container_image = "/ensembl-vep:106.1--pl5321h4a94de4_0"
                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,8 +3,9 @@ process PASTY {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::pasty=1.0.0" : null)
-        def container_image = "/pasty:1.0.0--hdfd78af_0"
+    def container_image = "/pasty:1.0.0--hdfd78af_0"
                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(fasta)

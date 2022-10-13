@@ -3,7 +3,7 @@ process CHECKM_QA {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::checkm-genome=1.2.1" : null)
-        def container_image = "/checkm-genome:1.2.1--pyhdfd78af_0"
+    def container_image = "/checkm-genome:1.2.1--pyhdfd78af_0"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

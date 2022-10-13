@@ -3,8 +3,9 @@ process PHYLOFLASH {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::phyloflash=3.4" : null)
-        def container_image = "/phyloflash:3.4--hdfd78af_1"
+    def container_image = "/phyloflash:3.4--hdfd78af_1"
                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(reads)

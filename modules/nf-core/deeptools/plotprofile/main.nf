@@ -3,8 +3,9 @@ process DEEPTOOLS_PLOTPROFILE {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::deeptools=3.5.1' : null)
-        def container_image = "/deeptools:3.5.1--py_0"
+    def container_image = "/deeptools:3.5.1--py_0"
                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(matrix)

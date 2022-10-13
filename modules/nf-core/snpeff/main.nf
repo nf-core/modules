@@ -3,7 +3,7 @@ process SNPEFF {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::snpeff=5.1" : null)
-        def container_image = "/snpeff:5.1--hdfd78af_2"
+    def container_image = "/snpeff:5.1--hdfd78af_2"
                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

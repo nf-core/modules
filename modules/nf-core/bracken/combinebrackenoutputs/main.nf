@@ -2,7 +2,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bracken=2.7" : null)
-        def container_image = "/bracken:2.7--py39hc16433a_0"
+    def container_image = "/bracken:2.7--py39hc16433a_0"
                                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

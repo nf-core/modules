@@ -3,7 +3,7 @@ process GECCO_RUN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gecco=0.9.2" : null)
-        def container_image = "/gecco:0.9.2--pyhdfd78af_0"
+    def container_image = "/gecco:0.9.2--pyhdfd78af_0"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

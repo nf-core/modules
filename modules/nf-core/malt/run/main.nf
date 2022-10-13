@@ -3,7 +3,7 @@ process MALT_RUN {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::malt=0.41" : null)
-        def container_image = "/malt:0.41--1"
+    def container_image = "/malt:0.41--1"
                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

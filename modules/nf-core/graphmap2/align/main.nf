@@ -4,7 +4,7 @@ process GRAPHMAP2_ALIGN {
     tag "$meta.id"
 
     conda (params.enable_conda ? "bioconda::graphmap=0.6.3" : null)
-        def container_image = "/graphmap:0.6.3--he513fc3_0"
+    def container_image = "/graphmap:0.6.3--he513fc3_0"
                                                   container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

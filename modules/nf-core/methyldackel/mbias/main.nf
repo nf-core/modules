@@ -3,7 +3,7 @@ process METHYLDACKEL_MBIAS {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::methyldackel=0.6.0' : null)
-        def container_image = "/methyldackel:0.6.0--h22771d5_0"
+    def container_image = "/methyldackel:0.6.0--h22771d5_0"
                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

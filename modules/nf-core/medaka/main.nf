@@ -3,7 +3,7 @@ process MEDAKA {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::medaka=1.4.4" : null)
-        def container_image = "/medaka:1.4.4--py38h130def0_0"
+    def container_image = "/medaka:1.4.4--py38h130def0_0"
                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process ASCAT {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ascat=3.0.0 bioconda::cancerit-allelecount=4.3.0" : null)
-        def container_image = "/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0"
+    def container_image = "/mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0"
                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

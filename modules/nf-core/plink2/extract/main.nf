@@ -3,7 +3,7 @@ process PLINK2_EXTRACT {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::plink2=2.00a2.3" : null)
-        def container_image = "/plink2:2.00a2.3--h712d239_1"
+    def container_image = "/plink2:2.00a2.3--h712d239_1"
                                                  container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

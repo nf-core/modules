@@ -3,8 +3,9 @@ process ARRIBA {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::arriba=2.3.0" : null)
-        def container_image = "/arriba:2.3.0--haa8aa89_0"
+    def container_image = "/arriba:2.3.0--haa8aa89_0"
                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(bam)

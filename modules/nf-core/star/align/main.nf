@@ -3,7 +3,7 @@ process STAR_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::star=2.7.10a bioconda::samtools=1.15.1 conda-forge::gawk=5.1.0" : null)
-        def container_image = "/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:afaaa4c6f5b308b4b6aa2dd8e99e1466b2a6b0cd-0"
+    def container_image = "/mulled-v2-1fa26d1ce03c295fe2fdcf85831a92fbcbd7e8c2:afaaa4c6f5b308b4b6aa2dd8e99e1466b2a6b0cd-0"
                                              container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

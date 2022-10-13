@@ -4,7 +4,7 @@ process KRONA_KRONADB {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
-        def container_image = "/krona:2.7.1--pl526_5"
+    def container_image = "/krona:2.7.1--pl526_5"
                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     output:

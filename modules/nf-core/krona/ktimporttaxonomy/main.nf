@@ -4,7 +4,7 @@ process KRONA_KTIMPORTTAXONOMY {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::krona=2.8" : null)
-        def container_image = "/krona:2.8--pl5262hdfd78af_2"
+    def container_image = "/krona:2.8--pl5262hdfd78af_2"
                                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

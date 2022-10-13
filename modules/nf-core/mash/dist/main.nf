@@ -3,7 +3,7 @@ process MASH_DIST {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::mash=2.3" : null)
-        def container_image = "/mash:2.3--he348c14_1"
+    def container_image = "/mash:2.3--he348c14_1"
                                             container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process RSEM_PREPAREREFERENCE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::rsem=1.3.3 bioconda::star=2.7.10a" : null)
-        def container_image = "/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0"
+    def container_image = "/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0"
                                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

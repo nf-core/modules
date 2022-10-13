@@ -3,7 +3,7 @@ process BEDTOOLS_MAKEWINDOWS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
-        def container_image = "/bedtools:2.30.0--h7d7f7ad_1"
+    def container_image = "/bedtools:2.30.0--h7d7f7ad_1"
                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

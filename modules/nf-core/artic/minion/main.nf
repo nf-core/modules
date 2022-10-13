@@ -3,7 +3,7 @@ process ARTIC_MINION {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::artic=1.2.2" : null)
-        def container_image = "/artic:1.2.2--pyhdfd78af_0"
+    def container_image = "/artic:1.2.2--pyhdfd78af_0"
                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

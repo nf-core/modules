@@ -3,8 +3,9 @@ process HAPLOGREP2_CLASSIFY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::haplogrep=2.4.0" : null)
-        def container_image = "/haplogrep:2.4.0--hdfd78af_0"
+    def container_image = "/haplogrep:2.4.0--hdfd78af_0"
                                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(inputfile)

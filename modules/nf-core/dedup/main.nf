@@ -3,8 +3,8 @@ process DEDUP {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::dedup=0.12.8" : null)
-        def container_image = "/dedup:0.12.8--hdfd78af_1"
-                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "/dedup:0.12.8--hdfd78af_1"
+    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
     tuple val(meta), path(bam)

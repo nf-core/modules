@@ -3,7 +3,7 @@ process SNIPPY_CORE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::snippy=4.6.0" : null)
-        def container_image = "/snippy:4.6.0--hdfd78af_2"
+    def container_image = "/snippy:4.6.0--hdfd78af_2"
                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

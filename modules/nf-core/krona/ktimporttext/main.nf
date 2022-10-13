@@ -3,7 +3,7 @@ process KRONA_KTIMPORTTEXT {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krona=2.8.1" : null)
-        def container_image = "/krona:2.8.1--pl5321hdfd78af_1"
+    def container_image = "/krona:2.8.1--pl5321hdfd78af_1"
                                                      container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process ABRICATE_SUMMARY {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::abricate=1.0.1" : null)
-        def container_image = "/abricate%3A1.0.1--ha8f3691_1"
+    def container_image = "/abricate%3A1.0.1--ha8f3691_1"
                                                    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

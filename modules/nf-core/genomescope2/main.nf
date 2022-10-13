@@ -3,7 +3,7 @@ process GENOMESCOPE2 {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::genomescope2=2.0" : null)
-        def container_image = "/genomescope2:2.0--py310r41hdfd78af_5"
+    def container_image = "/genomescope2:2.0--py310r41hdfd78af_5"
                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

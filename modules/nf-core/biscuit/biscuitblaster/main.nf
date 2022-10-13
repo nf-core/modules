@@ -3,7 +3,7 @@ process BISCUIT_BLASTER {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samblaster=0.1.26 bioconda::samtools=1.15" : null)
-        def container_image = "/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0"
+    def container_image = "/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0"
                                                          container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

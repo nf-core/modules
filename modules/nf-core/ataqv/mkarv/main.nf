@@ -2,7 +2,7 @@ process ATAQV_MKARV {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ataqv=1.3.0" : null)
-        def container_image = "/ataqv:1.3.0--py39hccc85d7_2"
+    def container_image = "/ataqv:1.3.0--py39hccc85d7_2"
                                               container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

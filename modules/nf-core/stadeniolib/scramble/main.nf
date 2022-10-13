@@ -3,7 +3,7 @@ process STADENIOLIB_SCRAMBLE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::staden_io_lib=1.14.14" : null)
-        def container_image = "/staden_io_lib:1.14.14--h0d9da7e_3"
+    def container_image = "/staden_io_lib:1.14.14--h0d9da7e_3"
                                                        container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

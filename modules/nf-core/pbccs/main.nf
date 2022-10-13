@@ -3,7 +3,7 @@ process PBCCS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::pbccs=6.2.0" : null)
-        def container_image = "/pbccs:6.2.0--h9ee0642_0"
+    def container_image = "/pbccs:6.2.0--h9ee0642_0"
                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -3,7 +3,7 @@ process BBMAP_PILEUP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.15.1 pigz=2.6" : null)
-        def container_image = "/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0"
+    def container_image = "/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0"
                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

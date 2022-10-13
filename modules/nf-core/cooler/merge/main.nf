@@ -3,7 +3,7 @@ process COOLER_MERGE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
-        def container_image = "/cooler:0.8.11--pyh3252c3a_0"
+    def container_image = "/cooler:0.8.11--pyh3252c3a_0"
                                                container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

@@ -4,7 +4,7 @@ process PICARD_RENAMESAMPLEINVCF {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
-        def container_image = "/picard:2.27.4--hdfd78af_0"
+    def container_image = "/picard:2.27.4--hdfd78af_0"
                                                            container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

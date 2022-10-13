@@ -3,7 +3,7 @@ process BCFTOOLS_NORM {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bcftools=1.15.1" : null)
-        def container_image = "/bcftools:1.15.1--h0ea216a_0"
+    def container_image = "/bcftools:1.15.1--h0ea216a_0"
                                                 container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:

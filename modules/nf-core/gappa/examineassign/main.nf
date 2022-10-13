@@ -3,8 +3,9 @@ process GAPPA_EXAMINEASSIGN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gappa=0.8.0" : null)
-        def container_image = "/gappa:0.8.0--h9a82719_0"
+    def container_image = "/gappa:0.8.0--h9a82719_0"
                                                       container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+n
 
     input:
     tuple val(meta), path(jplace)

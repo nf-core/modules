@@ -3,7 +3,7 @@ process RACON {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::racon=1.4.20" : null)
-        def container_image = "/racon:1.4.20--h9a82719_1"
+    def container_image = "/racon:1.4.20--h9a82719_1"
                                         container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
 
     input:
