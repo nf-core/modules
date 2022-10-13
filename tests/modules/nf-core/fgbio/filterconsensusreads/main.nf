@@ -12,9 +12,6 @@ workflow test_fgbio_filterconsensusreads {
     ]
 
     fasta               = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    min_reads           = '3'
-    min_baseq           = '45'
-    max_base_error_rate = '0.2'
 
-    FGBIO_FILTERCONSENSUSREADS ( input, fasta, min_reads, min_baseq, max_base_error_rate )
+    FGBIO_FILTERCONSENSUSREADS ( input, fasta )
 }
