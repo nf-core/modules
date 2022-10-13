@@ -14,6 +14,31 @@ tools:
       licence: ["UC-LBL license (see package)"]
 
 input:
+  - args:
+      type: map
+      description: |
+        Groovy Map containing extra parameters.
+
+        This map MUST follow the structure/keywords below and be provided via
+        modules.config.Parameters must be set between quotes, unless it is a
+        boolean value.
+        All (optional) parameters can be removed from the map, if they are not
+        set.
+
+        "args" corresponds to parameters for the tool itself (see documentation
+        above)
+        The rest of keys control how the tool runs.
+
+        ```
+        {
+          [
+            "args"              : ""                    (optional),
+            "output_extension"  : "extension of $reads" (optional),
+            "interleaved_output": false                 (optional)
+          ]
+        }
+        ```
+
   - meta:
       type: map
       description: |
@@ -24,11 +49,6 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and
         paired-end data, respectively.
-  - output_extension:
-      type: string
-      description: |
-        Desired file extension for the output file (for example, "fastq", "fa",
-        "fq.gz", etc)
   - names:
       type: string
       description: A comma-separated list of strings or files. The files can have one name per

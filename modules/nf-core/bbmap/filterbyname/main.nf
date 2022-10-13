@@ -9,23 +9,30 @@ process BBMAP_FILTERBYNAME {
 
     input:
     tuple val(meta), path(reads)
-    val output_extension
     val names
 
     output:
-    tuple val(meta), path("*${output_extension}"), emit: reads
-    tuple val(meta), path('*.log')               , emit: log
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.{fasta,fastq,gz,zip,fa,fq,sam}"), emit: reads
+    tuple val(meta), path('*.log')                , emit: log
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args               = task.ext.args   ?: [ args:"" ]
+    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def interleaved_output = args.interleaved_output ? true : false
+    def output_extension   = args.output_extension ? "$args.output_extension" :
+    meta.single_end ? reads.name.tokenize('.')[1..-1].join('.') :
+    reads[0].name.tokenize('.')[1..-1].join('.')
 
-    def input = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
-    def filtered  = meta.single_end ? "out=${prefix}${output_extension}" : "out1=${prefix}_1${output_extension} out2=${prefix}_2${output_extension}"
+    def input  = meta.single_end ? "in=${reads}" :
+    "in=${reads[0]} in2=${reads[1]}"
+
+    def filtered = (meta.single_end || interleaved_output) ?
+    "out=${prefix}.${output_extension}" :
+    "out1=${prefix}_1.${output_extension} out2=${prefix}_2.${output_extension}"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -40,7 +47,7 @@ process BBMAP_FILTERBYNAME {
         -Xmx${avail_mem}g \\
         $input \\
         $filtered \\
-        $args \\
+        $args.args \\
         &> ${prefix}.filterbyname.log
 
 
