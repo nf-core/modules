@@ -14,9 +14,9 @@ process PICARD_LIFTOVERVCF {
     path fasta
 
     output:
-    tuple val(meta), path("*lifted.vcf.gz")  , emit: vcf_lifted
-    tuple val(meta), path("*unlifted.vcf.gz"), emit: vcf_unlifted
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.lifted.vcf.gz")  , emit: vcf_lifted
+    tuple val(meta), path("*unlifted.vcf.gz") , emit: vcf_unlifted
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
