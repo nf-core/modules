@@ -9,7 +9,7 @@ process DRAGMAP_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path  hashmap
+    tuple val(meta), path(hashmap)
     val   sort_bam
 
     output:
