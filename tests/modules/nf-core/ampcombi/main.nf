@@ -3,19 +3,20 @@
 nextflow.enable.dsl = 2
 
 include { AMPCOMBI } from '../../../../modules/nf-core/ampcombi/main.nf'
+include { UNTAR as UNTAR1 ; UNTAR as UNTAR2 } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_ampcombi {
-
-    input_dir = folder("https://github.com/nf-core/test-datasets/tree/modules/data/delete_me/ampcombi/test_files/", checkIfExists: true)
-
-    faa_folder = folder("https://github.com/nf-core/test-datasets/tree/modules/data/delete_me/ampcombi/test_faa/", checkIfExists: true)
-    
+    amp_input = [
+        [ id:'test' ],
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files.tar.gz", checkIfExists: true)
+    ]
+    faa_folder = [
+        [ id:'test' ],
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa.tar.gz", checkIfExists: true)
+    ]
     outdir = "ampcombi_results"
 
-    AMPCOMBI ( input_dir, faa_folder, outdir )
+    UNTAR1 ( amp_input )
+    UNTAR2 ( faa_folder )
+    AMPCOMBI ( UNTAR1.out.untar, UNTAR2.out.untar.map{ it[1] }, outdir )
 }
-
-//['https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/ampcombi/test_files/ampir/sample_2/sample_2.ampir.tsv',
-//'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/ampcombi/test_files/amplify/sample_2/sample_2.amplify.tsv']
-//file("https://raw.githubusercontent.com/nf-core/test-datasets/funcscan/samplesheet.csv", checkIfExists: true)                                                                                                                            
-//"\$SAMPLE"
