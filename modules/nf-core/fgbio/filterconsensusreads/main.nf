@@ -9,9 +9,6 @@ process FGBIO_FILTERCONSENSUSREADS {
     input:
     tuple val(meta), path(bam)
     path fasta
-    val(min_reads)
-    val(min_baseq)
-    val(max_base_error_rate)
 
     output:
     tuple val(meta), path("*_consensus_filtered.bam"), emit: bam
