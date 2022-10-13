@@ -41,9 +41,6 @@ process FGBIO_FILTERCONSENSUSREADS {
         --input $bam \\
         --output ${prefix}_consensus_filtered.bam \\
         --ref ${fasta} \\
-        --min-reads ${min_reads} \\
-        --min-base-quality ${min_baseq} \\
-        --max-base-error-rate ${max_base_error_rate} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
