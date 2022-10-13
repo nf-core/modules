@@ -4,7 +4,6 @@ process GSTAMA_POLYACLEANUP {
 
     conda (params.enable_conda ? "bioconda::gs-tama=1.0.3" : null)
         'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gs-tama:1.0.3--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

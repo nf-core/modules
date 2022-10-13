@@ -4,7 +4,6 @@ process MENINGOTYPE {
 
     conda (params.enable_conda ? "bioconda::meningotype=0.8.5" : null)
         'https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/meningotype:0.8.5--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

@@ -4,7 +4,6 @@ process HAPLOCHECK {
 
     conda (params.enable_conda ? "bioconda::haplocheck=1.3.3" : null)
         'https://depot.galaxyproject.org/singularity/haplocheck:1.3.3--h4a94de4_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/haplocheck:1.3.3--h4a94de4_0" }
 
     input:
     tuple val(meta), path(vcf)

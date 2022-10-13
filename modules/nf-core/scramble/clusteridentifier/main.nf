@@ -4,7 +4,6 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
 
     conda (params.enable_conda ? "bioconda::scramble=1.0.1" : null)
         'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/scramble:1.0.1--h779adbc_1" }
 
     input:
     tuple val(meta), path(input), path(input_index)

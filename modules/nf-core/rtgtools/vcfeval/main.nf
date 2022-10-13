@@ -4,7 +4,6 @@ process RTGTOOLS_VCFEVAL {
 
     conda (params.enable_conda ? "bioconda::rtg-tools=3.12.1" : null)
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/rtg-tools:3.12.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi)

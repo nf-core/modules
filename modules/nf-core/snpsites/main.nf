@@ -3,7 +3,6 @@ process SNPSITES {
 
     conda (params.enable_conda ? "bioconda::snp-sites=2.5.1" : null)
         'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/snp-sites:2.5.1--hed695b0_0" }
 
     input:
     path alignment

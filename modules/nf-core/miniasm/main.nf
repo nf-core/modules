@@ -4,7 +4,6 @@ process MINIASM {
 
     conda (params.enable_conda ? "bioconda::miniasm=0.3_r179" : null)
         'https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/miniasm:0.3_r179--h5bf99c6_2" }
 
     input:
     tuple val(meta), path(reads), path(paf)

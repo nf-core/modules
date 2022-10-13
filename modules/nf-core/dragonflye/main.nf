@@ -4,7 +4,6 @@ process DRAGONFLYE {
 
     conda (params.enable_conda ? "bioconda::dragonflye=1.0.11" : null)
         'https://depot.galaxyproject.org/singularity/dragonflye:1.0.11--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/dragonflye:1.0.11--hdfd78af_0" }
 
     input:
     tuple val(meta), path(reads)

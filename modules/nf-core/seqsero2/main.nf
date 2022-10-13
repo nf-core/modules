@@ -4,7 +4,6 @@ process SEQSERO2 {
 
     conda (params.enable_conda ? "bioconda::seqsero2=1.2.1" : null)
         'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/seqsero2:1.2.1--py_0" }
 
     input:
     tuple val(meta), path(seqs)

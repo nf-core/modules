@@ -4,7 +4,6 @@ process PEDDY {
 
     conda (params.enable_conda ? "bioconda::peddy=0.4.8" : null)
         'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/peddy:0.4.8--pyh5e36f6f_0" }
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)

@@ -4,7 +4,6 @@ process TAILFINDR {
 
     conda (params.enable_conda ? "bioconda::ont-fast5-api=0.4.1 bioconda::r-tailfindr=1.3" : null)
         'https://depot.galaxyproject.org/singularity/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0" }
 
     input:
     tuple val(meta), path(fast5)

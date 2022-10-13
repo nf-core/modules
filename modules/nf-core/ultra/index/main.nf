@@ -4,7 +4,6 @@ process ULTRA_INDEX {
 
     conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4" : null)
         'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0" }
 
     input:
     path fasta

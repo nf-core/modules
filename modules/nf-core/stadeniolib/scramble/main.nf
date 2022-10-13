@@ -4,7 +4,6 @@ process STADENIOLIB_SCRAMBLE {
 
     conda (params.enable_conda ? "bioconda::staden_io_lib=1.14.14" : null)
         'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/staden_io_lib:1.14.14--h0d9da7e_3" }
 
     input:
     tuple val(meta), path(reads)

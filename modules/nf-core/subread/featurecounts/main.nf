@@ -4,7 +4,6 @@ process SUBREAD_FEATURECOUNTS {
 
     conda (params.enable_conda ? "bioconda::subread=2.0.1" : null)
         'https://depot.galaxyproject.org/singularity/subread:2.0.1--hed695b0_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/subread:2.0.1--hed695b0_0" }
 
     input:
     tuple val(meta), path(bams), path(annotation)

@@ -4,7 +4,6 @@ process COOLER_DIGEST {
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
         'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/cooler:0.8.11--pyh3252c3a_0" }
 
     input:
     path fasta

@@ -4,7 +4,6 @@ process NEXTGENMAP {
 
     conda (params.enable_conda ? "bioconda::nextgenmap=0.5.5" : null)
         'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/nextgenmap:0.5.5--hc9558a2_4" }
 
     input:
     tuple val(meta), path(reads)

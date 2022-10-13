@@ -4,7 +4,6 @@ process SORTMERNA {
 
     conda (params.enable_conda ? "bioconda::sortmerna=4.3.4" : null)
         'https://depot.galaxyproject.org/singularity/sortmerna:4.3.4--h9ee0642_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/sortmerna:4.3.4--h9ee0642_0" }
 
     input:
     tuple val(meta), path(reads)

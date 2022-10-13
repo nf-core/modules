@@ -4,7 +4,6 @@ process SNPDISTS {
 
     conda (params.enable_conda ? "bioconda::snp-dists=0.8.2" : null)
         'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/snp-dists:0.8.2--h5bf99c6_0" }
 
     input:
     tuple val(meta), path(alignment)

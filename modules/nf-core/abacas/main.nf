@@ -4,7 +4,6 @@ process ABACAS {
 
     conda (params.enable_conda ? "bioconda::abacas=1.3.1" : null)
         'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/abacas:1.3.1--pl526_0" }
 
     input:
     tuple val(meta), path(scaffold)

@@ -4,7 +4,6 @@ process PHYLOFLASH {
 
     conda (params.enable_conda ? "bioconda::phyloflash=3.4" : null)
         'https://depot.galaxyproject.org/singularity/phyloflash:3.4--hdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/phyloflash:3.4--hdfd78af_1" }
 
     input:
     tuple val(meta), path(reads)

@@ -4,7 +4,6 @@ process ABRICATE_RUN {
 
     conda (params.enable_conda ? "bioconda::abricate=1.0.1" : null)
         'https://depot.galaxyproject.org/singularity/abricate%3A1.0.1--ha8f3691_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/abricate:1.0.1--ha8f3691_1" }
 
     input:
     tuple val(meta), path(assembly)

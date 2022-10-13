@@ -4,7 +4,6 @@ process STAPHOPIASCCMEC {
 
     conda (params.enable_conda ? "bioconda::staphopia-sccmec=1.0.0" : null)
         'https://depot.galaxyproject.org/singularity/staphopia-sccmec:1.0.0--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/staphopia-sccmec:1.0.0--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

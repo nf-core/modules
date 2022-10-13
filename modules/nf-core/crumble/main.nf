@@ -4,7 +4,6 @@ process CRUMBLE {
 
     conda (params.enable_conda ? "bioconda::crumble=0.9.0" : null)
         'https://depot.galaxyproject.org/singularity/crumble:0.9.0--hb0d9459_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/crumble:0.9.0--hb0d9459_1" }
 
     input:
     tuple val(meta), path(input)

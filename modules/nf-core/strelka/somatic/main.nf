@@ -4,7 +4,6 @@ process STRELKA_SOMATIC {
 
     conda (params.enable_conda ? "bioconda::strelka=2.9.10" : null)
         'https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/strelka:2.9.10--h9ee0642_1" }
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor),  path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi), path(target_bed), path(target_bed_index)

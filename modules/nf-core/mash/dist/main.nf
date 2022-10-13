@@ -4,7 +4,6 @@ process MASH_DIST {
 
     conda (params.enable_conda ? "bioconda::mash=2.3" : null)
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mash:2.3--he348c14_1" }
 
     input:
     tuple val(meta), path(query)

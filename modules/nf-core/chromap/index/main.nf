@@ -4,7 +4,6 @@ process CHROMAP_INDEX {
 
     conda (params.enable_conda ? "bioconda::chromap=0.2.1" : null)
         'https://depot.galaxyproject.org/singularity/chromap:0.2.1--hd03093a_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/chromap:0.2.1--hd03093a_0" }
 
     input:
     path fasta

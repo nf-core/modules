@@ -4,7 +4,6 @@ process RAVEN {
 
     conda (params.enable_conda ? "bioconda::raven-assembler=1.6.1" : null)
         'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/raven-assembler:1.6.1--h2e03b76_0" }
 
     input:
     tuple val(meta), path(reads)

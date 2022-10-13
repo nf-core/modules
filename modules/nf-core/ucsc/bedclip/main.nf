@@ -5,7 +5,6 @@ process UCSC_BEDCLIP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-bedclip=377" : null)
         'https://depot.galaxyproject.org/singularity/ucsc-bedclip:377--h0b8a92a_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-bedclip:377--h0b8a92a_2" }
 
     input:
     tuple val(meta), path(bedgraph)

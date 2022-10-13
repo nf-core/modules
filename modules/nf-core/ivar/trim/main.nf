@@ -4,7 +4,6 @@ process IVAR_TRIM {
 
     conda (params.enable_conda ? "bioconda::ivar=1.3.1" : null)
         'https://depot.galaxyproject.org/singularity/ivar:1.3.1--h089eab3_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ivar:1.3.1--h089eab3_0" }
 
     input:
     tuple val(meta), path(bam), path(bai)

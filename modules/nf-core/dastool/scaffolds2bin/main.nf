@@ -4,7 +4,6 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.3" : null)
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/das_tool:1.1.3--r41hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

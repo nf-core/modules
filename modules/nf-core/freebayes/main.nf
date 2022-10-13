@@ -4,7 +4,6 @@ process FREEBAYES {
 
     conda (params.enable_conda ? "bioconda::freebayes=1.3.5" : null)
         'https://depot.galaxyproject.org/singularity/freebayes:1.3.5--py38ha193a2f_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/freebayes:1.3.5--py38ha193a2f_3" }
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)

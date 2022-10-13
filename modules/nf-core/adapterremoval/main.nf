@@ -4,7 +4,6 @@ process ADAPTERREMOVAL {
 
     conda (params.enable_conda ? "bioconda::adapterremoval=2.3.2" : null)
         'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/adapterremoval:2.3.2--hb7ba0dd_0" }
 
     input:
     tuple val(meta), path(reads)

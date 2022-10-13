@@ -4,7 +4,6 @@ process PROKKA {
 
     conda (params.enable_conda ? "bioconda::prokka=1.14.6" : null)
         'https://depot.galaxyproject.org/singularity/prokka%3A1.14.6--pl5321hdfd78af_4' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/prokka:1.14.6--pl5321hdfd78af_4" }
 
     input:
     tuple val(meta), path(fasta)

@@ -4,7 +4,6 @@ process IDR {
 
     conda (params.enable_conda ? "bioconda::idr=2.0.4.2" : null)
         'https://depot.galaxyproject.org/singularity/idr:2.0.4.2--py39hcbe4a3b_5' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/idr:2.0.4.2--py39hcbe4a3b_5" }
 
     input:
     path peaks

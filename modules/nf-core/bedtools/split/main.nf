@@ -4,7 +4,6 @@ process BEDTOOLS_SPLIT {
 
     conda (params.enable_conda ? "bioconda::bedtools=2.30.0" : null)
         'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bedtools:2.30.0--h7d7f7ad_2" }
 
     input:
     tuple val(meta), path(bed)

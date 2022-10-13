@@ -4,7 +4,6 @@ process GENMOD_COMPOUND {
 
     conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/genmod:3.7.4--pyh5e36f6f_0" }
 
     input:
     tuple val(meta), path(input_vcf)

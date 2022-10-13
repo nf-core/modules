@@ -4,7 +4,6 @@ process FASTAWINDOWS {
 
     conda (params.enable_conda ? "bioconda::fasta_windows=0.2.4" : null)
         'https://depot.galaxyproject.org/singularity/fasta_windows:0.2.4--hec16e2b_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/fasta_windows:0.2.4--hec16e2b_0" }
 
     input:
     tuple val(meta), path(fasta)

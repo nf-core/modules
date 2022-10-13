@@ -4,7 +4,6 @@ process ATLAS_RECAL {
 
     conda (params.enable_conda ? "bioconda::atlas=0.9.9" : null)
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/atlas:0.9.9--h082e891_0" }
 
     input:
     tuple val(meta), path(bam), path(bai), path(empiric), path(readgroups)

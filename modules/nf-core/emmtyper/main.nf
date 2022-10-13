@@ -4,7 +4,6 @@ process EMMTYPER {
 
     conda (params.enable_conda ? "bioconda::emmtyper=0.2.0" : null)
         'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/emmtyper:0.2.0--py_0" }
 
     input:
     tuple val(meta), path(fasta)

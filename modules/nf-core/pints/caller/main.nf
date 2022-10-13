@@ -4,7 +4,6 @@ process PINTS_CALLER {
 
     conda    (params.enable_conda ? "bioconda::pypints=1.1.6" : null)
         'https://depot.galaxyproject.org/singularity/pypints:1.1.6--pyh5e36f6f_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/pypints:1.1.6--pyh5e36f6f_1" }
 
     input:
     tuple val(meta), path(bams)

@@ -4,7 +4,6 @@ process DSHBIO_FILTERBED {
 
     conda (params.enable_conda ? "bioconda::dsh-bio=2.1" : null)
         'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/dsh-bio:2.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(bed)

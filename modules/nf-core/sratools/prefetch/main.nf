@@ -4,7 +4,6 @@ process SRATOOLS_PREFETCH {
 
     conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0' : null)
         'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/sra-tools:2.11.0--pl5321ha49a11a_3" }
 
     input:
     tuple val(meta), val(id)

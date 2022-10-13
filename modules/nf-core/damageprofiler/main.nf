@@ -4,7 +4,6 @@ process DAMAGEPROFILER {
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
         'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/damageprofiler:1.1--hdfd78af_2" }
 
     input:
     tuple val(meta), path(bam)

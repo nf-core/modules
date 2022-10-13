@@ -4,7 +4,6 @@ process YARA_INDEX {
 
     conda (params.enable_conda ? "bioconda::yara=1.0.2" : null)
         'https://depot.galaxyproject.org/singularity/yara:1.0.2--2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/yara:1.0.2--2" }
 
     input:
     tuple val(meta), path(fasta)

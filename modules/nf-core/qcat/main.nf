@@ -4,7 +4,6 @@ process QCAT {
 
     conda (params.enable_conda ? "bioconda::qcat=1.1.0" : null)
         'https://depot.galaxyproject.org/singularity/qcat:1.1.0--py_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/qcat:1.1.0--py_0" }
 
     input:
     tuple val(meta), path(reads)

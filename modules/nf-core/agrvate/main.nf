@@ -4,7 +4,6 @@ process AGRVATE {
 
     conda (params.enable_conda ? "bioconda::agrvate=1.0.2" : null)
         'https://depot.galaxyproject.org/singularity/agrvate:1.0.2--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/agrvate:1.0.2--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

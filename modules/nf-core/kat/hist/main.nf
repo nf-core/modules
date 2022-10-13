@@ -4,7 +4,6 @@ process KAT_HIST {
 
     conda (params.enable_conda ? "bioconda::kat=2.4.2" : null)
         'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/kat:2.4.2--py38hfc5f9d8_2" }
 
     input:
     tuple val(meta), path(reads)

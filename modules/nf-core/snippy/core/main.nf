@@ -4,7 +4,6 @@ process SNIPPY_CORE {
 
     conda (params.enable_conda ? "bioconda::snippy=4.6.0" : null)
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/snippy:4.6.0--hdfd78af_1" }
 
     input:
     tuple val(meta), path(vcf), path(aligned_fa)

@@ -4,7 +4,6 @@ process MANTA_TUMORONLY {
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/manta:1.6.0--h9ee0642_1" }
 
     input:
     tuple val(meta), path(input), path(input_index), path(target_bed), path(target_bed_tbi)

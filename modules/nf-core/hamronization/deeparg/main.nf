@@ -4,7 +4,6 @@ process HAMRONIZATION_DEEPARG {
 
     conda (params.enable_conda ? "bioconda::hamronization=1.1.1" : null)
         'https://depot.galaxyproject.org/singularity/hamronization:1.1.1--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hamronization:1.1.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(report)

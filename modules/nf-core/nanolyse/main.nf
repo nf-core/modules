@@ -4,7 +4,6 @@ process NANOLYSE {
 
     conda (params.enable_conda ? "bioconda::nanolyse=1.2.0" : null)
         'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/nanolyse:1.2.0--py_0" }
 
     input:
     tuple val(meta), path(fastq)

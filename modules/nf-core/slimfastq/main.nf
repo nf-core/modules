@@ -5,7 +5,6 @@ process SLIMFASTQ {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::slimfastq=2.04" : null)
         'https://depot.galaxyproject.org/singularity/slimfastq:2.04--h87f3376_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/slimfastq:2.04--h87f3376_2" }
 
     input:
     tuple val(meta), path(fastq)

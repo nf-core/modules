@@ -4,7 +4,6 @@ process CHECKM_QA {
 
     conda (params.enable_conda ? "bioconda::checkm-genome=1.2.1" : null)
         'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.1--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/checkm-genome:1.2.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(analysis_dir), path(marker_file), path(coverage_file)

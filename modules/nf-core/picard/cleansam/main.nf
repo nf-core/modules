@@ -4,7 +4,6 @@ process PICARD_CLEANSAM {
 
     conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
         'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/picard:2.27.4--hdfd78af_0" }
 
     input:
     tuple val(meta), path(bam)

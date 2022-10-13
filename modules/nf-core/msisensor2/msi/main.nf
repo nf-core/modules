@@ -4,7 +4,6 @@ process MSISENSOR2_MSI {
 
     conda (params.enable_conda ? "bioconda::msisensor2=0.1" : null)
         'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/msisensor2:0.1--hd03093a_0" }
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)

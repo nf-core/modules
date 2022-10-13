@@ -4,7 +4,6 @@ process BAMTOOLS_CONVERT {
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
         'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bamtools:2.5.1--h9a82719_9" }
 
     input:
     tuple val(meta), path(bam)

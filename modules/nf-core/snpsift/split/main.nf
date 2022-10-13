@@ -4,7 +4,6 @@ process SNPSIFT_SPLIT {
 
     conda (params.enable_conda ? "bioconda::snpsift=4.3.1t" : null)
         'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/snpsift:4.3.1t--hdfd78af_3" }
 
     input:
     tuple val(meta), path(vcf)

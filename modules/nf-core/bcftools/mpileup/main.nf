@@ -4,7 +4,6 @@ process BCFTOOLS_MPILEUP {
 
     conda (params.enable_conda ? "bioconda::bcftools=1.15.1" : null)
         'https://depot.galaxyproject.org/singularity/bcftools:1.15.1--h0ea216a_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bcftools:1.15.1--h0ea216a_0" }
 
     input:
     tuple val(meta), path(bam)

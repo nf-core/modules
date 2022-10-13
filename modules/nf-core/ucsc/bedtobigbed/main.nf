@@ -5,7 +5,6 @@ process UCSC_BEDTOBIGBED {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-bedtobigbed=377" : null)
         'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:377--ha8a8165_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-bedtobigbed:377--ha8a8165_3" }
 
     input:
     tuple val(meta), path(bed)

@@ -4,7 +4,6 @@ process KRONA_KTIMPORTTEXT {
 
     conda (params.enable_conda ? "bioconda::krona=2.8.1" : null)
         'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/krona:2.8.1--pl5321hdfd78af_1" }
 
     input:
     tuple val(meta), path(report)

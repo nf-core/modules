@@ -3,7 +3,6 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
 
     conda (params.enable_conda ? 'bioconda::metaphlan=3.0.12' : null)
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/metaphlan:3.0.12--pyhb7b1952_0" }
 
     input:
     tuple val(meta), path(profiles)

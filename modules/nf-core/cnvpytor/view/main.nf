@@ -4,7 +4,6 @@ process CNVPYTOR_VIEW {
 
     conda (params.enable_conda ? "bioconda::cnvpytor=1.2.1" : null)
         'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/cnvpytor:1.2.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(pytor_files)

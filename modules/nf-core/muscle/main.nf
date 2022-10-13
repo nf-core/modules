@@ -4,7 +4,6 @@ process MUSCLE {
 
     conda (params.enable_conda ? "bioconda::muscle=3.8.1551" : null)
         'https://depot.galaxyproject.org/singularity/muscle:3.8.1551--h7d875b9_6' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/muscle:3.8.1551--h7d875b9_6" }
 
     input:
     tuple val(meta), path(fasta)

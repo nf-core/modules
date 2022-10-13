@@ -4,7 +4,6 @@ process HMMER_HMMSEARCH {
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hmmer:3.3.2--h1b792b2_1" }
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)

@@ -4,7 +4,6 @@ process BWA_INDEX {
 
     conda (params.enable_conda ? "bioconda::bwa=0.7.17" : null)
         'https://depot.galaxyproject.org/singularity/bwa:0.7.17--hed695b0_7' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bwa:0.7.17--hed695b0_7" }
 
     input:
     path fasta

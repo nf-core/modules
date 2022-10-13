@@ -3,7 +3,6 @@ process GRAPHMAP2_INDEX {
 
     conda (params.enable_conda ? "bioconda::graphmap=0.6.3" : null)
         'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/graphmap:0.6.3--he513fc3_0" }
 
     input:
     path fasta

@@ -4,7 +4,6 @@ process MALT_RUN {
 
     conda (params.enable_conda ? "bioconda::malt=0.41" : null)
         'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/malt:0.41--1" }
 
     input:
     tuple val(meta), path(fastqs)

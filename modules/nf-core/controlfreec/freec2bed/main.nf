@@ -4,7 +4,6 @@ process CONTROLFREEC_FREEC2BED {
 
     conda (params.enable_conda ? "bioconda::control-freec=11.6" : null)
         'https://depot.galaxyproject.org/singularity/control-freec:11.6--h1b792b2_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/control-freec:11.6--h1b792b2_1" }
 
     input:
     tuple val(meta), path(ratio)

@@ -4,7 +4,6 @@ process HMTNOTE {
 
     conda (params.enable_conda ? "bioconda::hmtnote=0.7.2" : null)
         'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hmtnote:0.7.2--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(vcf)

@@ -4,7 +4,6 @@ process MAFFT {
 
     conda (params.enable_conda ? "bioconda::mafft=7.490" : null)
         'https://depot.galaxyproject.org/singularity/mafft:7.490--h779adbc_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mafft:7.490--h779adbc_0" }
 
     input:
     tuple val(meta), path(fasta)

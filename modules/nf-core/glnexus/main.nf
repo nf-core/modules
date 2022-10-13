@@ -4,7 +4,6 @@ process GLNEXUS {
 
     conda (params.enable_conda ? "bioconda::glnexus=1.4.1" : null)
         'https://depot.galaxyproject.org/singularity/glnexus:1.4.1--h40d77a6_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/glnexus:1.4.1--h40d77a6_0" }
 
     input:
     tuple val(meta), path(gvcfs)

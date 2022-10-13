@@ -4,7 +4,6 @@ process MEDAKA {
 
     conda (params.enable_conda ? "bioconda::medaka=1.4.4" : null)
         'https://depot.galaxyproject.org/singularity/medaka:1.4.4--py38h130def0_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/medaka:1.4.4--py38h130def0_0" }
 
     input:
     tuple val(meta), path(reads), path(assembly)

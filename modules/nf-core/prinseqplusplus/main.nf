@@ -4,7 +4,6 @@ process PRINSEQPLUSPLUS {
 
     conda (params.enable_conda ? "bioconda::prinseq-plus-plus=1.2.3" : null)
         'https://depot.galaxyproject.org/singularity/prinseq-plus-plus:1.2.3--hc90279e_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/prinseq-plus-plus:1.2.3--hc90279e_1" }
 
     input:
     tuple val(meta), path(reads)

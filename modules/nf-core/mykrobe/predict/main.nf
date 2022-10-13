@@ -4,7 +4,6 @@ process MYKROBE_PREDICT {
 
     conda (params.enable_conda ? "bioconda::mykrobe=0.11.0" : null)
         'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mykrobe:0.11.0--py39h2add14b_1" }
 
     input:
     tuple val(meta), path(seqs)

@@ -4,7 +4,6 @@ process NGMASTER {
 
     conda (params.enable_conda ? "bioconda::ngmaster=0.5.8" : null)
         'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ngmaster:0.5.8--pyhdfd78af_1" }
 
     input:
     tuple val(meta), path(fasta)

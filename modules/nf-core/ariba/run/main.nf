@@ -4,7 +4,6 @@ process ARIBA_RUN {
 
     conda (params.enable_conda ? "bioconda::ariba=2.14.6" : null)
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ariba:2.14.6--py39h67e14b5_3" }
 
     input:
     tuple val(meta), path(reads)

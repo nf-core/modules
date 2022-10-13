@@ -3,7 +3,6 @@ process DEEPBGC_DOWNLOAD {
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
         'https://depot.galaxyproject.org/singularity/deepbgc:0.1.30--pyhb7b1952_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/deepbgc:0.1.30--pyhb7b1952_1" }
 
     output:
     path "deepbgc_db/"  , emit: db

@@ -4,7 +4,6 @@ process TABIX_BGZIP {
 
     conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/tabix:1.11--hdfd78af_0" }
 
     input:
     tuple val(meta), path(input)

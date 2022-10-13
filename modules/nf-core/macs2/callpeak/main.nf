@@ -4,7 +4,6 @@ process MACS2_CALLPEAK {
 
     conda (params.enable_conda ? "bioconda::macs2=2.2.7.1" : null)
         'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/macs2:2.2.7.1--py38h4a8c8d9_3" }
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)

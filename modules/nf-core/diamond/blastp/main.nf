@@ -4,7 +4,6 @@ process DIAMOND_BLASTP {
 
     conda (params.enable_conda ? "bioconda::diamond=2.0.15" : null)
         'https://depot.galaxyproject.org/singularity/diamond:2.0.15--hb97b32f_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/diamond:2.0.15--hb97b32f_0" }
 
     input:
     tuple val(meta), path(fasta)

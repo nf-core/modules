@@ -4,7 +4,6 @@ process VCFLIB_VCFBREAKMULTI {
 
     conda (params.enable_conda ? "bioconda::vcflib=1.0.3" : null)
         'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/vcflib:1.0.3--ha025227_0" }
 
     input:
     tuple val(meta), path(vcf), path(tbi)

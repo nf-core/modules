@@ -4,7 +4,6 @@ process MERYL_HISTOGRAM {
 
     conda (params.enable_conda ? "bioconda::meryl=1.3" : null)
         'https://depot.galaxyproject.org/singularity/meryl:1.3--h87f3376_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/meryl:1.3--h87f3376_1" }
 
     input:
     tuple val(meta), path(meryl_db)

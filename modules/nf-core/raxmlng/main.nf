@@ -3,7 +3,6 @@ process RAXMLNG {
 
     conda (params.enable_conda ? 'bioconda::raxml-ng=1.0.3' : null)
         'https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/raxml-ng:1.0.3--h32fcf60_0" }
 
     input:
     path alignment

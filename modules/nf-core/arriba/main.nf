@@ -4,7 +4,6 @@ process ARRIBA {
 
     conda (params.enable_conda ? "bioconda::arriba=2.3.0" : null)
         'https://depot.galaxyproject.org/singularity/arriba:2.3.0--haa8aa89_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/arriba:2.3.0--haa8aa89_0" }
 
     input:
     tuple val(meta), path(bam)

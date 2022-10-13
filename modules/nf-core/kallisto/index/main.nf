@@ -4,7 +4,6 @@ process KALLISTO_INDEX {
 
     conda (params.enable_conda ? "bioconda::kallisto=0.46.2" : null)
         'https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/kallisto:0.46.2--h4f7b962_1" }
 
     input:
     path fasta

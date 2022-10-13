@@ -4,7 +4,6 @@ process HMMER_HMMALIGN {
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hmmer:3.3.2--h1b792b2_1" }
 
     input:
     tuple val(meta), path(fasta)

@@ -4,7 +4,6 @@ process LISSERO {
 
     conda (params.enable_conda ? "bioconda::lissero=0.4.9" : null)
         'https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/lissero:0.4.9--py_0" }
 
     input:
     tuple val(meta), path(fasta)

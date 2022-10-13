@@ -4,7 +4,6 @@ process GENOMESCOPE2 {
 
     conda (params.enable_conda ? "bioconda::genomescope2=2.0" : null)
         'https://depot.galaxyproject.org/singularity/genomescope2:2.0--py310r41hdfd78af_5':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/genomescope2:2.0--py310r41hdfd78af_5" }
 
     input:
     tuple val(meta), path(histogram)

@@ -4,7 +4,6 @@ process GATK4_APPLYVQSR {
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gatk4:4.2.6.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)

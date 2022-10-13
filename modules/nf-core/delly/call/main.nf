@@ -4,7 +4,6 @@ process DELLY_CALL {
 
     conda (params.enable_conda ? "bioconda::delly=1.1.5" : null)
         'https://depot.galaxyproject.org/singularity/delly:1.1.5--h358d541_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/delly:1.1.5--h358d541_0" }
 
     input:
     tuple val(meta), path(input), path(input_index), path(exclude_bed)

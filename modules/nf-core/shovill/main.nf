@@ -4,7 +4,6 @@ process SHOVILL {
 
     conda (params.enable_conda ? "bioconda::shovill=1.1.0" : null)
         'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/shovill:1.1.0--0" }
 
     input:
     tuple val(meta), path(reads)

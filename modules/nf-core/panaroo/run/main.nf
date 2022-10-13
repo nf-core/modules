@@ -4,7 +4,6 @@ process PANAROO_RUN {
 
     conda (params.enable_conda ? "bioconda::panaroo=1.2.9" : null)
         'https://depot.galaxyproject.org/singularity/panaroo:1.2.9--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/panaroo:1.2.9--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(gff)

@@ -4,7 +4,6 @@ process MLST {
 
     conda (params.enable_conda ? "bioconda::mlst=2.19.0" : null)
         'https://depot.galaxyproject.org/singularity/mlst:2.19.0--hdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mlst:2.19.0--hdfd78af_1" }
 
     input:
     tuple val(meta), path(fasta)

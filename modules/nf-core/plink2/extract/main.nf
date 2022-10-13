@@ -4,7 +4,6 @@ process PLINK2_EXTRACT {
 
     conda (params.enable_conda ? "bioconda::plink2=2.00a2.3" : null)
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/plink2:2.00a2.3--h712d239_1" }
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar), path(variants)

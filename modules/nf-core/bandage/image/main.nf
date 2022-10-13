@@ -4,7 +4,6 @@ process BANDAGE_IMAGE {
 
     conda (params.enable_conda ? 'bioconda::bandage=0.8.1' : null)
         'https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bandage:0.8.1--hc9558a2_2" }
 
     input:
     tuple val(meta), path(gfa)

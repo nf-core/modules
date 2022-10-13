@@ -4,7 +4,6 @@ process GFFREAD {
 
     conda (params.enable_conda ? "bioconda::gffread=0.12.1" : null)
         'https://depot.galaxyproject.org/singularity/gffread:0.12.1--h8b12597_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gffread:0.12.1--h8b12597_0" }
 
     input:
     path gff

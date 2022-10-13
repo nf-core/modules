@@ -4,7 +4,6 @@ process ANTISMASH_ANTISMASHLITE {
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/antismash-lite:6.0.1--pyhdfd78af_1" }
 
     containerOptions {
         "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :

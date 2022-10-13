@@ -4,7 +4,6 @@ process GUNC_RUN {
 
     conda (params.enable_conda ? "bioconda::gunc=1.0.5" : null)
         'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gunc:1.0.5--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

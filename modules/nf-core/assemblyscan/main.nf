@@ -4,7 +4,6 @@ process ASSEMBLYSCAN {
 
     conda (params.enable_conda ? "bioconda::assembly-scan=0.4.1" : null)
         'https://depot.galaxyproject.org/singularity/assembly-scan:0.4.1--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/assembly-scan:0.4.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(assembly)

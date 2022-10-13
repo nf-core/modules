@@ -4,7 +4,6 @@ process BAMCMP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::bamcmp=2.2" : null)
         'https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bamcmp:2.2--h05f6578_0" }
 
     input:
     tuple val(meta), path(sample), path(contaminant)

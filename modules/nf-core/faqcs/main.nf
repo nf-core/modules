@@ -4,7 +4,6 @@ process FAQCS {
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
         'https://depot.galaxyproject.org/singularity/faqcs%3A2.10--r41h9a82719_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/faqcs:2.10--r41h9a82719_2" }
 
     input:
     tuple val(meta), path(reads)

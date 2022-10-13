@@ -3,7 +3,6 @@ process BISMARK_SUMMARY {
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
         'https://depot.galaxyproject.org/singularity/bismark:0.23.0--0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bismark:0.23.0--0" }
 
     input:
     path(bam)

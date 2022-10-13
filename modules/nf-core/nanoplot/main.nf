@@ -4,7 +4,6 @@ process NANOPLOT {
 
     conda (params.enable_conda ? 'bioconda::nanoplot=1.40.0' : null)
         'https://depot.galaxyproject.org/singularity/nanoplot:1.40.0--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/nanoplot:1.40.0--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(ontfile)

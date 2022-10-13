@@ -4,7 +4,6 @@ process KAIJU_KAIJU2TABLE {
 
     conda (params.enable_conda ? "bioconda::kaiju=1.8.2" : null)
         'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/kaiju:1.8.2--h2e03b76_0" }
 
     input:
     tuple val(meta), path(results)

@@ -4,7 +4,6 @@ process FASTP {
 
     conda (params.enable_conda ? 'bioconda::fastp=0.23.2' : null)
         'https://depot.galaxyproject.org/singularity/fastp:0.23.2--h79da9fb_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/fastp:0.23.2--h79da9fb_0" }
 
     input:
     tuple val(meta), path(reads)

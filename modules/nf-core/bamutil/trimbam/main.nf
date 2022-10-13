@@ -4,7 +4,6 @@ process BAMUTIL_TRIMBAM {
 
     conda (params.enable_conda ? "bioconda::bamutil=1.0.15" : null)
         'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bamutil:1.0.15--h2e03b76_1" }
 
     input:
     tuple val(meta), path(bam), val(trim_left), val(trim_right)

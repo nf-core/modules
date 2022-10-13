@@ -5,7 +5,6 @@ process SOMALIER_RELATE {
 
     conda (params.enable_conda ? "bioconda::somalier=0.2.15" : null)
         'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/somalier:0.2.15--h37c5b7d_0" }
 
     input:
     tuple val(meta), path(extract)

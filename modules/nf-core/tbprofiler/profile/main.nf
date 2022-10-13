@@ -4,7 +4,6 @@ process TBPROFILER_PROFILE {
 
     conda (params.enable_conda ? "bioconda::tb-profiler=3.0.8" : null)
         'https://depot.galaxyproject.org/singularity/tb-profiler:3.0.8--pypyh5e36f6f_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/tb-profiler:3.0.8--pypyh5e36f6f_0" }
 
     input:
     tuple val(meta), path(reads)

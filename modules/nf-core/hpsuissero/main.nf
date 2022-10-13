@@ -5,7 +5,6 @@ process HPSUISSERO {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hpsuissero=1.0.1" : null)
         'https://depot.galaxyproject.org/singularity/hpsuissero%3A1.0.1--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hpsuissero:1.0.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

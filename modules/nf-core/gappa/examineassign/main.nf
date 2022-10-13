@@ -4,7 +4,6 @@ process GAPPA_EXAMINEASSIGN {
 
     conda (params.enable_conda ? "bioconda::gappa=0.8.0" : null)
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gappa:0.8.0--h9a82719_0" }
 
     input:
     tuple val(meta), path(jplace)

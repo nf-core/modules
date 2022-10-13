@@ -4,7 +4,6 @@ process WGSIM {
 
     conda (params.enable_conda ? "bioconda::wgsim=1.0" : null)
         'https://depot.galaxyproject.org/singularity/wgsim:1.0--h5bf99c6_4':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/wgsim:1.0--h5bf99c6_4" }
 
     input:
     tuple val(meta), path(fasta)

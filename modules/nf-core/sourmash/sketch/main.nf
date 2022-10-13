@@ -4,7 +4,6 @@ process SOURMASH_SKETCH {
 
     conda (params.enable_conda ? "bioconda::sourmash=4.2.4" : null)
         'https://depot.galaxyproject.org/singularity/sourmash:4.2.4--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/sourmash:4.2.4--hdfd78af_0" }
 
     input:
     tuple val(meta), path(sequence)

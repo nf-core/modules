@@ -4,7 +4,6 @@ process FASTQC {
 
     conda (params.enable_conda ? "bioconda::fastqc=0.11.9" : null)
         'https://depot.galaxyproject.org/singularity/fastqc:0.11.9--0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/fastqc:0.11.9--0" }
 
     input:
     tuple val(meta), path(reads)

@@ -4,7 +4,6 @@ process TRIMGALORE {
 
     conda (params.enable_conda ? 'bioconda::trim-galore=0.6.7' : null)
         'https://depot.galaxyproject.org/singularity/trim-galore:0.6.7--hdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/trim-galore:0.6.7--hdfd78af_0" }
 
     input:
     tuple val(meta), path(reads)

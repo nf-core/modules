@@ -4,7 +4,6 @@ process SEQKIT_STATS {
 
     conda (params.enable_conda ? "bioconda::seqkit=2.2.0" : null)
         'https://depot.galaxyproject.org/singularity/seqkit:2.2.0--h9ee0642_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/seqkit:2.2.0--h9ee0642_0" }
 
     input:
     tuple val(meta), path(reads)

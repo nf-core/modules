@@ -3,7 +3,6 @@ process MINIMAP2_INDEX {
 
     conda (params.enable_conda ? 'bioconda::minimap2=2.21' : null)
         'https://depot.galaxyproject.org/singularity/minimap2:2.21--h5bf99c6_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/minimap2:2.21--h5bf99c6_0" }
 
     input:
     tuple val(meta), path(fasta)

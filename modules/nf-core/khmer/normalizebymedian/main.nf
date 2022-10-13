@@ -4,7 +4,6 @@ process KHMER_NORMALIZEBYMEDIAN {
 
     conda (params.enable_conda ? "bioconda::khmer=3.0.0a3" : null)
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/khmer:3.0.0a3--py37haa7609a_2" }
 
     input:
     path pe_reads

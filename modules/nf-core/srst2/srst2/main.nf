@@ -4,7 +4,6 @@ process SRST2_SRST2 {
 
     conda (params.enable_conda ? "bioconda::srst2=0.2.0" : null)
         'https://depot.galaxyproject.org/singularity/srst2%3A0.2.0--py27_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/srst2:0.2.0--py27_2"}
 
     input:
     tuple val(meta), path(fastq_s), path(db)

@@ -4,7 +4,6 @@ process DASTOOL_DASTOOL {
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.4" : null)
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.4--r41hdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/das_tool:1.1.4--r41hdfd78af_1" }
 
     input:
     tuple val(meta), path(contigs), path(bins)

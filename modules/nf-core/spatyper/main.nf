@@ -4,7 +4,6 @@ process SPATYPER {
 
     conda (params.enable_conda ? "bioconda::spatyper=0.3.3" : null)
         'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/spatyper:0.3.3--pyhdfd78af_3" }
 
     input:
     tuple val(meta), path(fasta)

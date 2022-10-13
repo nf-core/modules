@@ -4,7 +4,6 @@ process BBMAP_INDEX {
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92" : null)
         'https://depot.galaxyproject.org/singularity/bbmap:38.92--he522d1c_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bbmap:38.92--he522d1c_0" }
 
     input:
     path fasta

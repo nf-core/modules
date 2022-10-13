@@ -4,7 +4,6 @@ process KLEBORATE {
 
     conda (params.enable_conda ? "bioconda::kleborate=2.1.0" : null)
         'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/kleborate:2.1.0--pyhdfd78af_1" }
 
     input:
     tuple val(meta), path(fastas)

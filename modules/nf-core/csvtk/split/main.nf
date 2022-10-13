@@ -4,7 +4,6 @@ process CSVTK_SPLIT {
 
     conda (params.enable_conda ? "bioconda::csvtk=0.23.0" : null)
         'https://depot.galaxyproject.org/singularity/csvtk:0.23.0--h9ee0642_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/csvtk:0.23.0--h9ee0642_0" }
 
     input:
     tuple val(meta), path(csv)

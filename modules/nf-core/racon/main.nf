@@ -4,7 +4,6 @@ process RACON {
 
     conda (params.enable_conda ? "bioconda::racon=1.4.20" : null)
         'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/racon:1.4.20--h9a82719_1" }
 
     input:
     tuple val(meta), path(reads), path(assembly), path(paf)

@@ -4,7 +4,6 @@ process LAST_MAFSWAP {
 
     conda (params.enable_conda ? 'bioconda::last=1250' : null)
         'https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/last:1250--h2e03b76_0" }
 
     input:
     tuple val(meta), path(maf)

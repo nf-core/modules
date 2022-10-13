@@ -4,7 +4,6 @@ process MINIMAP2_ALIGN {
 
     conda (params.enable_conda ? 'bioconda::minimap2=2.21 bioconda::samtools=1.12' : null)
         'https://depot.galaxyproject.org/singularity/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0" }
 
     input:
     tuple val(meta), path(reads)

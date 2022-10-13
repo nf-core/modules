@@ -4,7 +4,6 @@ process BLAST_MAKEBLASTDB {
 
     conda (params.enable_conda ? 'bioconda::blast=2.12.0' : null)
         'https://depot.galaxyproject.org/singularity/blast:2.12.0--pl5262h3289130_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/blast:2.12.0--pl5262h3289130_0" }
 
     input:
     path fasta

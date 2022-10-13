@@ -4,7 +4,6 @@ process BUSCO {
 
     conda (params.enable_conda ? "bioconda::busco=5.4.3" : null)
         'https://depot.galaxyproject.org/singularity/busco:5.4.3--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/busco:5.4.3--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path('tmp_input/*')

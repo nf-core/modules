@@ -4,7 +4,6 @@ process PORECHOP {
 
     conda (params.enable_conda ? "bioconda::porechop=0.2.4" : null)
         'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/porechop:0.2.4--py39h7cff6ad_2" }
 
     input:
     tuple val(meta), path(reads)

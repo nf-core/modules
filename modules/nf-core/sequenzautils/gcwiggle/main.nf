@@ -4,7 +4,6 @@ process SEQUENZAUTILS_GCWIGGLE {
 
     conda (params.enable_conda ? "bioconda::sequenza-utils=3.0.0" : null)
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/sequenza-utils:3.0.0--py38h6ed170a_2" }
 
     input:
     tuple val(meta), path(fasta)

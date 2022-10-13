@@ -5,7 +5,6 @@ process PRESEQ_LCEXTRAP {
 
     conda (params.enable_conda ? "bioconda::preseq=3.1.2" : null)
         'https://depot.galaxyproject.org/singularity/preseq:3.1.2--h445547b_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/preseq:3.1.2--h445547b_2" }
 
     input:
     tuple val(meta), path(bam)

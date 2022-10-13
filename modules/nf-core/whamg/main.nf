@@ -4,7 +4,6 @@ process WHAMG {
 
     conda (params.enable_conda ? "bioconda::wham=1.8.0" : null)
         'https://depot.galaxyproject.org/singularity/wham:1.8.0.1.2017.05.03--h8b12597_1':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/wham:1.8.0.1.2017.05.03--h8b12597_1" }
 
     input:
     tuple val(meta), path(bam), path(bai)

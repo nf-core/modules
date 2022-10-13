@@ -4,7 +4,6 @@ process FLYE {
 
     conda (params.enable_conda ? "bioconda::flye=2.9" : null)
         'https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/flye:2.9--py39h6935b12_1" }
 
     input:
     tuple val(meta), path(reads)

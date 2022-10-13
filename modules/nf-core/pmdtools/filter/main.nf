@@ -4,7 +4,6 @@ process PMDTOOLS_FILTER {
 
     conda (params.enable_conda ? "bioconda::pmdtools=0.60" : null)
         'https://depot.galaxyproject.org/singularity/pmdtools:0.60--hdfd78af_5' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/pmdtools:0.60--hdfd78af_5" }
 
     input:
     tuple val(meta), path(bam), path (bai)

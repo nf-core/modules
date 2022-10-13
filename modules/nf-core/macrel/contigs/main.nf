@@ -4,7 +4,6 @@ process MACREL_CONTIGS {
 
     conda (params.enable_conda ? "bioconda::macrel=1.1.0" : null)
         'https://depot.galaxyproject.org/singularity/macrel:1.1.0--py36hc5360cc_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/macrel:1.1.0--py36hc5360cc_0" }
 
     input:
     tuple val(meta), path(fasta)

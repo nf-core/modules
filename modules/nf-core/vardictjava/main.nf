@@ -4,7 +4,6 @@ process VARDICTJAVA {
 
     conda (params.enable_conda ? "bioconda::vardict-java=1.8.3" : null)
         'https://depot.galaxyproject.org/singularity/vardict-java:1.8.3--hdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/vardict-java:1.8.3--hdfd78af_0" }
 
     input:
     tuple val(meta), path(bam), path(bai), path(bed)

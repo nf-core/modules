@@ -4,7 +4,6 @@ process PAIRTOOLS_DEDUP {
 
     conda (params.enable_conda ? "bioconda::pairtools=0.3.0" : null)
         'https://depot.galaxyproject.org/singularity/pairtools:0.3.0--py37hb9c2fc3_5' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/pairtools:0.3.0--py37hb9c2fc3_5" }
 
     input:
     tuple val(meta), path(input)

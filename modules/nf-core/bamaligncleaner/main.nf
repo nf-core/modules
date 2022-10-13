@@ -4,7 +4,6 @@ process BAMALIGNCLEANER {
 
     conda (params.enable_conda ? "bioconda::bamaligncleaner=0.2.1" : null)
         'https://depot.galaxyproject.org/singularity/bamaligncleaner:0.2.1--pyhdfd78af_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bamaligncleaner:0.2.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(bam)

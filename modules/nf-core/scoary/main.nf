@@ -4,7 +4,6 @@ process SCOARY {
 
     conda (params.enable_conda ? "bioconda::scoary=1.6.16" : null)
         'https://depot.galaxyproject.org/singularity/scoary:1.6.16--py_2' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/scoary:1.6.16--py_2" }
 
     input:
     tuple val(meta), path(genes), path(traits)

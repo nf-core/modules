@@ -4,7 +4,6 @@ process RGI_MAIN {
 
     conda (params.enable_conda ? "bioconda::rgi=5.2.1" : null)
         'https://depot.galaxyproject.org/singularity/rgi:5.2.1--pyha8f3691_2':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/rgi:5.2.1--pyha8f3691_2" }
 
     input:
     tuple val(meta), path(fasta)

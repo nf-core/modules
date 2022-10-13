@@ -4,7 +4,6 @@ process ISOSEQ3_REFINE {
 
     conda (params.enable_conda ? "bioconda::isoseq3=3.4.0" : null)
         'https://depot.galaxyproject.org/singularity/isoseq3:3.4.0--0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/isoseq3:3.4.0--0" }
 
     input:
     tuple val(meta), path(bam)

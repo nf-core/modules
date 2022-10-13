@@ -4,7 +4,6 @@ process HIFIASM {
 
     conda (params.enable_conda ? "bioconda::hifiasm=0.15.4" : null)
         'https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hifiasm:0.15.4--h2e03b76_0" }
 
     input:
     tuple val(meta), path(reads)

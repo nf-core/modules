@@ -4,7 +4,6 @@ process IQTREE {
 
     conda (params.enable_conda ? 'bioconda::iqtree=2.1.4_beta' : null)
         'https://depot.galaxyproject.org/singularity/iqtree:2.1.4_beta--hdcc8f71_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/iqtree:2.1.4_beta--hdcc8f71_0" }
 
     input:
     path alignment

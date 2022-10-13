@@ -4,7 +4,6 @@ process AMRFINDERPLUS_UPDATE {
 
     conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
         'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:3.10.30--h6e70893_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ncbi-amrfinderplus:3.10.30--h6e70893_0" }
 
     output:
     path "amrfinderdb.tar.gz", emit: db

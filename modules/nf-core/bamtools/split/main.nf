@@ -4,7 +4,6 @@ process BAMTOOLS_SPLIT {
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.2" : null)
         'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hd03093a_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bamtools:2.5.2--hd03093a_0" }
 
     input:
     tuple val(meta), path(bam)

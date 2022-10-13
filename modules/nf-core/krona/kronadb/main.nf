@@ -5,7 +5,6 @@ process KRONA_KRONADB {
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/krona:2.7.1--pl526_5" }
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db

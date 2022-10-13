@@ -4,7 +4,6 @@ process BWAMETH_ALIGN {
 
     conda (params.enable_conda ? "bioconda::bwameth=0.2.2" : null)
         'https://depot.galaxyproject.org/singularity/bwameth:0.2.2--py_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/bwameth:0.2.2--py_1" }
 
     input:
     tuple val(meta), path(reads)

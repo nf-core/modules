@@ -5,7 +5,6 @@ process UCSC_BEDGRAPHTOBIGWIG {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ucsc-bedgraphtobigwig=377" : null)
         'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:377--h446ed27_1' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/ucsc-bedgraphtobigwig:377--h446ed27_1" }
 
     input:
     tuple val(meta), path(bedgraph)

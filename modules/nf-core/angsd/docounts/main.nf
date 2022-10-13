@@ -4,7 +4,6 @@ process ANGSD_DOCOUNTS {
 
     conda (params.enable_conda ? "bioconda::angsd=0.939" : null)
         'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/angsd:0.939--h468462d_0" }
 
     input:
     tuple val(meta), path(bam), path(bai), path(minqfile)

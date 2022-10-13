@@ -4,7 +4,6 @@ process GVCFTOOLS_EXTRACTVARIANTS {
 
     conda (params.enable_conda ? "bioconda::gvcftools=0.17.0" : null)
         'https://depot.galaxyproject.org/singularity/gvcftools:0.17.0--he941832_3':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gvcftools:0.17.0--he941832_3" }
 
     input:
     tuple val(meta), path(gvcf)

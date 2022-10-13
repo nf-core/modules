@@ -4,7 +4,6 @@ process OPTITYPE {
 
     conda (params.enable_conda ? "bioconda::optitype=1.3.5" : null)
         'https://depot.galaxyproject.org/singularity/optitype:1.3.5--0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/optitype:1.3.5--0" }
 
     input:
     tuple val(meta), path(bam), path(bai)

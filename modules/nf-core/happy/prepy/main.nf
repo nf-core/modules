@@ -5,7 +5,6 @@ process HAPPY_PREPY {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hap.py=0.3.14" : null)
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hap.py:0.3.14--py27h5c5a3ab_0" }
 
     input:
     tuple val(meta), path(vcf), path(bed)

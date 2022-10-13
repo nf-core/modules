@@ -4,7 +4,6 @@ process MOBSUITE_RECON {
 
     conda (params.enable_conda ? "bioconda::mob_suite=3.0.3" : null)
         'https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mob_suite:3.0.3--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

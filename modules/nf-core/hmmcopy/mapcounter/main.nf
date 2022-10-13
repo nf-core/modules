@@ -4,7 +4,6 @@ process HMMCOPY_MAPCOUNTER {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hmmcopy=0.1.1" : null)
         'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_7':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/hmmcopy:0.1.1--h2e03b76_7" }
 
     input:
     path bigwig

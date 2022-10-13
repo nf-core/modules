@@ -3,7 +3,6 @@ process FASTTREE {
 
     conda (params.enable_conda ? "bioconda::fasttree=2.1.10" : null)
         'https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/fasttree:2.1.10--h516909a_4" }
 
     input:
     path alignment

@@ -4,7 +4,6 @@ process BISCUIT_ALIGN {
 
     conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.15" : null)
         'https://depot.galaxyproject.org/singularity/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0" }
 
     input:
     tuple val(meta), path(reads)

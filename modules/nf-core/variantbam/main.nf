@@ -5,7 +5,6 @@ process VARIANTBAM {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::variantbam=1.4.4a" : null)
         'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/variantbam:1.4.4a--h7d7f7ad_5" }
 
     input:
     tuple val(meta), path(bam)

@@ -4,7 +4,6 @@ process DRAGMAP_HASHTABLE {
 
     conda (params.enable_conda ? "bioconda::dragmap=1.2.1" : null)
         'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--hd4ca14e_0':
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/dragmap:1.2.1--hd4ca14e_0" }
 
     input:
     path fasta

@@ -5,7 +5,6 @@ process GFAFFIX {
     conda (params.enable_conda ? 'bioconda::gfaffix=0.1.4' : null)
 
         'https://depot.galaxyproject.org/singularity/gfaffix:0.1.4--hec16e2b_0' :
-        "${params.docker_registry ?: 'quay.io/biocontainers'}/gfaffix:0.1.4--hec16e2b_0" }
 
     input:
     tuple val(meta), path(gfa)
