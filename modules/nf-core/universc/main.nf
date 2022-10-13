@@ -91,6 +91,31 @@ process CELLRANGER_COUNT_OS {
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
+    rm -rf ${reference_name}/star
+    mkdir -p ${reference_name}/star
+    unpigz -k ${reference_name}/genes/genes.gtf.gz
+
+    STAR \\
+        --runMode genomeGenerate \\
+        --runThreadN 1 \\
+        --genomeDir ${reference_name}/star \\
+        --genomeFastaFiles ${reference_name}/fasta/genome.fa \\
+        --genomeSAindexNbases 6 \\
+        --genomeChrBinNbits 15 \\
+        --genomeSAsparseD 1 \\
+        --limitGenomeGenerateRAM 17179869184 \\
+        --sjdbGTFfile ${reference_name}/genes/genes.gtf
+    sed -i "s/cellranger-cellranger-....../cellranger-3.0.2/g" ${reference_name}/reference.json
+
+    cp ${reference_name}/fasta/genome.fa genome.fa
+    cp ${reference_name}/genes/genes.gtf genes.gtf
+    rm -rf ${reference_name}
+
+    cellranger mkref \\
+        --genome=${reference_name} \\
+        --fasta=genome.fa \\
+        --genes=genes.gtf
+
     cellranger \\
         count  \\
         --id='sample-${meta.id}' \\
