@@ -3,9 +3,9 @@ process METHYLDACKEL_EXTRACT {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::methyldackel=0.6.0' : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/methyldackel:0.6.0--h22771d5_0' :
-        'quay.io/biocontainers/methyldackel:0.6.0--h22771d5_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/methyldackel:0.6.0--h22771d5_0" }
 
     input:
     tuple val(meta), path(bam), path(bai)

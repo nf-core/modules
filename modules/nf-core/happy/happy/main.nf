@@ -4,9 +4,9 @@ process HAPPY_HAPPY {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::hap.py=0.3.14" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'quay.io/biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/hap.py:0.3.14--py27h5c5a3ab_0" }
 
     input:
     tuple val(meta), path(truth_vcf), path(query_vcf), path(bed)

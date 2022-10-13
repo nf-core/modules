@@ -3,9 +3,9 @@ process BANDAGE_IMAGE {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::bandage=0.8.1' : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2' :
-        'quay.io/biocontainers/bandage:0.8.1--hc9558a2_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/bandage:0.8.1--hc9558a2_2" }
 
     input:
     tuple val(meta), path(gfa)

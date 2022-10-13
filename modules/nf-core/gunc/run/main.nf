@@ -3,9 +3,9 @@ process GUNC_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gunc=1.0.5" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        'quay.io/biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/gunc:1.0.5--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

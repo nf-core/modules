@@ -3,9 +3,9 @@ process ADAPTERREMOVAL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::adapterremoval=2.3.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
-        'quay.io/biocontainers/adapterremoval:2.3.2--hb7ba0dd_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/adapterremoval:2.3.2--hb7ba0dd_0" }
 
     input:
     tuple val(meta), path(reads)

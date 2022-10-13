@@ -3,9 +3,9 @@ process ABACAS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::abacas=1.3.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
-        'quay.io/biocontainers/abacas:1.3.1--pl526_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/abacas:1.3.1--pl526_0" }
 
     input:
     tuple val(meta), path(scaffold)

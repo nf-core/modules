@@ -3,9 +3,9 @@ process FFQ {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ffq=0.2.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/ffq:0.2.1--pyhdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/ffq:0.2.1--pyhdfd78af_0" }
 
     input:
     val ids

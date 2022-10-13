@@ -2,9 +2,9 @@ process HAMRONIZATION_SUMMARIZE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hamronization=1.1.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hamronization:1.1.1--pyhdfd78af_0':
-        'quay.io/biocontainers/hamronization:1.1.1--pyhdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/hamronization:1.1.1--pyhdfd78af_0" }
 
     input:
     path(reports)

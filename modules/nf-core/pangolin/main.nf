@@ -3,9 +3,9 @@ process PANGOLIN {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::pangolin=4.1.1' : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pangolin:4.1.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/pangolin:4.1.1--pyhdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/pangolin:4.1.1--pyhdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

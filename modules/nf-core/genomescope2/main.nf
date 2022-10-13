@@ -3,9 +3,9 @@ process GENOMESCOPE2 {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::genomescope2=2.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genomescope2:2.0--py310r41hdfd78af_5':
-        'quay.io/biocontainers/genomescope2:2.0--py310r41hdfd78af_5' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/genomescope2:2.0--py310r41hdfd78af_5" }
 
     input:
     tuple val(meta), path(histogram)

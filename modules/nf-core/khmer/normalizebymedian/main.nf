@@ -3,9 +3,9 @@ process KHMER_NORMALIZEBYMEDIAN {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::khmer=3.0.0a3" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
-        'quay.io/biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/khmer:3.0.0a3--py37haa7609a_2" }
 
     input:
     path pe_reads

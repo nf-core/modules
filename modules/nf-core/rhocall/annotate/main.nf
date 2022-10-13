@@ -3,9 +3,9 @@ process RHOCALL_ANNOTATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::rhocall=0.5.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
-        'quay.io/biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/rhocall:0.5.1--py39hbf8eff0_0" }
 
     input:
     tuple val(meta), path(vcf), path(tbi)

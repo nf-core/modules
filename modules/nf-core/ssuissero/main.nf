@@ -4,9 +4,9 @@ process SSUISSERO {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::ssuissero=1.0.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ssuissero%3A1.0.1--hdfd78af_0':
-        'quay.io/biocontainers/ssuissero:1.0.1--hdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/ssuissero:1.0.1--hdfd78af_0" }
 
     input:
     tuple val(meta), path(fasta)

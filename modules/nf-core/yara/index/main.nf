@@ -3,9 +3,9 @@ process YARA_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::yara=1.0.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yara:1.0.2--2' :
-        'quay.io/biocontainers/yara:1.0.2--2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/yara:1.0.2--2" }
 
     input:
     tuple val(meta), path(fasta)

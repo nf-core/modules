@@ -3,9 +3,9 @@ process DRAGMAP_HASHTABLE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::dragmap=1.2.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--hd4ca14e_0':
-        'quay.io/biocontainers/dragmap:1.2.1--hd4ca14e_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/dragmap:1.2.1--hd4ca14e_0" }
 
     input:
     path fasta

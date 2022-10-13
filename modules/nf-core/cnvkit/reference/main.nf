@@ -3,9 +3,9 @@ process CNVKIT_REFERENCE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.9" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvkit:0.9.9--pyhdfd78af_0':
-        'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/cnvkit:0.9.9--pyhdfd78af_0" }
 
     input:
     path fasta

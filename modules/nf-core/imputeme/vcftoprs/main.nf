@@ -3,7 +3,7 @@ process IMPUTEME_VCFTOPRS {
     label 'process_low'
 
     conda (params.enable_conda ? "YOUR-TOOL-HERE" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img' :
         'biocontainers/imputeme:vv1.0.7_cv1' }"
 

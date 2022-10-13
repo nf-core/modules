@@ -4,9 +4,9 @@ process PHANTOMPEAKQUALTOOLS {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::phantompeakqualtools=1.2.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0' :
-        'quay.io/biocontainers/phantompeakqualtools:1.2.2--0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/phantompeakqualtools:1.2.2--0" }
 
     input:
     tuple val(meta), path(bam)

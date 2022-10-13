@@ -4,9 +4,9 @@ process ADAPTERREMOVALFIXPREFIX {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::adapterremovalfixprefix=0.0.5" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
-        'quay.io/biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/adapterremovalfixprefix:0.0.5--hdfd78af_2" }
 
     input:
     tuple val(meta), path(fastq)

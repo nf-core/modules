@@ -3,9 +3,9 @@ process MANTA_TUMORONLY {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::manta=1.6.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
-        'quay.io/biocontainers/manta:1.6.0--h9ee0642_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/manta:1.6.0--h9ee0642_1" }
 
     input:
     tuple val(meta), path(input), path(input_index), path(target_bed), path(target_bed_tbi)

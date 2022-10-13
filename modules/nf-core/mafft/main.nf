@@ -3,9 +3,9 @@ process MAFFT {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::mafft=7.490" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mafft:7.490--h779adbc_0':
-        'quay.io/biocontainers/mafft:7.490--h779adbc_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/mafft:7.490--h779adbc_0" }
 
     input:
     tuple val(meta), path(fasta)

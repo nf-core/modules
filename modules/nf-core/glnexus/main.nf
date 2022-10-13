@@ -3,9 +3,9 @@ process GLNEXUS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::glnexus=1.4.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glnexus:1.4.1--h40d77a6_0' :
-        'quay.io/biocontainers/glnexus:1.4.1--h40d77a6_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/glnexus:1.4.1--h40d77a6_0" }
 
     input:
     tuple val(meta), path(gvcfs)

@@ -3,9 +3,9 @@ process GENMOD_ANNOTATE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
-        'quay.io/biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/genmod:3.7.4--pyh5e36f6f_0" }
 
     input:
     tuple val(meta), path(input_vcf)

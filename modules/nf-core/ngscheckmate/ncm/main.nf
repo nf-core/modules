@@ -2,9 +2,9 @@ process NGSCHECKMATE_NCM {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ngscheckmate=1.0.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.0--py27r41hdfd78af_3':
-        'quay.io/biocontainers/ngscheckmate:1.0.0--py27r41hdfd78af_3' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/ngscheckmate:1.0.0--py27r41hdfd78af_3" }
 
     input:
     path files

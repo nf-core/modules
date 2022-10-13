@@ -3,9 +3,9 @@ process SAMBLASTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::samblaster=0.1.26 bioconda::samtools=1.15.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:fff03944e664bbf9a139f7b174b9cb2d4163271a-0' :
-        'quay.io/biocontainers/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:fff03944e664bbf9a139f7b174b9cb2d4163271a-0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:fff03944e664bbf9a139f7b174b9cb2d4163271a-0" }
 
     input:
     tuple val(meta), path(bam)

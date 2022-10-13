@@ -3,9 +3,9 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::control-freec=11.6" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/control-freec:11.6--h1b792b2_1':
-        'quay.io/biocontainers/control-freec:11.6--h1b792b2_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/control-freec:11.6--h1b792b2_1" }
 
     input:
     tuple val(meta), path(cnvs), path(ratio)

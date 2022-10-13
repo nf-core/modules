@@ -2,14 +2,14 @@ process DEEPARG_DOWNLOADDATA {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deeparg=1.0.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/deeparg:1.0.2--pyhdfd78af_1' :
-        'quay.io/biocontainers/deeparg:1.0.2--pyhdfd78af_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/deeparg:1.0.2--pyhdfd78af_1" }
     /*
     We have to force singularity to run with -B to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
     Original report: https://github.com/nf-core/funcscan/issues/23
     */
-    containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
+    containerOptions { {workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
 
 
     input:

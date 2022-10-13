@@ -2,9 +2,9 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krakentools=1.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakentools:1.2--pyh5e36f6f_0':
-        'quay.io/biocontainers/krakentools:1.2--pyh5e36f6f_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/krakentools:1.2--pyh5e36f6f_0" }
 
     input:
     tuple val(meta), path(kreports)

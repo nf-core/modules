@@ -4,9 +4,9 @@ process KRONA_KTUPDATETAXONOMY {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::krona=2.7.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
-        'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/krona:2.7.1--pl526_5" }
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db

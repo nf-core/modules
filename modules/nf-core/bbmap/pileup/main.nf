@@ -3,9 +3,9 @@ process BBMAP_PILEUP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.15.1 pigz=2.6" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0' :
-        'quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0" }
 
     input:
     tuple val(meta), path(bam)

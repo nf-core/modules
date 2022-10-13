@@ -3,9 +3,9 @@ process WHAMG {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::wham=1.8.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wham:1.8.0.1.2017.05.03--h8b12597_1':
-        'quay.io/biocontainers/wham:1.8.0.1.2017.05.03--h8b12597_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/wham:1.8.0.1.2017.05.03--h8b12597_1" }
 
     input:
     tuple val(meta), path(bam), path(bai)

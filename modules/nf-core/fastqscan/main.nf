@@ -3,9 +3,9 @@ process FASTQSCAN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::fastq-scan=0.4.4" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastq-scan:0.4.4--h7d875b9_0' :
-        'quay.io/biocontainers/fastq-scan:0.4.4--h7d875b9_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/fastq-scan:0.4.4--h7d875b9_0" }
 
     input:
     tuple val(meta), path(reads)

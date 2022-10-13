@@ -2,9 +2,9 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bracken=2.7" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
-        'quay.io/biocontainers/bracken:2.7--py39hc16433a_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/bracken:2.7--py39hc16433a_0" }
 
     input:
     path input

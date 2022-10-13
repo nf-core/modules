@@ -3,9 +3,9 @@ process FLYE {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::flye=2.9" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1' :
-        'quay.io/biocontainers/flye:2.9--py39h6935b12_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/flye:2.9--py39h6935b12_1" }
 
     input:
     tuple val(meta), path(reads)

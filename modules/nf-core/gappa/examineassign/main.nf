@@ -3,9 +3,9 @@ process GAPPA_EXAMINEASSIGN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::gappa=0.8.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/gappa:0.8.0--h9a82719_0" }
 
     input:
     tuple val(meta), path(jplace)

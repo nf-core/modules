@@ -4,9 +4,9 @@ process SLIMFASTQ {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::slimfastq=2.04" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/slimfastq:2.04--h87f3376_2':
-        'quay.io/biocontainers/slimfastq:2.04--h87f3376_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/slimfastq:2.04--h87f3376_2" }
 
     input:
     tuple val(meta), path(fastq)

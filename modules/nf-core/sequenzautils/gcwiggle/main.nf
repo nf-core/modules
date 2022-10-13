@@ -3,9 +3,9 @@ process SEQUENZAUTILS_GCWIGGLE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::sequenza-utils=3.0.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
-        'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/sequenza-utils:3.0.0--py38h6ed170a_2" }
 
     input:
     tuple val(meta), path(fasta)

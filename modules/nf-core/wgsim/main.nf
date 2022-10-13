@@ -3,9 +3,9 @@ process WGSIM {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::wgsim=1.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wgsim:1.0--h5bf99c6_4':
-        'quay.io/biocontainers/wgsim:1.0--h5bf99c6_4' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/wgsim:1.0--h5bf99c6_4" }
 
     input:
     tuple val(meta), path(fasta)

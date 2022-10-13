@@ -4,9 +4,9 @@ process PRESEQ_LCEXTRAP {
     label 'error_ignore'
 
     conda (params.enable_conda ? "bioconda::preseq=3.1.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/preseq:3.1.2--h445547b_2':
-        'quay.io/biocontainers/preseq:3.1.2--h445547b_2' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/preseq:3.1.2--h445547b_2" }
 
     input:
     tuple val(meta), path(bam)

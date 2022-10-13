@@ -3,9 +3,9 @@ process EPANG {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::epa-ng=0.3.8" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
-        'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/epa-ng:0.3.8--h9a82719_1" }
 
     input:
     tuple val(meta), path(queryaln)

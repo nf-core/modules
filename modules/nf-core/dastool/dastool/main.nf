@@ -3,9 +3,9 @@ process DASTOOL_DASTOOL {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::das_tool=1.1.4" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.4--r41hdfd78af_1' :
-        'quay.io/biocontainers/das_tool:1.1.4--r41hdfd78af_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/das_tool:1.1.4--r41hdfd78af_1" }
 
     input:
     tuple val(meta), path(contigs), path(bins)

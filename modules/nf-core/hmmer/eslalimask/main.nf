@@ -3,9 +3,9 @@ process HMMER_ESLALIMASK {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1':
-        'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/hmmer:3.3.2--h1b792b2_1" }
 
     input:
     tuple val(meta), path(unmaskedaln), val(fmask_rf), val(fmask_all), val(gmask_rf), val(gmask_all), val(pmask_rf), val(pmask_all)

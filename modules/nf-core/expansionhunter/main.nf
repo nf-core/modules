@@ -3,9 +3,9 @@ process EXPANSIONHUNTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::expansionhunter=4.0.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunter:4.0.2--he785bd8_0' :
-        'quay.io/biocontainers/expansionhunter:4.0.2--he785bd8_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/expansionhunter:4.0.2--he785bd8_0" }
 
     input:
     tuple val(meta), path(bam), path(bai)

@@ -3,9 +3,9 @@ process TABIX_BGZIP {
     label 'process_single'
 
     conda (params.enable_conda ? 'bioconda::tabix=1.11' : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'quay.io/biocontainers/tabix:1.11--hdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/tabix:1.11--hdfd78af_0" }
 
     input:
     tuple val(meta), path(input)

@@ -3,9 +3,9 @@ process OPTITYPE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::optitype=1.3.5" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/optitype:1.3.5--0' :
-        'quay.io/biocontainers/optitype:1.3.5--0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/optitype:1.3.5--0" }
 
     input:
     tuple val(meta), path(bam), path(bai)

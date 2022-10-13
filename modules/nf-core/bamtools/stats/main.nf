@@ -3,9 +3,9 @@ process BAMTOOLS_STATS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamtools:2.5.1--h9a82719_9' :
-        'quay.io/biocontainers/bamtools:2.5.1--h9a82719_9' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/bamtools:2.5.1--h9a82719_9" }
 
     input:
     tuple val(meta), path(bam)

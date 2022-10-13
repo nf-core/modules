@@ -3,9 +3,9 @@ process ICHORCNA_CREATEPON {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::r-ichorcna=0.3.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
-        'quay.io/biocontainers/r-ichorcna:0.3.2--r41hdfd78af_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/r-ichorcna:0.3.2--r41hdfd78af_0" }
 
     input:
     path wigs

@@ -3,9 +3,9 @@ process MSISENSOR2_MSI {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::msisensor2=0.1" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0':
-        'quay.io/biocontainers/msisensor2:0.1--hd03093a_0' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/msisensor2:0.1--hd03093a_0" }
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)

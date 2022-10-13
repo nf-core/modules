@@ -3,9 +3,9 @@ process MALT_BUILD {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::malt=0.41" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
-        'quay.io/biocontainers/malt:0.41--1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/malt:0.41--1" }
 
     input:
     path fastas

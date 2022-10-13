@@ -3,9 +3,9 @@ process BWAMETH_ALIGN {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::bwameth=0.2.2" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwameth:0.2.2--py_1' :
-        'quay.io/biocontainers/bwameth:0.2.2--py_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/bwameth:0.2.2--py_1" }
 
     input:
     tuple val(meta), path(reads)

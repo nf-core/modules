@@ -3,9 +3,9 @@ process ECTYPER {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::ectyper=1.0.0" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ectyper:1.0.0--pyhdfd78af_1' :
-        'quay.io/biocontainers/ectyper:1.0.0--pyhdfd78af_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/ectyper:1.0.0--pyhdfd78af_1" }
 
     input:
     tuple val(meta), path(fasta)

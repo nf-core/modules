@@ -4,9 +4,9 @@ process VCF2DB {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::vcf2db=2020.02.24" : null)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container { workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcf2db:2020.02.24--hdfd78af_1':
-        'quay.io/biocontainers/vcf2db:2020.02.24--hdfd78af_1' }"
+        "${params.docker_url ?: 'quay.io/biocontainers'}/vcf2db:2020.02.24--hdfd78af_1" }
 
     input:
     tuple val(meta), path(vcf), path(ped)
