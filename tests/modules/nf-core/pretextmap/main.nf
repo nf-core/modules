@@ -28,7 +28,7 @@ workflow test_pretextmap_pairs_gz {
 
     input = [
         [ id:'test_pairs_gz', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['illumina']['test_pairs_gz'], checkIfExists: true)
+        file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/4dn.bsorted.chr21_22_only.nontriangle.pairs.gz", checkIfExists: true)
     ]
 
     PRETEXTMAP ( input )
