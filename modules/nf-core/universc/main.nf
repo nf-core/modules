@@ -46,7 +46,7 @@ process UNIVERSC {
     echo  ${input_reads}
 
     # disable auto testing for 10x to run on small test files
-    sed -i 's/temp_chemistry="auto"/temp_chemistry=\${chemistry}/g' /universc/launch_universc.sh 
+    sed -i 's/temp_chemistry="auto"/temp_chemistry=\${chemistry}/g' /universc/launch_universc.sh
     sed -i 's/chemistry="auto"/lastcall_b=16; lastcall_u=10/g' /universc/launch_universc.sh
     sed -i "2523s; || 26\\`;\\` > /dev/null || old_rna_offset=26;g" /universc/launch_universc.sh
 
