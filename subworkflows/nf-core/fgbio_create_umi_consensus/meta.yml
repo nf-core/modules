@@ -27,6 +27,11 @@ input:
       type: list
       description: list umi-tagged reads
       pattern: "[ *.{fastq.gz/fq.gz} ]"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: The reference fasta file
@@ -44,6 +49,12 @@ input:
     description: |
     Reguired argument: defines the UMI assignment strategy.
     Must be chosen among: Identity, Edit, Adjacency, Paired.
+  - aligner:
+      type: string
+      description: Aligner to use for alignment
+      enum:
+        - bwa
+        - bwamem2
 output:
   - versions:
       type: file
