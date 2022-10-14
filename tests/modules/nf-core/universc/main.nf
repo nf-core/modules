@@ -9,7 +9,7 @@ include { UNIVERSC } from '../../../../modules/nf-core/universc/main.nf'
 
 workflow test_cellranger_10x {
     
-    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: '123', samples: ["test_10x"] ], // meta map
+    input = [ [ id:'test', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', gem: '123', samples: ["test_10x"] ], // meta map
              [ file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_10x_2_fastq_gz'], checkIfExists: true)
         ]
@@ -43,7 +43,7 @@ workflow test_cellranger_10x {
 
 workflow test_universc_10x {
     
-    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: '123', samples: ["test_10x"] ], // meta map
+    input = [ [ id:'sample-123', technology:'10x', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', samples: ["test_10x"] ], // meta map
              [ file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),
               file(params.test_data['homo_sapiens']['illumina']['test_10x_2_fastq_gz'], checkIfExists: true)
         ]

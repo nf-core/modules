@@ -43,12 +43,18 @@ process UNIVERSC {
         --fasta=genome.fa \\
         --genes=genes.gtf
 
+    echo  ${input_reads}
+
+    # disable auto testing for 10x to run on small test files 
+    sed -i 's/chemistry="auto"//g' /universc/launch_universc.sh
+
     bash /universc/launch_universc.sh \\
-        --technology '${meta.technology}' \\
         --id 'sample-${meta.id}' \\
         ${input_reads} \\
+        --technology '${meta.technology}' \\
+        --chemistry '${meta.chemistry}' \\
         --reference ${reference_name} \\
-        --sample ${sample_arg} \\
+        --description ${sample_arg} \\
         --jobmode "local" \\
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
