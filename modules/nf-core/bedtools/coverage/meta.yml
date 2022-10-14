@@ -33,7 +33,10 @@ input:
       pattern: "*.{bam,bed,gff,vcf}"
   - fasta_fai:
       type: file
-      description: Optional reference genome 2 column file that defines the expected chromosome order in the input files for use with the -sorted option.
+      description: |
+        Optional reference genome 2 column file that defines the expected chromosome order 
+        in the input files for use with the -sorted option. 
+        When `fasta_fai` is provided, `-sorted` option is added to the command.
       pattern: "*.{fai,txt,chromsizes}"
 
 output:
