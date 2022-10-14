@@ -13,6 +13,7 @@ process UNIVERSC {
     //container "${ workflow.containerEngine == 'docker' && !task.ext.singularity_pull_docker_container ?
     //    "tomkellygenetics/universc:1.2.3"
     container "tomkellygenetics/universc:1.2.3"
+    containerOptions = "--user root"
 
     input:
     tuple val(meta), path(reads)
@@ -28,11 +29,20 @@ process UNIVERSC {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
+    cp ${reference_name}/fasta/genome.fa genome.fa
+    unpigz ${reference_name}/genes/genes.gtf.gz
+    cp ${reference_name}/genes/genes.gtf genes.gtf
+    rm -rf ${reference_name}
+
+    cellranger mkref \\
+        --genome=${reference_name} \\
+        --fasta=genome.fa \\
+        --genes=genes.gtf
+
     bash /universc/launch_universc.sh \\
         --technology '${meta.technology}' \\
         --id 'sample-${meta.id}' \\
@@ -79,6 +89,7 @@ process CELLRANGER_COUNT_OS {
     input:
     tuple val(meta), path(reads)
     path  reference
+
     output:
     tuple val(meta), path("sample-${meta.id}/outs/*"), emit: outs
     path "versions.yml"                              , emit: versions
