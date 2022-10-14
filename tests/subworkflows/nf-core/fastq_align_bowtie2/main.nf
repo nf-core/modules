@@ -11,7 +11,10 @@ workflow test_align_bowtie2_single_end {
         [ id:'test', single_end:true ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     save_unaligned = false
     sort = false
 
@@ -28,7 +31,10 @@ workflow test_align_bowtie2_paired_end {
         ]
     ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     save_unaligned = false
     sort = false
 
