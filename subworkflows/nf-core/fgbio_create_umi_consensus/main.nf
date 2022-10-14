@@ -20,26 +20,24 @@ workflow CREATE_UMI_CONSENSUS {
     take:
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
     fasta                     // channel: [mandatory] [ val(meta), /path/to/reference/fasta ]
-    read_structure            // string:  [mandatory] "read_structure"
     groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner                   // string:  [mandatory] "bwa" or "bwamem2"
 
     main:
     ch_versions = Channel.empty()
 
-    // using information in val(read_structure) FASTQ reads are converted into
+    // using information in read_structure (FASTQTOBAM:ext.args) FASTQ reads are converted into
     // a tagged unmapped BAM file (uBAM)
-    FASTQTOBAM ( reads, read_structure )
-    ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
+    FASTQTOBAM ( reads )
+    ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     // but keep the appropriate UMI tags in the FASTQ comment field and produce
     // an interleaved FASQT file (hence, split = false)
-    split = false
-    BAM2FASTQ ( FASTQTOBAM.out.umibam, split )
+    BAM2FASTQ ( FASTQTOBAM.out.bam, false )
     ch_versions = ch_versions.mix(BAM2FASTQ.out.versions)
 
-    // the user can choose here to use either bwa-mem (default) or bwa-mem2
+    // the user can choose here to use either bwa or bwamem2
     aligned_bam = Channel.empty()
 
     switch (aligner) {
@@ -65,6 +63,7 @@ workflow CREATE_UMI_CONSENSUS {
             break
         default:
             exit 1, "Unknown aligner: ${aligner}"
+    }
 
     // samblaster is used in order to tag mates information in the BAM file
     // this is used in order to group reads by UMI
@@ -82,9 +81,9 @@ workflow CREATE_UMI_CONSENSUS {
     ch_versions = ch_versions.mix(CALLUMICONSENSUS.out.versions)
 
     emit:
-    ubam           = FASTQTOBAM.out.umibam          // channel: [ val(meta), [ bam ] ]
-    groupbam       = GROUPREADSBYUMI.out.bam        // channel: [ val(meta), [ bam ] ]
-    consensusbam   = CALLUMICONSENSUS.out.bam       // channel: [ val(meta), [ bam ] ]
-    versions       = ch_versions                    // channel: [ versions.yml ]
+    ubam           = FASTQTOBAM.out.bam         // channel: [ val(meta), [ bam ] ]
+    groupbam       = GROUPREADSBYUMI.out.bam    // channel: [ val(meta), [ bam ] ]
+    consensusbam   = CALLUMICONSENSUS.out.bam   // channel: [ val(meta), [ bam ] ]
+    versions       = ch_versions                // channel: [ versions.yml ]
 }
 
