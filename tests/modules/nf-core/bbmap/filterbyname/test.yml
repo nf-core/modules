@@ -1,18 +1,40 @@
 - name: bbmap filterbyname test_bbmap_filterbyname_paired_end
   command: nextflow run ./tests/modules/nf-core/bbmap/filterbyname -entry test_bbmap_filterbyname_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/filterbyname/nextflow.config
   tags:
-  - bbmap/filterbyname
   - bbmap
+  - bbmap/filterbyname
   files:
-  - path: output/bbmap/test.fasta
-    md5sum: b03f20541df9eb3053f8fb507a6c124f
+  - path: output/bbmap/test_1.fastq.zip
+    md5sum: ad364713253f805c7fd2fff379ef4a2f
+  - path: output/bbmap/test_2.fastq.zip
+    me5sum: 967d5beefb2f881c126581a427e5d61b
+  - path: output/bbmap/test.filterbyname.log
+
+- name: bbmap filterbyname test_bbmap_filterbyname_paired_end_interleaved_filter_seqs
+  command: nextflow run ./tests/modules/nf-core/bbmap/filterbyname -entry test_bbmap_filterbyname_paired_end_interleaved_filter_seqs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/filterbyname/nextflow.config
+  tags:
+  - bbmap
+  - bbmap/filterbyname
+  files:
+  - path: output/bbmap/test.fasta.gz
+    md5sum: a333a3eedec402f2970cf8658ebe14e7
   - path: output/bbmap/test.filterbyname.log
 
 - name: bbmap filterbyname test_bbmap_filterbyname_single_end
   command: nextflow run ./tests/modules/nf-core/bbmap/filterbyname -entry test_bbmap_filterbyname_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/filterbyname/nextflow.config
   tags:
-  - bbmap/filterbyname
   - bbmap
+  - bbmap/filterbyname
+  files:
+  - path: output/bbmap/test.fasta
+    md5sum: 45f83b9d54d3a4ebd94f54300d2cbfc9
+  - path: output/bbmap/test.filterbyname.log
+
+- name: bbmap filterbyname test_bbmap_filterbyname_single_end_filter_seqs
+  command: nextflow run ./tests/modules/nf-core/bbmap/filterbyname -entry test_bbmap_filterbyname_single_end_filter_seqs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bbmap/filterbyname/nextflow.config
+  tags:
+  - bbmap
+  - bbmap/filterbyname
   files:
   - path: output/bbmap/test.fastq.gz
     md5sum: ddc04fd7fd192c9c61aea553d50669e0

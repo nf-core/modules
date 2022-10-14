@@ -9,7 +9,6 @@ process BBMAP_FILTERBYNAME {
 
     input:
     tuple val(meta), path(reads)
-    val names
 
     output:
     tuple val(meta), path("*.$output_extension"), emit: reads
@@ -21,9 +20,10 @@ process BBMAP_FILTERBYNAME {
 
     script:
     def args               = task.ext.args   ?: [ args:"" ]
+    args.args = args.args ? "$args.args" : ""
+
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def interleaved_output = args.interleaved_output ? true : false
-
     def input  = meta.single_end ? "in=${reads}" :
         "in=${reads[0]} in2=${reads[1]}"
 
@@ -40,10 +40,10 @@ process BBMAP_FILTERBYNAME {
 
     filtered = (meta.single_end || interleaved_output) ?
         "out=${prefix}.$output_extension" :
-        "out1=${prefix}_1.$output_extension}out2=${prefix}_2.$output_extension"
+        "out1=${prefix}_1.$output_extension out2=${prefix}_2.$output_extension"
+
     """
     filterbyname.sh \\
-        names=$names \\
         -Xmx${avail_mem}g \\
         $input \\
         $filtered \\
