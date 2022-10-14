@@ -2,17 +2,17 @@ process BBMAP_FILTERBYNAME {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::bbmap=39.00" : null)
+    conda (params.enable_conda ? "bioconda::bbmap=39.01" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.00--h5c4e2a8_0':
-        'quay.io/biocontainers/bbmap:39.00--h5c4e2a8_0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h311275f_0':
+        'quay.io/biocontainers/bbmap:39.01--h311275f_0' }"
 
     input:
     tuple val(meta), path(reads)
     val names
 
     output:
-    tuple val(meta), path("*.{fasta,fastq,gz,zip,fa,fq,sam}"), emit: reads
+    tuple val(meta), path("*.$output_extension"), emit: reads
     tuple val(meta), path('*.log')                , emit: log
     path "versions.yml"                           , emit: versions
 
@@ -23,16 +23,9 @@ process BBMAP_FILTERBYNAME {
     def args               = task.ext.args   ?: [ args:"" ]
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def interleaved_output = args.interleaved_output ? true : false
-    def output_extension   = args.output_extension ? "$args.output_extension" :
-    meta.single_end ? reads.name.tokenize('.')[1..-1].join('.') :
-    reads[0].name.tokenize('.')[1..-1].join('.')
 
     def input  = meta.single_end ? "in=${reads}" :
-    "in=${reads[0]} in2=${reads[1]}"
-
-    def filtered = (meta.single_end || interleaved_output) ?
-    "out=${prefix}.${output_extension}" :
-    "out1=${prefix}_1.${output_extension} out2=${prefix}_2.${output_extension}"
+        "in=${reads[0]} in2=${reads[1]}"
 
     def avail_mem = 3
     if (!task.memory) {
@@ -41,6 +34,13 @@ process BBMAP_FILTERBYNAME {
         avail_mem = task.memory.giga
     }
 
+    output_extension   = args.output_extension ? "$args.output_extension" :
+        meta.single_end ? reads.name.tokenize('.')[1..-1].join('.') :
+        reads[0].name.tokenize('.')[1..-1].join('.')
+
+    filtered = (meta.single_end || interleaved_output) ?
+        "out=${prefix}.$output_extension" :
+        "out1=${prefix}_1.$output_extension}out2=${prefix}_2.$output_extension"
     """
     filterbyname.sh \\
         names=$names \\
