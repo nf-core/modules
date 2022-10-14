@@ -12,7 +12,7 @@ process FGBIO_FILTERCONSENSUSREADS {
     // please note:
     // --min-reads is a required argument with no default
     // --min-base-quality is a required argument with no default
-    // --make sure they are specified via ext.args in your config
+    // make sure they are specified via ext.args in your config
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
