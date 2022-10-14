@@ -33,7 +33,7 @@ process MIRANDA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        miranda: \$(echo \$(miranda -v | sed -n 4p | sed 's/^.*miranda //; s/microRNA.*\$//' ))
+        miranda: \$(echo \$(miranda -v | sed -n 4p | sed 's/^.*miranda v//; s/microRNA.*\$//' ))
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process MIRANDA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        miranda: \$(echo \$(miranda -v | sed -n 4p | sed 's/^.*miranda //; s/microRNA.*\$//' ))
+        miranda: \$(echo \$(miranda -v | sed -n 4p | sed 's/^.*miranda v//; s/microRNA.*\$//' ))
     END_VERSIONS
     """
 }
