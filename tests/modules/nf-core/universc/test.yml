@@ -1,150 +1,188 @@
-## nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml universc
 - name: universc test_cellranger_10x
-  command: nextflow run tests/modules/nf-core/universc -entry test_cellranger_10x -c tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/universc -entry test_cellranger_10x -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
   tags:
-    - universc
+  - universc
+  - universc/cellranger
   files:
-    - path: output/main.nf
-      md5sum: 216fbfe8b2f51de6e720c12043f95717
-    - path: output/nextflow.config
-      md5sum: a44614a3c6420d316d52ea711b7f1aa6
-    - path: output/test.yml
-      md5sum: afd1f8cf262db16cb2c710438aafb74e
-    - path: "output/universc/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/universc/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    - path: output/universc/genome.filtered.gtf
-      md5sum: a8b8a7b5039e05d3a9cf9151ea138b5b
-    - path: output/universc/homo_sapiens_chr22_reference/fasta/genome.fa
-      md5sum: f315020d899597c1b57e5fe9f60f4c3e
-    - path: output/universc/homo_sapiens_chr22_reference/fasta/genome.fa.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685
-    - path: output/universc/homo_sapiens_chr22_reference/genes/genes.gtf.gz
-      md5sum: d1e05cd46684fa26d852b6bc9f05e31f
-    - path: output/universc/homo_sapiens_chr22_reference/reference.json
-      md5sum: 8405fd7f527a944eafb9c2909045840b
-    - path: output/universc/homo_sapiens_chr22_reference/star/Genome
-      md5sum: 897cec2d191945335f8b320438bd9135
-    - path: output/universc/homo_sapiens_chr22_reference/star/SA
-      md5sum: 7961129ac5d0e1706105be1d31c6b30c
-    - path: output/universc/homo_sapiens_chr22_reference/star/SAindex
-      md5sum: dcceb480b30cda93fb8c63ddc339093b
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrLength.txt
-      md5sum: c81f40f27e72606d7d07097c1d56a5b5
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrName.txt
-      md5sum: 5ae68a67b70976ee95342a7451cb5af1
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrNameLength.txt
-      md5sum: b190587cae0531f3cf25552d8aa674db
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrStart.txt
-      md5sum: bc73df776dd3d5bb9cfcbcba60880519
-    - path: output/universc/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab
-      md5sum: 9129691eeb4ed0d02b17be879fa3edb0
-    - path: output/universc/homo_sapiens_chr22_reference/star/exonInfo.tab
-      md5sum: 209b82f0683efd03e17d2c729676554f
-    - path: output/universc/homo_sapiens_chr22_reference/star/geneInfo.tab
-      md5sum: 02a8f4575bdfcd4a42b4d8d07f2e9369
-    - path: output/universc/homo_sapiens_chr22_reference/star/genomeParameters.txt
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbInfo.txt
-      md5sum: 1082ab459363b3f2f7aabcef0979c1ed
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.out.tab
-    - path: output/universc/homo_sapiens_chr22_reference/star/transcriptInfo.tab
-      md5sum: cedcb5f4e7d97bc548cd5daa022e092c
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix.h5
-      md5sum: f8b6b7cc8248151a98c46d4ebec450c6
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
-    - path: output/universc/sample-123/outs/metrics_summary.csv
-      md5sum: 707df0f101d479d93f412ca74f9c4131
-    - path: output/universc/sample-123/outs/molecule_info.h5
-      md5sum: a13bd7425f441c8d0eac8ffc50082996
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam
-      md5sum: 15441da9cfceea0bb48c8b66b1b860df
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
-      md5sum: 7c3d49c77016a09535aff61a027f750c
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
-      md5sum: a5290f3e300a4070f3d68a0c2e215f54
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
-      md5sum: 5cc39ef0c7ac85f2b758b164aabf9157
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
-      md5sum: 07d497c7ce3e22f374af7b2cf9b97d72
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
-      md5sum: bdce94a51f16e22d40301724080b76ee
-    - path: output/universc/sample-123/outs/web_summary.html
+  - path: output/genome.filtered.gtf
+    md5sum: 428eb76f23f848bbb727fa5001a4d0fb
+  - path: output/homo_sapiens_chr22_reference/fasta/genome.fa
+    md5sum: f315020d899597c1b57e5fe9f60f4c3e
+  - path: output/homo_sapiens_chr22_reference/fasta/genome.fa.fai
+    md5sum: 3520cd30e1b100e55f578db9c855f685
+  - path: output/homo_sapiens_chr22_reference/genes/genes.gtf
+    md5sum: 428eb76f23f848bbb727fa5001a4d0fb
+  - path: output/homo_sapiens_chr22_reference/reference.json
+    md5sum: b1a6ece7f2ba17bf379e5057d5e31795
+  - path: output/homo_sapiens_chr22_reference/star/Genome
+    md5sum: 22102926fadf5890e905ca71b2da3f35
+  - path: output/homo_sapiens_chr22_reference/star/SA
+    md5sum: bcf3e1a855783105150b46c905465333
+  - path: output/homo_sapiens_chr22_reference/star/SAindex
+    md5sum: b93fb07d342e6c32a00ebc4311c0ad38
+  - path: output/homo_sapiens_chr22_reference/star/chrLength.txt
+    md5sum: c81f40f27e72606d7d07097c1d56a5b5
+  - path: output/homo_sapiens_chr22_reference/star/chrName.txt
+    md5sum: 5ae68a67b70976ee95342a7451cb5af1
+  - path: output/homo_sapiens_chr22_reference/star/chrNameLength.txt
+    md5sum: b190587cae0531f3cf25552d8aa674db
+  - path: output/homo_sapiens_chr22_reference/star/chrStart.txt
+    md5sum: bc73df776dd3d5bb9cfcbcba60880519
+  - path: output/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab
+    md5sum: d04497f69d6ef889efd4d34fe63edcc4
+  - path: output/homo_sapiens_chr22_reference/star/exonInfo.tab
+    md5sum: 0d560290fab688b7268d88d5494bf9fe
+  - path: output/homo_sapiens_chr22_reference/star/geneInfo.tab
+    md5sum: 8b608537307443ffaee4927d2b428805
+  - path: output/homo_sapiens_chr22_reference/star/genomeParameters.txt
+    md5sum: 6d28cca59ec08cd4b364c71bd99ea7d7
+  - path: output/homo_sapiens_chr22_reference/star/sjdbInfo.txt
+    md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
+  - path: output/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
+    md5sum: 8760c33e966dad0b39f440301ebbdee4
+  - path: output/homo_sapiens_chr22_reference/star/sjdbList.out.tab
+    md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
+  - path: output/homo_sapiens_chr22_reference/star/transcriptInfo.tab
+    md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
+  - path: output/sample-123/outs/filtered_feature_bc_matrix.h5
+    md5sum: f8b6b7cc8248151a98c46d4ebec450c6
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: d596fbde3dd0390547d2b76e57bf23f8
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
+    md5sum: fb5666b3a31a26ffa4b95270212109fd
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 4cef0a278471e99bd53de94b413cdbdf
+  - path: output/sample-123/outs/metrics_summary.csv
+    md5sum: 707df0f101d479d93f412ca74f9c4131
+  - path: output/sample-123/outs/molecule_info.h5
+    md5sum: a13bd7425f441c8d0eac8ffc50082996
+  - path: output/sample-123/outs/possorted_genome_bam.bam
+    md5sum: 15441da9cfceea0bb48c8b66b1b860df
+  - path: output/sample-123/outs/possorted_genome_bam.bam.bai
+    md5sum: 7c3d49c77016a09535aff61a027f750c
+  - path: output/sample-123/outs/raw_feature_bc_matrix.h5
+    md5sum: a5290f3e300a4070f3d68a0c2e215f54
+  - path: output/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 5cc39ef0c7ac85f2b758b164aabf9157
+  - path: output/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
+    md5sum: 07d497c7ce3e22f374af7b2cf9b97d72
+  - path: output/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
+    md5sum: bdce94a51f16e22d40301724080b76ee
+  - path: output/sample-123/outs/web_summary.html
+    md5sum: c6ac3c9d613b884c9d1e536ef12d4d23
+  - path: output/sample-test/outs/filtered_feature_bc_matrix.h5
+    md5sum: 7f3d15ad41582f0ebd618eeb0d84f4c7
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 2e3beaf493f11981fb9dda0d836e183c
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/features.tsv.gz
+    md5sum: 1b69d9630f8c2d1b2f411948259b1a68
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    md5sum: b9c352ced64e52f414c4c682ef8f70cf
+  - path: output/sample-test/outs/metrics_summary.csv
+    md5sum: edfa1a0dc666c38f9740167c045fb3c8
+  - path: output/sample-test/outs/molecule_info.h5
+    md5sum: 2c23c63b082f4d0c4d4536bb7f3a42aa
+  - path: output/sample-test/outs/possorted_genome_bam.bam
+    md5sum: 5d8623d0b66ae9f7308822cc77cd254c
+  - path: output/sample-test/outs/possorted_genome_bam.bam.bai
+    md5sum: 6f6f17606ea30c0ff979df7efd30b0ee
+  - path: output/sample-test/outs/raw_feature_bc_matrix.h5
+    md5sum: 6bc595dfdc0a92f153abccc853f7712f
+  - path: output/sample-test/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 4b1c749e89009cbe0139d472f79c8a80
+  - path: output/sample-test/outs/raw_feature_bc_matrix/features.tsv.gz
+    md5sum: e2b92514fe7b57e8cbecf7eff94976c2
+  - path: output/sample-test/outs/raw_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 0871db2e1594c3c7b9872522f0b52e5c
+  - path: output/sample-test/outs/web_summary.html
+    md5sum: 1fc1edd5588901f5dbd8b132a46d1759
+
 - name: universc test_universc_10x
-  command: nextflow run tests/modules/nf-core/universc -entry test_universc_10x -c tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/universc -entry test_universc_10x -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
   tags:
-    - universc
+  - universc
   files:
-    - path: output/main.nf
-      md5sum: 216fbfe8b2f51de6e720c12043f95717
-    - path: output/nextflow.config
-      md5sum: a44614a3c6420d316d52ea711b7f1aa6
-    - path: output/test.yml
-      md5sum: afd1f8cf262db16cb2c710438aafb74e
-    - path: "output/universc/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/universc/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
-    - path: output/universc/genome.filtered.gtf
-      md5sum: a8b8a7b5039e05d3a9cf9151ea138b5b
-    - path: output/universc/homo_sapiens_chr22_reference/fasta/genome.fa
-      md5sum: f315020d899597c1b57e5fe9f60f4c3e
-    - path: output/universc/homo_sapiens_chr22_reference/fasta/genome.fa.fai
-      md5sum: 3520cd30e1b100e55f578db9c855f685
-    - path: output/universc/homo_sapiens_chr22_reference/genes/genes.gtf.gz
-      md5sum: d1e05cd46684fa26d852b6bc9f05e31f
-    - path: output/universc/homo_sapiens_chr22_reference/reference.json
-      md5sum: 8405fd7f527a944eafb9c2909045840b
-    - path: output/universc/homo_sapiens_chr22_reference/star/Genome
-      md5sum: 897cec2d191945335f8b320438bd9135
-    - path: output/universc/homo_sapiens_chr22_reference/star/SA
-      md5sum: 7961129ac5d0e1706105be1d31c6b30c
-    - path: output/universc/homo_sapiens_chr22_reference/star/SAindex
-      md5sum: dcceb480b30cda93fb8c63ddc339093b
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrLength.txt
-      md5sum: c81f40f27e72606d7d07097c1d56a5b5
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrName.txt
-      md5sum: 5ae68a67b70976ee95342a7451cb5af1
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrNameLength.txt
-      md5sum: b190587cae0531f3cf25552d8aa674db
-    - path: output/universc/homo_sapiens_chr22_reference/star/chrStart.txt
-      md5sum: bc73df776dd3d5bb9cfcbcba60880519
-    - path: output/universc/homo_sapiens_chr22_reference/star/exonGeTrInfo.tab
-      md5sum: 9129691eeb4ed0d02b17be879fa3edb0
-    - path: output/universc/homo_sapiens_chr22_reference/star/exonInfo.tab
-      md5sum: 209b82f0683efd03e17d2c729676554f
-    - path: output/universc/homo_sapiens_chr22_reference/star/geneInfo.tab
-      md5sum: 02a8f4575bdfcd4a42b4d8d07f2e9369
-    - path: output/universc/homo_sapiens_chr22_reference/star/genomeParameters.txt
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbInfo.txt
-      md5sum: 1082ab459363b3f2f7aabcef0979c1ed
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
-    - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.out.tab
-    - path: output/universc/homo_sapiens_chr22_reference/star/transcriptInfo.tab
-      md5sum: cedcb5f4e7d97bc548cd5daa022e092c
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix.h5
-      md5sum: f8b6b7cc8248151a98c46d4ebec450c6
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
-    - path: output/universc/sample-123/outs/metrics_summary.csv
-      md5sum: 707df0f101d479d93f412ca74f9c4131
-    - path: output/universc/sample-123/outs/molecule_info.h5
-      md5sum: a13bd7425f441c8d0eac8ffc50082996
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam
-      md5sum: 15441da9cfceea0bb48c8b66b1b860df
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
-      md5sum: 7c3d49c77016a09535aff61a027f750c
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
-      md5sum: a5290f3e300a4070f3d68a0c2e215f54
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
-      md5sum: 5cc39ef0c7ac85f2b758b164aabf9157
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
-      md5sum: 07d497c7ce3e22f374af7b2cf9b97d72
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
-      md5sum: bdce94a51f16e22d40301724080b76ee
-    - path: output/universc/sample-123/outs/web_summary.html
+  - path: output/sample-123/outs/basic_stats.txt
+    md5sum: 6ce8341506150f0b1add1800b0a11cdd
+  - path: output/sample-123/outs/filtered_feature_bc_matrix.h5
+    md5sum: 98c5e5d9fcef8cb01800b43aaa7ced39
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 590c3ab56264456733867ad7430c9681
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
+    md5sum: 8f1dc906d558d5a07120c23f3bd5a8d8
+  - path: output/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 355bbf7a99978ad78363bcb93ce72634
+  - path: output/sample-123/outs/metrics_summary.csv
+    md5sum: edfa1a0dc666c38f9740167c045fb3c8
+  - path: output/sample-123/outs/molecule_info.h5
+    md5sum: 3f3085fabcd724428070fbc41f318046
+  - path: output/sample-123/outs/possorted_genome_bam.bam
+    md5sum: 4494641d616570c36213ab0ff77c76e4
+  - path: output/sample-123/outs/possorted_genome_bam.bam.bai
+    md5sum: 30bedc00187efe82ae706322293c0014
+  - path: output/sample-123/outs/raw_feature_bc_matrix.h5
+    md5sum: e81123ba57c4bc1c1c372dbe4a7a8237
+  - path: output/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 294fa90ea9cf429c07d11b01e0c8ed7e
+  - path: output/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
+    md5sum: 62420b5ab474f1549ac8272c379fe4c6
+  - path: output/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 7083aef1cd1fe107746bcdd41478874a
+  - path: output/sample-123/outs/web_summary.html
+    md5sum: 87b0a2d1c3dd566c87d9a3587c9f9ed7
+  - path: output/sample-sample-123/outs/basic_stats.txt
+    md5sum: 6ce8341506150f0b1add1800b0a11cdd
+  - path: output/sample-sample-123/outs/filtered_feature_bc_matrix.h5
+    md5sum: 949ff47ed9bed2f8bedd0cc8cd314f7d
+  - path: output/sample-sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 7d4e0eed6c84ed509032712d64c99fa1
+  - path: output/sample-sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
+    md5sum: 766e76bd5b037cb9f35ae97850ceab07
+  - path: output/sample-sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    md5sum: f85ff730de93293ca1de6cbbaf86453d
+  - path: output/sample-sample-123/outs/metrics_summary.csv
+    md5sum: edfa1a0dc666c38f9740167c045fb3c8
+  - path: output/sample-sample-123/outs/molecule_info.h5
+    md5sum: 74e3ffc4c5d39d06dfb82df70da3368c
+  - path: output/sample-sample-123/outs/possorted_genome_bam.bam
+    md5sum: 74eba6f37d287202578d0439858a1548
+  - path: output/sample-sample-123/outs/possorted_genome_bam.bam.bai
+    md5sum: 8d44b7e49bce3c09dc7b928e02392abb
+  - path: output/sample-sample-123/outs/raw_feature_bc_matrix.h5
+    md5sum: e4a4b119497771bbca9000f028b3829a
+  - path: output/sample-sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 427fb87400305afb923bcbd845bbd931
+  - path: output/sample-sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
+    md5sum: af35c54655fe0bfca4f13e97610124f2
+  - path: output/sample-sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 9899f27833c95b487284cd927c86eeaf
+  - path: output/sample-sample-123/outs/web_summary.html
+    md5sum: 37fcaebe1d7c4df343bd7f1a7104a71e
+  - path: output/sample-test/outs/basic_stats.txt
+    md5sum: 6ce8341506150f0b1add1800b0a11cdd
+  - path: output/sample-test/outs/filtered_feature_bc_matrix.h5
+    md5sum: 8ecf76fe0622e867a1ff0e620cec25a6
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 92b4b6f4ebc50684b8648c6a84e29c1c
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/features.tsv.gz
+    md5sum: cc6caa1aefd6ccc124f4ce9589e4ffd3
+  - path: output/sample-test/outs/filtered_feature_bc_matrix/matrix.mtx.gz
+    md5sum: 820c458b29029e004a495014c6038409
+  - path: output/sample-test/outs/metrics_summary.csv
+    md5sum: edfa1a0dc666c38f9740167c045fb3c8
+  - path: output/sample-test/outs/molecule_info.h5
+    md5sum: 315b7744f7a365a8502ef77e826c6ed7
+  - path: output/sample-test/outs/possorted_genome_bam.bam
+    md5sum: 44077684a3474ddce2bddacc7e4ee052
+  - path: output/sample-test/outs/possorted_genome_bam.bam.bai
+    md5sum: 6f6f17606ea30c0ff979df7efd30b0ee
+  - path: output/sample-test/outs/raw_feature_bc_matrix.h5
+    md5sum: 0984272efe4ed62e7a4b476c8c37bc00
+  - path: output/sample-test/outs/raw_feature_bc_matrix/barcodes.tsv.gz
+    md5sum: 008ab0a8e3ff367bac8cd2209f2482b8
+  - path: output/sample-test/outs/raw_feature_bc_matrix/features.tsv.gz
+    md5sum: 25a7bfcafa3e3b02ac275ed535b7e63b
+  - path: output/sample-test/outs/raw_feature_bc_matrix/matrix.mtx.gz
+    md5sum: d4f2f666c6f50bdadc67061068175f94
+  - path: output/sample-test/outs/web_summary.html
+    md5sum: 6afb8bbc32c62e37eb8d52078e9c16a4
