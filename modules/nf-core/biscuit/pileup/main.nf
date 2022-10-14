@@ -36,6 +36,13 @@ process BISCUIT_PILEUP {
         \$INDEX \\
         $input \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
+    
+    # Pileup doesn't always exit with nonzero status in case of error. 
+    if grep -E "\\[main\\] Real time:" .command.err; then 
+        exit 0
+    else 
+        exit 1
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
