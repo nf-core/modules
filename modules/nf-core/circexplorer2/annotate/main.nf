@@ -20,6 +20,7 @@ process CIRCEXPLORER2_ANNOTATE {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     CIRCexplorer2 \\
@@ -27,7 +28,8 @@ process CIRCEXPLORER2_ANNOTATE {
         -r $gene_annotation \\
         -g $fasta \\
         -b $junctions \\
-        -o ${prefix}.txt
+        -o ${prefix}.txt \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

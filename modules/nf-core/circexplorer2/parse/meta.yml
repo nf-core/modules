@@ -2,7 +2,7 @@ name: "circexplorer2_parse"
 description: CIRCexplorer2 parses fusion junction files from multiple aligners to prepare them for CIRCexplorer2 annotate.
 keywords:
   - parse
-  - circRNA
+  - circrna
   - splice
 tools:
   - "circexplorer2":
@@ -20,7 +20,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fusions:
       type: file
-      description: BAM (BWA), BED (Segemehl), TXT (MapSplice), Junction (STAR).
+      description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR) file. Aligner will be autodetected based on file suffix.
       pattern: "*.{bam,junction,bed,txt}"
 
 output:

@@ -18,14 +18,17 @@ process CIRCEXPLORER2_PARSE {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def aligner = "${fusions}".endsWith(".junction") ? "-t STAR" : "${fusions}".endsWith(".txt") ? "-t MapSplice" : "${fusions}".endsWith(".bam") ? "-t BWA" : "-t segemehl"
+    if ("${fusions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     CIRCexplorer2 \\
         parse \\
         $aligner \\
         $fusions \\
-        -b ${prefix}.junction.bed
+        -b ${prefix}.bed \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
