@@ -98,7 +98,10 @@ workflow test_fastq_align_dragmap_SE {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     DRAGMAP_HASHTABLE ( fasta )
     FASTQ_ALIGN_DNA ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
 }
@@ -111,7 +114,10 @@ workflow test_fastq_align_dragmap_PE {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id:'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     DRAGMAP_HASHTABLE ( fasta )
     FASTQ_ALIGN_DNA ( input, DRAGMAP_HASHTABLE.out.hashmap, "dragmap", true )
 }
