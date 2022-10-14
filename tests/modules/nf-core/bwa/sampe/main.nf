@@ -19,7 +19,7 @@ workflow test_bwa_sampe {
         .set { input }
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_ALN ( input, BWA_INDEX.out.index )
     BWA_SAMPE ( input.join(BWA_ALN.out.sai), BWA_INDEX.out.index )
 }

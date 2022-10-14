@@ -17,7 +17,7 @@ workflow test_bwa_mem_single_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_MEM ( input, BWA_INDEX.out.index, false )
 }
 
@@ -33,7 +33,7 @@ workflow test_bwa_mem_single_end_sort {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_MEM ( input, BWA_INDEX.out.index, true )
 }
 
@@ -50,7 +50,7 @@ workflow test_bwa_mem_paired_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_MEM ( input, BWA_INDEX.out.index, false )
 }
 
@@ -67,6 +67,6 @@ workflow test_bwa_mem_paired_end_sort {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_MEM ( input, BWA_INDEX.out.index, true )
 }
