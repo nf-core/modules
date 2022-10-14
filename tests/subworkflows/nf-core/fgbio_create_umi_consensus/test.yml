@@ -1,44 +1,67 @@
-- name: fgbio_create_umi_consensus_bwamem1
+- name: fgbio_create_umi_consensus test_fgbio_create_umi_consensus_mem1
   command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem1 -c ./tests/config/nextflow.config
   tags:
-    - subworkflows
-    - subworkflows/fgbio_create_umi_consensus
-    # modules
-    - bwamem2/index
-    - bwamem2/mem
+    - bwa
     - bwa/index
     - bwa/mem
+    - bwamem2
+    - bwamem2/index
+    - bwamem2/mem
+    - fgbio
     - fgbio/callmolecularconsensusreads
     - fgbio/fastqtobam
     - fgbio/groupreadsbyumi
     - samblaster
+    - samtools
     - samtools/bam2fq
+    - subworkflows
+    - subworkflows/fgbio_create_umi_consensus
   files:
-    - path: ./output/fastqtobam/test_umi_converted.bam
+    - path: output/bam2fastq/test_interleaved.fq.gz
+      md5sum: a39bd6bc951a9887419b9d450c463e00
+    - path: output/bwamem1/test.bam
+      md5sum: b293811f3a68978c215927ce573e618e
+    - path: output/callumiconsensus/test_umiconsensus.bam
+      md5sum: 672a3fe0438728bd7146ee847c20cb72
+    - path: output/fastqtobam/test.bam
       md5sum: 9510735554e5eff29244077a72075fb6
-    - path: ./output/groupreadsbyumi/test_umi-grouped.bam
-      md5sum: 44f31da850d5a8100b43b629426f2e17
-    - path: ./output/callumiconsensus/test_umiconsensus.bam
-      md5sum: 24b48e3543de0ae7e8a95c116d5ca6a6
-- name: fgbio_create_umi_consensus_bwamem2
+    - path: output/groupreadsbyumi/test_umi-grouped.bam
+      md5sum: 500ecdd9543aa9a5b6f7c7922e4a1b5e
+    - path: output/groupreadsbyumi/test_umi_histogram.txt
+      md5sum: 01902e7151d17bc77e962421810178f3
+    - path: output/samblaster/test_processed.bam
+      md5sum: 78b5d0d3d517c68fa4cde5b1601f47b0
+
+- name: fgbio_create_umi_consensus test_fgbio_create_umi_consensus_mem2
   command: nextflow run ./tests/subworkflows/nf-core/fgbio_create_umi_consensus -entry test_fgbio_create_umi_consensus_mem2 -c ./tests/config/nextflow.config
   tags:
-    - subworkflows
-    - subworkflows/fgbio_create_umi_consensus
-    # modules
-    - bwamem2/index
-    - bwamem2/mem
+    - bwa
     - bwa/index
     - bwa/mem
+    - bwamem2
+    - bwamem2/index
+    - bwamem2/mem
+    - fgbio
     - fgbio/callmolecularconsensusreads
     - fgbio/fastqtobam
     - fgbio/groupreadsbyumi
     - samblaster
+    - samtools
     - samtools/bam2fq
+    - subworkflows
+    - subworkflows/fgbio_create_umi_consensus
   files:
-    - path: ./output/fastqtobam/test_umi_converted.bam
+    - path: output/bam2fastq/test_interleaved.fq.gz
+      md5sum: a39bd6bc951a9887419b9d450c463e00
+    - path: output/bwamem2/test.bam
+      md5sum: e35ca29154753dade9aea302f5005069
+    - path: output/callumiconsensus/test_umiconsensus.bam
+      md5sum: 672a3fe0438728bd7146ee847c20cb72
+    - path: output/fastqtobam/test.bam
       md5sum: 9510735554e5eff29244077a72075fb6
-    - path: ./output/groupreadsbyumi/test_umi-grouped.bam
-      md5sum: c69333155038b9a968fd096627d4dfb0
-    - path: ./output/callumiconsensus/test_umiconsensus.bam
-      md5sum: 24b48e3543de0ae7e8a95c116d5ca6a6
+    - path: output/groupreadsbyumi/test_umi-grouped.bam
+      md5sum: f6725e599265436c93e2b8826bc6a713
+    - path: output/groupreadsbyumi/test_umi_histogram.txt
+      md5sum: 01902e7151d17bc77e962421810178f3
+    - path: output/samblaster/test_processed.bam
+      md5sum: 5bcab60baafd42f4db243277eedec548
