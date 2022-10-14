@@ -19,10 +19,10 @@ include { SAMTOOLS_BAM2FQ                   as BAM2FASTQ        } from '../../..
 workflow CREATE_UMI_CONSENSUS {
     take:
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
-    fasta                     // channel: [mandatory] /path/to/reference/fasta
+    fasta                     // channel: [mandatory] [ val(meta), /path/to/reference/fasta ]
     read_structure            // string:  [mandatory] "read_structure"
     groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
-    aligner                   // string:  [mandatory] "bwa-mem" or "bwa-mem2"
+    aligner                   // string:  [mandatory] "bwa" or "bwamem2"
 
     main:
     ch_versions = Channel.empty()
@@ -42,25 +42,29 @@ workflow CREATE_UMI_CONSENSUS {
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
     aligned_bam = Channel.empty()
 
-    if (aligner == "bwa-mem") {
-        // reference is indexed
-        BWAMEM1_INDEX ( fasta )
-        ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
+    switch (aligner) {
+        case "bwa":
+            // reference is indexed
+            BWAMEM1_INDEX ( fasta )
+            ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
-        // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM1_MEM ( BAM2FASTQ.out.reads, BWAMEM1_INDEX.out.index, false )
-        ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
-        aligned_bam = BWAMEM1_MEM.out.bam
-    } else {
-        // reference is indexed
-        BWAMEM2_INDEX ( fasta )
-        ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
+            // appropriately tagged interleaved FASTQ reads are mapped to the reference
+            BWAMEM1_MEM ( BAM2FASTQ.out.reads, BWAMEM1_INDEX.out.index, false )
+            ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
+            aligned_bam = BWAMEM1_MEM.out.bam
+            break
+        case "bwamem2":
+            // reference is indexed
+            BWAMEM2_INDEX ( fasta )
+            ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
 
-        // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM2_MEM ( BAM2FASTQ.out.reads, BWAMEM2_INDEX.out.index, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
-        aligned_bam = BWAMEM2_MEM.out.bam
-    }
+            // appropriately tagged interleaved FASTQ reads are mapped to the reference
+            BWAMEM2_MEM ( BAM2FASTQ.out.reads, BWAMEM2_INDEX.out.index, false )
+            ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
+            aligned_bam = BWAMEM2_MEM.out.bam
+            break
+        default:
+            exit 1, "Unknown aligner: ${aligner}"
 
     // samblaster is used in order to tag mates information in the BAM file
     // this is used in order to group reads by UMI

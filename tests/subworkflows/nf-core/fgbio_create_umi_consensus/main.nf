@@ -12,7 +12,10 @@ workflow test_fgbio_create_umi_consensus_mem1 {
             file(params.test_data['homo_sapiens']['illumina']['test_umi_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta          =    file(params.test_data['homo_sapiens']['genome']['genome_fasta'],            checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     read_structure =    "+T 12M11S+T"
 
     CREATE_UMI_CONSENSUS( reads, fasta, read_structure, "Adjacency", "bwa-mem" )
@@ -26,7 +29,10 @@ workflow test_fgbio_create_umi_consensus_mem2 {
             file(params.test_data['homo_sapiens']['illumina']['test_umi_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta          =    file(params.test_data['homo_sapiens']['genome']['genome_fasta'],            checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     read_structure =    "+T 12M11S+T"
 
     CREATE_UMI_CONSENSUS( reads, fasta, read_structure, "Adjacency", "bwa-mem2" )
