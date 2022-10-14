@@ -1,51 +1,71 @@
 name: "gatk4_sitedepthtobaf"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: EXPERIMENTAL TOOL! Convert SiteDepth to BafEvidence
 keywords:
-  - sort
+  - gatk4
+  - site depth
+  - BAF
 tools:
-  - "gatk4":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Genome Analysis Toolkit (GATK4)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "https://github.com/broadinstitute/gatk"
-      doi: ""
-      licence: "['BSD-3-clause']"
+  - gatk4:
+      description: Genome Analysis Toolkit (GATK4)
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ["BSD-3-clause"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - site_depths:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Files containing site depths
+      pattern: "*.sd.txt.gz"
+  - site_depths_indices:
+      type: file
+      description: The indices of the site depth files
+      pattern: "*.sd.txt.gz.tbi"
+  - vcf:
+      type: file
+      description: Input VCF of SNPs marking loci for site depths
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of the input VCF of SNPs marking loci for site depths
+      pattern: "*.vcf.gz.tbi"
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: The sequence dictionary of the reference FASTA file
+      pattern: "*.dict"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - baf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: The created BAF file
+      pattern: "*.baf.txt.gz"
+  - baf_tbi:
+      type: file
+      description: The index of the created BAF file
+      pattern: "*.baf.txt.gz.tbi"
 
 authors:
   - "@nvnieuwk"
