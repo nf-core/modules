@@ -12,8 +12,8 @@ process BBMAP_FILTERBYNAME {
 
     output:
     tuple val(meta), path("*.$output_extension"), emit: reads
-    tuple val(meta), path('*.log')                , emit: log
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path('*.log')              , emit: log
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
