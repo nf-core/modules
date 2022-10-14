@@ -1,0 +1,48 @@
+name: "segemehl_align"
+description: A multi-split mapping algorithm for circular RNA, splicing, trans-splicing and fusion detection
+keywords:
+  - alignment
+  - circrna
+  - splicing
+  - fusions
+tools:
+  - "segemehl":
+      description: "A multi-split mapping algorithm for circular RNA, splicing, trans-splicing and fusion detection"
+      homepage: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
+      documentation: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
+      doi: "10.1186/gb-2014-15-2-r34"
+      licence: "GPL v3"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTA or FASTQ files
+      pattern: "*.{fa,fasta,fq,fastq,fq.gz,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - results:
+      type: folder
+      description: |
+        Directory containing genomic alignments in SAM format
+          (please add "-b" flag to task.ext.args for BAM)
+        In addition to split-read alignments files when -S parameter used.
+          [ *.{sam,bam}, *.trns.txt, *.mult.bed, *.sngl.bed ]
+      pattern: "{prefix}*"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@BarryDigby"

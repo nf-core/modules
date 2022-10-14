@@ -1,0 +1,8 @@
+- name: segemehl index test_segemehl_index
+  command: nextflow run ./tests/modules/nf-core/segemehl/index -entry test_segemehl_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/segemehl/index/nextflow.config
+  tags:
+    - segemehl
+    - segemehl/index
+  files:
+    - path: output/segemehl/genome.idx
+      md5sum: 56e4f41aa2cdcded4195750c1a6fd352
