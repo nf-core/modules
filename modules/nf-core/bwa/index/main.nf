@@ -11,7 +11,7 @@ process BWA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path(index) , emit: index
+    tuple val(meta), path(bwa) , emit: index
     path "versions.yml"          , emit: versions
 
     when:
