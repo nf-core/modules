@@ -1,7 +1,7 @@
 process KRAKENUNIQ_DOWNLOAD {
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::krakenuniq=1.0.0" : null)
+    conda (params.enable_conda ? "bioconda::krakenuniq=1.0.1a" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.1a--pl5321h19e8d03_0':
         'quay.io/biocontainers/krakenuniq:1.0.1a--pl5321h19e8d03_0' }"
