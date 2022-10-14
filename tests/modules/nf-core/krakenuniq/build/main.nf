@@ -18,6 +18,7 @@ workflow test_krakenuniq_build {
                         fna, tax, map ->
 
                         [ [id: "customdb"], fna, tax, map ]
+                    }
 
     KRAKENUNIQ_BUILD ( ch_input )
 }
