@@ -11,8 +11,8 @@ process SNAPALIGNER_INDEX {
     tuple val(meta), path(fasta), path(altcontigfile), path(nonaltcontigfile), path(altliftoverfile)
 
     output:
-    path "snap/*"            ,emit: index
-    path "versions.yml"      ,emit: versions
+    tuple val(meta), path("snap/*") ,emit: index
+    path "versions.yml"             ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
