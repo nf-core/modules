@@ -1,16 +1,14 @@
 - name: deseq2 differential test_deseq2_differential
   command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
   tags:
-    - deseq2/differential
     - deseq2
+    - deseq2/differential
   files:
-    - path: output/deseq2/treatment-saline-drug.deseq2.results.tsv
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
       md5sum: 269cdbe2b9c18393b448dd435e7f5c9a
-    - path: output/deseq2/treatment-saline-drug.deseq2.sizefactors.tsv
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
       md5sum: 6332f21889ecac387bb12eeb04f23849
-    - path: output/deseq2/treatment-saline-drug.normalised_counts.tsv
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
       md5sum: 827cdf01f366d72d6e4b500e9862ba74
-    - path: output/deseq2/treatment-saline-drug.rlog.tsv
+    - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
       md5sum: 8b674051048e826a59aec97aba752e78
-    - path: output/spoof/samplesheet.csv
-      md5sum: f81a2ce08cb150a440328d5b7091ab27
