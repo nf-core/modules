@@ -1,0 +1,10 @@
+- name: shinyngs app test_shinyngs_app
+  command: nextflow run ./tests/modules/nf-core/shinyngs/app -entry test_shinyngs_app -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/app/nextflow.config
+  tags:
+    - shinyngs/app
+    - shinyngs
+  files:
+    - path: output/shinyngs/app/app.R
+      md5sum: bedcfc45b6cdcc2b8fe3627987e2b17a
+    - path: output/shinyngs/app/data.rds
+      md5sum: 515bcc307bacad8e57b0d6ffe4594ecf
