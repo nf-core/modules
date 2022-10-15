@@ -39,7 +39,7 @@ process CIRCEXPLORER2_PARSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.junction.bed
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
