@@ -14,7 +14,6 @@ tools:
       licence: "GPL v3"
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -24,6 +23,14 @@ input:
       type: file
       description: FASTA or FASTQ files
       pattern: "*.{fa,fasta,fq,fastq,fq.gz,fastq.gz}"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file used to construct Segemehl
+      pattern: "*.{fa,fasta}"
+  - index:
+      type: file
+      description: Segemehl Index file from SEGEMEHL_INDEX
+      pattern: "*.idx"
 
 output:
   - meta:
