@@ -38,7 +38,7 @@ output:
           (please add "-b" flag to task.ext.args for BAM)
         In addition to split-read alignments files when -S parameter used.
           [ *.{sam,bam}, *.trns.txt, *.mult.bed, *.sngl.bed ]
-      pattern: "{prefix}*"
+      pattern: "{meta.id}*"
   - versions:
       type: file
       description: File containing software versions

@@ -23,6 +23,7 @@ process SEGEMEHL_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
+    def suffix = args.contains("-b") ? "bam" : "sam"
     """
     mkdir -p $prefix
 
@@ -32,7 +33,7 @@ process SEGEMEHL_ALIGN {
         -i $index \\
         $reads \\
         $args \\
-        -o ${prefix}/${prefix}.sam
+        -o ${prefix}/${prefix}.{suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
