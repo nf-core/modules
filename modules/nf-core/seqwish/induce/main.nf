@@ -4,8 +4,9 @@ process SEQWISH_INDUCE {
 
     conda (params.enable_conda ? 'bioconda::seqwish=0.7.6' : null)
 
-    def container_image = "/seqwish:0.7.6--h5b5514e_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "seqwish:0.7.6--h5b5514e_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(paf), path(fasta)

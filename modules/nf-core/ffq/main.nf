@@ -3,8 +3,9 @@ process FFQ {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ffq=0.2.1" : null)
-    def container_image = "/ffq:0.2.1--pyhdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "ffq:0.2.1--pyhdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     val ids

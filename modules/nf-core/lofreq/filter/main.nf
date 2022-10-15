@@ -3,8 +3,9 @@ process LOFREQ_FILTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::lofreq=2.1.5" : null)
-    def container_image = "/lofreq:2.1.5--py38h588ecb2_4"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "lofreq:2.1.5--py38h588ecb2_4"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(vcf)

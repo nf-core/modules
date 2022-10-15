@@ -3,8 +3,9 @@ process SVTK_STANDARDIZE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::svtk=0.0.20190615" : null)
-    def container_image = "/svtk:0.0.20190615--py37h73a75cf_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "svtk:0.0.20190615--py37h73a75cf_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(vcf)

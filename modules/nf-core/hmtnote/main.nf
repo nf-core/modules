@@ -3,8 +3,9 @@ process HMTNOTE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::hmtnote=0.7.2" : null)
-    def container_image = "/hmtnote:0.7.2--pyhdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "hmtnote:0.7.2--pyhdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(vcf)

@@ -3,8 +3,9 @@ process NEXTGENMAP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::nextgenmap=0.5.5" : null)
-    def container_image = "/nextgenmap:0.5.5--hc9558a2_4"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "nextgenmap:0.5.5--hc9558a2_4"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

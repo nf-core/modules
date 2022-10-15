@@ -3,8 +3,8 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::bowtie=1.3.0' : null)
-    def container_image = "/bowtie:1.3.0--py38hed8969a_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "bowtie:1.3.0--py38hed8969a_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
     input:
     path fasta

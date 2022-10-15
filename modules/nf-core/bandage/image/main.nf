@@ -3,8 +3,9 @@ process BANDAGE_IMAGE {
     label 'process_low'
 
     conda (params.enable_conda ? 'bioconda::bandage=0.8.1' : null)
-    def container_image = "/bandage:0.8.1--hc9558a2_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "bandage:0.8.1--hc9558a2_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(gfa)

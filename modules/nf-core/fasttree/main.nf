@@ -2,8 +2,9 @@ process FASTTREE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::fasttree=2.1.10" : null)
-    def container_image = "/fasttree:2.1.10--h516909a_4"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "fasttree:2.1.10--h516909a_4"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path alignment

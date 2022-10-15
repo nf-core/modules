@@ -3,8 +3,9 @@ process GOAT_TAXONSEARCH {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::goat=0.2.0" : null)
-    def container_image = "/goat:0.2.0--h92d785c_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "goat:0.2.0--h92d785c_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), val(taxon), path(taxa_file)

@@ -3,8 +3,9 @@ process GATK4_PRINTSVEVIDENCE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
-    def container_image = "/gatk4:4.2.6.1--hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "gatk4:4.2.6.1--hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(evidence_files), path(evidence_indices)

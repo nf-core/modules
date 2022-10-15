@@ -3,8 +3,9 @@ process HMMER_ESLREFORMAT {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
-    def container_image = "/hmmer:3.3.2--h1b792b2_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "hmmer:3.3.2--h1b792b2_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(seqfile)

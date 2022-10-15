@@ -4,8 +4,9 @@ process ADAPTERREMOVALFIXPREFIX {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::adapterremovalfixprefix=0.0.5" : null)
-    def container_image = "/adapterremovalfixprefix:0.0.5--hdfd78af_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "adapterremovalfixprefix:0.0.5--hdfd78af_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fastq)

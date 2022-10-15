@@ -3,8 +3,9 @@ process GENRICH {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::genrich=0.6.1" : null)
-    def container_image = "/genrich:0.6.1--h5bf99c6_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "genrich:0.6.1--h5bf99c6_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(treatment_bam)

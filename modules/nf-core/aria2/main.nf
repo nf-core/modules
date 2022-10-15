@@ -4,8 +4,9 @@ process ARIA2 {
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::aria2=1.36.0" : null)
-    def container_image = "/aria2:1.36.0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "aria2:1.36.0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     val source_url

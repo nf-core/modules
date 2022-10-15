@@ -3,8 +3,9 @@ process DSHBIO_FILTERBED {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::dsh-bio=2.1" : null)
-    def container_image = "/dsh-bio:2.1--hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "dsh-bio:2.1--hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bed)

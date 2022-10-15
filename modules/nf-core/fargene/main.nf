@@ -4,8 +4,9 @@ process FARGENE {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::fargene=0.1" : null)
-    def container_image = "/fargene:0.1--py27h21c881e_4"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "fargene:0.1--py27h21c881e_4"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     // input may be fasta (for genomes or longer contigs) or paired-end fastq (for metagenome), the latter in addition with --meta flag

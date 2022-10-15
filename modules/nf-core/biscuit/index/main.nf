@@ -3,8 +3,9 @@ process BISCUIT_INDEX {
     label 'process_long'
 
     conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
-    def container_image = "/biscuit:1.0.2.20220113--h81a5ba2_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "biscuit:1.0.2.20220113--h81a5ba2_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path fasta, stageAs: "BiscuitIndex/*"

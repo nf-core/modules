@@ -3,8 +3,9 @@ process MD5SUM {
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::coreutils=9.1" : null)
-    def container_image = "/ubuntu:20.04"
-    container { (params.container_registry ?: '' + container_image) }
+    def container_image = "ubuntu:20.04"
+    container [ params.container_registry ?: '' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(file)

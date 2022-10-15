@@ -3,8 +3,9 @@ process CNVKIT_ANTITARGET {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cnvkit=0.9.9" : null)
-    def container_image = "/cnvkit:0.9.9--pyhdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "cnvkit:0.9.9--pyhdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(targets)

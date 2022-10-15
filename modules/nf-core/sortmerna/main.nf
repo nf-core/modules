@@ -3,8 +3,9 @@ process SORTMERNA {
     label "process_high"
 
     conda (params.enable_conda ? "bioconda::sortmerna=4.3.4" : null)
-    def container_image = "/sortmerna:4.3.4--h9ee0642_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "sortmerna:4.3.4--h9ee0642_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

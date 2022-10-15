@@ -3,8 +3,9 @@ process PYCOQC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::pycoqc=2.5.2" : null)
-    def container_image = "/pycoqc:2.5.2--py_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "pycoqc:2.5.2--py_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path summary

@@ -3,8 +3,9 @@ process SOURMASH_SKETCH {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::sourmash=4.2.4" : null)
-    def container_image = "/sourmash:4.2.4--hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "sourmash:4.2.4--hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(sequence)

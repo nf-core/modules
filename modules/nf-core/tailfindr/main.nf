@@ -3,8 +3,9 @@ process TAILFINDR {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::ont-fast5-api=0.4.1 bioconda::r-tailfindr=1.3" : null)
-    def container_image = "/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fast5)

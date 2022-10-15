@@ -3,8 +3,9 @@ process SISTR {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::sistr_cmd=1.1.1" : null)
-    def container_image = "/sistr_cmd:1.1.1--pyh864c0ab_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "sistr_cmd:1.1.1--pyh864c0ab_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)

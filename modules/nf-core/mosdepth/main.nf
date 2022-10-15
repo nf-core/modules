@@ -3,8 +3,9 @@ process MOSDEPTH {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::mosdepth=0.3.3' : null)
-    def container_image = "/mosdepth:0.3.3--hdfd78af_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "mosdepth:0.3.3--hdfd78af_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam), path(bai)

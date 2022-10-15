@@ -2,8 +2,9 @@ process DEEPBGC_DOWNLOAD {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::deepbgc=0.1.30" : null)
-    def container_image = "/deepbgc:0.1.30--pyhb7b1952_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "deepbgc:0.1.30--pyhb7b1952_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     output:
     path "deepbgc_db/"  , emit: db

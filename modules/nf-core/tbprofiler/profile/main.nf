@@ -3,8 +3,9 @@ process TBPROFILER_PROFILE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::tb-profiler=3.0.8" : null)
-    def container_image = "/tb-profiler:3.0.8--pypyh5e36f6f_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "tb-profiler:3.0.8--pypyh5e36f6f_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

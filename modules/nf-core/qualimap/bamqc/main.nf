@@ -3,8 +3,9 @@ process QUALIMAP_BAMQC {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::qualimap=2.2.2d" : null)
-    def container_image = "/qualimap:2.2.2d--1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "qualimap:2.2.2d--1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

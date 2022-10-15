@@ -3,8 +3,9 @@ process STRINGTIE_STRINGTIE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::stringtie=2.2.1" : null)
-    def container_image = "/stringtie:2.2.1--hecb563c_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "stringtie:2.2.1--hecb563c_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

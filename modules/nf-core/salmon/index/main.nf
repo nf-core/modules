@@ -3,8 +3,9 @@ process SALMON_INDEX {
     label "process_medium"
 
     conda (params.enable_conda ? 'bioconda::salmon=1.5.2' : null)
-    def container_image = "/salmon:1.5.2--h84f40af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "salmon:1.5.2--h84f40af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path genome_fasta

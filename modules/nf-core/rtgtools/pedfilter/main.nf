@@ -3,8 +3,9 @@ process RTGTOOLS_PEDFILTER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::rtg-tools=3.12.1" : null)
-    def container_image = "/rtg-tools:3.12.1--hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "rtg-tools:3.12.1--hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(ped)

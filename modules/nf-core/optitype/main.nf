@@ -3,8 +3,9 @@ process OPTITYPE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::optitype=1.3.5" : null)
-    def container_image = "/optitype:1.3.5--0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "optitype:1.3.5--0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam), path(bai)

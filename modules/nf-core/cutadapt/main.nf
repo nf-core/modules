@@ -3,8 +3,9 @@ process CUTADAPT {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::cutadapt=3.4' : null)
-    def container_image = "/cutadapt:3.4--py39h38f01e4_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "cutadapt:3.4--py39h38f01e4_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

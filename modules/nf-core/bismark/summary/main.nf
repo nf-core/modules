@@ -2,8 +2,9 @@ process BISMARK_SUMMARY {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
-    def container_image = "/bismark:0.23.0--0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "bismark:0.23.0--0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path(bam)

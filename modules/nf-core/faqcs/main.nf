@@ -3,8 +3,9 @@ process FAQCS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::faqcs=2.10" : null)
-    def container_image = "/faqcs:2.10--r41h9a82719_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "faqcs:2.10--r41h9a82719_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

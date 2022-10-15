@@ -2,8 +2,9 @@ process MOTUS_DOWNLOADDB {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
-    def container_image = "/motus:3.0.1--pyhdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "motus:3.0.1--pyhdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path motus_downloaddb_script

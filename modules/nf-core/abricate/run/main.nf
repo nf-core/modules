@@ -3,8 +3,9 @@ process ABRICATE_RUN {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::abricate=1.0.1" : null)
-    def container_image = "/abricate:1.0.1--ha8f3691_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "abricate:1.0.1--ha8f3691_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(assembly)

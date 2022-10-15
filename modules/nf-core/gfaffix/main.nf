@@ -4,8 +4,9 @@ process GFAFFIX {
 
     conda (params.enable_conda ? 'bioconda::gfaffix=0.1.4' : null)
 
-    def container_image = "/gfaffix:0.1.4--hec16e2b_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "gfaffix:0.1.4--hec16e2b_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(gfa)

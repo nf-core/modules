@@ -3,8 +3,9 @@ process GENOTYPHI_PARSE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::genotyphi=1.9.1" : null)
-    def container_image = "/genotyphi:1.9.1--hdfd78af_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "genotyphi:1.9.1--hdfd78af_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(json)

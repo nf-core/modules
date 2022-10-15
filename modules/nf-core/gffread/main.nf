@@ -3,8 +3,9 @@ process GFFREAD {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::gffread=0.12.1" : null)
-    def container_image = "/gffread:0.12.1--h8b12597_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "gffread:0.12.1--h8b12597_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path gff

@@ -3,8 +3,9 @@ process MERYL_UNIONSUM {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::meryl=1.3" : null)
-    def container_image = "/meryl:1.3--h87f3376_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "meryl:1.3--h87f3376_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(meryl_dbs)

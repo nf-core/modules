@@ -3,8 +3,9 @@ process SNAPALIGNER_INDEX {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::snap-aligner=2.0.1" : null)
-    def container_image = "/snap-aligner:2.0.1--hd03093a_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "snap-aligner:2.0.1--hd03093a_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path fasta

@@ -3,8 +3,9 @@ process FASTP {
     label 'process_medium'
 
     conda (params.enable_conda ? 'bioconda::fastp=0.23.2' : null)
-    def container_image = "/fastp:0.23.2--h79da9fb_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "fastp:0.23.2--h79da9fb_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

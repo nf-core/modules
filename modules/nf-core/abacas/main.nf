@@ -3,8 +3,9 @@ process ABACAS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::abacas=1.3.1" : null)
-    def container_image = "/abacas:1.3.1--pl526_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "abacas:1.3.1--pl526_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(scaffold)

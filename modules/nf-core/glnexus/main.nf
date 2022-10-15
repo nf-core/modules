@@ -3,8 +3,9 @@ process GLNEXUS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::glnexus=1.4.1" : null)
-    def container_image = "/glnexus:1.4.1--h40d77a6_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "glnexus:1.4.1--h40d77a6_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(gvcfs)

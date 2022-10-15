@@ -3,8 +3,9 @@ process PORECHOP {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::porechop=0.2.4" : null)
-    def container_image = "/porechop:0.2.4--py39h7cff6ad_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "porechop:0.2.4--py39h7cff6ad_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

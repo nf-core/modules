@@ -3,8 +3,9 @@ process MINIASM {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::miniasm=0.3_r179" : null)
-    def container_image = "/miniasm:0.3_r179--h5bf99c6_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "miniasm:0.3_r179--h5bf99c6_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads), path(paf)

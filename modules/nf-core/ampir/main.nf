@@ -3,8 +3,9 @@ process AMPIR {
     label 'process_single'
 
     conda (params.enable_conda ? "conda-forge::r-ampir=1.1.0" : null)
-    def container_image = "/r-ampir:1.1.0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "r-ampir:1.1.0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(faa)

@@ -3,8 +3,9 @@ process DAMAGEPROFILER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::damageprofiler=1.1" : null)
-    def container_image = "/damageprofiler:1.1--hdfd78af_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "damageprofiler:1.1--hdfd78af_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

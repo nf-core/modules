@@ -3,8 +3,9 @@ process ANTISMASH_ANTISMASHLITE {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
-    def container_image = "/antismash-lite:6.0.1--pyhdfd78af_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "antismash-lite:6.0.1--pyhdfd78af_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?

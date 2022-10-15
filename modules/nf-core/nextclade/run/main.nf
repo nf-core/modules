@@ -3,8 +3,9 @@ process NEXTCLADE_RUN {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::nextclade=2.2.0" : null)
-    def container_image = "/nextclade:2.2.0--h9ee0642_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "nextclade:2.2.0--h9ee0642_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)

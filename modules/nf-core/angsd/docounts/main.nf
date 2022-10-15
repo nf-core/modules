@@ -3,8 +3,9 @@ process ANGSD_DOCOUNTS {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::angsd=0.939" : null)
-    def container_image = "/angsd:0.939--h468462d_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "angsd:0.939--h468462d_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam), path(bai), path(minqfile)

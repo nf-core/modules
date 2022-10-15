@@ -4,8 +4,9 @@ process MCRONI {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::mcroni=1.0.4" : null)
-    def container_image = "/mcroni:1.0.4--pyh5e36f6f_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "mcroni:1.0.4--pyh5e36f6f_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)

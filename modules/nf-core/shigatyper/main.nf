@@ -3,8 +3,9 @@ process SHIGATYPER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::shigatyper=2.0.1" : null)
-    def container_image = "/shigatyper:2.0.1--pyhdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "shigatyper:2.0.1--pyhdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

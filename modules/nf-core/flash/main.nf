@@ -2,8 +2,9 @@ process FLASH {
     tag "$meta.id"
     label 'process_medium'
 
-    def container_image = "/flash:1.2.11--hed695b0_5"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "flash:1.2.11--hed695b0_5"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(reads)

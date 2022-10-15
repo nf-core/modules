@@ -3,8 +3,9 @@ process GATK_INDELREALIGNER {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::gatk=3.5" : null)
-    def container_image = "/gatk:3.5--hdfd78af_11"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "gatk:3.5--hdfd78af_11"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)

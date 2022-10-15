@@ -3,8 +3,9 @@ process ICHORCNA_CREATEPON {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda (params.enable_conda ? "bioconda::r-ichorcna=0.3.2" : null)
-    def container_image = "/r-ichorcna:0.3.2--r41hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "r-ichorcna:0.3.2--r41hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     path wigs

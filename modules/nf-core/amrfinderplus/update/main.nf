@@ -3,8 +3,9 @@ process AMRFINDERPLUS_UPDATE {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::ncbi-amrfinderplus=3.10.30" : null)
-    def container_image = "/ncbi-amrfinderplus:3.10.30--h6e70893_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "ncbi-amrfinderplus:3.10.30--h6e70893_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     output:
     path "amrfinderdb.tar.gz", emit: db

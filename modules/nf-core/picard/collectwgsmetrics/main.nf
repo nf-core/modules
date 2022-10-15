@@ -3,8 +3,9 @@ process PICARD_COLLECTWGSMETRICS {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::picard=2.27.4 r::r-base" : null)
-    def container_image = "/picard:2.27.4--hdfd78af_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "picard:2.27.4--hdfd78af_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

@@ -3,8 +3,9 @@ process MTNUCRATIO {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::mtnucratio=0.7" : null)
-    def container_image = "/mtnucratio:0.7--hdfd78af_2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "mtnucratio:0.7--hdfd78af_2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

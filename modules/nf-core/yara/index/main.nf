@@ -3,8 +3,9 @@ process YARA_INDEX {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::yara=1.0.2" : null)
-    def container_image = "/yara:1.0.2--2"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "yara:1.0.2--2"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)

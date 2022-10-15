@@ -3,8 +3,9 @@ process TIDDIT_SV {
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::tiddit=3.1.0" : null)
-    def container_image = "/tiddit:3.1.0--py39h59fae87_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "tiddit:3.1.0--py39h59fae87_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(input), path(input_index)

@@ -3,8 +3,9 @@ process BAMTOOLS_STATS {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bamtools=2.5.1" : null)
-    def container_image = "/bamtools:2.5.1--h9a82719_9"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "bamtools:2.5.1--h9a82719_9"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(bam)

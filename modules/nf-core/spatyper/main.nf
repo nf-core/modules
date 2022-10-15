@@ -3,8 +3,9 @@ process SPATYPER {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::spatyper=0.3.3" : null)
-    def container_image = "/spatyper:0.3.3--pyhdfd78af_3"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "spatyper:0.3.3--pyhdfd78af_3"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)

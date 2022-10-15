@@ -3,8 +3,9 @@ process ENTREZDIRECT_ESEARCH {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::entrez-direct=16.2" : null)
-    def container_image = "/entrez-direct:16.2--he881be0_1"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "entrez-direct:16.2--he881be0_1"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), val(term)

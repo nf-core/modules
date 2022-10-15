@@ -3,8 +3,9 @@ process BWAMEM2_INDEX {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::bwa-mem2=2.2.1" : null)
-    def container_image = "/bwa-mem2:2.2.1--he513fc3_0"
-    container { (params.container_registry ?: 'quay.io/biocontainers' + container_image) }
+    def container_image = "bwa-mem2:2.2.1--he513fc3_0"
+    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+
 
     input:
     tuple val(meta), path(fasta)
