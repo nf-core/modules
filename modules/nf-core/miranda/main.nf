@@ -38,6 +38,7 @@ process MIRANDA {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
 
