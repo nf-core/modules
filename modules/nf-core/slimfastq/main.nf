@@ -7,7 +7,6 @@ process SLIMFASTQ {
     def container_image = "slimfastq:2.04--h87f3376_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastq)
 

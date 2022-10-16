@@ -6,7 +6,6 @@ process CNVKIT_BATCH {
     def container_image = "mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:304d1c5ab610f216e77c61420ebe85f1e7c5968a-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(tumor), path(normal)
     path  fasta

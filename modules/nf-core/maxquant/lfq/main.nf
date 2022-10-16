@@ -6,7 +6,6 @@ process MAXQUANT_LFQ {
     def container_image = "maxquant:2.0.3.0--py310hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta), path(paramfile)
     path raw

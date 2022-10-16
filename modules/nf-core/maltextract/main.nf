@@ -6,7 +6,6 @@ process MALTEXTRACT {
     def container_image = "hops:0.35--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path rma6
     path taxon_list

@@ -5,7 +5,6 @@ process BISMARK_SUMMARY {
     def container_image = "bismark:0.23.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path(bam)
     path(align_report)

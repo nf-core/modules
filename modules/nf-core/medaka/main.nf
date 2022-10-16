@@ -6,7 +6,6 @@ process MEDAKA {
     def container_image = "medaka:1.4.4--py38h130def0_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads), path(assembly)
 

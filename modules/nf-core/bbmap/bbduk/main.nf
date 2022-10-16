@@ -6,7 +6,6 @@ process BBMAP_BBDUK {
     def container_image = "bbmap:38.90--he522d1c_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path contaminants

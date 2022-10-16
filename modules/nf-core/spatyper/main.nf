@@ -6,7 +6,6 @@ process SPATYPER {
     def container_image = "spatyper:0.3.3--pyhdfd78af_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path repeats

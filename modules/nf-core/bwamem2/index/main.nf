@@ -6,7 +6,6 @@ process BWAMEM2_INDEX {
     def container_image = "bwa-mem2:2.2.1--he513fc3_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

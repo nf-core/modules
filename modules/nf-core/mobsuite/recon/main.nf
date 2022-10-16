@@ -6,7 +6,6 @@ process MOBSUITE_RECON {
     def container_image = "mob_suite:3.0.3--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

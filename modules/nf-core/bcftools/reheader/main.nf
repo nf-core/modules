@@ -6,7 +6,6 @@ process BCFTOOLS_REHEADER {
     def container_image = "bcftools:1.15.1--h0ea216a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
     path fai

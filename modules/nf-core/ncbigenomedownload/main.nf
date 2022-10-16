@@ -6,7 +6,6 @@ process NCBIGENOMEDOWNLOAD {
     def container_image = "ncbi-genome-download:0.3.1--pyh5e36f6f_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     val meta
     path accessions

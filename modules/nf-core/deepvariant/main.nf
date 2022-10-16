@@ -2,7 +2,6 @@ process DEEPVARIANT {
     tag "$meta.id"
     label 'process_medium'
 
-
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used with DeepVariant at the moment. Please use Docker or Singularity containers."
     }

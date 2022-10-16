@@ -6,7 +6,6 @@ process VSEARCH_USEARCHGLOBAL {
     def container_image = "vsearch:2.21.1--h95f258a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(queryfasta)
     path db

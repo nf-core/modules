@@ -6,7 +6,6 @@ process MTNUCRATIO {
     def container_image = "mtnucratio:0.7--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     val(mt_id)

@@ -6,7 +6,6 @@ process SRATOOLS_PREFETCH {
     def container_image = "sra-tools:2.11.0--pl5321ha49a11a_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), val(id)
     path ncbi_settings

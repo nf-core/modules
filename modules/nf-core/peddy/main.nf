@@ -6,7 +6,6 @@ process PEDDY {
     def container_image = "peddy:0.4.8--pyh5e36f6f_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
     path ped

@@ -6,7 +6,6 @@ process RASUSA {
     def container_image = "rasusa:0.3.0--h779adbc_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads), val(genome_size)
     val   depth_cutoff

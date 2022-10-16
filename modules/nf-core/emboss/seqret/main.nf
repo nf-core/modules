@@ -6,7 +6,6 @@ process EMBOSS_SEQRET {
     def container_image = "emboss:6.6.0--hf657eab_5"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(sequence)
     val out_ext

@@ -6,7 +6,6 @@ process STADENIOLIB_SCRAMBLE {
     def container_image = "staden_io_lib:1.14.14--h0d9da7e_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path(fasta)

@@ -6,7 +6,6 @@ process HMMER_HMMBUILD {
     def container_image = "hmmer:3.3.2--h87f3376_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(alignment)
     path mxfile

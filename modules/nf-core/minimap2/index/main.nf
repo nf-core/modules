@@ -5,7 +5,6 @@ process MINIMAP2_INDEX {
     def container_image = "minimap2:2.21--h5bf99c6_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

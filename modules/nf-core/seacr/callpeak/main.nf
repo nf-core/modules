@@ -7,7 +7,6 @@ process SEACR_CALLPEAK {
     def container_image = "mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:f4bb19b68e66de27e4c64306f951d5ff11919931-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bedgraph), path(ctrlbedgraph)
     val (threshold)

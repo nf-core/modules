@@ -6,7 +6,6 @@ process BISCUIT_INDEX {
     def container_image = "biscuit:1.0.2.20220113--h81a5ba2_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta, stageAs: "BiscuitIndex/*"
 

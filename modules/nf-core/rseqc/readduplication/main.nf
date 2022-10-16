@@ -6,7 +6,6 @@ process RSEQC_READDUPLICATION {
     def container_image = "rseqc:3.0.1--py37h516909a_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

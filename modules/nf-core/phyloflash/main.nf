@@ -6,7 +6,6 @@ process PHYLOFLASH {
     def container_image = "phyloflash:3.4--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path  silva_db

@@ -6,7 +6,6 @@ process ULTRA_PIPELINE {
     def container_image = "ultra_bioinformatics:0.0.4.1--pyh5e36f6f_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path genome

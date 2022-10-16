@@ -7,7 +7,6 @@ process PARACLU {
     def container_image = "paraclu:10--h9a82719_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bed)
     val(min_cluster)

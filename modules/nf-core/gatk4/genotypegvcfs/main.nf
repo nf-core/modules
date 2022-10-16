@@ -6,7 +6,6 @@ process GATK4_GENOTYPEGVCFS {
     def container_image = "gatk4:4.2.6.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gvcf), path(gvcf_index), path(intervals), path(intervals_index)
     path  fasta

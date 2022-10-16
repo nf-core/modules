@@ -6,7 +6,6 @@ process BEDTOOLS_SUBTRACT {
     def container_image = "bedtools:2.30.0--hc088bd4_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(intervals1), path(intervals2)
 

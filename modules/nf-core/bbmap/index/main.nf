@@ -6,7 +6,6 @@ process BBMAP_INDEX {
     def container_image = "bbmap:38.92--he522d1c_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

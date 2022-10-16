@@ -2,7 +2,6 @@ process FALCO {
     tag "$meta.id"
     label 'process_single'
 
-
     conda (params.enable_conda ? "bioconda::falco=1.2.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/falco:1.2.1--h867801b_3':

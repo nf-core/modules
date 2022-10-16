@@ -6,7 +6,6 @@ process LEGSTA {
     def container_image = "legsta:0.5.1--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(seqs)
 

@@ -6,7 +6,6 @@ process NEXTGENMAP {
     def container_image = "nextgenmap:0.5.5--hc9558a2_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path(fasta)

@@ -6,7 +6,6 @@ process LAST_LASTAL {
     def container_image = "last:1250--h2e03b76_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastx), path (param_file)
     path index

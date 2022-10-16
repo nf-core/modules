@@ -6,7 +6,6 @@ process SRATOOLS_FASTERQDUMP {
     def container_image = "mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(sra)
     path ncbi_settings

@@ -6,7 +6,6 @@ process MASHTREE {
     def container_image = "mashtree:1.2.0--pl526h516909a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(seqs)
 

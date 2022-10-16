@@ -6,7 +6,6 @@ process CONTROLFREEC_FREEC {
     def container_image = "control-freec:11.6--h1b792b2_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)
     path fasta

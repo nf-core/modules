@@ -5,7 +5,6 @@ process DEEPBGC_DOWNLOAD {
     def container_image = "deepbgc:0.1.30--pyhb7b1952_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     output:
     path "deepbgc_db/"  , emit: db
     path "versions.yml" , emit: versions

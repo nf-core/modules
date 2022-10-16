@@ -6,7 +6,6 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     def container_image = "gvcftools:0.17.0--he941832_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gvcf)
 

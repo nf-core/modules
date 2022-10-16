@@ -6,7 +6,6 @@ process IDR {
     def container_image = "idr:2.0.4.2--py39hcbe4a3b_5"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path peaks
     val peak_type

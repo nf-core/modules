@@ -7,7 +7,6 @@ process VARIANTBAM {
     def container_image = "variantbam:1.4.4a--h7d7f7ad_5"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

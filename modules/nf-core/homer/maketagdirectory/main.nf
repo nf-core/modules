@@ -8,7 +8,6 @@ process HOMER_MAKETAGDIRECTORY {
     def container_image = "mulled-v2-29293b111ffe5b4c1d1e14c711264aaed6b97b4a:594338b771cacf1623bd27772b5e12825f8835f2-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path fasta

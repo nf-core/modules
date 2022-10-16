@@ -6,7 +6,6 @@ process VERIFYBAMID_VERIFYBAMID2 {
     def container_image = "verifybamid2:2.0.1--hbb20b25_6"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     tuple path(svd_ud), path(svd_mu), path(svd_bed)

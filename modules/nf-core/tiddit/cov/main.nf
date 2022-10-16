@@ -6,7 +6,6 @@ process TIDDIT_COV {
     def container_image = "tiddit:3.0.0--py39h59fae87_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input)
     path  fasta

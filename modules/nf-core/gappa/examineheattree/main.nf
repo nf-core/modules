@@ -6,7 +6,6 @@ process GAPPA_EXAMINEHEATTREE {
     def container_image = "gappa:0.8.0--h9a82719_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(jplace)
 

@@ -6,7 +6,6 @@ process DIAMOND_MAKEDB {
     def container_image = "diamond:2.0.15--hb97b32f_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

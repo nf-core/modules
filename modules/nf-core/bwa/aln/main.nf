@@ -6,7 +6,6 @@ process BWA_ALN {
     def container_image = "bwa:0.7.17--h5bf99c6_8"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path index

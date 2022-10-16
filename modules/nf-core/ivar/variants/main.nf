@@ -6,7 +6,6 @@ process IVAR_VARIANTS {
     def container_image = "ivar:1.3.1--h089eab3_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path  fasta

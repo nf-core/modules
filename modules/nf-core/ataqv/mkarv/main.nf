@@ -5,7 +5,6 @@ process ATAQV_MKARV {
     def container_image = "ataqv:1.3.0--py39hccc85d7_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path json
 

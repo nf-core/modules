@@ -6,7 +6,6 @@ process SNPSIFT_SPLIT {
     def container_image = "snpsift:4.3.1t--hdfd78af_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
 

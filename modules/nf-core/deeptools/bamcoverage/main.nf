@@ -6,7 +6,6 @@ process DEEPTOOLS_BAMCOVERAGE {
     def container_image = "mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:2c687053c0252667cca265c9f4118f2c205a604c-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input), path(input_index)
     path(fasta)

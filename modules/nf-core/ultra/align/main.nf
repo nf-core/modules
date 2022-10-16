@@ -6,7 +6,6 @@ process ULTRA_ALIGN {
     def container_image = "mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:f63170074b42f54276c1f9b334e732a0f3bf28bd-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path genome

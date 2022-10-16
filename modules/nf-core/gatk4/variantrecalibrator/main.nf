@@ -6,7 +6,6 @@ process GATK4_VARIANTRECALIBRATOR {
     def container_image = "gatk4:4.2.6.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(tbi) // input vcf and tbi of variants to recalibrate
     path resource_vcf   // resource vcf

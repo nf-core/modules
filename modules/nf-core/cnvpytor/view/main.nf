@@ -6,7 +6,6 @@ process CNVPYTOR_VIEW {
     def container_image = "cnvpytor:1.2.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(pytor_files)
     val bin_sizes

@@ -6,7 +6,6 @@ process FGBIO_ZIPPERBAMS {
     def container_image = "fgbio:2.0.2--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(unmapped_bam)
     tuple val(meta), path(mapped_bam)
@@ -47,7 +46,6 @@ process FGBIO_ZIPPERBAMS {
         --ref ${fasta} \\
         ${args} \\
         --output ${prefix}.bam
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

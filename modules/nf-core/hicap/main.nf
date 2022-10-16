@@ -6,7 +6,6 @@ process HICAP {
     def container_image = "hicap:1.0.3--py_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path database_dir

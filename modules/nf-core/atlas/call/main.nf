@@ -6,7 +6,6 @@ process ATLAS_CALL {
     def container_image = "atlas:0.9.9--h082e891_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai), path(pmd), path(recal)
     path fasta
@@ -41,7 +40,6 @@ process ATLAS_CALL {
         $known_alleles_file \\
         method=${method} \\
         $args
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

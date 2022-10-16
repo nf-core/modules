@@ -6,7 +6,6 @@ process GENRICH {
     def container_image = "genrich:0.6.1--h5bf99c6_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(treatment_bam)
     path  control_bam

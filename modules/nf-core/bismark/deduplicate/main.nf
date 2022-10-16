@@ -6,7 +6,6 @@ process BISMARK_DEDUPLICATE {
     def container_image = "bismark:0.23.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

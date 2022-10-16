@@ -6,7 +6,6 @@ process BWAMETH_INDEX {
     def container_image = "bwameth:0.2.2--py_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta, stageAs: "bwameth/*"
 

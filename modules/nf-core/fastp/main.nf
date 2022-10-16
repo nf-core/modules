@@ -6,7 +6,6 @@ process FASTP {
     def container_image = "fastp:0.23.2--h79da9fb_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     val   save_trimmed_fail

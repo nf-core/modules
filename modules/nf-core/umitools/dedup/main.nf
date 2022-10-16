@@ -6,7 +6,6 @@ process UMITOOLS_DEDUP {
     def container_image = "umi_tools:1.1.2--py38h4a8c8d9_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     val get_output_stats

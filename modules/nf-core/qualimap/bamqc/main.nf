@@ -6,7 +6,6 @@ process QUALIMAP_BAMQC {
     def container_image = "qualimap:2.2.2d--1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path gff

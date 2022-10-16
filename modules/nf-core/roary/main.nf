@@ -6,7 +6,6 @@ process ROARY {
     def container_image = "roary:3.13.0--pl526h516909a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gff)
 

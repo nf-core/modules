@@ -7,7 +7,6 @@ process VCF2DB {
     def container_image = "vcf2db:2020.02.24--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(ped)
 

@@ -6,7 +6,6 @@ process PAIRIX {
     def container_image = "pairix:0.3.7--py36h30a8e3e_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(pair)
 

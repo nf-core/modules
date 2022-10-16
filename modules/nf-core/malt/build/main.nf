@@ -6,7 +6,6 @@ process MALT_BUILD {
     def container_image = "malt:0.41--1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fastas
     val seq_type

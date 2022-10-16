@@ -6,7 +6,6 @@ process SORTMERNA {
     def container_image = "sortmerna:4.3.4--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path  fastas

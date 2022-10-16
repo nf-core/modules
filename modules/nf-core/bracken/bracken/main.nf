@@ -8,7 +8,6 @@ process BRACKEN_BRACKEN {
     def container_image = "bracken:2.7--py39hc16433a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(kraken_report)
     path database

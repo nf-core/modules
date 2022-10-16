@@ -6,11 +6,9 @@ process GECCO_RUN {
     def container_image = "gecco:0.9.2--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input), path(hmm)
     path model_dir
-
 
     output:
     tuple val(meta), path("*.genes.tsv")    , optional: true, emit: genes

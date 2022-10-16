@@ -7,7 +7,6 @@ process HISAT2_ALIGN {
     def container_image = "mulled-v2-a97e90b3b802d1da3d6958e0867610c718cb5eb1:38aed4501da19db366dc7c8d52d31d94e760cfaf-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path  index

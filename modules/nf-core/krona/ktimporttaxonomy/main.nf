@@ -7,7 +7,6 @@ process KRONA_KTIMPORTTAXONOMY {
     def container_image = "krona:2.8--pl5262hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(report)
     path taxonomy, stageAs: 'taxonomy.tab'

@@ -6,7 +6,6 @@ process ISMAPPER {
     def container_image = "ismapper:2.0.2--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads), path(reference), path(query)
 

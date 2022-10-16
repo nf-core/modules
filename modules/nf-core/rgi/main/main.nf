@@ -6,7 +6,6 @@ process RGI_MAIN {
     def container_image = "rgi:5.2.1--pyha8f3691_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

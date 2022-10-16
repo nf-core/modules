@@ -6,7 +6,6 @@ process CHECKM_QA {
     def container_image = "checkm-genome:1.2.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(analysis_dir), path(marker_file), path(coverage_file)
     path exclude_marker_file

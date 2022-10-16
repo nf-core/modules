@@ -6,7 +6,6 @@ process ENTREZDIRECT_ESEARCH {
     def container_image = "entrez-direct:16.2--he881be0_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), val(term)
     val database

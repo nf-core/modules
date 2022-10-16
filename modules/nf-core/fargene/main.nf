@@ -7,7 +7,6 @@ process FARGENE {
     def container_image = "fargene:0.1--py27h21c881e_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     // input may be fasta (for genomes or longer contigs) or paired-end fastq (for metagenome), the latter in addition with --meta flag
     tuple val(meta), path(input)

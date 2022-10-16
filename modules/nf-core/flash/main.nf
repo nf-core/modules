@@ -5,7 +5,6 @@ process FLASH {
     def container_image = "flash:1.2.11--hed695b0_5"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

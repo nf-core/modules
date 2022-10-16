@@ -6,7 +6,6 @@ process SEQKIT_STATS {
     def container_image = "seqkit:2.2.0--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

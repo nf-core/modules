@@ -6,7 +6,6 @@ process GENMAP_MAPPABILITY {
     def container_image = "genmap:1.3.0--h1b792b2_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path index
 

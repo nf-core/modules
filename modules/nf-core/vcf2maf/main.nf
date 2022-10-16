@@ -8,7 +8,6 @@ process VCF2MAF {
     def container_image = "mulled-v2-b6fc09bed47d0dc4d8384ce9e04af5806f2cc91b:305092c6f8420acd17377d2cc8b96e1c3ccb7d26-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf) // Use an uncompressed VCF file!
     path fasta                 // Required

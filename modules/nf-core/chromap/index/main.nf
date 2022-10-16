@@ -6,7 +6,6 @@ process CHROMAP_INDEX {
     def container_image = "chromap:0.2.1--hd03093a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

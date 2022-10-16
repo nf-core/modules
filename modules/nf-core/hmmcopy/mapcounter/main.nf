@@ -6,7 +6,6 @@ process HMMCOPY_MAPCOUNTER {
     def container_image = "hmmcopy:0.1.1--h2e03b76_7"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path bigwig
 

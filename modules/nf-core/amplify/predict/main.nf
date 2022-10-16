@@ -7,7 +7,6 @@ process AMPLIFY_PREDICT {
     def container_image = "amplify:1.0.3--py36hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(faa)
     path(model_dir)

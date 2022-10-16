@@ -6,7 +6,6 @@ process SEQSERO2 {
     def container_image = "seqsero2:1.2.1--py_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(seqs)
 

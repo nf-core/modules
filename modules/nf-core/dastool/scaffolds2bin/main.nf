@@ -6,7 +6,6 @@ process DASTOOL_SCAFFOLDS2BIN {
     def container_image = "das_tool:1.1.3--r41hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     val(extension)

@@ -6,7 +6,6 @@ process PROKKA {
     def container_image = "prokka:1.14.6--pl5321hdfd78af_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path proteins

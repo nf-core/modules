@@ -6,7 +6,6 @@ process RTGTOOLS_VCFEVAL {
     def container_image = "rtg-tools:3.12.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi)
     tuple path(truth_vcf), path(truth_vcf_tbi)
@@ -50,7 +49,6 @@ process RTGTOOLS_VCFEVAL {
         --output=${prefix}_results \\
         --template=$sdf \\
         --threads=$task.cpus \\
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -6,7 +6,6 @@ process ENSEMBLVEP {
     def container_image = "ensembl-vep:106.1--pl5321h4a94de4_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
     val   genome
@@ -50,7 +49,6 @@ process ENSEMBLVEP {
         --dir_cache $dir_cache \\
         --fork $task.cpus \\
         --stats_file ${prefix}.summary.html \\
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -7,7 +7,6 @@ process SEQWISH_INDUCE {
     def container_image = "seqwish:0.7.6--h5b5514e_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(paf), path(fasta)
 

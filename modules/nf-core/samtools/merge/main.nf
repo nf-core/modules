@@ -6,7 +6,6 @@ process SAMTOOLS_MERGE {
     def container_image = "samtools:1.15.1--h1170115_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input_files, stageAs: "?/*")
     path fasta
@@ -17,7 +16,6 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     tuple val(meta), path("*.csi")         , optional:true, emit: csi
     path  "versions.yml"                                  , emit: versions
-
 
     when:
     task.ext.when == null || task.ext.when

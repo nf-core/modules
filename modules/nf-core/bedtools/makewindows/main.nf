@@ -6,7 +6,6 @@ process BEDTOOLS_MAKEWINDOWS {
     def container_image = "bedtools:2.30.0--h7d7f7ad_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(regions)
     val(use_bed)

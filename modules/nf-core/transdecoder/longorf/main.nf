@@ -6,7 +6,6 @@ process TRANSDECODER_LONGORF {
     def container_image = "transdecoder:5.5.0--pl5262hdfd78af_4"
     container [ params.container_registry ?: 'quay.io/comp-bio-aging' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

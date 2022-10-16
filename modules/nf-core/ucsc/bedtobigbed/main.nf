@@ -7,7 +7,6 @@ process UCSC_BEDTOBIGBED {
     def container_image = "ucsc-bedtobigbed:377--ha8a8165_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bed)
     path  sizes

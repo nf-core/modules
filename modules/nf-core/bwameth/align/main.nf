@@ -6,7 +6,6 @@ process BWAMETH_ALIGN {
     def container_image = "bwameth:0.2.2--py_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path index

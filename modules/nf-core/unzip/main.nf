@@ -6,7 +6,6 @@ process UNZIP {
     def container_image = "p7zip:15.09--h2d50403_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(archive)
 

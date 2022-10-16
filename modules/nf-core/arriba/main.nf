@@ -6,7 +6,6 @@ process ARRIBA {
     def container_image = "arriba:2.3.0--haa8aa89_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path fasta

@@ -6,7 +6,6 @@ process COOLER_DIGEST {
     def container_image = "cooler:0.8.11--pyh3252c3a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
     path chromsizes

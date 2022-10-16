@@ -7,7 +7,6 @@ process CMSEQ_POLYMUT {
     def container_image = "cmseq:1.0.4--pyhb7b1952_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai), path(gff), path(fasta)
 

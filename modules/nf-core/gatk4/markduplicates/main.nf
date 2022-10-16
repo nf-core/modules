@@ -6,7 +6,6 @@ process GATK4_MARKDUPLICATES {
     def container_image = "gatk4:4.2.6.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path  fasta
@@ -43,7 +42,6 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         ${reference} \\
         $args
-
 
     if  [[ ${prefix} == *.cram ]]; then
         mv ${prefix}.bai ${prefix}.crai

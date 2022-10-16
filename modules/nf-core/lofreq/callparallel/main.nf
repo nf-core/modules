@@ -6,7 +6,6 @@ process LOFREQ_CALLPARALLEL {
     def container_image = "lofreq:2.1.5--py38h588ecb2_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     path fasta

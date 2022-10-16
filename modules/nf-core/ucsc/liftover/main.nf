@@ -7,7 +7,6 @@ process UCSC_LIFTOVER {
     def container_image = "ucsc-liftover:377--h0b8a92a_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bed)
     path(chain)

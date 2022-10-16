@@ -7,7 +7,6 @@ process PRESEQ_CCURVE {
     def container_image = "preseq:3.1.2--h445547b_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

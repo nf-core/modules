@@ -6,7 +6,6 @@ process STRELKA_GERMLINE {
     def container_image = "strelka:2.9.10--h9ee0642_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input), path(input_index), path (target_bed), path (target_bed_tbi)
     path  fasta

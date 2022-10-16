@@ -6,7 +6,6 @@ process MEGAN_RMA2INFO {
     def container_image = "megan:6.21.7--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(rma6)
     val(megan_summary)

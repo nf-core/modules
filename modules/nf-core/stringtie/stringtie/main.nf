@@ -6,7 +6,6 @@ process STRINGTIE_STRINGTIE {
     def container_image = "stringtie:2.2.1--hecb563c_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path  annotation_gtf

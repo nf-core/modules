@@ -6,7 +6,6 @@ process DAMAGEPROFILER {
     def container_image = "damageprofiler:1.1--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path fasta

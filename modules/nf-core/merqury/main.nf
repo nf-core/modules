@@ -6,7 +6,6 @@ process MERQURY {
     def container_image = "merqury:1.3--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(meryl_db), path(assembly)
 

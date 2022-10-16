@@ -6,7 +6,6 @@ process SEROBA_RUN {
     def container_image = "seroba:1.0.2--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

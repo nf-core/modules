@@ -6,7 +6,6 @@ process SCOARY {
     def container_image = "scoary:1.6.16--py_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(genes), path(traits)
     path(tree)

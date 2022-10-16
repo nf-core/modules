@@ -6,7 +6,6 @@ process SNPEFF {
     def container_image = "snpeff:5.1--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
     val   db

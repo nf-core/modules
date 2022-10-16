@@ -6,7 +6,6 @@ process GUNC_DOWNLOADDB {
     def container_image = "gunc:1.0.5--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     val db_name
 

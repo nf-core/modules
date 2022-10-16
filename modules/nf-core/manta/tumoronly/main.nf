@@ -6,7 +6,6 @@ process MANTA_TUMORONLY {
     def container_image = "manta:1.6.0--h9ee0642_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input), path(input_index), path(target_bed), path(target_bed_tbi)
     path fasta

@@ -6,7 +6,6 @@ process BWAMEM2_MEM {
     def container_image = "mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:38aed4501da19db366dc7c8d52d31d94e760cfaf-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)

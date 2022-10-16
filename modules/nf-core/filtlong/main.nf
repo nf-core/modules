@@ -6,7 +6,6 @@ process FILTLONG {
     def container_image = "filtlong:0.2.1--h9a82719_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(shortreads), path(longreads)
 

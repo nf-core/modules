@@ -7,7 +7,6 @@ process LEEHOM {
     def container_image = "leehom:1.2.15--h29e30f7_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

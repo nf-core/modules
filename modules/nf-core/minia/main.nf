@@ -6,7 +6,6 @@ process MINIA {
     def container_image = "minia:3.2.6--h9a82719_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

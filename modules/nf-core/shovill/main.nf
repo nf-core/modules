@@ -6,7 +6,6 @@ process SHOVILL {
     def container_image = "shovill:1.1.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

@@ -6,7 +6,6 @@ process ARIBA_GETREF {
     def container_image = "ariba:2.14.6--py39h67e14b5_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     val(db_name)
 

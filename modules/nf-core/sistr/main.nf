@@ -6,7 +6,6 @@ process SISTR {
     def container_image = "sistr_cmd:1.1.1--pyh864c0ab_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

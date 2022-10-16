@@ -6,7 +6,6 @@ process FAQCS {
     def container_image = "faqcs:2.10--r41h9a82719_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 
@@ -37,7 +36,6 @@ process FAQCS {
             -t $task.cpus \\
             $args \\
             2> ${prefix}.fastp.log
-
 
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
             mv ${prefix}.unpaired.trimmed.fastq ${prefix}.trimmed.fastq

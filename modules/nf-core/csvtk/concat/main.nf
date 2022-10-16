@@ -6,7 +6,6 @@ process CSVTK_CONCAT {
     def container_image = "csvtk:0.23.0--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(csv)
     val in_format

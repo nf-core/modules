@@ -6,7 +6,6 @@ process STAPHOPIASCCMEC {
     def container_image = "staphopia-sccmec:1.0.0--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

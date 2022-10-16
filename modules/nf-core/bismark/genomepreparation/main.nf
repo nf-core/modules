@@ -6,7 +6,6 @@ process BISMARK_GENOMEPREPARATION {
     def container_image = "bismark:0.23.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta, stageAs: "BismarkIndex/*"
 

@@ -6,7 +6,6 @@ process DEDUP {
     def container_image = "dedup:0.12.8--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

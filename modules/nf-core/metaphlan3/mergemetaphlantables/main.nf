@@ -5,7 +5,6 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
     def container_image = "metaphlan:3.0.12--pyhb7b1952_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(profiles)
 

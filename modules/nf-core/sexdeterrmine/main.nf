@@ -6,7 +6,6 @@ process SEXDETERRMINE {
     def container_image = "sexdeterrmine:1.1.2--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(depth)
     path sample_list_file

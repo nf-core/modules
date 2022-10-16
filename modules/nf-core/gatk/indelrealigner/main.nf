@@ -6,7 +6,6 @@ process GATK_INDELREALIGNER {
     def container_image = "gatk:3.5--hdfd78af_11"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
     path(fasta)

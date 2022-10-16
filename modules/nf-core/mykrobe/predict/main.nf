@@ -6,7 +6,6 @@ process MYKROBE_PREDICT {
     def container_image = "mykrobe:0.11.0--py39h2add14b_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(seqs)
     val species

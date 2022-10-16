@@ -6,7 +6,6 @@ process ISOSEQ3_REFINE {
     def container_image = "isoseq3:3.4.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path primers

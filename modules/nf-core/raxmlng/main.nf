@@ -5,7 +5,6 @@ process RAXMLNG {
     def container_image = "raxml-ng:1.0.3--h32fcf60_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path alignment
 

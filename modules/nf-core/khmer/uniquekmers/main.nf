@@ -6,7 +6,6 @@ process KHMER_UNIQUEKMERS {
     def container_image = "khmer:3.0.0a3--py37haa7609a_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
     val  kmer_size

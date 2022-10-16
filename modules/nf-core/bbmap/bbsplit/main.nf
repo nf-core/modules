@@ -5,7 +5,6 @@ process BBMAP_BBSPLIT {
     def container_image = "bbmap:38.93--he522d1c_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path  index

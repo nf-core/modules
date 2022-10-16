@@ -6,7 +6,6 @@ process UNICYCLER {
     def container_image = "unicycler:0.4.8--py38h8162308_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(shortreads), path(longreads)
 

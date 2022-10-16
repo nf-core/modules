@@ -6,7 +6,6 @@ process DRAGMAP_HASHTABLE {
     def container_image = "dragmap:1.2.1--hd4ca14e_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

@@ -6,7 +6,6 @@ process MULTIVCFANALYZER {
     def container_image = "multivcfanalyzer:0.85.2--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path vcfs
     path fasta
@@ -18,7 +17,6 @@ process MULTIVCFANALYZER {
     val homozygous_freq
     val heterozygous_freq
     path gff_exclude
-
 
     output:
     path('fullAlignment.fasta.gz')                       , emit: full_alignment

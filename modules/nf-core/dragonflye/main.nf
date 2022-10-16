@@ -6,7 +6,6 @@ process DRAGONFLYE {
     def container_image = "dragonflye:1.0.11--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

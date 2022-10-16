@@ -6,7 +6,6 @@ process SEQUENZAUTILS_GCWIGGLE {
     def container_image = "sequenza-utils:3.0.0--py38h6ed170a_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

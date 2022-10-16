@@ -6,7 +6,6 @@ process MERYL_UNIONSUM {
     def container_image = "meryl:1.3--h87f3376_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(meryl_dbs)
 

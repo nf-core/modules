@@ -6,7 +6,6 @@ process FASTQC {
     def container_image = "fastqc:0.11.9--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

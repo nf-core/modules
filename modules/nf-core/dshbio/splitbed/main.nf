@@ -6,7 +6,6 @@ process DSHBIO_SPLITBED {
     def container_image = "dsh-bio:2.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bed)
 

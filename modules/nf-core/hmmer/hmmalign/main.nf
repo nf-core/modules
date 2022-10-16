@@ -6,7 +6,6 @@ process HMMER_HMMALIGN {
     def container_image = "hmmer:3.3.2--h1b792b2_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path hmm

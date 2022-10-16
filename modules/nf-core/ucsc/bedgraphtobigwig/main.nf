@@ -7,7 +7,6 @@ process UCSC_BEDGRAPHTOBIGWIG {
     def container_image = "ucsc-bedgraphtobigwig:377--h446ed27_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bedgraph)
     path  sizes

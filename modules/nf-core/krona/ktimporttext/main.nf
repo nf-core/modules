@@ -6,7 +6,6 @@ process KRONA_KTIMPORTTEXT {
     def container_image = "krona:2.8.1--pl5321hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(report)
 

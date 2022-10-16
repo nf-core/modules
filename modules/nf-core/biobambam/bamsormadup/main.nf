@@ -6,7 +6,6 @@ process BIOBAMBAM_BAMSORMADUP {
     def container_image = "biobambam:2.0.183--h9f5acd7_1"
     container (params.container_registry ?: 'quay.io/biocontainers' , container_image)
 
-
     input:
     tuple val(meta), path(bams, stageAs: "?/*")
     path(fasta)

@@ -6,7 +6,6 @@ process NEXTCLADE_DATASETGET {
     def container_image = "nextclade:2.2.0--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     val dataset
     val reference

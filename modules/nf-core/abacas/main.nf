@@ -6,7 +6,6 @@ process ABACAS {
     def container_image = "abacas:1.3.1--pl526_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(scaffold)
     path  fasta

@@ -6,7 +6,6 @@ process FASTAWINDOWS {
     def container_image = "fasta_windows:0.2.4--hec16e2b_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

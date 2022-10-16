@@ -6,7 +6,6 @@ process SAMTOOLS_CONVERT {
     def container_image = "samtools:1.15.1--h1170115_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input), path(index)
     path  fasta

@@ -6,7 +6,6 @@ process HAMRONIZATION_ABRICATE {
     def container_image = "hamronization:1.1.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(report)
     val(format)
@@ -33,7 +32,6 @@ process HAMRONIZATION_ABRICATE {
         --analysis_software_version ${software_version} \\
         --reference_database_version ${reference_db_version} \\
         > ${prefix}.${format}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -6,7 +6,6 @@ process MAPDAMAGE2 {
     def container_image = "mapdamage2:2.2.1--pyr40_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path(fasta)

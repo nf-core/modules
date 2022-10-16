@@ -6,7 +6,6 @@ process HAPLOGREP2_CLASSIFY {
     def container_image = "haplogrep:2.4.0--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(inputfile)
     val(format)

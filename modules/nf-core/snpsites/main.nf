@@ -5,7 +5,6 @@ process SNPSITES {
     def container_image = "snp-sites:2.5.1--hed695b0_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path alignment
 

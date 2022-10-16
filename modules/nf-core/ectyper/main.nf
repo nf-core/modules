@@ -6,7 +6,6 @@ process ECTYPER {
     def container_image = "ectyper:1.0.0--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

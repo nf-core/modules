@@ -7,7 +7,6 @@ process ARIA2 {
     def container_image = "aria2:1.36.0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     val source_url
 

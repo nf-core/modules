@@ -5,7 +5,6 @@ process GRAPHMAP2_INDEX {
     def container_image = "graphmap:0.6.3--he513fc3_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

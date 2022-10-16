@@ -6,7 +6,6 @@ process SUBREAD_FEATURECOUNTS {
     def container_image = "subread:2.0.1--hed695b0_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bams), path(annotation)
 

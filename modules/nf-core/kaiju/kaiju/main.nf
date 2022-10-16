@@ -6,7 +6,6 @@ process KAIJU_KAIJU {
     def container_image = "kaiju:1.8.2--h5b5514e_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path(db)

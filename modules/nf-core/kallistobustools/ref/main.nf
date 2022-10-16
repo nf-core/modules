@@ -6,7 +6,6 @@ process KALLISTOBUSTOOLS_REF {
     def container_image = "kb-python:0.27.2--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
     path gtf

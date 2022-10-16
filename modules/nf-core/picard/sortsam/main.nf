@@ -6,7 +6,6 @@ process PICARD_SORTSAM {
     def container_image = "picard:2.27.4--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     val sort_order

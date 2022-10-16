@@ -6,7 +6,6 @@ process PBBAM_PBMERGE {
     def container_image = "pbbam:1.7.0--h058f120_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

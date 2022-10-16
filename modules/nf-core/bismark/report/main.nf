@@ -6,7 +6,6 @@ process BISMARK_REPORT {
     def container_image = "bismark:0.23.0--0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(align_report), path(dedup_report), path(splitting_report), path(mbias)
 

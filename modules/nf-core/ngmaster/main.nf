@@ -6,7 +6,6 @@ process NGMASTER {
     def container_image = "ngmaster:0.5.8--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

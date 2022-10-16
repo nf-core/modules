@@ -6,7 +6,6 @@ process QCAT {
     def container_image = "qcat:1.1.0--py_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     val   barcode_kit

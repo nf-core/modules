@@ -6,7 +6,6 @@ process MASH_SCREEN {
     def container_image = "mash:2.3--he348c14_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(query)
     path sequences_sketch

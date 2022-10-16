@@ -6,7 +6,6 @@ process ELPREP_MERGE {
     def container_image = "elprep:5.1.2--he881be0_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

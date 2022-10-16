@@ -7,7 +7,6 @@ process KRONA_KTUPDATETAXONOMY {
     def container_image = "krona:2.7.1--pl526_5"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     output:
     path 'taxonomy/taxonomy.tab', emit: db
     path "versions.yml"         , emit: versions

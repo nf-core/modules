@@ -6,7 +6,6 @@ process VCFLIB_VCFBREAKMULTI {
     def container_image = "vcflib:1.0.3--hecb563c_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(tbi)
 

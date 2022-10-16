@@ -6,7 +6,6 @@ process BOWTIE2_BUILD {
     def container_image = "bowtie2:2.4.4--py39hbb4e92a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

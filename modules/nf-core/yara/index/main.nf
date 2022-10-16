@@ -6,7 +6,6 @@ process YARA_INDEX {
     def container_image = "yara:1.0.2--2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

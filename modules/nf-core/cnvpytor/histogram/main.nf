@@ -6,11 +6,9 @@ process CNVPYTOR_HISTOGRAM {
     def container_image = "cnvpytor:1.2.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(pytor)
     val bin_sizes
-
 
     output:
     tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor

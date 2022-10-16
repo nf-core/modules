@@ -6,7 +6,6 @@ process BUSCO {
     def container_image = "busco:5.4.3--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path('tmp_input/*')
     val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead

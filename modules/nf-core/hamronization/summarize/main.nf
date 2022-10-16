@@ -5,7 +5,6 @@ process HAMRONIZATION_SUMMARIZE {
     def container_image = "hamronization:1.1.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path(reports)
     val(format)

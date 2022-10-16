@@ -6,7 +6,6 @@ process NUCMER {
     def container_image = "mummer:3.23--pl5262h1b792b2_12"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(ref), path(query)
 

@@ -6,7 +6,6 @@ process MLST {
     def container_image = "mlst:2.19.0--hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

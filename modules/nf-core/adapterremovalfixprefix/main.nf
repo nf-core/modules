@@ -7,7 +7,6 @@ process ADAPTERREMOVALFIXPREFIX {
     def container_image = "adapterremovalfixprefix:0.0.5--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastq)
 

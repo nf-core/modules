@@ -6,7 +6,6 @@ process PINTS_CALLER {
     def container_image = "pypints:1.1.6--pyh5e36f6f_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bams)
 

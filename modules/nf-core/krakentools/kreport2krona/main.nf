@@ -7,7 +7,6 @@ process KRAKENTOOLS_KREPORT2KRONA {
     def container_image = "krakentools:1.2--pyh5e36f6f_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(kreport)
 

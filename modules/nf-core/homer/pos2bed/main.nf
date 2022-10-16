@@ -7,7 +7,6 @@ process HOMER_POS2BED {
     def container_image = "homer:4.11--pl526hc9558a2_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(peaks)
 

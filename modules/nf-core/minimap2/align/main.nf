@@ -6,7 +6,6 @@ process MINIMAP2_ALIGN {
     def container_image = "mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:1679e915ddb9d6b4abda91880c4b48857d471bd8-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path reference
@@ -38,7 +37,6 @@ process MINIMAP2_ALIGN {
         $cigar_paf \\
         $set_cigar_bam \\
         $bam_output
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

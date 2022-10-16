@@ -6,7 +6,6 @@ process PEAR {
     def container_image = "pear:0.9.6--h67092d7_8"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

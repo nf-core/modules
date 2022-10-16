@@ -6,7 +6,6 @@ process CNVKIT_ANTITARGET {
     def container_image = "cnvkit:0.9.9--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(targets)
 

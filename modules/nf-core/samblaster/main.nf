@@ -6,7 +6,6 @@ process SAMBLASTER {
     def container_image = "mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:fff03944e664bbf9a139f7b174b9cb2d4163271a-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

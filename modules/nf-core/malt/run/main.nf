@@ -6,7 +6,6 @@ process MALT_RUN {
     def container_image = "malt:0.41--1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastqs)
     val mode

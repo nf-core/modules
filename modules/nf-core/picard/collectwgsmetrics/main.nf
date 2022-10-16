@@ -6,7 +6,6 @@ process PICARD_COLLECTWGSMETRICS {
     def container_image = "picard:2.27.4--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     path  fasta
@@ -35,7 +34,6 @@ process PICARD_COLLECTWGSMETRICS {
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectWgsMetrics.coverage_metrics \\
         --REFERENCE_SEQUENCE ${fasta}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

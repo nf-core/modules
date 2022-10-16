@@ -6,7 +6,6 @@ process QUALIMAP_BAMQCCRAM {
     def container_image = "mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:61f6d4658ac88635fc37623af50bba77561988ab-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(cram), path(crai)
     path  gff

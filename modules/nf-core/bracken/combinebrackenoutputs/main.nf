@@ -5,7 +5,6 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     def container_image = "bracken:2.7--py39hc16433a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path input
 

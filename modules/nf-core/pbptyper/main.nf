@@ -6,7 +6,6 @@ process PBPTYPER {
     def container_image = "pbptyper:1.0.2--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path(db)

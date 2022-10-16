@@ -6,7 +6,6 @@ process MANTA_GERMLINE {
     def container_image = "manta:1.6.0--h9ee0642_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     //Matching the target bed with the input sample allows to parallelize the same sample run across different intervals or a single bed file
     tuple val(meta), path(input), path(index), path(target_bed), path(target_bed_tbi)

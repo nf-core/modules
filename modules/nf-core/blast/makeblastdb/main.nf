@@ -6,7 +6,6 @@ process BLAST_MAKEBLASTDB {
     def container_image = "blast:2.12.0--pl5262h3289130_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

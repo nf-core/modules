@@ -6,7 +6,6 @@ process PANAROO_RUN {
     def container_image = "panaroo:1.2.9--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gff)
 

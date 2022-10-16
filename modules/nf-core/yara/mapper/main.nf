@@ -6,7 +6,6 @@ process YARA_MAPPER {
     def container_image = "mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:d6c969c1e20cc02a9234961c07a24bb0887f05ea-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)

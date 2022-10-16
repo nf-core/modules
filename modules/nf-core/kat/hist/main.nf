@@ -6,7 +6,6 @@ process KAT_HIST {
     def container_image = "kat:2.4.2--py38hfc5f9d8_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

@@ -6,7 +6,6 @@ process SCRAMBLE_CLUSTERANALYSIS {
     def container_image = "scramble:1.0.1--h779adbc_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(clusters)
     path fasta

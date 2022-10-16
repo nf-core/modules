@@ -6,7 +6,6 @@ process BANDAGE_IMAGE {
     def container_image = "bandage:0.8.1--hc9558a2_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gfa)
 

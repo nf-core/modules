@@ -6,7 +6,6 @@ process TRIMGALORE {
     def container_image = "trim-galore:0.6.7--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

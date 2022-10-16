@@ -6,7 +6,6 @@ process GLIMPSE_CHUNK {
     def container_image = "glimpse-bio:1.1.1--h2ce4488_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input)
     val region

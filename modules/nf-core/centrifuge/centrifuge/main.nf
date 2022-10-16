@@ -6,7 +6,6 @@ process CENTRIFUGE_CENTRIFUGE {
     def container_image = "centrifuge:1.0.4_beta--h9a82719_6"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path db

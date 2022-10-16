@@ -11,7 +11,6 @@ process RMARKDOWNNOTEBOOK {
     def container_image = "mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' ,container_image ].join('/')
 
-
     input:
     tuple val(meta), path(notebook)
     val parameters

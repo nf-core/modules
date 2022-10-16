@@ -6,7 +6,6 @@ process SHASTA {
     def container_image = "shasta:0.8.0--h7d875b9_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

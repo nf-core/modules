@@ -6,7 +6,6 @@ process ASCAT {
     def container_image = "mulled-v2-c278c7398beb73294d78639a864352abef2931ce:dfe5aaa885de434adb2b490b68972c5840c6d761-0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
     path(allele_files)
@@ -83,7 +82,6 @@ process ASCAT {
         $skip_allele_counting_tumour_arg
         $skip_allele_counting_normal_arg
     )
-
 
     #Load the data
     ascat.bc = ascat.loadData(
@@ -194,6 +192,5 @@ process ASCAT {
     echo ' ascat: 3.0.0' >> versions.yml
 
     """
-
 
 }

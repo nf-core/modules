@@ -6,7 +6,6 @@ process SEQUENZAUTILS_BAM2SEQZ {
     def container_image = "sequenza-utils:3.0.0--py38h6ed170a_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(normalbam), path(tumourbam)
     path fasta

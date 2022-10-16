@@ -6,7 +6,6 @@ process ANTISMASH_ANTISMASHLITE {
     def container_image = "antismash-lite:6.0.1--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     containerOptions {
         workflow.containerEngine == 'singularity' ?
         "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :

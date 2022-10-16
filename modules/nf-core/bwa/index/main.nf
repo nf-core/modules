@@ -6,7 +6,6 @@ process BWA_INDEX {
     def container_image = "bwa:0.7.17--hed695b0_7"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

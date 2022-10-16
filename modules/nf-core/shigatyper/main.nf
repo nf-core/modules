@@ -6,7 +6,6 @@ process SHIGATYPER {
     def container_image = "shigatyper:2.0.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

@@ -6,7 +6,6 @@ process MSISENSOR_SCAN {
     def container_image = "msisensor:0.5--hb3646a4_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

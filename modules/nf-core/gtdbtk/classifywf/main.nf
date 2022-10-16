@@ -7,7 +7,6 @@ process GTDBTK_CLASSIFYWF {
     def container_image = "gtdbtk:1.5.0--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path("bins/*")
     tuple val(db_name), path("database/*")

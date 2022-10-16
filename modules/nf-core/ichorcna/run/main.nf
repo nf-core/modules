@@ -7,7 +7,6 @@ process ICHORCNA_RUN {
     def container_image = "r-ichorcna:0.3.2--r41hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(wig)
     path gc_wig

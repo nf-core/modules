@@ -6,7 +6,6 @@ process HAPLOCHECK {
     def container_image = "haplocheck:1.3.3--h4a94de4_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
 

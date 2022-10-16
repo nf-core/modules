@@ -7,7 +7,6 @@ process PLASMIDFINDER {
     def container_image = "plasmidfinder:2.1.6--py310hdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(seqs)
 

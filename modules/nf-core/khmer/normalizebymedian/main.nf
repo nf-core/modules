@@ -6,7 +6,6 @@ process KHMER_NORMALIZEBYMEDIAN {
     def container_image = "khmer:3.0.0a3--py37haa7609a_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path pe_reads
     path se_reads

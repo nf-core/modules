@@ -6,7 +6,6 @@ process PLASMIDID {
     def container_image = "plasmidid:1.6.5--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(scaffold)
     path  fasta

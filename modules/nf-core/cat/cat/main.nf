@@ -6,7 +6,6 @@ process CAT_CAT {
     def container_image = "pigz:2.3.4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(files_in)
 

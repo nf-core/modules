@@ -6,7 +6,6 @@ process PLINK2_EXTRACT {
     def container_image = "plink2:2.00a2.3--h712d239_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar), path(variants)
 

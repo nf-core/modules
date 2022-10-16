@@ -6,7 +6,6 @@ process PRINSEQPLUSPLUS {
     def container_image = "prinseq-plus-plus:1.2.3--hc90279e_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
 

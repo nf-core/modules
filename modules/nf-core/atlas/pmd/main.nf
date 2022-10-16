@@ -6,7 +6,6 @@ process ATLAS_PMD {
     def container_image = "atlas:0.9.9--h082e891_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai), path(pool_rg_txt)
     path(fasta)

@@ -6,7 +6,6 @@ process MACS2_CALLPEAK {
     def container_image = "macs2:2.2.7.1--py38h4a8c8d9_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(ipbam), path(controlbam)
     val   macs2_gsize

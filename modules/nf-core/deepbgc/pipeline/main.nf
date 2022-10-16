@@ -6,7 +6,6 @@ process DEEPBGC_PIPELINE {
     def container_image = "deepbgc:0.1.30--pyhb7b1952_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(genome)
     path(db)

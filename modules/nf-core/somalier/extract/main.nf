@@ -7,7 +7,6 @@ process SOMALIER_EXTRACT {
     def container_image = "somalier:0.2.15--h37c5b7d_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     tuple path(ref), path(refidx)

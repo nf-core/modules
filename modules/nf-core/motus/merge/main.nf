@@ -8,7 +8,6 @@ process MOTUS_MERGE {
     def container_image = "motus:3.0.1--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(input)
     path db // to stop docker saying it can't find it... would have to have the module in upstream steps anyway

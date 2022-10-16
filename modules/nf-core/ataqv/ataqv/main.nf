@@ -6,7 +6,6 @@ process ATAQV_ATAQV {
     def container_image = "ataqv:1.3.0--py39hccc85d7_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
     val organism

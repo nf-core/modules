@@ -6,7 +6,6 @@ process MUSCLE {
     def container_image = "muscle:3.8.1551--h7d875b9_6"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

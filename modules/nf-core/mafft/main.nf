@@ -6,7 +6,6 @@ process MAFFT {
     def container_image = "mafft:7.490--h779adbc_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
 

@@ -6,7 +6,6 @@ process KLEBORATE {
     def container_image = "kleborate:2.1.0--pyhdfd78af_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastas)
 

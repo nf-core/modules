@@ -6,7 +6,6 @@ process SNIPPY_RUN {
     def container_image = "snippy:4.6.0--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     path reference

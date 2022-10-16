@@ -6,7 +6,6 @@ process SVDB_QUERY {
     def container_image = "svdb:2.6.1--py39h5371cbf_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
     val(in_occs)

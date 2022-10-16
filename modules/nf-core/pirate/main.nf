@@ -6,7 +6,6 @@ process PIRATE {
     def container_image = "pirate:1.0.4--hdfd78af_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(gff)
 

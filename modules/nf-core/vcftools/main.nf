@@ -6,7 +6,6 @@ process VCFTOOLS {
     def container_image = "vcftools:0.1.16--he513fc3_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     // Owing to the nature of vcftools we here provide solutions to working with optional bed files and optional
     // alternative variant files, for use with the 'diff' suite of tools.

@@ -6,7 +6,6 @@ process SHASUM {
     def container_image = "ubuntu:20.04"
     container [ params.container_registry ?: '' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(file)
 

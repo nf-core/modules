@@ -6,7 +6,6 @@ process METHYLDACKEL_MBIAS {
     def container_image = "methyldackel:0.6.0--h22771d5_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
     path fasta

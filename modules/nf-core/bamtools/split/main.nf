@@ -6,7 +6,6 @@ process BAMTOOLS_SPLIT {
     def container_image = "bamtools:2.5.2--hd03093a_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
 

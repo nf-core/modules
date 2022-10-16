@@ -6,7 +6,6 @@ process VCFANNO {
     def container_image = "vcfanno:0.3.3--h9ee0642_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(tbi)
     path toml

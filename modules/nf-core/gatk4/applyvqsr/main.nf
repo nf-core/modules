@@ -6,7 +6,6 @@ process GATK4_APPLYVQSR {
     def container_image = "gatk4:4.2.6.1--hdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
     path  fasta

@@ -6,7 +6,6 @@ process BAMCMP {
     def container_image = "bamcmp:2.2--h05f6578_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(sample), path(contaminant)
 

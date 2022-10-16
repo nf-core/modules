@@ -6,7 +6,6 @@ process MAXBIN2 {
     def container_image = "maxbin2:2.2.7--he1b5a44_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(contigs), path(reads), path(abund)
 

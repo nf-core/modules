@@ -6,7 +6,6 @@ process SEQTK_SUBSEQ {
     def container_image = "seqtk:1.3--h5bf99c6_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path sequences
     path filter_list

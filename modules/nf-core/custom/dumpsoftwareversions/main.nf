@@ -6,7 +6,6 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     def container_image = "multiqc:1.13--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path versions
 

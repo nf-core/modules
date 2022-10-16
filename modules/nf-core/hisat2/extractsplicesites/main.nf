@@ -7,7 +7,6 @@ process HISAT2_EXTRACTSPLICESITES {
     def container_image = "hisat2:2.2.1--h1b792b2_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path gtf
 

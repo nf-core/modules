@@ -6,7 +6,6 @@ process NANOLYSE {
     def container_image = "nanolyse:1.2.0--py_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fastq)
     path  fasta

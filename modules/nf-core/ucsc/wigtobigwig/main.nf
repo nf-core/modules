@@ -7,7 +7,6 @@ process UCSC_WIGTOBIGWIG {
     def container_image = "ucsc-wigtobigwig:377--h0b8a92a_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(wig)
     path sizes

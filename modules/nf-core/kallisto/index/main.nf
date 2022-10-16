@@ -6,7 +6,6 @@ process KALLISTO_INDEX {
     def container_image = "kallisto:0.46.2--h4f7b962_1"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path fasta
 

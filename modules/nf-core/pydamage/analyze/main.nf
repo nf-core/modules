@@ -6,7 +6,6 @@ process PYDAMAGE_ANALYZE {
     def container_image = "pydamage:0.70--pyhdfd78af_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam), path(bai)
 

@@ -6,7 +6,6 @@ process SEQTK_SAMPLE {
     def container_image = "seqtk:1.3--h5bf99c6_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(reads)
     val sample_size

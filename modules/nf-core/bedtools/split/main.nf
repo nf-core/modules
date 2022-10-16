@@ -6,7 +6,6 @@ process BEDTOOLS_SPLIT {
     def container_image = "bedtools:2.30.0--h468198e_3"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bed)
     val(number_of_files)

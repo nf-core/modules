@@ -5,7 +5,6 @@ process FASTTREE {
     def container_image = "fasttree:2.1.10--h516909a_4"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path alignment
 

@@ -6,7 +6,6 @@ process ELPREP_FILTER {
     def container_image = "elprep:5.1.2--he881be0_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(bam)
     val(run_haplotypecaller)
@@ -20,7 +19,6 @@ process ELPREP_FILTER {
     val(bqsr_tables_only)
     val(get_activity_profile)
     val(get_assembly_regions)
-
 
     output:
     tuple val(meta), path("output/**.{bam,sam}")    ,emit: bam

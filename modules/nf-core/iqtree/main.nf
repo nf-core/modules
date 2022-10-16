@@ -6,7 +6,6 @@ process IQTREE {
     def container_image = "iqtree:2.1.4_beta--hdcc8f71_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     path alignment
     val constant_sites

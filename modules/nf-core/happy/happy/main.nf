@@ -7,7 +7,6 @@ process HAPPY_HAPPY {
     def container_image = "hap.py:0.3.14--py27h5c5a3ab_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(truth_vcf), path(query_vcf), path(bed)
     tuple path(fasta), path(fasta_fai)

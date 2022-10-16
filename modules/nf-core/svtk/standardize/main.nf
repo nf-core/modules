@@ -6,7 +6,6 @@ process SVTK_STANDARDIZE {
     def container_image = "svtk:0.0.20190615--py37h73a75cf_2"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(vcf)
     path fasta_fai

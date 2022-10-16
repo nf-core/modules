@@ -6,7 +6,6 @@ process AMRFINDERPLUS_RUN {
     def container_image = "ncbi-amrfinderplus:3.10.30--h6e70893_0"
     container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
 
-
     input:
     tuple val(meta), path(fasta)
     path db

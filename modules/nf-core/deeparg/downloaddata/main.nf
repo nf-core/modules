@@ -11,7 +11,6 @@ process DEEPARG_DOWNLOADDATA {
     */
     containerOptions { "${workflow.containerEngine}" == 'singularity' ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO' : '' }
 
-
     input:
 
     output:
