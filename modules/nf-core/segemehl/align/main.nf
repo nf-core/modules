@@ -23,7 +23,7 @@ process SEGEMEHL_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
-    def suffix = args.contains("-b") ? "bam" : "sam"
+    def suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
     mkdir -p $prefix
 
@@ -43,7 +43,7 @@ process SEGEMEHL_ALIGN {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = ( args.contains("-b") || args.contains("--bam") ) ? "bam" : "sam"
+    def suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
     mkdir -p $prefix
     touch ${prefix}/${prefix}.${suffix}
