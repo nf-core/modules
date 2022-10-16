@@ -13,7 +13,7 @@ process SEGEMEHL_ALIGN {
     path(index)
 
     output:
-    tuple val(meta), path("${meta.id}/*"), emit: results
+    tuple val(meta), path("${prefix}/*"), emit: results
     path "versions.yml"                  , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process SEGEMEHL_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def reads = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
     def suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
