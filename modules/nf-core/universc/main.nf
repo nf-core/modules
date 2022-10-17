@@ -61,7 +61,7 @@ process UNIVERSC {
     """
 }
 
-process CELLRANGER_COUNT_OS {
+process UNIVERSC_CELLRANGER_OS_COUNT {
     tag "$meta.id"
     label 'process_medium'
 

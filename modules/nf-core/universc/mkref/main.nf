@@ -1,4 +1,4 @@
-process CELLRANGER_MKREF_OS {
+process UNIVERSC_CELLRANGER_OS_MKREF {
     tag "$fasta"
     label 'process_high'
 

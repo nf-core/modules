@@ -1,4 +1,4 @@
-process CELLRANGER_MKFASTQ_OS {
+process UNIVERSC_CELLRANGER_OS_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
