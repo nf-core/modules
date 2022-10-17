@@ -9,8 +9,8 @@ include { KOFAMSCAN } from '../../../../modules/nf-core/kofamscan/main.nf'
 workflow test_kofamscan {
 
     fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
-    profiles = [ [], file("/home/toniher/tmp/koala/koala/profiles.tar.gz", checkIfExists: true) ]
-    ko_list = [ [], file("/home/toniher/tmp/koala/koala/ko_list.gz", checkIfExists: true) ]
+    profiles = [ [], file(params.test_data['sarscov2']['genome']['kofamscan_profiles_tar_gz'], checkIfExists: true) ]
+    ko_list = [ [], file(params.test_data['sarscov2']['genome']['kofamscan_ko_list_gz'], checkIfExists: true) ]
     format = 'detail'
 
     UNTAR( profiles )
