@@ -6,8 +6,9 @@ process SHINYNGS_APP {
     secret 'SHINYAPPS_SECRET'
 
     conda (params.enable_conda ? "bioconda::r-shinyngs=1.2.0" : null)
-    def container_image = "r-shinyngs:1.2.0--r41hdfd78af_0"
-    container [ params.container_registry ?: 'quay.io/biocontainers' , container_image ].join('/')
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.1.0--r41hdfd78af_0':
+        'quay.io/biocontainers/r-shinyngs:1.2.0--r41hdfd78af_0' }"
 
     input:
     path sample
