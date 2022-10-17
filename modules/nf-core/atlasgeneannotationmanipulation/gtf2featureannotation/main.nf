@@ -22,7 +22,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     script:
     def args = task.ext.args ?: ''
     def reference_cdna = fasta ? "--parse-cdnas $fasta" : ""
-    
+
     """
     gtf2featureAnnotation.R \\
         --gtf-file $gtf \\
@@ -30,12 +30,12 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         --first-field "gene_id" \\
         --output-file feature_annotation.tsv \\
         $reference_cdna \\
-        $args        
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        atlas-gene-annotation-manipulation: 1.1.0 
+        atlas-gene-annotation-manipulation: 1.1.0
     END_VERSIONS
     """
 }
