@@ -44,7 +44,7 @@ process HAPIBD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hapibd: \$(hap-ibd 2>&1 |head -n1 | sed 's/^hap-ibd.jar  \\[ version //; s/ \\]//')
+        hapibd: \$(hap-ibd 2>&1 |head -n1 | sed 's/^hap-ibd.jar  \\[ version //; s/, /rev/; s/ \\]//')
     END_VERSIONS
     """
 }
