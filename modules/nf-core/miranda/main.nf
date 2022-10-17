@@ -8,7 +8,7 @@ process MIRANDA {
         'quay.io/biocontainers/miranda:3.3a--h779adbc_3' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(query)
     path(mirbase)
 
     output:
@@ -24,7 +24,7 @@ process MIRANDA {
     """
     miranda \\
         $mirbase \\
-        $fasta \\
+        $query \\
         $args \\
         -out ${prefix}.out
 
