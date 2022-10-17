@@ -30,7 +30,7 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
+        profile: ["docker", "podman", "singularity", "conda"]
     env:
       NXF_ANSI_LOG: false
     steps:
@@ -64,6 +64,11 @@ jobs:
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
+
+      - name: Set up Podman
+        if: matrix.profile == 'podman'
+        run: |
+          sudo apt-get -y install podman && alias docker="podman"
 
       - name: Set up Singularity
         if: matrix.profile == 'singularity'
