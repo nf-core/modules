@@ -6,7 +6,7 @@ include { UMITOOLS_DEDUP     } from '../../../modules/nf-core/umitools/dedup/mai
 include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
 include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
-workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
+workflow BAM_DEDUP_UMITOOLS {
     take:
     bam_bai         // channel: [ val(meta), [ bam ], [ bai/csi ] ]
     get_dedup_stats // boolean: true/false

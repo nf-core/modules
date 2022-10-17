@@ -1,10 +1,10 @@
-- name: bam_dedup_stats_samtools_umitools test_bam_dedup_stats_samtools_umitools
-  command: nextflow run ./tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools -entry test_bam_dedup_stats_samtools_umitools -c ./tests/config/nextflow.config
+- name: bam_dedup_umitools test_bam_dedup_stats_samtools_umitools
+  command: nextflow run ./tests/subworkflows/nf-core/bam_dedup_umitools -entry test_bam_dedup_umitools -c ./tests/config/nextflow.config
   tags:
     - samtools
     - samtools/index
     - subworkflows
-    - subworkflows/bam_dedup_stats_samtools_umitools
+    - subworkflows/bam_dedup_umitools
     - subworkflows/bam_stats_samtools
     - umitools
     - umitools/dedup

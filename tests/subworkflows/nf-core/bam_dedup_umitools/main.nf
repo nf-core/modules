@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from '../../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
+include { BAM_DEDUP_UMITOOLS } from '../../../../subworkflows/nf-core/bam_dedup_umitools/main'
 
-workflow test_bam_dedup_stats_samtools_umitools {
+workflow test_bam_dedup_umitools {
     input = [
         [ id:'test'], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -12,5 +12,5 @@ workflow test_bam_dedup_stats_samtools_umitools {
     ]
     get_output_stats = false
 
-    BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS ( input, get_output_stats )
+    BAM_DEDUP_UMITOOLS ( input, get_output_stats )
 }
