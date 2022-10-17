@@ -8,9 +8,9 @@ process HAPIBD {
         'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
     input:
-        tuple val(meta), path(vcf)
-        path(map)
-        path(exclude)
+    tuple val(meta), path(vcf)
+    path(map)
+    path(exclude)
 
 
     output:
