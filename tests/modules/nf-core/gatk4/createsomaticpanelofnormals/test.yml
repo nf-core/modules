@@ -1,97 +1,97 @@
 - name: gatk4 createsomaticpanelofnormals test_gatk4_createsomaticpanelofnormals
   command: nextflow run ./tests/modules/nf-core/gatk4/createsomaticpanelofnormals -entry test_gatk4_createsomaticpanelofnormals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/createsomaticpanelofnormals/nextflow.config
   tags:
-  - gatk4/createsomaticpanelofnormals
-  - gatk4
+    - gatk4/createsomaticpanelofnormals
+    - gatk4
   files:
-  - path: output/gatk4/test.pon.vcf.gz
-  - path: output/gatk4/test.pon.vcf.gz.tbi
-    md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
-  - path: output/untar/test_genomicsdb/__tiledb_workspace.tdb
-  - path: output/untar/test_genomicsdb/callset.json
-    md5sum: a7d07d1c86449bbb1091ff29368da07a
-  - path: output/untar/test_genomicsdb/chr22$1$40001/.__consolidation_lock
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/AD.tdb
-    md5sum: af4201af4dde6f1b37245c3da4e3ff0d
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/AD_var.tdb
-    md5sum: ea3d9a7fb32c2bd737ae81c8c7d2cf43
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ALT.tdb
-    md5sum: 247c4ff323ad0a8a02d68a9c7693c98e
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ALT_var.tdb
-    md5sum: 60763683b8bec450658489fea224922f
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/BaseQRankSum.tdb
-    md5sum: beb9cbced93135555b3d1b68caeb345d
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DB.tdb
-    md5sum: 9ea963347fcafc63e7b79c3af6dab6c9
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DP.tdb
-    md5sum: 1c8ce940b7661fb78e97f5969ed47993
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DP_FORMAT.tdb
-    md5sum: 44af30fa505273504276fe2e08b14a4c
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/END.tdb
-    md5sum: 9e19c21816ca8ce38a60f26501e7cfe3
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ExcessHet.tdb
-    md5sum: 60b325671fb451fb04154ab377f7bb0e
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/FILTER.tdb
-    md5sum: 4e422113945620403a93ab963d06ff1b
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/FILTER_var.tdb
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GQ.tdb
-    md5sum: e1041e8aed6a5203152e46c063c8521d
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GT.tdb
-    md5sum: 37305518cdc1772f53d75e5a3a6cecbb
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GT_var.tdb
-    md5sum: da1b5c0a445f8b8b44c1615456241a15
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ID.tdb
-    md5sum: 42fef3580f301edbb0a1ce079e169082
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ID_var.tdb
-    md5sum: ed783fc9d68493e05a72606b51edbe32
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/InbreedingCoeff.tdb
-    md5sum: 1eef3d79386460e4b380ed932019f5fd
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MIN_DP.tdb
-    md5sum: 9f37896716e81189ececd10f753c1d05
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAC.tdb
-    md5sum: 284e3b5904333f79a687d4bbaef6dac4
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAC_var.tdb
-    md5sum: 9d9ca5d21f549fdf72bdb99c32e47f60
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAF.tdb
-    md5sum: 284e3b5904333f79a687d4bbaef6dac4
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAF_var.tdb
-    md5sum: 1ae2c66323ddd39561ecee694262d413
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MQRankSum.tdb
-    md5sum: 2c759f3bf85682d1dc4b5c10f4a97037
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PGT.tdb
-    md5sum: 4e422113945620403a93ab963d06ff1b
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PID.tdb
-    md5sum: 4e422113945620403a93ab963d06ff1b
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PL.tdb
-    md5sum: 8f75a287fb4c60c59e7d8b16eca888f6
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PL_var.tdb
-    md5sum: aea5b32eea2c5d2714ccef10b50d5786
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PS.tdb
-    md5sum: dd68dc8ea1d434712b5483ca71147584
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/QUAL.tdb
-    md5sum: 2cfbf625cae2be96196ec8dfe74d1716
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/RAW_MQandDP.tdb
-    md5sum: 8a648e922d688311d61ebb35e9bfbbed
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/REF.tdb
-    md5sum: d0d7841511da4691fa3ddb690e4de411
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/REF_var.tdb
-    md5sum: efb739434d30b39330c62a76a3c3c81c
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ReadPosRankSum.tdb
-    md5sum: e1cc57a5225e054416bee9bd852f4beb
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/SB.tdb
-    md5sum: 8490e40544d666aec4cc5b5510d197cf
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__book_keeping.tdb.gz
-    md5sum: dacbe1cd55cd0cdee355a5fd82ac742d
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__coords.tdb
-    md5sum: 1c86971d004e7581090928d9f24b7177
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__tiledb_fragment.tdb
-  - path: output/untar/test_genomicsdb/chr22$1$40001/__array_schema.tdb
-    md5sum: 6709e67921ae840bf61fbfb192554eda
-  - path: output/untar/test_genomicsdb/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
-    md5sum: 2502f79658bc000578ebcfddfc1194c0
-  - path: output/untar/test_genomicsdb/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_meta_fd82a2b3-4de9-4ba9-9432-91d086426bbf.json
-    md5sum: 4f9e23bdfd2aa1e1840c842f92dce9ec
-  - path: output/untar/test_genomicsdb/vcfheader.vcf
-    md5sum: 3717f34ad68ff491f40a138410b2667a
-  - path: output/untar/test_genomicsdb/vidmap.json
-    md5sum: 18d3f68bd2cb6f4474990507ff95017a
+    - path: output/gatk4/test.pon.vcf.gz
+    - path: output/gatk4/test.pon.vcf.gz.tbi
+      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
+    - path: output/untar/test_genomicsdb/__tiledb_workspace.tdb
+    - path: output/untar/test_genomicsdb/callset.json
+      md5sum: a7d07d1c86449bbb1091ff29368da07a
+    - path: output/untar/test_genomicsdb/chr22$1$40001/.__consolidation_lock
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/AD.tdb
+      md5sum: af4201af4dde6f1b37245c3da4e3ff0d
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/AD_var.tdb
+      md5sum: ea3d9a7fb32c2bd737ae81c8c7d2cf43
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ALT.tdb
+      md5sum: 247c4ff323ad0a8a02d68a9c7693c98e
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ALT_var.tdb
+      md5sum: 60763683b8bec450658489fea224922f
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/BaseQRankSum.tdb
+      md5sum: beb9cbced93135555b3d1b68caeb345d
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DB.tdb
+      md5sum: 9ea963347fcafc63e7b79c3af6dab6c9
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DP.tdb
+      md5sum: 1c8ce940b7661fb78e97f5969ed47993
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/DP_FORMAT.tdb
+      md5sum: 44af30fa505273504276fe2e08b14a4c
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/END.tdb
+      md5sum: 9e19c21816ca8ce38a60f26501e7cfe3
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ExcessHet.tdb
+      md5sum: 60b325671fb451fb04154ab377f7bb0e
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/FILTER.tdb
+      md5sum: 4e422113945620403a93ab963d06ff1b
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/FILTER_var.tdb
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GQ.tdb
+      md5sum: e1041e8aed6a5203152e46c063c8521d
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GT.tdb
+      md5sum: 37305518cdc1772f53d75e5a3a6cecbb
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/GT_var.tdb
+      md5sum: da1b5c0a445f8b8b44c1615456241a15
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ID.tdb
+      md5sum: 42fef3580f301edbb0a1ce079e169082
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ID_var.tdb
+      md5sum: ed783fc9d68493e05a72606b51edbe32
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/InbreedingCoeff.tdb
+      md5sum: 1eef3d79386460e4b380ed932019f5fd
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MIN_DP.tdb
+      md5sum: 9f37896716e81189ececd10f753c1d05
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAC.tdb
+      md5sum: 284e3b5904333f79a687d4bbaef6dac4
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAC_var.tdb
+      md5sum: 9d9ca5d21f549fdf72bdb99c32e47f60
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAF.tdb
+      md5sum: 284e3b5904333f79a687d4bbaef6dac4
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MLEAF_var.tdb
+      md5sum: 1ae2c66323ddd39561ecee694262d413
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/MQRankSum.tdb
+      md5sum: 2c759f3bf85682d1dc4b5c10f4a97037
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PGT.tdb
+      md5sum: 4e422113945620403a93ab963d06ff1b
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PID.tdb
+      md5sum: 4e422113945620403a93ab963d06ff1b
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PL.tdb
+      md5sum: 8f75a287fb4c60c59e7d8b16eca888f6
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PL_var.tdb
+      md5sum: aea5b32eea2c5d2714ccef10b50d5786
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/PS.tdb
+      md5sum: dd68dc8ea1d434712b5483ca71147584
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/QUAL.tdb
+      md5sum: 2cfbf625cae2be96196ec8dfe74d1716
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/RAW_MQandDP.tdb
+      md5sum: 8a648e922d688311d61ebb35e9bfbbed
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/REF.tdb
+      md5sum: d0d7841511da4691fa3ddb690e4de411
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/REF_var.tdb
+      md5sum: efb739434d30b39330c62a76a3c3c81c
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/ReadPosRankSum.tdb
+      md5sum: e1cc57a5225e054416bee9bd852f4beb
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/SB.tdb
+      md5sum: 8490e40544d666aec4cc5b5510d197cf
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__book_keeping.tdb.gz
+      md5sum: dacbe1cd55cd0cdee355a5fd82ac742d
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__coords.tdb
+      md5sum: 1c86971d004e7581090928d9f24b7177
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__0ef76155-3a29-441b-a0a1-86935ebb015c140514043270912_1639150110905/__tiledb_fragment.tdb
+    - path: output/untar/test_genomicsdb/chr22$1$40001/__array_schema.tdb
+      md5sum: 6709e67921ae840bf61fbfb192554eda
+    - path: output/untar/test_genomicsdb/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_column_bounds.json
+      md5sum: 2502f79658bc000578ebcfddfc1194c0
+    - path: output/untar/test_genomicsdb/chr22$1$40001/genomicsdb_meta_dir/genomicsdb_meta_fd82a2b3-4de9-4ba9-9432-91d086426bbf.json
+      md5sum: 4f9e23bdfd2aa1e1840c842f92dce9ec
+    - path: output/untar/test_genomicsdb/vcfheader.vcf
+      md5sum: 3717f34ad68ff491f40a138410b2667a
+    - path: output/untar/test_genomicsdb/vidmap.json
+      md5sum: 18d3f68bd2cb6f4474990507ff95017a
