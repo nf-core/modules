@@ -10,7 +10,7 @@
       contains: ["hap-ibd.jar"]
 
 - name: hapibd test_hapibd_excludesamples
-  command: nextflow run ./tests/modules/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/hapibd/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hapibd/nextflow.config
   tags:
     - hapibd
   files:
