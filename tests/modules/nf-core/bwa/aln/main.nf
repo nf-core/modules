@@ -17,7 +17,7 @@ workflow test_bwa_aln_single_end {
     ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    BWA_INDEX ( fasta )
+    BWA_INDEX ( [ [:], fasta ] )
     BWA_ALN ( input, BWA_INDEX.out.index )
 }
 
@@ -32,7 +32,10 @@ workflow test_bwa_aln_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [id: 'test'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     BWA_INDEX ( fasta )
     BWA_ALN ( input, BWA_INDEX.out.index )
