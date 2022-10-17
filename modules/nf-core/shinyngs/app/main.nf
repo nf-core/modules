@@ -2,8 +2,17 @@
 process SHINYNGS_APP {
     tag '$sample_sheet'
     label 'process_single'
-    //secret 'SHINYAPPS_TOKEN'
-    //secret 'SHINYAPPS_SECRET'
+
+    // To be able to pass the necessary secrets for shinyapps.io deployment,
+    // this process must be configured by placing a statement like the
+    // following in the nextflow.config:
+    //
+    // withName: SHINYNGS_APP {
+    //     secret 'SHINYAPPS_TOKEN'                                                  
+    //     secret 'SHINYAPPS_SECRET'  
+    // }
+    // 
+    // Those values must then be set in your Nextflow secrets.
 
     conda (params.enable_conda ? "bioconda::r-shinyngs=1.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
