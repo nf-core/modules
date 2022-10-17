@@ -6,7 +6,7 @@ process UNIVERSC {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
-    container "tomkellygenetics/universc:1.2.3"
+    container "tomkellygenetics/universc:1.2.4"
     containerOptions = "--user root"
 
     input:
@@ -27,11 +27,6 @@ process UNIVERSC {
     def reference_name = reference.name
     def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
-    # disable auto testing for 10x to run on small test files
-    sed -i 's/temp_chemistry="auto"/temp_chemistry=\${chemistry}/g' /universc/launch_universc.sh
-    sed -i 's/chemistry="auto"/lastcall_b=16; lastcall_u=10/g' /universc/launch_universc.sh
-    sed -i "2523s; || 26\\`;\\` > /dev/null || old_rna_offset=26;g" /universc/launch_universc.sh
-
     bash /universc/launch_universc.sh \\
         --id 'sample-${meta.id}' \\
         ${input_reads} \\
@@ -74,7 +69,7 @@ process CELLRANGER_COUNT_OS {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
-    container "tomkellygenetics/universc:1.2.3"
+    container "tomkellygenetics/universc:1.2.4"
     containerOptions = "--user root"
 
     input:
