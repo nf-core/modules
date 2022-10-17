@@ -1,39 +1,53 @@
 name: "shinyngs_app"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: build and deploy Shiny apps for interactively mining differential abundance data
 keywords:
-  - sort
+  - differential
+  - expression
+  - rna-seq
+  - deseq2
+
 tools:
   - "shinyngs":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/pinin4fjords/shinyngs"
+      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: "['AGPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - sample:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: |
+        CSV-format sample sheet with sample metadata
+  - feature_meta:
+      type: file
+      description: |
+        TSV-format feature (e.g. gene) metadata
+  - assay_files:
+      type: list
+      description: |
+        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+  - contrasts:
+      type: file
+      description: |
+        CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors. 
+  - differential_results:
+      type: list
+      description: |
+        List of TSV-format differential analysis outputs, one per row of the contrasts file 
 output:
-  #
+  - data:
+      type: file
+      description: shinyngs ExploratorySummarizedExperiment object serialized with saveRDS()
+      pattern: "app/data.rds"
+  - app:
+      type: file
+      description: tiny R script calling shinyngs functions to build and run the app
+      pattern: "app/app.R"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@pinin4fjords"
