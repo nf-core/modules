@@ -3,7 +3,7 @@ process GATK4_MARKDUPLICATES_SPARK {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.3.0.0 conda-forge::openjdk=8.0.312" : null)
-    container 'broadinstitute/gatk:4.2.6.1'
+    container 'broadinstitute/gatk:4.3.0.0'
 
     input:
     tuple val(meta), path(bam)
