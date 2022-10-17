@@ -51,12 +51,10 @@
       md5sum: edfa1a0dc666c38f9740167c045fb3c8
     - path: output/universc/sample-123/outs/molecule_info.h5
       contains: "HDF"
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
-      md5sum: da4828bd26ab54d235a0d8e7cdb18be6
     - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
       contains: "HDF"
     - path: output/universc/sample-123/outs/web_summary.html
-      md5sum: 1fc1edd5588901f5dbd8b132a46d1759
+      md5sum: 08f8ca631ac893bac36ebbbb9004056f
 
 - name: universc test_universc_10x
   command: nextflow run ./tests/modules/nf-core/universc -entry test_universc_10x -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
@@ -113,8 +111,6 @@
       md5sum: edfa1a0dc666c38f9740167c045fb3c8
     - path: output/universc/sample-123/outs/molecule_info.h5
       contains: "HDF"
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
-      md5sum: da4828bd26ab54d235a0d8e7cdb18be6
     - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
       contains: "HDF"
     - path: output/universc/sample-123/outs/web_summary.html
