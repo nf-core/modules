@@ -1,0 +1,24 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
+include { ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION } from '../../../../../modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/main.nf'
+
+// Make a table of gene annotations
+
+workflow test_atlasgeneannotationmanipulation_gtf2featureannotation {
+
+    gtf_file = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+
+    ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION ( gtf_file, [] )
+}
+
+// Make a table of transcript annotations with synchonised cDNAs
+
+workflow test_atlasgeneannotationmanipulation_gtf2featureannotation_with_fasta {
+
+    gtf_file = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+
+    ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION ( gtf_file, transcriptome_fasta )
+}

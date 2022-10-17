@@ -1,0 +1,31 @@
+name: "atlasgeneannotationmanipulation_gtf2featureannotation"
+description: Generate tables of feature metadata from GTF files
+keywords:
+  - gtf
+  - annotation
+tools:
+  - "atlasgeneannotationmanipulation":
+      description: "Scripts for manipulating gene annotation"
+      homepage: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
+      documentation: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
+      tool_dev_url: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
+      licence: "['Apache-2.0']"
+
+input:
+  - gtf:
+      type: file
+      description: gtf annotation file
+      pattern: "*.{gtf}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - feature_annotation:
+      type: file
+      description: TSV file with feature annotation
+      pattern: "*.{tsv}"
+
+authors:
+  - "@pinin4fjords"

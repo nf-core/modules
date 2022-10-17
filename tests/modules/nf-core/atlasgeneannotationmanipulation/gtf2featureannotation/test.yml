@@ -1,0 +1,19 @@
+- name: atlasgeneannotationmanipulation gtf2featureannotation test_atlasgeneannotationmanipulation_gtf2featureannotation
+  command: nextflow run ./tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation -entry test_atlasgeneannotationmanipulation_gtf2featureannotation -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/nextflow.config
+  tags:
+    - atlasgeneannotationmanipulation/gtf2featureannotation
+    - atlasgeneannotationmanipulation
+  files:
+    - path: output/atlasgeneannotationmanipulation/feature_annotation.tsv
+      md5sum: f064258c7741d1ca0c9ff3492797a835
+
+- name: atlasgeneannotationmanipulation gtf2featureannotation test_atlasgeneannotationmanipulation_gtf2featureannotation_with_fasta
+  command: nextflow run ./tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation -entry test_atlasgeneannotationmanipulation_gtf2featureannotation_with_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/nextflow.config
+  tags:
+    - atlasgeneannotationmanipulation/gtf2featureannotation
+    - atlasgeneannotationmanipulation
+  files:
+    - path: output/atlasgeneannotationmanipulation/feature_annotation.tsv
+      md5sum: 6e73c7a5861dae8e3025fff2ad4c9e18
+    - path: output/atlasgeneannotationmanipulation/filtered.fa.gz
+      md5sum: 10526909f402d0c850c8d77c802b7684
