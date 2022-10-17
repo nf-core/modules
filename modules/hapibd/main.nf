@@ -23,9 +23,9 @@ process HAPIBD {
     task.ext.when == null || task.ext.when
 
     script:
-        def args = task.ext.args ?: ''
-        def prefix = task.ext.prefix ?: "${meta.id}"
-        def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
 
     def avail_mem = 3
     if (!task.memory) {
