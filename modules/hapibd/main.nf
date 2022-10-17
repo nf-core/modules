@@ -2,10 +2,10 @@ process HAPIBD {
     tag "$meta.id"
     label 'process_low'
 
-    // conda (params.enable_conda ? "bioconda::hap-ibd=1.0.rev20May22.818" : null)
+    conda (params.enable_conda ? "bioconda::hap-ibd=1.0.rev20May22.818" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'ashotmarg/hap-ibd:ubuntu' }"
+        'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
+        'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
     input:
         tuple val(meta), path(vcf)
@@ -35,7 +35,7 @@ process HAPIBD {
     }
 
     """
-    java -Xmx${avail_mem}g -jar /bin/hap-ibd.jar \\
+    hap-ibd -Xmx${avail_mem}g \\
         gt=${vcf} \\
         map=${map} \\
         out=${prefix} \\

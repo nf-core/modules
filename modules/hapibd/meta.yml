@@ -29,11 +29,7 @@ input:
       type: file
       description: genetic map with cM units in PLINK format
       pattern: "*.{map,map.gz,map.zip}"
-  - out:
-      type: string
-      description: the output filename prefix
-      pattern: "example: cohort.hapibd.out"
-  - excludesamples:
+  - exclude:
       type: file
       description: text file containing samples one sample per line to be excluded from the analysis
       pattern: "*.*"
