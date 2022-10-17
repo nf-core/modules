@@ -26,8 +26,8 @@ process SHINYNGS_APP {
     task.ext.when == null || task.ext.when
 
     script:
-    # For full list of available args see
-    # https://github.com/pinin4fjords/shinyngs/blob/develop/exec/make_app_from_files.R
+    // For full list of available args see
+    // https://github.com/pinin4fjords/shinyngs/blob/develop/exec/make_app_from_files.R
     def args = task.ext.args ?: ''
 
     """
