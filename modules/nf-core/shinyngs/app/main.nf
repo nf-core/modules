@@ -2,8 +2,8 @@
 process SHINYNGS_APP {
     tag '$sample_sheet'
     label 'process_single'
-    secret 'SHINYAPPS_TOKEN'
-    secret 'SHINYAPPS_SECRET'
+    //secret 'SHINYAPPS_TOKEN'
+    //secret 'SHINYAPPS_SECRET'
 
     conda (params.enable_conda ? "bioconda::r-shinyngs=1.2.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
