@@ -9,7 +9,7 @@ process KOFAMSCAN {
 
     input:
     tuple val(meta), path(fasta)
-    path profile
+    path profiles
     path ko_list
     val format
 
@@ -37,7 +37,7 @@ process KOFAMSCAN {
     }
     """
     exec_annotation \\
-        -p $profile \\
+        -p $profiles \\
         -k $ko_list \\
         ${format_str} \\
         $args \\
