@@ -12,7 +12,7 @@
     - path: output/universc/homo_sapiens_chr22_reference/genes/genes.gtf
       md5sum: c37539d5bdae419bae799165d3f80c53
     - path: output/universc/homo_sapiens_chr22_reference/pickle/genes.pickle
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "cellranger.reference"
     - path: output/universc/homo_sapiens_chr22_reference/reference.json
       md5sum: 1f7bf05454cc908bf70cd232ae70b02d
     - path: output/universc/homo_sapiens_chr22_reference/star/Genome
@@ -36,7 +36,7 @@
     - path: output/universc/homo_sapiens_chr22_reference/star/geneInfo.tab
       md5sum: a20c70b081f5d83649c48ebbd951cb77
     - path: output/universc/homo_sapiens_chr22_reference/star/genomeParameters.txt
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "genomeGenerate"
     - path: output/universc/homo_sapiens_chr22_reference/star/sjdbInfo.txt
       md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
     - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
@@ -45,31 +45,17 @@
       md5sum: 9e4f991abbbfeb3935a2bb21b9e258f1
     - path: output/universc/homo_sapiens_chr22_reference/star/transcriptInfo.tab
       md5sum: 6fa11b4d34f4680a1c23dbcea2e050d5
-    - path: output/universc/sample-test/outs/filtered_feature_bc_matrix.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/filtered_feature_bc_matrix/features.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/filtered_feature_bc_matrix/matrix.mtx.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/metrics_summary.csv
+    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix.h5
+      contains: "HDF"
+    - path: output/universc/sample-123/outs/metrics_summary.csv
       md5sum: edfa1a0dc666c38f9740167c045fb3c8
-    - path: output/universc/sample-test/outs/molecule_info.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/possorted_genome_bam.bam
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/possorted_genome_bam.bam.bai
+    - path: output/universc/sample-123/outs/molecule_info.h5
+      contains: "HDF"
+    - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
       md5sum: da4828bd26ab54d235a0d8e7cdb18be6
-    - path: output/universc/sample-test/outs/raw_feature_bc_matrix.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/raw_feature_bc_matrix/barcodes.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/raw_feature_bc_matrix/features.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/raw_feature_bc_matrix/matrix.mtx.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-test/outs/web_summary.html
+    - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
+      contains: "HDF"
+    - path: output/universc/sample-123/outs/web_summary.html
       md5sum: 1fc1edd5588901f5dbd8b132a46d1759
 
 - name: universc test_universc_10x
@@ -86,7 +72,7 @@
     - path: output/universc/homo_sapiens_chr22_reference/genes/genes.gtf
       md5sum: c37539d5bdae419bae799165d3f80c53
     - path: output/universc/homo_sapiens_chr22_reference/pickle/genes.pickle
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "cellranger.reference"
     - path: output/universc/homo_sapiens_chr22_reference/reference.json
       md5sum: 1f7bf05454cc908bf70cd232ae70b02d
     - path: output/universc/homo_sapiens_chr22_reference/star/Genome
@@ -110,7 +96,7 @@
     - path: output/universc/homo_sapiens_chr22_reference/star/geneInfo.tab
       md5sum: a20c70b081f5d83649c48ebbd951cb77
     - path: output/universc/homo_sapiens_chr22_reference/star/genomeParameters.txt
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "genomeGenerate"
     - path: output/universc/homo_sapiens_chr22_reference/star/sjdbInfo.txt
       md5sum: 5690ea9d9f09f7ff85b7fd47bd234903
     - path: output/universc/homo_sapiens_chr22_reference/star/sjdbList.fromGTF.out.tab
@@ -122,28 +108,14 @@
     - path: output/universc/sample-123/outs/basic_stats.txt
       md5sum: 6ce8341506150f0b1add1800b0a11cdd
     - path: output/universc/sample-123/outs/filtered_feature_bc_matrix.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/features.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/filtered_feature_bc_matrix/matrix.mtx.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "HDF"
     - path: output/universc/sample-123/outs/metrics_summary.csv
       md5sum: edfa1a0dc666c38f9740167c045fb3c8
     - path: output/universc/sample-123/outs/molecule_info.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/possorted_genome_bam.bam
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "HDF"
     - path: output/universc/sample-123/outs/possorted_genome_bam.bam.bai
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      md5sum: da4828bd26ab54d235a0d8e7cdb18be6
     - path: output/universc/sample-123/outs/raw_feature_bc_matrix.h5
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/barcodes.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/features.tsv.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
-    - path: output/universc/sample-123/outs/raw_feature_bc_matrix/matrix.mtx.gz
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains: "HDF"
     - path: output/universc/sample-123/outs/web_summary.html
       md5sum: 87b0a2d1c3dd566c87d9a3587c9f9ed7
