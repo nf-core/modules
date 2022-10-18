@@ -8,19 +8,21 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         'quay.io/biocontainers/atlas-gene-annotation-manipulation:1.1.0--hdfd78af_0' }"
 
     input:
+    val meta
     path gtf
     path fasta
 
     output:
-    path "feature_annotation.tsv"   , emit: feature_annotation
-    path "versions.yml"             , emit: versions
-    path "*.fa.gz"                  , emit: filtered_cdna, optional: true
+    tuple val(meta), path("*.anno.tsv")    , emit: feature_annotation
+    tuple val(meta), path("*.fa.gz")                    , emit: filtered_cdna, optional: true
+    tuple val(meta), path("versions.yml")               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: ( meta.id ?: '' )
     def reference_cdna = fasta ? "--parse-cdnas $fasta" : ""
 
     """
@@ -28,7 +30,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         --gtf-file $gtf \\
         --feature-type "gene" \\
         --first-field "gene_id" \\
-        --output-file feature_annotation.tsv \\
+        --output-file ${prefix}.anno.tsv \\
         $reference_cdna \\
         $args
 
