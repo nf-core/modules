@@ -30,14 +30,24 @@ workflow FASTA_ALIGN_INDEX {
             break
         case 'bwamem':
             BWAMEM1_INDEX(ch_fasta)                                              // If aligner is bwa-mem
-            // TODO: add altliftover file to index files
-            ch_aligner_index = ch_aligner_index.mix(BWAMEM1_INDEX.out.index)
+            ch_aligner_index = ch_aligner_index
+                .mix(
+                    BWAMEM1_INDEX.out.index
+                    .join(ch_altliftover)
+                    .map{meta, index, alt -> [meta, index + alt]}
+                )
+
             ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
             break
         case 'bwamem2':
             BWAMEM2_INDEX(ch_fasta)                                              // If aligner is bwa-mem2
-            // TODO: add altliftover file to index files
-            ch_aligner_index = ch_aligner_index.mix(BWAMEM2_INDEX.out.index)
+            ch_aligner_index = ch_aligner_index
+                .mix(
+                    BWAMEM2_INDEX.out.index
+                    .join(ch_altliftover)
+                    .map{meta, index, alt -> [meta, index + alt]}
+                )
+
             ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
             break
         case 'dragmap':
@@ -46,8 +56,9 @@ workflow FASTA_ALIGN_INDEX {
             ch_versions = ch_versions.mix(DRAGMAP_HASHTABLE.out.versions)
             break
         case 'snap':
-            ch_snap_reference = ch_fasta.join(ch_altliftover)
-                                .map {meta, fasta, alt -> [meta, fasta, [], [], alt}
+            ch_snap_reference = ch_fasta
+                .join(ch_altliftover)
+                .map {meta, fasta, alt -> [meta, fasta, [], [], alt]}
 
             SNAP_INDEX(ch_snap_reference)                                        // If aligner is snap
             ch_aligner_index = ch_aligner_index.mix(SNAP_INDEX.out.index)
