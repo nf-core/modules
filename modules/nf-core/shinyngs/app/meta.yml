@@ -15,6 +15,36 @@ tools:
       licence: "['AGPL v3']"
 
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on input sample file, probably
+        experimental information, but at a minimum an id.
+        e.g. [ id:'test' ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information on feature metadata file, probably
+        experimental information, but at a minimum an id.
+        e.g. [ id:'test' ]
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information on input assay matrix file list,
+        probably experimental information, but at a minimum an id.
+        e.g. [ id:'test' ]
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing information on input contrasts file, probably
+        experimental information, but at a minimum an id.
+        e.g. [ id:'test' ]
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing information on input differential analysis files,
+        probably experimental information, but at a minimum an id.
+        e.g. [ id:'test' ]
   - sample:
       type: file
       description: |
@@ -36,13 +66,12 @@ input:
       description: |
         List of TSV-format differential analysis outputs, one per row of the contrasts file
 output:
-  - data:
-      type: file
-      description: shinyngs ExploratorySummarizedExperiment object serialized with saveRDS()
-      pattern: "app/data.rds"
   - app:
       type: file
-      description: tiny R script calling shinyngs functions to build and run the app
+      description: | 
+        Meta-keyed tuple containing a shinyngs ExploratorySummarizedExperiment
+        object serialized with saveRDS(), and the mini R script required to
+        build that into an application.
       pattern: "app/app.R"
   - versions:
       type: file
