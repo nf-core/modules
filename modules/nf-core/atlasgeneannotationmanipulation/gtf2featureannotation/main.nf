@@ -22,7 +22,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ( meta.id ?: '' )
+    def prefix = task.ext.prefix ?: meta.id 
     def reference_cdna = fasta ? "--parse-cdnas $fasta" : ""
 
     """
