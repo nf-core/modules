@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { UNTAR          } from '../../../../../modules/nf-core/untar/main.nf'
-include { UNIVERSC_CELLRANGER_OS_MKFASTQ } from '../../../../../modules/nf-core/universc/cellranger_os_mkfastq/main.nf'
+include { UNIVERSC_MKFASTQ } from '../../../../../modules/nf-core/universc/cellranger_os_mkfastq/main.nf'
 
 workflow test_universc_mkfastq_simple {
 
@@ -12,7 +12,7 @@ workflow test_universc_mkfastq_simple {
 
     UNTAR ( tiny_bcl )
 
-    UNIVERSC_CELLRANGER_OS_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv)
+    UNIVERSC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, simple_csv)
 }
 
 workflow test_universc_mkfastq_illumina {
@@ -22,5 +22,5 @@ workflow test_universc_mkfastq_illumina {
 
     UNTAR ( tiny_bcl )
 
-    UNIVERSC_CELLRANGER_OS_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv)
+    UNIVERSC_MKFASTQ ( UNTAR.out.untar.map{ it[1] }, samplesheet_csv)
 }

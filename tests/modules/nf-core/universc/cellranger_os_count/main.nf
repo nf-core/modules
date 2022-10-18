@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_CELLRANGER_OS_MKGTF } from '../../../../../modules/nf-core/universc/cellranger_os_mkgtf/main.nf'
-include { UNIVERSC_CELLRANGER_OS_MKREF } from '../../../../../modules/nf-core/universc/cellranger_os_mkref/main.nf'
-include { UNIVERSC_CELLRANGER_OS_COUNT } from '../../../../../modules/nf-core/universc/cellranger_os_count/main.nf'
+include { UNIVERSC_MKGTF } from '../../../../../modules/nf-core/universc/cellranger_os_mkgtf/main.nf'
+include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/cellranger_os_mkref/main.nf'
+include { UNIVERSC_COUNT } from '../../../../../modules/nf-core/universc/cellranger_os_count/main.nf'
 
 workflow test_cellranger_count {
 
@@ -18,16 +18,16 @@ workflow test_cellranger_count {
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
     reference_name = "homo_sapiens_chr22_reference"
 
-    UNIVERSC_CELLRANGER_OS_MKGTF ( gtf )
+    UNIVERSC_MKGTF ( gtf )
 
-    UNIVERSC_CELLRANGER_OS_MKREF (
+    UNIVERSC_MKREF (
         fasta,
-        UNIVERSC_CELLRANGER_OS_MKGTF.out.gtf,
+        UNIVERSC_MKGTF.out.gtf,
         reference_name
     )
 
-    UNIVERSC_CELLRANGER_OS_COUNT (
+    UNIVERSC_COUNT (
         input,
-        UNIVERSC_CELLRANGER_OS_MKREF.out.reference
+        UNIVERSC_MKREF.out.reference
     )
 }

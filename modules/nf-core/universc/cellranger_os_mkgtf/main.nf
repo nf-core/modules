@@ -1,4 +1,4 @@
-process UNIVERSC_CELLRANGER_OS_MKGTF {
+process UNIVERSC_MKGTF {
     tag "$gtf"
     label 'process_low'
 
