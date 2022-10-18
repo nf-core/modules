@@ -64,29 +64,30 @@ output:
       description: |
         Table with signatures classified as belonging to any of the genomes
         in the sourmash database(s).
-      pattern: "*{csv}"
+      pattern: "*{csv.gz}"
   - matches:
       type: file
       description: |
         A signature containing FracMinHash sketches of genomes
         in the sourmash database.
-      pattern: "*{sig}"
+      pattern: "*{sig.zip}"
   - unassigned:
       type: file
       description: |
         A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
         in the sourmash database(s).
-      pattern: "*{sig}"
+      pattern: "*{sig.zip}"
   - prefetch:
       type: file
       description: |
         All prefetch-matched signatures from the database.
-      pattern: "*{sig}"
+      pattern: "*{sig.zip}"
   - prefetchcsv:
       type: file
       description: |
         The names of all prefetch-matched signatures from the database in CSV format.
-      pattern: "*{csv}"
+      pattern: "*{csv.gz}"
 
 authors:
   - "@vmikk"
+  - "@taylorreiter"
