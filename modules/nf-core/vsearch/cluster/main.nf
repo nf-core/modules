@@ -9,8 +9,6 @@ process VSEARCH_CLUSTER {
 
     input:
     tuple val(meta), path(fasta)
-    val clusteroption
-    val outoption
 
     output:
     tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
@@ -36,10 +34,7 @@ process VSEARCH_CLUSTER {
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if !(args2.contains("--cluster_fast") ||
-        args2.contains("--cluster_size") ||
-        args2.contains("--cluster_smallmem") ||
-        args2.contains("--cluster_unoise") ) {
+    if (!args2.contains("--cluster_fast") && !args2.contains("--cluster_size") && !args2.contains("--cluster_smallmem") && !args2.contains("--cluster_unoise") ) {
             error "Unknown clustering option provided (${args2})"
         }
     def out_ext = args3.contains("--alnout") ? "aln" :
@@ -54,7 +49,8 @@ process VSEARCH_CLUSTER {
                     args3.contains("--samout") ? "sam" :
                     args3.contains("--uc") ? "uc.tsv" :
                     args3.contains("--userout") ? "out.tsv" :
-                    error "Unknown output file format provided (${args3})"
+                    ""
+    if (out_ext == "") { error "Unknown output file format provided (${args3})" }
     """
     vsearch \\
         $args2 $fasta \\
