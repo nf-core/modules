@@ -22,6 +22,17 @@ input:
   - fasta:
       type: file
       description: Reference genome fasta file
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing altliftover information
+        e.g. [ id:'test' ]
+  - altliftover:
+      type: file
+      description: |
+        Sam formatted liftover file for the reference genome alt contigs
+        See: https://github.com/lh3/bwa/blob/master/README-alt.md
+        Download from: https://sourceforge.net/projects/bio-bwa/files/bwakit
   - aligner:
       type: string
       description: Aligner to use for alignment

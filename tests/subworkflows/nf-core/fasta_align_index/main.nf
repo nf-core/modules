@@ -9,7 +9,11 @@ workflow test_bowtie2_build {
         [id:'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    FASTA_ALIGN_INDEX ( fasta, 'bowtie2' )
+    altliftover = [
+        [id:'test'],
+        []
+    ]
+    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bowtie2' )
 }
 
 workflow test_bwamem1_index {
@@ -17,7 +21,11 @@ workflow test_bwamem1_index {
         [id:'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    FASTA_ALIGN_INDEX ( fasta, 'bwamem' )
+    altliftover = [
+        [id:'test'],
+        []
+    ]
+    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bwamem' )
 }
 
 workflow test_bwamem2_index {
@@ -25,7 +33,11 @@ workflow test_bwamem2_index {
         [id:'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    FASTA_ALIGN_INDEX ( fasta, 'bwamem2' )
+    altliftover = [
+        [id:'test'],
+        []
+    ]
+    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bwamem2' )
 }
 
 workflow test_dragmap_hashtable {
@@ -33,13 +45,21 @@ workflow test_dragmap_hashtable {
         [id:'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    FASTA_ALIGN_INDEX ( fasta, 'dragmap' )
+    altliftover = [
+        [id:'test'],
+        []
+    ]
+    FASTA_ALIGN_INDEX ( fasta, altliftover, 'dragmap' )
 }
 
 workflow test_snap_index {
     fasta = [
         [id:'test'],
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
     ]
-    FASTA_ALIGN_INDEX ( fasta, 'snap' )
+    altliftover = [
+        [id:'test'],
+        []
+    ]
+    FASTA_ALIGN_INDEX ( fasta, altliftover, 'snap' )
 }
