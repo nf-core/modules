@@ -11,6 +11,6 @@ workflow test_universc_mkref {
     reference_name = "homo_sapiens_chr22_reference"
 
     UNIVERSC_MKREF ( fasta,
-                        gtf,
-                        reference_name )
+        gtf,
+        reference_name )
 }
