@@ -31,11 +31,6 @@ input:
       type: file
       description: File containing list of KO entries with their data
       pattern: "*.{fa,fasta}"
-  - format:
-      type: string
-      description: |
-        Specify the type of output file to be generated.
-      pattern: "detail|detail-tsv|mapper|mapper-oneline"
 
 output:
   - txt:

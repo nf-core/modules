@@ -24,25 +24,15 @@ process KOFAMSCAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def format_str = format ? "-f ${format}" : ""
-
-    switch( format ) {
-        case "detail": ext = 'txt'; break
-        case "detail-tsv": ext = 'tsv'; break
-        case "mapper": ext = 'txt'; break
-        case "mapper-oneline": ext = 'txt'; break
-        default:
-            ext = 'txt'
-            break
-    }
+    def extension = args.contains("--format detail-tsv") ? "tsv" :
+                    "txt"
     """
     exec_annotation \\
         -p $profiles \\
         -k $ko_list \\
-        ${format_str} \\
         $args \\
         --cpu $task.cpus \\
-        -o ${prefix}.${ext} \\
+        -o ${prefix}.${extension} \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml
