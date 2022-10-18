@@ -27,7 +27,7 @@ process UNIVERSC {
     def reference_name = reference.name
     def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
     """
-    bash /universc/launch_universc.sh \\
+    bash launch_universc.sh \\
         --id 'sample-${meta.id}' \\
         ${input_reads} \\
         --technology '${meta.technology}' \\
