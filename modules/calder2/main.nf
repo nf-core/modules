@@ -1,6 +1,7 @@
 def VERSION = '0.3'
 def BIOCONDA_PACKAGE = "bioconda::r-calder2=${VERSION}"
-def DOCKER_IMAGE = "lucananni93/calder2:${VERSION}"
+def DOCKER_IMAGE = "quay.io/biocontainers/r-calder2:${VERSION}"
+// def DOCKER_IMAGE = "lucananni93/calder2:${VERSION}"
 
 
 process CALDER2 {
