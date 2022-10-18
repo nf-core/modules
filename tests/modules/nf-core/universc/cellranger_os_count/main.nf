@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_CELLRANGER_OS_MKGTF } from '../../../../../modules/nf-core/universc/mkgtf/main.nf'
-include { UNIVERSC_CELLRANGER_OS_MKREF } from '../../../../../modules/nf-core/universc/mkref/main.nf'
-include { UNIVERSC_CELLRANGER_OS_COUNT } from '../../../../../modules/nf-core/universc/count/main.nf'
+include { UNIVERSC_CELLRANGER_OS_MKGTF } from '../../../../../modules/nf-core/universc/cellranger_os_mkgtf/main.nf'
+include { UNIVERSC_CELLRANGER_OS_MKREF } from '../../../../../modules/nf-core/universc/cellranger_os_mkref/main.nf'
+include { UNIVERSC_CELLRANGER_OS_COUNT } from '../../../../../modules/nf-core/universc/cellranger_os_count/main.nf'
 
 workflow test_cellranger_count {
 

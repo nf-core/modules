@@ -1,7 +1,7 @@
 - name: universc mkfastq test_universc_mkfastq_simple
-  command: nextflow run ./tests/modules/nf-core/universc/mkfastq -entry test_universc_mkfastq_simple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/mkfastq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/universc/cellranger_os_mkfastq -entry test_universc_mkfastq_simple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/cellranger_os_mkfastq/nextflow.config
   tags:
-    - universc/mkfastq
+    - universc/cellranger_os_mkfastq
     - universc
   files:
     - path: output/universc/cellranger-tiny-bcl-1/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
@@ -314,9 +314,9 @@
       md5sum: 514382c72286ae9c007bbbc10cfaefd8
 
 - name: universc mkfastq test_universc_mkfastq_illumina
-  command: nextflow run ./tests/modules/nf-core/universc/mkfastq -entry test_universc_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/mkfastq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/universc/cellranger_os_mkfastq -entry test_universc_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/cellranger_os_mkfastq/nextflow.config
   tags:
-    - universc/mkfastq
+    - universc/cellranger_os_mkfastq
     - universc
   files:
     - path: output/universc/cellranger-tiny-bcl-1/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz

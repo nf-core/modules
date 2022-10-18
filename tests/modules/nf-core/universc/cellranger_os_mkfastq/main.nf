@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { UNTAR          } from '../../../../../modules/nf-core/untar/main.nf'
-include { UNIVERSC_CELLRANGER_OS_MKFASTQ } from '../../../../../modules/nf-core/universc/mkfastq/main.nf'
+include { UNIVERSC_CELLRANGER_OS_MKFASTQ } from '../../../../../modules/nf-core/universc/cellranger_os_mkfastq/main.nf'
 
 workflow test_universc_mkfastq_simple {
 
