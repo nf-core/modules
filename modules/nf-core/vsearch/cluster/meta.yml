@@ -20,14 +20,6 @@ input:
       type: file
       description: Sequences to cluster in FASTA format
       pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - clusteroption:
-      type: string
-      description: Select type of clustering.
-      pattern: "fast|size|smallmem|unoise"
-  - outoption:
-      type: string
-      description: If using the `userout` option, specify which columns to include in output, with fields separated with `+` (e.g. query+target+id). See USEARCH manual for valid options. For other output options, use an empty string.
-      pattern: "alnout|biomout|blast6out|centroids|clusters|mothur_shared_out|msaout|otutabout|profile|samout|uc|userout"
 
 output:
   - meta:
