@@ -27,7 +27,7 @@ process SHINYNGS_APP {
     tuple val(meta5), path(differential_results)
 
     output:
-    tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: data
+    tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: app
     path "versions.yml"                                     , emit: versions
 
     when:
