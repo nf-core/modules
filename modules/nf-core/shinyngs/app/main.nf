@@ -21,10 +21,10 @@ process SHINYNGS_APP {
 
     input:
     tuple val(meta), path(sample)
-    tuple val(meta), path(feature_meta)
-    tuple val(meta), path(assay_files)
-    tuple val(meta), path(contrasts)
-    tuple val(meta), path(differential_results)
+    tuple val(meta2), path(feature_meta)
+    tuple val(meta3), path(assay_files)
+    tuple val(meta4), path(contrasts)
+    tuple val(meta5), path(differential_results)
 
     output:
     tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: data
