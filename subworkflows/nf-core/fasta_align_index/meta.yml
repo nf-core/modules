@@ -1,0 +1,48 @@
+name: "fasta_align_index"
+description: Generate aligner index for a reference genome
+keywords:
+  - fasta
+  - index
+  - bwamem
+  - bwamem2
+  - dragmap
+  - snapaligner
+modules:
+  - bowtie2/build
+  - bwa/index
+  - bwamem2/index
+  - dragmap/hashtable
+  - snapaligner/index
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+  - aligner:
+      type: string
+      description: Aligner to use for alignment
+      enum:
+        - bowtie2
+        - bwa
+        - bwamem2
+        - dragmap
+        - snap
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - index:
+      type: file
+      description: aligner index
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@matthdsm"
