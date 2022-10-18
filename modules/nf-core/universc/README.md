@@ -46,22 +46,6 @@ modify this code provided that they also contain this license.
 
 The tomkellygenetics/universc:<VERSION> container is automatically updated with tomkellygenetics/universc:latest.
 
-To build an updated container:
+To build an updated container use the Dockerfile provided here:
 
-1. Edit the Dockerfile. Update the UniverSC versions in this line:
-
-   ```bash
-   FROM tomkellygenetics/universc:<VERSION>
-   ```
-
-2. Create and test the container:
-
-   ```bash
-   docker build . -t nfcore/universc:<VERSION>
-   ```
-
-3. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
-
-   ```bash
-   docker push nfcore/universc:<VERSION>
-   ```
+[https://github.com/minoda-lab/universc/blob/master/Dockerfile](https://github.com/minoda-lab/universc/blob/master/Dockerfile)
