@@ -8,10 +8,10 @@ process SHINYNGS_APP {
     // following in the nextflow.config:
     //
     // withName: SHINYNGS_APP {
-    //     secret 'SHINYAPPS_TOKEN'                                                  
-    //     secret 'SHINYAPPS_SECRET'  
+    //     secret 'SHINYAPPS_TOKEN'
+    //     secret 'SHINYAPPS_SECRET
     // }
-    // 
+    //
     // Those values must then be set in your Nextflow secrets.
 
     conda (params.enable_conda ? "bioconda::r-shinyngs=1.3.0" : null)
