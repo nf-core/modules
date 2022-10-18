@@ -9,7 +9,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
 
     input:
     tuple val(meta), path(gtf)
-    tuple val(meta), path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.anno.tsv")                 , emit: feature_annotation
