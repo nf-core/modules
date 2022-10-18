@@ -3,14 +3,6 @@
   tags:
     - bowtie2
     - bowtie2/build
-    - bwa
-    - bwa/index
-    - bwamem2
-    - bwamem2/index
-    - dragmap
-    - dragmap/hashtable
-    - snapaligner
-    - snapaligner/index
     - subworkflows
     - subworkflows/fasta_align_index
   files:
@@ -30,14 +22,8 @@
 - name: fasta_align_index test_bwamem1_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_bwamem1_index -c ./tests/config/nextflow.config
   tags:
-    - bowtie2
-    - bowtie2/build
     - bwa
     - bwa/index
-    - bwamem2
-    - bwamem2/index
-    - dragmap
-    - dragmap/hashtable
     - snapaligner
     - snapaligner/index
     - subworkflows
@@ -57,17 +43,8 @@
 - name: fasta_align_index test_bwamem2_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_bwamem2_index -c ./tests/config/nextflow.config
   tags:
-    - bowtie2
-    - bowtie2/build
-    - bwa
-    - bwa/index
     - bwamem2
     - bwamem2/index
-    - dragmap
-    - dragmap/hashtable
-    - snapaligner
-    - snapaligner/index
-    - subworkflows
     - subworkflows/fasta_align_index
   files:
     - path: output/bwamem2/bwamem2/genome.fasta.0123
@@ -84,16 +61,8 @@
 - name: fasta_align_index test_dragmap_hashtable
   command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_dragmap_hashtable -c ./tests/config/nextflow.config
   tags:
-    - bowtie2
-    - bowtie2/build
-    - bwa
-    - bwa/index
-    - bwamem2
-    - bwamem2/index
     - dragmap
     - dragmap/hashtable
-    - snapaligner
-    - snapaligner/index
     - subworkflows
     - subworkflows/fasta_align_index
   files:
@@ -114,14 +83,6 @@
 - name: fasta_align_index test_snap_index
   command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_snap_index -c ./tests/config/nextflow.config
   tags:
-    - bowtie2
-    - bowtie2/build
-    - bwa
-    - bwa/index
-    - bwamem2
-    - bwamem2/index
-    - dragmap
-    - dragmap/hashtable
     - snapaligner
     - snapaligner/index
     - subworkflows
