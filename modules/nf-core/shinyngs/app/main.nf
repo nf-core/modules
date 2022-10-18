@@ -14,10 +14,10 @@ process SHINYNGS_APP {
     // 
     // Those values must then be set in your Nextflow secrets.
 
-    conda (params.enable_conda ? "bioconda::r-shinyngs=1.2.0" : null)
+    conda (params.enable_conda ? "bioconda::r-shinyngs=1.3.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.1.0--r41hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.2.0--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.3.0--r41hdfd78af_0':
+        'docker pull quay.io/biocontainers/r-shinyngs:1.3.0--r41hdfd78af_0' }"
 
     input:
     path sample
