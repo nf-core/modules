@@ -10,6 +10,7 @@ process PRETEXTMAP {
 
     input:
     tuple val(meta), path(input)
+    path fasta
 
     output:
     tuple val(meta), path("*.pretext"), emit: pretext
@@ -21,6 +22,7 @@ process PRETEXTMAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
 
     """
     if [[ $input == *.pairs.gz ]]; then
@@ -30,6 +32,7 @@ process PRETEXTMAP {
     else
         samtools \\
             view \\
+            $reference \\
             -h \\
             $input | PretextMap \\
             $args \\
