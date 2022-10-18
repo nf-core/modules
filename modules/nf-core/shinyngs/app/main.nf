@@ -20,16 +20,15 @@ process SHINYNGS_APP {
         'quay.io/biocontainers/r-shinyngs:1.3.0--r41hdfd78af_0' }"
 
     input:
-    path sample
-    path feature_meta
-    path (assay_files)
-    path contrasts
-    path (differential_results)
+    tuple val(meta), path(sample)
+    tuple val(meta), path(feature_meta)
+    tuple val(meta), path(assay_files)
+    tuple val(meta), path(contrasts)
+    tuple val(meta), path(differential_results)
 
     output:
-    path "app/data.rds"             , emit: data
-    path "app/app.R"                , emit: app
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*/data.rds"), path("*/app.R")    , emit: data
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,6 +37,7 @@ process SHINYNGS_APP {
     // For full list of available args see
     // https://github.com/pinin4fjords/shinyngs/blob/develop/exec/make_app_from_files.R
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
 
     """
     make_app_from_files.R \\
@@ -46,7 +46,7 @@ process SHINYNGS_APP {
         --assay_files ${assay_files.join(',')} \\
         --contrast_file $contrasts \\
         --differential_results ${differential_results.join(',')} \\
-        --output_dir app \\
+        --output_dir $prefix \\
         --contrast_stats_assay 1 \\
         $args \\
 
