@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 //
-// FASTA_ALIGN_INDEX: Align fastq files to a reference genome
+// FASTA_INDEX_DNA: Align fastq files to a reference genome
 //
 
 include { BOWTIE2_BUILD                     } from '../../../modules/nf-core/bowtie2/build/main'
@@ -10,7 +10,7 @@ include { BWAMEM2_INDEX                     } from '../../../modules/nf-core/bwa
 include { DRAGMAP_HASHTABLE                 } from '../../../modules/nf-core/dragmap/hashtable/main'
 include { SNAPALIGNER_INDEX as SNAP_INDEX   } from '../../../modules/nf-core/snapaligner/index/main'
 
-workflow FASTA_ALIGN_INDEX {
+workflow FASTA_INDEX_DNA {
 
     take:
         ch_fasta        // channel: [ val(meta), fasta ]

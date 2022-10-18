@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTA_ALIGN_INDEX } from '../../../../subworkflows/nf-core/fasta_align_index/main.nf'
+include { FASTA_INDEX_DNA } from '../../../../subworkflows/nf-core/fasta_index_dna/main.nf'
 
 workflow test_bowtie2_build {
     fasta = Channel.value([
@@ -13,7 +13,7 @@ workflow test_bowtie2_build {
         [id:'test'],
         []
     ])
-    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bowtie2' )
+    FASTA_INDEX_DNA ( fasta, altliftover, 'bowtie2' )
 }
 
 workflow test_bwamem1_index {
@@ -25,7 +25,7 @@ workflow test_bwamem1_index {
         [id:'test'],
         []
     ])
-    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bwamem' )
+    FASTA_INDEX_DNA ( fasta, altliftover, 'bwamem' )
 }
 
 workflow test_bwamem2_index {
@@ -37,7 +37,7 @@ workflow test_bwamem2_index {
         [id:'test'],
         []
     ])
-    FASTA_ALIGN_INDEX ( fasta, altliftover, 'bwamem2' )
+    FASTA_INDEX_DNA ( fasta, altliftover, 'bwamem2' )
 }
 
 workflow test_dragmap_hashtable {
@@ -49,7 +49,7 @@ workflow test_dragmap_hashtable {
         [id:'test'],
         []
     ])
-    FASTA_ALIGN_INDEX ( fasta, altliftover, 'dragmap' )
+    FASTA_INDEX_DNA ( fasta, altliftover, 'dragmap' )
 }
 
 workflow test_snap_index {
@@ -61,5 +61,5 @@ workflow test_snap_index {
         [id:'test'],
         []
     ])
-    FASTA_ALIGN_INDEX ( fasta, altliftover, 'snap' )
+    FASTA_INDEX_DNA ( fasta, altliftover, 'snap' )
 }

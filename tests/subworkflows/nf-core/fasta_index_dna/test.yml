@@ -1,10 +1,10 @@
-- name: fasta_align_index test_bowtie2_build
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_bowtie2_build -c ./tests/config/nextflow.config
+- name: fasta_index_dna test_bowtie2_build
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bowtie2_build -c ./tests/config/nextflow.config
   tags:
     - bowtie2
     - bowtie2/build
     - subworkflows
-    - subworkflows/fasta_align_index
+    - subworkflows/fasta_index_dna
   files:
     - path: output/bowtie2/bowtie2/genome.1.bt2
       md5sum: cbe3d0bbea55bc57c99b4bfa25b5fbdf
@@ -19,15 +19,15 @@
     - path: output/bowtie2/bowtie2/genome.rev.2.bt2
       md5sum: e3b4ef343dea4dd571642010a7d09597
 
-- name: fasta_align_index test_bwamem1_index
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_bwamem1_index -c ./tests/config/nextflow.config
+- name: fasta_index_dna test_bwamem1_index
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bwamem1_index -c ./tests/config/nextflow.config
   tags:
     - bwa
     - bwa/index
     - snapaligner
     - snapaligner/index
     - subworkflows
-    - subworkflows/fasta_align_index
+    - subworkflows/fasta_index_dna
   files:
     - path: output/bwamem1/bwa/genome.amb
       md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
@@ -40,12 +40,12 @@
     - path: output/bwamem1/bwa/genome.sa
       md5sum: ab3952cabf026b48cd3eb5bccbb636d1
 
-- name: fasta_align_index test_bwamem2_index
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_bwamem2_index -c ./tests/config/nextflow.config
+- name: fasta_index_dna test_bwamem2_index
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_bwamem2_index -c ./tests/config/nextflow.config
   tags:
     - bwamem2
     - bwamem2/index
-    - subworkflows/fasta_align_index
+    - subworkflows/fasta_index_dna
   files:
     - path: output/bwamem2/bwamem2/genome.fasta.0123
       md5sum: b02870de80106104abcb03cd9463e7d8
@@ -58,13 +58,13 @@
     - path: output/bwamem2/bwamem2/genome.fasta.pac
       md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
 
-- name: fasta_align_index test_dragmap_hashtable
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_dragmap_hashtable -c ./tests/config/nextflow.config
+- name: fasta_index_dna test_dragmap_hashtable
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_dragmap_hashtable -c ./tests/config/nextflow.config
   tags:
     - dragmap
     - dragmap/hashtable
     - subworkflows
-    - subworkflows/fasta_align_index
+    - subworkflows/fasta_index_dna
   files:
     - path: output/dragmap/dragmap/hash_table.cfg
     - path: output/dragmap/dragmap/hash_table.cfg.bin
@@ -80,13 +80,13 @@
     - path: output/dragmap/dragmap/str_table.bin
       md5sum: 302e2b30993973527e69c6bcd1f093d0
 
-- name: fasta_align_index test_snap_index
-  command: nextflow run ./tests/subworkflows/nf-core/fasta_align_index -entry test_snap_index -c ./tests/config/nextflow.config
+- name: fasta_index_dna test_snap_index
+  command: nextflow run ./tests/subworkflows/nf-core/fasta_index_dna -entry test_snap_index -c ./tests/config/nextflow.config
   tags:
     - snapaligner
     - snapaligner/index
     - subworkflows
-    - subworkflows/fasta_align_index
+    - subworkflows/fasta_index_dna
   files:
     - path: output/snap/snap/Genome
       md5sum: 7e189c954142ba37460332b467e34ed4
