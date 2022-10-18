@@ -8,7 +8,8 @@ process ODGI_STATS {
         'quay.io/biocontainers/odgi:0.8.0--py310hc8f18ef_0' }"
 
     input:
-    tuple val(meta), path(graph), val(suffix)
+    tuple val(meta), path(graph)
+    val(suffix)
 
     output:
     tuple val(meta), path("*.${suffix}"), emit: odgi_stats
