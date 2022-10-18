@@ -6,7 +6,7 @@ include { NANOMONSV_PARSE } from '../../../../../modules/nf-core/nanomonsv/parse
 
 workflow test_nanomonsv_parse {
 
-    def data_path = 'https://github.com/awgymer/nf-core-test-datasets/raw/modules/data/delete_me/nanomonsv'
+    def data_path = 'https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/nanomonsv'
     input = channel.of(
     [
         [ id:'control' ], // meta map
