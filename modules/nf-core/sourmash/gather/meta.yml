@@ -74,8 +74,8 @@ output:
   - unassigned:
       type: file
       description: |
-        Signatures not classified as belonging to any of the taxa
-        in the sourmash database.
+        A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
+        in the sourmash database(s).
       pattern: "*{sig}"
   - prefetch:
       type: file
