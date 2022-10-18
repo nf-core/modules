@@ -26,8 +26,7 @@ process ODGI_STATS {
         stats \\
         --threads $task.cpus \\
         --idx ${graph}
-        $args \\
-        > ${prefix}.${suffix}
+        $args > ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
