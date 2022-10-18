@@ -8,8 +8,6 @@
       contains: ["I3019"]
     - path: output/hapibd/test.log
       contains: ["hap-ibd.jar"]
-    - path: output/hapibd/versions.yml
-      ## contains: ["hap-ibd.jar"]
 
 - name: hapibd test_hapibd_excludesamples
   command: nextflow run ./tests/modules/nf-core/hapibd -entry test_hapibd_excludesamples -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hapibd/nextflow.config
