@@ -12,7 +12,7 @@ process ODGI_STATS {
     val(suffix)
 
     output:
-    tuple val(meta), path("${prefix}"."${suffix}"), emit: odgi_stats
+    tuple val(meta), path("*.${suffix}"), emit: odgi_stats
     path "versions.yml"                 , emit: versions
 
     when:
