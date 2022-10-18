@@ -16,12 +16,12 @@ process SOURMASH_GATHER {
     val save_prefetch_csv
 
     output:
-    tuple val(meta), path('*.csv')           , optional:true, emit: result
-    tuple val(meta), path('*_unassigned.sig'), optional:true, emit: unassigned
-    tuple val(meta), path('*_matches.sig')   , optional:true, emit: matches
-    tuple val(meta), path('*_prefetch.sig')  , optional:true, emit: prefetch
-    tuple val(meta), path('*_prefetch.csv')  , optional:true, emit: prefetchcsv
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path('*.csv.gz')             , optional:true, emit: result
+    tuple val(meta), path('*_unassigned.sig.zip') , optional:true, emit: unassigned
+    tuple val(meta), path('*_matches.sig.zip')    , optional:true, emit: matches
+    tuple val(meta), path('*_prefetch.sig.zip')   , optional:true, emit: prefetch
+    tuple val(meta), path('*_prefetch.csv.gz')    , optional:true, emit: prefetchcsv
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,15 +29,15 @@ process SOURMASH_GATHER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def unassigned  = save_unassigned   ? "--output-unassigned ${prefix}_unassigned.sig" : ''
-    def matches     = save_matches_sig  ? "--save-matches ${prefix}_matches.sig"         : ''
-    def prefetch    = save_prefetch     ? "--save-prefetch ${prefix}_prefetch.sig"       : ''
-    def prefetchcsv = save_prefetch_csv ? "--save-prefetch-csv ${prefix}_prefetch.csv"   : ''
+    def unassigned  = save_unassigned   ? "--output-unassigned ${prefix}_unassigned.sig.zip" : ''
+    def matches     = save_matches_sig  ? "--save-matches ${prefix}_matches.sig.zip"         : ''
+    def prefetch    = save_prefetch     ? "--save-prefetch ${prefix}_prefetch.sig.zip"       : ''
+    def prefetchcsv = save_prefetch_csv ? "--save-prefetch-csv ${prefix}_prefetch.csv.gz"    : ''
 
     """
     sourmash gather \\
         $args \\
-        --output ${prefix}.csv \\
+        --output ${prefix}.csv.gz \\
         ${unassigned} \\
         ${matches} \\
         ${prefetch} \\
