@@ -29,7 +29,6 @@ process MAGECK_COUNT {
     def sample_label = ("$inputfile".endsWith(".fastq.gz")) ? "--sample-label ${meta.id}" : ''
 
     """
-
     mageck \\
         count \\
         $args \\
