@@ -23,7 +23,6 @@ process ODGI_VIZ {
     """
     odgi \\
         viz \\
-        --threads 1 \\
         --idx ${graph} \\
         --out ${prefix}.png \\
         $args
