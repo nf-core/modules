@@ -1,4 +1,3 @@
-
 process MAGECK_COUNT {
     tag "$meta.id"
     label 'process_medium'
