@@ -11,7 +11,6 @@ process KOFAMSCAN {
     tuple val(meta), path(fasta)
     path profiles
     path ko_list
-    val format
 
     output:
     tuple val(meta), path('*.txt'), optional: true, emit: txt
