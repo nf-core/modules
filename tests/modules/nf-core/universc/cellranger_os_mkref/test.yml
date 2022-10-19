@@ -1,8 +1,8 @@
-- name: universc mkref test_universc_mkref
+- name: universc cellranger_os_mkref test_universc_mkref
   command: nextflow run ./tests/modules/nf-core/universc/cellranger_os_mkref -entry test_universc_mkref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/cellranger_os_mkref/nextflow.config
   tags:
-    - universc
     - universc/cellranger_os_mkref
+    - universc
   files:
     - path: output/universc/homo_sapiens_chr22_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
