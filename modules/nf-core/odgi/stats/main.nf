@@ -24,7 +24,6 @@ process ODGI_STATS {
     """
     odgi \\
         stats \\
-        --threads 1 \\
         --idx ${graph} \\
         $args > ${prefix}.${suffix}
 
