@@ -23,7 +23,7 @@ process ODGI_VIZ {
     """
     odgi \\
         viz \\
-        --threads $task.cpus \\
+        --threads 1 \\
         --idx ${graph} \\
         --out ${prefix}.png \\
         $args
