@@ -11,7 +11,7 @@ process ODGI_VIZ {
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("*.png"), emit: odgi_viz
+    tuple val(meta), path("*.png"), emit: png
     path "versions.yml"           , emit: versions
 
     when:
