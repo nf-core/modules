@@ -20,7 +20,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - pangenome_graph:
+  - graph:
       type: file
       description: Pangenome graph in binary ODGI or in GFA v1.0 format
       pattern: "*.{og,gfa}"
@@ -35,10 +35,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - txt:
+  - tsv:
       type: file
-      description: Dependent on the parameter selection the file format can be TSV or YAML.
-      pattern: "*.{tsv,yaml}"
+      description: Optional output file that contains graph statistics in TSV format.
+      pattern: "*.{tsv}"
+  - yaml:
+      type: file
+      description: Optional output file that contains graph statistics in YAML format.
+      pattern: "*.{yaml}"
 
 authors:
   - "@subwaystation"

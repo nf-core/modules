@@ -11,8 +11,8 @@ process ODGI_STATS {
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: odgi_stats_tsv
-    tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: odgi_stats_yaml
+    tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: tsv
+    tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
     path "versions.yml"                 , emit: versions
 
     when:
