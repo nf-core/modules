@@ -1,10 +1,10 @@
-name: "odgi_viz"
-description: Visualize a variation graph in 1D.
+name: "odgi_stats"
+description: Metrics describing a variation graph and its path relationship.
 keywords:
   - variation graph
   - pangenome graph
   - gfa
-  - graph viz
+  - graph stats
 tools:
   - "odgi":
       description: "An optimized dynamic genome/graph implementation"
@@ -35,10 +35,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - png:
+  - tsv:
       type: file
-      description: A 1D visualization of a pangenome graph.
-      pattern: "*.{png}"
+      description: Optional output file that contains graph statistics in TSV format.
+      pattern: "*.{tsv}"
+  - yaml:
+      type: file
+      description: Optional output file that contains graph statistics in YAML format.
+      pattern: "*.{yaml}"
 
 authors:
   - "@subwaystation"

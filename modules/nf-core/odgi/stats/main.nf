@@ -1,18 +1,19 @@
-process ODGI_VIZ {
+process ODGI_STATS {
     tag "$meta.id"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::odgi=0.8.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.8.0--py39h2add14b_0':
+        'https://depot.galaxyproject.org/singularity/odgi:0.8.0--py310hc8f18ef_0':
         'quay.io/biocontainers/odgi:0.8.0--py310hc8f18ef_0' }"
 
     input:
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("*.png"), emit: png
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: tsv
+    tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,13 +21,16 @@ process ODGI_VIZ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = ".og.stats.tsv"
+    if (args.contains("--yaml") || args.contains("--multiqc")) {
+        suffix = "og.stats.yaml"
+    }
     """
     odgi \\
-        viz \\
+        stats \\
         --threads $task.cpus \\
         --idx ${graph} \\
-        --out ${prefix}.png \\
-        $args
+        $args > ${prefix}.$suffix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
