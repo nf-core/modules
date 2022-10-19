@@ -24,6 +24,7 @@ process ODGI_STATS {
     """
     odgi \\
         stats \\
+        --threads $task.cpus \\
         --idx ${graph} \\
         $args > ${prefix}.${suffix}
 
