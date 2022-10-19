@@ -22,9 +22,7 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" :
-        ("$inputfile".endsWith(".txt")) ? "-k ${inputfile}" : ("$inputfile".endsWith(".csv")) ? "-k ${inputfile}" :
-        ("$inputfile".endsWith(".tsv")) ? "-k ${inputfile}"  : ''
+    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
     def sample_label = ("$inputfile".endsWith(".fastq.gz")) ? "--sample-label ${meta.id}" : ''
 
     """
