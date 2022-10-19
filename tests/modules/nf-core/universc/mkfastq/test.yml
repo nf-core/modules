@@ -1,8 +1,8 @@
-- name: universc cellranger_os_mkfastq test_universc_mkfastq_simple
-  command: nextflow run ./tests/modules/nf-core/universc/cellranger_os_mkfastq -entry test_universc_mkfastq_simple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/cellranger_os_mkfastq/nextflow.config
+- name: universc mkfastq test_universc_mkfastq_simple
+  command: nextflow run ./tests/modules/nf-core/universc/mkfastq -entry test_universc_mkfastq_simple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/mkfastq/nextflow.config
   tags:
     - universc
-    - universc/cellranger_os_mkfastq
+    - universc/mkfastq
   files:
     - path: output/universc/cellranger-tiny-bcl-1/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
       md5sum: a427127588f3c93a16ed3a70bf9406f3
@@ -313,11 +313,11 @@
     - path: output/untar/cellranger-tiny-bcl-1.2.0/runParameters.xml
       md5sum: 514382c72286ae9c007bbbc10cfaefd8
 
-- name: universc cellranger_os_mkfastq test_universc_mkfastq_illumina
-  command: nextflow run ./tests/modules/nf-core/universc/cellranger_os_mkfastq -entry test_universc_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/cellranger_os_mkfastq/nextflow.config
+- name: "\e[A\rls\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+  command: nextflow run ./tests/modules/nf-core/universc/mkfastq -entry test_universc_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/mkfastq/nextflow.config
   tags:
     - universc
-    - universc/cellranger_os_mkfastq
+    - universc/mkfastq
   files:
     - path: output/universc/cellranger-tiny-bcl-1/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
       md5sum: a427127588f3c93a16ed3a70bf9406f3

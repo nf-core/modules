@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_MKGTF } from '../../../../../modules/nf-core/universc/cellranger_os_mkgtf/main.nf'
-include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/cellranger_os_mkref/main.nf'
-include { UNIVERSC_COUNT } from '../../../../../modules/nf-core/universc/cellranger_os_count/main.nf'
+include { UNIVERSC_MKGTF } from '../../../../../modules/nf-core/universc/mkgtf/main.nf'
+include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/mkref/main.nf'
+include { UNIVERSC_COUNT } from '../../../../../modules/nf-core/universc/count/main.nf'
 
-workflow test_cellranger_count {
+workflow test_universc_count {
 
     input = [ [ id:'123', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', gem: '123', samples: ["test_10x"] ], // meta map
              [ file(params.test_data['homo_sapiens']['illumina']['test_10x_1_fastq_gz'], checkIfExists: true),

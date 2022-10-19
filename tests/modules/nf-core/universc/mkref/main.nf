@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/cellranger_os_mkref/main.nf'
+include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/mkref/main.nf'
 
 workflow test_universc_mkref {
 
