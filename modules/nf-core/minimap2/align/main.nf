@@ -33,7 +33,7 @@ process MINIMAP2_ALIGN {
     minimap2 \\
         $args \\
         -t $task.cpus \\
-        $reference \\
+        ${reference ?: reads} \\
         $input_reads \\
         $cigar_paf \\
         $set_cigar_bam \\
