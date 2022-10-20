@@ -2,7 +2,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tag "$meta.id"
     label 'process_high'
 
-    /conda (params.enable_conda ? "bioconda::krakenuniq=1.0.0" : null)
+    conda (params.enable_conda ? "bioconda::krakenuniq=1.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.0--pl5321h19e8d03_0':
         'quay.io/biocontainers/krakenuniq:1.0.0--pl5321h19e8d03_0' }"
@@ -14,7 +14,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     val report_file
     val save_output
 
-    output:
     output:
     tuple val(meta), path('*.classified{.,_}*')     , optional:true, emit: classified_reads_fastq
     tuple val(meta), path('*.unclassified{.,_}*')   , optional:true, emit: unclassified_reads_fastq
@@ -28,7 +27,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}".  // INCLUDE???
     def paired       = meta.single_end ? "" : "--paired"
     def classified   = meta.single_end ? '"\$PREFIX".classified.fastq'   : '"\$PREFIX".classified#.fastq'
     def unclassified = meta.single_end ? '"\$PREFIX".unclassified.fastq' : '"\$PREFIX".unclassified#.fastq'
@@ -38,7 +36,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def report = report_file ? '--report-file "\$PREFIX".krakenunniq.report.txt' : ""
     def compress_reads_command = save_output_fastqs ? "gzip *.fastq" : ""
 
-// How to get prefix (from meta) when having a list of fastqs?
     """
     krakenuniq \\
         --db $db \\
@@ -46,7 +43,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         --threads $task.cpus;
 
     for fastq in ${fastqs.join(' ')}; do \\
-        PREFIX=$(echo \$fastq);
+        PREFIX=\$(echo \$fastq);
         krakenuniq \\
             --db $db \\
             --threads $task.cpus \\
