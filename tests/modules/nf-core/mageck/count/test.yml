@@ -10,6 +10,7 @@
       md5sum: d79f3863168ee0f0750a59d94f70ce1a
     - path: output/mageck/test,test2.countsummary.txt
       md5sum: 45ca5c296b3be2116af65ef1b1583eba
+    - path: output/mageck/versions.yml
 
 - name: mageck count test_mageck_count_counts
   command: nextflow run ./tests/modules/nf-core/mageck/count -entry test_mageck_count_counts -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/count/nextflow.config
@@ -21,4 +22,4 @@
       md5sum: 2cdf4f6c03b69a748e03bfb502be3ba2
     - path: output/mageck/test.countsummary.txt
       md5sum: 41067b35495d72001a565ae37457b30e
-    - path: output/macheck/versions.yml
+    - path: output/mageck/versions.yml
