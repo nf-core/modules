@@ -24,6 +24,7 @@
       md5sum: afdf79e9b07035df28d6c8313661931b
     - path: output/gatk4/tumor.sr.txt.gz.tbi
       md5sum: 8207e46090fdbe125ce6936ac383da40
+    - path: output/versions.yml
 
 - name: gatk4 printsvevidence test_gatk4_printsvevidence_bed_no_fasta
   command: nextflow run ./tests/modules/nf-core/gatk4/printsvevidence -entry test_gatk4_printsvevidence_bed_no_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printsvevidence/nextflow.config
@@ -51,3 +52,4 @@
       md5sum: afdf79e9b07035df28d6c8313661931b
     - path: output/gatk4/tumor.sr.txt.gz.tbi
       md5sum: 8207e46090fdbe125ce6936ac383da40
+    - path: output/versions.yml

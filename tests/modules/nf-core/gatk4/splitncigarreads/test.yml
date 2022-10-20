@@ -6,6 +6,7 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: 910aaac4313960b125b76bdab3fb71c7
+    - path: output/versions.yml
 
 - name: gatk4 splitncigarreads test_gatk4_splitncigarreads_intervals
   command: nextflow run ./tests/modules/nf-core/gatk4/splitncigarreads -entry test_gatk4_splitncigarreads_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/splitncigarreads/nextflow.config
@@ -15,3 +16,4 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: 53e598180b8d1c4b732e8b7aef9b94fe
+    - path: output/versions.yml

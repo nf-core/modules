@@ -6,6 +6,7 @@
   files:
     - path: output/gatk4/test.reverted.bam
       md5sum: f783a88deb45c3a2c20ca12cbe1c5652
+    - path: output/versions.yml
 
 - name: gatk4 revertsam test_gatk4_revertsam_stubs
   command: nextflow run ./tests/modules/nf-core/gatk4/revertsam -entry test_gatk4_revertsam_stubs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/revertsam/nextflow.config -stub-run
@@ -14,3 +15,4 @@
     - gatk4/revertsam
   files:
     - path: output/gatk4/test.reverted.bam
+    - path: output/versions.yml
