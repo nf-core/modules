@@ -1,0 +1,24 @@
+- name: samtools merge test_samtools_merge
+  command: nextflow run ./tests/modules/nf-core/samtools/merge -entry test_samtools_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/merge/nextflow.config
+  tags:
+    - samtools
+    - samtools/merge
+  files:
+    - path: output/samtools/test.bam
+
+- name: samtools merge test_samtools_merge_cram
+  command: nextflow run ./tests/modules/nf-core/samtools/merge -entry test_samtools_merge_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/merge/nextflow.config
+  tags:
+    - samtools
+    - samtools/merge
+  files:
+    - path: output/samtools/test.cram
+
+- name: samtools merge test_samtools_merge_single_file
+  command: nextflow run ./tests/modules/nf-core/samtools/merge -entry test_samtools_merge_single_file -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/merge/nextflow.config
+  tags:
+    - samtools
+    - samtools/merge
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 6e38ae132fadae4cb4915814d6f872b2
