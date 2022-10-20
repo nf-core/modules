@@ -7,7 +7,7 @@ include { BEDTOOLS_CLOSEST } from '../../../../../modules/nf-core/bedtools/close
 workflow test_bedtools_closest {
 
     input = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
         [
             file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true),
