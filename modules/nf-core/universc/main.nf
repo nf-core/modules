@@ -46,4 +46,17 @@ process UNIVERSC {
         universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g' ))
     END_VERSIONS
     """
+
+
+    stub:
+    """
+    mkdir -p "sample-${meta.id}/outs/"
+    touch sample-${meta.id}/outs/fake_file.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
+        universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc | sed 's/^.* //g' ))
+    END_VERSIONS
+    """
 }
