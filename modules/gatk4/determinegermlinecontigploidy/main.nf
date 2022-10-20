@@ -5,11 +5,13 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--py36hdfd78af_1' :
-        'quay.io/biocontainers/gatk4:4.2.6.1--py36hdfd78af_1'}"
+        'broadinstitute/gatk'}"
+        //'quay.io/biocontainers/gatk4:4.2.6.1--py36hdfd78af_1'}"
 
     input:
     tuple val(meta), path(tsv)
-    // path  model
+    path model
+    path priors
 
     output:
     tuple val(meta), path("ploidy.tar"), emit: tar
@@ -21,8 +23,9 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // def model_command = model ? "--model $model" : ""
-    // def priors_command = priors ? "--contig-ploidy-priors $priors" : ""
+    def model_command = model ? "--model $model" : ""
+    def priors_command = priors ? "--contig-ploidy-priors $priors" : ""
+    def input_list = tsv.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,14 +33,14 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     } else {
         avail_mem = task.memory.giga
     }
-    // $model_command \\
     """
     gatk --java-options "-Xmx${avail_mem}g" DetermineGermlineContigPloidy \\
-        --input $tsv \\
-        -imr OVERLAPPING_ONLY \\
+        $input_list \\
         --output ploidy/ \\
         --output-prefix $prefix \\
-        $args
+        $args \\
+        $model_command \\
+        $priors_command
     tar -cvf ploidy.tar ploidy/
 
     cat <<-END_VERSIONS > versions.yml
