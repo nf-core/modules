@@ -9,6 +9,7 @@ process SAMTOOLS_COLLATEFASTQ {
 
     input:
     tuple val(meta), path(input)
+    tuple val(meta2), path(fasta)
 
     output:
     //TODO might be good to have ordered output of the fastq files, so we can
@@ -23,10 +24,12 @@ process SAMTOOLS_COLLATEFASTQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
     """
     samtools collate \\
         $args \\
         --threads $task.cpus \\
+        ${reference} \\
         -O \\
         $input \\
         . |
@@ -34,6 +37,7 @@ process SAMTOOLS_COLLATEFASTQ {
     samtools fastq \\
         $args2 \\
         --threads $task.cpus \\
+        ${reference} \\
         -1 ${prefix}_1.fq.gz \\
         -2 ${prefix}_2.fq.gz \\
         -0 ${prefix}_other.fq.gz \\
