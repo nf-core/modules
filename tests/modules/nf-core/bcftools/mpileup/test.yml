@@ -28,10 +28,10 @@
 
 - name: bcftools mpileup test_bcftools_mpileup_intervals
   command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_mpileup_intervals -c ./tests/config/nextflow.config     -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
-  tags:                                                                                                                 
-    - bcftools/mpileup                                                                                                  
-    - bcftools                                                                                                          
-  files:                                                                                                                
+  tags:
+    - bcftools/mpileup
+    - bcftools
+  files:
     - path: output/bcftools/test.bcftools_stats.txt
       md5sum: d91d947ec3822ecabf28d474babc303c
     - path: output/bcftools/test.vcf.gz.tbi
