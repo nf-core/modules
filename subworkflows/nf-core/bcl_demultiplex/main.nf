@@ -6,6 +6,7 @@
 
 include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
+include { UNTAR      } from "../../../modules/nf-core/untar/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -19,10 +20,34 @@ workflow BCL_DEMULTIPLEX {
         ch_stats    = Channel.empty()
         ch_interop  = Channel.empty()
 
+        // Split flowcells into separate channels containg run as tar and run as path
+        // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
+        ch_flowcell
+            .branch { meta, samplesheet, run ->
+                tar: run.toString().endsWith(".tar.gz")
+                dir: true
+            }.set { ch_flowcells }
+
+        ch_flowcells.tar
+            .multiMap { meta, samplesheet, run ->
+                samplesheets: [ meta, samplesheet ]
+                run_dirs: [ meta, run ]
+            }.set { ch_flowcells_tar }
+
+        // MODULE: untar
+        // Runs when run_dir is a tar archive
+        // Re-join the metadata and the untarred run directory with the samplesheet
+        ch_flowcells_tar_merged = ch_flowcells_tar.samplesheets.join( UNTAR ( ch_flowcells_tar.run_dirs ).untar )
+        ch_versions = ch_versions.mix(UNTAR.out.versions)
+
+        // Merge the two channels back together
+        ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
+
+
         // MODULE: bclconvert
         // Demultiplex the bcl files
         if (demultiplexer == "bclconvert") {
-            BCLCONVERT( ch_flowcell )
+            BCLCONVERT( ch_flowcells )
             ch_fastq    = ch_fastq.mix(BCLCONVERT.out.fastq)
             ch_interop  = ch_interop.mix(BCLCONVERT.out.interop)
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
@@ -33,7 +58,7 @@ workflow BCL_DEMULTIPLEX {
         // MODULE: bcl2fastq
         // Demultiplex the bcl files
         if (demultiplexer == "bcl2fastq") {
-            BCL2FASTQ( ch_flowcell )
+            BCL2FASTQ( ch_flowcells )
             ch_fastq    = ch_fastq.mix(BCL2FASTQ.out.fastq)
             ch_interop  = ch_interop.mix(BCL2FASTQ.out.interop)
             ch_reports  = ch_reports.mix(BCL2FASTQ.out.reports)
