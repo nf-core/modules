@@ -26,7 +26,6 @@ process CALDER2 {
     def args = task.ext.args ?: ''
     def suffix = resolution ? "::$resolution" : ""
     def cpus = task.cpus ?: 1
-    
     """
     # getting binsize
     binsize="\$(cooler info --field bin-size $cool$suffix)"
