@@ -11,7 +11,6 @@
     - path: output/gatk4/test.tranches
       md5sum: c029e52fd63a893e1154cc9144a19eeb
 
-
 - name: gatk4 variantrecalibrator test_gatk4_variantrecalibrator_allele_specific
   command: nextflow run ./tests/modules/nf-core/gatk4/variantrecalibrator -entry test_gatk4_variantrecalibrator_allele_specific -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/variantrecalibrator/nextflow.config
   tags:
@@ -24,4 +23,3 @@
     - path: output/gatk4/test.recal.idx
     - path: output/gatk4/test.tranches
       md5sum: ad52fa69325c758f458a30ee5b43d6b5
-

@@ -6,7 +6,6 @@
   files:
     - path: output/gatk4/test.bam
 
-
 - name: gatk4 fastqtosam test_gatk4_fastqtosam_paired_end
   command: nextflow run ./tests/modules/nf-core/gatk4/fastqtosam -entry test_gatk4_fastqtosam_paired_end -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/fastqtosam/nextflow.config
   tags:
@@ -14,4 +13,3 @@
     - gatk4/fastqtosam
   files:
     - path: output/gatk4/test.bam
-

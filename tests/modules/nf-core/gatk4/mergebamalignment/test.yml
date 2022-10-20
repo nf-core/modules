@@ -7,7 +7,6 @@
     - path: output/gatk4/test.bam
       md5sum: e6f1b343700b7ccb94e81ae127433988
 
-
 - name: gatk4 mergebamalignment test_gatk4_mergebamalignment_stubs
   command: nextflow run ./tests/modules/nf-core/gatk4/mergebamalignment -entry test_gatk4_mergebamalignment_stubs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/mergebamalignment/nextflow.config -stub-run
   tags:
@@ -15,4 +14,3 @@
     - gatk4/mergebamalignment
   files:
     - path: output/gatk4/test.bam
-
