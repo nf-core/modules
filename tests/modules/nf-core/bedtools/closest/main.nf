@@ -23,7 +23,7 @@ workflow test_bedtools_closest {
 workflow test_bedtools_closest_fasta_fai {
 
     input = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
     ]
