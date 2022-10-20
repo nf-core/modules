@@ -23,7 +23,6 @@
     - gatk4
   files:
     - path: output/gatk4/test.cram
-      md5sum: 41c5d0b70c25c676b75ffda9327e9b44
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_metrics
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_metrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
