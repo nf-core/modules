@@ -8,9 +8,7 @@ process SHINYNGS_STATICEXPLORATORY {
         'quay.io/biocontainers/r-shinyngs:1.3.0--r41hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(sample)
-    tuple val(meta2), path(feature_meta)
-    tuple val(meta3), path(assay_files)
+    tuple val(meta), path(sample), path(feature_meta), path(assay_files) 
 
     output:
     tuple val(meta), path("*/png/boxplot.png"), path("*/html/boxplot.html"), path("*/html/boxplot_files")                         , emit: boxplots

@@ -11,8 +11,6 @@ workflow test_shinyngs_staticexploratory {
     expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true) 
 
     SHINYNGS_STATICEXPLORATORY ( 
-        [ [ "id":"treatment" ], expression_sample_sheet ],
-        [ [ "id":"treatment" ], expression_feature_meta ],
-        [ [ "id":"treatment" ], [ expression_matrix_file ] ]
+        [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ],
     )
 }
