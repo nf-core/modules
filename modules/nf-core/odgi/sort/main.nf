@@ -11,8 +11,8 @@ process ODGI_SORT {
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("*.og")                 , emit: sorted_graph
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.og"), emit: sorted_graph
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
