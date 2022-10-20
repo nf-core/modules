@@ -6,7 +6,7 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: dc1a09ac6371aab7c50d1a554baa06d3
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
@@ -16,7 +16,7 @@
   files:
     - path: output/gatk4/test.bam
       md5sum: 898cb0a6616897d8ada90bab53bf0837
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_cram_out
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_cram_out -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
@@ -25,7 +25,7 @@
     - gatk4
   files:
     - path: output/gatk4/test.cram
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicatesspark test_gatk4_markduplicates_spark_multiple_bams_metrics
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicatesspark -entry test_gatk4_markduplicates_spark_multiple_bams_metrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicatesspark/nextflow.config
@@ -36,4 +36,4 @@
     - path: output/gatk4/test.bam
       md5sum: 898cb0a6616897d8ada90bab53bf0837
     - path: output/gatk4/test.metrics
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml

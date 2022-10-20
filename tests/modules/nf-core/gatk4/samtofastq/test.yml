@@ -6,7 +6,7 @@
   files:
     - path: output/gatk4/test.fastq.gz
       md5sum: 50ace41d4c24467f24f8b929540a7797
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 samtofastq test_gatk4_samtofastq_paired_end
   command: nextflow run ./tests/modules/nf-core/gatk4/samtofastq -entry test_gatk4_samtofastq_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/samtofastq/nextflow.config
@@ -18,7 +18,7 @@
       md5sum: cfea607c9d75fd9ea9704780ad3a499c
     - path: output/gatk4/test_2.fastq.gz
       md5sum: 613bf64c023609e1c62ad6ce9e4be8d7
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 samtofastq test_gatk4_samtofastq_paired_end_stubs
   command: nextflow run ./tests/modules/nf-core/gatk4/samtofastq -entry test_gatk4_samtofastq_paired_end_stubs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/samtofastq/nextflow.config -stub-run
@@ -28,4 +28,4 @@
   files:
     - path: output/gatk4/test_1.fastq.gz
     - path: output/gatk4/test_2.fastq.gz
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml

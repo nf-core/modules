@@ -9,7 +9,7 @@
     - path: output/gatk4/test.bam
       md5sum: 0c29a85e577d96c42268e49d245a4422
     - path: output/gatk4/test.bam.metrics
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_bams
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_bams -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
@@ -22,7 +22,7 @@
     - path: output/gatk4/test.bam
       md5sum: edeb80cb484c6e8644f0306680446340
     - path: output/gatk4/test.bam.metrics
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
 
 - name: gatk4 markduplicates test_gatk4_markduplicates_multiple_cram_output
   command: nextflow run ./tests/modules/nf-core/gatk4/markduplicates -entry test_gatk4_markduplicates_multiple_cram_output -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/markduplicates/nextflow.config
@@ -33,4 +33,4 @@
     - path: output/gatk4/test.cram
     - path: output/gatk4/test.cram.crai
     - path: output/gatk4/test.cram.metrics
-    - path: output/versions.yml
+    - path: output/gatk4/versions.yml
