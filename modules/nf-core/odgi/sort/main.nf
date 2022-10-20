@@ -27,7 +27,6 @@ process ODGI_SORT {
         --idx ${graph} \\
         --out ${prefix}.og \\
         $args
-        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         odgi: \$(echo \$(odgi version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
