@@ -1,5 +1,5 @@
-- name: bcftools mpileup test_bcftools_mpileup
-  command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_mpileup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
+- name: bcftools mpileup test_bcftools_mpileup_no_intervals
+  command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_mpileup_no_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
   tags:
     - bcftools/mpileup
     - bcftools
@@ -11,8 +11,21 @@
     - path: output/bcftools/test.vcf.gz
       md5sum: f37c4bdb0b7a4330477d6716ae2778c2
 
-- name: bcftools mpileup test_bcftools_save_mpileup
-  command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_save_mpileup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
+- name: bcftools mpileup test_bcftools_mpileup_intervals
+  command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_mpileup_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
+  tags:
+    - bcftools/mpileup
+    - bcftools
+  files:
+    - path: output/bcftools/test.bcftools_stats.txt
+      md5sum: 333225533d2eab53a394f4262fc10157
+    - path: output/bcftools/test.vcf.gz.tbi
+      md5sum: 4e69dc8b8a1b703314bbad9bbd472e51
+    - path: output/bcftools/test.vcf.gz
+      md5sum: fbcb926055a2a348e934f52aafd5a094
+
+- name: bcftools mpileup test_bcftools_save_mpileup_no_intervals
+  command: nextflow run ./tests/modules/nf-core/bcftools/mpileup -entry test_bcftools_save_mpileup_no_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/mpileup/nextflow.config
   tags:
     - bcftools/mpileup
     - bcftools

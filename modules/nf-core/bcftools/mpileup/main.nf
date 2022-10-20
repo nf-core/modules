@@ -8,7 +8,7 @@ process BCFTOOLS_MPILEUP {
         'quay.io/biocontainers/bcftools:1.15.1--h0ea216a_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(intervals)
     path fasta
     val save_mpileup
 
@@ -28,6 +28,7 @@ process BCFTOOLS_MPILEUP {
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
+    def intervals = intervals ? "-T ${intervals}" : ""
     """
     echo "${meta.id}" > sample_name.list
 
@@ -36,6 +37,7 @@ process BCFTOOLS_MPILEUP {
         --fasta-ref $fasta \\
         $args \\
         $bam \\
+        $intervals \\
         $mpileup \\
         | bcftools call --output-type v $args2 \\
         | bcftools reheader --samples sample_name.list \\
