@@ -23,8 +23,10 @@ workflow test_krakenuniq_preloadedkrakenuniq {
     KRAKENUNIQ_BUILD ( ch_input )
 
     input = [
-        [ id:'test', single_end:true ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz', 'test_2_fastq_gz'], checkIfExists: true)
+        [[ id:'test', single_end:true ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)],
+        [[ id:'test2', single_end:true ],
+        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
     ]
 
     KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input,KRAKENUNIQ_BUILD.out.db.map{it[1]},true,true,true )
