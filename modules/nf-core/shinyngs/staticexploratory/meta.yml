@@ -5,40 +5,68 @@ keywords:
 tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/pinin4fjords/shinyngs"
+      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: "['AGPL v3']"
-
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
+        Groovy Map containing information on variables for use in plots,
+        probably experimental information, but at a minimum an id.
+        e.g. [ id:'treatment' ]
+  - sample:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-output:
-  #Only when we have meta
-  - meta:
-      type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
+        CSV-format sample sheet with sample metadata
+  - feature_meta:
+      type: file
+      description: |
+        TSV-format feature (e.g. gene) metadata
+  - assay_files:
+      type: list
+      description: |
+        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+output:
+  - boxplots:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        box plots covering input matrices.
+  - densities:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        density plots covering input matrices.
+  - pca2d:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        2D PCA plots covering specified input matrix (by default the last one
+        in the input list.
+  - pca3d:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        3D PCA plots covering specified input matrix (by default the last one
+        in the input list.
+  - mad:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        MAD correlation plots covering specified input matrix (by default the
+        last one in the input list.
+  - dendro:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, for a sample clustering
+        dendrogramcovering specified input matrix (by default the last one in
+        the input list.
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@pinin4fjords"
