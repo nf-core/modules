@@ -33,7 +33,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ""
     def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ""
     def output_option = save_output ? '--output "\$PREFIX".krakenuniq.classified.txt' : ""
-    def report = report_file ? '--report-file "\$PREFIX".krakenunniq.report.txt' : ""
+    def report = report_file ? '--report-file "\$PREFIX".krakenuniq.report.txt' : ""
     def compress_reads_command = save_output_fastqs ? "gzip *.fastq" : ""
 
     """
