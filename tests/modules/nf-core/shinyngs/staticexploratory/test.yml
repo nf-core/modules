@@ -1,23 +1,23 @@
 - name: shinyngs staticexploratory test_shinyngs_staticexploratory
   command: nextflow run ./tests/modules/nf-core/shinyngs/staticexploratory -entry test_shinyngs_staticexploratory -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticexploratory/nextflow.config
   tags:
-  - shinyngs/staticexploratory
-  - shinyngs
+    - shinyngs/staticexploratory
+    - shinyngs
   files:
-  - path: output/shinyngs/treatment/html/boxplot.html
-  - path: output/shinyngs/treatment/html/density.html
-  - path: output/shinyngs/treatment/html/mad_correlation.html
-  - path: output/shinyngs/treatment/html/pca2d.html
-  - path: output/shinyngs/treatment/html/pca3d.html
-  - path: output/shinyngs/treatment/png/boxplot.png
-    md5sum: b074159c3831c53a94ceca534dd4e8c2
-  - path: output/shinyngs/treatment/png/density.png
-    md5sum: 4cb4161a90d2c3c2a7dbe0de15fed495
-  - path: output/shinyngs/treatment/png/mad_correlation.png
-    md5sum: 1fae2bd0d9109f76ed065520de37e279
-  - path: output/shinyngs/treatment/png/pca2d.png
-    md5sum: 9d64610fb7ee0bb54c8952bb8c343d0c
-  - path: output/shinyngs/treatment/png/pca3d.png
-    md5sum: 1163d1c9808dd995a73051f4cb694f7a
-  - path: output/shinyngs/treatment/png/sample_dendrogram.png
-    md5sum: 2b4994910f4462c8c1efd8a2ac768c27
+    - path: output/shinyngs/treatment/html/boxplot.html
+    - path: output/shinyngs/treatment/html/density.html
+    - path: output/shinyngs/treatment/html/mad_correlation.html
+    - path: output/shinyngs/treatment/html/pca2d.html
+    - path: output/shinyngs/treatment/html/pca3d.html
+    - path: output/shinyngs/treatment/png/boxplot.png
+      md5sum: b074159c3831c53a94ceca534dd4e8c2
+    - path: output/shinyngs/treatment/png/density.png
+      md5sum: 4cb4161a90d2c3c2a7dbe0de15fed495
+    - path: output/shinyngs/treatment/png/mad_correlation.png
+      md5sum: 1fae2bd0d9109f76ed065520de37e279
+    - path: output/shinyngs/treatment/png/pca2d.png
+      md5sum: 9d64610fb7ee0bb54c8952bb8c343d0c
+    - path: output/shinyngs/treatment/png/pca3d.png
+      md5sum: 1163d1c9808dd995a73051f4cb694f7a
+    - path: output/shinyngs/treatment/png/sample_dendrogram.png
+      md5sum: 2b4994910f4462c8c1efd8a2ac768c27
