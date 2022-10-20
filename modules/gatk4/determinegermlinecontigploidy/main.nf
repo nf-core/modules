@@ -14,7 +14,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     path priors
 
     output:
-    tuple val(meta), path("ploidy.tar"), emit: tar
+    tuple val(meta), path("ploidy.tar.gz"), emit: ploidy
     path  "versions.yml"               , emit: versions
 
     when:
@@ -41,7 +41,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         $args \\
         $model_command \\
         $priors_command
-    tar -cvf ploidy.tar ploidy/
+    tar -czvf ploidy.tar.gz ploidy/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

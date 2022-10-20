@@ -2,9 +2,13 @@
 
 nextflow.enable.dsl = 2
 
+include { GATK4_COLLECTREADCOUNTS as GATK4_COLLECTREADCOUNTS_INPUT1 } from '../../../../modules/gatk4/collectreadcounts/main.nf'
+include { GATK4_COLLECTREADCOUNTS as GATK4_COLLECTREADCOUNTS_INPUT2 } from '../../../../modules/gatk4/collectreadcounts/main.nf'
+include { GATK4_DETERMINEGERMLINECONTIGPLOIDY } from '../../../../modules/gatk4/determinegermlinecontigploidy/main.nf'
+include { UNTAR } from '../../../../modules/untar/main.nf'
 include { GATK4_GERMLINECNVCALLER } from '../../../../modules/gatk4/germlinecnvcaller/main.nf'
 
-workflow test_gatk4_germlinecnvcaller {
+workflow test_gatk4_germlinecnvcaller_cohort {
 
     input = [
         [ id:'test' ], // meta map
@@ -15,9 +19,31 @@ workflow test_gatk4_germlinecnvcaller {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
-    // model = file('/fs1/resources/ref/hg38/gatk_cnv/cnvref/ploidy-model/', checkIfExists: true)
 
-    GATK4_COLLECTREADCOUNTS ( input, fasta, fai, dict )
-    GATK4_DETERMINEGERMLINECONTIGPLOIDY ( GATK4_COLLECTREADCOUNTS.out.tsv)//, model )
-    GATK4_GERMLINECNVCALLER ( GATK4_COLLECTREADCOUNTS.out.tsv, GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.tar )
+    input1 = [
+        [ id:'test1' ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
+    ]
+    input2 = [
+        [ id:'test2' ], // meta map
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true),
+    ]
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+    model = []
+    priors =  file(params.test_data['homo_sapiens']['genome']['genome_ploidy_priors_tsv'], checkIfExists: true)
+    
+    GATK4_COLLECTREADCOUNTS_INPUT1 ( input1, fasta, fai, dict )
+    GATK4_COLLECTREADCOUNTS_INPUT2 ( input2, fasta, fai, dict )
+    input = GATK4_COLLECTREADCOUNTS_INPUT1.out.tsv.collect{ it[1] }
+            .combine(GATK4_COLLECTREADCOUNTS_INPUT2.out.tsv.collect{ it[1] })
+            .map { file1, file2 -> return [[id:"test"], [file1, file2]]}
+    GATK4_DETERMINEGERMLINECONTIGPLOIDY ( input, model, priors )
+    UNTAR (GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.ploidy)
+    GATK4_GERMLINECNVCALLER ( input, model, UNTAR.out.untar.collect{ it[1] } )
 }

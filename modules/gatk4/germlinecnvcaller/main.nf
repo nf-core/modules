@@ -5,13 +5,16 @@ process GATK4_GERMLINECNVCALLER {
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.0--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.0--hdfd78af_0' }"
+        'broadinstitute/gatk'}"
+        //'quay.io/biocontainers/gatk4:4.2.6.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(tsv), path(ploidy)
+    tuple val(meta), path(tsv)
+    path model
+    path ploidy
 
     output:
-    tuple val(meta), path("*.tar"), emit: tar
+    tuple val(meta), path("*.tar.gz"), emit: tar_gz
     path  "versions.yml"          , emit: versions
 
     when:
@@ -21,6 +24,7 @@ process GATK4_GERMLINECNVCALLER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--model $model" : ""
+    def input_list = tsv.collect{"--input $it"}.join(' ')
 
     def avail_mem = 3
     if (!task.memory) {
@@ -28,19 +32,15 @@ process GATK4_GERMLINECNVCALLER {
     } else {
         avail_mem = task.memory.giga
     }
-    // $model_command \\
-    // prefix = normal_case_run?
     """
-    tar -xvf ploidy.tar
-    mkdir $prefix
     gatk --java-options "-Xmx${avail_mem}g" GermlineCNVCaller \\
-        --run-mode CASE \\
-        --input $tsv \\
+        $input_list \\
         --contig-ploidy-calls ploidy/ \\
         --output cnv_calls/ \\
         --output-prefix $prefix \\
-        $args
-    tar -cvf cnv_calls.tar cnv_calls
+        $args \\
+        $model_command
+    tar -czvf cnv_calls.tar.gz cnv_calls
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
