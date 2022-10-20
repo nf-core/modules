@@ -16,7 +16,7 @@ process SAMTOOLS_COLLATEFASTQ {
     //TODO might be good to have ordered output of the fastq files, so we can
     // make sure the we get the right files
     tuple val(meta), path("*_{1,2,interleaved}.fq.gz"), path("*_other.fq.gz"), path("*_singleton.fq.gz"), emit: reads
-    path "versions.yml"                                                                     , emit: versions
+    path "versions.yml"                                                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
