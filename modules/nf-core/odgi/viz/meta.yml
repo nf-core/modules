@@ -1,0 +1,44 @@
+name: "odgi_viz"
+description: Visualize a variation graph in 1D.
+keywords:
+  - variation graph
+  - pangenome graph
+  - gfa
+  - graph viz
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Pangenome graph in binary ODGI or in GFA v1.0 format
+      pattern: "*.{og,gfa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - png:
+      type: file
+      description: A 1D visualization of a pangenome graph.
+      pattern: "*.{png}"
+
+authors:
+  - "@subwaystation"
