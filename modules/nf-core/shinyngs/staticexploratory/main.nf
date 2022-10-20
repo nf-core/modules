@@ -2,10 +2,10 @@ process SHINYNGS_STATICEXPLORATORY {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::r-shinyngs=1.3.0" : null)
+    conda (params.enable_conda ? "bioconda::r-shinyngs=1.3.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.3.0--r41hdfd78af_1':
-        'quay.io/biocontainers/r-shinyngs:1.3.0--r41hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs%3A1.3.2--r41hdfd78af_1':
+        'quay.io/biocontainers/r-shinyngs:1.3.2--r41hdfd78af_1' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files) 
