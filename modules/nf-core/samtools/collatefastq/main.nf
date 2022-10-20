@@ -10,11 +10,12 @@ process SAMTOOLS_COLLATEFASTQ {
     input:
     tuple val(meta), path(input)
     tuple val(meta2), path(fasta)
+    bool interleave
 
     output:
     //TODO might be good to have ordered output of the fastq files, so we can
     // make sure the we get the right files
-    tuple val(meta), path("*_{1,2}.fq.gz"), path("*_other.fq.gz"), path("*_singleton.fq.gz"), emit: reads
+    tuple val(meta), path("*_{1,2,interleaved}.fq.gz"), path("*_other.fq.gz"), path("*_singleton.fq.gz"), emit: reads
     path "versions.yml"                                                                     , emit: versions
 
     when:
@@ -25,6 +26,8 @@ process SAMTOOLS_COLLATEFASTQ {
     def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
+    def output = interleave ? "> ${prefix}_interleaved.fq.gz" : "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
+    """
     """
     samtools collate \\
         $args \\
@@ -38,10 +41,8 @@ process SAMTOOLS_COLLATEFASTQ {
         $args2 \\
         --threads $task.cpus \\
         ${reference} \\
-        -1 ${prefix}_1.fq.gz \\
-        -2 ${prefix}_2.fq.gz \\
         -0 ${prefix}_other.fq.gz \\
-        -s ${prefix}_singleton.fq.gz
+        $output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

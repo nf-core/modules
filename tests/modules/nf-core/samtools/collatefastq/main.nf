@@ -15,7 +15,7 @@ workflow test_samtools_collatefastq_bam {
                 file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
             ]
 
-    SAMTOOLS_COLLATEFASTQ ( input, fasta )
+    SAMTOOLS_COLLATEFASTQ ( input, fasta, false )
 }
 
 workflow test_samtools_collatefastq_cram {
@@ -29,5 +29,19 @@ workflow test_samtools_collatefastq_cram {
                 file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
             ]
 
-    SAMTOOLS_COLLATEFASTQ ( input, fasta )
+    SAMTOOLS_COLLATEFASTQ ( input, fasta, false )
+}
+
+workflow test_samtools_collatefastq_bam_interleaved {
+    input = [
+                [ id:'test', single_end:false ], // meta map
+                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+            ]
+
+    fasta = [
+                [ id:'test' ], // meta map
+                file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+            ]
+
+    SAMTOOLS_COLLATEFASTQ ( input, fasta, true )
 }

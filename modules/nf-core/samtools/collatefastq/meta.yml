@@ -34,6 +34,12 @@ input:
       type: file
       description: Reference genome fasta file
       pattern: "*.{fasta,fa}"
+  - interleave:
+      type: boolean
+      description: |
+        If true, the output is a single interleaved paired-end FASTQ
+        If false, the output split paired-end FASTQ
+      default: false
 output:
   - meta:
       type: map
