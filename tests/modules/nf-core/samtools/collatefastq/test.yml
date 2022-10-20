@@ -1,25 +1,25 @@
 - name: samtools collatefastq test_samtools_collatefastq_bam
   command: nextflow run ./tests/modules/nf-core/samtools/collatefastq -entry test_samtools_collatefastq_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/collatefastq/nextflow.config
   tags:
-  - samtools
-  - samtools/collatefastq
+    - samtools
+    - samtools/collatefastq
   files:
-  - path: output/samtools/test_1.fq.gz
-    md5sum: 31f2d22af9790b61d6006af8279f2689
-  - path: output/samtools/test_2.fq.gz
-    md5sum: de2cdaec58534253028fc42899b408e8
-  - path: output/samtools/test_other.fq.gz
-  - path: output/samtools/test_singleton.fq.gz
+    - path: output/samtools/test_1.fq.gz
+      md5sum: 31f2d22af9790b61d6006af8279f2689
+    - path: output/samtools/test_2.fq.gz
+      md5sum: de2cdaec58534253028fc42899b408e8
+    - path: output/samtools/test_other.fq.gz
+    - path: output/samtools/test_singleton.fq.gz
 
 - name: samtools collatefastq test_samtools_collatefastq_cram
   command: nextflow run ./tests/modules/nf-core/samtools/collatefastq -entry test_samtools_collatefastq_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/collatefastq/nextflow.config
   tags:
-  - samtools
-  - samtools/collatefastq
+    - samtools
+    - samtools/collatefastq
   files:
-  - path: output/samtools/test_1.fq.gz
-    md5sum: 31f2d22af9790b61d6006af8279f2689
-  - path: output/samtools/test_2.fq.gz
-    md5sum: de2cdaec58534253028fc42899b408e8
-  - path: output/samtools/test_other.fq.gz
-  - path: output/samtools/test_singleton.fq.gz
+    - path: output/samtools/test_1.fq.gz
+      md5sum: 31f2d22af9790b61d6006af8279f2689
+    - path: output/samtools/test_2.fq.gz
+      md5sum: de2cdaec58534253028fc42899b408e8
+    - path: output/samtools/test_other.fq.gz
+    - path: output/samtools/test_singleton.fq.gz
