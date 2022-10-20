@@ -1,5 +1,4 @@
 def VERSION = '0.3'
-// def DOCKER_IMAGE = "lucananni93/calder2:${VERSION}"
 
 
 process CALDER2 {
@@ -7,7 +6,10 @@ process CALDER2 {
     label 'process_high'
 
     conda (params.enable_conda ? "bioconda::r-calder2=0.3" : null)
-    container "quay.io/biocontainers/r-calder2:0.3--r41hdfd78af_0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/r-calder2:0.3--r41hdfd78af_0' :
+        'quay.io/biocontainers/r-calder2:0.3--r41hdfd78af_0' }"
+
 
     input:
     tuple val(meta), path(cool)
