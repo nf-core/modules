@@ -12,13 +12,14 @@ workflow test_deseq2_differential {
 
     Channel.fromPath(expression_contrasts)
         .splitCsv ( header:true, sep:',' )  
-        .set{
-            ch_contrast_definitions
+        .map{
+            tuple(it, expression_sample_sheet, expression_matrix_file)
         }
+        .set{
+            input
+        }      
 
     DESEQ2_DIFFERENTIAL (
-        expression_sample_sheet,
-        expression_matrix_file,
-        ch_contrast_definitions     
+        input        
     )
 }
