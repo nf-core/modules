@@ -13,7 +13,7 @@ process ODGI_DRAW {
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml"          , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
