@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
 
-workflow test_bcftools_mpileup_no_intervals {
+workflow test_bcftools_mpileup {
 
     input = [
         [ id:'test' ], // meta map
@@ -17,7 +17,7 @@ workflow test_bcftools_mpileup_no_intervals {
     BCFTOOLS_MPILEUP ( input, fasta, save_mpileup )
 }
 
-workflow test_bcftools_save_mpileup_no_intervals {
+workflow test_bcftools_save_mpileup {
 
     input = [
         [ id:'test' ], // meta map
