@@ -1,5 +1,3 @@
-def VERSION = '2.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
 process GTDBTK_CLASSIFYWF {
     tag "${meta.assembler}-${meta.id}"
     label 'process_medium'
@@ -61,6 +59,8 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
+    def VERSION = '2.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
     """
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.summary.tsv
     touch gtdbtk.${meta.assembler}-${meta.id}.stub.classify.tree.gz
