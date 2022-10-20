@@ -28,7 +28,7 @@ process BEDTOOLS_CLOSEST {
 
     def reference = fasta_fai ? "-g ${fasta_fai}" : ""
 
-    if (input_1 == "${prefix}.bed" || input_2 == "${prefix}.bed") {
+    if (input_1 == "${prefix}.${extension}" || input_2 == "${prefix}.${extension}") {
         error("One of the input files is called the same as the output file. Please specify another prefix.")
     }
 
