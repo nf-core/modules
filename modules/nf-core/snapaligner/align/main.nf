@@ -8,7 +8,7 @@ process SNAPALIGNER_ALIGN {
         'quay.io/biocontainers/snap-aligner:2.0.1--hd03093a_1' }"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta) , path(reads, stageAs: "?/*")
     tuple val(meta2), path(index)
 
     output:
@@ -30,7 +30,7 @@ process SNAPALIGNER_ALIGN {
 
     snap-aligner ${subcmd} \\
         \$INDEX \\
-        ${reads.join(" ")} \\
+        ${reads} \\
         -o ${prefix}.bam \\
         -t ${task.cpus} \\
         $args
