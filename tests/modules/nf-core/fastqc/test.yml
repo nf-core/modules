@@ -3,11 +3,8 @@
   tags:
     - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
-    - path: output/fastqc/test_1_fastqc.zip
     - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: a0004c87f5cd094b1c3f340a9b617151
+      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
     - path: output/fastqc/test_test_1_fastqc.zip
 
 - name: fastqc test_fastqc_paired_end
@@ -15,17 +12,11 @@
   tags:
     - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
-    - path: output/fastqc/test_1_fastqc.zip
-    - path: output/fastqc/test_2_fastqc.html
-      md5sum: ab52924742430bbccf8a137c293aafb9
-    - path: output/fastqc/test_2_fastqc.zip
     - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: a0004c87f5cd094b1c3f340a9b617151
+      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
     - path: output/fastqc/test_test_1_fastqc.zip
     - path: output/fastqc/test_test_2_fastqc.html
-      md5sum: 043e6efd7ae9fc70fbedcaa68977c8dd
+      md5sum: 47e3c6a063ba2ef63e1fa1a13372500d
     - path: output/fastqc/test_test_2_fastqc.zip
 
 - name: fastqc test_fastqc_interleaved
@@ -33,33 +24,33 @@
   tags:
     - fastqc
   files:
-    - path: output/fastqc/test_interleaved_fastqc.html
-      md5sum: b1a718883fcb54c9e8250d89fabb6208
-    - path: output/fastqc/test_interleaved_fastqc.zip
     - path: output/fastqc/test_test_interleaved_fastqc.html
-      md5sum: ce8fd9b1f69a5a81520e2d39f1df6090
+      md5sum: ac3f8737bf33cf27513b9b25c2c276ff
     - path: output/fastqc/test_test_interleaved_fastqc.zip
+
+- name: fastqc test_fastqc_bam
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+  tags:
+    - fastqc
+  files:
+    - path: output/fastqc/test_test.paired_end.sorted_fastqc.html
+      md5sum: 39b8bf6cea90341984197e9757ad3a41
+    - path: output/fastqc/test_test.paired_end.sorted_fastqc.zip
 
 - name: fastqc test_fastqc_multiple
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
     - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      md5sum: 96f5d0f6248fb0679c3a4faeaed29dc1
-    - path: output/fastqc/test_1_fastqc.zip
-    - path: output/fastqc/test_2_fastqc.html
-      md5sum: ab52924742430bbccf8a137c293aafb9
-    - path: output/fastqc/test_2_fastqc.zip
     - path: output/fastqc/test_test2_1_fastqc.html
-      md5sum: 8e9f5f529355c65bcb5c63e471a54297
+      md5sum: ae57c691ce60a8b103e4d6ed60c1f820
     - path: output/fastqc/test_test2_1_fastqc.zip
     - path: output/fastqc/test_test2_2_fastqc.html
-      md5sum: 9e27c65ba341ec0df9e24d349031c819
+      md5sum: 651f7ee239ca39650fcb4a1889b6cde9
     - path: output/fastqc/test_test2_2_fastqc.zip
     - path: output/fastqc/test_test_1_fastqc.html
-      md5sum: a0004c87f5cd094b1c3f340a9b617151
+      md5sum: d1ad97db8ca2f023e9d208d9babde1cb
     - path: output/fastqc/test_test_1_fastqc.zip
     - path: output/fastqc/test_test_2_fastqc.html
-      md5sum: 043e6efd7ae9fc70fbedcaa68977c8dd
+      md5sum: 47e3c6a063ba2ef63e1fa1a13372500d
     - path: output/fastqc/test_test_2_fastqc.zip

@@ -47,6 +47,19 @@ workflow test_fastqc_interleaved {
     FASTQC ( input )
 }
 
+//
+// Test with bam data
+//
+workflow test_fastqc_bam {
+    input = [
+                [id: 'test', single_end: false], // meta map
+                [
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                ]
+            ]
+
+    FASTQC ( input )
+}
 
 //
 // Test with multiple samples
