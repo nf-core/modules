@@ -21,7 +21,8 @@ process CALDER2 {
 
     script:
     def args = task.ext.args ?: ''
-    def suffix = resolution ? "::$resolution" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = resolution ? "::/resolutions/$resolution" : ""
     def cpus = task.cpus ?: 1
     def VERSION = '0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
