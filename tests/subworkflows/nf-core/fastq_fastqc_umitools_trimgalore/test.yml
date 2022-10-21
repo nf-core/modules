@@ -40,7 +40,6 @@
     - path: output/umitools/test.umi_extract_1.fastq.gz
     - path: output/umitools/test.umi_extract_2.fastq.gz
 
-
 - name: fastq_fastqc_umitools_trimgalore test_fastq_fastqc_umitools_trimgalore_
   command: nextflow run ./tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore -entry test_fastq_fastqc_umitools_trimgalore_ -c ./tests/config/nextflow.config
   tags:
