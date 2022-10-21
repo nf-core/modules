@@ -1,6 +1,3 @@
-def VERSION = '0.3'
-
-
 process CALDER2 {
     tag '$meta.id'
     label 'process_high'
@@ -26,6 +23,7 @@ process CALDER2 {
     def args = task.ext.args ?: ''
     def suffix = resolution ? "::$resolution" : ""
     def cpus = task.cpus ?: 1
+    def VERSION = '0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # getting binsize
     binsize="\$(cooler info --field bin-size $cool$suffix)"
