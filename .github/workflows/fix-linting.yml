@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
       # indication that the linting is being fixed
-      - name: Comment on PR
+      - name: React on comment
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{ github.event.comment.id }}
