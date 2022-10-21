@@ -10,5 +10,5 @@ workflow test_odgi_layout {
               file(params.test_data['homo_sapiens']['pangenome']['pangenome_smoothxg_gfa'], checkIfExists: true),
             ]
 
-    ODGI_LAYOUT ( input, "test" )
+    ODGI_LAYOUT ( input )
 }
