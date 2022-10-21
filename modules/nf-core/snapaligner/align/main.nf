@@ -30,7 +30,7 @@ process SNAPALIGNER_ALIGN {
 
     snap-aligner ${subcmd} \\
         \$INDEX \\
-        ${reads.join(" ")} \\
+        ${reads} \\
         -o ${prefix}.bam \\
         -t ${task.cpus} \\
         $args
