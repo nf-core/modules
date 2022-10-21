@@ -9,13 +9,21 @@
     - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.classified.txt
       md5sum: f885fa1cdbfc5460af0772219991bf6d
     - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.report.txt
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains:
+          - taxName
+          - taxReads
+          - kmers
+          - taxID
     - path: output/krakenuniq/test_1.fastq.gz.unclassified.fastq
     - path: output/krakenuniq/test_2.fastq.gz.classified.fastq
       md5sum: d0358a31b42ffd394d5c118c13a5deb3
     - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.classified.txt
       md5sum: d85da2f5b7d0665a20368cfc3ceb28d1
     - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.report.txt
-      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
+      contains:
+          - taxName
+          - taxReads
+          - kmers
+          - taxID
     - path: output/krakenuniq/test_2.fastq.gz.unclassified.fastq
       md5sum: 143c7eb70ca93cc2d5ea98767c370424
