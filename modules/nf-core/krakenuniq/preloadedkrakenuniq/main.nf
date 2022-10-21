@@ -39,7 +39,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     """
     krakenuniq \\
-        $args
+        $args \\
         --db $db \\
         --preload $ram_chunk_size \\
         --threads $task.cpus;
