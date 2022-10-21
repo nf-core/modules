@@ -24,6 +24,9 @@ input:
       type: file
       description: Pangenome graph in GFA v1.0 format or in ODGI binary format
       pattern: "*.{gfa,og}"
+  - prefix:
+      type: string
+      description: Prefix for output files
 
 output:
   - meta:
