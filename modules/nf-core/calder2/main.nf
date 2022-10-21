@@ -30,11 +30,11 @@ process CALDER2 {
     binsize="\$(cooler info --field bin-size $cool$suffix)"
 
     calder --input $cool$suffix \\
-           --outpath ${prefix} \\
-           --nproc $cpus \\
-           --type cool \\
-           --bin_size "\${binsize}" \\
-           $args
+        --outpath ${prefix} \\
+        --nproc $cpus \\
+        --type cool \\
+        --bin_size "\${binsize}" \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
