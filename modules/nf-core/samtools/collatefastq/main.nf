@@ -13,10 +13,11 @@ process SAMTOOLS_COLLATEFASTQ {
     val(interleave)
 
     output:
-    //TODO might be good to have ordered output of the fastq files, so we can
-    // make sure the we get the right files
-    tuple val(meta), path("*_{1,2,interleaved}.fq.gz"), path("*_other.fq.gz"), path("*_singleton.fq.gz"), emit: reads
-    path "versions.yml"                                                                                 , emit: versions
+    tuple val(meta), path("*_{1,2}.fq.gz")          , optional:true, emit: fastq
+    tuple val(meta), path("*_interleaved.fq.gz")    , optional:true, emit: fastq_interleaved
+    tuple val(meta), path("*_other.fq.gz")          , emit: fastq_other
+    tuple val(meta), path("*_singleton.fq.gz")      , optional:true, emit: fastq_singleton
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,9 @@ process SAMTOOLS_COLLATEFASTQ {
     def args2 = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def output = interleave ? "> ${prefix}_interleaved.fq.gz" : "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
+    def output =    (interleave && ! meta.single_end) ? "> ${prefix}_interleaved.fq.gz"                     :
+                    meta.single_end                   ? "-1 ${prefix}_1.fq.gz -s ${prefix}_singleton.fq.gz" :
+                    "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
 
     """
     samtools collate \\
@@ -43,9 +46,6 @@ process SAMTOOLS_COLLATEFASTQ {
         ${reference} \\
         -0 ${prefix}_other.fq.gz \\
         $output
-
-    # touch file so the outputs work
-    touch ${prefix}_singleton.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
