@@ -31,11 +31,13 @@ process AMPCOMBI {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 //    def fileoption = amp_input.isDirectory() ? "--amp_results $amp_input" : "--path_list ${amp_input} --sample_list ${prefix}"
-//    def fileoption = amp_input.contains([]) 
 //    def fileoption = amp_input.isCollectionOrArray([]) ? "--path_list ${amp_input} --sample_list ${prefix}" : "--amp_results $amp_input"
 //    def fileoption = amp_input.contains(['']) ? "--path_list $amp_input --sample_list ${prefix}" : "--amp_results $amp_input"
-    def fileoption = amp_input instanceof List ? "--path_list $amp_input --sample_list ${prefix}" : "--amp_results $amp_input"
-    //[${amp_input}.collect { "'$it'" }.join(', ')]
+//    def fileoption = amp_input instanceof List ? "--path_list '${amp_input} --sample_list ${prefix}" : "--amp_results $amp_input"
+//    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect { "'$it'" }.split(',')}' --sample_list ${prefix}" : "--amp_results $amp_input"
+//    def fileoption = amp_input instanceof List ? "--path_list ${amp_input.collect{"$it"}.toString().split(',')} --sample_list ${prefix}" : "--amp_results $amp_input"
+    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}' --sample_list ${prefix}" : "--amp_results $amp_input"
+//"[${file_list.collect { "'$it'" }.join(', ')}]"
     """
     ampcombi \\
         $args \\
