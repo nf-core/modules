@@ -25,12 +25,9 @@ process CALDER2 {
     def cpus = task.cpus ?: 1
     def VERSION = '0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    # getting binsize
+    # getting binsize as mandatory input for calder
     binsize="\$(cooler info --field bin-size $cool$suffix)"
 
-    echo "Detected binsize: \${binsize}"
-
-    # calling CALDER
     calder --input $cool$suffix --outpath ${meta.id} --nproc $cpus --type cool --bin_size "\${binsize}" $args
 
     cat <<-END_VERSIONS > versions.yml
