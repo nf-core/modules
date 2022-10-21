@@ -10,6 +10,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     input:
     tuple val(meta), path(fastqs)
     path  db
+    val ram_chunk_size
     val save_output_fastqs
     val report_file
     val save_output
@@ -38,8 +39,9 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     """
     krakenuniq \\
+        $args
         --db $db \\
-        --preload \\
+        --preload $ram_chunk_size \\
         --threads $task.cpus;
 
     for fastq in ${fastqs.join(' ')}; do \\
@@ -53,7 +55,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $classified_option \\
             $output_option \\
             $paired \\
-            $args \\
+            $args2 \\
             \$fastq;
     done
 

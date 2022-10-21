@@ -27,6 +27,10 @@ workflow test_krakenuniq_preloadedkrakenuniq {
         [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
     ]
+    ram_chunk_size = '8GB'
+    save_output_fastqs = true
+    report_file = true
+    save_output = true
 
-    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input,KRAKENUNIQ_BUILD.out.db.map{it[1]},true,true,true )
+    KRAKENUNIQ_PRELOADEDKRAKENUNIQ ( input,KRAKENUNIQ_BUILD.out.db.map{it[1]}, ram_chunk_size, save_output_fastqs, report_file, save_output )
 }
