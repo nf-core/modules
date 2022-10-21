@@ -28,6 +28,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
+
     def paired       = meta.single_end ? "" : "--paired"
     def classified   = meta.single_end ? '"\$PREFIX".classified.fastq'   : '"\$PREFIX".classified#.fastq'
     def unclassified = meta.single_end ? '"\$PREFIX".unclassified.fastq' : '"\$PREFIX".unclassified#.fastq'
