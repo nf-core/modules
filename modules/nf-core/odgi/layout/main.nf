@@ -19,7 +19,7 @@ process ODGI_LAYOUT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "--out test.lay"
+    def args = task.ext.args ?: "--out ${meta.id}.lay"
     """
     odgi \\
         layout \\
