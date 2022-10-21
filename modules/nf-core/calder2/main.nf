@@ -29,7 +29,7 @@ process CALDER2 {
     binsize="\$(cooler info --field bin-size $cool$suffix)"
 
     calder --input $cool$suffix \\
-           --outpath ${meta.id} \\
+           --outpath ${prefix} \\
            --nproc $cpus \\
            --type cool \\
            --bin_size "\${binsize}" \\
