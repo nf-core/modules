@@ -3,12 +3,8 @@
   tags:
     - universc
     - universc/mkfastq
-  files:
-    - path: output/universc/universc-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
 - name: universc mkfastq test_universc_mkfastq_illumina
   command: nextflow run ./tests/modules/nf-core/universc/mkfastq -entry test_universc_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/mkfastq/nextflow.config -stub-run
   tags:
     - universc
     - universc/mkfastq
-  files:
-    - path: output/universc/universc-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
