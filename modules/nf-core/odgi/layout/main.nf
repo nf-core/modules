@@ -9,7 +9,6 @@ process ODGI_LAYOUT {
 
     input:
     tuple val(meta), path(graph)
-    val(prefix)
 
     output:
     tuple val(meta), path("*.lay"), optional: true, emit: lay
