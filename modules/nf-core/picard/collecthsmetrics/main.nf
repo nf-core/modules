@@ -11,6 +11,7 @@ process PICARD_COLLECTHSMETRICS {
     tuple val(meta), path(bam)
     path fasta
     path fai
+    path dict
     path bait_intervals
     path target_intervals
 
@@ -26,6 +27,16 @@ process PICARD_COLLECTHSMETRICS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
+    def args2 = task.ext.args2 ?: ''
+    def reference_dict = "--SEQUENCE_DICTIONARY ${dict}"
+    if (bait_intervals.toString() ==~ ".*bed.*" || target_intervals.toString() ==~ ".*bed.*"){
+        if ( ! dict ){
+            exit 1, "Sequence dictionary input is mandatory when using bed intervals."
+        }
+        bait_intervals = bait_intervals.toString() - ~/.bed.*$/ + ".interval_list"
+        target_intervals = target_intervals.toString() - ~/.bed.*$/ + ".interval_list"
+    }
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Picard CollectHsMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -33,6 +44,16 @@ process PICARD_COLLECTHSMETRICS {
         avail_mem = task.memory.giga
     }
     """
+    for f in \$(find -name "*.bed*"); do
+    picard \\
+        -Xmx${avail_mem}g \\
+        BedToIntervalList \\
+        $args2 \\
+        --INPUT \$f \\
+        --OUTPUT \${f%.bed*}.interval_list \\
+        ${reference_dict}
+    done
+
     picard \\
         -Xmx${avail_mem}g \\
         CollectHsMetrics \\

@@ -38,14 +38,18 @@ input:
       type: file
       description: Index of FASTA file. Only needed when fasta is supplied.
       pattern: "*.fai"
+  - dict:
+      type: file
+      description: Sequence dictionary of FASTA file. Only needed when bed intervals are supplied.
+      pattern: "*.fai"
   - bait_intervals:
       type: file
-      description: An interval list file that contains the locations of the baits used.
-      pattern: "baits.interval_list"
+      description: An interval list or bed file that contains the locations of the baits used.
+      pattern: "baits.{interval_list,bed}"
   - target_intervals:
       type: file
-      description: An interval list file that contains the locations of the targets.
-      pattern: "targets.interval_list"
+      description: An interval list or bed file that contains the locations of the targets.
+      pattern: "targets.{interval_list,bed}"
 
 output:
   - meta:

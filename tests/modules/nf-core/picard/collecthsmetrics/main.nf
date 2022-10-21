@@ -11,10 +11,11 @@ workflow test_picard_collecthsmetrics {
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
     bait_intervals = file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true)
     target_intervals = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
-    PICARD_COLLECTHSMETRICS ( input, fasta, fai, bait_intervals, target_intervals )
+    PICARD_COLLECTHSMETRICS ( input, fasta, fai, dict, bait_intervals, target_intervals )
 }
 
 workflow test_picard_collecthsmetrics_nofasta {
@@ -25,5 +26,19 @@ workflow test_picard_collecthsmetrics_nofasta {
     bait_intervals = file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true)
     target_intervals = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
-    PICARD_COLLECTHSMETRICS ( input, [], [], bait_intervals, target_intervals )
+    PICARD_COLLECTHSMETRICS ( input, [], [], [] , bait_intervals, target_intervals )
+}
+
+workflow test_picard_collecthsmetrics_bed {
+
+    input = [ [ id:'test', single_end:false ], // meta map
+            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+
+    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    dict = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    bait_intervals = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+    target_intervals = file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
+
+    PICARD_COLLECTHSMETRICS ( input, fasta, fai, dict, bait_intervals, target_intervals )
 }
