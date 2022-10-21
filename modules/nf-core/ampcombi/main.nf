@@ -12,10 +12,10 @@ process AMPCOMBI {
     path(faa_folder)
 
     output:
-    tuple val(meta), path("${prefix}/")                          , emit: results_dir
-    tuple val(meta), path("*/*_diamond_matches.txt")    , emit: txt
-    tuple val(meta), path("*/*_ampcombi.csv")           , emit: csv
-    tuple val(meta), path("*/*_amp.faa")                , emit: faa
+    tuple val(meta), path("*/*")                       , emit: results_dir
+    tuple val(meta), path("*/*diamond_matches.txt")    , emit: txt
+    tuple val(meta), path("*/*ampcombi.csv")           , emit: csv
+    tuple val(meta), path("*/*amp.faa")                , emit: faa
     path("AMPcombi_summary.csv")                                , optional:true, emit: summary
     path("*.log")                                               , optional:true, emit: log
     path("*/amp_ref_database")                                  , optional:true, emit: results_db
@@ -30,7 +30,12 @@ process AMPCOMBI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fileoption = amp_input.isDirectory() ? "--amp_results $amp_input" : "--path_list $amp_input --sample_list ${prefix}"
+//    def fileoption = amp_input.isDirectory() ? "--amp_results $amp_input" : "--path_list ${amp_input} --sample_list ${prefix}"
+//    def fileoption = amp_input.contains([]) 
+//    def fileoption = amp_input.isCollectionOrArray([]) ? "--path_list ${amp_input} --sample_list ${prefix}" : "--amp_results $amp_input"
+//    def fileoption = amp_input.contains(['']) ? "--path_list $amp_input --sample_list ${prefix}" : "--amp_results $amp_input"
+    def fileoption = amp_input instanceof List ? "--path_list $amp_input --sample_list ${prefix}" : "--amp_results $amp_input"
+    //[${amp_input}.collect { "'$it'" }.join(', ')]
     """
     ampcombi \\
         $args \\
