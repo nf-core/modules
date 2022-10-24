@@ -44,7 +44,6 @@ process SHINYNGS_APP {
         --contrast_file $contrasts \\
         --differential_results ${differential_results.join(',')} \\
         --output_dir $prefix \\
-        --contrast_stats_assay 1 \\
         $args \\
 
     cat <<-END_VERSIONS > versions.yml
