@@ -1,6 +1,6 @@
 
 process SHINYNGS_APP {
-    tag '$sample_sheet'
+    tag '$sample'
     label 'process_single'
 
     // To be able to pass the necessary secrets for shinyapps.io deployment,
