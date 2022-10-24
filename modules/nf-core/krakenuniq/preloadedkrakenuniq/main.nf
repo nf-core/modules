@@ -99,16 +99,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $paired \\
             $args2 \\
             \$fastq";
+        touch \$PREFIX.fastq.gz.classified.fastq
+        touch \$PREFIX.fastq.gz.krakenuniq.classified.txt
+        touch \$PREFIX.fastq.gz.krakenuniq.report.txt
+        touch \$PREFIX.fastq.gz.unclassified.fastq
     done
-
-    touch test_1.fastq.gz.classified.fastq
-    touch test_1.fastq.gz.krakenuniq.classified.txt
-    touch test_1.fastq.gz.krakenuniq.report.txt
-    touch test_1.fastq.gz.unclassified.fastq
-    touch test_2.fastq.gz.classified.fastq
-    touch test_2.fastq.gz.krakenuniq.classified.txt
-    touch test_2.fastq.gz.krakenuniq.report.txt
-    touch test_2.fastq.gz.unclassified.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
