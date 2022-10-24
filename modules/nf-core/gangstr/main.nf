@@ -36,7 +36,7 @@ process GANGSTR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gangstr: \$(GangSTR --version)
+        gangstr: \$(echo \$(GangSTR --version 2>&1))
     END_VERSIONS
     """
 }
