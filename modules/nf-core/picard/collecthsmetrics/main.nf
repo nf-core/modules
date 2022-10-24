@@ -45,13 +45,13 @@ process PICARD_COLLECTHSMETRICS {
     }
     """
     for f in \$(find -name "*.bed*"); do
-    picard \\
-        -Xmx${avail_mem}g \\
-        BedToIntervalList \\
-        $args2 \\
-        --INPUT \$f \\
-        --OUTPUT \${f%.bed*}.interval_list \\
-        ${reference_dict}
+        picard \\
+            -Xmx${avail_mem}g \\
+            BedToIntervalList \\
+            $args2 \\
+            --INPUT \$f \\
+            --OUTPUT \${f%.bed*}.interval_list \\
+            ${reference_dict}
     done
 
     picard \\
