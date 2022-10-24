@@ -68,17 +68,51 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     """
 
     stub:
-    """
-    echo stub > test_1.fastq.gz.classified.fastq
-    echo stub > test_1.fastq.gz.krakenuniq.classified.txt
-    echo stub > test_1.fastq.gz.krakenuniq.report.txt
-    echo stub > test_1.fastq.gz.unclassified.fastq
-    echo stub > test_2.fastq.gz.classified.fastq
-    echo stub > test_2.fastq.gz.krakenuniq.classified.txt
-    echo stub > test_2.fastq.gz.krakenuniq.report.txt
-    echo stub > test_2.fastq.gz.unclassified.fastq
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
 
-    echo "${task.process}:" > versions.yml
-    echo ' krakenuniq: 1.0.0' >> versions.yml
+    def paired       = meta.single_end ? "" : "--paired"
+    def classified   = meta.single_end ? '"\$PREFIX".classified.fastq'   : '"\$PREFIX".classified#.fastq'
+    def unclassified = meta.single_end ? '"\$PREFIX".unclassified.fastq' : '"\$PREFIX".unclassified#.fastq'
+    def classified_option = save_output_fastqs ? "--classified-out ${classified}" : ""
+    def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ""
+    def output_option = save_output ? '--output "\$PREFIX".krakenuniq.classified.txt' : ""
+    def report = report_file ? '--report-file "\$PREFIX".krakenuniq.report.txt' : ""
+    def compress_reads_command = save_output_fastqs ? "gzip *.fastq" : ""
+    """
+    echo "krakenuniq \\
+        $args \\
+        --db $db \\
+        --preload $ram_chunk_size \\
+        --threads $task.cpus"
+
+    for fastq in ${fastqs.join(' ')}; do \\
+        PREFIX=\$(echo \$fastq);
+        echo "krakenuniq \\
+            --db $db \\
+            --threads $task.cpus \\
+            $report \\
+            $output_option \\
+            $unclassified_option \\
+            $classified_option \\
+            $output_option \\
+            $paired \\
+            $args2 \\
+            \$fastq";
+    done
+
+    touch test_1.fastq.gz.classified.fastq
+    touch test_1.fastq.gz.krakenuniq.classified.txt
+    touch test_1.fastq.gz.krakenuniq.report.txt
+    touch test_1.fastq.gz.unclassified.fastq
+    touch test_2.fastq.gz.classified.fastq
+    touch test_2.fastq.gz.krakenuniq.classified.txt
+    touch test_2.fastq.gz.krakenuniq.report.txt
+    touch test_2.fastq.gz.unclassified.fastq
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
+    END_VERSIONS
     """
 }
