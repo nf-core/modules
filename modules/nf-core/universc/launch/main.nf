@@ -1,4 +1,4 @@
-process UNIVERSC {
+process UNIVERSC_LAUNCH {
     tag "$meta.id"
     label 'process_medium'
 

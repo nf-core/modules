@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_MKGTF } from '../../../../modules/nf-core/universc/mkgtf/main.nf'
-include { UNIVERSC_MKREF } from '../../../../modules/nf-core/universc/mkref/main.nf'
-include { UNIVERSC_COUNT } from '../../../../modules/nf-core/universc/count/main.nf'
-include { UNIVERSC } from '../../../../modules/nf-core/universc/main.nf'
+include { UNIVERSC_MKGTF } from '../../../../../modules/nf-core/universc/mkgtf/main.nf'
+include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/mkref/main.nf'
+include { UNIVERSC_COUNT } from '../../../../../modules/nf-core/universc/count/main.nf'
+include { UNIVERSC_LAUNCH } from '../../../../../modules/nf-core/universc/launch/main.nf'
 
 workflow test_universc_10x {
     
@@ -27,7 +27,7 @@ workflow test_universc_10x {
         reference_name
     )
 
-    UNIVERSC (
+    UNIVERSC_LAUNCH (
         input,
         UNIVERSC_MKREF.out.reference
     )
