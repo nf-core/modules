@@ -19,6 +19,34 @@ parse_args <- function(x){
     as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
 }
 
+#' Flexibly read CSV or TSV files
+#'
+#' @param file Input file
+#' @param header Passed to read.delim()
+#' @param row.names Passed to read.delim()
+#'
+#' @return output Data frame
+
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
+  
+  ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
+  
+  if (ext == "tsv" || ext == "txt") {
+    separator <- "\\t"
+  } else if (ext == "csv") {
+    separator <- ","
+  } else {
+    stop(paste("Unknown separator for", ext))
+  }
+    
+  read.delim(
+    file,
+    sep = separator,
+    header = header,
+    row.names = row.names
+  )
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -96,12 +124,12 @@ library(BiocParallel)
 ################################################
 
 count.table <-
-    read.delim(
+  read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
         row.names = opt\$gene_id_col
     )
-sample.sheet <- read.csv(file = opt\$sample_file)
+sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
     stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
@@ -158,7 +186,7 @@ if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
         )
     )
 } else if (!is.null(opt\$blocking)) {
-    blocking.vars = unlist(strsplit(opt\$blocking, split = ','))
+    blocking.vars = unlist(strsplit(opt\$blocking, split = ';'))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         stop(
             paste0(
