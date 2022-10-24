@@ -1,0 +1,7 @@
+- name: varlociraptor estimate_alignmentproperties test_varlociraptor_estimate_alignmentproperties
+  command: nextflow run ./tests/modules/nf-core/varlociraptor/estimate_alignmentproperties -entry test_varlociraptor_estimate_alignmentproperties -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/varlociraptor/estimate_alignmentproperties/nextflow.config
+  tags:
+    - varlociraptor/estimate_alignmentproperties
+    - varlociraptor
+  files:
+    - path: output/varlociraptor/test_alignment-properties.json
