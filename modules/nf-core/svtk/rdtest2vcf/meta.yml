@@ -1,14 +1,18 @@
 name: "svtk_rdtest2vcf"
 description: Convert an RdTest-formatted bed to the standard VCF format.
 keywords:
-  - sort
+  - svtk
+  - rdtest2vcf
+  - bed
+  - rdtest
+  - vcf
 tools:
   - "svtk":
       description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
-      doi: ""
+      doi: "10.1038/s41586-020-2287-8"
       licence: "['MIT']"
 
 input:
@@ -19,12 +23,16 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bed:
       type: file
-      description: The RdTest-formatted bed
+      description: An RdTest-formatted bed
       pattern: "*.bed"
   - samples:
       type: file
       description: A text file containing the names of all samples that need to be added to the VCF
       pattern: "*.txt"
+  - fasta_fai:
+      type: file
+      description: The reference file of a FASTA file containing the contigs
+      pattern: "*.fai"
 
 output:
   - meta:
