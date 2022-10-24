@@ -44,10 +44,10 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         $args \\
         --db $db \\
         --preload $ram_chunk_size \\
-        --threads $task.cpus;
+        --threads $task.cpus
 
     for fastq in ${fastqs.join(' ')}; do \\
-        PREFIX=\$(echo \$fastq);
+        PREFIX=\$(echo \$fastq)
         krakenuniq \\
             --db $db \\
             --threads $task.cpus \\
@@ -58,7 +58,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $output_option \\
             $paired \\
             $args2 \\
-            \$fastq;
+            \$fastq
     done
 
     $compress_reads_command
@@ -89,7 +89,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         --threads $task.cpus"
 
     for fastq in ${fastqs.join(' ')}; do \\
-        PREFIX=\$(echo \$fastq);
+        PREFIX=\$(echo \$fastq)
         echo "krakenuniq \\
             --db $db \\
             --threads $task.cpus \\
@@ -100,7 +100,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $output_option \\
             $paired \\
             $args2 \\
-            \$fastq";
+            \$fastq"
 
         touch "\$PREFIX".classified.fastq.gz
         touch "\$PREFIX".krakenuniq.classified.txt
