@@ -4,11 +4,12 @@ process VARLOCIRAPTOR_PREPROCESS {
 
     conda (params.enable_conda ? "bioconda::varlociraptor=5.3.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varlociraptor5.3.3--hc349b7f_0':
-        'quay.io/biocontainers/varlociraptor5.3.3--hc349b7f_0' }"
+        'https://depot.galaxyproject.org/singularity/varlociraptor:5.3.3--hc349b7f_0':
+        'quay.io/biocontainers/varlociraptor:5.3.3--hc349b7f_0' }"
 
     input:
     tuple val(meta) , path(bam)
+    tuple val(meta) , path(bai)
     tuple val(meta) , path(properties)
     tuple val(meta) , path(candidates)
     tuple val(meta2), path(fasta)
@@ -16,7 +17,7 @@ process VARLOCIRAPTOR_PREPROCESS {
 
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bcf"), emit: bcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -27,15 +28,15 @@ process VARLOCIRAPTOR_PREPROCESS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    varlociraptor \
-        preprocess \
-            variants \
-                ${fasta}
-                $args \
-                --alignment-properties ${properties} \
-                --candidates ${candidates} \
-                --bam ${bam} \
-                --output ${prefix}.bcf
+    varlociraptor \\
+        preprocess \\
+            variants \\
+                ${fasta} \\
+                $args \\
+                --alignment-properties ${properties} \\
+                --candidates ${candidates} \\
+                --bam ${bam} \\
+                --output ${prefix}_preprocessed.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

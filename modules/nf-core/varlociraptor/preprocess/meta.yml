@@ -1,36 +1,54 @@
 name: "varlociraptor_preprocess"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: "Preprocess given variants by obtaining internal observations (allele likelihoods, strand information, ...)for each fragment."
 keywords:
-  - sort
+  - varlociraptor
+  - preprocess
 tools:
   - "varlociraptor":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://varlociraptor.github.io/landing/"
+      documentation: "https://varlociraptor.github.io/landing/"
+      tool_dev_url: "https://github.com/varlociraptor/varlociraptor"
+      doi: "https://doi.org/10.1186/s13059-020-01993-6"
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
   - bam:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM file index
+      pattern: "*.{bai,crai,sai}"
+  - properties:
+      type: file
+      description: Alignment properties json
+      pattern: "*.json"
+  - candidates:
+      type: file
+      description: Sorted VCF/BCF file to process
+      pattern: "*.{vcf,bcf}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: Reference genome fasta index
+      pattern: "*.fai"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
@@ -41,11 +59,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - bcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Preprocessed variants in bcf format
+      pattern: "*.bcf"
 
 authors:
   - "@matthdsm"
