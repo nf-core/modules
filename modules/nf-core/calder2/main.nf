@@ -13,8 +13,9 @@ process CALDER2 {
     val resolution
 
     output:
-    tuple val(meta), path("${meta.id}/")            , emit: folder
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("${meta.id}/")                    , emit: output_folder
+    tuple val(meta), path("${meta.id}/intermediate_data/")  , emit: intermediate_data_folder      , optional: true
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
