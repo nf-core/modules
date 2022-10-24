@@ -37,7 +37,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ""
     def output_option = save_output ? '--output "\$PREFIX".krakenuniq.classified.txt' : ""
     def report = report_file ? '--report-file "\$PREFIX".krakenuniq.report.txt' : ""
-    def compress_reads_command = save_output_fastqs ? "gzip *.fastq" : ""
+    def compress_reads_command = save_output_fastqs ? "gzip --no-name *.fastq" : ""
 
     """
     krakenuniq \\
@@ -61,6 +61,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             \$fastq;
     done
 
+    $compress_reads_command
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
@@ -78,7 +80,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def unclassified_option = save_output_fastqs ? "--unclassified-out ${unclassified}" : ""
     def output_option = save_output ? '--output "\$PREFIX".krakenuniq.classified.txt' : ""
     def report = report_file ? '--report-file "\$PREFIX".krakenuniq.report.txt' : ""
-    def compress_reads_command = save_output_fastqs ? "gzip *.fastq" : ""
+    def compress_reads_command = save_output_fastqs ? "echo 'gzip --no-name *.fastq'" : ""
     """
     echo "krakenuniq \\
         $args \\
@@ -99,11 +101,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $paired \\
             $args2 \\
             \$fastq";
-        touch \$PREFIX.fastq.gz.classified.fastq
-        touch \$PREFIX.fastq.gz.krakenuniq.classified.txt
-        touch \$PREFIX.fastq.gz.krakenuniq.report.txt
-        touch \$PREFIX.fastq.gz.unclassified.fastq
+
+        touch "\$PREFIX".classified.fastq.gz
+        touch "\$PREFIX".krakenuniq.classified.txt
+        touch "\$PREFIX".krakenuniq.report.txt
+        touch "\$PREFIX".unclassified.fastq.gz
     done
+
+    $compress_reads_command
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
