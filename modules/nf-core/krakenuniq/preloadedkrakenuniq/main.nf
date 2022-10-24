@@ -66,4 +66,19 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    echo stub > test_1.fastq.gz.classified.fastq
+    echo stub > test_1.fastq.gz.krakenuniq.classified.txt
+    echo stub > test_1.fastq.gz.krakenuniq.report.txt
+    echo stub > test_1.fastq.gz.unclassified.fastq
+    echo stub > test_2.fastq.gz.classified.fastq
+    echo stub > test_2.fastq.gz.krakenuniq.classified.txt
+    echo stub > test_2.fastq.gz.krakenuniq.report.txt
+    echo stub > test_2.fastq.gz.unclassified.fastq
+
+    echo "${task.process}:" > versions.yml
+    echo ' krakenuniq: 1.0.0' >> versions.yml
+    """
 }

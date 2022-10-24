@@ -1,29 +1,14 @@
 - name: krakenuniq preloadedkrakenuniq test_krakenuniq_preloadedkrakenuniq
-  command: nextflow run ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq -entry test_krakenuniq_preloadedkrakenuniq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq -entry test_krakenuniq_preloadedkrakenuniq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq/nextflow.config -stub-run
   tags:
     - krakenuniq/preloadedkrakenuniq
     - krakenuniq
   files:
     - path: output/krakenuniq/test_1.fastq.gz.classified.fastq
-      md5sum: 4161df271f9bfcd25d5845a1e220dbec
     - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.classified.txt
-      md5sum: f885fa1cdbfc5460af0772219991bf6d
     - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.report.txt
-      contains:
-        - taxName
-        - taxReads
-        - kmers
-        - taxID
     - path: output/krakenuniq/test_1.fastq.gz.unclassified.fastq
     - path: output/krakenuniq/test_2.fastq.gz.classified.fastq
-      md5sum: d0358a31b42ffd394d5c118c13a5deb3
     - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.classified.txt
-      md5sum: d85da2f5b7d0665a20368cfc3ceb28d1
     - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.report.txt
-      contains:
-        - taxName
-        - taxReads
-        - kmers
-        - taxID
     - path: output/krakenuniq/test_2.fastq.gz.unclassified.fastq
-      md5sum: 143c7eb70ca93cc2d5ea98767c370424
