@@ -21,7 +21,6 @@ process SVTK_RDTEST2VCF {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     def contigs = fasta_fai ? "--contigs ${fasta_fai}" : ""
