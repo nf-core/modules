@@ -1,8 +1,8 @@
 - name: mageck mle test_mageck_mle
   command: nextflow run ./tests/modules/nf-core/mageck/mle -entry test_mageck_mle -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/mle/nextflow.config
   tags:
-  - mageck
-  - mageck/mle
+    - mageck
+    - mageck/mle
   files:
-  - path: output/mageck/test.gene_summary.txt
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+    - path: output/mageck/test.gene_summary.txt
+      contains: "[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]"
