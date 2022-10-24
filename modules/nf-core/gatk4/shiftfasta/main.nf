@@ -10,7 +10,7 @@ process GATK4_SHIFTFASTA {
     input:
     tuple val(meta), path(fasta)
     path (fasta_fai)
-    path (seq_dict)
+    path (dict)
 
     output:
     tuple val(meta), path("*_shift.fasta")       , emit: shift_fa
@@ -27,10 +27,10 @@ process GATK4_SHIFTFASTA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def dict = seq_dict ? "--sequence-dictionary ${seq_dict}" : ""
+    def seq_dict = dict ? "--sequence-dictionary ${dict}" : ""
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK ApplyBQSR] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK ShiftFasta] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
@@ -40,7 +40,7 @@ process GATK4_SHIFTFASTA {
         --output ${prefix}_shift.fasta \\
         --shift-back-output ${prefix}_shift.back_chain \\
         $args \\
-        $dict \\
+        $seq_dict \\
         --tmp-dir .
 
     cat <<-END_VERSIONS > versions.yml

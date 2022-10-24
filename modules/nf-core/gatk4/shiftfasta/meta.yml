@@ -29,7 +29,7 @@ input:
       type: file
       description: index for fasta file
       pattern: "*.{fai}"
-  - seq_dict:
+  - dict:
       type: file
       description: sequence dictionary file
       pattern: "*.{dict}"
@@ -44,18 +44,22 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - shift_fa:
+  - dict:
       type: file
-      description: Shifted fasta file
-      pattern: "*.{fa,fasta}"
-  - shift_back_chain:
-      type: file
-      description: The shiftback chain file to use when lifting over
-      pattern: "*.{back_chain}"
+      description: sequence dictionary file
+      pattern: "*.{dict}"
   - intervals:
       type: file
       description: Intervals file for the fasta file
       pattern: "*.{intervals}"
+  - shift_back_chain:
+      type: file
+      description: The shiftback chain file to use when lifting over
+      pattern: "*.{back_chain}"
+  - shift_fa:
+      type: file
+      description: Shifted fasta file
+      pattern: "*.{fa,fasta}"
   - shift_intervals:
       type: file
       description: Intervals file for the shifted fasta file
