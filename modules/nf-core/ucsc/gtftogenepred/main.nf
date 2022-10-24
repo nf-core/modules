@@ -1,5 +1,5 @@
 process UCSC_GTFTOGENEPRED {
-    tag '$gtf'
+    tag '${meta.id}'
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ucsc-gtftogenepred=377" : null)
