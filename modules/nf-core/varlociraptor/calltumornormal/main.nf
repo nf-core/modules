@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_PREPROCESS {
+process VARLOCIRAPTOR_CALLTUMORNORMAL {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,15 +8,12 @@ process VARLOCIRAPTOR_PREPROCESS {
         'quay.io/biocontainers/varlociraptor5.3.3--hc349b7f_0' }"
 
     input:
-    tuple val(meta) , path(bam)
-    tuple val(meta) , path(properties)
-    tuple val(meta) , path(candidates)
-    tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta), path(tumor)
+    tuple val(meta), path(normal)
 
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bcf"), emit: bcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,14 +25,14 @@ process VARLOCIRAPTOR_PREPROCESS {
 
     """
     varlociraptor \
-        preprocess \
+        call \
             variants \
-                ${fasta}
                 $args \
-                --alignment-properties ${properties} \
-                --candidates ${candidates} \
-                --bam ${bam} \
-                --output ${prefix}.bcf
+                --output ${prefix}.bcf \
+                tumor-normal \
+                    $args2 \
+                    --normal ${normal} \
+                    --tumor ${tumor}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

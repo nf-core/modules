@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_CALL {
+process VARLOCIRAPTOR_ESTIMATE_ALIGNMENTPROPERTIES {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,9 +8,12 @@ process VARLOCIRAPTOR_CALL {
         'quay.io/biocontainers/varlociraptor5.3.3--hc349b7f_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta) , path(bam)
+    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fai)
 
     output:
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,13 +24,13 @@ process VARLOCIRAPTOR_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    varlociraptor \\
+        estimate \\
+            alignment-properties \\
+            $fasta \\
+            $ args \\
+            --bam $bam \\
+            > ${prefix}_alignment-properties.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

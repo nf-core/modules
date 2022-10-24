@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_ESTIMATE {
+process VARLOCIRAPTOR_FILTERCALLS {
     tag "$meta.id"
     label 'process_single'
 

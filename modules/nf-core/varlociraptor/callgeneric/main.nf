@@ -1,4 +1,4 @@
-process VARLOCIRAPTOR_PLOT {
+process VARLOCIRAPTOR_CALLGENERIC {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,10 +8,11 @@ process VARLOCIRAPTOR_PLOT {
         'quay.io/biocontainers/varlociraptor5.3.3--hc349b7f_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(observations)
+    tuple val(meta), path(scenario)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bcf"), emit: bcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -22,13 +23,14 @@ process VARLOCIRAPTOR_PLOT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    varlociraptor \
+        call \
+            variants \
+                $args \
+                --output ${prefix}.bcf \
+                generic \
+                    --obs ${observations} \
+                    --scenario ${scenario}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -8,10 +8,10 @@ process VARLOCIRAPTOR_DECODEPHRED {
         'quay.io/biocontainers/varlociraptor5.3.3--hc349b7f_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bcf)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bcf"), emit: bcf
     path "versions.yml"           , emit: versions
 
     when:
@@ -22,13 +22,9 @@ process VARLOCIRAPTOR_DECODEPHRED {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    varlociraptor decode-phred \\
+        < $bcf \\
+        > ${prefix}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
