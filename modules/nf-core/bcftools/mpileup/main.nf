@@ -13,11 +13,11 @@ process BCFTOOLS_MPILEUP {
     val save_mpileup
 
     output:
-    tuple val(meta), path("*.gz")      , emit: vcf
-    tuple val(meta), path("*.tbi")     , emit: tbi
-    tuple val(meta), path("*stats.txt"), emit: stats
+    tuple val(meta), path("*.gz")         , emit: vcf
+    tuple val(meta), path("*.tbi")        , emit: tbi
+    tuple val(meta), path("*stats.txt")   , emit: stats
     tuple val(meta), path("*.mpileup.gz") , emit: mpileup, optional: true
-    path  "versions.yml"               , emit: versions
+    path  "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
