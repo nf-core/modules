@@ -28,23 +28,23 @@ parse_args <- function(x){
 #' @return output Data frame
 
 read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
-  
-  ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
-  
-  if (ext == "tsv" || ext == "txt") {
-    separator <- "\\t"
-  } else if (ext == "csv") {
-    separator <- ","
-  } else {
-    stop(paste("Unknown separator for", ext))
-  }
-    
-  read.delim(
-    file,
-    sep = separator,
-    header = header,
-    row.names = row.names
-  )
+
+    ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
+
+    if (ext == "tsv" || ext == "txt") {
+        separator <- "\\t"
+    } else if (ext == "csv") {
+        separator <- ","
+    } else {
+        stop(paste("Unknown separator for", ext))
+    }
+
+    read.delim(
+        file,
+        sep = separator,
+        header = header,
+        row.names = row.names
+    )
 }
 
 ################################################
@@ -124,7 +124,7 @@ library(BiocParallel)
 ################################################
 
 count.table <-
-  read_delim_flexible(
+    read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
         row.names = opt\$gene_id_col
