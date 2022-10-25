@@ -26,6 +26,7 @@ process SAMTOOLS_VIEW {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     def readnames = qname ? "--qname-file ${qname}": ""
@@ -42,7 +43,8 @@ process SAMTOOLS_VIEW {
         ${readnames} \\
         $args \\
         -o ${prefix}.${file_type} \\
-        $input
+        $input \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
