@@ -36,12 +36,17 @@ process AMPCOMBI {
 //    def fileoption = amp_input instanceof List ? "--path_list '${amp_input} --sample_list ${prefix}" : "--amp_results $amp_input"
 //    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect { "'$it'" }.split(',')}' --sample_list ${prefix}" : "--amp_results $amp_input"
 //    def fileoption = amp_input instanceof List ? "--path_list ${amp_input.collect{"$it"}.toString().split(',')} --sample_list ${prefix}" : "--amp_results $amp_input"
-    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}' --sample_list ${prefix}" : "--amp_results $amp_input"
+//    def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}' --sample_list ${prefix}" : "--amp_results $amp_input"
 //"[${file_list.collect { "'$it'" }.join(', ')}]"
+//        ${fileoption} \\
+// printf '%s\n'
+    String file = "${amp_input.collect{"'$it'"}.join(" ")}"
     """
+    echo ${file}
     ampcombi \\
         $args \\
-        ${fileoption} \\
+        --path_list ${file} \\
+        --sample_list ${prefix} \\
         --faa_folder $faa_folder/
 
     cat <<-END_VERSIONS > versions.yml
