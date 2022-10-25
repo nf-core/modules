@@ -20,10 +20,11 @@ process AGAT_STATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def program = 'agat_sp_statistics.pl'
 
     """
 
-    agat_sp_statistics.pl \\
+    ${program} \\
         $args \\
         --output ${prefix}.stats.txt \\
         $gff

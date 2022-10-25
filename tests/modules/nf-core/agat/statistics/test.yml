@@ -1,0 +1,8 @@
+- name: agat statistics test_statistics
+  command: nextflow run ./tests/modules/nf-core/agat/statistics -entry test_statistics -c ./tests/config/nextflow.config
+  tags:
+    - agat/statistics
+    - agat
+  files:
+    - path: output/agat/statistics/test.stats.txt
+      md5sum: 9b9c848b1946d43fa68128f4d6316052
