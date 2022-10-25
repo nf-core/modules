@@ -2,6 +2,8 @@ name: "mageck_mle"
 description: maximum-likelihood analysis of gene essentialities computation
 keywords:
   - sort
+  - maximum-likelihood
+  - CRISPR
 tools:
   - "mageck":
       description: "MAGeCK (Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout), an algorithm to process, QC, analyze and visualize CRISPR screening data."
@@ -45,6 +47,12 @@ output:
       description: |
         Gene summary file describing the fitness score
         and associated p-values.
+      pattern: "*.{gene_summary}"
+  - sgrna_summary:
+      type: file
+      description: |
+        sgRNA summary file describing the sgRNA and
+        associated gene
       pattern: "*.{gene_summary}"
 
 authors:
