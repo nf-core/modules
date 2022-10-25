@@ -40,6 +40,8 @@ workflow test_deseq2_differential {
     )
 }
 
+// This second test checks that a CSV format matrix works the same as a TSV one
+
 workflow test_deseq2_differential_csv {
 
     expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
