@@ -12,8 +12,9 @@ process MAGECK_MLE {
     path(design_matrix)
 
     output:
-    tuple val(meta), path("*.gene_summary.txt"), emit: gene_summary
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.gene_summary.txt") , emit: gene_summary
+    tuple val(meta), path("*.sgrna_summary.txt"), emit: sgrna_summary
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
