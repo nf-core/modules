@@ -8,7 +8,7 @@ include { SOURMASH_COMPARE } from '../../../../../modules/nf-core/sourmash/compa
 workflow test_sourmash_compare {
     
     input = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test', single_end:false ], 
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
