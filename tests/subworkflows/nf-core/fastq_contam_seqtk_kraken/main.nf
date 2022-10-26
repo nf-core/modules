@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQ_CONTAM_SEQTK_KRAKEN } from '../../../../subworkflows/nf-core/FASTQ_CONTAM_SEQTK_KRAKEN/main.nf'
+include { FASTQ_CONTAM_SEQTK_KRAKEN } from '../../../../subworkflows/nf-core/fastq_contam_seqtk_kraken/main.nf'
 include { UNTAR                     } from '../../../modules/nf-core/untar/main.nf'
 
 workflow test_FASTQ_CONTAM_SEQTK_KRAKEN {
