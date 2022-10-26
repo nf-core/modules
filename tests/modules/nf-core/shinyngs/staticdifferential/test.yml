@@ -1,0 +1,9 @@
+- name: shinyngs staticdifferential test_shinyngs_staticdifferential
+  command: nextflow run ./tests/modules/nf-core/shinyngs/staticdifferential -entry test_shinyngs_staticdifferential -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/shinyngs/staticdifferential/nextflow.config
+  tags:
+    - shinyngs/staticdifferential
+    - shinyngs
+  files:
+    - path: output/shinyngs/test/html/volcano.html
+    - path: output/shinyngs/test/png/volcano.png
+      md5sum: 563f8a5a984f0e308fd3c5e1d67ead77

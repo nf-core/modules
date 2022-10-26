@@ -1,0 +1,60 @@
+name: "shinyngs_staticexploratory"
+description: write your description here
+keywords:
+  - rnaseq
+  - plot
+  - differential
+tools:
+  - "shinyngs":
+      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
+      homepage: "https://github.com/pinin4fjords/shinyngs"
+      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
+      licence: "['AGPL v3']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information on experiment represented by max,
+        features and samples, at a minimum an id.
+        e.g. [ id:'test' ]
+  - differential_results:
+      type: list
+      description: |
+        A tabular differential analysis outputs
+  - sample:
+      type: file
+      description: |
+        CSV-format sample sheet with sample metadata
+  - feature_meta:
+      type: file
+      description: |
+        TSV-format feature (e.g. gene) metadata
+  - assay_file:
+      type: list
+      description: |
+        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing contrast information
+        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+  - volcanos:
+      type: tuple
+      description: |
+        Meta-keyed tuple containing a PNG, HTML, and HTML files directory for
+        a volcano plot built from the differential result table..
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"
