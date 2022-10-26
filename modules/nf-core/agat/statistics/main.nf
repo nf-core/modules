@@ -20,8 +20,7 @@ process AGAT_STATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def program = args.contains("--basic") ? "agat_sq_stat_basic.pl" :
-                  "agat_sp_statistics.pl"
+    def program = args.contains("--basic") ? "agat_sq_stat_basic.pl" : "agat_sp_statistics.pl"
 
     def inputarg = args.contains("--basic") ? "-i" : "--gff"
 
