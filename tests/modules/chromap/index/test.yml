@@ -1,9 +1,0 @@
-- name: chromap index test_chromap_index
-  command: nextflow run ./tests/modules/chromap/index -entry test_chromap_index -c ./tests/config/nextflow.config -c ./tests/modules/chromap/index/nextflow.config
-  tags:
-    - chromap/index
-    - chromap
-  files:
-    - path: output/chromap/genome.index
-    - path: output/chromap/versions.yml
-      md5sum: b75dec647f9dc5f4887f36d1db7a9ccd

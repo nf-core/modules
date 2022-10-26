@@ -1,0 +1,34 @@
+name: yara_index
+description: Builds a YARA index for a reference genome
+keywords:
+  - build
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - yara:
+      description: Yara is an exact tool for aligning DNA sequencing reads to reference genomes.
+      homepage: https://github.com/seqan/seqan
+      documentation: https://github.com/seqan/seqan
+      tool_dev_url: https://github.com/seqan/seqan
+      doi: ""
+      licence: ["https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"]
+
+input:
+  - fasta:
+      type: file
+      description: Input genome fasta file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: file
+      description: YARA genome index files
+      pattern: "yara.*"
+
+authors:
+  - "@apeltzer"

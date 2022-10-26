@@ -1,0 +1,69 @@
+name: hmmer_hmmsearch
+description: search profile(s) against a sequence database
+keywords:
+  - hidden Markov model
+  - HMM
+  - hmmer
+  - hmmsearch
+tools:
+  - hmmer:
+      description: Biosequence analysis using profile hidden Markov models
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: https://github.com/EddyRivasLab/hmmer
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - hmmfile:
+      type: file
+      description: One or more HMM profiles created with hmmbuild
+      pattern: "*.{hmm,hmm.gz}"
+  - seqdb:
+      type: file
+      description: Database of sequences in FASTA format
+      pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+  - write_align:
+      type: val
+      description: Flag to write optional alignment output. Specify with 'true' to output
+  - write_target:
+      type: val
+      description: Flag to write optional per target summary . Specify with 'true' to output
+  - write_domain:
+      type: val
+      description: Flag to write optional per domain summary. Specify with 'true' to output
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - output:
+      type: file
+      description: Human readable output summarizing hmmsearch results
+      pattern: "*.{txt.gz}"
+  - alignments:
+      type: file
+      description: Optional multiple sequence alignment (MSA) in Stockholm format
+      pattern: "*.{sto.gz}"
+  - target_summary:
+      type: file
+      description: Optional tabular (space-delimited) summary of per-target output
+      pattern: "*.{tbl.gz}"
+  - domain_summary:
+      type: file
+      description: Optional tabular (space-delimited) summary of per-domain output
+      pattern: "*.{domtbl.gz}"
+
+authors:
+  - "@Midnighter"

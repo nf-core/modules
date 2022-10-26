@@ -27,6 +27,6 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
 - [ ] Add a resource `label`
 - [ ] Use BioConda and BioContainers if possible to fulfil software requirements.
 - Ensure that the test works with either Docker / Singularity. Conda CI tests can be quite flaky:
-    - [ ] `PROFILE=docker pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`
-    - [ ] `PROFILE=singularity pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`
-    - [ ] `PROFILE=conda pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`
+  - [ ] `PROFILE=docker pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`
+  - [ ] `PROFILE=singularity pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`
+  - [ ] `PROFILE=conda pytest --tag <MODULE> --symlink --keep-workflow-wd --git-aware`

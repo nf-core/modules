@@ -5,25 +5,26 @@ on:
   pull_request:
     branches: [master]
 
-
 jobs:
-  Markdown:
+  Prettier:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v2
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
 
-      - name: Install markdownlint
-        run: npm install -g markdownlint-cli
+      - name: Install Prettier
+        run: npm install -g prettier
 
-      - name: Run Markdownlint
-        run: markdownlint ${GITHUB_WORKSPACE} -c ${GITHUB_WORKSPACE}/.markdownlint.yml
+      - name: Run Prettier --check
+        run: prettier --check .
 
   EditorConfig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v2
 
@@ -32,18 +33,3 @@ jobs:
 
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
-
-  YAML:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
-
-      - name: Install yaml-lint
-        run: npm install -g yaml-lint
-
-      - name: Run yaml-lint
-        run: yamllint $(find ${GITHUB_WORKSPACE} -type f -name "*.yaml" -or -name "*.yml")

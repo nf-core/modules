@@ -1,8 +1,0 @@
-- name: bcftools merge test_bcftools_merge
-  command: nextflow run ./tests/modules/bcftools/merge -entry test_bcftools_merge -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/merge/nextflow.config
-  tags:
-    - bcftools/merge
-    - bcftools
-  files:
-    - path: output/bcftools/test.vcf.gz
-      md5sum: 52165fc4149c61547e63800b876c9661

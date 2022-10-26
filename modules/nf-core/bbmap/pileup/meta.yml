@@ -1,0 +1,47 @@
+name: "bbmap_pileup"
+description: Calculates per-scaffold or per-base coverage information from an unsorted sam or bam file.
+keywords:
+  - fasta
+  - genome
+  - coverage
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      tool_dev_url: "https://github.com/BioInfoTools/BBMap/blob/master/sh/pileup.sh"
+      doi: ""
+      licence: ["UC-LBL license (see package)"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - stats:
+      type: file
+      description: Per-scaffold coverage info
+      pattern: "*.stats.txt"
+  - hist:
+      type: file
+      description: "Histogram of # occurrences of each depth level"
+      pattern: "*.hist.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@Emiller88"
