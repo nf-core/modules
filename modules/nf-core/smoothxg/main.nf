@@ -1,14 +1,14 @@
-def VERSION = '0.6.1' // Version information not provided by tool on CLI
+def VERSION = '0.6.5' // Version information not provided by tool on CLI
 
 process SMOOTHXG {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::smoothxg=0.6.1' : null)
+    conda (params.enable_conda ? 'bioconda::smoothxg=0.6.5' : null)
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoothxg:0.6.1--h735f0e5_0' :
-        'quay.io/biocontainers/smoothxg:0.6.1--h735f0e5_0' }"
+        'https://depot.galaxyproject.org/singularity/smoothxg:0.6.5--hfb1f815_2' :
+        'quay.io/biocontainers/smoothxg:0.6.5--hfb1f815_2' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -16,6 +16,9 @@ process SMOOTHXG {
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
     path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
