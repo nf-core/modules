@@ -25,10 +25,11 @@ workflow FASTQ_CONTAM_KRAKEN {
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
                 kraken_db,
-                true,
-                true
+                false,
+                false
         )
         ch_versions = ch_versions.mix(KRAKEN2.out.versions.first())
+        ch_reports.mix(KRAKEN2.out.report)
 
     emit:
         reports  = ch_reports     // channel: [ [meta], log  ]
