@@ -12,3 +12,13 @@ workflow test_picard_collectwgsmetrics {
 
     PICARD_COLLECTWGSMETRICS ( input, fasta )
 }
+
+workflow test_picard_collectwgsmetrics_with_interval {
+    input        = [ [ id:'test', single_end:false ], // meta map
+                   file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                   ]
+    fasta        = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    intervallist = file(params.test_data['sarscov2']['genome']['picard']['baits.interval_list'], checkIfExists: true)
+
+    PICARD_COLLECTWGSMETRICS ( input, fasta )
+}
