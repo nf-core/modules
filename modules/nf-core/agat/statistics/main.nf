@@ -20,14 +20,18 @@ process AGAT_STATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def program = 'agat_sp_statistics.pl'
+    def program = args.contains("--basic") ? "agat_sq_stat_basic.pl" :
+                  args.contains("--functional") ? "agat_sp_functional_statistics.pl" :
+                  "agat_sp_statistics.pl"
+
+    def inputarg = args.contains("--basic") ? "-i" : "--gff"
 
     """
 
     ${program} \\
         $args \\
         --output ${prefix}.stats.txt \\
-        --gff $gff
+        ${inputarg} $gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
