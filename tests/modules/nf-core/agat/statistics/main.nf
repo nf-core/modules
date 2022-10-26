@@ -6,9 +6,9 @@ include { AGAT_STATISTICS } from '../../../../../modules/nf-core/agat/statistics
 
 workflow test_statistics {
 
-    gff = [ file(params.test_data['bacteroides_fragilis']['genome']['genome_gff_gz'], checkIfExists: true) ]
+    gff = [ file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) ]
 
 
     AGAT_STATISTICS ( [ [id:'test'], gff ] )
-    
+
 }

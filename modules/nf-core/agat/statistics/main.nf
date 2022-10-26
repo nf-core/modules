@@ -27,7 +27,7 @@ process AGAT_STATISTICS {
     ${program} \\
         $args \\
         --output ${prefix}.stats.txt \\
-        $gff
+        --gff $gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
