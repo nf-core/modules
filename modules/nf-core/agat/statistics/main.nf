@@ -26,6 +26,9 @@ process AGAT_STATISTICS {
 
     def inputarg = args.contains("--basic") ? "-i" : "--gff"
 
+    args = args.replace("--basic", "")
+    args = args.replace("--functional", "")
+
     """
 
     ${program} \\
