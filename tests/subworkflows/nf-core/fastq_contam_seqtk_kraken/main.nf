@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQ_CONTAM_KRAKEN } from '../../../../subworkflows/nf-core/fastq_contam_kraken/main.nf'
+include { FASTQ_CONTAM_SEQTK_KRAKEN } from '../../../../subworkflows/nf-core/FASTQ_CONTAM_SEQTK_KRAKEN/main.nf'
 include { UNTAR           }     from '../../../modules/nf-core/untar/main.nf'
 
-workflow test_fastq_contam_kraken {
+workflow test_FASTQ_CONTAM_SEQTK_KRAKEN {
 
     input = [
         [ id:'test', single_end:true ], // meta map
@@ -16,5 +16,5 @@ workflow test_fastq_contam_kraken {
 
     UNTAR ( db )
 
-    FASTQ_CONTAM_KRAKEN ( input , 25000, UNTAR.out.untar.map{ it[1] })
+    FASTQ_CONTAM_SEQTK_KRAKEN ( input , 25000, UNTAR.out.untar.map{ it[1] })
 }

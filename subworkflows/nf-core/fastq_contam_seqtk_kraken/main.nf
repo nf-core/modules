@@ -1,13 +1,13 @@
 #!/usr/bin/env nextflow
 
 //
-// FASTQ_CONTA_KRAKEN: Subsample FASTQs and perform contamination screening
+// FASTQ_CONTAM_SEQTK_KRAKEN: Subsample FASTQs and perform contamination screening
 //
 include { KRAKEN2_KRAKEN2 as KRAKEN2 } from '../../../modules/nf-core/kraken2/kraken2/main'
 include { SEQTK_SAMPLE               } from '../../../modules/nf-core/seqtk/sample/main'
 include { UNTAR as UNTAR_KRAKEN2_DB  } from '../../../modules/nf-core/untar/main'
 
-workflow FASTQ_CONTAM_KRAKEN {
+workflow FASTQ_CONTAM_SEQTK_KRAKEN {
 
     take:
         ch_reads    //channel: [mandatory] meta,reads
