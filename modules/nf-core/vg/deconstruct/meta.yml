@@ -25,6 +25,14 @@ input:
       type: file
       description: Variation graph in GFA format
       pattern: "*.{gfa}"
+  - pb:
+      type: file
+      description: Optional snarls file (from vg snarls) to avoid recomputing. Usually ends with "pb". See "vg snarls".
+      pattern: "*.{pb}"
+  - gbwt:
+      type: file
+      description: Optional GBWT file (from vg gbwt) so to only consider alt traversals that correspond to GBWT threads FILE.
+      pattern: "*.{gbwt}"
 
 output:
   - meta:
