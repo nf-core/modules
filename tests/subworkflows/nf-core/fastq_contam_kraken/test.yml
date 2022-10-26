@@ -1,12 +1,13 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core subworkflows create-test-yml
-- name: "fastq_contam_kraken"
+- name: fastq_contam_kraken test_fastq_contam_kraken
   command: nextflow run ./tests/subworkflows/nf-core/fastq_contam_kraken -entry test_fastq_contam_kraken -c ./tests/config/nextflow.config
   tags:
-    - "subworkflows"
-    - "subworkflows/fastq_contam_kraken"
+    - kraken2
+    - kraken2/kraken2
+    - seqtk
+    - seqtk/sample
+    - subworkflows
+    - subworkflows/fastq_contam_kraken
+    - untar
   files:
-    - path: "output/fastq_contam_kraken/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/fastq_contam_kraken/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/kraken2/test.kraken2.report.txt
+      md5sum: 4227755fe40478b8d7dc8634b489761e

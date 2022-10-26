@@ -3,17 +3,16 @@
 //
 // FASTQ_CONTA_KRAKEN: Subsample FASTQs and perform contamination screening
 //
-
 include { KRAKEN2_KRAKEN2 as KRAKEN2 } from '../../../modules/nf-core/kraken2/kraken2/main'
 include { SEQTK_SAMPLE               } from '../../../modules/nf-core/seqtk/sample/main'
+include { UNTAR as UNTAR_KRAKEN2_DB  } from '../../../modules/nf-core/untar/main'
 
 workflow FASTQ_CONTAM_KRAKEN {
 
     take:
         ch_reads    //channel: [mandatory] meta,reads
         sample_size //string:  [mandatory] number of reads to subsample
-        kraken_db   //string:  [mandatory] path to Kraken2 DB to use for screening
-
+        kraken2_db  //string:  [mandatory] path to Kraken2 DB to use for screening
 
     main:
         ch_reports  = Channel.empty()
@@ -24,7 +23,7 @@ workflow FASTQ_CONTAM_KRAKEN {
         ch_versions.mix(SEQTK_SAMPLE.out.versions)
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
-                kraken_db,
+                kraken2_db,
                 false,
                 false
         )
