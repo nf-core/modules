@@ -11,7 +11,7 @@ workflow test_fastq_contam_kraken {
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
 
-    db = "https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20220908.tar.gz"
+    db = file("https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20220908.tar.gz")
 
     FASTQ_CONTAM_KRAKEN ( input , 25000, db)
 }
