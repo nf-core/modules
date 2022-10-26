@@ -32,8 +32,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     script:
     // Assign sensible numbers for multicore and buffer_size based on bismark docs
-    def ccore = task.cpus ? ((task.cpus as int) / 3) as int : 1
-    def multicore = (ccore > 1) ? "--multicore ${ccore}" : ""
+    def multicore = (task.cpus >= 6) ? "--multicore ${(task.cpus / 3) as int}" : ""
     // Only set buffer_size when there are more than 6.GB of memory available
     def buffer = (task.memory?.giga > 6) ? "--buffer_size ${task.memory.giga - 2}G" : ""
 
