@@ -14,6 +14,9 @@ workflow test_sourmash_compare {
 
     save_numpy_matrix = true
     save_csv = true
+    
+    SOURMASH_SKETCH ( input )
+
     SOURMASH_COMPARE (
         SOURMASH_SKETCH.out.signatures.collect { it[1] },
         save_numpy_matrix,
