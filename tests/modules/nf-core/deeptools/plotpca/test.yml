@@ -2,7 +2,8 @@
   command: nextflow run ./tests/modules/nf-core/deeptools/plotpca -entry test_plotpca -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deeptools/plotpca/nextflow.config
   tags:
     - deeptools
-    - deeltools/plotpca
+    - deeptools/plotpca
   files:
+    - path: output/deeptools/test.plotPCA.pdf
     - path: output/deeptools/test.plotPCA.tab
       md5sum: 8f433095dff64848c0a4d132e566ea0f
