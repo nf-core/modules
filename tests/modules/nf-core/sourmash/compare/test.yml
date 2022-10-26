@@ -1,9 +1,9 @@
 - name: sourmash compare test_sourmash_compare
   command: nextflow run ./tests/modules/nf-core/sourmash/compare -entry test_sourmash_compare -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sourmash/compare/nextflow.config
   tags:
-    - "sourmash"
-    - "sourmash/compare"
+    - sourmash
+    - sourmash/compare
   files:
-    - path: "output/sourmash/test.comp"
-    - path: "output/sourmash/test.comp.csv"
-    - path: "output/sourmash/test.comp.labels.txt"
+    - path: output/sourmash/test.comp
+    - path: output/sourmash/test.comp.csv
+    - path: output/sourmash/test.comp.labels.txt
