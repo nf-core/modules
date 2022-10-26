@@ -1,0 +1,68 @@
+name: deeparg_predict
+description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+keywords:
+  - deeparg
+  - antimicrobial resistance
+  - antimicrobial resistance genes
+  - arg
+  - deep learning
+  - prediction
+  - contigs
+  - metagenomes
+tools:
+  - deeparg:
+      description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+      homepage: https://bench.cs.vt.edu/deeparg
+      documentation: https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
+      tool_dev_url: https://bitbucket.org/gusphdproj/deeparg-ss/src/master/
+      doi: "10.1186/s40168-018-0401-z"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - fasta:
+      type: file
+      description: FASTA file containing gene-like sequences
+      pattern: "*.{fasta,fa,fna}"
+  - model:
+      type: string
+      description: Which model to use, depending on input data. Either 'LS' or 'SS' for long or short sequences respectively
+      pattern: "LS|LS"
+  - db:
+      type: directory
+      description: Path to a directory containing the deepARG pre-built models
+      pattern: "*/"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - daa:
+      type: file
+      description: Sequences of ARG-like sequences from DIAMOND alignment
+      pattern: "*.align.daa"
+  - daa_tsv:
+      type: file
+      description: Alignments scores against ARG-like sequences from DIAMOND alignment
+      pattern: "*.align.daa.tsv"
+  - arg:
+      type: file
+      description: Table containing sequences with an ARG-like probability of more than specified thresholds
+      pattern: "*.mapping.ARG"
+  - potential_arg:
+      type: file
+      description: Table containing sequences with an ARG-like probability of less than specified thresholds, and requires manual inspection
+      pattern: "*.mapping.potential.ARG"
+
+authors:
+  - "@jfy133"

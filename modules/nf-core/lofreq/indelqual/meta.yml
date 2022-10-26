@@ -1,0 +1,44 @@
+name: lofreq_indelqual
+description: Inserts indel qualities in a BAM file
+keywords:
+  - bam
+  - indel
+  - qualities
+tools:
+  - lofreq:
+      description: Lofreq is a fast and sensitive variant-caller for inferring SNVs and indels from next-generation sequencing data. It's indelqual programme inserts indel qualities in a BAM file
+      homepage: https://csb5.github.io/lofreq/
+      doi: "10.1093/nar/gks918"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fasta}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: BAM file with indel qualities inserted into it
+      pattern: "*.{bam}"
+
+authors:
+  - "@kaurravneet4123"

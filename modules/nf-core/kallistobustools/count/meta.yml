@@ -1,0 +1,67 @@
+name: kallistobustools_count
+description: quantifies scRNA-seq data from fastq files using kb-python.
+keywords:
+  - scRNA-seq
+  - count
+tools:
+  - kb:
+      description: kallisto and bustools are wrapped in an easy-to-use program called kb
+      homepage: https://www.kallistobus.tools/
+      documentation: https://kb-python.readthedocs.io/en/latest/index.html
+      tool_dev_url: https://github.com/pachterlab/kb_python
+      doi: ""
+      licence: MIT License
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+    type: file
+    description: |
+      List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+      respectively.
+  - index:
+      type: file
+      description: kb-ref index file (.idx)
+      pattern: "*.{idx}"
+  - t2g:
+      type: file
+      description: t2g file from kallisto
+      pattern: "*t2g.txt"
+  - t1c:
+      type: file
+      description: kb ref's c1 spliced_t2c file
+      pattern: "*.{cdna_t2c.txt}"
+  - t2c:
+      type: file
+      description: kb ref's c2 unspliced_t2c file
+      pattern: "*.{introns_t2c.txt}"
+  - workflow_mode:
+      type: value
+      description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
+      pattern: "{standard,lamanno,nucleus,kite}"
+  - technology:
+      type: value
+      description: String value defining the sequencing technology used.
+      pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - count:
+      type: file
+      description: kb count output folder
+      pattern: "*.{count}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@flowuenne"

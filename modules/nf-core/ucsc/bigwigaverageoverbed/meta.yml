@@ -1,0 +1,46 @@
+name: ucsc_bigwigaverageoverbed
+description: compute average score of bigwig over bed file
+keywords:
+  - bigwig
+  - bedGraph
+tools:
+  - ucsc:
+      description: Compute average score of big wig over each bed, which may have introns.
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ["varies; see http://genome.ucsc.edu/license"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: bed file
+      pattern: "*.{bed}"
+  - bigwig:
+      type: file
+      description: bigwig file
+      pattern: "*.{bigwig,bw}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tab:
+      type: file
+      description: tab file
+      pattern: "*.{tab}"
+
+authors:
+  - "@jianhong"

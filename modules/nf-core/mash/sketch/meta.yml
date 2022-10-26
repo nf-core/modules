@@ -1,0 +1,44 @@
+name: mash_sketch
+description: Creates vastly reduced representations of sequences using MinHash
+keywords:
+  - mash/sketch
+tools:
+  - mash:
+      description: Fast sequence distance estimator that uses MinHash
+      homepage: https://github.com/marbl/Mash
+      documentation: https://mash.readthedocs.io/en/latest/sketches.html
+      tool_dev_url: https://github.com/marbl/Mash
+      doi: "10.1186/s13059-016-0997-x"
+      licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input paired-end FastQ files
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - mash:
+      type: file
+      description: Sketch output
+      pattern: "*.{mash}"
+  - stats:
+      type: file
+      description: Sketch statistics
+      pattern: "*.{mash_stats}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@thanhleviet"

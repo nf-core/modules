@@ -1,0 +1,39 @@
+name: homer_makeucscfile
+description: Create a UCSC bed graph with the HOMER suite
+keywords:
+  - peaks
+  - bed
+  - bedGraph
+tools:
+  - homer:
+      description: |
+        HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
+      documentation: http://homer.ucsd.edu/homer/
+      doi: 10.1016/j.molcel.2010.05.004.
+      licence: ["GPL-3.0-or-later"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tagDir:
+      type: directory
+      description: "The 'Tag Directory'"
+      pattern: "tagDir"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bedGraph:
+      type: file
+      description: The UCSC bed graph
+      pattern: "*.bedGraph.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@EMiller88"

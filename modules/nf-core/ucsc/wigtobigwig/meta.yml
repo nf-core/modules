@@ -1,0 +1,43 @@
+name: ucsc_wigtobigwig
+description: Convert ascii format wig file to binary big wig format
+keywords:
+  - wig
+  - bigwig
+tools:
+  - ucsc:
+      description: |
+        Convert ascii format wig file (in fixedStep, variableStep
+        or bedGraph format) to binary big wig format
+      homepage: None
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ["varies; see http://genome.ucsc.edu/license"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - wig:
+      type: file
+      description: wig file
+      pattern: "*.{wig}"
+  - chromsizes:
+      type: file
+      description: chromosome sizes file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bw:
+      type: file
+      description: bigwig file
+      pattern: "*.{bw}"
+
+authors:
+  - "@jianhong"
+  - "@projectoriented"

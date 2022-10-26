@@ -7,7 +7,6 @@ on:
   pull_request:
     branches: [master]
 
-
 jobs:
   changes:
     name: Check for changes
@@ -16,7 +15,7 @@ jobs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
         id: filter
@@ -25,9 +24,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-20.04
-    env:
-      NXF_VER: 21.04.0
-
     name: ${{ matrix.tags }}
     needs: changes
     if: needs.changes.outputs.modules != '[]'
@@ -36,7 +32,7 @@ jobs:
       matrix:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2

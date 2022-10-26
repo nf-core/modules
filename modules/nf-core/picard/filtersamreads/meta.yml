@@ -1,0 +1,51 @@
+name: picard_filtersamreads
+description: Filters SAM/BAM files to include/exclude either aligned/unaligned reads or based on a read list
+keywords:
+  - bam
+  - filter
+tools:
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      tool_dev_url: https://github.com/broadinstitute/picard
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: List of BAM files. If filtering without read list must be sorted by queryname with picard sortsam
+      pattern: "*.{bam}"
+  - filter:
+      type: value
+      description: Picard filter type
+      pattern: "includeAligned|excludeAligned|includeReadList|excludeReadList"
+  - readlist:
+      type: file
+      description: Optional text file containing reads IDs to include or exclude
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Filtered BAM file
+      pattern: "*.{bam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jfy133"

@@ -1,0 +1,47 @@
+name: medaka
+description: A tool to create consensus sequences and variant calls from nanopore sequencing data
+keywords:
+  - assembly
+  - polishing
+  - nanopore
+tools:
+  - medaka:
+      description: Neural network sequence error correction.
+      homepage: https://nanoporetech.github.io/medaka/index.html
+      documentation: https://nanoporetech.github.io/medaka/index.html
+      tool_dev_url: https://github.com/nanoporetech/medaka
+      doi: ""
+      licence: ["Mozilla Public License 2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input nanopore fasta/FastQ files
+      pattern: "*.{fasta,fa,fastq,fastq.gz,fq,fq.gz}"
+  - assembly:
+      type: file
+      description: Genome assembly
+      pattern: "*.{fasta,fa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - assembly:
+      type: file
+      description: Polished genome assembly
+      pattern: "*.fa.gz"
+
+authors:
+  - "@avantonder"

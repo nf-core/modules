@@ -1,0 +1,68 @@
+name: metabat2_metabat2
+keywords:
+  - sort
+  - binning
+  - depth
+  - bam
+  - coverage
+  - de novo assembly
+tools:
+  - metabat2:
+      description: Metagenome binning
+      homepage: https://bitbucket.org/berkeleylab/metabat/src/master/
+      documentation: https://bitbucket.org/berkeleylab/metabat/src/master/
+      tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
+      doi: "10.7717/peerj.7359"
+      licence: ["BSD-3-clause-LBNL"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Fasta file of the assembled contigs
+      pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
+  - depth:
+      type: file
+      description: |
+        Optional text file listing the coverage per contig pre-generated
+        by metabat2_jgisummarizebamcontigdepths
+      pattern: "*.txt"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Bins created from assembled contigs in fasta file
+      pattern: "*.fa.gz"
+  - tooshort:
+      type: file
+      description: Contigs that did not pass length filtering
+      pattern: "*.tooShort.fa.gz"
+  - lowdepth:
+      type: file
+      description: Contigs that did not have sufficient depth for binning
+      pattern: "*.lowDepth.fa.gz"
+  - unbinned:
+      type: file
+      description: Contigs that pass length and depth filtering but could not be binned
+      pattern: "*.unbinned.fa.gz"
+  - membership:
+      type: file
+      description: cluster memberships as a matrix format.
+      pattern: "*.tsv.gz"
+
+authors:
+  - "@maxibor"
+  - "@jfy133"

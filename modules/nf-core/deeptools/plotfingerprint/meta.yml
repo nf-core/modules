@@ -1,0 +1,61 @@
+name: deeptools_plotfingerprint
+description: plots cumulative reads coverages by BAM file
+keywords:
+  - plot
+  - fingerprint
+  - cumulative coverage
+  - bam
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      homepage:
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: One or more BAM files
+      pattern: "*.{bam}"
+  - bais:
+      type: file
+      description: Corresponding BAM file indexes
+      pattern: "*.bam.bai"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pdf:
+      type: file
+      description: |
+        Output figure containing resulting plot
+      pattern: "*.{plotFingerprint.pdf}"
+  - matrix:
+      type: file
+      description: |
+        Output file summarizing the read counts per bin
+      pattern: "*.{plotFingerprint.raw.txt}"
+  - metrics:
+      type: file
+      description: |
+        file containing BAM file quality metrics
+      pattern: "*.{qcmetrics.txt}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@emiller88"
+  - "@drpatelh"
+  - "@joseespinosa"

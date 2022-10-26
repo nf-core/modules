@@ -1,0 +1,39 @@
+name: last_postmask
+description: Post-alignment masking
+keywords:
+  - LAST
+  - mask
+  - alignment
+  - MAF
+tools:
+  - last:
+      description: LAST finds & aligns related regions of sequences.
+      homepage: https://gitlab.com/mcfrith/last
+      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-postmask.rst
+      tool_dev_url: https://gitlab.com/mcfrith/last
+      doi: "10.1371/journal.pone.0028819"
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - maf:
+      type: file
+      description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
+      pattern: "*.{maf.gz,maf}"
+
+output:
+  - maf:
+      type: file
+      description: Multiple Aligment Format (MAF) file, compressed with gzip
+      pattern: "*.{maf.gz}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@charles-plessy"

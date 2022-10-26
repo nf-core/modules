@@ -1,0 +1,37 @@
+name: rapidnj
+description: Produces a Newick format phylogeny from a multiple sequence alignment using a Neighbour-Joining algorithm. Capable of bacterial genome size alignments.
+keywords:
+  - phylogeny
+  - newick
+  - neighbour-joining
+tools:
+  - rapidnj:
+      description: RapidNJ is an algorithmic engineered implementation of canonical neighbour-joining. It uses an efficient search heuristic to speed-up the core computations of the neighbour-joining method that enables RapidNJ to outperform other state-of-the-art neighbour-joining implementations.
+      homepage: https://birc.au.dk/software/rapidnj
+      documentation: https://birc.au.dk/software/rapidnj
+      tool_dev_url: https://github.com/somme89/rapidNJ
+      doi: "doi:10.1007/978-3-540-87361-7_10"
+      licence: ["GPL v2"]
+
+input:
+  - alignment:
+      type: file
+      description: A FASTA format multiple sequence alignment file
+      pattern: "*.{fasta,fas,fa,mfa}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - phylogeny:
+      type: file
+      description: A phylogeny in Newick format
+      pattern: "*.{tre}"
+  - stockholm_alignment:
+      type: file
+      description: An alignment in Stockholm format
+      pattern: "*.{sth}"
+authors:
+  - "@aunderwo"
+  - "@avantonder"

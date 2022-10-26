@@ -1,0 +1,100 @@
+name: fargene
+description: tool that takes either fragmented metagenomic data or longer sequences as input and predicts and delivers full-length antiobiotic resistance genes as output.
+keywords:
+  - antibiotic resistance genes
+  - ARGs
+  - identifier
+  - metagenomic
+  - contigs
+tools:
+  - fargene:
+      description: Fragmented Antibiotic Resistance Gene Identifier takes either fragmented metagenomic data or longer sequences as input and predicts and delivers full-length antiobiotic resistance genes as output
+      homepage: https://github.com/fannyhb/fargene
+      documentation: https://github.com/fannyhb/fargene
+      tool_dev_url: https://github.com/fannyhb/fargene
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: uncompressed fasta file or paired-end fastq files containing either genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented metagenomic reads (fastq)
+      pattern: "*.{fasta}"
+  - hmm_model:
+      type: string
+      description: name of custom hidden markov model to be used [pre-defined class_a, class_b_1_2, class_b_3, class_c, class_d_1, class_d_2, qnr, tet_efflux, tet_rpg, tet_enzyme]
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - log:
+      type: file
+      description: log file
+      pattern: "*.{log}"
+  - txt:
+      type: file
+      description: analysis summary text file
+      pattern: "*.{txt}"
+  - hmm:
+      type: file
+      description: output from hmmsearch
+      pattern: "*.{out}"
+  - orfs:
+      type: file
+      description: open reading frames (ORFs)
+      pattern: "*.{fasta}"
+  - orfs_amino:
+      type: file
+      description: protein translation of open reading frames (ORFs)
+      pattern: "*.{fasta}"
+  - contigs:
+      type: file
+      description: (complete) contigs that passed the final full-length classification
+      pattern: "*.{fasta}"
+  - contigs_pept:
+      type: file
+      description: parts of the contigs that passed the final classification step that aligned with the HMM, as amino acid sequences
+      pattern: "*.{fasta}"
+  - filtered:
+      type: file
+      description: sequences that passed the final classification step, but only the parts that where predicted by the HMM to be part of the gene
+      pattern: "*.{fasta}"
+  - filtered_pept:
+      type: file
+      description: sequences from filtered.fasta, translated in the same frame as the gene is predicted to be located
+      pattern: "*.{fasta}"
+  - fragments:
+      type: file
+      description: All quality controlled retrieved fragments that were classified as positive, together with its read-pair, gathered in two files
+      pattern: "*.{fastq}"
+  - trimmed:
+      type: file
+      description: The quality controlled retrieved fragments from each input file.
+      pattern: "*.{fasta}"
+  - spades:
+      type: directory
+      description: The output from the SPAdes assembly
+      pattern: "spades_assembly"
+  - metagenome:
+      type: file
+      description: The FASTQ to FASTA converted input files from metagenomic reads.
+      pattern: "*.{fasta}"
+  - tmp:
+      type: file
+      description: The from FASTQ to FASTA converted input files and their translated input sequences. Are only saved if option --store-peptides is used.
+      pattern: "*.{fasta}"
+
+authors:
+  - "@louperelo"

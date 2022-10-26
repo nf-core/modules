@@ -1,0 +1,36 @@
+name: glnexus
+description: merge gVCF files and perform joint variant calling
+keywords:
+  - merge
+  - gvcf
+tools:
+  - glnexus:
+      description: scalable gVCF merging and joint variant calling for population sequencing projects.
+      homepage: https://github.com/dnanexus-rnd/GLnexus
+      documentation: https://github.com/dnanexus-rnd/GLnexus/wiki/Getting-Started
+      tool_dev_url: None
+      doi: https://doi.org/10.1101/343970
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - gvcfs:
+      type: list
+      description: Input genomic vcf files
+      pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bcf:
+      type: file
+      description: merged BCF file
+      pattern: "*.bcf"
+authors:
+  - "@ramprasadn"
