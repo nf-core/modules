@@ -13,10 +13,10 @@ process SOURMASH_COMPARE {
     val save_csv
 
     output:
-    tuple val(meta), path("*.comp")            , optional:true, emit: numpy_matrix
-    tuple val(meta), path("*.comp.labels.txt") , optional:true, emit: labels
-    tuple val(meta), path("*.comp.csv")        , optional:true, emit: csv
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.comp")           , optional:true, emit: numpy_matrix
+    tuple val(meta), path("*.comp.labels.txt"), optional:true, emit: labels
+    tuple val(meta), path("*.comp.csv")       , optional:true, emit: csv
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,8 @@ process SOURMASH_COMPARE {
     script:
     def args   = task.ext.args     ?: ''
     def prefix = task.ext.prefix   ?: "${meta.id}"
-    def comp   = save_numpy_matrix ?: "--output ${prefix}.comp"  : '' 
-    def csv    = save_csv          ?: "--csv ${prefix}.comp.csv" : ''
+    def comp   = save_numpy_matrix ? "--output ${prefix}.comp"  : '' 
+    def csv    = save_csv          ? "--csv ${prefix}.comp.csv" : ''
     
     """
     sourmash compare \\
