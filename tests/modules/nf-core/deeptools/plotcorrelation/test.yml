@@ -4,10 +4,8 @@
     - deeptools
     - deeptools/plotcorrelation
   files:
-    - path: "output/plotcorrelation/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/plotcorrelation/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/deeptools/test.plotCorrelation.mat.tab
+      md5sum: 24e46b74bd580e22c48687a1843eaa5f
 
 - name: "deeptools plotcorrelation test_plotcorrelation_no_method"
   command: nextflow run ./tests/modules/nf-core/deeptools/plotcorrelation -entry test_plotcorrelation_no_method -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deeptools/plotcorrelation/nextflow.config
@@ -15,10 +13,8 @@
     - deeptools
     - deeptools/plotcorrelation
   files:
-    - path: "output/plotcorrelation/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/plotcorrelation/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/deeptools/test.plotCorrelation.mat.tab
+      md5sum: 24e46b74bd580e22c48687a1843eaa5f
   
 - name: "deeptools plotcorrelation test_plotcorrelation_no_plot_type"
   command: nextflow run ./tests/modules/nf-core/deeptools/plotcorrelation -entry test_plotcorrelation_no_plot_type -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deeptools/plotcorrelation/nextflow.config 
@@ -26,7 +22,5 @@
     - deeptools
     - deeptools/plotcorrelation
   files:
-    - path: "output/plotcorrelation/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/plotcorrelation/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/deeptools/test.plotCorrelation.mat.tab
+      md5sum: 24e46b74bd580e22c48687a1843eaa5f
