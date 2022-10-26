@@ -1,0 +1,55 @@
+name: "biohansel"
+description: Use k-mers to rapidly subtype S. enterica genomes
+keywords:
+  - Salmonella enterica
+  - subtyping
+  - prokaryote
+tools:
+  - "biohansel":
+      description: "Subtype Salmonella enterica genomes using 33bp k-mer typing schemes."
+      homepage: "https://github.com/phac-nml/biohansel"
+      documentation: "https://github.com/phac-nml/biohansel"
+      tool_dev_url: "https://github.com/phac-nml/biohansel"
+      doi: "10.1101/2020.01.10.902056"
+      licence: "['Apache-2.0 license']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - seqs:
+      type: file
+      description: FASTA or FASTQ
+      pattern: "*.{fasta.gz,fa.gz,fna.gz,fastq.gz,fq.gz}"
+  - scheme_metadata:
+      type: file
+      description: Scheme subtype metadata table
+      pattern: "*.{tab,tsv,txt}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - summary:
+      type: file
+      description: Tab-delimited subtyping summary output
+      pattern: "*summary.txt"
+  - kmer_results:
+      type: file
+      description: Tab-delimited subtyping kmer matching output
+      pattern: "*kmer-results.txt"
+  - simple_summary:
+      type: file
+      description: A simple version of summary output
+      pattern: "*simple-summary.txt"
+
+authors:
+  - "@rpetit3"
