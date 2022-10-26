@@ -1,9 +1,0 @@
-- name: delly call test_delly_call
-  command: nextflow run ./tests/modules/delly/call -entry test_delly_call -c ./tests/config/nextflow.config -c ./tests/modules/delly/call/nextflow.config
-  tags:
-    - delly
-    - delly/call
-  files:
-    - path: output/delly/test.bcf
-    - path: output/delly/test.bcf.csi
-      md5sum: 19e0cdf06c415f4942f6d4dbd5fb7271

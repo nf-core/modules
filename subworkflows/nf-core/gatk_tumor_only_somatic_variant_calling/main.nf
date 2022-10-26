@@ -7,10 +7,10 @@ params.getpileup_options   = [:]
 params.calccontam_options  = [:]
 params.filtercalls_options = [suffix: '_filtered']
 
-include { GATK4_MUTECT2                as MUTECT2 }                  from '../../../modules/gatk4/mutect2/main'                addParams( options: params.mutect2_options )
-include { GATK4_GETPILEUPSUMMARIES     as GETPILEUPSUMMARIES }       from '../../../modules/gatk4/getpileupsummaries/main'     addParams( options: params.getpileup_options )
-include { GATK4_CALCULATECONTAMINATION as CALCULATECONTAMINATION }   from '../../../modules/gatk4/calculatecontamination/main' addParams( options: params.calccontam_options )
-include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../../../modules/gatk4/filtermutectcalls/main'      addParams( options: params.filtercalls_options )
+include { GATK4_MUTECT2                as MUTECT2 }                  from '../../../modules/nf-core/gatk4/mutect2/main'
+include { GATK4_GETPILEUPSUMMARIES     as GETPILEUPSUMMARIES }       from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
+include { GATK4_CALCULATECONTAMINATION as CALCULATECONTAMINATION }   from '../../../modules/nf-core/gatk4/calculatecontamination/main'
+include { GATK4_FILTERMUTECTCALLS      as FILTERMUTECTCALLS }        from '../../../modules/nf-core/gatk4/filtermutectcalls/main'
 
 workflow GATK_TUMOR_ONLY_SOMATIC_VARIANT_CALLING {
     take:
