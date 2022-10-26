@@ -61,7 +61,7 @@ process ADAPTERREMOVAL {
             --file1 ${reads[0]} \\
             --file2 ${reads[1]} \\
             $args \\
-            $adapterlist \\
+            $list \\
             --basename ${prefix} \\
             --threads $task.cpus \\
             --seed 42 \\
