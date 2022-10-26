@@ -10,17 +10,17 @@ keywords:
 tools:
   - vg:
     description: |
-            Variation graph data structures, interchange formats, alignment, genotyping,
-            and variant calling methods.
+      Variation graph data structures, interchange formats, alignment, genotyping,
+      and variant calling methods.
     homepage: https://github.com/vgteam/vg
     documentation: https://github.com/vgteam/vg/wiki
-    licence: ['MIT']
+    licence: ["MIT"]
 input:
   - meta:
       type: map
       description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - gfa:
       type: file
       description: Variation graph in GFA format
@@ -38,8 +38,8 @@ output:
   - meta:
       type: map
       description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - vcf:
       type: file
       description: Variants in VCF format
