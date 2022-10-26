@@ -1,15 +1,20 @@
 name: sourmash_sketch
-description: Create a signature (a hash sketch) of a sequence using sourmash
+description: Create a signature (a group of FracMinHash sketches) of a sequence using sourmash
 keywords:
   - hash sketch
-  - signature
+  - sourmash
+  - genomics
+  - metagenomics
+  - taxonomic classification
+  - taxonomic profiling
+  - kmer
 tools:
   - sourmash:
-      description: Compute and compare MinHash signatures for DNA data sets.
+      description: Compute and compare FracMinHash signatures for DNA and protein data sets.
       homepage: https://sourmash.readthedocs.io/
       documentation: https://sourmash.readthedocs.io/
-      tool_dev_url: https://github.com/dib-lab/sourmash
-      doi: "10.1186/s13059-016-0997-x"
+      tool_dev_url: https://github.com/sourmash-bio/sourmash
+      doi: "10.21105/joss.00027"
       licence: ["BSD-3-clause"]
 
 input:
@@ -20,8 +25,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - sequence:
       type: file
-      description: FastA file containing (genomic) sequence data
-      pattern: "*.{fna,fa,fasta}"
+      description: FASTA or FASTQ file containing (genomic, transcriptomic, or proteomic) sequence data
+      pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
 
 output:
   - meta:
@@ -35,7 +40,7 @@ output:
       pattern: "versions.yml"
   - signatures:
       type: file
-      description: MinHash signature of the given sequence
+      description: FracMinHash signature of the given sequence
       pattern: "*.{sig}"
 
 authors:
