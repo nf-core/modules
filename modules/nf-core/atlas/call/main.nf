@@ -8,11 +8,9 @@ process ATLAS_CALL {
         'quay.io/biocontainers/atlas:0.9.9--h082e891_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), path(pmd), path(recal)
     path fasta
     path fai
-    path recal
-    path pmd
     path known_alleles
     val method
 
@@ -28,7 +26,7 @@ process ATLAS_CALL {
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def recal_file         = recal ? "recal=${recal}" : ""
     def pmd_file           = pmd ? "pmdFile=${pmd}" : ""
-    def known_alleles_file = known_alleles ? "pmdFile=${known_alleles}" : ""
+    def known_alleles_file = known_alleles ? "alleles=${known_alleles}" : ""
 
     def valid_method = ['MLE', 'Bayesian', 'allelePresence', 'randomBase', 'majorityBase']
     if ( !valid_method.contains(method) )  { error "Unrecognised calling method for ATLAS_CALL. Options: MLE, Bayesian, allelePresence, randomBase, majorityBase" }
@@ -40,6 +38,7 @@ process ATLAS_CALL {
         fasta=${fasta} \\
         $recal_file \\
         $pmd_file \\
+        $known_alleles_file \\
         method=${method} \\
         $args
 

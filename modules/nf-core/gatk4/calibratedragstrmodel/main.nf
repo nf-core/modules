@@ -1,6 +1,6 @@
 process GATK4_CALIBRATEDRAGSTRMODEL {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -24,7 +24,7 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_command = intervals ? "--intervals $intervals" : ""
+    def intervals_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -34,14 +34,14 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" CalibrateDragstrModel \\
-        --input $bam \\
+        --input ${bam} \\
         --output ${prefix}.txt \\
-        --reference $fasta \\
-        --str-table-path $strtablefile \\
-        --threads $task.cpus \\
-        $intervals_command \\
+        --reference ${fasta} \\
+        --str-table-path ${strtablefile} \\
+        --threads ${task.cpus} \\
+        ${intervals_command} \\
         --tmp-dir . \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
