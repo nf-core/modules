@@ -32,3 +32,14 @@ workflow test_adapterremoval_paired_end_collapse {
     ADAPTERREMOVAL_COLLAPSE ( input, [] )
 }
 
+workflow test_adapterremoval_paired_end_adapterlist {
+    input = [ [ id:'test', single_end:false, collapse:false ], // meta map
+              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+            ]
+    adapterlist = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/adapterremoval/adapterremoval_adapterlist.txt", checkIfExists: true)
+
+    ADAPTERREMOVAL ( input, adapterlist )
+}
+
+
