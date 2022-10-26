@@ -9,6 +9,8 @@ process VG_DECONSTRUCT {
 
     input:
     tuple val(meta), path(gfa)
+    path(pb)
+    path(gbwt)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -20,10 +22,14 @@ process VG_DECONSTRUCT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def snarls = pb ? "--snarls ${pb}" : ""
+    def gbwt_arg = gbwt ? "--gbwt ${gwbt}" : ""
     """
     vg deconstruct \\
         --threads $task.cpus \\
         $args \\
+        $snarls \\
+        $gbwt_arg \\
         $gfa > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
