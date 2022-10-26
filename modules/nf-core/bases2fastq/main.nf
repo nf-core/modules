@@ -28,8 +28,6 @@ process BASES2FASTQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
     """
-    ls
-
     bases2fastq \\
         -p $task.cpus \\
         $runManifest \\
