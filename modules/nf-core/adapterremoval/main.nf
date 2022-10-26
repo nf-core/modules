@@ -34,7 +34,7 @@ process ADAPTERREMOVAL {
         AdapterRemoval  \\
             --file1 $reads \\
             $args \\
-            $adapterlist \\
+            $list \\
             --basename ${prefix} \\
             --threads ${task.cpus} \\
             --seed 42 \\
