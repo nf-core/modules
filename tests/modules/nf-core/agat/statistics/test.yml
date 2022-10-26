@@ -14,14 +14,5 @@
     - agat
   files:
     - path: output/agat/test.stats.txt
-      md5sum: 93713c82655a421a41623dc500e7f3d1
+      md5sum: a41a0a9cfba3ed7cc1aff28815843c78
 
-
-- name: agat statistics test_functional
-  command: nextflow run ./tests/modules/nf-core/agat/statistics -entry test_functional -c ./tests/config/nextflow.config
-  tags:
-    - agat/statistics
-    - agat
-  files:
-    - path: output/agat/test.stats.txt
-      md5sum: 93713c82655a421a41623dc500e7f3d1

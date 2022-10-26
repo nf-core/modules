@@ -21,13 +21,11 @@ process AGAT_STATISTICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def program = args.contains("--basic") ? "agat_sq_stat_basic.pl" :
-                  args.contains("--functional") ? "agat_sp_functional_statistics.pl" :
                   "agat_sp_statistics.pl"
 
     def inputarg = args.contains("--basic") ? "-i" : "--gff"
 
     args = args.replace("--basic", "")
-    args = args.replace("--functional", "")
 
     """
 

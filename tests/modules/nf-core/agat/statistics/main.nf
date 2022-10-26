@@ -22,11 +22,3 @@ workflow test_basic {
 
 }
 
-workflow test_functional {
-
-    gff = [ file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) ]
-
-
-    AGAT_STATISTICS ( [ [id:'test'], gff ] )
-
-}
