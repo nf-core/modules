@@ -2,13 +2,13 @@ process VG_DECONSTRUCT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? 'bioconda::vg=1.38.0' : null)
+    conda (params.enable_conda ? 'bioconda::vg=1.43.0' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.38.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.38.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vg:1.43.0--h9ee0642_0' :
+        'quay.io/biocontainers/vg:1.43.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(fasta), path(gfa)
+    tuple val(meta), path(gfa)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -23,13 +23,12 @@ process VG_DECONSTRUCT {
     """
     vg deconstruct \\
         --threads $task.cpus \\
-        --path=$fasta \\
         $args \\
         $gfa > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vg: \$(vg version 2>&1 | grep -o 'vg .*' | cut -f3 -d ' ')
+        vg: \$(vg version 2>&1 | grep -o 'vg .*' | cut -f3 -d ' ' | cut -f2 -d 'v')
     END_VERSIONS
     """
 }
