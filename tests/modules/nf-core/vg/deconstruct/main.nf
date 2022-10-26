@@ -9,5 +9,5 @@ workflow test_vg_deconstruct {
               [ file(params.test_data['homo_sapiens']['pangenome']['pangenome_gfaffix_gfa'], checkIfExists: true) ]
             ]
 
-    VG_DECONSTRUCT( input, Channel.empty(), Channel.empty() )
+    VG_DECONSTRUCT( input, [], [] )
 }
