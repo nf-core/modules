@@ -26,7 +26,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
         $label \\
         --bamfiles ${bams.join(' ')} \\
         --numberOfProcessors $task.cpus \\
-        --outFileName all_bam.bamSummary.npz \\
+        --outFileName all_bam.bamSummary.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
