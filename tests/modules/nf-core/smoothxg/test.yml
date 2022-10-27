@@ -6,6 +6,14 @@
     - path: output/smoothxg/test.smoothxg.gfa
     - path: output/smoothxg/test.maf
 
+- name: smoothxg_recurse_times
+  command: nextflow run ./tests/modules/nf-core/smoothxg -entry test_smoothxg_recurse_times -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/nextflow.config
+  tags:
+    - smoothxg
+  files:
+    - path: output/smoothxg/test.smoothxg.gfa
+    - path: output/smoothxg/test.maf
+
 - name: smoothxg_pangenomics
   command: nextflow run ./tests/modules/nf-core/smoothxg -entry test_smoothxg_pangenomics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/nextflow.config
   tags:
