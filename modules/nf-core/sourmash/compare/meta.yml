@@ -25,7 +25,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - signatures:
       type: file
-      description: Files containing signatures (hash sketches) of samples 
+      description: Files containing signatures (hash sketches) of samples
       pattern: "*.{sig}"
   - save_numpy_matrix:
       type: boolean
@@ -34,7 +34,7 @@ input:
   - save_csv:
       type: boolean
       description: |
-        If true, output will contain a (dis)similarity matrix in CSV format 
+        If true, output will contain a (dis)similarity matrix in CSV format
 
 output:
   - meta:
@@ -48,7 +48,7 @@ output:
       pattern: "versions.yml"
   - numpy_matrix:
       type: file
-      description: An optional (dis)similarity matrix numpy binary format 
+      description: An optional (dis)similarity matrix numpy binary format
       pattern: "*.comp"
   - csv:
       type: file
