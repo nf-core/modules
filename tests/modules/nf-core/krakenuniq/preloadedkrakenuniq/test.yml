@@ -1,0 +1,14 @@
+- name: krakenuniq preloadedkrakenuniq test_krakenuniq_preloadedkrakenuniq
+  command: nextflow run ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq -entry test_krakenuniq_preloadedkrakenuniq -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/krakenuniq/preloadedkrakenuniq/nextflow.config -stub-run
+  tags:
+    - krakenuniq/preloadedkrakenuniq
+    - krakenuniq
+  files:
+    - path: output/krakenuniq/test_1.fastq.gz.classified.fastq.gz
+    - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.classified.txt
+    - path: output/krakenuniq/test_1.fastq.gz.krakenuniq.report.txt
+    - path: output/krakenuniq/test_1.fastq.gz.unclassified.fastq.gz
+    - path: output/krakenuniq/test_2.fastq.gz.classified.fastq.gz
+    - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.classified.txt
+    - path: output/krakenuniq/test_2.fastq.gz.krakenuniq.report.txt
+    - path: output/krakenuniq/test_2.fastq.gz.unclassified.fastq.gz
