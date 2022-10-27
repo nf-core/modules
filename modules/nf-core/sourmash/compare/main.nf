@@ -13,7 +13,7 @@ process SOURMASH_COMPARE {
     val save_csv
 
     output:
-    tuple path("*comp.labels.txt"), path("*comp"), optional:true, emit: matrix
+    tuple path("*comp.npy.labels.txt"), path("*comp.npy"), optional:true, emit: matrix
     path "*comp.csv"       , optional:true, emit: csv
     path "versions.yml"    , emit: versions    
 
@@ -22,7 +22,7 @@ process SOURMASH_COMPARE {
 
     script:
     def args   = task.ext.args     ?: ''
-    def comp   = save_numpy_matrix ? "--output comp"  : ''
+    def comp   = save_numpy_matrix ? "--output comp.npy"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
     def ffile = file_list ? "--from-file ${file_list}" : ''
