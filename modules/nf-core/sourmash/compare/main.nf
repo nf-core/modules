@@ -22,9 +22,8 @@ process SOURMASH_COMPARE {
 
     script:
     def args   = task.ext.args     ?: ''
-    def comp   = save_numpy_matrix ? "--output comp"  : '' 
+    def comp   = save_numpy_matrix ? "--output comp"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
-    
     """
     sourmash compare \\
         $args \\
@@ -32,10 +31,9 @@ process SOURMASH_COMPARE {
         ${comp} \\
         ${csv} \\
         ${signatures.join(' ')}
- 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' ) 
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
     END_VERSIONS
     """
 }
