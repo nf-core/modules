@@ -1,5 +1,5 @@
 process SOURMASH_COMPARE {
-    label 'process_low'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::sourmash=4.5.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,7 +8,7 @@ process SOURMASH_COMPARE {
 
     input:
     path signatures
-    path(file_list)
+    path(file_list) // optional file
     val save_numpy_matrix
     val save_csv
 
@@ -25,15 +25,18 @@ process SOURMASH_COMPARE {
     def args   = task.ext.args     ?: ''
     def comp   = save_numpy_matrix ? "--output comp"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
-    if ( file_list && signatures ) error "Only supply one of either signatures or file_list, not both"
-    def input = file_list ? "--from-file ${file_list}" : "${signatures.join(' ')}"
+    if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
+    def ffile = file_list ? "--from-file ${file_list}" : ''
+    def sigs = signatures ? "${signatures.join(' ')}" : ''
+    if ( !file_list && !signatures ) error "Supply either signatures, file_list, or both"
     """
     sourmash compare \\
         $args \\
         --processes $task.cpus \\
         ${comp} \\
         ${csv} \\
-        ${input}
+        ${ffile} \\
+        ${sigs}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
