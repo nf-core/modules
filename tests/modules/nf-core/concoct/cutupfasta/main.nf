@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CONCOCT_CUTUPFASTA                           } from '../../../../../modules/nf-core/concoct/cutupfasta/main.nf'
+include { CONCOCT_CUTUPFASTA } from '../../../../../modules/nf-core/concoct/cutupfasta/main.nf'
 
 workflow test_concoct_cutupfasta {
 
