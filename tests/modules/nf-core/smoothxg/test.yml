@@ -1,7 +1,6 @@
 - name: smoothxg
-  command: nextflow run ./tests/modules/smoothxg -entry test_smoothxg -c ./tests/config/nextflow.config -c ./tests/modules/smoothxg/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/smoothxg -entry test_smoothxg -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/nextflow.config
   tags:
     - smoothxg
   files:
     - path: output/smoothxg/test.smoothxg.gfa
-      md5sum: 5a080dec53a97190cfc21af59ac22c3a

@@ -1,8 +1,6 @@
-def VERSION = '0.6.5' // Version information not provided by tool on CLI
-
 process SMOOTHXG {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::smoothxg=0.6.5' : null)
 
@@ -32,7 +30,7 @@ process SMOOTHXG {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        smoothxg: $VERSION
+        smoothxg: \$(smoothxg --version 2>&1 | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
 }

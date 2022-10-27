@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SMOOTHXG } from '../../../modules/smoothxg/main.nf'
+include { SMOOTHXG } from '../../../../modules/nf-core/smoothxg/main.nf'
 
 workflow test_smoothxg {
     input = [ [ id:'test' ], // meta map
