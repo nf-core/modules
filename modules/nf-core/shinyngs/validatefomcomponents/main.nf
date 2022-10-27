@@ -1,5 +1,5 @@
 process SHINYNGS_VALIDATEFOMCOMPONENTS {
-    tag '$sample'
+    tag "$sample"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::r-shinyngs=1.4.1" : null)
