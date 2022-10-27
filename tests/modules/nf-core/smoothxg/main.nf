@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+nextflow.preview.recursion = true
 
 include { SMOOTHXG } from '../../../../modules/nf-core/smoothxg/main.nf'
 
