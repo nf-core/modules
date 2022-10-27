@@ -37,7 +37,7 @@ process BOWTIE_ALIGN {
         $args \\
         $endedness \\
         2> ${prefix}.out \\
-        | samtools view $args2 -@ $task.cpus -bS -o ${prefix}.bam -
+        | samtools view $args2 -@ $task.cpus -bS -o ${prefix}.bam
 
     if [ -f ${prefix}.unmapped.fastq ]; then
         gzip ${prefix}.unmapped.fastq

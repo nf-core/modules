@@ -36,7 +36,7 @@ process BWAMETH_ALIGN {
         -t $task.cpus \\
         --reference \$INDEX \\
         $reads \\
-        | samtools view $args2 -@ $task.cpus -bhS -o ${prefix}.bam -
+        | samtools view $args2 -@ $task.cpus -bhS -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

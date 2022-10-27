@@ -34,7 +34,7 @@ process DRAGMAP_ALIGN {
         --num-threads $task.cpus \\
         $reads_command \\
         2> ${prefix}.dragmap.log \\
-        | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam -
+        | samtools $samtools_command $args2 --threads $task.cpus -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
