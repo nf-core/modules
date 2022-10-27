@@ -6,7 +6,7 @@
   files:
     - path: output/deeptools/all_bam.bamSummary.npz
       md5sum: 26646bf4b0f066fda0128bb9583a0614
-  
+
 - name: "deeptools multibamsummary test_multibamsummary_bam_no_label"
   command: nextflow run ./tests/modules/nf-core/deeptools/multibamsummary -entry test_multibamsummary_bam_no_label -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deeptools/multibamsummary/nextflow.config
   tags:
