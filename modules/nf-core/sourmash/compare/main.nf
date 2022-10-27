@@ -8,6 +8,7 @@ process SOURMASH_COMPARE {
 
     input:
     path signatures
+    path(file_list)
     val save_numpy_matrix
     val save_csv
 
@@ -24,13 +25,16 @@ process SOURMASH_COMPARE {
     def args   = task.ext.args     ?: ''
     def comp   = save_numpy_matrix ? "--output comp"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
+    if ( file_list && signatures ) error "Only supply one of either signatures or file_list, not both"
+    def input = file_list ? "--from-file ${file_list}" : "${signatures.join(' ')}"
     """
     sourmash compare \\
         $args \\
         --processes $task.cpus \\
         ${comp} \\
         ${csv} \\
-        ${signatures.join(' ')}
+        ${input}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
