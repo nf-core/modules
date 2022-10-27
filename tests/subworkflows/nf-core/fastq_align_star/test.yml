@@ -61,7 +61,6 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: c23c978974e8568a2b2959e6a5965cf2
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: e34d06e4a197ece0edb49227bfd1be2f
 
 - name: fastq_align_star fastq_align_star_paired_end
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_star -entry test_align_star_paired_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fastq_align_star/nextflow.config
@@ -126,4 +125,3 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: 3f1385e59e45555d2aff101b3d6de896
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: c60bdb9cb1dd7cc96f4efbb763595a2a
