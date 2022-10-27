@@ -1,0 +1,29 @@
+name: cellranger_atac_mkref
+description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger-atac mkref command.
+keywords:
+  - reference
+  - mkref
+  - index
+tools:
+  - cellranger-atac:
+      description: Cell Ranger ATAC is a set of analysis pipelines that process Chromium Single Cell ATAC data.
+      homepage: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
+      documentation: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
+      tool_dev_url: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
+      doi: ""
+      licence: 10x Genomics EULA
+input:
+  - reference_config:
+      type: config
+      description: config file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and JASPAR format motif file path
+      pattern: config
+output:
+  - reference:
+      type: folder
+      description: Folder called cellranger_atac_reference containing all the reference indices needed by Cell Ranger ATAC
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@heylf"
