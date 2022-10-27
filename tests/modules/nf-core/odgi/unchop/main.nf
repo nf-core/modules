@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ODGI_UNCHOP } from "$moduleDir/modules/nf-core/odgi/unchop/main.nf"
 

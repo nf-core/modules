@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HAMRONIZATION_DEEPARG                                 } from "$moduleDir/modules/nf-core/hamronization/deeparg/main.nf"
 include { HAMRONIZATION_DEEPARG as HAMRONIZATION_DEEPARG_SECOND } from "$moduleDir/modules/nf-core/hamronization/deeparg/main.nf"

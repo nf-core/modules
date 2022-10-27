@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ELPREP_SPLIT } from "$moduleDir/modules/nf-core/elprep/split/main.nf"
 include { ELPREP_MERGE } from "$moduleDir/modules/nf-core/elprep/merge/main.nf"

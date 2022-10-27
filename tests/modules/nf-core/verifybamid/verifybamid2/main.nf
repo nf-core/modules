@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_SVD } from "$moduleDir/modules/nf-core/verifybamid/verifybamid2/main.nf"
 include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_REFVCF } from "$moduleDir/modules/nf-core/verifybamid/verifybamid2/main.nf"

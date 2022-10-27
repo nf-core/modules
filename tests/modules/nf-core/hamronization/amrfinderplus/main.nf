@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 include { HAMRONIZATION_AMRFINDERPLUS } from "$moduleDir/modules/nf-core/hamronization/amrfinderplus/main.nf"
 
 workflow test_hamronization_amrfinderplus {

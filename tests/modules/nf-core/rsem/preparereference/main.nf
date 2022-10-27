@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RSEM_PREPAREREFERENCE }   from "$moduleDir/modules/nf-core/rsem/preparereference/main.nf"
 

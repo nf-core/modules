@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CALDER2 } from "$moduleDir/modules/nf-core/calder2/main.nf"
 

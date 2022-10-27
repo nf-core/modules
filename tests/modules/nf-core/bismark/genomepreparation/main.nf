@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BISMARK_GENOMEPREPARATION } from "$moduleDir/modules/nf-core/bismark/genomepreparation/main.nf"
 

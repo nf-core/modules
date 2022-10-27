@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DELLY_CALL } from "$moduleDir/modules/nf-core/delly/call/main.nf"
 

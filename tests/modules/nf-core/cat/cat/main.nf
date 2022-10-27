@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CAT_CAT                        } from "$moduleDir/modules/nf-core/cat/cat/main.nf"
 include { CAT_CAT as CAT_UNZIPPED_ZIPPED } from "$moduleDir/modules/nf-core/cat/cat/main.nf"

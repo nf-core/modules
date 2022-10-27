@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ICHORCNA_RUN } from "$moduleDir/modules/nf-core/ichorcna/run/main.nf"
 include { HMMCOPY_READCOUNTER } from "$moduleDir/modules/nf-core/hmmcopy/readcounter/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DESEQ2_DIFFERENTIAL } from "$moduleDir/modules/nf-core/deseq2/differential/main.nf"
 

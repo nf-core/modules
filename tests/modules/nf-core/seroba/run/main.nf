@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEROBA_RUN } from "$moduleDir/modules/nf-core/seroba/run/main.nf"
 

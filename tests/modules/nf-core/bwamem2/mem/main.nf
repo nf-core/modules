@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BWAMEM2_INDEX } from "$moduleDir/modules/nf-core/bwamem2/index/main.nf"
 include { BWAMEM2_MEM   } from "$moduleDir/modules/nf-core/bwamem2/mem/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_CSI } from "$moduleDir/modules/nf-core/bcftools/index/main.nf"
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_TBI } from "$moduleDir/modules/nf-core/bcftools/index/main.nf"

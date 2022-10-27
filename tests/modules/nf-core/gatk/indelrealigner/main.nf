@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK_REALIGNERTARGETCREATOR } from "$moduleDir/modules/nf-core/gatk/realignertargetcreator/main.nf"
 include { GATK_INDELREALIGNER } from "$moduleDir/modules/nf-core/gatk/indelrealigner/main.nf"

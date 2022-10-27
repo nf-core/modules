@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { METHYLDACKEL_EXTRACT } from "$moduleDir/modules/nf-core/methyldackel/extract/main.nf"
 

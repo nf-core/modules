@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HOMER_MAKETAGDIRECTORY } from "$moduleDir/modules/nf-core/homer/maketagdirectory/main.nf"
 include { HOMER_FINDPEAKS } from "$moduleDir/modules/nf-core/homer/findpeaks/main.nf"

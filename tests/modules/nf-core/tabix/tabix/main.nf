@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TABIX_TABIX as TABIX_BED     } from "$moduleDir/modules/nf-core/tabix/tabix/main.nf"
 include { TABIX_TABIX as TABIX_GFF     } from "$moduleDir/modules/nf-core/tabix/tabix/main.nf"

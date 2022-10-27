@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTANI } from "$moduleDir/modules/nf-core/fastani/main.nf"
 

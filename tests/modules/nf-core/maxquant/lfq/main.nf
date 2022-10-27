@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MAXQUANT_LFQ } from "$moduleDir/modules/nf-core/maxquant/lfq/main.nf"
 

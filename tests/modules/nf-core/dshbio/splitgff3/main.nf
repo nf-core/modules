@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DSHBIO_SPLITGFF3 } from "$moduleDir/modules/nf-core/dshbio/splitgff3/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SRST2_SRST2 } from "$moduleDir/modules/nf-core/srst2/srst2/main.nf"
 

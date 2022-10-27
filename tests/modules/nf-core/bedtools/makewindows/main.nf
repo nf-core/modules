@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BEDTOOLS_MAKEWINDOWS } from "$moduleDir/modules/nf-core/bedtools/makewindows/main.nf"
 

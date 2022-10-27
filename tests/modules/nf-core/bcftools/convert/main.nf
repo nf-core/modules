@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_GVCF } from "$moduleDir/modules/nf-core/bcftools/convert/main.nf"
 include { BCFTOOLS_CONVERT as BCFTOOLS_CONVERT_BCF  } from "$moduleDir/modules/nf-core/bcftools/convert/main.nf"

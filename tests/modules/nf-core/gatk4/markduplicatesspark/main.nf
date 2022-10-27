@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_MARKDUPLICATES_SPARK } from "$moduleDir/modules/nf-core/gatk4/markduplicatesspark/main.nf"
 include { GATK4_MARKDUPLICATES_SPARK as GATK4_MARKDUPLICATES_SPARK_CRAM } from "$moduleDir/modules/nf-core/gatk4/markduplicatesspark/main.nf"

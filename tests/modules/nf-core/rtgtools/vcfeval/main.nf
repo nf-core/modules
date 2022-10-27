@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RTGTOOLS_VCFEVAL } from "$moduleDir/modules/nf-core/rtgtools/vcfeval/main.nf"
 include { UNTAR } from "$moduleDir/modules/nf-core/untar/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CSVTK_CONCAT } from "$moduleDir/modules/nf-core/csvtk/concat/main.nf"
 

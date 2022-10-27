@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UMITOOLS_EXTRACT } from "$moduleDir/modules/nf-core/umitools/extract/main.nf"
 include { BWA_INDEX        } from "$moduleDir/modules/nf-core/bwa/index/main.nf"

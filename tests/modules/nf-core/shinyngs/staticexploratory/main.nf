@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SHINYNGS_STATICEXPLORATORY } from "$moduleDir/modules/nf-core/shinyngs/staticexploratory/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GUNC_DOWNLOADDB } from "$moduleDir/modules/nf-core/gunc/downloaddb/main.nf"
 

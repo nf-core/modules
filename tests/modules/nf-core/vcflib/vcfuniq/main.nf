@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VCFLIB_VCFUNIQ } from "$moduleDir/modules/nf-core/vcflib/vcfuniq/main.nf"
 

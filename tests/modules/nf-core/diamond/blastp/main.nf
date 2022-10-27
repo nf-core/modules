@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DIAMOND_MAKEDB } from "$moduleDir/modules/nf-core/diamond/makedb/main.nf"
 include { DIAMOND_BLASTP } from "$moduleDir/modules/nf-core/diamond/blastp/main.nf"

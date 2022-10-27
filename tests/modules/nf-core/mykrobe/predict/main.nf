@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MYKROBE_PREDICT } from "$moduleDir/modules/nf-core/mykrobe/predict/main.nf"
 

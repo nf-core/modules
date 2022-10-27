@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_PRINTSVEVIDENCE     } from "$moduleDir/modules/nf-core/gatk4/printsvevidence/main.nf"
 include { GATK4_COLLECTSVEVIDENCE   } from "$moduleDir/modules/nf-core/gatk4/collectsvevidence/main.nf"

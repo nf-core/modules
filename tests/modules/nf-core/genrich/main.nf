@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GENRICH } from "$moduleDir/modules/nf-core/genrich/main.nf"
 include { GENRICH as GENRICH_CTRL    } from "$moduleDir/modules/nf-core/genrich/main.nf"

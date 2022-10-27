@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DEEPBGC_DOWNLOAD } from "$moduleDir/modules/nf-core/deepbgc/download/main.nf"
 

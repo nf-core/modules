@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ARIBA_GETREF } from "$moduleDir/modules/nf-core/ariba/getref/main.nf"
 include { ARIBA_RUN } from "$moduleDir/modules/nf-core/ariba/run/main.nf"

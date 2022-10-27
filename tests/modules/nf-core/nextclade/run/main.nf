@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NEXTCLADE_DATASETGET } from "$moduleDir/modules/nf-core/nextclade/datasetget/main.nf"
 include { NEXTCLADE_RUN        } from "$moduleDir/modules/nf-core/nextclade/run/main.nf"

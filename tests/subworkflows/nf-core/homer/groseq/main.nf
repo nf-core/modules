@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HOMER_GROSEQ as HOMER_GROSEQ_BAM
           HOMER_GROSEQ as HOMER_GROSEQ_BED } from "../../../../../subworkflows/nf-core/homer/groseq/main"

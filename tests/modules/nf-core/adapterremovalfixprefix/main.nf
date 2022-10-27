@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ADAPTERREMOVAL          } from "$moduleDir/modules/nf-core/adapterremoval/main.nf"
 include { ADAPTERREMOVALFIXPREFIX } from "$moduleDir/modules/nf-core/adapterremovalfixprefix/main.nf"

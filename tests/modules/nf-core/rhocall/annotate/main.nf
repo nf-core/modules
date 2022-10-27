@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RHOCALL_ANNOTATE } from "$moduleDir/modules/nf-core/rhocall/annotate/main.nf"
 include { BCFTOOLS_ROH } from "$moduleDir/modules/nf-core/bcftools/roh/main.nf"

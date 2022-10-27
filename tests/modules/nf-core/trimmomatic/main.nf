@@ -1,6 +1,7 @@
 nextflow.enable.dsl = 2
 
 include {
+moduleDir = launchDir
     TRIMMOMATIC as TRIMMOMATIC_SE
     TRIMMOMATIC as TRIMMOMATIC_PE
     TRIMMOMATIC

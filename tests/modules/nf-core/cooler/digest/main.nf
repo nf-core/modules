@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { COOLER_DIGEST } from "$moduleDir/modules/nf-core/cooler/digest/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PLINK_VCF     } from "$moduleDir/modules/nf-core/plink/vcf/main.nf"
 include { PLINK_EXTRACT } from "$moduleDir/modules/nf-core/plink/extract/main.nf"

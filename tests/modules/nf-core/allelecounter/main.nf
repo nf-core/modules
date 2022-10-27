@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
+moduleDir = launchDir
 include { ALLELECOUNTER } from "$moduleDir/modules/nf-core/allelecounter/main.nf"
 
 workflow test_allelecounter_bam {

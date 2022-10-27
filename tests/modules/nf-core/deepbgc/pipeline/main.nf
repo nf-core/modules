@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GUNZIP } from "$moduleDir/modules/nf-core/gunzip/main.nf"
 include { PRODIGAL } from "$moduleDir/modules/nf-core/prodigal/main.nf"

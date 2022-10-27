@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTA_INDEX_DNA } from "../../../../subworkflows/nf-core/fasta_index_dna/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from "../../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main"
 

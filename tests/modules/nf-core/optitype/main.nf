@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { OPTITYPE } from "$moduleDir/modules/nf-core/optitype/main.nf"
 

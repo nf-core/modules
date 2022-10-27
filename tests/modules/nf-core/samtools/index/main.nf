@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_BAI  } from "$moduleDir/modules/nf-core/samtools/index/main.nf"
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_CRAI } from "$moduleDir/modules/nf-core/samtools/index/main.nf"

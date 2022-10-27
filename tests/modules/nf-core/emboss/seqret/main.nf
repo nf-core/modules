@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { EMBOSS_SEQRET } from "$moduleDir/modules/nf-core/emboss/seqret/main.nf"
 include { GUNZIP } from "$moduleDir/modules/nf-core/gunzip/main.nf"

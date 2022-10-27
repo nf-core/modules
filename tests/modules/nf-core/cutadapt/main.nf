@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CUTADAPT } from "$moduleDir/modules/nf-core/cutadapt/main.nf"
 

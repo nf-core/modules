@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PICARD_MARKDUPLICATES as PICARD_MARKDUPLICATES_SORTED_BAM } from "$moduleDir/modules/nf-core/picard/markduplicates/main.nf"
 include { PICARD_MARKDUPLICATES as PICARD_MARKDUPLICATES_UNSORTED_BAM}  from "$moduleDir/modules/nf-core/picard/markduplicates/main.nf"

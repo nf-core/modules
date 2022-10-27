@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION } from "$moduleDir/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/main.nf"
 

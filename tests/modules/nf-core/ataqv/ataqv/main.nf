@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ATAQV_ATAQV } from "$moduleDir/modules/nf-core/ataqv/ataqv/main.nf"
 include { ATAQV_ATAQV as ATAQV_ATAQV_PROBLEM_READS} from "$moduleDir/modules/nf-core/ataqv/ataqv/main.nf"

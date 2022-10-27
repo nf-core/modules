@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ADAPTERREMOVAL                            } from "$moduleDir/modules/nf-core/adapterremoval/main.nf"
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_COLLAPSE } from "$moduleDir/modules/nf-core/adapterremoval/main.nf"

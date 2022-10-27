@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_VARIANTRECALIBRATOR as GATK4_VARIANTRECALIBRATOR_NO_ALLELESPECIFICTY   } from "$moduleDir/modules/nf-core/gatk4/variantrecalibrator/main.nf"
 include { GATK4_VARIANTRECALIBRATOR as GATK4_VARIANTRECALIBRATOR_WITH_ALLELESPECIFICTY } from "$moduleDir/modules/nf-core/gatk4/variantrecalibrator/main.nf"

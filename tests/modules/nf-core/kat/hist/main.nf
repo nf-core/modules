@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { KAT_HIST } from "$moduleDir/modules/nf-core/kat/hist/main.nf"
 

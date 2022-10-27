@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GRAPHMAP2_INDEX } from "$moduleDir/modules/nf-core/graphmap2/index/main.nf"
 include { GRAPHMAP2_ALIGN } from "$moduleDir/modules/nf-core/graphmap2/align/main.nf"

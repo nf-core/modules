@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TRANSDECODER_LONGORF } from "$moduleDir/modules/nf-core/transdecoder/longorf/main.nf"
 

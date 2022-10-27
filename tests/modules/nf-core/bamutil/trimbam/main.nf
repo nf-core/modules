@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAMUTIL_TRIMBAM } from "$moduleDir/modules/nf-core/bamutil/trimbam/main.nf"
 

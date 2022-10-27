@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAMTOOLS_STATS } from "$moduleDir/modules/nf-core/bamtools/stats/main.nf"
 

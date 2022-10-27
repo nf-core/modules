@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MINIMAP2_ALIGN } from "$moduleDir/modules/nf-core/minimap2/align/main.nf"
 

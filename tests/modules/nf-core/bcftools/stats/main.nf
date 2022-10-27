@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCFTOOLS_STATS } from "$moduleDir/modules/nf-core/bcftools/stats/main.nf"
 

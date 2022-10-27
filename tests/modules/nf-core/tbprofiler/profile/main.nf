@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TBPROFILER_PROFILE } from "$moduleDir/modules/nf-core/tbprofiler/profile/main.nf"
 

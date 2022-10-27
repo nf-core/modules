@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GAPPA_EXAMINEASSIGN } from "$moduleDir/modules/nf-core/gappa/examineassign/main.nf"
 

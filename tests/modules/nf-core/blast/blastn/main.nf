@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BLAST_MAKEBLASTDB } from "$moduleDir/modules/nf-core/blast/makeblastdb/main.nf"
 include { BLAST_BLASTN      } from "$moduleDir/modules/nf-core/blast/blastn/main.nf"

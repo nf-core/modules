@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEGEMEHL_ALIGN as SEGEMEHL_SAM } from "$moduleDir/modules/nf-core/segemehl/align/main.nf"
 include { SEGEMEHL_ALIGN as SEGEMEHL_BAM } from "$moduleDir/modules/nf-core/segemehl/align/main.nf"

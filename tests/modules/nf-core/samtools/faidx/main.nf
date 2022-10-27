@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_FAIDX } from "$moduleDir/modules/nf-core/samtools/faidx/main.nf"
 

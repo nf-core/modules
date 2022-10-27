@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTQ_CONTAM_SEQTK_KRAKEN } from "../../../../subworkflows/nf-core/fastq_contam_seqtk_kraken/main.nf"
 include { UNTAR                     } from "$moduleDir/modules/nf-core/untar/main.nf"

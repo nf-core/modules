@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_CALCULATECONTAMINATION                                              } from "$moduleDir/modules/nf-core/gatk4/calculatecontamination/main.nf"
 include { GATK4_CALCULATECONTAMINATION as GATK4_CALCULATECONTAMINATION_SEGMENTATION } from "$moduleDir/modules/nf-core/gatk4/calculatecontamination/main.nf"

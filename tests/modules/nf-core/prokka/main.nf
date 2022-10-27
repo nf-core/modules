@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PROKKA } from "$moduleDir/modules/nf-core/prokka/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CNVKIT_REFERENCE } from "$moduleDir/modules/nf-core/cnvkit/reference/main.nf"
 

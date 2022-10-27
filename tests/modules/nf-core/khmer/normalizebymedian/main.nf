@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEQTK_MERGEPE                                           } from "$moduleDir/modules/nf-core/seqtk/mergepe/main.nf"
 include { KHMER_NORMALIZEBYMEDIAN                                 } from "$moduleDir/modules/nf-core/khmer/normalizebymedian/main.nf"

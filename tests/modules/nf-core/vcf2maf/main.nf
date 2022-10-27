@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VCF2MAF } from "$moduleDir/modules/nf-core/vcf2maf/main.nf"
 include { UNTAR   } from "$moduleDir/modules/nf-core/untar/main.nf"

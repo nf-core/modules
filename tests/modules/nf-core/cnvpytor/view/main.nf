@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CNVPYTOR_VIEW } from "$moduleDir/modules/nf-core/cnvpytor/view/main.nf"
 

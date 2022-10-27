@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VSEARCH_CLUSTER } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
 include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SMALLMEM } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"

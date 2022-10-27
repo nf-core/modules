@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UNTAR           } from "$moduleDir/modules/nf-core/untar/main.nf"
 include { GATK4_CREATESOMATICPANELOFNORMALS } from "$moduleDir/modules/nf-core/gatk4/createsomaticpanelofnormals/main.nf"

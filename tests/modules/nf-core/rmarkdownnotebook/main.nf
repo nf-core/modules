@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RMARKDOWNNOTEBOOK } from "$moduleDir/modules/nf-core/rmarkdownnotebook/main.nf"
 include { RMARKDOWNNOTEBOOK as RMARKDOWNNOTEBOOK_PARAMETRIZE } from "$moduleDir/modules/nf-core/rmarkdownnotebook/main.nf"

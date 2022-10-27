@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PICARD_CLEANSAM } from "$moduleDir/modules/nf-core/picard/cleansam/main.nf"
 

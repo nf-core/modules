@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DSHBIO_EXPORTSEGMENTS } from "$moduleDir/modules/nf-core/dshbio/exportsegments/main.nf"
 

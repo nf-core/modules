@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VG_DECONSTRUCT } from "$moduleDir/modules/nf-core/vg/deconstruct/main.nf"
 

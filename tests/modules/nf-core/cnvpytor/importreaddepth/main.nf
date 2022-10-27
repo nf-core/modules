@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CNVPYTOR_IMPORTREADDEPTH } from "$moduleDir/modules/nf-core/cnvpytor/importreaddepth/main.nf"
 

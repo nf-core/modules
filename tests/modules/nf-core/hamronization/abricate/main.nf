@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HAMRONIZATION_ABRICATE } from "$moduleDir/modules/nf-core/hamronization/abricate/main.nf"
 

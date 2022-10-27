@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MUSCLE } from "$moduleDir/modules/nf-core/muscle/main.nf"
 include { MUSCLE as MUSCLE_TREE } from "$moduleDir/modules/nf-core/muscle/main.nf"

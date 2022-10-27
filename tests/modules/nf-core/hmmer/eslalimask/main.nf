@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HMMER_HMMALIGN             } from "$moduleDir/modules/nf-core/hmmer/hmmalign/main.nf"
 include { HMMER_ESLALIMASK as RFMASK } from "$moduleDir/modules/nf-core/hmmer/eslalimask/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SNAPALIGNER_INDEX } from "$moduleDir/modules/nf-core/snapaligner/index/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SCRAMBLE_CLUSTERANALYSIS   } from "$moduleDir/modules/nf-core/scramble/clusteranalysis/main.nf"
 include { SCRAMBLE_CLUSTERIDENTIFIER } from "$moduleDir/modules/nf-core/scramble/clusteridentifier/main.nf"

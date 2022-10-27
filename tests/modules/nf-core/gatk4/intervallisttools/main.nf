@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_BEDTOINTERVALLIST } from "$moduleDir/modules/nf-core/gatk4/bedtointervallist/main.nf"
 include { GATK4_INTERVALLISTTOOLS } from "$moduleDir/modules/nf-core/gatk4/intervallisttools/main.nf"

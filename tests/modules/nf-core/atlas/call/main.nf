@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ATLAS_CALL } from "$moduleDir/modules/nf-core/atlas/call/main.nf"
 

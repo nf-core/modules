@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GLIMPSE_CHUNK } from "$moduleDir/modules/nf-core/glimpse/chunk/main.nf"
 

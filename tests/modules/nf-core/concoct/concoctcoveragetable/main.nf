@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CONCOCT_CUTUPFASTA } from "$moduleDir/modules/nf-core/concoct/cutupfasta/main.nf"
 include { CONCOCT_CONCOCTCOVERAGETABLE } from "$moduleDir/modules/nf-core/concoct/concoctcoveragetable/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { COOLER_DUMP } from "$moduleDir/modules/nf-core/cooler/dump/main.nf"
 

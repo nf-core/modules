@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MAGECK_MLE } from "$moduleDir/modules/nf-core/mageck/mle/main.nf"
 

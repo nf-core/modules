@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MOTUS_DOWNLOADDB } from "$moduleDir/modules/nf-core/motus/downloaddb/main.nf"
 include { MOTUS_PROFILE    } from "$moduleDir/modules/nf-core/motus/profile/main.nf"

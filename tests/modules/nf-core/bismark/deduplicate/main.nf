@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BISMARK_DEDUPLICATE } from "$moduleDir/modules/nf-core/bismark/deduplicate/main.nf"
 

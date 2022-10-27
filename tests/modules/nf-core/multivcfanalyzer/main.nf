@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK_UNIFIEDGENOTYPER } from "$moduleDir/modules/nf-core/gatk/unifiedgenotyper/main.nf"
 include { GUNZIP                } from "$moduleDir/modules/nf-core/gunzip/main.nf"

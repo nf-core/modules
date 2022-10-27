@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_COLLATE } from "$moduleDir/modules/nf-core/samtools/collate/main.nf"
 include { SAMTOOLS_FIXMATE } from "$moduleDir/modules/nf-core/samtools/fixmate/main.nf"

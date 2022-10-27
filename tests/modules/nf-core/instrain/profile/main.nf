@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { INSTRAIN_PROFILE } from "$moduleDir/modules/nf-core/instrain/profile/main.nf"
 

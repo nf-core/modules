@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GENMOD_MODELS   } from "$moduleDir/modules/nf-core/genmod/models/main.nf"
 

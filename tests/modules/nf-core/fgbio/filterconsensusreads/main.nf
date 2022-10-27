@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FGBIO_FILTERCONSENSUSREADS } from "$moduleDir/modules/nf-core/fgbio/filterconsensusreads/main.nf"
 

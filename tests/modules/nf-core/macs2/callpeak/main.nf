@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MACS2_CALLPEAK } from "$moduleDir/modules/nf-core/macs2/callpeak/main.nf"
 include { MACS2_CALLPEAK as MACS2_CALLPEAK_CTRL    } from "$moduleDir/modules/nf-core/macs2/callpeak/main.nf"

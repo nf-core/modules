@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MASH_SKETCH } from "$moduleDir/modules/nf-core/mash/sketch/main.nf"
 

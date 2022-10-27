@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_CONVERT as SAMTOOLS_BAMTOCRAM } from "$moduleDir/modules/nf-core/samtools/convert/main.nf"
 include { SAMTOOLS_CONVERT as SAMTOOLS_CRAMTOBAM } from "$moduleDir/modules/nf-core/samtools/convert/main.nf"

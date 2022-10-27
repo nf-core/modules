@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HISAT2_EXTRACTSPLICESITES } from "$moduleDir/modules/nf-core/hisat2/extractsplicesites/main.nf"
 include { HISAT2_BUILD              } from "$moduleDir/modules/nf-core/hisat2/build/main.nf"

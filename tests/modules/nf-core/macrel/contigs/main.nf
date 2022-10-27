@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MACREL_CONTIGS } from "$moduleDir/modules/nf-core/macrel/contigs/main.nf"
 

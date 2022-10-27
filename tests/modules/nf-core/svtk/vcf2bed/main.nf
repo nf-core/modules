@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SVTK_VCF2BED      } from "$moduleDir/modules/nf-core/svtk/vcf2bed/main.nf"
 include { MANTA_GERMLINE    } from "$moduleDir/modules/nf-core/manta/germline/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { QUALIMAP_BAMQC } from "$moduleDir/modules/nf-core/qualimap/bamqc/main.nf"
 

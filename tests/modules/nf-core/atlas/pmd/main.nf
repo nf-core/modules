@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ATLAS_PMD } from "$moduleDir/modules/nf-core/atlas/pmd/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 //keep --no-verson argument, otherwise md5 will change on each execution
 include { BCFTOOLS_MERGE                        } from "$moduleDir/modules/nf-core/bcftools/merge/main.nf"

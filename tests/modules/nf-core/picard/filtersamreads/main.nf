@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PICARD_SORTSAM        } from "$moduleDir/modules/nf-core/picard/sortsam/main.nf"
 include { PICARD_FILTERSAMREADS } from "$moduleDir/modules/nf-core/picard/filtersamreads/main.nf"

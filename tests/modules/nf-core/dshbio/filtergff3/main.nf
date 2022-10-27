@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DSHBIO_FILTERGFF3 } from "$moduleDir/modules/nf-core/dshbio/filtergff3/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_BAM } from "../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf"
 include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_CRAM } from "../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf"

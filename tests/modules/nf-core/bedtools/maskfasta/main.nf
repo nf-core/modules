@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BEDTOOLS_MASKFASTA } from "$moduleDir/modules/nf-core/bedtools/maskfasta/main.nf"
 

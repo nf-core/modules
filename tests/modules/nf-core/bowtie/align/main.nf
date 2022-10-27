@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BOWTIE_BUILD } from "$moduleDir/modules/nf-core/bowtie/build/main.nf"
 include { BOWTIE_ALIGN } from "$moduleDir/modules/nf-core/bowtie/align/main.nf"

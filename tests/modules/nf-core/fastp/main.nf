@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTP } from "$moduleDir/modules/nf-core/fastp/main.nf"
 

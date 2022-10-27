@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VSEARCH_USEARCHGLOBAL } from "$moduleDir/modules/nf-core/vsearch/usearchglobal/main.nf"
 

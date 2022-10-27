@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ECTYPER } from "$moduleDir/modules/nf-core/ectyper/main.nf"
 

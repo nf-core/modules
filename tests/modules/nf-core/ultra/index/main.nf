@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ULTRA_INDEX } from "$moduleDir/modules/nf-core/ultra/index/main.nf"
 include { GFFREAD     } from "$moduleDir/modules/nf-core/gffread/main.nf"

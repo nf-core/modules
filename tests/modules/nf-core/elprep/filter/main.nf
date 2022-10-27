@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ELPREP_FILTER } from "$moduleDir/modules/nf-core/elprep/filter/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VCFLIB_VCFBREAKMULTI } from "$moduleDir/modules/nf-core/vcflib/vcfbreakmulti/main.nf"
 

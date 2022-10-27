@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { LEEHOM } from "$moduleDir/modules/nf-core/leehom/main.nf"
 include { SAMTOOLS_VIEW } from "$moduleDir/modules/nf-core/samtools/view/main.nf"

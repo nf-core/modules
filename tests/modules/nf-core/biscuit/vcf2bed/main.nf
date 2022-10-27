@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BISCUIT_VCF2BED } from "$moduleDir/modules/nf-core/biscuit/vcf2bed/main.nf"
 

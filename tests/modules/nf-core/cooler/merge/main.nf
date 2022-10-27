@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { COOLER_MERGE } from "$moduleDir/modules/nf-core/cooler/merge/main.nf"
 include { COOLER_DUMP  } from "$moduleDir/modules/nf-core/cooler/dump/main.nf"

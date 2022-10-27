@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCL2FASTQ } from "$moduleDir/modules/nf-core/bcl2fastq/main.nf"
 include { UNTAR      } from "$moduleDir/modules/nf-core/untar/main.nf"

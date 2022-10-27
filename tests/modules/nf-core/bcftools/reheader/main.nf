@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCFTOOLS_REHEADER } from "$moduleDir/modules/nf-core/bcftools/reheader/main.nf"
 

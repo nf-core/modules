@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEACR_CALLPEAK } from "$moduleDir/modules/nf-core/seacr/callpeak/main.nf"
 

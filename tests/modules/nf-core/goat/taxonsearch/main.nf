@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GOAT_TAXONSEARCH } from "$moduleDir/modules/nf-core/goat/taxonsearch/main.nf"
 

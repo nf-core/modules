@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ICHORCNA_CREATEPON } from "$moduleDir/modules/nf-core/ichorcna/createpon/main.nf"
 

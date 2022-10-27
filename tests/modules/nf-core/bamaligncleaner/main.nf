@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAMALIGNCLEANER } from "$moduleDir/modules/nf-core/bamaligncleaner/main.nf"
 

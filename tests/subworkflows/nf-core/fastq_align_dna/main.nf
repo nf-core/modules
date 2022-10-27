@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BOWTIE2_BUILD     } from "$moduleDir/modules/nf-core/bowtie2/build/main.nf"
 include { BWA_INDEX         } from "$moduleDir/modules/nf-core/bwa/index/main.nf"

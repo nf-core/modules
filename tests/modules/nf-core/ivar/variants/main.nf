@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { IVAR_VARIANTS } from "$moduleDir/modules/nf-core/ivar/variants/main.nf"
 

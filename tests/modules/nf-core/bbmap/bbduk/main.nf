@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BBMAP_BBDUK } from "$moduleDir/modules/nf-core/bbmap/bbduk/main.nf"
 

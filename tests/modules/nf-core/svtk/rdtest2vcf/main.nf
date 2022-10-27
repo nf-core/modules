@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SVTK_RDTEST2VCF } from "$moduleDir/modules/nf-core/svtk/rdtest2vcf/main.nf"
 include { SVTK_VCF2BED      } from "$moduleDir/modules/nf-core/svtk/vcf2bed/main.nf"

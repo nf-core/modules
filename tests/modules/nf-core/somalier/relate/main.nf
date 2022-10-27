@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SOMALIER_RELATE } from "$moduleDir/modules/nf-core/somalier/relate/main.nf"
 

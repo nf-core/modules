@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_INDEX } from "$moduleDir/modules/nf-core/bbmap/bbsplit/main.nf"
 include { BBMAP_BBSPLIT as BBMAP_BBSPLIT_SPLIT } from "$moduleDir/modules/nf-core/bbmap/bbsplit/main.nf"

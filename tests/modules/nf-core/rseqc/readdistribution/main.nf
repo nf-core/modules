@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RSEQC_READDISTRIBUTION }   from "$moduleDir/modules/nf-core/rseqc/readdistribution/main.nf"
 

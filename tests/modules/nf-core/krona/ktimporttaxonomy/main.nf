@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_READS  } from "$moduleDir/modules/nf-core/krona/ktimporttaxonomy/main.nf"
 include { KRONA_KTIMPORTTAXONOMY as KRONA_KTIMPORTTAXONOMY_REPORT } from "$moduleDir/modules/nf-core/krona/ktimporttaxonomy/main.nf"

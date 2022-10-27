@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SHINYNGS_APP } from "$moduleDir/modules/nf-core/shinyngs/app/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MOSDEPTH                       } from "$moduleDir/modules/nf-core/mosdepth/main.nf"
 include { MOSDEPTH as MOSDEPTH_FAIL      } from "$moduleDir/modules/nf-core/mosdepth/main.nf"

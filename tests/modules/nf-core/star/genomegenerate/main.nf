@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { STAR_GENOMEGENERATE } from "$moduleDir/modules/nf-core/star/genomegenerate/main.nf"
 

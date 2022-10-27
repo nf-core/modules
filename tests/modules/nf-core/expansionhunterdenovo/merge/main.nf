@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { EXPANSIONHUNTERDENOVO_MERGE   } from "$moduleDir/modules/nf-core/expansionhunterdenovo/merge/main.nf"
 include { EXPANSIONHUNTERDENOVO_PROFILE } from "$moduleDir/modules/nf-core/expansionhunterdenovo/profile/main.nf"

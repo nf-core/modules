@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ANTISMASH_ANTISMASHLITE                  } from "$moduleDir/modules/nf-core/antismash/antismashlite/main.nf"
 include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from "$moduleDir/modules/nf-core/antismash/antismashlitedownloaddatabases/main.nf"

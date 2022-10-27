@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SOURMASH_SKETCH as SOURMASH_SKETCH1 } from "$moduleDir/modules/nf-core/sourmash/sketch/main.nf"
 include { SOURMASH_SKETCH as SOURMASH_SKETCH2 } from "$moduleDir/modules/nf-core/sourmash/sketch/main.nf"

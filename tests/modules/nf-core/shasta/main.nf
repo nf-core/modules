@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SHASTA } from "$moduleDir/modules/nf-core/shasta/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PRODIGAL } from "$moduleDir/modules/nf-core/prodigal/main.nf"
 include { AMPLIFY_PREDICT } from "$moduleDir/modules/nf-core/amplify/predict/main.nf"

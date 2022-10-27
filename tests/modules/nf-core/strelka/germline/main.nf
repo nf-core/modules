@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { STRELKA_GERMLINE } from "$moduleDir/modules/nf-core/strelka/germline/main.nf"
 

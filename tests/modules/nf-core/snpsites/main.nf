@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SNPSITES } from "$moduleDir/modules/nf-core/snpsites/main.nf"
 

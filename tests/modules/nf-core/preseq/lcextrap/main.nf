@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PRESEQ_LCEXTRAP } from "$moduleDir/modules/nf-core/preseq/lcextrap/main.nf"
 

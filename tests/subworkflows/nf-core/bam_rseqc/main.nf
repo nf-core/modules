@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAM_RSEQC } from "../../../../subworkflows/nf-core/bam_rseqc/main.nf"
 

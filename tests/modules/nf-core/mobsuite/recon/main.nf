@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MOBSUITE_RECON } from "$moduleDir/modules/nf-core/mobsuite/recon/main.nf"
 

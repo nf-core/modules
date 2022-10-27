@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { KALLISTOBUSTOOLS_REF   } from "$moduleDir/modules/nf-core/kallistobustools/ref/main.nf"
 include { KALLISTOBUSTOOLS_COUNT } from "$moduleDir/modules/nf-core/kallistobustools/count/main.nf"

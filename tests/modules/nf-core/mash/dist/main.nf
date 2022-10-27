@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MASH_DIST } from "$moduleDir/modules/nf-core/mash/dist/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SHOVILL                    } from "$moduleDir/modules/nf-core/shovill/main.nf"
 include { SHOVILL as SHOVILL_SKESA   } from "$moduleDir/modules/nf-core/shovill/main.nf"

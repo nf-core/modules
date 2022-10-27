@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MERYL_COUNT     } from "$moduleDir/modules/nf-core/meryl/count/main.nf"
 include { MERYL_HISTOGRAM } from "$moduleDir/modules/nf-core/meryl/histogram/main.nf"

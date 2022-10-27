@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BWAMETH_INDEX } from "$moduleDir/modules/nf-core/bwameth/index/main.nf"
 

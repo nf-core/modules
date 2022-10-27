@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PICARD_CROSSCHECKFINGERPRINTS } from "$moduleDir/modules/nf-core/picard/crosscheckfingerprints/main.nf"
 

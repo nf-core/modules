@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GENMOD_COMPOUND } from "$moduleDir/modules/nf-core/genmod/compound/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ARIA2 } from "$moduleDir/modules/nf-core/aria2/main.nf"
 

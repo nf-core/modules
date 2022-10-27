@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TIDDIT_COV as TIDDIT_COV_BED } from "$moduleDir/modules/nf-core/tiddit/cov/main.nf"
 include { TIDDIT_COV as TIDDIT_COV_WIG } from "$moduleDir/modules/nf-core/tiddit/cov/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DRAGONFLYE  } from "$moduleDir/modules/nf-core/dragonflye/main.nf"
 include { DRAGONFLYE as DRAGONFLYE_RAVEN   } from "$moduleDir/modules/nf-core/dragonflye/main.nf"

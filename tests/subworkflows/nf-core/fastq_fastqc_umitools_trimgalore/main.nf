@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from "../../../../subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/main.nf"
 

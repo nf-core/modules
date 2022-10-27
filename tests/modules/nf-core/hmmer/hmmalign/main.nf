@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HMMER_HMMALIGN as HMMER_HMMALIGN        } from "$moduleDir/modules/nf-core/hmmer/hmmalign/main.nf"
 include { HMMER_HMMALIGN as HMMER_HMMALIGN_PREFIX } from "$moduleDir/modules/nf-core/hmmer/hmmalign/main.nf"

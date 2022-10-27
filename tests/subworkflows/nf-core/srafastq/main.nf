@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SRAFASTQ } from "../../../../subworkflows/nf-core/srafastq/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UNZIP      } from "$moduleDir/modules/nf-core/unzip/main.nf"
 include { MALT_BUILD } from  '../$moduleDir/modules/nf-core/malt/build/main.nf'

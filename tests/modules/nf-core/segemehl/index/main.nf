@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEGEMEHL_INDEX } from "$moduleDir/modules/nf-core/segemehl/index/main.nf"
 

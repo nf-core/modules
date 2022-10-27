@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEQTK_SAMPLE } from "$moduleDir/modules/nf-core/seqtk/sample/main.nf"
 

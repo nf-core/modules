@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MANTA_CONVERTINVERSION } from "$moduleDir/modules/nf-core/manta/convertinversion/main.nf"
 include { MANTA_TUMORONLY        } from "$moduleDir/modules/nf-core/manta/tumoronly/main.nf"

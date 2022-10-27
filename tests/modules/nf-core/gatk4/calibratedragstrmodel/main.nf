@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_CALIBRATEDRAGSTRMODEL } from "$moduleDir/modules/nf-core/gatk4/calibratedragstrmodel/main.nf"
 

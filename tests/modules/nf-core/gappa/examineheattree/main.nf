@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GAPPA_EXAMINEHEATTREE } from "$moduleDir/modules/nf-core/gappa/examineheattree/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RACON } from "$moduleDir/modules/nf-core/racon/main.nf"
 

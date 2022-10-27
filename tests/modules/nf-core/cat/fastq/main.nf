@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CAT_FASTQ } from "$moduleDir/modules/nf-core/cat/fastq/main.nf"
 

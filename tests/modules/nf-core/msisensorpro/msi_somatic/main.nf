@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MSISENSORPRO_MSI_SOMATIC } from "$moduleDir/modules/nf-core/msisensorpro/msi_somatic/main.nf"
 include { MSISENSORPRO_SCAN } from "$moduleDir/modules/nf-core/msisensorpro/scan/main.nf"

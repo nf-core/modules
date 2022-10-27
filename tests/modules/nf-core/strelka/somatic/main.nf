@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { STRELKA_SOMATIC } from "$moduleDir/modules/nf-core/strelka/somatic/main.nf"
 

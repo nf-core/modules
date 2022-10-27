@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MANTA_SOMATIC } from "$moduleDir/modules/nf-core/manta/somatic/main.nf"
 

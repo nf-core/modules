@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SNIPPY_RUN } from "$moduleDir/modules/nf-core/snippy/run/main.nf"
 include { SNIPPY_CORE } from "$moduleDir/modules/nf-core/snippy/core/main.nf"

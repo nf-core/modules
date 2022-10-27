@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PLINK2_VCF } from "$moduleDir/modules/nf-core/plink2/vcf/main.nf"
 include { PLINK2_SCORE } from "$moduleDir/modules/nf-core/plink2/score/main.nf"

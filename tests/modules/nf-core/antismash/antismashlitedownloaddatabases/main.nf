@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UNTAR as UNTAR1 } from "$moduleDir/modules/nf-core/untar/main.nf"
 include { UNTAR as UNTAR2 } from "$moduleDir/modules/nf-core/untar/main.nf"

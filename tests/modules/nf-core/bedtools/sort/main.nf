@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BEDTOOLS_SORT } from "$moduleDir/modules/nf-core/bedtools/sort/main.nf"
 

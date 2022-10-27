@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RASUSA } from "$moduleDir/modules/nf-core/rasusa/main.nf"
 

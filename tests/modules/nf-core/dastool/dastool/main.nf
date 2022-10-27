@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
+moduleDir = launchDir
 include { METABAT2_METABAT2 } from "$moduleDir/modules/nf-core/metabat2/metabat2/main.nf"
 include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from "$moduleDir/modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf"
 include { DASTOOL_FASTATOCONTIG2BIN } from "$moduleDir/modules/nf-core/dastool/fastatocontig2bin/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS } from "$moduleDir/modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf"
 

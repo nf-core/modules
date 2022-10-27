@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CHECKM_LINEAGEWF              } from "$moduleDir/modules/nf-core/checkm/lineagewf/main.nf"
 include { CHECKM_LINEAGEWF as CHECKM_LINEAGEWF_FASTA        } from "$moduleDir/modules/nf-core/checkm/lineagewf/main.nf"

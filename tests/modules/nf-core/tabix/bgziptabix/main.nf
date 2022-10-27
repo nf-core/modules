@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TABIX_BGZIPTABIX } from "$moduleDir/modules/nf-core/tabix/bgziptabix/main.nf"
 

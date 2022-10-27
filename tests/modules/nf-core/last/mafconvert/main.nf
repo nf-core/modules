@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { LAST_MAFCONVERT } from "$moduleDir/modules/nf-core/last/mafconvert/main.nf"
 

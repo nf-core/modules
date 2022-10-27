@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PMDTOOLS_FILTER } from "$moduleDir/modules/nf-core/pmdtools/filter/main.nf"
 

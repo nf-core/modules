@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ENTREZDIRECT_ESUMMARY } from "$moduleDir/modules/nf-core/entrezdirect/esummary/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NANOMONSV_PARSE } from "$moduleDir/modules/nf-core/nanomonsv/parse/main.nf"
 

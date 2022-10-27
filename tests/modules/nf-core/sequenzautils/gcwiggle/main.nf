@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEQUENZAUTILS_GCWIGGLE } from "$moduleDir/modules/nf-core/sequenzautils/gcwiggle/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ANGSD_DOCOUNTS } from "$moduleDir/modules/nf-core/angsd/docounts/main.nf"
 

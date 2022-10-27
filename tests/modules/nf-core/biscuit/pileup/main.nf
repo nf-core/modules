@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BISCUIT_INDEX  } from "$moduleDir/modules/nf-core/biscuit/index/main.nf"
 include { BISCUIT_PILEUP } from "$moduleDir/modules/nf-core/biscuit/pileup/main.nf"

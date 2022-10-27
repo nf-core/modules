@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { CUSTOM_GETCHROMSIZES } from "$moduleDir/modules/nf-core/custom/getchromsizes/main.nf"
 

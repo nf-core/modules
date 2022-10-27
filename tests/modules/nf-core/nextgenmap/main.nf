@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NEXTGENMAP } from "$moduleDir/modules/nf-core/nextgenmap/main.nf"
 

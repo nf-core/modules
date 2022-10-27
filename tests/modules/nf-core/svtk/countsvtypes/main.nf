@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SVTK_COUNTSVTYPES } from "$moduleDir/modules/nf-core/svtk/countsvtypes/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HAPPY_PREPY } from "$moduleDir/modules/nf-core/happy/prepy/main.nf"
 

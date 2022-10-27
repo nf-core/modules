@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BIOHANSEL as BIOHANSEL_PE } from "$moduleDir/modules/nf-core/biohansel/main.nf"
 include { BIOHANSEL as BIOHANSEL_SE } from "$moduleDir/modules/nf-core/biohansel/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ANNOTATION_SNPEFF } from "../../../../../subworkflows/nf-core/annotation/snpeff/main"
 

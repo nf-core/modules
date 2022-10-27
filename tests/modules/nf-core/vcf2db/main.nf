@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VCF2DB } from "$moduleDir/modules/nf-core/vcf2db/main.nf"
 

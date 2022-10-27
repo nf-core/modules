@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RSEQC_JUNCTIONSATURATION }   from "$moduleDir/modules/nf-core/rseqc/junctionsaturation/main.nf"
 

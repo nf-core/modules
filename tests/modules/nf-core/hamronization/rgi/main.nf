@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 include { RGI_MAIN } from "$moduleDir/modules/nf-core/rgi/main/main.nf"
 include { HAMRONIZATION_RGI } from "$moduleDir/modules/nf-core/hamronization/rgi/main.nf"
 

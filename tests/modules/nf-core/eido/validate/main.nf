@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { EIDO_VALIDATE } from "$moduleDir/modules/nf-core/eido/validate/main.nf"
 

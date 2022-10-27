@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { AGRVATE } from "$moduleDir/modules/nf-core/agrvate/main.nf"
 

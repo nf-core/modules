@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SEQKIT_REPLACE } from "$moduleDir/modules/nf-core/seqkit/replace/main.nf"
 include { SEQKIT_REPLACE as SEQKIT_REPLACEUNCOMP } from "$moduleDir/modules/nf-core/seqkit/replace/main.nf"

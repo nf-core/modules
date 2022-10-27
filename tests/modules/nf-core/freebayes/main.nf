@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FREEBAYES } from "$moduleDir/modules/nf-core/freebayes/main.nf"
 

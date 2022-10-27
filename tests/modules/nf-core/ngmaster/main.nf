@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NGMASTER } from "$moduleDir/modules/nf-core/ngmaster/main.nf"
 

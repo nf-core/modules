@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { VCFTOOLS as VCFTOOLS_BASE     } from "$moduleDir/modules/nf-core/vcftools/main.nf"
 include { VCFTOOLS as VCFTOOLS_OPTIONAL } from "$moduleDir/modules/nf-core/vcftools/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DRAGMAP_HASHTABLE } from "$moduleDir/modules/nf-core/dragmap/hashtable/main.nf"
 include { DRAGMAP_ALIGN     } from "$moduleDir/modules/nf-core/dragmap/align/main.nf"

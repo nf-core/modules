@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UCSC_BEDCLIP } from "$moduleDir/modules/nf-core/ucsc/bedclip/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAMTOOLS_SPLIT as BAMTOOLS_SPLIT_SINGLE   } from "$moduleDir/modules/nf-core/bamtools/split/main.nf"
 include { BAMTOOLS_SPLIT as BAMTOOLS_SPLIT_MULTIPLE } from "$moduleDir/modules/nf-core/bamtools/split/main.nf"

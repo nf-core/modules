@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MEGAN_RMA2INFO } from "$moduleDir/modules/nf-core/megan/rma2info/main.nf"
 

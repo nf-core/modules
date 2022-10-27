@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { STAPHOPIASCCMEC } from "$moduleDir/modules/nf-core/staphopiasccmec/main.nf"
 include { STAPHOPIASCCMEC as STAPHOPIASCCMEC_HAMMING } from "$moduleDir/modules/nf-core/staphopiasccmec/main.nf"

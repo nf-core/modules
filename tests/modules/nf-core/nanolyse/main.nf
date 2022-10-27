@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NANOLYSE } from "$moduleDir/modules/nf-core/nanolyse/main.nf"
 

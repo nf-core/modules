@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { TAILFINDR } from "$moduleDir/modules/nf-core/tailfindr/main.nf"
 

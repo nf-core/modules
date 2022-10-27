@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { LOFREQ_CALLPARALLEL } from "$moduleDir/modules/nf-core/lofreq/callparallel/main.nf"
 

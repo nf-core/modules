@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { HMMER_HMMSEARCH } from "$moduleDir/modules/nf-core/hmmer/hmmsearch/main.nf"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG } from "../../../../subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/main"
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SPATYPER } from "$moduleDir/modules/nf-core/spatyper/main.nf"
 include { SPATYPER as SPATYPER_ENRICH } from "$moduleDir/modules/nf-core/spatyper/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_DEPTH } from "$moduleDir/modules/nf-core/samtools/depth/main.nf"
 include { SEXDETERRMINE } from "$moduleDir/modules/nf-core/sexdeterrmine/main.nf"

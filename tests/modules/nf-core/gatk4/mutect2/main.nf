@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK4_MUTECT2                       } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"
 include { GATK4_MUTECT2 as GATK4_MUTECT2_PAIR } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"

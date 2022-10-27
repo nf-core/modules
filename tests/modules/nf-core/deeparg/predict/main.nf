@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DEEPARG_DOWNLOADDATA } from "$moduleDir/modules/nf-core/deeparg/downloaddata/main.nf"
 include { DEEPARG_PREDICT      } from "$moduleDir/modules/nf-core/deeparg/predict/main.nf"

@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { UNTAR        } from "$moduleDir/modules/nf-core/untar/main.nf"
 include { ARTIC_MINION } from "$moduleDir/modules/nf-core/artic/minion/main.nf"

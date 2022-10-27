@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ABRICATE_RUN } from "$moduleDir/modules/nf-core/abricate/run/main.nf"
 

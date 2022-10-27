@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_BAM} from "$moduleDir/modules/nf-core/ngscheckmate/ncm/main.nf"
 include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_VCF} from "$moduleDir/modules/nf-core/ngscheckmate/ncm/main.nf"

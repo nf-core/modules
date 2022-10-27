@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { RAXMLNG as RAXMLNG_NO_BOOTSTRAP } from "$moduleDir/modules/nf-core/raxmlng/main.nf"
 include { RAXMLNG as RAXMLNG_BOOTSTRAP    } from "$moduleDir/modules/nf-core/raxmlng/main.nf"

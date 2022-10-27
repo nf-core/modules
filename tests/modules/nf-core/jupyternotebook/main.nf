@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { JUPYTERNOTEBOOK } from "$moduleDir/modules/nf-core/jupyternotebook/main.nf"
 include { JUPYTERNOTEBOOK as JUPYTERNOTEBOOK_PARAMETRIZE } from "$moduleDir/modules/nf-core/jupyternotebook/main.nf"

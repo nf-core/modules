@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { MAPDAMAGE2 } from "$moduleDir/modules/nf-core/mapdamage2/main.nf"
 

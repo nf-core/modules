@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SAMTOOLS_DICT } from "$moduleDir/modules/nf-core/samtools/dict/main.nf"
 

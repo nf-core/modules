@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BCFTOOLS_CONSENSUS } from "$moduleDir/modules/nf-core/bcftools/consensus/main.nf"
 

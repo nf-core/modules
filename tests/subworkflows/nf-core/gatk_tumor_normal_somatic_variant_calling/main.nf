@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from "../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main"
 

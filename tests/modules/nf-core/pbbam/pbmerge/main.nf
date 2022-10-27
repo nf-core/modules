@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PBBAM_PBMERGE } from "$moduleDir/modules/nf-core/pbbam/pbmerge/main.nf"
 

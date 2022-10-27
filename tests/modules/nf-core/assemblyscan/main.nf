@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ASSEMBLYSCAN } from "$moduleDir/modules/nf-core/assemblyscan/main.nf"
 

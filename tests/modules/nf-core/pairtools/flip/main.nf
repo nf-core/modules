@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { PAIRTOOLS_FLIP } from "$moduleDir/modules/nf-core/pairtools/flip/main.nf"
 

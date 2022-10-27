@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { STRINGTIE_STRINGTIE } from "$moduleDir/modules/nf-core/stringtie/stringtie/main.nf"
 include { STRINGTIE_MERGE     } from "$moduleDir/modules/nf-core/stringtie/merge/main.nf"

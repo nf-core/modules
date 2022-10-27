@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { ANNOTATION_ENSEMBLVEP } from "../../../../../subworkflows/nf-core/annotation/ensemblvep/main"
 

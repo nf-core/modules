@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { SVTK_STANDARDIZE } from "$moduleDir/modules/nf-core/svtk/standardize/main.nf"
 include { MANTA_GERMLINE   } from "$moduleDir/modules/nf-core/manta/germline/main.nf"

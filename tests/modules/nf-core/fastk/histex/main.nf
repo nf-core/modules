@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { FASTK_FASTK } from "$moduleDir/modules/nf-core/fastk/fastk/main.nf"
 include { FASTK_HISTEX } from "$moduleDir/modules/nf-core/fastk/histex/main.nf"

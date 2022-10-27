@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_EXT_ERROR }   from "$moduleDir/modules/nf-core/bamtools/convert/main.nf"
 include { BAMTOOLS_CONVERT as BAMTOOLS_CONVERT_NOEXT_ERROR } from "$moduleDir/modules/nf-core/bamtools/convert/main.nf"

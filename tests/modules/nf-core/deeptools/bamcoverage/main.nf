@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { DEEPTOOLS_BAMCOVERAGE } from "$moduleDir/modules/nf-core/deeptools/bamcoverage/main.nf"
 

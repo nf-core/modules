@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+moduleDir = launchDir
 
 include { KRAKENUNIQ_DOWNLOAD } from "$moduleDir/modules/nf-core/krakenuniq/download/main.nf"
 include { KRAKENUNIQ_BUILD    } from "$moduleDir/modules/nf-core/krakenuniq/build/main.nf"
