@@ -1,0 +1,48 @@
+name: "odgi_draw"
+description: Draw previously-determined 2D layouts of the graph with diverse annotations.
+keywords:
+  - variation graph
+  - pangenome graph
+  - gfa
+  - graph drawing
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Pangenome graph in GFA v1.0 format or ODGI binary format
+      pattern: "*.{gfa,og}"
+  - lay:
+      type: file
+      description: 2D layout from 'odgi layout' in LAY binary format
+      pattern: "*.{lay}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - png:
+      type: file
+      description: File in PNG format containing a 2D drawing of a pangenome graph
+      pattern: "*.{png}"
+
+authors:
+  - "@subwaystation"
