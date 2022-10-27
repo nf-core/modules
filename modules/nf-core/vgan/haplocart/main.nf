@@ -10,7 +10,7 @@ process VGAN_HAPLOCART {
         'quay.io/biocontainers/vgan' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), path(reads2)
 
     output:
     tuple val(meta), path("*.txt"), path("*.posterior.txt"), emit: txt
@@ -22,6 +22,7 @@ process VGAN_HAPLOCART {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
 
     mkdir hc_files
@@ -44,6 +45,9 @@ process VGAN_HAPLOCART {
     if [[ "${meta.format}" == "fastq" ]] && ${meta.single_end};
     then 
         vgan haplocart $args -t -1 -fq1 $reads -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
+    elif [[ "${meta.format}" == "fastq" ]] && [[ "$reads2" != "NULL" ]];
+    then
+        vgan haplocart $args -t -1 -fq1 $reads -fq2 $reads2 -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
     elif [[ "${meta.format}" == "fastq" ]];
     then
         vgan haplocart $args -t -1 -fq1 $reads -i -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
