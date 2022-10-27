@@ -24,7 +24,7 @@ process DEEPTOOLS_PLOTCORRELATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def resolved_method = method ?: 'spearman' 
+    def resolved_method = method ?: 'spearman'
     def resolved_plot_type = plot_type ?: 'heatmap'
     """
     plotCorrelation \\

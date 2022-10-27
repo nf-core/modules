@@ -1,5 +1,5 @@
 name: "deeptools_multibamsummary"
-description: Computes read coverage for genomic regions (bins) across the entire genome.  
+description: Computes read coverage for genomic regions (bins) across the entire genome.
 keywords:
   - bam
   - coverage
@@ -28,7 +28,7 @@ input:
       pattern: "*.bam.bai"
   - labels:
       type: string
-      description: User specified labels instead of default labels (file names). 
+      description: User specified labels instead of default labels (file names).
 
 output:
   - meta:
@@ -45,7 +45,7 @@ output:
   - versions:
       type: file
       description: File containing software versions
-      pattern: "versions.yml"  
+      pattern: "versions.yml"
 
 authors:
   - "@tamara-hodgetts"

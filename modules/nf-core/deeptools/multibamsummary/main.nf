@@ -1,6 +1,6 @@
 process DEEPTOOLS_MULTIBAMSUMMARY {
     tag "$meta.id"
-    label 'process_high' 
+    label 'process_high'
 
     conda (params.enable_conda ? 'bioconda::deeptools=3.5.1' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
