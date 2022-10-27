@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_NO_ALLELSPECIFICITY } from '../../../../../modules/nf-core/gatk4/applyvqsr/main.nf'
-include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_WITH_ALLELSPECIFICITY} from '../../../../../modules/nf-core/gatk4/applyvqsr/main.nf'
+include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_NO_ALLELSPECIFICITY } from "$moduleDir/modules/nf-core/gatk4/applyvqsr/main.nf"
+include { GATK4_APPLYVQSR as GATK4_APPLYVQSR_WITH_ALLELSPECIFICITY} from "$moduleDir/modules/nf-core/gatk4/applyvqsr/main.nf"
 
 workflow test_gatk4_applyvqsr {
     input = [ [ id:'test'], // meta map

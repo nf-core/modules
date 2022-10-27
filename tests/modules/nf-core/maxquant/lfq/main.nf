@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { MAXQUANT_LFQ } from '../../../../../modules/nf-core/maxquant/lfq/main.nf'
+include { MAXQUANT_LFQ } from "$moduleDir/modules/nf-core/maxquant/lfq/main.nf"
 
 workflow test_maxquant_lfq {
-        
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true), file(params.test_data['proteomics']['parameter']['maxquant'] , checkIfExists: true)
             ]

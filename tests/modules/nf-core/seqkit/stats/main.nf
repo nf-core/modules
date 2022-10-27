@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQKIT_STATS } from '../../../../../modules/nf-core/seqkit/stats/main.nf'
+include { SEQKIT_STATS } from "$moduleDir/modules/nf-core/seqkit/stats/main.nf"
 
 workflow test_seqkit_stats_single_end {
 

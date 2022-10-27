@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DSHBIO_FILTERBED } from '../../../../../modules/nf-core/dshbio/filterbed/main.nf'
+include { DSHBIO_FILTERBED } from "$moduleDir/modules/nf-core/dshbio/filterbed/main.nf"
 
 workflow test_dshbio_filterbed {
     input = [ [ id:'test' ], // meta map

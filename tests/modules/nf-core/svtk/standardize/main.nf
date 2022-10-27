@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { SVTK_STANDARDIZE } from '../../../../../modules/nf-core/svtk/standardize/main.nf'
-include { MANTA_GERMLINE   } from '../../../../../modules/nf-core/manta/germline/main.nf'
+include { SVTK_STANDARDIZE } from "$moduleDir/modules/nf-core/svtk/standardize/main.nf"
+include { MANTA_GERMLINE   } from "$moduleDir/modules/nf-core/manta/germline/main.nf"
 
 workflow test_svtk_standardize {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
@@ -24,14 +24,14 @@ workflow test_svtk_standardize {
         fasta_fai
     )
 
-    SVTK_STANDARDIZE ( 
+    SVTK_STANDARDIZE (
         MANTA_GERMLINE.out.diploid_sv_vcf,
         fasta_fai
     )
 }
 
 workflow test_svtk_standardize_no_contigs {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
@@ -49,7 +49,7 @@ workflow test_svtk_standardize_no_contigs {
         fasta_fai
     )
 
-    SVTK_STANDARDIZE ( 
+    SVTK_STANDARDIZE (
         MANTA_GERMLINE.out.diploid_sv_vcf,
         []
     )

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_INDEX } from '../../../../../modules/nf-core/bbmap/index/main.nf'
+include { BBMAP_INDEX } from "$moduleDir/modules/nf-core/bbmap/index/main.nf"
 
 workflow test_bbmap_index {
-    
+
     input = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
     BBMAP_INDEX ( input )

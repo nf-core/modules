@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { HISAT2_EXTRACTSPLICESITES } from '../../../../../modules/nf-core/hisat2/extractsplicesites/main.nf'
-include { HISAT2_BUILD              } from '../../../../../modules/nf-core/hisat2/build/main.nf'
-include { HISAT2_ALIGN              } from '../../../../../modules/nf-core/hisat2/align/main.nf'
+include { HISAT2_EXTRACTSPLICESITES } from "$moduleDir/modules/nf-core/hisat2/extractsplicesites/main.nf"
+include { HISAT2_BUILD              } from "$moduleDir/modules/nf-core/hisat2/build/main.nf"
+include { HISAT2_ALIGN              } from "$moduleDir/modules/nf-core/hisat2/align/main.nf"
 
 workflow test_hisat2_align_single_end {
     input = [

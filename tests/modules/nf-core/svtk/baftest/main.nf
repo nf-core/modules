@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SVTK_BAFTEST      } from '../../../../../modules/nf-core/svtk/baftest/main.nf'
-include { SVTK_VCF2BED      } from '../../../../../modules/nf-core/svtk/vcf2bed/main.nf'
-include { MANTA_GERMLINE    } from '../../../../../modules/nf-core/manta/germline/main.nf'
+include { SVTK_BAFTEST      } from "$moduleDir/modules/nf-core/svtk/baftest/main.nf"
+include { SVTK_VCF2BED      } from "$moduleDir/modules/nf-core/svtk/vcf2bed/main.nf"
+include { MANTA_GERMLINE    } from "$moduleDir/modules/nf-core/manta/germline/main.nf"
 
 workflow test_svtk_baftest {
 

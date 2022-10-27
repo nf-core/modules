@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { NCBIGENOMEDOWNLOAD } from '../../../../modules/nf-core/ncbigenomedownload/main.nf'
+include { NCBIGENOMEDOWNLOAD } from "$moduleDir/modules/nf-core/ncbigenomedownload/main.nf"
 
 workflow test_ncbigenomedownload {
-    
+
     input = [ [ id:'test', single_end:false ] ]
 
     accessions = []

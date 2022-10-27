@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { AMPIR } from '../../../../modules/nf-core/ampir/main.nf'
+include { AMPIR } from "$moduleDir/modules/nf-core/ampir/main.nf"
 
 workflow test_ampir {
 

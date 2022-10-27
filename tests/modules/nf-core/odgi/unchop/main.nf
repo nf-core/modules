@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ODGI_UNCHOP } from '../../../../../modules/nf-core/odgi/unchop/main.nf'
+include { ODGI_UNCHOP } from "$moduleDir/modules/nf-core/odgi/unchop/main.nf"
 
 workflow test_odgi_unchop {
 

@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BWAMETH_INDEX } from '../../../../../modules/nf-core/bwameth/index/main.nf'
-include { BWAMETH_ALIGN } from '../../../../../modules/nf-core/bwameth/align/main.nf'
+include { BWAMETH_INDEX } from "$moduleDir/modules/nf-core/bwameth/index/main.nf"
+include { BWAMETH_ALIGN } from "$moduleDir/modules/nf-core/bwameth/align/main.nf"
 
 //
 // Test with single-end data

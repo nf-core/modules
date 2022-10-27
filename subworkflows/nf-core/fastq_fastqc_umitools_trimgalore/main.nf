@@ -2,9 +2,9 @@
 // Read QC, UMI extraction and trimming
 //
 
-include { FASTQC           } from '../../../modules/nf-core/fastqc/main'
-include { UMITOOLS_EXTRACT } from '../../../modules/nf-core/umitools/extract/main'
-include { TRIMGALORE       } from '../../../modules/nf-core/trimgalore/main'
+include { FASTQC           } from "$moduleDir/modules/nf-core/fastqc/main"
+include { UMITOOLS_EXTRACT } from "$moduleDir/modules/nf-core/umitools/extract/main"
+include { TRIMGALORE       } from "$moduleDir/modules/nf-core/trimgalore/main"
 
 //
 // Function that parses TrimGalore log output file to get total number of reads after trimming

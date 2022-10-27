@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { QUALIMAP_BAMQCCRAM } from '../../../../../modules/nf-core/qualimap/bamqccram/main.nf'
+include { QUALIMAP_BAMQCCRAM } from "$moduleDir/modules/nf-core/qualimap/bamqccram/main.nf"
 
 workflow test_qualimap_bamqc {
     input   = [ [ id:'test', single_end:false ], // meta map

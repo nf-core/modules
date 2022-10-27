@@ -1,5 +1,5 @@
-include { HISAT2_ALIGN            } from '../../../modules/nf-core/hisat2/align/main'
-include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
+include { HISAT2_ALIGN            } from "$moduleDir/modules/nf-core/hisat2/align/main"
+include { BAM_SORT_STATS_SAMTOOLS } from "../bam_sort_stats_samtools/main"
 
 workflow FASTQ_ALIGN_HISAT2 {
 

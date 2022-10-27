@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP                                } from '../../../../../modules/nf-core/gunzip/main.nf'
-include { METABAT2_METABAT2                     } from '../../../../../modules/nf-core/metabat2/metabat2/main.nf'
-include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS  } from '../../../../../modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf'
-include { DASTOOL_FASTATOCONTIG2BIN                 } from '../../../../../modules/nf-core/dastool/fastatocontig2bin/main.nf'
+include { GUNZIP                                } from "$moduleDir/modules/nf-core/gunzip/main.nf"
+include { METABAT2_METABAT2                     } from "$moduleDir/modules/nf-core/metabat2/metabat2/main.nf"
+include { METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS  } from "$moduleDir/modules/nf-core/metabat2/jgisummarizebamcontigdepths/main.nf"
+include { DASTOOL_FASTATOCONTIG2BIN                 } from "$moduleDir/modules/nf-core/dastool/fastatocontig2bin/main.nf"
 
 workflow test_dastool_fastatocontig2bin {
 

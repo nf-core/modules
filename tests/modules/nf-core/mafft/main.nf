@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MAFFT } from '../../../../modules/nf-core/mafft/main.nf'
+include { MAFFT } from "$moduleDir/modules/nf-core/mafft/main.nf"
 
 workflow test_mafft {
 

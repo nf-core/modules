@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SOURMASH_SKETCH as SOURMASH_SKETCH1 } from '../../../../../modules/nf-core/sourmash/sketch/main.nf'
-include { SOURMASH_SKETCH as SOURMASH_SKETCH2 } from '../../../../../modules/nf-core/sourmash/sketch/main.nf'
-include { SOURMASH_GATHER } from '../../../../../modules/nf-core/sourmash/gather/main.nf'
+include { SOURMASH_SKETCH as SOURMASH_SKETCH1 } from "$moduleDir/modules/nf-core/sourmash/sketch/main.nf"
+include { SOURMASH_SKETCH as SOURMASH_SKETCH2 } from "$moduleDir/modules/nf-core/sourmash/sketch/main.nf"
+include { SOURMASH_GATHER } from "$moduleDir/modules/nf-core/sourmash/gather/main.nf"
 
 workflow test_sourmash_gather {
 

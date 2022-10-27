@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { METHYLDACKEL_EXTRACT } from '../../../../../modules/nf-core/methyldackel/extract/main.nf'
+include { METHYLDACKEL_EXTRACT } from "$moduleDir/modules/nf-core/methyldackel/extract/main.nf"
 
 workflow test_methyldackel_extract {
     input = [ [ id:'test', single_end:false ], // meta map

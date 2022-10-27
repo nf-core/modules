@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CALDER2 } from '../../../../modules/nf-core/calder2/main.nf'
+include { CALDER2 } from "$moduleDir/modules/nf-core/calder2/main.nf"
 
 
 def TEST_COOL_PATH = "https://raw.githubusercontent.com/CSOgroup/CALDER2/main/tests/testthat/data/test.cool"
@@ -10,7 +10,7 @@ def TEST_MCOOL_PATH = "https://raw.githubusercontent.com/CSOgroup/CALDER2/main/t
 
 
 workflow test_calder2_cool {
-    
+
     input = [ [ id:'test' ], //meta map
               file(TEST_COOL_PATH, checkIfExists: true) ]
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { TRIMGALORE } from '../../../../modules/nf-core/trimgalore/main.nf'
+include { TRIMGALORE } from "$moduleDir/modules/nf-core/trimgalore/main.nf"
 
 //
 // Test with single-end data

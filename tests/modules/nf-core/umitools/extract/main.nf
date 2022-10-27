@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { UMITOOLS_EXTRACT } from '../../../../../modules/nf-core/umitools/extract/main.nf'
+include { UMITOOLS_EXTRACT } from "$moduleDir/modules/nf-core/umitools/extract/main.nf"
 
 //
 // Test with single-end data

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_ZIPPERBAMS } from '../../../../../modules/nf-core/fgbio/zipperbams/main.nf'
+include { FGBIO_ZIPPERBAMS } from "$moduleDir/modules/nf-core/fgbio/zipperbams/main.nf"
 
 workflow test_fgbio_zipperbams {
 

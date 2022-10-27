@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTREADCOUNTS } from '../../../../../modules/nf-core/gatk4/collectreadcounts/main.nf'
+include { GATK4_COLLECTREADCOUNTS } from "$moduleDir/modules/nf-core/gatk4/collectreadcounts/main.nf"
 
 workflow test_gatk4_collectreadcounts_hdf5 {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -21,7 +21,7 @@ workflow test_gatk4_collectreadcounts_hdf5 {
 }
 
 workflow test_gatk4_collectreadcounts_tsv {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -37,7 +37,7 @@ workflow test_gatk4_collectreadcounts_tsv {
 }
 
 workflow test_gatk4_collectreadcounts_cram {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),

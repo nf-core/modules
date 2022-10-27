@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { PINTS_CALLER } from '../../../../../modules/nf-core/pints/caller/main.nf'
+include { PINTS_CALLER } from "$moduleDir/modules/nf-core/pints/caller/main.nf"
 
 workflow test_pints_caller {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         // FIXME Fails if it doesn't find any signals

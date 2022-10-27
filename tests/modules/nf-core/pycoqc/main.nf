@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PYCOQC } from '../../../../modules/nf-core/pycoqc/main.nf'
+include { PYCOQC } from "$moduleDir/modules/nf-core/pycoqc/main.nf"
 
 workflow test_pycoqc {
 

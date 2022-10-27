@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MUMMER } from '../../../../modules/nf-core/mummer/main.nf'
+include { MUMMER } from "$moduleDir/modules/nf-core/mummer/main.nf"
 
 workflow test_mummer {
 

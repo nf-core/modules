@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { HAMRONIZATION_DEEPARG                                 } from '../../../../../modules/nf-core/hamronization/deeparg/main.nf'
-include { HAMRONIZATION_DEEPARG as HAMRONIZATION_DEEPARG_SECOND } from '../../../../../modules/nf-core/hamronization/deeparg/main.nf'
-include { HAMRONIZATION_SUMMARIZE                               } from '../../../../../modules/nf-core/hamronization/summarize/main.nf'
+include { HAMRONIZATION_DEEPARG                                 } from "$moduleDir/modules/nf-core/hamronization/deeparg/main.nf"
+include { HAMRONIZATION_DEEPARG as HAMRONIZATION_DEEPARG_SECOND } from "$moduleDir/modules/nf-core/hamronization/deeparg/main.nf"
+include { HAMRONIZATION_SUMMARIZE                               } from "$moduleDir/modules/nf-core/hamronization/summarize/main.nf"
 
 workflow test_hamronization_summarize {
 

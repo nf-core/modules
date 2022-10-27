@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC } from '../../../../modules/nf-core/fastqc/main.nf'
+include { FASTQC } from "$moduleDir/modules/nf-core/fastqc/main.nf"
 
 //
 // Test with single-end data

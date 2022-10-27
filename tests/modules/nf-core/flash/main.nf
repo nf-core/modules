@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FLASH } from '../../../../modules/nf-core/flash/main.nf'
+include { FLASH } from "$moduleDir/modules/nf-core/flash/main.nf"
 
 workflow test_flash {
     input = [

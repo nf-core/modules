@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_COLLECTSVEVIDENCE } from '../../../../../modules/nf-core/gatk4/collectsvevidence/main.nf'
+include { GATK4_COLLECTSVEVIDENCE } from "$moduleDir/modules/nf-core/gatk4/collectsvevidence/main.nf"
 
 workflow test_gatk4_collectsvevidence_cram {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
@@ -22,7 +22,7 @@ workflow test_gatk4_collectsvevidence_cram {
 }
 
 workflow test_gatk4_collectsvevidence_bam {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -39,7 +39,7 @@ workflow test_gatk4_collectsvevidence_bam {
 }
 
 workflow test_gatk4_collectsvevidence_allele_count {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),

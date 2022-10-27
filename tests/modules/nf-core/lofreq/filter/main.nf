@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LOFREQ_FILTER } from '../../../../../modules/nf-core/lofreq/filter/main.nf'
+include { LOFREQ_FILTER } from "$moduleDir/modules/nf-core/lofreq/filter/main.nf"
 
 workflow test_lofreq_filter {
 

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_COLLATE } from '../../../../../modules/nf-core/samtools/collate/main.nf'
+include { SAMTOOLS_COLLATE } from "$moduleDir/modules/nf-core/samtools/collate/main.nf"
 
 workflow test_samtools_collate {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)

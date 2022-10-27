@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STRELKA_GERMLINE } from '../../../../../modules/nf-core/strelka/germline/main.nf'
+include { STRELKA_GERMLINE } from "$moduleDir/modules/nf-core/strelka/germline/main.nf"
 
 workflow test_strelka_germline {
     input = [

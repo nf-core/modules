@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DUPHOLD } from '../../../../modules/nf-core/duphold/main.nf'
+include { DUPHOLD } from "$moduleDir/modules/nf-core/duphold/main.nf"
 
 workflow test_duphold {
 

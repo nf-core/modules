@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTANI } from '../../../../modules/nf-core/fastani/main.nf'
+include { FASTANI } from "$moduleDir/modules/nf-core/fastani/main.nf"
 
 workflow test_fastani {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_SELECTVARIANTS } from '../../../../../modules/nf-core/gatk4/selectvariants/main.nf'
+include { GATK4_SELECTVARIANTS } from "$moduleDir/modules/nf-core/gatk4/selectvariants/main.nf"
 
 // Basic parameters with uncompressed VCF input
 workflow test_gatk4_selectvariants_vcf_input {

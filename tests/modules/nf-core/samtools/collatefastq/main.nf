@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_COLLATEFASTQ } from '../../../../../modules/nf-core/samtools/collatefastq/main.nf'
+include { SAMTOOLS_COLLATEFASTQ } from "$moduleDir/modules/nf-core/samtools/collatefastq/main.nf"
 
 workflow test_samtools_collatefastq_bam {
     input = [

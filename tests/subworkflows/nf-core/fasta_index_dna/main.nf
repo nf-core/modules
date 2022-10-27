@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTA_INDEX_DNA } from '../../../../subworkflows/nf-core/fasta_index_dna/main.nf'
+include { FASTA_INDEX_DNA } from "../../../../subworkflows/nf-core/fasta_index_dna/main.nf"
 
 workflow test_bowtie2_build {
     fasta = Channel.value([

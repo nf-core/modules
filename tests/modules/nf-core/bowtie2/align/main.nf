@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE2_BUILD } from '../../../../../modules/nf-core/bowtie2/build/main.nf'
-include { BOWTIE2_ALIGN } from '../../../../../modules/nf-core/bowtie2/align/main.nf'
+include { BOWTIE2_BUILD } from "$moduleDir/modules/nf-core/bowtie2/build/main.nf"
+include { BOWTIE2_ALIGN } from "$moduleDir/modules/nf-core/bowtie2/align/main.nf"
 
 workflow test_bowtie2_align_single_end {
     input = [

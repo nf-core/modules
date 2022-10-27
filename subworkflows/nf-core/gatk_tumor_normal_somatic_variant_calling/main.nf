@@ -9,12 +9,12 @@ params.getpileup_normal_options = [suffix: '_normal']
 params.calccontam_options       = [:]
 params.filtercalls_options      = [suffix: '_filtered']
 
-include { GATK4_MUTECT2                   as MUTECT2 }                   from '../../../modules/nf-core/gatk4/mutect2/main'
-include { GATK4_LEARNREADORIENTATIONMODEL as LEARNREADORIENTATIONMODEL } from '../../../modules/nf-core/gatk4/learnreadorientationmodel/main'
-include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_TUMOR }  from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
-include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from '../../../modules/nf-core/gatk4/getpileupsummaries/main'
-include { GATK4_CALCULATECONTAMINATION    as CALCULATECONTAMINATION }    from '../../../modules/nf-core/gatk4/calculatecontamination/main'
-include { GATK4_FILTERMUTECTCALLS         as FILTERMUTECTCALLS }         from '../../../modules/nf-core/gatk4/filtermutectcalls/main'
+include { GATK4_MUTECT2                   as MUTECT2 }                   from "$moduleDir/modules/nf-core/gatk4/mutect2/main"
+include { GATK4_LEARNREADORIENTATIONMODEL as LEARNREADORIENTATIONMODEL } from "$moduleDir/modules/nf-core/gatk4/learnreadorientationmodel/main"
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_TUMOR }  from "$moduleDir/modules/nf-core/gatk4/getpileupsummaries/main"
+include { GATK4_GETPILEUPSUMMARIES        as GETPILEUPSUMMARIES_NORMAL}  from "$moduleDir/modules/nf-core/gatk4/getpileupsummaries/main"
+include { GATK4_CALCULATECONTAMINATION    as CALCULATECONTAMINATION }    from "$moduleDir/modules/nf-core/gatk4/calculatecontamination/main"
+include { GATK4_FILTERMUTECTCALLS         as FILTERMUTECTCALLS }         from "$moduleDir/modules/nf-core/gatk4/filtermutectcalls/main"
 
 workflow GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING {
     take:

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { MOTUS_DOWNLOADDB                } from '../../../../../modules/nf-core/motus/downloaddb/main.nf'
-include { MOTUS_PROFILE                   } from '../../../../../modules/nf-core/motus/profile/main.nf'
-include { MOTUS_MERGE                     } from '../../../../../modules/nf-core/motus/merge/main.nf'
-include { MOTUS_MERGE as MOTUS_MERGE_BIOM } from '../../../../../modules/nf-core/motus/merge/main.nf'
+include { MOTUS_DOWNLOADDB                } from "$moduleDir/modules/nf-core/motus/downloaddb/main.nf"
+include { MOTUS_PROFILE                   } from "$moduleDir/modules/nf-core/motus/profile/main.nf"
+include { MOTUS_MERGE                     } from "$moduleDir/modules/nf-core/motus/merge/main.nf"
+include { MOTUS_MERGE as MOTUS_MERGE_BIOM } from "$moduleDir/modules/nf-core/motus/merge/main.nf"
 
 workflow test_motus_merge {
 

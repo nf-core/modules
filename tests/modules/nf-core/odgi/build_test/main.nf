@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ODGI_BUILD } from '../../../../../modules/nf-core/odgi/build/main.nf'
+include { ODGI_BUILD } from "$moduleDir/modules/nf-core/odgi/build/main.nf"
 
 workflow test_odgi_build {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LOFREQ_CALL } from '../../../../../modules/nf-core/lofreq/call/main.nf'
+include { LOFREQ_CALL } from "$moduleDir/modules/nf-core/lofreq/call/main.nf"
 
 workflow test_lofreq_call {
 

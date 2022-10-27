@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPSITES } from '../../../../modules/nf-core/snpsites/main.nf'
+include { SNPSITES } from "$moduleDir/modules/nf-core/snpsites/main.nf"
 
 workflow test_snpsites {
-    
+
     input = file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)
 
     SNPSITES ( input )

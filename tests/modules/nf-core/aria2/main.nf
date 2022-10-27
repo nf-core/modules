@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ARIA2 } from '../../../../modules/nf-core/aria2/main.nf'
+include { ARIA2 } from "$moduleDir/modules/nf-core/aria2/main.nf"
 
 workflow test_aria2 {
 

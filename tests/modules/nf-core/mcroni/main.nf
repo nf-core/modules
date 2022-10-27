@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MCRONI } from '../../../../modules/nf-core/mcroni/main.nf'
+include { MCRONI } from "$moduleDir/modules/nf-core/mcroni/main.nf"
 
 workflow test_mcroni {
 

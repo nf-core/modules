@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { SEGEMEHL_ALIGN as SEGEMEHL_SAM } from '../../../../../modules/nf-core/segemehl/align/main.nf'
-include { SEGEMEHL_ALIGN as SEGEMEHL_BAM } from '../../../../../modules/nf-core/segemehl/align/main.nf'
-include { SEGEMEHL_ALIGN as SEGEMEHL_PREFIX } from '../../../../../modules/nf-core/segemehl/align/main.nf'
+include { SEGEMEHL_ALIGN as SEGEMEHL_SAM } from "$moduleDir/modules/nf-core/segemehl/align/main.nf"
+include { SEGEMEHL_ALIGN as SEGEMEHL_BAM } from "$moduleDir/modules/nf-core/segemehl/align/main.nf"
+include { SEGEMEHL_ALIGN as SEGEMEHL_PREFIX } from "$moduleDir/modules/nf-core/segemehl/align/main.nf"
 
 workflow test_segemehl_align_pe {
 

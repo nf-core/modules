@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK as FASTK1 } from '../../../../../modules/nf-core/fastk/fastk/main.nf'
-include { FASTK_FASTK as FASTK2 } from '../../../../../modules/nf-core/fastk/fastk/main.nf'
-include { MERQURYFK_KATCOMP } from '../../../../../modules/nf-core/merquryfk/katcomp/main.nf'
+include { FASTK_FASTK as FASTK1 } from "$moduleDir/modules/nf-core/fastk/fastk/main.nf"
+include { FASTK_FASTK as FASTK2 } from "$moduleDir/modules/nf-core/fastk/fastk/main.nf"
+include { MERQURYFK_KATCOMP } from "$moduleDir/modules/nf-core/merquryfk/katcomp/main.nf"
 
 workflow test_merquryfk_katcomp_png {
 

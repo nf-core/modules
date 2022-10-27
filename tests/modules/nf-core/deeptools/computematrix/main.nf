@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPTOOLS_COMPUTEMATRIX } from '../../../../../modules/nf-core/deeptools/computematrix/main.nf'
+include { DEEPTOOLS_COMPUTEMATRIX } from "$moduleDir/modules/nf-core/deeptools/computematrix/main.nf"
 
 workflow test_deeptools_computematrix {
 

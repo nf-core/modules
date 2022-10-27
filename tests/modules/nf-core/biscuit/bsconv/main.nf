@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX  } from '../../../../../modules/nf-core/biscuit/index/main.nf'
-include { BISCUIT_BSCONV } from '../../../../../modules/nf-core/biscuit/bsconv/main.nf'
+include { BISCUIT_INDEX  } from "$moduleDir/modules/nf-core/biscuit/index/main.nf"
+include { BISCUIT_BSCONV } from "$moduleDir/modules/nf-core/biscuit/bsconv/main.nf"
 
 workflow test_biscuit_bsconv {
 

@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { VCFLIB_VCFUNIQ } from '../../../../../modules/nf-core/vcflib/vcfuniq/main.nf'
+include { VCFLIB_VCFUNIQ } from "$moduleDir/modules/nf-core/vcflib/vcfuniq/main.nf"
 
 workflow test_vcflib_vcfuniq {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)

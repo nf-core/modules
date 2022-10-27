@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { EXPANSIONHUNTERDENOVO_MERGE   } from '../../../../../modules/nf-core/expansionhunterdenovo/merge/main.nf'
-include { EXPANSIONHUNTERDENOVO_PROFILE } from '../../../../../modules/nf-core/expansionhunterdenovo/profile/main.nf'
+include { EXPANSIONHUNTERDENOVO_MERGE   } from "$moduleDir/modules/nf-core/expansionhunterdenovo/merge/main.nf"
+include { EXPANSIONHUNTERDENOVO_PROFILE } from "$moduleDir/modules/nf-core/expansionhunterdenovo/profile/main.nf"
 
 workflow test_expansionhunterdenovo_merge {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GANGSTR } from '../../../../modules/nf-core/gangstr/main.nf'
+include { GANGSTR } from "$moduleDir/modules/nf-core/gangstr/main.nf"
 
 workflow test_gangstr_cram {
 

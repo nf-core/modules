@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_COVERAGE } from '../../../../../modules/nf-core/bedtools/coverage/main.nf'
+include { BEDTOOLS_COVERAGE } from "$moduleDir/modules/nf-core/bedtools/coverage/main.nf"
 
 workflow test_bedtools_coverage {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),

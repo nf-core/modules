@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_GATHERBQSRREPORTS } from '../../../../../modules/nf-core/gatk4/gatherbqsrreports/main.nf'
+include { GATK4_GATHERBQSRREPORTS } from "$moduleDir/modules/nf-core/gatk4/gatherbqsrreports/main.nf"
 
 workflow test_gatk4_gatherbqsrreports {
 

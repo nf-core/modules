@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BIOBAMBAM_BAMMERGE } from '../../../../../modules/nf-core/biobambam/bammerge/main.nf'
+include { BIOBAMBAM_BAMMERGE } from "$moduleDir/modules/nf-core/biobambam/bammerge/main.nf"
 
 workflow test_biobambam_bammerge_paired {
 

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { VCF2DB } from '../../../../modules/nf-core/vcf2db/main.nf'
+include { VCF2DB } from "$moduleDir/modules/nf-core/vcf2db/main.nf"
 
 workflow test_vcf2db {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true),

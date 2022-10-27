@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SALMON_INDEX } from '../../../../../modules/nf-core/salmon/index/main.nf'
+include { SALMON_INDEX } from "$moduleDir/modules/nf-core/salmon/index/main.nf"
 
 workflow test_salmon_index {
     genome_fasta     = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

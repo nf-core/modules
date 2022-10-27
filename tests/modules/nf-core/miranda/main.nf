@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MIRANDA } from '../../../../modules/nf-core/miranda/main.nf'
+include { MIRANDA } from "$moduleDir/modules/nf-core/miranda/main.nf"
 
 workflow test_miranda {
 

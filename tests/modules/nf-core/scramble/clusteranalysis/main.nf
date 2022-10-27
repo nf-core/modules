@@ -2,15 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { SCRAMBLE_CLUSTERANALYSIS   } from '../../../../../modules/nf-core/scramble/clusteranalysis/main.nf'
-include { SCRAMBLE_CLUSTERIDENTIFIER } from '../../../../../modules/nf-core/scramble/clusteridentifier/main.nf'
+include { SCRAMBLE_CLUSTERANALYSIS   } from "$moduleDir/modules/nf-core/scramble/clusteranalysis/main.nf"
+include { SCRAMBLE_CLUSTERIDENTIFIER } from "$moduleDir/modules/nf-core/scramble/clusteridentifier/main.nf"
 
 workflow test_scramble_clusteranalysis {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['scramble']['bam'], checkIfExists: true),   
-        file(params.test_data['homo_sapiens']['scramble']['bam_bai'], checkIfExists: true),   
+        file(params.test_data['homo_sapiens']['scramble']['bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['scramble']['bam_bai'], checkIfExists: true),
         []
     ]
 
@@ -30,11 +30,11 @@ workflow test_scramble_clusteranalysis {
 }
 
 workflow test_scramble_clusteranalysis_fasta {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['scramble']['cram'], checkIfExists: true),   
-        file(params.test_data['homo_sapiens']['scramble']['cram_crai'], checkIfExists: true),   
+        file(params.test_data['homo_sapiens']['scramble']['cram'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['scramble']['cram_crai'], checkIfExists: true),
         []
     ]
 

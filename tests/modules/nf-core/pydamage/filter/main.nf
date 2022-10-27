@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { PYDAMAGE_ANALYZE } from '../../../../../modules/nf-core/pydamage/analyze/main.nf'
-include { PYDAMAGE_FILTER } from '../../../../../modules/nf-core/pydamage/filter/main.nf'
+include { PYDAMAGE_ANALYZE } from "$moduleDir/modules/nf-core/pydamage/analyze/main.nf"
+include { PYDAMAGE_FILTER } from "$moduleDir/modules/nf-core/pydamage/filter/main.nf"
 
 workflow test_pydamage {
 

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_CLOSEST } from '../../../../../modules/nf-core/bedtools/closest/main.nf'
+include { BEDTOOLS_CLOSEST } from "$moduleDir/modules/nf-core/bedtools/closest/main.nf"
 
 workflow test_bedtools_closest {
 

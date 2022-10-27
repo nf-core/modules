@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KRONA_KTIMPORTTEXT } from '../../../../../modules/nf-core/krona/ktimporttext/main.nf'
+include { KRONA_KTIMPORTTEXT } from "$moduleDir/modules/nf-core/krona/ktimporttext/main.nf"
 
 workflow test_krona_ktimporttext_multi {
 

@@ -4,9 +4,9 @@
 // Demultiplex Illumina BCL data using bcl-convert or bcl2fastq
 //
 
-include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
-include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
-include { UNTAR      } from "../../../modules/nf-core/untar/main"
+include { BCLCONVERT } from "$moduleDir/modules/nf-core/bclconvert/main"
+include { BCL2FASTQ  } from "$moduleDir/modules/nf-core/bcl2fastq/main"
+include { UNTAR      } from "$moduleDir/modules/nf-core/untar/main"
 
 workflow BCL_DEMULTIPLEX {
     take:

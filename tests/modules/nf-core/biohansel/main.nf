@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { BIOHANSEL as BIOHANSEL_PE } from '../../../../modules/nf-core/biohansel/main.nf'
-include { BIOHANSEL as BIOHANSEL_SE } from '../../../../modules/nf-core/biohansel/main.nf'
-include { BIOHANSEL as BIOHANSEL_FASTA } from '../../../../modules/nf-core/biohansel/main.nf'
+include { BIOHANSEL as BIOHANSEL_PE } from "$moduleDir/modules/nf-core/biohansel/main.nf"
+include { BIOHANSEL as BIOHANSEL_SE } from "$moduleDir/modules/nf-core/biohansel/main.nf"
+include { BIOHANSEL as BIOHANSEL_FASTA } from "$moduleDir/modules/nf-core/biohansel/main.nf"
 
 workflow test_biohansel_paired_end {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         [
@@ -20,7 +20,7 @@ workflow test_biohansel_paired_end {
 }
 
 workflow test_biohansel_single_end {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
@@ -30,7 +30,7 @@ workflow test_biohansel_single_end {
 }
 
 workflow test_biohansel_assembly {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MEGAN_RMA2INFO } from '../../../../../modules/nf-core/megan/rma2info/main.nf'
+include { MEGAN_RMA2INFO } from "$moduleDir/modules/nf-core/megan/rma2info/main.nf"
 
 workflow test_megan_rma2info {
 

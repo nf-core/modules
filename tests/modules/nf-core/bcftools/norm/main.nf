@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_NORM } from '../../../../../modules/nf-core/bcftools/norm/main.nf'
+include { BCFTOOLS_NORM } from "$moduleDir/modules/nf-core/bcftools/norm/main.nf"
 
 workflow test_bcftools_norm_no_tbi {
-    
+
     input = [ [ id:'test2', single_end:false ], // meta map
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
             []
@@ -17,10 +17,10 @@ workflow test_bcftools_norm_no_tbi {
 }
 
 workflow test_bcftools_norm_tbi {
-    
+
     input = [ [ id:'test2', single_end:false ], // meta map
             file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-            file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)            
+            file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)
             ]
 
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)

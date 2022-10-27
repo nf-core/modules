@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_SORT } from '../../../../../modules/nf-core/pairtools/sort/main.nf'
+include { PAIRTOOLS_SORT } from "$moduleDir/modules/nf-core/pairtools/sort/main.nf"
 
 workflow test_pairtools_sort {
 

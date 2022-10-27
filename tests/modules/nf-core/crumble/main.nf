@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { CRUMBLE } from '../../../../modules/nf-core/crumble/main.nf'
+include { CRUMBLE } from "$moduleDir/modules/nf-core/crumble/main.nf"
 
 workflow test_crumble {
-    
+
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)

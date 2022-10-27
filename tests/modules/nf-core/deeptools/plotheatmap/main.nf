@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DEEPTOOLS_PLOTHEATMAP } from '../../../../../modules/nf-core/deeptools/plotheatmap/main.nf'
+include { DEEPTOOLS_PLOTHEATMAP } from "$moduleDir/modules/nf-core/deeptools/plotheatmap/main.nf"
 
 workflow test_deeptools_plotheatmap {
 

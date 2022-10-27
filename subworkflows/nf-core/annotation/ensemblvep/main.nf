@@ -2,8 +2,8 @@
 // Run VEP to annotate VCF files
 //
 
-include { ENSEMBLVEP       } from '../../../../modules/ensemblvep/main'
-include { TABIX_BGZIPTABIX } from '../../../../modules/tabix/bgziptabix/main'
+include { ENSEMBLVEP       } from "$moduleDir/modules/ensemblvep/main"
+include { TABIX_BGZIPTABIX } from "$moduleDir/modules/tabix/bgziptabix/main"
 
 workflow ANNOTATION_ENSEMBLVEP {
     take:

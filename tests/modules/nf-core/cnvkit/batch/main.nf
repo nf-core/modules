@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVKIT_BATCH as CNVKIT_HYBRID    } from '../../../../../modules/nf-core/cnvkit/batch/main.nf'
-include { CNVKIT_BATCH as CNVKIT_WGS       } from '../../../../../modules/nf-core/cnvkit/batch/main.nf'
-include { CNVKIT_BATCH as CNVKIT_TUMORONLY } from '../../../../../modules/nf-core/cnvkit/batch/main.nf'
-include { CNVKIT_BATCH as CNVKIT_GERMLINE } from '../../../../../modules/nf-core/cnvkit/batch/main.nf'
+include { CNVKIT_BATCH as CNVKIT_HYBRID    } from "$moduleDir/modules/nf-core/cnvkit/batch/main.nf"
+include { CNVKIT_BATCH as CNVKIT_WGS       } from "$moduleDir/modules/nf-core/cnvkit/batch/main.nf"
+include { CNVKIT_BATCH as CNVKIT_TUMORONLY } from "$moduleDir/modules/nf-core/cnvkit/batch/main.nf"
+include { CNVKIT_BATCH as CNVKIT_GERMLINE } from "$moduleDir/modules/nf-core/cnvkit/batch/main.nf"
 
 workflow test_cnvkit_hybrid_somatic {
 

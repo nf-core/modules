@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FAQCS } from '../../../../modules/nf-core/faqcs/main.nf'
+include { FAQCS } from "$moduleDir/modules/nf-core/faqcs/main.nf"
 
 
 //

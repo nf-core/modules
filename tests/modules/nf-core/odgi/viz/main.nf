@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ODGI_VIZ } from '../../../../../modules/nf-core/odgi/viz/main.nf'
+include { ODGI_VIZ } from "$moduleDir/modules/nf-core/odgi/viz/main.nf"
 
 workflow test_odgi_viz {
 

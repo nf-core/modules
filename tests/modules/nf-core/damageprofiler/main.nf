@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DAMAGEPROFILER } from '../../../../modules/nf-core/damageprofiler/main.nf'
+include { DAMAGEPROFILER } from "$moduleDir/modules/nf-core/damageprofiler/main.nf"
 
 workflow test_damageprofiler {
 

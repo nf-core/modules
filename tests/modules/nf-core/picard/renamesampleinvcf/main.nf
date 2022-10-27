@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_RENAMESAMPLEINVCF } from '../../../../../modules/nf-core/picard/renamesampleinvcf/main.nf'
+include { PICARD_RENAMESAMPLEINVCF } from "$moduleDir/modules/nf-core/picard/renamesampleinvcf/main.nf"
 
 workflow test_picard_renamesampleinvcf {
 

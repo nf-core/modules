@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CIRCEXPLORER2_ANNOTATE } from '../../../../../modules/nf-core/circexplorer2/annotate/main.nf'
+include { CIRCEXPLORER2_ANNOTATE } from "$moduleDir/modules/nf-core/circexplorer2/annotate/main.nf"
 
 workflow test_circexplorer2_annotate {
 

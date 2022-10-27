@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_VCF2BED } from '../../../../../modules/nf-core/biscuit/vcf2bed/main.nf'
+include { BISCUIT_VCF2BED } from "$moduleDir/modules/nf-core/biscuit/vcf2bed/main.nf"
 
 workflow test_biscuit_vcf2bed {
 

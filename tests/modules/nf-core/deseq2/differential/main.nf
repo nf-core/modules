@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DESEQ2_DIFFERENTIAL } from '../../../../../modules/nf-core/deseq2/differential/main.nf'
+include { DESEQ2_DIFFERENTIAL } from "$moduleDir/modules/nf-core/deseq2/differential/main.nf"
 
 process tsv_to_csv {
 

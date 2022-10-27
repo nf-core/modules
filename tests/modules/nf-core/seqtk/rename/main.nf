@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQTK_RENAME } from '../../../../../modules/nf-core/seqtk/rename/main.nf'
+include { SEQTK_RENAME } from "$moduleDir/modules/nf-core/seqtk/rename/main.nf"
 
 workflow test_seqtk_rename {
     input = [ [ id:'test' ],   // meta map

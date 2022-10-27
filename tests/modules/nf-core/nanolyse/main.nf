@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOLYSE } from '../../../../modules/nf-core/nanolyse/main.nf'
+include { NANOLYSE } from "$moduleDir/modules/nf-core/nanolyse/main.nf"
 
 workflow test_nanolyse {
-    input = [ 
+    input = [
         [ id:'test' ], // meta map
         [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)]
     ]

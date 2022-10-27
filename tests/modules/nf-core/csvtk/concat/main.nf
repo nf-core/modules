@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { CSVTK_CONCAT } from '../../../../../modules/nf-core/csvtk/concat/main.nf'
+include { CSVTK_CONCAT } from "$moduleDir/modules/nf-core/csvtk/concat/main.nf"
 
 workflow test_csvtk_concat {
 
-    input = [ 
+    input = [
         [ id:'test' ], // meta map
         [ file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
           file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),

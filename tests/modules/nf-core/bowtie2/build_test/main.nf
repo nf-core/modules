@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE2_BUILD } from '../../../../../modules/nf-core/bowtie2/build/main.nf'
+include { BOWTIE2_BUILD } from "$moduleDir/modules/nf-core/bowtie2/build/main.nf"
 
 workflow test_bowtie2_build {
     fasta = [

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SRAFASTQ } from '../../../../subworkflows/nf-core/srafastq/main.nf'
+include { SRAFASTQ } from "../../../../subworkflows/nf-core/srafastq/main.nf"
 
 workflow test_srafastq_single_end {
     input = Channel.of(

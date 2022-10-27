@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE2_BUILD     } from '../../../../modules/nf-core/bowtie2/build/main.nf'
-include { BWA_INDEX         } from '../../../../modules/nf-core/bwa/index/main.nf'
-include { BWAMEM2_INDEX     } from '../../../../modules/nf-core/bwamem2/index/main.nf'
-include { DRAGMAP_HASHTABLE } from '../../../../modules/nf-core/dragmap/hashtable/main.nf'
-include { FASTQ_ALIGN_DNA   } from '../../../../subworkflows/nf-core/fastq_align_dna/main.nf'
-include { SNAPALIGNER_INDEX } from '../../../../modules/nf-core/snapaligner/index/main.nf'
+include { BOWTIE2_BUILD     } from "$moduleDir/modules/nf-core/bowtie2/build/main.nf"
+include { BWA_INDEX         } from "$moduleDir/modules/nf-core/bwa/index/main.nf"
+include { BWAMEM2_INDEX     } from "$moduleDir/modules/nf-core/bwamem2/index/main.nf"
+include { DRAGMAP_HASHTABLE } from "$moduleDir/modules/nf-core/dragmap/hashtable/main.nf"
+include { FASTQ_ALIGN_DNA   } from "../../../../subworkflows/nf-core/fastq_align_dna/main.nf"
+include { SNAPALIGNER_INDEX } from "$moduleDir/modules/nf-core/snapaligner/index/main.nf"
 
 workflow test_fastq_align_bowtie2_SE {
     input = [

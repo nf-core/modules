@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SOURMASH_SKETCH } from '../../../../../modules/nf-core/sourmash/sketch/main.nf'
+include { SOURMASH_SKETCH } from "$moduleDir/modules/nf-core/sourmash/sketch/main.nf"
 
 workflow test_sourmash_sketch {
 

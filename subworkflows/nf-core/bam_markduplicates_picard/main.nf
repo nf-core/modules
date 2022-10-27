@@ -2,9 +2,9 @@
 // Picard MarkDuplicates, index BAM file and run samtools stats, flagstat and idxstats
 //
 
-include { PICARD_MARKDUPLICATES } from '../../../modules/nf-core/picard/markduplicates/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
-include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
+include { PICARD_MARKDUPLICATES } from "$moduleDir/modules/nf-core/picard/markduplicates/main"
+include { SAMTOOLS_INDEX     } from "$moduleDir/modules/nf-core/samtools/index/main"
+include { BAM_STATS_SAMTOOLS } from "../bam_stats_samtools/main"
 
 workflow BAM_MARKDUPLICATES_PICARD {
 

@@ -5,7 +5,7 @@ nextflow.enable.dsl = 2
 include {
     HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_BED
     HOMER_MAKETAGDIRECTORY as HOMER_MAKETAGDIRECTORY_BAM
-} from '../../../../../modules/nf-core/homer/maketagdirectory/main.nf'
+} from "$moduleDir/modules/nf-core/homer/maketagdirectory/main.nf"
 
 workflow test_homer_maketagdirectory_bed {
     input = [[id:'test'],

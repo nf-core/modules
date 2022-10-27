@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HAMRONIZATION_ABRICATE } from '../../../../../modules/nf-core/hamronization/abricate/main.nf'
+include { HAMRONIZATION_ABRICATE } from "$moduleDir/modules/nf-core/hamronization/abricate/main.nf"
 
 workflow test_hamronization_abricate {
 

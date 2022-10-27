@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { MACS2_CALLPEAK } from '../../../../../modules/nf-core/macs2/callpeak/main.nf'
-include { MACS2_CALLPEAK as MACS2_CALLPEAK_CTRL    } from '../../../../../modules/nf-core/macs2/callpeak/main.nf'
-include { MACS2_CALLPEAK as MACS2_CALLPEAK_BED     } from '../../../../../modules/nf-core/macs2/callpeak/main.nf'
+include { MACS2_CALLPEAK } from "$moduleDir/modules/nf-core/macs2/callpeak/main.nf"
+include { MACS2_CALLPEAK as MACS2_CALLPEAK_CTRL    } from "$moduleDir/modules/nf-core/macs2/callpeak/main.nf"
+include { MACS2_CALLPEAK as MACS2_CALLPEAK_BED     } from "$moduleDir/modules/nf-core/macs2/callpeak/main.nf"
 
 workflow test_macs2_callpeak_bed {
     input     = [ [ id:'test', single_end:false ], // meta map

@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { SEQKIT_PAIR } from '../../../../../modules/nf-core/seqkit/pair/main.nf'
+include { SEQKIT_PAIR } from "$moduleDir/modules/nf-core/seqkit/pair/main.nf"
 
 workflow test_seqkit_pair {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]

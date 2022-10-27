@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { DRAGONFLYE  } from '../../../../modules/nf-core/dragonflye/main.nf'
-include { DRAGONFLYE as DRAGONFLYE_RAVEN   } from '../../../../modules/nf-core/dragonflye/main.nf'
+include { DRAGONFLYE  } from "$moduleDir/modules/nf-core/dragonflye/main.nf"
+include { DRAGONFLYE as DRAGONFLYE_RAVEN   } from "$moduleDir/modules/nf-core/dragonflye/main.nf"
 
 workflow test_dragonflye {
     input = [ [ id:'test', single_end:true ], // meta map

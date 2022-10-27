@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_UNIFIEDGENOTYPER } from '../../../../modules/nf-core/gatk/unifiedgenotyper/main.nf'
-include { GUNZIP                } from '../../../../modules/nf-core/gunzip/main.nf'
-include { MULTIVCFANALYZER      } from '../../../../modules/nf-core/multivcfanalyzer/main.nf'
+include { GATK_UNIFIEDGENOTYPER } from "$moduleDir/modules/nf-core/gatk/unifiedgenotyper/main.nf"
+include { GUNZIP                } from "$moduleDir/modules/nf-core/gunzip/main.nf"
+include { MULTIVCFANALYZER      } from "$moduleDir/modules/nf-core/multivcfanalyzer/main.nf"
 
 workflow test_multivcfanalyzer {
 

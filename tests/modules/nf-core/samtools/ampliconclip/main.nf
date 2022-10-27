@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_AMPLICONCLIP } from '../../../../../modules/nf-core/samtools/ampliconclip/main.nf'
+include { SAMTOOLS_AMPLICONCLIP } from "$moduleDir/modules/nf-core/samtools/ampliconclip/main.nf"
 
 workflow test_samtools_ampliconclip_no_stats_no_rejects {
 
-    input = [ 
+    input = [
         [ id:'test', single_end:false ],
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
@@ -19,7 +19,7 @@ workflow test_samtools_ampliconclip_no_stats_no_rejects {
 
 workflow test_samtools_ampliconclip_no_stats_with_rejects {
 
-    input = [ 
+    input = [
         [ id:'test', single_end:false ],
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
@@ -32,7 +32,7 @@ workflow test_samtools_ampliconclip_no_stats_with_rejects {
 
 workflow test_samtools_ampliconclip_with_stats_with_rejects {
 
-    input = [ 
+    input = [
         [ id:'test', single_end:false ],
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]

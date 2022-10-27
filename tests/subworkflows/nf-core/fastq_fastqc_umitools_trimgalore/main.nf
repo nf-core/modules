@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from '../../../../subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/main.nf'
+include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE } from "../../../../subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/main.nf"
 
 //
 // Test with single-end data

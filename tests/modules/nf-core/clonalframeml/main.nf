@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CLONALFRAMEML } from '../../../../modules/nf-core/clonalframeml/main.nf'
+include { CLONALFRAMEML } from "$moduleDir/modules/nf-core/clonalframeml/main.nf"
 
 workflow test_clonalframeml {
 

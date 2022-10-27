@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_SPLITNCIGARREADS } from '../../../../../modules/nf-core/gatk4/splitncigarreads/main.nf'
+include { GATK4_SPLITNCIGARREADS } from "$moduleDir/modules/nf-core/gatk4/splitncigarreads/main.nf"
 
 workflow test_gatk4_splitncigarreads {
     input = [ [ id:'test' ], // meta map

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_FASTQTOSAM } from '../../../../../modules/nf-core/picard/fastqtosam/main.nf'
+include { PICARD_FASTQTOSAM } from "$moduleDir/modules/nf-core/picard/fastqtosam/main.nf"
 
 workflow test_picard_fastqtosam_single {
 

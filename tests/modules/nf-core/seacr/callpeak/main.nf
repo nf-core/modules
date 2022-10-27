@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { SEACR_CALLPEAK } from '../../../../../modules/nf-core/seacr/callpeak/main.nf'
+include { SEACR_CALLPEAK } from "$moduleDir/modules/nf-core/seacr/callpeak/main.nf"
 
 workflow test_seacr_callpeak {
     input = [ [ id:'test_1'],
               file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_1'], checkIfExists: true),
-              file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_2'], checkIfExists: true) 
+              file(params.test_data['homo_sapiens']['illumina']['cutandrun_bedgraph_test_2'], checkIfExists: true)
             ]
 
     SEACR_CALLPEAK ( input, 0.05 )

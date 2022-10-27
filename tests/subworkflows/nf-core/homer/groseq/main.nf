@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { HOMER_GROSEQ as HOMER_GROSEQ_BAM
-          HOMER_GROSEQ as HOMER_GROSEQ_BED } from '../../../../../subworkflows/nf-core/homer/groseq/main'
+          HOMER_GROSEQ as HOMER_GROSEQ_BED } from "../../../../../subworkflows/nf-core/homer/groseq/main"
 
 workflow test_homer_groseq_bam {
     def input = []

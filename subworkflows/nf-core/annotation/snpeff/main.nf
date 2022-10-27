@@ -2,8 +2,8 @@
 // Run SNPEFF to annotate VCF files
 //
 
-include { SNPEFF           } from '../../../../modules/snpeff/main'
-include { TABIX_BGZIPTABIX } from '../../../../modules/tabix/bgziptabix/main'
+include { SNPEFF           } from "$moduleDir/modules/snpeff/main"
+include { TABIX_BGZIPTABIX } from "$moduleDir/modules/tabix/bgziptabix/main"
 
 workflow ANNOTATION_SNPEFF {
     take:

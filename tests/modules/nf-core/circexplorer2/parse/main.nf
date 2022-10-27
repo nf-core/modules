@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CIRCEXPLORER2_PARSE } from '../../../../../modules/nf-core/circexplorer2/parse/main.nf'
+include { CIRCEXPLORER2_PARSE } from "$moduleDir/modules/nf-core/circexplorer2/parse/main.nf"
 
 workflow test_circexplorer2_parse {
 

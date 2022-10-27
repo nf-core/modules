@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNC_RUN        } from '../../../../../modules/nf-core/gunc/run/main.nf'
-include { GUNC_DOWNLOADDB } from '../../../../../modules/nf-core/gunc/downloaddb/main.nf'
+include { GUNC_RUN        } from "$moduleDir/modules/nf-core/gunc/run/main.nf"
+include { GUNC_DOWNLOADDB } from "$moduleDir/modules/nf-core/gunc/downloaddb/main.nf"
 
 workflow test_gunc_run {
 

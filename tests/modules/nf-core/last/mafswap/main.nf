@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { LAST_MAFSWAP } from '../../../../../modules/nf-core/last/mafswap/main.nf'
+include { LAST_MAFSWAP } from "$moduleDir/modules/nf-core/last/mafswap/main.nf"
 
 workflow test_last_mafswap {
 

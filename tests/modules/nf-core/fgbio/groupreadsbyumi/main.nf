@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_GROUPREADSBYUMI } from '../../../../../modules/nf-core/fgbio/groupreadsbyumi/main.nf'
+include { FGBIO_GROUPREADSBYUMI } from "$moduleDir/modules/nf-core/fgbio/groupreadsbyumi/main.nf"
 
 workflow test_fgbio_groupreadsbyumi {
 

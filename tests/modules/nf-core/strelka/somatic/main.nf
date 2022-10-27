@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { STRELKA_SOMATIC } from '../../../../../modules/nf-core/strelka/somatic/main.nf'
+include { STRELKA_SOMATIC } from "$moduleDir/modules/nf-core/strelka/somatic/main.nf"
 
 workflow test_strelka_somatic {
 

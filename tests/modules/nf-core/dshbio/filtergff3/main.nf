@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { DSHBIO_FILTERGFF3 } from '../../../../../modules/nf-core/dshbio/filtergff3/main.nf'
+include { DSHBIO_FILTERGFF3 } from "$moduleDir/modules/nf-core/dshbio/filtergff3/main.nf"
 
 workflow test_dshbio_filtergff3 {
     input = [ [ id:'test' ], // meta map

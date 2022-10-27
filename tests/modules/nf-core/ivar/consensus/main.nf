@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { IVAR_CONSENSUS } from '../../../../../modules/nf-core/ivar/consensus/main.nf'
+include { IVAR_CONSENSUS } from "$moduleDir/modules/nf-core/ivar/consensus/main.nf"
 
 workflow test_ivar_consensus {
 

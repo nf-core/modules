@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { MASH_SKETCH } from '../../../../../modules/nf-core/mash/sketch/main.nf'
+include { MASH_SKETCH } from "$moduleDir/modules/nf-core/mash/sketch/main.nf"
 
 workflow test_mash_sketch {
-    
+
     input = [ [ id:'test', single_end:false], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)

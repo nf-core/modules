@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_BAM } from '../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf'
-include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_CRAM } from '../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf'
+include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_BAM } from "../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf"
+include { BAM_MARKDUPLICATES_PICARD as BAM_MARKDUPLICATES_PICARD_CRAM } from "../../../../subworkflows/nf-core/bam_markduplicates_picard/main.nf"
 
 workflow test_bam_markduplicates_picard_bam {
     input = [

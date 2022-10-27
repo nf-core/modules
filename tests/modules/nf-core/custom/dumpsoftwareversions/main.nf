@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQC                      } from '../../../../../modules/nf-core/fastqc/main.nf'
-include { MULTIQC                     } from '../../../../../modules/nf-core/multiqc/main.nf'
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../../../../modules/nf-core/custom/dumpsoftwareversions/main.nf'
+include { FASTQC                      } from "$moduleDir/modules/nf-core/fastqc/main.nf"
+include { MULTIQC                     } from "$moduleDir/modules/nf-core/multiqc/main.nf"
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from "$moduleDir/modules/nf-core/custom/dumpsoftwareversions/main.nf"
 
 workflow fastqc1 {
     take:

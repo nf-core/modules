@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BWA_INDEX } from '../../../../../modules/nf-core/bwa/index/main.nf'
+include { BWA_INDEX } from "$moduleDir/modules/nf-core/bwa/index/main.nf"
 
 workflow test_bwa_index {
     fasta = [

@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { KLEBORATE } from '../../../../modules/nf-core/kleborate/main.nf'
+include { KLEBORATE } from "$moduleDir/modules/nf-core/kleborate/main.nf"
 
 workflow test_kleborate {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true),

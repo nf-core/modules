@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { VSEARCH_CLUSTER } from '../../../../../modules/nf-core/vsearch/cluster/main.nf'
-include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SMALLMEM } from '../../../../../modules/nf-core/vsearch/cluster/main.nf'
-include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_UNOISE } from '../../../../../modules/nf-core/vsearch/cluster/main.nf'
-include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_USEROUT } from '../../../../../modules/nf-core/vsearch/cluster/main.nf'
-include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SIZE } from '../../../../../modules/nf-core/vsearch/cluster/main.nf'
+include { VSEARCH_CLUSTER } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
+include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SMALLMEM } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
+include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_UNOISE } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
+include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_USEROUT } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
+include { VSEARCH_CLUSTER as VSEARCH_CLUSTER_SIZE } from "$moduleDir/modules/nf-core/vsearch/cluster/main.nf"
 
 workflow test_vsearch_cluster_fast {
 

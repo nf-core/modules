@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HOMER_ANNOTATEPEAKS } from '../../../../../modules/nf-core/homer/annotatepeaks/main.nf'
+include { HOMER_ANNOTATEPEAKS } from "$moduleDir/modules/nf-core/homer/annotatepeaks/main.nf"
 
 workflow test_homer_annotatepeaks {
     input = [ [ id:'test'],

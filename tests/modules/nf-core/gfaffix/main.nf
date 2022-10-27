@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GFAFFIX } from '../../../../modules/nf-core/gfaffix/main.nf'
+include { GFAFFIX } from "$moduleDir/modules/nf-core/gfaffix/main.nf"
 
 workflow test_gfaffix {
     input = [ [ id:'test' ], // meta map

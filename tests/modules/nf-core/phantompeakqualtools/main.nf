@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PHANTOMPEAKQUALTOOLS } from '../../../../modules/nf-core/phantompeakqualtools/main.nf'
+include { PHANTOMPEAKQUALTOOLS } from "$moduleDir/modules/nf-core/phantompeakqualtools/main.nf"
 
 workflow test_phantompeakqualtools_single_end {
 

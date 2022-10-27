@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION } from '../../../../../modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/main.nf'
+include { ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION } from "$moduleDir/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/main.nf"
 
 // Make a table of gene annotations
 

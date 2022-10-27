@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BUSCO } from '../../../../modules/nf-core/busco/main.nf'
+include { BUSCO } from "$moduleDir/modules/nf-core/busco/main.nf"
 
 workflow test_busco_genome_single_fasta {
 

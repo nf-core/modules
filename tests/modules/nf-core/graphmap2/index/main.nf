@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GRAPHMAP2_INDEX } from '../../../../../modules/nf-core/graphmap2/index/main.nf'
+include { GRAPHMAP2_INDEX } from "$moduleDir/modules/nf-core/graphmap2/index/main.nf"
 
 workflow test_graphmap2_index {
 

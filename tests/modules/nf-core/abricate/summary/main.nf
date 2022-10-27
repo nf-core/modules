@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ABRICATE_RUN } from '../../../../../modules/nf-core/abricate/run/main.nf'
-include { ABRICATE_SUMMARY } from '../../../../../modules/nf-core/abricate/summary/main.nf'
+include { ABRICATE_RUN } from "$moduleDir/modules/nf-core/abricate/run/main.nf"
+include { ABRICATE_SUMMARY } from "$moduleDir/modules/nf-core/abricate/summary/main.nf"
 
 workflow test_abricate_summary {
 
@@ -15,7 +15,7 @@ workflow test_abricate_summary {
     ]
 
     ABRICATE_RUN ( Channel.fromList(inputs) )
-    ABRICATE_SUMMARY ( 
+    ABRICATE_SUMMARY (
         ABRICATE_RUN.out.report.collect{ meta, report -> report }.map{ report -> [[ id: 'test_summary'], report]}
     )
 }

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PRESEQ_LCEXTRAP } from '../../../../../modules/nf-core/preseq/lcextrap/main.nf'
+include { PRESEQ_LCEXTRAP } from "$moduleDir/modules/nf-core/preseq/lcextrap/main.nf"
 
 //
 // Test with single-end data

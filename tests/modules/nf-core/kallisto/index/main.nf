@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KALLISTO_INDEX } from '../../../../../modules/nf-core/kallisto/index/main.nf'
+include { KALLISTO_INDEX } from "$moduleDir/modules/nf-core/kallisto/index/main.nf"
 
 workflow test_kallisto_index {
 

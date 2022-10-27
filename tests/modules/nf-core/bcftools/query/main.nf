@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_QUERY } from '../../../../../modules/nf-core/bcftools/query/main.nf'
+include { BCFTOOLS_QUERY } from "$moduleDir/modules/nf-core/bcftools/query/main.nf"
 
 workflow test_bcftools_query {
 

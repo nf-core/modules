@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { PANAROO_RUN } from '../../../../../modules/nf-core/panaroo/run/main.nf'
+include { PANAROO_RUN } from "$moduleDir/modules/nf-core/panaroo/run/main.nf"
 
 workflow test_panaroo_run {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         [

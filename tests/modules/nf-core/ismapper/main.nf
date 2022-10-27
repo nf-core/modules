@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { ISMAPPER } from '../../../../modules/nf-core/ismapper/main.nf'
+include { ISMAPPER } from "$moduleDir/modules/nf-core/ismapper/main.nf"
 
 workflow test_ismapper {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ],

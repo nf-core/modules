@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_STATS_SAMTOOLS } from '../../../../subworkflows/nf-core/bam_stats_samtools/main'
+include { BAM_STATS_SAMTOOLS } from "../../../../subworkflows/nf-core/bam_stats_samtools/main"
 
 workflow test_bam_stats_samtools_single_end {
     input = [

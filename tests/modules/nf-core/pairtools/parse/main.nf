@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PAIRTOOLS_PARSE } from '../../../../../modules/nf-core/pairtools/parse/main.nf'
+include { PAIRTOOLS_PARSE } from "$moduleDir/modules/nf-core/pairtools/parse/main.nf"
 
 workflow test_pairtools_parse {
 

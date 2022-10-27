@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { PICARD_CREATESEQUENCEDICTIONARY } from '../../../../../modules/nf-core/picard/createsequencedictionary/main.nf'
+include { PICARD_CREATESEQUENCEDICTIONARY } from "$moduleDir/modules/nf-core/picard/createsequencedictionary/main.nf"
 
 workflow test_picard_createsequencedictionary {
-    
-    input = [ 
+
+    input = [
         [ id:'test' ], // meta map
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) 
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
 
     PICARD_CREATESEQUENCEDICTIONARY ( input )

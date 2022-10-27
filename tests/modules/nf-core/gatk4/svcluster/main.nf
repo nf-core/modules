@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_SVCLUSTER } from '../../../../../modules/nf-core/gatk4/svcluster/main.nf'
-include { MANTA_GERMLINE  } from '../../../../../modules/nf-core/manta/germline/main.nf'
+include { GATK4_SVCLUSTER } from "$moduleDir/modules/nf-core/gatk4/svcluster/main.nf"
+include { MANTA_GERMLINE  } from "$moduleDir/modules/nf-core/manta/germline/main.nf"
 
 workflow test_gatk4_svcluster {
 

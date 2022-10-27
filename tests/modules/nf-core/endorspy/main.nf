@@ -2,20 +2,20 @@
 
 nextflow.enable.dsl = 2
 
-include { ENDORSPY } from '../../../../modules/nf-core/endorspy/main.nf'
-include { SAMTOOLS_FLAGSTAT } from '../../../../modules/nf-core/samtools/flagstat/main.nf'
-include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT2 } from '../../../../modules/nf-core/samtools/flagstat/main.nf'
-include { SAMTOOLS_VIEW } from '../../../../modules/nf-core/samtools/view/main.nf'
-include { SAMTOOLS_INDEX } from '../../../../modules/nf-core/samtools/index/main.nf'
+include { ENDORSPY } from "$moduleDir/modules/nf-core/endorspy/main.nf"
+include { SAMTOOLS_FLAGSTAT } from "$moduleDir/modules/nf-core/samtools/flagstat/main.nf"
+include { SAMTOOLS_FLAGSTAT as SAMTOOLS_FLAGSTAT2 } from "$moduleDir/modules/nf-core/samtools/flagstat/main.nf"
+include { SAMTOOLS_VIEW } from "$moduleDir/modules/nf-core/samtools/view/main.nf"
+include { SAMTOOLS_INDEX } from "$moduleDir/modules/nf-core/samtools/index/main.nf"
 
 workflow test_endorspy {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
-    
+
 
     SAMTOOLS_FLAGSTAT ( input )
     SAMTOOLS_VIEW ( input, [] )

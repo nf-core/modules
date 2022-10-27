@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNPSIFT_SPLIT } from '../../../../../modules/nf-core/snpsift/split/main.nf'
+include { SNPSIFT_SPLIT } from "$moduleDir/modules/nf-core/snpsift/split/main.nf"
 
 workflow test_snpsift_split_base {
 

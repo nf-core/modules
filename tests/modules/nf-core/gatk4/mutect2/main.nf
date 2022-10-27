@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MUTECT2                       } from '../../../../../modules/nf-core/gatk4/mutect2/main.nf'
-include { GATK4_MUTECT2 as GATK4_MUTECT2_PAIR } from '../../../../../modules/nf-core/gatk4/mutect2/main.nf'
-include { GATK4_MUTECT2 as GATK4_MUTECT2_MITO } from '../../../../../modules/nf-core/gatk4/mutect2/main.nf'
-include { GATK4_MUTECT2 as GATK4_MUTECT2_F1R2 } from '../../../../../modules/nf-core/gatk4/mutect2/main.nf'
+include { GATK4_MUTECT2                       } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"
+include { GATK4_MUTECT2 as GATK4_MUTECT2_PAIR } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"
+include { GATK4_MUTECT2 as GATK4_MUTECT2_MITO } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"
+include { GATK4_MUTECT2 as GATK4_MUTECT2_F1R2 } from "$moduleDir/modules/nf-core/gatk4/mutect2/main.nf"
 
 workflow test_gatk4_mutect2_tumor_normal_pair {
     input = [ [ id:'test', normal_id:'normal', tumor_id:'tumour' ], // meta map

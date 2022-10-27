@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { ABRICATE_RUN } from '../../../../../modules/nf-core/abricate/run/main.nf'
+include { ABRICATE_RUN } from "$moduleDir/modules/nf-core/abricate/run/main.nf"
 
 workflow test_abricate_run {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
     ]

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_REALIGNERTARGETCREATOR } from '../../../../../modules/nf-core/gatk/realignertargetcreator/main.nf'
+include { GATK_REALIGNERTARGETCREATOR } from "$moduleDir/modules/nf-core/gatk/realignertargetcreator/main.nf"
 
 workflow test_gatk_realignertargetcreator {
 

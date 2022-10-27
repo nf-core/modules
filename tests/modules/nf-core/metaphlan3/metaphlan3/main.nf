@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR                 } from '../../../../../modules/nf-core/untar/main.nf'
-include { METAPHLAN3_METAPHLAN3 } from '../../../../../modules/nf-core/metaphlan3/metaphlan3/main.nf'
+include { UNTAR                 } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { METAPHLAN3_METAPHLAN3 } from "$moduleDir/modules/nf-core/metaphlan3/metaphlan3/main.nf"
 
 workflow test_metaphlan3_single_end {
 

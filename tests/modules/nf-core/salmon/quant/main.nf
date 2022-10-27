@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SALMON_INDEX } from '../../../../../modules/nf-core/salmon/index/main.nf'
-include { SALMON_QUANT } from '../../../../../modules/nf-core/salmon/quant/main.nf'
+include { SALMON_INDEX } from "$moduleDir/modules/nf-core/salmon/index/main.nf"
+include { SALMON_QUANT } from "$moduleDir/modules/nf-core/salmon/quant/main.nf"
 
 workflow test_salmon_quant_single_end {
 

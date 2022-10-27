@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { SHIGATYPER } from '../../../../modules/nf-core/shigatyper/main.nf'
+include { SHIGATYPER } from "$moduleDir/modules/nf-core/shigatyper/main.nf"
 
 workflow test_shigatyper_pe {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false, is_ont:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
@@ -16,8 +16,8 @@ workflow test_shigatyper_pe {
 }
 
 workflow test_shigatyper_se {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:true, is_ont:false ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
@@ -26,8 +26,8 @@ workflow test_shigatyper_se {
 }
 
 workflow test_shigatyper_ont {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:true, is_ont:true ], // meta map
         [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
     ]

@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { AGRVATE } from '../../../../modules/nf-core/agrvate/main.nf'
+include { AGRVATE } from "$moduleDir/modules/nf-core/agrvate/main.nf"
 
 workflow test_agrvate {
-    
+
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 

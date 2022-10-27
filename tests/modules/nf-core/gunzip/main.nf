@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GUNZIP } from '../../../../modules/nf-core/gunzip/main.nf'
+include { GUNZIP } from "$moduleDir/modules/nf-core/gunzip/main.nf"
 
 workflow test_gunzip {
     input = [ [],

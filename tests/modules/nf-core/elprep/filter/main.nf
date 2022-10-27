@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ELPREP_FILTER } from '../../../../../modules/nf-core/elprep/filter/main.nf'
+include { ELPREP_FILTER } from "$moduleDir/modules/nf-core/elprep/filter/main.nf"
 
 workflow test_elprep_filter {
 

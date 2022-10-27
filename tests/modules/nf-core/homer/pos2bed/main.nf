@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { HOMER_MAKETAGDIRECTORY } from '../../../../../modules/nf-core/homer/maketagdirectory/main.nf'
-include { HOMER_FINDPEAKS } from '../../../../../modules/nf-core/homer/findpeaks/main.nf'
-include { HOMER_POS2BED } from '../../../../../modules/nf-core/homer/pos2bed/main.nf'
+include { HOMER_MAKETAGDIRECTORY } from "$moduleDir/modules/nf-core/homer/maketagdirectory/main.nf"
+include { HOMER_FINDPEAKS } from "$moduleDir/modules/nf-core/homer/findpeaks/main.nf"
+include { HOMER_POS2BED } from "$moduleDir/modules/nf-core/homer/pos2bed/main.nf"
 
 workflow test_homer_pos2bed {
     input = [[id:'test'],

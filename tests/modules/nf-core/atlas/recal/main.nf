@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLAS_RECAL } from '../../../../../modules/nf-core/atlas/recal/main.nf'
+include { ATLAS_RECAL } from "$moduleDir/modules/nf-core/atlas/recal/main.nf"
 
 workflow test_atlas_recal {
 

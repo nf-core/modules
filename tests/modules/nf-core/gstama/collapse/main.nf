@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GSTAMA_COLLAPSE } from '../../../../../modules/nf-core/gstama/collapse/main.nf'
+include { GSTAMA_COLLAPSE } from "$moduleDir/modules/nf-core/gstama/collapse/main.nf"
 
 workflow test_gstama_collapse {
 

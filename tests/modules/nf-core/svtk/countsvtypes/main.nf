@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SVTK_COUNTSVTYPES } from '../../../../../modules/nf-core/svtk/countsvtypes/main.nf'
+include { SVTK_COUNTSVTYPES } from "$moduleDir/modules/nf-core/svtk/countsvtypes/main.nf"
 
 workflow test_svtk_countsvtypes {
 

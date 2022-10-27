@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HMMCOPY_GENERATEMAP } from '../../../../../modules/nf-core/hmmcopy/generatemap/main.nf'
+include { HMMCOPY_GENERATEMAP } from "$moduleDir/modules/nf-core/hmmcopy/generatemap/main.nf"
 
 workflow test_hmmcopy_generatemap {
 

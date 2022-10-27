@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_BAMTOBED } from '../../../../../modules/nf-core/bedtools/bamtobed/main.nf'
+include { BEDTOOLS_BAMTOBED } from "$moduleDir/modules/nf-core/bedtools/bamtobed/main.nf"
 
 workflow test_bedtools_bamtobed {
     input = [ [ id:'test'], //meta map

@@ -4,11 +4,11 @@
 // FASTA_INDEX_DNA: Align fastq files to a reference genome
 //
 
-include { BOWTIE2_BUILD                     } from '../../../modules/nf-core/bowtie2/build/main'
-include { BWA_INDEX as BWAMEM1_INDEX        } from '../../../modules/nf-core/bwa/index/main'
-include { BWAMEM2_INDEX                     } from '../../../modules/nf-core/bwamem2/index/main'
-include { DRAGMAP_HASHTABLE                 } from '../../../modules/nf-core/dragmap/hashtable/main'
-include { SNAPALIGNER_INDEX as SNAP_INDEX   } from '../../../modules/nf-core/snapaligner/index/main'
+include { BOWTIE2_BUILD                     } from "$moduleDir/modules/nf-core/bowtie2/build/main"
+include { BWA_INDEX as BWAMEM1_INDEX        } from "$moduleDir/modules/nf-core/bwa/index/main"
+include { BWAMEM2_INDEX                     } from "$moduleDir/modules/nf-core/bwamem2/index/main"
+include { DRAGMAP_HASHTABLE                 } from "$moduleDir/modules/nf-core/dragmap/hashtable/main"
+include { SNAPALIGNER_INDEX as SNAP_INDEX   } from "$moduleDir/modules/nf-core/snapaligner/index/main"
 
 workflow FASTA_INDEX_DNA {
 

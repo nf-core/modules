@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { OPTITYPE } from '../../../../modules/nf-core/optitype/main.nf'
+include { OPTITYPE } from "$moduleDir/modules/nf-core/optitype/main.nf"
 
 workflow test_optitype {
     input = [ [ id:'test', seq_type:'dna' ], // meta map

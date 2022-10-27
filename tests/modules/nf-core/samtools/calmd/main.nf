@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_CALMD } from '../../../../../modules/nf-core/samtools/calmd/main.nf'
+include { SAMTOOLS_CALMD } from "$moduleDir/modules/nf-core/samtools/calmd/main.nf"
 
 workflow test_samtools_calmd {
-    
+
     input1 = [
         [ id:'test', single_end:false ], // meta map
         file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)

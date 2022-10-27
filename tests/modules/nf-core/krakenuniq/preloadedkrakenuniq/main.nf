@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { KRAKENUNIQ_PRELOADEDKRAKENUNIQ } from '../../../../../modules/nf-core/krakenuniq/preloadedkrakenuniq/main.nf'
+include { KRAKENUNIQ_PRELOADEDKRAKENUNIQ } from "$moduleDir/modules/nf-core/krakenuniq/preloadedkrakenuniq/main.nf"
 
 workflow test_krakenuniq_preloadedkrakenuniq {
 

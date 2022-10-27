@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR     } from '../../../../modules/nf-core/untar/main.nf'
-include { GUNZIP    } from '../../../../modules/nf-core/gunzip/main.nf'
-include { KOFAMSCAN } from '../../../../modules/nf-core/kofamscan/main.nf'
+include { UNTAR     } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { GUNZIP    } from "$moduleDir/modules/nf-core/gunzip/main.nf"
+include { KOFAMSCAN } from "$moduleDir/modules/nf-core/kofamscan/main.nf"
 
 workflow test_kofamscan_txt {
 

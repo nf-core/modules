@@ -2,18 +2,18 @@
 
 nextflow.enable.dsl = 2
 
-include { PLINK_VCF     } from '../../../../../modules/nf-core/plink/vcf/main.nf'
-include { PLINK_EXTRACT } from '../../../../../modules/nf-core/plink/extract/main.nf'
+include { PLINK_VCF     } from "$moduleDir/modules/nf-core/plink/vcf/main.nf"
+include { PLINK_EXTRACT } from "$moduleDir/modules/nf-core/plink/extract/main.nf"
 
 workflow test_plink_extract {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true) 
+        file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
     ]
 
     PLINK_VCF ( input )
-    
+
     PLINK_VCF.out.bim
         .splitText(file: 'variants.keep', keepHeader: false, by: 10)
         .first()

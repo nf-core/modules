@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
-include { VCFANNO } from '../../../../modules/nf-core/vcfanno/main.nf'
+include { UNTAR } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { VCFANNO } from "$moduleDir/modules/nf-core/vcfanno/main.nf"
 
 workflow test_vcfanno {
 
@@ -22,10 +22,10 @@ workflow test_vcfanno {
 
 workflow test_vcfanno_uncompressed {
 
-    input = [ 
+    input = [
         [ id:'test_uncompressed', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
-        [] 
+        []
     ]
 
     toml = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)

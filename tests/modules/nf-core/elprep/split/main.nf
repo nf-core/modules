@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ELPREP_SPLIT } from '../../../../../modules/nf-core/elprep/split/main.nf'
+include { ELPREP_SPLIT } from "$moduleDir/modules/nf-core/elprep/split/main.nf"
 
 workflow test_elprep_split {
 

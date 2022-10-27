@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GSTAMA_POLYACLEANUP } from '../../../../../modules/nf-core/gstama/polyacleanup/main.nf'
+include { GSTAMA_POLYACLEANUP } from "$moduleDir/modules/nf-core/gstama/polyacleanup/main.nf"
 
 workflow test_gstama_polyacleanup {
 

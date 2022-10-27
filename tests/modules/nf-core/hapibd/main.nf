@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { HAPIBD } from '../../../../modules/nf-core/hapibd/main.nf'
+include { HAPIBD } from "$moduleDir/modules/nf-core/hapibd/main.nf"
 
 workflow test_hapibd {
 

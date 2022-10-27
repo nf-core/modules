@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { EIDO_VALIDATE } from '../../../../../modules/nf-core/eido/validate/main.nf'
+include { EIDO_VALIDATE } from "$moduleDir/modules/nf-core/eido/validate/main.nf"
 
 workflow test_eido_validate_on_nextflow_samplesheet {
 

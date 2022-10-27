@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MERGEBAMALIGNMENT } from '../../../../../modules/nf-core/gatk4/mergebamalignment/main.nf'
+include { GATK4_MERGEBAMALIGNMENT } from "$moduleDir/modules/nf-core/gatk4/mergebamalignment/main.nf"
 
 workflow test_gatk4_mergebamalignment {
     input    = [ [ id:'test' ], // meta map

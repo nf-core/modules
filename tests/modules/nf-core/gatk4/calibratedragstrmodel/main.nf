@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_CALIBRATEDRAGSTRMODEL } from '../../../../../modules/nf-core/gatk4/calibratedragstrmodel/main.nf'
+include { GATK4_CALIBRATEDRAGSTRMODEL } from "$moduleDir/modules/nf-core/gatk4/calibratedragstrmodel/main.nf"
 
 workflow test_gatk4_calibratedragstrmodel_bam {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
@@ -25,7 +25,7 @@ workflow test_gatk4_calibratedragstrmodel_bam {
 }
 
 workflow test_gatk4_calibratedragstrmodel_cram {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
@@ -45,7 +45,7 @@ workflow test_gatk4_calibratedragstrmodel_cram {
 }
 
 workflow test_gatk4_calibratedragstrmodel_beds {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),

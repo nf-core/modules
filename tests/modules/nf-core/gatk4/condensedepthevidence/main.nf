@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_CONDENSEDEPTHEVIDENCE } from '../../../../../modules/nf-core/gatk4/condensedepthevidence/main.nf'
+include { GATK4_CONDENSEDEPTHEVIDENCE } from "$moduleDir/modules/nf-core/gatk4/condensedepthevidence/main.nf"
 
 workflow test_gatk4_condensdepthevidence {
 

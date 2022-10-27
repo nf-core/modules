@@ -2,8 +2,8 @@
 // Run bedClip and bedGraphToBigWig
 //
 
-include { UCSC_BEDCLIP          } from '../../../modules/nf-core/ucsc/bedclip/main'
-include { UCSC_BEDGRAPHTOBIGWIG } from '../../../modules/nf-core/ucsc/bedgraphtobigwig/main'
+include { UCSC_BEDCLIP          } from "$moduleDir/modules/nf-core/ucsc/bedclip/main"
+include { UCSC_BEDGRAPHTOBIGWIG } from "$moduleDir/modules/nf-core/ucsc/bedgraphtobigwig/main"
 
 workflow BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG {
     take:

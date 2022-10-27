@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_VIEW } from '../../../../../modules/nf-core/samtools/view/main.nf'
+include { SAMTOOLS_VIEW } from "$moduleDir/modules/nf-core/samtools/view/main.nf"
 
 workflow test_samtools_view {
     input = [ [ id:'test', single_end:false ], // meta map

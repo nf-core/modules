@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_SVD } from '../../../../../modules/nf-core/verifybamid/verifybamid2/main.nf'
-include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_REFVCF } from '../../../../../modules/nf-core/verifybamid/verifybamid2/main.nf'
-include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_PANEL } from '../../../../../modules/nf-core/verifybamid/verifybamid2/main.nf'
+include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_SVD } from "$moduleDir/modules/nf-core/verifybamid/verifybamid2/main.nf"
+include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_REFVCF } from "$moduleDir/modules/nf-core/verifybamid/verifybamid2/main.nf"
+include { VERIFYBAMID_VERIFYBAMID2 as VERIFYBAMID_VERIFYBAMID2_PANEL } from "$moduleDir/modules/nf-core/verifybamid/verifybamid2/main.nf"
 
 workflow test_verifybamid_verifybamid2_svd {
 

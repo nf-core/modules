@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { MACREL_CONTIGS } from '../../../../../modules/nf-core/macrel/contigs/main.nf'
+include { MACREL_CONTIGS } from "$moduleDir/modules/nf-core/macrel/contigs/main.nf"
 
 workflow test_macrel_contigs {
-    
-    input = [ 
+
+    input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true) 
+        file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)
     ]
 
     MACREL_CONTIGS ( input )

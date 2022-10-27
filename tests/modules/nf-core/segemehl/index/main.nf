@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SEGEMEHL_INDEX } from '../../../../../modules/nf-core/segemehl/index/main.nf'
+include { SEGEMEHL_INDEX } from "$moduleDir/modules/nf-core/segemehl/index/main.nf"
 
 workflow test_segemehl_index {
 

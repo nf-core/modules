@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_CSI } from '../../../../../modules/nf-core/bcftools/index/main.nf'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_TBI } from '../../../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_CSI } from "$moduleDir/modules/nf-core/bcftools/index/main.nf"
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_TBI } from "$moduleDir/modules/nf-core/bcftools/index/main.nf"
 
 
 workflow test_bcftools_index_csi {

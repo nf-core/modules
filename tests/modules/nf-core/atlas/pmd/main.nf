@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLAS_PMD } from '../../../../../modules/nf-core/atlas/pmd/main.nf'
+include { ATLAS_PMD } from "$moduleDir/modules/nf-core/atlas/pmd/main.nf"
 
 workflow test_atlas_pmd {
 

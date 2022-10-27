@@ -1,6 +1,6 @@
-include { CUSTOM_SRATOOLSNCBISETTINGS } from '../../../modules/nf-core/custom/sratoolsncbisettings/main'
-include { SRATOOLS_PREFETCH           } from '../../../modules/nf-core/sratools/prefetch/main'
-include { SRATOOLS_FASTERQDUMP        } from '../../../modules/nf-core/sratools/fasterqdump/main'
+include { CUSTOM_SRATOOLSNCBISETTINGS } from "$moduleDir/modules/nf-core/custom/sratoolsncbisettings/main"
+include { SRATOOLS_PREFETCH           } from "$moduleDir/modules/nf-core/sratools/prefetch/main"
+include { SRATOOLS_FASTERQDUMP        } from "$moduleDir/modules/nf-core/sratools/fasterqdump/main"
 
 /**
  * Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).

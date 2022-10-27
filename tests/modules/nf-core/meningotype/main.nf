@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { MENINGOTYPE } from '../../../../modules/nf-core/meningotype/main.nf'
+include { MENINGOTYPE } from "$moduleDir/modules/nf-core/meningotype/main.nf"
 
 workflow test_meningotype {
-    
+
     input = [ [ id:'test', single_end:false ], // meta map
               file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
 

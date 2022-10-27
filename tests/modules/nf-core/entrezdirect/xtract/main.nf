@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { ENTREZDIRECT_ESUMMARY } from '../../../../../modules/nf-core/entrezdirect/esummary/main.nf'
-include { ENTREZDIRECT_XTRACT   } from '../../../../../modules/nf-core/entrezdirect/xtract/main.nf'
+include { ENTREZDIRECT_ESUMMARY } from "$moduleDir/modules/nf-core/entrezdirect/esummary/main.nf"
+include { ENTREZDIRECT_XTRACT   } from "$moduleDir/modules/nf-core/entrezdirect/xtract/main.nf"
 
 //
 // Test with Assembly database

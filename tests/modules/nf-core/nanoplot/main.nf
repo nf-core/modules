@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOPLOT  } from '../../../../modules/nf-core/nanoplot/main.nf'
+include { NANOPLOT  } from "$moduleDir/modules/nf-core/nanoplot/main.nf"
 
 workflow test_nanoplot_summary {
     def input = []
     input = [ [ id:'test' ], // meta map
             [ file(params.test_data['sarscov2']['nanopore']['test_sequencing_summary'], checkIfExists: true) ] ]
-              
+
     NANOPLOT ( input )
 }
 

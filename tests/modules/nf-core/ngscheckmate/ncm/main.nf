@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_BAM} from '../../../../../modules/nf-core/ngscheckmate/ncm/main.nf'
-include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_VCF} from '../../../../../modules/nf-core/ngscheckmate/ncm/main.nf'
+include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_BAM} from "$moduleDir/modules/nf-core/ngscheckmate/ncm/main.nf"
+include { NGSCHECKMATE_NCM as NGSCHECKMATE_NCM_VCF} from "$moduleDir/modules/nf-core/ngscheckmate/ncm/main.nf"
 
-include { BEDTOOLS_MAKEWINDOWS } from '../../../../../modules/nf-core/bedtools/makewindows/main.nf'
+include { BEDTOOLS_MAKEWINDOWS } from "$moduleDir/modules/nf-core/bedtools/makewindows/main.nf"
 
-include { BCFTOOLS_MPILEUP } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
-include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP2 } from '../../../../../modules/nf-core/bcftools/mpileup/main.nf'
+include { BCFTOOLS_MPILEUP } from "$moduleDir/modules/nf-core/bcftools/mpileup/main.nf"
+include { BCFTOOLS_MPILEUP as BCFTOOLS_MPILEUP2 } from "$moduleDir/modules/nf-core/bcftools/mpileup/main.nf"
 
 workflow test_ngscheckmate_ncm_bam {
     input    = [ file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),

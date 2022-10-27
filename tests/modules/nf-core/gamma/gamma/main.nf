@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GAMMA_GAMMA } from '../../../../../modules/nf-core/gamma/gamma/main.nf'
+include { GAMMA_GAMMA } from "$moduleDir/modules/nf-core/gamma/gamma/main.nf"
 
 workflow test_unzip {
 

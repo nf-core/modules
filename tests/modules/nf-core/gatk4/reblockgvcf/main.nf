@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_REBLOCKGVCF } from '../../../../../modules/nf-core/gatk4/reblockgvcf/main.nf'
+include { GATK4_REBLOCKGVCF } from "$moduleDir/modules/nf-core/gatk4/reblockgvcf/main.nf"
 
 workflow test_gatk4_reblockgvcf {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
@@ -21,7 +21,7 @@ workflow test_gatk4_reblockgvcf {
 }
 
 workflow test_gatk4_reblockgvcf_intervals {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
@@ -37,7 +37,7 @@ workflow test_gatk4_reblockgvcf_intervals {
 }
 
 workflow test_gatk4_reblockgvcf_dbsnp {
-    
+
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MAGECK_MLE } from '../../../../../modules/nf-core/mageck/mle/main.nf'
+include { MAGECK_MLE } from "$moduleDir/modules/nf-core/mageck/mle/main.nf"
 
 workflow test_mageck_mle {
 

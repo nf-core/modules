@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { NANOMONSV_PARSE } from '../../../../../modules/nf-core/nanomonsv/parse/main.nf'
+include { NANOMONSV_PARSE } from "$moduleDir/modules/nf-core/nanomonsv/parse/main.nf"
 
 workflow test_nanomonsv_parse {
 

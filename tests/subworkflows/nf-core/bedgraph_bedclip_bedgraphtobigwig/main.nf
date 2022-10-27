@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG } from '../../../../subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/main'
+include { BEDGRAPH_BEDCLIP_BEDGRAPHTOBIGWIG } from "../../../../subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/main"
 
 workflow test_bedgraph_bedclip_bedgraphtobigwig {
     input = [ [ id:'test', single_end:false ], // meta map

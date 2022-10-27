@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { PRESEQ_CCURVE } from '../../../../../modules/nf-core/preseq/ccurve/main.nf'
+include { PRESEQ_CCURVE } from "$moduleDir/modules/nf-core/preseq/ccurve/main.nf"
 
 workflow test_preseq_ccurve_single_end {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) 
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
     PRESEQ_CCURVE ( input )

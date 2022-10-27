@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FALCO } from '../../../../modules/nf-core/falco/main.nf'
+include { FALCO } from "$moduleDir/modules/nf-core/falco/main.nf"
 
 //
 // Test with single-end data

@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR             } from '../../../../../modules/nf-core/untar/main.nf'
-include { KAIJU_KAIJU       } from '../../../../../modules/nf-core/kaiju/kaiju/main.nf'
-include { KAIJU_KAIJU2TABLE } from '../../../../../modules/nf-core/kaiju/kaiju2table/main.nf'
+include { UNTAR             } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { KAIJU_KAIJU       } from "$moduleDir/modules/nf-core/kaiju/kaiju/main.nf"
+include { KAIJU_KAIJU2TABLE } from "$moduleDir/modules/nf-core/kaiju/kaiju2table/main.nf"
 
 workflow test_kaiju_kaiju_single_end {
 

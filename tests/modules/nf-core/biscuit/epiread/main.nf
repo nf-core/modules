@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX   } from '../../../../../modules/nf-core/biscuit/index/main.nf'
-include { BISCUIT_EPIREAD } from '../../../../../modules/nf-core/biscuit/epiread/main.nf'
+include { BISCUIT_INDEX   } from "$moduleDir/modules/nf-core/biscuit/index/main.nf"
+include { BISCUIT_EPIREAD } from "$moduleDir/modules/nf-core/biscuit/epiread/main.nf"
 
 workflow test_biscuit_epiread_nosnp {
 

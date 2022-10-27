@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_QC_PICARD } from '../../../../subworkflows/nf-core/bam_qc_picard/main'
+include { BAM_QC_PICARD } from "../../../../subworkflows/nf-core/bam_qc_picard/main"
 
 workflow test_bam_qc_picard_wgs {
     input = [ [ id:'test', single_end:false ], // meta map

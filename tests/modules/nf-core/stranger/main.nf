@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { EXPANSIONHUNTER } from '../../../../modules/nf-core/expansionhunter/main.nf'
-include { STRANGER } from '../../../../modules/nf-core/stranger/main.nf'
+include { EXPANSIONHUNTER } from "$moduleDir/modules/nf-core/expansionhunter/main.nf"
+include { STRANGER } from "$moduleDir/modules/nf-core/stranger/main.nf"
 
 
 input = [ [ id:'test', gender:'male' ], // meta map

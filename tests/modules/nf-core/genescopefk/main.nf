@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTK_FASTK  } from '../../../../modules/nf-core/fastk/fastk/main.nf'
-include { FASTK_HISTEX } from '../../../../modules/nf-core/fastk/histex/main.nf'
-include { GENESCOPEFK  } from '../../../../modules/nf-core/genescopefk/main.nf'
+include { FASTK_FASTK  } from "$moduleDir/modules/nf-core/fastk/fastk/main.nf"
+include { FASTK_HISTEX } from "$moduleDir/modules/nf-core/fastk/histex/main.nf"
+include { GENESCOPEFK  } from "$moduleDir/modules/nf-core/genescopefk/main.nf"
 
 workflow test_genescopefk {
 

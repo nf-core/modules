@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BEDTOOLS_COMPLEMENT } from '../../../../../modules/nf-core/bedtools/complement/main.nf'
+include { BEDTOOLS_COMPLEMENT } from "$moduleDir/modules/nf-core/bedtools/complement/main.nf"
 
 workflow test_bedtools_complement {
     input = [ [ id:'test'],

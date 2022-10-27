@@ -2,15 +2,15 @@
 
 nextflow.enable.dsl = 2
 
-include { RTGTOOLS_VCFEVAL } from '../../../../../modules/nf-core/rtgtools/vcfeval/main.nf'
-include { UNTAR } from '../../../../modules/nf-core/untar/main.nf'
+include { RTGTOOLS_VCFEVAL } from "$moduleDir/modules/nf-core/rtgtools/vcfeval/main.nf"
+include { UNTAR } from "$moduleDir/modules/nf-core/untar/main.nf"
 
 workflow test_rtgtools_vcfeval {
-    
+
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),        
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true),
     ]
 
     truth = [
@@ -32,13 +32,13 @@ workflow test_rtgtools_vcfeval {
             meta, folder ->
                 folder
         })
-    
+
 
     RTGTOOLS_VCFEVAL ( input, truth, truth_regions, evaluation_regions, sdf )
 }
 
 workflow test_rtgtools_vcfeval_no_optional_inputs {
-    
+
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_REVERTSAM } from '../../../../../modules/nf-core/gatk4/revertsam/main.nf'
+include { GATK4_REVERTSAM } from "$moduleDir/modules/nf-core/gatk4/revertsam/main.nf"
 
 workflow test_gatk4_revertsam {
     input = [ [ id:'test' ], // meta map

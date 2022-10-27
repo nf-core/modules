@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_SITEDEPTHTOBAF      } from '../../../../../modules/nf-core/gatk4/sitedepthtobaf/main.nf'
-include { GATK4_COLLECTSVEVIDENCE   } from '../../../../../modules/nf-core/gatk4/collectsvevidence/main.nf'
+include { GATK4_SITEDEPTHTOBAF      } from "$moduleDir/modules/nf-core/gatk4/sitedepthtobaf/main.nf"
+include { GATK4_COLLECTSVEVIDENCE   } from "$moduleDir/modules/nf-core/gatk4/collectsvevidence/main.nf"
 
 workflow test_gatk4_sitedepthtobaf {
 

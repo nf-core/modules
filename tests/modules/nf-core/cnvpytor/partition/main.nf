@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { CNVPYTOR_PARTITION } from '../../../../../modules/nf-core/cnvpytor/partition/main.nf'
+include { CNVPYTOR_PARTITION } from "$moduleDir/modules/nf-core/cnvpytor/partition/main.nf"
 
 workflow test_cnvpytor_partition {
 

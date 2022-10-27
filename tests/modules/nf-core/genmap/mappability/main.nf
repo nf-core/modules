@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GENMAP_INDEX       } from '../../../../../modules/nf-core/genmap/index/main.nf'
-include { GENMAP_MAPPABILITY } from '../../../../../modules/nf-core/genmap/mappability/main.nf'
+include { GENMAP_INDEX       } from "$moduleDir/modules/nf-core/genmap/index/main.nf"
+include { GENMAP_MAPPABILITY } from "$moduleDir/modules/nf-core/genmap/mappability/main.nf"
 
 workflow test_genmap_map {
 

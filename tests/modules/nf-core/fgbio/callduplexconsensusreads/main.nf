@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_CALLDUPLEXCONSENSUSREADS } from '../../../../../modules/nf-core/fgbio/callduplexconsensusreads/main.nf'
+include { FGBIO_CALLDUPLEXCONSENSUSREADS } from "$moduleDir/modules/nf-core/fgbio/callduplexconsensusreads/main.nf"
 
 workflow test_fgbio_callduplexconsensusreads {
 

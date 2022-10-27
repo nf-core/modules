@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { FGBIO_FILTERCONSENSUSREADS } from '../../../../../modules/nf-core/fgbio/filterconsensusreads/main.nf'
+include { FGBIO_FILTERCONSENSUSREADS } from "$moduleDir/modules/nf-core/fgbio/filterconsensusreads/main.nf"
 
 workflow test_fgbio_filterconsensusreads {
 

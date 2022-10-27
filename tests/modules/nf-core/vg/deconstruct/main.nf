@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VG_DECONSTRUCT } from '../../../../../modules/nf-core/vg/deconstruct/main.nf'
+include { VG_DECONSTRUCT } from "$moduleDir/modules/nf-core/vg/deconstruct/main.nf"
 
 workflow test_vg_deconstruct {
     input = [ [ id:'test' ], // meta map

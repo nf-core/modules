@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR      } from '../../../../../modules/nf-core/untar/main.nf'
-include { LAST_TRAIN } from '../../../../../modules/nf-core/last/train/main.nf'
+include { UNTAR      } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { LAST_TRAIN } from "$moduleDir/modules/nf-core/last/train/main.nf"
 
 workflow test_last_train {
 

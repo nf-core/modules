@@ -2,10 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { UNTAR           } from '../../../../../modules/nf-core/untar/main.nf'
-include { KRAKEN2_KRAKEN2 } from '../../../../../modules/nf-core/kraken2/kraken2/main.nf'
-include { BRACKEN_BRACKEN } from '../../../../../modules/nf-core/bracken/bracken/main.nf'
-include { BRACKEN_COMBINEBRACKENOUTPUTS } from '../../../../../modules/nf-core/bracken/combinebrackenoutputs/main.nf'
+include { UNTAR           } from "$moduleDir/modules/nf-core/untar/main.nf"
+include { KRAKEN2_KRAKEN2 } from "$moduleDir/modules/nf-core/kraken2/kraken2/main.nf"
+include { BRACKEN_BRACKEN } from "$moduleDir/modules/nf-core/bracken/bracken/main.nf"
+include { BRACKEN_COMBINEBRACKENOUTPUTS } from "$moduleDir/modules/nf-core/bracken/combinebrackenoutputs/main.nf"
 
 workflow test_bracken_combinebrackenoutputs {
 

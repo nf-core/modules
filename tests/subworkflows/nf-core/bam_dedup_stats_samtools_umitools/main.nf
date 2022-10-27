@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from '../../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from "../../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main"
 
 workflow test_bam_dedup_stats_samtools_umitools {
     input = [

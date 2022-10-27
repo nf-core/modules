@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SNAPALIGNER_INDEX } from '../../../../../modules/nf-core/snapaligner/index/main.nf'
+include { SNAPALIGNER_INDEX } from "$moduleDir/modules/nf-core/snapaligner/index/main.nf"
 
 workflow test_snapaligner_index {
     fasta = [

@@ -2,12 +2,12 @@
 
 nextflow.enable.dsl = 2
 
-include { COOLER_CLOAD }                       from '../../../../../modules/nf-core/cooler/cload/main.nf'
-include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from '../../../../../modules/nf-core/cooler/cload/main.nf'
-include { COOLER_CLOAD as COOLER_CLOAD_TABIX } from '../../../../../modules/nf-core/cooler/cload/main.nf'
-include { COOLER_DUMP }                        from '../../../../../modules/nf-core/cooler/dump/main.nf'
-include { COOLER_DUMP as COOLER_DUMP_PAIRS}    from '../../../../../modules/nf-core/cooler/dump/main.nf'
-include { COOLER_DUMP as COOLER_DUMP_TABIX}    from '../../../../../modules/nf-core/cooler/dump/main.nf'
+include { COOLER_CLOAD }                       from "$moduleDir/modules/nf-core/cooler/cload/main.nf"
+include { COOLER_CLOAD as COOLER_CLOAD_PAIRS } from "$moduleDir/modules/nf-core/cooler/cload/main.nf"
+include { COOLER_CLOAD as COOLER_CLOAD_TABIX } from "$moduleDir/modules/nf-core/cooler/cload/main.nf"
+include { COOLER_DUMP }                        from "$moduleDir/modules/nf-core/cooler/dump/main.nf"
+include { COOLER_DUMP as COOLER_DUMP_PAIRS}    from "$moduleDir/modules/nf-core/cooler/dump/main.nf"
+include { COOLER_DUMP as COOLER_DUMP_TABIX}    from "$moduleDir/modules/nf-core/cooler/dump/main.nf"
 
 workflow test_cooler_cload_pairix {
 

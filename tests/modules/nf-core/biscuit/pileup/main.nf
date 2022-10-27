@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { BISCUIT_INDEX  } from '../../../../../modules/nf-core/biscuit/index/main.nf'
-include { BISCUIT_PILEUP } from '../../../../../modules/nf-core/biscuit/pileup/main.nf'
+include { BISCUIT_INDEX  } from "$moduleDir/modules/nf-core/biscuit/index/main.nf"
+include { BISCUIT_PILEUP } from "$moduleDir/modules/nf-core/biscuit/pileup/main.nf"
 
 workflow test_biscuit_pileup {
 
@@ -11,8 +11,8 @@ workflow test_biscuit_pileup {
         [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true)],
         [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)],    
-	[], //tumor bam 
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)],
+	[], //tumor bam
 	[] //tumor bai
         ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
@@ -28,7 +28,7 @@ workflow test_biscuit_pileup_somatic {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)    
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
         ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 

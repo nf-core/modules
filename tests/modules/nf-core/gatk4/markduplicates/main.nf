@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK4_MARKDUPLICATES } from '../../../../../modules/nf-core/gatk4/markduplicates/main.nf'
-include { GATK4_MARKDUPLICATES as GATK4_MARKDUPLICATES_CRAM } from '../../../../../modules/nf-core/gatk4/markduplicates/main.nf'
+include { GATK4_MARKDUPLICATES } from "$moduleDir/modules/nf-core/gatk4/markduplicates/main.nf"
+include { GATK4_MARKDUPLICATES as GATK4_MARKDUPLICATES_CRAM } from "$moduleDir/modules/nf-core/gatk4/markduplicates/main.nf"
 
 workflow test_gatk4_markduplicates {
     input = [ [ id:'test', single_end:false ], // meta map

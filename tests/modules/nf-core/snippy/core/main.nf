@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { SNIPPY_RUN } from '../../../../../modules/nf-core/snippy/run/main.nf'
-include { SNIPPY_CORE } from '../../../../../modules/nf-core/snippy/core/main.nf'
+include { SNIPPY_RUN } from "$moduleDir/modules/nf-core/snippy/run/main.nf"
+include { SNIPPY_CORE } from "$moduleDir/modules/nf-core/snippy/core/main.nf"
 
 workflow test_snippy_core {
-    
+
     input = [ [ id:'test', single_end:false ], // meta map
               [ file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]

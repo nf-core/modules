@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { CONCOCT_CUTUPFASTA } from '../../../../../modules/nf-core/concoct/cutupfasta/main.nf'
-include { CONCOCT_CONCOCTCOVERAGETABLE } from '../../../../../modules/nf-core/concoct/concoctcoveragetable/main.nf'
+include { CONCOCT_CUTUPFASTA } from "$moduleDir/modules/nf-core/concoct/cutupfasta/main.nf"
+include { CONCOCT_CONCOCTCOVERAGETABLE } from "$moduleDir/modules/nf-core/concoct/concoctcoveragetable/main.nf"
 
 workflow test_concoct_concoctcoveragetable {
 

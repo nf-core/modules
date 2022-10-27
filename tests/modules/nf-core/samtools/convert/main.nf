@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { SAMTOOLS_CONVERT as SAMTOOLS_BAMTOCRAM } from '../../../../../modules/nf-core/samtools/convert/main.nf'
-include { SAMTOOLS_CONVERT as SAMTOOLS_CRAMTOBAM } from '../../../../../modules/nf-core/samtools/convert/main.nf'
+include { SAMTOOLS_CONVERT as SAMTOOLS_BAMTOCRAM } from "$moduleDir/modules/nf-core/samtools/convert/main.nf"
+include { SAMTOOLS_CONVERT as SAMTOOLS_CRAMTOBAM } from "$moduleDir/modules/nf-core/samtools/convert/main.nf"
 
 workflow test_samtools_convert_bamtocram {
 

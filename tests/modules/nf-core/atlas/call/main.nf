@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ATLAS_CALL } from '../../../../../modules/nf-core/atlas/call/main.nf'
+include { ATLAS_CALL } from "$moduleDir/modules/nf-core/atlas/call/main.nf"
 
 workflow test_atlas_call {
 

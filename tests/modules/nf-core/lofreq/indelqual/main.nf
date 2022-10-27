@@ -3,10 +3,10 @@
 nextflow.enable.dsl = 2
 
 
-include { LOFREQ_INDELQUAL } from '../../../../../modules/nf-core/lofreq/indelqual/main.nf'
+include { LOFREQ_INDELQUAL } from "$moduleDir/modules/nf-core/lofreq/indelqual/main.nf"
 
 workflow test_lofreq_indelqual {
-    
+
     input = [ [ id:'test' ], // meta map
               file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
 

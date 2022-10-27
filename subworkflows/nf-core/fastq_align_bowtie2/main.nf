@@ -2,8 +2,8 @@
 // Alignment with Bowtie2
 //
 
-include { BOWTIE2_ALIGN           } from '../../../modules/nf-core/bowtie2/align/main'
-include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
+include { BOWTIE2_ALIGN           } from "$moduleDir/modules/nf-core/bowtie2/align/main"
+include { BAM_SORT_STATS_SAMTOOLS } from "../bam_sort_stats_samtools/main"
 
 workflow FASTQ_ALIGN_BOWTIE2 {
     take:
