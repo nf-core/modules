@@ -11,11 +11,10 @@ workflow test_fastp_single_end {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
@@ -26,11 +25,10 @@ workflow test_fastp_paired_end {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
@@ -40,11 +38,10 @@ workflow test_fastp_interleaved {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_interleaved_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = false
     save_merged       = false
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
@@ -54,11 +51,10 @@ workflow test_fastp_single_end_trim_fail {
     input = [ [ id:'test', single_end:true ], // meta map
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = true
     save_merged       = false
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
@@ -69,11 +65,10 @@ workflow test_fastp_paired_end_trim_fail {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = true
     save_merged       = false
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
@@ -84,11 +79,10 @@ workflow test_fastp_paired_end_merged {
               [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
             ]
-    adapter_fasta = []
     save_trimmed_fail = false
     save_merged       = true
 
-    FASTP ( input, adapter_fasta, save_trimmed_fail, save_merged )
+    FASTP ( input, [], save_trimmed_fail, save_merged )
 }
 
 //
