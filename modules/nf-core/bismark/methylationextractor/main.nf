@@ -25,22 +25,24 @@ process BISMARK_METHYLATIONEXTRACTOR {
     script:
     def args = task.ext.args ?: ''
     // Assign sensible numbers for multicore and buffer_size based on bismark docs
-    def multicore = (task.cpus >= 6) ? "--multicore ${(task.cpus / 3) as int}" : ""
+    if(!args.contains('--multicore') && task.cpus >= 6){
+        args += "--multicore ${(task.cpus / 3) as int}"
+    }
     // Only set buffer_size when there are more than 6.GB of memory available
-    def buffer = (task.memory?.giga > 6) ? "--buffer_size ${task.memory.giga - 2}G" : ""
+    if(!args.contains('--buffer_size') && task.memory?.giga > 6){
+        args += "--buffer_size ${task.memory.giga - 2}G"
+    }
 
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
+        $bam \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
         $seqtype \\
-        $args \\
-        $multicore \\
-        $buffer \\
-        $bam
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
