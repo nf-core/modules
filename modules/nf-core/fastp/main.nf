@@ -42,7 +42,7 @@ process FASTP {
             --thread $task.cpus \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
-          $adapter_list \\
+            $adapter_list \\
             $fail_fastq \\
             $args \\
             2> ${prefix}.fastp.log \\
