@@ -13,6 +13,7 @@ process SMOOTHXG {
 
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
+    path("*.maf") , optional: true, emit: maf
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,7 +26,7 @@ process SMOOTHXG {
     smoothxg \\
         --threads=$task.cpus \\
         --gfa-in=${gfa} \\
-        --smoothed-out=${prefix}.smoothxg.gfa
+        --smoothed-out=${prefix}.smoothxg.gfa \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

@@ -38,5 +38,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - maf:
+    type: file
+    description: write the multiple sequence alignments (MSAs) in MAF format in this file
+    pattern: "*.{maf}"
 authors:
-  - "@heuermh"
+  - "@heuermh, @subwaystation"

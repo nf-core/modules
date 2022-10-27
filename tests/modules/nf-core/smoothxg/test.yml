@@ -4,6 +4,7 @@
     - smoothxg
   files:
     - path: output/smoothxg/test.smoothxg.gfa
+    - path: output/smoothxg/test.maf
 
 - name: smoothxg_pangenomics
   command: nextflow run ./tests/modules/nf-core/smoothxg -entry test_smoothxg_pangenomics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/nextflow.config
@@ -11,3 +12,4 @@
     - smoothxg
   files:
     - path: output/smoothxg/test.smoothxg.gfa
+    - path: output/smoothxg/test.maf
