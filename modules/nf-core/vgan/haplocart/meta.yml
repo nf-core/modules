@@ -1,52 +1,46 @@
 name: "vgan_haplocart"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Human mtDNA haplogroup classification
 keywords:
   - sort
 tools:
   - "vgan":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Suite of tools for pangenomics built using vg"
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://github.com/grenaud/vgan"
+      documentation: "https://github.com/grenaud/vgan"
       tool_dev_url: "None"
       doi: ""
       licence: "['GPL v3']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - INPUT1:
+      type: file
+      description: Input file
+      pattern: "*.{fq}, *.{fq.gz}, *.{fa}, *.{fa.gz}"
+
+  - INPUT2:
+      type: file
+      description: Optional second FASTQ file for paired-end reads
+      pattern: "*.{fq}, *.{fq.gz}"
+
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
+
   - txt:
       type: file
       description: HaploCart output file with predicted mtDNA haplogroup
       pattern: "*.{txt}"
 
+  - posterior:
+      type: file
+      description: HaploCart posterior output file
+      pattern: "*.{posterior.txt}"
+
 authors:
   - "@grenaud"
   - "@JoshuaDanielRubin"
+  - "@nicolaavogel"
+
