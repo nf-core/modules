@@ -1,0 +1,14 @@
+- name: cellranger-atac mkfastq test_cellranger_atac_mkfastq_simple
+  command: nextflow run ./tests/modules/nf-core/cellranger-atac/mkfastq -entry test_cellranger_atac_mkfastq_simple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellranger-atac/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellranger-atac
+    - cellranger-atac/mkfastq
+  files:
+    - path: output/cellranger-atac/cellranger-atac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
+- name: cellranger-atac mkfastq test_cellranger_atac_mkfastq_illumina
+  command: nextflow run ./tests/modules/nf-core/cellranger-atac/mkfastq -entry test_cellranger_atac_mkfastq_illumina -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cellranger-atac/mkfastq/nextflow.config -stub-run
+  tags:
+    - cellranger-atac
+    - cellranger-atac/mkfastq
+  files:
+    - path: output/cellranger-atac/cellranger-atac-tiny-bcl-1/outs/fastq_path/fake_file.fastq.gz
