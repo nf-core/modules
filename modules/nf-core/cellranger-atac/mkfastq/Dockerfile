@@ -1,9 +1,9 @@
-# Dockerfile to create container with Cell Ranger v7.0.0 and bcl2fastq v2.20.0
+# Dockerfile to create container with Cell Ranger ATAC v2.1.0 and bcl2fastq v2.20.0
 # Push to nfcore/cellranger-atacmkfastq:<VER>
 
 FROM continuumio/miniconda3:4.8.2
 LABEL authors="Florian Heyl, Gisela Gabernet <gisela.gabernet@gmail.com>" \
-    description="Docker image containing bcl2fastq2 and Cell Ranger"
+    description="Docker image containing bcl2fastq2 and Cell Ranger ATAC"
 # Disclaimer: this container is not provided nor supported by Illumina or 10x Genomics.
 
 # Install procps and clean apt cache
@@ -17,7 +17,7 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # Copy pre-downloaded bcl2fastq2 and cellranger-atac file
 ENV BCL2FASTQ2_VER=v2-20-0-linux-x86-64 \
-    CELLRANGER_ATAC_VER=7.0.0
+    CELLRANGER_ATAC_VER=2.1.0
 COPY bcl2fastq2-$BCL2FASTQ2_VER.zip /tmp/bcl2fastq2-$BCL2FASTQ2_VER.zip
 COPY cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz /opt/cellranger-atac-$CELLRANGER_ATAC_VER.tar.gz
 
