@@ -16,11 +16,11 @@ input:
   - INPUT1:
       type: file
       description: Input file
-      pattern: "*.{fq}, *.{fq.gz}, *.{fa}, *.{fa.gz}"
+      pattern: "*.{fq}, *.{fq.gz}"
 
   - INPUT2:
       type: file
-      description: Optional second FASTQ file for paired-end reads
+      description: Optional second FASTQ file for non-interleaved paired-end reads
       pattern: "*.{fq}, *.{fq.gz}"
 
 output:
