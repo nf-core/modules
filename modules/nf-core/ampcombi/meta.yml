@@ -47,11 +47,11 @@ output:
       pattern: "versions.yml"
   - txt:
       type: file
-      description: An alignment file containing the results from the Diamond alignment step done on all AMP hits.
+      description: An alignment file containing the results from the DIAMOND alignment step done on all AMP hits.
       pattern: "/*/*_diamond_matches.txt"
   - csv:
       type: file
-      description: A file containing the summary report of all predicted AMP hits from all AMP tools given as input and the corresponding taxonomic and functional classification from teh alignment step.
+      description: A file containing the summary report of all predicted AMP hits from all AMP tools given as input and the corresponding taxonomic and functional classification from the alignment step.
       pattern: "/*/*_ampcombi.csv"
   - faa:
       type: file
