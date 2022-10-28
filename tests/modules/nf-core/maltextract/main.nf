@@ -13,7 +13,7 @@ workflow test_maltextract {
     fastas = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     gff = []
     seq_type = "DNA"
-    map_db = [ [], file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/megan-nucl-Jan2021.db.zip", checkIfExists: true) ]
+    map_db = [ [], file("http://software-ab.cs.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true) ]
     input = [
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
@@ -24,7 +24,7 @@ workflow test_maltextract {
 
     UNZIP_MALT ( map_db )
     UNZIP_MALTEXTRACT ( ncbi_dir )
-    MALT_BUILD ( fastas, seq_type, gff, UNZIP_MALT.out.unzipped_archive.map{ it[1] } )
+    MALT_BUILD ( fastas, seq_type, UNZIP_MALT.out.unzipped_archive.map{ it[1] } , "ref" , "taxonomy" )
     MALT_RUN ( input, mode, MALT_BUILD.out.index )
     ch_input_to_maltextract = MALT_RUN.out.rma6.map{ it[1] }
     MALTEXTRACT ( ch_input_to_maltextract, taxon_list, UNZIP_MALTEXTRACT.out.unzipped_archive.map{ it[1] })
