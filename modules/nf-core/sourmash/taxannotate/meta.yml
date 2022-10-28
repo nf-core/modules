@@ -1,51 +1,60 @@
 name: "sourmash_taxannotate"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Annotate list of metagenome members (based on sourmash signature matches) with taxonomic information.
 keywords:
-  - sort
+  - FracMinHash sketch
+  - signature
+  - kmer
+  - containment
+  - sourmash
+  - genomics
+  - metagenomics
+  - taxonomic classification
+  - taxonomic profiling
 tools:
   - "sourmash":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Compute and compare MinHash signatures for DNA data sets."
-      homepage: "https://sourmash.readthedocs.io/"
-      documentation: "https://sourmash.readthedocs.io/"
-      tool_dev_url: "https://github.com/dib-lab/sourmash"
-      doi: ""
-      licence: "['BSD-3-clause']"
+      description: Compute and compare FracMinHash signatures for DNA data sets.
+      homepage: https://sourmash.readthedocs.io/
+      documentation: https://sourmash.readthedocs.io/
+      tool_dev_url: https://github.com/sourmash-bio/sourmash
+      doi: "10.21105/joss.00027"
+      licence: ["BSD-3-clause"]
 
-## TODO nf-core: Add a description of all of the variables used as input
+## Description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - gather_results:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: |
+        Table with signatures classified as belonging to any of the genomes
+        in the sourmash database(s), result of `sourmash gather` command.
+  - taxonomy:
+      type: file
+      description: Database with lineages (in CSV format)
 
-## TODO nf-core: Add a description of all of the variables used as output
+## Description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
+  - result:
+      type: file
+      description: |
+        Table with signatures classified as belonging to any of the genomes
+        in the sourmash database(s) with an additional 'lineage' column
+        containing the taxonomic information for each database match.
+      pattern: "*{csv.gz}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+
 
 authors:
   - "@vmikk"
+  - "@taylorreiter"

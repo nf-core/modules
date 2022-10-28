@@ -24,7 +24,7 @@ workflow test_sourmash_taxannotate {
     // Dummy taxonomy
     File tax = new File("${workflow.workDir}/taxonomy.csv")
     tax.write("ident,superkingdom,phylum,class,order,family,genus,species\n")
-    tax.append("ID,d__Bacteria,p__Proteobacteria,c__Gammaproteobacteria,o__Enterobacterales,f__Enterobacteriaceae,g__Escherichia,s__Escherichia coli\n")
+    tax.append("db,d__Riboviria,p__Pisuviricota,c__Pisoniviricetes,o__Nidovirales,f__Coronaviridae,g__Betacoronavirus,s__SARS‑CoV‑2\n")
     taxonomy = file(tax)
 
     // Create sketches
@@ -33,7 +33,7 @@ workflow test_sourmash_taxannotate {
 
     // Search a metagenome signature against database
     save_unassigned    = false
-    save_matches_sig   = true
+    save_matches_sig   = false
     save_prefetch      = false
     save_prefetch_csv  = false
 
