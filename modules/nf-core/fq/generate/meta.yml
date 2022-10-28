@@ -1,7 +1,9 @@
-name: "fq_lint"
-description: fq lint is a FASTQ file pair validator.
+name: "fq_generate"
+description: |
+  fq generate is a FASTQ file pair generator. It creates two reads, formatting names as described by Illumina.
+  While generate creates "valid" FASTQ reads, the content of the files are completely random. The sequences do not align to any genome.
 keywords:
-  - lint
+  - generate
   - fastq
 tools:
   - "fq":
@@ -18,12 +20,17 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - fastq:
-      type: file
-      description: FASTQ file list
-      pattern: "*.fastq{,.gz}"
 
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: Random generated FASTQ files.
+      pattern: "*.R[12].fastq.gz"
   - versions:
       type: file
       description: File containing software versions
