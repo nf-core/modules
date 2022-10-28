@@ -6,7 +6,10 @@ include { CHROMAP_INDEX } from '../../../../../modules/nf-core/chromap/index/mai
 
 workflow test_chromap_index {
 
-    input = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    input = [
+        [ id:'test' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     CHROMAP_INDEX ( input )
 }
