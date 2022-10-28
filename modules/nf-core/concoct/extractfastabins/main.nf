@@ -12,6 +12,7 @@ process CONCOCT_EXTRACTFASTABINS {
 
     output:
     tuple val(meta), path("fasta_bins/*.fa"), emit: fasta
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
