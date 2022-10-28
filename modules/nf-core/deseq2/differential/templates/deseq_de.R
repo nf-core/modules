@@ -81,7 +81,9 @@ opt <- list(
     minmu = 0.5,
     vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
     shrink_lfc = TRUE,
-    cores = 1
+    cores = 1,
+    vs_blind = TRUE,
+    vst_nsub = 1000
 )
 opt_types <- lapply(opt, class)
 
@@ -331,9 +333,14 @@ write.table(
 # Note very limited rounding for consistency of results
 
 for (vs_method_name in strsplit(opt\$vs_method, ',')){
-    vs_func <- get(vs_method_name)
+    if (vs_method_name == 'vst'){
+        vs_mat <- vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub)
+    }else if (vs_method_name == 'rlog'){
+        vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
+    }
+
     write.table(
-        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))), nsmall = 8),
+        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_mat)), nsmall = 8),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
