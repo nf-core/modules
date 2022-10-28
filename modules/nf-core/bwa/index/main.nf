@@ -12,7 +12,7 @@ process BWA_INDEX {
 
     output:
     tuple val(meta), path(bwa) , emit: index
-    path "versions.yml"          , emit: versions
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +26,22 @@ process BWA_INDEX {
         $args \\
         -p bwa/${fasta.baseName} \\
         $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir bwa
+
+    touch bwa/genome.amb
+    touch bwa/genome.ann
+    touch bwa/genome.bwt
+    touch bwa/genome.pac
+    touch bwa/genome.sa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
