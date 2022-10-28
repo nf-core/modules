@@ -1,32 +1,33 @@
 - name: vgan haplocart test_vgan_haplocart_paired_end_interleaved
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_paired_end_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan/haplocart
-  - vgan
+    - vgan/haplocart
+    - vgan
   files:
-  - path: output/vgan/test.posterior.txt
-    md5sum: 4926eefd2e32052eb88c157b3528e178
-  - path: output/vgan/test.txt
-    md5sum: d70778b7e17c294f09a9ef7319375e55
+    - path: output/vgan/test.posterior.txt
+      md5sum: 4926eefd2e32052eb88c157b3528e178
+    - path: output/vgan/test.txt
+      md5sum: d70778b7e17c294f09a9ef7319375e55
 
 - name: vgan haplocart test_vgan_haplocart_paired_end_separate
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_paired_end_separate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan/haplocart
-  - vgan
+    - vgan/haplocart
+    - vgan
   files:
-  - path: output/vgan/test.posterior.txt
-    md5sum: 4926eefd2e32052eb88c157b3528e178
-  - path: output/vgan/test.txt
-    md5sum: 346b13fb071ae5ba094c9542a851e188
+    - path: output/vgan/test.posterior.txt
+      md5sum: 4926eefd2e32052eb88c157b3528e178
+    - path: output/vgan/test.txt
+      md5sum: 346b13fb071ae5ba094c9542a851e188
 
 - name: vgan haplocart test_vgan_haplocart_single_end
   command: nextflow run ./tests/modules/nf-core/vgan/haplocart -entry test_vgan_haplocart_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vgan/haplocart/nextflow.config
   tags:
-  - vgan/haplocart
-  - vgan
+    - vgan/haplocart
+    - vgan
   files:
-  - path: output/vgan/test.posterior.txt
-    md5sum: 4926eefd2e32052eb88c157b3528e178
-  - path: output/vgan/test.txt
-    md5sum: 346b13fb071ae5ba094c9542a851e188
+    - path: output/vgan/test.posterior.txt
+      md5sum: 4926eefd2e32052eb88c157b3528e178
+    - path: output/vgan/test.txt
+      md5sum: 346b13fb071ae5ba094c9542a851e188
+
