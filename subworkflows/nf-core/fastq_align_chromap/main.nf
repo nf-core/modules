@@ -7,9 +7,13 @@ include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 
 workflow FASTQ_ALIGN_CHROMAP {
     take:
-    reads // channel: [ val(meta), [ reads ] ]
-    index //    path: /path/to/index
-    fasta //    path: /path/to/fasta
+    ch_reads           // channel: [ val(meta), [ reads ] ]
+    ch_index           // channel: [ val(meta2, [ index ] ]
+    ch_fasta           // channel: [ val(meta2, [ fasta ] ]
+    ch_barcodes        // channel: [ barcodes ]
+    ch_whitelist       // channel: [ whitelist ]
+    ch_chr_order       // channel: [ chr_order ]
+    ch_pairs_chr_order // channel: [ pairs_chr_order ]
 
     main:
     ch_versions = Channel.empty()
@@ -17,7 +21,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     //
     // Map reads with CHROMAP
     //
-    CHROMAP_CHROMAP(reads, fasta, index, [], [], [], [])
+    CHROMAP_CHROMAP(ch_reads, ch_fasta, ch_index, ch_barcodes, ch_whitelist, ch_chr_order, ch_pairs_chr_order)
     ch_versions = ch_versions.mix(CHROMAP_CHROMAP.out.versions)
 
     //
