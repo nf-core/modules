@@ -1,0 +1,14 @@
+- name: gatk4 determinegermlinecontigploidy test_gatk4_determinegermlinecontigploidy
+  command: nextflow run ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy -entry test_gatk4_determinegermlinecontigploidy -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/determinegermlinecontigploidy/nextflow.config
+  tags:
+  - gatk4
+  - gatk4/determinegermlinecontigploidy
+  files:
+  - path: output/gatk4/test-calls.tar.gz
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/gatk4/test-model.tar.gz
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/gatk4/test.tsv
+    md5sum: 8e45a6164916c303387f39f02ce45841
+  - path: output/gatk4/test2.tsv
+    md5sum: 3dff7983975147fa4854f8a5a363d212
