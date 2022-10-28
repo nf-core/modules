@@ -10,7 +10,7 @@ workflow test_vgan_haplocart_paired_end_interleaved {
         [ id:'test', single_end:false, format:'fastq'], // meta map
         file(params.test_data['homo_sapiens']['illumina']['rCRS_reads'], checkIfExists: true),
         []
-        ]
+            ]
 
     VGAN_HAPLOCART(input)
 }
