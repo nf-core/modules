@@ -5,8 +5,10 @@ nextflow.enable.dsl = 2
 include { CONCOCT_CUTUPFASTA           } from '../../../../../modules/nf-core/concoct/cutupfasta/main.nf'
 include { CONCOCT_CONCOCTCOVERAGETABLE } from '../../../../../modules/nf-core/concoct/concoctcoveragetable/main.nf'
 include { CONCOCT_CONCOCT              } from '../../../../../modules/nf-core/concoct/concoct/main.nf'
+include { CONCOCT_MERGECUTUPCLUSTERING } from '../../../../../modules/nf-core/concoct/mergecutupclustering/main.nf'
+include { CONCOCT_EXTRACTFASTABINS     } from '../../../../../modules/nf-core/concoct/extractfastabins/main.nf'
 
-workflow test_concoct_concoct {
+workflow test_concoct_extractfastabins {
 
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -39,4 +41,11 @@ workflow test_concoct_concoct {
 
     CONCOCT_CONCOCT( ch_concoctconcoct_input )
 
+    CONCOCT_MERGECUTUPCLUSTERING ( CONCOCT_CONCOCT.out.clustering_csv )
+
+    ch_input_for_extractfastabins = Channel.of(input).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+
+    CONCOCT_EXTRACTFASTABINS ( ch_input_for_extractfastabins )
+
+    CONCOCT_EXTRACTFASTABINS.out.fasta
 }
