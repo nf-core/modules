@@ -23,14 +23,12 @@ process SEQUENCETOOLS_PILEUPCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Allow gzipped mpileup as input
-    def cat_input = mpileup.toString().endsWith(".gz") ? "zcat ${mpileup}" : "cat ${mpileup}"
     def args_list = args.tokenize()
     // If no output format is set, freqsum is produced in stdout.
     freqsum_output = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "| gzip -c > ${prefix}.freqsum.gz"
 
     """
-    ${cat_input} | \\
+    gzip -cdf ${mpileup} | \\
     pileupCaller \\
         -f ${snpfile} \\
         ${args} \\
