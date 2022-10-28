@@ -1,4 +1,5 @@
 process SOURMASH_COMPARE {
+    tag "$meta.id"
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::sourmash=4.5.0" : null)
@@ -7,13 +8,13 @@ process SOURMASH_COMPARE {
         'quay.io/biocontainers/sourmash:4.5.0--hdfd78af_0' }"
 
     input:
-    path signatures
-    path(file_list) // optional file
+    tuple val(meta), path(signatures)
+    path file_list // optional file
     val save_numpy_matrix
     val save_csv
 
     output:
-    tuple path("*comp.npy.labels.txt"), path("*comp.npy"), optional:true, emit: matrix
+    tuple val(meta), path("*comp.npy.labels.txt"), path("*comp.npy"), optional:true, emit: matrix
     path "*comp.csv"       , optional:true, emit: csv
     path "versions.yml"    , emit: versions
 
@@ -22,6 +23,7 @@ process SOURMASH_COMPARE {
 
     script:
     def args   = task.ext.args     ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def comp   = save_numpy_matrix ? "--output comp.npy"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
