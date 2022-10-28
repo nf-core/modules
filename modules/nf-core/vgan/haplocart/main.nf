@@ -44,13 +44,13 @@ process VGAN_HAPLOCART {
 
     if [[ "${meta.format}" == "fastq" ]] && ${meta.single_end};
     then 
-        vgan haplocart $args -t -1 -fq1 $reads -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
-    elif [[ "${meta.format}" == "fastq" ]] && [[ "$reads2" != "NULL" ]];
+        vgan haplocart $args -t $task.cpus -fq1 $reads -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
+    elif [[ "${meta.format}" == "fastq" ]] && [[ "$reads2" != "" ]];
     then
-        vgan haplocart $args -t -1 -fq1 $reads -fq2 $reads2 -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
+        vgan haplocart $args -t $task.cpus -fq1 $reads -fq2 $reads2 -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
     elif [[ "${meta.format}" == "fastq" ]];
     then
-        vgan haplocart $args -t -1 -fq1 $reads -i -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
+        vgan haplocart $args -t $task.cpus -fq1 $reads -i -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
     fi
 
     echo $VERSION >> versions.yml
