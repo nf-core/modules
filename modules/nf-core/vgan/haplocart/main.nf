@@ -43,7 +43,7 @@ process VGAN_HAPLOCART {
 
 
     if [[ "${meta.format}" == "fastq" ]] && ${meta.single_end};
-    then 
+    then
         vgan haplocart $args -t $task.cpus -fq1 $reads -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
     elif [[ "${meta.format}" == "fastq" ]] && [[ "$reads2" != "" ]];
     then
