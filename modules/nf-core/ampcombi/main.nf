@@ -12,18 +12,18 @@ process AMPCOMBI {
     path(faa_folder)
 
     output:
-    tuple val(meta), path("*/*")                       , emit: sample_dir
-    tuple val(meta), path("*/*diamond_matches.txt")    , emit: txt
-    tuple val(meta), path("*/*ampcombi.csv")           , emit: csv
-    tuple val(meta), path("*/*amp.faa")                , emit: faa
-    path("AMPcombi_summary.csv")                       , optional:true, emit: summary_csv
-    path("AMPcombi_summary.html")                      , optional:true, emit: summary_html
-    path("*.log")                                      , emit: log
-    path("*/amp_ref_database")                         , optional:true, emit: results_db
-    path("*/amp_ref_database/*.dmnd")                  , optional:true, emit: results_db_dmnd
-    path("*/amp_ref_database/*.clean.fasta")           , optional:true, emit: results_db_fasta
-    path("*/amp_ref_database/*.tsv")                   , optional:true, emit: results_db_tsv
-    path "versions.yml"                                , emit: versions
+    tuple val(meta), path("${meta.id}*")                        , emit: sample_dir
+    tuple val(meta), path("${meta.id}/*diamond_matches.txt")    , emit: txt
+    tuple val(meta), path("${meta.id}/*ampcombi.csv")           , emit: csv
+    tuple val(meta), path("${meta.id}/*amp.faa")                , emit: faa
+    path("AMPcombi_summary.csv")                                , optional:true, emit: summary_csv
+    path("AMPcombi_summary.html")                               , optional:true, emit: summary_html
+    path("*.log")                                               , emit: log
+    path("*/amp_ref_database")                                  , optional:true, emit: results_db
+    path("*/amp_ref_database/*.dmnd")                           , optional:true, emit: results_db_dmnd
+    path("*/amp_ref_database/*.clean.fasta")                    , optional:true, emit: results_db_fasta
+    path("*/amp_ref_database/*.tsv")                            , optional:true, emit: results_db_tsv
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

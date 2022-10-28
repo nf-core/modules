@@ -7,7 +7,7 @@ include { UNTAR as UNTAR1 ; UNTAR as UNTAR2 } from '../../../../modules/nf-core/
 
 workflow test_ampcombi_directory {
    amp_input = [
-       [ id:'sample_1 sample_2' ],
+       [ id:'sample_1'],
        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files.tar.gz", checkIfExists: true)
    ]
    faa_folder = [
