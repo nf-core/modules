@@ -12,7 +12,7 @@ process AMPCOMBI {
     path(faa_folder)
 
     output:
-    tuple val(meta), path("*/${prefix}*")                       , emit: sample_dir
+    tuple val(meta), path("*/*")                       , emit: sample_dir
     tuple val(meta), path("*/*diamond_matches.txt")    , emit: txt
     tuple val(meta), path("*/*ampcombi.csv")           , emit: csv
     tuple val(meta), path("*/*amp.faa")                , emit: faa
