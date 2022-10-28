@@ -22,6 +22,9 @@ process BISMARK_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    if(task.ext.prefix){
+        args += " --prefix ${task.ext.prefix}"
+    }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
 
     // Try to assign sensible bismark --multicore if not already set
