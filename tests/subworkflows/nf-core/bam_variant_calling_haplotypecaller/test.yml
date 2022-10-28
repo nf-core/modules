@@ -1,0 +1,43 @@
+- name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter
+  command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_scatter -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/merge
+    - bedtools
+    - bedtools/split
+    - gatk4
+    - gatk4/haplotypecaller
+    - subworkflows
+    - subworkflows/bam_variant_calling_haplotypecaller
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bcftools/test.vcf.gz
+    - path: output/bedtools/test.00001.bed
+      md5sum: d58e5e46c2fcc3b8be5db0f023e93cb5
+    - path: output/bedtools/test.00002.bed
+      md5sum: 03caf952e9297a54620d2bbba8dc2823
+    - path: output/gatk4/test.00001.vcf.gz
+    - path: output/gatk4/test.00001.vcf.gz.tbi
+      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
+    - path: output/gatk4/test.00002.vcf.gz
+    - path: output/gatk4/test.00002.vcf.gz.tbi
+      md5sum: 1dfe76b2dc7ab47f456335c5aaa59174
+    - path: output/tabix/test.vcf.gz.tbi
+
+- name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter
+  command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_no_scatter -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/merge
+    - bedtools
+    - bedtools/split
+    - gatk4
+    - gatk4/haplotypecaller
+    - subworkflows
+    - subworkflows/bam_variant_calling_haplotypecaller
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/gatk4/test.vcf.gz
+    - path: output/gatk4/test.vcf.gz.tbi
