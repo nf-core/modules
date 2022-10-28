@@ -1,0 +1,10 @@
+- name: eigenstratdatabasetools eigenstratsnpcoverage test_eigenstratdatabasetools_eigenstratsnpcoverage
+  command: nextflow run ./tests/modules/nf-core/eigenstratdatabasetools/eigenstratsnpcoverage -entry test_eigenstratdatabasetools_eigenstratsnpcoverage -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/eigenstratdatabasetools/eigenstratsnpcoverage/nextflow.config
+  tags:
+  - eigenstratdatabasetools/eigenstratsnpcoverage
+  - eigenstratdatabasetools
+  files:
+  - path: output/eigenstratdatabasetools/test.json
+    md5sum: f7bc6041f69b0ad8a0b314c1002ba122
+  - path: output/eigenstratdatabasetools/test.tsv
+    md5sum: ecebee27f4ea48ce141e09d017789e72
