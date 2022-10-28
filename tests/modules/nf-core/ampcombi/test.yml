@@ -1,151 +1,111 @@
 - name: ampcombi test_ampcombi_directory
   command: nextflow run ./tests/modules/nf-core/ampcombi -entry test_ampcombi_directory -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ampcombi/nextflow.config
   tags:
-  - ampcombi
+    - ampcombi
   files:
-  - path: output/ampcombi/amp_ref_database/amp_ref.dmnd
-    md5sum: f20d8d0c073bcc5857962f4bf62ace9d
-  - path: output/ampcombi/amp_ref_database/general_amps_2022_10_21.tsv
-    md5sum: 1b8f1f949c83ca1bb1917aa0cbdac431
-  - path: output/ampcombi/amp_ref_database/general_amps_2022_10_21_clean.fasta
-    md5sum: 05c063716bbb55c37ae33bda4e0e6732
-  - path: output/ampcombi/sample_1/sample_1_amp.faa
-    md5sum: 8fef1e243eed8d605b9d40082b37a703
-  - path: output/ampcombi/sample_1/sample_1_ampcombi.csv
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-  - path: output/ampcombi/sample_1/sample_1_diamond_matches.txt
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-  - path: output/ampcombi/sample_2/sample_2_amp.faa
-    md5sum: 701d97b6351457a68336e1777a902228
-  - path: output/ampcombi/sample_2/sample_2_ampcombi.csv
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-  - path: output/ampcombi/sample_2/sample_2_diamond_matches.txt
-    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
-  - path: output/ampcombi/test_faa/sample_1.faa
-    md5sum: 6f359060feaa569e74ddc907b0914d67
-  - path: output/ampcombi/test_faa/sample_2.faa
-    md5sum: 85ea2df4ee7937fa54c2383a152f12eb
-  - path: output/ampcombi/test_files/ampir/sample_1/sample_1.ampir.faa
-    md5sum: 235b211bed65606c8af5acf4a9b8d8e2
-  - path: output/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv
-    md5sum: 1a43992a8b3e84be400d0b95b8746fae
-  - path: output/ampcombi/test_files/ampir/sample_2/sample_2.ampir.faa
-    md5sum: 0529e2afcf0c3ae36cb3127b0bb6f8ed
-  - path: output/ampcombi/test_files/ampir/sample_2/sample_2.ampir.tsv
-    md5sum: 17da25bcc2e7837166afb1cbf7001db5
-  - path: output/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv
-    md5sum: 0c21947d4c3b81717ea8d43024db6f87
-  - path: output/ampcombi/test_files/amplify/sample_2/sample_2.amplify.tsv
-    md5sum: 019ec32f28dc747aa28a5cff00be64a5
-  - path: output/ampcombi/test_files/ensembleamppred/sample_1/sample_1.ensembleamppred_ERR.txt
-    md5sum: d19cd4d512fddab1b73b729423eb532a
-  - path: output/ampcombi/test_files/ensembleamppred/sample_1/sample_1.output_ensembleamppred.txt
-    md5sum: 4f69dd5b915d812b43741653432981d9
-  - path: output/ampcombi/test_files/ensembleamppred/sample_2/sample_2.ensembleamppredERR.txt
-    md5sum: d19cd4d512fddab1b73b729423eb532a
-  - path: output/ampcombi/test_files/ensembleamppred/sample_2/sample_2.output_ensembleamppred.txt
-    md5sum: 4f69dd5b915d812b43741653432981d9
-  - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_1/sample_1.hmmsearch.txt
-    md5sum: 42a638cd8933a16bb3408887bd756e10
-  - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_1/sample_1_ABC_tran.txt.gz
-    md5sum: 7b131aaa094b758a75ab70b9dd7dd976
-  - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_2/sample_2.hmmsearch.txt
-    md5sum: 73730a0cfa2c9135b9e828dedda0591b
-  - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_2/sample_2_ABC_tran.txt.gz
-    md5sum: 091cca3d8efc0ab9b95f3249460635d7
-  - path: output/ampcombi/test_files/macrel/sample_1/README.md
-    md5sum: fa3706dfc95d0538a52c4d0d824be5fb
-  - path: output/ampcombi/test_files/macrel/sample_1/sample_1.all_orfs.faa.gz
-    md5sum: 80c09d29d224dbfc33ebb50d9122ad6e
-  - path: output/ampcombi/test_files/macrel/sample_1/sample_1.macrel.tsv
-    md5sum: 7e19ccb0f4bd2a8848b7f5bf5c36b0af
-  - path: output/ampcombi/test_files/macrel/sample_1/sample_1.prediction.gz
-    md5sum: 14234954f5e419449e480da5c6927732
-  - path: output/ampcombi/test_files/macrel/sample_1/sample_1.smorfs.faa.gz
-    md5sum: f7ca7d71600bb38311e31d6a096f4da7
-  - path: output/ampcombi/test_files/macrel/sample_1/sample_1_log.txt
-    md5sum: 5b2c9c779dc08aca9e36910cd0720d7e
-  - path: output/ampcombi/test_files/macrel/sample_2/README.md
-    md5sum: fa3706dfc95d0538a52c4d0d824be5fb
-  - path: output/ampcombi/test_files/macrel/sample_2/sample_2.all_orfs.faa.gz
-    md5sum: b3a05a878b38304dd49a0cc90acb842e
-  - path: output/ampcombi/test_files/macrel/sample_2/sample_2.macrel.tsv
-    md5sum: b8b7f5b9770be8f1ee2c047bfb9a66c5
-  - path: output/ampcombi/test_files/macrel/sample_2/sample_2.prediction.gz
-    md5sum: 507e994dc616922bcdc0b1352fe2fae8
-  - path: output/ampcombi/test_files/macrel/sample_2/sample_2.smorfs.faa.gz
-    md5sum: ccc1ad0be9b93666d799d89e61c1d49e
-  - path: output/ampcombi/test_files/macrel/sample_2/sample_2_log.txt
-    md5sum: 8d8aef600214b5bce647335fcd2911c2
-  - path: output/ampcombi/test_files/neubi/sample_1/sample_1.faa_results
-    md5sum: ba37d3b9361aea1ba03018c27425c80f
-  - path: output/ampcombi/test_files/neubi/sample_1/sample_1.faa_results.neubi.fasta
-    md5sum: a9cd056deb06d7ddf0f3010555b71b02
-  - path: output/ampcombi/test_files/neubi/sample_2/sample_2.faa_results
-    md5sum: 5a0ca6ad189bb2473898636fbe745af6
-  - path: output/ampcombi/test_files/neubi/sample_2/sample_2.faa_results.neubi.fasta
-    md5sum: 6c9a09dad3be8542b25a5f3f38ba64ad
-  - path: output/untar1/test_files/ampir/sample_1/sample_1.ampir.faa
-    md5sum: 235b211bed65606c8af5acf4a9b8d8e2
-  - path: output/untar1/test_files/ampir/sample_1/sample_1.ampir.tsv
-    md5sum: 1a43992a8b3e84be400d0b95b8746fae
-  - path: output/untar1/test_files/ampir/sample_2/sample_2.ampir.faa
-    md5sum: 0529e2afcf0c3ae36cb3127b0bb6f8ed
-  - path: output/untar1/test_files/ampir/sample_2/sample_2.ampir.tsv
-    md5sum: 17da25bcc2e7837166afb1cbf7001db5
-  - path: output/untar1/test_files/amplify/sample_1/sample_1_amplify.tsv
-    md5sum: 0c21947d4c3b81717ea8d43024db6f87
-  - path: output/untar1/test_files/amplify/sample_2/sample_2.amplify.tsv
-    md5sum: 019ec32f28dc747aa28a5cff00be64a5
-  - path: output/untar1/test_files/ensembleamppred/sample_1/sample_1.ensembleamppred_ERR.txt
-    md5sum: d19cd4d512fddab1b73b729423eb532a
-  - path: output/untar1/test_files/ensembleamppred/sample_1/sample_1.output_ensembleamppred.txt
-    md5sum: 4f69dd5b915d812b43741653432981d9
-  - path: output/untar1/test_files/ensembleamppred/sample_2/sample_2.ensembleamppredERR.txt
-    md5sum: d19cd4d512fddab1b73b729423eb532a
-  - path: output/untar1/test_files/ensembleamppred/sample_2/sample_2.output_ensembleamppred.txt
-    md5sum: 4f69dd5b915d812b43741653432981d9
-  - path: output/untar1/test_files/hmmer_hmmsearch/sample_1/sample_1.hmmsearch.txt
-    md5sum: 42a638cd8933a16bb3408887bd756e10
-  - path: output/untar1/test_files/hmmer_hmmsearch/sample_1/sample_1_ABC_tran.txt.gz
-    md5sum: 7b131aaa094b758a75ab70b9dd7dd976
-  - path: output/untar1/test_files/hmmer_hmmsearch/sample_2/sample_2.hmmsearch.txt
-    md5sum: 73730a0cfa2c9135b9e828dedda0591b
-  - path: output/untar1/test_files/hmmer_hmmsearch/sample_2/sample_2_ABC_tran.txt.gz
-    md5sum: 091cca3d8efc0ab9b95f3249460635d7
-  - path: output/untar1/test_files/macrel/sample_1/README.md
-    md5sum: fa3706dfc95d0538a52c4d0d824be5fb
-  - path: output/untar1/test_files/macrel/sample_1/sample_1.all_orfs.faa.gz
-    md5sum: 80c09d29d224dbfc33ebb50d9122ad6e
-  - path: output/untar1/test_files/macrel/sample_1/sample_1.macrel.tsv
-    md5sum: 7e19ccb0f4bd2a8848b7f5bf5c36b0af
-  - path: output/untar1/test_files/macrel/sample_1/sample_1.prediction.gz
-    md5sum: 14234954f5e419449e480da5c6927732
-  - path: output/untar1/test_files/macrel/sample_1/sample_1.smorfs.faa.gz
-    md5sum: f7ca7d71600bb38311e31d6a096f4da7
-  - path: output/untar1/test_files/macrel/sample_1/sample_1_log.txt
-    md5sum: 5b2c9c779dc08aca9e36910cd0720d7e
-  - path: output/untar1/test_files/macrel/sample_2/README.md
-    md5sum: fa3706dfc95d0538a52c4d0d824be5fb
-  - path: output/untar1/test_files/macrel/sample_2/sample_2.all_orfs.faa.gz
-    md5sum: b3a05a878b38304dd49a0cc90acb842e
-  - path: output/untar1/test_files/macrel/sample_2/sample_2.macrel.tsv
-    md5sum: b8b7f5b9770be8f1ee2c047bfb9a66c5
-  - path: output/untar1/test_files/macrel/sample_2/sample_2.prediction.gz
-    md5sum: 507e994dc616922bcdc0b1352fe2fae8
-  - path: output/untar1/test_files/macrel/sample_2/sample_2.smorfs.faa.gz
-    md5sum: ccc1ad0be9b93666d799d89e61c1d49e
-  - path: output/untar1/test_files/macrel/sample_2/sample_2_log.txt
-    md5sum: 8d8aef600214b5bce647335fcd2911c2
-  - path: output/untar1/test_files/neubi/sample_1/sample_1.faa_results
-    md5sum: ba37d3b9361aea1ba03018c27425c80f
-  - path: output/untar1/test_files/neubi/sample_1/sample_1.faa_results.neubi.fasta
-    md5sum: a9cd056deb06d7ddf0f3010555b71b02
-  - path: output/untar1/test_files/neubi/sample_2/sample_2.faa_results
-    md5sum: 5a0ca6ad189bb2473898636fbe745af6
-  - path: output/untar1/test_files/neubi/sample_2/sample_2.faa_results.neubi.fasta
-    md5sum: 6c9a09dad3be8542b25a5f3f38ba64ad
-  - path: output/untar2/test_faa/sample_1.faa
-    md5sum: 6f359060feaa569e74ddc907b0914d67
-  - path: output/untar2/test_faa/sample_2.faa
-    md5sum: 85ea2df4ee7937fa54c2383a152f12eb
+    - path: output/ampcombi/amp_ref_database/amp_ref.dmnd
+    - path: output/ampcombi/amp_ref_database/general_amps_2022_10_28.tsv
+      contains: ["DRAMP"]
+    - path: output/ampcombi/amp_ref_database/general_amps_2022_10_28_clean.fasta
+      contains: ["DRAMP"]
+    - path: output/ampcombi/ampcombi.log
+      contains: ["found", "AMPcombi"]
+    - path: output/ampcombi/sample_1/sample_1_amp.faa
+      md5sum: 8fef1e243eed8d605b9d40082b37a703
+    - path: output/ampcombi/sample_1/sample_1_ampcombi.csv
+      contains: ["DRAMP"]
+    - path: output/ampcombi/sample_1/sample_1_diamond_matches.txt
+      contains: ["contig_id"]
+    - path: output/ampcombi/sample_2/sample_2_amp.faa
+      md5sum: 701d97b6351457a68336e1777a902228
+    - path: output/ampcombi/sample_2/sample_2_ampcombi.csv
+      contains: ["DRAMP"]
+    - path: output/ampcombi/sample_2/sample_2_diamond_matches.txt
+      contains: ["target_id"]
+    - path: output/ampcombi/test_faa/sample_1.faa
+      md5sum: 6f359060feaa569e74ddc907b0914d67
+    - path: output/ampcombi/test_faa/sample_2.faa
+      md5sum: 85ea2df4ee7937fa54c2383a152f12eb
+    - path: output/ampcombi/test_files/ampir/sample_1/sample_1.ampir.faa
+      md5sum: 235b211bed65606c8af5acf4a9b8d8e2
+    - path: output/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv
+      md5sum: 1a43992a8b3e84be400d0b95b8746fae
+    - path: output/ampcombi/test_files/ampir/sample_2/sample_2.ampir.faa
+      md5sum: 0529e2afcf0c3ae36cb3127b0bb6f8ed
+    - path: output/ampcombi/test_files/ampir/sample_2/sample_2.ampir.tsv
+      md5sum: 17da25bcc2e7837166afb1cbf7001db5
+    - path: output/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv
+      md5sum: 0c21947d4c3b81717ea8d43024db6f87
+    - path: output/ampcombi/test_files/amplify/sample_2/sample_2.amplify.tsv
+      md5sum: 019ec32f28dc747aa28a5cff00be64a5
+    - path: output/ampcombi/test_files/ensembleamppred/sample_1/sample_1.ensembleamppred_ERR.txt
+      md5sum: d19cd4d512fddab1b73b729423eb532a
+    - path: output/ampcombi/test_files/ensembleamppred/sample_1/sample_1.output_ensembleamppred.txt
+      md5sum: 4f69dd5b915d812b43741653432981d9
+    - path: output/ampcombi/test_files/ensembleamppred/sample_2/sample_2.ensembleamppredERR.txt
+      md5sum: d19cd4d512fddab1b73b729423eb532a
+    - path: output/ampcombi/test_files/ensembleamppred/sample_2/sample_2.output_ensembleamppred.txt
+      md5sum: 4f69dd5b915d812b43741653432981d9
+    - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_1/sample_1.hmmsearch.txt
+      md5sum: 42a638cd8933a16bb3408887bd756e10
+    - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_1/sample_1_ABC_tran.txt.gz
+      md5sum: 7b131aaa094b758a75ab70b9dd7dd976
+    - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_2/sample_2.hmmsearch.txt
+      md5sum: 73730a0cfa2c9135b9e828dedda0591b
+    - path: output/ampcombi/test_files/hmmer_hmmsearch/sample_2/sample_2_ABC_tran.txt.gz
+      md5sum: 091cca3d8efc0ab9b95f3249460635d7
+    - path: output/ampcombi/test_files/macrel/sample_1/README.md
+      md5sum: fa3706dfc95d0538a52c4d0d824be5fb
+    - path: output/ampcombi/test_files/macrel/sample_1/sample_1.all_orfs.faa.gz
+      md5sum: 80c09d29d224dbfc33ebb50d9122ad6e
+    - path: output/ampcombi/test_files/macrel/sample_1/sample_1.macrel.tsv
+      md5sum: 7e19ccb0f4bd2a8848b7f5bf5c36b0af
+    - path: output/ampcombi/test_files/macrel/sample_1/sample_1.prediction.gz
+      md5sum: 14234954f5e419449e480da5c6927732
+    - path: output/ampcombi/test_files/macrel/sample_1/sample_1.smorfs.faa.gz
+      md5sum: f7ca7d71600bb38311e31d6a096f4da7
+    - path: output/ampcombi/test_files/macrel/sample_1/sample_1_log.txt
+      md5sum: 5b2c9c779dc08aca9e36910cd0720d7e
+    - path: output/ampcombi/test_files/macrel/sample_2/README.md
+      md5sum: fa3706dfc95d0538a52c4d0d824be5fb
+    - path: output/ampcombi/test_files/macrel/sample_2/sample_2.all_orfs.faa.gz
+      md5sum: b3a05a878b38304dd49a0cc90acb842e
+    - path: output/ampcombi/test_files/macrel/sample_2/sample_2.macrel.tsv
+      md5sum: b8b7f5b9770be8f1ee2c047bfb9a66c5
+    - path: output/ampcombi/test_files/macrel/sample_2/sample_2.prediction.gz
+      md5sum: 507e994dc616922bcdc0b1352fe2fae8
+    - path: output/ampcombi/test_files/macrel/sample_2/sample_2.smorfs.faa.gz
+      md5sum: ccc1ad0be9b93666d799d89e61c1d49e
+    - path: output/ampcombi/test_files/macrel/sample_2/sample_2_log.txt
+      md5sum: 8d8aef600214b5bce647335fcd2911c2
+    - path: output/ampcombi/test_files/neubi/sample_1/sample_1.faa_results
+      md5sum: ba37d3b9361aea1ba03018c27425c80f
+    - path: output/ampcombi/test_files/neubi/sample_1/sample_1.faa_results.neubi.fasta
+      md5sum: a9cd056deb06d7ddf0f3010555b71b02
+    - path: output/ampcombi/test_files/neubi/sample_2/sample_2.faa_results
+      md5sum: 5a0ca6ad189bb2473898636fbe745af6
+    - path: output/ampcombi/test_files/neubi/sample_2/sample_2.faa_results.neubi.fasta
+      md5sum: 6c9a09dad3be8542b25a5f3f38ba64ad
+
+- name: ampcombi test_ampcombi_file_paths
+  command: nextflow run ./tests/modules/nf-core/ampcombi -entry test_ampcombi_file_paths -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ampcombi/nextflow.config
+  tags:
+    - ampcombi
+  files:
+    - path: output/ampcombi/amp_ref_database/amp_ref.dmnd
+    - path: output/ampcombi/amp_ref_database/general_amps_2022_10_28.tsv
+      contains: ["DRAMP"]
+    - path: output/ampcombi/amp_ref_database/general_amps_2022_10_28_clean.fasta
+      contains: ["DRAMP"]
+    - path: output/ampcombi/ampcombi.log
+      contains: ["found", "AMPcombi"]
+    - path: output/ampcombi/sample_1/sample_1_amp.faa
+      md5sum: 9d7f55164e093c8eabbe84ceec8135de
+    - path: output/ampcombi/sample_1/sample_1_ampcombi.csv
+      contains: ["DRAMP"]
+    - path: output/ampcombi/sample_1/sample_1_diamond_matches.txt
+      contains: ["target_id"]
+    - path: output/ampcombi/test_faa/sample_1.faa
+      md5sum: 6f359060feaa569e74ddc907b0914d67
+    - path: output/ampcombi/test_faa/sample_2.faa
+      md5sum: 85ea2df4ee7937fa54c2383a152f12eb

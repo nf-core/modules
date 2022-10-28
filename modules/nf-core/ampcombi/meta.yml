@@ -61,19 +61,34 @@ output:
       type: file
       description: A log file that captures the standard output ina log file. Can be activated by `--log`.
       pattern: "*.log"
-  - results_dir:
+  - sample_dir:
       type: folder
-      description: The main output directory that contains subdirectories organised by sample name.
+      description: The output directory that contains the summary output and related alignment files for one sample.
       pattern: "/*"
   - results_db:
       type: folder
       description: If the AMP reference database is not provided by the user using the flag `--amp_database', by default the DRAMP database will be downloaded, filtered and stored in this folder.
       pattern: "/amp_ref_database"
-   - summary:
+  - results_db_fasta:
       type: file
-      description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
-      pattern: "AMPcombi_summary.csv"
-     
+      description: AMP reference database fasta file, cleaned of diamond-uncompatible characters.
+      pattern: "/amp_ref_database/*.clean.fasta"
+  - results_db_dmd:
+      type: file
+      description: AMP reference database converted to Diamond database format.
+      pattern: "/amp_ref_database/*.dmnd"
+  - results_db_tsv:
+      type: file
+      description: AMP reference database in tsv-format with two columns containing header and sequence.
+      pattern: "/amp_ref_database/*.tsv"
+  - summary_csv:
+    type: file
+    description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
+    pattern: "AMPcombi_summary.html"
+  - summary_html:
+    type: file
+    description: A file that concatenates all samples ampcombi summaries. This is activated with `--complete_summary true`.
+    pattern: "AMPcombi_summary.html"
 
 authors:
   - "@darcy220606"
