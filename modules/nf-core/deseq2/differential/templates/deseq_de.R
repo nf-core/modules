@@ -152,7 +152,7 @@ missing_samples <-
 
 if (length(missing_samples) > 0) {
     stop(paste(
-        len(missing_samples),
+        length(missing_samples),
         'specified samples missing from count table:',
         paste(missing_samples, collapse = ',')
     ))
