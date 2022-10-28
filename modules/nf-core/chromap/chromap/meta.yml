@@ -33,16 +33,11 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: |
         The fasta reference file.
-  - meta3:
+  - meta2:
       type: map
       description: |
         Groovy Map containing sample information
