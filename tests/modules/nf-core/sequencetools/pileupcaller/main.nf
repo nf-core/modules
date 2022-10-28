@@ -14,7 +14,7 @@ workflow test_sequencetools_pileupcaller {
 
     snpfile = file('/Users/lamnidis/Software/github/TCLamnidis/modules/local_test_data/chr_21.snp')
 
-    SEQUENCETOOLS_PILEUPCALLER_FREQSUM ( input, snpfile )
-    SEQUENCETOOLS_PILEUPCALLER_EIG ( input, snpfile )
-    SEQUENCETOOLS_PILEUPCALLER_PLINK ( input, snpfile )
+    SEQUENCETOOLS_PILEUPCALLER_FREQSUM ( input, snpfile, [] )
+    SEQUENCETOOLS_PILEUPCALLER_EIG ( input, snpfile, [] )
+    SEQUENCETOOLS_PILEUPCALLER_PLINK ( input, snpfile, [] )
 }

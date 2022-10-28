@@ -10,6 +10,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     input:
     tuple val(meta), path(mpileup)
     path snpfile
+    path sample_names_fn
 
     output:
     tuple val(meta), path("*.geno"), path("*.snp"), path("*.ind")   , optional:true, emit: eigenstrat
@@ -23,6 +24,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sample_names = sample_names_fn ? "--sampleNameFile ${sample_names_fn}" : ''
     def args_list = args.tokenize()
     // If no output format is set, freqsum is produced in stdout.
     freqsum_output = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "| gzip -c > ${prefix}.freqsum.gz"
@@ -31,6 +33,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     gzip -cdf ${mpileup} | \\
     pileupCaller \\
         -f ${snpfile} \\
+        ${sample_names} \\
         ${args} \\
         ${freqsum_output}
 
