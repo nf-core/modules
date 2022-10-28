@@ -51,9 +51,6 @@ process VGAN_HAPLOCART {
     elif [[ "${meta.format}" == "fastq" ]];
     then
         vgan haplocart $args -t -1 -fq1 $reads -i -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
-    elif [[ "${meta.format}" == "fasta" ]];
-    then
-        vgan haplocart $args -t -1 -f $reads -o ${prefix}.txt --hc-files hc_files -pf ${prefix}.posterior.txt;
     fi
 
     echo $VERSION >> versions.yml
