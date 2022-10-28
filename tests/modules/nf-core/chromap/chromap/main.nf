@@ -15,16 +15,15 @@ workflow test_chromap_chromap_single_end {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta_index = [
+    fasta = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    fasta_map = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    CHROMAP_INDEX ( fasta_index )
+    CHROMAP_INDEX ( fasta )
     CHROMAP_CHROMAP_BASE (
         input,                      // meta + read data
-        fasta_map,                      // reference genome
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
@@ -43,16 +42,15 @@ workflow test_chromap_chromap_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta_index = [
+    fasta = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    fasta_map = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
     CHROMAP_INDEX ( fasta )
     CHROMAP_CHROMAP_BASE (
         input,                      // meta + read data
-        fasta_map,                      // reference genome
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
@@ -71,16 +69,15 @@ workflow test_chromap_chromap_paired_bam {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta_index = [
+    fasta = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    fasta_map = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    CHROMAP_INDEX ( fasta_index )
+    CHROMAP_INDEX ( fasta )
     CHROMAP_CHROMAP_SAM (
         input,                      // meta + read data
-        fasta_map,                      // reference genome
+        fasta,                      // reference genome
         CHROMAP_INDEX.out.index,    // reference index
         [],                         // barcode file
         [],                         // barcode whitelist
