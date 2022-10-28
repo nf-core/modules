@@ -1,14 +1,19 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml sequencetools/pileupcaller
-- name: "sequencetools pileupcaller"
-  command: nextflow run ./tests/modules/sequencetools/pileupcaller -entry test_sequencetools_pileupcaller -c ./tests/config/nextflow.config -c ./tests/modules/sequencetools/pileupcaller/nextflow.config
+- name: sequencetools pileupcaller test_sequencetools_pileupcaller
+  command: nextflow run ./tests/modules/nf-core/sequencetools/pileupcaller -entry test_sequencetools_pileupcaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sequencetools/pileupcaller/nextflow.config
   tags:
-    - "sequencetools"
-    #
-    - "sequencetools/pileupcaller"
-    #
+  - sequencetools
+  - sequencetools/pileupcaller
   files:
-    - path: "output/sequencetools/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: output/sequencetools/versions.yml
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/sequencetools/test.bed
+    md5sum: 3c4d2c473f6c60d47e32d0ab2ab6fe2d
+  - path: output/sequencetools/test.bim
+    md5sum: 4618dec3be68386e18562a3f4812e0dc
+  - path: output/sequencetools/test.fam
+    md5sum: f3e98d680273a975b00ea6e0d67cfad1
+  - path: output/sequencetools/test.freqsum.gz
+  - path: output/sequencetools/test.geno
+    md5sum: 921318abede9c6d2163b1b2785b4bbaa
+  - path: output/sequencetools/test.ind
+    md5sum: f8d5d94b39e3693452af54688649aaad
+  - path: output/sequencetools/test.snp
+    md5sum: 1c64da4b67bbc46ea4ac3146efb37346

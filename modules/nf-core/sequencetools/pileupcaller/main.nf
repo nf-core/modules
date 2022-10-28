@@ -8,15 +8,14 @@ process SEQUENCETOOLS_PILEUPCALLER {
         'quay.io/biocontainers/sequencetools' }"
 
     input:
-    tuple val(meta), path(mpileup), path(snpfile)
-    val calling_method
-    val output_format
+    tuple val(meta), path(mpileup)
+    path snpfile
 
     output:
-    tuple val(meta), path("*.geno.txt"), path("*.snp.txt"), path("*.ind.txt"), optional:true, emit: eigenstrat
-    tuple val(meta), path("*.bed"), path("*.bim"), path("*.fam")             , optional:true, emit: plink
-    tuple val(meta), path("*.freqsum.gz")                                    , optional:true, emit: freqsum
-    path "versions.yml"                                                                     , emit: versions
+    tuple val(meta), path("*.geno"), path("*.snp"), path("*.ind")   , optional:true, emit: eigenstrat
+    tuple val(meta), path("*.bed"), path("*.bim"), path("*.fam")    , optional:true, emit: plink
+    tuple val(meta), path("*.freqsum.gz")                           , optional:true, emit: freqsum
+    path "versions.yml"                                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,23 +23,18 @@ process SEQUENCETOOLS_PILEUPCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Validate requested calling method
-    def valid_modes = ['randomHaploid', 'randomDiploid', 'majorityCall']
-    if ( !valid_modes.contains(calling_method) )  { error "Unrecognised calling method. Options: randomHaploid, randomDiploid, majorityCall. You provided: ${calling_method}" }
-    def valid_out_formats = ['EIGENSTRAT', 'PLINK' , 'FREQSUM']
-    // Validate requested output_format
-    if ( !valid_out_formats.contains(output_format) )  { error "Unrecognised output genotype format. Valid options: EIGENSTRAT, PLINK, FREQSUM. You provided: ${output_format}" }
-    def output = output_format == "EIGENSTRAT" ? "--eigenstratOut ${prefix}" : output_format == "PLINK" ?  "--plinkOut ${prefix}" : ''
-    // Freqsum output only output in stdout, so if that is requested, pipe stdout into gzip and save the file.
-    def output2 = output_format == "FREQSUM" ? "| gzip -c > ${prefix}.freqsum.gz"
+    // Allow gzipped mpileup as input
+    def cat_input = mpileup.toString().endsWith(".gz") ? "zcat ${mpileup}" : "cat ${mpileup}"
+    def args_list = args.tokenize()
+    // If no output format is set, freqsum is produced in stdout.
+    freqsum_output = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "| gzip -c > ${prefix}.freqsum.gz"
 
     """
-    cat ${mpileup} | \\
+    ${cat_input} | \\
     pileupCaller \\
-        --${calling_method} \\
-        ${output} \\
-        $args \\
-        ${output2}
+        -f ${snpfile} \\
+        ${args} \\
+        ${freqsum_output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
