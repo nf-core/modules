@@ -26,7 +26,6 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: 0ca8c5edb633a2f4c72fb3160cc25abf
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: 9194fece9bca76163309909590d29009
 
 - name: fastq_align_chromap test_fastq_align_chromap_paired_end
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_chromap -entry test_fastq_align_chromap_paired_end -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/fastq_align_chromap/nextflow.config
@@ -56,4 +55,3 @@
     - path: ./output/samtools/test.sorted.bam.idxstats
       md5sum: 1adb27b52d4d64b826f48b59d61dcd4d
     - path: ./output/samtools/test.sorted.bam.stats
-      md5sum: 92e657f56f4b817bec77ed9b763ff4a0
