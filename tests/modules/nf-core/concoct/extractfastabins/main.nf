@@ -47,5 +47,5 @@ workflow test_concoct_extractfastabins {
 
     CONCOCT_EXTRACTFASTABINS ( ch_input_for_extractfastabins )
 
-    CONCOCT_EXTRACTFASTABINS.out.fasta.dump(tag: "outcheck")
+    CONCOCT_EXTRACTFASTABINS.out.fasta
 }
