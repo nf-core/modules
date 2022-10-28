@@ -13,7 +13,12 @@ workflow test_fastq_align_chromap_single_end {
             file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test' ],
+        [
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        ]
+    ]
 
     CHROMAP_INDEX ( fasta )
     FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta)
@@ -28,8 +33,12 @@ workflow test_fastq_align_chromap_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-
+    fasta = [
+        [ id:'test' ],
+        [
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+        ]
+    ]
     CHROMAP_INDEX ( fasta )
     FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta)
 }
