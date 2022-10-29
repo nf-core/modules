@@ -1,5 +1,5 @@
 name: "shinyngs_staticdifferential"
-description: write your description here
+description: Make plots for interpretation of differential abundance statistics
 keywords:
   - rnaseq
   - plot
@@ -26,19 +26,20 @@ input:
   - differential_results:
       type: list
       description: |
-        A tabular differential analysis outputs
+        CSV or TSV-format tabular file with differential analysis outputs
   - sample:
       type: file
       description: |
-        CSV-format sample sheet with sample metadata
+        CSV or TSV-format sample sheet with sample metadata
   - feature_meta:
       type: file
       description: |
-        TSV-format feature (e.g. gene) metadata
+        CSV or TSV-format feature (e.g. gene) metadata
   - assay_file:
       type: list
       description: |
-        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        CSV or TSV matrix file to use alongside differential statistics in
+        interpretation. Usually a normalised form.
 
 output:
   - meta:
