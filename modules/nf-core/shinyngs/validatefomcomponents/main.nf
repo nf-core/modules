@@ -2,10 +2,10 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
     tag "$sample"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::r-shinyngs=1.4.1" : null)
+    conda (params.enable_conda ? "bioconda::r-shinyngs=1.4.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.4.1--r41hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.4.1--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.4.2--r41hdfd78af_0':
+        'quay.io/biocontainers/r-shinyngs:1.4.2--r41hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
