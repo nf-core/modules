@@ -4,8 +4,8 @@ process COOLER_BALANCE {
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh5e36f6f_1':
-        'quay.io/biocontainers/cooler:0.8.11--pyh5e36f6f_1' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.8.11--pyh3252c3a_0':
+        'quay.io/biocontainers/cooler:0.8.11--pyh3252c3a_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)
