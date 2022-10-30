@@ -14,8 +14,8 @@ workflow test_cooler_cload_pairix {
     input = [ [ id:'test_pairix', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_pairix_pair_gz'], checkIfExists: true),
              file(params.test_data['generic']['cooler']['test_pairix_pair_gz_px2'], checkIfExists: true),
-	     2000000
-	    ]
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
 
@@ -29,8 +29,8 @@ workflow test_cooler_cload_pairs {
     input = [ [ id:'test_pairs', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_pairs_pair'], checkIfExists: true),
              [],
-	     2000000
-	    ]
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
 
@@ -44,8 +44,8 @@ workflow test_cooler_cload_tabix {
     input = [ [ id:'test_tabix', single_end:false ], // meta map
              file(params.test_data['generic']['cooler']['test_tabix_pair_gz'], checkIfExists: true),
              file(params.test_data['generic']['cooler']['test_tabix_pair_gz_tbi'], checkIfExists: true),
-	     2000000
-	    ]
+             2000000
+    ]
 
     sizes    = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'], checkIfExists: true)
 
