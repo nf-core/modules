@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { COOLER_BALANCE } from '../../../../../modules/nf-core/cooler/balance/main.nf'
+include { COOLER_DUMP    } from '../../../../../modules/nf-core/cooler/dump/main.nf'
 
 workflow test_cooler_balance {
 
@@ -13,4 +14,5 @@ workflow test_cooler_balance {
     ]
 
     COOLER_BALANCE ( input )
+    COOLER_DUMP ( COOLER_BALANCE.out.cool.combine([[:]]) )
 }

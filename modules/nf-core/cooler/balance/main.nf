@@ -19,9 +19,10 @@ process COOLER_BALANCE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${cool.baseName}_balanced"
-    suffix = resolution ? "::$resolution" : ""
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = resolution ? "::/resolutions/$resolution" : ""
     extension = cool.getExtension()
+    if ("$cool" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     cp ${cool} ${prefix}.${extension}
 
