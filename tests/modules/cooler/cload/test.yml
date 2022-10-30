@@ -15,7 +15,7 @@
     - path: output/cooler/test_pairs.2000000.cool
 
 - name: cooler cload test_cooler_cload_tabix
-  command: nextflow run ./tests/modules/cooler/cload -entry test_cooler_cload_tabix -c ./tests/config/nextflow.config  -c ./tests/modules/cooler/cload/nextflow.config
+  command: nextflow run ./tests/modules/cooler/cload -entry test_cooler_cload_tabix -c ./tests/config/nextflow.config -c ./tests/modules/cooler/cload/nextflow.config
   tags:
     - cooler/cload
     - cooler
