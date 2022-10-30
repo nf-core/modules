@@ -1,5 +1,5 @@
 - name: cooler cload test_cooler_cload_pairix
-  command: nextflow run ./tests/modules/nf-core/cooler/cload -entry test_cooler_cload_pairix -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cooler/cload/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cooler/cload -entry test_cooler_cload_pairix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooler/cload/nextflow.config
   tags:
     - cooler/cload
     - cooler
@@ -7,7 +7,7 @@
     - path: output/cooler/test_pairix.2000000.cool
 
 - name: cooler cload test_cooler_cload_pairs
-  command: nextflow run ./tests/modules/nf-core/cooler/cload -entry test_cooler_cload_pairs -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cooler/cload/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/cooler/cload -entry test_cooler_cload_pairs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooler/cload/nextflow.config
   tags:
     - cooler/cload
     - cooler
