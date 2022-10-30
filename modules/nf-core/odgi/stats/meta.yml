@@ -1,0 +1,48 @@
+name: "odgi_stats"
+description: Metrics describing a variation graph and its path relationship.
+keywords:
+  - variation graph
+  - pangenome graph
+  - gfa
+  - graph stats
+tools:
+  - "odgi":
+      description: "An optimized dynamic genome/graph implementation"
+      homepage: "https://github.com/pangenome/odgi"
+      documentation: "https://odgi.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/pangenome/odgi"
+      doi: "10.1093/bioinformatics/btac308"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - graph:
+      type: file
+      description: Pangenome graph in binary ODGI or in GFA v1.0 format
+      pattern: "*.{og,gfa}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: Optional output file that contains graph statistics in TSV format.
+      pattern: "*.{tsv}"
+  - yaml:
+      type: file
+      description: Optional output file that contains graph statistics in YAML format.
+      pattern: "*.{yaml}"
+
+authors:
+  - "@subwaystation"
