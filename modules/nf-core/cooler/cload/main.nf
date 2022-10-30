@@ -29,7 +29,7 @@ process COOLER_CLOAD {
         $nproc \\
         ${chromsizes}:${cool_bin} \\
         $pairs \\
-        ${prefix}.${cool_bin}.cool
+        ${prefix}.cool
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

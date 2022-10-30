@@ -24,7 +24,7 @@ process COOLER_MAKEBINS {
     cooler makebins \\
         $args \\
         ${chromsizes} \\
-        ${cool_bin} > ${prefix}_${cool_bin}.bed
+        ${cool_bin} > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
