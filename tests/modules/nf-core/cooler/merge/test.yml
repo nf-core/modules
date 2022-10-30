@@ -1,0 +1,7 @@
+- name: cooler merge test_cooler_merge
+  command: nextflow run ./tests/modules/nf-core/cooler/merge -entry test_cooler_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/cooler/merge/nextflow.config
+  tags:
+    - cooler/merge
+    - cooler
+  files:
+    - path: output/cooler/test.cool
