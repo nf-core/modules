@@ -12,14 +12,15 @@ process ARIA2 {
     val source_url
 
     output:
-    path ("*.*")       , emit: downloaded_files
-    path "versions.yml", emit: versions
+    path ("$downloaded_file"), emit: downloaded_file
+    path "versions.yml"      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args        = task.ext.args ?: ''
+    downloaded_file = source_url.split("/")[-1]
 
     """
     set -e
