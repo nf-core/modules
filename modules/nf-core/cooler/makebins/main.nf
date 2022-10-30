@@ -1,5 +1,5 @@
 process COOLER_MAKEBINS {
-    tag "${cool_bin}"
+    tag "${meta.id}}"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::cooler=0.8.11" : null)
@@ -8,17 +8,17 @@ process COOLER_MAKEBINS {
         'quay.io/biocontainers/cooler:0.8.11--pyh5e36f6f_1' }"
 
     input:
-    tuple path(chromsizes), val(cool_bin)
+    tuple val(meta), path(chromsizes), val(cool_bin)
 
     output:
-    path ("*.bed")       , emit: bed
-    path ("versions.yml"), emit: versions
+    tuple val(meta), path("*.bed"), emit: bed
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cooler makebins \\
