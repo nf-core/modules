@@ -8,8 +8,7 @@ process SEQTK_SAMPLE {
         'quay.io/biocontainers/seqtk:1.3--h5bf99c6_3' }"
 
     input:
-    tuple val(meta), path(reads)
-    val sample_size
+    tuple val(meta), path(reads), val(sample_size)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
@@ -23,6 +22,9 @@ process SEQTK_SAMPLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!(args ==~ /.*-s[0-9]+.*/)) {
         args += " -s100"
+    }
+    if ( !sample_size ) {
+        error "SEQTK/SAMPLE must have a sample_size value included"
     }
     """
     printf "%s\\n" $reads | while read f; 
