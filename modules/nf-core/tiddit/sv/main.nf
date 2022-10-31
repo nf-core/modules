@@ -9,8 +9,8 @@ process TIDDIT_SV {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path  fasta
-    path  bwa_index
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(bwa_index)
 
     output:
     tuple val(meta), path("*.vcf")         , emit: vcf
