@@ -2,10 +2,10 @@ process LAST_SPLIT {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? 'bioconda::last=1268' : null)
+    conda (params.enable_conda ? 'bioconda::last=1411' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1268--h5b5514e_1' :
-        'quay.io/biocontainers/last:1268--h5b5514e_1' }"
+        'https://depot.galaxyproject.org/singularity/last:1411--h5b5514e_1' :
+        'quay.io/biocontainers/last:1411--h5b5514e_1' }"
 
     input:
     tuple val(meta), path(maf)
