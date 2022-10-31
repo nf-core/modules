@@ -2,10 +2,10 @@ process AGAT_STATISTICS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::agat=0.9.2-1" : null)
+    conda (params.enable_conda ? "bioconda::agat=1.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:0.9.2--pl5321hdfd78af_1' :
-        'quay.io/biocontainers/agat:0.9.2--pl5321hdfd78af_1 ' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.0.0--pl5321hdfd78af_0' :
+        'quay.io/biocontainers/agat:1.0.0--pl5321hdfd78af_0  ' }"
 
     input:
     tuple val(meta), path(gff)
@@ -35,7 +35,7 @@ process AGAT_STATISTICS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_sp_statistics.pl --help |head -n3 | tail -n1 | grep -Eo '[0-9.]+')
+        agat: \$(agat_sp_statistics.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """
 }
