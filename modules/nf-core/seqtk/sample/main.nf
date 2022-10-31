@@ -27,8 +27,8 @@ process SEQTK_SAMPLE {
         error "SEQTK/SAMPLE must have a sample_size value included"
     }
     """
-    printf "%s\\n" $reads | while read f; 
-    do 
+    printf "%s\\n" $reads | while read f;
+    do
         seqtk \\
             sample \\
             $args \\

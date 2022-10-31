@@ -29,7 +29,7 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
             .set { ch_reads_with_n }
 
         SEQTK_SAMPLE(ch_reads_with_n)
-    
+
         ch_versions.mix(SEQTK_SAMPLE.out.versions)
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
