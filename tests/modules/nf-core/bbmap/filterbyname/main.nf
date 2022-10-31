@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { BBMAP_FILTERBYNAME as BBMAP_FILTERBYNAME } from '../../../../../modules/nf-core/bbmap/filterbyname/main.nf'
+include { BBMAP_FILTERBYNAME } from '../../../../../modules/nf-core/bbmap/filterbyname/main.nf'
 
 workflow test_bbmap_filterbyname_paired_end {
     
