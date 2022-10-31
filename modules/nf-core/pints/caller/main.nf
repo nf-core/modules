@@ -11,9 +11,10 @@ process PINTS_CALLER {
     tuple val(meta), path(bams)
 
     output:
-    tuple val(meta), path("*_divergent_peaks.bed")     , emit: divergent_TREs
-    tuple val(meta), path("*_bidirectional_peaks.bed") , emit: bidirectional_TREs
-    tuple val(meta), path("*_unidirectional_peaks.bed"), emit: unidirectional_TREs
+    tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
+    tuple val(meta), path("*_bidirectional_peaks.bed") , optional:true, emit: bidirectional_TREs
+    tuple val(meta), path("*_unidirectional_peaks.bed"), optional:true, emit: unidirectional_TREs
+    tuple val(meta), path("peakcalling_*.log")                        , emit: peakcalling_log
     path  "versions.yml"     , emit: versions
 
     when:
