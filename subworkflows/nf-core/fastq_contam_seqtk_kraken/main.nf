@@ -17,8 +17,19 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         ch_reports  = Channel.empty()
         ch_versions = Channel.empty()
 
-        SEQTK_SAMPLE(ch_reads, sample_size)
+        // Combine all combinations of reads with sample_size(s).
+        // Note using more than 1 sample_size can cause file collisions
+        // We add n_reads to meta to avoid collisions
+        ch_reads
+            .combine(sample_size)
+            .map{ it ->
+                def meta2 = it[0] + [n_reads: it[2]]
+                [ meta2, it[1], it[2] ]
+            }
+            .set { ch_reads_with_n }
 
+        SEQTK_SAMPLE(ch_reads_with_n)
+    
         ch_versions.mix(SEQTK_SAMPLE.out.versions)
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
