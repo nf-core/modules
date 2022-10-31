@@ -1,8 +1,0 @@
-- name: bcftools concat test_bcftools_concat
-  command: nextflow run ./tests/modules/bcftools/concat -entry test_bcftools_concat -c ./tests/config/nextflow.config -c ./tests/modules/bcftools/concat/nextflow.config
-  tags:
-    - bcftools/concat
-    - bcftools
-  files:
-    - path: output/bcftools/test3.vcf.gz
-      md5sum: 35c88bfaad20101062e98beb217d7137

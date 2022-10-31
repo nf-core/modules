@@ -1,0 +1,44 @@
+name: kaiju_kaiju2krona
+description: Convert Kaiju's tab-separated output file into a tab-separated text file which can be imported into Krona.
+keywords:
+  - taxonomy
+  - visualisation
+  - krona chart
+  - metagenomics
+tools:
+  - "kaiju":
+      description: Fast and sensitive taxonomic classification for metagenomics
+      homepage: https://kaiju.binf.ku.dk/
+      documentation: https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
+      tool_dev_url: https://github.com/bioinformatics-centre/kaiju
+      doi: "10.1038/ncomms11257"
+      licence: ["GNU GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - tsv:
+      type: file
+      description: Kaiju tab-separated output file
+      pattern: "*.{tsv,txt}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Krona text-based input file converted from Kaiju report
+      pattern: "*.{txt,krona}"
+
+authors:
+  - "@MillironX"

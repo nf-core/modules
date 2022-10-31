@@ -1,0 +1,48 @@
+name: bowtie_align
+description: Align reads to a reference genome using bowtie
+keywords:
+  - align
+  - map
+  - fastq
+  - fasta
+  - genome
+  - reference
+tools:
+  - bowtie:
+      description: |
+        bowtie is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: http://bowtie-bio.sourceforge.net/index.shtml
+      documentation: http://bowtie-bio.sourceforge.net/manual.shtml
+      arxiv: arXiv:1303.3997
+      licence: ["Artistic-2.0"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - index:
+      type: file
+      description: Bowtie genome index files
+      pattern: "*.ebwt"
+output:
+  - bam:
+      type: file
+      description: Output BAM file containing read alignments
+      pattern: "*.{bam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastq:
+      type: file
+      description: Unaligned FastQ files
+      pattern: "*.fastq.gz"
+authors:
+  - "@kevinmenden"
