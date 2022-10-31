@@ -9,8 +9,8 @@ process CHROMAP_CHROMAP {
 
     input:
     tuple val(meta), path(reads)
-    path fasta
-    path index
+    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(index)
     path barcodes
     path whitelist
     path chr_order
