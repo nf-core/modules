@@ -14,3 +14,15 @@
     - path: output/pints/test_2_divergent_peaks.bed
       md5sum: 213a2ba5d9930768d76bf2a7d8c3f7fb
     - path: output/pints/test_2_unidirectional_peaks.bed
+
+- name: "pints caller empty results"
+  command: nextflow run ./tests/modules/nf-core/pints/caller -entry test_pints_caller_empty_results -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pints/caller/nextflow.config
+  tags:
+    - "pints"
+    - "pints/caller"
+  exit_code: 1
+  stdout:
+    contains:
+      - "ERROR: No signal found across all chromosomes!"
+    must_not_contain:
+      - "pybedtools.helpers.BEDToolsError"
