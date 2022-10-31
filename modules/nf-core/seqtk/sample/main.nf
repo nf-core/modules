@@ -19,45 +19,25 @@ process SEQTK_SAMPLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.single_end) {
-        """
-        seqtk \\
-            sample \\
-            $args \\
-            $reads \\
-            $sample_size \\
-            | gzip --no-name > ${prefix}.fastq.gz \\
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
-        """
-    } else {
-        if (!(args ==~ /.*-s[0-9]+.*/)) {
-            args += " -s100"
-        }
-        """
-        seqtk \\
-            sample \\
-            $args \\
-            ${reads[0]} \\
-            $sample_size \\
-            | gzip --no-name > ${prefix}_1.fastq.gz \\
-
-        seqtk \\
-            sample \\
-            $args \\
-            ${reads[1]} \\
-            $sample_size \\
-            | gzip --no-name > ${prefix}_2.fastq.gz \\
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
-        """
+    if (!(args ==~ /.*-s[0-9]+.*/)) {
+        args += " -s100"
     }
+    """
+    printf "%s\\n" $reads | while read f; 
+    do 
+        seqtk \\
+            sample \\
+            $args \\
+            \$f \\
+            $sample_size \\
+            | gzip --no-name > ${prefix}_\$(basename \$f).fastq.gz
+    done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
