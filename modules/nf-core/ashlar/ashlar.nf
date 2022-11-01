@@ -68,6 +68,7 @@ process wc {
 
 process ashlar {
     conda 'bioconda::ashlar=1.17.0'
+    params.out = 'ashlar_output.ome.tif'
 
     input:
         path file_in
