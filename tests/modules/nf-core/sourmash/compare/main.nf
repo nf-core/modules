@@ -13,16 +13,13 @@ workflow test_sourmash_compare {
     ])
 
     ch_sketch_for_compare = SOURMASH_SKETCH ( input ).signatures
-        .dump(tag: "precollect")
         .collect { it[1] }
-        .dump(tag: "premap")
         .map {
             signatures ->
                 def meta = [:]
                 meta.id = "group1"
                 [ meta, signatures ]
         }
-        .dump(tag: "postmap")
 
     save_numpy_matrix = true
     save_csv = true
@@ -34,5 +31,5 @@ workflow test_sourmash_compare {
         save_csv
      )
     
-    SOURMASH_COMPARE.out.matrix.dump(tag: "postcompare")
+    SOURMASH_COMPARE.out.matrix
 }
