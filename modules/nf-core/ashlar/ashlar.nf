@@ -24,6 +24,7 @@ process ashlar {
     params.quiet = ''
     params.help = ''
     params.version = ''
+    params.output_channels = ''
 
     input:
         path file_in
@@ -31,6 +32,7 @@ process ashlar {
         path '*.tif'
 
     script:
+    println file_in
     def flip_x = params.flip_x == '' ? '' : '--flip-x'
     def flip_y = params.flip_y == '' ? '' : '--flip-y'
     def flip_mosaic_x = params.flip_mosaic_x == '' ? '' : '--flip-mosaic-x'
@@ -40,10 +42,11 @@ process ashlar {
     def quiet = params.quiet == '' ? '' : '--quiet'
     def help = params.help == '' ? false : true
     def version = params.version == '' ? false : true
+    def output_channels = params.output_channels == '' ? '' : '--output-channels ' + params.output_channels
 
     if(!help && !version) {
         """
-        ashlar $file_in -o $params.output -c $params.channel $flip_x $flip_y $flip_mosaic_x $flip_mosaic_y -m $params.maximum_shift $filter_sigma --tile-size $params.tile_size $plates $quiet
+        ashlar $file_in -o $params.output -c $params.channel $flip_x $flip_y $flip_mosaic_x $flip_mosaic_y -m $params.maximum_shift $filter_sigma --tile-size $params.tile_size $plates $quiet $output_channels
         """
     }
     else if(help && version) {
