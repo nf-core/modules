@@ -69,6 +69,7 @@ process wc {
 process ashlar {
     conda 'bioconda::ashlar=1.17.0'
     params.output = 'ashlar_output.ome.tif'
+    params.channel = '0'
 
     input:
         path file_in
@@ -76,7 +77,7 @@ process ashlar {
         path '*.tif'
 
     """
-    ashlar $file_in -o $params.output
+    ashlar $file_in -o $params.output -c $params.channel
     """
 
 }
