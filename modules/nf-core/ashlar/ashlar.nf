@@ -68,15 +68,15 @@ process wc {
 
 process ashlar {
     conda 'bioconda::ashlar=1.17.0'
-    params.out = 'ashlar_output.ome.tif'
+    params.output = 'ashlar_output.ome.tif'
 
     input:
         path file_in
     output:
-        path '*.ome.tif'
+        path '*.tif'
 
     """
-    ashlar $file_in -o $params.out
+    ashlar $file_in -o $params.output
     """
 
 }
