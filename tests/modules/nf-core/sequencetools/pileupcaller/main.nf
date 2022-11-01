@@ -12,7 +12,7 @@ workflow test_sequencetools_pileupcaller {
             ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
 
-    snpfile = file('/Users/lamnidis/Software/github/TCLamnidis/modules/local_test_data/chr_21.snp')
+    snpfile = file(params.test_data['homo_sapiens']['genome']['genome_21_eigenstrat_snp'], checkIfExists: true)
 
     SEQUENCETOOLS_PILEUPCALLER_FREQSUM ( input, snpfile, [] )
     SEQUENCETOOLS_PILEUPCALLER_EIG ( input, snpfile, [] )
