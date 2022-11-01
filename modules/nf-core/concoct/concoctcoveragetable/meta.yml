@@ -1,0 +1,56 @@
+name: "concoct_concoctcoveragetable"
+description: Generate the input coverage table for CONCOCT using a BEDFile
+keywords:
+  - contigs
+  - fragment
+  - mags
+  - binning
+  - bed
+  - bam
+  - subcontigs
+  - coverage
+tools:
+  - "concoct":
+      description: "Clustering cONtigs with COverage and ComposiTion"
+      homepage: "https://concoct.readthedocs.io/en/latest/index.html"
+      documentation: "https://concoct.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/BinPro/CONCOCT"
+      doi: "10.1038/nmeth.3103"
+      licence: "['FreeBSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: BED file describing where each contig was cut up (typically output from CONCOCT's cut_up_fasta.py)
+      pattern: "*.bed"
+  - bamfiles:
+      type: file
+      description: A single or list of BAM files of reads mapped back to original contigs (prior cutting up)
+      pattern: "*.bam"
+  - baifiles:
+      type: file
+      description: A single or list of BAM index files (.bai) corresponding to BAM
+      pattern: "*.bam"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: Contig coverage table
+      pattern: "*.tsv"
+
+authors:
+  - "@jfy133"
