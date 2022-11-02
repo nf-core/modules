@@ -34,6 +34,11 @@ input:
       type: folder
       description: The path to the folder containing the respective protein fasta files with '.faa' extension. Filenames have to contain the corresponding sample-name, i.e. sample_1.faa
       pattern: "*/"
+  - amp_database:
+      type: folder
+      description: The path to the folder containing the fasta and tsv database files.
+      pattern: "*/"
+
 
 output:
   - meta:
