@@ -26,10 +26,12 @@ process ashlar {
     params.version = ''
     params.output_channels = ''
     params.ffp = ''
+    params.dfp = ''
 
     input:
-        path file_in
+        val file_in
         val file_ffp
+        val file_dfp
     output:
         path '*.tif'
 
@@ -45,10 +47,11 @@ process ashlar {
     def version = params.version == '' ? false : true
     def output_channels = params.output_channels == '' ? '' : '--output-channels ' + params.output_channels
     def ffp = params.ffp == '' ? '' : '--ffp ' + file_ffp
+    def dfp = params.dfp == '' ? '' : '--dfp ' + file_dfp
 
     if(!help && !version) {
         """
-        ashlar $file_in -o $params.output -c $params.channel $flip_x $flip_y $flip_mosaic_x $flip_mosaic_y -m $params.maximum_shift $filter_sigma --tile-size $params.tile_size $plates $quiet $output_channels $ffp
+        ashlar $file_in -o $params.output -c $params.channel $flip_x $flip_y $flip_mosaic_x $flip_mosaic_y -m $params.maximum_shift $filter_sigma --tile-size $params.tile_size $plates $quiet $output_channels $ffp $dfp
         """
     }
     else if(help && version) {
@@ -74,18 +77,15 @@ process ashlar {
 }
 
 workflow {
-    input_file_list = params.in.split(',') as List
-    ch_input_files = Channel.fromList( input_file_list )
-    def ffp_file_list = []
+    input_file_list = params.in.split(',').join(' ')
+    ffp_file_list = []
     if(params.ffp) {
-        ffp_file_list = params.ffp.split(',') as List
-        ch_ffp_files = Channel.fromList( ffp_file_list )
+        ffp_file_list = params.ffp.split(',').join(' ')
     }
-    else {
-        for(item in input_file_list){
-            ffp_file_list.add('/dev/null')
-        }
-        ch_ffp_files = Channel.fromList (ffp_file_list)
+    dfp_file_list = []
+    if(params.dfp) {
+        dfp_file_list = params.dfp.split(',').join(' ')
     }
-    ashlar(ch_input_files, ch_ffp_files) | wc | view { it.trim() }
+
+    ashlar(input_file_list, ffp_file_list, dfp_file_list) | wc | view { it.trim() }
 }
