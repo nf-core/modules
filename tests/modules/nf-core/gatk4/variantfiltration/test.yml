@@ -12,6 +12,16 @@
     - path: output/gatk4/test.filtered.vcf.gz.tbi
     - path: output/gatk4/versions.yml
 
+- name: gatk4 variantfiltration test_gatk4_variantfiltration_vcf_input_stubs
+  command: nextflow run ./tests/modules/nf-core/gatk4/variantfiltration -entry test_gatk4_variantfiltration_vcf_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/variantfiltration/nextflow.config -stub-run
+  tags:
+    - gatk4/variantfiltration
+    - gatk4
+  files:
+    - path: output/gatk4/test.filtered.vcf.gz
+    - path: output/gatk4/test.filtered.vcf.gz.tbi
+    - path: output/gatk4/versions.yml
+
 - name: gatk4 variantfiltration test_gatk4_variantfiltration_gz_input
   command: nextflow run ./tests/modules/nf-core/gatk4/variantfiltration -entry test_gatk4_variantfiltration_gz_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/variantfiltration/nextflow.config
   tags:
@@ -26,7 +36,7 @@
     - path: output/gatk4/test.filtered.vcf.gz.tbi
     - path: output/gatk4/versions.yml
 
-- name: gatk4 variantfiltration test_gatk4_variantfiltration_gz_input
+- name: gatk4 variantfiltration test_gatk4_variantfiltration_gz_input_stubs
   command: nextflow run ./tests/modules/nf-core/gatk4/variantfiltration -entry test_gatk4_variantfiltration_gz_input -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/variantfiltration/nextflow.config -stub-run
   tags:
     - gatk4/variantfiltration
