@@ -1,15 +1,15 @@
-name: cooler_zoomify
-description: Generate a multi-resolution cooler file by coarsening
+name: "cooler_balance"
+description: Run matrix balancing on a cool file
 keywords:
-  - mcool
+  - balance
 tools:
-  - cooler:
+  - "cooler":
       description: Sparse binary format for genomic interaction matrices
       homepage: https://open2c.github.io/cooler/
       documentation: https://cooler.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
-      licence: ["BSD-3-clause"]
+      licence: ["BSD-3-Clause"]
 
 input:
   - meta:
@@ -21,6 +21,9 @@ input:
       type: file
       description: Path to COOL file
       pattern: "*.{cool,mcool}"
+  - resolution:
+      type: value
+      description: Resolution
 
 output:
   - meta:
@@ -32,10 +35,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - mcool:
+  - cool:
       type: file
-      description: Output mcool file
-      pattern: "*.mcool"
+      description: Output COOL file balancing weigths
+      pattern: "*.cool"
 
 authors:
-  - "@jianhong"
+  - "@nservant"
+  - "@muffato"

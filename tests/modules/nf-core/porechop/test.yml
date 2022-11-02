@@ -1,9 +1,0 @@
-- name: porechop test_porechop
-  command: nextflow run ./tests/modules/nf-core/porechop -entry test_porechop -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/porechop/nextflow.config
-  tags:
-    - porechop
-  files:
-    - path: output/porechop/test_porechop.fastq.gz
-      md5sum: 08f314ae9f162c8dcc27e5b513d2064d
-    - path: output/porechop/test_porechop.log
-      contains: ["Saving trimmed reads to file"]
