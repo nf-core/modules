@@ -52,9 +52,7 @@ process BCFTOOLS_MERGE {
                     "vcf.gz"
     """
     touch ${prefix}.bcf.gz
-    touch ${prefix}.bcf
     touch ${prefix}.vcf.gz
-    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
