@@ -45,14 +45,14 @@ process BCFTOOLS_MERGE {
     """
 
     stub:
+    def args = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
     """
-    touch ${prefix}.bcf.gz
-    touch ${prefix}.vcf.gz
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
