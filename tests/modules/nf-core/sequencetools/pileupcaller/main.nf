@@ -10,8 +10,6 @@ workflow test_sequencetools_pileupcaller {
     input = [ [ id:'test', single_end:false ], // meta map
                 file(params.test_data['homo_sapiens']['illumina']['test_mpileup'], checkIfExists: true)
             ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-
     snpfile = file(params.test_data['homo_sapiens']['genome']['genome_21_eigenstrat_snp'], checkIfExists: true)
 
     SEQUENCETOOLS_PILEUPCALLER_FREQSUM ( input, snpfile, [] )
