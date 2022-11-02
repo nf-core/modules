@@ -4,8 +4,8 @@ process AMPCOMBI {
 
     conda (params.enable_conda ? "bioconda::ampcombi=0.1.6" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:0.1.5--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:0.1.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ampcombi:0.1.6--pyhdfd78af_0':
+        'quay.io/biocontainers/ampcombi:0.1.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(amp_input)
