@@ -1,9 +1,9 @@
-- name: cellranger count test_cellranger_count
-  command: nextflow run ./tests/modules/nf-core/cellranger/count -entry test_cellranger_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellranger/count/nextflow.config
+- name: cellranger-atac count test_cellranger_atac_count
+  command: nextflow run ./tests/modules/nf-core/cellranger-atac/count -entry test_cellranger_atac_count -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/cellranger-atac/count/nextflow.config
   tags:
-    - cellranger/count
-    - cellranger
-  files:  //TODO has to be adapted!
+    - cellranger-atac/count
+    - cellranger-atac
+  files:
     - path: output/cellranger-atac/cellranger_atac_reference/fasta/genome.fa
       md5sum: f315020d899597c1b57e5fe9f60f4c3e
     - path: output/cellranger-atac/cellranger_atac_reference/fasta/genome.fa.fai
