@@ -51,7 +51,10 @@ process BCFTOOLS_MERGE {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
     """
-    touch ${prefix}.${extension}
+    touch ${prefix}.bcf.gz
+    touch ${prefix}.bcf
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
