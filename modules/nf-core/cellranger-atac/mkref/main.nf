@@ -10,7 +10,7 @@ process CELLRANGER_ATAC_MKREF {
     input:
     path fasta
     path gtf
-    path motif
+    path motifs
     path reference_config
     val reference_name
 

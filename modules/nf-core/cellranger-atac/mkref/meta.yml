@@ -1,5 +1,5 @@
 name: cellranger_atac_mkref
-description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger-atac mkref command.
+description: Module to build the reference needed by the 10x Genomics Cell Ranger ATAC tool. Uses the cellranger-atac mkref command.
 keywords:
   - reference
   - mkref
@@ -13,6 +13,18 @@ tools:
       doi: ""
       licence: 10x Genomics EULA
 input:
+  - fasta:
+      type: file
+      description: fasta genome file
+      pattern: "*.{fasta,fa}"
+  - gtf:
+      type: file
+      description: gtf transcriptome file
+      pattern: "*.gtf"
+  - motifs:
+      type: file
+      description: motif file
+      pattern: "*.txt"    
   - reference_config:
       type: config
       description: config file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and JASPAR format motif file path
