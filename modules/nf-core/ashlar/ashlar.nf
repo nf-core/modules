@@ -32,7 +32,6 @@ process ashlar {
         path '*.tif'
 
     script:
-    println file_in
     def flip_x = params.flip_x == '' ? '' : '--flip-x'
     def flip_y = params.flip_y == '' ? '' : '--flip-y'
     def flip_mosaic_x = params.flip_mosaic_x == '' ? '' : '--flip-mosaic-x'
@@ -72,5 +71,7 @@ process ashlar {
 }
 
 workflow {
-  ashlar(params.in) | wc | view { it.trim() }
+    input_file_list = params.in.split(',') as List
+    ch_input_files = Channel.fromList( input_file_list )
+    ashlar(ch_input_files) | wc | view {it.trim() }
 }
