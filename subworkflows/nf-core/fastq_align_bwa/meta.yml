@@ -33,6 +33,10 @@ input:
       type: file
       description: BWA genome index files
       pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - sort_bam:
+      type: boolean
+      description: If true bwa modules sort resulting bam files
+      pattern: "true or false"
   - ch_fasta:
       type: file
       description: |
