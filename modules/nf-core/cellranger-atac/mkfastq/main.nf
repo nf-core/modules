@@ -5,7 +5,7 @@ process CELLRANGER_ATAC_MKFASTQ {
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger-atac:2.1.0"
+    container "nfcore/cellranger-atacmkfastq:2.1.0"
 
     input:
     path bcl
