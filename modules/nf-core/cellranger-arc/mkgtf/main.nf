@@ -3,9 +3,9 @@ process CELLRANGER_ARC_MKGTF {
     label 'process_low'
 
     if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+        exit 1, "Conda environments cannot be used when using the Cell Ranger Arc tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger:7.0.0"
+    container "nfcore/cellranger-arc:2.0.2"
 
     input:
     path gtf
@@ -20,7 +20,7 @@ process CELLRANGER_ARC_MKGTF {
     script:
     def args = task.ext.args ?: ''
     """
-    cellranger \\
+    cellranger-arc \\
         mkgtf \\
         $gtf \\
         ${gtf.baseName}.filtered.gtf \\
@@ -28,7 +28,7 @@ process CELLRANGER_ARC_MKGTF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }
