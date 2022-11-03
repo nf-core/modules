@@ -9,7 +9,7 @@ process WFMASH {
 
     input:
     tuple val(meta), path(fasta_gz)
-    val(do_query)
+    val(query_self)
     path(gzi)
     path(fai)
     path(fasta_query_list)
@@ -27,7 +27,7 @@ process WFMASH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
-    def query = do_query ? "${fasta_gz}" : ""
+    def query = query_self ? "${fasta_gz}" : ""
     def paf_mappings = paf ? "--input-paf ${paf}" : ""
     """
     wfmash \\

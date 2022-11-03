@@ -25,7 +25,7 @@ input:
       type: file
       description: BGZIPPED FASTA target file to create the mappings from.
       pattern: "{fa.gz,fna.gz,fasta.gz}"
-  - do_query:
+  - query_self:
       type: val
       description: If set to true, the input FASTA will also be used as the query FASTA.
       pattern: "{true, false}"
