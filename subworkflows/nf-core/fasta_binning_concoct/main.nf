@@ -7,8 +7,8 @@ include { CONCOCT_EXTRACTFASTABINS     } from '../../../modules/nf-core/concoct/
 workflow FASTA_BINNING_CONCOCT {
 
     take:
-    ch_fasta // channel: [ val(meta), [ fasta ] ]       // raw contigs from assembly
-    ch_bam   // channel: [ val(meta), [ bam ], [bai]]   // bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta
+    ch_fasta // channel (mandatory): [ val(meta), [ fasta ] ] (raw contigs from assembly)
+    ch_bam   // channel (mandatory): [ val(meta), [ bam ], [bai]] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
 
     main:
     ch_versions = Channel.empty()
