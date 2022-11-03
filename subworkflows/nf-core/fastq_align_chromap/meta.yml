@@ -65,12 +65,6 @@ input:
       description: |
         Structure: [path(pairs_chr_order)]
         Natural chromosome order for pairs flipping
-  - ch_fasta:
-      type: file
-      description: |
-        Structure: [val(meta2), path(fasta)]
-        Reference fasta file
-      pattern: "*.{fasta,fa}"
 output:
   - meta:
       type: map
