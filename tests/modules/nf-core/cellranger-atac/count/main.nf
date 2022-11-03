@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { CELLRANGER_ATAC_MKREF } from '../../../../../modules/nf-core/cellranger/mkref/main.nf'
-include { CELLRANGER_ATAC_COUNT } from '../../../../../modules/nf-core/cellranger/count/main.nf'
+include { CELLRANGER_ATAC_MKREF } from '../../../../../modules/nf-core/cellranger-atac/mkref/main.nf'
+include { CELLRANGER_ATAC_COUNT } from '../../../../../modules/nf-core/cellranger-atac/count/main.nf'
 
 workflow test_cellranger_atac_count {
 
