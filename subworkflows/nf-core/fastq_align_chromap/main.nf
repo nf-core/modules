@@ -14,6 +14,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_whitelist       // channel (optional):  [ whitelist ]
     ch_chr_order       // channel (optional):  [ chr_order ]
     ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
+    ch_fasta           // channel (optional) : /path/to/reference.fasta
 
     main:
     ch_versions = Channel.empty()

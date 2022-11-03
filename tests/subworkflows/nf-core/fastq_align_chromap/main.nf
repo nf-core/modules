@@ -21,7 +21,7 @@ workflow test_fastq_align_chromap_single_end {
     ]
 
     CHROMAP_INDEX ( fasta )
-    FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta, [], [], [], [])
+    FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta, [], [], [], [], [] )
 }
 
 workflow test_fastq_align_chromap_paired_end {
@@ -40,5 +40,5 @@ workflow test_fastq_align_chromap_paired_end {
         ]
     ]
     CHROMAP_INDEX ( fasta )
-    FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta, [], [], [], [])
+    FASTQ_ALIGN_CHROMAP ( input, CHROMAP_INDEX.out.index, fasta, [], [], [], [], [] )
 }
