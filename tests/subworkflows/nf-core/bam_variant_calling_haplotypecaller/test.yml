@@ -24,7 +24,6 @@
     - path: output/gatk4/test.00002.vcf.gz.tbi
       md5sum: 254b1766a027f17c7421bb0882508330
     - path: output/tabix/test.vcf.gz.tbi
-      md5sum: 84e62805b2dce600e31363112b965549
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_no_scatter -c ./tests/config/nextflow.config
@@ -42,4 +41,3 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: 0d3cd155b45d7be5b7483dbbae152316
