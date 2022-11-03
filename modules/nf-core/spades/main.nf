@@ -9,8 +9,8 @@ process SPADES {
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
-    tuple val(meta), path(yml)
-    path  hmm
+    path yml
+    path hmm
 
     output:
     tuple val(meta), path('*.scaffolds.fa.gz')    , optional:true, emit: scaffolds

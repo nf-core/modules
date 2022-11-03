@@ -38,7 +38,8 @@ input:
       type: file
       description: |
         Path to yml file containing read information.
-        Entries must contain only the file name and no paths.
+        The raw FASTQ files listed in this YAML file must also be supplied to the illumina input channel _in addition_ to this YML.
+        File entries in this yml must contain only the file name and no paths.
       pattern: "*.{yml,yaml}"
   - hmm:
       type: file

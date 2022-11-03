@@ -1,18 +1,4 @@
 [
-    {
-        orientation: "fr",
-        type: "paired-end",
-        right reads: [
-            "test_2.fastq.gz"
-        ],
-        left reads: [
-            "test_1.fastq.gz"
-        ]
-    },
-    {
-        type: "pacbio",
-        single reads: [
-            "alz.ccs.fastq.gz"
-        ]
-    }
+  { orientation: "fr", type: "paired-end", right reads: ["test_2.fastq.gz"], left reads: ["test_1.fastq.gz"] },
+  { type: "nanopore", single reads: ["test.fastq.gz"] },
 ]

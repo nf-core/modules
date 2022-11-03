@@ -37,6 +37,20 @@
     - path: output/spades/test.spades.log
     - path: output/spades/warnings.log
 
+- name: spades test_spades_yml
+  command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_yml -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
+  tags:
+    - spades
+  files:
+    - path: output/spades/test.assembly.gfa.gz
+      md5sum: 22f92cbade8f25be3ac170eaf09f4c7b
+    - path: output/spades/test.contigs.fa.gz
+      md5sum: bb2d294a5752a6f3a208834b8799ec98
+    - path: output/spades/test.scaffolds.fa.gz
+      md5sum: 65aa6e3364925ec617fffda3e84b4cbc
+    - path: output/spades/test.spades.log
+    - path: output/spades/warnings.log
+
 - name: spades test_spades_illumina_pacbio
   command: nextflow run ./tests/modules/nf-core/spades -entry test_spades_illumina_pacbio -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/spades/nextflow.config
   tags:
