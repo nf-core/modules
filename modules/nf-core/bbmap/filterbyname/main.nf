@@ -53,7 +53,7 @@ process BBMAP_FILTERBYNAME {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bbmap: \$(bbversion.sh)
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
     END_VERSIONS
     """
 }
