@@ -7,7 +7,7 @@ include { CELLRANGER_ATAC_COUNT } from '../../../../../modules/nf-core/cellrange
 
 workflow test_cellranger_atac_count {
 
-    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: 'test', samples: ["test"] ], // meta map
+    input = [ [ id:'test', single_end:true, strandedness:'forward', gem: 'scATAC', samples: ["scATAC"] ], // meta map
              [  file(params.test_data['homo_sapiens']['illumina']['test_scATAC_1_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scATAC_3_fastq_gz'], checkIfExists: true),
                 file(params.test_data['homo_sapiens']['illumina']['test_scATAC_2_fastq_gz'], checkIfExists: true)
@@ -15,7 +15,7 @@ workflow test_cellranger_atac_count {
     ]
 
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    gtf = file(params.test_data['homo_sapiens']['genome']['genome_scATAC_gtf'], checkIfExists: true)
     motifs = file(params.test_data['homo_sapiens']['genome']['genome_motif'], checkIfExists: true)
     reference_config = file(params.test_data['homo_sapiens']['genome']['genome_config'], checkIfExists: true)
     reference_name = "cellranger_atac_reference"
