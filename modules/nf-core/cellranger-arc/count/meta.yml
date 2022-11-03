@@ -1,15 +1,15 @@
-name: cellranger_count
-description: Module to use Cell Ranger's pipelines analyze sequencing data produced from Chromium Single Cell Gene Expression.
+name: cellranger_arc_count
+description: Module to use Cell Ranger's ARC pipelines analyze sequencing data produced from Chromium Single Cell ARC.
 keywords:
   - align
   - count
   - reference
 tools:
-  - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
-      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
-      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+  - cellranger-arc:
+      description: Cell Ranger ARC is a set of analysis pipelines that process Chromium Single Cell ARC data.
+      homepage: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
       doi: ""
       licence: 10x Genomics EULA
 input:
@@ -18,23 +18,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - lib_csv:
       type: file
       description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+        Path to a 3-column CSV file declaring FASTQ paths, sample names and library types of input ATAC and GEX FASTQs.
   - reference:
       type: folder
-      description: Folder containing all the reference indices needed by Cell Ranger
+      description: Folder containing all the reference indices needed by Cell Ranger ARC
 output:
   - outs:
       type: file
-      description: Files containing the outputs of Cell Ranger
+      description: Files containing the outputs of Cell Ranger ARC
       pattern: "sample-${meta.gem}/outs/*"
   - versions:
       type: file
       description: File containing software version
       pattern: "versions.yml"
 authors:
+  - "@heylf"
   - "@ggabernet"
   - "@Emiller88"

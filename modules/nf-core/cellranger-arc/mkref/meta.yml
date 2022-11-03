@@ -1,15 +1,15 @@
-name: cellranger_mkref
-description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkref command.
+name: cellranger_arc_mkref
+description: Module to build the reference needed by the 10x Genomics Cell Ranger Arc tool. Uses the cellranger-arc mkref command.
 keywords:
   - reference
   - mkref
   - index
 tools:
-  - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
-      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
-      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+  - cellranger-arc:
+      description: Cell Ranger Arc is a set of analysis pipelines that process Chromium Single Cell Arc data.
+      homepage: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-arc/software/pipelines/latest/what-is-cell-ranger-arc
       doi: ""
       licence: 10x Genomics EULA
 input:
@@ -21,17 +21,22 @@ input:
       type: file
       description: gtf transcriptome file
       pattern: "*.gtf"
-  - reference_name:
-      type: val
-      description: name to give the reference folder
-      pattern: str
+  - motifs:
+      type: file
+      description: motif file
+      pattern: "*.txt"    
+  - reference_config:
+      type: config
+      description: config file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and JASPAR format motif file path
+      pattern: config
 output:
   - reference:
       type: folder
-      description: Folder containing all the reference indices needed by Cell Ranger
+      description: Folder called cellranger_arc_reference containing all the reference indices needed by Cell Ranger Arc
   - versions:
       type: file
       description: File containing software version
       pattern: "versions.yml"
 authors:
   - "@ggabernet"
+  - "@heylf"

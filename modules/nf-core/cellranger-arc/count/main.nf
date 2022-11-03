@@ -1,14 +1,15 @@
-process CELLRANGER_COUNT {
+process CELLRANGER_ARC_COUNT {
     tag "$meta.gem"
     label 'process_high'
 
     if (params.enable_conda) {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger:7.0.0"
+    container "nfcore/cellranger-arc:2.0.2"
 
     input:
     tuple val(meta), path(reads)
+    path  lib_csv
     path  reference
 
     output:
@@ -21,13 +22,14 @@ process CELLRANGER_COUNT {
     script:
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
+    def lib_csv_name = lib_csv.name
     def reference_name = reference.name
     """
-    cellranger \\
+    cellranger-arc \\
         count \\
         --id='sample-${meta.gem}' \\
-        --fastqs=. \\
-        --transcriptome=$reference_name \\
+        --libraries=$lib_csv_name \\
+        --reference=$reference_name \\
         --sample=$sample_arg \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
@@ -35,7 +37,7 @@ process CELLRANGER_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 
@@ -46,7 +48,7 @@ process CELLRANGER_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }

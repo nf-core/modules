@@ -3,9 +3,9 @@ process CELLRANGER_ARC_MKFASTQ {
     label 'process_medium'
 
     if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+        exit 1, "Conda environments cannot be used when using the Cell Ranger Arc tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellrangermkfastq:2.0.2"
+    container "nfcore/cellranger-arcmkfastq:2.0.2"
 
     input:
     path bcl
@@ -21,14 +21,14 @@ process CELLRANGER_ARC_MKFASTQ {
     script:
     def args = task.ext.args ?: ''
     """
-    cellranger mkfastq --id=${bcl.getSimpleName()} \
+    cellranger-arc mkfastq --id=${bcl.getSimpleName()} \
         --run=$bcl \
         --csv=$csv \
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 
@@ -39,7 +39,7 @@ process CELLRANGER_ARC_MKFASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }

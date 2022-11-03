@@ -1,15 +1,17 @@
-process CELLRANGER_MKREF {
-    tag "$fasta"
-    label 'process_high'
+process CELLRANGER_ARC_MKREF {
+    tag "$reference_config"
+    label 'process_medium'
 
     if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
+        exit 1, "Conda environments cannot be used when using the Cell Ranger Arc tool. Please use docker or singularity containers."
     }
-    container "nfcore/cellranger:7.0.0"
+    container "nfcore/cellranger-arc:2.0.2"
 
     input:
     path fasta
     path gtf
+    path motifs
+    path reference_config
     val reference_name
 
     output:
@@ -22,15 +24,13 @@ process CELLRANGER_MKREF {
     script:
     def args = task.ext.args ?: ''
     """
-    cellranger \\
+    cellranger-arc \\
         mkref \\
-        --genome=$reference_name \\
-        --fasta=$fasta \\
-        --genes=$gtf
+        --config=$reference_config
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+        cellranger-arc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
 }
