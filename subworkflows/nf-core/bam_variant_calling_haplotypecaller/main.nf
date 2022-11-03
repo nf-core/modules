@@ -23,27 +23,32 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Optional: Scatter the BED files
     //
 
-    ch_input = ch_bam.join(ch_scatter ?: Channel.empty(), remainder: true)
-                    .branch({ meta, bam, bai, bed, scatter_count=[] ->
+    ch_input = ch_bam
+                    .join(ch_dragstr_models ?: Channel.empty(), remainder: true)
+                    .join(ch_scatter ?: Channel.empty(), remainder: true)
+                    .branch({ meta, bam, bai, bed, dragstr_model=[], scatter_count=[] ->
                         new_meta = meta.clone()
                         new_meta.subwf_scatter_count = scatter_count ?: 1
-                        multiple: scatter_count > 1
-                            return [ new_meta, bam, bai, bed ]
-                        single: scatter_count <= 1 || scatter_count == []
-                            return [ new_meta, bam, bai, bed ]
+
+                        dragstr = dragstr_model ?: []
+
+                        multiple: new_meta.subwf_scatter_count > 1
+                            return [ new_meta, bam, bai, bed, dragstr ]
+                        single: new_meta.subwf_scatter_count <= 1
+                            return [ new_meta, bam, bai, bed, dragstr ]
                     })
 
     BEDTOOLS_SPLIT (
-        ch_input.multiple.map({ meta, bam, bai, bed -> [ meta, bed ]}),
+        ch_input.multiple.map({ meta, bam, bai, bed, dragstr_model -> [ meta, bed ]}),
     )
     ch_versions = ch_versions.mix(BEDTOOLS_SPLIT.out.versions.first())
 
     ch_scattered_bams = ch_input.multiple.combine(BEDTOOLS_SPLIT.out.beds.transpose(), by:0)
-                            .map({ meta, bam, bai, full_bed, scattered_bed ->
+                            .map({ meta, bam, bai, full_bed, dragstr_model, scattered_bed ->
                                 new_meta = meta.clone()
                                 new_meta.id = scattered_bed.baseName
                                 new_meta.subwf_sample = meta.id
-                                [ new_meta, bam, bai, scattered_bed ]
+                                [ new_meta, bam, bai, scattered_bed, dragstr_model ]
                             })
                             .mix(ch_input.single)
 
@@ -51,14 +56,8 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Call variants using HaplotypeCaller
     //
 
-    ch_haplotypecaller_input = ch_scattered_bams.join(ch_dragstr_models ?: Channel.empty(), remainder: true)
-                                    .map({ meta, bam, bai, bed, dragstr_model ->
-                                        dragstr = dragstr_model ?: []
-                                        [ meta, bam, bai, bed, dragstr ]
-                                    })
-
     GATK4_HAPLOTYPECALLER (
-        ch_haplotypecaller_input,
+        ch_scattered_bams,
         ch_fasta,
         ch_fasta_fai,
         ch_dict,
