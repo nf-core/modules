@@ -603,6 +603,10 @@ controlfreec/makegraph:
   - modules/nf-core/controlfreec/makegraph/**
   - tests/modules/nf-core/controlfreec/makegraph/**
 
+cooler/balance:
+  - modules/nf-core/cooler/balance/**
+  - tests/modules/nf-core/cooler/balance/**
+
 cooler/cload:
   - modules/nf-core/cooler/cload/**
   - tests/modules/nf-core/cooler/cload/**
@@ -614,6 +618,10 @@ cooler/digest:
 cooler/dump:
   - modules/nf-core/cooler/dump/**
   - tests/modules/nf-core/cooler/dump/**
+
+cooler/makebins:
+  - modules/nf-core/cooler/makebins/**
+  - tests/modules/nf-core/cooler/makebins/**
 
 cooler/merge:
   - modules/nf-core/cooler/merge/**
@@ -2647,9 +2655,17 @@ subworkflows/bedgraph_bedclip_bedgraphtobigwig:
   - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
   - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
 
+subworkflows/fasta_binning_concoct:
+  - subworkflows/nf-core/fasta_binning_concoct/**
+  - tests/subworkflows/nf-core/fasta_binning_concoct/**
+
 subworkflows/fasta_index_dna:
   - subworkflows/nf-core/fasta_index_dna/**
   - tests/subworkflows/nf-core/fasta_index_dna/**
+
+subworkflows/fastq_align_chromap:
+  - subworkflows/nf-core/fastq_align_chromap/**
+  - tests/subworkflows/nf-core/fastq_align_chromap/**
 
 subworkflows/fastq_align_dna:
   - subworkflows/nf-core/fastq_align_dna/**
