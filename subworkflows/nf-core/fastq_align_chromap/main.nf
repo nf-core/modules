@@ -27,7 +27,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS(CHROMAP_CHROMAP.out.bam, ch_fasta)
+    BAM_SORT_STATS_SAMTOOLS(CHROMAP_CHROMAP.out.bam, ch_fasta[1])
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
