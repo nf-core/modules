@@ -19,8 +19,8 @@ process GAWK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
+    def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
     prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}" // This default is up to debate, please post about it on Slack or open a PR with your suggested change
 
     program = program_file ? "-f ${program_file}" : "${args2}"
