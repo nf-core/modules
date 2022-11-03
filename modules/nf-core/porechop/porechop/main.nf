@@ -1,4 +1,4 @@
-process PORECHOP {
+process PORECHOP_PORECHOP {
     tag "$meta.id"
     label 'process_medium'
 
@@ -28,7 +28,6 @@ process PORECHOP {
         $args \\
         -o ${prefix}.fastq.gz \\
         > ${prefix}.log
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         porechop: \$( porechop --version )
