@@ -1,0 +1,27 @@
+- name: arcashla extract test_arcashla_extract
+  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arcashla/extract/nextflow.config
+  tags:
+    - arcashla
+    - arcashla/extract
+  files:
+    - path: output/arcashla/test.paired_end.sorted.extracted.1.fq.gz
+      md5sum: d2858959d079ecc8300a3fd768d43111
+    - path: output/arcashla/test.paired_end.sorted.extracted.2.fq.gz
+      md5sum: 15c4e180f3454e67e62c3c4dbb2906f9
+    - path: output/arcashla/test.log
+      md5sum: 509f31443a4f91bc968f49005eeaecf2
+    - path: output/arcashla/versions.yml
+      md5sum: ce48fa53589827141f681ccb16a2a011
+
+- name: arcashla extract test_arcashla_extract single end
+  command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arcashla/extract/nextflow.config
+  tags:
+    - arcashla
+    - arcashla/extract
+  files:
+    - path: output/arcashla/test3.single_end.markduplicates.sorted.extracted.fq.gz
+      md5sum: 60d92e7b8ca5bc6b597ebf7deaf9b503
+    - path: output/arcashla/test_single_end.log
+      md5sum: 2ed6fec5a0205df1cbdfcdf93ed4922e
+    - path: output/arcashla/versions.yml
+      md5sum: 36b48f49c345df8cb1d30bfe130e6218
