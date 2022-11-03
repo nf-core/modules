@@ -23,7 +23,7 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Optional: Scatter the BED files
     //
 
-    ch_input = ch_bam.combine(ch_scatter, by:0)
+    ch_input = ch_bam.join(ch_scatter ?: Channel.empty(), remainder: true)
                     .branch({ meta, bam, bai, bed, scatter_count=[] ->
                         new_meta = meta.clone()
                         new_meta.subwf_scatter_count = scatter_count ?: 1
@@ -33,38 +33,29 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
                             return [ new_meta, bam, bai, bed ]
                     })
 
-    ch_input.multiple.view({"multiple: $it"})
-    ch_input.single.view({"single: $it"})
-
-    ch_beds =
-
     BEDTOOLS_SPLIT (
         ch_input.multiple.map({ meta, bam, bai, bed -> [ meta, bed ]}),
-        scatter_count
     )
     ch_versions = ch_versions.mix(BEDTOOLS_SPLIT.out.versions.first())
 
-    ch_scattered_bams = ch_bam.combine(BEDTOOLS_SPLIT.out.beds.transpose(), by:0)
+    ch_scattered_bams = ch_input.multiple.combine(BEDTOOLS_SPLIT.out.beds.transpose(), by:0)
                             .map({ meta, bam, bai, full_bed, scattered_bed ->
                                 new_meta = meta.clone()
                                 new_meta.id = scattered_bed.baseName
-                                new_meta.sample = meta.id
+                                new_meta.subwf_sample = meta.id
                                 [ new_meta, bam, bai, scattered_bed ]
                             })
+                            .mix(ch_input.single)
 
     //
     // Call variants using HaplotypeCaller
     //
 
-    if (ch_dragstr_models){
-        ch_bam_dragstr = ch_scattered_bams.combine(ch_dragstr_models, by: 0)
-    } else {
-        ch_bam_dragstr = ch_scattered_bams
-    }
-
-    ch_haplotypecaller_input = ch_bam_dragstr.map({ meta, bam, bai, bed, dragstr_model=[] ->
-                                                    [ meta, bam, bai, bed, dragstr_model ]
-                                                })
+    ch_haplotypecaller_input = ch_scattered_bams.join(ch_dragstr_models ?: Channel.empty(), remainder: true)
+                                    .map({ meta, bam, bai, bed, dragstr_model ->
+                                        dragstr = dragstr_model ?: []
+                                        [ meta, bam, bai, bed, dragstr ]
+                                    })
 
     GATK4_HAPLOTYPECALLER (
         ch_haplotypecaller_input,
@@ -80,17 +71,22 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Optional: Merge scattered VCFs
     //
 
-    ch_merge_input = GATK4_HAPLOTYPECALLER.out.vcf
-                        .combine(GATK4_HAPLOTYPECALLER.out.tbi, by:0)
-                        .map({ meta, vcf, tbi ->
-                            new_meta = [:]
-                            new_meta.id = meta.sample
-                            [ groupKey(new_meta), vcf, tbi ]
+    ch_caller_output = GATK4_HAPLOTYPECALLER.out.vcf
+                        .join(GATK4_HAPLOTYPECALLER.out.tbi)
+                        .branch({ meta, vcf, tbi ->
+                            new_meta = meta.clone()
+                            new_meta.remove('subwf_scatter_count')
+                            new_meta.remove('subwf_sample')
+                            new_meta.id = meta.subwf_sample
+
+                            multiple: meta.subwf_scatter_count > 1
+                                [ groupKey(new_meta, meta.subwf_scatter_count), vcf, tbi ]
+                            single: meta.subwf_scatter_count <= 1
+                                [ groupKey(new_meta, meta.subwf_scatter_count), vcf, tbi ]
                         })
-                        .groupTuple()
 
     BCFTOOLS_MERGE (
-        ch_merge_input,
+        ch_caller_output.multiple.groupTuple(),
         [],
         ch_fasta,
         ch_fasta_fai
@@ -103,10 +99,9 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
 
     ch_called_vcfs      = BCFTOOLS_MERGE.out.merged_variants
+                            .mix(ch_caller_output.single.map({meta, vcf, tbi -> [meta, vcf]}))
     ch_called_vcfs_tbi  = TABIX_TABIX.out.tbi
-
-    ch_called_vcfs      = GATK4_HAPLOTYPECALLER.out.vcf
-    ch_called_vcfs_tbi  = GATK4_HAPLOTYPECALLER.out.tbi
+                            .mix(ch_caller_output.single.map({meta, vcf, tbi -> [meta, tbi]}))
 
     emit:
     vcf      = ch_called_vcfs              // channel: [ meta, vcf ]

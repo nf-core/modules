@@ -13,26 +13,18 @@
     - tabix/tabix
   files:
     - path: output/bcftools/test.vcf.gz
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/bedtools/test.00001.bed
       md5sum: d58e5e46c2fcc3b8be5db0f023e93cb5
     - path: output/bedtools/test.00002.bed
       md5sum: 03caf952e9297a54620d2bbba8dc2823
     - path: output/gatk4/test.00001.vcf.gz
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/gatk4/test.00001.vcf.gz.tbi
       md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
     - path: output/gatk4/test.00002.vcf.gz
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/gatk4/test.00002.vcf.gz.tbi
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      md5sum: 254b1766a027f17c7421bb0882508330
     - path: output/tabix/test.vcf.gz.tbi
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+      md5sum: 84e62805b2dce600e31363112b965549
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_no_scatter -c ./tests/config/nextflow.config
@@ -49,7 +41,5 @@
     - tabix/tabix
   files:
     - path: output/gatk4/test.vcf.gz
-      contains:
-        - ' # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: 4a6504f4a1c7bd08b5c0d39bd42501b0
+      md5sum: 0d3cd155b45d7be5b7483dbbae152316
