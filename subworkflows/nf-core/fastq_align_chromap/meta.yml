@@ -25,9 +25,9 @@ input:
   - ch_reads:
       type: file
       description: |
+        Structure: [val(meta), path(reads)]
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-      structure: [val(meta), path(reads)]
   - meta2:
       type: map
       description: |
@@ -36,35 +36,35 @@ input:
   - ch_index:
       type: file
       description: |
+        Structure: [val(meta2), path(index)]
         Chromap genome index files
-      structure: [val(meta2), path(index)]
       pattern: "*.index"
   - ch_fasta:
       type: file
       description: |
+        Structure: [val(meta2), path(fasta)]
         Reference fasta file
-      structure: [val(meta2), path(fasta)]
       pattern: "*.{fasta,fa}"
   - ch_barcodes:
       type: file
       description: |
+        Structure: [path(barcodes)]
         Cell barcode files
-      structure: [path(barcodes)]
   - ch_whitelist:
       type: file
       description: |
+        Structure: [path(whitelist)]
         Cell barcode whitelist file
-      structure: [path(whitelist)]
   - ch_chr_order:
       type: file
       description: |
+        Structure: [path(chr_order)]
         Custom chromosome order
-      structure: [path(chr_order)]
   - ch_pairs_chr_order:
       type: file
       description: |
+        Structure: [path(pairs_chr_order)]
         Natural chromosome order for pairs flipping
-      structure: [path(pairs_chr_order)]
 output:
   - meta:
       type: map
