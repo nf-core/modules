@@ -19,7 +19,7 @@ process GAWK {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}"
+    prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}" // This default is up to debate, please post about it on Slack or open a PR with your suggested change
 
     """
     awk \\
