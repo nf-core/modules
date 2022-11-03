@@ -10,7 +10,7 @@ workflow test_ampcombi_directory {
        [ id:'sample_1'],
        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files.tar.gz", checkIfExists: true)
    ]
-   faa_folder = [
+   faa_input = [
        [ id:[]],
        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa.tar.gz", checkIfExists: true)
    ]
@@ -26,12 +26,11 @@ workflow test_ampcombi_file_paths {
                  [file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/ampir/sample_1/sample_1.ampir.tsv', checkIfExists: true),
                   file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_files/amplify/sample_1/sample_1_amplify.tsv', checkIfExists: true)]
                   ]
-    faa_folder = [
+    faa_input = [
         [ id:'sample_1' ],
-        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa.tar.gz", checkIfExists: true)
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/test_faa/sample_1.faa", checkIfExists: true)
     ]
     db = params.db ? file( params.db ) : []
 
-    UNTAR2 ( faa_folder )
-    AMPCOMBI ( amp_input, UNTAR2.out.untar.map{ it[1] }, db )
+    AMPCOMBI ( amp_input, faa_input, db )
 }
