@@ -4,12 +4,13 @@ include { BAM_SORT_STATS_SAMTOOLS } from '../bam_sort_stats_samtools/main'
 workflow FASTQ_ALIGN_STAR {
 
     take:
-    reads               // channel: [ val(meta), [ reads ] ]
-    index               // channel: /path/to/star/index/
-    gtf                 // channel: /path/to/genome.gtf
-    star_ignore_sjdbgtf // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
-    seq_platform        // string : sequencing platform
-    seq_center          // string : sequencing center
+    ch_reads               // channel: [ val(meta), [ reads ] ]
+    ch_index               // channel: /path/to/star/index/
+    ch_gtf                 // channel: /path/to/genome.gtf
+    star_ignore_sjdbgtf    // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
+    seq_platform           // string : sequencing platform
+    seq_center             // string : sequencing center
+    ch_fasta               // channel: /path/to/reference.fasta
 
     main:
 
@@ -24,7 +25,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS ( STAR_ALIGN.out.bam, [] )
+    BAM_SORT_STATS_SAMTOOLS ( STAR_ALIGN.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:

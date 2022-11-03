@@ -18,15 +18,35 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - index:
+  - ch_index:
       type: directory
       description: STAR genome index
       pattern: "star"
+  - ch_gtf:
+      type: file
+      description: |
+        GTF file used to set the splice junctions with the --sjdbGTFfile flag
+      pattern: "*.gtf"
+  - star_ignore_sjdbgtf :
+      type: boolean
+      description: |
+        If true the --sjdbGTFfile flag is set
+      pattern: "true or false"
+  - seq_platform:
+      type: string
+      description: |
+        Sequencing platform to be added to the bam header using the --outSAMattrRGline flag
+  - seq_center:
+      type: string
+      description: |
+        Sequencing center to be added to the bam header using the --outSAMattrRGline flag
+
+
 output:
   - orig_bam:
       type: file
