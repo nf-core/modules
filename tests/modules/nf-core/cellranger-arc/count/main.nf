@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { CELLRANGER_ARC_MKGTF } from '../../../../../modules/nf-core/cellranger-arc/mkgtf/main.nf'
 include { CELLRANGER_ARC_MKREF } from '../../../../../modules/nf-core/cellranger-arc/mkref/main.nf'
 include { CELLRANGER_ARC_COUNT } from '../../../../../modules/nf-core/cellranger-arc/count/main.nf'
 
@@ -23,9 +24,11 @@ workflow test_cellranger_arc_count {
     reference_name = "cellranger_arc_reference"
     lib_csv = file(params.test_data['homo_sapiens']['illumina']['multiome_lib_csv'], checkIfExists: true)
 
+    CELLRANGER_ARC_MKGTF ( gtf )
+
     CELLRANGER_ARC_MKREF (
         fasta,
-        gtf,
+        CELLRANGER_MKGTF.out.gtf,
         motifs,
         reference_config,
         reference_name
