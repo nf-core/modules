@@ -9,6 +9,7 @@ process GAWK {
 
     input:
     tuple val(meta), path(input)
+    path(program_file)
 
     output:
     tuple val(meta), path("${prefix}")  , emit: output
@@ -19,11 +20,15 @@ process GAWK {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}" // This default is up to debate, please post about it on Slack or open a PR with your suggested change
+
+    program = program_file ? "-f ${program_file}" : "${args2}"
 
     """
     awk \\
         ${args} \\
+        ${program} \\
         ${input} \\
         > ${prefix}
 

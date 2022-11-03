@@ -20,7 +20,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input:
       type: file
-      description: The input file - Specify the logic that needs to be executed on this file on the `args`
+      description: The input file - Specify the logic that needs to be executed on this file on the `args2` or in the program file
+      pattern: "*"
+  - program_file:
+      type: file
+      description: A file containing logic for awk to execute
       pattern: "*"
 
 output:
