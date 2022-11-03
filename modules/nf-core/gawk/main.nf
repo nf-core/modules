@@ -19,7 +19,7 @@ process GAWK {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}"
 
     """
     awk \\
