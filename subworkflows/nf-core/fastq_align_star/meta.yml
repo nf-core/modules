@@ -45,6 +45,10 @@ input:
       type: string
       description: |
         Sequencing center to be added to the bam header using the --outSAMattrRGline flag
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
 
 output:
   - orig_bam:
