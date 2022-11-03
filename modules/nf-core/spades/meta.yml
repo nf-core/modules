@@ -34,6 +34,12 @@ input:
       type: file
       description: |
         List of input FastQ files of size 1, originating from Oxford Nanopore technology.
+  - yml:
+      type: file
+      description: |
+        Path to yml file containing read information.
+        Entries must contain only the file name and no paths.
+      pattern: "*.{yml,yaml}"
   - hmm:
       type: file
       description: File or directory with amino acid HMMs for Spades HMM-guided mode.

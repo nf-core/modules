@@ -9,6 +9,7 @@ process SPADES {
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
+    tuple val(meta), path(yml)
     path  hmm
 
     output:
@@ -31,15 +32,14 @@ process SPADES {
     def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
     def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
     def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
+    def reads = yml ? "--dataset $yml" : "$illumina_reads $pacbio_reads $nanopore_reads"
     """
     spades.py \\
         $args \\
         --threads $task.cpus \\
         --memory $maxmem \\
         $custom_hmms \\
-        $illumina_reads \\
-        $pacbio_reads \\
-        $nanopore_reads \\
+        $reads \\
         -o ./
     mv spades.log ${prefix}.spades.log
 
