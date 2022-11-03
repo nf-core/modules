@@ -19,10 +19,8 @@
       md5sum: 03caf952e9297a54620d2bbba8dc2823
     - path: output/gatk4/test.00001.vcf.gz
     - path: output/gatk4/test.00001.vcf.gz.tbi
-      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
-      md5sum: 254b1766a027f17c7421bb0882508330
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter
@@ -41,7 +39,6 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
-      md5sum: 0d3cd155b45d7be5b7483dbbae152316
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_dragstr
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_scatter_dragstr -c ./tests/config/nextflow.config
@@ -64,10 +61,8 @@
       md5sum: 03caf952e9297a54620d2bbba8dc2823
     - path: output/gatk4/test.00001.vcf.gz
     - path: output/gatk4/test.00001.vcf.gz.tbi
-      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
-      md5sum: f932eb529121f062e67a28b458b581e6
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_cram
@@ -91,10 +86,8 @@
       md5sum: 03caf952e9297a54620d2bbba8dc2823
     - path: output/gatk4/test.00001.vcf.gz
     - path: output/gatk4/test.00001.vcf.gz.tbi
-      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
-      md5sum: f99ded571c5207e0c04cddc538a0dd6a
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_no_scatter
@@ -118,10 +111,8 @@
       md5sum: 03caf952e9297a54620d2bbba8dc2823
     - path: output/gatk4/test.00001.vcf.gz
     - path: output/gatk4/test.00001.vcf.gz.tbi
-      md5sum: e7ca7e9fe76ce12198fd54ec9a64fad4
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
-      md5sum: 254b1766a027f17c7421bb0882508330
     - path: output/gatk4/test2.vcf.gz
     - path: output/gatk4/test2.vcf.gz.tbi
     - path: output/tabix/test.vcf.gz.tbi
