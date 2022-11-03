@@ -2,11 +2,11 @@
 
 nextflow.enable.dsl = 2
 
-include { BOWTIE2_BUILD } from '../../../../modules/nf-core/bowtie2/build/main.nf'
-include { FASTQ_ALIGN_BOWTIE2 } from '../../../../subworkflows/nf-core/fastq_align_bowtie2/main.nf'
+include { BWA_INDEX       } from '../../../../modules/nf-core/bwa/index/main.nf'
+include { FASTQ_ALIGN_BWA } from '../../../../subworkflows/nf-core/fastq_align_bwa/main.nf'
 
 
-workflow test_align_bowtie2_single_end {
+workflow test_fastq_align_bwa_single_end {
     input = [
         [ id:'test', single_end:true ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
@@ -15,14 +15,13 @@ workflow test_align_bowtie2_single_end {
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    save_unaligned = false
     sort = false
 
-    BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [ ] )
+    BWA_INDEX ( fasta )
+    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [ ] )
 }
 
-workflow test_align_bowtie2_paired_end {
+workflow test_fastq_align_bwa_paired_end {
     input = [
         [ id:'test', single_end:false ], // meta map
         [
@@ -30,15 +29,12 @@ workflow test_align_bowtie2_paired_end {
             file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
         ]
     ]
-
     fasta = [
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    save_unaligned = false
     sort = false
 
-    BOWTIE2_BUILD ( fasta )
-    FASTQ_ALIGN_BOWTIE2 ( input, BOWTIE2_BUILD.out.index, save_unaligned, sort, [ ] )
+    BWA_INDEX ( fasta )
+    FASTQ_ALIGN_BWA ( input, BWA_INDEX.out.index, sort, [ ] )
 }
-
