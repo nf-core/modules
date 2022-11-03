@@ -13,7 +13,7 @@ process WFMASH {
     path(gzi)
     path(fai)
     path(fasta_query_list)
-    path(paf_in)
+    path(paf)
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
