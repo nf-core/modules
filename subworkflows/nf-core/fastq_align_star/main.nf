@@ -19,7 +19,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Map reads with STAR
     //
-    STAR_ALIGN ( reads, index, gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, star_ignore_sjdbgtf, seq_platform, seq_center )
     ch_versions = ch_versions.mix(STAR_ALIGN.out.versions.first())
 
     //
