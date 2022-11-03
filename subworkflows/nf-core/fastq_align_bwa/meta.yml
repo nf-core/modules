@@ -19,15 +19,27 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - index:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - ch_index:
       type: file
       description: BWA genome index files
       pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [val(meta2), path(fasta)]
+        Reference fasta file
+      pattern: "*.{fasta,fa}"
+
 # TODO Update when we decide on a standard for subworkflow docs
 output:
   - bam_orig:

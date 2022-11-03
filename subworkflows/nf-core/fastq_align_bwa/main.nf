@@ -9,10 +9,10 @@ workflow FASTQ_ALIGN_BWA {
     take:
     ch_reads // channel (mandatory): [ val(meta), [ reads ] ]
     ch_index // channel (mandatory): [ val(meta2, [ index ] ]
+    ch_fasta // channel (optional):  [ val(meta2, [ fasta ] ]
     sort_bam // val
 
     main:
-
     ch_versions = Channel.empty()
 
     //
@@ -24,7 +24,7 @@ workflow FASTQ_ALIGN_BWA {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, [] )
+    BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
