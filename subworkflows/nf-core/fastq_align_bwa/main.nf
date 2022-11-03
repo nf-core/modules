@@ -9,7 +9,7 @@ workflow FASTQ_ALIGN_BWA {
     take:
     ch_reads // channel (mandatory): [ val(meta), [ reads ] ]
     ch_index // channel (mandatory): [ val(meta2, [ index ] ]
-    ch_fasta // channel (optional):  [ val(meta2, [ fasta ] ]
+    ch_fasta // channel (optional):  [ fasta ]
     sort_bam // val
 
     main:
