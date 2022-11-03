@@ -11,6 +11,7 @@ workflow test_wfmash {
             ]
     gzi = file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_gzi'], checkIfExists: true)
     fai = file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_fai'], checkIfExists: true)
+    do_query = true
 
-    WFMASH ( input, gzi, fai, [] )
+    WFMASH ( input, do_query, gzi, fai, [], [] )
 }

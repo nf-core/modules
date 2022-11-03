@@ -9,9 +9,11 @@ process WFMASH {
 
     input:
     tuple val(meta), path(fasta_gz)
+    val(do_query)
     path(gzi)
     path(fai)
-    path(fasta_query)
+    path(fasta_query_list)
+    path(paf_in)
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
@@ -24,12 +26,16 @@ process WFMASH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def query = fasta_query ? "--query-file-list ${fasta_query}" : ""
+    def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
+    def query = do_query ? "${fasta_gz}" : ""
+    def paf_mappings = paf_in ? "--input-paf ${paf_in}" : ""
     """
     wfmash \\
         ${fasta_gz} \\
         $query \\
+        $query_list \\
         --threads $task.cpus \\
+        $paf_mappings \\
         $args > ${prefix}.paf
 
 
