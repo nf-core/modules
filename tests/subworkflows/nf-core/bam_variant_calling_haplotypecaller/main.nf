@@ -13,6 +13,11 @@ workflow test_bam_variant_calling_haplotypecaller_scatter {
         file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
     ])
 
+    scatter = Channel.of([
+        [id:"test"],
+        2
+    ])
+
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
@@ -21,14 +26,13 @@ workflow test_bam_variant_calling_haplotypecaller_scatter {
 
     BAM_VARIANT_CALLING_HAPLOTYPECALLER (
         input,
+        scatter,
         fasta,
         fasta_fai,
         dict,
         [],
         [],
         [],
-        "scatter",
-        2
     )
 }
 
@@ -41,6 +45,8 @@ workflow test_bam_variant_calling_haplotypecaller_no_scatter {
         file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
     ])
 
+    scatter = []
+
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
 
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
@@ -49,13 +55,12 @@ workflow test_bam_variant_calling_haplotypecaller_no_scatter {
 
     BAM_VARIANT_CALLING_HAPLOTYPECALLER (
         input,
+        scatter,
         fasta,
         fasta_fai,
         dict,
         [],
         [],
         [],
-        "no_scatter",
-        []
     )
 }

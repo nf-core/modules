@@ -7,15 +7,13 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
 
     take:
     ch_bam              // channel: [mandatory] [meta, bam, bai, bed]
+    ch_scatter          // channel: [optional]  [meta, scatter_count]
     ch_fasta            // channel: [mandatory] [fasta]
     ch_fasta_fai        // channel: [mandatory] [fasta_fai]
     ch_dict             // channel: [mandatory] [dict]
     ch_dragstr_models   // channel: [optional]  [meta, dragstr_model]
     ch_dbsnp            // channel: [optional]  [dbsnp]
     ch_dbsnp_tbi        // channel: [optional]  [dbsnp_tbi]
-
-    strategy            // string:  [mandatory] => The strategy used to run the subworkflow ["scatter","no_scatter"]
-    scatter_count       // integer: [optional]  => The amount of scattered BEDs should be created
 
     main:
 
@@ -24,27 +22,35 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     //
     // Optional: Scatter the BED files
     //
-    if (strategy == "scatter" && scatter_count > 1){
 
-        ch_beds = ch_bam.map({ meta, bam, bai, bed -> [ meta, bed ]})
+    ch_input = ch_bam.combine(ch_scatter, by:0)
+                    .branch({ meta, bam, bai, bed, scatter_count=[] ->
+                        new_meta = meta.clone()
+                        new_meta.subwf_scatter_count = scatter_count ?: 1
+                        multiple: scatter_count > 1
+                            return [ new_meta, bam, bai, bed ]
+                        single: scatter_count <= 1 || scatter_count == []
+                            return [ new_meta, bam, bai, bed ]
+                    })
 
-        BEDTOOLS_SPLIT (
-            ch_beds,
-            scatter_count
-        )
-        ch_versions = ch_versions.mix(BEDTOOLS_SPLIT.out.versions.first())
+    ch_input.multiple.view({"multiple: $it"})
+    ch_input.single.view({"single: $it"})
 
-        ch_scattered_bams = ch_bam.combine(BEDTOOLS_SPLIT.out.beds.transpose(), by:0)
-                                .map({ meta, bam, bai, full_bed, scattered_bed ->
-                                    new_meta = meta.clone()
-                                    new_meta.id = scattered_bed.baseName
-                                    new_meta.sample = meta.id
-                                    [ new_meta, bam, bai, scattered_bed ]
-                                })
+    ch_beds =
 
-    } else {
-        ch_scattered_bams = ch_bam
-    }
+    BEDTOOLS_SPLIT (
+        ch_input.multiple.map({ meta, bam, bai, bed -> [ meta, bed ]}),
+        scatter_count
+    )
+    ch_versions = ch_versions.mix(BEDTOOLS_SPLIT.out.versions.first())
+
+    ch_scattered_bams = ch_bam.combine(BEDTOOLS_SPLIT.out.beds.transpose(), by:0)
+                            .map({ meta, bam, bai, full_bed, scattered_bed ->
+                                new_meta = meta.clone()
+                                new_meta.id = scattered_bed.baseName
+                                new_meta.sample = meta.id
+                                [ new_meta, bam, bai, scattered_bed ]
+                            })
 
     //
     // Call variants using HaplotypeCaller
@@ -74,36 +80,33 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Optional: Merge scattered VCFs
     //
 
-    if (strategy == "scatter" && scatter_count > 1){
+    ch_merge_input = GATK4_HAPLOTYPECALLER.out.vcf
+                        .combine(GATK4_HAPLOTYPECALLER.out.tbi, by:0)
+                        .map({ meta, vcf, tbi ->
+                            new_meta = [:]
+                            new_meta.id = meta.sample
+                            [ groupKey(new_meta), vcf, tbi ]
+                        })
+                        .groupTuple()
 
-        ch_merge_input = GATK4_HAPLOTYPECALLER.out.vcf
-                            .combine(GATK4_HAPLOTYPECALLER.out.tbi, by:0)
-                            .map({ meta, vcf, tbi ->
-                                new_meta = [:]
-                                new_meta.id = meta.sample
-                                [ new_meta, vcf, tbi ]
-                            })
-                            .groupTuple()
+    BCFTOOLS_MERGE (
+        ch_merge_input,
+        [],
+        ch_fasta,
+        ch_fasta_fai
+    )
+    ch_versions = ch_versions.mix(BCFTOOLS_MERGE.out.versions.first())
 
-        BCFTOOLS_MERGE (
-            ch_merge_input,
-            [],
-            ch_fasta,
-            ch_fasta_fai
-        )
-        ch_versions = ch_versions.mix(BCFTOOLS_MERGE.out.versions.first())
+    TABIX_TABIX (
+        BCFTOOLS_MERGE.out.merged_variants
+    )
+    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
 
-        TABIX_TABIX (
-            BCFTOOLS_MERGE.out.merged_variants
-        )
-        ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
+    ch_called_vcfs      = BCFTOOLS_MERGE.out.merged_variants
+    ch_called_vcfs_tbi  = TABIX_TABIX.out.tbi
 
-        ch_called_vcfs      = BCFTOOLS_MERGE.out.merged_variants
-        ch_called_vcfs_tbi  = TABIX_TABIX.out.tbi
-    } else {
-        ch_called_vcfs      = GATK4_HAPLOTYPECALLER.out.vcf
-        ch_called_vcfs_tbi  = GATK4_HAPLOTYPECALLER.out.tbi
-    }
+    ch_called_vcfs      = GATK4_HAPLOTYPECALLER.out.vcf
+    ch_called_vcfs_tbi  = GATK4_HAPLOTYPECALLER.out.tbi
 
     emit:
     vcf      = ch_called_vcfs              // channel: [ meta, vcf ]
