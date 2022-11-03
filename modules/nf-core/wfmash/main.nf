@@ -28,7 +28,7 @@ process WFMASH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
     def query = do_query ? "${fasta_gz}" : ""
-    def paf_mappings = paf_in ? "--input-paf ${paf_in}" : ""
+    def paf_mappings = paf ? "--input-paf ${paf}" : ""
     """
     wfmash \\
         ${fasta_gz} \\
