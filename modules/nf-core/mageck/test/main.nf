@@ -22,7 +22,6 @@ process MAGECK_TEST {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-
     """
     mageck  \\
         test \\
