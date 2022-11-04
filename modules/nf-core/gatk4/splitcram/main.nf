@@ -30,6 +30,7 @@ process GATK4_SPLITCRAM {
 
     """
     gatk --java-options "-Xmx${avail_mem}g" SplitCRAM \\
+        ${args} \\
         --input ${cram} \\
         --output ${prefix}.%04d.cram \\
         --tmp-dir .
