@@ -2,10 +2,10 @@ process LAST_POSTMASK {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? 'bioconda::last=1411' : null)
+    conda (params.enable_conda ? 'bioconda::last=1418' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1411--h5b5514e_1' :
-        'quay.io/biocontainers/last:1411--h5b5514e_1' }"
+        'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
+        'quay.io/biocontainers/last:1418--h5b5514e_0' }"
 
     input:
     tuple val(meta), path(maf)
