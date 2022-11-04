@@ -8,7 +8,6 @@ process MAGECK_TEST {
         'quay.io/biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
 
     input:
-
     tuple val(meta), path(count_table)
 
     output:
