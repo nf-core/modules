@@ -32,12 +32,24 @@ output:
         e.g. [ id:'test', single_end:false ]
   - extracted_reads_fastq:
       type: file
-      description: FASTQ file(s)
+      description: FASTQ file(s) containing chromosome 6 reads and related HLA sequences
       pattern: "*.fq.gz"
   - log:
       type: file
       description: Log file for run summary
       pattern: "*.log"
+  - intermediate_sam:
+      type: file
+      description: Optional intermediate SAM file
+      pattern: "*.sam"
+  - intermediate_bam:
+      type: file
+      description: Optional intermediate BAM file
+      pattern: "*.bam"
+  - intermediate_sorted_bam:
+      type: file
+      description: Optional intermediate sorted BAM file
+      pattern: "*.sorted.bam"
   - versions:
       type: file
       description: File containing software versions

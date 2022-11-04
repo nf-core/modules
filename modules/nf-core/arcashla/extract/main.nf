@@ -11,9 +11,12 @@ process ARCASHLA_EXTRACT {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.fq.gz"), emit: extracted_reads_fastq
-    path "*.log"                    , emit: log
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.fq.gz")                 , emit: extracted_reads_fastq
+    path "*.log"                                     , emit: log
+    tuple val(meta), path("temp_files/**.sam")       , emit: intermediate_sam,        optional: true
+    tuple val(meta), path("temp_files/**.bam")       , emit: intermediate_bam,        optional: true
+    tuple val(meta), path("temp_files/**.sorted.bam"), emit: intermediate_sorted_bam, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,6 +33,7 @@ process ARCASHLA_EXTRACT {
         $args \\
         -t $task.cpus \\
         -o . \\
+        --temp temp_files/ \\
         --log ${prefix}.log \\
         $single_end \\
         $bam
