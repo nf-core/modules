@@ -11,7 +11,7 @@ process CONCOCT_EXTRACTFASTABINS {
     tuple val(meta), path(original_fasta), path(csv)
 
     output:
-    tuple val(meta), path("fasta_bins/*.fa"), emit: fasta
+    tuple val(meta), path("fasta_bins/*.fa.gz"), emit: fasta
     path "versions.yml"                     , emit: versions
 
     when:
@@ -28,6 +28,8 @@ process CONCOCT_EXTRACTFASTABINS {
         $original_fasta \\
         $csv \\
         --output_path fasta_bins/
+
+    gzip fasta_bins/*.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
