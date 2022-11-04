@@ -26,7 +26,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - input:
       type: file
-      description: The input file - Specify the logic that needs to be executed on this file on the `args2` or in the program file
+      description: The input file - Specify the logic that needs to be executed on this file on the `ext.args2` or in the program file
       pattern: "*"
   - program_file:
       type: file
@@ -45,7 +45,7 @@ output:
       pattern: "versions.yml"
   - output:
       type: file
-      description: The output file - specify the name and extension of this file using `prefix`
+      description: The output file - specify the name of this file using `ext.prefix` and the extension using `ext.suffix`
       pattern: "*"
 
 authors:

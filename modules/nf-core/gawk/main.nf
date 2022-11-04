@@ -12,8 +12,8 @@ process GAWK {
     path(program_file)
 
     output:
-    tuple val(meta), path("${prefix}")  , emit: output
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}.${suffix}"), emit: output
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,8 @@ process GAWK {
     script:
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
     def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
-    prefix = task.ext.prefix ?: "${meta.id}.${input.getExtension}" // This default is up to debate, please post about it on Slack or open a PR with your suggested change
+    prefix = task.ext.prefix ?: "${meta.id}" // This default is up to debate, please post about it on Slack or open a PR with your suggested change
+    suffix = task.ext.suffix ?: "${input.getExtension}"
 
     program = program_file ? "-f ${program_file}" : "${args2}"
 
