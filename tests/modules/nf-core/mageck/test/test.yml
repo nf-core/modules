@@ -1,21 +1,35 @@
 - name: mageck test test_mageck_test
   command: nextflow run ./tests/modules/nf-core/mageck/test -entry test_mageck_test -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/test/nextflow.config
   tags:
-    - mageck
-    - mageck/test
+  - mageck/test
+  - mageck
   files:
-    - path: output/mageck/test.gene_summary.txt
-      md5sum: 23d39164e44e7125a5f5912463fa5970
-    - path: output/mageck/test.sgrna_summary.txt
-      md5sum: 26e4a50272a0289b0261a5380276f273
+  - path: output/mageck/test.gene_summary.txt
+    md5sum: 23d39164e44e7125a5f5912463fa5970
+  - path: output/mageck/test.sgrna_summary.txt
+    md5sum: 26e4a50272a0289b0261a5380276f273
+  - path: output/mageck/versions.yml
 
 - name: mageck test test_mageck_test_day0_label
   command: nextflow run ./tests/modules/nf-core/mageck/test -entry test_mageck_test_day0_label -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/test/nextflow.config
   tags:
-    - mageck
-    - mageck/test
+  - mageck/test
+  - mageck
   files:
-    - path: output/mageck/test.gene_summary.txt
-      md5sum: 23d39164e44e7125a5f5912463fa5970
-    - path: output/mageck/test.sgrna_summary.txt
-      md5sum: 26e4a50272a0289b0261a5380276f273
+  - path: output/mageck/test.HL60.final_vs_HL60.initial.gene_summary.txt
+    md5sum: 973d57a2a432eb6c7e602ca466299b6d
+  - path: output/mageck/test.HL60.final_vs_HL60.initial.sgrna_summary.txt
+    md5sum: a299a0f2cf7ce62bcf8aa4b4f48ea9db
+  - path: output/mageck/test.KBM7.final_vs_HL60.initial.gene_summary.txt
+    md5sum: 5a39c0132560cf6a3818b0e463df99a9
+  - path: output/mageck/test.KBM7.final_vs_HL60.initial.sgrna_summary.txt
+    md5sum: aeb64ee78422ef4906161cb03c0c0ad2
+  - path: output/mageck/test.KBM7.initial_vs_HL60.initial.gene_summary.txt
+    md5sum: d532a4280945d28bad2186287b32cb3e
+  - path: output/mageck/test.KBM7.initial_vs_HL60.initial.sgrna_summary.txt
+    md5sum: 60c9104cad7d49bcead4d29cafb2af40
+  - path: output/mageck/test.gene_summary.txt
+    md5sum: 2e5447f5930f01f9adea57bf89cec5fe
+  - path: output/mageck/test.sgrna_summary.txt
+    md5sum: 60c9104cad7d49bcead4d29cafb2af40
+  - path: output/mageck/versions.yml

@@ -24,5 +24,5 @@ workflow test_mageck_test_day0_label {
     ]
 
 
-    MAGECK_TEST ( input )
+    MAGECK_TEST_DAY0_LABEL ( input )
 }
