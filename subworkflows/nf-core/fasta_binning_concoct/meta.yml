@@ -1,0 +1,75 @@
+name: "fasta_binning_concoct"
+description: Runs the CONCOCT workflow of contig binning
+keywords:
+  - concoct
+  - binning
+  - metagenomics
+  - contigs
+modules:
+  - concoct/cutupfasta
+  - concoct/concoctcoveragetable
+  - concoct/concoct
+  - concoct/mergecutupclustering
+  - concoct/extractfastabins
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta)]
+        File containing raw assembled contigs in FASTA format.
+  - ch_bam:
+      type: file
+      description: |
+        Structure: [ val(meta), path(bam), path(bai)]
+        BAM and associated index files file representing reads mapped against each
+        contig in ch_fasta. Meta must be identical between ch_fasta and ch_bam entries.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - coverage_table:
+      type: file
+      description: |
+        Structure: [ val(meta), path(tsv)]
+        (Sub)contig coverage table
+  - original_csv:
+      type: file
+      description: |
+        Structure: [ val(meta), path(csv) ]
+        Original CONCOCT GT1000 output
+  - raw_clustering_csv:
+      type: file
+      description: |
+        Structure: [ val(meta), path(csv) ]
+        CSV containing information which subcontig is assigned to which cluster
+  - pca_original:
+      type: file
+      description: |
+        Structure: [ val(meta), path(csv) ]
+        CSV file containing untransformed PCA component values
+  - pca_transformed:
+      type: file
+      description: |
+        Structure: [ val(meta), path(csv) ]
+        CSV file transformed PCA component values
+  - cluster_table:
+      type: file
+      description: |
+        Structure: [ val(meta), path(csv) ]
+        CSV file containing final cluster assignments of original input contigs
+  - bin:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+        FASTA files containing CONCOCT predicted bin clusters, named numerically
+        by CONCOCT cluster ID
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@jfy133"
