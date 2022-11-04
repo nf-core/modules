@@ -23,20 +23,23 @@ workflow BAM_VARIANT_CALLING_HAPLOTYPECALLER {
     // Optional: Scatter the BED files
     //
 
-    ch_input = ch_bam
-                    .join(ch_dragstr_models ?: Channel.empty(), remainder: true)
-                    .join(ch_scatter ?: Channel.empty(), remainder: true)
-                    .branch({ meta, bam, bai, bed, dragstr_model=[], scatter_count=[] ->
-                        new_meta = meta.clone()
-                        new_meta.subwf_scatter_count = scatter_count ?: 1
+    ch_bam
+        .join(ch_dragstr_models ?: Channel.empty(), remainder: true)
+        .join(ch_scatter ?: Channel.empty(), remainder: true)
+        .branch( 
+            { meta, bam, bai, bed, dragstr_model=[], scatter_count=[] ->
+                new_meta = meta.clone()
+                new_meta.subwf_scatter_count = scatter_count ?: 1
 
-                        dragstr = dragstr_model ?: []
+                dragstr = dragstr_model ?: []
 
-                        multiple: new_meta.subwf_scatter_count > 1
-                            return [ new_meta, bam, bai, bed, dragstr ]
-                        single: new_meta.subwf_scatter_count <= 1
-                            return [ new_meta, bam, bai, bed, dragstr ]
-                    })
+                multiple: new_meta.subwf_scatter_count > 1
+                    return [ new_meta, bam, bai, bed, dragstr ]
+                single: new_meta.subwf_scatter_count <= 1
+                    return [ new_meta, bam, bai, bed, dragstr ]
+            }
+        )
+        .set { ch_input }
 
     BEDTOOLS_SPLIT (
         ch_input.multiple.map({ meta, bam, bai, bed, dragstr_model -> [ meta, bed ]}),
