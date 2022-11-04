@@ -177,3 +177,64 @@ workflow test_bam_variant_calling_haplotypecaller_scatter_no_scatter {
         [],
     )
 }
+
+workflow test_bam_variant_calling_haplotypecaller_scatter_no_bed {
+
+    input = Channel.of([
+        [id:"test"],
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        []
+    ])
+
+    scatter = Channel.of([
+        [id:"test"],
+        2
+    ])
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+
+    BAM_VARIANT_CALLING_HAPLOTYPECALLER (
+        input,
+        scatter,
+        fasta,
+        fasta_fai,
+        dict,
+        [],
+        [],
+        [],
+    )
+}
+
+workflow test_bam_variant_calling_haplotypecaller_no_scatter_no_bed {
+
+    input = Channel.of([
+        [id:"test"],
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+        []
+    ])
+
+    scatter = []
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    dict = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+
+    BAM_VARIANT_CALLING_HAPLOTYPECALLER (
+        input,
+        scatter,
+        fasta,
+        fasta_fai,
+        dict,
+        [],
+        [],
+        [],
+    )
+}

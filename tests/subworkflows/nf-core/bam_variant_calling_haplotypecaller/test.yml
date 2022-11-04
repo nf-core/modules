@@ -7,6 +7,7 @@
     - bedtools/split
     - gatk4
     - gatk4/haplotypecaller
+    - gawk
     - subworkflows
     - subworkflows/bam_variant_calling_haplotypecaller
     - tabix
@@ -21,6 +22,8 @@
     - path: output/gatk4/test.00001.vcf.gz.tbi
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter
@@ -32,6 +35,7 @@
     - bedtools/split
     - gatk4
     - gatk4/haplotypecaller
+    - gawk
     - subworkflows
     - subworkflows/bam_variant_calling_haplotypecaller
     - tabix
@@ -39,6 +43,8 @@
   files:
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_dragstr
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_scatter_dragstr -c ./tests/config/nextflow.config
@@ -49,6 +55,7 @@
     - bedtools/split
     - gatk4
     - gatk4/haplotypecaller
+    - gawk
     - subworkflows
     - subworkflows/bam_variant_calling_haplotypecaller
     - tabix
@@ -63,6 +70,8 @@
     - path: output/gatk4/test.00001.vcf.gz.tbi
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_cram
@@ -74,6 +83,7 @@
     - bedtools/split
     - gatk4
     - gatk4/haplotypecaller
+    - gawk
     - subworkflows
     - subworkflows/bam_variant_calling_haplotypecaller
     - tabix
@@ -88,6 +98,8 @@
     - path: output/gatk4/test.00001.vcf.gz.tbi
     - path: output/gatk4/test.00002.vcf.gz
     - path: output/gatk4/test.00002.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/tabix/test.vcf.gz.tbi
 
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_no_scatter
@@ -99,6 +111,7 @@
     - bedtools/split
     - gatk4
     - gatk4/haplotypecaller
+    - gawk
     - subworkflows
     - subworkflows/bam_variant_calling_haplotypecaller
     - tabix
@@ -115,4 +128,49 @@
     - path: output/gatk4/test.00002.vcf.gz.tbi
     - path: output/gatk4/test2.vcf.gz
     - path: output/gatk4/test2.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
     - path: output/tabix/test.vcf.gz.tbi
+
+- name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_scatter_no_bed
+  command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_scatter_no_bed -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/merge
+    - bedtools
+    - bedtools/split
+    - gatk4
+    - gatk4/haplotypecaller
+    - gawk
+    - subworkflows
+    - subworkflows/bam_variant_calling_haplotypecaller
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/bedtools/test.00001.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
+    - path: output/gatk4/test.vcf.gz
+    - path: output/gatk4/test.vcf.gz.tbi
+
+
+- name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter_no_bed
+  command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_no_scatter_no_bed -c ./tests/config/nextflow.config
+  tags:
+    - bcftools
+    - bcftools/merge
+    - bedtools
+    - bedtools/split
+    - gatk4
+    - gatk4/haplotypecaller
+    - gawk
+    - subworkflows
+    - subworkflows/bam_variant_calling_haplotypecaller
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/gatk4/test.vcf.gz
+    - path: output/gatk4/test.vcf.gz.tbi
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
