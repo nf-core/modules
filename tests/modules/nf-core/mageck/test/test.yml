@@ -1,12 +1,21 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml mageck/test
-- name: "mageck test"
+- name: mageck test test_mageck_test
   command: nextflow run ./tests/modules/nf-core/mageck/test -entry test_mageck_test -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/test/nextflow.config
   tags:
-    - "mageck"
-    - "mageck/test"
+  - mageck
+  - mageck/test
   files:
-    - path: "output/mageck/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/mageck/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/mageck/test.gene_summary.txt
+    md5sum: 23d39164e44e7125a5f5912463fa5970
+  - path: output/mageck/test.sgrna_summary.txt
+    md5sum: 26e4a50272a0289b0261a5380276f273
+
+- name: mageck test test_mageck_test_day0_label
+  command: nextflow run ./tests/modules/nf-core/mageck/test -entry test_mageck_test_day0_label -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mageck/test/nextflow.config
+  tags:
+  - mageck
+  - mageck/test
+  files:
+  - path: output/mageck/test.gene_summary.txt
+    md5sum: 23d39164e44e7125a5f5912463fa5970
+  - path: output/mageck/test.sgrna_summary.txt
+    md5sum: 26e4a50272a0289b0261a5380276f273
