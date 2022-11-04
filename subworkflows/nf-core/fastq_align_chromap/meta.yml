@@ -1,0 +1,99 @@
+name: "fastq_align_chromap"
+description: Align high throughput chromatin profiles using Chromap then sort with samtools
+keywords:
+  - align
+  - fasta
+  - genome
+  - reference
+  - chromatin profiles
+  - chip-seq
+  - atac-seq
+  - hic
+modules:
+  - chromap/chromap
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ch_reads:
+      type: file
+      description: |
+        Structure: [val(meta), path(reads)]
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - ch_index:
+      type: file
+      description: |
+        Structure: [val(meta2), path(index)]
+        Chromap genome index files
+      pattern: "*.index"
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [val(meta2), path(fasta)]
+        Reference fasta file
+      pattern: "*.{fasta,fa}"
+  - ch_barcodes:
+      type: file
+      description: |
+        Structure: [path(barcodes)]
+        Cell barcode files
+  - ch_whitelist:
+      type: file
+      description: |
+        Structure: [path(whitelist)]
+        Cell barcode whitelist file
+  - ch_chr_order:
+      type: file
+      description: |
+        Structure: [path(chr_order)]
+        Custom chromosome order
+  - ch_pairs_chr_order:
+      type: file
+      description: |
+        Structure: [path(pairs_chr_order)]
+        Natural chromosome order for pairs flipping
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index (currently only for snapaligner)
+      pattern: "*.bai"
+  - stats:
+      type: file
+      description: File containing samtools stats output
+      pattern: "*.{stats}"
+  - flagstat:
+      type: file
+      description: File containing samtools flagstat output
+      pattern: "*.{flagstat}"
+  - idxstats:
+      type: file
+      description: File containing samtools idxstats output
+      pattern: "*.{idxstats}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@JoseEspinosa"

@@ -45,3 +45,26 @@
       md5sum: 8b674051048e826a59aec97aba752e78
     - path: output/tsv/test.csv
       md5sum: f8e51c79c9add0d07eb46aba6a09d33c
+
+- name: deseq2 differential test_deseq2_differential_vst_nsub
+  command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_vst_nsub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
+  tags:
+    - deseq2
+    - deseq2/differential
+  files:
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
+      md5sum: 2402bf409e0497674374528728591059
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.sizefactors.tsv
+      md5sum: 6332f21889ecac387bb12eeb04f23849
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.normalised_counts.tsv
+      md5sum: 827cdf01f366d72d6e4b500e9862ba74
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.vst.tsv
+      md5sum: 53a74c2e7fd188e7236055d5e6af769a
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
+      md5sum: 269cdbe2b9c18393b448dd435e7f5c9a
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
+      md5sum: 6332f21889ecac387bb12eeb04f23849
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
+      md5sum: 827cdf01f366d72d6e4b500e9862ba74
+    - path: output/deseq2/treatment-mCherry-hND6.vst.tsv
+      md5sum: 53a74c2e7fd188e7236055d5e6af769a
