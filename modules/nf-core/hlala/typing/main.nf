@@ -1,4 +1,4 @@
-process HLALA {
+process HLALA_TYPING {
     tag "$meta.id"
     label 'process_single'
 
@@ -12,7 +12,7 @@ process HLALA {
     path(graph)
 
     output:
-    tuple val(meta), path("working/${prefix}")   , emit: folder
+    tuple val(meta), path("${prefix}")   , emit: folder
     path "versions.yml"                          , emit: versions
 
     when:
@@ -22,11 +22,11 @@ process HLALA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ./HLA-LA.pl \\
+    ./bin/HLA-LA.pl \\
         --BAM $bam \\
         --graph $graph \\
         --sampleID $prefix \\
-        --workingDir working \\
+        --workingDir . \\
         --maxThreads $task.cpus \\
         $args
 
