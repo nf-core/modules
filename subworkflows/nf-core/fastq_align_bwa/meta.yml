@@ -1,21 +1,18 @@
-name: "fastq_align_chromap"
-description: Align high throughput chromatin profiles using Chromap then sort with samtools
+name: fastq_align_bwa
+description: Align reads to a reference genome using bwa then sort with samtools
 keywords:
   - align
   - fasta
   - genome
   - reference
-  - chromatin profiles
-  - chip-seq
-  - atac-seq
-  - hic
 modules:
-  - chromap/chromap
+  - bwa/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+# TODO Update when we decide on a standard for subworkflow docs
 input:
   - meta:
       type: map
@@ -25,7 +22,6 @@ input:
   - ch_reads:
       type: file
       description: |
-        Structure: [val(meta), path(reads)]
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
   - meta2:
@@ -35,45 +31,28 @@ input:
         e.g. [ id:'test' ]
   - ch_index:
       type: file
-      description: |
-        Structure: [val(meta2), path(index)]
-        Chromap genome index files
-      pattern: "*.index"
+      description: BWA genome index files
+      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - sort_bam:
+      type: boolean
+      description: If true bwa modules sort resulting bam files
+      pattern: "true or false"
   - ch_fasta:
       type: file
       description: |
         Structure: [val(meta2), path(fasta)]
         Reference fasta file
       pattern: "*.{fasta,fa}"
-  - ch_barcodes:
-      type: file
-      description: |
-        Structure: [path(barcodes)]
-        Cell barcode files
-  - ch_whitelist:
-      type: file
-      description: |
-        Structure: [path(whitelist)]
-        Cell barcode whitelist file
-  - ch_chr_order:
-      type: file
-      description: |
-        Structure: [path(chr_order)]
-        Custom chromosome order
-  - ch_pairs_chr_order:
-      type: file
-      description: |
-        Structure: [path(pairs_chr_order)]
-        Natural chromosome order for pairs flipping
+
+# TODO Update when we decide on a standard for subworkflow docs
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
+  - bam_orig:
+      type: file
+      description: BAM file produced by bwa
+      pattern: "*.bam"
   - bam:
       type: file
-      description: BAM file
+      description: BAM file ordered by samtools
       pattern: "*.bam"
   - bai:
       type: file
