@@ -154,7 +154,6 @@
     - path: output/gatk4/test.vcf.gz
     - path: output/gatk4/test.vcf.gz.tbi
 
-
 - name: bam_variant_calling_haplotypecaller test_bam_variant_calling_haplotypecaller_no_scatter_no_bed
   command: nextflow run ./tests/subworkflows/nf-core/bam_variant_calling_haplotypecaller -entry test_bam_variant_calling_haplotypecaller_no_scatter_no_bed -c ./tests/config/nextflow.config
   tags:
