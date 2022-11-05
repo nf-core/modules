@@ -31,11 +31,11 @@ process GATK4_PRINTREADS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" PrintReads \\
-      $args \\
-      --reference $fasta \\
-      --input $bam \\
-      --read-index $bai \\
-      --output ${prefix}.reads.bam
+        $args \\
+        --reference $fasta \\
+        --input $bam \\
+        --read-index $bai \\
+        --output ${prefix}.reads.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
