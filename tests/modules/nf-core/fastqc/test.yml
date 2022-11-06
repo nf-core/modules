@@ -54,3 +54,12 @@
     - path: output/fastqc/test2_2_fastqc.zip
     - path: output/fastqc/test2_2_fastqc.html
       md5sum: c8f46120e68b9adb58f82a03fcc28a14
+
+- name: fastqc test_fastqc_custom_prefix
+  command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_custom_prefix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
+  tags:
+    - fastqc
+  files:
+    - path: output/fastqc/mysample_test_1_fastqc.html
+      md5sum: 457cb567caa68bee86f3993083e35a36
+    - path: output/fastqc/mysample_test_1_fastqc.zip
