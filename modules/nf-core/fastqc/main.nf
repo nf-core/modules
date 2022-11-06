@@ -23,7 +23,7 @@ process FASTQC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     printf "%s\\n" $reads | while read f; do [[ \$(basename \$f) =~ ^${prefix}.* ]] && ln -s \$f \$(basename \$f) || ln -s \$f ${prefix}_\$(basename \$f) ; done
-    fastqc $args --threads $task.cpus ${prefix}_*
+    fastqc $args --threads $task.cpus ${prefix}*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
