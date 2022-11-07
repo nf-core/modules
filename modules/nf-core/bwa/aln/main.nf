@@ -24,7 +24,7 @@ process BWA_ALN {
 
     if (meta.single_end) {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\
