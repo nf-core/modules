@@ -18,7 +18,7 @@ parse_args <- function(x){
 
     # Ensure the option vectors are length 2 (key/ value) to cactch empty ones
     args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
-   
+
     parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
     parsed_args[! is.na(parsed_args)]
 }
