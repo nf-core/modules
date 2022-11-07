@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { COOLER_ZOOMIFY } from '../../../../../modules/nf-core/cooler/zoomify/main.nf'
+include { COOLER_DUMP    } from '../../../../../modules/nf-core/cooler/dump/main.nf'
 
 workflow test_cooler_zoomify {
 
@@ -12,4 +13,5 @@ workflow test_cooler_zoomify {
     ]
 
     COOLER_ZOOMIFY ( input )
+    COOLER_DUMP ( COOLER_ZOOMIFY.out.mcool.combine([2,4,8]) )
 }

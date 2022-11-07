@@ -67,7 +67,7 @@ workflow FASTA_INDEX_DNA {
         default:
             exit 1, "Unknown aligner: ${aligner}"
     }
-    ch_aligner_index.dump(tag: 'Aligner Index files')
+    ch_aligner_index
 
     emit:
         index    = ch_aligner_index // channel: [ val(meta), index ]
