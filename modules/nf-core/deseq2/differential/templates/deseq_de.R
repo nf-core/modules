@@ -14,9 +14,13 @@
 
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
+    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
 
-    as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
+    # Ensure the option vectors are length 2 (key/ value) to cactch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+   
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
 }
 
 #' Flexibly read CSV or TSV files
@@ -62,10 +66,10 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 opt <- list(
     count_file = '$counts',
     sample_file = '$samplesheet',
-    contrast_variable = '$meta.variable',
-    reference_level = '$meta.reference',
-    treatment_level = '$meta.target',
-    blocking_variables = '$meta.blocking',
+    contrast_variable = NULL,
+    reference_level = NULL,
+    treatment_level = NULL,
+    blocking_variables = NULL,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -94,8 +98,22 @@ for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
     }else{
-        opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+
+        # Preserve classes from defaults where possible
+        if (! is.null(opt[[ao]])){
+            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        opt[[ao]] <- args_opt[[ao]]
     }
+}
+
+# Check if required parameters have been provided
+
+required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+
+if (length(missing) > 0){
+    stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
 
 # Check file inputs are valid
@@ -187,13 +205,13 @@ if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt\$blocking)) {
-    blocking.vars = unlist(strsplit(opt\$blocking, split = ';'))
+} else if (!is.null(opt\$blocking_variables)) {
+    blocking.vars = unlist(strsplit(opt\$blocking_variables, split = ';'))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         stop(
             paste0(
                 'One or more of the blocking variables specified (',
-                opt\$blocking,
+                opt\$blocking_variables,
                 ') do not correspond to sample sheet columns.'
             )
         )
