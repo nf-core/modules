@@ -27,8 +27,6 @@ process SHINYNGS_STATICDIFFERENTIAL {
     differential_plots.R \\
         --differential_file $differential_result \\
         --feature_metadata $feature_meta \\
-        --reference_level $meta.reference \\
-        --treatment_level $meta.target \\
         --outdir $prefix \\
         $args
 

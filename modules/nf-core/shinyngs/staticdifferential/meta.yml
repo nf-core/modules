@@ -16,7 +16,9 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing contrast information
+        Groovy Map containing contrast information, to be passed as reference
+        and target levels, like '--reference_level $meta.reference
+        --treatment_level $meta.target'
         e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
   - meta2:
       type: map
