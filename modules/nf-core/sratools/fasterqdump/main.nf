@@ -24,8 +24,8 @@ process SRATOOLS_FASTERQDUMP {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // WARNING: Paired-end data extracted by fasterq-dump (--split-3 the default)
-        // always creates *_1.fastq *_2.fastq files but sometimes also
-        // an additional *.fastq file for unpaired reads which we ignore here.
+    // always creates *_1.fastq *_2.fastq files but sometimes also
+    // an additional *.fastq file for unpaired reads which we ignore here.
     fastq = meta.single_end ? '*.fastq.gz' : '*_{1,2}.fastq.gz'
     def outfile = meta.single_end ? "${prefix}.fastq" : prefix
     """
