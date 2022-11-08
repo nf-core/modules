@@ -5,16 +5,20 @@
 //
 
 include { BWAMEM2_INDEX                                            } from '../../../modules/nf-core/bwamem2/index/main.nf'
-include { BWAMEM2_MEM                                              } from '../../../modules/nf-core/bwamem2/mem/main.nf'
+include { BWAMEM2_MEM                       as BWAMEM2_MEM_PRE     } from '../../../modules/nf-core/bwamem2/mem/main.nf'
+include { BWAMEM2_MEM                       as BWAMEM2_MEM_POST    } from '../../../modules/nf-core/bwamem2/mem/main.nf'
 include { BWA_INDEX                         as BWAMEM1_INDEX       } from '../../../modules/nf-core/bwa/index/main.nf'
-include { BWA_MEM                           as BWAMEM1_MEM         } from '../../../modules/nf-core/bwa/mem/main.nf'
+include { BWA_MEM                           as BWAMEM1_MEM_PRE     } from '../../../modules/nf-core/bwa/mem/main.nf'
+include { BWA_MEM                           as BWAMEM1_MEM_POST    } from '../../../modules/nf-core/bwa/mem/main.nf'
 include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS    } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads/main.nf'
 include { FGBIO_CALLDUPLEXCONSENSUSREADS    as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads/main.nf'
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM          } from '../../../modules/nf-core/fgbio/fastqtobam/main.nf'
 include { FGBIO_FILTERCONSENSUSREADS        as FILTERCONSENSUS     } from '../../../modules/nf-core/fgbio/filterconsensusreads/main.nf'
 include { FGBIO_GROUPREADSBYUMI             as GROUPREADSBYUMI     } from '../../../modules/nf-core/fgbio/groupreadsbyumi/main.nf'
-include { FGBIO_ZIPPERBAMS                  as ZIPPERBAMS          } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
-include { SAMTOOLS_FASTQ                    as BAM2FASTQ           } from '../../../modules/nf-core/samtools/fastq/main.nf'
+include { FGBIO_ZIPPERBAMS                  as ZIPPERBAMS_PRE      } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
+include { FGBIO_ZIPPERBAMS                  as ZIPPERBAMS_POST     } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
+include { SAMTOOLS_FASTQ                    as BAM2FASTQ_PRE       } from '../../../modules/nf-core/samtools/fastq/main.nf'
+include { SAMTOOLS_FASTQ                    as BAM2FASTQ_POST      } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_SORT                     as SORTBAM             } from '../../../modules/nf-core/samtools/sort/main.nf'
 
 
@@ -39,8 +43,8 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
-    BAM2FASTQ ( FASTQTOBAM.out.umibam )
-    ch_versions = ch_versions.mix(BAM2FASTQ.out.versions)
+    BAM2FASTQ_PRE ( FASTQTOBAM.out.umibam )
+    ch_versions = ch_versions.mix(BAM2FASTQ_PRE.out.versions)
 
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
     aligned_bam = Channel.empty()
@@ -55,7 +59,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         // sets bwaindex to correct input
         bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM1_MEM ( BAM2FASTQ.out.reads, bwaindex, false )
+        BWAMEM1_MEM ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
         aligned_bam = BWAMEM1_MEM.out.bam
     } else {
@@ -69,15 +73,15 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM2_MEM ( BAM2FASTQ.out.reads, bwaindex, false )
+        BWAMEM2_MEM ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         aligned_bam = BWAMEM2_MEM.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS ( FASTQTOBAM.out.umibam, aligned_bam, fasta, dict )
-    ch_versions = ch_versions.mix(ZIPPERBAMS.out.versions)
+    ZIPPERBAMS_PRE ( FASTQTOBAM.out.umibam, aligned_bam, fasta, dict )
+    ch_versions = ch_versions.mix(ZIPPERBAMS_PRE.out.versions)
 
     // appropriately tagged reads are now grouped by UMI information
     GROUPREADSBYUMI ( ZIPPERBAMS.out.bam, groupreadsbyumi_strategy )
@@ -95,8 +99,9 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
 
     if (duplex){
         // this is executed if the library contains duplex UMIs
-        CALLDUPLEXCONSENSUS ( )
-
+        CALLDUPLEXCONSENSUS (FILTERCONSENSUS.out.bam )
+        ch_versions = ch_versions.mix(CALLDUPLEXCONSENSUS.out.versions)
+        consensus_bam =  CALLDUPLEXCONSENSUS.out.bam
 
     } else {
         // using the above created groups, a consensus across reads in the same group
@@ -107,14 +112,40 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         consensus_bam =  CALLUMICONSENSUS.out.bam
     }
 
+    // now the consensus uBAM needs to be converted into FASTQ again
+    // to be aligned
+    BAM2FASTQ_POST ( consensus_bam )
+    ch_versions = ch_versions.mix(BAM2FASTQ_POST.out.versions)
 
+    aligned_bam_post = Channel.empty()
 
+    if (aligner == "bwa-mem") {
+        // index made available through previous steps
+        BWAMEM1_MEM_POST ( BAM2FASTQ_POST.out.reads, bwaindex, false )
+        ch_versions = ch_versions.mix(BWAMEM1_MEM_POST.out.versions)
+        aligned_bam_post = BWAMEM1_MEM_POST.out.bam
+    } else {
+        // index made available through previous steps
+        BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.reads, bwaindex, false )
+        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
+        aligned_bam_post = BWAMEM2_MEM.out.bam
+    }
+
+    // in order to tag mates information in the BAM file
+    // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
+    ZIPPERBAMS_POST ( consensus_bam, aligned_bam_post, fasta, dict )
+    ch_versions = ch_versions.mix(ZIPPERBAMS_POST.out.versions)
+
+    // finally sort bam file
+    SORTBAM ( ZIPPERBAMS_POST.out.bam )
+    ch_versions = ch_versions.mix(SORTBAM.out.versions)
 
 
     emit:
-    ubam           = FASTQTOBAM.out.umibam          // channel: [ val(meta), [ bam ] ]
-    groupbam       = GROUPREADSBYUMI.out.bam        // channel: [ val(meta), [ bam ] ]
-    consensusbam   = CALLUMICONSENSUS.out.bam       // channel: [ val(meta), [ bam ] ]
-    versions       = ch_versions                    // channel: [ versions.yml ]
+    ubam               = FASTQTOBAM.out.umibam          // channel: [ val(meta), [ bam ] ]
+    groupbam           = GROUPREADSBYUMI.out.bam        // channel: [ val(meta), [ bam ] ]
+    consensusbam       = consensus_bam                  // channel: [ val(meta), [ bam ] ]
+    mappedconsensusbam = SORTBAM.out.bam                // channel: [ val(meta), [ bam ]  ]
+    versions           = ch_versions                    // channel: [ versions.yml ]
 }
 
