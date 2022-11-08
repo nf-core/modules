@@ -95,6 +95,8 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
 
     if (duplex){
         // this is executed if the library contains duplex UMIs
+        CALLDUPLEXCONSENSUS ( )
+
 
     } else {
         // using the above created groups, a consensus across reads in the same group
