@@ -14,30 +14,34 @@ process GATK4_PRINTREADS {
     path (dict)
 
     output:
-    tuple val(meta), path("*.reads.bam") , emit: bam,   optional: true
-    tuple val(meta), path("*.reads.cram"), emit: cram,  optional: true
-    tuple val(meta), path("*.reads.sam") , emit: sam,   optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("${prefix}.bam") , emit: bam,   optional: true
+    tuple val(meta), path("${prefix}.cram"), emit: cram,  optional: true
+    tuple val(meta), path("${prefix}.sam") , emit: sam,   optional: true
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK PrintReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.giga
     }
+    if ("${input}" == "${prefix}.${input.extension}") {
+        error("Output filename is the same as input filename. Please specify a different prefix.")
+    }
+
     """
     gatk --java-options "-Xmx${avail_mem}g" PrintReads \\
         $args \\
         --reference $fasta \\
         --input $input \\
         --read-index $index \\
-        --output ${prefix}.reads.${input.getExtension()}
+        --output ${prefix}.${input.getExtension()}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -46,11 +50,11 @@ process GATK4_PRINTREADS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.reads.bam
-    touch ${prefix}.reads.cram
-    touch ${prefix}.reads.sam
+    touch ${prefix}.${input.getExtension()}
+    touch ${prefix}.${input.getExtension()}
+    touch ${prefix}.${input.getExtension()}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
