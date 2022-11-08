@@ -9,6 +9,7 @@ process GATK4_SELECTVARIANTS {
 
     input:
     tuple val(meta), path(vcf), path(vcf_idx)
+    path (intervals)
 
     output:
     tuple val(meta), path("*.selectvariants.vcf.gz")       , emit: vcf
@@ -21,10 +22,10 @@ process GATK4_SELECTVARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def interval = intervals ? "--intervals ${intervals}" : ""
     def avail_mem = 3
     if (!task.memory) {
-        log.info '[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+        log.info '[GATK SelectVariants] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
         avail_mem = task.memory.toGiga()
     }
@@ -32,8 +33,21 @@ process GATK4_SELECTVARIANTS {
     gatk --java-options "-Xmx${avail_mem}G" SelectVariants \\
         --variant $vcf \\
         --output ${prefix}.selectvariants.vcf.gz \\
+        $interval \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.selectvariants.vcf.gz
+    touch ${prefix}.selectvariants.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

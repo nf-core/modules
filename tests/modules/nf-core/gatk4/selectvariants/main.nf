@@ -12,8 +12,9 @@ workflow test_gatk4_selectvariants_vcf_input {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_idx'], checkIfExists: true)
     ]
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_interval_list'], checkIfExists: true)
 
-    GATK4_SELECTVARIANTS ( input)
+    GATK4_SELECTVARIANTS ( input, intervals)
 }
 
 // Basic parameters with compressed VCF input
@@ -25,5 +26,5 @@ workflow test_gatk4_selectvariants_gz_input {
         file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true)
     ]
 
-    GATK4_SELECTVARIANTS ( input )
+    GATK4_SELECTVARIANTS ( input, [] )
 }
