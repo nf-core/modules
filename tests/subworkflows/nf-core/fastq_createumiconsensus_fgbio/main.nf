@@ -7,7 +7,7 @@ include { FASTQ_CREATEUMICONSENSUS_FGBIO } from '../../../../subworkflows/nf-cor
 workflow test_fastq_createumiconsensus_fgbio_single_umi {
 
     reads = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test_single', single_end:false ], // meta map
         [
             file(params.test_data['homo_sapiens']['illumina']['test_umi_1_fastq_gz'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_umi_2_fastq_gz'], checkIfExists: true)
@@ -24,7 +24,7 @@ workflow test_fastq_createumiconsensus_fgbio_single_umi {
 workflow test_fastq_createumiconsensus_fgbio_duplex_umi {
 
     reads = [
-        [ id:'test', single_end:false ], // meta map
+        [ id:'test_duplex', single_end:false ], // meta map
         [
             file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_1_fastq_gz'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_2_fastq_gz'], checkIfExists: true)
