@@ -1,15 +1,15 @@
 - name: pbccs test_pbccs
   command: nextflow run ./tests/modules/nf-core/pbccs -entry test_pbccs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pbccs/nextflow.config
   tags:
-    - pbccs
+  - pbccs
   files:
-    - path: output/pbccs/alz.chunk2.bam
-      md5sum: 2b6451f2d0454eb08359cb84e2e4069c
-    - path: output/pbccs/alz.chunk2.bam.pbi
-      md5sum: 3112cda9744e3facbf38245d41aaf080
-    - path: output/pbccs/alz.chunk2.metrics.json.gz
-      contains: ["zmws"]
-    - path: output/pbccs/alz.chunk2.report.json
-      contains: ["Created by pbcopper"]
-    - path: output/pbccs/alz.chunk2.report.txt
-      md5sum: bbc5bd7a1269345cf7a7f3d4c746024b
+  - path: output/pbccs/alz.chunk2.bam
+    md5sum: 306ba0287e3c7f4cd8f5af577af7ac62
+  - path: output/pbccs/alz.chunk2.bam.pbi
+    md5sum: 36c3d2843aae90739ee8ca82d27abd55
+  - path: output/pbccs/alz.chunk2.metrics.json.gz
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/pbccs/alz.chunk2.report.json
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/pbccs/alz.chunk2.report.txt
+    md5sum: 67583febb144333e3f854c7bf4a17a50
