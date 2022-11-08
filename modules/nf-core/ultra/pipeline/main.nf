@@ -4,8 +4,8 @@ process ULTRA_PIPELINE {
 
     conda (params.enable_conda ? "bioconda::ultra_bioinformatics=0.0.4.2" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.2--pyh5e36f6f_0' :
-        'quay.io/biocontainers/ultra_bioinformatics:0.0.4.2--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0' :
+        'quay.io/biocontainers/ultra_bioinformatics:0.0.4.2--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(reads)
