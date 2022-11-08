@@ -59,18 +59,18 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bai:
+  - bam:
       type: file
-      description: Index of the sorted BAM file
-      pattern: "*.{bai}"
-  - crai:
+      description: Sorted BAM file
+      pattern: "*.{bam}"
+  - cram:
       type: file
-      description: Index of the Sorted CRAM file
-      pattern: "*.{crai}"
-  - sai:
+      description: Sorted CRAM file
+      pattern: "*.{cram}"
+  - sam:
       type: file
-      description: Index of the sorted SAM file
-      pattern: "*.{sai}"
+      description: Sorted SAM file
+      pattern: "*.{sam}"
 
 authors:
   - "@ramprasadn"
