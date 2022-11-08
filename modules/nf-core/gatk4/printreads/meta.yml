@@ -1,6 +1,10 @@
 name: "gatk4_printreads"
 description: Print reads in the SAM/BAM/CRAM file
 keywords:
+  - gatk4
+  - bam
+  - cram
+  - sam
   - printreads
 tools:
   - gatk4:
@@ -19,11 +23,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - input:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-  - bai:
+  - index:
       type: file
       description: BAM/CRAM/SAM file
       pattern: "*.{bai,crai,sai}"
@@ -57,8 +61,16 @@ output:
       pattern: "versions.yml"
   - bam:
       type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
+      description: Index of the sorted BAM file
+      pattern: "*.{bam}"
+  - cram:
+      type: file
+      description: Index of the Sorted CRAM file
+      pattern: "*.{cram}"
+  - bam:
+      type: file
+      description: Index of the sorted SAM file
+      pattern: "*.{sam}"
 
 authors:
   - "@ramprasadn"

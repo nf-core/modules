@@ -8,14 +8,16 @@ process GATK4_PRINTREADS {
         'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta)
     path (fai)
     path (dict)
 
     output:
-    tuple val(meta), path("*.reads.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.reads.bam") , emit: bam,   optional: true
+    tuple val(meta), path("*.reads.cram"), emit: cram,  optional: true
+    tuple val(meta), path("*.reads.sam") , emit: sam,   optional: true
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,9 +35,9 @@ process GATK4_PRINTREADS {
     gatk --java-options "-Xmx${avail_mem}g" PrintReads \\
         $args \\
         --reference $fasta \\
-        --input $bam \\
-        --read-index $bai \\
-        --output ${prefix}.reads.bam
+        --input $input \\
+        --read-index $index \\
+        --output ${prefix}.reads.${input.getExtension()}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -47,6 +49,8 @@ process GATK4_PRINTREADS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.reads.bam
+    touch ${prefix}.reads.cram
+    touch ${prefix}.reads.sam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,10 +1,19 @@
-- name: "gatk4 printreads"
-  command: nextflow run ./tests/modules/nf-core/gatk4/printreads -entry test_gatk4_printreads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printreads/nextflow.config
+- name: "gatk4 printreads bam"
+  command: nextflow run ./tests/modules/nf-core/gatk4/printreads -entry test_gatk4_printreads_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printreads/nextflow.config
   tags:
     - "gatk4"
     - "gatk4/printreads"
   files:
     - path: "output/gatk4/test.reads.bam"
+    - path: "output/gatk4/versions.yml"
+
+- name: "gatk4 printreads cram"
+  command: nextflow run ./tests/modules/nf-core/gatk4/printreads -entry test_gatk4_printreads_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/printreads/nextflow.config
+  tags:
+    - "gatk4"
+    - "gatk4/printreads"
+  files:
+    - path: "output/gatk4/test.reads.cram"
     - path: "output/gatk4/versions.yml"
 
 - name: "gatk4 printreads stub"
