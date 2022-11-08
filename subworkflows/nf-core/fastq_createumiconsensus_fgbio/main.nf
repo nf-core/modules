@@ -46,7 +46,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
-    BAM2FASTQ_PRE ( FASTQTOBAM.out.umibam )
+    BAM2FASTQ_PRE ( FASTQTOBAM.out.bam )
     ch_versions = ch_versions.mix(BAM2FASTQ_PRE.out.versions)
 
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
@@ -56,7 +56,13 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         // reference is indexed if index not available in iGenomes - this is set in modules configuration
         // NB: this should exist in main workflow in a form like:
         // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
-        BWAMEM1_INDEX ( fasta )
+        // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
+        // to accommodate both
+        fasta_meta = [
+            [id: 'dummy'],
+            fasta
+        ]
+        BWAMEM1_INDEX ( fasta_meta )
         ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
         // sets bwaindex to correct input
@@ -71,7 +77,13 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         // reference is indexed if index not available in iGenomes - this is set in modules configuration
         // NB: this should exist in main workflow in a form like:
         // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
-        BWAMEM2_INDEX ( fasta )
+        // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
+        // to accommodate both
+        fasta_meta = [
+            [id: 'dummy'],
+            fasta
+        ]
+        BWAMEM2_INDEX ( fasta_meta )
         ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
 
         // sets bwaindex to correct input
