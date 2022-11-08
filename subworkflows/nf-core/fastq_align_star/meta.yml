@@ -1,0 +1,111 @@
+name: "fastq_align_star"
+description: Align reads to a reference genome using bowtie2 then sort with samtools
+keywords:
+  - align
+  - fasta
+  - genome
+  - reference
+modules:
+  - star/align
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - ch_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - ch_index:
+      type: directory
+      description: STAR genome index
+      pattern: "star"
+  - ch_gtf:
+      type: file
+      description: |
+        GTF file used to set the splice junctions with the --sjdbGTFfile flag
+      pattern: "*.gtf"
+  - star_ignore_sjdbgtf:
+      type: boolean
+      description: |
+        If true the --sjdbGTFfile flag is set
+      pattern: "true or false"
+  - seq_platform:
+      type: string
+      description: |
+        Sequencing platform to be added to the bam header using the --outSAMattrRGline flag
+  - seq_center:
+      type: string
+      description: |
+        Sequencing center to be added to the bam header using the --outSAMattrRGline flag
+  - ch_fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
+
+output:
+  - orig_bam:
+      type: file
+      description: Output BAM file containing read alignments
+      pattern: "*.{bam}"
+  - log_final:
+      type: file
+      description: STAR final log file
+      pattern: "*Log.final.out"
+  - log_out:
+      type: file
+      description: STAR lot out file
+      pattern: "*Log.out"
+  - log_progress:
+      type: file
+      description: STAR log progress file
+      pattern: "*Log.progress.out"
+  - bam_sorted:
+      type: file
+      description: Sorted BAM file of read alignments (optional)
+      pattern: "*sortedByCoord.out.bam"
+  - bam_transcript:
+      type: file
+      description: Output BAM file of transcriptome alignment (optional)
+      pattern: "*toTranscriptome.out.bam"
+  - fastq:
+      type: file
+      description: Unmapped FastQ files (optional)
+      pattern: "*fastq.gz"
+  - tab:
+      type: file
+      description: STAR output tab file(s) (optional)
+      pattern: "*.tab"
+  - stats:
+      type: file
+      description: File containing samtools stats output
+      pattern: "*.{stats}"
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai,sai}"
+  - flagstat:
+      type: file
+      description: File containing samtools flagstat output
+      pattern: "*.{flagstat}"
+  - idxstats:
+      type: file
+      description: File containing samtools idxstats output
+      pattern: "*.{idxstats}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@JoseEspinosa"

@@ -14,9 +14,13 @@
 
 parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')))
+    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
 
-    as.list(structure(args_vals[c(FALSE, TRUE)], names = args_vals[c(TRUE, FALSE)]))
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
 }
 
 #' Flexibly read CSV or TSV files
@@ -62,10 +66,10 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 opt <- list(
     count_file = '$counts',
     sample_file = '$samplesheet',
-    contrast_variable = '$meta.variable',
-    reference_level = '$meta.reference',
-    treatment_level = '$meta.target',
-    blocking_variables = '$meta.blocking',
+    contrast_variable = NULL,
+    reference_level = NULL,
+    treatment_level = NULL,
+    blocking_variables = NULL,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -81,7 +85,9 @@ opt <- list(
     minmu = 0.5,
     vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
     shrink_lfc = TRUE,
-    cores = 1
+    cores = 1,
+    vs_blind = TRUE,
+    vst_nsub = 1000
 )
 opt_types <- lapply(opt, class)
 
@@ -92,8 +98,22 @@ for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
     }else{
-        opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+
+        # Preserve classes from defaults where possible
+        if (! is.null(opt[[ao]])){
+            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        }
+        opt[[ao]] <- args_opt[[ao]]
     }
+}
+
+# Check if required parameters have been provided
+
+required_opts <- c('contrast_variable', 'reference_level', 'treatment_level')
+missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+
+if (length(missing) > 0){
+    stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
 
 # Check file inputs are valid
@@ -150,7 +170,7 @@ missing_samples <-
 
 if (length(missing_samples) > 0) {
     stop(paste(
-        len(missing_samples),
+        length(missing_samples),
         'specified samples missing from count table:',
         paste(missing_samples, collapse = ',')
     ))
@@ -185,14 +205,14 @@ if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt\$blocking)) {
-    blocking.vars = unlist(strsplit(opt\$blocking, split = ';'))
+} else if (!is.null(opt\$blocking_variables)) {
+    blocking.vars = unlist(strsplit(opt\$blocking_variables, split = ';'))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
+        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
         stop(
-            paste0(
-                'One or more of the blocking variables specified (',
-                opt\$blocking,
-                ') do not correspond to sample sheet columns.'
+            paste(
+                'Blocking variables', missing_block,
+                'do not correspond to sample sheet columns.'
             )
         )
     }
@@ -331,9 +351,14 @@ write.table(
 # Note very limited rounding for consistency of results
 
 for (vs_method_name in strsplit(opt\$vs_method, ',')){
-    vs_func <- get(vs_method_name)
+    if (vs_method_name == 'vst'){
+        vs_mat <- vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub)
+    }else if (vs_method_name == 'rlog'){
+        vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
+    }
+
     write.table(
-        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_func(dds))), nsmall = 8),
+        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_mat)), nsmall = 8),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,

@@ -16,5 +16,5 @@ workflow test_cooler_merge {
     ]
 
     COOLER_MERGE ( input )
-    COOLER_DUMP ( COOLER_MERGE.out.cool, "" )
+    COOLER_DUMP ( COOLER_MERGE.out.cool.combine([[:]]) )
 }
