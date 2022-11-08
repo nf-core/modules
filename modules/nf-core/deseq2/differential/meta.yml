@@ -24,11 +24,13 @@ input:
       type: file
       description: |
         Raw TSV or CSV format expression matrix as output from the nf-core RNA-seq workflow
-  - contrast_meta:
+  - meta:
       type: map
       description: |
-        Groovy Map containing contrast information
-        e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+        Groovy Map containing contrast information, which can be referred to in
+        calls at the pipeline level e.g. [ variable:'treatment', reference:'treated',
+        control:'saline', blocking:'' ] passed in as ext.args like: '--reference_level
+        $meta.reference --treatment_level $meta.target'
 
 output:
   - results:
