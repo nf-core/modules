@@ -21,7 +21,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
-      description: BAM file
+      description: BAM file. If the BAM file is not indexed, this tool will run samtools index before extracting reads.
       pattern: "*.bam"
 
 output:
