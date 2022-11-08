@@ -39,6 +39,9 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
 
     // using information in val(read_structure) FASTQ reads are converted into
     // a tagged unmapped BAM file (uBAM)
+    // if the UMIs are present in read names instead of inline sequences
+    // please make sure you adjust your config to include --extract-umis-from-read-names with ext.args
+    // of the following step
     FASTQTOBAM ( reads, read_structure )
     ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
 
@@ -59,9 +62,11 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         // sets bwaindex to correct input
         bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM1_MEM ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
-        ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
-        aligned_bam = BWAMEM1_MEM.out.bam
+        // the aligner should be set with the following parameters "-p -K 150000000 -Y"
+        // to be configured in ext.args of your config
+        BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
+        ch_versions = ch_versions.mix(BWAMEM1_MEM_PRE.out.versions)
+        aligned_bam = BWAMEM1_MEM_PRE.out.bam
     } else {
         // reference is indexed if index not available in iGenomes - this is set in modules configuration
         // NB: this should exist in main workflow in a form like:
@@ -73,9 +78,11 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
-        BWAMEM2_MEM ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
-        aligned_bam = BWAMEM2_MEM.out.bam
+        // the aligner should be set with the following parameters "-p -K 150000000 -Y"
+        // to be configured in ext.args of your config
+        BWAMEM2_MEM_PRE ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
+        ch_versions = ch_versions.mix(BWAMEM2_MEM_PRE.out.versions)
+        aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
 
     // in order to tag mates information in the BAM file
@@ -84,22 +91,20 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     ch_versions = ch_versions.mix(ZIPPERBAMS_PRE.out.versions)
 
     // appropriately tagged reads are now grouped by UMI information
+    // note that in tests ext.args has been set to recommended --edits 1
+    // if UMIs are significantly longer (e.g. 20bp) or have more errors, --edits can be increased
+    // explicit parameter strategy is Adjacency
+    // For multiplex PCR and similar data where reads' genomic positions are fixed by the primers
+    // it is recommended to use --strategy Identity to reduce runtime at the expense of lower accuracy
     GROUPREADSBYUMI ( ZIPPERBAMS.out.bam, groupreadsbyumi_strategy )
     ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
-
-    // please note in FILTERCONSENSUSREADS:
-    // --min-reads is a required argument with no default
-    // --min-base-quality is a required argument with no default
-    // make sure they are specified via ext.args in your config
-    FILTERCONSENSUS ( GROUPREADSBYUMI.out.bam, fasta )
-    ch_versions = ch_versions.mix(FILTERCONSENSUS.out.versions)
 
     // prepare output channel independently on UMI structure
     consensus_bam = Channel.empty()
 
     if (duplex){
         // this is executed if the library contains duplex UMIs
-        CALLDUPLEXCONSENSUS (FILTERCONSENSUS.out.bam )
+        CALLDUPLEXCONSENSUS ( GROUPREADSBYUMI.out.bam )
         ch_versions = ch_versions.mix(CALLDUPLEXCONSENSUS.out.versions)
         consensus_bam =  CALLDUPLEXCONSENSUS.out.bam
 
@@ -107,14 +112,21 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         // using the above created groups, a consensus across reads in the same group
         // can be called
         // this will emit a consensus BAM file
-        CALLUMICONSENSUS ( FILTERCONSENSUS.out.bam )
+        CALLUMICONSENSUS ( GROUPREADSBYUMI.out.bam )
         ch_versions = ch_versions.mix(CALLUMICONSENSUS.out.versions)
         consensus_bam =  CALLUMICONSENSUS.out.bam
     }
 
+    // please note in FILTERCONSENSUSREADS:
+    // --min-reads is a required argument with no default
+    // --min-base-quality is a required argument with no default
+    // make sure they are specified via ext.args in your config
+    FILTERCONSENSUS ( consensus_bam, fasta )
+    ch_versions = ch_versions.mix(FILTERCONSENSUS.out.versions)
+
     // now the consensus uBAM needs to be converted into FASTQ again
     // to be aligned
-    BAM2FASTQ_POST ( consensus_bam )
+    BAM2FASTQ_POST ( FILTERCONSENSUS.out.bam )
     ch_versions = ch_versions.mix(BAM2FASTQ_POST.out.versions)
 
     aligned_bam_post = Channel.empty()
