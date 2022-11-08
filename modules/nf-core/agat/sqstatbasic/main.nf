@@ -1,4 +1,4 @@
-process AGAT_STATISTICS {
+process AGAT_SQSTATBASIC {
     tag "$meta.id"
     label 'process_low'
 
@@ -20,22 +20,17 @@ process AGAT_STATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def program = args.contains("--basic") ? "agat_sq_stat_basic.pl" : "agat_sp_statistics.pl"
-
-    def inputarg = args.contains("--basic") ? "-i" : "--gff"
-
-    args = args.replace("--basic", "")
 
     """
 
-    ${program} \\
-        $args \\
+    agat_sq_stat_basic.pl \\
+        -i $gff \\
         --output ${prefix}.stats.txt \\
-        ${inputarg} $gff
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_sp_statistics.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
+        agat: \$(agat_sq_stat_basic.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """
 }
