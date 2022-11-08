@@ -28,7 +28,6 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
     fasta                     // channel: [mandatory] /path/to/reference/fasta
     dict                      // channel: [mandatory] /path/to/reference/dictionary
-    read_structure            // string:  [mandatory] "read_structure"
     groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner                   // string:  [mandatory] "bwa-mem" or "bwa-mem2"
     duplex                    // bool:    [mandatory] true or false depending on UMI structure
@@ -42,7 +41,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     // if the UMIs are present in read names instead of inline sequences
     // please make sure you adjust your config to include --extract-umis-from-read-names with ext.args
     // of the following step
-    FASTQTOBAM ( reads, read_structure )
+    FASTQTOBAM ( reads )
     ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
