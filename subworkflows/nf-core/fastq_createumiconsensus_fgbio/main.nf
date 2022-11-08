@@ -42,7 +42,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     // please make sure you adjust your config to include --extract-umis-from-read-names with ext.args
     // of the following step
     FASTQTOBAM ( reads )
-    ch_versions = ch_versions.mix(FASTQTOBAM.out.version)
+    ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     BAM2FASTQ_PRE ( FASTQTOBAM.out.umibam )
