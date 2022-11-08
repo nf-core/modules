@@ -15,6 +15,7 @@
         - "Converting bam to fastq"
     - path: output/arcashla/versions.yml
       md5sum: ce48fa53589827141f681ccb16a2a011
+    - path: output/arcashla/temp_files
 
 - name: arcashla extract test_arcashla_extract single end
   command: nextflow run ./tests/modules/nf-core/arcashla/extract -entry test_arcashla_extract_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/arcashla/extract/nextflow.config
@@ -30,3 +31,4 @@
         - "Converting bam to fastq"
     - path: output/arcashla/versions.yml
       md5sum: 36b48f49c345df8cb1d30bfe130e6218
+    - path: output/arcashla/temp_files
