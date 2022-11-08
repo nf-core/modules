@@ -208,11 +208,11 @@ if (!opt\$contrast_variable %in% colnames(sample.sheet)) {
 } else if (!is.null(opt\$blocking_variables)) {
     blocking.vars = unlist(strsplit(opt\$blocking_variables, split = ';'))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
+        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
         stop(
-            paste0(
-                'One or more of the blocking variables specified (',
-                opt\$blocking_variables,
-                ') do not correspond to sample sheet columns.'
+            paste(
+                'Blocking variables', missing_block,
+                'do not correspond to sample sheet columns.'
             )
         )
     }
