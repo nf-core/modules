@@ -16,7 +16,7 @@ parse_args <- function(x){
     args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
     args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
 
-    # Ensure the option vectors are length 2 (key/ value) to cactch empty ones
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
     args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
 
     parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
