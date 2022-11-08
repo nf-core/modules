@@ -139,7 +139,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     } else {
         // index made available through previous steps
         BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.reads, bwaindex, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
+        ch_versions = ch_versions.mix(BWAMEM2_MEM_POST.out.versions)
         aligned_bam_post = BWAMEM2_MEM.out.bam
     }
 
