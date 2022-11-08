@@ -96,6 +96,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     // explicit parameter strategy is Adjacency
     // For multiplex PCR and similar data where reads' genomic positions are fixed by the primers
     // it is recommended to use --strategy Identity to reduce runtime at the expense of lower accuracy
+    // For duplex UMIs reads MUST be grouped using --strategy paired
     GROUPREADSBYUMI ( ZIPPERBAMS.out.bam, groupreadsbyumi_strategy )
     ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
 
