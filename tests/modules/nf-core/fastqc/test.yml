@@ -4,7 +4,7 @@
     - fastqc
   files:
     - path: output/fastqc/test_1_fastqc.html
-      md5sum: 3b0ca7daa8af7a4fdf6711652950200b
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_1_fastqc.zip
 
 - name: fastqc test_fastqc_paired_end
@@ -13,10 +13,10 @@
     - fastqc
   files:
     - path: output/fastqc/test_1_fastqc.html
-      md5sum: 3b0ca7daa8af7a4fdf6711652950200b
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_1_fastqc.zip
     - path: output/fastqc/test_2_fastqc.html
-      md5sum: accd42c4a5ccd0601e01e5a3d927e6cf
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_2_fastqc.zip
 
 - name: fastqc test_fastqc_interleaved
@@ -25,7 +25,7 @@
     - fastqc
   files:
     - path: output/fastqc/test_interleaved_fastqc.html
-      md5sum: 59ed7053f9d1d54979fc6679ad40e791
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_interleaved_fastqc.zip
 
 - name: fastqc test_fastqc_bam
@@ -34,7 +34,7 @@
     - fastqc
   files:
     - path: output/fastqc/test.paired_end.sorted_fastqc.html
-      md5sum: b1a5dd494281aa3a9e1ded3944c442dc
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test.paired_end.sorted_fastqc.zip
 
 - name: fastqc test_fastqc_multiple
@@ -44,16 +44,16 @@
   files:
     - path: output/fastqc/test_1_fastqc.zip
     - path: output/fastqc/test_1_fastqc.html
-      md5sum: 3b0ca7daa8af7a4fdf6711652950200b
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test_2_fastqc.zip
     - path: output/fastqc/test_2_fastqc.html
-      md5sum: accd42c4a5ccd0601e01e5a3d927e6cf
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test2_1_fastqc.zip
     - path: output/fastqc/test2_1_fastqc.html
-      md5sum: 90a644f134b6fddd1f793b97229781cc
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/test2_2_fastqc.zip
     - path: output/fastqc/test2_2_fastqc.html
-      md5sum: 5662b2346f40d12aa6a987f830cd537f
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
 
 - name: fastqc test_fastqc_custom_prefix
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_custom_prefix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
@@ -61,5 +61,5 @@
     - fastqc
   files:
     - path: output/fastqc/mysample_test_1_fastqc.html
-      md5sum: 68ecc69e8750372cdfa562a803adeaef
+      contains: <tr><td>File type</td><td>Conventional base calls</td></tr>
     - path: output/fastqc/mysample_test_1_fastqc.zip
