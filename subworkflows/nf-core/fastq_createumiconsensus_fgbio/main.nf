@@ -4,12 +4,12 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-include { BWAMEM2_INDEX                                            } from '../../../modules/nf-core/bwamem2/index/main.nf'
-include { BWAMEM2_MEM                       as BWAMEM2_MEM_PRE     } from '../../../modules/nf-core/bwamem2/mem/main.nf'
-include { BWAMEM2_MEM                       as BWAMEM2_MEM_POST    } from '../../../modules/nf-core/bwamem2/mem/main.nf'
 include { BWA_INDEX                         as BWAMEM1_INDEX       } from '../../../modules/nf-core/bwa/index/main.nf'
 include { BWA_MEM                           as BWAMEM1_MEM_PRE     } from '../../../modules/nf-core/bwa/mem/main.nf'
 include { BWA_MEM                           as BWAMEM1_MEM_POST    } from '../../../modules/nf-core/bwa/mem/main.nf'
+include { BWAMEM2_INDEX                                            } from '../../../modules/nf-core/bwamem2/index/main.nf'
+include { BWAMEM2_MEM                       as BWAMEM2_MEM_PRE     } from '../../../modules/nf-core/bwamem2/mem/main.nf'
+include { BWAMEM2_MEM                       as BWAMEM2_MEM_POST    } from '../../../modules/nf-core/bwamem2/mem/main.nf'
 include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS    } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads/main.nf'
 include { FGBIO_CALLDUPLEXCONSENSUSREADS    as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads/main.nf'
 include { FGBIO_FASTQTOBAM                  as FASTQTOBAM          } from '../../../modules/nf-core/fgbio/fastqtobam/main.nf'
