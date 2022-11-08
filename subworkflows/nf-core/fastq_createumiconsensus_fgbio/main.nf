@@ -27,6 +27,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
     take:
     reads                     // channel: [mandatory] [ val(meta), [ reads ] ]
     fasta                     // channel: [mandatory] /path/to/reference/fasta
+    bwa_index                 // channel: [optional]  /path/to/reference/bwaindex
     dict                      // channel: [mandatory] /path/to/reference/dictionary
     groupreadsbyumi_strategy  // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner                   // string:  [mandatory] "bwa-mem" or "bwa-mem2"
@@ -59,7 +60,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
         // sets bwaindex to correct input
-        bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
+        bwaindex    = fasta ? bwa_index ? Channel.fromPath(bwa_index).collect() : BWAMEM1_INDEX.out.index : []
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
@@ -74,7 +75,7 @@ workflow FASTQ_CREATEUMICONSENSUS_FGBIO {
         ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
 
         // sets bwaindex to correct input
-        bwaindex    = params.fasta ? params.bwaindex ? Channel.fromPath(params.bwaindex).collect() : BWAMEM1_INDEX.out.index : []
+        bwaindex    = fasta ? bwa_index ? Channel.fromPath(bwa_index).collect() : BWAMEM1_INDEX.out.index : []
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"

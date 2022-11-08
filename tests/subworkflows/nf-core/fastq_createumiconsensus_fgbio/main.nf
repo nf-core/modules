@@ -16,7 +16,7 @@ workflow test_fastq_createumiconsensus_fgbio_single_umi {
     fasta          =    file(params.test_data['homo_sapiens']['genome']['genome_fasta'],            checkIfExists: true)
     dict           =    file(params.test_data['homo_sapiens']['genome']['genome_dict'] ,            checkIfExists: true)
 
-    FASTQ_CREATEUMICONSENSUS_FGBIO ( reads, fasta, dict, "Adjacency", "bwa-mem", false )
+    FASTQ_CREATEUMICONSENSUS_FGBIO ( reads, fasta, [], dict, "Adjacency", "bwa-mem", false )
 }
 
 
@@ -33,5 +33,5 @@ workflow test_fastq_createumiconsensus_fgbio_duplex_umi {
     fasta          =    file(params.test_data['homo_sapiens']['genome']['genome_fasta'],            checkIfExists: true)
     dict           =    file(params.test_data['homo_sapiens']['genome']['genome_dict'] ,            checkIfExists: true)
 
-    FASTQ_CREATEUMICONSENSUS_FGBIO ( reads, fasta, dict, "paired", "bwa-mem", true )
+    FASTQ_CREATEUMICONSENSUS_FGBIO ( reads, fasta, [], dict, "paired", "bwa-mem", true )
 }
