@@ -11,8 +11,8 @@ process MINIPROT_ALIGN {
     container "quay.io/sanger-tol/miniprot:${version}"
 
     input:
-    tuple val(meta), path(ref)
-    path pep
+    tuple val(meta), path(pep)
+    path ref
 
 
     output:
