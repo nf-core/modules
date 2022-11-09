@@ -1,14 +1,16 @@
-name: bismark_report
-description: Collects bismark alignment reports
+name: "bismark_coverage2cytosine"
+description: Relates methylation calls back to genomic cytosine contexts.
 keywords:
   - bismark
-  - qc
+  - consensus
+  - map
   - methylation
   - 5mC
   - methylseq
   - bisulphite
   - bisulfite
-  - report
+  - bam
+  - bedGraph
 tools:
   - bismark:
       description: |
@@ -18,44 +20,44 @@ tools:
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
+
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - align_report:
+  - coverage_file:
       type: file
-      description: Bismark alignment reports
-      pattern: "*{report.txt}"
-  - splitting_report:
-      type: file
-      description: Bismark splitting reports
-      pattern: "*{splitting_report.txt}"
-  - dedup_report:
-      type: file
-      description: Bismark deduplication reports
-      pattern: "*.{deduplication_report.txt}"
-  - mbias:
-      type: file
-      description: Text file containing methylation bias information
-      pattern: "*.{txt}"
-  - fasta:
-      type: file
-      description: Input genome fasta file
+      description: |
+        A file containing methylation calls per position, in the format produced by bismark_methylation_extractor.
+  - index:
+      type: dir
+      description: Bismark genome index directory
+      pattern: "BismarkIndex"
+
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - coverage:
+      type: file
+      description: A file containing methylation calls per position.
+      pattern: "*.cov.gz"
   - report:
       type: file
-      description: Bismark reports
-      pattern: "*.{html,txt}"
+      description: Genomic cytosine context results.
+      pattern: "*report.txt.gz"
+  - summary:
+      type: file
+      description: Cyotosine context summary report.
+      pattern: "*cytosine_context_summary.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+
 authors:
-  - "@phue"
+  - "@ewels"
