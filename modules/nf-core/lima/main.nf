@@ -64,7 +64,7 @@ process LIMA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        lima: \$( lima --version | sed 's/lima //g' | sed 's/ (.\\+//g' )
+        lima: \$( lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g' )
     END_VERSIONS
     """
 }

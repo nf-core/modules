@@ -29,7 +29,7 @@ process PBBAM_PBMERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbbam: \$( pbmerge --version|sed 's/pbmerge //' )
+        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
     END_VERSIONS
     """
 }

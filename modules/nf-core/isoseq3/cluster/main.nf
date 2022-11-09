@@ -39,7 +39,7 @@ process ISOSEQ3_CLUSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        isoseq3: \$( isoseq3 cluster --version|sed 's/isoseq cluster //g'|sed 's/ (.*//g' )
+        isoseq3: \$( isoseq3 cluster --version | head -n 1 | sed 's/isoseq cluster //g' | sed 's/ (.*//g' )
     END_VERSIONS
     """
 }
