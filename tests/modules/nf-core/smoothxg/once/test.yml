@@ -1,0 +1,17 @@
+- name: smoothxg once
+  command: nextflow run ./tests/modules/nf-core/smoothxg/once -entry test_smoothxg_once -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/once/nextflow.config
+  tags:
+    - smoothxg
+    - smoothxg/once
+  files:
+    - path: output/smoothxg/test.smoothxg.gfa
+    - path: output/smoothxg/test.maf
+
+- name: smoothxg once pangenomics
+  command: nextflow run ./tests/modules/nf-core/smoothxg/once -entry test_smoothxg_once_pangenomics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smoothxg/once/nextflow.config
+  tags:
+    - smoothxg
+    - smoothxg/once
+  files:
+    - path: output/smoothxg/test.smoothxg.gfa
+    - path: output/smoothxg/test.maf
