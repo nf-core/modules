@@ -1,19 +1,21 @@
-process BISMARK_DEDUPLICATE {
+process BISMARK_COVERAGE2CYTOSINE {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::bismark=0.24.0" : null)
+    conda (params.enable_conda ? "bioconda::bismark=0.23.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
         'quay.io/biocontainers/bismark:0.24.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(coverage_file)
+    path index
 
     output:
-    tuple val(meta), path("*.deduplicated.bam")        , emit: bam
-    tuple val(meta), path("*.deduplication_report.txt"), emit: report
-    path  "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.cov.gz"), optional: true      , emit: coverage
+    tuple val(meta), path("*report.txt.gz")                , emit: report
+    tuple val(meta), path("*cytosine_context_summary.txt") , emit: summary
+    path  "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,12 +23,14 @@ process BISMARK_DEDUPLICATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seqtype    = meta.single_end ? '-s' : '-p'
+
     """
-    deduplicate_bismark \\
-        $args \\
-        $seqtype \\
-        --bam $bam
+    coverage2cytosine \\
+        $coverage_file \\
+        --genome $index \\
+        --output ${prefix} \\
+        --gzip \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
