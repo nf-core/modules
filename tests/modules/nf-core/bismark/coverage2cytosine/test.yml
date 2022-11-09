@@ -5,6 +5,6 @@
     - bismark/coverage2cytosine
   files:
     - path: output/bismark/test.CpG_report.txt.gz
-      md5sum: f0d16086d10e5ba32a4b71e4a349342a
     - path: output/bismark/test.cytosine_context_summary.txt
-      md5sum: 5ed486bfa844a5e476a7ab054a7a8d6b
+      contains:
+        - "A       CGA     ACGA    883     227     79.55"
