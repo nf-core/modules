@@ -51,6 +51,8 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // of the following step
     FASTQTOBAM ( reads )
     ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
+    // check channel
+    check_bam = FASTQTOBAM.out.bam.dump(tag: 'fastq_to_bam')
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     BAM2FASTQ_PRE ( FASTQTOBAM.out.bam )
@@ -69,6 +71,8 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM1_INDEX.out.index : []
         // check what's created:
         bwaindexcheck    = bwaindex.dump(tag: 'bwa_index_to_map')
+        // check reads channel
+        //readscheck = BAM2FASTQ_PRE.out.reads.dump(tag: 'reads_channel')
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
