@@ -42,7 +42,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
     // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
     // to accommodate both
-    fasta_meta = fasta.map{ it -> [[id:it[0].baseName], it] }
+    fasta_meta = Channel.value(fasta).map{ it -> [[id:it[0].baseName], it] }
 
     // using information in val(read_structure) FASTQ reads are converted into
     // a tagged unmapped BAM file (uBAM)
