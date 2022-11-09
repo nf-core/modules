@@ -37,6 +37,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     ch_versions = Channel.empty()
 
+    // reference is indexed if index not available in iGenomes - this is set in modules configuration
+    // NB: this should exist in main workflow in a form like:
+    // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
+    // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
+    // to accommodate both
+    fasta_meta = fasta.map{ it -> [[id:it[0].baseName], it] }
+
     // using information in val(read_structure) FASTQ reads are converted into
     // a tagged unmapped BAM file (uBAM)
     // if the UMIs are present in read names instead of inline sequences
@@ -53,20 +60,12 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     aligned_bam = Channel.empty()
 
     if (aligner == "bwa-mem") {
-        // reference is indexed if index not available in iGenomes - this is set in modules configuration
-        // NB: this should exist in main workflow in a form like:
-        // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
-        // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
-        // to accommodate both
-        fasta_meta = [
-            [id: 'dummy'],
-            fasta
-        ]
+
         BWAMEM1_INDEX ( fasta_meta )
         ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
 
         // sets bwaindex to correct input
-        bwaindex    = fasta_meta ? bwa_index ? [ [id: 'dummy'], Channel.fromPath(bwa_index).collect()] : BWAMEM1_INDEX.out.index : []
+        bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM1_INDEX.out.index : []
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
@@ -74,20 +73,12 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         ch_versions = ch_versions.mix(BWAMEM1_MEM_PRE.out.versions)
         aligned_bam = BWAMEM1_MEM_PRE.out.bam
     } else {
-        // reference is indexed if index not available in iGenomes - this is set in modules configuration
-        // NB: this should exist in main workflow in a form like:
-        // params.bwaindex = WorkflowMain.getGenomeAttribute(params, 'bwa')
-        // index has been changed with metamap, this is inconsistent with other modules: i.e. creating a dummy meta here
-        // to accommodate both
-        fasta_meta = [
-            [id: 'dummy'],
-            fasta
-        ]
+
         BWAMEM2_INDEX ( fasta_meta )
         ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
 
         // sets bwaindex to correct input
-        bwaindex    = fasta ? bwa_index ? Channel.fromPath(bwa_index).collect() : BWAMEM1_INDEX.out.index : []
+        bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM2_INDEX.out.index : []
 
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
