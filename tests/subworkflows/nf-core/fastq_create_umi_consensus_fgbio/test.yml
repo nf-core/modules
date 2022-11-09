@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core subworkflows create-test-yml
+- name: "fastq_create_umi_consensus_fgbio"
+  command: nextflow run ./tests/subworkflows/nf-core/fastq_create_umi_consensus_fgbio -entry test_fastq_create_umi_consensus_fgbio -c ./tests/config/nextflow.config
+  tags:
+    - "subworkflows"
+    - "subworkflows/fastq_create_umi_consensus_fgbio"
+  files:
+    - path: "output/fastq_create_umi_consensus_fgbio/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: output/fastq_create_umi_consensus_fgbio/versions.yml
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
