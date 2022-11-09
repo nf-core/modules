@@ -8,8 +8,7 @@ process GATK4_SELECTVARIANTS {
         'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(vcf_idx)
-    path (intervals)
+    tuple val(meta), path(vcf), path(vcf_idx), path (intervals)
 
     output:
     tuple val(meta), path("*.selectvariants.vcf.gz")       , emit: vcf
