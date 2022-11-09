@@ -12,10 +12,10 @@ process BISMARK_COVERAGE2CYTOSINE {
     path index
 
     output:
-    tuple val(meta), path("*cov.gz")                      , emit: coverage
-    tuple val(meta), path("*report.txt.gz")               , emit: report
-    tuple val(meta), path("*cytosine_context_summary.txt"), emit: summary
-    path  "versions.yml"                                  , emit: versions
+    tuple val(meta), path("*.cov.gz"), optional: true      , emit: coverage
+    tuple val(meta), path("*report.txt.gz")                , emit: report
+    tuple val(meta), path("*cytosine_context_summary.txt") , emit: summary
+    path  "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

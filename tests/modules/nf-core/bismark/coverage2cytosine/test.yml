@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml bismark/coverage2cytosine
-- name: "bismark coverage2cytosine"
+- name: bismark coverage2cytosine test_bismark_coverage2cytosine
   command: nextflow run ./tests/modules/nf-core/bismark/coverage2cytosine -entry test_bismark_coverage2cytosine -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bismark/coverage2cytosine/nextflow.config
   tags:
-    - "bismark"
-    - "bismark/coverage2cytosine"
+    - bismark
+    - bismark/coverage2cytosine
   files:
-    - path: "output/bismark/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/bismark/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/bismark/test.CpG_report.txt.gz
+      md5sum: f0d16086d10e5ba32a4b71e4a349342a
+    - path: output/bismark/test.cytosine_context_summary.txt
+      md5sum: 5ed486bfa844a5e476a7ab054a7a8d6b
