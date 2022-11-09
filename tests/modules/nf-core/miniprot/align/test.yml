@@ -1,0 +1,25 @@
+- name: miniprot align test_miniprot_align_gff
+  command: nextflow run ./tests/modules/miniprot/align -entry test_miniprot_align_gff -c ./tests/config/nextflow.config -c ./tests/modules/miniprot/align/nextflow.config
+  tags:
+    - miniprot
+    - miniprot/align
+  files:
+    - path: output/miniprot/genome.mpi
+      md5sum: bf4f59376dc00f758b69706f38b4f650
+    - path: output/miniprot/test.gff
+      md5sum: 5faabc6fb54e4021de37aa78c129fab6
+    - path: output/miniprot/versions.yml
+      md5sum: 25e86c616466985a3012658f64a9868b
+
+- name: miniprot align test_miniprot_align_paf
+  command: nextflow run ./tests/modules/miniprot/align -entry test_miniprot_align_paf -c ./tests/config/nextflow.config -c ./tests/modules/miniprot/align/nextflow.config
+  tags:
+    - miniprot
+    - miniprot/align
+  files:
+    - path: output/miniprot/genome.mpi
+      md5sum: bf4f59376dc00f758b69706f38b4f650
+    - path: output/miniprot/test.paf
+      md5sum: af65a174f8d8d18ec4e1abf8d33ef3f1
+    - path: output/miniprot/versions.yml
+      md5sum: 80ec5877c67aaa0b86cdda26d242814c
