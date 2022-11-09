@@ -63,9 +63,12 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
         BWAMEM1_INDEX ( fasta_meta )
         ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
+        check_module_out = BWAMEM1_INDEX.out.index.dump(tag: 'index_out')
 
         // sets bwaindex to correct input
         bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM1_INDEX.out.index : []
+        // check what's created:
+        bwaindexcheck    = bwaindex.dump(tag: 'bwa_index_to_map')
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
@@ -79,7 +82,8 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
         // sets bwaindex to correct input
         bwaindex    = fasta_meta ? bwa_index ? Channel.fromPath(bwa_index).collect().map{ it -> [[id:it[0].baseName], it] } : BWAMEM2_INDEX.out.index : []
-
+        // check what's created:
+        bwaindexcheck    = bwaindex.dump(tag: 'bwaindex')
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
