@@ -78,3 +78,17 @@ workflow test_fastqc_multiple {
 
     FASTQC ( input )
 }
+
+//
+// Test with custom prefix
+//
+workflow test_fastqc_custom_prefix {
+    input = [
+                [ id:'mysample', single_end:true ], // meta map
+                [
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+            ]
+
+    FASTQC ( input )
+}
