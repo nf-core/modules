@@ -15,3 +15,11 @@
   files:
     - path: output/bcftools/test3.vcf.gz
       md5sum: 1f6a3ffdffbc56e0bc1b184e70ee88df
+
+- name: bcftools concat test_bcftools_concat_tbi_stub
+  command: nextflow run ./tests/modules/nf-core/bcftools/concat -entry test_bcftools_concat_tbi -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/bcftools/concat/nextflow.config -stub
+  tags:
+    - bcftools
+    - bcftools/concat
+  files:
+    - path: output/bcftools/test3.vcf.gz
