@@ -1,51 +1,71 @@
 name: "gatk4_determinegermlinecontigploidy"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Determines the baseline contig ploidy for germline samples given counts data
 keywords:
-  - sort
+  - gatk4
+  - determinegermlinecontigploidy
+  - counts
+  - copy number
 tools:
-  - "gatk4":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Genome Analysis Toolkit (GATK4)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "https://github.com/broadinstitute/gatk"
-      doi: ""
-      licence: "['BSD-3-clause']"
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - counts:
+      type: file(s)
+      description: One or more count TSV files created with gatk/collectreadcounts
+      pattern: "*.tsv"
+  - bed:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Optional - A bed file containing the intervals to include in the process
+      pattern: "*.bed"
+  - exclude_beds:
+      type: file(s)
+      description: Optional - One or more bed files containing intervals to exclude from the process
+      pattern: "*.bed"
+  - contig_ploidy_table:
+      type: file
+      description: The contig ploidy priors table
+      pattern: "*.tsv"
+  - ploidy_model:
+      type: folder
+      description: |
+        Optional - A folder containing the ploidy model.
+        When a model is supplied to tool will run in CASE mode.
+        The folder can be tar-zipped.
+      pattern: "*(.tar.gz)?"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - calls:
+      type: folder
+      description: A folder containing the calls from the input files
+      pattern: "*.tar.gz"
+  - model:
+      type: folder
+      description: |
+        A folder containing the model from the input files.
+        This will only be created in COHORT mode (when no model is supplied to the process).
+      pattern: "*.tar.gz"
 
 authors:
   - "@nvnieuwk"
