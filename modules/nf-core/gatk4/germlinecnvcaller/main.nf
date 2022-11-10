@@ -8,7 +8,8 @@ process GATK4_GERMLINECNVCALLER {
         'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(calls), path(counts)
+    tuple val(meta), path(calls), path(counts), path(annotated_intervals)
+    path(model) // Required if the tool is run in CASE mode
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -18,8 +19,12 @@ process GATK4_GERMLINECNVCALLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '--run-mode CASE'
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def input_counts = counts.collect(){"--input ${it}"}.join(" ")
+    def ann_intervals = annotated_intervals ? "--annotated-intervals ${annotated_intervals}" : ""
+    def denoising_model = model ? "--model ${model}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -30,9 +35,11 @@ process GATK4_GERMLINECNVCALLER {
 
     """
     gatk --java-options "-Xmx${avail_mem}g" GermlineCNVCaller \\
+        ${input_counts} \\
         --contig-ploidy-calls ${calls} \\
         --output-prefix ${prefix} \\
         --output ${prefix} \\
+        ${ann_intervals} \\
         --tmp-dir . \\
         ${args}
 
