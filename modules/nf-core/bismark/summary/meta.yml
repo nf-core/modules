@@ -23,25 +23,25 @@ tools:
       licence: ["GPL-3.0-or-later"]
 input:
   - bam:
-      type: file
-      description: Bismark alignment
-      pattern: "*.{bam}"
+      type: value
+      description: Bismark alignment BAM filenames (not files)
+      pattern: "*.bam"
   - align_report:
       type: file
       description: Bismark alignment reports
-      pattern: "*{report.txt}"
+      pattern: "*report.txt"
   - dedup_report:
       type: file
       description: Bismark deduplication reports
-      pattern: "*.{deduplication_report.txt}"
+      pattern: "*.deduplication_report.txt"
   - splitting_report:
       type: file
       description: Bismark splitting reports
-      pattern: "*{splitting_report.txt}"
+      pattern: "*splitting_report.txt"
   - mbias:
       type: file
       description: Text file containing methylation bias information
-      pattern: "*.{txt}"
+      pattern: "*.txt"
 output:
   - summary:
       type: file
