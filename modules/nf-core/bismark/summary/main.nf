@@ -23,7 +23,7 @@ process BISMARK_SUMMARY {
     script:
     def args = task.ext.args ?: ''
     """
-    bismark2summary $bam
+    bismark2summary ${bam.join(' ')}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
