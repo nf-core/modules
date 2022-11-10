@@ -1,0 +1,63 @@
+name: "bismark_coverage2cytosine"
+description: Relates methylation calls back to genomic cytosine contexts.
+keywords:
+  - bismark
+  - consensus
+  - map
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - bam
+  - bedGraph
+tools:
+  - bismark:
+      description: |
+        Bismark is a tool to map bisulfite treated sequencing reads
+        and perform methylation calling in a quick and easy-to-use fashion.
+      homepage: https://github.com/FelixKrueger/Bismark
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      doi: 10.1093/bioinformatics/btr167
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - coverage_file:
+      type: file
+      description: |
+        A file containing methylation calls per position, in the format produced by bismark_methylation_extractor.
+  - index:
+      type: dir
+      description: Bismark genome index directory
+      pattern: "BismarkIndex"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - coverage:
+      type: file
+      description: A file containing methylation calls per position.
+      pattern: "*.cov.gz"
+  - report:
+      type: file
+      description: Genomic cytosine context results.
+      pattern: "*report.txt.gz"
+  - summary:
+      type: file
+      description: Cyotosine context summary report.
+      pattern: "*cytosine_context_summary.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@ewels"
