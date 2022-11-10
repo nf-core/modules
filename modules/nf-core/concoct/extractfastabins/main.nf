@@ -35,6 +35,8 @@ process CONCOCT_EXTRACTFASTABINS {
         gzip \${i/\\///${prefix}_}
     done
 
+    gzip fasta_bins/*.fa
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         concoct: \$(echo \$(concoct --version 2>&1) | sed 's/concoct //g' )
