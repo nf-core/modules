@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml gatk4/germlinecnvcaller
+- name: "gatk4 germlinecnvcaller"
+  command: nextflow run ./tests/modules/nf-core/gatk4/germlinecnvcaller -entry test_gatk4_germlinecnvcaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gatk4/germlinecnvcaller/nextflow.config
+  tags:
+    - "gatk4"
+    - "gatk4/germlinecnvcaller"
+  files:
+    - path: "output/gatk4/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/gatk4/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
