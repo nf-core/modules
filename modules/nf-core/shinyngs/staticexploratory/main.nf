@@ -14,7 +14,7 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/png/boxplot.png"), path("*/html/boxplot.html")                 , emit: boxplots
     tuple val(meta), path("*/png/density.png"), path("*/html/density.html")                 , emit: densities
     tuple val(meta), path("*/png/pca2d.png"), path("*/html/pca2d.html")                     , emit: pca2d
-    tuple val(meta), path("*/png/pca3d.png"), path("*/html/pca3d.html"),                    , emit: pca3d
+    tuple val(meta), path("*/png/pca3d.png"), path("*/html/pca3d.html")                     , emit: pca3d
     tuple val(meta), path("*/png/mad_correlation.png"), path("*/html/mad_correlation.html") , emit: mad
     tuple val(meta), path("*/png/sample_dendrogram.png")                                    , emit: dendro
     path "versions.yml"                                                                     , emit: versions
