@@ -35,7 +35,7 @@ process CONCOCT_EXTRACTFASTABINS {
         gzip \${i/\\///${prefix}_}
     done
 
-    gzip fasta_bins/*.fa
+    gzip ${prefix}/*.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
