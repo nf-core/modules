@@ -11,7 +11,7 @@ workflow test_picard_collectwgsmetrics {
             ]
     fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
 
-    PICARD_COLLECTWGSMETRICS ( input, fasta )
+    PICARD_COLLECTWGSMETRICS ( input, fasta, [] )
 }
 
 //Test with an interval list file
