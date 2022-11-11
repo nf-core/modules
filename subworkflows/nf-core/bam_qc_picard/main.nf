@@ -28,7 +28,7 @@ workflow BAM_QC_PICARD {
         ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
-        PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
+        PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta, [] )
         ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
         ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics)
     }
