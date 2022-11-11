@@ -26,6 +26,10 @@ allelecounter:
   - modules/nf-core/allelecounter/**
   - tests/modules/nf-core/allelecounter/**
 
+ampcombi:
+  - modules/nf-core/ampcombi/**
+  - tests/modules/nf-core/ampcombi/**
+
 ampir:
   - modules/nf-core/ampir/**
   - tests/modules/nf-core/ampir/**
@@ -369,6 +373,10 @@ bismark/align:
   - modules/nf-core/bismark/align/**
   - modules/nf-core/bismark/genomepreparation/**
   - tests/modules/nf-core/bismark/align/**
+
+bismark/coverage2cytosine:
+  - modules/nf-core/bismark/coverage2cytosine/**
+  - tests/modules/nf-core/bismark/coverage2cytosine/**
 
 bismark/deduplicate:
   - modules/nf-core/bismark/deduplicate/**
@@ -787,6 +795,10 @@ eido/validate:
   - modules/nf-core/eido/validate/**
   - tests/modules/nf-core/eido/validate/**
 
+eigenstratdatabasetools/eigenstratsnpcoverage:
+  - modules/nf-core/eigenstratdatabasetools/eigenstratsnpcoverage/**
+  - tests/modules/nf-core/eigenstratdatabasetools/eigenstratsnpcoverage/**
+
 elprep/filter:
   - modules/nf-core/elprep/filter/**
   - tests/modules/nf-core/elprep/filter/**
@@ -979,6 +991,10 @@ gatk/unifiedgenotyper:
   - modules/nf-core/gatk/unifiedgenotyper/**
   - tests/modules/nf-core/gatk/unifiedgenotyper/**
 
+gatk4/annotateintervals:
+  - modules/nf-core/gatk4/annotateintervals/**
+  - tests/modules/nf-core/gatk4/annotateintervals/**
+
 gatk4/applybqsr:
   - modules/nf-core/gatk4/applybqsr/**
   - tests/modules/nf-core/gatk4/applybqsr/**
@@ -1042,6 +1058,10 @@ gatk4/createsequencedictionary:
 gatk4/createsomaticpanelofnormals:
   - modules/nf-core/gatk4/createsomaticpanelofnormals/**
   - tests/modules/nf-core/gatk4/createsomaticpanelofnormals/**
+
+gatk4/determinegermlinecontigploidy:
+  - modules/nf-core/gatk4/determinegermlinecontigploidy/**
+  - tests/modules/nf-core/gatk4/determinegermlinecontigploidy/**
 
 gatk4/estimatelibrarycomplexity:
   - modules/nf-core/gatk4/estimatelibrarycomplexity/**
@@ -1127,6 +1147,10 @@ gatk4/mutect2:
   - modules/nf-core/gatk4/mutect2/**
   - tests/modules/nf-core/gatk4/mutect2/**
 
+gatk4/printreads:
+  - modules/nf-core/gatk4/printreads/**
+  - tests/modules/nf-core/gatk4/printreads/**
+
 gatk4/printsvevidence:
   - modules/nf-core/gatk4/printsvevidence/**
   - tests/modules/nf-core/gatk4/printsvevidence/**
@@ -1155,6 +1179,10 @@ gatk4/sitedepthtobaf:
   - modules/nf-core/gatk4/sitedepthtobaf/**
   - tests/modules/nf-core/gatk4/sitedepthtobaf/**
 
+gatk4/splitcram:
+  - modules/nf-core/gatk4/splitcram/**
+  - tests/modules/nf-core/gatk4/splitcram/**
+
 gatk4/splitintervals:
   - modules/nf-core/gatk4/splitintervals/**
   - tests/modules/nf-core/gatk4/splitintervals/**
@@ -1178,6 +1206,10 @@ gatk4/variantfiltration:
 gatk4/variantrecalibrator:
   - modules/nf-core/gatk4/variantrecalibrator/**
   - tests/modules/nf-core/gatk4/variantrecalibrator/**
+
+gawk:
+  - modules/nf-core/gawk/**
+  - tests/modules/nf-core/gawk/**
 
 gecco/run:
   - modules/nf-core/gecco/run/**
@@ -2131,6 +2163,10 @@ porechop/porechop:
   - modules/nf-core/porechop/porechop/**
   - tests/modules/nf-core/porechop/porechop/**
 
+porechop/abi:
+  - modules/nf-core/porechop/abi/**
+  - tests/modules/nf-core/porechop/abi/**
+
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
   - tests/modules/nf-core/preseq/ccurve/**
@@ -2431,6 +2467,10 @@ seqtk/subseq:
   - modules/nf-core/seqtk/subseq/**
   - tests/modules/nf-core/seqtk/subseq/**
 
+sequencetools/pileupcaller:
+  - modules/nf-core/sequencetools/pileupcaller/**
+  - tests/modules/nf-core/sequencetools/pileupcaller/**
+
 sequenzautils/bam2seqz:
   - modules/nf-core/sequenzautils/bam2seqz/**
   - tests/modules/nf-core/sequenzautils/bam2seqz/**
@@ -2466,6 +2506,10 @@ shigatyper:
 shinyngs/app:
   - modules/nf-core/shinyngs/app/**
   - tests/modules/nf-core/shinyngs/app/**
+
+shinyngs/staticdifferential:
+  - modules/nf-core/shinyngs/staticdifferential/**
+  - tests/modules/nf-core/shinyngs/staticdifferential/**
 
 shinyngs/staticexploratory:
   - modules/nf-core/shinyngs/staticexploratory/**
@@ -2659,6 +2703,14 @@ subworkflows/fasta_index_dna:
   - subworkflows/nf-core/fasta_index_dna/**
   - tests/subworkflows/nf-core/fasta_index_dna/**
 
+subworkflows/fastq_align_bowtie2:
+  - subworkflows/nf-core/fastq_align_bowtie2/**
+  - tests/subworkflows/nf-core/fastq_align_bowtie2/**
+
+subworkflows/fastq_align_bwa:
+  - subworkflows/nf-core/fastq_align_bwa/**
+  - tests/subworkflows/nf-core/fastq_align_bwa/**
+
 subworkflows/fastq_align_chromap:
   - subworkflows/nf-core/fastq_align_chromap/**
   - tests/subworkflows/nf-core/fastq_align_chromap/**
@@ -2679,6 +2731,10 @@ subworkflows/fastq_contam_seqtk_kraken:
   - subworkflows/nf-core/fastq_contam_seqtk_kraken/**
   - tests/subworkflows/nf-core/fastq_contam_seqtk_kraken/**
 
+subworkflows/fastq_download_prefetch_fasterqdump_sratools:
+  - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
+  - tests/subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**
+
 subworkflows/fastq_fastqc_umitools_trimgalore:
   - subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
   - tests/subworkflows/nf-core/fastq_fastqc_umitools_trimgalore/**
@@ -2698,10 +2754,6 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
-
-subworkflows/srafastq:
-  - subworkflows/nf-core/srafastq/**
-  - tests/subworkflows/nf-core/srafastq/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
@@ -2887,6 +2939,10 @@ vsearch/sintax:
 vsearch/usearchglobal:
   - modules/nf-core/vsearch/usearchglobal/**
   - tests/modules/nf-core/vsearch/usearchglobal/**
+
+wfmash:
+  - modules/nf-core/wfmash/**
+  - tests/modules/nf-core/wfmash/**
 
 wgsim:
   - modules/nf-core/wgsim/**
