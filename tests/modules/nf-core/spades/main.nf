@@ -45,7 +45,7 @@ workflow test_spades_yml {
 
             ]
     yml = [
-        file(params.test_data['generic']['yml']['spades'], checkIfExists: true)
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/spades/spades_input_yml.yml', checkIfExists: true)
         ]
     SPADES ( input, yml, [] )
 }
