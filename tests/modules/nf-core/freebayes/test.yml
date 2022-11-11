@@ -4,9 +4,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: f28d0b8e2ccedeac0e590ca2ecaac83d
+      md5sum: 4978a2f69d7419db9e5a740cba925d19
     - path: output/freebayes/versions.yml
-      md5sum: 53651eb835af65df829241257584a7d2
 
 - name: freebayes test_freebayes_bed
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_bed -c ./tests/config/nextflow.config
@@ -14,9 +13,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: 1927441d1b7a4c48cbb61821de300ad4
+      md5sum: dfb4e3539ebb058ca966d6185e139063
     - path: output/freebayes/versions.yml
-      md5sum: becc93c8a0be580c09d55b955d60a5e1
 
 - name: freebayes test_freebayes_cram
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_cram -c ./tests/config/nextflow.config
@@ -24,9 +22,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: 9b8d1d51d779bbea4086c7f7a2ece641
+      md5sum: 178263bc22b281fa3a664835b3a8e7c8
     - path: output/freebayes/versions.yml
-      md5sum: 2e5b266edfc6cab81353cfc72c00f67c
 
 - name: freebayes test_freebayes_somatic
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic -c ./tests/config/nextflow.config
@@ -34,9 +31,8 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: dcaa639912174055c1380913d6102c01
+      md5sum: 17f07152aa92ef3ac492893b2b55d9fd
     - path: output/freebayes/versions.yml
-      md5sum: 8fbdb4c052fb3e42b5508a966125fa05
 
 - name: freebayes test_freebayes_somatic_cram_intervals
   command: nextflow run ./tests/modules/nf-core/freebayes -entry test_freebayes_somatic_cram_intervals -c ./tests/config/nextflow.config
@@ -44,6 +40,5 @@
     - freebayes
   files:
     - path: output/freebayes/test.vcf.gz
-      md5sum: b0052a2b83c0ba1b9686d0c96e61712f
+      md5sum: f5a3a6090d7ffac889a2bf4c23c93a86
     - path: output/freebayes/versions.yml
-      md5sum: af97e3dfdc086188739907c3460e49e0
