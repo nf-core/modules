@@ -45,7 +45,7 @@ workflow test_spades_yml {
 
             ]
     yml = [
-        file("/home/jfellows/Documents/git/aidaanva/modules/modules/nf-core/spades/test.yml")
+        file(params.test_data['generic']['yml']['spades'], checkIfExists: true)
         ]
     SPADES ( input, yml, [] )
 }
