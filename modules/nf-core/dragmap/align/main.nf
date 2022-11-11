@@ -4,7 +4,7 @@ process DRAGMAP_ALIGN {
 
     conda (params.enable_conda ? "bioconda::dragmap=1.3.0 bioconda::samtools=1.16.1 conda-forge::pigz=2.3.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:bb7e33c2ede38421063b8379a5fb3453645bb047-0':
+        'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:bb7e33c2ede38421063b8379a5fb3453645bb047-0':
         'quay.io/biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:bb7e33c2ede38421063b8379a5fb3453645bb047-0' }"
 
     input:
