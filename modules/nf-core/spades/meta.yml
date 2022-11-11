@@ -38,7 +38,7 @@ input:
       type: file
       description: |
         Path to yml file containing read information.
-        The raw FASTQ files listed in this YAML file must also be supplied to the illumina input channel _in addition_ to this YML.
+        The raw FASTQ files listed in this YAML file MUST be supplied to the respective illumina/pacbio/nanopore input channel(s) _in addition_ to this YML.
         File entries in this yml must contain only the file name and no paths.
       pattern: "*.{yml,yaml}"
   - hmm:
