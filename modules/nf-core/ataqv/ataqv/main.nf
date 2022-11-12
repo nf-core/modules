@@ -34,6 +34,7 @@ process ATAQV_ATAQV {
     """
     ataqv \\
         $args \\
+        $mito \\
         $peak \\
         $tss \\
         $excl_regs \\
