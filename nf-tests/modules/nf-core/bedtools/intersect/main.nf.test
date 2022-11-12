@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process BEDTOOLS_INTERSECT"
+    script "modules/nf-core/bedtools/intersect/main.nf"
+    process "BEDTOOLS_INTERSECT"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                 outdir = "$outputDir"
+            }
+            process {
+                """
+                bed_1 = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/test.bed")
+                bed_2 = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/test2.bed")
+                meta = [ id:'test' ]
+
+                input[0] = [ meta, bed_1, bed_2 ]
+                input[1] = 'bed'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.intersect, process.out.versions).match()
+        }
+
+    }
+
+    test("Should run with bam file") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                 outdir = "$outputDir"
+            }
+            process {
+                """
+                pe_bam = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.bam")
+                baits_bed = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/baits.bed")
+                meta = [ id:'test' ]
+
+                input[0] = [ meta, pe_bam, baits_bed ]
+                input[1] = 'bam'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.intersect, process.out.versions).match()
+        }
+
+    }
+
+}
