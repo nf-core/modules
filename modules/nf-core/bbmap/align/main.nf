@@ -51,7 +51,7 @@ process BBMAP_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bbmap: \$(bbversion.sh)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
