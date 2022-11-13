@@ -36,7 +36,7 @@
     - subworkflows/fastq_align_dna
   files:
     - path: output/bowtie2/test.bam
-      md5sum: ac5e65284b43ebf81ba29801ebbb015b
+      md5sum: 13e9ca95507fddd13571c02462d4e519
 
 - name: fastq_align_dna test_fastq_align_bwa_SE
   command: nextflow run ./tests/subworkflows/nf-core/fastq_align_dna -entry test_fastq_align_bwa_SE -c ./tests/config/nextflow.config
