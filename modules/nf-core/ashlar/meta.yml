@@ -19,18 +19,6 @@ input:
       type: file
       description: multidimentional image data in formats from most commercial microscopes
       pattern: "*.ome.tiff"
-  - align_channel:
-      type: integer
-      description: Reference channel number for image alignment. Numbering starts at 0. (default: 0)
-      ## TODO nf-core: how do we set a default
-  - maximum-shift:
-      type: integer
-      description: Maximum allowed per-tile corrective shift in microns (default: 15)
-      ## TODO nf-core: need to set default
-  - tile_size:
-      type: integer
-      description: Pyramid tile size for OME-TIFF output (default: 1024)
-      ## TODO nf-core: need to set default
 
 output:
   #

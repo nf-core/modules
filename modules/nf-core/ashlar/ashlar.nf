@@ -10,6 +10,7 @@ process wc {
 }
 
 process ashlar {
+    println 'running process ashlar in ashlar.nf'
     conda 'bioconda::ashlar=1.17.0'
     params.output = 'ashlar_output.ome.tif'
     params.channel = '0'
