@@ -11,7 +11,7 @@ process AGAT_SPSTATISTICS {
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("*.txt"), emit: stats_file
+    tuple val(meta), path("*.txt"), emit: stats_txt
     path "versions.yml"           , emit: versions
 
     when:
@@ -22,7 +22,6 @@ process AGAT_SPSTATISTICS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-
     agat_sp_statistics.pl \\
         --gff $gff \\
         --output ${prefix}.stats.txt \\
