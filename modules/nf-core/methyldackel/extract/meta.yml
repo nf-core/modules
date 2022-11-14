@@ -5,6 +5,7 @@ keywords:
   - 5mC
   - methylseq
   - bisulphite
+  - bisulfite
   - consensus
   - bedGraph
   - bam
@@ -31,7 +32,7 @@ input:
   - fai:
       type: file
       description: FASTA index file
-      pattern: "*.{fai}"
+      pattern: "*.fai"
   - bam:
       type: file
       description: BAM/CRAM file
@@ -48,8 +49,12 @@ output:
         e.g. [ id:'test', single_end:false ]
   - bedgraph:
       type: file
-      description: bedGraph file containing per-base methylation metrics
-      pattern: "*.{bedGraph}"
+      description: bedGraph file, containing per-base methylation metrics
+      pattern: "*.bedGraph"
+  - methylkit:
+      type: file
+      description: methylKit file, containing per-base methylation metrics
+      pattern: "*.methylKit"
   - versions:
       type: file
       description: File containing software versions
