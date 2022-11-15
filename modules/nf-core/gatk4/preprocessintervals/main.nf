@@ -8,20 +8,21 @@ process GATK4_PREPROCESSINTERVALS {
         'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
-    path  exclude_intervals
-    path  fasta
-    path  fai
-    path  dict
+    tuple val(meta), path(exclude_intervals)
+    path fasta
+    path fai
+    path dict
 
     output:
-    path  "*.interval_list"                 , emit: interval_list
-    path  "versions.yml"                    , emit: versions
+    path "*.interval_list"                 , emit: interval_list
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def exclude_command = exclude_intervals ? "--exclude-intervals $exclude_intervals" : ""
 
     def avail_mem = 3
