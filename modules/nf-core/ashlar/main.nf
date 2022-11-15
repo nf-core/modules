@@ -58,7 +58,7 @@ process ASHLAR {
     task.ext.when == null || task.ext.when
 
     script:
-    //def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -78,11 +78,9 @@ process ASHLAR {
     */
 
     """
-    echo 'file_in:'
-    echo $file_in
-
     ashlar \\
-        $file_in
+        $file_in \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
