@@ -14,8 +14,8 @@ process GATK4_PREPROCESSINTERVALS {
     path dict
 
     output:
-    path "*.interval_list"                 , emit: interval_list
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.interval_list"), emit: interval_list
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
