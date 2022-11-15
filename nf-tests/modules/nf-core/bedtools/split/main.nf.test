@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process BEDTOOLS_SPLIT"
+    script "modules/nf-core/bedtools/split/main.nf"
+    process "BEDTOOLS_SPLIT"
+    config "nf-tests/modules/nf-core/bedtools/split/nextflow.config"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // define parameters here. Example:
+
+            }
+            process {
+                """
+                input[0] = [
+                             [ id:'test', scatter:2 ], // meta map
+                             file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

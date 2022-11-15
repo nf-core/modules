@@ -3,21 +3,22 @@ nextflow_process {
     name "Test Process BEDTOOLS_INTERSECT"
     script "modules/nf-core/bedtools/intersect/main.nf"
     process "BEDTOOLS_INTERSECT"
+    config "nf-tests/modules/nf-core/bedtools/intersect/nextflow.config"
 
     test("Should run without failures") {
 
         when {
             params {
                 // define parameters here. Example:
-                 outdir = "$outputDir"
+
             }
             process {
                 """
-                bed_1 = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/test.bed")
-                bed_2 = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/test2.bed")
-                meta = [ id:'test' ]
-
-                input[0] = [ meta, bed_1, bed_2 ]
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
+                           ]
                 input[1] = 'bed'
                 """
             }
@@ -25,7 +26,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out.intersect, process.out.versions).match()
+            assert snapshot(process.out).match()
         }
 
     }
@@ -35,15 +36,15 @@ nextflow_process {
         when {
             params {
                 // define parameters here. Example:
-                 outdir = "$outputDir"
+
             }
             process {
                 """
-                pe_bam = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bam/test.paired_end.bam")
-                baits_bed = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/bed/baits.bed")
-                meta = [ id:'test' ]
-
-                input[0] = [ meta, pe_bam, baits_bed ]
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
+                           ]
                 input[1] = 'bam'
                 """
             }
@@ -51,7 +52,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out.intersect, process.out.versions).match()
+            assert snapshot(process.out).match()
         }
 
     }
