@@ -10,8 +10,8 @@ process ONCOCNV {
         'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv1' }"
 
     input:
-    tuple normal_dataset_id, file(normal_bams), file(normal_bais)
-    tuple tumor_dataset_id, file(tumor_bams), file(tumor_bais)
+    tuple val(normal_dataset_id), path(normal_bams), path(normal_bais)
+    tuple val(tumor_dataset_id), path(tumor_bams), path(tumor_bais)
     path bed
     path fasta
 
@@ -25,26 +25,29 @@ process ONCOCNV {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = params.enable_conda ? '' : '/usr/local/bin'
     def cghseg = task.ext.cghseg ? 'cghseg' : ''
+    def mode = task.mode ?: 'Ampli'
+    def normal_bams_input = normal_bams.join(',')
+    def prefix = params.enable_conda ? '' : '/usr/local/bin'
+    def tumor_bams_input = tumor_bams.join(',')
     """
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
-        -m ${task.mode} \\
+        -m $mode \\
         -b ${bed} \\
-        -c ${normal_bams.join(",")} \\
+        -c $normal_bams_input \\
         -o ControlStats.txt
 
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getSampleStats \\
-        -m ${task.mode} \\
+        -m $mode \\
         -c ControlStats.txt \\
-        -s ${tumor_bams.join(",")} \\
+        -s $tumor_bams_input \\
         -o SampleStats.txt
     
     cat ControlStats.txt \\
         | grep -v start \\
-        | awk '{print $1,$2,$3}' \\
+        | awk '{print \$1,\$2,\$3}' \\
         | sed "s/ /\t/g" > target.bed
 
     perl ${prefix}/createTargetGC.pl \\
@@ -56,12 +59,12 @@ process ONCOCNV {
     cat ${prefix}/processControl.R \\
         | R \\
         --slave \\
-        --args ControlStats.txt ControlStatsProcessed.txt target.GC.txt
+        --args ControlStats.txt ControlStatsProcessed.txt TargetGC.txt
 
     cat ${prefix}/processSamples.R \\
         | R \\
         --slave \\
-        --args TestStats.txt ControlStatsProcessed.txt Output.log ${cghseg}
+        --args SampleStats.txt ControlStatsProcessed.txt Output.log ${cghseg}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
