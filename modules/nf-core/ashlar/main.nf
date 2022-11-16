@@ -46,7 +46,7 @@ process ASHLAR {
     //               https://github.com/nf-core/modules/blob/master/modules/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path file_in
+    tuple val(meta), path(file_in)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -58,7 +58,8 @@ process ASHLAR {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args_conf = task.ext.args ?: ''
+
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -80,7 +81,7 @@ process ASHLAR {
     """
     ashlar \\
         $file_in \\
-        $args
+        $args_conf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

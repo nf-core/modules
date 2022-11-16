@@ -15,8 +15,18 @@ tools:
 input:
   #
   ## TODO nf-core: need to add optional and default parameters
+  #- file_in:
+  #    type: file
+  #    description: multidimentional image data in formats from most commercial microscopes
+  #    pattern: "*.ome.tiff"
+
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', test: true ]
   - file_in:
-      type: file
+      type: path
       description: multidimentional image data in formats from most commercial microscopes
       pattern: "*.ome.tiff"
 
