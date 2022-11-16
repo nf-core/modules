@@ -35,9 +35,7 @@ process GATK4_PREPROCESSINTERVALS {
     gatk --java-options "-Xmx${avail_mem}g" PreprocessIntervals \\
         $exclude_command \\
         --reference $fasta \\
-        --padding 0 \\
-        -imr OVERLAPPING_ONLY \\
-        --output preprocessed_intervals.interval_list \\
+        --output ${prefix}.interval_list \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
