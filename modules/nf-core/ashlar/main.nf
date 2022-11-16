@@ -17,10 +17,15 @@
 
 println 'running main.nf'
 
+include { initOptions } from './functions'
+params.options = [:]
+options = initOptions(params.options)
+
+
 process ASHLAR {
     println 'running process ASHLAR'
 
-    tag '$file_in'
+    tag '$meta.id'
     label 'process_single'
 
     // TODO nf-core: List required Conda package(s).
@@ -59,6 +64,7 @@ process ASHLAR {
 
     script:
     def args_conf = task.ext.args ?: ''
+    def args_opt = options.args ?: ''
 
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
@@ -74,14 +80,16 @@ process ASHLAR {
     /*
     ashlar \\
         $file_in \\
-        $args \\
+        $args_conf \\
         -@ $task.cpus \\
+        $args_opt
     */
 
     """
     ashlar \\
         $file_in \\
-        $args_conf
+        $args_conf \\
+        $args_opt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
