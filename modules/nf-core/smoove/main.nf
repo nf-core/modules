@@ -2,8 +2,10 @@ process SMOOVE {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::smoove=0.2.8" : null)
-    container "brentp/smoove"
+    conda (params.enable_conda ? "bioconda::smoove=0.2.8" : null)  
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
+        'quay.io/biocontainers/smoove:0.2.8--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(input), path(index)
