@@ -18,9 +18,9 @@ process HLALA_PREPAREGRAPH {
 
     script:
     def args = task.ext.args ?: ''
-
+    // OBS: the "../bin/HLA-LA" described in the documentation is found in the docker container in "/usr/local/opt/hla-la/bin/HLA-LA"
     """
-    ../bin/HLA-LA \\
+    /usr/local/opt/hla-la/bin/HLA-LA \\
         --action prepareGraph \\
         --PRG_graph_dir $graph
 

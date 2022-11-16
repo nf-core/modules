@@ -22,7 +22,7 @@ process HLALA_TYPING {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ./bin/HLA-LA.pl \\
+    HLA-LA.pl \\
         --BAM $bam \\
         --graph $graph \\
         --sampleID $prefix \\
