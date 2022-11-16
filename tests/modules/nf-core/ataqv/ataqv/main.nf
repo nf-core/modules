@@ -14,7 +14,7 @@ workflow test_ataqv_ataqv {
         []
     ]
     
-    ATAQV_ATAQV ( input, 'human', [], [], [] )
+    ATAQV_ATAQV ( input, 'human', '', [], [], [] )
 }
 
 workflow test_ataqv_ataqv_problem_reads {
@@ -26,7 +26,7 @@ workflow test_ataqv_ataqv_problem_reads {
         []
     ]
     
-    ATAQV_ATAQV_PROBLEM_READS ( input, 'human', [], [], [] )
+    ATAQV_ATAQV_PROBLEM_READS ( input, 'human', '', [], [], [] )
 }
 
 workflow test_ataqv_ataqv_peak {
@@ -38,7 +38,7 @@ workflow test_ataqv_ataqv_peak {
         file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
     ]
     
-    ATAQV_ATAQV ( input, 'human', [], [], [] )
+    ATAQV_ATAQV ( input, 'human', '', [], [], [] )
 }
 
 workflow test_ataqv_ataqv_tss {
@@ -51,7 +51,7 @@ workflow test_ataqv_ataqv_tss {
     ] 
     tss_file = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
    
-    ATAQV_ATAQV ( input, 'human', tss_file, [], [] )
+    ATAQV_ATAQV ( input, 'human', '', tss_file, [], [] )
 }
 
 workflow test_ataqv_ataqv_excluded_regs {
@@ -65,5 +65,5 @@ workflow test_ataqv_ataqv_excluded_regs {
     tss_file = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
     excl_regs_file = file(params.test_data['sarscov2']['genome']['test2_bed'], checkIfExists: true)
    
-    ATAQV_ATAQV ( input, 'human', tss_file, excl_regs_file, [] )
+    ATAQV_ATAQV ( input, 'human', '', tss_file, excl_regs_file, [] )
 }
