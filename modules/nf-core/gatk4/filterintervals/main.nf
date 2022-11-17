@@ -24,7 +24,7 @@ process GATK4_FILTERINTERVALS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
     def tsv_command = tsv ? "--input $tsv" : ""
-    
+
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK FilterIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
