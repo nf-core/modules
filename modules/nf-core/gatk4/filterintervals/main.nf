@@ -8,9 +8,9 @@ process GATK4_FILTERINTERVALS {
         'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(tsv)
-    path  processed_intervals
-    path  annotated_intervals
+    tuple val(meta), path(intervals)
+    path tsv
+    path annotated_intervals
 
     output:
     tuple val(meta), path("*.interval_list"), emit: interval_list
@@ -22,7 +22,9 @@ process GATK4_FILTERINTERVALS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
+    def tsv_command = tsv ? "--input $tsv" : ""
+    
     def avail_mem = 3
     if (!task.memory) {
         log.info '[GATK FilterIntervals] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -31,11 +33,11 @@ process GATK4_FILTERINTERVALS {
     }
     """
     gatk --java-options "-Xmx${avail_mem}g" FilterIntervals \\
-    --intervals $processed_intervals \\
-    --annotated-intervals $annotated_intervals \\
-    -imr OVERLAPPING_ONLY \\
-    --input $tsv \\
-    --output filtered_intervals.interval_list \\
+    $annotated_command \\
+    $tsv_command \\
+    --intervals $intervals \\
+    --output ${prefix}.interval_list \\
+    $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
