@@ -44,7 +44,7 @@ process ONCOCNV {
         -c ControlStats.txt \\
         -s $tumor_bams_input \\
         -o SampleStats.txt
-    
+
     cat ControlStats.txt \\
         | grep -v start \\
         | awk '{print \$1,\$2,\$3}' \\
