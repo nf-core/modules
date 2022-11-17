@@ -1,14 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml fcs/fcsgx
-- name: "fcs fcsgx"
+- name: fcs fcsgx test_fcs_fcsgx
   command: nextflow run ./tests/modules/nf-core/fcs/fcsgx -entry test_fcs_fcsgx -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fcs/fcsgx/nextflow.config
   tags:
-    - "fcs"
-    - "fcs/fcsgx"
+  - fcs/fcsgx
+  - fcs
   files:
-    - path: "output/fcs/genome.6973.fcs_gx_report.txt"
-      # md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/fcs/genome.6973.taxonomy.rpt"
-      # m5dsum:
-    - path: "output/fcs/versions.yml"
-      # md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/fcs/out/fcsgx_test.fa.6973.fcs_gx_report.txt
+    contains: [ "FCS genome report", "run-date", "prok:CFB group bacteria" ]
+  - path: output/fcs/out/fcsgx_test.fa.6973.taxonomy.rpt
+    contains: [ "GX taxonomy analysis report", "run-date", "prok:CFB group bacteria"]

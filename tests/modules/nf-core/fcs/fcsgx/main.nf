@@ -7,8 +7,8 @@ include { FCS_FCSGX } from '../../../../../modules/nf-core/fcs/fcsgx/main.nf'
 workflow test_fcs_fcsgx {
 
     input = [
-        [ id:'test', taxid:'6973' ], // meta map
-        file("/Users/tillenglert/Documents/FCSGX/fcsgx_test.fa.gz"), // file(params.test_data['Blattella_germanica']['genome']['genome_fa_gz'], checkIfExists: true),
+        [ id:'test', taxid:'9606' ], // meta map
+        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
     ]
 
     database = [
