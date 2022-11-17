@@ -65,6 +65,7 @@ process ASHLAR {
     script:
     def args_conf = task.ext.args ?: ''
     def args_opt = options.args ?: ''
+    def args_meta = meta.args ?: ''
 
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
@@ -89,7 +90,8 @@ process ASHLAR {
     ashlar \\
         $file_in \\
         $args_conf \\
-        $args_opt
+        $args_opt \\
+        $args_meta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

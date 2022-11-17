@@ -25,7 +25,7 @@ workflow test_ashlar {
 
     //ASHLAR ( file('/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff') )
 
-    input =  [ [ id:'test' ],
+    input =  [ [ id:'test', args: '--flip-y' ],
                file(TEST_IMG, checkIfExists: true) ]
 
     ASHLAR ( input )
