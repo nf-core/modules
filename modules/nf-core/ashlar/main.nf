@@ -56,8 +56,9 @@ process ASHLAR {
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     // TODO nf-core: List additional required output channels/values here
-    path "*.ome.tif"
-    path "versions.yml"           , emit: versions
+    //path "*.ome.tif"
+    tuple val(meta), path("*.ome.tif"),     emit: ashlar_tif
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
