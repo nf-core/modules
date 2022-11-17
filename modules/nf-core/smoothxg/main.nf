@@ -1,4 +1,4 @@
-process SMOOTHXG_ONCE {
+process SMOOTHXG {
     tag "$meta.id"
     label 'process_high'
 
