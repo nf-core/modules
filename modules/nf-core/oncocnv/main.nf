@@ -16,10 +16,10 @@ process ONCOCNV {
     path fasta
 
     output:
-    tuple val(meta), path("*.profile.png")  ,emit: png
-    tuple val(meta), path("*.profile.txt")  ,emit: profile
-    tuple val(meta), path("*.summary.txt")  ,emit: summary
-    path "versions.yml"                     ,emit: versions
+    tuple path("*.profile.png")  ,emit: png
+    tuple path("*.profile.txt")  ,emit: profile
+    tuple path("*.summary.txt")  ,emit: summary
+    path "versions.yml"          ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -69,8 +69,8 @@ process ONCOCNV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         oncocnv: 7.0
-        perl: \$(perl --version | grep 'This is perl' | sed 's/.*(//g' | sed 's/)//g')
-        r: \$(R --version | grep "R version")
+        perl: \$(perl --version | grep 'This is perl' | sed 's/.*(v//g' | sed 's/)//g')
+        r: \$(R --version | grep "R version" | sed 's/R version //g')
     END_VERSIONS
     """
 }
