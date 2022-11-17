@@ -1,51 +1,60 @@
 name: "fcs_fcsgx"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Run FCS-GX on assembled genomes. The contigs of the assembly are searched against a reference database excluding the given taxid.
 keywords:
-  - sort
+  - assembly
+  - genomics
+  - quality control
+  - contamination
+  - NCBI
 tools:
   - "fcs":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
+      description: |
+        "The Foreign Contamination Screening (FCS) tool rapidly detects contaminants from foreign
+        organisms in genome assemblies to prepare your data for submission. Therefore, the
+        submission process to NCBI is faster and fewer contaminated genomes are submitted.
+        This reduces errors in analyses and conclusions, not just for the original data submitter
+        but for all subsequent users of the assembly."
+      homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
+      documentation: "https://github.com/ncbi/fcs/wiki/FCS-GX"
+      tool_dev_url: "https://github.com/ncbi/fcs"
       doi: ""
-      licence: ""
+      licence: "United States Government Work"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test', taxid:'6973' ]
+  - assembly:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: assembly fasta file
+  - database:
+      type: file
+      description: Files of the database downloaded from the ncbi server,
+        https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/. All files
+        of one db should be downloaded and given to the process as
+        channel.collect(). The link contains 2 databases, test-only and all.
+        Use all for pipeline usage and test-only for tests.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  # 
+        e.g. [ id:'test', taxid:'9606' ]
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - fcs_gx_report:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Report containing the contig identifier and recommended action (EXCLUDE, TRIM, FIX, REVIEW)
+      pattern: "*.fcs_gx_report.txt"
+  - taxonomy_report:
+      type: file
+      description: Report containing the contig identifier and mapped contaminant species
+      pattern: "*.taxonomy.rpt"
 
 authors:
   - "@tillenglert"
