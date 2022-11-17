@@ -30,3 +30,5 @@ workflow test_ashlar {
 
     ASHLAR ( input )
 }
+
+// can add additional test workflows below

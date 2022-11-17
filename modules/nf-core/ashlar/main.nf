@@ -21,7 +21,6 @@ include { initOptions } from './functions'
 params.options = [:]
 options = initOptions(params.options)
 
-
 process ASHLAR {
     println 'running process ASHLAR'
 
@@ -33,8 +32,7 @@ process ASHLAR {
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     // TODO nf-core: need versions for all packages below
-    //conda (params.enable_conda ? "bioconda::ashlar=1.17.0" : null)
-    conda "bioconda::ashlar=1.17.0"
+    conda (params.enable_conda ? "bioconda::ashlar=1.17.0" : null)
 
     /*
     TODO nf-core: how do we referene that we'll
@@ -57,8 +55,8 @@ process ASHLAR {
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
     // TODO nf-core: List additional required output channels/values here
     //path "*.ome.tif"
-    tuple val(meta), path("*.ome.tif"),     emit: ashlar_tif
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("*.ome.tif")  ,   emit: ashlar_tif
+    path "versions.yml"                 ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
