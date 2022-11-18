@@ -2,13 +2,13 @@
 
 # Filter rows based on the number of columns passing the abundance threshold. By
 # default this will be any row with a value of 1 or more, which would be a
-# permissive threshold for RNA-seq data. 
+# permissive threshold for RNA-seq data.
 #
 # In RNA-seq studies it's often not enough to just remove genes not expressed in
 # any sample. We also want to remove anything likely to be part of noise, or
 # which has sufficiently low expression that differential analysis would not be
 # useful. For that reason we might require a higher threshold than 1, and
-# require that more than one sample passes. 
+# require that more than one sample passes.
 #
 # Often we want to know that a gene is expressed in a substantial enough number
 # of sample that differential analysis worthwhile, so we may pick a threshold
@@ -30,32 +30,32 @@
 #' @return named list of options and values similar to optparse
 
 parse_args <- function(x, opt_defaults){
-  args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-  args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
-  
-  # Ensure the option vectors are length 2 (key/ value) to catch empty ones
-  args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
-  
-  parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
-  parsed_args[! is.na(parsed_args)]
-  
-  # Now apply CLI options to override defaults
- 
-  opt_types <- lapply(opt_defaults, class) 
-  
-  for ( ao in names(parsed_args)){
-    if (! ao %in% names(opt_defaults)){
-      stop(paste("Invalid option:", ao))
-    }else{
-      
-      # Preserve classes from defaults where possible
-      if (! is.null(opt_defaults[[ao]])){
-        parsed_args[[ao]] <- as(parsed_args[[ao]], opt_types[[ao]])
-      }
-      opt_defaults[[ao]] <- parsed_args[[ao]]
+    args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+    args_vals <- unlist(lapply(args_list, function(y) strsplit(y, ' +')), recursive = FALSE)
+
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
+
+    # Now apply CLI options to override defaults
+
+    opt_types <- lapply(opt_defaults, class)
+
+    for ( ao in names(parsed_args)){
+        if (! ao %in% names(opt_defaults)){
+            stop(paste("Invalid option:", ao))
+        }else{
+
+            # Preserve classes from defaults where possible
+            if (! is.null(opt_defaults[[ao]])){
+                parsed_args[[ao]] <- as(parsed_args[[ao]], opt_types[[ao]])
+            }
+            opt_defaults[[ao]] <- parsed_args[[ao]]
+        }
     }
-  }
-  opt_defaults
+    opt_defaults
 }
 
 #' Flexibly read CSV or TSV files
@@ -89,12 +89,12 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 # Set up default options
 
 opt <- list(
-  abundance_matrix_file = '$abundance',
-  sample_file = '$samplesheet',
-  minimum_abundance = 1,
-  minimum_samples = 1,
-  minimum_proportion = 0,
-  grouping_variable = NULL
+    abundance_matrix_file = '$abundance',
+    sample_file = '$samplesheet',
+    minimum_abundance = 1,
+    minimum_samples = 1,
+    minimum_proportion = 0,
+    grouping_variable = NULL
 )
 
 opt <- parse_args('$task.ext.args', opt)
@@ -105,47 +105,47 @@ abundance_matrix <- read_delim_flexible(opt\$abundance_matrix_file, row.names = 
 
 samplesheet <- read_delim_flexible(opt\$sample_file, row.names = 1)
 if (any(! rownames(samplesheet) %in% colnames(abundance_matrix))){
-  stop('Not all sample sheet rows represented in supplied abundance matrix')
+    stop('Not all sample sheet rows represented in supplied abundance matrix')
 }else{
-  abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
+    abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
 }
 
 # If we want to define n based on the levels of a grouping variable...
 
 if (! is.null(opt\$grouping_variable)){
-    
-  # Pick a minimum number of samples to pass threshold based on group size
-    
-  if (! opt\$grouping_variable %in% colnames(samplesheet)){
-    stop(paste(opt\$grouping_variable, "not in supplied sample sheet"))
-  }else{
-    opt\$minimum_samples <- min(table(samplesheet[[opt\$grouping_variable]]))
-    if ( opt\$minimum_proportion > 0){
-      opt\$minimum_samples <- opt\$minimum_samples * opt\$minimum_proportion
+
+    # Pick a minimum number of samples to pass threshold based on group size
+
+    if (! opt\$grouping_variable %in% colnames(samplesheet)){
+        stop(paste(opt\$grouping_variable, "not in supplied sample sheet"))
+    }else{
+        opt\$minimum_samples <- min(table(samplesheet[[opt\$grouping_variable]]))
+        if ( opt\$minimum_proportion > 0){
+            opt\$minimum_samples <- opt\$minimum_samples * opt\$minimum_proportion
+        }
     }
-  }
 }else if (opt\$minimum_proportion > 0){
-  
-  # Or if we want to define it based on a static proportion of the sample number
-  
-  opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
+
+    # Or if we want to define it based on a static proportion of the sample number
+
+    opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
 # Generate a boolean vector specifying the genes to retain
 
 keep <- apply(abundance_matrix, 1, function(x){
-  sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
+    sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
 })
 
 # Write out the matrix retaining the specified rows
 
 write.table(
-  abundance_matrix[keep,,drop = FALSE],
-  file = paste0(tools::file_path_sans_ext(basename(opt\$abundance_matrix_file), compression = FALSE), '.filtered.tsv'),
-  col.names = TRUE,
-  row.names = FALSE,
-  sep = '\t',
-  quote = FALSE
+    abundance_matrix[keep,,drop = FALSE],
+    file = paste0(tools::file_path_sans_ext(basename(opt\$abundance_matrix_file), compression = FALSE), '.filtered.tsv'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
 )
 
 ################################################
