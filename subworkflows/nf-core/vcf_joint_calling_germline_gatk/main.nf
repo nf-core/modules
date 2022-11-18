@@ -10,8 +10,7 @@ include { TABIX_TABIX as TABIX                                  } from '../../..
 workflow VCF_JOINT_CALLING_GERMLINE_GATK {
 
     take:
-    gvcf             // channel: [ val(meta), [ gvcf ], [ gvcf_index ], [val(interval)]]
-    interval         // channel: [ val(meta), [ interval ] ]
+    gvcf             // channel: [ val(meta), [ gvcf ], [ gvcf_index ], interval]
     fasta            // channel: [ val(meta), /path/to/reference/fasta]
     fai              // channel: [ val(meta), /path/to/reference/fasta/index]
     dict             // channel: [ val(meta), /path/to/reference/fasta/dict]
