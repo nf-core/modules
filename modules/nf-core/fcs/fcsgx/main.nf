@@ -32,7 +32,7 @@ process FCS_FCSGX {
         --fasta $assembly \\
         --out-dir ./out \\
         --gx-db ./${gxdb[0].baseName} \\
-        --tax-id $meta.taxid \\
+        --tax-id ${meta.taxid} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
