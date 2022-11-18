@@ -11,13 +11,13 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
 
     output:
-    tuple val(meta), path("*/png/boxplot.png"), path("*/html/boxplot.html"), path("*/html/boxplot_files")                         , emit: boxplots
-    tuple val(meta), path("*/png/density.png"), path("*/html/density.html"), path("*/html/density_files")                         , emit: densities
-    tuple val(meta), path("*/png/pca2d.png"), path("*/html/pca2d.html"), path("*/html/pca2d_files")                               , emit: pca2d
-    tuple val(meta), path("*/png/pca3d.png"), path("*/html/pca3d.html"), path("*/html/pca3d_files")                               , emit: pca3d
-    tuple val(meta), path("*/png/mad_correlation.png"), path("*/html/mad_correlation.html"), path("*/html/mad_correlation_files") , emit: mad
-    tuple val(meta), path("*/png/sample_dendrogram.png")                                                                          , emit: dendro
-    path "versions.yml"                                                                                                           , emit: versions
+    tuple val(meta), path("*/png/boxplot.png"), path("*/html/boxplot.html")                 , emit: boxplots
+    tuple val(meta), path("*/png/density.png"), path("*/html/density.html")                 , emit: densities
+    tuple val(meta), path("*/png/pca2d.png"), path("*/html/pca2d.html")                     , emit: pca2d
+    tuple val(meta), path("*/png/pca3d.png"), path("*/html/pca3d.html")                     , emit: pca3d
+    tuple val(meta), path("*/png/mad_correlation.png"), path("*/html/mad_correlation.html") , emit: mad
+    tuple val(meta), path("*/png/sample_dendrogram.png")                                    , emit: dendro
+    path "versions.yml"                                                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

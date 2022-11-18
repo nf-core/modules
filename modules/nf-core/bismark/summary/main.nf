@@ -7,7 +7,7 @@ process BISMARK_SUMMARY {
         'quay.io/biocontainers/bismark:0.24.0--hdfd78af_0' }"
 
     input:
-    path(bam)
+    val(bam)
     path(align_report)
     path(dedup_report)
     path(splitting_report)
@@ -23,7 +23,7 @@ process BISMARK_SUMMARY {
     script:
     def args = task.ext.args ?: ''
     """
-    bismark2summary
+    bismark2summary ${bam.join(' ')}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
