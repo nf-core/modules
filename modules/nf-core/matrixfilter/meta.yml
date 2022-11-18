@@ -1,0 +1,41 @@
+name: "matrixfilter"
+description: filter a matrix based on a minimum value and numbers of samples
+  that must pass.
+keywords:
+  - matrix
+  - filter
+tools:
+  - "matrixfilter":
+      description: "filter a matrix based on a minimum value and numbers of samples"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on experiment, at a minimum an id.
+        e.g. [ id:'test' ]
+  - sample:
+      type: file
+      description: |
+        CSV or TSV format sample sheet with sample metadata
+  - abundance:
+      type: file
+      description: |
+        Raw TSV or CSV format expression matrix as output from the nf-core RNA-seq workflow
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information on experiment.
+        e.g. [ id:'test' ]
+  - filtered:
+      type: file
+      description: Filtered version of input matrix
+      pattern: "*.filtered.tsv"
+
+authors:
+  - "@pinin4fjords"
