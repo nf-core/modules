@@ -51,6 +51,31 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
+#' Round numeric dataframe columns to fixed decimal places by applying
+#' formatting and converting back to numerics
+#'
+#' @param dataframe A data frame
+#' @param columns Which columns to round (assumes all of them by default)
+#' @param digits How many decimal places to round to?
+#'
+#' @return output Data frame
+
+round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (is.null(columns)){
+        columns <- colnames(df)
+    }
+
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = 8)
+
+    # Convert columns back to numeric
+
+    for (c in columns) {
+        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]] <- as.numeric(df[[c]])
+    }
+    df
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -302,7 +327,10 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 write.table(
-    format(data.frame(gene_id = rownames(comp.results), comp.results), nsmall = 8),
+    data.frame(
+        gene_id = rownames(comp.results),
+        round_dataframe_columns(data.frame(comp.results))
+    ),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -357,8 +385,13 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
         vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
     }
 
+    # Again apply the slight rounding and then restore numeric
+
     write.table(
-        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_mat)), nsmall = 8),
+        data.frame(
+            gene_id=rownames(counts(dds)),
+            round_dataframe_columns(data.frame(assay(vs_mat)))
+        ),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
