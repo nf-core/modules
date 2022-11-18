@@ -25,6 +25,7 @@ process SHIGEIFINDER {
     shigeifinder \\
         $args \\
         --output ${prefix}.tsv \\
+        -t $task.cpus \\
         -i $seqs
 
     cat <<-END_VERSIONS > versions.yml
