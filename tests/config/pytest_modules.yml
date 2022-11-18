@@ -723,10 +723,6 @@ deeptools/computematrix:
   - modules/nf-core/deeptools/computematrix/**
   - tests/modules/nf-core/deeptools/computematrix/**
 
-deeptools/plotpca:
-  - modules/nf-core/deeptools/plotpca/**
-  - tests/modules/nf-core/deeptools/plotpca/**
-
 deeptools/multibamsummary:
   - modules/nf-core/deeptools/multibamsummary/**
   - tests/modules/nf-core/deeptools/multibamsummary/**
@@ -742,6 +738,10 @@ deeptools/plotfingerprint:
 deeptools/plotheatmap:
   - modules/nf-core/deeptools/plotheatmap/**
   - tests/modules/nf-core/deeptools/plotheatmap/**
+
+deeptools/plotpca:
+  - modules/nf-core/deeptools/plotpca/**
+  - tests/modules/nf-core/deeptools/plotpca/**
 
 deeptools/plotprofile:
   - modules/nf-core/deeptools/plotprofile/**
@@ -2203,13 +2203,13 @@ pmdtools/filter:
   - modules/nf-core/pmdtools/filter/**
   - tests/modules/nf-core/pmdtools/filter/**
 
-porechop/porechop:
-  - modules/nf-core/porechop/porechop/**
-  - tests/modules/nf-core/porechop/porechop/**
-
 porechop/abi:
   - modules/nf-core/porechop/abi/**
   - tests/modules/nf-core/porechop/abi/**
+
+porechop/porechop:
+  - modules/nf-core/porechop/porechop/**
+  - tests/modules/nf-core/porechop/porechop/**
 
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
@@ -2802,6 +2802,10 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
+
+subworkflows/vcf_joint_calling_germline_gatk:
+  - subworkflows/nf-core/vcf_joint_calling_germline_gatk/**
+  - tests/subworkflows/nf-core/vcf_joint_calling_germline_gatk/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
