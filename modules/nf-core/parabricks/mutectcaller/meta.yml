@@ -1,0 +1,66 @@
+name: "parabricks_mutectcaller"
+description: NVIDIA Clara Parabricks GPU-accelerated somatic variant calling, replicating GATK Mutect2.
+keywords:
+  - variant
+  - vcf
+  - mutect2
+  - mutect
+  - somatic
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/4.0.0/Documentation/"
+      tool_dev_url: ""
+      doi: ""
+      licence: "custom"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing tumor sample information - id must match read groups for this sample
+        [ id:'test']
+  - fasta:
+      type: file
+      description: reference fasta - must be unzipped
+      pattern: "*.fasta"
+  - tumor_bam:
+      type: file
+      description: bam file for tumor sample
+      pattern: "*.bam"
+  - meta2:
+      type: map
+      description: |
+        Optional groovy Map containing normal sample information - id must match read groups for this sample
+        [ id:'test']
+  - normal_bam:
+      type: file
+      description: bam file for normal sample, used in tumor-normal variant calling
+      pattern: "*.bam"
+  - interval_file:
+      type: file
+      description: file or files containing genomic intervals for use in base quality score recalibration
+      pattern: "*.{bed,interval_list,picard,list,intervals}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: compressed variants file
+      pattern: "*.vcf.gz"
+  - stats:
+      type: dir
+      description: variant statistics
+      pattern: "*.vcf.gz.stats"
+
+authors:
+  - "@bsiranosian"
