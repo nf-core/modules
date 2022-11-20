@@ -3,7 +3,6 @@ process ONCOCNV {
     tag "$tumor_dataset_id"
     label 'process_medium'
 
-    // conda package not yet available
     conda (params.enable_conda ? "bioconda::oncocnv=7.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/oncocnv/v7.0_cv1/oncocnv_v7.0_cv1.sif':
@@ -28,7 +27,7 @@ process ONCOCNV {
     def cghseg = task.ext.cghseg ? 'cghseg' : ''
     def mode = task.mode ?: 'Ampli'
     def normal_bams_input = normal_bams.join(',')
-    def prefix = params.enable_conda ? '' : '/usr/local/bin'
+    def prefix = params.enable_conda ? '$PREFIX/bin' : '/usr/local/bin'
     def tumor_bams_input = tumor_bams.join(',')
     """
     perl ${prefix}/ONCOCNV_getCounts.pl \\
