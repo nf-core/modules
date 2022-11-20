@@ -27,11 +27,10 @@ process ONCOCNV {
     def cghseg = task.ext.cghseg ? 'cghseg' : ''
     def mode = task.mode ?: 'Ampli'
     def normal_bams_input = normal_bams.join(',')
-    def prefix = params.enable_conda ? '/usr/share/miniconda/envs/test/bin' : '/usr/local/bin'
+    def prefix = params.enable_conda ? '' : '/usr/local/bin'
     def tumor_bams_input = tumor_bams.join(',')
     """
-    conda info --envs
-    ls /usr/share/miniconda/envs/*
+    ONCOCNV_getCounts.pl
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
         -m $mode \\
