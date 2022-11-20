@@ -30,7 +30,7 @@ process ONCOCNV {
     def prefix = params.enable_conda ? '/opt/conda/bin' : '/usr/local/bin'
     def tumor_bams_input = tumor_bams.join(',')
     """
-    echo "Conda prefix; $PREFIX"
+    ls /opt
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
         -m $mode \\
