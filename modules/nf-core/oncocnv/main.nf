@@ -30,6 +30,8 @@ process ONCOCNV {
     def prefix = params.enable_conda ? '/usr/share/miniconda/envs/test/bin' : '/usr/local/bin'
     def tumor_bams_input = tumor_bams.join(',')
     """
+    conda info --envs
+    ls /usr/share/miniconda/envs/*
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
         -m $mode \\
