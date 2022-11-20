@@ -9,7 +9,7 @@ process GATK4_FILTERINTERVALS {
 
     input:
     tuple val(meta), path(intervals)
-    path tsv
+    path input
     path annotated_intervals
 
     output:
@@ -23,7 +23,7 @@ process GATK4_FILTERINTERVALS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
-    def tsv_command = tsv ? "--input $tsv" : ""
+    def input_command = input ? "--input $input" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -34,7 +34,7 @@ process GATK4_FILTERINTERVALS {
     """
     gatk --java-options "-Xmx${avail_mem}g" FilterIntervals \\
     $annotated_command \\
-    $tsv_command \\
+    $input_command \\
     --intervals $intervals \\
     --output ${prefix}.interval_list \\
     $args
