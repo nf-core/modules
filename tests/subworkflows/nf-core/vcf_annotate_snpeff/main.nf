@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { VCF_ANNOTATE_SNPEFF } from '../../../../../subworkflows/nf-core/vcf_annotate_snpeff/main'
+include { VCF_ANNOTATE_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_snpeff/main.nf'
 
 workflow vcf_annotate_snpeff {
     input = [
