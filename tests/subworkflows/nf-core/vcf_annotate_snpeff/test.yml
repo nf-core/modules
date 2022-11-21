@@ -1,0 +1,11 @@
+- name: snpeff vcf_annotate_snpeff
+  command: nextflow run ./tests/subworkflows/vcf_annotate_snpeff -entry vcf_annotate_snpeff -c ./tests/config/nextflow.config
+  tags:
+    - subworkflows
+    - subworkflows/vcf_annotate_snpeff
+    # Modules
+    - snpeff
+    - tabix/bgziptabix
+  files:
+    - path: output/annotation/test_snpEff.ann.vcf.gz
+    - path: output/annotation/test_snpEff.ann.vcf.gz.tbi
