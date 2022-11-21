@@ -98,7 +98,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS_PRE ( FASTQTOBAM.out.umibam, aligned_bam, fasta, dict )
+    ZIPPERBAMS_PRE ( FASTQTOBAM.out.bam, aligned_bam, fasta, dict )
     ch_versions = ch_versions.mix(ZIPPERBAMS_PRE.out.versions)
 
     // appropriately tagged reads are now grouped by UMI information
