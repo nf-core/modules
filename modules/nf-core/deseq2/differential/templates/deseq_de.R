@@ -273,7 +273,7 @@ model <- paste(model, opt\$contrast_variable, sep = ' + ')
 if (opt\$control_genes_file != ''){
     control_genes <- readLines(opt\$control_genes_file)
     if (! opt\$sizefactors_from_controls){
-        count_table <- count_table[setdiff(rownames(count_table), control_genes),]
+        count.table <- count.table[setdiff(rownames(count.table), control_genes),]
     }
 }
 

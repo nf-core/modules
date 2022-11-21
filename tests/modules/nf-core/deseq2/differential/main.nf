@@ -79,7 +79,39 @@ workflow test_deseq2_differential_spikes {
             input
         }
 
-    // Make our fake spikes and pretent they're ERCC controls
+    // Make our fake spikes and pretend they're ERCC controls
+
+    spoof_spikes(expression_matrix_file)
+        .map{
+            tuple(['id':'ERCC'], it)
+        }.set{
+            ch_spikes
+        }
+
+    DESEQ2_DIFFERENTIAL (
+        input,
+        ch_spikes
+    )
+}
+
+// Try with spikes as control genes, but stripping rather than using
+
+workflow test_deseq2_differential_strip_spikes {
+
+    expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+    expression_contrasts = file(params.test_data['mus_musculus']['genome']['rnaseq_contrasts'], checkIfExists: true)
+
+    Channel.fromPath(expression_contrasts)
+        .splitCsv ( header:true, sep:',' )
+        .map{
+            tuple(it, expression_sample_sheet, expression_matrix_file)
+        }
+        .set{
+            input
+        }
+
+    // Make our fake spikes and pretend they're ERCC controls
 
     spoof_spikes(expression_matrix_file)
         .map{
