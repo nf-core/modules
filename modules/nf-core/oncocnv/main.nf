@@ -1,5 +1,5 @@
 process ONCOCNV {
-    tag "$tumor_dataset_id"
+    tag "$meta.id"
     label 'process_medium'
 
     conda (params.enable_conda ? "bioconda::oncocnv=7.0" : null)
@@ -8,8 +8,7 @@ process ONCOCNV {
         'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv1' }"
 
     input:
-    tuple val(normal_dataset_id), path(normal_bams), path(normal_bais)
-    tuple val(tumor_dataset_id), path(tumor_bams), path(tumor_bais)
+    tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index)
     path bed
     path fasta
 
@@ -23,24 +22,23 @@ process ONCOCNV {
     task.ext.when == null || task.ext.when
 
     script:
-    def cghseg = task.ext.cghseg ? 'cghseg' : ''
-    def mode = task.mode ?: 'Ampli'
-    def normal_bams_input = normal_bams.join(',')
-    def prefix = params.enable_conda ? '/home/runner/conda_pkgs_dir/oncocnv-7.0-pl5321r42hdfd78af_0/bin' : '/usr/local/bin'
-    def tumor_bams_input = tumor_bams.join(',')
+    def cghseg = task.ext.args2 ?: 'cghseg'
+    def mode = task.ext.args ?: '-m Ampli'
+    def normal = normal.join(',')
+    def tumor = tumor.join(',')
     """
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
-        -m $mode \\
+        $mode \\
         -b ${bed} \\
-        -c $normal_bams_input \\
+        -c $normal \\
         -o ControlStats.txt
 
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getSampleStats \\
-        -m $mode \\
+        $mode \\
         -c ControlStats.txt \\
-        -s $tumor_bams_input \\
+        -s $tumor \\
         -o SampleStats.txt
 
     cat ControlStats.txt \\
@@ -62,7 +60,7 @@ process ONCOCNV {
     cat ${prefix}/processSamples.R \\
         | R \\
         --slave \\
-        --args SampleStats.txt ControlStatsProcessed.txt Output.log ${cghseg}
+        --args SampleStats.txt ControlStatsProcessed.txt Output.log $cghseg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

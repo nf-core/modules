@@ -14,29 +14,24 @@ tools:
       licence: "GPL-3.0-or-later"
 
 input:
-  - normal_dataset_id:
-      type: string
+  - meta:
+      type: map
       description: |
-        Dataset id for normal samples
-        e.g. 'normal_samples'
-  - normal_bams:
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - normal:
       type: file
       description: BAM files
       pattern: "*.bam"
-  - normal_bais:
+  - normal_index:
       type: file
       description: BAM file indices
       pattern: "*.bam.bai"
-  - tumor_dataset_id:
-      type: string
-      description: |
-        Dataset id for tumor samples
-        e.g. 'tumor_samples'
-  - tumor_bams:
+  - tumor:
       type: file
       description: BAM files
       pattern: "*.bam"
-  - tumor_bais:
+  - tumor_index:
       type: file
       description: BAM file indices
       pattern: "*.bam.bai"
