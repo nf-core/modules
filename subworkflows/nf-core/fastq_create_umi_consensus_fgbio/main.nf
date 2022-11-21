@@ -76,7 +76,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
+        BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM_PRE.out.versions)
         aligned_bam = BWAMEM1_MEM_PRE.out.bam
     } else {
@@ -91,7 +91,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM2_MEM_PRE ( BAM2FASTQ_PRE.out.reads, bwaindex, false )
+        BWAMEM2_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM2_MEM_PRE.out.versions)
         aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
@@ -145,12 +145,12 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     if (aligner == "bwa-mem") {
         // index made available through previous steps
-        BWAMEM1_MEM_POST ( BAM2FASTQ_POST.out.reads, bwaindex, false )
+        BWAMEM1_MEM_POST ( BAM2FASTQ_POST.out.fastq, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM_POST.out.versions)
         aligned_bam_post = BWAMEM1_MEM_POST.out.bam
     } else {
         // index made available through previous steps
-        BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.reads, bwaindex, false )
+        BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.fastq, bwaindex, false )
         ch_versions = ch_versions.mix(BWAMEM2_MEM_POST.out.versions)
         aligned_bam_post = BWAMEM2_MEM.out.bam
     }
