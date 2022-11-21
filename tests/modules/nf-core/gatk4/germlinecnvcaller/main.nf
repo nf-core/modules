@@ -10,11 +10,8 @@ include { UNTAR } from '../../../../../modules/nf-core/untar/main.nf'
 include { GATK4_GERMLINECNVCALLER } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
 
 workflow test_gatk4_germlinecnvcaller_cohort {
-    //gc_filtered_intervals = file('/mnt/lennart/bnf/dev/ryan/nf-core/test-datasets/data/genomics/homo_sapiens/genome/genome.filtered_intervals.interval_list', checkIfExists: true)
-    //intervals = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
-    intervals = file('/mnt/lennart/bnf/dev/ryan/nf-core/test-datasets/data/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
-    //bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
-    bed = Channel.of(file('/mnt/lennart/bnf/dev/ryan/nf-core/test-datasets/data/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true))
+    intervals = file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
+    bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
     priors =  file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
     inputs = Channel.of([
         [ id:'test1' ], // meta map
