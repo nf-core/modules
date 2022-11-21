@@ -65,7 +65,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = 8)
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
 
     # Convert columns back to numeric
 
