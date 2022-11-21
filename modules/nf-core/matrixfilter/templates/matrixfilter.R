@@ -104,8 +104,15 @@ abundance_matrix <- read_delim_flexible(opt\$abundance_matrix_file, row.names = 
 # Read the sample sheet and check against matrix
 
 samplesheet <- read_delim_flexible(opt\$sample_file, row.names = 1)
-if (any(! rownames(samplesheet) %in% colnames(abundance_matrix))){
-    stop('Not all sample sheet rows represented in supplied abundance matrix')
+missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
+
+if (length(missing_samples) > 0){
+    stop(
+         paste(
+               paste(missing_samples, collapse = ', '),
+               'not represented in supplied abundance matrix'
+         )
+    )
 }else{
     abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
 }
