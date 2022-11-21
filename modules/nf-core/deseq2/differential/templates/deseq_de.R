@@ -60,7 +60,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 #'
 #' @return output Data frame
 
-round_dataframe_columns <- function(df, columns = NULL, digits = 7){
+round_dataframe_columns <- function(df, columns = NULL, digits = 6){
     if (is.null(columns)){
         columns <- colnames(df)
     }
