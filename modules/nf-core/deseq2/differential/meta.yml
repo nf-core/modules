@@ -31,6 +31,14 @@ input:
         calls at the pipeline level e.g. [ variable:'treatment', reference:'treated',
         control:'saline', blocking:'' ] passed in as ext.args like: '--reference_level
         $meta.reference --treatment_level $meta.target'
+  - control_genes:
+      type: file
+      description: |
+        Text file listing control genes, one per line
+  - control_genes_meta:
+      type: file
+      description: |
+        Meta map describing control genes, e.g. [ id: 'ERCC' ]
 
 output:
   - results:
