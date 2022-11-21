@@ -95,6 +95,7 @@ opt <- list(
     reference_level = NULL,
     treatment_level = NULL,
     blocking_variables = NULL,
+    control_genes_file = '$control_genes_file',
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -273,6 +274,12 @@ dds <- DESeqDataSetFromMatrix(
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+if (opt\$control_genes_file != ''){
+    control_genes <- readLines(opt\$control_genes_file)
+    print(paste('Estimating size factors using', length(control_genes), 'control genes'))
+    dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
+}
 
 dds <- DESeq(
     dds,

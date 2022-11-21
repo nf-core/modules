@@ -9,6 +9,7 @@ process DESEQ2_DIFFERENTIAL {
 
     input:
     tuple val(meta), path(samplesheet), path(counts)
+    tuple val(control_genes_meta), path(control_genes_file) 
 
     output:
     tuple val(meta), path("*.deseq2.results.tsv")              , emit: results

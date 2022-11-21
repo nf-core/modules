@@ -1,8 +1,8 @@
 - name: deseq2 differential test_deseq2_differential
   command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
   tags:
-    - deseq2
     - deseq2/differential
+    - deseq2
   files:
     - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
       md5sum: 86f0312a4691dfb4d7c15643059d8fb8
@@ -21,11 +21,36 @@
     - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
       md5sum: 1077cf03a8c6a155932eaaed7415b74c
 
+- name: deseq2 differential test_deseq2_differential_spikes
+  command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_spikes -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
+  tags:
+    - deseq2/differential
+    - deseq2
+  files:
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
+      md5sum: 150a32eef482244b47ddc7f7ffb1ad2a
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.sizefactors.tsv
+      md5sum: 1708374146b4e8c28fbc78fa292102cd
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.normalised_counts.tsv
+      md5sum: 1c9c7ee4ca90ff0d91ae16dbfd64fdc9
+    - path: output/deseq2/treatment-mCherry-hND6-sample_number.rlog.tsv
+      md5sum: c28300837df9ca6adeba2a52ea5e181e
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.results.tsv
+      md5sum: 88b3230c5a4ad8717c1d0b38c824f1fc
+    - path: output/deseq2/treatment-mCherry-hND6.deseq2.sizefactors.tsv
+      md5sum: 1708374146b4e8c28fbc78fa292102cd
+    - path: output/deseq2/treatment-mCherry-hND6.normalised_counts.tsv
+      md5sum: 1c9c7ee4ca90ff0d91ae16dbfd64fdc9
+    - path: output/deseq2/treatment-mCherry-hND6.rlog.tsv
+      md5sum: c28300837df9ca6adeba2a52ea5e181e
+    - path: output/spoof/spikes.txt
+      md5sum: 8bd8a80b4616fc0a68f69bee6869c8bc
+
 - name: deseq2 differential test_deseq2_differential_csv
   command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_csv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
   tags:
-    - deseq2
     - deseq2/differential
+    - deseq2
   files:
     - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
       md5sum: 86f0312a4691dfb4d7c15643059d8fb8
@@ -49,8 +74,8 @@
 - name: deseq2 differential test_deseq2_differential_vst_nsub
   command: nextflow run ./tests/modules/nf-core/deseq2/differential -entry test_deseq2_differential_vst_nsub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deseq2/differential/nextflow.config
   tags:
-    - deseq2
     - deseq2/differential
+    - deseq2
   files:
     - path: output/deseq2/treatment-mCherry-hND6-sample_number.deseq2.results.tsv
       md5sum: 86f0312a4691dfb4d7c15643059d8fb8
