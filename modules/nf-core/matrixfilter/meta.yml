@@ -21,7 +21,9 @@ input:
   - abundance:
       type: file
       description: |
-        Raw TSV or CSV format expression matrix as output from the nf-core RNA-seq workflow
+        Raw TSV or CSV format expression abundance matrix with features (e.g.
+        genes) by row and observations (e.g. samples) by column. All rowsnames
+        from the sample sheet should be present in the columns.
   - minimum_abundance:
       type: numeric
       description: |
@@ -30,21 +32,24 @@ input:
   - minimum_samples:
       type: numeric
       description: |
-        Minimum samples that must pass the threshold to retain the row/ feature
-        (e.g. gene). Supplied via task.ext.args as --minimum_samples
+        Minimum observations that must pass the threshold to retain
+        the row/ feature (e.g. gene). Supplied via task.ext.args as
+        --minimum_samples
       default: 1
   - minimum_proportion:
       type: numeric
       description: |
-        A minimum proportion of samples that must pass the threshold. Supplied
-        via task.ext.args as --minimum_proportion. Overrides minimum_samples
+        A minimum proportion of observations that must pass the threshold.
+        Supplied via task.ext.args as --minimum_proportion. Overrides
+        minimum_samples
       default: 0
   - grouping_variable:
       type: string
-      description: Supply a variable from the sample sheet that can be used to define
+      description: |
+        Supply a variable from the sample sheet that can be used to define
         groups and derive a minimum group size upon which to base minimum
-        sample numbers. The rationale being to allow retention of features that
-        might be present in only one group. Supplied via task.ext.args as
+        observation numbers. The rationale being to allow retention of features
+        that might be present in only one group. Supplied via task.ext.args as
         --grouping_variable
 
 output:
