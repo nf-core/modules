@@ -108,10 +108,10 @@ missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
 
 if (length(missing_samples) > 0){
     stop(
-         paste(
-               paste(missing_samples, collapse = ', '),
-               'not represented in supplied abundance matrix'
-         )
+        paste(
+            paste(missing_samples, collapse = ', '),
+            'not represented in supplied abundance matrix'
+        )
     )
 }else{
     abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
