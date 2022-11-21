@@ -4,8 +4,8 @@ process ONCOCNV {
 
     conda (params.enable_conda ? "bioconda::oncocnv=7.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/oncocnv/v7.0_cv1/oncocnv_v7.0_cv1.sif':
-        'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv1' }"
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/oncocnv/v7.0_cv2/oncocnv_v7.0_cv2.sif':
+        'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv2' }"
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index)
@@ -27,14 +27,14 @@ process ONCOCNV {
     def normal = normal.join(',')
     def tumor = tumor.join(',')
     """
-    perl ${prefix}/ONCOCNV_getCounts.pl \\
+    perl \$(which ONCOCNV_getCounts.pl) \\
         getControlStats \\
         $mode \\
         -b ${bed} \\
         -c $normal \\
         -o ControlStats.txt
 
-    perl ${prefix}/ONCOCNV_getCounts.pl \\
+    perl \$(which ONCOCNV_getCounts.pl) \\
         getSampleStats \\
         $mode \\
         -c ControlStats.txt \\
@@ -46,18 +46,18 @@ process ONCOCNV {
         | awk '{print \$1,\$2,\$3}' \\
         | sed "s/ /\t/g" > target.bed
 
-    perl ${prefix}/createTargetGC.pl \\
+    perl \$(which createTargetGC.pl) \\
         -bed target.bed \\
         -fi ${fasta} \\
         -od . \\
         -of TargetGC.txt
 
-    cat ${prefix}/processControl.R \\
+    cat \$(which processControl.R) \\
         | R \\
         --slave \\
         --args ControlStats.txt ControlStatsProcessed.txt TargetGC.txt
 
-    cat ${prefix}/processSamples.R \\
+    cat \$(which processSamples.R) \\
         | R \\
         --slave \\
         --args SampleStats.txt ControlStatsProcessed.txt Output.log $cghseg
