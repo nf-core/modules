@@ -13,10 +13,10 @@ process ONCOCNV {
     path fasta
 
     output:
-    tuple path("*.profile.png")  ,emit: png
-    tuple path("*.profile.txt")  ,emit: profile
-    tuple path("*.summary.txt")  ,emit: summary
-    path "versions.yml"          ,emit: versions
+    tuple val(meta), path("*.profile.png")  ,emit: png
+    tuple val(meta), path("*.profile.txt")  ,emit: profile
+    tuple val(meta), path("*.summary.txt")  ,emit: summary
+    path "versions.yml"                     ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
