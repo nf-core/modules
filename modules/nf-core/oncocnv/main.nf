@@ -27,10 +27,9 @@ process ONCOCNV {
     def cghseg = task.ext.cghseg ? 'cghseg' : ''
     def mode = task.mode ?: 'Ampli'
     def normal_bams_input = normal_bams.join(',')
-    def prefix = params.enable_conda ? '' : '/usr/local/bin'
+    def prefix = params.enable_conda ? '/home/runner/conda_pkgs_dir/oncocnv-7.0-pl5321r42hdfd78af_0/bin' : '/usr/local/bin'
     def tumor_bams_input = tumor_bams.join(',')
     """
-    find /home -name "ONCOCNV_getCounts.pl"
     perl ${prefix}/ONCOCNV_getCounts.pl \\
         getControlStats \\
         -m $mode \\
