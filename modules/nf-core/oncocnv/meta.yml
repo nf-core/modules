@@ -14,30 +14,58 @@ tools:
       licence: "GPL-3.0-or-later"
 
 input:
-  - meta:
-      type: map
+  - normal_dataset_id:
+      type: string
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
+        Dataset id for normal samples
+        e.g. 'normal_samples'
+  - normal_bams:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM files
+      pattern: "*.bam"
+  - normal_bais:
+      type: file
+      description: BAM file indices
+      pattern: "*.bam.bai"
+  - tumor_dataset_id:
+      type: string
+      description: |
+        Dataset id for tumor samples
+        e.g. 'tumor_samples'
+  - tumor_bams:
+      type: file
+      description: BAM files
+      pattern: "*.bam"
+  - tumor_bais:
+      type: file
+      description: BAM file indices
+      pattern: "*.bam.bai"
+  - bed:
+      type: file
+      description: annotated BED file containing target regions
+      pattern: "*.bed"
+  - fasta:
+      type: file
+      description: genome FASTA file
+      pattern: "*.fasta"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - png:
+      type: file
+      description: PNG file containing profile plot
+      pattern: "*.profile.png"
+  - profile:
+      type: file
+      description: TXT file containing profile data
+      pattern: "*.profile.txt"
+  - summary:
+      type: file
+      description: TXT file containing summarized data
+      pattern: "*.summary.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@marrip"
