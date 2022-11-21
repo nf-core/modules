@@ -8,25 +8,25 @@ workflow test_parabricks_haplotypecaller {
     
     input = [
         [ id:'test'],
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/Ref/chr1/Homo_sapiens_assembly38.fasta", checkIfExists: true),
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/nf-core-files/test.bam")
-        
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+        [],
+        []
     ]
-
-    PARABRICKS_HAPLOTYPECALLER ( input, interval_file=[] )
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    
+    PARABRICKS_HAPLOTYPECALLER ( input, fasta )
 }
 
 workflow test_parabricks_haplotypecaller_intervals {
     
     input = [
         [ id:'test'],
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/Ref/chr1/Homo_sapiens_assembly38.fasta", checkIfExists: true),
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/nf-core-files/test.bam")
-    ]
-    interval_file = [
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/Ref/chr1/intervals_1.bed", checkIfExists: true),
-        file("/home/bsiranos/parabricks_demo/parabricks_sample/Ref/chr1/intervals_2.bed", checkIfExists: true)
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)      
     ]
 
-    PARABRICKS_HAPLOTYPECALLER ( input, interval_file=interval_file )
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+
+    PARABRICKS_HAPLOTYPECALLER ( input, fasta )
 }

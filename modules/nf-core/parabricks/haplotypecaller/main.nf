@@ -16,8 +16,13 @@ process PARABRICKS_HAPLOTYPECALLER {
     // container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
-    tuple val(meta), path(fasta), path(bam)
-    path interval_file
+    tuple val(meta), path(input), path(input_index), path(interval_file)
+    path  fasta
+
+    // path  fai
+    // path  dict
+    // path  dbsnp
+    // path  dbsnp_tbi
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -30,11 +35,14 @@ process PARABRICKS_HAPLOTYPECALLER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def copy_index_command = input_index ? "cp -L $input_index `readlink -f $input`.bai" : ""
     """
+    $copy_index_command
+
     pbrun \\
         haplotypecaller \\
         --ref $fasta \\
-        --in-bam $bam \\
+        --in-bam $input \\
         --out-variants ${prefix}.vcf \\
         $interval_file_command \\
         --num-gpus $task.accelerator.request \\

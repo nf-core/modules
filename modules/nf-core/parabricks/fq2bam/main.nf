@@ -16,7 +16,9 @@ process PARABRICKS_FQ2BAM {
     container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
-    tuple val(meta), path(reads), path(index)
+    tuple val(meta), path(reads)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(index)
     path known_sites
     path interval_file
     val markdups
@@ -45,18 +47,19 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    # index and fasta need to be in the same dir as files and not symlinks
+    # and have the same base name for pbrun to function
+    cp \$INDEX.amb ${fasta}.amb 
+    cp \$INDEX.ann ${fasta}.ann 
+    cp \$INDEX.bwt ${fasta}.bwt 
+    cp \$INDEX.pac ${fasta}.pac 
+    cp \$INDEX.sa ${fasta}.sa 
+    cp -L $fasta ${fasta}2
+    mv ${fasta}2 $fasta
 
-    # args: 
-    # --num-gpus NUM_GPUS 
-    # --out-qc-metrics-dir OUT_QC_METRICS_DIR
-    # --bwa-options BWA_OPTIONS
-    # -L INTERVAL, --interval INTERVAL
-    echo $meta
-    echo $index
-    echo \$INDEX
     pbrun \\
         fq2bam \\
-        --ref \$INDEX \\
+        --ref $fasta \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\

@@ -16,11 +16,12 @@ process PARABRICKS_APPLYBQSR {
     container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
-    tuple val(meta), path(bam), path(fasta), path(recal_file)
-    path interval_file
+    tuple val(meta), path(input), path(input_index), path(bqsr_table), path(interval_file)
+    path  fasta
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai
     path "versions.yml", emit: versions
 
     when:
@@ -30,14 +31,19 @@ process PARABRICKS_APPLYBQSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def copy_index_command = input_index ? "cp -L $input_index `readlink -f $input`.bai" : ""
     """
+    # parabricks complains when index is not a regular file in the same directory as the bam
+    # copy the index to this path. 
+    $copy_index_command
+
     pbrun \\
         applybqsr \\
         --ref $fasta \\
-        --in-bam $bam \\
-        --in-recal-file $recal_file \\
+        --in-bam $input \\
+        --in-recal-file $bqsr_table \\
         $interval_file_command \\
-        --out-bam ${prefix}_bqsr.bam \\
+        --out-bam ${prefix}.bam \\
         --num-threads $task.cpus \\
         --num-gpus $task.accelerator.request \\
         $args
@@ -49,3 +55,4 @@ process PARABRICKS_APPLYBQSR {
     """
 }
 
+// TODO: limit to 2 gpus (applybqsr won't use more than 2, according to the documentation)

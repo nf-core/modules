@@ -16,9 +16,10 @@ process PARABRICKS_MUTECTCALLER {
     // container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
-    tuple val(meta), path(fasta), path(tumor_bam)
-    tuple val(meta2), path(normal_bam)
-    path interval_file
+    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(intervals)
+    tuple val(meta2), path(normal_bam), path(normal_bam_index) 
+    path fasta
+    path panel_of_normals
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -31,9 +32,17 @@ process PARABRICKS_MUTECTCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def normal_bam_command = normal_bam ? "--in-normal-bam $normal_bam --normal-name $meta2.id" : ""
-    def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def normal_bam_command = normal_bam ? "--in-normal-bam $normal_bam --normal-name $meta.normal_id" : ""
+    def interval_file_command = intervals ? intervals.collect{"--interval-file $it"}.join(' ') : ""
+    def copy_tumor_index_command = tumor_bam_index ? "cp -L $tumor_bam_index `readlink -f $tumor_bam`.bai" : ""
+    def copy_normal_index_command = normal_bam_index ? "cp -L $normal_bam_index `readlink -f $normal_bam`.bai" : ""
+    def pon_command = panel_of_normals ? "--pon $panel_of_normals" : ""
     """
+    # parabricks complains when index is not a regular file in the same directory as the bam
+    # copy the index to this path. 
+    $copy_tumor_index_command
+    $copy_normal_index_command
+
     pbrun \\
         mutectcaller \\
         --ref $fasta \\
@@ -53,5 +62,7 @@ process PARABRICKS_MUTECTCALLER {
 }
 
 // TODO
-// panel of normals features
-// additional mutect arguments
+// * panel of normals features
+// * additional mutect arguments
+// * some detection or additional help for the fact that the names specified on --tumor-name 
+//     and --normal-name MUST be the same as the sample name specified in the readgroups.
