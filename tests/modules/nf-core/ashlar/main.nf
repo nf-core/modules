@@ -9,26 +9,53 @@ include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' 
 
 def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
 // def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
+def TEST_SHEET = './input_sheet.csv'
 
 workflow test_ashlar {
 
     println 'running workflow test_ashlar'
 
     /*
-    // TO DO: test with input sample sheet like the following
     input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)=
-    ASHLAR ( input )
+    input_channel = Channel.fromList [ input ]
+    ASHLAR ( input_channel )
     */
 
-    input_channel = Channel.fromPath( TEST_IMG )
-    //input_channel = Channel.fromPath( params.file_in )
+    input_list =  [ [ [ id:'test', args: '--flip-y' ],
+               file(TEST_IMG, checkIfExists: true) ] ]
+    input_channel = Channel.fromList(input_list)
 
-    //ASHLAR ( file('/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff') )
-
-    input =  [ [ id:'test', args: '--flip-y' ],
-               file(TEST_IMG, checkIfExists: true) ]
-
-    ASHLAR ( input )
+    ASHLAR ( input_channel )
 }
 
-// can add additional test workflows below
+// we can add additional test workflows below
+/*
+include { SAMPLESHEET_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check'
+
+workflow test_ashlar_sheet {
+
+    INPUT_CHECK (
+        TEST_SHEET
+    )
+    .input_images
+    .map {
+        meta, fastq ->
+            def meta_clone = meta.clone()
+            meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
+            [ meta_clone, fastq ]
+    }
+    .groupTuple(by: [0])
+    .branch {
+        meta, fastq ->
+            single  : fastq.size() == 1
+                return [ meta, fastq.flatten() ]
+            multiple: fastq.size() > 1
+                return [ meta, fastq.flatten() ]
+    }
+    .set { ch_fastq }
+
+    // pass meta map of each row of samplesheet to ASHLAR
+
+    ASHLAR ( )
+}
+*/
