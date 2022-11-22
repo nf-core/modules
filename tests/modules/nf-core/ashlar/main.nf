@@ -9,7 +9,7 @@ include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' 
 
 def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
 // def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
-def TEST_SHEET = './input_sheet.csv'
+def TEST_SHEET = '/home/pollen/github/modules/tests/modules/nf-core/ashlar/input_sheet.csv'
 
 workflow test_ashlar {
 
@@ -29,33 +29,34 @@ workflow test_ashlar {
 }
 
 // we can add additional test workflows below
-/*
-include { SAMPLESHEET_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check'
+
+include { INPUT_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check.nf'
 
 workflow test_ashlar_sheet {
+
+    /*
+    INPUT_CHECK (
+        TEST_SHEET
+    )
+    .images
+    .map {
+        [ [ id:it.id, args: it.args],
+            file(it.file_list, checkIfExists: true) ]
+    }
+    .set { input_maps }
+
+    ASHLAR ( input_maps )
+    */
 
     INPUT_CHECK (
         TEST_SHEET
     )
-    .input_images
+    .images
     .map {
-        meta, fastq ->
-            def meta_clone = meta.clone()
-            meta_clone.id = meta_clone.id.split('_')[0..-2].join('_')
-            [ meta_clone, fastq ]
+        [ [ id:it.id, args: it.args],
+            file(it.file_list, checkIfExists: true) ]
     }
-    .groupTuple(by: [0])
-    .branch {
-        meta, fastq ->
-            single  : fastq.size() == 1
-                return [ meta, fastq.flatten() ]
-            multiple: fastq.size() > 1
-                return [ meta, fastq.flatten() ]
-    }
-    .set { ch_fastq }
+    .view { "$it" }
 
-    // pass meta map of each row of samplesheet to ASHLAR
-
-    ASHLAR ( )
 }
-*/
+
