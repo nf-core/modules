@@ -1,6 +1,6 @@
 process MATRIXFILTER {
     tag "$meta"
-    label 'process_medium'
+    label 'process_single'
     conda (params.enable_conda ? "r-base" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-base:4.2.1' :
