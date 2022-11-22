@@ -42,7 +42,18 @@ process GATK4_GERMLINECNVCALLER {
         $args \\
         $intervals_command \\
         $model_command
-    tar -czvf cnv_calls.tar.gz cnv_calls
+    tar -czvf ${prefix}.tar.gz cnv_calls
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tar.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
