@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MATRIXFILTER } from '../../../../../modules/nf-core/custom/matrixfilter/main.nf'
+include { CUSTOM_MATRIXFILTER } from '../../../../../modules/nf-core/custom/matrixfilter/main.nf'
 
 empty_samplesheet = [[],[]]
 
@@ -12,7 +12,7 @@ workflow test_custom_matrixfilter {
 
     ch_samples_matrix = [ [ "id":"SRP254919" ], expression_matrix_file ]
     
-    MATRIXFILTER(
+    CUSTOM_MATRIXFILTER(
         ch_samples_matrix,
         empty_samplesheet
     )
@@ -24,7 +24,7 @@ workflow test_custom_matrixfilter_prop {
 
     ch_samples_matrix = [ [ "id":"SRP254919" ], expression_matrix_file ]
     
-    MATRIXFILTER(
+    CUSTOM_MATRIXFILTER(
         ch_samples_matrix,
         empty_samplesheet
     )
@@ -38,7 +38,7 @@ workflow test_custom_matrixfilter_group {
     ch_samples_matrix = [ [ "id":"SRP254919" ], expression_matrix_file ]
     ch_samplesheet = [ [ "id":"SRP254919" ], expression_sample_sheet ]    
 
-    MATRIXFILTER(
+    CUSTOM_MATRIXFILTER(
         ch_samples_matrix,
         ch_samplesheet
     )

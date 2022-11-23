@@ -1,4 +1,4 @@
-process MATRIXFILTER {
+process CUSTOM_MATRIXFILTER {
     tag "$meta"
     label 'process_single'
     conda (params.enable_conda ? "r-base" : null)
