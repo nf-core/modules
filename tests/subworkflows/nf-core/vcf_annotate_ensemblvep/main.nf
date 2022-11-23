@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { ANNOTATION_ENSEMBLVEP } from '../../../../../subworkflows/nf-core/annotation/ensemblvep/main'
+include { ANNOTATION_ENSEMBLVEP } from '../../../../subworkflows/nf-core/vcf_annotate_ensemblvep/main.nf'
 
 workflow annotation_ensemblvep {
     input = [
@@ -10,5 +10,5 @@ workflow annotation_ensemblvep {
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    ANNOTATION_ENSEMBLVEP ( input, "WBcel235", "caenorhabditis_elegans", "104", [], [] )
+    ANNOTATION_ENSEMBLVEP ( input, [], "WBcel235", "caenorhabditis_elegans", "104", [], [] )
 }
