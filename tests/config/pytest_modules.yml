@@ -2735,6 +2735,10 @@ subworkflows/bcl_demultiplex:
   - subworkflows/nf-core/bcl_demultiplex/**
   - tests/subworkflows/nf-core/bcl_demultiplex/**
 
+subworkflows/bed_scatter_bedtools:
+  - subworkflows/nf-core/bed_scatter_bedtools/**
+  - tests/subworkflows/nf-core/bed_scatter_bedtools/**
+
 subworkflows/bedgraph_bedclip_bedgraphtobigwig:
   - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
   - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
@@ -2795,13 +2799,13 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
   - subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
   - tests/subworkflows/nf-core/gatk_tumor_only_somatic_variant_calling/**
 
-subworkflows/vcf_annotate_snpeff:
-  - subworkflows/nf-core/vcf_annotate_snpeff/**
-  - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
-
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
+
+subworkflows/vcf_annotate_snpeff:
+  - subworkflows/nf-core/vcf_annotate_snpeff/**
+  - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**

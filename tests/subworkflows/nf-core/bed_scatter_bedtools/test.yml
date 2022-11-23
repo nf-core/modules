@@ -1,0 +1,43 @@
+- name: bed_scatter_bedtools test_bed_scatter_bedtools_bed
+  command: nextflow run ./tests/subworkflows/nf-core/bed_scatter_bedtools -entry test_bed_scatter_bedtools_bed -c ./tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools/split
+    - gawk
+    - subworkflows
+    - subworkflows/bed_scatter_bedtools
+  files:
+    - path: output/bedtools/test.00001.bed
+      md5sum: 03caf952e9297a54620d2bbba8dc2823
+    - path: output/bedtools/test.00002.bed
+      md5sum: d58e5e46c2fcc3b8be5db0f023e93cb5
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
+
+- name: bed_scatter_bedtools test_bed_scatter_bedtools_no_bed
+  command: nextflow run ./tests/subworkflows/nf-core/bed_scatter_bedtools -entry test_bed_scatter_bedtools_no_bed -c ./tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools/split
+    - gawk
+    - subworkflows
+    - subworkflows/bed_scatter_bedtools
+  files:
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
+
+- name: bed_scatter_bedtools test_bed_scatter_bedtools_mixed
+  command: nextflow run ./tests/subworkflows/nf-core/bed_scatter_bedtools -entry test_bed_scatter_bedtools_mixed -c ./tests/config/nextflow.config
+  tags:
+    - bedtools
+    - bedtools/split
+    - gawk
+    - subworkflows
+    - subworkflows/bed_scatter_bedtools
+  files:
+    - path: output/bedtools/test2.00001.bed
+      md5sum: 03caf952e9297a54620d2bbba8dc2823
+    - path: output/bedtools/test2.00002.bed
+      md5sum: d58e5e46c2fcc3b8be5db0f023e93cb5
+    - path: output/gawk/fasta_fai.bed
+      md5sum: 87a15eb9c2ff20ccd5cd8735a28708f7
