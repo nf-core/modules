@@ -162,9 +162,14 @@ keep <- apply(abundance_matrix, 1, function(x){
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
 
+prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
-    file = paste0(tools::file_path_sans_ext(basename(opt\$abundance_matrix_file), compression = FALSE), '.filtered.tsv'),
+    file = paste0(
+        prefix,
+        '.filtered.tsv'
+    ),
     col.names = c(feature_id_name, colnames(abundance_matrix)),
     row.names = FALSE,
     sep = '\t',
