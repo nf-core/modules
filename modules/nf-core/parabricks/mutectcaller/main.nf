@@ -1,8 +1,8 @@
 process PARABRICKS_MUTECTCALLER {
-    tag "$meta.id"
+    tag "$meta.tumor_id"
     label 'process_high'
     memory "30 GB"
-    cpus 16
+    cpus 8
     accelerator 1
 
     if (params.enable_conda) {
@@ -16,10 +16,11 @@ process PARABRICKS_MUTECTCALLER {
     // container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
-    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(intervals)
+    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(interval_file)
     tuple val(meta2), path(normal_bam), path(normal_bam_index) 
     path fasta
     path panel_of_normals
+    path panel_of_normals_index
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -31,17 +32,21 @@ process PARABRICKS_MUTECTCALLER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def normal_bam_command = normal_bam ? "--in-normal-bam $normal_bam --normal-name $meta.normal_id" : ""
-    def interval_file_command = intervals ? intervals.collect{"--interval-file $it"}.join(' ') : ""
+    def prefix = task.ext.prefix ?: "${meta.tumor_id}"
+    def normal_bam_command = normal_bam ? "--in-normal-bam $normal_bam --normal-name ${meta2.normal_id}" : ""
+    def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def copy_tumor_index_command = tumor_bam_index ? "cp -L $tumor_bam_index `readlink -f $tumor_bam`.bai" : ""
     def copy_normal_index_command = normal_bam_index ? "cp -L $normal_bam_index `readlink -f $normal_bam`.bai" : ""
     def pon_command = panel_of_normals ? "--pon $panel_of_normals" : ""
+    def pre_pon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     """
     # parabricks complains when index is not a regular file in the same directory as the bam
     # copy the index to this path. 
     $copy_tumor_index_command
     $copy_normal_index_command
+
+    # generate pon index file, in panel_of_normals is specified
+    $pre_pon_command
 
     pbrun \\
         mutectcaller \\
@@ -51,6 +56,7 @@ process PARABRICKS_MUTECTCALLER {
         --tumor-name ${prefix} \\
         --out-vcf ${prefix}.vcf.gz \\
         $interval_file_command \\
+        $pon_command \\
         --num-gpus $task.accelerator.request \\
         $args
 

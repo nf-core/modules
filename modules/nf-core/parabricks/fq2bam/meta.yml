@@ -59,6 +59,10 @@ output:
       type: file
       description: Sorted BAM file
       pattern: "*.bam"
+  - bai:
+      type: file
+      description: index corresponding to sorted BAM file
+      pattern: "*.bai"
   - qc_metrics:
       type: dir
       description: optional directory of qc metrics

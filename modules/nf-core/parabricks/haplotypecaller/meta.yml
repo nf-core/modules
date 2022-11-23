@@ -20,18 +20,22 @@ input:
       description: |
         Groovy Map containing tumor sample information - id must match read groups for this sample
         [ id:'test']
-  - fasta:
-      type: file
-      description: reference fasta - must be unzipped
-      pattern: "*.fasta"
-  - bam:
+  - input:
       type: file
       description: bam file for sample to be variant called
       pattern: "*.bam"
+  - input_index:
+      type: file
+      description: bai index corresponding to input bam file. Only necessary when using intervals
+      pattern: "*.bai"
   - interval_file:
       type: file
       description: file or files containing genomic intervals for use in base quality score recalibration
       pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - fasta:
+      type: file
+      description: reference fasta - must be unzipped
+      pattern: "*.fasta"
 
 output:
   - meta:

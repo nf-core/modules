@@ -2,7 +2,7 @@ process PARABRICKS_DEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
     memory "30 GB"
-    cpus 16
+    cpus 8
     accelerator 1
 
     if (params.enable_conda) {

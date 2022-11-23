@@ -2,7 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
     memory "30 GB"
-    cpus 16
+    cpus 8
     accelerator 1
 
     if (params.enable_conda) {
@@ -12,8 +12,8 @@ process PARABRICKS_FQ2BAM {
         exit 1, "Singularity containers cannot be used with Parabricks at the moment. Please use a Docker container."
     }
 
-    // container "nvcr.io/nvidia/clara/clara-parabricks:4.0.0-1"
-    container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.0-1"
+    // container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
     tuple val(meta), path(reads)
@@ -26,6 +26,7 @@ process PARABRICKS_FQ2BAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai
     path "versions.yml", emit: versions
     path "qc_metrics", optional:true, emit: qc_metrics
     path("*.table"), optional:true, emit: bqsr_table
@@ -49,13 +50,13 @@ process PARABRICKS_FQ2BAM {
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
     # index and fasta need to be in the same dir as files and not symlinks
     # and have the same base name for pbrun to function
-    cp \$INDEX.amb ${fasta}.amb 
-    cp \$INDEX.ann ${fasta}.ann 
-    cp \$INDEX.bwt ${fasta}.bwt 
-    cp \$INDEX.pac ${fasta}.pac 
-    cp \$INDEX.sa ${fasta}.sa 
-    cp -L $fasta ${fasta}2
-    mv ${fasta}2 $fasta
+    # here we copy the index into the staging dir of fasta
+    FASTA_PATH=`readlink -f $fasta`
+    cp \$INDEX.amb \$FASTA_PATH.amb 
+    cp \$INDEX.ann \$FASTA_PATH.ann 
+    cp \$INDEX.bwt \$FASTA_PATH.bwt 
+    cp \$INDEX.pac \$FASTA_PATH.pac 
+    cp \$INDEX.sa \$FASTA_PATH.sa 
 
     pbrun \\
         fq2bam \\

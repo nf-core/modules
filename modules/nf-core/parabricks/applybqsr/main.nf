@@ -12,8 +12,8 @@ process PARABRICKS_APPLYBQSR {
         exit 1, "Singularity containers cannot be used with Parabricks at the moment. Please use a Docker container."
     }
 
-    // container "nvcr.io/nvidia/clara/clara-parabricks:4.0.0-1"
-    container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.0-1"
+    // container "645946264134.dkr.ecr.us-west-2.amazonaws.com/clara-parabricks:4.0.0-1"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(interval_file)

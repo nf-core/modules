@@ -1,12 +1,17 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml parabricks/fq2bam
-- name: "parabricks fq2bam"
-  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+- name: parabricks haplotypecaller test_parabricks_haplotypecaller
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config
   tags:
-    - "parabricks"
-    - "parabricks/fq2bam"
+  - parabricks
+  - parabricks/haplotypecaller
   files:
-    - path: "output/parabricks/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/parabricks/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/parabricks/test.vcf
+    md5sum: c1c8984e5bdcf2af185457cee2247fe5
+
+- name: parabricks haplotypecaller test_parabricks_haplotypecaller_intervals
+  command: nextflow run ./tests/modules/nf-core/parabricks/haplotypecaller -entry test_parabricks_haplotypecaller_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/haplotypecaller/nextflow.config
+  tags:
+  - parabricks
+  - parabricks/haplotypecaller
+  files:
+  - path: output/parabricks/test.vcf
+    md5sum: c1c8984e5bdcf2af185457cee2247fe5

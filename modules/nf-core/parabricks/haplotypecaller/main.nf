@@ -2,7 +2,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_high'
     memory "30 GB"
-    cpus 16
+    cpus 8
     accelerator 1
 
     if (params.enable_conda) {
@@ -18,11 +18,6 @@ process PARABRICKS_HAPLOTYPECALLER {
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
     path  fasta
-
-    // path  fai
-    // path  dict
-    // path  dbsnp
-    // path  dbsnp_tbi
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf

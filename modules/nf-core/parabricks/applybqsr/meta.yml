@@ -19,22 +19,26 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - bam:
+  - input:
       type: file
-      description: input aligned bam file
+      description: bam file for sample to be variant called
       pattern: "*.bam"
-  - fasta:
+  - input_index:
       type: file
-      description: reference fasta file
-      pattern: "*.{fasta,fasta.gz}"
-  - recal_file:
+      description: bai index corresponding to input bam file. Only necessary if intervals are provided
+      pattern: "*.bai"
+  - bqsr_table:
       type: file
-      description: calculated BQSR table from fq2bam
+      description: Table from calculating bqsr. Output from fq2bam.
       pattern: "*.table"
   - interval_file:
       type: file
       description: file or files containing genomic intervals for use in base quality score recalibration
       pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - fasta:
+      type: file
+      description: reference fasta - must be unzipped 
+      pattern: "*.fasta"
 
 output:
   - meta:
@@ -50,5 +54,9 @@ output:
       type: file
       description: BAM file after applying BQSR
       pattern: "*.bam"
+  - bai:
+      type: file
+      description: bai index corresponding to output bam file
+      pattern: "*.bai"
 authors:
   - "@bsiranosian"

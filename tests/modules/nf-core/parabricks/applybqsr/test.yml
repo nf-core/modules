@@ -1,12 +1,21 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml parabricks/fq2bam
-- name: "parabricks fq2bam"
-  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+- name: parabricks applybqsr test_parabricks_applybqsr
+  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr -entry test_parabricks_applybqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config
   tags:
-    - "parabricks"
-    - "parabricks/fq2bam"
+  - parabricks/applybqsr
+  - parabricks
   files:
-    - path: "output/parabricks/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/parabricks/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/parabricks/test.bam
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/parabricks/test.bam.bai
+    md5sum: 0d76977b2e36046cc176112776c5fa4e
+
+- name: parabricks applybqsr test_parabricks_applybqsr_intervals
+  command: nextflow run ./tests/modules/nf-core/parabricks/applybqsr -entry test_parabricks_applybqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/applybqsr/nextflow.config
+  tags:
+  - parabricks/applybqsr
+  - parabricks
+  files:
+  - path: output/parabricks/test.bam
+    contains: '[ # TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead ]'
+  - path: output/parabricks/test.bam.bai
+    md5sum: 0d76977b2e36046cc176112776c5fa4e
