@@ -1,0 +1,8 @@
+- name: "agat convertspgxf2gxf test_convertspgxf2gxf"
+  command: nextflow run ./tests/modules/nf-core/agat/convertspgxf2gxf -entry test_convertspgxf2gxf -c ./tests/config/nextflow.config
+  tags:
+    - "agat"
+    - "agat/convertspgxf2gxf"
+  files:
+    - path: "output/agat/test.converted.gff"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
