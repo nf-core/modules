@@ -101,25 +101,38 @@ opt <- parse_args('$task.ext.args', opt)
 
 abundance_matrix <- read_delim_flexible(opt\$abundance_matrix_file, row.names = 1)
 
-# Read the sample sheet and check against matrix
+# If a sample sheet was specified, validate the matrix against it
 
-samplesheet <- read_delim_flexible(opt\$sample_file, row.names = 1)
-missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
+if (opt\$sample_file != ''){
 
-if (length(missing_samples) > 0){
-    stop(
-        paste(
-            paste(missing_samples, collapse = ', '),
-            'not represented in supplied abundance matrix'
+    # Read the sample sheet and check against matrix
+
+    samplesheet <- read_delim_flexible(opt\$sample_file, row.names = 1)
+    missing_samples <- setdiff(rownames(samplesheet), colnames(abundance_matrix))
+
+    if (length(missing_samples) > 0){
+        stop(
+            paste(
+                paste(missing_samples, collapse = ', '),
+                'not represented in supplied abundance matrix'
+            )
         )
-    )
+    }else{
+        abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
+    }
 }else{
-    abundance_matrix <- abundance_matrix[,rownames(samplesheet)]
+
+    # If we're not using a sample sheet to select columns, then at least make
+    # sure the ones we have are numeric (some upstream things like the RNA-seq
+    # workflow have annotation colummns as well)
+
+    numeric_columns <- unlist(lapply(1:ncol(abundance_matrix), function(x) is.numeric(abundance_matrix[,x])))
+    abundance_matrix <- abundance_matrix[,numeric_columns]
 }
 
 # If we want to define n based on the levels of a grouping variable...
 
-if (! is.null(opt\$grouping_variable)){
+if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
 
     # Pick a minimum number of samples to pass threshold based on group size
 
@@ -138,7 +151,7 @@ if (! is.null(opt\$grouping_variable)){
     opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
-# Generate a boolean vector specifying the genes to retain
+# Generate a boolean vector specifying the features to retain
 
 keep <- apply(abundance_matrix, 1, function(x){
     sum(x > opt\$minimum_abundance) >= opt\$minimum_samples

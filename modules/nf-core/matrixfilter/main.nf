@@ -7,7 +7,8 @@ process MATRIXFILTER {
         'quay.io/biocontainers/r-base:4.2.1' }"
 
     input:
-    tuple val(meta), path(samplesheet), path(abundance)
+    tuple val(meta), path(abundance)
+    tuple val(samplesheet_meta), path(samplesheet)
 
     output:
     tuple val(meta), path("*.filtered.tsv")             , emit: filtered
