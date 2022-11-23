@@ -6,14 +6,14 @@ include { AGAT_CONVERTSPGXF2GXF } from '../../../../../modules/nf-core/agat/conv
 
 workflow test_gff {
 
-    gff = [ file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) ]
 
-    AGAT_CONVERTSPGXF2GXF ( [ [id:'test'], gff ] )
+    AGAT_CONVERTSPGXF2GXF ( [ [id:'test'], input ] )
 }
 
 workflow test_gtf {
 
-    gff = [ file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
+    input = [ file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
 
-    AGAT_CONVERTSPGXF2GXF ( [ [id:'test'], gff ] )
+    AGAT_CONVERTSPGXF2GXF ( [ [id:'test'], input ] )
 }

@@ -8,10 +8,11 @@ process AGAT_CONVERTSPGXF2GXF {
         'quay.io/biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(gff)
+    tuple val(meta), path(input)
 
     output:
     tuple val(meta), path("*.converted.gff"), emit: output_gff
+    tuple val(meta), path("*.log"), emit: log
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,7 +24,7 @@ process AGAT_CONVERTSPGXF2GXF {
 
     """
     agat_convert_sp_gxf2gxf.pl \\
-        --gff $gff \\
+        --gff $input \\
         --output ${prefix}.converted.gff \\
         $args
 
