@@ -17,7 +17,6 @@ input:
       description: BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - run_metrics_json:
       type: file
@@ -31,7 +30,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - manifest_file:
       type: file
       description: File containing absolute paths to bam files used as input for SMNCopyNumberCaller
