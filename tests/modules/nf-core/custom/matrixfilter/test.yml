@@ -1,0 +1,32 @@
+- name: custom matrixfilter test_matrixfilter
+  command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_matrixfilter -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
+  tags:
+    - custom/matrixfilter
+    - custom
+  files:
+    - path: output/matrixfilter/R_sessionInfo.log
+      md5sum: 3d754459ac30832b80756d253ce0026b
+    - path: output/matrixfilter/SRP254919.salmon.merged.gene_counts.top1000cov.filtered.tsv
+      md5sum: 84f2a16e50f5ce9d38e8176fb324ebe0
+
+- name: custom matrixfilter test_matrixfilter_prop
+  command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_matrixfilter_prop -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
+  tags:
+    - custom/matrixfilter
+    - custom
+  files:
+    - path: output/matrixfilter/R_sessionInfo.log
+      md5sum: 3d754459ac30832b80756d253ce0026b
+    - path: output/matrixfilter/SRP254919.salmon.merged.gene_counts.top1000cov.filtered.tsv
+      md5sum: 8cf3de07e8a37ce6a8dea40c7a696a79
+
+- name: custom matrixfilter test_matrixfilter_group
+  command: nextflow run ./tests/modules/nf-core/custom/matrixfilter -entry test_matrixfilter_group -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/matrixfilter/nextflow.config
+  tags:
+    - custom/matrixfilter
+    - custom
+  files:
+    - path: output/matrixfilter/R_sessionInfo.log
+      md5sum: 3d754459ac30832b80756d253ce0026b
+    - path: output/matrixfilter/SRP254919.salmon.merged.gene_counts.top1000cov.filtered.tsv
+      md5sum: 6b25196c3bc03167dbdddc03cfa90a29

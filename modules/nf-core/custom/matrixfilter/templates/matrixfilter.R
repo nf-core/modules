@@ -63,10 +63,11 @@ parse_args <- function(x, opt_defaults){
 #' @param file Input file
 #' @param header Passed to read.delim()
 #' @param row.names Passed to read.delim()
+#' @param nrows Passed to read.delim()
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -1 ){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -100,6 +101,7 @@ opt <- list(
 opt <- parse_args('$task.ext.args', opt)
 
 abundance_matrix <- read_delim_flexible(opt\$abundance_matrix_file, row.names = 1)
+feature_id_name <- colnames( read_delim_flexible(opt\$abundance_matrix_file, nrows = 1)[1])
 
 # If a sample sheet was specified, validate the matrix against it
 
@@ -157,12 +159,13 @@ keep <- apply(abundance_matrix, 1, function(x){
     sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
 })
 
-# Write out the matrix retaining the specified rows
+# Write out the matrix retaining the specified rows and re-prepending the
+# column with the feature identifiers
 
 write.table(
-    abundance_matrix[keep,,drop = FALSE],
+    data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
     file = paste0(tools::file_path_sans_ext(basename(opt\$abundance_matrix_file), compression = FALSE), '.filtered.tsv'),
-    col.names = TRUE,
+    col.names = c(feature_id_name, colnames(abundance_matrix)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE

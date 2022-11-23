@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { MATRIXFILTER } from '../../../../modules/nf-core/matrixfilter/main.nf'
+include { MATRIXFILTER } from '../../../../../modules/nf-core/custom/matrixfilter/main.nf'
 
 empty_samplesheet = [[],[]]
 
