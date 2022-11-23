@@ -28,6 +28,9 @@ process SMNCOPYNUMBERCALLER {
     manifest_in.text = bam.join("\n")
     def out_dir = task.workDir
     def genome_version = task.ext.genome_version // [19/37/38]
+    def program_version = 'SMNCopyNumberCaller commit 3e67e3b on Feb 8, 2020'
+    // No versioning included with this program, so added github commit from:
+    // https://github.com/Illumina/SMNCopyNumberCaller
 
     """
     smn_caller.py \\
@@ -40,7 +43,7 @@ process SMNCOPYNUMBERCALLER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        smncopynumbercaller: 'SMNCopyNumberCaller commit 3e67e3b on Feb 8, 2020' 2>&1
+        echo $program_version
     END_VERSIONS
     """
 }
