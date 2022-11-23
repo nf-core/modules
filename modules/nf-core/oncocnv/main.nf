@@ -26,6 +26,7 @@ process ONCOCNV {
     def mode = task.ext.args ?: '-m Ampli'
     def normal = normal.join(',')
     def tumor = tumor.join(',')
+    def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     perl \$(which ONCOCNV_getCounts.pl) \\
         getControlStats \\
@@ -64,7 +65,7 @@ process ONCOCNV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        oncocnv: 7.0
+        oncocnv: $VERSION
         perl: \$(perl --version | grep 'This is perl' | sed 's/.*(v//g' | sed 's/)//g')
         r: \$(R --version | grep "R version" | sed 's/R version //g')
     END_VERSIONS
