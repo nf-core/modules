@@ -6,7 +6,7 @@ include { MATRIXFILTER } from '../../../../../modules/nf-core/custom/matrixfilte
 
 empty_samplesheet = [[],[]]
 
-workflow test_matrixfilter {
+workflow test_custom_matrixfilter {
 
     expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
 
@@ -18,7 +18,7 @@ workflow test_matrixfilter {
     )
 }
 
-workflow test_matrixfilter_prop {
+workflow test_custom_matrixfilter_prop {
 
     expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
 
@@ -30,7 +30,7 @@ workflow test_matrixfilter_prop {
     )
 }
 
-workflow test_matrixfilter_group {
+workflow test_custom_matrixfilter_group {
 
     expression_sample_sheet = file(params.test_data['mus_musculus']['genome']['rnaseq_samplesheet'], checkIfExists: true)
     expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
