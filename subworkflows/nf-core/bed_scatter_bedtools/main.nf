@@ -64,6 +64,7 @@ workflow BED_SCATTER_BEDTOOLS {
     BEDTOOLS_SPLIT.out.beds
         .map(
             { meta, beds ->
+                // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
                 new_meta = meta.clone()
                 new_meta.subwf_scatter_count = beds instanceof Path ? 1 : beds.size()
                 [ new_meta, beds ]
