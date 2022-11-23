@@ -18,5 +18,11 @@ process MATRIXFILTER {
     task.ext.when == null || task.ext.when
 
     script:
+    // Note: params are passed at line 100 of the template like:
+    //
+    // opt <- parse_args('$task.ext.args', opt)
+    //
+    // (new variables defined here don't seem to be available in templates, so
+    // we have to access $task directly)
     template 'matrixfilter.R'
 }
