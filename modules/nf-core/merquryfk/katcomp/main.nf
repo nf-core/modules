@@ -6,7 +6,7 @@ process MERQURYFK_KATCOMP {
         error "Conda environments cannot be used when using the FastK tool. Please use docker or singularity containers."
     }
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0'
+    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
 
     input:
     tuple val(meta), path(fastk1_hist), path(fastk1_ktab), path(fastk2_hist), path(fastk2_ktab)
