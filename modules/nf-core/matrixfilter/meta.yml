@@ -12,18 +12,26 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing information on experiment, at a minimum an id.
-        e.g. [ id:'test' ]
-  - samplesheet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata
+        Groovy Map containing information on matrix to be filtered, at a
+        minimum an id. e.g. [ id:'test' ]
   - abundance:
       type: file
       description: |
         Raw TSV or CSV format abundance matrix with features (e.g.
         genes) by row and observations (e.g. samples) by column. All rownames
         from the sample sheet should be present in the columns.
+  - samplesheet_meta:
+      type: map
+      description: |
+        Where samplesheet is provided, aroovy Map containing information on
+        sample sheet, at a minimum an id.  e.g. [ id:'test' ]
+  - samplesheet:
+      type: file
+      description: |
+        Optional CSV or TSV format sample sheet with sample metadata. If
+        provided this is used to infer minimum passing samples from group sizes
+        present (see grouping_variable), but also to validate matrix columns.
+        If not provided, all numeric columns are selected.
   - minimum_abundance:
       type: numeric
       description: |
@@ -44,13 +52,13 @@ input:
         minimum_samples
       default: 0
   - grouping_variable:
-      type: string
+      type: optional string
       description: |
-        Supply a variable from the sample sheet that can be used to define
-        groups and derive a minimum group size upon which to base minimum
-        observation numbers. The rationale being to allow retention of features
-        that might be present in only one group. Supplied via task.ext.args as
-        --grouping_variable
+        Optionally supply a variable from the sample sheet that can be used to
+        define groups and derive a minimum group size upon which to base
+        minimum observation numbers. The rationale being to allow retention of
+        features that might be present in only one group. Supplied via
+        task.ext.args as --grouping_variable
 
 output:
   - versions:
