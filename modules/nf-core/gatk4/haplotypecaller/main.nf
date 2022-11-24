@@ -30,7 +30,7 @@ process GATK4_HAPLOTYPECALLER {
     def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""
     def interval_command = intervals ? "--intervals $intervals" : ""
     def dragstr_command = dragstr_model ? "--dragstr-params-path $dragstr_model" : ""
-    def bamout_command = args.contains("--bam-writer-type") ? "--bam-output ${prefix.replace('.g', '')}.realigned.bam" : ""
+    def bamout_command = args.contains("--bam-writer-type") ? "--bam-output ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam" : ""
 
     def avail_mem = 3
     if (!task.memory) {
