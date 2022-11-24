@@ -16,7 +16,10 @@ workflow test_gff {
 
 workflow test_gtf {
 
-    input = [ file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) ]
+    input = [
+        [ id: 'test' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true) 
+    ]
 
-    AGAT_CONVERTSPGXF2GXF ( [ [id:'test'], input ] )
+    AGAT_CONVERTSPGXF2GXF ( input )
 }
