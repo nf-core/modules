@@ -6,7 +6,10 @@ include { AGAT_CONVERTSPGFF2GTF } from '../../../../../modules/nf-core/agat/conv
 
 workflow test_gff {
 
-    input = [ file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) ]
+    input = [ 
+        [ id: 'test' ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_gff3'], checkIfExists: true) 
+    ]
 
-    AGAT_CONVERTSPGFF2GTF ( [ [id:'test'], input ] )
+    AGAT_CONVERTSPGFF2GTF ( input )
 }
