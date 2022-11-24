@@ -5,7 +5,6 @@
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
-    - path: output/picard/versions.yml
 
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics stub
   command: nextflow run ./tests/modules/nf-core/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectwgsmetrics/nextflow.config -stub-run
@@ -14,7 +13,6 @@
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
-    - path: output/picard/versions.yml
 
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics_with_interval
   command: nextflow run ./tests/modules/nf-core/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics_with_interval -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectwgsmetrics/nextflow.config
@@ -23,7 +21,6 @@
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
-    - path: output/picard/versions.yml
 
 - name: picard collectwgsmetrics test_picard_collectwgsmetrics_with_interval stub
   command: nextflow run ./tests/modules/nf-core/picard/collectwgsmetrics -entry test_picard_collectwgsmetrics_with_interval -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectwgsmetrics/nextflow.config -stub-run
@@ -32,4 +29,3 @@
     - picard
   files:
     - path: output/picard/test.CollectWgsMetrics.coverage_metrics
-    - path: output/picard/versions.yml
