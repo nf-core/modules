@@ -8,7 +8,7 @@ process AGAT_CONVERTSPGFF2GTF {
         'quay.io/biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(gff)
 
     output:
     tuple val(meta), path("*.agat.gtf"), emit: output_gtf
