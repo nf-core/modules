@@ -11,7 +11,7 @@ process AGAT_CONVERTSPGXF2GXF {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.converted.gff"), emit: output_gff
+    tuple val(meta), path("*.agat.gff"), emit: output_gff
     tuple val(meta), path("*.log"), emit: log
     path "versions.yml"           , emit: versions
 
@@ -25,7 +25,7 @@ process AGAT_CONVERTSPGXF2GXF {
     """
     agat_convert_sp_gxf2gxf.pl \\
         --gff $input \\
-        --output ${prefix}.converted.gff \\
+        --output ${prefix}.agat.gff \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
