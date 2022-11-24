@@ -24,7 +24,7 @@ process AGAT_CONVERTSPGXF2GXF {
 
     """
     agat_convert_sp_gxf2gxf.pl \\
-        --gff $input \\
+        --gff $gff \\
         --output ${prefix}.agat.gff \\
         $args
 
