@@ -14,12 +14,13 @@ workflow test_star_alignment_single_end {
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_junctions = '/'
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, [], star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
 }
 
 workflow test_star_alignment_paired_end {
@@ -32,12 +33,13 @@ workflow test_star_alignment_paired_end {
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_junctions = '/'
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, [], star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
 }
 
 workflow test_star_alignment_paired_end_with_junctions {
@@ -50,13 +52,13 @@ workflow test_star_alignment_paired_end_with_junctions {
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
-    junctions = file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_SJ'], checkIfExists: true)
+    star_junctions = file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_SJ'], checkIfExists: true)
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_ALIGN ( input, STAR_GENOMEGENERATE.out.index, gtf, star_junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
 }
 
 workflow test_star_alignment_paired_end_for_fusion {
@@ -69,12 +71,13 @@ workflow test_star_alignment_paired_end_for_fusion {
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_junctions = '/'
     star_ignore_sjdbgtf = false
     seq_platform = 'illumina'
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_FOR_ARRIBA ( input, STAR_GENOMEGENERATE.out.index, gtf, [], star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_FOR_ARRIBA ( input, STAR_GENOMEGENERATE.out.index, gtf, star_junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
 }
 
 workflow test_star_alignment_paired_end_for_starfusion {
@@ -87,10 +90,11 @@ workflow test_star_alignment_paired_end_for_starfusion {
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     gtf   = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+    star_junctions = '/'
     star_ignore_sjdbgtf = false
     seq_platform = false
     seq_center = false
 
     STAR_GENOMEGENERATE ( fasta, gtf )
-    STAR_FOR_STARFUSION ( input, STAR_GENOMEGENERATE.out.index, gtf, [], star_ignore_sjdbgtf, seq_platform, seq_center )
+    STAR_FOR_STARFUSION ( input, STAR_GENOMEGENERATE.out.index, gtf, star_junctions, star_ignore_sjdbgtf, seq_platform, seq_center )
 }

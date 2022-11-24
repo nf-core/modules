@@ -87,7 +87,7 @@
     - path: output/star/test.SJ.out.tab
 
 - name: star align test_star_alignment_paired_end_with_junctions
-  command: nextflow run ./tests/modules/star/align -entry test_star_alignment_paired_end_with_junctions -c ./tests/config/nextflow.config -c ./tests/modules/star/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/star/align -entry test_star_alignment_paired_end_with_junctions -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/star/align/nextflow.config
   tags:
     - star/align
     - star
@@ -124,7 +124,7 @@
     - path: output/star/star/transcriptInfo.tab
       md5sum: 0c3a5adb49d15e5feff81db8e29f2e36
     - path: output/star/test.Aligned.out.bam
-      md5sum: 1c3d2ec335c1fdc7a905cf1c7eb70f09
+      md5sum: 6563f632eac2b6efc4cf61eda5ac42c4
     - path: output/star/test.Log.final.out
     - path: output/star/test.Log.out
     - path: output/star/test.Log.progress.out
