@@ -2,12 +2,13 @@
 // Run VEP to annotate VCF files
 //
 
-include { ENSEMBLVEP       } from '../../../../modules/ensemblvep/main'
-include { TABIX_BGZIPTABIX } from '../../../../modules/tabix/bgziptabix/main'
+include { ENSEMBLVEP       } from '../../../modules/nf-core/ensemblvep/main'
+include { TABIX_BGZIPTABIX } from '../../../modules/nf-core/tabix/bgziptabix/main'
 
-workflow ANNOTATION_ENSEMBLVEP {
+workflow VCF_ANNOTATE_ENSEMBLVEP {
     take:
     vcf               // channel: [ val(meta), vcf ]
+    fasta             //   value: fasta to use (optionnal)
     vep_genome        //   value: genome to use
     vep_species       //   value: species to use
     vep_cache_version //   value: cache version to use
@@ -17,15 +18,17 @@ workflow ANNOTATION_ENSEMBLVEP {
     main:
     ch_versions = Channel.empty()
 
-    ENSEMBLVEP(vcf, vep_genome, vep_species, vep_cache_version, vep_cache, vep_extra_files)
+    ENSEMBLVEP(vcf, vep_genome, vep_species, vep_cache_version, vep_cache, fasta, vep_extra_files)
     TABIX_BGZIPTABIX(ENSEMBLVEP.out.vcf)
 
     // Gather versions of all tools used
-    ch_versions = ch_versions.mix(ENSEMBLVEP.out.versions.first())
-    ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions.first())
+    ch_versions = ch_versions.mix(ENSEMBLVEP.out.versions)
+    ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
     emit:
     vcf_tbi  = TABIX_BGZIPTABIX.out.gz_tbi // channel: [ val(meta), vcf.gz, vcf.gz.tbi ]
+    json     = ENSEMBLVEP.out.json         // channel: [ val(meta), json ]
+    tab      = ENSEMBLVEP.out.tab          // channel: [ val(meta), tab ]
     reports  = ENSEMBLVEP.out.report       //    path: *.html
     versions = ch_versions                 //    path: versions.yml
 }
