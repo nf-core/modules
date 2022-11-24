@@ -1,0 +1,9 @@
+- name: "agat convertspgff2gtf test_gff"
+  command: nextflow run ./tests/modules/nf-core/agat/convertspgff2gtf -entry test_gff -c ./tests/config/nextflow.config
+  tags:
+    - "agat"
+    - "agat/convertspgff2gtf"
+  files:
+    - path: "output/agat/test.agat.gtf"
+      md5sum: 26f1b81c7f3a65d298fcfbcbfae775b3
+    - path: "output/agat/genome.agat.log"

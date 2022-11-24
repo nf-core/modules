@@ -1,0 +1,36 @@
+process AGAT_CONVERTSPGFF2GTF {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda (params.enable_conda ? "bioconda::agat=1.0.0" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/agat:1.0.0--pl5321hdfd78af_0' :
+        'quay.io/biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
+
+    input:
+    tuple val(meta), path(input)
+
+    output:
+    tuple val(meta), path("*.agat.gtf"), emit: output_gtf
+    tuple val(meta), path("*.log"), emit: log
+    path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    agat_convert_sp_gff2gtf.pl \\
+        --gff $input \\
+        --output ${prefix}.agat.gtf \\
+        $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: \$(agat_convert_sp_gff2gtf.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
+    END_VERSIONS
+    """
+}
