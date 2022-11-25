@@ -18,6 +18,22 @@ adapterremovalfixprefix:
   - modules/nf-core/adapterremovalfixprefix/**
   - tests/modules/nf-core/adapterremovalfixprefix/**
 
+agat/convertspgff2gtf:
+  - modules/nf-core/agat/convertspgff2gtf/**
+  - tests/modules/nf-core/agat/convertspgff2gtf/**
+
+agat/convertspgxf2gxf:
+  - modules/nf-core/agat/convertspgxf2gxf/**
+  - tests/modules/nf-core/agat/convertspgxf2gxf/**
+
+agat/spstatistics:
+  - modules/nf-core/agat/spstatistics/**
+  - tests/modules/nf-core/agat/spstatistics/**
+
+agat/sqstatbasic:
+  - modules/nf-core/agat/sqstatbasic/**
+  - tests/modules/nf-core/agat/sqstatbasic/**
+
 agrvate:
   - modules/nf-core/agrvate/**
   - tests/modules/nf-core/agrvate/**
@@ -61,6 +77,10 @@ antismash/antismashlite:
 antismash/antismashlitedownloaddatabases:
   - modules/nf-core/antismash/antismashlitedownloaddatabases/**
   - tests/modules/nf-core/antismash/antismashlitedownloaddatabases/**
+
+arcashla/extract:
+  - modules/nf-core/arcashla/extract/**
+  - tests/modules/nf-core/arcashla/extract/**
 
 aria2:
   - modules/nf-core/aria2/**
@@ -715,6 +735,14 @@ deeptools/computematrix:
   - modules/nf-core/deeptools/computematrix/**
   - tests/modules/nf-core/deeptools/computematrix/**
 
+deeptools/multibamsummary:
+  - modules/nf-core/deeptools/multibamsummary/**
+  - tests/modules/nf-core/deeptools/multibamsummary/**
+
+deeptools/plotcorrelation:
+  - modules/nf-core/deeptools/multibamsummary/**
+  - tests/modules/nf-core/deeptools/multibamsummary/**
+
 deeptools/plotfingerprint:
   - modules/nf-core/deeptools/plotfingerprint/**
   - tests/modules/nf-core/deeptools/plotfingerprint/**
@@ -722,6 +750,10 @@ deeptools/plotfingerprint:
 deeptools/plotheatmap:
   - modules/nf-core/deeptools/plotheatmap/**
   - tests/modules/nf-core/deeptools/plotheatmap/**
+
+deeptools/plotpca:
+  - modules/nf-core/deeptools/plotpca/**
+  - tests/modules/nf-core/deeptools/plotpca/**
 
 deeptools/plotprofile:
   - modules/nf-core/deeptools/plotprofile/**
@@ -910,6 +942,10 @@ fasttree:
 fcs/fcsadaptor:
   - modules/nf-core/fcs/fcsadaptor/**
   - tests/modules/nf-core/fcs/fcsadaptor/**
+
+fcs/fcsgx:
+  - modules/nf-core/fcs/fcsgx/**
+  - tests/modules/nf-core/fcs/fcsgx/**
 
 ffq:
   - modules/nf-core/ffq/**
@@ -1758,6 +1794,10 @@ megan/rma2info:
   - modules/nf-core/megan/rma2info/**
   - tests/modules/nf-core/megan/rma2info/**
 
+melt:
+  - modules/nf-core/melt/**
+  - tests/modules/nf-core/melt/**
+
 meningotype:
   - modules/nf-core/meningotype/**
   - tests/modules/nf-core/meningotype/**
@@ -1889,6 +1929,10 @@ msisensorpro/scan:
 mtnucratio:
   - modules/nf-core/mtnucratio/**
   - tests/modules/nf-core/mtnucratio/**
+
+multibamsummary:
+  - modules/multibamsummary/**
+  - tests/modules/multibamsummary/**
 
 multiqc:
   - modules/nf-core/fastqc/**
@@ -2159,17 +2203,25 @@ plink2/vcf:
   - modules/nf-core/plink2/vcf/**
   - tests/modules/nf-core/plink2/vcf/**
 
+plotcorrelation:
+  - modules/plotcorrelation/**
+  - tests/modules/plotcorrelation/**
+
+plotpca:
+  - modules/plotpca/**
+  - tests/modules/plotpca/**
+
 pmdtools/filter:
   - modules/nf-core/pmdtools/filter/**
   - tests/modules/nf-core/pmdtools/filter/**
 
-porechop/porechop:
-  - modules/nf-core/porechop/porechop/**
-  - tests/modules/nf-core/porechop/porechop/**
-
 porechop/abi:
   - modules/nf-core/porechop/abi/**
   - tests/modules/nf-core/porechop/abi/**
+
+porechop/porechop:
+  - modules/nf-core/porechop/porechop/**
+  - tests/modules/nf-core/porechop/porechop/**
 
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
@@ -2507,6 +2559,10 @@ shigatyper:
   - modules/nf-core/shigatyper/**
   - tests/modules/nf-core/shigatyper/**
 
+shigeifinder:
+  - modules/nf-core/shigeifinder/**
+  - tests/modules/nf-core/shigeifinder/**
+
 shinyngs/app:
   - modules/nf-core/shinyngs/app/**
   - tests/modules/nf-core/shinyngs/app/**
@@ -2534,6 +2590,10 @@ sistr:
 slimfastq:
   - modules/nf-core/slimfastq/**
   - tests/modules/nf-core/slimfastq/**
+
+smoove:
+  - modules/nf-core/smoove/**
+  - tests/modules/nf-core/smoove/**
 
 snapaligner/align:
   - modules/nf-core/snapaligner/align/**
@@ -2655,14 +2715,6 @@ subworkflows/align_bowtie2:
   - subworkflows/nf-core/align_bowtie2/**
   - tests/subworkflows/nf-core/align_bowtie2/**
 
-subworkflows/annotation/ensemblvep:
-  - subworkflows/nf-core/annotation/ensemblvep/**
-  - tests/subworkflows/nf-core/annotation/ensemblvep/**
-
-subworkflows/annotation/snpeff:
-  - subworkflows/nf-core/annotation/snpeff/**
-  - tests/subworkflows/nf-core/annotation/snpeff/**
-
 subworkflows/bam_dedup_stats_samtools_umitools:
   - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
   - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
@@ -2758,6 +2810,14 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
+
+subworkflows/vcf_annotate_ensembl_vep:
+  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+
+subworkflows/vcf_annotate_snpeff:
+  - subworkflows/nf-core/vcf_annotate_snpeff/**
+  - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
