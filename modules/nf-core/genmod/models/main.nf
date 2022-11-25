@@ -36,7 +36,7 @@ process GENMOD_MODELS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' )
     END_VERSIONS
     """
 
@@ -47,7 +47,7 @@ process GENMOD_MODELS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' ))
+        genmod: \$(echo \$(genmod --version 2>&1) | sed 's/^.*genmod version: //' )
     END_VERSIONS
     """
 }

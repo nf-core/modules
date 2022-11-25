@@ -11,8 +11,5 @@ workflow test_fgbio_callduplexconsensusreads {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_duplex_umi_grouped_bam'], checkIfExists: true)
     ]
 
-    min_reads = '3'
-    min_baseq = '20'
-
-    FGBIO_CALLDUPLEXCONSENSUSREADS ( input, min_reads, min_baseq )
+    FGBIO_CALLDUPLEXCONSENSUSREADS ( input )
 }

@@ -6,12 +6,11 @@ include { UNZIP } from '../../../../../modules/nf-core/unzip/main.nf'
 include { MALT_BUILD } from '../../../../../modules/nf-core/malt/build/main.nf'
 
 workflow test_malt_build {
-    fastas        = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    seq_type      = "DNA"
-    map_accession = [ [], file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true) ]
-    mapping_type  = 'ref'
-    mapping_db    = 'taxonomy'
 
-    UNZIP ( map_accession )
-    MALT_BUILD ( fastas, seq_type, UNZIP.out.unzipped_archive.map{ it[1] }, "ref", "taxonomy" )
+    fastas = file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
+    gff = file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['test1_gff'], checkIfExists: true)
+    mapping_db = [ [], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/megan-nucl-Feb2022.db.zip", checkIfExists: true) ]
+
+    UNZIP ( mapping_db )
+    MALT_BUILD ( fastas, gff, UNZIP.out.unzipped_archive.map { it[1] } )
 }
