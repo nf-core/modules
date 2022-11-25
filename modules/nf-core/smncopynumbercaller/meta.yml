@@ -18,11 +18,11 @@ input:
       pattern: "*.{bam,cram,sam}"
 
 output:
-  - run_metrics_json:
+  - run_metrics:
       type: file
       description: File containing run parameters of SMNCopyNumberCaller
       pattern: "*.{json}"
-  - smncopynumber_tsv:
+  - smncopynumber:
       type: file
       description: File containing the output of SMNCopyNumberCaller
       pattern: "*.{tsv}"

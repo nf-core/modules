@@ -1,3 +1,9 @@
+#!/usr/bin/env nextflow
+nextflow.enable.dsl = 2
+def SMNCOPYNUMBERCALLER_VERSION = 'SMNCopyNumberCaller commit 3e67e3b on Feb 8, 2020'
+// No versioning included with this program; added github commit from:
+// https://github.com/Illumina/SMNCopyNumberCaller
+
 process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
@@ -8,29 +14,27 @@ process SMNCOPYNUMBERCALLER {
     container "clinicalgenomics/smncopynumbercaller:v1.1.2"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
-    // QUESTION: what are good emit names?
-    tuple val(meta), path ("*.txt"), emit: manifest_file
-    tuple val(meta), path("*.tsv"), emit: smncopynumber_tsv
-    tuple val(meta), path("*.json"), emit: run_metrics_json
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("manifest.txt"), emit: manifest
+    tuple val(meta), path("*.tsv"), emit: smncopynumber
+    tuple val(meta), path("*.json"), emit: run_metrics
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
+    exec:
+    def manifest_in = file(task.workDir + 'manifest.txt')
+    manifest_in.text = bam.join("\n")
+
     script:
     def args = task.ext.args ?: ''
     def cpus = task.cpus
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def manifest_in = file(task.workDir+'/manifest.txt')
-    manifest_in.text = bam.join("\n")
-    def out_dir = task.workDir
     def genome_version = task.ext.genome_version // [19/37/38]
-    def program_version = 'SMNCopyNumberCaller commit 3e67e3b on Feb 8, 2020'
-    // No versioning included with this program, so added github commit from:
-    // https://github.com/Illumina/SMNCopyNumberCaller
+    def out_dir = task.outDir
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     smn_caller.py \\
@@ -43,7 +47,7 @@ process SMNCOPYNUMBERCALLER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        echo $program_version
+        SMNCopyNumberCaller: $SMNCOPYNUMBERCALLER_VERSION
     END_VERSIONS
     """
 }
