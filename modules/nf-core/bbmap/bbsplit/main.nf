@@ -51,7 +51,7 @@ process BBMAP_BBSPLIT {
 
             cat <<-END_VERSIONS > versions.yml
             "${task.process}":
-                bbmap: \$(bbversion.sh 2>&1)
+                bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
             END_VERSIONS
             """
         } else {
@@ -80,7 +80,7 @@ process BBMAP_BBSPLIT {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            bbmap: \$(bbversion.sh 2>&1)
+            bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
         END_VERSIONS
         """
     }
