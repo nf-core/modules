@@ -1,11 +1,11 @@
-- name: ensemblvep vcf_annotate_ensemblvep
-  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep/main.nf -entry vcf_annotate_ensemblvep -c ./tests/config/nextflow.config -c ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep/nextflow.config
+- name: vcf_annotate_ensemblvep vcf_annotation_ensemblvep
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_annotate_ensemblvep -entry vcf_annotation_ensemblvep -c ./tests/config/nextflow.config
   tags:
+    - ensemblvep
     - subworkflows
     - subworkflows/vcf_annotate_ensemblvep
-    # Modules
-    - ensemblvep
-    - tabix/bgziptabix
+    - tabix
+    - tabix/tabix
   files:
-    - path: output/annotation/test_vep.ann.vcf.gz
-    - path: output/annotation/test_vep.ann.vcf.gz.tbi
+    - path: output/tabix/test.vcf.gz.tbi
+      md5sum: 4cb176febbc8c26d717a6c6e67b9c905

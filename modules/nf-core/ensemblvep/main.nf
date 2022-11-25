@@ -8,7 +8,7 @@ process ENSEMBLVEP {
         'quay.io/biocontainers/ensembl-vep:108.2--pl5321h4a94de4_0' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf, stageAs: "?/*")
     val   genome
     val   species
     val   cache_version
@@ -17,9 +17,9 @@ process ENSEMBLVEP {
     path  extra_files
 
     output:
-    tuple val(meta), path("*.ann.vcf.gz")  , optional:true, emit: vcf
-    tuple val(meta), path("*.ann.tab.gz")  , optional:true, emit: tab
-    tuple val(meta), path("*.ann.json.gz") , optional:true, emit: json
+    tuple val(meta), path("*.vcf.gz")  , optional:true, emit: vcf
+    tuple val(meta), path("*.tab.gz")  , optional:true, emit: tab
+    tuple val(meta), path("*.json.gz") , optional:true, emit: json
     path "*.summary.html"                  , emit: report
     path "versions.yml"                    , emit: versions
 
@@ -37,7 +37,7 @@ process ENSEMBLVEP {
     """
     vep \\
         -i $vcf \\
-        -o ${prefix}.ann.${file_extension}.gz \\
+        -o ${prefix}.${file_extension}.gz \\
         $args \\
         $compress_cmd \\
         $reference \\
