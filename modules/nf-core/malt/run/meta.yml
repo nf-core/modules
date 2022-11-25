@@ -28,10 +28,6 @@ input:
       type: file
       description: Input FASTQ files
       pattern: "*.{fastq.gz,fq.gz}"
-  - mode:
-      type: string
-      description: Program mode
-      pattern: "Unknown|BlastN|BlastP|BlastX|Classifier"
   - index:
       type: directory
       description: Index/database directory from malt-build
