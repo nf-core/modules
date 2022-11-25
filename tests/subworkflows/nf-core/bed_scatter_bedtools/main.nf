@@ -12,47 +12,7 @@ workflow test_bed_scatter_bedtools_bed {
         2
     ])
 
-    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-
     BED_SCATTER_BEDTOOLS (
-        input,
-        fasta_fai
-    )
-}
-
-workflow test_bed_scatter_bedtools_no_bed {
-
-    input = Channel.of([
-        [id:'test'],
-        [],
-        2
-    ])
-
-    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-
-    BED_SCATTER_BEDTOOLS (
-        input,
-        fasta_fai
-    )
-}
-
-workflow test_bed_scatter_bedtools_mixed {
-
-    input = Channel.of([
-        [id:'test'],
-        [],
-        2
-    ],
-    [
-        [id:'test2'],
-        file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true),
-        2
-    ])
-
-    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-
-    BED_SCATTER_BEDTOOLS (
-        input,
-        fasta_fai
+        input
     )
 }

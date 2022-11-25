@@ -1,5 +1,4 @@
 include { BEDTOOLS_SPLIT     } from '../../../modules/nf-core/bedtools/split/main'
-include { GAWK               } from '../../../modules/nf-core/gawk/main'
 
 workflow BED_SCATTER_BEDTOOLS {
 
@@ -7,46 +6,12 @@ workflow BED_SCATTER_BEDTOOLS {
 
     take:
     ch_bed          // channel: [ meta, bed, scatter_count ]
-    ch_fasta_fai    // channel: [ fasta_fai ]
 
     main:
 
     ch_versions = Channel.empty()
 
     ch_bed
-        .branch(
-            { meta, bed, scatter_count ->
-                bed: bed
-                no_bed: !bed
-            }
-        )
-        .set { ch_input }
-
-    GAWK(
-        [[id:'fasta_fai'], ch_fasta_fai],
-        []
-    )
-    ch_versions = ch_versions.mix(GAWK.out.versions.first())
-
-    ch_input.no_bed
-        .combine(
-            GAWK.out.output
-                .map(
-                    { meta, bed ->
-                        [ bed ]
-                    }
-                )
-        )
-        .map(
-            { meta, empty_bed, scatter_count, new_bed ->
-                [ meta, new_bed, scatter_count ]
-            }
-        )
-        .set { ch_new_beds }
-
-    ch_input.bed.mix(ch_new_beds)
-
-    ch_input.bed
         .map(
             { meta, bed, scatter_count ->
                 new_meta = meta.clone()
