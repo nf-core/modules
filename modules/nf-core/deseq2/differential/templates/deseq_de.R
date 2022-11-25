@@ -51,6 +51,31 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
     )
 }
 
+#' Round numeric dataframe columns to fixed decimal places by applying
+#' formatting and converting back to numerics
+#'
+#' @param dataframe A data frame
+#' @param columns Which columns to round (assumes all of them by default)
+#' @param digits How many decimal places to round to?
+#'
+#' @return output Data frame
+
+round_dataframe_columns <- function(df, columns = NULL, digits = 8){
+    if (is.null(columns)){
+        columns <- colnames(df)
+    }
+
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
+
+    # Convert columns back to numeric
+
+    for (c in columns) {
+        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]] <- as.numeric(df[[c]])
+    }
+    df
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -70,6 +95,8 @@ opt <- list(
     reference_level = NULL,
     treatment_level = NULL,
     blocking_variables = NULL,
+    control_genes_file = '$control_genes_file',
+    sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -243,11 +270,23 @@ model <- paste(model, opt\$contrast_variable, sep = ' + ')
 ################################################
 ################################################
 
+if (opt\$control_genes_file != ''){
+    control_genes <- readLines(opt\$control_genes_file)
+    if (! opt\$sizefactors_from_controls){
+        count.table <- count.table[setdiff(rownames(count.table), control_genes),]
+    }
+}
+
 dds <- DESeqDataSetFromMatrix(
     countData = round(count.table),
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
+    print(paste('Estimating size factors using', length(control_genes), 'control genes'))
+    dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
+}
 
 dds <- DESeq(
     dds,
@@ -302,7 +341,10 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # results
 
 write.table(
-    format(data.frame(gene_id = rownames(comp.results), comp.results), nsmall = 8),
+    data.frame(
+        gene_id = rownames(comp.results),
+        round_dataframe_columns(data.frame(comp.results))
+    ),
     file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -357,8 +399,13 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
         vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
     }
 
+    # Again apply the slight rounding and then restore numeric
+
     write.table(
-        format(data.frame(gene_id=rownames(counts(dds)), assay(vs_mat)), nsmall = 8),
+        data.frame(
+            gene_id=rownames(counts(dds)),
+            round_dataframe_columns(data.frame(assay(vs_mat)))
+        ),
         file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
