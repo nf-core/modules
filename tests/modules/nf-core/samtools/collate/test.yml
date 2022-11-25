@@ -5,7 +5,7 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: dbb8244c28778a970e49577731b158df
+      md5sum: 377f4176c9305850c5bbeddea8ad80c5
 
 - name: samtools collate test_samtools_collate_cram
   command: nextflow run ./tests/modules/nf-core/samtools/collate -entry test_samtools_collate_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/collate/nextflow.config
@@ -14,4 +14,4 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: 81aa61ed1f6f3bf6b9c94f70cbf2a177
+      md5sum: 7dc62d3cccb266df8ae9f335f23cde20
