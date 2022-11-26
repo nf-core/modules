@@ -3,10 +3,10 @@ process BBMAP_CLUMPIFY {
     label 'process_single'
     label 'process_high_memory'
 
-    conda (params.enable_conda ? "bioconda::bbmap=38.98" : null)
+    conda (params.enable_conda ? "bioconda::bbmap=39.01" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:38.98--h5c4e2a8_1' :
-        'quay.io/biocontainers/bbmap:38.98--h5c4e2a8_1' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
+        'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
 
     input:
     tuple val(meta), path(reads)
