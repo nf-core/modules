@@ -1,0 +1,206 @@
+- name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: e3bd79a85934aaf66d76ea02958a0364
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+
+- name: parabricks fq2bam test_parabricks_fq2bam_pe_nomkdup
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_nomkdup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+
+- name: parabricks fq2bam test_parabricks_fq2bam_se_mkdup
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_se_mkdup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: b43e415b9a781f746d26cfb9a82ff5b6
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+
+- name: parabricks fq2bam test_parabricks_fq2bam_se_mkdup_qc
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_se_mkdup_qc -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/qc_metrics/alignment.txt
+    md5sum: 175a691958d85d409ae0dc31aa778a3f
+  - path: output/parabricks/qc_metrics/base_distribution_by_cycle.pdf
+    should_exist: true
+  - path: output/parabricks/qc_metrics/base_distribution_by_cycle.png
+    should_exist: true
+  - path: output/parabricks/qc_metrics/base_distribution_by_cycle.txt
+    md5sum: d232610e5b820ca7db76542ed41f540e
+  - path: output/parabricks/qc_metrics/gcbias.pdf
+    should_exist: true
+  - path: output/parabricks/qc_metrics/gcbias_0.png
+    md5sum: b70c3747bbe10cfafa6e50fe7210e0d1
+  - path: output/parabricks/qc_metrics/gcbias_detail.txt
+    md5sum: 24f1957dc1654c0d993f84b82c273e1b
+  - path: output/parabricks/qc_metrics/gcbias_summary.txt
+    md5sum: 4c40815a99e68da515ee09d7a1dc371d
+  - path: output/parabricks/qc_metrics/insert_size.txt
+    md5sum: d41d8cd98f00b204e9800998ecf8427e
+  - path: output/parabricks/qc_metrics/mean_quality_by_cycle.pdf
+    should_exist: true
+  - path: output/parabricks/qc_metrics/mean_quality_by_cycle.png
+    should_exist: true
+  - path: output/parabricks/qc_metrics/mean_quality_by_cycle.txt
+    md5sum: e8c526858383c7615dd3a2590a082985
+  - path: output/parabricks/qc_metrics/quality_yield.txt
+    md5sum: 76709f8533e7f36b1ccf2d358defa3ef
+  - path: output/parabricks/qc_metrics/qualityscore.pdf
+    should_exist: true
+  - path: output/parabricks/qc_metrics/qualityscore.png
+    should_exist: true
+  - path: output/parabricks/qc_metrics/qualityscore.txt
+    md5sum: 523ec5877089015b4341dd6096d55dbe
+  - path: output/parabricks/qc_metrics/sequencingArtifact.bait_bias_detail_metrics.txt
+    md5sum: eab24c33e369027df9f3bd9310e0f318
+  - path: output/parabricks/qc_metrics/sequencingArtifact.bait_bias_summary_metrics.txt
+    md5sum: 141b535c2771a0460ce5b2178806e80e
+  - path: output/parabricks/qc_metrics/sequencingArtifact.error_summary_metrics.txt
+    md5sum: beadc0e9606c9db88aaa54264c2d28b1
+  - path: output/parabricks/qc_metrics/sequencingArtifact.pre_adapter_detail_metrics.txt
+    md5sum: bc5fbd6bde27c6a5b9fd96252dc10f17
+  - path: output/parabricks/qc_metrics/sequencingArtifact.pre_adapter_summary_metrics.txt
+    md5sum: cc3f3ea2cfa17f97d04457a354c18f29
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: b43e415b9a781f746d26cfb9a82ff5b6
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+
+- name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_bqsr
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_bqsr -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: e3bd79a85934aaf66d76ea02958a0364
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+  - path: output/parabricks/test.table
+    md5sum: a63b35267493ab63ae58c348caaaf28f
+
+- name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_bqsr2
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_bqsr2 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: e3bd79a85934aaf66d76ea02958a0364
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+  - path: output/parabricks/test.table
+    md5sum: a63b35267493ab63ae58c348caaaf28f
+
+- name: parabricks fq2bam test_parabricks_fq2bam_pe_mkdup_bqsr_intervals
+  command: nextflow run ./tests/modules/nf-core/parabricks/fq2bam -entry test_parabricks_fq2bam_pe_mkdup_bqsr_intervals -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/parabricks/fq2bam/nextflow.config
+  tags:
+  - parabricks/fq2bam
+  - parabricks
+  files:
+  - path: output/bwa/bwa/genome.amb
+    md5sum: 3a68b8b2287e07dd3f5f95f4344ba76e
+  - path: output/bwa/bwa/genome.ann
+    md5sum: c32e11f6c859f166c7525a9c1d583567
+  - path: output/bwa/bwa/genome.bwt
+    md5sum: 0469c30a1e239dd08f68afe66fde99da
+  - path: output/bwa/bwa/genome.pac
+    md5sum: 983e3d2cd6f36e2546e6d25a0da78d66
+  - path: output/bwa/bwa/genome.sa
+    md5sum: ab3952cabf026b48cd3eb5bccbb636d1
+  - path: output/parabricks/test-duplicate-metrics.txt
+    md5sum: e3bd79a85934aaf66d76ea02958a0364
+  - path: output/parabricks/test.bam
+    should_exist: true
+  - path: output/parabricks/test.bam.bai
+    should_exist: true
+  - path: output/parabricks/test.table
+    md5sum: f703648007481982782952c040137594
