@@ -2,10 +2,10 @@ process BBMAP_PILEUP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bbmap=38.92 bioconda::samtools=1.15.1 pigz=2.6" : null)
+    conda (params.enable_conda ? "bioconda::bbmap=39.01 bioconda::samtools=1.16.1 pigz=2.6" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0' :
-        'quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:2fee0e0facec1dfe32a1ee4aa516aef7d0296ebf-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:e8a286b2e789c091bac0a57302cdc78aa0112353-0' :
+        'quay.io/biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:e8a286b2e789c091bac0a57302cdc78aa0112353-0' }"
 
     input:
     tuple val(meta), path(bam)
