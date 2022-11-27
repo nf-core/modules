@@ -32,7 +32,7 @@ process BISCUIT_EPIREAD {
     def options_snp_bed = snp_bed ? "-B ${unzipped_snp_bed}" : ""
     if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     $unzip_snp_bed
 

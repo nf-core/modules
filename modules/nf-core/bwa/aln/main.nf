@@ -40,7 +40,7 @@ process BWA_ALN {
         """
     } else {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\

@@ -27,7 +27,7 @@ process BISCUIT_BLASTER {
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.95),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit align \\
         -@ $biscuit_cpus \\

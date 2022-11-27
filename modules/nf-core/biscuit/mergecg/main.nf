@@ -23,7 +23,7 @@ process BISCUIT_MERGECG {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit mergecg \\
         $args \\
