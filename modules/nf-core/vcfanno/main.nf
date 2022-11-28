@@ -42,7 +42,7 @@ process VCFANNO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_annotated.vcf
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
