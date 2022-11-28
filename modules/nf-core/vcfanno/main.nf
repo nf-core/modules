@@ -14,7 +14,7 @@ process VCFANNO {
     path resources
 
     output:
-    tuple val(meta), path("*_annotated.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"                     , emit: versions
 
     when:
