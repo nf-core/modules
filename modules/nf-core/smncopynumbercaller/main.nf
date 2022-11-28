@@ -17,7 +17,6 @@ process SMNCOPYNUMBERCALLER {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("manifest.txt"), emit: manifest
     tuple val(meta), path("*.tsv"), emit: smncopynumber
     tuple val(meta), path("*.json"), emit: run_metrics
     path "versions.yml" , emit: versions
@@ -25,21 +24,18 @@ process SMNCOPYNUMBERCALLER {
     when:
     task.ext.when == null || task.ext.when
 
-    exec:
-    def manifest_in = file(task.workDir + 'manifest.txt')
-    manifest_in.text = bam.join("\n")
-
     script:
+    manifest_text = bam.join("\n")
     def args = task.ext.args ?: ''
     def cpus = task.cpus
     def genome_version = task.ext.genome_version // [19/37/38]
-    def out_dir = task.outDir
+    def out_dir = task.workdir
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
+    echo "$manifest_text" >manifest.txt
     smn_caller.py \\
         $args \\
-        --manifest $manifest_in \\
+        --manifest manifest.txt \\
         --genome $genome_version \\
         --prefix $prefix \\
         --outDir $out_dir \\
