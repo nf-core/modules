@@ -1,8 +1,9 @@
-## Please run the following command to build this file:
-#                nf-core modules create-test-yml smncopynumbercaller
-- name: smncopynumbercaller
+- name: smncopynumbercaller test_smncopynumbercaller
   command: nextflow run ./tests/modules/nf-core/smncopynumbercaller -entry test_smncopynumbercaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smncopynumbercaller/nextflow.config
   tags:
-    - smncopynumbercaller
+  - smncopynumbercaller
   files:
-    - path: output/smncopynumbercaller/versions.yml
+  - path: output/smncopynumbercaller/results/test.json
+    md5sum: ef881613c0bc0cbf050746f85cf66b62
+  - path: output/smncopynumbercaller/results/test.tsv
+    md5sum: 932851001d39a6dd2aa13d2d22c2149d
