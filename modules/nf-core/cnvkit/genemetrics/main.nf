@@ -12,7 +12,7 @@ process CNVKIT_GENEMETRICS {
     tuple val(meta), path(cnr), path(cns)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.tsv"), emit: tsv
     //tuple val(meta), path("*.cnn"), emit: cnn
     path "versions.yml"           , emit: versions
 
@@ -28,6 +28,7 @@ process CNVKIT_GENEMETRICS {
         genemetrics \\
         $cnr \\
         $segments \\
+        --output ${prefix}.tsv \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
