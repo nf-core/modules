@@ -7,7 +7,7 @@ process PARABRICKS_FQ2BAM {
     }
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.0.0-1"
-    
+
     input:
     tuple val(meta), path(reads), path(interval_file)
     tuple val(meta2), path(fasta)
