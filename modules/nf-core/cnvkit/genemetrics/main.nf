@@ -1,4 +1,3 @@
-
 process CNVKIT_GENEMETRICS {
     tag "$meta.id"
     label 'process_low'
