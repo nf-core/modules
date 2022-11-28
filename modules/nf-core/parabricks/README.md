@@ -11,7 +11,9 @@ Parabricks tools must be run with at least one NVIDIA GPU with >16GB vRAM, and a
 To give docker or singularity access to GPUs present on the host system, add this line to the configuration file: `docker.runOptions = "--gpus all"` or `singularity.runOptions = "--nv"`.
 
 ## License
+
 As of version 4.0, Parabricks is available for general use. The license from NVIDIA states:
+
 ```
 A license is no longer required to use Clara Parabricks. The container works out of the box once downloaded.
 
@@ -23,10 +25,12 @@ Clara Parabricks is free for
 
 Users who would like to have Enterprise Support for Clara Parabricks can purchase NVIDIA AI Enterprise licenses, which provides full-stack support. To learn more about NVIDIA AI Enterprise, please visit https://www.nvidia.com/en-us/data-center/products/ai-enterprise/.
 ```
+
 ## Specific tools
+
 ### fq2bam
 
-`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the numebr of threads used with this tool - all avilable threads on the system are used by default. 
+`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the numebr of threads used with this tool - all avilable threads on the system are used by default.
 
 Alignment and coordinate sorting are always performed. Duplicate marking can be performed by passing the option `markdups=true`. Duplicate marking and BQSR can be performed by passing the options `markdups=true` and `known_sites=$KNOWN_SITES_FILE`.
 
@@ -35,13 +39,17 @@ Please see the `fq2bam/meta.yml` file for a detailed list of required and option
 For additional considerations, including information about how readgroups are added to the resulting bam files, see the [tool documentation](https://docs.nvidia.com/clara/parabricks/4.0.0/Documentation/ToolDocs/man_fq2bam.html).
 
 ### applybqsr
+
 TBD.
 
 ### mutectcaller
+
 TBD.
 
 ### haplotypecaller
+
 TBD.
 
 ### deepvariant
+
 TBD.
