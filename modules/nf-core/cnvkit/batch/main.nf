@@ -13,6 +13,7 @@ process CNVKIT_BATCH {
     path  fasta_fai
     path  targets
     path  reference
+    val   panel_of_normals
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -61,6 +62,14 @@ process CNVKIT_BATCH {
         else {
             normal_args = normal_prefix ? "--normal $normal_out" : ""
         }
+    }
+
+    // generation of panel of normals
+    def generate_pon = panel_of_normals ? true : false
+
+    if (generate_pon && !tumor_exists && normal_bam){
+        def pon_input = normal.collect("$it").join(' ')
+        normal_args = "--normal $pon_input"
     }
 
     def target_args = targets ? "--targets $targets" : ""
