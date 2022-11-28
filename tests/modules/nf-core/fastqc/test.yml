@@ -1,75 +1,83 @@
 - name: fastqc test_fastqc_single_end
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_1_fastqc.zip
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 2a9a43fdd45758508df92ac32b9a7d7f
+  - path: output/fastqc/test_1_fastqc.zip
+  - path: output/fastqc/test_fastqc.html
+    md5sum: bc681570acc3573ce62b7dc4848e63d0
+  - path: output/fastqc/test_fastqc.zip
 
 - name: fastqc test_fastqc_paired_end
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_paired_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_1_fastqc.zip
-    - path: output/fastqc/test_2_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_2_fastqc.zip
+  - path: output/fastqc/test_0_fastqc.html
+    md5sum: dd898efab2b240d5e08ea96fc5a74341
+  - path: output/fastqc/test_0_fastqc.zip
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 3687c3a670a05971f82079faf5c88ab9
+  - path: output/fastqc/test_1_fastqc.zip
+  - path: output/fastqc/test_2_fastqc.html
+    md5sum: 1383debdc70dfde4719e81e4dd9fd8c4
+  - path: output/fastqc/test_2_fastqc.zip
 
 - name: fastqc test_fastqc_interleaved
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_interleaved -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_interleaved_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_interleaved_fastqc.zip
+  - path: output/fastqc/test_fastqc.html
+    md5sum: 7da6d994a35fbd016c96c963a3874c48
+  - path: output/fastqc/test_fastqc.zip
+  - path: output/fastqc/test_interleaved_fastqc.html
+    md5sum: 1c13d788a60c6a212b13d9805a78f991
+  - path: output/fastqc/test_interleaved_fastqc.zip
 
 - name: fastqc test_fastqc_bam
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_bam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test.paired_end.sorted_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test.paired_end.sorted_fastqc.zip
+  - path: output/fastqc/test.paired_end.sorted_fastqc.html
+    md5sum: 33942daa5e879280acb8ad5191cbacfa
+  - path: output/fastqc/test.paired_end.sorted_fastqc.zip
+  - path: output/fastqc/test_fastqc.html
+    md5sum: 5d63498279d2632ca51b80ede84b6de5
+  - path: output/fastqc/test_fastqc.zip
 
 - name: fastqc test_fastqc_multiple
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_multiple -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/test_1_fastqc.zip
-    - path: output/fastqc/test_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test_2_fastqc.zip
-    - path: output/fastqc/test_2_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test2_1_fastqc.zip
-    - path: output/fastqc/test2_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/test2_2_fastqc.zip
-    - path: output/fastqc/test2_2_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
+  - path: output/fastqc/test2_1_fastqc.html
+    md5sum: 94fae8cddc75f2c290d8b43af5fe3c62
+  - path: output/fastqc/test2_1_fastqc.zip
+  - path: output/fastqc/test2_2_fastqc.html
+    md5sum: a7163b8bb6606af41b91e899e9afb40a
+  - path: output/fastqc/test2_2_fastqc.zip
+  - path: output/fastqc/test_0_fastqc.html
+    md5sum: dd898efab2b240d5e08ea96fc5a74341
+  - path: output/fastqc/test_0_fastqc.zip
+  - path: output/fastqc/test_1_fastqc.html
+    md5sum: 3687c3a670a05971f82079faf5c88ab9
+  - path: output/fastqc/test_1_fastqc.zip
+  - path: output/fastqc/test_2_fastqc.html
+    md5sum: eb3e5ba48e1e7aa3338669430be08a14
+  - path: output/fastqc/test_2_fastqc.zip
+  - path: output/fastqc/test_3_fastqc.html
+    md5sum: 30ed8d906060bfef0a9af75df345f4e9
+  - path: output/fastqc/test_3_fastqc.zip
 
 - name: fastqc test_fastqc_custom_prefix
   command: nextflow run ./tests/modules/nf-core/fastqc -entry test_fastqc_custom_prefix -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastqc/nextflow.config
   tags:
-    - fastqc
+  - fastqc
   files:
-    - path: output/fastqc/mysample_test_1_fastqc.html
-      contains:
-        - <tr><td>File type</td><td>Conventional base calls</td></tr>
-    - path: output/fastqc/mysample_test_1_fastqc.zip
+  - path: output/fastqc/mysample_fastqc.html
+    md5sum: 13f5c1c126485ce449e06a2fff14f99d
+  - path: output/fastqc/mysample_fastqc.zip

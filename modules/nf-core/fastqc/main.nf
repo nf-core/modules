@@ -21,8 +21,11 @@ process FASTQC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def rename = reads instanceof Path || reads.size() == 1 ? "$reads ${prefix}.${reads.extension}" : reads.withIndex().collect { entry, index -> "$entry ${prefix}_${index}.${entry.extension}" }.join(' ')
     """
-    printf "%s\\n" $reads | while read f; do [[ \$f =~ ^${prefix}.* ]] || ln -s \$f ${prefix}_\$f ; done
+    printf "%s %s\\n" $rename | while read old_name new_name; do
+        [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
+    done
     fastqc $args --threads $task.cpus ${prefix}*
 
     cat <<-END_VERSIONS > versions.yml
