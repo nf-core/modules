@@ -1,0 +1,63 @@
+name: "checkv"
+## TODO nf-core: Add a description of the module and list keywords
+description: Assess the quality of metagenome-assembled viral genomes.
+keywords:
+  - checkv
+  - checkm
+  - mag
+  - metagenome
+  - quality
+  - isolates
+  - virus
+  - completeness
+  - contamination
+tools:
+  - "checkv":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: Assess the quality of metagenome-assembled viral genomes.
+      homepage: https://bitbucket.org/berkeleylab/checkv/src/master/
+      documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
+      tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
+      doi: "http://dx.doi.org/10.1038/s41587-020-00774-7"
+      licence: "['Modified BSD']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fasta, fna, fa,gz, bz2, xz}"
+
+  - db:
+      type: directory
+      description: Optional directory pointing to checkV database to prevent re-downloading
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'sample', bin:'1' ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - results:
+      type: directory
+      description: CheckV output directory
+      pattern: "*/"
+
+  - tsv:
+      type: file
+      description: CheckV tables on completeness, contamination and other summary information
+      pattern: "*.tsv"
+
+authors:
+  - "@Joon-Klaps"
