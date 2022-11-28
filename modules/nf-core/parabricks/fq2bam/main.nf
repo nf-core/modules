@@ -44,11 +44,11 @@ process PARABRICKS_FQ2BAM {
     #   and have the same base name for pbrun to function
     #   here we copy the index into the staging dir of fasta
     FASTA_PATH=`readlink -f $fasta`
-    cp \$INDEX.amb \$FASTA_PATH.amb 
-    cp \$INDEX.ann \$FASTA_PATH.ann 
-    cp \$INDEX.bwt \$FASTA_PATH.bwt 
-    cp \$INDEX.pac \$FASTA_PATH.pac 
-    cp \$INDEX.sa \$FASTA_PATH.sa 
+    cp \$INDEX.amb \$FASTA_PATH.amb
+    cp \$INDEX.ann \$FASTA_PATH.ann
+    cp \$INDEX.bwt \$FASTA_PATH.bwt
+    cp \$INDEX.pac \$FASTA_PATH.pac
+    cp \$INDEX.sa \$FASTA_PATH.sa
 
     pbrun \\
         fq2bam \\
@@ -64,7 +64,7 @@ process PARABRICKS_FQ2BAM {
         $interval_file_command \\
         --num-gpus $task.accelerator.request \\
         $args
-       
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
