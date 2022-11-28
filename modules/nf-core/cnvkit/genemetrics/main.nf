@@ -21,7 +21,8 @@ process CNVKIT_GENEMETRICS {
 
     script:
     def args = task.ext.args ?: ''
-    def segments = cns ? '--segment $cns' : ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def segments = cns ? "--segment ${cns}" : ""
 
     """
     cnvkit.py \\
