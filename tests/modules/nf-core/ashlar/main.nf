@@ -13,14 +13,6 @@ def TEST_SHEET = '/home/pollen/github/modules/tests/modules/nf-core/ashlar/input
 
 workflow test_ashlar {
 
-    println 'running workflow test_ashlar'
-
-    /*
-    input = file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)=
-    input_channel = Channel.fromList [ input ]
-    ASHLAR ( input_channel )
-    */
-
     input_list =  [ [ [ id:'test', args: '--flip-y' ],
                file(TEST_IMG, checkIfExists: true) ] ]
     input_channel = Channel.fromList(input_list)
@@ -28,15 +20,17 @@ workflow test_ashlar {
     ASHLAR ( input_channel )
 }
 
+
 // we can add additional test workflows below
 
 include { INPUT_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check.nf'
 
 workflow test_ashlar_sheet {
 
-    /*
+    ch_input = file(TEST_SHEET)
+
     INPUT_CHECK (
-        TEST_SHEET
+        ch_input
     )
     .images
     .map {
@@ -46,17 +40,6 @@ workflow test_ashlar_sheet {
     .set { input_maps }
 
     ASHLAR ( input_maps )
-    */
-
-    INPUT_CHECK (
-        TEST_SHEET
-    )
-    .images
-    .map {
-        [ [ id:it.id, args: it.args],
-            file(it.file_list, checkIfExists: true) ]
-    }
-    .view { "$it" }
 
 }
 

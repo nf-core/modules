@@ -2,6 +2,8 @@ include { SAMPLESHEET_CHECK } from './samplesheet_check'
 
 workflow INPUT_CHECK {
 
+    println "running INPUT_CHECK..."
+
     take:
     samplesheet  // file: ./input_sheet.csv
 
@@ -10,6 +12,7 @@ workflow INPUT_CHECK {
         .csv
         .splitCsv (header:true, sep:',')
         .map { create_image_channel(it) }
+        .view()
         .set { images }
 
     emit:
