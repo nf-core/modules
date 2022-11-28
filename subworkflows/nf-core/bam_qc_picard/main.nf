@@ -18,7 +18,7 @@ workflow BAM_QC_PICARD {
     ch_versions = Channel.empty()
     ch_coverage_metrics = Channel.empty()
 
-    PICARD_COLLECTMULTIPLEMETRICS( ch_bam, ch_fasta )
+    PICARD_COLLECTMULTIPLEMETRICS( ch_bam, ch_fasta, ch_fasta_fai )
     ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions.first())
 
     if (ch_bait_interval || ch_target_interval) {
@@ -28,7 +28,7 @@ workflow BAM_QC_PICARD {
         ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
         ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
     } else {
-        PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta )
+        PICARD_COLLECTWGSMETRICS( ch_bam, ch_fasta, [] )
         ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
         ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics)
     }
