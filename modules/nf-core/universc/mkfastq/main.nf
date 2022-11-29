@@ -6,7 +6,12 @@ process UNIVERSC_MKFASTQ {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
     }
     container "tomkellygenetics/universc:1.2.4"
-    containerOptions = "--user root"
+    if (workflow.containerEngine == 'docker'){
+        containerOptions = "--user root"
+    }
+    if (workflow.containerEngine == 'singularity'){
+        containerOptions = "--writable"
+    }
 
     input:
     path bcl

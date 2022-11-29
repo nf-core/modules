@@ -7,7 +7,12 @@ process UNIVERSC_COUNT {
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
     container "tomkellygenetics/universc:1.2.4"
-    containerOptions = "--user root"
+    if (workflow.containerEngine == 'docker'){
+        containerOptions = "--user root"
+    }
+    if (workflow.containerEngine == 'singularity'){
+        containerOptions = "--writable"
+    }
 
     input:
     tuple val(meta), path(reads)
