@@ -39,7 +39,7 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     """
 
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
     # index and fasta need to be in the same dir as regular files (not symlinks)
     #   and have the same base name for pbrun to function
     #   here we copy the index into the staging dir of fasta
