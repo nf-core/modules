@@ -25,24 +25,15 @@ process VERIFYBAMID_VERIFYBAMID {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def args_list = args.tokenize()
-
-    def bam_arg = "${bam}.endsWith('.bam|.BAM')" ? "--bam ${bam}" : ""
-    def bai_arg = "${bai}.endsWith('.bai|.BAI')" ? "--bai ${bai}" : ""
-    def refvcf_args = "${refvcf}.endsWith('.vcf|.vcf.gz')" ? "--vcf ${refvcf}" : ""
-    def out_args = "--out ${prefix}"
-
     def VERSION = '1.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     verifyBamID \\
-        ${bam_arg} \\
-        ${bai_arg} \\
-        ${refvcf_args} \\
-        ${out_args} \\
-        ${args_list.join(' ')} \\
+        --bam ${bam} \\
+        --vcf ${refvcf} \\
+        --out ${prefix} \\
+        ${args} \\
         > ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
