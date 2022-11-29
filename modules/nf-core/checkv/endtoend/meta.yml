@@ -1,5 +1,5 @@
-name: "checkv"
-## TODO nf-core: Add a description of the module and list keywords
+name: "checkv_endtoend"
+
 description: Assess the quality of metagenome-assembled viral genomes.
 keywords:
   - checkv
@@ -11,9 +11,9 @@ keywords:
   - virus
   - completeness
   - contamination
+
 tools:
   - "checkv":
-      ## TODO nf-core: Add a description and other details for the software below
       description: Assess the quality of metagenome-assembled viral genomes.
       homepage: https://bitbucket.org/berkeleylab/checkv/src/master/
       documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
@@ -31,11 +31,11 @@ input:
   - fasta:
       type: file
       description: fasta file
-      pattern: "*.{fasta, fna, fa,gz, bz2, xz}"
+      pattern: "*.{fasta, fna, fa, gz, bz2, xz}"
 
   - db:
       type: directory
-      description: Optional directory pointing to checkV database to prevent re-downloading
+      description: Directory pointing to checkV database
 
 output:
   - meta:

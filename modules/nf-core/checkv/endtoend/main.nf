@@ -1,4 +1,4 @@
-process CHECKV {
+process CHECKV_ENDTOEND {
     tag "$meta.id"
     label 'process_medium'
 
@@ -22,7 +22,7 @@ process CHECKV {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    checkv_db = db ? "export CHECKVDB=${db}" : "checkv download_database --quiet ./ && export CHECKVDB=checkv*"
+    checkv_db = db ? "export CHECKVDB=${db}" : ""
     """
     $checkv_db
 

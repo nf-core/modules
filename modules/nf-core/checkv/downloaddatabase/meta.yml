@@ -1,0 +1,47 @@
+name: "checkv_downloaddatabase"
+
+description: Construct the database necessary for checkv's quality assessment
+keywords:
+  - checkv
+  - checkm
+  - mag
+  - metagenome
+  - quality
+  - isolates
+  - virus
+  - completeness
+  - contamination
+
+tools:
+  - "checkv":
+      description: Assess the quality of metagenome-assembled viral genomes.
+      homepage: https://bitbucket.org/berkeleylab/checkv/src/master/
+      documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
+      tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
+      doi: "http://dx.doi.org/10.1038/s41587-020-00774-7"
+      licence: "['Modified BSD']"
+
+
+input:
+  - fasta:
+      type: file
+      pattern: "*.{fasta, fna, fa, gz, bz2, xz}"
+      description: fasta file containing additional sequences for the checkv_db
+
+  - db:
+      type: directory
+      description: directory pointing to checkV database to avoid redownloading the database
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - checkv_db:
+      type: directory
+      description: directory pointing to database
+
+
+authors:
+  - "@Joon-Klaps"
