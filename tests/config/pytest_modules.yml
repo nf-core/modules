@@ -18,6 +18,14 @@ adapterremovalfixprefix:
   - modules/nf-core/adapterremovalfixprefix/**
   - tests/modules/nf-core/adapterremovalfixprefix/**
 
+agat/convertspgff2gtf:
+  - modules/nf-core/agat/convertspgff2gtf/**
+  - tests/modules/nf-core/agat/convertspgff2gtf/**
+
+agat/convertspgxf2gxf:
+  - modules/nf-core/agat/convertspgxf2gxf/**
+  - tests/modules/nf-core/agat/convertspgxf2gxf/**
+
 agat/spstatistics:
   - modules/nf-core/agat/spstatistics/**
   - tests/modules/nf-core/agat/spstatistics/**
@@ -578,6 +586,10 @@ cnvkit/antitarget:
 cnvkit/batch:
   - modules/nf-core/cnvkit/batch/**
   - tests/modules/nf-core/cnvkit/batch/**
+
+cnvkit/genemetrics:
+  - modules/nf-core/cnvkit/genemetrics/**
+  - tests/modules/nf-core/cnvkit/genemetrics/**
 
 cnvkit/reference:
   - modules/nf-core/cnvkit/reference/**
@@ -2703,14 +2715,6 @@ subworkflows/align_bowtie2:
   - subworkflows/nf-core/align_bowtie2/**
   - tests/subworkflows/nf-core/align_bowtie2/**
 
-subworkflows/annotation/ensemblvep:
-  - subworkflows/nf-core/annotation/ensemblvep/**
-  - tests/subworkflows/nf-core/annotation/ensemblvep/**
-
-subworkflows/annotation/snpeff:
-  - subworkflows/nf-core/annotation/snpeff/**
-  - tests/subworkflows/nf-core/annotation/snpeff/**
-
 subworkflows/bam_dedup_stats_samtools_umitools:
   - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
   - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
@@ -2806,6 +2810,14 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
+
+subworkflows/vcf_annotate_ensembl_vep:
+  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+
+subworkflows/vcf_annotate_snpeff:
+  - subworkflows/nf-core/vcf_annotate_snpeff/**
+  - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
