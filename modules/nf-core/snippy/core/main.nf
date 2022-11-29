@@ -34,9 +34,9 @@ process SNIPPY_CORE {
 
     # Collect samples into necessary folders
     mkdir samples
-    find . -name "*.vcf" | sed 's/.vcf//' | xargs -I {} bash -c 'mkdir samples/{}'
-    find . -name "*.vcf" | sed 's/.vcf//' | xargs -I {} bash -c 'cp -L {}.vcf samples/{}/{}.vcf'
-    find . -name "*.aligned.fa" | sed 's/.aligned.fa//' | xargs -I {} bash -c 'cp -L {}.aligned.fa samples/{}/{}.aligned.fa'
+    find . -name "*.vcf" | sed 's/\\.vcf\$//' | xargs -I {} bash -c 'mkdir samples/{}'
+    find . -name "*.vcf" | sed 's/\\.vcf\$//' | xargs -I {} bash -c 'cp -L {}.vcf samples/{}/{}.vcf'
+    find . -name "*.aligned.fa" | sed 's/\\.aligned.fa\$//' | xargs -I {} bash -c 'cp -L {}.aligned.fa samples/{}/{}.aligned.fa'
 
     # Run snippy-core
     snippy-core \\

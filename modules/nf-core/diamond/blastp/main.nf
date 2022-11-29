@@ -45,7 +45,7 @@ process DIAMOND_BLASTP {
             break
     }
     """
-    DB=`find -L ./ -name "*.dmnd" | sed 's/.dmnd//'`
+    DB=`find -L ./ -name "*.dmnd" | sed 's/\\.dmnd\$//'`
 
     diamond \\
         blastp \\
