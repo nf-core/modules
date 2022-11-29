@@ -52,6 +52,7 @@ process GATK4_COLLECTREADCOUNTS {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--format HDF5") ? "hdf5" :
                     args.contains("--format TSV")  ? "tsv" :

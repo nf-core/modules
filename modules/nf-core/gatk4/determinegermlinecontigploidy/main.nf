@@ -70,6 +70,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
     touch ${prefix}-calls.tar.gz
     touch ${prefix}-model.tar.gz
+    touch ${prefix}.tsv
+    touch ${prefix}2.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
