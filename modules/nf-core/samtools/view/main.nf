@@ -2,10 +2,10 @@ process SAMTOOLS_VIEW {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::samtools=1.15.1" : null)
+    conda (params.enable_conda ? "bioconda::samtools=1.16.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.15.1--h1170115_0' :
-        'quay.io/biocontainers/samtools:1.15.1--h1170115_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.16.1--h6899075_1' :
+        'quay.io/biocontainers/samtools:1.16.1--h6899075_1' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -26,6 +26,7 @@ process SAMTOOLS_VIEW {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     def readnames = qname ? "--qname-file ${qname}": ""
@@ -42,7 +43,8 @@ process SAMTOOLS_VIEW {
         ${readnames} \\
         $args \\
         -o ${prefix}.${file_type} \\
-        $input
+        $input \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

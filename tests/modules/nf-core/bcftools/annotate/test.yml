@@ -6,7 +6,6 @@
   files:
     - path: output/bcftools/test_compressed_vcf_annotated.vcf.gz
     - path: output/bcftools/versions.yml
-      md5sum: ff237d88fce62300fdab66b284e9aa95
 
 - name: bcftools annotate test_bcftools_annotate_out_bcf
   command: nextflow run ./tests/modules/nf-core/bcftools/annotate -entry test_bcftools_annotate_out_bcf -c ./tests/config/nextflow.config
@@ -16,4 +15,3 @@
   files:
     - path: output/bcftools/test_compressed_bcf_annotated.bcf
     - path: output/bcftools/versions.yml
-      md5sum: bbcefb8ebfca05c538a92dbfb94d977e

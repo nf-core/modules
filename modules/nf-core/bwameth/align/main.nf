@@ -24,7 +24,7 @@ process BWAMETH_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-R ${meta.read_group}" : ""
     """
-    INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/.bwameth.c2t//'`
+    INDEX=`find -L ${index} -name "*.bwameth.c2t" | sed 's/\\.bwameth.c2t\$//'`
 
     # Modify the timestamps so that bwameth doesn't complain about building the index
     # See https://github.com/nf-core/methylseq/pull/217

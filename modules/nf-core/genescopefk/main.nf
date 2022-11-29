@@ -6,7 +6,7 @@ process GENESCOPEFK {
         error "Conda environments cannot be used when using the GeneScope tool. Please use docker or singularity containers."
     }
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.0'
+    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
 
     input:
     tuple val(meta), path(fastk_histex_histogram)

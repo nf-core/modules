@@ -18,7 +18,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data,respectively.
+      description: List of input FastQ files
       pattern: "*.{fastq.gz}"
   - sample_size:
       type: value
@@ -36,9 +36,10 @@ output:
       pattern: "versions.yml"
   - reads:
       type: file
-      description: Subsampled FastQ files, 1 for single-end data or 2 for paired-end data.
+      description: Subsampled FastQ files
       pattern: "*.{fastq.gz}"
 
 authors:
   - "@kaurravneet4123"
   - "@sidorov-si"
+  - "@adamrtalbot"
