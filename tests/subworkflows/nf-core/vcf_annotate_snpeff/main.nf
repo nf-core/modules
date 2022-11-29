@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { ANNOTATION_SNPEFF } from '../../../../../subworkflows/nf-core/annotation/snpeff/main'
+include { VCF_ANNOTATE_SNPEFF } from '../../../../subworkflows/nf-core/vcf_annotate_snpeff/main.nf'
 
-workflow annotation_snpeff {
+workflow vcf_annotate_snpeff {
     input = [
         [ id:'test' ], // meta map
         file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
 
-    ANNOTATION_SNPEFF ( input, "WBcel235.99", [] )
+    VCF_ANNOTATE_SNPEFF ( input, "WBcel235.99", [] )
 }

@@ -24,7 +24,7 @@ process BWA_SAMSE {
     def read_group = meta.read_group ? "-r ${meta.read_group}" : ""
 
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
     bwa samse \\
         $args \\
