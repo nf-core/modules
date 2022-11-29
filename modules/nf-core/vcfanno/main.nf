@@ -8,7 +8,7 @@ process VCFANNO {
         'quay.io/biocontainers/vcfanno:0.3.3--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcf, stageAs: "input/*"), path(tbi, stageAs: "input/*")
+    tuple val(meta), path(vcf), path(tbi)
     path toml
     path lua
     path resources
