@@ -14,9 +14,8 @@ workflow BED_SCATTER_BEDTOOLS {
     ch_bed
         .map(
             { meta, bed, scatter_count ->
-                new_meta = meta.clone()
-                new_meta.subwf_scatter_count = scatter_count
-                [ new_meta, bed ]
+                meta = meta + [subwf_scatter_count:scatter_count]
+                [ meta, bed ]
             }
         )
         .set { ch_bedtools_split }
@@ -30,17 +29,17 @@ workflow BED_SCATTER_BEDTOOLS {
         .map(
             { meta, beds ->
                 // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
-                new_meta = meta.clone()
-                new_meta.subwf_scatter_count = beds instanceof Path ? 1 : beds.size()
-                [ new_meta, beds ]
+                scatter_count = beds instanceof Path ? 1 : beds.size()
+                meta = meta + [subwf_scatter_count:scatter_count]
+                [ meta, beds ]
             }
         )
         .transpose()
-        .set { scattered_beds }
+        .set { ch_scattered_beds }
 
     emit:
-    scattered_beds              // channel: [ meta, bed ]
+    scattered_beds = ch_scattered_beds // channel: [ meta, bed ]
 
-    versions = ch_versions      // channel: [ versions.yml ]
+    versions = ch_versions             // channel: [ versions.yml ]
 }
 
