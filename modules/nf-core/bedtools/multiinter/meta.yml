@@ -18,8 +18,8 @@ input:
         e.g. [ id:'test', single_end:false ]
   - beds:
       type: list
-      description: List of bed files to be merged
-      pattern: "*.{bed}"
+      description: List of files to be merged
+      pattern: "*.{bed,vcf,gff}"
 
 output:
   - meta:
