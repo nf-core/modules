@@ -10,10 +10,11 @@ process VCFANNO {
     input:
     tuple val(meta), path(vcf), path(tbi)
     path toml
-    path resource_dir
+    path lua
+    path resources
 
     output:
-    tuple val(meta), path("*_annotated.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     path "versions.yml"                     , emit: versions
 
     when:
@@ -22,15 +23,15 @@ process VCFANNO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def lua_cmd = lua ? "--lua ${lua}" : ""
     """
-    ln -sf $resource_dir/* \$(pwd)
-
     vcfanno \\
         -p $task.cpus \\
         $args \\
+        $lua \\
         $toml \\
         $vcf \\
-        > ${prefix}_annotated.vcf
+        > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,7 +42,7 @@ process VCFANNO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_annotated.vcf
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
