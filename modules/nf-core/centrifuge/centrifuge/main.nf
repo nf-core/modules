@@ -41,7 +41,7 @@ process CENTRIFUGE_CENTRIFUGE {
     def sam_output = sam_format ? "--out-fmt 'sam'" : ''
     """
     ## we add "-no-name ._" to ensure silly Mac OSX metafiles files aren't included
-    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
     centrifuge \\
         -x \$db_name \\
         -p $task.cpus \\

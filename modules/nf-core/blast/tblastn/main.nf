@@ -22,7 +22,7 @@ process BLAST_TBLASTN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    DB=`find -L ./ -name "*.nsq" | sed 's/.nsq//'`
+    DB=`find -L ./ -name "*.nsq" | sed 's/\\.nsq\$//'`
     tblastn \\
         -num_threads $task.cpus \\
         -db \$DB \\
