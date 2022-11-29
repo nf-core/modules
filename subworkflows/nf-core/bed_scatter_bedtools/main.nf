@@ -30,15 +30,15 @@ workflow BED_SCATTER_BEDTOOLS {
             { meta, beds ->
                 // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
                 scatter_count = beds instanceof Path ? 1 : beds.size()
-                meta = meta + [subwf_scatter_count:scatter_count]
-                [ meta, beds ]
+                meta.remove("subwf_scatter_count")
+                [ meta, beds, scatter_count ]
             }
         )
         .transpose()
         .set { ch_scattered_beds }
 
     emit:
-    scattered_beds = ch_scattered_beds // channel: [ meta, bed ]
+    scattered_beds = ch_scattered_beds // channel: [ meta, bed, scatter_count ]
 
     versions = ch_versions             // channel: [ versions.yml ]
 }
