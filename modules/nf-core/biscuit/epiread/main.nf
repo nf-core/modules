@@ -2,7 +2,7 @@ process BISCUIT_EPIREAD {
     tag "$meta.id"
     label 'process_long'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.15" : null)
+    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.15=h1170115_1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0':
         'quay.io/biocontainers/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0' }"
@@ -32,7 +32,7 @@ process BISCUIT_EPIREAD {
     def options_snp_bed = snp_bed ? "-B ${unzipped_snp_bed}" : ""
     if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     $unzip_snp_bed
 

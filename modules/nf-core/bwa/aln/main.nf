@@ -8,8 +8,8 @@ process BWA_ALN {
         'quay.io/biocontainers/bwa:0.7.17--h5bf99c6_8' }"
 
     input:
-    tuple val(meta), path(reads)
-    path index
+    tuple val(meta) , path(reads)
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.sai"), emit: sai
@@ -24,7 +24,7 @@ process BWA_ALN {
 
     if (meta.single_end) {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\
@@ -40,7 +40,7 @@ process BWA_ALN {
         """
     } else {
         """
-        INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
+        INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
         bwa aln \\
             $args \\
