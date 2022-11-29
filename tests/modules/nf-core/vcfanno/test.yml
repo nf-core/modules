@@ -1,23 +1,15 @@
 - name: vcfanno test_vcfanno
-  command: nextflow run ./tests/modules/nf-core/vcfanno -entry test_vcfanno -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/vcfanno/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcfanno -entry test_vcfanno -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcfanno/nextflow.config
   tags:
     - vcfanno
   files:
-    - path: output/untar/vcfanno_grch38_module_test/exac.vcf.gz
-      md5sum: eba4b55d81148d9c316cda68a5c0ad6d
-    - path: output/untar/vcfanno_grch38_module_test/exac.vcf.gz.tbi
-      md5sum: ec47aa09f0248f4f32ae12fb7ba03f34
-    - path: output/vcfanno/test_compressed_annotated.vcf
+    - path: output/vcfanno/test_compressed.vcf
       md5sum: 90ceb2fd2e06e781846d69c3981db665
 
 - name: vcfanno test_vcfanno_uncompressed
-  command: nextflow run ./tests/modules/nf-core/vcfanno -entry test_vcfanno_uncompressed -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/vcfanno/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/vcfanno -entry test_vcfanno_uncompressed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vcfanno/nextflow.config
   tags:
     - vcfanno
   files:
-    - path: output/untar/vcfanno_grch38_module_test/exac.vcf.gz
-      md5sum: eba4b55d81148d9c316cda68a5c0ad6d
-    - path: output/untar/vcfanno_grch38_module_test/exac.vcf.gz.tbi
-      md5sum: ec47aa09f0248f4f32ae12fb7ba03f34
-    - path: output/vcfanno/test_uncompressed_annotated.vcf
+    - path: output/vcfanno/test_uncompressed.vcf
       md5sum: 90ceb2fd2e06e781846d69c3981db665
