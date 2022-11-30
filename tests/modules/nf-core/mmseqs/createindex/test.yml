@@ -1,0 +1,251 @@
+- name: mmseqs createindex test_mmseqs_createindex
+  command: nextflow run ./tests/modules/nf-core/mmseqs/createindex -entry test_mmseqs_createindex -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/createindex/nextflow.config
+  tags:
+    - mmseqs
+    - mmseqs/createindex
+  files:
+    - path: output/mmseqs/mmseqs/mmseqs
+      md5sum: 5299bd35cc5c9e3b535f84845f7b7c49
+    - path: output/mmseqs/mmseqs/mmseqs.dbtype
+      md5sum: f1d3ff8443297732862df21dc4e57262
+    - path: output/mmseqs/mmseqs/mmseqs.fasta
+      md5sum: 4e04341f8781429444f53f69beb31392
+    - path: output/mmseqs/mmseqs/mmseqs.idx
+    - path: output/mmseqs/mmseqs/mmseqs.idx.dbtype
+      md5sum: 9a198d4f48144e20661df7fd2dc41bf7
+    - path: output/mmseqs/mmseqs/mmseqs.idx.index
+      md5sum: 7e2a9492629961e969437bb95e0f11cb
+    - path: output/mmseqs/mmseqs/mmseqs.index
+      md5sum: 240757a3e7a4aa88caa99c46fae62b2c
+    - path: output/mmseqs/mmseqs/mmseqs.lookup
+      md5sum: e37a12cd28da6dcb8aab5566c6b7fbe4
+    - path: output/mmseqs/mmseqs/mmseqs.source
+      md5sum: 16bef02c30aadbfa8d035596502f0aa2
+    - path: output/mmseqs/mmseqs/mmseqs.tsv
+      md5sum: b80f9b6371ac9169fdc5db4218f7b7bf
+    - path: output/mmseqs/mmseqs/mmseqs_aln.0
+      md5sum: 99b176fa7bb85c1cb155cbbb9af35dfc
+    - path: output/mmseqs/mmseqs/mmseqs_aln.1
+      md5sum: f00673aa3a5564ffe1344ab22ef4a0a0
+    - path: output/mmseqs/mmseqs/mmseqs_aln.dbtype
+      md5sum: cbe23d9655fccd4311acdd6261c81bd8
+    - path: output/mmseqs/mmseqs/mmseqs_aln.index
+      md5sum: bb30fec44031e19c014fa09519b9cbaf
+    - path: output/mmseqs/mmseqs/mmseqs_aln.tsv
+      md5sum: de20d018cd578bf1f848314e937b284c
+    - path: output/mmseqs/mmseqs/mmseqs_clu.0
+      md5sum: a14e734eb859442fb2cbe4935dcdca39
+    - path: output/mmseqs/mmseqs/mmseqs_clu.dbtype
+      md5sum: b9d9c6dbc098c97ae446f612efd8eafd
+    - path: output/mmseqs/mmseqs/mmseqs_clu.index
+      md5sum: f9dc7a2ad1d77f05fff0c4f568565cbb
+    - path: output/mmseqs/mmseqs/mmseqs_h
+      md5sum: ea8eaf1163a562ae3db747a9263821e2
+    - path: output/mmseqs/mmseqs/mmseqs_h.dbtype
+      md5sum: 740bab4f9ec8808aedb68d6b1281aeb2
+    - path: output/mmseqs/mmseqs/mmseqs_h.index
+      md5sum: d4e96c2e5c354b48f1c2710208680259
+    - path: output/mmseqs/mmseqs/mmseqs_h.tsv
+      md5sum: c93812496bf37e11a1f2b0e6b3c23b8b
+    - path: output/mmseqs/mmseqs/mmseqs_profile
+      md5sum: 88efcc9b5b1d76b047e3893993f82237
+    - path: output/mmseqs/mmseqs/mmseqs_profile.dbtype
+      md5sum: f2dd0dedb2c260419ece4a9e03b2e828
+    - path: output/mmseqs/mmseqs/mmseqs_profile.idx
+      md5sum: ae78b0d5242496564fe4b80d3b1f52c0
+    - path: output/mmseqs/mmseqs/mmseqs_profile.idx.dbtype
+      md5sum: 9a198d4f48144e20661df7fd2dc41bf7
+    - path: output/mmseqs/mmseqs/mmseqs_profile.idx.index
+      md5sum: 336880f87c849e675cb9cfd42032e806
+    - path: output/mmseqs/mmseqs/mmseqs_profile.index
+      md5sum: 85f786b4fff706de5eceeb5222d5d5e8
+    - path: output/mmseqs/mmseqs/mmseqs_profile.lookup
+      md5sum: e37a12cd28da6dcb8aab5566c6b7fbe4
+    - path: output/mmseqs/mmseqs/mmseqs_profile.source
+      md5sum: 16bef02c30aadbfa8d035596502f0aa2
+    - path: output/mmseqs/mmseqs/mmseqs_profile_h
+      md5sum: ea8eaf1163a562ae3db747a9263821e2
+    - path: output/mmseqs/mmseqs/mmseqs_profile_h.dbtype
+      md5sum: 740bab4f9ec8808aedb68d6b1281aeb2
+    - path: output/mmseqs/mmseqs/mmseqs_profile_h.index
+      md5sum: d4e96c2e5c354b48f1c2710208680259
+    - path: output/mmseqs/mmseqs/mmseqs_seq
+      md5sum: a6f0109d8fa7acdffae9594a1e9d78a3
+    - path: output/mmseqs/mmseqs/mmseqs_seq.dbtype
+      md5sum: 4352d88a78aa39750bf70cd6f27bcaa5
+    - path: output/mmseqs/mmseqs/mmseqs_seq.index
+      md5sum: d4871f57011d13727fcc3f35745c22cc
+    - path: output/mmseqs/mmseqs/mmseqs_seq.lookup
+      md5sum: e37a12cd28da6dcb8aab5566c6b7fbe4
+    - path: output/mmseqs/mmseqs/mmseqs_seq.source
+      md5sum: 16bef02c30aadbfa8d035596502f0aa2
+    - path: output/mmseqs/mmseqs/mmseqs_seq.tsv
+      md5sum: a36c1dd5d0cfd4e45fb21a97c750defd
+    - path: output/mmseqs/mmseqs/mmseqs_seq_h
+      md5sum: ea8eaf1163a562ae3db747a9263821e2
+    - path: output/mmseqs/mmseqs/mmseqs_seq_h.dbtype
+      md5sum: 740bab4f9ec8808aedb68d6b1281aeb2
+    - path: output/mmseqs/mmseqs/mmseqs_seq_h.index
+      md5sum: d4e96c2e5c354b48f1c2710208680259
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/aln.0
+      md5sum: fb17f5ed836dadd1fb30dd01fde2297d
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/aln.1
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/aln.7
+      md5sum: 62c4cd5bf28ede5bc1444d889ee636a0
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/aln.dbtype
+      md5sum: cbe23d9655fccd4311acdd6261c81bd8
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/aln.index
+      md5sum: 22184f6e22586db3990d0666f55f2782
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/clust
+      md5sum: 7a6c39a1926bfd2f5ea6d5f8884489a4
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/clust.dbtype
+      md5sum: b9d9c6dbc098c97ae446f612efd8eafd
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/clust.index
+      md5sum: d4529f11a331ac8b3c93e471ddcd1b8c
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy
+      md5sum: a6f0109d8fa7acdffae9594a1e9d78a3
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy.dbtype
+      md5sum: 4352d88a78aa39750bf70cd6f27bcaa5
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy.index
+      md5sum: fded3dd6d36ea3c73fd04892c3f83e94
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy.lookup
+      md5sum: e37a12cd28da6dcb8aab5566c6b7fbe4
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy.source
+      md5sum: 16bef02c30aadbfa8d035596502f0aa2
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy_h
+      md5sum: ea8eaf1163a562ae3db747a9263821e2
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy_h.dbtype
+      md5sum: 740bab4f9ec8808aedb68d6b1281aeb2
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/input_step_redundancy_h.index
+      md5sum: d4e96c2e5c354b48f1c2710208680259
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/linclust.sh
+      md5sum: fa6749f543812d399c43a0580a657b5c
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/order_redundancy
+      md5sum: cb30ad97771c337a7292770d9f34ad98
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pre_clust
+      md5sum: a14e734eb859442fb2cbe4935dcdca39
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pre_clust.dbtype
+      md5sum: b9d9c6dbc098c97ae446f612efd8eafd
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pre_clust.index
+      md5sum: f9dc7a2ad1d77f05fff0c4f568565cbb
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref
+      md5sum: ed20a0d68df17a1276bf4d5f1b03720d
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref.index
+      md5sum: b469c616bfc6a0b651a018d2ea4179c0
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter1
+      md5sum: ed20a0d68df17a1276bf4d5f1b03720d
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter1.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter1.index
+      md5sum: f3791c5fd007d51e894e5d7d54f23060
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter2.0
+      md5sum: 54139b179c1f8e9c4eec0b794aac4833
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter2.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_filter2.index
+      md5sum: 12e11697af73962253ef15a9bff04aa4
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.0
+      md5sum: 5650725d807b5b40be9aa9b659b3b52e
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.1
+      md5sum: b9d81fa3f34ae9299ac75a400c166dc8
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.2
+      md5sum: 80a0828191fd715f303e07b467319422
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.3
+      md5sum: 7a8abf48eb77b59b970312d1cc64c8cd
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.4
+      md5sum: 0b21a87ec07328f39112b66bd0ce2b8c
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.5
+      md5sum: 239d97ed4a3bfcc7dc0e8816aee9b7c5
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.6
+      md5sum: 11b4f329f74af946d7a908586620951c
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.7
+      md5sum: b67901bba67b782696ee19dde78d772c
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/11719368907366057737/pref_rescore1.index
+      md5sum: 4fe64c01f0e59d0b2454ffb1322718cf
+    - path: output/mmseqs/mmseqs/tmp/latest/aln.0
+      md5sum: fb17f5ed836dadd1fb30dd01fde2297d
+    - path: output/mmseqs/mmseqs/tmp/latest/aln.7
+      md5sum: 62c4cd5bf28ede5bc1444d889ee636a0
+    - path: output/mmseqs/mmseqs/tmp/latest/aln.dbtype
+      md5sum: cbe23d9655fccd4311acdd6261c81bd8
+    - path: output/mmseqs/mmseqs/tmp/latest/aln.index
+      md5sum: 22184f6e22586db3990d0666f55f2782
+    - path: output/mmseqs/mmseqs/tmp/latest/clust
+      md5sum: 7a6c39a1926bfd2f5ea6d5f8884489a4
+    - path: output/mmseqs/mmseqs/tmp/latest/clust.dbtype
+      md5sum: b9d9c6dbc098c97ae446f612efd8eafd
+    - path: output/mmseqs/mmseqs/tmp/latest/clust.index
+      md5sum: d4529f11a331ac8b3c93e471ddcd1b8c
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy
+      md5sum: a6f0109d8fa7acdffae9594a1e9d78a3
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy.dbtype
+      md5sum: 4352d88a78aa39750bf70cd6f27bcaa5
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy.index
+      md5sum: fded3dd6d36ea3c73fd04892c3f83e94
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy.lookup
+      md5sum: e37a12cd28da6dcb8aab5566c6b7fbe4
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy.source
+      md5sum: 16bef02c30aadbfa8d035596502f0aa2
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy_h
+      md5sum: ea8eaf1163a562ae3db747a9263821e2
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy_h.dbtype
+      md5sum: 740bab4f9ec8808aedb68d6b1281aeb2
+    - path: output/mmseqs/mmseqs/tmp/latest/input_step_redundancy_h.index
+      md5sum: d4e96c2e5c354b48f1c2710208680259
+    - path: output/mmseqs/mmseqs/tmp/latest/linclust.sh
+      md5sum: fa6749f543812d399c43a0580a657b5c
+    - path: output/mmseqs/mmseqs/tmp/latest/order_redundancy
+      md5sum: cb30ad97771c337a7292770d9f34ad98
+    - path: output/mmseqs/mmseqs/tmp/latest/pre_clust
+      md5sum: a14e734eb859442fb2cbe4935dcdca39
+    - path: output/mmseqs/mmseqs/tmp/latest/pre_clust.dbtype
+      md5sum: b9d9c6dbc098c97ae446f612efd8eafd
+    - path: output/mmseqs/mmseqs/tmp/latest/pre_clust.index
+      md5sum: f9dc7a2ad1d77f05fff0c4f568565cbb
+    - path: output/mmseqs/mmseqs/tmp/latest/pref
+      md5sum: ed20a0d68df17a1276bf4d5f1b03720d
+    - path: output/mmseqs/mmseqs/tmp/latest/pref.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/latest/pref.index
+      md5sum: b469c616bfc6a0b651a018d2ea4179c0
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter1
+      md5sum: ed20a0d68df17a1276bf4d5f1b03720d
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter1.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter1.index
+      md5sum: f3791c5fd007d51e894e5d7d54f23060
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter2.0
+      md5sum: 54139b179c1f8e9c4eec0b794aac4833
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter2.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_filter2.index
+      md5sum: 12e11697af73962253ef15a9bff04aa4
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.0
+      md5sum: 5650725d807b5b40be9aa9b659b3b52e
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.1
+      md5sum: b9d81fa3f34ae9299ac75a400c166dc8
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.2
+      md5sum: 80a0828191fd715f303e07b467319422
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.3
+      md5sum: 7a8abf48eb77b59b970312d1cc64c8cd
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.4
+      md5sum: 0b21a87ec07328f39112b66bd0ce2b8c
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.5
+      md5sum: 239d97ed4a3bfcc7dc0e8816aee9b7c5
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.6
+      md5sum: 11b4f329f74af946d7a908586620951c
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.7
+      md5sum: b67901bba67b782696ee19dde78d772c
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.dbtype
+      md5sum: a5403c7d81b2c8a123c847982165418b
+    - path: output/mmseqs/mmseqs/tmp/latest/pref_rescore1.index
+      md5sum: 4fe64c01f0e59d0b2454ffb1322718cf
+    - path: output/mmseqs/mmseqs/tmp1/2902531261726042786/createindex.sh
+      md5sum: efcb42eca0c232152424fe9b99033422
+    - path: output/mmseqs/mmseqs/tmp1/latest/createindex.sh
+      md5sum: efcb42eca0c232152424fe9b99033422
+    - path: output/mmseqs/versions.yml
