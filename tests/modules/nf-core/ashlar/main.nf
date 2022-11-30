@@ -8,13 +8,20 @@ include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' 
 // include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf'
 
 def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
-// def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
+def TEST_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
+def TEST_IMG_2 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-07.ome.tiff"
 def TEST_SHEET = '/home/pollen/github/modules/tests/modules/nf-core/ashlar/input_sheet.csv'
 
 workflow test_ashlar {
 
+    /* works
     input_list =  [ [ [ id:'test', args: '--flip-y' ],
                file(TEST_IMG, checkIfExists: true) ] ]
+    input_channel = Channel.fromList(input_list)
+    */
+
+    input_list =  [ [ [ id:'test', args: '--flip-y' ],
+               "${TEST_IMG_1} ${TEST_IMG_2}" ] ]
     input_channel = Channel.fromList(input_list)
 
     ASHLAR ( input_channel )
@@ -29,6 +36,7 @@ workflow test_ashlar_sheet {
 
     ch_input = file(TEST_SHEET)
 
+    /* works
     INPUT_CHECK (
         ch_input
     )
@@ -36,6 +44,17 @@ workflow test_ashlar_sheet {
     .map {
         [ [ id:it.id, args: it.args],
             file(it.file_list, checkIfExists: true) ]
+    }
+    .set { input_maps }
+    */
+
+    INPUT_CHECK (
+        ch_input
+    )
+    .images
+    .map {
+        [ [ id:it.id, args: it.args],
+            it.file_list ]
     }
     .set { input_maps }
 

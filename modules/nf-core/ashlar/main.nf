@@ -49,7 +49,8 @@ process ASHLAR {
     //               https://github.com/nf-core/modules/blob/master/modules/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(file_in)
+    //tuple val(meta), path(file_in)
+    tuple val(meta), val(file_in)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
