@@ -25,7 +25,7 @@ process CHECKV_DOWNLOADDATABASE {
     // determine which command needs to be executed
     if (checkv_db != '' & update_sequence != '') {
         method = "checkv update_database --threads $task.cpus"
-    else{
+    }else{
         method = 'checkv download_database'
     }
 
