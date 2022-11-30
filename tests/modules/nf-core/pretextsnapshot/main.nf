@@ -2,14 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-include { PRETEXTSNAPSHOT } from '../../../../modules/nf-core/pretextsnapshot/main.nf'
+include { PRETEXTSNAPSHOT} from '../../../../modules/nf-core/pretextsnapshot/main.nf'
 
 workflow test_pretextsnapshot {
 
     input = [
         [ id:'test' ], // meta map
-        file("https://github.com/epaule/test-datasets/raw/pretextsnapshot/testdata/jaGalFasc40_2.pretext") // test data
+        file("/tmp/jaGalFasc40_2.pretext") // test data (copy it locally until in test-data)
     ]
 
-    PRETEXTSNAPSHOT_ALL ( input )
+    PRETEXTSNAPSHOT ( input )
 }

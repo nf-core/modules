@@ -1,4 +1,4 @@
-process PRETEXTSNAPSHOT_ALL {
+process PRETEXTSNAPSHOT {
     tag "$meta.id"
     label 'process_single'
 
@@ -10,7 +10,7 @@ process PRETEXTSNAPSHOT_ALL {
     input:
     tuple val(meta), path(pretext)
 
-    output:git 
+    output:
     tuple val(meta), path("*.png"), emit: picture
     path "versions.yml"           , emit: versions
 
