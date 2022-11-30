@@ -29,6 +29,14 @@ input:
       type: file
       description: BAM index file
       pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Reference Fasta file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Index of the reference Fasta
+      pattern: "*.fai"
 
 output:
   - meta:
