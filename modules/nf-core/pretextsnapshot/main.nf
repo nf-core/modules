@@ -25,7 +25,7 @@ process PRETEXTSNAPSHOT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pretextsnapshot: \$(echo \$(PretextSnapshot--version 2>&1) | sed 's/^.PretextSnapshot //; s/Using.*\$//' ))
+        pretextsnapshot: \$(echo \$(PretextSnapshot --version 2>&1) | sed 's/^.*PretextSnapshot Version //' ))
     END_VERSIONS
     """
 }
