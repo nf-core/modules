@@ -1,0 +1,36 @@
+name: New subworkflow
+description: Suggest a new subworkflow for nf-core/modules
+title: "new subworkflow: INPUT/OPERATION/TOOL"
+labels: new subworkflow
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing subworkflow for this?
+      description: This subworkflow does not exist yet with the [`nf-core subworkflows list`](https://github.com/nf-core/tools#list-subworkflows) command
+      options:
+        - label: I have searched for the existing subworkflow
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Is there an open PR for this?
+      description: There is no [open pull request](https://github.com/nf-core/modules/pulls) for this subworkflow
+      options:
+        - label: I have searched for existing PRs
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Is there an open issue for this?
+      description: There is no [open issue](https://github.com/nf-core/modules/issues) for this subworkflow
+      options:
+        - label: I have searched for existing issues
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Are you going to work on this?
+      description: If I'm planning to work on this subworkflow, I added myself to the `Assignees` to facilitate tracking who is working on the subworkflow
+      options:
+        - label: If I'm planning to work on this subworkflow, I added myself to the `Assignees` to facilitate tracking who is working on the subworkflow
+          required: false

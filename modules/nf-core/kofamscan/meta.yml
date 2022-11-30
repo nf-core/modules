@@ -1,0 +1,50 @@
+name: "kofamscan"
+description: Produces annotation using kofamscan against a Profile database and a KO list
+keywords:
+  - fasta
+  - kegg
+  - kofamscan
+tools:
+  - "kofamscan":
+      description: "KofamKOALA assigns K numbers to the user's sequence data by HMMER/HMMSEARCH against KOfam"
+      homepage: "https://www.genome.jp/tools/kofamkoala/"
+      documentation: "https://github.com/takaram/kofam_scan"
+      tool_dev_url: "https://github.com/takaram/kofam_scan"
+      doi: "10.1093/bioinformatics/btz859"
+      licence: "['MIT License']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Input fasta file containing query sequences
+      pattern: "*.{fa,fasta}"
+  - profiles:
+      type: directory
+      description: Directory containing the Profiles database
+      pattern: "*"
+  - ko_list:
+      type: file
+      description: File containing list of KO entries with their data
+      pattern: "*.{fa,fasta}"
+
+output:
+  - txt:
+      type: file
+      description: Application-specific text file with hits information
+      pattern: "*.{txt}"
+  - tsv:
+      type: file
+      description: Tab separated file containing with detailed hits
+      pattern: "*.{tsv}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@toniher"

@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main' addParams( [:]  )
+include { GATK_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING } from '../../../../subworkflows/nf-core/gatk_tumor_normal_somatic_variant_calling/main'
 
 workflow test_gatk_tumor_normal_somatic_variant_calling {
     input =         [

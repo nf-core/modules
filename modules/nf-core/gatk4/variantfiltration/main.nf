@@ -2,10 +2,10 @@ process GATK4_VARIANTFILTRATION {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::gatk4=4.2.6.1" : null)
+    conda (params.enable_conda ? "bioconda::gatk4=4.3.0.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.2.6.1--hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.2.6.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.3.0.0--py36hdfd78af_0':
+        'quay.io/biocontainers/gatk4:4.3.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -38,6 +38,17 @@ process GATK4_VARIANTFILTRATION {
         --reference $fasta \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

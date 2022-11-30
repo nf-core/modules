@@ -8,11 +8,11 @@ process CHROMAP_INDEX {
         'quay.io/biocontainers/chromap:0.2.1--hd03093a_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "*.index"     , emit: index
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*.index"), emit: index
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

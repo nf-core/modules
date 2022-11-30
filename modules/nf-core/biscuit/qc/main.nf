@@ -23,7 +23,7 @@ process BISCUIT_QC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def se = meta.single_end ? "-s" : ""
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit qc \\
         $args \\

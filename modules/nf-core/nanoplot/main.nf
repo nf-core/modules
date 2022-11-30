@@ -11,11 +11,11 @@ process NANOPLOT {
     tuple val(meta), path(ontfile)
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.png") , emit: png
-    tuple val(meta), path("*.txt") , emit: txt
-    tuple val(meta), path("*.log") , emit: log
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.html")                , emit: html
+    tuple val(meta), path("*.png") , optional: true, emit: png
+    tuple val(meta), path("*.txt")                 , emit: txt
+    tuple val(meta), path("*.log")                 , emit: log
+    path  "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

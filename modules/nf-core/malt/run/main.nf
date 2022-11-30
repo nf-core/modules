@@ -2,14 +2,13 @@ process MALT_RUN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::malt=0.41" : null)
+    conda (params.enable_conda ? "bioconda::malt=0.61" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.41--1' :
-        'quay.io/biocontainers/malt:0.41--1' }"
+        'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
+        'quay.io/biocontainers/malt:0.61--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastqs)
-    val mode
     path index
 
     output:
@@ -38,7 +37,6 @@ process MALT_RUN {
         -o . \\
         $args \\
         --inFile ${fastqs.join(' ')} \\
-        -m $mode \\
         --index $index/ |&tee ${prefix}-malt-run.log
 
     cat <<-END_VERSIONS > versions.yml

@@ -35,6 +35,11 @@ input:
       type: file
       description: SAI file specified alongside meta and reads in input channel.
       pattern: "*.sai"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information.
+        e.g. [ id:'test', single_end:false ]
   - index:
       type: directory
       description: Directory containing BWA index files (amb,ann,bwt,pac,sa) from BWA_INDEX
