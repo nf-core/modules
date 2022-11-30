@@ -5,6 +5,8 @@
     - verifybamid/verifybamid
   files:
     - path: output/verifybamid/test.log
+      contains:
+        - "Analysis finished"
     - path: output/verifybamid/test.depthRG
       md5sum: 2374504c4138c04f3b29210dcb3da96f
     - path: output/verifybamid/test.depthSM
