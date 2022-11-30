@@ -11,7 +11,7 @@ workflow test_gatk4_mergevcfs {
                 file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists: true) ]
             ]
 
-    dict  = [ [id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+    dict  = [ [id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
 
     GATK4_MERGEVCFS ( input, dict )
 }
