@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { SORTMERNA } from '../../../modules/sortmerna/main.nf'
+include { SORTMERNA } from '../../../../modules/nf-core/sortmerna/main.nf'
 
 //
 // Test with single-end data

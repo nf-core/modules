@@ -1,5 +1,5 @@
 - name: sortmerna test_sortmerna_single_end
-  command: nextflow run tests/modules/sortmerna -entry test_sortmerna_single_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/nf-core/sortmerna -entry test_sortmerna_single_end -c tests/config/nextflow.config
   tags:
     - sortmerna
   files:
@@ -11,7 +11,7 @@
       md5sum: 3f9f2ec12cd79432f9a16a0713bf4652
 
 - name: sortmerna test_sortmerna_paired_end
-  command: nextflow run tests/modules/sortmerna -entry test_sortmerna_paired_end -c tests/config/nextflow.config
+  command: nextflow run tests/modules/nf-core/sortmerna -entry test_sortmerna_paired_end -c tests/config/nextflow.config
   tags:
     - sortmerna
   files:
