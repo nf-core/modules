@@ -11,7 +11,7 @@ process CHECKV_DOWNLOADDATABASE {
     path db
 
     output:
-    path "checkv-db-*"           , emit: checkv_db
+    path "checkv-db-*"         , emit: checkv_db
     path "versions.yml"        , emit: versions
 
     when:
