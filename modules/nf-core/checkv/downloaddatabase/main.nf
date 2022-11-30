@@ -11,8 +11,8 @@ process CHECKV_DOWNLOADDATABASE {
     path db
 
     output:
-    path "checkv-db-*"         , emit: checkv_db
-    path "versions.yml"        , emit: versions
+    path "output/checkv-db-*"         , emit: checkv_db
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +26,18 @@ process CHECKV_DOWNLOADDATABASE {
     if (checkv_db != '' & update_sequence != '') {
         method = "checkv update_database --threads $task.cpus"
     }else if (checkv_db != '' & update_sequence == '') {
-        method = 'echo'
+        method = 'ln -s'    //link database when it's given
     }else{
         method = 'checkv download_database'
     }
 
     """
+    mkdir output
+
     $method \\
         $args \\
         $db \\
-        ./  \\
+        ./output/  \\
         $fasta \\
 
     cat <<-END_VERSIONS > versions.yml
