@@ -1,0 +1,79 @@
+name: maxbin2
+description: MaxBin is a software that is capable of clustering metagenomic contigs
+keywords:
+  - metagenomics
+  - assembly
+  - binning
+  - maxbin2
+  - de novo assembly
+  - mags
+  - metagenome-assembled genomes
+  - contigs
+tools:
+  - maxbin2:
+      description: MaxBin is software for binning assembled metagenomic sequences based on an Expectation-Maximization algorithm.
+      homepage: https://sourceforge.net/projects/maxbin/
+      documentation: https://sourceforge.net/projects/maxbin/
+      tool_dev_url: https://sourceforge.net/projects/maxbin/
+      doi: "10.1093/bioinformatics/btv638"
+      licence: ["BSD 3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - contigs:
+      type: file
+      description: Multi FASTA file containing assembled contigs of a given sample
+      pattern: "*.fasta"
+  - reads:
+      type: file
+      description: Reads used to assemble contigs in FASTA or FASTQ format. Do not supply at the same time as abundance files.
+      pattern: "*.fasta"
+  - abund:
+      type: file
+      description: Contig abundance files, i.e. reads against each contig. See MaxBin2 README for details. Do not supply at the same time as read files.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - binned_fastas:
+      type: file
+      description: Binned contigs, one per bin designated with numeric IDs
+      pattern: "*.fasta.gz"
+  - summary:
+      type: file
+      description: Summary file describing which contigs are being classified into which bin
+      pattern: "*.summary"
+  - log:
+      type: file
+      description: Log file recording the core steps of MaxBin algorithm
+      pattern: "*.log.gz"
+  - marker:
+      type: file
+      description: Marker gene presence numbers for each bin
+      pattern: "*.marker.gz"
+  - unbinned_fasta:
+      type: file
+      description: All sequences that pass the minimum length threshold but are not classified successfully.
+      pattern: "*.noclass.gz"
+  - tooshort_fasta:
+      type: file
+      description: All sequences that do not meet the minimum length threshold.
+      pattern: "*.tooshort.gz"
+  - marker_genes:
+      type: file
+      description: All sequences that do not meet the minimum length threshold.
+      pattern: "*.marker_of_each_gene.tar.gz"
+
+authors:
+  - "@jfy133"

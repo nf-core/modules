@@ -1,0 +1,37 @@
+name: cellranger_mkref
+description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkref command.
+keywords:
+  - reference
+  - mkref
+  - index
+tools:
+  - cellranger:
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+      documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      doi: ""
+      licence: 10x Genomics EULA
+input:
+  - fasta:
+      type: file
+      description: fasta genome file
+      pattern: "*.{fasta,fa}"
+  - gtf:
+      type: file
+      description: gtf transcriptome file
+      pattern: "*.gtf"
+  - reference_name:
+      type: val
+      description: name to give the reference folder
+      pattern: str
+output:
+  - reference:
+      type: folder
+      description: Folder containing all the reference indices needed by Cell Ranger
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@ggabernet"

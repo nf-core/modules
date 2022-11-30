@@ -1,0 +1,45 @@
+name: ucsc_liftover
+description: convert between genome builds
+keywords:
+  - liftOver
+tools:
+  - ucsc:
+      description: Move annotations from one assembly to another
+      homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
+      documentation: None
+      tool_dev_url: None
+      doi: ""
+      licence: ["varies; see http://genome.ucsc.edu/license"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+      type: file
+      description: Browser Extensible Data (BED) file
+      pattern: "*.{bed}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+  - lifted:
+      type: file
+      description: BED file containing successfully lifted variants
+      pattern: "*.{lifted.bed}"
+  - unlifted:
+      type: file
+      description: BED file containing variants that couldn't be lifted
+      pattern: "*.{unlifted.bed}"
+
+authors:
+  - "@nebfield"

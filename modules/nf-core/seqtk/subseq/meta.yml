@@ -1,0 +1,34 @@
+name: seqtk_subseq
+description: Select only sequences that match the filtering condition
+keywords:
+  - filtering,selection
+tools:
+  - seqtk:
+      description: Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format
+      homepage: https://github.com/lh3/seqtk
+      documentation: https://docs.csc.fi/apps/seqtk/
+      tool_dev_url: https://github.com/lh3/seqtk
+      licence: ["MIT"]
+
+input:
+  - sequences:
+      type: file
+      description: FASTQ/FASTA file
+      pattern: "*.{fq,fq.gz,fa,fa.gz}"
+  - filter_list:
+      type: file
+      description: BED file or a text file with a list of sequence names
+      pattern: "*.{bed,lst}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sequences:
+      type: file
+      description: FASTQ/FASTA file
+      pattern: "*.{fq.gz,fa.gz}"
+
+authors:
+  - "@sidorov-si"

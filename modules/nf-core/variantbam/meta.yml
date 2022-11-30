@@ -1,0 +1,46 @@
+name: variantbam
+description: Filtering, downsampling and profiling alignments in BAM/CRAM formats
+keywords:
+  - filter
+  - bam
+  - subsample
+  - downsample
+  - downsample bam
+  - subsample bam
+tools:
+  - variantbam:
+      description: Filtering and profiling of next-generational sequencing data using region-specific rules
+      homepage: https://github.com/walaj/VariantBam
+      documentation: https://github.com/walaj/VariantBam#table-of-contents
+      tool_dev_url: https://github.com/walaj/VariantBam
+      doi: 10.1093/bioinformatics/btw111
+      licence: ["Apache-2.0"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM file
+      pattern: "*.{bam,cram}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Filtered or downsampled BAM file
+      pattern: "*.{bam}"
+
+authors:
+  - "@bjohnnyd"

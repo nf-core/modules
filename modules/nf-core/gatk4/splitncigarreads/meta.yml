@@ -1,0 +1,55 @@
+name: gatk4_splitncigarreads
+description: Splits reads that contain Ns in their cigar string
+keywords:
+  - vcf
+  - merge
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - bam:
+      type: list
+      description: BAM/SAM/CRAM file containing reads
+      pattern: "*.{bam,sam,cram}"
+  - bai:
+      type: list
+      description: BAI/SAI/CRAI index file (optional)
+      pattern: "*.{bai,sai,crai}"
+  - intervals:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fasta.fai"
+  - dict:
+      type: file
+      description: GATK sequence dictionary
+      pattern: "*.dict"
+output:
+  - bam:
+      type: file
+      description: Output file with split reads (BAM/SAM/CRAM)
+      pattern: "*.{bam,sam,cram}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@kevinmenden"

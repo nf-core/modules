@@ -1,0 +1,55 @@
+name: pmdtools_filter
+description: pmdtools command to filter ancient DNA molecules from others
+keywords:
+  - pmdtools
+  - aDNA
+  - filter
+  - damage
+tools:
+  - pmdtools:
+      description: Compute postmortem damage patterns and decontaminate ancient genomes
+      homepage: https://github.com/pontussk/PMDtools
+      documentation: https://github.com/pontussk/PMDtools
+      tool_dev_url: https://github.com/pontussk/PMDtools
+      doi: "10.1073/pnas.1318934111"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - threshold:
+      type: value
+      description: Post-mortem damage score threshold
+  - reference:
+      type: file
+      description: FASTA file
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bam:
+      type: file
+      description: Filtered BAM file
+      pattern: "*.bam"
+
+authors:
+  - "@alexandregilardet"

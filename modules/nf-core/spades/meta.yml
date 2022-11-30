@@ -1,0 +1,91 @@
+name: spades
+description: Assembles a small genome (bacterial, fungal, viral)
+keywords:
+  - genome
+  - assembly
+  - genome assembler
+  - small genome
+  - de novo assembler
+tools:
+  - spades:
+      description: SPAdes (St. Petersburg genome assembler) is intended for both standard isolates and single-cell MDA bacteria assemblies.
+      homepage: http://cab.spbu.ru/files/release3.15.0/manual.html
+      documentation: http://cab.spbu.ru/files/release3.15.0/manual.html
+      tool_dev_url: https://github.com/ablab/spades
+      doi: 10.1089/cmb.2012.0021
+      licence: ["GPL v2"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - illumina:
+      type: file
+      description: |
+        List of input FastQ (Illumina or PacBio CCS reads) files
+        of size 1 and 2 for single-end and paired-end data,
+        respectively. This input data type is required.
+  - pacbio:
+      type: file
+      description: |
+        List of input PacBio CLR FastQ files of size 1.
+  - nanopore:
+      type: file
+      description: |
+        List of input FastQ files of size 1, originating from Oxford Nanopore technology.
+  - yml:
+      type: file
+      description: |
+        Path to yml file containing read information.
+        The raw FASTQ files listed in this YAML file MUST be supplied to the respective illumina/pacbio/nanopore input channel(s) _in addition_ to this YML.
+        File entries in this yml must contain only the file name and no paths.
+      pattern: "*.{yml,yaml}"
+  - hmm:
+      type: file
+      description: File or directory with amino acid HMMs for Spades HMM-guided mode.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - scaffolds:
+      type: file
+      description: |
+        Fasta file containing scaffolds
+      pattern: "*.fa.gz"
+  - contigs:
+      type: file
+      description: |
+        Fasta file containing contigs
+      pattern: "*.fa.gz"
+  - transcripts:
+      type: file
+      description: |
+        Fasta file containing transcripts
+      pattern: "*.fa.gz"
+  - gene_clusters:
+      type: file
+      description: |
+        Fasta file containing gene_clusters
+      pattern: "*.fa.gz"
+  - gfa:
+      type: file
+      description: |
+        gfa file containing assembly
+      pattern: "*.gfa.gz"
+  - log:
+      type: file
+      description: |
+        Spades log file
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@JoseEspinosa"
+  - "@drpatelh"
+  - "@d4straub"

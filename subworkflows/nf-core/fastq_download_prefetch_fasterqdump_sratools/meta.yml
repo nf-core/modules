@@ -1,0 +1,41 @@
+name: fastq_download_prefetch_fasterqdump_sratools
+description: Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).
+keywords:
+  - SRA
+  - NCBI
+  - sequencing
+  - fastq
+  - prefetch
+  - fasterq-dump
+modules:
+  - custom/sratoolsncbisettings
+  - sratools/prefetch
+  - sratools/fasterqdump
+input:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - id:
+      type: string
+      description: >
+        SRA run identifier.
+# TODO Update when we decide on a standard for subworkflow docs
+output:
+  - meta:
+      type: map
+      description: >
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: Extracted FASTQ file or files if the sequencing reads are paired-end.
+      pattern: "*.fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Midnighter"
+  - "@drpatelh"

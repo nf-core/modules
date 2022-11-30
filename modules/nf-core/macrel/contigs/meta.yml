@@ -1,0 +1,61 @@
+name: macrel_contigs
+description: A tool that mines antimicrobial peptides (AMPs) from (meta)genomes by predicting peptides from genomes (provided as contigs) and outputs all the predicted anti-microbial peptides found.
+keywords:
+  - AMP
+  - antimicrobial peptides
+  - genome mining
+  - metagenomes
+  - peptide prediction
+tools:
+  - macrel:
+      description: A pipeline for AMP (antimicrobial peptide) prediction
+      homepage: https://macrel.readthedocs.io/en/latest/
+      documentation: https://macrel.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/BigDataBiology/macrel
+      doi: "10.7717/peerj.10555"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: A fasta file with nucleotide sequences.
+      pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - amp_prediction:
+      type: file
+      description: A zipped file, with all predicted amps in a table format.
+      pattern: "*.prediction.gz"
+  - smorfs:
+      type: file
+      description: A zipped fasta file containing aminoacid sequences showing the general gene prediction information in the contigs.
+      pattern: "*.smorfs.faa.gz"
+  - all_orfs:
+      type: file
+      description: A zipped fasta file containing amino acid sequences showing the general gene prediction information in the contigs.
+      pattern: "*.all_orfs.faa.gz"
+  - readme_file:
+      type: file
+      description: A readme file containing tool specific information (e.g. citations, details about the output, etc.).
+      pattern: "*.md"
+  - log_file:
+      type: file
+      description: A log file containing the information pertaining to the run.
+      pattern: "*_log.txt"
+
+authors:
+  - "@darcy220606"

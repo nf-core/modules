@@ -1,6 +1,0 @@
-- name: multiqc
-  command: nextflow run ./tests/modules/multiqc -entry test_multiqc -c ./tests/config/nextflow.config -c ./tests/modules/multiqc/nextflow.config
-  tags:
-    - multiqc
-  files:
-    - path: output/multiqc/multiqc_report.html

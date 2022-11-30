@@ -1,0 +1,48 @@
+name: pairtools_parse
+description: Find ligation junctions in .sam, make .pairs
+keywords:
+  - parse
+tools:
+  - pairtools:
+      description: CLI tools to process mapped Hi-C data
+      homepage: http://pairtools.readthedocs.io/
+      documentation: http://pairtools.readthedocs.io/
+      tool_dev_url: https://github.com/mirnylab/pairtools
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - chromsizes:
+      type: file
+      description: chromosome size file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - pairsam:
+      type: file
+      description: parsed pair file
+      pattern: "*.{pairsam.gz}"
+  - stat:
+      type: file
+      description: stats of the pairs
+      pattern: "*.{pairsam.stat}"
+
+authors:
+  - "@jianhong"

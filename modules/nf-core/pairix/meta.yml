@@ -1,0 +1,42 @@
+name: pairix
+description: |
+  a tool for indexing and querying on a block-compressed text file
+  containing pairs of genomic coordinates
+keywords:
+  - index
+tools:
+  - pairix:
+      description: 2D indexing on bgzipped text files of paired genomic coordinates
+      homepage: "https://github.com/4dn-dcic/pairix"
+      documentation: "https://github.com/4dn-dcic/pairix"
+      tool_dev_url: "https://github.com/4dn-dcic/pairix"
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pair:
+      type: file
+      description: pair file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: file
+      description: pair index file
+      pattern: "*.px2"
+
+authors:
+  - "@jianhong"

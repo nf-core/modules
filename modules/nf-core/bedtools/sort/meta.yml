@@ -1,0 +1,46 @@
+name: bedtools_sort
+description: Sorts a feature file by chromosome and other criteria.
+keywords:
+  - bed
+  - sort
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/sort.html
+      licence: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - intervals:
+      type: file
+      description: BED/BEDGRAPH
+      pattern: "*.{bed|bedGraph}"
+
+  - extension:
+      type: string
+      description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt", ".tab", etc.) It is set arbitrarily by the user and corresponds to the file format which depends on arguments.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - sorted:
+      type: file
+      description: Sorted output file
+      pattern: "*.${extension}"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@Emiller88"
+  - "@sruthipsuresh"
+  - "@drpatelh"
+  - "@chris-cheshire"

@@ -1,0 +1,50 @@
+name: optitype
+description: Perform HLA-I typing of sequencing data
+keywords:
+  - hla-typing
+  - ILP
+  - HLA-I
+tools:
+  - optitype:
+      description: Precision HLA typing from next-generation sequencing data
+      homepage: https://github.com/FRED-2/OptiType
+      documentation: https://github.com/FRED-2/OptiType
+      doi: "10.1093/bioinformatics/btu548"
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.{bam}"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.{bai}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', seq_type:'DNA' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - output:
+      type: file
+      description: OptiType Results Folder
+      pattern: "${prefix}"
+  - pdf:
+      type: file
+      description: OptiType PDF Plots
+      pattern: "*.pdf"
+
+authors:
+  - "@apeltzer"

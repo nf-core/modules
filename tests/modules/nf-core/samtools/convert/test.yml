@@ -1,0 +1,21 @@
+- name: samtools convert test_samtools_convert_bamtocram
+  command: nextflow run ./tests/modules/nf-core/samtools/convert -entry test_samtools_convert_bamtocram -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/convert
+  files:
+    - path: output/samtools/test.cram
+    - path: output/samtools/test.cram.crai
+    - path: output/samtools/versions.yml
+
+- name: samtools convert test_samtools_convert_cramtobam
+  command: nextflow run ./tests/modules/nf-core/samtools/convert -entry test_samtools_convert_cramtobam -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/convert
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 404c21b14c37e83aad04ba972bbffbe6
+    - path: output/samtools/test.bam.bai
+      md5sum: c55142e20838c3b56d93ff853a7b7189
+    - path: output/samtools/versions.yml

@@ -1,0 +1,41 @@
+name: last_lastdb
+description: Prepare sequences for subsequent alignment with lastal.
+keywords:
+  - LAST
+  - index
+  - fasta
+  - fastq
+tools:
+  - last:
+      description: LAST finds & aligns related regions of sequences.
+      homepage: https://gitlab.com/mcfrith/last
+      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastdb.rst
+      tool_dev_url: https://gitlab.com/mcfrith/last
+      doi: ""
+      licence: ["GPL-3.0-or-later"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastx:
+      type: file
+      description: >
+        Sequence file in FASTA or FASTQ format.
+        May be compressed with gzip.
+      pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - index:
+      type: directory
+      description: directory containing the files of the LAST index
+      pattern: "lastdb/"
+
+authors:
+  - "@charles-plessy"

@@ -1,0 +1,8 @@
+- name: samtools calmd test_samtools_calmd
+  command: nextflow run ./tests/modules/nf-core/samtools/calmd -entry test_samtools_calmd -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/calmd/nextflow.config
+  tags:
+    - samtools
+    - samtools/calmd
+  files:
+    - path: output/samtools/test.bam
+      md5sum: 2ba8c7adecca133d6c3f0654e3abd541

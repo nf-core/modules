@@ -1,0 +1,53 @@
+name: seacr_callpeak
+description: Call peaks using SEACR on sequenced reads in bedgraph format
+keywords:
+  - peak-caller
+  - peaks
+  - bedgraph
+  - cut&tag
+  - cut&run
+  - chromatin
+  - seacr
+tools:
+  - seacr:
+    description: |
+      SEACR is intended to call peaks and enriched regions from sparse CUT&RUN
+      or chromatin profiling data in which background is dominated by "zeroes"
+      (i.e. regions with no read coverage).
+    homepage: https://github.com/FredHutch/SEACR
+    documentation: https://github.com/FredHutch/SEACR
+    licence: ["GPL-2.0-only"]
+input:
+  - meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bedgraph:
+    type: file
+    description: |
+      The target bedgraph file from which the peaks will be calculated.
+  - ctrlbedgraph:
+    type: file
+    description: |
+      Control (IgG) data bedgraph file to generate an empirical threshold for peak calling.
+  - threshold:
+    type: value
+    description: |
+      Threshold value used to call peaks if the ctrlbedgraph input is set to []. Set to 1 if using a control bedgraph
+output:
+  - meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bed:
+    type: file
+    description: Bed file containing the calculated peaks.
+    pattern: "*.bed"
+  - versions:
+    type: file
+    description: File containing software versions
+    pattern: "versions.yml"
+authors:
+  - "@chris-cheshire"
