@@ -4,9 +4,9 @@
     - shovill
   files:
     - path: output/shovill/contigs.gfa
-      md5sum: 277af5d8ae8a0d2432db59a316226828
+      contains: ["S", "KC"]
     - path: output/shovill/spades.fasta
-      md5sum: 2506fc2af3a24397a3c5d3fbda0861fb
+      contains: [">", "NODE", "pilon"]
     # MD5sum not reproducible (timestamp)
     - path: output/shovill/contigs.fa
     - path: output/shovill/shovill.corrections
@@ -17,8 +17,11 @@
   tags:
     - shovill
   files:
+    # This file is currently empty, but nf-core lint doesn't want us to test empty files with MD5 checksums
     - path: output/shovill/shovill.corrections
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+      must_not_contain_regex:
+        - "."
+        - "^$"
     # MD5sum not reproducible (timestamp, contig order)
     - path: output/shovill/contigs.fa
     - path: output/shovill/contigs.fastg
@@ -30,8 +33,11 @@
   tags:
     - shovill
   files:
+    # This file is currently empty, but nf-core lint doesn't want us to test empty files with MD5 checksums
     - path: output/shovill/shovill.corrections
-      md5sum: d41d8cd98f00b204e9800998ecf8427e
+      must_not_contain_regex:
+        - "."
+        - "^$"
     - path: output/shovill/skesa.fasta
       md5sum: 8157837dbe8315922f588dafa7af5ef8
     # MD5sum not reproducible (timestamp)
