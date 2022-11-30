@@ -8,7 +8,7 @@ workflow test_pretextsnapshot {
 
     input = [
         [ id:'test' ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file("https://github.com/epaule/test-datasets/raw/pretextsnapshot/testdata/jaGalFasc40_2.pretext") // test data
     ]
 
     PRETEXTSNAPSHOT_ALL ( input )
