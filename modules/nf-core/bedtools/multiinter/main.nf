@@ -9,6 +9,7 @@ process BEDTOOLS_MULTIINTER {
 
     input:
     tuple val(meta), path(beds, stageAs: "inputs/*")
+    path chrom_sizes
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -20,11 +21,13 @@ process BEDTOOLS_MULTIINTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sizes_cmd = chrom_sizes ? "-g $chrom_sizes" : ''
 
     """
     bedtools \\
         multiinter \\
         $args \\
+        $sizes_cmd \\
         -i $beds \\
         > ${prefix}.bed
 

@@ -20,6 +20,10 @@ input:
       type: list
       description: List of files to be merged
       pattern: "*.{bed,vcf,gff}"
+  - chrom_sizes:
+      type: file
+      description: Chromosome sizes file
+      pattern: "*{.sizes,.txt}"
 
 output:
   - meta:
