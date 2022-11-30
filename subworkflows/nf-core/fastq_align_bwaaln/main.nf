@@ -10,7 +10,7 @@ include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/mai
 workflow FASTQ_ALIGN_BWAALN {
 
     take:
-    ch_reads // channel (mandatory): [ val(meta), [ reads ] ]. Important: meta REQUIRES singleend` entry!
+    ch_reads // channel (mandatory): [ val(meta), [ reads ] ]. subworkImportant: meta REQUIRES singleend` entry!
     ch_index // channel (mandatory): [ val(meta), [ index ] ]
 
     main:
@@ -21,9 +21,9 @@ workflow FASTQ_ALIGN_BWAALN {
     ch_versions = ch_versions.mix( BWA_ALN.out.versions.first() )
 
     ch_sai_for_bam = ch_reads
-                        .join( BWA_ALN.out.sai )
+                        .join ( BWA_ALN.out.sai )
                         .branch {
-                            meta, sai ->
+                            meta, reads, sai ->
                                 pe: !meta.single_end
                                 se: meta.single_end
                         }

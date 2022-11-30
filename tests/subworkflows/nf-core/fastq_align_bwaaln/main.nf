@@ -8,12 +8,10 @@ include { FASTQ_ALIGN_BWAALN } from '../../../../subworkflows/nf-core/fastq_alig
 
 workflow test_fastq_align_bwaaln_singleend {
 
-    input = Channel.fromList(
-        [
+    input = Channel.of([
             [ id:'test', single_end:true ], // meta map
             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-        ]
-    )
+        ])
     fasta = [
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
@@ -26,16 +24,14 @@ workflow test_fastq_align_bwaaln_singleend {
 
 workflow test_fastq_align_bwaaln_paired_end {
 
-    input = Channel.fromList(
-        [
-            [ id:'test', single_end:false ], // meta map
-            [
-                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-            ]
-        ]
-    )
-    fasta = [
+    input = Channel.of([
+                [ id:'test', single_end:false ], // meta map
+                [
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                ]
+    ])
+            fasta = [
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
