@@ -9,6 +9,7 @@ process MMSEQS_CREATEINDEX {
 
     input:
     path db
+    val db_name
 
     output:
     path(db)           , emit: db_indexed
@@ -19,9 +20,10 @@ process MMSEQS_CREATEINDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def db_path_name = db_name ? "${db}/${db_name}": "${db}/${db}"
     """
     mmseqs createindex \\
-        ${db}/${db} \\
+        ${db_path_name} \\
         tmp1 \\
         $args
 
