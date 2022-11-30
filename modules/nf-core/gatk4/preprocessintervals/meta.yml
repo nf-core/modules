@@ -24,7 +24,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - exclude_intervals:
       type: file
-      description: Bed file with the genomic regions to be excluded from the analysis (optional)
+      description: Interval file (bed or interval_list) with the genomic regions to be excluded from the analysis (optional)
       pattern: "*.{bed,interval_list}"
   - fasta:
       type: file
