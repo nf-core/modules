@@ -1,4 +1,4 @@
-name: samtools_stats
+name: bam_stats_samtools
 description: Produces comprehensive statistics from SAM/BAM/CRAM file
 keywords:
   - statistics
@@ -24,7 +24,10 @@ input:
       type: file
       description: Index for BAM/CRAM/SAM file
       pattern: "*.{bai,crai,sai}"
-# TODO Update when we decide on a standard for subworkflow docs
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
 output:
   - meta:
       type: map
@@ -35,6 +38,14 @@ output:
       type: file
       description: File containing samtools stats output
       pattern: "*.{stats}"
+  - flagstat:
+      type: file
+      description: File containing samtools flagstat output
+      pattern: "*.{flagstat}"
+  - idxstats:
+      type: file
+      description: File containing samtools idxstats output
+      pattern: "*.{idxstats}"
   - versions:
       type: file
       description: File containing software versions

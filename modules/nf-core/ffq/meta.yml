@@ -1,0 +1,36 @@
+name: "ffq"
+description: A command line tool that makes it easier to find sequencing data from the SRA / GEO / ENA.
+keywords:
+  - SRA
+  - ENA
+  - GEO
+  - metadata
+  - fetch
+  - public
+  - databases
+tools:
+  - "ffq":
+      description: "A command line tool that makes it easier to find sequencing data from the SRA / GEO / ENA."
+      homepage: https://github.com/pachterlab/ffq
+      documentation: https://github.com/pachterlab/ffq#usage
+      tool_dev_url: https://github.com/pachterlab/ffq
+      doi: "10.1101/2022.05.18.492548"
+      licence: "['MIT']"
+
+input:
+  - ids:
+      type: list
+      description: List of supported database ids e.g. SRA / GEO / ENA
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: JSON file containing metadata for ids
+      pattern: "*.{json}"
+
+authors:
+  - "@drpatelh"

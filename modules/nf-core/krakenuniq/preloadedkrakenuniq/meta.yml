@@ -1,0 +1,78 @@
+name: "krakenuniq_preloadedkrakenuniq"
+description: Classifies metagenomic sequence data using unique k-mer counts
+keywords:
+  - classify
+  - metagenomics
+  - kmers
+  - fastq
+  - db
+tools:
+  - "krakenuniq":
+      description: "Metagenomics classifier with unique k-mer counting for more specific results"
+      homepage: https://github.com/fbreitwieser/krakenuniq
+      documentation: https://github.com/fbreitwieser/krakenuniq
+      doi: 10.1186/s13059-018-1568-0
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastqs:
+      type: file
+      description: List of input FastQ files
+  - db:
+      type: directory
+      description: KrakenUniq database
+  - ram_chunk_size:
+      type: val
+      description: Amount of maximum amount of RAM each chunk of database that should be loaded at any one time
+      pattern: "*GB"
+  - save_output_fastqs:
+      type: boolean
+      description: |
+        If true, optional commands are added to save classified and unclassified reads
+        as fastq files
+  - save_reads_assignment:
+      type: boolean
+      description: |
+        If true, an optional command is added to save a file reporting the taxonomic
+        classification of each input read
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - classified_reads_fastq:
+      type: file
+      description: |
+        Reads classified as belonging to any of the taxa
+        on the KrakenUniq database.
+      pattern: "*.fastq.gz"
+  - unclassified_reads_fastq:
+      type: file
+      description: |
+        Reads not classified to any of the taxa
+        on the KrakenUniq database.
+      pattern: "*.fastq.gz"
+  - classified_assignment:
+      type: file
+      description: |
+        KrakenUniq output file indicating the taxonomic assignment of
+        each input read ## DOUBLE CHECK!!
+  - report:
+      type: file
+      description: |
+        KrakenUniq report containing stats about classified
+        and not classifed reads.
+      pattern: "*.report.txt"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@mjamy"
+  - "@Midnighter"
