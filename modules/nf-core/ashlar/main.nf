@@ -63,6 +63,8 @@ process ASHLAR {
     task.ext.when == null || task.ext.when
 
     script:
+    println meta.args
+
     def args_conf = task.ext.args ?: ''
     def args_opt = options.args ?: ''
     def args_meta = meta.args ?: ''

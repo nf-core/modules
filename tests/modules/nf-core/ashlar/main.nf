@@ -53,7 +53,7 @@ workflow test_ashlar_sheet {
     )
     .images
     .map {
-        [ [ id:it.id, args: it.args],
+        [ [ id:it.id, args: '--flip-y' ],
             it.file_list ]
     }
     .set { input_maps }
