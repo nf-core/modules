@@ -1,24 +1,55 @@
 #!/usr/bin/env nextflow
 
-include { BCFTOOLS_SORT                                         } from '../../../modules/nf-core/bcftools/sort/main'
 include { GATK4_GENOMICSDBIMPORT                                } from '../../../modules/nf-core/gatk4/genomicsdbimport/main'
 include { GATK4_GENOTYPEGVCFS                                   } from '../../../modules/nf-core/gatk4/genotypegvcfs/main'
 include { GATK4_MERGEVCFS as MERGE_GENOTYPEGVCFS                } from '../../../modules/nf-core/gatk4/mergevcfs/main'
-include { GATK4_MERGEVCFS as MERGE_VQSR                         } from '../../../modules/nf-core/gatk4/mergevcfs/main'
 include { TABIX_TABIX as TABIX                                  } from '../../../modules/nf-core/tabix/tabix/main'
+include { BEDTOOLS_MULTIINTER                                   } from '../../../modules/nf-core/bedtools/multiinter/main'
+
+include { BED_SCATTER_BEDTOOLS as BED_SCATTER                   } from '../../subworkflows/nf-core/bed_scatter_bedtools/main'
 
 workflow VCF_JOINT_CALLING_GERMLINE_GATK {
 
     take:
-    gvcf             // channel: [ val(meta), [ gvcf ], [ gvcf_index ], interval]
-    fasta            // channel: [ val(meta), /path/to/reference/fasta]
-    fai              // channel: [ val(meta), /path/to/reference/fasta/index]
-    dict             // channel: [ val(meta), /path/to/reference/fasta/dict]
-    dbsnp            // channel: [ val(meta), /path/to/dbsnp/vcf]
-    dbsnp_tbi        // channel: [ val(meta), /path/to/dbsnp/vcf/index]
+    ch_gvcfs            // channel: [ val(meta), [ gvcf ], [ gvcf_index ]]
+    ch_beds             // channel: [ val(meta), [ bed ]]
+    ch_fasta            // channel: [ val(meta), /path/to/reference/fasta]
+    ch_fai              // channel: [ val(meta), /path/to/reference/fasta/index]
+    ch_dict             // channel: [ val(meta), /path/to/reference/fasta/dict]
+    ch_dbsnp            // channel: [ val(meta), /path/to/dbsnp/vcf]
+    ch_dbsnp_tbi        // channel: [ val(meta), /path/to/dbsnp/vcf/index]
 
     main:
     ch_versions    = Channel.empty()
+
+    // Merge bed files to create a single interval list
+    // BEDTOOLS_MULTIINTER( [meta, bed], chrom_sizes )
+    BEDTOOLS_MULTIINTER( ch_beds, [] )
+
+    // Split merged bed into individual intervals for genotyping
+    // BED_SCATTER_BEDTOOLS( [meta, bed, scatter_count] )
+    BED_SCATTER()
+
+    // Generate (multi)sample GenomicsDB
+    // GATK4_GENOMICSDBIMPORT([ meta, vcf, vcf_index, interval_file, interval_value, workspace ], run_intlist, run_updatewspace, input_map)
+    GATK4_GENOMICSDBIMPORT(
+        ch_gvcfs.map{meta, gvcf, tbi -> [meta, gvcf, tbi, [], [], []]},
+        false,
+        false,
+        []
+    )
+
+    // GenotypeGVCFs
+    GATK4_GENOTYPEGVCFS (genotype_input, fasta, fai, dict, dbsnp, dbsnp_tbi)
+
+    // Merge split GenotypeGVCFs VCFs
+    GATK4_MERGEVCFS(
+        GATK4_GENOMICSDBIMPORT.out.genomicsdb.map{ meta, gdb -> [meta, gdb, [], [], []]},
+        ch_dict
+    )
+
+    // Generate VCF index
+    TABIX()
 
     //
     //Map input for GenomicsDBImport.
