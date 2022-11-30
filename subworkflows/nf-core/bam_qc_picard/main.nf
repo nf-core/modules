@@ -9,8 +9,8 @@ include { PICARD_COLLECTHSMETRICS       } from '../../../modules/nf-core/picard/
 workflow BAM_QC_PICARD {
     take:
     ch_bam_bai          // channel: [ val(meta), [ bam ], [bai]]
-    ch_fasta            // channel: [ val(meta2), fasta ]
-    ch_fasta_fai        // channel: [ val(meta2), fasta_fai ]
+    ch_fasta            // channel: [ val(meta), fasta ]
+    ch_fasta_fai        // channel: [ val(meta), fasta_fai ]
     ch_bait_interval    // channel: [ bait_interval ]
     ch_target_interval  // channel: [ target_interval ]
 
