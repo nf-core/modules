@@ -22,7 +22,7 @@ process CENTRIFUGE_KREPORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/.1.cf//'`
+    db_name=`find -L ${db} -name "*.1.cf" -not -name "._*"  | sed 's/\\.1.cf\$//'`
     centrifuge-kreport -x \$db_name ${report} > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
