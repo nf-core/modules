@@ -9,8 +9,10 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
 
     input:
     tuple val(meta), path(bam)
-    val(min_reads)
-    val(min_baseq)
+    // please note:
+    // --min-reads is a required argument with no default
+    // --min-input-base-quality is a required argument with no default
+    // make sure they are specified via ext.args in your config
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
@@ -43,8 +45,6 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
         CallDuplexConsensusReads \\
         --input $bam \\
         --output ${prefix}.bam \\
-        --min-reads ${min_reads} \\
-        --min-input-base-quality ${min_baseq} \\
         --threads ${task.cpus} \\
         $args
 
