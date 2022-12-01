@@ -8,9 +8,9 @@ process PICARD_COLLECTHSMETRICS {
         'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path fasta
-    path fai
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
     path bait_intervals
     path target_intervals
 
