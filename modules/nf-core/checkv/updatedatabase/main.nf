@@ -7,7 +7,7 @@ process CHECKV_UPDATEDATABASE {
         'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
 
     input:
-    tulpe val(meta), path (fasta)
+    tuple val(meta), path (fasta)
     path db
 
     output:
