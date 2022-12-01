@@ -24,6 +24,9 @@ options = initOptions(params.options)
 process ASHLAR {
     println 'running process ASHLAR'
 
+    // publishDir "/tmp/tmpOUTPUT/ashlar_results", pattern: "${meta.id}.ome.tif"
+    // publishDir = [ path: { "${params.outdir}/${meta.id}/" } ]
+
     tag '$meta.id'
     label 'process_single'
 
@@ -57,14 +60,13 @@ process ASHLAR {
     // TODO nf-core: List additional required output channels/values here
     //path "*.ome.tif"
     tuple val(meta), path("*.ome.tif")  ,   emit: ashlar_tif
+    // tuple val(meta), path("${meta.id}.ome.tif")  ,   emit: ashlar_tif
     path "versions.yml"                 ,   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    println meta.args
-
     def args_conf = task.ext.args ?: ''
     def args_opt = options.args ?: ''
     def args_meta = meta.args ?: ''

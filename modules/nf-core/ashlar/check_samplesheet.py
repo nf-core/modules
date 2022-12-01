@@ -36,17 +36,15 @@ def print_error(error, context="Line", context_str=""):
 def check_samplesheet(file_in, file_out):
     """
     This function checks that the samplesheet follows the following structure:
-    sample,input_file_list,optional_args
-    https://github.com/nf-core/test-datasets/blob/rnaseq/samplesheet/v3.1/samplesheet_test.csv
+    sample,file_list,args
     """
 
-    """
     sample_mapping_dict = {}
     with open(file_in, "r", encoding='utf-8-sig') as fin:
 
         ## Check header
         MIN_COLS = 3
-        HEADER = ["sample", "input_file_list", "optional_args"]
+        HEADER = ["sample", "file_list", "args"]
         header = [x.strip('"') for x in fin.readline().strip().split(",")]
         if header[: len(HEADER)] != HEADER:
             print(
@@ -76,7 +74,7 @@ def check_samplesheet(file_in, file_out):
                     )
 
                 ## Check sample name entries
-                sample, fastq_1, fastq_2, strandedness = lspl[: len(HEADER)]
+                sample, file_list, args = lspl[: len(HEADER)]
                 if sample.find(" ") != -1:
                     print(
                         f"WARNING: Spaces have been replaced by underscores for sample: {sample}"
@@ -85,44 +83,29 @@ def check_samplesheet(file_in, file_out):
                 if not sample:
                     print_error("Sample entry has not been specified!", "Line", line)
 
-                ## Check FastQ file extension
-                for fastq in [fastq_1, fastq_2]:
-                    if fastq:
-                        if fastq.find(" ") != -1:
-                            print_error("FastQ file contains spaces!", "Line", line)
-                        if not fastq.endswith(".fastq.gz") and not fastq.endswith(".fq.gz"):
+                ## Check input files
+                if file_list:
+                    print('file_list: {}'.format(file_list))
+                    if file_list.find(" ") != -1:
+                        file_list_list = file_list.split(' ')
+                    else:
+                        file_list_list = [file_list]
+                    print(file_list_list)
+                    for input_file in file_list_list:
+                        print('current input file: {}'.format(input_file))
+                        if not os.path.exists(input_file):
+                            print_error("Input file does not exist!", "Line", line)
+                        if not input_file.endswith(".tiff"):
                             print_error(
-                                "FastQ file does not have extension '.fastq.gz' or '.fq.gz'!",
-                                "Line",
-                                line,
-                            )
-
-                ## Check strandedness
-                strandednesses = ["unstranded", "forward", "reverse"]
-                if strandedness:
-                    if strandedness not in strandednesses:
-                        print_error(
-                            f"Strandedness must be one of '{', '.join(strandednesses)}'!",
-                            "Line",
-                            line,
-                        )
+                                "Input image file must have extension '.tiff' or '.ome.tiff'!",
+                                "Line", line)
                 else:
-                    print_error(
-                        f"Strandedness has not been specified! Must be one of {', '.join(strandednesses)}.",
-                        "Line",
-                        line,
-                    )
+                    print_error("Each run must include at least one input image!", "Line", line)
 
-                ## Auto-detect paired-end/single-end
-                sample_info = []  ## [single_end, fastq_1, fastq_2, strandedness]
-                if sample and fastq_1 and fastq_2:  ## Paired-end short reads
-                    sample_info = ["0", fastq_1, fastq_2, strandedness]
-                elif sample and fastq_1 and not fastq_2:  ## Single-end short reads
-                    sample_info = ["1", fastq_1, fastq_2, strandedness]
-                else:
-                    print_error("Invalid combination of columns provided!", "Line", line)
+                ## Check optional arguments
+                # TO DO: ashlar will error on bad arguments, so do we need to do any checking here?
 
-                ## Create sample mapping dictionary = {sample: [[ single_end, fastq_1, fastq_2, strandedness ]]}
+                sample_info = [file_list, args]
                 if sample not in sample_mapping_dict:
                     sample_mapping_dict[sample] = [sample_info]
                 else:
@@ -137,44 +120,22 @@ def check_samplesheet(file_in, file_out):
         make_dir(out_dir)
         with open(file_out, "w") as fout:
             fout.write(
-                ",".join(["sample", "single_end", "fastq_1", "fastq_2", "strandedness"])
+                ",".join(["sample", "file_list", "args"])
                 + "\n"
             )
             for sample in sorted(sample_mapping_dict.keys()):
-
-                ## Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-                if not all(
-                    x[0] == sample_mapping_dict[sample][0][0]
-                    for x in sample_mapping_dict[sample]
-                ):
-                    print_error(
-                        f"Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end!",
-                        "Sample",
-                        sample,
-                    )
-
-                ## Check that multiple runs of the same sample are of the same strandedness
-                if not all(
-                    x[-1] == sample_mapping_dict[sample][0][-1]
-                    for x in sample_mapping_dict[sample]
-                ):
-                    print_error(
-                        f"Multiple runs of a sample must have the same strandedness!",
-                        "Sample",
-                        sample,
-                    )
 
                 for idx, val in enumerate(sample_mapping_dict[sample]):
                     fout.write(",".join([f"{sample}_T{idx+1}"] + val) + "\n")
     else:
         print_error(f"No entries to process!", "Samplesheet: {file_in}")
-    """
 
+    '''
     with open(file_in, "r", encoding='utf-8-sig') as fin:
         with open(file_out, "w") as fout:
             for line in fin:
                 fout.write(line)
-
+    '''
 
 def main(args=None):
     args = parse_args(args)
