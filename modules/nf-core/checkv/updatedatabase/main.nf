@@ -1,4 +1,4 @@
-process CHECKV_DOWNLOADDATABASE {
+process CHECKV_UPDATEDATABASE {
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::checkv=1.0.1" : null)
@@ -7,7 +7,7 @@ process CHECKV_DOWNLOADDATABASE {
         'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tulpe val(meta), path (fasta)
     path db
 
     output:
@@ -19,12 +19,17 @@ process CHECKV_DOWNLOADDATABASE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def checkv_db = db ?: ''
+    def update_sequence = fasta ?: ''
 
     """
-    checkv download_database \\
+    checkv update_database \\
+        --threads $task.cpus \\
         $args \\
+        $db \\
         ./$prefix/  \\
+        $fasta \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

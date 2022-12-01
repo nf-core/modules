@@ -24,12 +24,11 @@ process CHECKV_ENDTOEND {
     prefix = task.ext.prefix ?: "${meta.id}"
     checkv_db = db ? "export CHECKVDB=${db}" : ""
     """
-    $checkv_db
-
     checkv \\
         end_to_end \\
         $args \\
-        -t $task.cpus \\
+        --threads $task.cpus \\
+        -d $db \\
         $fasta \\
         $prefix
 
