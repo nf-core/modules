@@ -10,6 +10,7 @@ process WHAMG {
     input:
     tuple val(meta), path(bam), path(bai)
     path(fasta)
+    path(fasta_fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
