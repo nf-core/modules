@@ -35,7 +35,7 @@ process MMSEQS_CREATEINDEX {
 
     stub:
     """
-    touch ${db}.idx
+    touch ${db_path_name}.idx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
