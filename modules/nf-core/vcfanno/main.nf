@@ -28,7 +28,7 @@ process VCFANNO {
     vcfanno \\
         -p $task.cpus \\
         $args \\
-        $lua \\
+        $lua_cmd \\
         $toml \\
         $vcf \\
         > ${prefix}.vcf
