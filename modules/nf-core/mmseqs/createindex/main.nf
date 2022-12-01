@@ -23,7 +23,7 @@ process MMSEQS_CREATEINDEX {
     def db_path_name = db_name ? "${db}/${db_name}": "${db}/${db}"
     """
     mmseqs createindex \\
-        ${db_path_name} \\
+        $db_path_name \\
         tmp1 \\
         $args
 
