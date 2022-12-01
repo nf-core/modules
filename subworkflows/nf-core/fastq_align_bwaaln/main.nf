@@ -10,7 +10,7 @@ include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/mai
 workflow FASTQ_ALIGN_BWAALN {
 
     take:
-    ch_reads // channel (mandatory): [ val(meta), [ reads ] ]. subworkImportant: meta REQUIRES singleend` entry!
+    ch_reads // channel (mandatory): [ val(meta), [ reads ] ]. subworkImportant: meta REQUIRES single_end` entry!
     ch_index // channel (mandatory): [ val(meta), [ index ] ]
 
     main:

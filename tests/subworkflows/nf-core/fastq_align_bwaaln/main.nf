@@ -16,7 +16,6 @@ workflow test_fastq_align_bwaaln_singleend {
         [id: 'test'],
         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
     ]
-    sort = false
 
     BWA_INDEX ( fasta )
     FASTQ_ALIGN_BWAALN ( input, BWA_INDEX.out.index )

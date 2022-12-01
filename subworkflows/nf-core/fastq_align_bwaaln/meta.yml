@@ -23,10 +23,9 @@ input:
       type: directory
       description: |
         Structure: [ val(meta), path(index/) ]
-        A directory containing bwa aln reference indicies as from `bwa index`
+        A directory containing bwa aln reference indices as from `bwa index`
         Contains files ending in extensions such as .amb, .ann, .bwt etc.
 
-      pattern: "*.{bam,cram,sam}"
 
 output:
   - meta:
