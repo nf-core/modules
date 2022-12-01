@@ -14,7 +14,7 @@ process WHAMG {
     output:
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
-    path("*.txt")                           , emit: graph, optional: true
+    tuple val(meta), path("*.txt")          , emit: graph, optional: true
     path "versions.yml"                     , emit: versions
 
     when:
