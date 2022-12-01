@@ -7,7 +7,7 @@ include { MMSEQS_TSV2EXPROFILEDB } from '../../../../../modules/nf-core/mmseqs/t
 
 workflow test_mmseqs_tsv2exprofiledb {
 
-    db = file('s3://nf-proteinfold-tests/modules_mmseqs_test_data/mmseqs.tar.gz', checkIfExists: true)
+    db = file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true)
 
     ch_db = UNTAR ( [[:], db] ).untar
         .map { it[1] }
