@@ -25,11 +25,11 @@ process CHECKV_UPDATEDATABASE {
 
     """
     checkv update_database \\
-        --threads $task.cpus \\
+        -t $task.cpus \\
         $args \\
-        $db \\
+        $checkv_db \\
         ./$prefix/  \\
-        $fasta \\
+        $update_sequence \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

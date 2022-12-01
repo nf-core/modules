@@ -21,18 +21,14 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "http://dx.doi.org/10.1038/s41587-020-00774-7"
-      licence: "['Modified BSD']"
+      licence: "['BSD License']"
 
 input:
-  - fasta:
-      type: file
-      description: fasta file containing additional sequences for the checkv_db
-      pattern: "*.{fasta,fna,fa,.fasta.gz,.fna.gz,.fa.gz,bz2,xz}"
-
-
-  - db:
-      type: directory
-      description: directory pointing to checkV database to avoid redownloading the database
+   - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'sample', bin:'1' ]
 
 output:
   - versions:

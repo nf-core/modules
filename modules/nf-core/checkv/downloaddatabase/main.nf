@@ -7,8 +7,7 @@ process CHECKV_DOWNLOADDATABASE {
         'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
-    path db
+    val(meta)
 
     output:
     path "${prefix}/*"         , emit: checkv_db

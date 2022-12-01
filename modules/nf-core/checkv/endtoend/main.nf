@@ -12,9 +12,13 @@ process CHECKV_ENDTOEND {
     path db
 
     output:
-    tuple val(meta), path ("${prefix}")      , emit: results
-    tuple val(meta), path ("${prefix}/*.tsv"), emit: tsv
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path ("${prefix}/quality_summary.tsv") , emit: quality_summary
+    tuple val(meta), path ("${prefix}/completeness.tsv")    , emit: completeness
+    tuple val(meta), path ("${prefix}/contamination.tsv")   , emit: contamination
+    tuple val(meta), path ("${prefix}/complete_genomes.tsv"), emit: complete_genomes
+    tuple val(meta), path ("${prefix}/proviruses.fna")      , emit: proviruses
+    tuple val(meta), path ("${prefix}/viruses.fna")         , emit: viruses
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,12 +26,12 @@ process CHECKV_ENDTOEND {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    checkv_db = db ? "export CHECKVDB=${db}" : ""
+
     """
     checkv \\
         end_to_end \\
         $args \\
-        --threads $task.cpus \\
+        -t $task.cpus \\
         -d $db \\
         $fasta \\
         $prefix

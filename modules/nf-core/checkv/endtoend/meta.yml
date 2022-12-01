@@ -19,7 +19,7 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "http://dx.doi.org/10.1038/s41587-020-00774-7"
-      licence: "['Modified BSD']"
+      licence: "['BSD License']"
 
 input:
   - meta:
@@ -49,15 +49,35 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 
-  - results:
-      type: directory
-      description: CheckV output directory
-      pattern: "*/"
-
-  - tsv:
+  - quality_summary:
       type: file
-      description: CheckV tables on completeness, contamination and other summary information
-      pattern: "*.tsv"
+      description: CheckV's main output containing integrated results from the three main modules (contamination, completeness, complete genomes) with overall quality of contigs
+      pattern: "${prefix}/quality_summary.tsv"
+
+  - completeness:
+      type: file
+      description: CheckV's detailed overview table on estimating completeness
+      pattern: "${prefix}/completeness.tsv"
+
+  - contamination:
+      type: file
+      description: CheckV's detailed overview table on estimating contamination
+      pattern: "${prefix}/contamination.tsv"
+
+  - complete_genomes:
+      type: file
+      description: CheckV's detailed overview table on the identified putative complete genomes
+      pattern: "${prefix}/complete_genomes.tsv"
+
+  - proviruses:
+      type: file
+      description: CheckV's extracted proviruses contigs
+      pattern: "${prefix}/proviruses.fna"
+
+  - viruses:
+      type: file
+      description: CheckV's extracted virus contigs
+      pattern: "${prefix}/viruses.fna"
 
 authors:
   - "@Joon-Klaps"
