@@ -6,9 +6,6 @@ process CHECKV_DOWNLOADDATABASE {
         'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
         'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
 
-    input:
-    val(meta)
-
     output:
     path "${prefix}/*"         , emit: checkv_db
     path "versions.yml"        , emit: versions
@@ -18,7 +15,7 @@ process CHECKV_DOWNLOADDATABASE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "checkv_db"
 
     """
     checkv download_database \\
