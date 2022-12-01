@@ -1,0 +1,33 @@
+name: "custom_tsvtogseagct"
+description: Convert a TSV with features by row and observations by column to a GCT format file as consumed by GSEA
+keywords:
+  - gsea
+  - gct
+tools:
+  - "tsvtogseagct":
+      description: "Convert a TSV with features by row and observations by column to a GCT format file as consumed by GSEA"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing matrix information
+        e.g. [ id:'test' ]
+  - tsv:
+      type: file
+      description: TSV file
+      pattern: "*.{tsv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing matrix information
+        e.g. [ id:'test' ]
+  - gct:
+      type: file
+      description: GCT format version of input TSV
+      pattern: "*.{gct}"
+
+authors:
+  - "@pinin4fjords"
