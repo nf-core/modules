@@ -7,6 +7,7 @@ process CUSTOM_TSVTOGSEAGCT {
 
     output:
     tuple val(meta), path("*.gct"), emit: gct
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +26,7 @@ process CUSTOM_TSVTOGSEAGCT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bash: \$(bash --version | head -n 1)
+        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
     END_VERSIONS
     """
 }
