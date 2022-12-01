@@ -9,9 +9,8 @@ process SOMALIER_RELATE {
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
-    tuple val(meta), path(extract)
+    tuple val(meta), path(extract), path(ped)
     path(sample_groups)
-    path(ped)
 
     output:
     tuple val(meta), path("*.html"),          emit: html

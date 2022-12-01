@@ -9,13 +9,14 @@ process SOMALIER_EXTRACT {
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    tuple path(ref), path(refidx)
+    tuple val(meta), path(input), path(input_index)
+    path(fasta)
+    path(fai)
     path(sites)
 
     output:
-    tuple val(meta), path("*.somalier"), emit: extract
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("*.somalier") , emit: extract
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +28,8 @@ process SOMALIER_EXTRACT {
     """
     somalier extract \\
     --sites ${sites} \\
-    -f ${ref} \\
-    ${bam} \\
+    -f ${fasta} \\
+    ${input} \\
     ${args}
 
     cat <<-END_VERSIONS > versions.yml
