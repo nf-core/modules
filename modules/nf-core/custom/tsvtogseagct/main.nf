@@ -16,7 +16,7 @@ process CUSTOM_TSVTOGSEAGCT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     n_columns=\$(head -n 1 $tsv | tr "\t" "\n" | wc -l)
-    n_lines=\$(wc -l < $tsv) 
+    n_lines=\$(wc -l < $tsv)
     gct_file=${prefix}.gct
 
     echo -e "#1.2\$(printf '\t%.0s' {1..\$n_columns})\n\$((n_lines-1))\t\$((n_columns-1))\$(printf '\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
