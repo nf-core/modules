@@ -1,0 +1,19 @@
+- name: custom tabulartogseacls test_custom_tabulartogseacls
+  command: nextflow run ./tests/modules/nf-core/custom/tabulartogseacls -entry test_custom_tabulartogseacls -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/tabulartogseacls/nextflow.config
+  tags:
+    - custom
+    - custom/tabulartogseacls
+  files:
+    - path: output/custom/test.cls
+      md5sum: 7b887159417842b1fe87afebe4f8c2b7
+
+- name: custom tabulartogseacls test_custom_tabulartogseacls_tsv
+  command: nextflow run ./tests/modules/nf-core/custom/tabulartogseacls -entry test_custom_tabulartogseacls_tsv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/tabulartogseacls/nextflow.config
+  tags:
+    - custom
+    - custom/tabulartogseacls
+  files:
+    - path: output/csv/test.tsv
+      md5sum: 7c5233cf34fd8eaf7071f21f6fcac7d8
+    - path: output/custom/test.cls
+      md5sum: 7b887159417842b1fe87afebe4f8c2b7
