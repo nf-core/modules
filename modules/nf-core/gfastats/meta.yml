@@ -1,32 +1,46 @@
 name: "gfastats"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+  A single fast and exhaustive tool for summary statistics and simultaneous *fa*
+  (fasta, fastq, gfa [.gz]) genome assembly file manipulation.
 keywords:
   - sort
 tools:
   - "gfastats":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "The swiss army knife for genome assembly."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/vgl-hub/gfastats"
+      documentation: "https://github.com/vgl-hub/gfastats/tree/main/instructions"
+      tool_dev_url: "https://github.com/vgl-hub/gfastats"
+      doi: "https://doi.org/10.1093/bioinformatics/btac460"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - assembly:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Draft assembly file
+      pattern: "*.{fasta,fastq,gfa}(.gz)?"
+  - genome_size:
+      type: number
+      description: estimated genome size for NG* statistics (optional).
+  - target:
+      type: string
+      description: target specific sequence by header, optionally with coordinates (optional).
+  - agpfile:
+      type: file
+      description: converts input agp to path and replaces existing paths.
+  - include_bed:
+      type: file
+      description: generates output on a subset list of headers or coordinates in 0-based bed format.
+  - exclude_bed:
+      type: file
+      description: opposite of --include-bed. They can be combined (no coordinates).
+  - instructions:
+      type: file
+      description: set of instructions provided as an ordered list.
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -36,7 +50,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
+  #
   - versions:
       type: file
       description: File containing software versions
