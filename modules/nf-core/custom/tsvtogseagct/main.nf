@@ -16,13 +16,13 @@ process CUSTOM_TSVTOGSEAGCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    n_columns=\$(head -n 1 $tsv | tr "\t" "\n" | wc -l)
+    n_columns=\$(head -n 1 $tsv | tr "\\t" "\\n" | wc -l)
     n_lines=\$(wc -l < $tsv)
     gct_file=${prefix}.gct
 
-    echo -e "#1.2\$(printf '\t%.0s' {1..\$n_columns})\n\$((n_lines-1))\t\$((n_columns-1))\$(printf '\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
-    echo -e "NAME\tDESCRIPTION\t\$(head -n 1 $tsv | cut -f1 --complement)" >> \$gct_file
-    cat $tsv | tail -n +2 | awk 'BEGIN { OFS = "\t"} {\$1=\$1"\tNA"}1' >> \$gct_file
+    echo -e "#1.2\$(printf '\\t%.0s' {1..\$n_columns})\\n\$((n_lines-1))\\t\$((n_columns-1))\$(printf '\\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
+    echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 $tsv | cut -f1 --complement)" >> \$gct_file
+    cat $tsv | tail -n +2 | awk 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
