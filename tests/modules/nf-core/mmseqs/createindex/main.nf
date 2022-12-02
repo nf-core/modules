@@ -11,5 +11,5 @@ workflow test_mmseqs_createindex {
 
     ch_db = UNTAR ( [[:], db] ).untar
         .map { it[1] }
-    MMSEQS_CREATEINDEX ( ch_db, '' )
+    MMSEQS_CREATEINDEX ( ch_db )
 }

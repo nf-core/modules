@@ -9,7 +9,6 @@ process MMSEQS_CREATEINDEX {
 
     input:
     path db
-    val db_name
 
     output:
     path(db)           , emit: db_indexed
@@ -20,10 +19,11 @@ process MMSEQS_CREATEINDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def db_path_name = db_name ? "${db}/${db_name}": "${db}/${db}"
     """
+    DB_NAME=`basename \$(find -L ./$db/ -name "*_seq.tsv") | sed 's/_seq\\.tsv\$//'`
+
     mmseqs createindex \\
-        $db_path_name \\
+        "${db}/\${DB_NAME}" \\
         tmp1 \\
         $args
 
@@ -35,7 +35,7 @@ process MMSEQS_CREATEINDEX {
 
     stub:
     """
-    touch ${db_path_name}.idx
+    touch "${db}/\${DB_NAME}".idx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
