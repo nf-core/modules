@@ -25,7 +25,7 @@ process CHECKV_UPDATEDATABASE {
 
     """
     checkv update_database \\
-        -t $task.cpus \\
+        --threads $task.cpus \\
         $args \\
         $checkv_db \\
         ./$prefix/  \\
