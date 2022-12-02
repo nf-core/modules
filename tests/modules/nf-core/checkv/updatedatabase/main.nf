@@ -8,7 +8,7 @@ include { CHECKV_DOWNLOADDATABASE } from '../../../../../modules/nf-core/checkv/
 workflow test_checkv_updatedatabase {
 
     input = [ [ id:'test', single_end:false ], // meta map
-            file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)]
+            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
 
     CHECKV_DOWNLOADDATABASE()
 
