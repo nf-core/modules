@@ -39,7 +39,7 @@ process DEEPBGC_PIPELINE {
         $args \\
         $genome
 
-    mv "${genome.baseName}/ ${prefix}/
+    mv "${genome.baseName}/" "${prefix}/"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
