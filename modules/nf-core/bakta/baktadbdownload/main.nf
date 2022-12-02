@@ -7,8 +7,8 @@ process BAKTA_BAKTADBDOWNLOAD {
         'quay.io/biocontainers/bakta:1.5.0--pyhdfd78af_0' }"
 
     output:
-    path "db.tar.gz", emit: db_tar_gz
-    path "versions.yml"           , emit: versions
+    path "db.tar.gz"        , emit: db_tar_gz
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
