@@ -39,7 +39,9 @@ process DEEPBGC_PIPELINE {
         $args \\
         $genome
 
-    mv "${genome.baseName}/" "${prefix}/"
+    if [[ "${genome.baseName}/" != "${prefix}/" ]];
+        mv "${genome.baseName}/" "${prefix}/"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
