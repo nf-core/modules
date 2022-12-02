@@ -31,9 +31,9 @@ process BAKTA_BAKTADBDOWNLOAD {
     def args = task.ext.args ?: ''
 
     """
-    echo bakta_db \\
+    echo "bakta_db \\
         download \\
-        $args
+        $args"
 
     touch db.tar.gz
 
