@@ -1,0 +1,45 @@
+name: agat_convertspgff2gtf
+description: |
+  Converts a GFF/GTF file into a proper GTF file
+keywords:
+  - genome
+  - gff
+  - gtf
+  - conversion
+
+tools:
+  - agat:
+      description: "AGAT is a toolkit for manipulation and getting information from GFF/GTF files"
+      homepage: "https://github.com/NBISweden/AGAT"
+      documentation: "https://agat.readthedocs.io/"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - gff:
+      type: file
+      description: Annotation file in GFF3/GTF format
+      pattern: "*.{gff, gtf}"
+
+output:
+  - output_gtf:
+      type: file
+      description: Annotation file in GTF format
+      pattern: "*.{gtf}"
+  - log:
+      type: file
+      description: Log file of the conversion process
+      pattern: "*.{log}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@toniher"
