@@ -42,24 +42,20 @@ input:
       type: file
       description: set of instructions provided as an ordered list.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - assembly_summary:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Assembly summary statistics file
+      pattern: "*.assembly_summary"
 
 authors:
   - "@mahesh-panchal"

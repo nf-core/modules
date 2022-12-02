@@ -2,10 +2,10 @@ process GFASTATS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gfastats=1.3.4" : null)
+    conda (params.enable_conda ? "bioconda::gfastats=1.3.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfastats:1.3.4--hd03093a_0':
-        'quay.io/biocontainers/gfastats:1.3.4--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/gfastats:1.3.5--hd03093a_0':
+        'quay.io/biocontainers/gfastats:1.3.5--hd03093a_0' }"
 
     input:
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
@@ -17,8 +17,8 @@ process GFASTATS {
     path instructions                 // -k --swiss-army-knife <file> set of instructions provided as an ordered list.
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.assembly_summary"), emit: assembly_summary
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,7 +41,7 @@ process GFASTATS {
         $assembly \\
         $genome_size \\
         $target \\
-        > ${prefix}.out
+        > ${prefix}.assembly_summary
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
