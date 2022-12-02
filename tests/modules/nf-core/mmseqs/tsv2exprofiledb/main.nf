@@ -11,5 +11,5 @@ workflow test_mmseqs_tsv2exprofiledb {
 
     ch_db = UNTAR ( [[:], db] ).untar
         .map { it[1] }
-    MMSEQS_TSV2EXPROFILEDB ( ch_db, '' )
+    MMSEQS_TSV2EXPROFILEDB ( ch_db )
 }
