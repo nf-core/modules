@@ -11,8 +11,8 @@ process CHECKV_UPDATEDATABASE {
     path db
 
     output:
-    path "${prefix}/*"         , emit: checkv_db
-    path "versions.yml"        , emit: versions
+    tuple val(meta) ,path "${prefix}/*"         , emit: checkv_db
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
