@@ -34,6 +34,10 @@ input:
       type: file
       description: Sequence dictionary
       pattern: "*.dict"
+  - arguments_file:
+      type: file
+      description: File containing command line arguments
+      pattern: "*"
 output:
   - interval_list:
       type: file

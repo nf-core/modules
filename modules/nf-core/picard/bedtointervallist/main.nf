@@ -10,6 +10,7 @@ process PICARD_BEDTOINTERVALLIST {
     input:
     tuple val(meta) , path(bed)
     tuple val(meta2), path(dict)
+    file  arguments_file
 
     output:
     tuple val(meta), path('*.interval_list'), emit: interval_list
@@ -21,6 +22,7 @@ process PICARD_BEDTOINTERVALLIST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_file = arguments_file ? "--arguments_file ${arguments_file}" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -36,7 +38,7 @@ process PICARD_BEDTOINTERVALLIST {
         --OUTPUT ${prefix}.interval_list \\
         --SEQUENCE_DICTIONARY $dict \\
         --TMP_DIR . \\
-        $args
+        $args_file $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

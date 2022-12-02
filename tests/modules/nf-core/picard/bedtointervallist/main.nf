@@ -14,5 +14,5 @@ workflow test_picard_bedtointervallist {
         file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
     ]
 
-    PICARD_BEDTOINTERVALLIST ( input, dict )
+    PICARD_BEDTOINTERVALLIST ( input, dict, [] )
 }
