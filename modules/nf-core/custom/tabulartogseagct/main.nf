@@ -1,9 +1,9 @@
-process CUSTOM_TSVTOGSEAGCT {
+process CUSTOM_TABULARTOGSEAGCT {
     tag "$meta.id"
     label 'process_single'
 
     input:
-    tuple val(meta), path(tsv)
+    tuple val(meta), path(tabular)
 
     output:
     tuple val(meta), path("*.gct"), emit: gct
@@ -15,14 +15,15 @@ process CUSTOM_TSVTOGSEAGCT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def separator = tabular.getName().endsWith(".csv") ? ',' : '\\t'
     """
-    n_columns=\$(head -n 1 $tsv | tr "\\t" "\\n" | wc -l)
-    n_lines=\$(wc -l < $tsv)
+    n_columns=\$(head -n 1 $tabular | tr "$separator" "\\n" | wc -l)
+    n_lines=\$(wc -l < $tabular)
     gct_file=${prefix}.gct
 
     echo -e "#1.2\$(printf '\\t%.0s' {1..\$n_columns})\\n\$((n_lines-1))\\t\$((n_columns-1))\$(printf '\\t%.0s' {1..\$((n_columns-1))})" > \$gct_file
-    echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 $tsv | cut -f1 --complement)" >> \$gct_file
-    cat $tsv | tail -n +2 | awk 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
+    echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 $tabular | cut -f1 -d\$'$separator' --complement | awk -F'$separator' 'BEGIN { OFS = "\\t"}; {\$1=\$1}1' )" >> \$gct_file
+    cat $tabular | tail -n +2 | awk -F'$separator' 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

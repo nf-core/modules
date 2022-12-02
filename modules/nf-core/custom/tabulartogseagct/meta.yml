@@ -1,11 +1,11 @@
-name: "custom_tsvtogseagct"
-description: Convert a TSV with features by row and observations by column to a GCT format file as consumed by GSEA
+name: "custom_tabulartogseagct"
+description: Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA
 keywords:
   - gsea
   - gct
 tools:
-  - "tsvtogseagct":
-      description: "Convert a TSV with features by row and observations by column to a GCT format file as consumed by GSEA"
+  - "tabulartogseagct":
+      description: "Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA"
 
 input:
   - meta:
@@ -15,8 +15,8 @@ input:
         e.g. [ id:'test' ]
   - tsv:
       type: file
-      description: TSV file
-      pattern: "*.{tsv}"
+      description: TSV or CSV file
+      pattern: "*.{tsv,csv}"
 
 output:
   - meta:
