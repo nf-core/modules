@@ -66,14 +66,15 @@ process TRINITY {
     }
 
     // --seqType argument, fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    seqType_args = ${reads[0]} ==~ /(.*fasta(.gz)?)|(.*fa(.gz)?)/ ? "fa" : "fq"
+    seqType_args = ${reads[0]} ==~ /(.*fasta(.gz)?$)|(.*fa(.gz)?$)/ ? "fa" : "fq"
 
     """
     Trinity \\
     --seqType ${seqType_args} \\
-    --max_memory 128G \\
+    --max_memory $task.memory \\
     ${reads_args} \\
     --output ${prefix}_trinity \\
+    --CPU $task.cpus \\
     $args
 
     #Note that Trinity needs the word 'trinity' in the outdir
@@ -88,7 +89,7 @@ process TRINITY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trinity: \$(echo \$(Trinity --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        trinity: \$(echo \$(Trinity --version 2>&1) | sed 's/^.*trinity //; s/Using.*\$//' ))
     END_VERSIONS
     """
 }
