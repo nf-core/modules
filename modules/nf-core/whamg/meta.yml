@@ -52,6 +52,10 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of the VCF file
+      pattern: "*.vcf.gz.tbi"
 
 authors:
   - "@nvnieuwk"
