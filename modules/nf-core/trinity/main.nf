@@ -78,15 +78,7 @@ process TRINITY {
     $args
 
     #Note that Trinity needs the word 'trinity' in the outdir
-
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trinity: \$(echo \$(Trinity --version 2>&1) | sed 's/^.*trinity //; s/Using.*\$//' ))
