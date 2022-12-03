@@ -25,7 +25,7 @@ process ASHLAR {
     println 'running process ASHLAR'
 
     // publishDir "/tmp/tmpOUTPUT/ashlar_results", pattern: "${meta.id}.ome.tif"
-    // publishDir = [ path: { "${params.outdir}/${meta.id}/" } ]
+    publishDir = [ path: { "${params.outdir}/foo/${meta.id}/" } ]
 
     tag '$meta.id'
     label 'process_single'
@@ -71,6 +71,8 @@ process ASHLAR {
     def args_opt = options.args ?: ''
     def args_meta = meta.args ?: ''
 
+    debug_file = new File('/tmp/tmp_debug/log.txt')
+    debug_file.write "${meta.id}  ${meta.sample}  ${meta.args}"
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified

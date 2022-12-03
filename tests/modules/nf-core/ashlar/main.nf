@@ -21,7 +21,6 @@ workflow test_ashlar {
     ASHLAR ( input_channel )
 }
 
-
 // we can add additional test workflows below
 
 include { INPUT_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check.nf'
@@ -35,8 +34,8 @@ workflow test_ashlar_sheet {
     )
     .images
     .map {
-        [ [ id:it.id, args: '--flip-y' ],
-            it.file_list ]
+        it -> [ [ id: it.sample, args: '--flip-y' ],
+                it.file_list ]
     }
     .set { input_maps }
 

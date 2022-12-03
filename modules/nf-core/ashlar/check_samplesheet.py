@@ -126,7 +126,8 @@ def check_samplesheet(file_in, file_out):
             for sample in sorted(sample_mapping_dict.keys()):
 
                 for idx, val in enumerate(sample_mapping_dict[sample]):
-                    fout.write(",".join([f"{sample}_T{idx+1}"] + val) + "\n")
+                    fout.write(",".join([f"{sample}"] + val) + "\n")
+#                    fout.write(",".join([f"{sample}_T{idx+1}"] + val) + "\n")
     else:
         print_error(f"No entries to process!", "Samplesheet: {file_in}")
 
