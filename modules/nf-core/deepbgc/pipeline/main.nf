@@ -39,7 +39,7 @@ process DEEPBGC_PIPELINE {
         $args \\
         $genome
 
-    if [[ "${genome.baseName}/" != "${prefix}/" ]];
+    if [[ "${genome.baseName}/" != "${prefix}/" ]]; then
         mv "${genome.baseName}/" "${prefix}/"
     fi
 
