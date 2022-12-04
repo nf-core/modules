@@ -88,6 +88,10 @@ jobs:
         if: matrix.profile == 'conda'
         run: conda clean -a
 
+      - name: Install mamba
+        if: matrix.profile == 'conda'
+        run: curl micro.mamba.pm/install.sh | bash
+
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
