@@ -90,12 +90,12 @@ jobs:
 
       - name: Install mamba
         if: matrix.profile == 'conda'
-        run: curl micro.mamba.pm/install.sh | bash
+        run: conda install mamba -n base -c conda-forge
 
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
-        run: PATH="/home/runner/micromamba/bin:$PATH" TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
         if: failure()
