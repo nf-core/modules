@@ -1,0 +1,73 @@
+name: "vcf_gather_bcftools"
+description: |
+  Concatenate several VCF files using bcftools concat.
+  Especially works well with the scatter subworkflows in nf-core.
+  An additional option can be given to sort the concatenated VCF.
+keywords:
+  - concat
+  - vcf
+  - gather
+  - sort
+  - bcftools
+modules:
+  - bcftools/sort
+  - bcftools/concat
+  - tabix/tabix
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
+        e.g. [ id:'test.001', common_meta:'test' ]
+  - vcf:
+      type: file(s)
+      description: VCF files that should be concatenated
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file(s)
+      description: Indices of the VCF files that should be concatenated
+      pattern: "*.vcf.gz.tbi"
+  - gather_count:
+      type: integer
+      description: The gather count for each VCF
+  - common_meta:
+      type: string
+      description: |
+        The string of the common meta to use as the new 'id'.
+        Please make sure all VCFs that need to be concatenated have the same value in the
+        the meta field specified. (and that only the ID is different between these files)
+  - sort:
+      type: boolean
+      description: |
+        Whether or not to sort the output VCF,
+        this can be useful if this subworkflow isn't used in a scatter/gather workflow
+  - bed:
+      type: file(s)
+      description: |
+        This file won't be used by the subworkflow but is here to limit
+        the overall code needed between the scatter and gather subworkflows.
+        This file can be '[]' if you want to use this subworkflow without using a scatter subworkflow first.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAM/CRAM/SAM samtools index
+      pattern: "*.{bai,crai,sai}"
+  - csi:
+      type: file
+      description: CSI samtools index
+      pattern: "*.csi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "None"
