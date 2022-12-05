@@ -1,7 +1,7 @@
 - name: gfastats test_gfastats_asm_only
   command: nextflow run ./tests/modules/nf-core/gfastats -entry test_gfastats_asm_only -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/gfastats/nextflow.config
   tags:
-  - gfastats
+    - gfastats
   files:
-  - path: output/gfastats/test.assembly_summary
-    md5sum: b536dc651c430571a89e76862ef50e26
+    - path: output/gfastats/test.assembly_summary
+      md5sum: b536dc651c430571a89e76862ef50e26
