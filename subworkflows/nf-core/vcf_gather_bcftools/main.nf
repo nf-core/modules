@@ -25,11 +25,11 @@ workflow VCF_GATHER_BCFTOOLS {
         .groupTuple()
 
     BCFTOOLS_CONCAT ( ch_concat_input )
-    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
+    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions)
 
     if (val_sort) {
         BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
-        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
+        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions)
 
         ch_tabix_input = BCFTOOLS_SORT.out.vcf
 
@@ -38,7 +38,7 @@ workflow VCF_GATHER_BCFTOOLS {
     }
 
     TABIX_TABIX ( ch_tabix_input )
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
+    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
     vcf      = ch_tabix_input        // channel: [ val(meta), [ vcf ] ]
