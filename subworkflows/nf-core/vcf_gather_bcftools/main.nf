@@ -14,15 +14,11 @@ workflow VCF_GATHER_BCFTOOLS {
 
     ch_versions = Channel.empty()
 
-    ch_concat_input = ch_vcfs
-        .join(ch_scatter_output)
-        .map(
-            { meta, vcf, tbi, bed, gather_count ->
-                meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
-                [ groupKey(meta, gather_count), vcf, tbi ]
-            }
-        )
-        .groupTuple()
+    ch_concat_input = ch_vcfs.join(ch_scatter_output)
+        .map{ meta, vcf, tbi, bed, gather_count ->
+            meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
+            [ groupKey(meta, gather_count), vcf, tbi ]
+        }.groupTuple()
 
     BCFTOOLS_CONCAT ( ch_concat_input )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
