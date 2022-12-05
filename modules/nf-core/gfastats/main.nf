@@ -9,6 +9,7 @@ process GFASTATS {
 
     input:
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
+    val out_fmt                       // output format (fasta/fastq/gfa)
     val genome_size                   // estimated genome size for NG* statistics (optional).
     val target                        // target specific sequence by header, optionally with coordinates (optional).
     path agpfile                      // -a --agp-to-path <file> converts input agp to path and replaces existing paths.
@@ -18,6 +19,7 @@ process GFASTATS {
 
     output:
     tuple val(meta), path("*.assembly_summary"), emit: assembly_summary
+    tuple val(meta), path("*.${out_fmt}.gz")   , emit: assembly
     path "versions.yml"                        , emit: versions
 
     when:
@@ -38,6 +40,7 @@ process GFASTATS {
         $ibed \\
         $ebed \\
         $sak \\
+        --out-format ${prefix}.${out_fmt}.gz \\
         $assembly \\
         $genome_size \\
         $target \\

@@ -23,6 +23,9 @@ input:
       type: file
       description: Draft assembly file
       pattern: "*.{fasta,fastq,gfa}(.gz)?"
+  - out_fmt:
+      type: string
+      description: Output format (fasta, fastq, gfa)
   - genome_size:
       type: number
       description: estimated genome size for NG* statistics (optional).
@@ -56,6 +59,10 @@ output:
       type: file
       description: Assembly summary statistics file
       pattern: "*.assembly_summary"
+  - assembly:
+      type: file
+      description: The assembly as modified by gfastats
+      pattern: "*.{fasta,fastq,gfa}.gz"
 
 authors:
   - "@mahesh-panchal"
