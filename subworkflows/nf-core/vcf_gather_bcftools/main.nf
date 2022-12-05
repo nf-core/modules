@@ -7,8 +7,8 @@ workflow VCF_GATHER_BCFTOOLS {
     take:
     ch_vcfs             // channel: [ meta, vcf, tbi ]
     ch_scatter_output   // channel: [ meta, bed, gather_count ] => output from the scatter subworkflow, if you didn't use this subworkflow you can just use `[]` as bed since it isn't used
-    val_common_meta         // string:  The name of the meta field that should become the new id
-    val_sort                // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
+    val_common_meta     // string:  The name of the meta field that should become the new id
+    val_sort            // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
 
     main:
 
@@ -18,7 +18,7 @@ workflow VCF_GATHER_BCFTOOLS {
         .join(ch_scatter_output)
         .map(
             { meta, vcf, tbi, bed, gather_count ->
-                meta = meta + [id:meta[common_meta]]
+                meta = meta + [id:meta[val_common_meta]]
                 [ groupKey(meta, gather_count), vcf, tbi ]
             }
         )
@@ -28,7 +28,7 @@ workflow VCF_GATHER_BCFTOOLS {
     BCFTOOLS_CONCAT ( ch_concat_input )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
 
-    if (sort) {
+    if (val_sort) {
         BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
         ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
