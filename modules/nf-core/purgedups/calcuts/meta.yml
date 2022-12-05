@@ -1,51 +1,47 @@
 name: "purgedups_calcuts"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Calculate coverage cutoffs to determine when to purge duplicated sequence.
 keywords:
-  - sort
+  - coverage
+  - cutoff
+  - purge duplications
 tools:
   - "purgedups":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/dfguan/purge_dups"
+      documentation: "https://github.com/dfguan/purge_dups"
+      tool_dev_url: "https://github.com/dfguan/purge_dups"
+      doi: "https://doi.org/10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - stat:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Histogram of coverage
+      pattern: "*.stat"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  # 
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - cutoff:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Cutoff file
+      pattern: "*.cutoffs"
+  - log:
+      type: file
+      description: Log file
+      pattern: ".calcuts.log"
 
 authors:
   - "@mahesh-panchal"
