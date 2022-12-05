@@ -9,7 +9,7 @@ workflow test_pretextsnapshot_all {
 
     input = [
         [ id:'test' ], // meta map
-        file("/tmp/jaGalFasc40_2.pretext") // test data (copy it locally until in test-data)
+        file(params.test_data['galaxea_fascicularis']['hic']['pretext'], checkIfExists: true)
     ]
 
     PRETEXTSNAPSHOT_ALL ( input )
@@ -19,7 +19,7 @@ workflow test_pretextsnapshot_full {
 
     input = [
         [ id:'test' ], // meta map
-        file("/tmp/jaGalFasc40_2.pretext") // test data (copy it locally until in test-data)
+        file(params.test_data['galaxea_fascicularis']['hic']['pretext'], checkIfExists: true)
     ]
 
     PRETEXTSNAPSHOT_FULL ( input )
