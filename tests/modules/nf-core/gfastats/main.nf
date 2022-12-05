@@ -23,23 +23,23 @@ workflow test_gfastats_asm_only {
 }
 
 // TODO:: Fix test. Tool hangs without exit code when sak file is improperly formatted
-// workflow test_gfastats_sak {
+workflow test_gfastats_sak {
 
-//     input = [
-//         [ id:'test', single_end:false ], // meta map
-//         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-//     ]
-//     sak   = Channel.of("""
-//     RVCP    MT192765.1
-//     """.trim()).collectFile( name: 'assembly.sak' )
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ]
+    sak   = Channel.of("""\
+    RVCP\tMT192765.1
+    """.stripIndent()).collectFile( name: 'assembly.sak' )
 
-//     GFASTATS (
-//         input,
-//         29800,
-//         'MT192765.1',
-//         [],      // No agp file
-//         [],      // No include bed file
-//         [],      // No exclude bed file
-//         sak
-//     )
-// }
+    GFASTATS (
+        input,
+        29800,
+        'MT192765.1',
+        [],      // No agp file
+        [],      // No include bed file
+        [],      // No exclude bed file
+        sak
+    )
+}
