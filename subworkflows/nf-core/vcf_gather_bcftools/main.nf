@@ -18,7 +18,7 @@ workflow VCF_GATHER_BCFTOOLS {
         .join(ch_scatter_output)
         .map(
             { meta, vcf, tbi, bed, gather_count ->
-                meta = meta + [id:meta[val_common_meta]]
+                meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
                 [ groupKey(meta, gather_count), vcf, tbi ]
             }
         )

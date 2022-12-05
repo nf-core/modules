@@ -36,3 +36,36 @@ workflow test_vcf_gather_bcftools {
         true
     )
 }
+
+workflow test_vcf_gather_bcftools_no_meta {
+
+    input = Channel.of([
+        [id:'test'],
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_ann_vcf_gz_tbi'], checkIfExists: true)
+    ],
+    [
+        [id:'test'],
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz_tbi'], checkIfExists: true)
+    ])
+
+    scatter = Channel.of([
+        [id:'test'],
+        [],
+        2
+    ],
+    [
+        [id:'test'],
+        [],
+        2
+    ])
+
+
+    VCF_GATHER_BCFTOOLS (
+        input,
+        scatter,
+        [],
+        true
+    )
+}
