@@ -11,8 +11,8 @@ process PURGEDUPS_SPLITFA {
     tuple val(meta), path(assembly)
 
     output:
-    tuple val(meta), path("*.split.fasta"), emit: split_fasta
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.split.fasta.gz"), emit: split_fasta
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process PURGEDUPS_SPLITFA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    split_fa $args $assembly > ${prefix}.split.fasta
+    split_fa $args $assembly | gzip -c > ${prefix}.split.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
