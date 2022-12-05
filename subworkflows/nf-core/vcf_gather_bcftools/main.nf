@@ -7,8 +7,8 @@ workflow VCF_GATHER_BCFTOOLS {
     take:
     ch_vcfs             // channel: [ meta, vcf, tbi ]
     ch_scatter_output   // channel: [ meta, bed, gather_count ] => output from the scatter subworkflow, if you didn't use this subworkflow you can just use `[]` as bed since it isn't used
-    common_meta         // string:  The name of the meta field that should become the new id
-    sort                // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
+    val_common_meta         // string:  The name of the meta field that should become the new id
+    val_sort                // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
 
     main:
 
