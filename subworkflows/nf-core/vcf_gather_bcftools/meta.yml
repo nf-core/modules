@@ -19,17 +19,17 @@ input:
       description: |
         Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
         e.g. [ id:'test.001', common_meta:'test' ]
-  - vcf:
+  - ch_vcfs:
       type: file(s)
-      description: VCF files that should be concatenated
-      pattern: "*.vcf.gz"
-  - tbi:
-      type: file(s)
-      description: Indices of the VCF files that should be concatenated
-      pattern: "*.vcf.gz.tbi"
-  - gather_count:
-      type: integer
-      description: The gather count for each VCF
+      description: |
+        VCF files and their indices that should be concatenated
+        [ meta, vcf, tbi ]
+  - ch_scatter_output:
+      type: file and integer
+      description: |
+        The output created from a scatter subworkflow (contains a BED file and scatter_count).
+        The BED file isn't actually used in the pipeline so can remain empty if you manually set this input channel
+        [ meta, bed, scatter_count ]
   - common_meta:
       type: string
       description: |
@@ -41,33 +41,23 @@ input:
       description: |
         Whether or not to sort the output VCF,
         this can be useful if this subworkflow isn't used in a scatter/gather workflow
-  - bed:
-      type: file(s)
-      description: |
-        This file won't be used by the subworkflow but is here to limit
-        the overall code needed between the scatter and gather subworkflows.
-        This file can be '[]' if you want to use this subworkflow without using a scatter subworkflow first.
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - bam:
+  - vcf:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
+      description: The concatenated (and possible sorted) VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
       type: file
-      description: BAM/CRAM/SAM samtools index
-      pattern: "*.{bai,crai,sai}"
-  - csi:
-      type: file
-      description: CSI samtools index
-      pattern: "*.csi"
+      description: The indices of the output VCFs
+      pattern: "*.vcf.gz.tbi"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
-  - "None"
+  - "@nvnieuwk"
