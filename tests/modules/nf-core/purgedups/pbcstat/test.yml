@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purgedups/pbcstat
-- name: "purgedups pbcstat"
+- name: purgedups pbcstat test_purgedups_pbcstat
   command: nextflow run ./tests/modules/nf-core/purgedups/pbcstat -entry test_purgedups_pbcstat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purgedups/pbcstat/nextflow.config
   tags:
-    - "purgedups"
-    - "purgedups/pbcstat"
+    - purgedups/pbcstat
+    - purgedups
   files:
-    - path: "output/purgedups/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purgedups/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/purgedups/test.PB.base.cov
+      md5sum: fe8c98de33f46406c239cc9a1e124a38
+    - path: output/purgedups/test.PB.stat
+      md5sum: 51e126445de86be9812e4b291f869f9c
