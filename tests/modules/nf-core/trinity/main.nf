@@ -14,3 +14,14 @@ workflow test_trinity_paired_end {
 
     TRINITY ( input )
 }
+
+
+workflow test_trinity_single_end {
+    
+    input = [
+        [ id:'test', single_end:true ], // meta map
+        [ file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true) ]
+    ]
+
+    TRINITY ( input )
+}

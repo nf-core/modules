@@ -5,5 +5,15 @@
   files:
     - path: output/trinity/test_trinity.Trinity.fasta
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - '>TRINITY_'
+    - path: output/trinity/versions.yml
+
+- name: trinity test_trinity_single_end
+  command: nextflow run ./tests/modules/nf-core/trinity -entry test_trinity_single_end -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/trinity/nextflow.config
+  tags:
+    - trinity
+  files:
+    - path: output/trinity/test_trinity.Trinity.fasta
+      contains:
+        - '>TRINITY_'
     - path: output/trinity/versions.yml

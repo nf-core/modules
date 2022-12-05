@@ -89,7 +89,9 @@ process TRINITY {
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trinity: \$(echo \$(Trinity --version 2>&1) | sed 's/^.*trinity //; s/Using.*\$//' ))
+        trinity: \$(echo \$(Trinity --version |head -n 1 2>&1) | sed 's/^.*trinity //; s/Using.*\$//' ))
     END_VERSIONS
+
+    # Need to only take the first line of --version since it will warn about not being up-to-date and this messes up the version.yaml.
     """
 }
