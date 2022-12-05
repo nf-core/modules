@@ -11,7 +11,7 @@ process CHECKV_UPDATEDATABASE {
     path db
 
     output:
-    tuple val(meta) ,path "${prefix}/*"         , emit: checkv_db
+    tuple val(meta), path("${prefix}/*")        , emit: checkv_db
     path "versions.yml"                         , emit: versions
 
     when:
