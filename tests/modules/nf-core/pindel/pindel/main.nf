@@ -8,9 +8,15 @@ workflow test_pindel_pindel {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
         500
     ]
 
-    PINDEL_PINDEL ( input, file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) )
+    reference = [
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+    ]
+
+    PINDEL_PINDEL ( input, reference, file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) )
 }
