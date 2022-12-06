@@ -2,7 +2,11 @@ name: "pretextsnapshot"
 description: a module to generate images from Pretext contact maps.
 keywords:
   - pretext
-  - picture
+  - image
+  - hic
+  - PNG
+  - JPG
+  - BMP
 tools:
   - "pretextsnapshot":
       description: "Commandline image generator for Pretext Hi-C genome contact maps."
@@ -32,10 +36,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - picture:
+  - image:
       type: file
-      description: PNG file
-      pattern: "*.png"
+      description: image of a hic contact map
+      pattern: "*.png *.jpg *.bmp"
 
 authors:
   - "@epaule"
