@@ -29,6 +29,11 @@ input:
       type: file
       description: GMX or GMT file with gene sets
       pattern: "*.{gmx,gmt}"
+  - ext.contrast:
+      type: map
+      description: Map provided via ext in Nextflow configuration, defining
+        which of the groups defined in cls should be used for the reference and
+        target groups. Can be a closure referencing the meta.
 
 output:
   - meta:
