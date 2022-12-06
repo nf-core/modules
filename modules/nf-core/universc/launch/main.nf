@@ -6,7 +6,7 @@ process UNIVERSC_LAUNCH {
         exit 1, "Conda environments cannot be used when using the Cell Ranger tool. Please use docker or singularity containers."
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
-    container "tomkellygenetics/universc:1.2.4"
+    container "nfcore/universc:1.2.4"
     if (workflow.containerEngine == 'docker'){
         containerOptions = "--user root"
     }

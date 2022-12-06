@@ -46,6 +46,13 @@ modify this code provided that they also contain this license.
 
 The tomkellygenetics/universc:<VERSION> container is automatically updated with tomkellygenetics/universc:latest.
 
+A stable release is mirrored at nfcore/universc:1.2.4 and will be updated as needed.
+
 To build an updated container use the Dockerfile provided here:
 
 [https://github.com/minoda-lab/universc/blob/master/Dockerfile](https://github.com/minoda-lab/universc/blob/master/Dockerfile)
+
+Note that this uses a custom base image which is built with an open-source implementation of
+Cell Ranger v3.0.2 on MIT License and relies of Python 2. The build file can be found here:
+
+[https://github.com/TomKellyGenetics/cellranger_clean/blob/master/Dockerfile](https://github.com/TomKellyGenetics/cellranger_clean/blob/master/Dockerfile)
