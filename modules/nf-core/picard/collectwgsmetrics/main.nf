@@ -8,8 +8,8 @@ process PICARD_COLLECTWGSMETRICS {
         'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path  fasta
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
     path  intervallist
 
     output:

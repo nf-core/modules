@@ -6,11 +6,15 @@ include { PICARD_COLLECTHSMETRICS } from '../../../../../modules/nf-core/picard/
 
 workflow test_picard_collecthsmetrics {
 
-    input = [ [ id:'test', single_end:false ], // meta map
-            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+        ]
 
-    fasta = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-    fai = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+
+    fasta = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+    fai =   [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     bait_intervals = file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true)
     target_intervals = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
@@ -19,11 +23,14 @@ workflow test_picard_collecthsmetrics {
 
 workflow test_picard_collecthsmetrics_nofasta {
 
-    input = [ [ id:'test', single_end:false ], // meta map
-            file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+    ]
 
     bait_intervals = file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true)
     target_intervals = file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
 
-    PICARD_COLLECTHSMETRICS ( input, [], [], bait_intervals, target_intervals )
+    PICARD_COLLECTHSMETRICS ( input, [[:],[]], [[:],[]], bait_intervals, target_intervals )
 }
