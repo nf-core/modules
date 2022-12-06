@@ -23,6 +23,10 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
   - insert:
       type: int
       description: Insert size, either 500 as sensible default or from Picard/CollectInsertSizeMetrics
@@ -32,6 +36,9 @@ input:
   - fasta:
       type: file
       description: Input reference genome fasta file
+  - fai:
+      type: file
+      description: Input reference genome fasta index file
 
 output:
   - meta:

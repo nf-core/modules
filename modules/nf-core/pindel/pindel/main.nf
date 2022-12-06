@@ -8,9 +8,9 @@ process PINDEL_PINDEL {
         'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
 
     input:
-    tuple val(meta), path(bam), val(insert)
+    tuple val(meta), path(bam), path(bai), val(insert)
+    tuple path(fasta), path(fai)
     path bed
-    path fasta
 
     output:
     tuple val(meta), path("*_BP")            , emit: bp
