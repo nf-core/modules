@@ -1,11 +1,11 @@
-process BAKTA {
+process BAKTA_BAKTA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::bakta=1.5.0" : null)
+    conda (params.enable_conda ? "bioconda::bakta=1.6.0" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.5.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/bakta:1.5.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.6.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/bakta:1.6.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -36,13 +36,13 @@ process BAKTA {
     def prodigal_tf = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
     """
     bakta \\
+        $fasta
         $args \\
         --threads $task.cpus \\
         --prefix $prefix \\
-        --db $db \\
         $proteins_opt \\
         $prodigal_tf \\
-        $fasta
+        --db $db \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
