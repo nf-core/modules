@@ -6,8 +6,6 @@
   files:
     - path: output/custom/test.gct
       md5sum: 008c1c51294cb3f405817b7e5527f182
-    - path: output/strip/test.tsv
-      md5sum: 0c2224f6c33af1fe93c3b1382b3e05ce
 
 - name: custom tabulartogseagct test_custom_tabulartogseagct_csv
   command: nextflow run ./tests/modules/nf-core/custom/tabulartogseagct -entry test_custom_tabulartogseagct_csv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/custom/tabulartogseagct/nextflow.config
@@ -17,7 +15,3 @@
   files:
     - path: output/custom/test.gct
       md5sum: 008c1c51294cb3f405817b7e5527f182
-    - path: output/strip/test.tsv
-      md5sum: 0c2224f6c33af1fe93c3b1382b3e05ce
-    - path: output/tsv/test.csv
-      md5sum: 99074bb484c23741a4c647517081ec78
