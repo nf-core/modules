@@ -13,9 +13,9 @@ process SALSA2 {
     path(bed)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: fasta
-    tuple val(meta), path("*.agp"), emit: agp
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("SALSA_output/scaffolds_FINAL.fasta"), emit: fasta
+    tuple val(meta), path("SALSA_output/scaffolds_FINAL.agp"), emit: agp
+//    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,15 +26,13 @@ process SALSA2 {
     """
     run_pipeline.py \\
         $args \\
-        -@ $task.cpus \\
         -a $fasta \\
         -b $bed \\
-        -l $index \\
-        -o ${prefix}
+        -l $index
 
     #cat <<-END_VERSIONS > versions.yml
     #"${task.process}":
-    #    salsa2: \$(echo \$(salsa --version 2>&1) | sed 's/^.*salsa //; s/Using.*\$//' ))
+    #    salsa2: \$(echo \$(run_pipeline.py --version 2>&1) | sed 's/^.*salsa //; s/Using.*\$//' ))
     #END_VERSIONS
     """
 }
