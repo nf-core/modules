@@ -14,8 +14,8 @@ process GSEA_GSEA {
     tuple val(meta), path("*/*.rpt")                                                                                                        , emit: param_log
     tuple val(meta), path("*/index.html")                                                                                                   , emit: index
     tuple val(meta), path("*/heat_map_corr_plot.html")                                                                                      , emit: heat_map_corr_plot
-    tuple val(meta), path("*/gsea_report_for_${meta.reference}*.tsv"),  path("*/gsea_report_for_${meta.target}*.tsv")                       , emit: report_tsvs
-    tuple val(meta), path("*/gsea_report_for_${meta.reference}*.html"),  path("*/gsea_report_for_${meta.target}*.html")                     , emit: report_htmls
+    tuple val(meta), path("*/gsea_report_for_reference_*.tsv"),  path("*/gsea_report_for_target_*.tsv")                                     , emit: report_tsvs
+    tuple val(meta), path("*/gsea_report_for_reference_*.html"),  path("*/gsea_report_for_target_*.html")                                   , emit: report_htmls
     tuple val(meta), path("*/ranked_gene_list*.tsv")                                                                                        , emit: ranked_gene_list
     tuple val(meta), path("*/gene_set_sizes.tsv")                                                                                           , emit: gene_set_sizes
     tuple val(meta), path("*/butterfly_plot.png")                                                                                           , emit: butterfly_plot
@@ -37,12 +37,13 @@ process GSEA_GSEA {
 
     script:
     def args = task.ext.args ?: ''
+    def contrast = task.ext.contrast ?: [ ]
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Run GSEA
     gsea-cli GSEA \
         -res $gct \
-        -cls ${cls}#${meta.target}_versus_${meta.reference} \
+        -cls ${cls}#${contrast.target}_versus_${contrast.reference} \
         -gmx $gene_sets \
         -out \$(pwd) \
         --rpt_label $prefix \
@@ -61,11 +62,11 @@ process GSEA_GSEA {
         ln -s \$l ${prefix}.Gsea.rpt.zip
     done
 
-    ln -s \$(ls ranked_gene_list_${meta.target}_versus_${meta.reference}_*.tsv) ranked_gene_list_${meta.target}_versus_${meta.reference}.tsv
-    ln -s \$(ls gsea_report_for_${meta.reference}_*.html) gsea_report_for_${meta.reference}.html
-    ln -s \$(ls gsea_report_for_${meta.reference}_*.tsv) gsea_report_for_${meta.reference}.tsv
-    ln -s \$(ls gsea_report_for_${meta.target}_*.html) gsea_report_for_${meta.target}.html
-    ln -s \$(ls gsea_report_for_${meta.target}_*.tsv) gsea_report_for_${meta.target}.tsv
+    ln -s \$(ls ranked_gene_list_${contrast.target}_versus_${contrast.reference}_*.tsv) ranked_gene_list_${contrast.target}_versus_${contrast.reference}.tsv
+    ln -s \$(ls gsea_report_for_${contrast.reference}_*.html) gsea_report_for_reference_${contrast.reference}.html
+    ln -s \$(ls gsea_report_for_${contrast.reference}_*.tsv) gsea_report_for_reference_${contrast.reference}.tsv
+    ln -s \$(ls gsea_report_for_${contrast.target}_*.html) gsea_report_for_target_${contrast.target}.html
+    ln -s \$(ls gsea_report_for_${contrast.target}_*.tsv) gsea_report_for_target_${contrast.target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
