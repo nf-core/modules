@@ -26,7 +26,7 @@ process HAPLOCHECK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        haplocheck: \$(echo \$(haplocheck --version 2>&1) | cut -f 2 -d " " )
+        haplocheck: \$(echo \$(haplocheck --version 2>&1) | sed 's/.*\\([0-9].[0-9].[0-9]\\).*/\\1/' )
     END_VERSIONS
     """
 
@@ -38,7 +38,7 @@ process HAPLOCHECK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        haplocheck: \$(echo \$(haplocheck --version 2>&1) | cut -f 2 -d " " )
+        haplocheck: \$(echo \$(haplocheck --version 2>&1) | sed 's/.*\\([0-9].[0-9].[0-9]\\).*/\\1/' )
     END_VERSIONS
     """
 }

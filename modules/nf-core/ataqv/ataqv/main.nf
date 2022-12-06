@@ -10,6 +10,7 @@ process ATAQV_ATAQV {
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
     val organism
+    val mito_name
     path tss_file
     path excl_regs_file
     path autosom_ref_file
@@ -24,6 +25,7 @@ process ATAQV_ATAQV {
 
     script:
     def args = task.ext.args ?: ''
+    def mito = mito_name ? "--mitochondrial-reference-name ${mito_name}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
     def tss         = tss_file         ? "--tss-file $tss_file"                         : ''
@@ -32,6 +34,7 @@ process ATAQV_ATAQV {
     """
     ataqv \\
         $args \\
+        $mito \\
         $peak \\
         $tss \\
         $excl_regs \\

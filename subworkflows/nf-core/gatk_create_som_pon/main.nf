@@ -5,9 +5,9 @@ params.mutect2_options      = [args: '--max-mnp-distance 0']
 params.gendbimport_options  = [:]
 params.createsompon_options = [:]
 
-include { GATK4_MUTECT2                     } from '../../../modules/nf-core/gatk4/mutect2/main'                     addParams( options: params.mutect2_options )
-include { GATK4_GENOMICSDBIMPORT            } from '../../../modules/nf-core/gatk4/genomicsdbimport/main'            addParams( options: params.gendbimport_options )
-include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/nf-core/gatk4/createsomaticpanelofnormals/main' addParams( options: params.createsompon_options )
+include { GATK4_MUTECT2                     } from '../../../modules/nf-core/gatk4/mutect2/main'
+include { GATK4_GENOMICSDBIMPORT            } from '../../../modules/nf-core/gatk4/genomicsdbimport/main'
+include { GATK4_CREATESOMATICPANELOFNORMALS } from '../../../modules/nf-core/gatk4/createsomaticpanelofnormals/main'
 
 workflow GATK_CREATE_SOM_PON {
     take:

@@ -13,6 +13,7 @@ process RGI_MAIN {
     output:
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt") , emit: tsv
+    tuple val(meta), path("temp/")  , emit: tmp
     env VER                        , emit: tool_version
     env DBVER                      , emit: db_version
     path "versions.yml"            , emit: versions
@@ -30,6 +31,9 @@ process RGI_MAIN {
         --num_threads $task.cpus \\
         --output_file $prefix \\
         --input_sequence $fasta
+
+    mkdir temp/
+    mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json temp/
 
     VER=\$(rgi main --version)
     DBVER=\$(rgi database --version)

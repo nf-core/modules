@@ -1,0 +1,65 @@
+name: "gatk4_svannotate"
+description: Adds predicted functional consequence, gene overlap, and noncoding element overlap annotations to SV VCF from GATK-SV pipeline. Input files are an SV VCF, a GTF file containing primary or canonical transcripts, and a BED file containing noncoding elements. Output file is an annotated SV VCF.
+keywords:
+  - gatk4
+  - svannotate
+  - vcf
+  - annotate
+  - structural variants
+tools:
+  - gatk4:
+      description: Genome Analysis Toolkit (GATK4)
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      tool_dev_url: https://github.com/broadinstitute/gatk
+      doi: "10.1158/1538-7445.AM2017-3590"
+      licence: ["BSD-3-clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: A VCF file created with a structural variant caller
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: The index file of the VCF
+      pattern: "*.vcf.gz.tbi"
+  - fasta:
+      type: file
+      description: Optional - reference FASTA file needed when the input is a CRAM file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Optional - index of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.fai"
+  - dict:
+      type: file
+      description: Optional - sequence dictionary of the reference FASTA file needed when the input is a CRAM file
+      pattern: "*.dict"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - annotated_vcf:
+      type: file
+      description: The annotated structural variant VCF
+      pattern: "*.vcf.gz"
+  - index:
+      type: file
+      description: The index of the VCF
+      pattern: "*.vcf.gz.tbi"
+
+authors:
+  - "@nvnieuwk"

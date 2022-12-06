@@ -5,6 +5,11 @@ on:
   pull_request:
     branches: [master]
 
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   changes:
     name: Check for changes
@@ -13,7 +18,7 @@ jobs:
       # Expose matched filters as job 'modules' output variable
       modules: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
         id: filter
@@ -34,7 +39,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -91,7 +96,8 @@ jobs:
       - name: Output log on failure
         if: failure()
         run: |
-          sudo apt install bat > /dev/null
+          sudo apt-get update > /dev/null
+          sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
       - name: Upload logs on failure

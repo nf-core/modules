@@ -1,5 +1,5 @@
 - name: picard collecthsmetrics test_picard_collecthsmetrics
-  command: nextflow run ./tests/modules/nf-core/picard/collecthsmetrics -entry test_picard_collecthsmetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collecthsmetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collecthsmetrics -entry test_picard_collecthsmetrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collecthsmetrics/nextflow.config
   tags:
     - picard/collecthsmetrics
     - picard
@@ -7,7 +7,7 @@
     - path: output/picard/test.CollectHsMetrics.coverage_metrics
 
 - name: picard collecthsmetrics test_picard_collecthsmetrics_nofasta
-  command: nextflow run ./tests/modules/nf-core/picard/collecthsmetrics -entry test_picard_collecthsmetrics_nofasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collecthsmetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collecthsmetrics -entry test_picard_collecthsmetrics_nofasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collecthsmetrics/nextflow.config
   tags:
     - picard/collecthsmetrics
     - picard

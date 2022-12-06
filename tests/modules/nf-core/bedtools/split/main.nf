@@ -5,13 +5,11 @@ nextflow.enable.dsl = 2
 include { BEDTOOLS_SPLIT } from '../../../../../modules/nf-core/bedtools/split/main.nf'
 
 workflow test_bedtools_split {
-    
+
     input = [
-        [ id:'test' ], // meta map
+        [ id:'test', scatter:2 ], // meta map
         file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
     ]
 
-    number_of_files = 2
-
-    BEDTOOLS_SPLIT ( input, number_of_files )
+    BEDTOOLS_SPLIT ( input )
 }
