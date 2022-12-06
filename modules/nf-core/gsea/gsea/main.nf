@@ -37,13 +37,13 @@ process GSEA_GSEA {
 
     script:
     def args = task.ext.args ?: ''
-    def contrast = task.ext.contrast ?: [ ]
+    def args2 = task.ext.args2 ?: [ ]
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Run GSEA
     gsea-cli GSEA \
         -res $gct \
-        -cls ${cls}#${contrast.target}_versus_${contrast.reference} \
+        -cls ${cls}#${args2.target}_versus_${args2.reference} \
         -gmx $gene_sets \
         -out \$(pwd) \
         --rpt_label $prefix \
@@ -62,11 +62,11 @@ process GSEA_GSEA {
         ln -s \$l ${prefix}.Gsea.rpt.zip
     done
 
-    ln -s \$(ls ranked_gene_list_${contrast.target}_versus_${contrast.reference}_*.tsv) ranked_gene_list_${contrast.target}_versus_${contrast.reference}.tsv
-    ln -s \$(ls gsea_report_for_${contrast.reference}_*.html) gsea_report_for_reference_${contrast.reference}.html
-    ln -s \$(ls gsea_report_for_${contrast.reference}_*.tsv) gsea_report_for_reference_${contrast.reference}.tsv
-    ln -s \$(ls gsea_report_for_${contrast.target}_*.html) gsea_report_for_target_${contrast.target}.html
-    ln -s \$(ls gsea_report_for_${contrast.target}_*.tsv) gsea_report_for_target_${contrast.target}.tsv
+    ln -s \$(ls ranked_gene_list_${args2.target}_versus_${args2.reference}_*.tsv) ranked_gene_list_${args2.target}_versus_${args2.reference}.tsv
+    ln -s \$(ls gsea_report_for_${args2.reference}_*.html) gsea_report_for_reference_${args2.reference}.html
+    ln -s \$(ls gsea_report_for_${args2.reference}_*.tsv) gsea_report_for_reference_${args2.reference}.tsv
+    ln -s \$(ls gsea_report_for_${args2.target}_*.html) gsea_report_for_target_${args2.target}.html
+    ln -s \$(ls gsea_report_for_${args2.target}_*.tsv) gsea_report_for_target_${args2.target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
