@@ -44,7 +44,7 @@ process PINDEL_PINDEL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pindel: \$(pindel | grep '^Pindel version' | sed 's/Pindel version //; s/, *.\$//' ))
+        pindel: \$(pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\\+.//' ))
     END_VERSIONS
     """
 }
