@@ -20,7 +20,8 @@ process CUSTOM_TABULARTOGSEACLS {
     script:
     def args = task.ext.args ?: []
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def separator = args.separator ? "\\${args.separator}" : ( samples.getName().endsWith(".tsv") ? '\\t' : ',' )
+    def separator = args.separator ? "${args.separator}" : ( samples.getName().endsWith(".tsv") ? '\t': ',' )
+    separator = separator == '\t' ? '\\t': separator
     """
     cls_file=${prefix}.cls
 
