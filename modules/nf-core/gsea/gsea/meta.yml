@@ -17,7 +17,11 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing metadata, at a minimum and id e.g. [ id:'test' ]
+        Groovy Map containing metadata, at a minimum an id and the reference
+        and target levels e.g. e.g. [ id:'test', reference:"WT", target:"MUT" ].
+        Reference and target levels can then be provided to the module via an ext.args
+        specification for the process like: ext.args = { [ "reference":
+        "$meta.reference", "target": "$meta.target" ] }
   - gct:
       type: file
       description: GCT file with expression values
@@ -30,11 +34,6 @@ input:
       type: file
       description: GMX or GMT file with gene sets
       pattern: "*.{gmx,gmt}"
-  - ext.args2:
-      type: map
-      description: Map provided via ext in Nextflow configuration, defining
-        which of the groups defined in cls should be used for the reference and
-        target groups. Can be a closure referencing the meta.
 
 output:
   - meta:
