@@ -18,9 +18,11 @@ process CUSTOM_TABULARTOGSEAGCT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: []
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def separator = tabular.getName().endsWith(".csv") ? ',' : '\\t'
+    def separator = args.separator ? "${args.separator}" : ( tabular.getName().endsWith(".csv") ? ',': '\t' )
+    separator = separator == '\t' ? '\\t': separator
+
     """
     n_columns=\$(head -n 1 $tabular | tr "$separator" "\\n" | wc -l)
     n_lines=\$(wc -l < $tabular)

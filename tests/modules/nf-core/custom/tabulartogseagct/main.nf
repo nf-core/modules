@@ -40,3 +40,39 @@ workflow test_custom_tabulartogseagct_csv {
 
     CUSTOM_TABULARTOGSEAGCT ( input )
 }
+
+workflow test_custom_tabulartogseagct_csv_override {
+    
+    input = Channel.fromPath(infile)
+        .splitCsv(sep: "\t", header: false)
+        .map{
+            lst = new ArrayList(it);
+            lst.remove(1);
+            lst.join(',')
+        }
+        .view()
+        .collectFile(name: 'test.tsv', newLine: true, sort: false)
+        .map{
+            [ [ id:'test' ], it]
+        }
+
+    CUSTOM_TABULARTOGSEAGCT ( input )
+}
+
+workflow test_custom_tabulartogseagct_csv_override_pipe {
+    
+    input = Channel.fromPath(infile)
+        .splitCsv(sep: "\t", header: false)
+        .map{
+            lst = new ArrayList(it);
+            lst.remove(1);
+            lst.join('|')
+        }
+        .view()
+        .collectFile(name: 'test.tsv', newLine: true, sort: false)
+        .map{
+            [ [ id:'test' ], it]
+        }
+
+    CUSTOM_TABULARTOGSEAGCT ( input )
+}
