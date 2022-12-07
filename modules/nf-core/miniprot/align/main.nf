@@ -1,6 +1,4 @@
-
 process MINIPROT_ALIGN {
-
     tag "$meta.id"
     label 'process_medium'
 
@@ -12,7 +10,6 @@ process MINIPROT_ALIGN {
     input:
     tuple val(meta), path(pep)
     path ref
-
 
     output:
     tuple val(meta), path("*.paf"), optional: true, emit: paf
@@ -40,4 +37,3 @@ process MINIPROT_ALIGN {
     END_VERSIONS
     """
 }
-
