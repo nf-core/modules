@@ -11,11 +11,13 @@ process GSEA_GSEA {
     tuple val(meta), path(gct), path(cls), path(gene_sets)
 
     output:
-    tuple val(meta), path("*/*.rpt")                                                                                                        , emit: param_log
-    tuple val(meta), path("*/index.html")                                                                                                   , emit: index
+    tuple val(meta), path("*/*.rpt")                                                                                                        , emit: rpt
+    tuple val(meta), path("*/index.html")                                                                                                   , emit: index_html
     tuple val(meta), path("*/heat_map_corr_plot.html")                                                                                      , emit: heat_map_corr_plot
-    tuple val(meta), path("*/gsea_report_for_reference_*.tsv"),  path("*/gsea_report_for_target_*.tsv")                                     , emit: report_tsvs
-    tuple val(meta), path("*/gsea_report_for_reference_*.html"),  path("*/gsea_report_for_target_*.html")                                   , emit: report_htmls
+    tuple val(meta), path("*/gsea_report_for_reference_*.tsv"),                                                                             , emit: report_tsvs_ref
+    tuple val(meta), path("*/gsea_report_for_reference_*.html")                                                                             , emit: report_htmls_ref
+    tuple val(meta), path("*/gsea_report_for_target_*.tsv")                                                                                 , emit: report_tsvs_target
+    tuple val(meta), path("*/gsea_report_for_target_*.html")                                                                                , emit: report_htmls_target
     tuple val(meta), path("*/ranked_gene_list*.tsv")                                                                                        , emit: ranked_gene_list
     tuple val(meta), path("*/gene_set_sizes.tsv")                                                                                           , emit: gene_set_sizes
     tuple val(meta), path("*/butterfly_plot.png")                                                                                           , emit: butterfly_plot
