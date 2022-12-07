@@ -46,7 +46,7 @@ process GSEA_GSEA {
         -res $gct \
         -cls ${cls}#${args2.target}_versus_${args2.reference} \
         -gmx $gene_sets \
-        -out \$(pwd) \
+        -out . \
         --rpt_label $prefix \
         $args
 
