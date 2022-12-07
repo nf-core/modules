@@ -32,8 +32,14 @@ process PINDEL_PINDEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def insert_size = insert ?: "500"
+
+    if (bam instanceof nextflow.util.BlankSeparatedList) {
+        error "pindel/pindel only takes a single bam file as input"
+    }
+
     """
-    echo -e "${bam}\t${insert}\t${prefix}" > pindel.cfg
+    echo -e "${bam}\t${insert_size}\t${prefix}" > pindel.cfg
 
     pindel \\
         $args \\
