@@ -17,9 +17,7 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing information on inputs and contrast, at a minimum
-        an ID, reference and target e.g. [ id:'test', reference:"WT",
-        target:"MUT" ]
+        Groovy Map containing metadata, at a minimum and id e.g. [ id:'test' ]
   - gct:
       type: file
       description: GCT file with expression values
@@ -42,9 +40,7 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing information on inputs and contrast, at a minimum
-        an ID, reference and target e.g. [ id:'test', reference:"WT",
-        target:"MUT" ]
+        Groovy Map containing metadata, at a minimum and id e.g. [ id:'test' ]
   - rpt:
       type: file
       description: File containing parameter settings used

@@ -39,18 +39,18 @@ process GSEA_GSEA {
 
     script:
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: [ ]
+    def args = task.ext.args ?: [ ]
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Run GSEA
     gsea-cli GSEA \
         -res $gct \
-        -cls ${cls}#${args2.target}_versus_${args2.reference} \
+        -cls ${cls}#${args.target}_versus_${args.reference} \
         -gmx $gene_sets \
         -out . \
         --rpt_label $prefix \
-        $args
+        $args2
 
     # Move things out of the timestamped folder
     mv ${prefix}.Gsea.* ${prefix}
@@ -65,11 +65,11 @@ process GSEA_GSEA {
         ln -s \$l ${prefix}.Gsea.rpt.zip
     done
 
-    ln -s \$(ls ranked_gene_list_${args2.target}_versus_${args2.reference}_*.tsv) ranked_gene_list_${args2.target}_versus_${args2.reference}.tsv
-    ln -s \$(ls gsea_report_for_${args2.reference}_*.html) gsea_report_for_reference_${args2.reference}.html
-    ln -s \$(ls gsea_report_for_${args2.reference}_*.tsv) gsea_report_for_reference_${args2.reference}.tsv
-    ln -s \$(ls gsea_report_for_${args2.target}_*.html) gsea_report_for_target_${args2.target}.html
-    ln -s \$(ls gsea_report_for_${args2.target}_*.tsv) gsea_report_for_target_${args2.target}.tsv
+    ln -s \$(ls ranked_gene_list_${args.target}_versus_${args.reference}_*.tsv) ranked_gene_list_${args.target}_versus_${args.reference}.tsv
+    ln -s \$(ls gsea_report_for_${args.reference}_*.html) gsea_report_for_reference_${args.reference}.html
+    ln -s \$(ls gsea_report_for_${args.reference}_*.tsv) gsea_report_for_reference_${args.reference}.tsv
+    ln -s \$(ls gsea_report_for_${args.target}_*.html) gsea_report_for_target_${args.target}.html
+    ln -s \$(ls gsea_report_for_${args.target}_*.tsv) gsea_report_for_target_${args.target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
