@@ -3,6 +3,8 @@ description: Make a GSEA class file (.cls) from tabular inputs
 keywords:
   - gsea
   - cls
+  - convert
+  - tabular
 tools:
   - "custom":
       description: "Make a GSEA class file (.cls) from tabular inputs"
@@ -11,19 +13,23 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing contrast information, minimally the treatment
-        column to use e.g. [ id:'test', varaible:treatment ]
+        Groovy Map containing metadata e.g. [ id:'test' ]
   - samples:
       type: file
-      description: TSV/CSV samples file
+      description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
+        and variables by column.
       pattern: "*.{csv,tsv}"
+  - variable:
+      type: string
+      description: A column name from samples that should be used to derive a
+        class for sample. This should be supplied via ext.args from the calling
+        workflow.
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing contrast information, minimally the treatment
-        column to use e.g. [ id:'test', variable:treatment ]
+        Groovy Map containing metadata e.g. [ id:'test' ]
   - cls:
       type: file
       description: |
