@@ -1,6 +1,6 @@
 process PICARD_COLLECTWGSMETRICS {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::picard=2.27.4 r::r-base" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
