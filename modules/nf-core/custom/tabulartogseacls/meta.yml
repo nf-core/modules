@@ -1,7 +1,8 @@
 name: "custom_tabulartogseacls"
 description: Make a GSEA class file (.cls) from tabular inputs
 keywords:
-  - sort
+  - gsea
+  - cls
 tools:
   - "custom":
       description: "Make a GSEA class file (.cls) from tabular inputs"
@@ -23,6 +24,11 @@ output:
       description: |
         Groovy Map containing contrast information, minimally the treatment
         column to use e.g. [ id:'test', varaible:treatment ]
+  - cls:
+      type: file
+      description: A categorical class format file (.cls) as defined by the Broad
+        documentation at
+        https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
   - versions:
       type: file
       description: File containing software versions
