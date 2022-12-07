@@ -36,6 +36,7 @@ process GSEA_GSEA {
     task.ext.when == null || task.ext.when
 
     script:
+    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: [ ]
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -71,7 +72,7 @@ process GSEA_GSEA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gsea: 4.3.2
+        gsea: $VERSION
     END_VERSIONS
     """
 }
