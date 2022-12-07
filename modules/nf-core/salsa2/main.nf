@@ -34,9 +34,9 @@ process SALSA2 {
     """
     run_pipeline.py \\
         $args \\
-        -a $fasta \\
-        -b $bed \\
-        -l $index \\
+        --assembly $fasta \\
+        --bed $bed \\
+        --length $index \\
         $gfa \\
         $dup \\
         $filter 
