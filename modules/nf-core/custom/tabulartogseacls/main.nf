@@ -22,10 +22,12 @@ process CUSTOM_TABULARTOGSEACLS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def separator = args.separator ? "${args.separator}" : ( samples.getName().endsWith(".tsv") ? '\t': ',' )
     separator = separator == '\t' ? '\\t': separator
+    def variable = args.variable
+    if ( !variable ) error "Supply a variable in the sample sheet from which to derive classes"
     """
     cls_file=${prefix}.cls
 
-    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$meta.variable" | awk -F':' '{print \$1}')
+    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$variable" | awk -F':' '{print \$1}')
     classes=\$(tail -n +2 $samples | awk -F'$separator' '{print \$'\$column_number'}')
     unique_classes=\$(echo -e "\$classes" | awk '!x[\$0]++')
 
