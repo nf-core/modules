@@ -13,9 +13,10 @@ input:
       description: |
         Groovy Map containing matrix information
         e.g. [ id:'test' ]
-  - tsv:
+  - tabular:
       type: file
-      description: TSV or CSV file
+      description: Tabular (e.g. TSV or CSV file) with features by row and
+        observations by column.
       pattern: "*.{tsv,csv}"
 
 output:
