@@ -1,17 +1,15 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
-def SMNCOPYNUMBERCALLER_VERSION = 'SMNCopyNumberCaller commit 3e67e3b on Feb 8, 2020'
-// No versioning included with this program; added github commit from:
-// https://github.com/Illumina/SMNCopyNumberCaller
+def SMNCOPYNUMBERCALLER_VERSION = 1.1.2
 
 process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
 
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used with SMNCopyNumberCaller at the moment. Please use Docker or Singularity containers."
-    }
-    container "clinicalgenomics/smncopynumbercaller:v1.1.2"
+    conda (params.enable_conda ? "bioconda::smncopynumbercaller=1.1.2" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
+        'quay.io/biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
