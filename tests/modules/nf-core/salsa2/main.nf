@@ -13,5 +13,5 @@ workflow test_salsa2 {
     ]
     bed = file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
 
-    SALSA2 ( input, bed )
+    SALSA2 ( input, bed, [], [], [] )
 }

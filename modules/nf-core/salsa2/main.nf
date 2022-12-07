@@ -11,11 +11,15 @@ process SALSA2 {
     // Input for salsa2 : bedfile from hicpro (nf-core/hic pipeline), draft assembly and draft assembly index
     tuple val(meta), path(fasta), path(index)
     path(bed)
+    path(gfa)
+    path(dup)
+    path(filter_bed)
 
     output:
-    tuple val(meta), path("SALSA_output/scaffolds_FINAL.fasta"), emit: fasta
-    tuple val(meta), path("SALSA_output/scaffolds_FINAL.agp"), emit: agp
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val(meta), path("*_scaffolds_FINAL.fasta")	, emit: fasta
+    tuple val(meta), path("*_scaffolds_FINAL.agp")	, emit: agp
+    tuple val(meta), path("*/*scaffolds_FINAL.original-coordinates.agp"), optional: true, emit: agp_original_coordinates
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,12 +27,22 @@ process SALSA2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def gfa = gfa ? "--gfa $gfa" : ""
+    def dup = dup ? "--dup $dup" : ""
+    def filter = filter_bed ? "--filter $filter_bed" : ""
+    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     run_pipeline.py \\
         $args \\
         -a $fasta \\
         -b $bed \\
-        -l $index
+        -l $index \\
+        $gfa \\
+        $dup \\
+        $filter 
+
+    mv */scaffolds_FINAL.fasta ${prefix}_scaffolds_FINAL.fasta
+    mv */scaffolds_FINAL.agp ${prefix}_scaffolds_FINAL.agp
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
