@@ -1,5 +1,5 @@
 - name: miniprot align test_miniprot_align_gff
-  command: nextflow run ./tests/modules/miniprot/align -entry test_miniprot_align_gff -c ./tests/config/nextflow.config -c ./tests/modules/miniprot/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/miniprot/align -entry test_miniprot_align_gff -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/miniprot/align/nextflow.config
   tags:
     - miniprot
     - miniprot/align
@@ -12,7 +12,7 @@
       md5sum: 25e86c616466985a3012658f64a9868b
 
 - name: miniprot align test_miniprot_align_paf
-  command: nextflow run ./tests/modules/miniprot/align -entry test_miniprot_align_paf -c ./tests/config/nextflow.config -c ./tests/modules/miniprot/align/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/miniprot/align -entry test_miniprot_align_paf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/miniprot/align/nextflow.config
   tags:
     - miniprot
     - miniprot/align

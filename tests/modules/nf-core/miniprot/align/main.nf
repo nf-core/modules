@@ -1,8 +1,8 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-include { MINIPROT_INDEX } from '../../../../modules/miniprot/index/main.nf'
-include { MINIPROT_ALIGN } from '../../../../modules/miniprot/align/main.nf'
+include { MINIPROT_INDEX } from '../../../../../modules/nf-core/miniprot/index/main.nf'
+include { MINIPROT_ALIGN } from '../../../../../modules/nf-core/miniprot/align/main.nf'
 
 workflow test_miniprot_align_gff {
     
