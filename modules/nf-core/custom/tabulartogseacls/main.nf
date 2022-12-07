@@ -18,9 +18,9 @@ process CUSTOM_TABULARTOGSEACLS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: []
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def separator = samples.getName().endsWith(".csv") ? ',' : '\\t'
+    def separator = args.separator ? "\\${args.separator}" : ( samples.getName().endsWith(".tsv") ? '\\t' : ',' )
     """
     cls_file=${prefix}.cls
 

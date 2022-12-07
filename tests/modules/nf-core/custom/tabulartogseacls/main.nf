@@ -30,3 +30,18 @@ workflow test_custom_tabulartogseacls_tsv {
 
     CUSTOM_TABULARTOGSEACLS ( input )
 }
+
+workflow test_custom_tabulartogseacls_tsv_override {
+   
+    input = Channel.fromPath(expression_sample_sheet)
+       .splitCsv(header: false)
+       .map{
+           it.join('\t')
+       }
+       .collectFile(name: 'test.csv', newLine: true, sort: false)
+       .map{
+           [ [ id:'test', variable:'treatment' ], it]
+       }
+
+    CUSTOM_TABULARTOGSEACLS ( input )
+}
