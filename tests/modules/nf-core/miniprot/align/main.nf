@@ -12,7 +12,7 @@ workflow test_miniprot_align_gff {
 
     MINIPROT_INDEX ( [ [id:'test'], input] )
  
-    MINIPROT_ALIGN ( [ [id:'test'], input_pep] , MINIPROT_INDEX.out.index.map { it[1] } )
+    MINIPROT_ALIGN ( [ [id:'test'], input_pep] , MINIPROT_INDEX.out.index )
 }
 
 workflow test_miniprot_align_paf {
@@ -23,6 +23,6 @@ workflow test_miniprot_align_paf {
 
     MINIPROT_INDEX ( [ [id:'test'], input] )
  
-    MINIPROT_ALIGN ( [ [id:'test'], input_pep] , MINIPROT_INDEX.out.index.map { it[1] } )
+    MINIPROT_ALIGN ( [ [id:'test'], input_pep] , MINIPROT_INDEX.out.index )
 }
 

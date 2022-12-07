@@ -9,7 +9,7 @@ process MINIPROT_ALIGN {
 
     input:
     tuple val(meta), path(pep)
-    path ref
+    tuple val(meta2), path(ref)
 
     output:
     tuple val(meta), path("*.paf"), optional: true, emit: paf
