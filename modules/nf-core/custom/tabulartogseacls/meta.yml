@@ -13,23 +13,24 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing metadata e.g. [ id:'test' ]
+        Groovy Map containing metadata including an id, the sample sheet column
+        used to define groups, and optionally a separator to override defaults e.g. [
+          id:'test', variable:'treatment', separator:',' ]. The way these values are
+        passed to the associated module parameters is then defined via an ext.args
+        specification for the process from the workflow, like: ext.args = { [
+          "separator": "\t", "variable": "$meta.variable" ] }
   - samples:
       type: file
       description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
         and variables by column.
       pattern: "*.{csv,tsv}"
-  - variable:
-      type: string
-      description: A column name from samples that should be used to derive a
-        class for sample. This should be supplied via ext.args from the calling
-        workflow.
 
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing metadata e.g. [ id:'test' ]
+        Groovy Map containing metadata e.g. [ id:'test', variable:'treatment',
+        separator:',' ]
   - cls:
       type: file
       description: |
