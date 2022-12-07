@@ -1,11 +1,11 @@
 process MINIPROT_INDEX {
     tag "$meta.id"
     label 'process_medium'
-    def version = '0.5-c2'
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used when using the miniprot process. Please use docker or singularity containers."
-    }
-    container "quay.io/sanger-tol/miniprot:${version}"
+
+    conda (params.enable_conda ? "bioconda::miniprot=0.5" : null)
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/miniprot:0.5--h7132678_0':
+        'quay.io/biocontainers/miniprot:0.5--h7132678_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -29,7 +29,7 @@ process MINIPROT_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        miniprot: $version
+        miniprot: \$(miniprot --version 2>&1)
     END_VERSIONS
     """
 }
