@@ -9,7 +9,8 @@ process PINDEL_PINDEL {
 
     input:
     tuple val(meta), path(bam), path(bai), val(insert)
-    tuple path(fasta), path(fai)
+    path fasta
+    path fai
     path bed
 
     output:

@@ -13,10 +13,5 @@ workflow test_pindel_pindel {
         500
     ]
 
-    reference = [
-        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
-        file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    ]
-
-    PINDEL_PINDEL ( input, reference, file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) )
+    PINDEL_PINDEL ( input, file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true), file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true) )
 }
