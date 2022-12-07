@@ -1,6 +1,6 @@
 process PICARD_COLLECTHSMETRICS {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,9 +8,9 @@ process PICARD_COLLECTHSMETRICS {
         'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path fasta
-    path fai
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
     path bait_intervals
     path target_intervals
 
