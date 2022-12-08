@@ -142,9 +142,13 @@ atlasgeneannotationmanipulation/gtf2featureannotation:
   - modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
   - tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
 
-bakta:
-  - modules/nf-core/bakta/**
-  - tests/modules/nf-core/bakta/**
+bakta/bakta:
+  - modules/nf-core/bakta/bakta/**
+  - tests/modules/nf-core/bakta/bakta/**
+
+bakta/baktadbdownload:
+  - modules/nf-core/bakta/baktadbdownload/**
+  - tests/modules/nf-core/bakta/baktadbdownload/**
 
 bamaligncleaner:
   - modules/nf-core/bamaligncleaner/**
@@ -694,6 +698,10 @@ custom/matrixfilter:
 custom/sratoolsncbisettings:
   - modules/nf-core/custom/sratoolsncbisettings/**
   - tests/modules/nf-core/custom/sratoolsncbisettings/**
+
+custom/tabulartogseagct:
+  - modules/nf-core/custom/tabulartogseagct/**
+  - tests/modules/nf-core/custom/tabulartogseagct/**
 
 cutadapt:
   - modules/nf-core/cutadapt/**
@@ -1315,6 +1323,10 @@ gfaffix:
   - modules/nf-core/gfaffix/**
   - tests/modules/nf-core/gfaffix/**
 
+gfastats:
+  - modules/nf-core/gfastats/**
+  - tests/modules/nf-core/gfastats/**
+
 gffread:
   - modules/nf-core/gffread/**
   - tests/modules/nf-core/gffread/**
@@ -1894,6 +1906,14 @@ miranda:
   - modules/nf-core/miranda/**
   - tests/modules/nf-core/miranda/**
 
+miniprot/align:
+  - modules/miniprot/align/**
+  - tests/modules/miniprot/align/**
+
+miniprot/index:
+  - modules/nf-core/miniprot/index/**
+  - tests/modules/nf-core/miniprot/index/**
+
 mlst:
   - modules/nf-core/mlst/**
   - tests/modules/nf-core/mlst/**
@@ -2262,6 +2282,18 @@ prodigal:
 prokka:
   - modules/nf-core/prokka/**
   - tests/modules/nf-core/prokka/**
+
+purgedups/calcuts:
+  - modules/nf-core/purgedups/calcuts/**
+  - tests/modules/nf-core/purgedups/calcuts/**
+
+purgedups/pbcstat:
+  - modules/nf-core/purgedups/pbcstat/**
+  - tests/modules/nf-core/purgedups/pbcstat/**
+
+purgedups/splitfa:
+  - modules/nf-core/purgedups/splitfa/**
+  - tests/modules/nf-core/purgedups/splitfa/**
 
 pycoqc:
   - modules/nf-core/pycoqc/**
@@ -2651,6 +2683,10 @@ somalier/relate:
   - modules/nf-core/somalier/relate/**
   - tests/modules/nf-core/somalier/relate/**
 
+sortmerna:
+  - modules/nf-core/sortmerna/**
+  - tests/modules/nf-core/sortmerna/**
+
 sourmash/compare:
   - modules/nf-core/sourmash/compare/**
   - tests/modules/nf-core/sourmash/compare/**
@@ -2662,10 +2698,6 @@ sourmash/gather:
 sourmash/sketch:
   - modules/nf-core/sourmash/sketch/**
   - tests/modules/nf-core/sourmash/sketch/**
-
-sortmerna:
-  - modules/nf-core/sortmerna/**
-  - tests/modules/nf-core/sortmerna/**
 
 spades:
   - modules/nf-core/spades/**
@@ -2791,6 +2823,10 @@ subworkflows/fastq_align_bwa:
   - subworkflows/nf-core/fastq_align_bwa/**
   - tests/subworkflows/nf-core/fastq_align_bwa/**
 
+subworkflows/fastq_align_bwaaln:
+  - subworkflows/nf-core/fastq_align_bwaaln/**
+  - tests/subworkflows/nf-core/fastq_align_bwaaln/**
+
 subworkflows/fastq_align_chromap:
   - subworkflows/nf-core/fastq_align_chromap/**
   - tests/subworkflows/nf-core/fastq_align_chromap/**
@@ -2802,10 +2838,6 @@ subworkflows/fastq_align_dna:
 subworkflows/fastq_align_hisat2:
   - subworkflows/nf-core/fastq_align_hisat2/**
   - tests/subworkflows/nf-core/fastq_align_hisat2/**
-
-subworkflows/fastq_align_bwaaln_samtools:
-  - subworkflows/nf-core/fastq_align_bwaaln/**
-  - tests/subworkflows/nf-core/fastq_align_bwaaln/**
 
 subworkflows/fastq_align_star:
   - subworkflows/nf-core/fastq_align_star/**
@@ -2846,6 +2878,10 @@ subworkflows/vcf_annotate_ensembl_vep:
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
   - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
+
+subworkflows/vcf_gather_bcftools:
+  - subworkflows/nf-core/vcf_gather_bcftools/**
+  - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
