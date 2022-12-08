@@ -18,7 +18,8 @@ input:
           id:'test', variable:'treatment', separator:',' ]. The way these values are
         passed to the associated module parameters is then defined via an ext.args
         specification for the process from the workflow, like: ext.args = { [
-          "separator": "\t", "variable": "$meta.variable" ] }
+          "separator": "\t", "variable": "$meta.variable" ] } ('variable' is
+        compulsory here).
   - samples:
       type: file
       description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
