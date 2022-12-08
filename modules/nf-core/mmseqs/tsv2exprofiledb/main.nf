@@ -20,11 +20,11 @@ process MMSEQS_TSV2EXPROFILEDB {
     script:
     def args = task.ext.args ?: ''
     """
-    DB_NAME=`basename \$(find -L ./$db/ -name "*_seq.tsv") | sed 's/_seq\\.tsv\$//'`
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
 
     mmseqs tsv2exprofiledb \\
-        "${db}/\${DB_NAME}" \\
-        "${db}/\${DB_NAME}_db" \\
+        \${DB_PATH_NAME} \\
+        "\${DB_PATH_NAME}_db" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,9 +35,9 @@ process MMSEQS_TSV2EXPROFILEDB {
 
     stub:
     """
-    DB_NAME=`basename \$(find -L ./$db/ -name "*_seq.tsv") | sed 's/_seq\\.tsv\$//'`
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
 
-    touch "${db}/\${DB_NAME}_db"
+    touch "\${DB_PATH_NAME}_db"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
