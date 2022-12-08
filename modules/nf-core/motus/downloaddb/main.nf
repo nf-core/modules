@@ -1,10 +1,10 @@
 process MOTUS_DOWNLOADDB {
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
+    conda (params.enable_conda ? "bioconda::motus=3.0.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
+        'quay.io/biocontainers/motus:3.0.3--pyhdfd78af_0' }"
 
     input:
     path motus_downloaddb_script
@@ -28,12 +28,9 @@ process MOTUS_DOWNLOADDB {
         $args \\
         -t $task.cpus
 
-    ## mOTUs version number is not available from command line.
-    ## mOTUs save the version number in index database folder.
-    ## mOTUs will check the database version is same version as exec version.
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
+        motus: \$(echo \$(motus --version) | sed 's/motus //g;s/ on.*//g')
     END_VERSIONS
     """
 }

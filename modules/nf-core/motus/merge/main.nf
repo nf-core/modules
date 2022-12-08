@@ -1,13 +1,11 @@
-VERSION = '3.0.1'
-
 process MOTUS_MERGE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
+    conda (params.enable_conda ? "bioconda::motus=3.0.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
+        'quay.io/biocontainers/motus:3.0.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -35,13 +33,9 @@ process MOTUS_MERGE {
         $args \\
         -o ${prefix}.${suffix}
 
-    ## Take version from the mOTUs/profile module output, as cannot reconstruct
-    ## version without having database staged in this directory.
-    VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$VERSION
+        motus: \$(echo \$(motus --version) | sed 's/motus //g;s/ on.*//g')
     END_VERSIONS
     """
 }

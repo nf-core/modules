@@ -2,10 +2,10 @@ process MOTUS_PROFILE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::motus=3.0.1" : null)
+    conda (params.enable_conda ? "bioconda::motus=3.0.3" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/motus:3.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
+        'quay.io/biocontainers/motus:3.0.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -40,17 +40,9 @@ process MOTUS_PROFILE {
         -o ${prefix}.out \\
         2> ${prefix}.log
 
-    ## mOTUs version number is not available from command line.
-    ## mOTUs save the version number in index database folder.
-    ## mOTUs will check the database version is same version as exec version.
-    if [ "$db" == "" ]; then
-        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
-    else
-        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
-    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$VERSION
+        motus: \$(echo \$(motus --version) | sed 's/motus //g;s/ on.*//g')
     END_VERSIONS
     """
 }
