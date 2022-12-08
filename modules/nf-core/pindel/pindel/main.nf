@@ -31,7 +31,7 @@ process PINDEL_PINDEL {
 
     script:
     def args = task.ext.args ?: ''
-    def insert_size = task.ext.args2 ?: '500'
+    def args2 = task.ext.args2 ?: '500'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (bam instanceof nextflow.util.BlankSeparatedList) {
@@ -39,7 +39,7 @@ process PINDEL_PINDEL {
     }
 
     """
-    echo -e "${bam}\t${insert_size}\t${prefix}" > pindel.cfg
+    echo -e "${bam}\t${args2}\t${prefix}" > pindel.cfg
 
     pindel \\
         $args \\
