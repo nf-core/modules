@@ -20,10 +20,10 @@ process MMSEQS_CREATEINDEX {
     script:
     def args = task.ext.args ?: ''
     """
-    DB_NAME=`basename \$(find -L ./$db/ -name "*_seq.tsv") | sed 's/_seq\\.tsv\$//'`
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
 
     mmseqs createindex \\
-        "${db}/\${DB_NAME}" \\
+        \${DB_PATH_NAME} \\
         tmp1 \\
         $args
 
@@ -35,7 +35,9 @@ process MMSEQS_CREATEINDEX {
 
     stub:
     """
-    touch "${db}/\${DB_NAME}".idx
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+
+    touch "\${DB_PATH_NAME}.idx"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
