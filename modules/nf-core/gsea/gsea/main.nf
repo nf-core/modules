@@ -9,6 +9,7 @@ process GSEA_GSEA {
 
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
+    tuple val(meta2), val(reference), val(target)
 
     output:
     tuple val(meta), path("*/*.rpt")                                                                                                        , emit: rpt
@@ -39,18 +40,17 @@ process GSEA_GSEA {
 
     script:
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def args = task.ext.args ?: [ ]
-    def args2 = task.ext.args2 ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Run GSEA
     gsea-cli GSEA \
         -res $gct \
-        -cls ${cls}#${args.target}_versus_${args.reference} \
+        -cls ${cls}#${target}_versus_${reference} \
         -gmx $gene_sets \
         -out . \
         --rpt_label $prefix \
-        $args2
+        $args
 
     # Move things out of the timestamped folder
     mv ${prefix}.Gsea.* ${prefix}
@@ -65,11 +65,11 @@ process GSEA_GSEA {
         ln -s \$l ${prefix}.Gsea.rpt.zip
     done
 
-    ln -s \$(ls ranked_gene_list_${args.target}_versus_${args.reference}_*.tsv) ranked_gene_list_${args.target}_versus_${args.reference}.tsv
-    ln -s \$(ls gsea_report_for_${args.reference}_*.html) gsea_report_for_reference_${args.reference}.html
-    ln -s \$(ls gsea_report_for_${args.reference}_*.tsv) gsea_report_for_reference_${args.reference}.tsv
-    ln -s \$(ls gsea_report_for_${args.target}_*.html) gsea_report_for_target_${args.target}.html
-    ln -s \$(ls gsea_report_for_${args.target}_*.tsv) gsea_report_for_target_${args.target}.tsv
+    ln -s \$(ls ranked_gene_list_${target}_versus_${reference}_*.tsv) ranked_gene_list_${target}_versus_${reference}.tsv
+    ln -s \$(ls gsea_report_for_${reference}_*.html) gsea_report_for_reference_${reference}.html
+    ln -s \$(ls gsea_report_for_${reference}_*.tsv) gsea_report_for_reference_${reference}.tsv
+    ln -s \$(ls gsea_report_for_${target}_*.html) gsea_report_for_target_${target}.html
+    ln -s \$(ls gsea_report_for_${target}_*.tsv) gsea_report_for_target_${target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
