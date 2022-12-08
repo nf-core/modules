@@ -18,6 +18,7 @@ workflow VCF_JOINT_CALLING_GERMLINE_GATK {
     ch_dict             // channel: [ val(meta), /path/to/reference/fasta/dict]
     ch_dbsnp            // channel: [ val(meta), /path/to/dbsnp/vcf]
     ch_dbsnp_tbi        // channel: [ val(meta), /path/to/dbsnp/vcf/index]
+    scatter_count       // channel: val(scatter_count)
 
     main:
     ch_versions    = Channel.empty()
@@ -25,10 +26,12 @@ workflow VCF_JOINT_CALLING_GERMLINE_GATK {
     // Merge bed files to create a single interval list
     // BEDTOOLS_MULTIINTER( [meta, bed], chrom_sizes )
     BEDTOOLS_MULTIINTER( ch_beds, [] )
+    ch_versions = ch_versions.mix(BEDTOOLS_MULTIINTER.out.versions).first()
 
     // Split merged bed into individual intervals for genotyping
     // BED_SCATTER_BEDTOOLS( [meta, bed, scatter_count] )
-    BED_SCATTER()
+    BED_SCATTER_BEDTOOLS(BEDTOOLS_MULTIINTER.out.bed, scatter_count)
+    ch_versions = ch_versions.mix(BED_SCATTER_BEDTOOLS.out.versions).first()
 
     // Generate (multi)sample GenomicsDB
     // GATK4_GENOMICSDBIMPORT([ meta, vcf, vcf_index, interval_file, interval_value, workspace ], run_intlist, run_updatewspace, input_map)
@@ -38,98 +41,33 @@ workflow VCF_JOINT_CALLING_GERMLINE_GATK {
         false,
         []
     )
+    ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions).first()
+
+    // Join gdb with each interval
+    ch_gdb_with_interval = GATK4_GENOMICSDBIMPORT.out.genomicsdb.combine(BED_SCATTER_BEDTOOLS.out.scattered_beds)
 
     // GenotypeGVCFs
-    GATK4_GENOTYPEGVCFS (genotype_input, fasta, fai, dict, dbsnp, dbsnp_tbi)
+    GATK4_GENOTYPEGVCFS (ch_gdb_with_interval, fasta, fai, dict, dbsnp, dbsnp_tbi)
+    ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions).first()
 
     // Merge split GenotypeGVCFs VCFs
     GATK4_MERGEVCFS(
-        GATK4_GENOMICSDBIMPORT.out.genomicsdb.map{ meta, gdb -> [meta, gdb, [], [], []]},
+        GATK4_GENOTYPEGVCFS.out.vcf.map{ meta, gdb -> [meta, gdb, [], [], []]},
         ch_dict
     )
+    ch_versions = ch_versions.mix(GATK4_MERGEVCFS.out.versions).first()
+
+    // Sort merged VCF
+    BCFTOOLS_SORT(GATK4_MERGEVCFS.out.vcf)
+    ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions).first()
 
     // Generate VCF index
-    TABIX()
-
-    //
-    //Map input for GenomicsDBImport.
-    //rename based on num_intervals, group all samples by their interval_name/interval_file and restructure for channel
-    //group by 0,3 to avoid a list of metas and make sure that any intervals
-    //
-
-    // Generate genomicsdb for each interval in the sample
-    gendb_input = input.map{
-        meta, gvcf, tbi, intervals->
-            new_meta = [
-                        id:             "joint_variant_calling",
-                        intervals_name: meta.intervals_name,
-                        num_intervals:  meta.num_intervals
-                    ]
-
-            [ new_meta, gvcf, tbi, intervals ]
-
-        }.groupTuple(by:[0,3]).map{ new_meta, gvcf, tbi, intervals ->
-            [ new_meta, gvcf, tbi, intervals, [], [] ]
-        }
-
-    //
-    //Convert all sample vcfs into a genomicsdb workspace using genomicsdbimport.
-    //
-    GATK4_GENOMICSDBIMPORT ( gendb_input, false, false, false )
-
-    genotype_input = GATK4_GENOMICSDBIMPORT.out.genomicsdb.map{
-        meta, genomicsdb ->
-            [meta, genomicsdb, [], [], []]
-        }
-
-    //
-    //Joint genotyping performed using GenotypeGVCFs
-    //Sort vcfs called by interval within each VCF
-    //
-
-    GATK4_GENOTYPEGVCFS (genotype_input, fasta, fai, dict, dbsnp, dbsnp_tbi)
-
-    BCFTOOLS_SORT(GATK4_GENOTYPEGVCFS.out.vcf)
-    vcfs_sorted_input = BCFTOOLS_SORT.out.vcf.branch{
-        intervals:    it[0].num_intervals > 1
-        no_intervals: it[0].num_intervals <= 1
-    }
-
-    vcfs_sorted_input_no_intervals =  vcfs_sorted_input.no_intervals.map{ meta , vcf ->
-
-                            [[  id:             "joint_variant_calling",
-                                num_intervals:  meta.num_intervals,
-                                patient:        "all_samples",
-                                variantcaller:  "haplotypecaller"
-                            ] , vcf ]
-    }
-
-    // Index vcf files if no scatter/gather by intervals
-    TABIX(vcfs_sorted_input_no_intervals)
-
-    //Merge scatter/gather vcfs & index
-    //Rework meta for variantscalled.csv and annotation tools
-    MERGE_GENOTYPEGVCFS(vcfs_sorted_input.intervals.map{meta, vcf ->
-                                [
-                                        [
-                                            id: "joint_variant_calling",
-                                            num_intervals: meta.num_intervals,
-                                            patient: "all_samples",
-                                            variantcaller: "haplotypecaller",
-                                        ],
-                                vcf]
-                            }.groupTuple()
-                            ,dict)
-
-    ch_versions = ch_versions.mix(GATK4_GENOMICSDBIMPORT.out.versions)
-    ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions)
-
-
+    TABIX(BCFTOOLS_SORT.out.vcf)
+    ch_versions = ch_versions.mix(TABIX.out.versions).first()
 
 
     emit:
-    versions       = ch_versions                                                                                            // channel: [ versions.yml ]
-    genotype_vcf   = Channel.empty().mix( vcfs_sorted_input_no_intervals, MERGE_GENOTYPEGVCFS.out.vcf)  // channel: [ val(meta), [ vcf ] ]
-    genotype_index = Channel.empty().mix( TABIX.out.tbi, MERGE_GENOTYPEGVCFS.out.tbi)                    // channel: [ val(meta), [ tbi ] ]
+    versions    = ch_versions                                                                                            // channel: [ versions.yml ]
+    vcf_tbi     = TABIX.out.vcf_tbi                                                                                      // channel: [ val(meta), vcf, index ]
 }
 
