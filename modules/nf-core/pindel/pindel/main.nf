@@ -8,7 +8,7 @@ process PINDEL_PINDEL {
         'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), val(insert)
+    tuple val(meta), path(bam), path(bai)
     path fasta
     path fai
     path bed
@@ -31,8 +31,8 @@ process PINDEL_PINDEL {
 
     script:
     def args = task.ext.args ?: ''
+    def insert_size = task.ext.args2 ?: '500'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def insert_size = insert ?: "500"
 
     if (bam instanceof nextflow.util.BlankSeparatedList) {
         error "pindel/pindel only takes a single bam file as input"

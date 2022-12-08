@@ -18,7 +18,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test', single_end:false, insert_size:500 ]
   - bam:
       type: file
       description: BAM file
@@ -27,9 +27,6 @@ input:
       type: file
       description: BAM index file
       pattern: "*.bai"
-  - insert:
-      type: int
-      description: Insert size, either 500 as sensible default or from Picard/CollectInsertSizeMetrics
   - bed:
       type: file
       description: BED file containing regions of interest
