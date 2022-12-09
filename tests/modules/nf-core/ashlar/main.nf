@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-// include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf'
-include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' addParams( options: [args: '--flip-mosaic-x'] )
+include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf'
+// include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' addParams( options: [args: '--flip-mosaic-x'] )
 
 def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
 def TEST_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"

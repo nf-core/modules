@@ -1,7 +1,3 @@
-include { initOptions } from './functions'
-params.options = [:]
-options = initOptions(params.options)
-
 process ASHLAR {
     tag '$meta.id'
     label 'process_single'
@@ -24,14 +20,12 @@ process ASHLAR {
 
     script:
     def args_conf = task.ext.args ?: ''
-    def args_opt = options.args ?: ''
     def args_meta = meta.args ?: ''
 
     """
     ashlar \\
         $file_in \\
         $args_conf \\
-        $args_opt \\
         $args_meta
 
     cat <<-END_VERSIONS > versions.yml
