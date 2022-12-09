@@ -17,8 +17,6 @@
       md5sum: 4a0988fc3c0fe5cfd5dd205fe6755595
     - path: output/somalier/test.samples.tsv
       md5sum: 9ff7aa43d2822f73e297e5e1e6740c29
-    - path: output/tabix/test2_haplotc.ann.vcf.gz.tbi
-      md5sum: 1a6de349a15ddaa4d4e854677fcd692d
 
 - name: vcf_stats_somalier test_vcf_stats_somalier_index
   command: nextflow run ./tests/subworkflows/nf-core/vcf_stats_somalier -entry test_vcf_stats_somalier_index -c ./tests/config/nextflow.config
@@ -82,7 +80,6 @@
     - path: output/somalier/testN.somalier
       md5sum: ee6661a917b00d9f663a5169a1d0b600
     - path: output/tabix/test2_haplotc.ann.vcf.gz.tbi
-      md5sum: 1a6de349a15ddaa4d4e854677fcd692d
 
 - name: vcf_stats_somalier test_vcf_stats_somalier_mixed_no_combine
   command: nextflow run ./tests/subworkflows/nf-core/vcf_stats_somalier -entry test_vcf_stats_somalier_mixed_no_combine -c ./tests/config/nextflow.config
@@ -112,4 +109,3 @@
     - path: output/somalier/testN.somalier
       md5sum: ee6661a917b00d9f663a5169a1d0b600
     - path: output/tabix/test_haplotcaller.cnn.vcf.gz.tbi
-      md5sum: 5dbb083794785241265803e4fa8e1346
