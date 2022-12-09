@@ -11,7 +11,7 @@ workflow test_gsea_gsea {
     gmx_file = file(params.test_data['homo_sapiens']['gene_set_analysis']['gmx'], checkIfExists: true)
 
     input = [ ['id': 'study' ], gct_file, cls_file, gmx_file ]
-    contrast = [ [ 'id': 'MUT_vs_WT' ], 'WT', 'MUT' ] 
+    contrast = [ 'WT', 'MUT' ] 
 
     GSEA_GSEA (
         input,
@@ -26,7 +26,7 @@ workflow test_gsea_gsea_nosets {
     gmx_file = file(params.test_data['homo_sapiens']['gene_set_analysis']['gmx'], checkIfExists: true)
 
     input = [ ['id': 'study' ], gct_file, cls_file, gmx_file ]
-    contrast = [ [ 'id': 'MUT_vs_WT' ], 'WT', 'MUT' ] 
+    contrast = [ 'WT', 'MUT' ] 
 
     GSEA_GSEA (
         input,
@@ -41,7 +41,7 @@ workflow test_gsea_gsea_zip {
     gmx_file = file(params.test_data['homo_sapiens']['gene_set_analysis']['gmx'], checkIfExists: true)
 
     input = [ ['id': 'study' ], gct_file, cls_file, gmx_file ]
-    contrast = [ [ 'id': 'MUT_vs_WT' ], 'WT', 'MUT' ]  
+    contrast = [ 'WT', 'MUT' ] 
 
     GSEA_GSEA (
         input,

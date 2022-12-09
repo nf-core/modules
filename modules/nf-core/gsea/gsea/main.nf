@@ -9,7 +9,7 @@ process GSEA_GSEA {
 
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
-    tuple val(meta2), val(reference), val(target)
+    tuple val(reference), val(target)
 
     output:
     tuple val(meta), path("*/*.rpt")                                                                                                        , emit: rpt
