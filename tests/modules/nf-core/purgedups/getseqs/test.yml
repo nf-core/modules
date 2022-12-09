@@ -1,12 +1,10 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purgedups/getseqs
-- name: "purgedups getseqs"
+- name: purgedups getseqs test_purgedups_getseqs
   command: nextflow run ./tests/modules/nf-core/purgedups/getseqs -entry test_purgedups_getseqs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purgedups/getseqs/nextflow.config
   tags:
-    - "purgedups"
-    - "purgedups/getseqs"
+    - purgedups
+    - purgedups/getseqs
   files:
-    - path: "output/purgedups/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purgedups/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/purgedups/test.hap.fa
+    - path: output/purgedups/test.purged.fa
+      md5sum: 70d0b87ecc04353767b1a713992f00fe
+    - path: output/purgedups/versions.yml
