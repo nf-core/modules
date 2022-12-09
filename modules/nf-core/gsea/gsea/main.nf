@@ -15,10 +15,10 @@ process GSEA_GSEA {
     tuple val(meta), path("*/*.rpt")                                                                                                        , emit: rpt
     tuple val(meta), path("*/index.html")                                                                                                   , emit: index_html
     tuple val(meta), path("*/heat_map_corr_plot.html")                                                                                      , emit: heat_map_corr_plot
-    tuple val(meta), path("*/gsea_report_for_reference_*.tsv")                                                                              , emit: report_tsvs_ref
-    tuple val(meta), path("*/gsea_report_for_reference_*.html")                                                                             , emit: report_htmls_ref
-    tuple val(meta), path("*/gsea_report_for_target_*.tsv")                                                                                 , emit: report_tsvs_target
-    tuple val(meta), path("*/gsea_report_for_target_*.html")                                                                                , emit: report_htmls_target
+    tuple val(meta), path("*/gsea_report_for_${reference}.tsv")                                                                             , emit: report_tsvs_ref
+    tuple val(meta), path("*/gsea_report_for_${reference}.html")                                                                            , emit: report_htmls_ref
+    tuple val(meta), path("*/gsea_report_for_${target}.tsv")                                                                                , emit: report_tsvs_target
+    tuple val(meta), path("*/gsea_report_for_${target}.html")                                                                               , emit: report_htmls_target
     tuple val(meta), path("*/ranked_gene_list*.tsv")                                                                                        , emit: ranked_gene_list
     tuple val(meta), path("*/gene_set_sizes.tsv")                                                                                           , emit: gene_set_sizes
     tuple val(meta), path("*/butterfly_plot.png")                                                                                           , emit: butterfly_plot
@@ -65,11 +65,21 @@ process GSEA_GSEA {
         ln -s \$l ${prefix}.Gsea.rpt.zip
     done
 
-    ln -s \$(ls ranked_gene_list_${target}_versus_${reference}_*.tsv) ranked_gene_list_${target}_versus_${reference}.tsv
-    ln -s \$(ls gsea_report_for_${reference}_*.html) gsea_report_for_reference_${reference}.html
-    ln -s \$(ls gsea_report_for_${reference}_*.tsv) gsea_report_for_reference_${reference}.tsv
-    ln -s \$(ls gsea_report_for_${target}_*.html) gsea_report_for_target_${target}.html
-    ln -s \$(ls gsea_report_for_${target}_*.tsv) gsea_report_for_target_${target}.tsv
+    for pattern in \\
+        "ranked_gene_list_${target}_versus_${reference}_*.tsv" \\
+        "gsea_report_for_${reference}_*.html" \\
+        "gsea_report_for_${reference}_*.tsv" \\
+        "gsea_report_for_${target}_*.html" \\
+        "gsea_report_for_${target}_*.tsv" \\
+    ; do
+        ln -s \$pattern \${pattern//_\\*/}        
+    done
+
+    #ln -s ranked_gene_list_${target}_versus_${reference}_*.tsv ranked_gene_list_${target}_versus_${reference}.tsv
+    #ln -s ls gsea_report_for_${reference}_*.html gsea_report_for_reference_${reference}.html
+    #ln -s ls gsea_report_for_${reference}_*.tsv gsea_report_for_reference_${reference}.tsv
+    #ln -s ls gsea_report_for_${target}_*.html gsea_report_for_target_${target}.html
+    #ln -s ls gsea_report_for_${target}_*.tsv gsea_report_for_target_${target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
