@@ -24,15 +24,15 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: fasta file, Path to initial assembly, headers must not contain ':'
+      description: Fasta file of assembly. Headers must not contain ':'
       pattern: "*.{fa, fasta}"
   - index:
       type: file
-      description: index of the fasta file, Length of contigs at start
+      description: Fasta index file of assembly containing the length of contigs.
       pattern: "*.{fa.fai, fasta.fai}"
   - bed:
       type: file
-      description: bed file, Bed file of alignments sorted by read names, e.g., from HiC-Pro
+      description: BED file of alignments sorted by read names, e.g., from HiC-Pro
       pattern: "*.{bed}"
 
 output:
@@ -47,7 +47,7 @@ output:
       pattern: "*_scaffolds_FINAL.fasta"
   - agp:
       type: file
-      description: agp style output for the scaffolds describing the assignment, orientation and ordering of contigs along the scaffolds
+      description: AGP style output for the scaffolds describing the assignment, orientation and ordering of contigs along the scaffolds
       pattern: "*_scaffolds_FINAL.agp"
   - agp_original_coordinates:
       type: file
