@@ -1,8 +1,0 @@
-- name: samtools idxstats
-  command: nextflow run ./tests/modules/samtools/idxstats -entry test_samtools_idxstats -c ./tests/config/nextflow.config -c ./tests/modules/samtools/idxstats/nextflow.config
-  tags:
-    - samtools
-    - samtools/idxstats
-  files:
-    - path: ./output/samtools/test.paired_end.sorted.bam.idxstats
-      md5sum: df60a8c8d6621100d05178c93fb053a2

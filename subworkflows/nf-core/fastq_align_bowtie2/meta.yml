@@ -1,0 +1,63 @@
+name: fastq_align_bowtie2
+description: Align reads to a reference genome using bowtie2 then sort with samtools
+keywords:
+  - align
+  - fasta
+  - genome
+  - reference
+modules:
+  - bowtie2/align
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - ch_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - ch_index:
+      type: file
+      description: Bowtie2 genome index files
+      pattern: "*.ebwt"
+  - save_unaligned:
+      type: boolean
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - sort_bam:
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - ch_fasta:
+      type: file
+      description: Reference fasta file
+      pattern: "*.{fasta,fa}"
+# TODO Update when we decide on a standard for subworkflow docs
+output:
+  - bam:
+      type: file
+      description: Output BAM file containing read alignments
+      pattern: "*.{bam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fastq:
+      type: file
+      description: Unaligned FastQ files
+      pattern: "*.fastq.gz"
+  - log:
+      type: file
+      description: Alignment log
+      pattern: "*.log"
+# TODO Add samtools outputs
+authors:
+  - "@drpatelh"

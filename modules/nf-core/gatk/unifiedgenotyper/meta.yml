@@ -1,0 +1,73 @@
+name: "gatk_unifiedgenotyper"
+keywords:
+  - bam
+  - vcf
+  - variant calling
+tools:
+  - "gatk":
+      description: "The full Genome Analysis Toolkit (GATK) framework, license restricted."
+      homepage: "https://gatk.broadinstitute.org/hc/en-us"
+      documentation: "https://github.com/broadinstitute/gatk-docs"
+      licence: "['https://software.broadinstitute.org/gatk/download/licensing', 'BSD', 'https://www.broadinstitute.org/gatk/about/#licensing']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: Sorted and indexed BAM/CRAM/SAM file
+      pattern: "*.bam"
+  - index:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Reference file used to generate BAM file
+      pattern: ".{fasta,fa,fna}"
+  - fai:
+      type: file
+      description: Index of reference file used to generate BAM file
+      pattern: ".fai"
+  - dict:
+      type: file
+      description: GATK dict file for reference
+      pattern: ".dict"
+  - intervals:
+      type: file
+      description: Bed file with the genomic regions included in the library (optional)
+      pattern: "*.intervals"
+  - contamination:
+      type: file
+      description: Tab-separated file containing fraction of contamination in sequencing data (per sample) to aggressively remove
+      pattern: "*"
+  - dbsnps:
+      type: file
+      description: VCF file containing known sites (optional)
+      pattern: "*"
+  - comp:
+      type: file
+      description: Comparison VCF file (optional)
+      pattern: "*"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: VCF file containing called variants
+      pattern: "*.vcf.gz"
+
+authors:
+  - "@ilight1542"
+  - "@jfy133"

@@ -1,0 +1,8 @@
+- name: glimpse chunk test_glimpse_chunk
+  command: nextflow run ./tests/modules/nf-core/glimpse/chunk -entry test_glimpse_chunk -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/glimpse/chunk/nextflow.config
+  tags:
+    - glimpse
+    - glimpse/chunk
+  files:
+    - path: output/glimpse/test.txt
+      md5sum: c690cdcc7aa086bb85431bb2b193176f

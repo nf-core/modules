@@ -1,0 +1,68 @@
+name: "bases2fastq"
+description: Demultiplex Element Biosciences bases files
+keywords:
+  - demultiplex
+  - element
+  - fastq
+tools:
+  - "bases2fastq":
+      description: "Demultiplexes sequencing data and converts base calls into FASTQ files for secondary analysis"
+      homepage: "https://go.elementbiosciences.com/bases2fastq-download"
+      documentation: "https://www.elementbiosciences.com/resources/user-guides/workflow/bases2fastq"
+      licence: "http://go.elembio.link/eula"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - run_manifest:
+      type: file
+      description: RunManifest file
+      pattern: "*.{csv}"
+  - run_dir:
+      type: directory
+      description: "Input run directory containing optionally containing a RunManifest.json if run_manifest is not supplied"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sample_fastq:
+      type: file
+      description: Demultiplexed sample FASTQ files
+      pattern: "output/Samples/*/*_R*.fastq.gz"
+  - sample_json:
+      type: file
+      description: Demultiplexed sample stats
+      pattern: "output/Samples/*/*.json"
+  - qc_report:
+      type: file
+      description: QC HTML report
+      pattern: "output/*.html"
+  - run_stats:
+      type: file
+      description: QC HTML report
+      pattern: "output/*.html"
+  - generated_run_manifest:
+      type: file
+      description: Updated Run Manifest JSON from the run_manifest csv
+      pattern: "output/RunManifest.json"
+  - metrics:
+      type: file
+      description: Sample metrics
+      pattern: "output/Metrics.csv"
+  - unassigned:
+      type: file
+      description: Unassigned Sequences
+      pattern: "output/UnassignedSequences.csv"
+
+authors:
+  - "@Emiller88"

@@ -1,0 +1,55 @@
+name: "haplocheck"
+description: |
+  Haplocheck detects contamination patterns in mtDNA AND WGS sequencing studies by analyzing
+  the mitochondrial DNA. Haplocheck also works as a proxy tool for nDNA studies and provides
+  users a graphical report to investigate the contamination further. Internally, it uses the
+  Haplogrep tool, that supports rCRS and RSRS mitochondrial versions.
+keywords:
+  - mitochondrial
+  - mtDNA
+  - contamination
+tools:
+  - "haplocheck":
+      description: "Detects in-sample contamination in mtDNA or WGS sequencing studies by analyzing the mitochondrial content."
+      homepage: "https://github.com/genepi/haplocheck"
+      documentation: "https://github.com/genepi/haplocheck"
+      tool_dev_url: "https://github.com/genepi/haplocheck"
+      doi: 10.1101/gr.256545.119
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - txt:
+      type: file
+      description: Raw report in txt format
+      pattern: "*.{txt}"
+
+  - html:
+      type: file
+      description: Haplocheck HTML report
+      pattern: "*.{html}"
+
+authors:
+  - "@lmtani"

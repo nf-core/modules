@@ -1,0 +1,59 @@
+name: "entrezdirect_xtract"
+description: Queries an NCBI database using an UID
+keywords:
+  - public datasets
+  - entrez
+  - search
+  - ncbi
+  - database
+tools:
+  - entrezdirect:
+      description: |
+        Entrez Direct (EDirect) is a method for accessing the NCBI's set of
+        interconnected databases (publication, sequence, structure, gene,
+        variation, expression, etc.) from a UNIX terminal window. Functions
+        take search terms from command line arguments. Individual operations
+        are combined to build multi-step queries. Record retrieval and
+        formatting normally complete the process.
+      homepage: https://www.ncbi.nlm.nih.gov/books/NBK179288/
+      documentation: https://www.ncbi.nlm.nih.gov/books/NBK25501/
+      tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
+      doi: 10.1016/S0076-6879(96)66012-1
+      licence: ["PUBLIC DOMAIN"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - xml_input:
+      type: file
+      description: XML text file containing query results from database.
+  - pattern:
+      type: value
+      description: String in xml_input that encloses element to search.
+  - element:
+      type: value
+      description: Space-delimited strings that will be converted to columns.
+  - sep:
+      type: value
+      description: Separator/delimiter between columns (for instance "," or "\t").
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - xtract_table:
+      type: file
+      description: TXT file containing columns searched from element.
+      pattern: "*.txt"
+
+authors:
+  - "@alxndrdiaz"
