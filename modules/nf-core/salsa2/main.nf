@@ -16,10 +16,10 @@ process SALSA2 {
     path(filter_bed)
 
     output:
-    tuple val(meta), path("*_scaffolds_FINAL.fasta")	, emit: fasta
-    tuple val(meta), path("*_scaffolds_FINAL.agp")	, emit: agp
-    tuple val(meta), path("*/*scaffolds_FINAL.original-coordinates.agp"), optional: true, emit: agp_original_coordinates
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_scaffolds_FINAL.fasta")	                , emit: fasta
+    tuple val(meta), path("*_scaffolds_FINAL.agp")	                    , emit: agp
+    tuple val(meta), path("*/*scaffolds_FINAL.original-coordinates.agp"), emit: agp_original_coordinates, optional: true
+    path "versions.yml"                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +39,7 @@ process SALSA2 {
         --length $index \\
         $gfa \\
         $dup \\
-        $filter 
+        $filter
 
     mv */scaffolds_FINAL.fasta ${prefix}_scaffolds_FINAL.fasta
     mv */scaffolds_FINAL.agp ${prefix}_scaffolds_FINAL.agp
