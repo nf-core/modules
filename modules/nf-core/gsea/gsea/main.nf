@@ -72,7 +72,7 @@ process GSEA_GSEA {
         "gsea_report_for_${target}_*.html" \\
         "gsea_report_for_${target}_*.tsv" \\
     ; do
-        ln -s \$pattern \${pattern//_\\*/}        
+        ln -s \$pattern \${pattern//_\\*/}
     done
 
     #ln -s ranked_gene_list_${target}_versus_${reference}_*.tsv ranked_gene_list_${target}_versus_${reference}.tsv
