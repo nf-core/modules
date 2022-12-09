@@ -71,8 +71,10 @@ process ASHLAR {
     def args_opt = options.args ?: ''
     def args_meta = meta.args ?: ''
 
+    /*
     debug_file = new File('/tmp/tmp_debug/log.txt')
     debug_file.write "${meta.id}  ${meta.sample}  ${meta.args}"
+    */
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -88,7 +90,6 @@ process ASHLAR {
     ashlar \\
         $file_in \\
         $args_conf \\
-        -@ $task.cpus \\
         $args_opt
     */
 

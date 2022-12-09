@@ -8,23 +8,16 @@ tools:
       description: "Alignment by Simultaneous Harmonization of Layer/Adjacency Registration"
       homepage: "https://labsyspharm.github.io/ashlar/"
       documentation: "https://labsyspharm.github.io/ashlar/"
-      tool_dev_url: "None"
       doi: "10.1101/2021.04.20.440625"
       licence: "['MIT']"
 
 input:
   #
-  ## TODO nf-core: need to add optional and default parameters
-  #- file_in:
-  #    type: file
-  #    description: multidimentional image data in formats from most commercial microscopes
-  #    pattern: "*.ome.tiff"
-
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', test: true ]
+        e.g. [ id:'test', : args: '--flip-x' ]
   - file_in:
       type: path
       description: multidimentional image data in formats from most commercial microscopes
@@ -32,17 +25,20 @@ input:
 
 output:
   #
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', : args: '--flip-x' ]
+  - file_out:
+      type: file
+      description: pyramidal OME-TIFF
+      pattern: "*.tif"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: This just handles one output option.  We also have to handle the case
-  ##               where the user requests a series of single-channel plain TIFF files
-  ##               by setting the output filename to *.tif
-  - file_out:
-      type: file
-      description: pyramidal OME-TIFF
-      pattern: "*.ome.tif"
 
 authors:
   - "@RobJY"
+  - "@jmuhlich"
