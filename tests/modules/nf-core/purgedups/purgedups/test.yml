@@ -1,12 +1,13 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml purgedups/purgedups
-- name: "purgedups purgedups"
+- name: purgedups purgedups test_purgedups_purgedups
   command: nextflow run ./tests/modules/nf-core/purgedups/purgedups -entry test_purgedups_purgedups -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purgedups/purgedups/nextflow.config
   tags:
-    - "purgedups"
-    - "purgedups/purgedups"
+    - purgedups
+    - purgedups/purgedups
   files:
-    - path: "output/purgedups/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/purgedups/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/purgedups/test.dups.bed
+      md5sum: f5282a0c87eee32d5fe665284572b794
+    - path: output/purgedups/test.purge_dups.log
+      contains:
+        - "tp:"
+        - "check overpuring"
+    - path: output/purgedups/versions.yml
