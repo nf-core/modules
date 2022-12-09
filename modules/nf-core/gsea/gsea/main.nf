@@ -44,12 +44,12 @@ process GSEA_GSEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Run GSEA
-    gsea-cli GSEA \
-        -res $gct \
-        -cls ${cls}#${target}_versus_${reference} \
-        -gmx $gene_sets \
-        -out . \
-        --rpt_label $prefix \
+    gsea-cli GSEA \\
+        -res $gct \\
+        -cls ${cls}#${target}_versus_${reference} \\
+        -gmx $gene_sets \\
+        -out . \\
+        --rpt_label $prefix \\
         $args
 
     # Move things out of the timestamped folder
