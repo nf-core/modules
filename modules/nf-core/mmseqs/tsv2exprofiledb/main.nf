@@ -1,4 +1,4 @@
-process MMSEQS_CREATEINDEX {
+process MMSEQS_TSV2EXPROFILEDB {
     tag "$db"
     label 'process_high'
 
@@ -11,9 +11,9 @@ process MMSEQS_CREATEINDEX {
     path db
 
     output:
-    path(db)           , emit: db_indexed
+    path (db)          , emit: db_exprofile
     path "versions.yml", emit: versions
-
+    // INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
     when:
     task.ext.when == null || task.ext.when
 
@@ -22,9 +22,9 @@ process MMSEQS_CREATEINDEX {
     """
     DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
 
-    mmseqs createindex \\
+    mmseqs tsv2exprofiledb \\
         \${DB_PATH_NAME} \\
-        tmp1 \\
+        "\${DB_PATH_NAME}_db" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,7 @@ process MMSEQS_CREATEINDEX {
     """
     DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
 
-    touch "\${DB_PATH_NAME}.idx"
+    touch "\${DB_PATH_NAME}_db"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
