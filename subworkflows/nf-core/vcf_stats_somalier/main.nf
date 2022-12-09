@@ -4,11 +4,11 @@ include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_STATS_SOMALIER {
     take:
-        ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi ] => The joint-genotyped VCFs
-        ch_fasta                // channel: [mandatory] [ fasta ] => fasta reference
-        ch_fasta_fai            // channel: [mandatory] [ fai ] => index of the fasta reference
-        ch_somalier_sites       // channel: [mandatory] [ somalier_sites_vcf ] => The VCF containing the common sites for Somalier
-        ch_peds                 // channel: [optional]  [ meta, ped ] => The peds with their meta fields
+        ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi ]
+        ch_fasta                // channel: [mandatory] [ fasta ]
+        ch_fasta_fai            // channel: [mandatory] [ fai ]
+        ch_somalier_sites       // channel: [mandatory] [ somalier_sites_vcf ]
+        ch_peds                 // channel: [optional]  [ meta, ped ]
         ch_sample_groups        // channel: [optional]  [ txt ]
     main:
 
