@@ -3,8 +3,6 @@ params.options = [:]
 options = initOptions(params.options)
 
 process ASHLAR {
-    publishDir = [ path: { "${params.outdir}/${meta.id}/" } ]
-
     tag '$meta.id'
     label 'process_single'
 
