@@ -142,9 +142,13 @@ atlasgeneannotationmanipulation/gtf2featureannotation:
   - modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
   - tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
 
-bakta:
-  - modules/nf-core/bakta/**
-  - tests/modules/nf-core/bakta/**
+bakta/bakta:
+  - modules/nf-core/bakta/bakta/**
+  - tests/modules/nf-core/bakta/bakta/**
+
+bakta/baktadbdownload:
+  - modules/nf-core/bakta/baktadbdownload/**
+  - tests/modules/nf-core/bakta/baktadbdownload/**
 
 bamaligncleaner:
   - modules/nf-core/bamaligncleaner/**
@@ -695,6 +699,14 @@ custom/sratoolsncbisettings:
   - modules/nf-core/custom/sratoolsncbisettings/**
   - tests/modules/nf-core/custom/sratoolsncbisettings/**
 
+custom/tabulartogseacls:
+  - modules/nf-core/custom/tabulartogseacls/**
+  - tests/modules/nf-core/custom/tabulartogseacls/**
+
+custom/tabulartogseagct:
+  - modules/nf-core/custom/tabulartogseagct/**
+  - tests/modules/nf-core/custom/tabulartogseagct/**
+
 cutadapt:
   - modules/nf-core/cutadapt/**
   - tests/modules/nf-core/cutadapt/**
@@ -1119,6 +1131,10 @@ gatk4/fastqtosam:
   - modules/nf-core/gatk4/fastqtosam/**
   - tests/modules/nf-core/gatk4/fastqtosam/**
 
+gatk4/filterintervals:
+  - modules/nf-core/gatk4/filterintervals/**
+  - tests/modules/nf-core/gatk4/filterintervals/**
+
 gatk4/filtermutectcalls:
   - modules/nf-core/gatk4/filtermutectcalls/**
   - tests/modules/nf-core/gatk4/filtermutectcalls/**
@@ -1194,6 +1210,10 @@ gatk4/mergevcfs:
 gatk4/mutect2:
   - modules/nf-core/gatk4/mutect2/**
   - tests/modules/nf-core/gatk4/mutect2/**
+
+gatk4/preprocessintervals:
+  - modules/nf-core/gatk4/preprocessintervals/**
+  - tests/modules/nf-core/gatk4/preprocessintervals/**
 
 gatk4/printreads:
   - modules/nf-core/gatk4/printreads/**
@@ -1306,6 +1326,10 @@ genrich:
 gfaffix:
   - modules/nf-core/gfaffix/**
   - tests/modules/nf-core/gfaffix/**
+
+gfastats:
+  - modules/nf-core/gfastats/**
+  - tests/modules/nf-core/gfastats/**
 
 gffread:
   - modules/nf-core/gffread/**
@@ -1886,9 +1910,25 @@ miranda:
   - modules/nf-core/miranda/**
   - tests/modules/nf-core/miranda/**
 
+miniprot/align:
+  - modules/miniprot/align/**
+  - tests/modules/miniprot/align/**
+
+miniprot/index:
+  - modules/nf-core/miniprot/index/**
+  - tests/modules/nf-core/miniprot/index/**
+
 mlst:
   - modules/nf-core/mlst/**
   - tests/modules/nf-core/mlst/**
+
+mmseqs/createindex:
+  - modules/nf-core/mmseqs/createindex/**
+  - tests/modules/nf-core/mmeqs/createindex/**
+
+mmseqs/tsv2exprofiledb:
+  - modules/nf-core/mmseqs/tsv2exprofiledb/**
+  - tests/modules/nf-core/mmseqs/tsv2exprofiledb/**
 
 mobsuite/recon:
   - modules/nf-core/mobsuite/recon/**
@@ -2115,6 +2155,10 @@ picard/addorreplacereadgroups:
   - modules/nf-core/picard/addorreplacereadgroups/**
   - tests/modules/nf-core/picard/addorreplacereadgroups/**
 
+picard/bedtointervallist:
+  - modules/nf-core/picard/bedtointervallist/**
+  - tests/modules/nf-core/picard/bedtointervallist/**
+
 picard/cleansam:
   - modules/nf-core/picard/cleansam/**
   - tests/modules/nf-core/picard/cleansam/**
@@ -2174,6 +2218,10 @@ picard/sortsam:
 picard/sortvcf:
   - modules/nf-core/picard/sortvcf/**
   - tests/modules/nf-core/picard/sortvcf/**
+
+pindel/pindel:
+  - modules/nf-core/pindel/pindel/**
+  - tests/modules/nf-core/pindel/pindel/**
 
 pints/caller:
   - modules/nf-core/pints/caller/**
@@ -2246,6 +2294,18 @@ prodigal:
 prokka:
   - modules/nf-core/prokka/**
   - tests/modules/nf-core/prokka/**
+
+purgedups/calcuts:
+  - modules/nf-core/purgedups/calcuts/**
+  - tests/modules/nf-core/purgedups/calcuts/**
+
+purgedups/pbcstat:
+  - modules/nf-core/purgedups/pbcstat/**
+  - tests/modules/nf-core/purgedups/pbcstat/**
+
+purgedups/splitfa:
+  - modules/nf-core/purgedups/splitfa/**
+  - tests/modules/nf-core/purgedups/splitfa/**
 
 pycoqc:
   - modules/nf-core/pycoqc/**
@@ -2779,6 +2839,10 @@ subworkflows/fastq_align_bwa:
   - subworkflows/nf-core/fastq_align_bwa/**
   - tests/subworkflows/nf-core/fastq_align_bwa/**
 
+subworkflows/fastq_align_bwaaln:
+  - subworkflows/nf-core/fastq_align_bwaaln/**
+  - tests/subworkflows/nf-core/fastq_align_bwaaln/**
+
 subworkflows/fastq_align_chromap:
   - subworkflows/nf-core/fastq_align_chromap/**
   - tests/subworkflows/nf-core/fastq_align_chromap/**
@@ -2830,6 +2894,10 @@ subworkflows/vcf_annotate_ensembl_vep:
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
   - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
+
+subworkflows/vcf_gather_bcftools:
+  - subworkflows/nf-core/vcf_gather_bcftools/**
+  - tests/subworkflows/nf-core/vcf_gather_bcftools/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
@@ -2995,6 +3063,10 @@ vcflib/vcfuniq:
 vcftools:
   - modules/nf-core/vcftools/**
   - tests/modules/nf-core/vcftools/**
+
+verifybamid/verifybamid:
+  - modules/nf-core/verifybamid/verifybamid/**
+  - tests/modules/nf-core/verifybamid/verifybamid/**
 
 verifybamid/verifybamid2:
   - modules/nf-core/verifybamid/verifybamid2/**
