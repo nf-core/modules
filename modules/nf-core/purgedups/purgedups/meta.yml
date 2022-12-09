@@ -1,51 +1,57 @@
 name: "purgedups_purgedups"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Purge haplotigs and overlaps for an assembly
 keywords:
-  - sort
+  - Haplotype purging
+  - Duplication purging
+  - False duplications
+  - Assembly curation
+  - Read depth
 tools:
   - "purgedups":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/dfguan/purge_dups"
+      documentation: "https://github.com/dfguan/purge_dups"
+      tool_dev_url: "https://github.com/dfguan/purge_dups"
+      doi: "https://doi.org/10.1093/bioinformatics/btaa025"
       licence: "['MIT']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - basecov:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: A file containing a histogram of base coverage. Obtained from PURGEDUPS_PBCSTAT
+      pattern: "*.PB.base.cov"
+  - cutoff:
+      type: file
+      description: A file containing duplication cutoff points. Obtained from PURGEDUPS_CALCUTS
+      pattern: "*.cutoffs"
+  - paf:
+      type: file
+      description: A file of assembly alignments to itself
+      pattern: "*.paf(.gz)?"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - bed:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: A bed file of sequences purged of false duplications
+      pattern: "*.bed"
+  - log:
+      type: file
+      description: A log of the tool output
+      pattern: "*.log"
 
 authors:
-  - "None"
+  - "@mahesh-panchal"
