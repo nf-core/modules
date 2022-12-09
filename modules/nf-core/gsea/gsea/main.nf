@@ -75,11 +75,6 @@ process GSEA_GSEA {
         ln -s \$pattern \${pattern//_\\*/}
     done
 
-    #ln -s ranked_gene_list_${target}_versus_${reference}_*.tsv ranked_gene_list_${target}_versus_${reference}.tsv
-    #ln -s ls gsea_report_for_${reference}_*.html gsea_report_for_reference_${reference}.html
-    #ln -s ls gsea_report_for_${reference}_*.tsv gsea_report_for_reference_${reference}.tsv
-    #ln -s ls gsea_report_for_${target}_*.html gsea_report_for_target_${target}.html
-    #ln -s ls gsea_report_for_${target}_*.tsv gsea_report_for_target_${target}.tsv
     popd
 
     cat <<-END_VERSIONS > versions.yml
