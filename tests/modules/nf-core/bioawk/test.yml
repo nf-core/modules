@@ -1,0 +1,8 @@
+- name: bioawk test_bioawk
+  command: nextflow run ./tests/modules/nf-core/bioawk -entry test_bioawk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bioawk/nextflow.config
+  tags:
+    - bioawk
+  files:
+    - path: output/bioawk/sample_1.fa.gz
+      md5sum: 7029066c27ac6f5ef18d660d5741979a
+    - path: output/bioawk/versions.yml
