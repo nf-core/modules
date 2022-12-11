@@ -75,130 +75,28 @@ process CNVKIT_BATCH {
     def target_args = targets ? "--targets $targets" : ""
     def reference_args = reference ? "--reference $reference" : ""
 
-    // somatic_mode cram_input
-    if (tumor_cram && normal_cram){
-        """
-        samtools view -T $fasta $fai_reference $tumor -@ $task.cpus -o $tumor_out
-        samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out
+    def samtools_cram_convert = ''
+    samtools_cram_convert += normal_cram ? "samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out \\" : ''
+    samtools_cram_convert += tumor_cram  ? "samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out \\" : ''
+    def samtools_version = normal_cram || tumor_cram ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')" : ''
 
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
+    """
+    $samtools_cram_convert
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-    // somatic_mode bam_input
-    else if (tumor_bam && normal_bam){
-        """
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
+    cnvkit.py \\
+        batch \\
+        $tumor_out \\
+        $normal_args \\
+        $fasta_args \\
+        $reference_args \\
+        $target_args \\
+        --processes $task.cpus \\
+        $args
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-    // tumor_only_mode cram_input
-    else if(tumor_cram && !normal_exists){
-        """
-        samtools view -T $fasta $fai_reference $tumor -@ $task.cpus -o $tumor_out
-
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-    // tumor_only bam_input
-    else if(tumor_bam && !normal_exists){
-        """
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-    // germline mode cram_input
-    // normal_args must be --normal []
-    else if (normal_cram && !tumor_exists){
-        """
-        samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $tumor_out
-
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-    // germline mode bam_input
-    else if (normal_bam && !tumor_exists){
-        """
-        cnvkit.py \\
-            batch \\
-            $tumor_out \\
-            $normal_args \\
-            $fasta_args \\
-            $reference_args \\
-            $target_args \\
-            --processes $task.cpus \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-        END_VERSIONS
-        """
-    }
-
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        $samtools_version
+        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
+    END_VERSIONS
+    """
 }
