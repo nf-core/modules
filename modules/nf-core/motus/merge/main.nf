@@ -33,9 +33,13 @@ process MOTUS_MERGE {
         $args \\
         -o ${prefix}.${suffix}
 
+    ## Take version from the mOTUs/profile module output, as cannot reconstruct
+    ## version without having database staged in this directory.
+    VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$(echo \$(motus --version) | sed 's/motus //g;s/ on.*//g')
+        motus: \$VERSION
     END_VERSIONS
     """
 }

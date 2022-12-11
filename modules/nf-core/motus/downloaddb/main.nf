@@ -28,9 +28,12 @@ process MOTUS_DOWNLOADDB {
         $args \\
         -t $task.cpus
 
+    ## mOTUs version number is not available from command line.
+    ## mOTUs save the version number in index database folder.
+    ## mOTUs will check the database version is same version as exec version.
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$(echo \$(motus --version) | sed 's/motus //g;s/ on.*//g')
+        motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
     END_VERSIONS
     """
 }
