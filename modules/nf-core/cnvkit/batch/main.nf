@@ -76,8 +76,8 @@ process CNVKIT_BATCH {
     def reference_args = reference ? "--reference $reference" : ""
 
     def samtools_cram_convert = ''
-    samtools_cram_convert += normal_cram ? "samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out \\" : ''
-    samtools_cram_convert += tumor_cram  ? "samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out \\" : ''
+    samtools_cram_convert += normal_cram ? "samtools view -T $fasta $fai_reference $normal -@ $task.cpus -o $normal_out\n" : ''
+    samtools_cram_convert += tumor_cram ? "samtools view -T $fasta $fai_reference $tumor -@ $task.cpus -o $tumor_out\n" : ''
     def samtools_version = normal_cram || tumor_cram ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')" : ''
 
     """
