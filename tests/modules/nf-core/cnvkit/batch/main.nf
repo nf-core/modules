@@ -109,7 +109,6 @@ workflow test_cnvkit_pon {
         ]
     ]
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-    targets   = file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
 
-    CNVKIT_PON ( input, fasta, [], targets, [], true )
+    CNVKIT_PON ( input, fasta, [], [], [], true )
 }
