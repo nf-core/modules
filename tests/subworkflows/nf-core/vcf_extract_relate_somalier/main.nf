@@ -140,3 +140,27 @@ workflow test_vcf_extract_relate_somalier_mixed_no_combine {
         sample_groups
     )
 }
+
+workflow test_vcf_extract_relate_somalier_joint_vcf {
+
+    vcfs = Channel.of([
+        [id:"test"],
+        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
+        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz_tbi'], checkIfExists: true)
+    ])
+
+    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+    somalier_sites = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz", checkIfExists: true)
+    peds = []
+    sample_groups = []
+
+    VCF_EXTRACT_RELATE_SOMALIER (
+        vcfs,
+        fasta,
+        fasta_fai,
+        somalier_sites,
+        peds,
+        sample_groups
+    )
+}

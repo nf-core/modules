@@ -110,3 +110,25 @@
     - path: output/somalier/testN.somalier
       md5sum: ee6661a917b00d9f663a5169a1d0b600
     - path: output/tabix/test_haplotcaller.cnn.vcf.gz.tbi
+
+- name: vcf_extract_relate_somalier test_vcf_extract_relate_somalier_joint_vcf
+  command: nextflow run ./tests/subworkflows/nf-core/vcf_extract_relate_somalier -entry test_vcf_extract_relate_somalier_joint_vcf -c ./tests/config/nextflow.config
+  tags:
+    - somalier
+    - somalier/extract
+    - somalier/relate
+    - subworkflows
+    - subworkflows/vcf_extract_relate_somalier
+    - tabix
+    - tabix/tabix
+  files:
+    - path: output/somalier/normal.somalier
+      md5sum: 8b9317463571847a6662fc198ffef552
+    - path: output/somalier/test.html
+      md5sum: 0158f90ec954ecad2adeedfa9ad050a0
+    - path: output/somalier/test.pairs.tsv
+      md5sum: 33837e10dd64e58b1a38368547ee0406
+    - path: output/somalier/test.samples.tsv
+      md5sum: fd74853a564297af9c9b1224fd24caf3
+    - path: output/somalier/tumour.somalier
+      md5sum: 1207e98a2c58d2027a296f641f701593
