@@ -31,7 +31,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
@@ -39,7 +38,7 @@ output:
   - transcript_fasta:
       type: file
       description: de novo assembled transcripts fasta file
-      pattern: "Trinity.fasta"
+      pattern: "*.fasta"
 
 authors:
   - "@timslittle"

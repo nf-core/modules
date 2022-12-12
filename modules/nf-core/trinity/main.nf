@@ -11,7 +11,7 @@ process TRINITY {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*Trinity.fasta"), emit: transcript_fasta
+    tuple val(meta), path("*.fasta")       , emit: transcript_fasta
     path "versions.yml"                    , emit: versions
 
     when:
@@ -39,6 +39,8 @@ process TRINITY {
     }
 
     """
+    # Note that Trinity needs the word 'trinity' in the outdir
+
     Trinity \\
     --seqType ${seqType_args} \\
     --max_memory ${avail_mem}G \\
@@ -47,7 +49,7 @@ process TRINITY {
     --CPU $task.cpus \\
     $args
 
-    # Note that Trinity needs the word 'trinity' in the outdir
+    mv ${prefix}_trinity.Trinity.fasta ${prefix}.fasta
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
