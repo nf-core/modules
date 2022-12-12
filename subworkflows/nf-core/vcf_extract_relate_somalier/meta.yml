@@ -52,25 +52,25 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - somalier_extract:
+  - extract:
       type: file
       description: |
         The extract file created with Somalier extract
         Structure: [ meta, extract ]
       pattern: "*.extract"
-  - somalier_html:
+  - html:
       type: file
       description: |
         An HTML file containing an interactive graph on the relatedness of the samples
         Structure: [ meta, html ]
       pattern: "*.html"
-  - somalier_pairs_tsv:
+  - pairs_tsv:
       type: file
       description: |
         A TSV file detailing the relatedness between pairs of samples
         Structure: [ meta, tsv ]
       pattern: "*.tsv"
-  - somalier_samples_tsv:
+  - samples_tsv:
       type: file
       description: |
         A TSV file detailing the relatedness between all samples with the same meta

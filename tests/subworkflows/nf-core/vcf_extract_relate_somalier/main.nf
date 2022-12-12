@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { VCF_STATS_SOMALIER } from '../../../../subworkflows/nf-core/vcf_stats_somalier/main.nf'
+include { VCF_EXTRACT_RELATE_SOMALIER } from '../../../../subworkflows/nf-core/vcf_extract_relate_somalier/main.nf'
 
-workflow test_vcf_stats_somalier_minimum {
+workflow test_vcf_extract_relate_somalier_minimum {
 
     vcfs = Channel.of([
         [id:"test"],
@@ -18,7 +18,7 @@ workflow test_vcf_stats_somalier_minimum {
     peds = []
     sample_groups = []
 
-    VCF_STATS_SOMALIER (
+    VCF_EXTRACT_RELATE_SOMALIER (
         vcfs,
         fasta,
         fasta_fai,
@@ -28,7 +28,7 @@ workflow test_vcf_stats_somalier_minimum {
     )
 }
 
-workflow test_vcf_stats_somalier_index {
+workflow test_vcf_extract_relate_somalier_index {
 
     vcfs = Channel.of([
         [id:"test"],
@@ -42,7 +42,7 @@ workflow test_vcf_stats_somalier_index {
     peds = []
     sample_groups = []
 
-    VCF_STATS_SOMALIER (
+    VCF_EXTRACT_RELATE_SOMALIER (
         vcfs,
         fasta,
         fasta_fai,
@@ -52,7 +52,7 @@ workflow test_vcf_stats_somalier_index {
     )
 }
 
-workflow test_vcf_stats_somalier_ped {
+workflow test_vcf_extract_relate_somalier_ped {
 
     vcfs = Channel.of([
         [id:"test"],
@@ -69,7 +69,7 @@ workflow test_vcf_stats_somalier_ped {
     ])
     sample_groups = []
 
-    VCF_STATS_SOMALIER (
+    VCF_EXTRACT_RELATE_SOMALIER (
         vcfs,
         fasta,
         fasta_fai,
@@ -79,7 +79,7 @@ workflow test_vcf_stats_somalier_ped {
     )
 }
 
-workflow test_vcf_stats_somalier_mixed_combine {
+workflow test_vcf_extract_relate_somalier_mixed_combine {
 
     vcfs = Channel.of([
         [id:"test"],
@@ -100,7 +100,7 @@ workflow test_vcf_stats_somalier_mixed_combine {
     ])
     sample_groups = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
 
-    VCF_STATS_SOMALIER (
+    VCF_EXTRACT_RELATE_SOMALIER (
         vcfs,
         fasta,
         fasta_fai,
@@ -110,7 +110,7 @@ workflow test_vcf_stats_somalier_mixed_combine {
     )
 }
 
-workflow test_vcf_stats_somalier_mixed_no_combine {
+workflow test_vcf_extract_relate_somalier_mixed_no_combine {
 
     vcfs = Channel.of([
         [id:"test"],
@@ -131,7 +131,7 @@ workflow test_vcf_stats_somalier_mixed_no_combine {
     ])
     sample_groups = []
 
-    VCF_STATS_SOMALIER (
+    VCF_EXTRACT_RELATE_SOMALIER (
         vcfs,
         fasta,
         fasta_fai,

@@ -2,7 +2,7 @@ include { SOMALIER_EXTRACT } from '../../../modules/nf-core/somalier/extract/mai
 include { SOMALIER_RELATE  } from '../../../modules/nf-core/somalier/relate/main'
 include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
 
-workflow VCF_STATS_SOMALIER {
+workflow VCF_EXTRACT_RELATE_SOMALIER {
     take:
         ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi ]
         ch_fasta                // channel: [mandatory] [ fasta ]
@@ -56,9 +56,9 @@ workflow VCF_STATS_SOMALIER {
     ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     emit:
-    somalier_extract        = SOMALIER_EXTRACT.out.extract
-    somalier_html           = SOMALIER_RELATE.out.html
-    somalier_pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv
-    somalier_samples_tsv    = SOMALIER_RELATE.out.samples_tsv
-    versions                = ch_versions
+    extract        = SOMALIER_EXTRACT.out.extract
+    html           = SOMALIER_RELATE.out.html
+    pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv
+    samples_tsv    = SOMALIER_RELATE.out.samples_tsv
+    versions       = ch_versions
 }
