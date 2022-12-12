@@ -10,6 +10,7 @@ process PICARD_COLLECTWGSMETRICS {
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fai)
     path  intervallist
 
     output:
