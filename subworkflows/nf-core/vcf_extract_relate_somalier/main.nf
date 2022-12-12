@@ -45,8 +45,9 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         .groupTuple()
         .join(ch_peds ?: Channel.empty(), by:0 , remainder:true)
         .map { meta, extract, ped ->
-            [ meta, extract, ped ?: [] ]
-        }.view()
+            extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
+            [ meta, extract2, ped ?: [] ]
+        }
 
     SOMALIER_RELATE(
         ch_somalierrelate_input,
