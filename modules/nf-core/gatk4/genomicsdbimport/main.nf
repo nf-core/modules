@@ -84,7 +84,7 @@ process GATK4_GENOMICSDBIMPORT {
         updated_db = "${wspace}"
     }
 
-    def stub_genomicsdb = genomicsdb_command == "--genomicsdb-workspace-path ${prefix}" ? "touch ${prefix}" : "touch ${wspace}" : ""
+    def stub_genomicsdb = genomicsdb_command == "--genomicsdb-workspace-path ${prefix}" ? "touch ${prefix}" : ""
     def stub_interval   = interval_command == "--output-interval-list-to-file ${prefix}.interval_list" ? "touch ${prefix}.interval_list" : ""
     def stub_update     = updated_db ? "touch ${wspace}" : ""
 
