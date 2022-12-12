@@ -12,7 +12,7 @@ process TRINITY {
 
     output:
     tuple val(meta), path("*Trinity.fasta"), emit: transcript_fasta
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
