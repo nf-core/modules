@@ -1,8 +1,8 @@
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics
-  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
-    - picard
     - picard/collectmultiplemetrics
+    - picard
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
       contains:
@@ -29,12 +29,13 @@
         - "QUALITY\tCOUNT_OF_Q"
         - "14\t1926"
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
+    - path: output/picard/versions.yml
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_nofasta
-  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_nofasta -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_nofasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
-    - picard
     - picard/collectmultiplemetrics
+    - picard
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
       contains:
@@ -61,12 +62,13 @@
         - "QUALITY\tCOUNT_OF_Q"
         - "14\t1926"
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
+    - path: output/picard/versions.yml
 
 - name: picard collectmultiplemetrics test_picard_collectmultiplemetrics_cram
-  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/picard/collectmultiplemetrics -entry test_picard_collectmultiplemetrics_cram -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collectmultiplemetrics/nextflow.config
   tags:
-    - picard
     - picard/collectmultiplemetrics
+    - picard
   files:
     - path: output/picard/test.CollectMultipleMetrics.alignment_summary_metrics
       contains:
@@ -75,22 +77,17 @@
     - path: output/picard/test.CollectMultipleMetrics.base_distribution_by_cycle_metrics
       contains:
         - "READ_END\tCYCLE\tPCT_A\tPCT_C\tPCT_G\tPCT_T\tPCT_N"
-        - "1\t1\t34.065934\t15.242822\t16.093584\t34.526764\t0.070897"
     - path: output/picard/test.CollectMultipleMetrics.insert_size_histogram.pdf
     - path: output/picard/test.CollectMultipleMetrics.insert_size_metrics
       contains:
         - "MEDIAN_INSERT_SIZE\tMODE_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_95_PERCENT\tWIDTH_OF_99_PERCENT\tSAMPLE\tLIBRARY\tREAD_GROUP"
-        - "123\t96\t23\t32\t300\t125.684397\t32.447863\t2820\tFR\t11\t17\t27\t37\t47\t57\t69\t83\t103\t125\t169"
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_by_cycle_metrics
       contains:
         - "CYCLE\tMEAN_QUALITY"
-        - "1\t41.018079"
-        - "2\t40.981921"
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution.pdf
     - path: output/picard/test.CollectMultipleMetrics.quality_distribution_metrics
       contains:
         - "QUALITY\tCOUNT_OF_Q"
-        - "3\t2"
-        - "4\t44"
     - path: output/picard/test.CollectMultipleMetrics.read_length_histogram.pdf
+    - path: output/picard/versions.yml

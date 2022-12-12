@@ -65,7 +65,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
         columns <- colnames(df)
     }
 
-    df[,columns] <- format(data.frame(df[, columns]), nsmall = 8)
+    df[,columns] <- format(data.frame(df[, columns]), nsmall = digits)
 
     # Convert columns back to numeric
 
@@ -95,6 +95,8 @@ opt <- list(
     reference_level = NULL,
     treatment_level = NULL,
     blocking_variables = NULL,
+    control_genes_file = '$control_genes_file',
+    sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
     test = "Wald",
@@ -268,11 +270,23 @@ model <- paste(model, opt\$contrast_variable, sep = ' + ')
 ################################################
 ################################################
 
+if (opt\$control_genes_file != ''){
+    control_genes <- readLines(opt\$control_genes_file)
+    if (! opt\$sizefactors_from_controls){
+        count.table <- count.table[setdiff(rownames(count.table), control_genes),]
+    }
+}
+
 dds <- DESeqDataSetFromMatrix(
     countData = round(count.table),
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
+    print(paste('Estimating size factors using', length(control_genes), 'control genes'))
+    dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
+}
 
 dds <- DESeq(
     dds,

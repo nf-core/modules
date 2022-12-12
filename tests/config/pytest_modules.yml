@@ -18,6 +18,14 @@ adapterremovalfixprefix:
   - modules/nf-core/adapterremovalfixprefix/**
   - tests/modules/nf-core/adapterremovalfixprefix/**
 
+agat/convertspgff2gtf:
+  - modules/nf-core/agat/convertspgff2gtf/**
+  - tests/modules/nf-core/agat/convertspgff2gtf/**
+
+agat/convertspgxf2gxf:
+  - modules/nf-core/agat/convertspgxf2gxf/**
+  - tests/modules/nf-core/agat/convertspgxf2gxf/**
+
 agat/spstatistics:
   - modules/nf-core/agat/spstatistics/**
   - tests/modules/nf-core/agat/spstatistics/**
@@ -134,9 +142,13 @@ atlasgeneannotationmanipulation/gtf2featureannotation:
   - modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
   - tests/modules/nf-core/atlasgeneannotationmanipulation/gtf2featureannotation/**
 
-bakta:
-  - modules/nf-core/bakta/**
-  - tests/modules/nf-core/bakta/**
+bakta/bakta:
+  - modules/nf-core/bakta/bakta/**
+  - tests/modules/nf-core/bakta/bakta/**
+
+bakta/baktadbdownload:
+  - modules/nf-core/bakta/baktadbdownload/**
+  - tests/modules/nf-core/bakta/baktadbdownload/**
 
 bamaligncleaner:
   - modules/nf-core/bamaligncleaner/**
@@ -306,6 +318,10 @@ bedtools/merge:
   - modules/nf-core/bedtools/merge/**
   - tests/modules/nf-core/bedtools/merge/**
 
+bedtools/multiinter:
+  - modules/nf-core/bedtools/multiinter/**
+  - tests/modules/nf-core/bedtools/multiinter/**
+
 bedtools/slop:
   - modules/nf-core/bedtools/slop/**
   - tests/modules/nf-core/bedtools/slop/**
@@ -321,6 +337,10 @@ bedtools/split:
 bedtools/subtract:
   - modules/nf-core/bedtools/subtract/**
   - tests/modules/nf-core/bedtools/subtract/**
+
+bioawk:
+  - modules/nf-core/bioawk/**
+  - tests/modules/nf-core/bioawk/**
 
 biobambam/bammarkduplicates2:
   - modules/nf-core/biobambam/bammarkduplicates2/**
@@ -547,6 +567,18 @@ checkm/qa:
   - modules/nf-core/checkm/qa/**
   - tests/modules/nf-core/checkm/qa/**
 
+checkv/downloaddatabase:
+  - modules/nf-core/checkv/downloaddatabase/**
+  - tests/modules/nf-core/checkv/downloaddatabase/**
+
+checkv/endtoend:
+  - modules/nf-core/checkv/endtoend/**
+  - tests/modules/nf-core/checkv/endtoend/**
+
+checkv/updatedatabase:
+  - modules/nf-core/checkv/updatedatabase/**
+  - tests/modules/nf-core/checkv/updatedatabase/**
+
 chromap/chromap:
   - modules/nf-core/chromap/chromap/**
   - tests/modules/nf-core/chromap/chromap/**
@@ -578,6 +610,10 @@ cnvkit/antitarget:
 cnvkit/batch:
   - modules/nf-core/cnvkit/batch/**
   - tests/modules/nf-core/cnvkit/batch/**
+
+cnvkit/genemetrics:
+  - modules/nf-core/cnvkit/genemetrics/**
+  - tests/modules/nf-core/cnvkit/genemetrics/**
 
 cnvkit/reference:
   - modules/nf-core/cnvkit/reference/**
@@ -649,7 +685,7 @@ cooler/merge:
 
 cooler/zoomify:
   - modules/nf-core/cooler/zoomify/**
-  - tests/software/cooler/zoomify/**
+  - tests/modules/nf-core/cooler/zoomify/**
 
 crumble:
   - modules/nf-core/crumble/**
@@ -671,9 +707,21 @@ custom/getchromsizes:
   - modules/nf-core/custom/getchromsizes/**
   - tests/modules/nf-core/custom/getchromsizes/**
 
+custom/matrixfilter:
+  - modules/nf-core/custom/matrixfilter/**
+  - tests/modules/nf-core/custom/matrixfilter/**
+
 custom/sratoolsncbisettings:
   - modules/nf-core/custom/sratoolsncbisettings/**
   - tests/modules/nf-core/custom/sratoolsncbisettings/**
+
+custom/tabulartogseacls:
+  - modules/nf-core/custom/tabulartogseacls/**
+  - tests/modules/nf-core/custom/tabulartogseacls/**
+
+custom/tabulartogseagct:
+  - modules/nf-core/custom/tabulartogseagct/**
+  - tests/modules/nf-core/custom/tabulartogseagct/**
 
 cutadapt:
   - modules/nf-core/cutadapt/**
@@ -723,17 +771,13 @@ deeptools/computematrix:
   - modules/nf-core/deeptools/computematrix/**
   - tests/modules/nf-core/deeptools/computematrix/**
 
-deeptools/plotpca:
-  - modules/nf-core/deeptools/plotpca/**
-  - tests/modules/nf-core/deeptools/plotpca/**
-
 deeptools/multibamsummary:
   - modules/nf-core/deeptools/multibamsummary/**
   - tests/modules/nf-core/deeptools/multibamsummary/**
 
 deeptools/plotcorrelation:
-  - modules/nf-core/deeptools/multibamsummary/**
-  - tests/modules/nf-core/deeptools/multibamsummary/**
+  - modules/nf-core/deeptools/plotcorrelation/**
+  - tests/modules/nf-core/deeptools/plotcorrelation/**
 
 deeptools/plotfingerprint:
   - modules/nf-core/deeptools/plotfingerprint/**
@@ -742,6 +786,10 @@ deeptools/plotfingerprint:
 deeptools/plotheatmap:
   - modules/nf-core/deeptools/plotheatmap/**
   - tests/modules/nf-core/deeptools/plotheatmap/**
+
+deeptools/plotpca:
+  - modules/nf-core/deeptools/plotpca/**
+  - tests/modules/nf-core/deeptools/plotpca/**
 
 deeptools/plotprofile:
   - modules/nf-core/deeptools/plotprofile/**
@@ -931,6 +979,10 @@ fcs/fcsadaptor:
   - modules/nf-core/fcs/fcsadaptor/**
   - tests/modules/nf-core/fcs/fcsadaptor/**
 
+fcs/fcsgx:
+  - modules/nf-core/fcs/fcsgx/**
+  - tests/modules/nf-core/fcs/fcsgx/**
+
 ffq:
   - modules/nf-core/ffq/**
   - tests/modules/nf-core/ffq/**
@@ -1095,6 +1147,10 @@ gatk4/fastqtosam:
   - modules/nf-core/gatk4/fastqtosam/**
   - tests/modules/nf-core/gatk4/fastqtosam/**
 
+gatk4/filterintervals:
+  - modules/nf-core/gatk4/filterintervals/**
+  - tests/modules/nf-core/gatk4/filterintervals/**
+
 gatk4/filtermutectcalls:
   - modules/nf-core/gatk4/filtermutectcalls/**
   - tests/modules/nf-core/gatk4/filtermutectcalls/**
@@ -1170,6 +1226,10 @@ gatk4/mergevcfs:
 gatk4/mutect2:
   - modules/nf-core/gatk4/mutect2/**
   - tests/modules/nf-core/gatk4/mutect2/**
+
+gatk4/preprocessintervals:
+  - modules/nf-core/gatk4/preprocessintervals/**
+  - tests/modules/nf-core/gatk4/preprocessintervals/**
 
 gatk4/printreads:
   - modules/nf-core/gatk4/printreads/**
@@ -1283,6 +1343,10 @@ gfaffix:
   - modules/nf-core/gfaffix/**
   - tests/modules/nf-core/gfaffix/**
 
+gfastats:
+  - modules/nf-core/gfastats/**
+  - tests/modules/nf-core/gfastats/**
+
 gffread:
   - modules/nf-core/gffread/**
   - tests/modules/nf-core/gffread/**
@@ -1306,6 +1370,10 @@ graphmap2/align:
 graphmap2/index:
   - modules/nf-core/graphmap2/index/**
   - tests/modules/nf-core/graphmap2/index/**
+
+gsea/gsea:
+  - modules/nf-core/gsea/gsea/**
+  - tests/modules/nf-core/gsea/gsea/**
 
 gstama/collapse:
   - modules/nf-core/gstama/collapse/**
@@ -1858,6 +1926,14 @@ minimap2/index:
   - modules/nf-core/minimap2/index/**
   - tests/modules/nf-core/minimap2/index/**
 
+miniprot/align:
+  - modules/miniprot/align/**
+  - tests/modules/miniprot/align/**
+
+miniprot/index:
+  - modules/nf-core/miniprot/index/**
+  - tests/modules/nf-core/miniprot/index/**
+
 miranda:
   - modules/nf-core/miranda/**
   - tests/modules/nf-core/miranda/**
@@ -1865,6 +1941,14 @@ miranda:
 mlst:
   - modules/nf-core/mlst/**
   - tests/modules/nf-core/mlst/**
+
+mmseqs/createindex:
+  - modules/nf-core/mmseqs/createindex/**
+  - tests/modules/nf-core/mmeqs/createindex/**
+
+mmseqs/tsv2exprofiledb:
+  - modules/nf-core/mmseqs/tsv2exprofiledb/**
+  - tests/modules/nf-core/mmseqs/tsv2exprofiledb/**
 
 mobsuite/recon:
   - modules/nf-core/mobsuite/recon/**
@@ -1913,10 +1997,6 @@ msisensorpro/scan:
 mtnucratio:
   - modules/nf-core/mtnucratio/**
   - tests/modules/nf-core/mtnucratio/**
-
-multibamsummary:
-  - modules/multibamsummary/**
-  - tests/modules/multibamsummary/**
 
 multiqc:
   - modules/nf-core/fastqc/**
@@ -2011,6 +2091,10 @@ odgi/viz:
   - modules/nf-core/odgi/viz/**
   - tests/modules/nf-core/odgi/viz/**
 
+oncocnv:
+  - modules/nf-core/oncocnv/**
+  - tests/modules/nf-core/oncocnv/**
+
 optitype:
   - modules/nf-core/optitype/**
   - tests/modules/nf-core/optitype/**
@@ -2091,6 +2175,10 @@ picard/addorreplacereadgroups:
   - modules/nf-core/picard/addorreplacereadgroups/**
   - tests/modules/nf-core/picard/addorreplacereadgroups/**
 
+picard/bedtointervallist:
+  - modules/nf-core/picard/bedtointervallist/**
+  - tests/modules/nf-core/picard/bedtointervallist/**
+
 picard/cleansam:
   - modules/nf-core/picard/cleansam/**
   - tests/modules/nf-core/picard/cleansam/**
@@ -2151,6 +2239,10 @@ picard/sortvcf:
   - modules/nf-core/picard/sortvcf/**
   - tests/modules/nf-core/picard/sortvcf/**
 
+pindel/pindel:
+  - modules/nf-core/pindel/pindel/**
+  - tests/modules/nf-core/pindel/pindel/**
+
 pints/caller:
   - modules/nf-core/pints/caller/**
   - tests/modules/nf-core/pints/caller/**
@@ -2187,25 +2279,17 @@ plink2/vcf:
   - modules/nf-core/plink2/vcf/**
   - tests/modules/nf-core/plink2/vcf/**
 
-plotcorrelation:
-  - modules/plotcorrelation/**
-  - tests/modules/plotcorrelation/**
-
-plotpca:
-  - modules/plotpca/**
-  - tests/modules/plotpca/**
-
 pmdtools/filter:
   - modules/nf-core/pmdtools/filter/**
   - tests/modules/nf-core/pmdtools/filter/**
 
-porechop/porechop:
-  - modules/nf-core/porechop/porechop/**
-  - tests/modules/nf-core/porechop/porechop/**
-
 porechop/abi:
   - modules/nf-core/porechop/abi/**
   - tests/modules/nf-core/porechop/abi/**
+
+porechop/porechop:
+  - modules/nf-core/porechop/porechop/**
+  - tests/modules/nf-core/porechop/porechop/**
 
 preseq/ccurve:
   - modules/nf-core/preseq/ccurve/**
@@ -2230,6 +2314,26 @@ prodigal:
 prokka:
   - modules/nf-core/prokka/**
   - tests/modules/nf-core/prokka/**
+
+purgedups/calcuts:
+  - modules/nf-core/purgedups/calcuts/**
+  - tests/modules/nf-core/purgedups/calcuts/**
+
+purgedups/getseqs:
+  - modules/nf-core/purgedups/getseqs/**
+  - tests/modules/nf-core/purgedups/getseqs/**
+
+purgedups/pbcstat:
+  - modules/nf-core/purgedups/pbcstat/**
+  - tests/modules/nf-core/purgedups/pbcstat/**
+
+purgedups/purgedups:
+  - modules/nf-core/purgedups/purgedups/**
+  - tests/modules/nf-core/purgedups/purgedups/**
+
+purgedups/splitfa:
+  - modules/nf-core/purgedups/splitfa/**
+  - tests/modules/nf-core/purgedups/splitfa/**
 
 pycoqc:
   - modules/nf-core/pycoqc/**
@@ -2350,6 +2454,10 @@ salmon/index:
 salmon/quant:
   - modules/nf-core/salmon/quant/**
   - tests/modules/nf-core/salmon/quant/**
+
+salsa2:
+  - modules/nf-core/salsa2/**
+  - tests/modules/nf-core/salsa2/**
 
 samblaster:
   - modules/nf-core/samblaster/**
@@ -2543,6 +2651,10 @@ shigatyper:
   - modules/nf-core/shigatyper/**
   - tests/modules/nf-core/shigatyper/**
 
+shigeifinder:
+  - modules/nf-core/shigeifinder/**
+  - tests/modules/nf-core/shigeifinder/**
+
 shinyngs/app:
   - modules/nf-core/shinyngs/app/**
   - tests/modules/nf-core/shinyngs/app/**
@@ -2618,6 +2730,10 @@ somalier/extract:
 somalier/relate:
   - modules/nf-core/somalier/relate/**
   - tests/modules/nf-core/somalier/relate/**
+
+sortmerna:
+  - modules/nf-core/sortmerna/**
+  - tests/modules/nf-core/sortmerna/**
 
 sourmash/compare:
   - modules/nf-core/sourmash/compare/**
@@ -2699,14 +2815,6 @@ subworkflows/align_bowtie2:
   - subworkflows/nf-core/align_bowtie2/**
   - tests/subworkflows/nf-core/align_bowtie2/**
 
-subworkflows/annotation/ensemblvep:
-  - subworkflows/nf-core/annotation/ensemblvep/**
-  - tests/subworkflows/nf-core/annotation/ensemblvep/**
-
-subworkflows/annotation/snpeff:
-  - subworkflows/nf-core/annotation/snpeff/**
-  - tests/subworkflows/nf-core/annotation/snpeff/**
-
 subworkflows/bam_dedup_stats_samtools_umitools:
   - subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
   - tests/subworkflows/nf-core/bam_dedup_stats_samtools_umitools/**
@@ -2739,6 +2847,10 @@ subworkflows/bcl_demultiplex:
   - subworkflows/nf-core/bcl_demultiplex/**
   - tests/subworkflows/nf-core/bcl_demultiplex/**
 
+subworkflows/bed_scatter_bedtools:
+  - subworkflows/nf-core/bed_scatter_bedtools/**
+  - tests/subworkflows/nf-core/bed_scatter_bedtools/**
+
 subworkflows/bedgraph_bedclip_bedgraphtobigwig:
   - subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
   - tests/subworkflows/nf-core/bedgraph_bedclip_bedgraphtobigwig/**
@@ -2758,6 +2870,10 @@ subworkflows/fastq_align_bowtie2:
 subworkflows/fastq_align_bwa:
   - subworkflows/nf-core/fastq_align_bwa/**
   - tests/subworkflows/nf-core/fastq_align_bwa/**
+
+subworkflows/fastq_align_bwaaln:
+  - subworkflows/nf-core/fastq_align_bwaaln/**
+  - tests/subworkflows/nf-core/fastq_align_bwaaln/**
 
 subworkflows/fastq_align_chromap:
   - subworkflows/nf-core/fastq_align_chromap/**
@@ -2802,6 +2918,22 @@ subworkflows/gatk_tumor_only_somatic_variant_calling:
 subworkflows/homer/groseq:
   - subworkflows/nf-core/homer/groseq/**
   - tests/subworkflows/nf-core/homer/groseq/**
+
+subworkflows/vcf_annotate_ensembl_vep:
+  - subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+  - tests/subworkflows/nf-core/vcf_annotate_ensembl_vep/**
+
+subworkflows/vcf_annotate_snpeff:
+  - subworkflows/nf-core/vcf_annotate_snpeff/**
+  - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
+
+subworkflows/vcf_gather_bcftools:
+  - subworkflows/nf-core/vcf_gather_bcftools/**
+  - tests/subworkflows/nf-core/vcf_gather_bcftools/**
+
+subworkflows/vcf_extract_relate_somalier:
+  - subworkflows/nf-core/vcf_extract_relate_somalier/**
+  - tests/subworkflows/nf-core/vcf_extract_relate_somalier/**
 
 svdb/merge:
   - modules/nf-core/svdb/merge/**
@@ -2967,6 +3099,10 @@ vcflib/vcfuniq:
 vcftools:
   - modules/nf-core/vcftools/**
   - tests/modules/nf-core/vcftools/**
+
+verifybamid/verifybamid:
+  - modules/nf-core/verifybamid/verifybamid/**
+  - tests/modules/nf-core/verifybamid/verifybamid/**
 
 verifybamid/verifybamid2:
   - modules/nf-core/verifybamid/verifybamid2/**
