@@ -41,7 +41,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
 
     stub:
     """
-    touch test.dict
+    touch ${fasta.baseName}.dict
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
