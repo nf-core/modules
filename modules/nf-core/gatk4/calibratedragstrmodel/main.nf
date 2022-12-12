@@ -48,4 +48,17 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def intervals_command = intervals ? "--intervals ${intervals}" : ""
+
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
 }
