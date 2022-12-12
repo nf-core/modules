@@ -53,8 +53,6 @@ process BCFTOOLS_CONVERT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def regions = bed ? "--regions-file $bed" : ""
-    def reference = fasta ?  "--fasta-ref $fasta" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
