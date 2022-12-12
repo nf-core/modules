@@ -1,9 +1,9 @@
 - name: smncopynumbercaller test_smncopynumbercaller
-  command: nextflow run ./tests/modules/nf-core/smncopynumbercaller -entry test_smncopynumbercaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smncopynumb
+  command: nextflow run ./tests/modules/nf-core/smncopynumbercaller -entry test_smncopynumbercaller -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/smncopynumbercaller/nextflow.config
   tags:
-  - smncopynumbercaller
+    - smncopynumbercaller
   files:
-  - path: output/smncopynumbercaller/out/test.json
-    md5sum: ef881613c0bc0cbf050746f85cf66b62
-  - path: output/smncopynumbercaller/out/test.tsv
-    md5sum: 932851001d39a6dd2aa13d2d22c2149d
+    - path: output/smncopynumbercaller/out/test.json
+      md5sum: ef881613c0bc0cbf050746f85cf66b62
+    - path: output/smncopynumbercaller/out/test.tsv
+      md5sum: 932851001d39a6dd2aa13d2d22c2149d

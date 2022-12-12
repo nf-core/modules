@@ -34,7 +34,7 @@ process SMNCOPYNUMBERCALLER {
         --genome $genome_version \\
         --prefix $prefix \\
         --outDir "out" \\
-        --threads "${task.cpus}"
+        --threads $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
