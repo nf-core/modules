@@ -31,6 +31,10 @@ input:
       type: list
       description: VCF file index
       pattern: "*.{idx,tbi}"
+  - intervals:
+      type: file
+      description: One or more genomic intervals over which to operate
+      pattern: ".intervals"
 
 output:
   - meta:
@@ -53,3 +57,4 @@ output:
 
 authors:
   - "@mjcipriano"
+  - "@ramprasadn"

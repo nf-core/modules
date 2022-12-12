@@ -88,6 +88,10 @@ jobs:
         if: matrix.profile == 'conda'
         run: conda clean -a
 
+      - name: Install mamba
+        if: matrix.profile == 'conda'
+        run: conda install mamba -n base -c conda-forge
+
       # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
@@ -96,7 +100,8 @@ jobs:
       - name: Output log on failure
         if: failure()
         run: |
-          sudo apt install bat > /dev/null
+          sudo apt-get update > /dev/null
+          sudo apt-get install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/pytest_workflow_*/*/log.{out,err}
 
       - name: Upload logs on failure

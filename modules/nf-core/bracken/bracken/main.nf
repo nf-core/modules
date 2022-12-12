@@ -21,12 +21,9 @@ process BRACKEN_BRACKEN {
     task.ext.when == null || task.ext.when
 
     script:
-    def threshold = meta.threshold ?: 10
-    def taxonomic_level = meta.taxonomic_level ?: 'S'
-    def read_length = meta.read_length ?: 150
-    def args = task.ext.args ?: "-l ${taxonomic_level} -t ${threshold} -r ${read_length}"
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    bracken_report = "${prefix}_${taxonomic_level}.tsv"
+    bracken_report = "${prefix}.tsv"
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
     def VERSION = '2.7'

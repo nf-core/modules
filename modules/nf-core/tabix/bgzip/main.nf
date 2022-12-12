@@ -37,4 +37,18 @@ process TABIX_BGZIP {
         tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
+    output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
+
+    """
+    touch ${output}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

@@ -5,7 +5,7 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: e6a9285be7b1c616dc4e17679fce5f1e
+      md5sum: 3d0ebcd0c08721d56088f23cf358b612
 
 - name: samtools view test_samtools_view_cram
   command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_cram -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
@@ -22,7 +22,7 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: 4f4a97da17db79c78b1912da3cdc1d8f
+      md5sum: f8dfadd910aeb742c84703c7efb4af0e
 
 - name: samtools view test_samtools_view_index
   command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_index -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
@@ -31,9 +31,9 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: b2d2482cea94adfc9628473792b0d215
+      md5sum: e0cfe6a07ddd5b24458ff180db22ca51
     - path: output/samtools/test.bam.csi
-      md5sum: 343a2085b436cab2123147dafd255607
+      md5sum: 1b47ef166c280537d0dc14b94ccb966f
 
 - name: samtools view test_samtools_view_filter
   command: nextflow run ./tests/modules/nf-core/samtools/view -entry test_samtools_view_filter -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/samtools/view/nextflow.config
@@ -42,7 +42,7 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: d8e20876423cb1123a559e4347115249
+      md5sum: 3a1563532853ccc1b46a086258b8efbb
     - path: output/samtools/test.bam.csi
       md5sum: b1d688576e59529271333aa50b3ad3ae
 
@@ -53,4 +53,4 @@
     - samtools
   files:
     - path: output/samtools/test.bam
-      md5sum: e6a9285be7b1c616dc4e17679fce5f1e
+      md5sum: 3d0ebcd0c08721d56088f23cf358b612

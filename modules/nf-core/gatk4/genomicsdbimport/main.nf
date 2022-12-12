@@ -64,4 +64,38 @@ process GATK4_GENOMICSDBIMPORT {
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+
+    genomicsdb_command = "--genomicsdb-workspace-path ${prefix}"
+    interval_command = interval_file ? "--intervals ${interval_file}" : "--intervals ${interval_value}"
+
+    // settings changed for running get intervals list mode if run_intlist is true
+    if (run_intlist) {
+        genomicsdb_command = "--genomicsdb-update-workspace-path ${wspace}"
+        interval_command = "--output-interval-list-to-file ${prefix}.interval_list"
+    }
+
+    // settings changed for running update gendb mode. input_command same as default, update_db forces module to emit the updated gendb
+    if (run_updatewspace) {
+        genomicsdb_command = "--genomicsdb-update-workspace-path ${wspace}"
+        interval_command = ''
+        updated_db = "${wspace}"
+    }
+
+    def stub_genomicsdb = genomicsdb_command == "--genomicsdb-workspace-path ${prefix}" ? "touch ${prefix}" : ""
+    def stub_interval   = interval_command == "--output-interval-list-to-file ${prefix}.interval_list" ? "touch ${prefix}.interval_list" : ""
+    def stub_update     = updated_db ? "touch ${wspace}" : ""
+
+    """
+    ${stub_genomicsdb}
+    ${stub_interval}
+    ${stub_update}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
 }
