@@ -4,6 +4,11 @@ process BCL2FASTQ {
 
     container "nfcore/bcl2fastq:2.20.0.422"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 

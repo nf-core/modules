@@ -7,6 +7,11 @@ process FCS_FCSADAPTOR {
         'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.2.3/fcs-adaptor.0.2.3.sif':
         'ncbi/fcs-adaptor:0.2.3' }"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     tuple val(meta), path(assembly)
 
