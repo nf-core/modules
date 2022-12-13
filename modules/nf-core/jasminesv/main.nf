@@ -10,6 +10,7 @@ process JASMINESV {
     input:
     tuple val(meta), path(vcfs), path(bams), path(sample_dists)
     path(fasta)
+    path(fasta_fai)
     path(chr_norm)
 
     output:
@@ -25,8 +26,6 @@ process JASMINESV {
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     vcfs.each{
-        println(it)
-        println(it.getExtension())
         if (it.getExtension() == "gz"){
             error "Gzipped files are not supported by Jasmine, please gunzip your VCF files first."
             // https://github.com/mkirsche/Jasmine/issues/31
@@ -34,9 +33,9 @@ process JASMINESV {
     }
 
     make_bam = bams ? "ls *.bam > bams.txt" : ""
-    bam_argument = bams ? "bam_list=bams.txt"
-    make_iris = args2 != '' ? "echo ${args2} > iris.txt"
-    iris_argument = args2 != '' ? "iris_args=iris.txt"
+    bam_argument = bams ? "bam_list=bams.txt" : ""
+    make_iris = args2 != '' ? "echo ${args2} > iris.txt" : ""
+    iris_argument = args2 != '' ? "iris_args=iris.txt" : ""
     sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
     chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
@@ -52,12 +51,14 @@ process JASMINESV {
         genome_file=${fasta} \\
         ${bam_argument} \\
         ${iris_argument} \\
+        ${sample_dists_argument} \\
+        ${chr_norm_argument} \\
         ${args}
 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        jasminesv: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        jasminesv: \$(echo \$(jasmine 2>&1 | grep "version" | sed 's/Jasmine version //'))
     END_VERSIONS
     """
 }

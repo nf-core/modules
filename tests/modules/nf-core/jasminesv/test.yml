@@ -1,11 +1,26 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml jasminesv
-- name: "jasminesv"
-  command: nextflow run ./tests/modules/nf-core/jasminesv -entry test_jasminesv -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jasminesv/nextflow.config
+- name: jasminesv test_jasminesv_minimum
+  command: nextflow run ./tests/modules/nf-core/jasminesv -entry test_jasminesv_minimum -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jasminesv/nextflow.config
   tags:
-    - "jasminesv"
+    - jasminesv
   files:
-    - path: "output/jasminesv/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/jasminesv/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/jasminesv/test.vcf
+      md5sum: a5f2ea4423010007d26bd61adb169eb7
+    - path: output/jasminesv/versions.yml
+
+- name: jasminesv test_jasminesv_iris
+  command: nextflow run ./tests/modules/nf-core/jasminesv -entry test_jasminesv_iris -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jasminesv/nextflow.config
+  tags:
+    - jasminesv
+  files:
+    - path: output/jasminesv/test.vcf
+      md5sum: 4140a44d52426b17c4882a2b4d7508fb
+    - path: output/jasminesv/versions.yml
+
+- name: jasminesv test_jasminesv_all_inputs
+  command: nextflow run ./tests/modules/nf-core/jasminesv -entry test_jasminesv_all_inputs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/jasminesv/nextflow.config
+  tags:
+    - jasminesv
+  files:
+    - path: output/jasminesv/test.vcf
+      md5sum: ee57b923cb0a6e2af25790942281fa09
+    - path: output/jasminesv/versions.yml
