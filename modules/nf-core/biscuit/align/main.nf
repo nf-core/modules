@@ -2,18 +2,19 @@ process BISCUIT_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113 bioconda::samtools=1.15=h1170115_1" : null)
+    conda (params.enable_conda ? "bioconda::biscuit=1.1.0.20220707 bioconda::samtools=1.16.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0':
-        'quay.io/biocontainers/mulled-v2-db16f1c237a26ea9245cf9924f858974ff321d6e:17fa66297f088a1bc7560b7b90dc273bf23f2d8c-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0':
+        'quay.io/biocontainers/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0' }"
 
     input:
     tuple val(meta), path(reads)
     path index
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bam")               , emit: bam
+    tuple val(meta), path("*.bam"), path("*.bai"), emit: indexed_bam
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +26,7 @@ process BISCUIT_ALIGN {
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     """
+    set -o pipefail
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit align \\
@@ -32,7 +34,7 @@ process BISCUIT_ALIGN {
         -@ $biscuit_cpus \\
         \$INDEX \\
         $reads \\
-        | samtools sort $args2 --threads $samtools_cpus -o ${prefix}.bam -
+        | samtools sort $args2 --threads $samtools_cpus --write-index -o ${prefix}.bam##idx##${prefix}.bam.bai -
 
 
     cat <<-END_VERSIONS > versions.yml
