@@ -20,13 +20,11 @@ process PRETEXTSNAPSHOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outdir = task.ext.outdir ?: '.'
     """
     PretextSnapshot \\
         $args \\
         --map $pretext_map \\
         --prefix $prefix \\
-        --folder $outdir
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
