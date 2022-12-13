@@ -23,7 +23,7 @@ process BISCUIT_BSCONV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit bsconv \\
         $args \\
