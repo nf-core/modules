@@ -1,0 +1,9 @@
+- name: survivor merge test_survivor_merge
+  command: nextflow run ./tests/modules/nf-core/survivor/merge -entry test_survivor_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/survivor/merge/nextflow.config
+  tags:
+    - survivor/merge
+    - survivor
+  files:
+    - path: output/survivor/test.vcf
+      md5sum: 0a73eec31d180e0b053742df8f2e2f73
+    - path: output/survivor/versions.yml
