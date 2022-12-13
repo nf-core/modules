@@ -2,7 +2,7 @@ process CRUMBLE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::crumble=0.9.0" : null)
+    conda "bioconda::crumble=0.9.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/crumble:0.9.0--hb0d9459_1':
         'quay.io/biocontainers/crumble:0.9.0--hb0d9459_1' }"

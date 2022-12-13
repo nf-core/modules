@@ -1,7 +1,7 @@
 process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::antismash-lite=6.0.1" : null)
+    conda "bioconda::antismash-lite=6.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
         'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
