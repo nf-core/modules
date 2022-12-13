@@ -1,7 +1,7 @@
 process CUSTOM_MATRIXFILTER {
     tag "$meta"
     label 'process_single'
-    conda (params.enable_conda ? "r-base" : null)
+    conda "conda-forge::r-base=4.2.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-base:4.2.1' :
         'quay.io/biocontainers/r-base:4.2.1' }"

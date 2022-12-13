@@ -2,7 +2,7 @@ process SNIPPY_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::snippy=4.6.0" : null)
+    conda "bioconda::snippy=4.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
         'quay.io/biocontainers/snippy:4.6.0--hdfd78af_2' }"
