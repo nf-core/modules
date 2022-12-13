@@ -21,9 +21,14 @@ process SURVIVOR_MERGE {
     def args = task.ext.args ?: [:]
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def max_distance_breakpoints        = args.max_distance_breakpoints         ?: 0.2
+    def min_supporting_callers          = args.min_supporting_callers           ?: 1
+    def account_for_type                = args.account_for_type                 ?: 0
+    def account_for_sv_strands          = args.account_for_sv_strands           ?: 0
+    def estimate_distanced_by_sv_size   = args.estimate_distanced_by_sv_size    ?: 0
+    def min_sv_size                     = args.min_sv_size                      ?: 20
+
     vcfs.each{
-        println(it)
-        println(it.getExtension())
         if (it.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
