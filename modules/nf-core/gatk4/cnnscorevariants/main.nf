@@ -3,9 +3,6 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    if (params.enable_conda) {
-        exit 1, "Conda environments cannot be used for GATK4/CNNScoreVariants at the moment. Please use docker or singularity containers."
-    }
     container "broadinstitute/gatk:4.3.0.0" //Biocontainers is missing a package
 
     input:

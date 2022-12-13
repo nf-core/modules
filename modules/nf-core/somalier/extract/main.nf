@@ -3,7 +3,7 @@ process SOMALIER_EXTRACT {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::somalier=0.2.15" : null)
+    conda "bioconda::somalier=0.2.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
         'quay.io/biocontainers/somalier:0.2.15--h37c5b7d_0' }"
