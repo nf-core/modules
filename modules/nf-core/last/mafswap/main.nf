@@ -2,7 +2,7 @@ process LAST_MAFSWAP {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? 'bioconda::last=1418' : null)
+    conda "bioconda::last=1418"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
         'quay.io/biocontainers/last:1418--h5b5514e_0' }"
