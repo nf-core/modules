@@ -27,10 +27,22 @@ process SOMALIER_EXTRACT {
 
     """
     somalier extract \\
-    --sites ${sites} \\
-    -f ${fasta} \\
-    ${input} \\
-    ${args}
+        --sites ${sites} \\
+        -f ${fasta} \\
+        ${input} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.somalier
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
