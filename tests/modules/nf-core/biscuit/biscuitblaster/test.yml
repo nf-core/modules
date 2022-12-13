@@ -1,5 +1,5 @@
 - name: biscuit biscuitblaster test_biscuit_blaster_single
-  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_single -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/biscuitblaster/nextflow.config
   tags:
     - biscuit/biscuitblaster
     - biscuit
@@ -21,14 +21,12 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bam
-      md5sum: 9ece50b67349382d38b20c2702e65675
+      md5sum: 78f313558ada63981ce44aab74c820e0
     - path: output/biscuit/test.bam.bai
-      md5sum: 8f14bb42fd38cc7ce4a3c3a9d7133ea4
-    - path: output/biscuit/versions.yml
-      md5sum: bfb660b5b0d92dde6817a1c6a2a302bb
+      md5sum: 5b32533afbf45f1b129b5a8a54097971
 
 - name: biscuit biscuitblaster test_biscuit_blaster_paired
-  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_paired -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/biscuitblaster -entry test_biscuit_blaster_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/biscuitblaster/nextflow.config
   tags:
     - biscuit/biscuitblaster
     - biscuit
@@ -50,8 +48,6 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 55bcd97d7059bf73dc0d221e36e8e901
     - path: output/biscuit/test.bam
-      md5sum: 0c6de35f38003df6ea5dd036170df91b
+      md5sum: be76af944c7eadbecbf87e6e2688731b
     - path: output/biscuit/test.bam.bai
-      md5sum: 0d76977b2e36046cc176112776c5fa4e
-    - path: output/biscuit/versions.yml
-      md5sum: 82160a7ad29ccc3a21e59b1869399c04
+      md5sum: bc235b43786886957bd5bb5b6623d4dd
