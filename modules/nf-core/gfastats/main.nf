@@ -2,7 +2,7 @@ process GFASTATS {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::gfastats=1.3.5" : null)
+    conda "bioconda::gfastats=1.3.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gfastats:1.3.5--hd03093a_0':
         'quay.io/biocontainers/gfastats:1.3.5--hd03093a_0' }"
