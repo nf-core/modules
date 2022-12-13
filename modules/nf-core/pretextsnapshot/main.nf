@@ -25,7 +25,7 @@ process PRETEXTSNAPSHOT {
         $args \\
         --map $pretext_map \\
         --prefix $prefix \\
-	--folder .
+        --folder .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
