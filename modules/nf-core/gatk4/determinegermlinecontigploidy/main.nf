@@ -2,9 +2,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-    if(params.enable_conda){
-        error "Conda environments cannot be used for GATK4/DetermineGermlineContigPloidy at the moment. Please use docker or singularity containers."
-    }
     container "broadinstitute/gatk:4.3.0.0"
 
     input:
