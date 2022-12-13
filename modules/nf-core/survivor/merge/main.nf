@@ -45,7 +45,7 @@ process SURVIVOR_MERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //')
+        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
     END_VERSIONS
     """
 }
