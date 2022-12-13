@@ -11,7 +11,8 @@ workflow test_jasminesv {
         [
             file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
-        ]
+        ],
+        []
     ]
 
     JASMINESV ( input )
