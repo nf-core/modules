@@ -42,4 +42,17 @@ process SOMALIER_RELATE {
     END_VERSIONS
     """
 
+    stub:
+    def prefix = task.ext.prefix ?: "$meta.id"
+
+    """
+    touch ${prefix}.html
+    touch ${prefix}.pairs.tsv
+    touch ${prefix}.samples.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
+    END_VERSIONS
+    """
 }

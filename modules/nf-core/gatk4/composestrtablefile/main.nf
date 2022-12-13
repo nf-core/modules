@@ -43,7 +43,7 @@ process GATK4_COMPOSESTRTABLEFILE {
 
     stub:
     """
-    touch test.zip
+    touch ${fasta.baseName}.zip
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
