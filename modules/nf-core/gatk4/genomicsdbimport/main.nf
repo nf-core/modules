@@ -70,6 +70,7 @@ process GATK4_GENOMICSDBIMPORT {
 
     genomicsdb_command = "--genomicsdb-workspace-path ${prefix}"
     interval_command = interval_file ? "--intervals ${interval_file}" : "--intervals ${interval_value}"
+    updated_db = []
 
     // settings changed for running get intervals list mode if run_intlist is true
     if (run_intlist) {
