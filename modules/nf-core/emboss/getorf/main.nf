@@ -41,6 +41,10 @@ process EMBOSS_GETORF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def osformat2 = args.contains('-osformat2') ? '' : "-osformat2 ${out_ext}"
+    def table = params.getorf_table ?: 0
+    def minsize = params.getorf_minsize ?: 30
+    def maxsize = params.getorf_maxsize ?: 1000000
+    def getorf_find = params.getorf_find ?: 0
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -52,14 +56,14 @@ process EMBOSS_GETORF {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     getorf \\
-    -table $params.getorf_table \\
-    -minsize $params.getorf_minsize \\
-    -maxsize $params.getorf_maxsize \\
-    -find $params.getorf_find \\
-    $args \\
+    -table ${table} \\
+    -minsize ${getorf_minsize} \\
+    -maxsize ${getorf_maxsize} \\
+    -find ${getorf_find} \\
     -sequence ${sequence} \\
     ${outfmt2} \\
-    -outseq ${prefix}.${out_ext}
+    -outseq ${prefix}.${out_ext} \\
+    $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
