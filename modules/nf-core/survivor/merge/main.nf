@@ -53,4 +53,23 @@ process SURVIVOR_MERGE {
         survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    vcfs.each{
+        if (it.getExtension() == "gz"){
+            error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
+            // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
+        }
+    }
+
+    """
+    touch ${prefix}.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
+    END_VERSIONS
+    """
 }
