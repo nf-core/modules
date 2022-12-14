@@ -20,8 +20,8 @@ process SRATOOLS_PREFETCH {
 
     shell:
     args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
-    args2 \+= task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     template 'retry_with_backoff.sh'
 }
