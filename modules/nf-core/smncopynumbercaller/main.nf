@@ -1,5 +1,3 @@
-#!/usr/bin/env nextflow
-
 process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
@@ -13,7 +11,7 @@ process SMNCOPYNUMBERCALLER {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("out/*.tsv"), emit: smncopynumber
+    tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
     tuple val(meta), path("out/*.json"), emit: run_metrics
     path "versions.yml" , emit: versions
 
@@ -23,22 +21,20 @@ process SMNCOPYNUMBERCALLER {
     script:
     manifest_text = bam.join("\n")
     def args = task.ext.args ?: ''
-    def genome_version = task.ext.genome_version // [19/37/38]
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def smncopynumbercaller_version = "1.1.2"
+    def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     echo "$manifest_text" >manifest.txt
     smn_caller.py \\
         $args \\
         --manifest manifest.txt \\
-        --genome $genome_version \\
         --prefix $prefix \\
         --outDir "out" \\
         --threads $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        SMNCopyNumberCaller: $smncopynumbercaller_version
+        SMNCopyNumberCaller: $VERSION
     END_VERSIONS
     """
 }
