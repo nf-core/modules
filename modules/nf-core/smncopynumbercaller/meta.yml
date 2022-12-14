@@ -16,6 +16,15 @@ input:
       type: file
       description: BAM/CRAM file
       pattern: "*.{bam,cram}"
+  - bai:
+      type: file
+      description: BAM/CRAM index file
+      pattern: "*.{bai,crai}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
 
 output:
   - run_metrics:
