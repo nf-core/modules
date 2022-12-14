@@ -12,13 +12,13 @@ process SHINYNGS_STATICEXPLORATORY {
 
     output:
     tuple val(meta), path("*/png/boxplot.png")                  , emit: boxplots_png
-    tuple val(meta), path("*/png/boxplot.html")                 , emit: boxplots_html, optional: true
+    tuple val(meta), path("*/html/boxplot.html")                , emit: boxplots_html, optional: true
     tuple val(meta), path("*/png/density.png")                  , emit: densities_png
     tuple val(meta), path("*/html/density.html")                , emit: densities_html, optional: true
     tuple val(meta), path("*/png/pca2d.png")                    , emit: pca2d_png
     tuple val(meta), path("*/html/pca2d.html")                  , emit: pca2d_html, optional: true
     tuple val(meta), path("*/png/pca3d.png")                    , emit: pca3d_png
-    tuple val(meta), path("*/png/pca3d.html")                   , emit: pca3d_html, optional: true
+    tuple val(meta), path("*/html/pca3d.html")                  , emit: pca3d_html, optional: true
     tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png
     tuple val(meta), path("*/html/mad_correlation.html")        , emit: mad_html, optional: true
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
