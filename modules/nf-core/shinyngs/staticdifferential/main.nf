@@ -13,7 +13,7 @@ process SHINYNGS_STATICDIFFERENTIAL {
 
     output:
     tuple val(meta), path("*/png/volcano.png")      , emit: volcanos_png
-    tuple val(meta), path("*/html/volcano.html")    , emit: volcanos_html
+    tuple val(meta), path("*/html/volcano.html")    , emit: volcanos_html, optional: true
     path "versions.yml"                             , emit: versions
 
     when:
