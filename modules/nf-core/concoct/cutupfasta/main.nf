@@ -22,7 +22,7 @@ process CONCOCT_CUTUPFASTA {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def bedfile    = bed ? "-b ${prefix}.bed" : ""
     if ("$fasta" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"

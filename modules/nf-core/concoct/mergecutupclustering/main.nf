@@ -19,7 +19,7 @@ process CONCOCT_MERGECUTUPCLUSTERING {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$clustering_csv" == "${prefix}.csv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
