@@ -2,7 +2,7 @@ process SURVIVOR_MERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::survivor=1.0.7" : null)
+    conda "bioconda::survivor=1.0.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
         'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
