@@ -26,7 +26,6 @@ input:
       pattern: "*.{gff,em,gb,refseq,pir,swiss,sw,txt,fasta}"
 ##TODO what about zipped files?
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -34,7 +33,6 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
