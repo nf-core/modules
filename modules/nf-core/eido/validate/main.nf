@@ -20,7 +20,8 @@ process EIDO_VALIDATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "validation"
     """
     eido validate $args $samplesheet -s $schema -e > ${prefix}.log

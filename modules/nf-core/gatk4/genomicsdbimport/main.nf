@@ -23,7 +23,8 @@ process GATK4_GENOMICSDBIMPORT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     // settings for running default create gendb mode

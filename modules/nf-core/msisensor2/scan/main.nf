@@ -19,7 +19,8 @@ process MSISENSOR2_SCAN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def inputs      = fasta.collect{ "-d $it"}.join(" ")
     output_path = output ?: "output.scan"
     """

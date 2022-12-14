@@ -25,7 +25,8 @@ process HMMER_ESLALIMASK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fmask_rfarg  = fmask_rf  ? "--fmask-rf ${prefix}.fmask-rf"   : ""
     def fmask_allarg = fmask_all ? "--fmask-all ${prefix}.fmask-all" : ""

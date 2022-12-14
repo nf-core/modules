@@ -22,7 +22,8 @@ process SRST2_SRST2 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ""
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_s = meta.single_end ? "--input_se ${fastq_s}" : "--input_pe ${fastq_s[0]} ${fastq_s[1]}"
     if (meta.db=="gene") {

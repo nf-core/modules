@@ -21,7 +21,8 @@ process BRACKEN_BRACKEN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ""
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     bracken_report = "${prefix}.tsv"
     // WARN: Version information not provided by tool on CLI.

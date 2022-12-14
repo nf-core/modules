@@ -22,7 +22,8 @@ process GATK4_LEFTALIGNANDTRIMVARIANTS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args             = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals       ? "--intervals $intervals" : ""
     def avail_mem = 3

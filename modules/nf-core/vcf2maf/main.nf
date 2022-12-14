@@ -22,7 +22,8 @@ process VCF2MAF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def vep_cache_cmd = vep_cache       ? "--vep-data $vep_cache" : ""
     // If VEP is present, it will find it and add it to commands.

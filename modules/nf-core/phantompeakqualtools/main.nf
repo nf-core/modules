@@ -21,8 +21,10 @@ process PHANTOMPEAKQUALTOOLS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def args2  = task.ext.args2 ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    def args2 = task.ext.args2 ?: ''
+    args2 \+= task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

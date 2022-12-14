@@ -36,7 +36,8 @@ process ARTIC_MINION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
     def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""

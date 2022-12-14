@@ -18,7 +18,8 @@ process HMMER_ESLREFORMAT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
     def suffix   = args ? args.trim().tokenize(" ")[-1] : "sequences"
     // Use for any postprocessing of the sequence file, e.g. removal of gap characters

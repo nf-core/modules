@@ -19,7 +19,8 @@ process STRINGTIE_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def reference = annotation_gtf ? "-G $annotation_gtf" : ""
     """
     stringtie \\

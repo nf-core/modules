@@ -22,7 +22,8 @@ process CHECKM_LINEAGEWF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix    = task.ext.prefix ?: "${meta.id}"
     checkm_db = db ? "export CHECKM_DATA_PATH=${db}" : ""
     """

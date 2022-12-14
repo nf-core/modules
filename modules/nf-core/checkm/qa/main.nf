@@ -20,7 +20,8 @@ process CHECKM_QA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix       = task.ext.prefix ?: "${meta.id}"
     suffix       = task.ext.args?.matches(".*-o 9.*|.*--out_file 9.*") ? "fasta" : "txt"
     def coverage = coverage_file                                   ? "--coverage_file ${coverage_file}"  : ""

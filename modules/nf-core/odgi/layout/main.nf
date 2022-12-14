@@ -20,6 +20,7 @@ process ODGI_LAYOUT {
 
     script:
     def args = task.ext.args ?: "--out ${meta.id}.lay"
+    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     odgi \\
         layout \\
