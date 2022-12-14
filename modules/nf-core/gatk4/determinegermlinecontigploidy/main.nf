@@ -4,6 +4,11 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
 
     container "broadinstitute/gatk:4.3.0.0"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
     path(contig_ploidy_table)
