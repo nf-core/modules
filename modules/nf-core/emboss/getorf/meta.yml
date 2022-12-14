@@ -13,7 +13,6 @@ tools:
       doi: "10.1016/s0168-9525(00)02024-2"
       licence: "['GPL']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -21,12 +20,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - sequence:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input sequence query
+      pattern: "*.{gff,em,gb,refseq,pir,swiss,sw,txt,fasta}"
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
