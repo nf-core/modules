@@ -28,7 +28,7 @@ process FCS_FCSADAPTOR {
 
     script:
     def args = task.ext.args ?: '--prok' // --prok || --euk
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSADAPTOR_VERSION = '0.2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
