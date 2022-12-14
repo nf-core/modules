@@ -11,7 +11,13 @@ workflow test_survivor_merge {
         [
             file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf'], checkIfExists: true),
             file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
-        ]
+        ],
+        0.2,
+        1,
+        0,
+        0,
+        0,
+        20
     ]
 
     SURVIVOR_MERGE ( input )
