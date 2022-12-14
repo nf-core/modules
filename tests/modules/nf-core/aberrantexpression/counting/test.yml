@@ -1,0 +1,10 @@
+- name: preprocessgeneannotation
+  command: nextflow run ./tests/modules/nf-core/aberrantexpression/counting -entry test_aberrantexpression_counting -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/aberrantexpression/counting/nextflow.config
+  tags:
+  - aberrantexpression/counting
+  - aberrantexpression
+  files:
+  - path: output/preprocessgeneannotation/count_ranges.Rds
+  - path: output/preprocessgeneannotation/gene_name_mapping.tsv
+    md5sum: 7e2607aa0b34a2e4819f154bf6a5e55b
+  - path: output/preprocessgeneannotation/txdb.db
