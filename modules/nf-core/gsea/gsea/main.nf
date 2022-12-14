@@ -2,7 +2,7 @@ process GSEA_GSEA {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::gsea=4.3.2" : null)
+    conda "bioconda::gsea=4.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gsea:4.3.2--hdfd78af_0':
         'quay.io/biocontainers/gsea:4.3.2--hdfd78af_0' }"

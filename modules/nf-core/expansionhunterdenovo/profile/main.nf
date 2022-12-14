@@ -2,7 +2,7 @@ process EXPANSIONHUNTERDENOVO_PROFILE {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::expansionhunterdenovo=0.9.0" : null)
+    conda "bioconda::expansionhunterdenovo=0.9.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunterdenovo:0.9.0--hdc99072_3':
         'quay.io/biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
