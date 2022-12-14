@@ -21,7 +21,7 @@ process RHOCALL_ANNOTATE {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def az_bed = bed ? "-b ${bed}" : ''
     """
