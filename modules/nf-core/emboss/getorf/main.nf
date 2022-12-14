@@ -30,7 +30,7 @@ process EMBOSS_GETORF {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.${params.getorf_outformat}"), emit: bam
+    tuple val(meta), path("*.${out_ext}"), emit: bam
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -40,6 +40,7 @@ process EMBOSS_GETORF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def osformat2 = args.contains('-osformat2') ? '' : "-osformat2 ${out_ext}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -57,12 +58,12 @@ process EMBOSS_GETORF {
     -find $params.getorf_find \\
     $args \\
     -sequence ${sequence} \\
-    -outfmt2 $params.getorf_outformat \\
-    -outseq ${prefix}.${params.getorf_outformat}
+    ${outfmt2} \\
+    -outseq ${prefix}.${out_ext}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        emboss: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        emboss: \$(echo \$(getorf -version 2>&1) | sed 's/EMBOSS://')
     END_VERSIONS
     """
 }
