@@ -50,4 +50,19 @@ process GATK4_COLLECTREADCOUNTS {
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--format HDF5") ? "hdf5" :
+                    args.contains("--format TSV")  ? "tsv" :
+                    "hdf5"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
 }
