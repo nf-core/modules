@@ -2,7 +2,7 @@ process BAMUTIL_TRIMBAM {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::bamutil=1.0.15" : null)
+    conda "bioconda::bamutil=1.0.15"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
         'quay.io/biocontainers/bamutil:1.0.15--h2e03b76_1' }"

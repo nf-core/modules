@@ -1,7 +1,7 @@
 process CHECKV_DOWNLOADDATABASE {
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::checkv=1.0.1" : null)
+    conda "bioconda::checkv=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
         'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
