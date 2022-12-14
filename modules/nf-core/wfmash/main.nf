@@ -2,7 +2,7 @@ process WFMASH {
     tag '$bam'
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::wfmash=0.10.0" : null)
+    conda "bioconda::wfmash=0.10.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wfmash:0.10.0--hfdddef0_0':
         'quay.io/biocontainers/wfmash:0.10.0--hfdddef0_0' }"

@@ -1,7 +1,8 @@
-- name: bakta
-  command: nextflow run ./tests/modules/nf-core/bakta -entry test_bakta -c ./tests/config/nextflow.config -stub-run
+- name: bakta_bakta
+  command: nextflow run ./tests/modules/nf-core/bakta/bakta -entry test_bakta_bakta -c ./tests/config/nextflow.config -stub-run
   tags:
     - bakta
+    - bakta/bakta
   files:
     - path: output/bakta/test.embl
     - path: output/bakta/test.faa

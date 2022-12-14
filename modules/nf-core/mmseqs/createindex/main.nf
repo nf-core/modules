@@ -2,14 +2,13 @@ process MMSEQS_CREATEINDEX {
     tag "$db"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::mmseqs2=14.7e284" : null)
+    conda "bioconda::mmseqs2=14.7e284"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
         'quay.io/biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
 
     input:
     path db
-    val db_name
 
     output:
     path(db)           , emit: db_indexed
@@ -20,10 +19,11 @@ process MMSEQS_CREATEINDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def db_path_name = db_name ? "${db}/${db_name}": "${db}/${db}"
     """
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+
     mmseqs createindex \\
-        $db_path_name \\
+        \${DB_PATH_NAME} \\
         tmp1 \\
         $args
 
@@ -35,7 +35,9 @@ process MMSEQS_CREATEINDEX {
 
     stub:
     """
-    touch ${db_path_name}.idx
+    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+
+    touch "\${DB_PATH_NAME}.idx"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
