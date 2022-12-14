@@ -12,8 +12,9 @@ process SHINYNGS_STATICDIFFERENTIAL {
     tuple val(meta2), path(sample), path(feature_meta), path(assay_file)    // Experiment-level info
 
     output:
-    tuple val(meta), path("*/png/volcano.png"), path("*/html/volcano.html")                                 , emit: volcanos
-    path "versions.yml"                                                                                     , emit: versions
+    tuple val(meta), path("*/png/volcano.png")      , emit: volcanos_png
+    tuple val(meta), path("*/html/volcano.html")    , emit: volcanos_html
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
