@@ -34,15 +34,13 @@ process JASMINESV {
 
     make_bam = bams ? "ls *.bam > bams.txt" : ""
     bam_argument = bams ? "bam_list=bams.txt" : ""
-    make_iris = args2 != '' ? "echo ${args2} > iris.txt" : ""
-    iris_argument = args2 != '' ? "iris_args=iris.txt" : ""
+    iris_argument = args2 != '' ? "iris_args=${args2}" : ""
     sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
     chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
     """
     ls *.vcf > vcfs.txt
     ${make_bam}
-    ${make_iris}
 
     jasmine \\
         file_list=vcfs.txt \\
@@ -62,7 +60,7 @@ process JASMINESV {
     END_VERSIONS
     """
 
-    script:
+    stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     vcfs.each{
