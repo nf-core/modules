@@ -23,7 +23,7 @@ process ATLAS_CALL {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def recal_file         = recal ? "recal=${recal}" : ""
     def pmd_file           = pmd ? "pmdFile=${pmd}" : ""
