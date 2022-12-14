@@ -2,12 +2,18 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
+
     if(params.enable_conda){
         error "Conda environments cannot be used for GATK4/DetermineGermlineContigPloidy at the moment. Please use docker or singularity containers."
     }
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'broadinstitute/gatk:4.3.0.0':
         'broadinstitute/gatk:4.3.0.0' }"
+
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)

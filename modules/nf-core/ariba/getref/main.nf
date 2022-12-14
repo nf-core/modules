@@ -2,7 +2,7 @@ process ARIBA_GETREF {
     tag "$db_name"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::ariba=2.14.6" : null)
+    conda "bioconda::ariba=2.14.6"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
         'quay.io/biocontainers/ariba:2.14.6--py39h67e14b5_3' }"

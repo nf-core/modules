@@ -2,7 +2,7 @@ process VARDICTJAVA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::vardict-java=1.8.3" : null)
+    conda "bioconda::vardict-java=1.8.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vardict-java:1.8.3--hdfd78af_0':
         'quay.io/biocontainers/vardict-java:1.8.3--hdfd78af_0' }"

@@ -2,7 +2,7 @@ process HMMER_ESLALIMASK {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::hmmer=3.3.2" : null)
+    conda "bioconda::hmmer=3.3.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1':
         'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
