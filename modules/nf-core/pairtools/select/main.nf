@@ -2,7 +2,7 @@ process PAIRTOOLS_SELECT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::pairtools=0.3.0" : null)
+    conda "bioconda::pairtools=0.3.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:0.3.0--py37hb9c2fc3_5' :
         'quay.io/biocontainers/pairtools:0.3.0--py37hb9c2fc3_5' }"

@@ -2,7 +2,7 @@ process NGMASTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::ngmaster=0.5.8" : null)
+    conda "bioconda::ngmaster=0.5.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
         'quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"

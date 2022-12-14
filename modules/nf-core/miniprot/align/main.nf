@@ -2,7 +2,7 @@ process MINIPROT_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::miniprot=0.5" : null)
+    conda "bioconda::miniprot=0.5"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniprot:0.5--h7132678_0':
         'quay.io/biocontainers/miniprot:0.5--h7132678_0' }"
