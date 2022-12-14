@@ -6,6 +6,11 @@ process IMPUTEME_VCFTOPRS {
         'https://containers.biocontainers.pro/s3/SingImgsRepo/imputeme/vv1.0.7_cv1/imputeme_vv1.0.7_cv1.img' :
         'biocontainers/imputeme:vv1.0.7_cv1' }"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "IMPUTEME_VCFTOPRS module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     tuple val(meta), path(vcf)
 
