@@ -4,6 +4,11 @@ process CELLRANGER_MKREF {
 
     container "nfcore/cellranger:7.0.0"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     path fasta
     path gtf
