@@ -50,7 +50,7 @@ process TRINITY {
     $args
 
     mv ${prefix}_trinity.Trinity.fasta ${prefix}.fasta
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trinity: \$(echo \$(Trinity --version | head -n 1 2>&1) | sed 's/^Trinity version: Trinity-v//' ))
