@@ -25,7 +25,7 @@ process BEDTOOLS_BAMTOBED {
         bamtobed \\
         $args \\
         -i $bam \\
-        | bedtools sort > ${prefix}.bed
+        > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
