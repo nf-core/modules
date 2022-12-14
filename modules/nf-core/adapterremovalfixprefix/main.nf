@@ -20,6 +20,7 @@ process ADAPTERREMOVALFIXPREFIX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$fastq" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

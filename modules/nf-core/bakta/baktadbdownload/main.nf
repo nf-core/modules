@@ -15,6 +15,7 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     """
     bakta_db \\
@@ -29,6 +30,7 @@ process BAKTA_BAKTADBDOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     """
     echo "bakta_db \\

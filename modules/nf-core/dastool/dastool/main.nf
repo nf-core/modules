@@ -32,6 +32,7 @@ process DASTOOL_DASTOOL {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bin_list = bins instanceof List ? bins.join(",") : "$bins"
     def db_dir = db_directory ? "--db_directory $db_directory" : ""

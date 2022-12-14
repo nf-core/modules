@@ -22,6 +22,7 @@ process DEEPTOOLS_BAMCOVERAGE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
 
     // cram_input is currently not working with deeptools

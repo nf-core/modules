@@ -29,6 +29,7 @@ process GTDBTK_CLASSIFYWF {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
     def VERSION = '1.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

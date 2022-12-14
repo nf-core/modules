@@ -20,6 +20,7 @@ process FCS_FCSGX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSGX_VERSION = '0.2.3'
 

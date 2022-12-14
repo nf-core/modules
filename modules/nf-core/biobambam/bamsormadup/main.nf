@@ -20,6 +20,7 @@ process BIOBAMBAM_BAMSORMADUP {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("outputformat=cram") ? "cram" : "bam"
     def input_string = bams instanceof List ? bams.join(" I=") : bams

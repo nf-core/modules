@@ -26,6 +26,7 @@ process ICHORCNA_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def pon = panel_of_normals ? "--normalPanel ${panel_of_normals}" : ''
     def centro = centromere ? "--centromere ${centromere}" : ''

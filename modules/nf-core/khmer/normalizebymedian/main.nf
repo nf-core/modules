@@ -21,6 +21,7 @@ process KHMER_NORMALIZEBYMEDIAN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     pe_args = pe_reads ? "--paired" : ""
     se_args = se_reads ? "--unpaired-reads ${se_reads}" : ""
     files   = pe_reads ? pe_reads : se_reads

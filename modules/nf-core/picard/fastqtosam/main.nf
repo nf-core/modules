@@ -19,6 +19,7 @@ process PICARD_FASTQTOSAM {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!task.memory) {
         log.warn '[Picard FastqToSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'

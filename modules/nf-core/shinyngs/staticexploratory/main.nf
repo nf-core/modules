@@ -26,6 +26,7 @@ process SHINYNGS_STATICEXPLORATORY {
     // For full list of available args see
     // https://github.com/pinin4fjords/shinyngs/blob/develop/exec/exploratory_plots.R
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: meta.id
     """
     exploratory_plots.R \\

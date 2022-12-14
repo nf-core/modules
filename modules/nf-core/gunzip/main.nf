@@ -19,6 +19,7 @@ process GUNZIP {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     gunzip = archive.toString() - '.gz'
     """
     gunzip \\

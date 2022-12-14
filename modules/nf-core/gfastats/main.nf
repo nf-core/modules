@@ -27,6 +27,7 @@ process GFASTATS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def agp  = agpfile ? "--agp-to-path $agp" : ""
     def ibed = include_bed ? "--include-bed $include_bed" : ""

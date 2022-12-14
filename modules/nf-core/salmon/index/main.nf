@@ -20,6 +20,7 @@ process SALMON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def get_decoy_ids = "grep '^>' $genome_fasta | cut -d ' ' -f 1 > decoys.txt"
     def gentrome      = "gentrome.fa"
     if (genome_fasta.endsWith('.gz')) {

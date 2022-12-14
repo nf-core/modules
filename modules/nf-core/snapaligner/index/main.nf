@@ -19,6 +19,7 @@ process SNAPALIGNER_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def altcontigfile_arg = altcontigfile ? '-altContigFile ' + altcontigfile : ''
     def nonaltcontigfile_arg = nonaltcontigfile ? '-nonAltContigFile ' + nonaltcontigfile : ''
     def altliftoverfile_arg = altliftoverfile ? '-altLiftoverFile ' + altliftoverfile : ''

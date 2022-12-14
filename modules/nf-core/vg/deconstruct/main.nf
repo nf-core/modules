@@ -21,6 +21,7 @@ process VG_DECONSTRUCT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def snarls = pb ? "--snarls ${pb}" : ""
     def gbwt_arg = gbwt ? "--gbwt ${gwbt}" : ""

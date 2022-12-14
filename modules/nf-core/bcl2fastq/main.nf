@@ -22,6 +22,7 @@ process BCL2FASTQ {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     """
     bcl2fastq \\

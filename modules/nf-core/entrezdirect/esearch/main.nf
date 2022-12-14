@@ -21,6 +21,7 @@ process ENTREZDIRECT_ESEARCH {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     esearch \\
         -db $database \\

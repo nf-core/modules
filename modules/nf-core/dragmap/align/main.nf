@@ -22,7 +22,9 @@ process DRAGMAP_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads_command = meta.single_end ? "-1 $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     def samtools_command = sort_bam ? 'sort' : 'view'

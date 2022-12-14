@@ -23,6 +23,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}_consensus"
 
     def mem_gb = 8

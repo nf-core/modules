@@ -23,6 +23,7 @@ process AMPIR {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     min_length = ("${min_length}" == "[]") ? "": " min_len = as.integer(${min_length})," // Fall back to AMPir default value if none specified
     if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"

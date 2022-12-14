@@ -18,6 +18,7 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     merge_metaphlan_tables.py \\

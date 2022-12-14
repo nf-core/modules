@@ -24,6 +24,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     // Assign sensible numbers for multicore and buffer_size based on bismark docs
     if(!args.contains('--multicore') && task.cpus >= 6){
         args += " --multicore ${(task.cpus / 3) as int}"

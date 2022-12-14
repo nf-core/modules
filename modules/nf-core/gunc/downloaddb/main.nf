@@ -19,6 +19,7 @@ process GUNC_DOWNLOADDB {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     gunc download_db . -db $db_name $args
 

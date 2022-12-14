@@ -28,6 +28,7 @@ process GATK4_VARIANTRECALIBRATOR {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_command = fasta ? "--reference $fasta " : ''
     def labels_command = labels.join(' ')

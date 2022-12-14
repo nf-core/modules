@@ -23,6 +23,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_names = sample_names_fn ? "--sampleNameFile ${sample_names_fn}" : ''
     def args_list = args.tokenize()

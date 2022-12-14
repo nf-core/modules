@@ -15,6 +15,7 @@ process DEEPBGC_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     """
     export DEEPBGC_DOWNLOADS_DIR='./deepbgc_db'

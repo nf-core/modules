@@ -21,6 +21,7 @@ process PBPTYPER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def db_args = db ? '--db ${db}' : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """

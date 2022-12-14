@@ -21,6 +21,7 @@ process NEXTCLADE_DATASETGET {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${dataset}"
     def fasta = reference ? "--reference ${reference}" : ''
     def version = tag ? "--tag ${tag}" : ''

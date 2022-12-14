@@ -23,6 +23,7 @@ process AMRFINDERPLUS_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     prefix = task.ext.prefix ?: "${meta.id}"
     organism_param = meta.containsKey("organism") ? "--organism ${meta.organism} --mutation_all ${prefix}-mutations.tsv" : ""

@@ -20,6 +20,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def extended_args = args.contains("--NEW_SAMPLE_NAME") ? $args : "${args} --NEW_SAMPLE_NAME ${meta.id}"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
@@ -45,6 +46,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     stub:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_renam.vcf.gz

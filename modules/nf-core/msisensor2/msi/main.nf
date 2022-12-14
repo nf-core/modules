@@ -23,6 +23,7 @@ process MSISENSOR2_MSI {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def scan_cmd          = scan       ? "-d $scan"       : ""
     def model_cmd         = models     ? "-M models/"     : ""

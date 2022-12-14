@@ -21,6 +21,7 @@ process YARA_MAPPER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def index_prefix = index[0].baseName.substring(0,index[0].baseName.lastIndexOf('.'))
     if (meta.single_end) {

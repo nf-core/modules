@@ -21,6 +21,7 @@ process TRIMMOMATIC {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def trimmed = meta.single_end ? "SE" : "PE"
     def output = meta.single_end ?

@@ -24,6 +24,7 @@ process SNIPPY_CORE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = reference.getName().endsWith(".gz") ? true : false
     def reference_name = reference.getName().replace(".gz", "")

@@ -23,6 +23,7 @@ process DEEPARG_DOWNLOADDATA {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def VERSION='1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     deeparg \\

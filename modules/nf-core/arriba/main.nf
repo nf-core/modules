@@ -27,6 +27,7 @@ process ARRIBA {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def blacklist = blacklist ? "-b $blacklist" : "-f blacklist"
     def known_fusions = known_fusions ? "-k $known_fusions" : ""

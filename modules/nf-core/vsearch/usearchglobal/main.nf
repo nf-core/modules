@@ -31,6 +31,7 @@ process VSEARCH_USEARCHGLOBAL {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def columns = user_columns ? "--userfields ${user_columns}" : ''
     switch ( outoption ) {

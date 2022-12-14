@@ -22,6 +22,7 @@ process GATK4_COMBINEGVCFS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = vcf.collect{"--variant $it"}.join(' ')
 

@@ -25,6 +25,7 @@ process MACS2_CALLPEAK {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
     def format    = meta.single_end ? 'BAM' : 'BAMPE'

@@ -28,6 +28,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args2 = task.ext.args ?: ''
 
     def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'
@@ -119,6 +120,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     stub:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args2 = task.ext.args ?: ''
 
     def classified   = meta.single_end ? '"\${PREFIX}.classified.fastq"'   : '"\${PREFIX}.classified#.fastq"'

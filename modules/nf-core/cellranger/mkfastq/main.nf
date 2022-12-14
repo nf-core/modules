@@ -17,6 +17,7 @@ process CELLRANGER_MKFASTQ {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     cellranger mkfastq --id=${bcl.getSimpleName()} \
         --run=$bcl \

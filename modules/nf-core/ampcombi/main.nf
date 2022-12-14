@@ -31,6 +31,7 @@ process AMPCOMBI {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
     def fileoption = amp_input instanceof List ? "--path_list '${amp_input.collect{"$it"}.join("' '")}'" : "--amp_results $amp_input/"

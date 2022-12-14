@@ -23,6 +23,7 @@ process HISAT2_BUILD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def avail_mem = 0
     if (!task.memory) {
         log.info "[HISAT2 index build] Available memory not known - defaulting to 0. Specify process memory requirements to change this."

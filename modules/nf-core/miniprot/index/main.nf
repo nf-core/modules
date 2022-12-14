@@ -19,6 +19,7 @@ process MINIPROT_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     """
     miniprot \\

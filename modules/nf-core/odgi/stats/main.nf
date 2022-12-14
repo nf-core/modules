@@ -20,6 +20,7 @@ process ODGI_STATS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = ".og.stats.tsv"
     if (args.contains("--yaml") || args.contains("--multiqc")) {

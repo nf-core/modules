@@ -19,6 +19,7 @@ process KRAKENUNIQ_BUILD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     custom_db     = custom_library_dir ? "mkdir $prefix && mv library taxonomy $custom_seqid2taxid $prefix" : ""
     """

@@ -22,6 +22,7 @@ process GATK4_PREPROCESSINTERVALS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def exclude_command = exclude_intervals ? "--exclude-intervals $exclude_intervals" : ""
 

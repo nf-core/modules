@@ -26,6 +26,7 @@ process GATK4_SHIFTFASTA {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def seq_dict = dict ? "--sequence-dictionary ${dict}" : ""
     def avail_mem = 3

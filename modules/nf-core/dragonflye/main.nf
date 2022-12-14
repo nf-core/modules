@@ -23,6 +23,7 @@ process DRAGONFLYE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def memory = task.memory.toGiga()
     """
     dragonflye \\

@@ -26,6 +26,7 @@ process ADAPTERREMOVAL {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def list = adapterlist ? "--adapter-list ${adapterlist}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
 

@@ -25,6 +25,7 @@ process ATAQV_ATAQV {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def mito = mito_name ? "--mitochondrial-reference-name ${mito_name}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def peak        = peak_file        ? "--peak-file $peak_file"                       : ''

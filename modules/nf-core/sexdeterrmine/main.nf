@@ -21,6 +21,7 @@ process SEXDETERRMINE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_list = sample_list_file ? '-f ${sample_list_file}' : ''
     if ("$depth" == "${prefix}.tsv") error "Input depth and output TSV names are the same, set prefix in module configuration to disambiguate!"

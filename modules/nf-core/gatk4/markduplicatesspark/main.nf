@@ -21,6 +21,7 @@ process GATK4_MARKDUPLICATES_SPARK {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = bam.collect{"--input $it"}.join(' ')
 

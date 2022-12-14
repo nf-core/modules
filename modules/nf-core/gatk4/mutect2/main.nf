@@ -29,6 +29,7 @@ process GATK4_MUTECT2 {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def inputs = input.collect{ "--input $it"}.join(" ")
     def interval_command = intervals ? "--intervals $intervals" : ""

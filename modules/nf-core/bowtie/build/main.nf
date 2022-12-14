@@ -19,6 +19,7 @@ process BOWTIE_BUILD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     mkdir bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}

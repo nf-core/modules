@@ -26,6 +26,7 @@ process GUBBINS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     run_gubbins.py \\
         --threads $task.cpus \\

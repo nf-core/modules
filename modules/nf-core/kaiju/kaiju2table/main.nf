@@ -21,6 +21,7 @@ process KAIJU_KAIJU2TABLE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     dbnodes=`find -L ${db} -name "*nodes.dmp"`

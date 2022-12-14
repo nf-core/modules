@@ -26,6 +26,7 @@ process MUSCLE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_out = args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
     def clw_out   = args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''

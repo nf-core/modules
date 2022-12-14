@@ -25,6 +25,7 @@ process WFMASH {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def query_list = fasta_query_list ? "--query-file-list ${fasta_query_list}" : ""
     def query = query_self ? "${fasta_gz}" : ""

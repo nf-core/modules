@@ -24,6 +24,7 @@ process STRELKA_SOMATIC {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def options_target_bed = target_bed ? "--callRegions ${target_bed}" : ""
     def options_manta = manta_candidate_small_indels ? "--indelCandidates ${manta_candidate_small_indels}" : ""

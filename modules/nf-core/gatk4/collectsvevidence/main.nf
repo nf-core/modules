@@ -27,6 +27,7 @@ process GATK4_COLLECTSVEVIDENCE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def sd_vcf = site_depth_vcf ? "--sd-file ${prefix}.sd.txt.gz --site-depth-locs-vcf ${site_depth_vcf}" : ""

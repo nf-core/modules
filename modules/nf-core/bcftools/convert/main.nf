@@ -24,6 +24,7 @@ process BCFTOOLS_CONVERT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def regions = bed ? "--regions-file $bed" : ""
@@ -51,6 +52,7 @@ process BCFTOOLS_CONVERT {
 
     stub:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :

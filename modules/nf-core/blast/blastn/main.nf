@@ -20,6 +20,7 @@ process BLAST_BLASTN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     DB=`find -L ./ -name "*.ndb" | sed 's/\\.ndb\$//'`

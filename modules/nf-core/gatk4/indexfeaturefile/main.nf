@@ -19,6 +19,7 @@ process GATK4_INDEXFEATUREFILE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     def avail_mem = 3
     if (!task.memory) {

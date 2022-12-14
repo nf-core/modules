@@ -25,6 +25,7 @@ process GATK4_GENOTYPEGVCFS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def gvcf_command = gvcf.name.endsWith(".vcf") || gvcf.name.endsWith(".vcf.gz") ? "$gvcf" : "gendb://$gvcf"
     def dbsnp_command = dbsnp ? "--dbsnp $dbsnp" : ""

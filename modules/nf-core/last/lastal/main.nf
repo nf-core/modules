@@ -20,6 +20,7 @@ process LAST_LASTAL {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """

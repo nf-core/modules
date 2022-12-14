@@ -20,6 +20,7 @@ process BEDTOOLS_MULTIINTER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sizes_cmd = chrom_sizes ? "-g $chrom_sizes" : ''
 

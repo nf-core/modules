@@ -23,6 +23,7 @@ process FGBIO_ZIPPERBAMS {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     def compression = task.ext.compression ?: '0'
     prefix = task.ext.prefix ?: "${meta.id}_zipped"
     def fgbio_mem_gb = 4

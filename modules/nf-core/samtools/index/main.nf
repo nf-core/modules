@@ -21,6 +21,7 @@ process SAMTOOLS_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     samtools \\
         index \\

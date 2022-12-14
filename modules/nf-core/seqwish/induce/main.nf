@@ -20,6 +20,7 @@ process SEQWISH_INDUCE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = paf.join(',') // this ensures that we can actually input a
         // comma-separated list of PAF files as required by

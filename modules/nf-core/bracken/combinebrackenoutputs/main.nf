@@ -19,6 +19,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.

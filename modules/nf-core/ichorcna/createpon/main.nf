@@ -23,6 +23,7 @@ process ICHORCNA_CREATEPON {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def centro = centromere ? "--centromere ${centromere}" : ''
     def prefix = task.ext.prefix ?: "PoN"
     def VERSION = '0.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

@@ -23,6 +23,7 @@ process METABAT2_METABAT2 {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def decompress_depth = depth ? "gzip -d -f $depth" : ""
     def depth_file = depth ? "-a ${depth.baseName}" : ""

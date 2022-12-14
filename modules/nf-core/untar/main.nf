@@ -20,6 +20,7 @@ process UNTAR {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     untar     = archive.toString() - '.tar.gz'
 
     """

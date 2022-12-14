@@ -19,8 +19,11 @@ process SAMBLASTER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     def args3 = task.ext.args3 ?: ''
+    args3 += task.ext.custom_args3 ? ' ' + task.ext.custom_args3 : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """

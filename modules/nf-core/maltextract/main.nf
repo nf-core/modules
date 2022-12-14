@@ -21,6 +21,7 @@ process MALTEXTRACT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\

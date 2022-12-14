@@ -18,6 +18,7 @@ process KRAKENUNIQ_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     krakenuniq-download \\
         --threads ${task.cpus} \\

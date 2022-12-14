@@ -19,6 +19,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     cat \$(which assess_significance.R) | R --slave --args ${cnvs} ${ratio}

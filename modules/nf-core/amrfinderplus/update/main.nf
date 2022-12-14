@@ -16,6 +16,7 @@ process AMRFINDERPLUS_UPDATE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     mkdir amrfinderdb
     amrfinder_update -d amrfinderdb

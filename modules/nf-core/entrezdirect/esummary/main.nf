@@ -20,6 +20,7 @@ process ENTREZDIRECT_ESUMMARY {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
     if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"

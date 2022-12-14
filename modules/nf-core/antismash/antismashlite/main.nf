@@ -44,6 +44,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
 

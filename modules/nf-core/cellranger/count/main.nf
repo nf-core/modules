@@ -17,6 +17,7 @@ process CELLRANGER_COUNT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
     """

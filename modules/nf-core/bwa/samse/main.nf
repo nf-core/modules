@@ -20,6 +20,7 @@ process BWA_SAMSE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_group = meta.read_group ? "-r ${meta.read_group}" : ""
 

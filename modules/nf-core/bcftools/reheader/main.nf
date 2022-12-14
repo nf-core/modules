@@ -21,6 +21,7 @@ process BCFTOOLS_REHEADER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def update_sequences = fai ? "-f $fai" : ""
     def new_header       = header ? "-h $header" : ""

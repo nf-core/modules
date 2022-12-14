@@ -24,6 +24,7 @@ process FREEBAYES {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input            = input_2        ? "${input_1} ${input_2}"        : "${input_1}"
     def targets_file     = target_bed     ? "--target ${target_bed}"       : ""

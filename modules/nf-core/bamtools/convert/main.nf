@@ -19,6 +19,7 @@ process BAMTOOLS_CONVERT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def test = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
     if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"

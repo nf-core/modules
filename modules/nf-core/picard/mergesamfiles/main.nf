@@ -19,6 +19,7 @@ process PICARD_MERGESAMFILES {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_files = bams.sort()
     def avail_mem = 3

@@ -20,6 +20,7 @@ process NUCMER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed_ref   = ref.getName().endsWith(".gz")   ? true : false
     def is_compressed_query = query.getName().endsWith(".gz") ? true : false

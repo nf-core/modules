@@ -21,6 +21,7 @@ process KHMER_UNIQUEKMERS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     unique-kmers.py \\
         -k $kmer_size \\

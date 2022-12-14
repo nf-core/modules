@@ -21,7 +21,9 @@ process RSEM_PREPAREREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
     def args_list = args.tokenize()
     if (args_list.contains('--star')) {
         args_list.removeIf { it.contains('--star') }

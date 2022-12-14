@@ -20,6 +20,7 @@ process TABIX_BGZIP {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
     output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"

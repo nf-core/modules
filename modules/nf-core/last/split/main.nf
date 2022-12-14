@@ -19,6 +19,7 @@ process LAST_SPLIT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz

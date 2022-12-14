@@ -21,6 +21,7 @@ process AMPLIFY_PREDICT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

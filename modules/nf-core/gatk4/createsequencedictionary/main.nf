@@ -19,6 +19,7 @@ process GATK4_CREATESEQUENCEDICTIONARY {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
 
     def avail_mem = 6
     if (!task.memory) {

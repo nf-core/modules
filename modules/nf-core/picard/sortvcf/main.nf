@@ -21,6 +21,7 @@ process PICARD_SORTVCF {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def seq_dict = sequence_dict ? "--SEQUENCE_DICTIONARY $sequence_dict" : ""
     def reference = reference ? "--REFERENCE_SEQUENCE $reference" : ""

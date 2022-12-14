@@ -19,6 +19,7 @@ process FFQ {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def id_list = ids.sort()
     def name = id_list.size() == 1 ? ids[0] : 'metadata'
     def prefix = task.ext.prefix ?: "${name}"

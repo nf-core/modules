@@ -20,6 +20,7 @@ process BCFTOOLS_ANNOTATE {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def matcher = input ==~ /\S+\.*vcf\.\S*/

@@ -19,6 +19,7 @@ process BISMARK_REPORT {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     bismark2report $args
 

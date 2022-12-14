@@ -21,6 +21,7 @@ process MEGAN_DAA2INFO {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def summary = megan_summary ? "-es ${prefix}.megan" : ""
     """

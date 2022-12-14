@@ -20,6 +20,7 @@ process DASTOOL_FASTATOCONTIG2BIN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_extension = extension ? extension : "fasta"
     def clean_fasta = fasta.toString() - ".gz"

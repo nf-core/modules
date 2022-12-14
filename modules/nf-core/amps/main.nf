@@ -23,6 +23,7 @@ process AMPS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     """
     postprocessing.AMPS.r \\
         -r $maltextract_results \\

@@ -20,6 +20,7 @@ process COOLER_CLOAD {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def nproc  = args.contains('pairix') || args.contains('tabix')? "--nproc $task.cpus" : ''
 

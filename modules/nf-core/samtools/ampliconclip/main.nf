@@ -24,6 +24,7 @@ process SAMTOOLS_AMPLICONCLIP {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rejects = save_cliprejects ? "--rejects-file ${prefix}.cliprejects.bam" : ""
     def stats   = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""

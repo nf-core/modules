@@ -19,6 +19,7 @@ process WGSIM {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def WGSIM_VERSION = "0.3.1-r13" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

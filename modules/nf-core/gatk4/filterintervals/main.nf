@@ -21,6 +21,7 @@ process GATK4_FILTERINTERVALS {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def annotated_command = annotated_intervals ? "--annotated-intervals $annotated_intervals" : ""
     def read_counts_command = read_counts ? "--input $read_counts" : ""

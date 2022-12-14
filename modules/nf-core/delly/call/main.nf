@@ -22,6 +22,7 @@ process DELLY_CALL {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
     """

@@ -23,6 +23,7 @@ process IDR {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     if (peaks.toList().size < 2) {
         log.error "[ERROR] idr needs at least two replicates only one provided."
     }

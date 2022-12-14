@@ -21,6 +21,7 @@ process SPATYPER {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_args = repeats && repeat_order ? "-r ${repeats} -o ${repeat_order}" : ""
     """

@@ -19,6 +19,7 @@ process GATK4_FASTQTOSAM {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reads_command = meta.single_end ? "--FASTQ $reads" : "--FASTQ ${reads[0]} --FASTQ2 ${reads[1]}"
 

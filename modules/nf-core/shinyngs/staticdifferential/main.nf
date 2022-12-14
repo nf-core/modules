@@ -22,6 +22,7 @@ process SHINYNGS_STATICDIFFERENTIAL {
     // For full list of available args see
     // https://github.com/pinin4fjords/shinyngs/blob/develop/exec/differential_plots.R
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: meta.id
     """
     differential_plots.R \\

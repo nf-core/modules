@@ -20,7 +20,8 @@ process GAWK {
 
     script:
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
-    def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
+    def args2 = task.ext.args2 ?: ''
+    args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : '' // args2 is used to specify a program when no program file has been given
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "${input.getExtension}"
 

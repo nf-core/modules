@@ -26,6 +26,7 @@ process GECCO_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def custom_model = model_dir ? "--model ${model_dir}" : ""
     def custom_hmm = hmm ? "--hmm ${hmm}" : ""

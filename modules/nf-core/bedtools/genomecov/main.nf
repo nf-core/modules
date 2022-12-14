@@ -21,6 +21,7 @@ process BEDTOOLS_GENOMECOV {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def args_list = args.tokenize()
     args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
     if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {

@@ -29,6 +29,7 @@ process GENRICH {
 
     script:
     def args = task.ext.args ?: ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def control    = control_bam    ? "-c $control_bam"               : ''
     def blacklist  = blacklist_bed  ? "-E $blacklist_bed"             : ""
