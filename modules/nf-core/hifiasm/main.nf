@@ -2,7 +2,7 @@ process HIFIASM {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::hifiasm=0.15.4" : null)
+    conda "bioconda::hifiasm=0.15.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hifiasm:0.15.4--h2e03b76_0' :
         'quay.io/biocontainers/hifiasm:0.15.4--h2e03b76_0' }"
