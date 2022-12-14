@@ -4,6 +4,11 @@ process BCLCONVERT {
 
     container "nfcore/bclconvert:4.0.3"
 
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 
