@@ -65,14 +65,6 @@ process EMBOSS_GETORF {
     -outfmt2 $params.getorf_outformat \\
     -outseq ${prefix}.${params.getorf_outformat}
 
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         emboss: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
