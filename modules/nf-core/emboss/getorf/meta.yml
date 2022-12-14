@@ -24,6 +24,7 @@ input:
       type: file
       description: Input sequence query
       pattern: "*.{gff,em,gb,refseq,pir,swiss,sw,txt,fasta}"
+##TODO what about zipped files?
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -38,11 +39,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - outseq:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Converted sequence file
+      pattern: "*"
 
 authors:
-  - "None"
+  - "@timslittle"
