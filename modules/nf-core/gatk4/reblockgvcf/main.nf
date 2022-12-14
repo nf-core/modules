@@ -56,6 +56,7 @@ process GATK4_REBLOCKGVCF {
 
     """
     touch ${prefix}.rb.g.vcf.gz
+    touch ${prefix}.rb.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
