@@ -2,7 +2,7 @@ process GENRICH {
     tag "$meta.id"
     label 'process_high'
 
-    conda (params.enable_conda ? "bioconda::genrich=0.6.1" : null)
+    conda "bioconda::genrich=0.6.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genrich:0.6.1--h5bf99c6_1' :
         'quay.io/biocontainers/genrich:0.6.1--h5bf99c6_1' }"

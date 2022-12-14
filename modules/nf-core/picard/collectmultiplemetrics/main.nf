@@ -2,7 +2,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::picard=2.27.4" : null)
+    conda "bioconda::picard=2.27.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:2.27.4--hdfd78af_0' :
         'quay.io/biocontainers/picard:2.27.4--hdfd78af_0' }"
