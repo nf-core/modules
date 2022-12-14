@@ -12,9 +12,7 @@ process EMBOSS_GETORF {
     val out_ext
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.${out_ext}"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
+    tuple val(meta), path("*.${out_ext}"), emit: orf
     path "versions.yml"                  , emit: versions
 
     when:
