@@ -1,12 +1,9 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml emboss/getorf
-- name: "emboss getorf"
+- name: emboss getorf test_emboss_getorf
   command: nextflow run ./tests/modules/nf-core/emboss/getorf -entry test_emboss_getorf -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/emboss/getorf/nextflow.config
   tags:
-    - "emboss"
-    - "emboss/getorf"
+    - emboss/getorf
+    - emboss
   files:
-    - path: "output/emboss/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/emboss/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+    - path: output/emboss/test.fasta
+      md5sum: 04c31fbdcaab40618b1a5e0d8b22a347
+    - path: output/emboss/versions.yml
