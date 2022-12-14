@@ -20,7 +20,7 @@ process QUALIMAP_RNASEQ {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     def memory     = task.memory.toGiga() + "G"

@@ -38,8 +38,7 @@ process MULTIVCFANALYZER {
     task.ext.when == null || task.ext.when
 
     script:
-    // def args = task.ext.args ?: ''
-    args += task.ext.custom_args ? ' ' + task.ext.custom_args : '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivating $args to prevent breakage of input
+    // def args = task.ext.args ?: '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivating $args to prevent breakage of input
     def args2 = task.ext.args2 ?: ''
     args2 += task.ext.custom_args2 ? ' ' + task.ext.custom_args2 : ''
 

@@ -22,7 +22,7 @@ process PICARD_COLLECTWGSMETRICS {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3
     def interval  = intervallist ? "--INTERVALS ${intervallist}" : ''

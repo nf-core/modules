@@ -20,7 +20,7 @@ process ARIA2 {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     downloaded_file = source_url.split("/")[-1]
 
     """

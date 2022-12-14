@@ -23,7 +23,7 @@ process STRINGTIE_STRINGTIE {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     def reference = annotation_gtf ? "-G $annotation_gtf" : ""
     def ballgown  = annotation_gtf ? "-b ${prefix}.ballgown" : ""

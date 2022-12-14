@@ -18,7 +18,7 @@ process MOTUS_DOWNLOADDB {
 
     script:
     def args = task.ext.args ?: ''
-    args \+= task.ext.custom_args ? ' ' + task.ext.custom_args : ''
+    args += task.ext.custom_args ? ' ' + task.ext.custom_args : ''
     def software = "${motus_downloaddb_script.simpleName}_copy.py"
     """
     ## must copy script file to working directory,
