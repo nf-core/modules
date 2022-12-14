@@ -61,4 +61,23 @@ process JASMINESV {
         jasminesv: \$(echo \$(jasmine 2>&1 | grep "version" | sed 's/Jasmine version //'))
     END_VERSIONS
     """
+
+    script:
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+
+    vcfs.each{
+        if (it.getExtension() == "gz"){
+            error "Gzipped files are not supported by Jasmine, please gunzip your VCF files first."
+            // https://github.com/mkirsche/Jasmine/issues/31
+        }
+    }
+
+    """
+    touch ${prefix}.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        jasminesv: \$(echo \$(jasmine 2>&1 | grep "version" | sed 's/Jasmine version //'))
+    END_VERSIONS
+    """
 }
