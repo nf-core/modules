@@ -55,6 +55,16 @@ process EMBOSS_GETORF {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
+    getorf \\
+    -table $params.getorf_table \\
+    -minsize $params.getorf_minsize \\
+    -maxsize $params.getorf_maxsize \\
+    -find $params.getorf_find \\
+    $args \\
+    -sequence ${sequence} \\
+    -outfmt2 $params.getorf_outformat \\
+    -outseq ${prefix}.${params.getorf_outformat}
+
     samtools \\
         sort \\
         $args \\
