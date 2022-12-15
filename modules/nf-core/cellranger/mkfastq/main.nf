@@ -2,7 +2,6 @@ process CELLRANGER_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-
     container "nfcore/cellrangermkfastq:7.0.0"
 
     // Exit if running this module with -profile conda / -profile mamba
