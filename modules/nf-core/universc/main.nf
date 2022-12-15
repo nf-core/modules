@@ -7,7 +7,7 @@ process UNIVERSC {
         conda (params.enable_conda ? "hcc::cellranger=3.0.2" : null)
     }
     container "nfcore/universc:1.2.4"
-    if (workflow.containerEngine == 'docker'){
+    if (workflow.containerEngine == 'docker' | workflow.containerEngine == 'podman'){
         containerOptions = "--user root"
     }
     if (workflow.containerEngine == 'singularity'){

@@ -60,14 +60,14 @@ STAR aligner and a permissive software license without and EULA.
 ### Container settings
 
 The cellranger install directory must have write permissions to run UniverSC.
-To run in docker use the `--user root` option in container parameters
+To run in docker or podman use the `--user root` option in container parameters
 and for singularity use the `--writeable` parameter.
 
 These are set as default in universc/main.nf:
 
 ```
     container "nfcore/universc:1.2.4"
-    if (workflow.containerEngine == 'docker'){
+    if (workflow.containerEngine == 'docker' | workflow.containerEngine == 'podman'){
         containerOptions = "--user root"
     }
     if (workflow.containerEngine == 'singularity'){
@@ -80,6 +80,7 @@ as one of the following before running nextflow.
 
 ```
 export PROFILE="docker"
+expert PROFILE="podman"
 export PROFILE="singularity"
 ```
 
