@@ -95,7 +95,6 @@ process CNVKIT_BATCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        $samtools_version
         ${samtools_version}cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
     END_VERSIONS
     """
