@@ -23,7 +23,7 @@ input:
         e.g. [ id:'test', single_end:false ]
   - sequences:
       type: file
-      description: fasta file
+      description: fasta file of sequences to be clustered
       pattern: "*.{fa|fasta}"
 
 output:
@@ -37,10 +37,9 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - fasta:
       type: file
-      description: Representative sequences in fasta format
+      description: fasta file of the representative sequences for each cluster
       pattern: "*.{fasta}"
   - text:
       type: file
