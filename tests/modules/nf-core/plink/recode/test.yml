@@ -1,0 +1,17 @@
+- name: plink recode test_plink_recode
+  command: nextflow run ./tests/modules/nf-core/plink/recode -entry test_plink_recode -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/plink/recode/nextflow.config
+  tags:
+    - plink/recode
+    - plink
+  files:
+    - path: output/plink/test.bed
+      md5sum: b10649faa5f2d2f86f7c5b538bded586
+    - path: output/plink/test.bim
+      md5sum: c947ff182ee3d6585739a8add1e78124
+    - path: output/plink/test.fam
+      md5sum: fccad9d93658a4c5d1c943ff55e548ae
+    - path: output/plink/test.map
+      md5sum: a4fead940835b04b7f43ea3842f00085
+    - path: output/plink/test.ped
+      md5sum: 17cf8f2ff2f47dfd8c06b2764d660e2a
+    - path: output/plink/versions.yml
