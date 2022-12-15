@@ -31,6 +31,59 @@ It is still suffient to generate summary reports and count matrices compatible w
 single-cell analysis tools available for 10X Genomics and Cell Ranger output format
 in Python and R packages.
 
+## Usage
+
+### Generating References
+
+The Cell Ranger modules can be used to generate reference indexes to run UniverSC.
+Note that UniverSC requires the Open Source version v3.0.2 of Cell Ranger included
+in the nf-core/universc Docker image. The same module parameters can be run provided
+that the container is changed in process configurations (modify nextflow.config).
+
+```
+process {
+
+...
+    withName: CELLRANGER_MKGTF {
+        container = "nfcore/universc:1.2.4"
+    }
+    withName: CELLRANGER_MKREF{
+       container = "nfcore/universc:1.2.4"
+    }
+...
+}
+```
+
+This will generate a compatible index for UniverSC using the same version of the
+STAR aligner and a permissive software license without and EULA.
+
+### Container settings
+
+The cellranger install directory must have write permissions to run UniverSC.
+To run in docker use the `--user root` option in container parameters
+and for singularity use the `--writeable` parameter.
+
+These are set as default in universc/main.nf:
+```
+    container "nfcore/universc:1.2.4"
+    if (workflow.containerEngine == 'docker'){
+        containerOptions = "--user root"
+    }
+    if (workflow.containerEngine == 'singularity'){
+        containerOptions = "--writable"
+    }
+```
+
+Select the container engine with `nextflow --profile "docker"` or set the environment variable
+as one of the following before running nextflow.
+
+```
+export PROFILE="docker"
+export PROFILE="singularity"
+```
+
+Note that due to dependencies installed in a docker image, it is not possible to use conda environments.
+
 ## Disclaimer
 
 We are third party developers not affiliated with 10X Genomics or any other vendor of
