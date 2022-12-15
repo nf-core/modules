@@ -19,10 +19,11 @@ input:
       type: file
       description: BED/BEDGRAPH
       pattern: "*.{bed|bedGraph}"
-
-  - extension:
-      type: string
-      description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt", ".tab", etc.) It is set arbitrarily by the user and corresponds to the file format which depends on arguments.
+  - genome_file:
+      type: file
+      description: |
+        Optional reference genome 2 column file that defines the expected chromosome order.
+      pattern: "*.{fai,txt,chromsizes}"
 output:
   - meta:
       type: map
@@ -44,3 +45,4 @@ authors:
   - "@sruthipsuresh"
   - "@drpatelh"
   - "@chris-cheshire"
+  - "@adamrtalbot"
