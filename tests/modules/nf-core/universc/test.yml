@@ -1,8 +1,7 @@
 - name: universc launch test_universc_10x
-  command: nextflow run ./tests/modules/nf-core/universc/launch -entry test_universc_10x -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/launch/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/universc -entry test_universc_10x -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/universc/nextflow.config
   tags:
     - universc
-    - universc/launch
   files:
     - path: output/cellranger/genome.filtered.gtf
       md5sum: 9dc1a510bbe4438cfc2a74423bf2b2bd
