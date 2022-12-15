@@ -2,9 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { UNIVERSC_MKGTF } from '../../../../../modules/nf-core/universc/mkgtf/main.nf'
-include { UNIVERSC_MKREF } from '../../../../../modules/nf-core/universc/mkref/main.nf'
-include { UNIVERSC_COUNT } from '../../../../../modules/nf-core/universc/count/main.nf'
+include { CELLRANGER_MKGTF } from '../../../../../modules/nf-core/cellranger/mkgtf/main.nf'
+include { CELLRANGER_MKREF } from '../../../../../modules/nf-core/cellranger/mkref/main.nf'
 include { UNIVERSC_LAUNCH } from '../../../../../modules/nf-core/universc/launch/main.nf'
 
 workflow test_universc_10x {
@@ -19,16 +18,16 @@ workflow test_universc_10x {
     gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
     reference_name = "homo_sapiens_chr22_reference"
 
-    UNIVERSC_MKGTF ( gtf )
+    CELLRANGER_MKGTF ( gtf )
 
-    UNIVERSC_MKREF (
+    CELLRANGER_MKREF (
         fasta,
-        UNIVERSC_MKGTF.out.gtf,
+        CELLRANGER_MKGTF.out.gtf,
         reference_name
     )
 
     UNIVERSC_LAUNCH (
         input,
-        UNIVERSC_MKREF.out.reference
+        CELLRANGER_MKREF.out.reference
     )
 }
