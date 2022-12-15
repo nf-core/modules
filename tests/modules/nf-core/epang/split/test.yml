@@ -1,0 +1,12 @@
+## TODO nf-core: Please run the following command to build this file:
+#                nf-core modules create-test-yml epang/split
+- name: "epang split"
+  command: nextflow run ./tests/modules/nf-core/epang/split -entry test_epang_split -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/epang/split/nextflow.config
+  tags:
+    - "epang"
+    - "epang/split"
+  files:
+    - path: "output/epang/test.bam"
+      md5sum: e667c7caad0bc4b7ac383fd023c654fc
+    - path: "output/epang/versions.yml"
+      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
