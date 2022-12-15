@@ -22,15 +22,15 @@ process TABIX_BGZIP {
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
-    output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
-    command1 = in_bgzip ? '-d' : '-c'
-    command2 = in_bgzip ? ''   : " > ${output}"
+    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
+    command = in_bgzip ? '-d' : ''
     // Name the index according to $prefix, unless a name has been requested
     if ((args.matches("(^| )-i\\b") || args.matches("(^| )--index(\$| )")) && !args.matches("(^| )-I\\b") && !args.matches("(^| )--index-name\\b")) {
         args = args + " -I ${output}.gzi"
     }
     """
-    bgzip $command1 $args -@${task.cpus} $input $command2
+    bgzip $command -c $args -@${task.cpus} $input > ${output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
