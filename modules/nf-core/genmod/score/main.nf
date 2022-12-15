@@ -2,7 +2,7 @@ process GENMOD_SCORE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::genmod=3.7.4" : null)
+    conda "bioconda::genmod=3.7.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmod:3.7.4--pyh5e36f6f_0':
         'quay.io/biocontainers/genmod:3.7.4--pyh5e36f6f_0' }"

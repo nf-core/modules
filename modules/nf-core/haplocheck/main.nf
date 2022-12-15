@@ -2,7 +2,7 @@ process HAPLOCHECK {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::haplocheck=1.3.3" : null)
+    conda "bioconda::haplocheck=1.3.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/haplocheck:1.3.3--h4a94de4_0':
         'quay.io/biocontainers/haplocheck:1.3.3--h4a94de4_0' }"
