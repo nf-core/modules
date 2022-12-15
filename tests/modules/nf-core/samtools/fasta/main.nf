@@ -11,5 +11,5 @@ workflow test_samtools_fasta {
         file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
     ]
 
-    SAMTOOLS_FASTA ( input )
+    SAMTOOLS_FASTA ( input, false )
 }
