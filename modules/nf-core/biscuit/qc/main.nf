@@ -2,7 +2,7 @@ process BISCUIT_QC {
     tag "$meta.id"
     label 'process_long'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.1.0.20220707" : null)
+    conda "bioconda::biscuit=1.1.0.20220707"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
         'quay.io/biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
