@@ -1,19 +1,19 @@
 name: "cdhit"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Cluster protein sequences using sequence similarity
 keywords:
-  - sort
+  - cluster
+  - protein
+  - alignment
+  - fasta
 tools:
   - "cdhit":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Clusters and compares protein or nucleotide sequences"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://sites.google.com/view/cd-hit/home"
+      documentation: "https://github.com/weizhongli/cdhit/wiki"
+      tool_dev_url: "https://github.com/weizhongli/cdhit"
+      doi: "10.1093/bioinformatics/btl158"
       licence: "['GPL v2']"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -21,14 +21,11 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - sequences:
       type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: fasta file
+      pattern: "*.{fa|fasta}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   #Only when we have meta
   - meta:
@@ -36,16 +33,19 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
   ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Representative sequences in fasta format
+      pattern: "*.{fasta}"
+  - text:
+      type: file
+      description: List of clusters 
+      pattern: "*.{txt}"
 
 authors:
-  - "None"
+  - "@timslittle"
