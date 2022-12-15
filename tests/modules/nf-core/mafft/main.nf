@@ -24,6 +24,6 @@ workflow test_mafft_add {
 
     MAFFT_ADD (
         input,
-        file('https://raw.githubusercontent.com/erikrikarddaniel/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true)
+        file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true)
     )
 }
