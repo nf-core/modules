@@ -9,6 +9,7 @@ process MAFFT {
 
     input:
     tuple val(meta), path(fasta)
+    path  addsequences
 
     output:
     tuple val(meta), path("*.fas"), emit: fas
@@ -20,10 +21,12 @@ process MAFFT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def add = addsequences ? "--add $addsequences" : ''
     """
     mafft \\
         --thread ${task.cpus} \\
         ${args} \\
+        ${add} \\
         ${fasta} \\
         > ${prefix}.fas
 
