@@ -1,8 +1,8 @@
 - name: biscuit align test_biscuit_align_single
   command: nextflow run ./tests/modules/nf-core/biscuit/align -entry test_biscuit_align_single -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/align/nextflow.config
   tags:
-    - biscuit
     - biscuit/align
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -24,12 +24,13 @@
       md5sum: 001250f6e785711a7775ac4a40e0b4d0
     - path: output/biscuit/test.bam.bai
       md5sum: 60fe784bc6d396d1c1eecc81485c24df
+    - path: output/biscuit/versions.yml
 
 - name: biscuit align test_biscuit_align_paired
   command: nextflow run ./tests/modules/nf-core/biscuit/align -entry test_biscuit_align_paired -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/align/nextflow.config
   tags:
-    - biscuit
     - biscuit/align
+    - biscuit
   files:
     - path: output/biscuit/BiscuitIndex/genome.fasta
       md5sum: 6e9fe4042a72f2345f644f239272b7e6
@@ -51,3 +52,4 @@
       md5sum: a915916a15f2f2642b64ab2ae2b851e5
     - path: output/biscuit/test.bam.bai
       md5sum: 9c9669e0bd8017d82ecb65c0a96ff457
+    - path: output/biscuit/versions.yml
