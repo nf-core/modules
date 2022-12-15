@@ -23,7 +23,7 @@ workflow test_tabix_bgzip_compress_gzi {
 
 workflow test_tabix_bgzip_decompress {
     input = [ [ id:'test' ], // meta map
-              [ file(params.test_data['sarscov2']['genome']['test_bed_gz'], checkIfExists: true) ]
+              [ file(params.test_data['homo_sapiens']['genome']['genome_bed_gz'], checkIfExists: true) ]
             ]
 
     TABIX_BGZIP ( input )
