@@ -2,7 +2,7 @@ process BISCUIT_INDEX {
     tag "$fasta"
     label 'process_long'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
+    conda "bioconda::biscuit=1.0.2.20220113"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/biscuit:1.0.2.20220113--h81a5ba2_0':
         'quay.io/biocontainers/biscuit:1.0.2.20220113--h81a5ba2_0' }"

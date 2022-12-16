@@ -3,7 +3,7 @@ process GTDBTK_CLASSIFYWF {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda (params.enable_conda ? "bioconda::gtdbtk=1.5.0" : null)
+    conda "bioconda::gtdbtk=1.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gtdbtk:1.5.0--pyhdfd78af_0' :
         'quay.io/biocontainers/gtdbtk:1.5.0--pyhdfd78af_0' }"
