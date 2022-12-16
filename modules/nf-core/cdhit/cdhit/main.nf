@@ -11,9 +11,9 @@ process CDHIT {
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: fasta
-    tuple val(meta), path(".txt"),    emit: clusters
-    path "versions.yml"           ,   emit: versions
+    tuple val(meta), path("*.fasta")    ,emit: fasta
+    tuple val(meta), path("*.clstr")    ,emit: clusters
+    path "versions.yml"                 ,emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process CDHIT {
     """
     cd-hit \\
     -i $sequences \\
-    -o $prefix \\
+    -o ${prefix}.fasta \\
     -c $threshold \\
     -n $wordsize \\
     -M $task.memory.bytes \\
