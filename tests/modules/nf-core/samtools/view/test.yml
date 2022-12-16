@@ -4,8 +4,6 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.bam
-      md5sum: 3d0ebcd0c08721d56088f23cf358b612
     - path: output/samtools/versions.yml
 
 - name: samtools view test_samtools_view_cram
@@ -14,7 +12,6 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.cram
     - path: output/samtools/versions.yml
 
 - name: samtools view test_samtools_view_convert
@@ -23,8 +20,6 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.bam
-      md5sum: f8dfadd910aeb742c84703c7efb4af0e
     - path: output/samtools/versions.yml
 
 - name: samtools view test_samtools_view_index
@@ -33,8 +28,6 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.bam
-      md5sum: e0cfe6a07ddd5b24458ff180db22ca51
     - path: output/samtools/test.bam.csi
       md5sum: 1b47ef166c280537d0dc14b94ccb966f
     - path: output/samtools/versions.yml
@@ -45,14 +38,12 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.bam
-      md5sum: 671857c7d1418562f983a07f6859f5a0
     - path: output/samtools/test.bam.csi
-      md5sum: 242bd79567706944b4eac4728d46e57e
-    - path: output/samtools/test.filtered.bam
-      md5sum: 2fe47de468765dfcc7560eafbba339a9
-    - path: output/samtools/test.filtered.bam.csi
-      md5sum: 58aea4d549478af978249161e43b28bb
+      md5sum: 9d7de0d4ee6e6e0c3e1133022dea1239
+    - path: output/samtools/test.unoutput.bam
+      md5sum: 06d8322c2b47594ce3872216ed092de4
+    - path: output/samtools/test.unoutput.bam.csi
+      md5sum: df908c888ac28bbdcd57a94758186af5
     - path: output/samtools/versions.yml
 
 - name: samtools view test_samtools_view_stubs
@@ -61,6 +52,4 @@
     - samtools/view
     - samtools
   files:
-    - path: output/samtools/test.bam
-      md5sum: 3d0ebcd0c08721d56088f23cf358b612
     - path: output/samtools/versions.yml
