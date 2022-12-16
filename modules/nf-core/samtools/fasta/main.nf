@@ -25,8 +25,8 @@ process SAMTOOLS_FASTA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output = ( interleave && ! meta.single_end ) ? "> ${prefix}_interleaved.fasta.gz" :
-                 meta.single_end ? "-1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz" :
-                 "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
+        meta.single_end ? "-1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz" :
+        "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
     """
     samtools \\
         fasta \\
