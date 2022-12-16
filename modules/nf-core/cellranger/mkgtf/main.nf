@@ -3,9 +3,6 @@ process CELLRANGER_MKGTF {
     label 'process_low'
 
     container "nfcore/cellranger:7.0.0"
-    if (workflow.containerEngine == 'podman'){
-        containerOptions = "--user root --memory 0  --systemd=always"
-    }
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
