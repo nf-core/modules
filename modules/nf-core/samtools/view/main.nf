@@ -13,14 +13,15 @@ process SAMTOOLS_VIEW {
     path qname
 
     output:
-    tuple val(meta), path("*.bam"),        emit: bam,      optional: true
-    tuple val(meta), path("*.cram"),       emit: cram,     optional: true
-    tuple val(meta), path("*.sam"),        emit: sam,      optional: true
-    tuple val(meta), path("*.bai"),        emit: bai,      optional: true
-    tuple val(meta), path("*.csi"),        emit: csi,      optional: true
-    tuple val(meta), path("*.crai"),       emit: crai,     optional: true
-    tuple val(meta), path("*.filtered.*"), emit: filtered, optional: true
-    path  "versions.yml",                  emit: versions
+    tuple val(meta), path("*[!unoutput].bam"),            emit: bam,            optional: true
+    tuple val(meta), path("*[!unoutput].cram"),           emit: cram,           optional: true
+    tuple val(meta), path("*[!unoutput].sam"),            emit: sam,            optional: true
+    tuple val(meta), path("*[!unoutput]*.bai"),           emit: bai,            optional: true
+    tuple val(meta), path("*[!unoutput]*.csi"),           emit: csi,            optional: true
+    tuple val(meta), path("*[!unoutput]*.crai"),          emit: crai,           optional: true
+    tuple val(meta), path("*.unoutput.{bam,cram,sam}"),   emit: unoutput,       optional: true
+    tuple val(meta), path("*.unoutput.*.{bai,csi,crai}"), emit: unoutput_index, optional: true
+    path  "versions.yml",                                 emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +35,7 @@ process SAMTOOLS_VIEW {
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     input.getExtension()
-    def readnames = qname ? "--qname-file ${qname} --unoutput ${prefix}.filtered.${file_type}": ""
+    def readnames = qname ? "--qname-file ${qname} --unoutput ${prefix}.unoutput.${file_type}": ""
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\

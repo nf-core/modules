@@ -53,6 +53,10 @@ workflow test_samtools_view_filter {
     qname = Channel.of("testN:2817", "testN:2814").collectFile(name: "readnames.list", newLine: true)
 
     SAMTOOLS_VIEW ( input, fasta, qname )
+    SAMTOOLS_VIEW.out.bam.view()
+    SAMTOOLS_VIEW.out.csi.view()
+    SAMTOOLS_VIEW.out.unoutput.view()
+    SAMTOOLS_VIEW.out.unoutput_index.view()
 }
 
 workflow test_samtools_view_stubs {
