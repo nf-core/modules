@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { CDHIT } from '../../../../modules/nf-core/cdhit/main.nf'
+include { CDHIT } from '../../../../modules/nf-core/cdhit/cdhit/main.nf'
 
 workflow test_cdhit {
     
     input = [
         [ id:'test', single_end:false ], // meta map
-        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+        file(params.test_data['proteomics']['database']['yeast_UPS_fasta'], checkIfExists: true)
     ]
 
     CDHIT ( input )
