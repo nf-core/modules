@@ -35,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "podman"]
+        profile: ["docker", "singularity", "conda"]
         exclude:
           - profile: "conda"
             tags: bases2fastq
@@ -120,11 +120,6 @@ jobs:
         uses: eWaterCycle/setup-singularity@v5
         with:
           singularity-version: 3.7.1
-
-      - name: Set up Podman
-        if: matrix.profile == 'podman'
-        run: |
-          sudo ln -sf /usr/bin/podman /usr/bin/docker
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
