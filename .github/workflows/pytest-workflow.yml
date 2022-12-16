@@ -124,7 +124,7 @@ jobs:
       - name: Set up Podman
         if: matrix.profile == 'podman'
         run: |
-          sudo ln -s /usr/bin/podman /usr/bin/docker
+          sudo ln -sf /usr/bin/podman /usr/bin/docker
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
