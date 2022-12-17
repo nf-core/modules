@@ -51,14 +51,15 @@ process PICARD_COLLECTRNASEQMETRICS {
 
     picard \\
         -Xmx${avail_mem}g \\
-	CollectRnaSeqMetrics \\
-	$args \\
-	$reference \\
-	$rrna \\
-	$strand \\
-	--REF_FLAT \$ref_flat \\
-	--INPUT $bam \\
-	--OUTPUT ${prefix}.rna_metrics
+        CollectRnaSeqMetrics \\
+        $args \\
+        $reference \\
+        $rrna \\
+        $strand \\
+        --REF_FLAT \$ref_flat \\
+        --INPUT $bam \\
+        --OUTPUT ${prefix}.rna_metrics
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
