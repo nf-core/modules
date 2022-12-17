@@ -2,19 +2,18 @@ process EPANG_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::epa-ng=0.3.8" : null)
+    conda "bioconda::epa-ng=0.3.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
         'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
 
     input:
-    tuple val(meta), path(refaln)
-    path  fullaln
+    tuple val(meta), path(refaln), path(fullaln)
 
     output:
-    tuple val(meta), path("query.fasta.gz"), emit: query
-    path  "reference.fasta.gz"             , emit: reference
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("query.fasta.gz")    , emit: query
+    tuple val(meta), path("reference.fasta.gz"), emit: reference
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
