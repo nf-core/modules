@@ -2,7 +2,7 @@ process DEDUP {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::dedup=0.12.8" : null)
+    conda "bioconda::dedup=0.12.8"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dedup:0.12.8--hdfd78af_1' :
         'quay.io/biocontainers/dedup:0.12.8--hdfd78af_1' }"
