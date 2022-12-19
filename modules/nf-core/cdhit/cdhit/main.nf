@@ -21,15 +21,13 @@ process CDHIT_CDHIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def threshold = params.cdhit_threshold ?: 0.9
-    def wordsize = params.cdhit_wordsize ?: 5
     """
     cd-hit \\
         -i $sequences \\
         -o ${prefix}.fasta \\
         -c $threshold \\
         -n $wordsize \\
-        -M $task.memory.bytes \\
+        -M $task.memory.mega \\
         -T $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
