@@ -20,7 +20,7 @@ process UCSC_GTFTOGENEPRED {
 
     script:
     def args = task.ext.args ?: ''
-    gen_refflat = args.contains("-genePredExt") && args.contains("-geneNameAsName2") ? "true" : "false"
+    def gen_refflat = args.contains("-genePredExt") && args.contains("-geneNameAsName2") ? "true" : "false"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
