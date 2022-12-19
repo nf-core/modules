@@ -11,7 +11,7 @@ process FQ_SUBSAMPLE {
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: bam
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
     path "versions.yml"                , emit: versions
 
     when:
