@@ -1,5 +1,5 @@
 - name: biscuit pileup test_biscuit_pileup
-  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/pileup/nextflow.config
   tags:
     - biscuit
     - biscuit/pileup
@@ -21,12 +21,10 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 7deee1aac3395d93bef1df11ab38379e
     - path: output/biscuit/test.vcf.gz
-      md5sum: ef9798c318ead0f8a79ee7fdeb1ffbf9
-    - path: output/biscuit/versions.yml
-      md5sum: ae38b891fdbf9f7ff5c486408f949dc5
+      md5sum: 2d03ad282745b9623a2209d7c746a35b
 
 - name: biscuit pileup test_biscuit_pileup_somatic
-  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup_somatic -c ./tests/config/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/biscuit/pileup -entry test_biscuit_pileup_somatic -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/biscuit/pileup/nextflow.config
   tags:
     - biscuit
     - biscuit/pileup
@@ -48,6 +46,4 @@
     - path: output/biscuit/BiscuitIndex/genome.fasta.par.sa
       md5sum: 7deee1aac3395d93bef1df11ab38379e
     - path: output/biscuit/test.vcf.gz
-      md5sum: 692b4a6191b08fabe5efa5abe00da420
-    - path: output/biscuit/versions.yml
-      md5sum: cc51fd498d67fdc7cc067686eb855b93
+      md5sum: d45d682063a328300008480a283f7edb
