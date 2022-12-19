@@ -22,7 +22,6 @@ process BISCUIT_VCF2BED {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    set -o pipefail
     biscuit vcf2bed \\
         $args \\
         $vcf | \\

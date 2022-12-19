@@ -12,9 +12,9 @@ process BISCUIT_BLASTER {
     path index
 
     output:
-    tuple val(meta), path("*.bam")               , emit: bam
-    tuple val(meta), path("*.bam"), path("*.bai"), emit: indexed_bam
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai 
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,6 @@ process BISCUIT_BLASTER {
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.95),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     """
-    set -o pipefail
     INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit align \\
