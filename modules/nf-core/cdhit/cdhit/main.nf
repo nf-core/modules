@@ -32,7 +32,7 @@ process CDHIT_CDHIT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cdhit: \$(echo \$(cd-hit -h|head -n 1 2>&1) | sed 's/====== CD-HIT version //;s/ (built on .*) ======//' ))
+        cdhit: \$(echo \$(cd-hit -h|head -n 1 2>&1) | sed 's/====== CD-HIT version //;s/ (built on .*) ======//' )
     END_VERSIONS
     """
 }
