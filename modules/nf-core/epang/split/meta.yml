@@ -23,11 +23,11 @@ input:
   - refaln:
       type: file
       description: reference alignment in any supported format including phylip and fasta, may be gzipped
-      pattern: "*"
+      pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
   - fullaln:
       type: file
       description: full alignment in any supported format to split into reference and query alignments
-      pattern: "*"
+      pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
 
 output:
   - meta:
