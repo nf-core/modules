@@ -49,7 +49,7 @@ process FQ_SUBSAMPLE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fq: \$(echo \$(fq subsample --version | sed 's/fq-lint //g'))
+        fq: \$(echo \$(fq subsample --version | sed 's/fq-subsample //g'))
     END_VERSIONS
     """
 }
