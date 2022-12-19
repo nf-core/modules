@@ -25,7 +25,7 @@ process FQ_SUBSAMPLE {
     def args = task.ext.args ?: ''
     def prob_exists = args =~ /-p|--probability/
     def nrec_exists = args =~ /-n|--record-count/
-    if ( !prob_exists && !nrec_exists ){
+    if ( !(prob_exists || nrec_exists) ){
         error "FQ/SUBSAMPLE requires --probability (-p) or --record-count (-n) specified in task.ext.args!"
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
