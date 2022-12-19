@@ -1,4 +1,4 @@
-process CDHIT {
+process CDHIT_CDHIT {
     tag "$meta.id"
     label 'process_medium'
 
@@ -25,12 +25,12 @@ process CDHIT {
     def wordsize = params.cdhit_wordsize ?: 5
     """
     cd-hit \\
-    -i $sequences \\
-    -o ${prefix}.fasta \\
-    -c $threshold \\
-    -n $wordsize \\
-    -M $task.memory.bytes \\
-    -T $task.cpus
+        -i $sequences \\
+        -o ${prefix}.fasta \\
+        -c $threshold \\
+        -n $wordsize \\
+        -M $task.memory.bytes \\
+        -T $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
