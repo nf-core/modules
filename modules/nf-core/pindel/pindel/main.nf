@@ -2,7 +2,7 @@ process PINDEL_PINDEL {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::pindel=0.2.5b9" : null)
+    conda "bioconda::pindel=0.2.5b9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pindel:0.2.5b9--h06e5f0a_6':
         'quay.io/biocontainers/pindel:0.2.5b9--h06e5f0a_6' }"

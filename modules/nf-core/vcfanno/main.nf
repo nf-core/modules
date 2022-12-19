@@ -2,7 +2,7 @@ process VCFANNO {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::vcfanno=0.3.3" : null)
+    conda "bioconda::vcfanno=0.3.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vcfanno:0.3.3--h9ee0642_0':
         'quay.io/biocontainers/vcfanno:0.3.3--h9ee0642_0' }"

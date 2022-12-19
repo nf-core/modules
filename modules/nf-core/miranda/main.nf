@@ -2,7 +2,7 @@ process MIRANDA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::miranda=3.3a" : null)
+    conda "bioconda::miranda=3.3a"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miranda:3.3a--h779adbc_3':
         'quay.io/biocontainers/miranda:3.3a--h779adbc_3' }"

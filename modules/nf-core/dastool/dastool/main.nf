@@ -2,7 +2,7 @@ process DASTOOL_DASTOOL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::das_tool=1.1.4" : null)
+    conda "bioconda::das_tool=1.1.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.4--r41hdfd78af_1' :
         'quay.io/biocontainers/das_tool:1.1.4--r41hdfd78af_1' }"
