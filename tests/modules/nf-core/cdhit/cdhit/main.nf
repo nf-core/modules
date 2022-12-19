@@ -11,5 +11,5 @@ workflow test_cdhit {
         file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
     ]
 
-    CDHIT ( input )
+    CDHIT_CDHIT ( input )
 }
