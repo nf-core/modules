@@ -16,9 +16,9 @@ process SALMON_QUANT {
     val   lib_type
 
     output:
-    tuple val(meta), path("${prefix}")     , emit: results
-    tuple val(meta), path("meta_info.json"), emit: json_info, optional: true
-    path  "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}") , emit: results
+    tuple val(meta), path("*info.json"), emit: json_info, optional: true
+    path  "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -66,7 +66,7 @@ process SALMON_QUANT {
         -o $prefix
 
     if [ -f $prefix/aux_info/meta_info.json ]; then
-        cp $prefix/aux_info/meta_info.json .
+        cp $prefix/aux_info/meta_info.json "${prefix}_meta_info.json"
     fi
 
     cat <<-END_VERSIONS > versions.yml
