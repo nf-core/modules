@@ -13,7 +13,7 @@ process BISCUIT_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai 
+    tuple val(meta), path("*.bai"), emit: bai
     path "versions.yml"           , emit: versions
 
     when:
