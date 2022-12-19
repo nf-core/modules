@@ -11,8 +11,8 @@ process FQ_GENERATE {
     val meta
 
     output:
-    tuple val(meta), path("*.R1.fastq.gz"), path("*.R2.fastq.gz"), emit: fastq
-    path "versions.yml"                                          , emit: versions
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

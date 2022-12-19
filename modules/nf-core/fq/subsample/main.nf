@@ -35,8 +35,8 @@ process FQ_SUBSAMPLE {
         fastq1_output = "--r1-dst ${prefix}.fastq.gz"
         fastq2_output = ""
     } else if ( n_fastq == 2 ){
-        fastq1_output = "--r1-dst ${prefix}.R1.fastq.gz"
-        fastq2_output = "--r2-dst ${prefix}.R2.fastq.gz"
+        fastq1_output = "--r1-dst ${prefix}_R1.fastq.gz"
+        fastq2_output = "--r2-dst ${prefix}_R2.fastq.gz"
     } else {
         error "FQ/SUBSAMPLE only accepts 1 or 2 FASTQ files!"
     }
