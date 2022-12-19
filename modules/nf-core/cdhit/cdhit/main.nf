@@ -25,8 +25,6 @@ process CDHIT_CDHIT {
     cd-hit \\
         -i $sequences \\
         -o ${prefix}.fasta \\
-        -c $threshold \\
-        -n $wordsize \\
         -M $task.memory.mega \\
         -T $task.cpus
 
