@@ -1,0 +1,53 @@
+name: "fastq_sample_infer_strandedness_fq_salmon"
+description: Subsample fastq and infer strandedness
+keywords:
+  - fastq
+  - subsample
+  - strandedness
+modules:
+  - fq/subsample
+  - salmon/quant
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - ch_index:
+      type: file
+      description: Salmon index files
+      pattern: "Directory containing Salmon index"
+  - ch_transcript_fasta:
+      type: file
+      description: Transcript fasta file
+      pattern: "Path to transcript sequence in fasta format"
+  - ch_gtf:
+      type: file
+      description: GTF features file
+      pattern: "Path features in GTF format"
+
+output:
+  - reads:
+    type: file
+    description: Subsampled fastq reads.
+    pattern: "*.{fq,fastq}{,.gz}"
+  - results:
+    type: directory
+    description: Folder containing the quantification results for a specific sample
+    pattern: "${prefix}"
+  - json_info:
+    type: file
+    description: File containing meta information from Salmon quant
+    pattern: "*info.json"
+  - versions:
+    type: file
+    description: File containing software versions
+    pattern: "versions.yml"
+authors:
+  - "@robsyme"
+  - "@drpatelh"
