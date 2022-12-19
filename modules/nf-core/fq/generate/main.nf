@@ -23,7 +23,7 @@ process FQ_GENERATE {
     """
     fq generate \\
         $args \\
-        ${prefix}.R1.fastq.gz ${prefix}.R2.fastq.gz
+        ${prefix}_R1.fastq.gz ${prefix}_R2.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
