@@ -2,7 +2,7 @@ process SEROBA_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda (params.enable_conda ? "bioconda::seroba=1.0.2" : null)
+    conda "bioconda::seroba=1.0.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seroba:1.0.2--pyhdfd78af_1':
         'quay.io/biocontainers/seroba:1.0.2--pyhdfd78af_1' }"
