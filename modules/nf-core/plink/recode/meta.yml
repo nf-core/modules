@@ -43,99 +43,99 @@ output:
       pattern: "versions.yml"
   - ped:
       type: file
-      description: PLINK/MERLIN/Haploview text pedigree + genotype table file
+      description: PLINK/MERLIN/Haploview text pedigree + genotype table file. Produced by the default "--recode" or by "--recode 12".
       pattern: "*.{ped}"
   - map:
       type: file
-      description: PLINK text fileset variant information file
+      description: PLINK text fileset variant information file. Produced by the default "--recode" or by "--recode 12".
       pattern: "*.{map}"
   - txt:
       type: file
-      description: Text file
+      description: Text file. Produced by "--recode 23".
       pattern: "*.{txt}"
   - raw:
       type: file
-      description: Additive + dominant component file
+      description: Additive + dominant component file. Produced by "--recode AD" or "--recode A".
       pattern: "*.{raw}"
   - traw:
       type: file
-      description: Variant-major additive component file
+      description: Variant-major additive component file. Produced by "--recode A-transpose".
       pattern: "*.{traw}"
   - beagle-dat:
       type: file
-      description: Single BEAGLE unphased genotype file
+      description: Single BEAGLE unphased genotype file. Produced by "--recode beagle" in 'beagle-nomap' mode.
       pattern: "*.{beagle.dat}"
   - chr-dat:
       type: file
-      description: BEAGLE unphased genotype and variant information files
+      description: BEAGLE unphased genotype and variant information files. Produced by "--recode beagle".
       pattern: "*.{*.chr-*.dat}"
   - chr-map:
       type: file
-      description: BEAGLE variant information files
+      description: BEAGLE variant information files. Produced by "--recode beagle".
       pattern: "*.{*chr-*.map}"
   - geno:
       type: file
-      description: BIMBAM genotype file
+      description: BIMBAM genotype file. Produced by "--recode bimbam".
       pattern: "*.{recode.geno.txt}"
   - pheno:
       type: file
-      description: BIMBAM phenotype file
+      description: BIMBAM phenotype file. Produced by "--recode bimbam".
       pattern: "*.{recode.pheno.txt}"
   - pos:
       type: file
-      description: BIMBAM variant position file
+      description: BIMBAM variant position file. Produced by "--recode bimbam".
       pattern: "*.{recode.pos.txt}"
   - phase:
       type: file
-      description: fastPHASE format
+      description: fastPHASE format. Produced by "--recode fastphase".
       pattern: "*.{recode.phase.inp}"
   - info:
       type: file
-      description: Haploview map file
+      description: Haploview map file. Produced by "--recode HV".
       pattern: "*.{info}"
   - lgen:
       type: file
-      description: PLINK long-format genotype file
+      description: PLINK long-format genotype file. Produced by "--recode lgen".
       pattern: "*.{lgen}"
   - list:
       type: file
-      description: Genotype list file
+      description: Genotype list file. Produced by "--recode list".
       pattern: "*.{list}"
   - gen:
       type: file
-      description: Oxford genotype file format
+      description: Oxford genotype file format. Produced by "--recode oxford".
       pattern: "*.{gen}"
   - genz:
       type: file
-      description: Compressed Oxford genotype file format
+      description: Compressed Oxford genotype file format. Produced by "--recode oxford gen-gz".
       pattern: "*.{genz}"
   - sample:
       type: file
-      description: Oxford sample information file
+      description: Oxford sample information file. Produced by "--recode oxford".
       pattern: "*.{sample}"
   - rlist:
       type: file
-      description: Rare genotype list file
+      description: Rare genotype list file. Produced by "--recode rlist".
       pattern: "*.{rlist}"
   - strctin:
       type: file
-      description: Structure-format file
+      description: Structure-format file. Produced by "--recode structure".
       pattern: "*.{strct_in}"
   - tped:
       type: file
-      description: Transposed text PED file
+      description: Transposed text PED file. Produced by "--recode transpose".
       pattern: "*.{tped}"
   - tfam:
       type: file
-      description: Transposed text FAM file
+      description: Transposed text FAM file. Produced by "--recode transpose".
       pattern: "*.{tfam}"
   - vcf:
       type: file
-      description: Variant calling file (VCF)
+      description: Variant calling file (VCF). Produced by "--recode vcf".
       pattern: "*.{vcf}"
   - vcfgz:
       type: file
-      description: Compressed variant calling file (VCF)
+      description: Compressed variant calling file (VCF). Produced by "--recode vcf bgz".
       pattern: "*.{vcf.gz}"
 
 authors:
