@@ -22,6 +22,10 @@ input:
       type: file
       description: FASTA file containing the sequences to align
       pattern: "*.{fa,fasta}"
+  - addsequences:
+      type: file
+      description: FASTA file containing sequences to align to the sequences in `fasta`
+      pattern: "*.{fa,fasta}"
 
 output:
   - meta:

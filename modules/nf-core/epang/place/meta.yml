@@ -1,4 +1,4 @@
-name: "epang"
+name: "epang_place"
 description: phylogenetic placement of query sequences in a reference tree
 keywords:
   - phylogeny
@@ -34,10 +34,6 @@ input:
   - bfastfile:
       type: file
       description: file argument to the --bfast parameter
-      pattern: "*"
-  - splitfile:
-      type: file
-      description: file argument to the --split parameter
       pattern: "*"
   - binaryfile:
       type: file
