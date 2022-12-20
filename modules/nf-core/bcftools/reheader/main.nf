@@ -8,9 +8,8 @@ process BCFTOOLS_REHEADER {
         'quay.io/biocontainers/bcftools:1.16--hfe4b78e_1' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(header)
     path fai
-    path header
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
