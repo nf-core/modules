@@ -2,13 +2,13 @@
 
 nextflow.enable.dsl = 2
 
-include { FASTQ_SAMPLE_INFER_STRANDEDNESS_FQ_SALMON } from '../../../../subworkflows/nf-core/fastq_sample_infer_strandedness_fq_salmon/main.nf'
-include { SALMON_INDEX }                              from '../../../../modules/nf-core/salmon/index/main.nf'
+include { FASTQ_SUBSAMPLE_FQ_SALMON } from '../../../../subworkflows/nf-core/fastq_subsample_fq_salmon/main.nf'
+include { SALMON_INDEX              } from '../../../../modules/nf-core/salmon/index/main.nf'
 
 //
 // Test with paired-end data
 //
-workflow test_fastq_sample_infer_strandedness_fq_salmon {
+workflow test_fastq_subsample_fq_salmon {
     input = [
                 [ id:'test', single_end:false ], // meta map
                 [
@@ -21,5 +21,5 @@ workflow test_fastq_sample_infer_strandedness_fq_salmon {
     gtf              = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
 
     SALMON_INDEX ( genome_fasta, transcript_fasta )
-    FASTQ_SAMPLE_INFER_STRANDEDNESS_FQ_SALMON ( input, SALMON_INDEX.out.index, transcript_fasta, gtf)
+    FASTQ_SUBSAMPLE_FQ_SALMON ( input, SALMON_INDEX.out.index, transcript_fasta, gtf)
 }

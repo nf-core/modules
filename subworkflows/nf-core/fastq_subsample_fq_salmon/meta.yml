@@ -42,7 +42,9 @@ output:
     pattern: "${prefix}"
   - json_info:
     type: file
-    description: File containing meta information from Salmon quant
+    description: |
+      File containing meta information from Salmon quant
+      Which could be used to infer strandedness among other things
     pattern: "*info.json"
   - versions:
     type: file

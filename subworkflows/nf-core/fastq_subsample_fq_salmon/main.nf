@@ -5,7 +5,7 @@
 include { FQ_SUBSAMPLE } from '../../../modules/nf-core/fq/subsample/main'
 include { SALMON_QUANT } from '../../../modules/nf-core/salmon/quant/main'
 
-workflow FASTQ_SAMPLE_INFER_STRANDEDNESS_FQ_SALMON {
+workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     take:
     ch_reads            // channel: [ val(meta), [ reads ] ]
     ch_index            // channel: /path/to/salmon/index/
