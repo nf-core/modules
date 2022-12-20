@@ -48,6 +48,12 @@ process PICARD_COLLECTRNASEQMETRICS {
     } else if (meta.strandedness == "forward") {
       strand = "--STRAND_SPECIFICITY SECOND_READ_TRANSCRIPTION_STRAND"
     } else { strand = "--STRAND_SPECIFICITY NONE" }
+    def avail_mem = 3
+    if (!task.memory) {
+        log.info '[Picard CollectMultipleMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = task.memory.giga
+    }
     """
     picard \\
         -Xmx${avail_mem}g \\
