@@ -26,8 +26,8 @@ process PICARD_COLLECTRNASEQMETRICS {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     tuple val(meta), path(bam)
     path ref_flat
-    path rrna_intervals
     path fasta
+    path rrna_intervals
 
     output:
     tuple val(meta), path("*.rna_metrics")  , emit: metrics 
