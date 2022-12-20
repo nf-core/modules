@@ -14,7 +14,7 @@ process PICARD_COLLECTRNASEQMETRICS {
     path rrna_intervals
 
     output:
-    tuple val(meta), path("*.rna_metrics")  , emit: metrics 
+    tuple val(meta), path("*.rna_metrics")  , emit: metrics
     tuple val(meta), path("*.pdf")          , emit: pdf, optional: true
     path "versions.yml"                     , emit: versions
 
@@ -28,9 +28,9 @@ process PICARD_COLLECTRNASEQMETRICS {
     def rrna = rrna_intervals ? "--RIBOSOMAL_INTERVALS ${rrna_intervals}" : ""
     def strand = ""
     if ( meta.strandedness == "forward" || meta.single_end ) {
-      strand = "--STRAND_SPECIFICITY FIRST_READ_TRANSCRIPTION_STRAND"
+        strand = "--STRAND_SPECIFICITY FIRST_READ_TRANSCRIPTION_STRAND"
     } else if (meta.strandedness == "forward") {
-      strand = "--STRAND_SPECIFICITY SECOND_READ_TRANSCRIPTION_STRAND"
+        strand = "--STRAND_SPECIFICITY SECOND_READ_TRANSCRIPTION_STRAND"
     } else { strand = "--STRAND_SPECIFICITY NONE" }
     def avail_mem = 3
     if (!task.memory) {
