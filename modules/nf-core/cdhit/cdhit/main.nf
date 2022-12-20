@@ -2,7 +2,7 @@ process CDHIT_CDHIT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::cd-hit=4.8.1" : null)
+    conda "bioconda::cd-hit=4.8.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7':
         'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
