@@ -1,5 +1,6 @@
 //
-// Sub-sample FastQ files and pseudo-align with Salmon to infer strandedness
+// Sub-sample FastQ files and pseudo-align with Salmon
+//      can be used to infer strandedness of library
 //
 
 include { FQ_SUBSAMPLE } from '../../../modules/nf-core/fq/subsample/main'
