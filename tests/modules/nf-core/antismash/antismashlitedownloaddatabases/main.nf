@@ -8,6 +8,9 @@ include { UNTAR as UNTAR3 } from '../../../../../modules/nf-core/untar/main.nf'
 include { ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES } from '../../../../../modules/nf-core/antismash/antismashlitedownloaddatabases/main.nf'
 
 workflow test_antismash_antismashlitedownloaddatabases {
+
+    println("$workflow.containerEngine")
+
     input1 = [
         [],
         file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/antismash/css.tar.gz', checkIfExists: true)

@@ -35,18 +35,31 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    conda = params.enable_conda
+    cp_cmd = workflow.containerEngine ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
         $args
 
-    if [[ $conda = false ]]; \
-        then \
-            cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir; \
-        else \
-            cp -r \$(python -c 'import antismash;print(antismash.__file__.split("/__")[0])') antismash_dir; \
-    fi
+    $cp_cmd
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    println(workflow.containerEngine == null)
+    cp_cmd = workflow.containerEngine == null ? "cp -r /usr/local/lib/python3.8/site-packages/antismash antismash_dir;" :  "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;"
+    """
+    echo "download-antismash-databases --database-dir antismash_db $args"
+
+    echo "$cp_cmd"
+
+    mkdir antismash_dir
+    mkdir antismash_db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
