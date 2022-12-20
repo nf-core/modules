@@ -2,8 +2,8 @@
 // Sub-sample FastQ files and pseudo-align with Salmon to infer strandedness
 //
 
-include { FQ_SUBSAMPLE } from '../../modules/nf-core/fq/subsample/main'
-include { SALMON_QUANT } from '../../modules/nf-core/salmon/quant/main'
+include { FQ_SUBSAMPLE } from '../../../modules/nf-core/fq/subsample/main'
+include { SALMON_QUANT } from '../../../modules/nf-core/salmon/quant/main'
 
 workflow FASTQ_SAMPLE_INFER_STRANDEDNESS_FQ_SALMON {
     take:
