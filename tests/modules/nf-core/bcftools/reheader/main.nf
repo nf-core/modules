@@ -8,33 +8,33 @@ workflow test_bcftools_reheader_update_sequences {
 
     input = [
         [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+        []
     ]
     fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    header = []
-    BCFTOOLS_REHEADER ( input, fai, header )
+    BCFTOOLS_REHEADER ( input, fai )
 }
 
 workflow test_bcftools_reheader_new_header {
 
     input = [
         [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
     fai    = []
-    header = file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
 
-    BCFTOOLS_REHEADER ( input, fai, header )
+    BCFTOOLS_REHEADER ( input, fai )
 }
 
 workflow test_bcftools_reheader_new_header_update_sequences {
 
     input = [
         [ id:'test', single_end:false ],
-        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true)
+        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+        file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
     ]
     fai    = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-    header = file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true)
 
-    BCFTOOLS_REHEADER ( input, fai, header )
+    BCFTOOLS_REHEADER ( input, fai )
 }
