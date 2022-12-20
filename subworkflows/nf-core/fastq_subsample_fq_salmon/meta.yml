@@ -33,23 +33,23 @@ input:
 
 output:
   - reads:
-    type: file
-    description: Subsampled fastq reads.
-    pattern: "*.{fq,fastq}{,.gz}"
+      type: file
+      description: Subsampled fastq reads.
+      pattern: "*.{fq,fastq}{,.gz}"
   - results:
-    type: directory
-    description: Folder containing the quantification results for a specific sample
-    pattern: "${prefix}"
+      type: directory
+      description: Folder containing the quantification results for a specific sample
+      pattern: "${prefix}"
   - json_info:
-    type: file
-    description: |
-      File containing meta information from Salmon quant
-      Which could be used to infer strandedness among other things
-    pattern: "*info.json"
+      type: file
+      description: |
+        File containing meta information from Salmon quant
+        Which could be used to infer strandedness among other things
+      pattern: "*info.json"
   - versions:
-    type: file
-    description: File containing software versions
-    pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@robsyme"
   - "@drpatelh"
