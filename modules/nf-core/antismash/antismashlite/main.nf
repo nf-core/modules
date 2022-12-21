@@ -2,10 +2,10 @@ process ANTISMASH_ANTISMASHLITE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::antismash-lite=6.0.1"
+    conda "bioconda::antismash-lite=6.1.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:6.0.1--pyhdfd78af_1' :
-        'quay.io/biocontainers/antismash-lite:6.0.1--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
+        'quay.io/biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
