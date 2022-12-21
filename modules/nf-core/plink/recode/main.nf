@@ -8,9 +8,7 @@ process PLINK_RECODE {
         'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
-    tuple val(meta), path(bed)
-    tuple val(meta), path(bim)
-    tuple val(meta), path(fam)
+    tuple val(meta), path(bed),  path(bim), path(fam)
 
     output:
     tuple val(meta), path("*.ped")                    , optional:true, emit: ped
