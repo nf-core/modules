@@ -17,7 +17,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - bed:
       type: file
       description: PLINK binary biallelic genotype table file
@@ -51,7 +50,7 @@ output:
       pattern: "*.{map}"
   - txt:
       type: file
-      description: Text file. Produced by "--recode 23".
+      description: Text file. Produced by "--recode 23". Can only be used in a file with only one sample.
       pattern: "*.{txt}"
   - raw:
       type: file
