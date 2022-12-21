@@ -29,7 +29,7 @@ workflow test_antismashlite {
 
     antismash_detection = [
         [],
-        file('https://github.com/nf-core/test-datasets/raw/91bb8781c576967e23d2c5315dd4d43213575033/data/delete_me/antismash/derection.tar.gz', checkIfExists: true)
+        file('https://github.com/nf-core/test-datasets/raw/91bb8781c576967e23d2c5315dd4d43213575033/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
     ]
 
     antismash_modules = [
