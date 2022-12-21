@@ -47,7 +47,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
             [ count ? groupKey(meta, count): meta, extract ]
         }
         .groupTuple()
-        .join(ch_peds ?: Channel.empty())
+        .join(ch_peds ?: Channel.empty(), remainder:true)
         .map { meta, extract, ped ->
             extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
             [ meta, extract2, ped ]
