@@ -14,9 +14,9 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
 
     ch_versions         = Channel.empty()
 
-    ch_all_peds = ch_vcfs
-        .join(ch_peds ?: Channel.empty(), remainder:true)
-        .map { meta, vcf, tbi, count, ped -> [ meta, ped ?: [] ]}
+    ch_all_peds = ch_peds ?: Channel.empty()
+        .join(ch_vcfs, remainder:true)
+        .map { meta, ped, vcf, tbi, count -> [ meta, ped ?: [] ]}
 
     ch_input = ch_vcfs
         .branch { meta, vcf, tbi, count ->
