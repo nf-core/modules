@@ -16,7 +16,10 @@ workflow test_vcf_extract_relate_somalier_minimum {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     somalier_sites = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz", checkIfExists: true)
-    peds = []
+    peds = Channel.of([
+        [id:"test"],
+        []
+    ])
     sample_groups = []
 
     VCF_EXTRACT_RELATE_SOMALIER (
@@ -41,7 +44,11 @@ workflow test_vcf_extract_relate_somalier_index {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     somalier_sites = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz", checkIfExists: true)
-    peds = []
+    peds = Channel.of([
+        [id:"test"],
+        []
+    ])
+
     sample_groups = []
 
     VCF_EXTRACT_RELATE_SOMALIER (
@@ -135,6 +142,10 @@ workflow test_vcf_extract_relate_somalier_mixed_no_combine {
     peds = Channel.of([
         [id:"test"],
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped", checkIfExists: true)
+    ],
+    [
+        [id:"test2"],
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped", checkIfExists: true)
     ])
     sample_groups = []
 
@@ -160,7 +171,10 @@ workflow test_vcf_extract_relate_somalier_joint_vcf {
     fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
     fasta_fai = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
     somalier_sites = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz", checkIfExists: true)
-    peds = []
+    peds = Channel.of([
+        [id:"test"],
+        []
+    ])
     sample_groups = []
 
     VCF_EXTRACT_RELATE_SOMALIER (

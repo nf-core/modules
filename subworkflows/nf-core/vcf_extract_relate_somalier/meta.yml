@@ -41,8 +41,10 @@ input:
   - ch_peds:
       type: file
       description: |
-        Optional - A channel containing the PED files for the corresponding families
-        Structure: [ meta, ped ]
+        A channel containing an optional PED file for the corresponding families.
+        When you don't want to use a PED file, you must supply a channel
+        containing the meta and an empty value (`[]`) instead of a PED
+        Structure: [ meta, (ped|[]) ]
   - ch_sample_groups:
       type: file
       description: |

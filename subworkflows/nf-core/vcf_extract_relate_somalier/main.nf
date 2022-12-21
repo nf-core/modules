@@ -8,7 +8,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_fasta                // channel: [mandatory] [ fasta ]
         ch_fasta_fai            // channel: [mandatory] [ fai ]
         ch_somalier_sites       // channel: [mandatory] [ somalier_sites_vcf ]
-        ch_peds                 // channel: [optional]  [ meta, ped ]
+        ch_peds                 // channel: [mandatory] [ meta, ped ]
         ch_sample_groups        // channel: [optional]  [ txt ]
     main:
 
@@ -47,7 +47,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
             [ count ? groupKey(meta, count): meta, extract ]
         }
         .groupTuple()
-        .join(ch_peds ?: Channel.empty(), remainder:true)
+        .join(ch_peds)
         .map { meta, extract, ped ->
             extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
             [ meta, extract2, ped ]
