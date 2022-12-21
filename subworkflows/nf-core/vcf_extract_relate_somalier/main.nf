@@ -14,18 +14,6 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
 
     ch_versions         = Channel.empty()
 
-    if(ch_peds){
-        ch_all_peds = ch_peds
-            .join(ch_vcfs, remainder:true)
-            .map { meta, ped, vcf, tbi, count -> [ meta, ped ?: [] ]}
-            .distinct()
-    }
-    else {
-        ch_all_peds = ch_vcfs
-            .map { meta, vcf, tbi, count -> [ meta, [] ]}
-            .distinct()
-    }
-
     ch_input = ch_vcfs
         .branch { meta, vcf, tbi, count ->
             tbi: tbi != []
@@ -59,7 +47,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
             [ count ? groupKey(meta, count): meta, extract ]
         }
         .groupTuple()
-        .join(ch_all_peds)
+        .join(ch_peds ?: Channel.empty())
         .map { meta, extract, ped ->
             extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
             [ meta, extract2, ped ]
