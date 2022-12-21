@@ -17,7 +17,5 @@ workflow test_plink_recode {
     bim_ch = PLINK_VCF.out.bim
     fam_ch = PLINK_VCF.out.fam
 
-    ch_bed_bim_fam = bed_ch.join(bim_ch).join(fam_ch)
-
-    PLINK_RECODE ( ch_bed_bim_fam )
+    PLINK_RECODE ( bed_ch, bim_ch, fam_ch )
 }
