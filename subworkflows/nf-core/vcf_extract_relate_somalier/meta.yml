@@ -19,8 +19,10 @@ input:
   - ch_vcfs:
       type: file(s)
       description: |
-        The input VCFs to perform the stats on, optionally with their indices
-        Structure: [ meta, vcf, (tbi|[]) ]
+        The input VCFs to perform the stats on, optionally with their indices.
+        This channel can also contain the number of samples in the same family/group
+        to check relatedness. This is adviced to add as it can improve the efficiency of your pipeline
+        Structure: [ meta, vcf, (tbi|[]), count ]
   - ch_fasta:
       type: file
       description: |

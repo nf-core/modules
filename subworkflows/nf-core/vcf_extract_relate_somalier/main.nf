@@ -4,7 +4,7 @@ include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_EXTRACT_RELATE_SOMALIER {
     take:
-        ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi ]
+        ch_vcfs                 // channel: [mandatory] [ meta, vcf, tbi, count ]
         ch_fasta                // channel: [mandatory] [ fasta ]
         ch_fasta_fai            // channel: [mandatory] [ fai ]
         ch_somalier_sites       // channel: [mandatory] [ somalier_sites_vcf ]
@@ -16,10 +16,10 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
 
     ch_all_peds = ch_vcfs
         .join(ch_peds ?: Channel.empty(), remainder:true)
-        .map { meta, vcf, tbi, ped -> [ meta, ped ?: [] ]}
+        .map { meta, vcf, tbi, count, ped -> [ meta, ped ?: [] ]}
 
     ch_input = ch_vcfs
-        .branch { meta, vcf, tbi ->
+        .branch { meta, vcf, tbi, count ->
             tbi: tbi != []
                 return [ meta, vcf, tbi ]
             no_tbi: tbi == []
@@ -46,7 +46,11 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
     ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
-        .groupTuple(remainder:true)
+        .join(ch_vcfs)
+        .map { meta, extract, vcf, tbi, count ->
+            [ count ? groupKey(meta, count): meta, extract ]
+        }
+        .groupTuple()
         .join(ch_all_peds)
         .map { meta, extract, ped ->
             extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
