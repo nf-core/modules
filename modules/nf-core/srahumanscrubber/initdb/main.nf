@@ -33,7 +33,7 @@ process SRAHUMANSCRUBBER_INITDB {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sra-human-scrubber: $VERSION
-        sra-human-scrubber-db: \$DBVERSION
+        sra-human-scrubber-db: $VERSION
     END_VERSIONS
     """
 }
