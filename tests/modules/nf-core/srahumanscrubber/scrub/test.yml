@@ -1,0 +1,9 @@
+- name: srahumanscrubber scrub test_srahumanscrubber_scrub
+  command: nextflow run ./tests/modules/nf-core/srahumanscrubber/scrub -entry test_srahumanscrubber_scrub -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/srahumanscrubber/scrub/nextflow.config -stub-run
+  tags:
+    - srahumanscrubber/scrub
+    - srahumanscrubber
+  files:
+    - path: output/srahumanscrubber/STUBRUN.human_filter.db
+    - path: output/srahumanscrubber/test.scrubbed.fastq.gz
+    - path: output/srahumanscrubber/versions.yml
