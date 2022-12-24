@@ -1,7 +1,7 @@
 VERSION = '2.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 process SRAHUMANSCRUBBER_SCRUB {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda "bioconda::sra-human-scrubber=2.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
