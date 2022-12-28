@@ -32,9 +32,9 @@ process FASTP {
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
     def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--unpaired1 ${prefix}_1.fail.fastq.gz --unpaired2 ${prefix}_2.fail.fastq.gz" : ''
     def out_fq = ""
-    if ( save_trimmed_pass ) { 
+    if ( save_trimmed_pass ) {
         out_fq = meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_1.fastp.fastq.gz --out2 ${prefix}_2.fastp.fastq.gz"
-	out_fq = task.ext.args?.contains('--interleaved_in') ? "${prefix}.fastp.fastq.gz" : out_fq
+        out_fq = task.ext.args?.contains('--interleaved_in') ? "${prefix}.fastp.fastq.gz" : out_fq
     } else if ( task.ext.args?.contains('--interleaved_in') ) {
         out_fq = "/dev/null"
     }
