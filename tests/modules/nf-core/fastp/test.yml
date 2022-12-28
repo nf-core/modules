@@ -280,5 +280,7 @@
     - path: output/fastp/test.fastp.json
       md5sum: 25ec85e3534f380ca2109c894671f1ed
     - path: output/fastp/test.fastp.log
-      md5sum: 38149a208a77ef480fb69312abc740b0
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 198"
     - path: output/fastp/versions.yml
