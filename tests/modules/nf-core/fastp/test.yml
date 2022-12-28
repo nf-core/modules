@@ -233,3 +233,52 @@
         - "@ERR5069949.576388 NS500628:121:HK3MMAFX2:4:11501:11167:14939/1 merged_77_0"
         - "ACTGTTTTCTTTGTAGAAAACATCCGTAATAGGACCTTTGTATTCTGAGGACTTTGTAAGTAAAGCACCGTCTATGC"
         - "AAA6AEEEEEEEEEAEEE/6EEAEEEAEEEEEAEEEEEEEEEEEEEEEEEEEEE<AAEEEEEEEEEEE</EEEA/AE"
+
+- name: fastp test_fastp_single_end_omit_trimmed
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_single_end_omit_trimmed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
+  tags:
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>12.922000 K (92.984097%)"
+        - "single end (151 cycles)"
+    - path: output/fastp/test.fastp.json
+      md5sum: d1c792ddeb23c75ae2cad18ae43a281d
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "Q20 bases: 12922(92.9841%)"
+        - "reads passed filter: 99"
+    - path: output/fastp/versions.yml
+
+- name: fastp test_fastp_paired_end_omit_trimmed
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_paired_end_omit_trimmed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
+  tags:
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
+        - "The input has little adapter percentage (~0.000000%), probably it's trimmed before."
+    - path: output/fastp/test.fastp.json
+      md5sum: b796f27579af95a55fba6f8089e426da
+    - path: output/fastp/test.fastp.log
+      contains:
+        - "No adapter detected for read1"
+        - "Q30 bases: 12281(88.3716%)"
+    - path: output/fastp/versions.yml
+
+- name: fastp test_fastp_interleaved_omit_trimmed
+  command: nextflow run ./tests/modules/nf-core/fastp -entry test_fastp_interleaved_omit_trimmed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/fastp/nextflow.config
+  tags:
+    - fastp
+  files:
+    - path: output/fastp/test.fastp.html
+      contains:
+        - "Q20 bases:</td><td class='col2'>25.719000 K (93.033098%)"
+        - "paired end (151 cycles + 151 cycles)"
+    - path: output/fastp/test.fastp.json
+      md5sum: 25ec85e3534f380ca2109c894671f1ed
+    - path: output/fastp/test.fastp.log
+      md5sum: 38149a208a77ef480fb69312abc740b0
+    - path: output/fastp/versions.yml
