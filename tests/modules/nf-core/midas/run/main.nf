@@ -11,5 +11,5 @@ workflow test_midas_run {
         [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
     ]
 
-    MIDAS_RUN ( input, [] )
+    MIDAS_RUN ( input, [], "species")
 }

@@ -11,6 +11,7 @@ process MIDAS_RUN {
     input:
     tuple val(meta), path(reads)
     path db, stageAs: 'db/*'
+    val(mode)
 
     output:
     tuple val(meta), path("results/*"), emit: results
@@ -25,10 +26,11 @@ process MIDAS_RUN {
     if (meta.single_end) {
         """
         run_midas.py \\
-            $args \\
+            $mode \\
             results \\
             -1 ${reads[0]} \\
             -d $db \\
+            $args \\
             -t $task.cpus
 
         cat <<-END_VERSIONS > versions.yml
@@ -39,11 +41,12 @@ process MIDAS_RUN {
     } else {
         """
         run_midas.py \\
-            $args \\
+            $mode \\
             $prefix \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
             -d $db \\
+            $args \\
             -t $task.cpus
 
         cat <<-END_VERSIONS > versions.yml
