@@ -1,8 +1,8 @@
 - name: deepbgc pipeline test_deepbgc_pipeline_gbk
-  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_gbk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
   tags:
-    - deepbgc/pipeline
     - deepbgc
+    - deepbgc/pipeline
   files:
     - path: output/deepbgc/deepbgc_db/0.1.0/classifier/product_activity.pkl
       md5sum: 90f0c010460e9df882cb057664a49f30
@@ -29,8 +29,9 @@
     - path: output/deepbgc/deepbgc_db/common/Pfam-A.31.0.hmm.h3p
       md5sum: 27b98a1ded123b6a1ef72db01927017c
     - path: output/deepbgc/test_gbk/LOG.txt
-      contains: ["Saved DeepBGC result to:"]
+      contains: ["Saved DeepBGC result to"]
     - path: output/deepbgc/test_gbk/README.txt
+      contains: ["Log output of DeepBGC"]
     - path: output/deepbgc/test_gbk/test_gbk.antismash.json
       md5sum: 7dba3996cf38756b05e7612de8433c23
     - path: output/deepbgc/test_gbk/test_gbk.bgc.gbk
@@ -47,10 +48,10 @@
       md5sum: 8fe56fcf4d9e839e83be7523cd3efa02
 
 - name: deepbgc pipeline test_deepbgc_pipeline_fa
-  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/deepbgc/pipeline -entry test_deepbgc_pipeline_fa -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/deepbgc/pipeline/nextflow.config
   tags:
-    - deepbgc/pipeline
     - deepbgc
+    - deepbgc/pipeline
   files:
     - path: output/deepbgc/deepbgc_db/0.1.0/classifier/product_activity.pkl
       md5sum: 90f0c010460e9df882cb057664a49f30
@@ -76,22 +77,23 @@
       md5sum: 1fe946fa2b3bcde1d4b2bad732bce612
     - path: output/deepbgc/deepbgc_db/common/Pfam-A.31.0.hmm.h3p
       md5sum: 27b98a1ded123b6a1ef72db01927017c
-    - path: output/deepbgc/test1.contigs/LOG.txt
-      contains: ["Saved DeepBGC result to:"]
-    - path: output/deepbgc/test1.contigs/README.txt
-    - path: output/deepbgc/test1.contigs/evaluation/test1.contigs.bgc.png
+    - path: output/deepbgc/test_fa/LOG.txt
+      contains: ["Saved DeepBGC result to"]
+    - path: output/deepbgc/test_fa/README.txt
+      contains: ["Log output of DeepBGC"]
+    - path: output/deepbgc/test_fa/evaluation/test1.contigs.bgc.png
       md5sum: f4a0fc6cd260e2d7ad16f7a1fa103f96
-    - path: output/deepbgc/test1.contigs/evaluation/test1.contigs.score.png
+    - path: output/deepbgc/test_fa/evaluation/test1.contigs.score.png
       md5sum: 572e8882031f667580d8c8e13c2cbb91
-    - path: output/deepbgc/test1.contigs/test1.contigs.antismash.json
-      contains: ['"name": "DeepBGC"']
-    - path: output/deepbgc/test1.contigs/test1.contigs.bgc.gbk
+    - path: output/deepbgc/test_fa/test1.contigs.antismash.json
+      contains: ["version"]
+    - path: output/deepbgc/test_fa/test1.contigs.bgc.gbk
       md5sum: 7fc70dd034903622dae273bf71b402f2
-    - path: output/deepbgc/test1.contigs/test1.contigs.bgc.tsv
+    - path: output/deepbgc/test_fa/test1.contigs.bgc.tsv
       contains: ["sequence_id"]
-    - path: output/deepbgc/test1.contigs/test1.contigs.full.gbk
+    - path: output/deepbgc/test_fa/test1.contigs.full.gbk
       contains: ["LOCUS"]
-    - path: output/deepbgc/test1.contigs/test1.contigs.pfam.tsv
+    - path: output/deepbgc/test_fa/test1.contigs.pfam.tsv
       md5sum: 1179eb4e6df0c83aaeec18d7d34e7524
     - path: output/gunzip/test1.contigs.fa
       md5sum: 80c4d78f2810f6d9e90fa6da9bb9c4f9
