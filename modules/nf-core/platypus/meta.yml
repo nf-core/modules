@@ -13,7 +13,6 @@ tools:
       licence: ["BSD-3-clause"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
@@ -21,31 +20,31 @@ input:
         e.g. [ id:'test']
   - tumor_file:
       type: file
-      description: BAM file
-      pattern: "*.bam"
+      description: Tumor or metastatic sample, BAM or CRAM file
+      pattern: "*.{bam,cram}"
   - tummor_file_bai:
       type: file
       description: Index of BAMfile
-      pattern: "*.bai"
+      pattern: "*.{bai,crai}"
   - control_file:
       type: file
-      description: BAM file
-      pattern: "*.bam"
+      description: Control (or blood) of matching tumor/metastatic sample, BAM or CRAM file
+      pattern: "*.{bam,cram}"
   - control_file_bai:
       type: file
       description: Index of BAMfile
-      pattern: "*.bai"
+      pattern: "*.{bai,crai}"
   - fasta:
       type: file
       description: The reference fasta file
-      pattern: "*.fasta"
+      pattern: "*.{fasta,fa}"
   - fai:
       type: file
       description: Index of reference fasta file
       pattern: "*.fai"
   - skipregions_file:
       type: file
-      description: File with regions to skip
+      description: File with regions to skip, region as comma-separated list of chr:start-end, or just list of chr, or nothing
       pattern: "*.bed|*.txt|*.tab"
 
 output:
@@ -56,9 +55,9 @@ output:
         e.g. [ id:'test',]
   - vcf:
       type: file
-      description: VCF file
+      description: Output VCF file
       pattern: "*.vcf.gz"
-  - vcf_tbi:
+  - tbi:
       type: file
       description: Index of VCF file
       pattern: "*.vcf.gz.tbi"
