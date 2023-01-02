@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl = 2
 
-include { PLATYPUS } from '../../../modules/platypus/main.nf'
+include { PLATYPUS } from '../../../modules/nf-core/platypus/main.nf'
 
 workflow test_platypus_nocontrol {
 
