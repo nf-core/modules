@@ -8,8 +8,7 @@ process GAPPA_EXAMINEASSIGN {
         'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
 
     input:
-    tuple val(meta), path(jplace)
-    path  taxonomy
+    tuple val(meta), path(jplace), path(taxonomy)
 
     output:
     tuple val(meta), path("./.")                  , emit: examineassign
