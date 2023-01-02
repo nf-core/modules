@@ -20,7 +20,7 @@ process PLATYPUS {
 
     output:
     tuple val(meta), path('*.vcf.gz')            , emit: vcf
-    tuple val(meta), path('*.vcf.gz.tbi')        , emit: vcf_tbi
+    tuple val(meta), path('*.vcf.gz.tbi')        , emit: tbi
     tuple val(meta), path('*.log')               , emit: log
     path  "versions.yml"                         , emit: version
 
@@ -32,6 +32,7 @@ process PLATYPUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bamlist = control_file ? "${control_file},${tumor_file}" : "${tumor_file}"
     def skipregions = skipregions_file ? "skipRegionsFile=${skipregions_file}" : ""
+    def VERSION = '0.8.1' //  WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions. 
 
     """
     platypus callVariants \\
@@ -48,7 +49,7 @@ process PLATYPUS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        platypus: 0.8.1
+        platypus: ${VERSION}
     END_VERSIONS
 
     """
