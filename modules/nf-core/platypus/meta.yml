@@ -37,7 +37,7 @@ input:
   - fasta:
       type: file
       description: The reference fasta file
-      pattern: "*.{fasta,fa}"
+      pattern: "*.fa"
   - fai:
       type: file
       description: Index of reference fasta file
@@ -52,7 +52,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test',]
+        e.g. [ id:'test']
   - vcf:
       type: file
       description: Output VCF file

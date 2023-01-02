@@ -51,6 +51,5 @@ process PLATYPUS {
     "${task.process}":
         platypus: ${VERSION}
     END_VERSIONS
-
     """
 }
