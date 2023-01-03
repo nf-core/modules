@@ -50,7 +50,7 @@ process GSEA_GSEA {
         -res $gct \\
         -cls ${cls}#${target}_versus_${reference} \\
         -gmx $gene_sets \\
-        $chip \\
+        $chip_command \\
         -out . \\
         --rpt_label $prefix \\
         $args
