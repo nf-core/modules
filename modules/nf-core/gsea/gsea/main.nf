@@ -10,6 +10,7 @@ process GSEA_GSEA {
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
     tuple val(reference), val(target)
+    path(chip) // Optional identifier mapping file
 
     output:
     tuple val(meta), path("*/*.rpt")                                                                                                        , emit: rpt
@@ -42,12 +43,14 @@ process GSEA_GSEA {
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def chip_command = chip ? "-chip $chip -collapse true" : ''
     """
     # Run GSEA
     gsea-cli GSEA \\
         -res $gct \\
         -cls ${cls}#${target}_versus_${reference} \\
         -gmx $gene_sets \\
+        $chip_command \\
         -out . \\
         --rpt_label $prefix \\
         $args
