@@ -43,7 +43,7 @@ process GSEA_GSEA {
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def chip = chip ? "-chip $chip -collapse true" : ''
+    def chip_command = chip ? "-chip $chip -collapse true" : ''
     """
     # Run GSEA
     gsea-cli GSEA \\
