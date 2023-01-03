@@ -49,7 +49,8 @@ process GSEA_GSEA {
     gsea-cli GSEA \\
         -res $gct \\
         -cls ${cls}#${target}_versus_${reference} \\
-        -gmx $gene_sets $chip \\
+        -gmx $gene_sets \\
+        $chip \\
         -out . \\
         --rpt_label $prefix \\
         $args
