@@ -24,7 +24,10 @@ workflow test_mosdepth_bed {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    bed = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    ]
 
     MOSDEPTH ( input, bed, [] )
 }
@@ -35,7 +38,10 @@ workflow test_mosdepth_cram {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)
     ]
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    fasta = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
 
     MOSDEPTH ( input, [], fasta )
 }
@@ -46,9 +52,14 @@ workflow test_mosdepth_cram_bed {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)
     ]
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
-    fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-
+    bed = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    ]
+    fasta = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+    ]
     MOSDEPTH ( input, bed, fasta )
 }
 
@@ -58,7 +69,10 @@ workflow test_mosdepth_window {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    bed = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    ]
 
     MOSDEPTH_WINDOW ( input, [], [] )
 }
@@ -79,8 +93,10 @@ workflow test_mosdepth_thresholds {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
-
+    bed = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    ]
     MOSDEPTH_THRESHOLD ( input, bed, [] )
 }
 
@@ -90,7 +106,9 @@ workflow test_mosdepth_fail {
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
     ]
-    bed = file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
-
+    bed = [
+        [ id:'test' ],
+        file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+    ]
     MOSDEPTH_FAIL ( input, bed, [] )
 }
