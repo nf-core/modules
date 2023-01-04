@@ -1,12 +1,32 @@
-## TODO nf-core: Please run the following command to build this file:
-#                nf-core modules create-test-yml beagle/beagle5
-- name: "beagle beagle5"
+- name: beagle beagle5 test_beagle_beagle5
   command: nextflow run ./tests/modules/nf-core/beagle/beagle5 -entry test_beagle_beagle5 -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/beagle/beagle5/nextflow.config
   tags:
-    - "beagle"
-    - "beagle/beagle5"
+  - beagle
+  - beagle/beagle5
   files:
-    - path: "output/beagle/test.bam"
-      md5sum: e667c7caad0bc4b7ac383fd023c654fc
-    - path: "output/beagle/versions.yml"
-      md5sum: a01fe51bc4c6a3a6226fbf77b2c7cf3b
+  - path: output/beagle/test.bglout.log
+    contains: ["Brian L. Browning"]
+  - path: output/beagle/test.bglout.vcf.gz
+    md5sum: ff6de226b1db1b2d97fcf38a3d2279f1
+
+- name: beagle beagle5 test_beagle_beagle5_ref
+  command: nextflow run ./tests/modules/nf-core/beagle/beagle5 -entry test_beagle_beagle5_ref -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/beagle/beagle5/nextflow.config
+  tags:
+  - beagle
+  - beagle/beagle5
+  files:
+  - path: output/beagle/test.bglout.log
+    contains: ["Brian L. Browning"]
+  - path: output/beagle/test.bglout.vcf.gz
+    md5sum: 38cee514b8039c04acc1b6d2db32d73c
+
+- name: beagle beagle5 test_beagle_beagle5_ref_map
+  command: nextflow run ./tests/modules/nf-core/beagle/beagle5 -entry test_beagle_beagle5_ref_map -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/beagle/beagle5/nextflow.config
+  tags:
+  - beagle
+  - beagle/beagle5
+  files:
+  - path: output/beagle/test.bglout.log
+    contains: ["Brian L. Browning"]
+  - path: output/beagle/test.bglout.vcf.gz
+    md5sum: 29b9d8aba9c8b2d70078feefa0f5b7b8

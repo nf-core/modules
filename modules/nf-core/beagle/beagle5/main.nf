@@ -25,7 +25,7 @@ process BEAGLE_BEAGLE5 {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.imputed"
+    def prefix = task.ext.prefix ?: "${meta.id}.bglout"
     def ref_command = refpanel ? "ref=$refpanel" : ""
     def map_command = genmap ? "map=$genmap" : ""
     def excludesamples_command = exclsamples ? "excludesamples=$exclsamples" : ""
