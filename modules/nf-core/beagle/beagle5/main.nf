@@ -2,7 +2,6 @@ process BEAGLE_BEAGLE5 {
     tag "$meta.id"
     label 'process_high'
 
-    // conda (params.enable_conda ? "bioconda::beagle=5.2_21Apr21.304" : null)
     conda "bioconda::beagle=5.2_21Apr21.304"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/beagle:5.2_21Apr21.304--hdfd78af_0':
