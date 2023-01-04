@@ -4,6 +4,7 @@ nextflow.enable.dsl = 2
 
 include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf'
 // include { ASHLAR } from '../../../../../modules/modules/nf-core/ashlar/main.nf' addParams( options: [args: '--flip-mosaic-x'] )
+include { ZERO_UUID } from './zero_uuid.nf'
 
 def TEST_IMG = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-0{6,7}.ome.tiff"
 def TEST_IMG_1 = "/home/pollen/HITS/nextflow/mcmicro/exemplar-001/raw/exemplar-001-cycle-06.ome.tiff"
@@ -17,6 +18,9 @@ workflow test_ashlar {
     input_channel = Channel.fromList(input_list)
 
     ASHLAR ( input_channel )
+
+    ZERO_UUID ( ASHLAR.out[1] )
+
 }
 
 include { INPUT_CHECK } from '../../../../../modules/modules/nf-core/ashlar/input_check.nf'
@@ -36,5 +40,7 @@ workflow test_ashlar_sheet {
     .set { input_maps }
 
     ASHLAR ( input_maps )
+
+    ZERO_UUID ( ASHLAR.out[1] )
 
 }
