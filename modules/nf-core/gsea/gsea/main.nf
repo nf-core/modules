@@ -66,7 +66,7 @@ process GSEA_GSEA {
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
-        find . -name "*\${pattern}*" -execdir echo {} ';' | while read -r f; do
+        find . -name "*\${pattern}*" | sed "s|^\\./||" | while read -r f; do
             mv \$f \${f//\$pattern/}
         done
     done
