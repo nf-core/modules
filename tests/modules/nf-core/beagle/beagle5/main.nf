@@ -8,7 +8,7 @@ workflow test_beagle_beagle5 {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("https://github.com/ashotmarg/modules/raw/master/ashTestData/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
     ]
     []
     []
@@ -22,9 +22,9 @@ workflow test_beagle_beagle5_ref {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("https://github.com/ashotmarg/modules/raw/master/ashTestData/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
     ]
-    refpanel = file("https://github.com/ashotmarg/modules/raw/master/ashTestData/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+    refpanel = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
     []
     []
     []
@@ -36,10 +36,10 @@ workflow test_beagle_beagle5_ref_map {
 
     input = [
         [ id:'test', single_end:false ], // meta map
-        file("https://github.com/ashotmarg/modules/raw/master/ashTestData/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
     ]
-    refpanel = file("https://github.com/ashotmarg/modules/raw/master/ashTestData/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
-    genmap   = file("https://github.com/ashotmarg/test-datasets/raw/modules/data/delete_me/beagle/plink.chr22.GRCh38.map", checkIfExists: true)
+    refpanel = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+    genmap   = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/plink.chr22.GRCh38.map", checkIfExists: true)
     []
     []
 
