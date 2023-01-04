@@ -1,3 +1,7 @@
+//
+// Run SAMtools idxstats, then split reads in input bam into one bam per chromosome in idxstats output
+//
+
 include { SAMTOOLS_IDXSTATS      } from '../../../modules/nf-core/samtools/idxstats/main'
 include { SAMTOOLS_VIEW          } from '../../../modules/nf-core/samtools/view/main'
 include { SAMTOOLS_INDEX         } from '../../../modules/nf-core/samtools/index/main'
