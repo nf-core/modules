@@ -1,0 +1,198 @@
+- name: bam_split_by_chrom test_bam_split_by_chrom
+  command: nextflow run ./tests/subworkflows/nf-core/bam_split_by_chrom -entry test_bam_split_by_chrom -c ./tests/config/nextflow.config
+  tags:
+    - samtools
+    - samtools/idxstats
+    - samtools/index
+    - samtools/view
+    - subworkflows
+    - subworkflows/bam_split_by_chrom
+  files:
+    - path: output/samtools/test.idxstats
+      md5sum: 094096b6f303cc18892e1e027c87f273
+    - path: output/samtools/test3.single_end.markduplicates.sorted.bam.bai
+      md5sum: aa2c550d18cc31a582664dd0e97e1774
+    - path: output/samtools/test_1.bam
+      md5sum: 8f956dfc665e24a09af2fd8266dbf55d
+    - path: output/samtools/test_1.bam.bai
+      md5sum: 5ad8eaefe6c8c9d5a33674b485cb1269
+    - path: output/samtools/test_10.bam
+      md5sum: a7801e38ba286e96fcbfcde28a29b727
+    - path: output/samtools/test_10.bam.bai
+      md5sum: e6dcb8addee896b4b6f38903aba05f4c
+    - path: output/samtools/test_11.bam
+      md5sum: 0f5ee52e1503af575d16b85f50a20d97
+    - path: output/samtools/test_11.bam.bai
+      md5sum: 0ce5d0b66b90b053aece4663f87d2017
+    - path: output/samtools/test_12.bam
+      md5sum: 61ceb2eeb04448f5008ae8ec0d4c0803
+    - path: output/samtools/test_12.bam.bai
+      md5sum: dc3f48d929904e1fc82ef65dcc1ac941
+    - path: output/samtools/test_13.bam
+      md5sum: 3c872c779e3bac478bad168a7f6bde6d
+    - path: output/samtools/test_13.bam.bai
+      md5sum: 183333bffa2e4bf503375ebb637d142e
+    - path: output/samtools/test_14.bam
+      md5sum: ec791019d1aecea1227c7097d8d716af
+    - path: output/samtools/test_14.bam.bai
+      md5sum: b944400209e13a650892ef4227a27ffe
+    - path: output/samtools/test_15.bam
+      md5sum: c87556444c5796de4ca7ab5f73d8296d
+    - path: output/samtools/test_15.bam.bai
+      md5sum: f1a4756b3bda34663b3e84b97df235bb
+    - path: output/samtools/test_16.bam
+      md5sum: d53067544eff825d5c45f2cf9729db46
+    - path: output/samtools/test_16.bam.bai
+      md5sum: 62c4ee8614e3b3acc8351c06bd308df3
+    - path: output/samtools/test_17.bam
+      md5sum: 5768bc82f9eaf25b0d2567fae6ea4927
+    - path: output/samtools/test_17.bam.bai
+      md5sum: 22c3aab2e2ecbd23ab85b21baa53634c
+    - path: output/samtools/test_18.bam
+      md5sum: 5d576f109dc135baa5ca4a4a1dbc7bc6
+    - path: output/samtools/test_18.bam.bai
+      md5sum: d40a763a1c12dec4db5ac891a4244201
+    - path: output/samtools/test_19.bam
+      md5sum: 06cb2a34af3bc89309d4bdb1bc70038d
+    - path: output/samtools/test_19.bam.bai
+      md5sum: f67cc2d45febbeba69d30ff31f0249f3
+    - path: output/samtools/test_2.bam
+      md5sum: 24dda93b04ac4f177693e5e15da152da
+    - path: output/samtools/test_2.bam.bai
+      md5sum: 1d460f95b090be0c653a54dafc915072
+    - path: output/samtools/test_20.bam
+      md5sum: d057b458f08ccdd1b8a8e3058a73f7db
+    - path: output/samtools/test_20.bam.bai
+      md5sum: 2c5ff42f559a9466e4d9d39ad636a54f
+    - path: output/samtools/test_21.bam
+      md5sum: 8491e2204a95cb6b75d29ff9b72cb850
+    - path: output/samtools/test_21.bam.bai
+      md5sum: 250807897f693b58025b6318251f84e3
+    - path: output/samtools/test_22.bam
+      md5sum: b2bc686148b80db9a32db481761ad416
+    - path: output/samtools/test_22.bam.bai
+      md5sum: cd912323eaa0bbe6688b497b505e79be
+    - path: output/samtools/test_3.bam
+      md5sum: 8f93775191d3f28116b6359e7e06d6b9
+    - path: output/samtools/test_3.bam.bai
+      md5sum: 04ed369330bca608d80dcb5480e33c95
+    - path: output/samtools/test_4.bam
+      md5sum: bef8db4727d0cb5eb014feb672339834
+    - path: output/samtools/test_4.bam.bai
+      md5sum: 5f62e0705c4044bab32ee99e99d15a63
+    - path: output/samtools/test_5.bam
+      md5sum: 7c1f9519a940d980573e103b62fe4490
+    - path: output/samtools/test_5.bam.bai
+      md5sum: 99d06680ea6bd7f18f6485015358e1a5
+    - path: output/samtools/test_6.bam
+      md5sum: 95a2f1347501f8f6663dec3afdde41a9
+    - path: output/samtools/test_6.bam.bai
+      md5sum: 82bb6dfd25d8a221673259c8117ae1d2
+    - path: output/samtools/test_7.bam
+      md5sum: 40255b667d67ebbbf2710c91769ac75b
+    - path: output/samtools/test_7.bam.bai
+      md5sum: c8288fb58aeb11b0845aa65533d72cbd
+    - path: output/samtools/test_8.bam
+      md5sum: 19bdcc9a6bb6650fb5d486e3fd92944a
+    - path: output/samtools/test_8.bam.bai
+      md5sum: e9f5a8e0bc98d9a1fee2a706b570e032
+    - path: output/samtools/test_9.bam
+      md5sum: de639545f113dfd69f4ae64df59c5d7d
+    - path: output/samtools/test_9.bam.bai
+      md5sum: 8c9ea0198b568c767ea97e25b898abfe
+    - path: output/samtools/test_GL000191.1.bam
+      md5sum: 9577a73a9406aa99fa9e6dda92daa1ad
+    - path: output/samtools/test_GL000191.1.bam.bai
+      md5sum: bbf6de9a838a44741a199f90a1b3ce83
+    - path: output/samtools/test_GL000192.1.bam
+      md5sum: 154be8773157309de434cc6c25d9abbc
+    - path: output/samtools/test_GL000192.1.bam.bai
+      md5sum: 85d3353c29e9ed493a4a6bd37c10df7b
+    - path: output/samtools/test_GL000194.1.bam
+      md5sum: 27dc1a08022fa5f7896020984dc745d9
+    - path: output/samtools/test_GL000194.1.bam.bai
+      md5sum: cb0a24b321fde3b1364ba73510ca7461
+    - path: output/samtools/test_GL000200.1.bam
+      md5sum: 89de42f71b6f5c050c39d1e0fc07bff5
+    - path: output/samtools/test_GL000200.1.bam.bai
+      md5sum: daa9d5add9274b7588f9eb1a7f80122e
+    - path: output/samtools/test_GL000211.1.bam
+      md5sum: 522c612490c3eafb953fdbd740e3254e
+    - path: output/samtools/test_GL000211.1.bam.bai
+      md5sum: caad378b5e57c5926ab25f5c88bee34f
+    - path: output/samtools/test_GL000212.1.bam
+      md5sum: 3659622f1b479fcef82e7ad6823fd832
+    - path: output/samtools/test_GL000212.1.bam.bai
+      md5sum: d6093cd2b850f83dd72cc06911ec8ba3
+    - path: output/samtools/test_GL000213.1.bam
+      md5sum: c8f7c0a7086d9d36d724d395f9a8b465
+    - path: output/samtools/test_GL000213.1.bam.bai
+      md5sum: ae9d55b3d9ec913f0543c56b0a6f173c
+    - path: output/samtools/test_GL000214.1.bam
+      md5sum: 2ae989ead5837f3ee3b9cd32cb2853bf
+    - path: output/samtools/test_GL000214.1.bam.bai
+      md5sum: b8e804f5f8bd572fa41d43084c5d9dad
+    - path: output/samtools/test_GL000217.1.bam
+      md5sum: 09642b52c9b1634ec97a9926b08096fb
+    - path: output/samtools/test_GL000217.1.bam.bai
+      md5sum: 6d44548a09664162ea4e7f9fa6e0c54f
+    - path: output/samtools/test_GL000220.1.bam
+      md5sum: bb32781a09ebc6bbe2fe4b9d743599e2
+    - path: output/samtools/test_GL000220.1.bam.bai
+      md5sum: 16cf8a216e24612a87dd743a9ed69457
+    - path: output/samtools/test_GL000221.1.bam
+      md5sum: 44a24c30a00550670aec2b069805e6d1
+    - path: output/samtools/test_GL000221.1.bam.bai
+      md5sum: 39b4ef2647af93abe39861dd715f376e
+    - path: output/samtools/test_GL000222.1.bam
+      md5sum: 676c2d3b9345e2dd4b10ba83dfce96bd
+    - path: output/samtools/test_GL000222.1.bam.bai
+      md5sum: ced99cae7d77c1c72271f69f2751942d
+    - path: output/samtools/test_GL000224.1.bam
+      md5sum: f83b12c6a4b02499533a05192696ca0c
+    - path: output/samtools/test_GL000224.1.bam.bai
+      md5sum: 76d290851c9778051a7c2936a1e020e2
+    - path: output/samtools/test_GL000225.1.bam
+      md5sum: 0864792690d06e1d202170284d97bf45
+    - path: output/samtools/test_GL000225.1.bam.bai
+      md5sum: e61b4881ec08f0dc7544dc0037779f14
+    - path: output/samtools/test_GL000226.1.bam
+      md5sum: d70b4e12be62180fa26b1f9818a0d9dc
+    - path: output/samtools/test_GL000226.1.bam.bai
+      md5sum: ee751029b05aed5cd0b25294c40819e1
+    - path: output/samtools/test_GL000227.1.bam
+      md5sum: 590bbe69103c8c8a330f05387fe8ad1a
+    - path: output/samtools/test_GL000227.1.bam.bai
+      md5sum: 6755942ba49ef2ddeb375ff7ae3def18
+    - path: output/samtools/test_GL000228.1.bam
+      md5sum: bf75d0f1f8951a9f8ec9382cd683e87a
+    - path: output/samtools/test_GL000228.1.bam.bai
+      md5sum: 705c51daa6339073b187251a35bd46b2
+    - path: output/samtools/test_GL000237.1.bam
+      md5sum: 319bcbea4a00788c8e247a1367ff0d63
+    - path: output/samtools/test_GL000237.1.bam.bai
+      md5sum: 91937991e6e001e284038745fc4b118f
+    - path: output/samtools/test_GL000240.1.bam
+      md5sum: 21825b33c8973b5a2af36a377571178a
+    - path: output/samtools/test_GL000240.1.bam.bai
+      md5sum: 8a8bd2cbfb74c3079dc055caf238b1a7
+    - path: output/samtools/test_GL000243.1.bam
+      md5sum: d9eba81668d80bc381f15f49f593515d
+    - path: output/samtools/test_GL000243.1.bam.bai
+      md5sum: d84eb16f5cf378628a9ef04878e7fe61
+    - path: output/samtools/test_MT.bam
+      md5sum: e3c2ca4c987ef2bd3b6761ead955a5e3
+    - path: output/samtools/test_MT.bam.bai
+      md5sum: 1b891034e522f20fb061fbc310b8bc8b
+    - path: output/samtools/test_X.bam
+      md5sum: dd3ea31140939def63854973ae2c17cf
+    - path: output/samtools/test_X.bam.bai
+      md5sum: 5294f90687381c09c44a84302328ad1d
+    - path: output/samtools/test_Y.bam
+      md5sum: 965a08c5678c2ccdb05f786b7397090e
+    - path: output/samtools/test_Y.bam.bai
+      md5sum: 91470e9e5233c4e73cc191b5fe4cbc01
+    - path: output/samtools/test_hs37d5.bam
+      md5sum: 2eb31b0fbcf6cf5a958940bf36fdcd4b
+    - path: output/samtools/test_hs37d5.bam.bai
+      md5sum: efb77baba7c175f0322a9b172b485db3
