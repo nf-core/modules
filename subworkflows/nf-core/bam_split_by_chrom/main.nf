@@ -6,38 +6,42 @@ include { SAMTOOLS_IDXSTATS      } from '../../../modules/nf-core/samtools/idxst
 include { SAMTOOLS_VIEW          } from '../../../modules/nf-core/samtools/view/main'
 include { SAMTOOLS_INDEX         } from '../../../modules/nf-core/samtools/index/main'
 
-workflow BAM_SPLIT_BY_CHROM {
+workflow BAM_SPLIT_BY_REGION {
 
     take:
     ch_bam // channel: [ val(meta), bam , bai ]
+    ch_bed // channel [ bed ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    // Run idxstats to get names for chromosomes but also umber of mapped reads.
-    SAMTOOLS_IDXSTATS(ch_bam)
-    ch_versions = ch_versions.mix(SAMTOOLS_IDXSTATS.out.versions.first())
+    // Create channel containing the region names from the bed file.
+    ch_regions = ch_bed
+                    .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t' )
+                    .map{
+                        stats ->
+                            // If the regions file contains just a sequence name provide that
+                            if (! stats['start'] ) {
+                                region = stats['seq_name']
+                            } else if ( ! stats['stop']) {
+                            // If a specific position is given, use that
+                                region = [stats['seq_name'], stats['start']].join(":")
+                            } else {
+                            // If a region between specific bps is requested use that
+                                region = [ [stats['seq_name'], stats['start']].join(":"), stats['stop']].join('-')
+                            }
+                        [ region ]
+                    }
 
-    // Create channel containing the sequence names that contain any mapped reads in them for each meta entry. [ [meta], seq_name ]
-    ch_chroms_with_reads = SAMTOOLS_IDXSTATS.out.idxstats
-                                .splitCsv ( header: ['seq_name', 'seq_length', 'n_mapped_reads', 'n_unmapped_reads'], sep:'\t' )
-                                // Only keep chromosomes that have some data to avoid creating empty bams
-                                //      that will likely fail in some downstream processes
-                                .filter{ it[1]['n_mapped_reads'].toInteger() > 0 }
-                                .map{
-                                    meta, stats ->
-                                    [ meta, stats['seq_name'] ]
-                                }
-
-    // Create a channel for each input bam that has an additional field iterating over all chromosomes containing reads
+    // Combine input bam with regions.
     ch_bam
-        .combine(ch_chroms_with_reads, by:0)
-        // Place chromosome name into map
+        .combine(ch_regions)
+        // Place region into map
         .map{
             meta, bam, bai, chrom ->
             clone = meta.clone()
-            clone['seq_name'] = chrom
+            clone['genomic_region'] = chrom
 
             [ clone, bam, bai ]
         }
