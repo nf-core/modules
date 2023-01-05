@@ -6,7 +6,9 @@ include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../modules/nf-cor
 include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../modules/nf-core/hmmer/eslreformat/main'
-include { EPANG                                     } from '../../modules/nf-core/epang/main'
+include { MAFFT                                     } from '../../modules/nf-core/mafft/main'
+include { EPANG_PLACE                               } from '../../modules/nf-core/epang/place/main'
+include { EPANG_SPLIT                               } from '../../modules/nf-core/epang/split/main'
 include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../modules/nf-core/gappa/examinegraft/main'
 include { GAPPA_EXAMINEASSIGN as GAPPA_ASSIGN       } from '../../modules/nf-core/gappa/examineassign/main'
 include { GAPPA_EXAMINEHEATTREE as GAPPA_HEATTREE   } from '../../modules/nf-core/gappa/examineheattree/main'
@@ -14,112 +16,141 @@ include { GAPPA_EXAMINEHEATTREE as GAPPA_HEATTREE   } from '../../modules/nf-cor
 workflow SEQUENCES_NEWICK_PHYLOPLACE_EPANG_GAPPA {
 
     take:
-    ch_pp_data // channel: [ val(meta), [ file(queryseqfile), file(refseqfile), file(refphylogeny), file(hmmfile), val(model) ] ]
+    ch_pp_data // channel: [ val(meta), [ file(queryseqfile), file(refseqfile), file(refphylogeny), file(hmmfile), val(model), val(alignmethod) ] ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    // 1.a For entries that do not specify an hmm file, build one to use for alignment
+    // Divide the input channel into two: One for hmmer and one for mafft alignment
+    ch_hmmer_data = ch_pp_data.filter { it.data.alignmethod == 'hmmer' }
+    ch_mafft_data = ch_pp_data.filter { it.data.alignmethod == 'mafft' }
+
+    // 1.a.1 HMMER alignment: For entries that do not specify an hmm file, build one to use for alignment
     HMMER_HMMBUILD ( 
-        ch_pp_data
+        ch_hmmer_data
             .filter { ! it.data.hmmfile }
             .map { [ it.meta, it.data.refseqfile ] }, 
         [] 
     )
-    // 1.b This handles mixed input where some samples have hmmfile set, while others don't (sample sheet input)
+    // 1.a.2 This handles mixed input where some samples have hmmfile set, while others don't (sample sheet input)
     ch_hmm = Channel.empty()
         .mix(HMMER_HMMBUILD.out.hmm.map { [ it[0], it[1] ] })
         .mix(
-            ch_pp_data
+            ch_hmmer_data
                 .filter { it.data.hmmfile }
                 .map { [ it.meta, it.data.hmmfile ] }
         )
 
     ch_versions = ch_versions.mix(HMMER_HMMBUILD.out.versions.first())
 
-    // 2. For entries that do not specify an hmm file, "unalign" the reference sequences before they can be aligned to the hmm.
+    // 1.b For entries that do not specify an hmm file, "unalign" the reference sequences before they can be aligned to the hmm.
     HMMER_UNALIGNREF ( 
-        ch_pp_data
+        ch_hmmer_data
             .filter { ! it.data.hmmfile }
             .map { [ it.meta, it.data.refseqfile ] } 
     )
-    ch_unaligned = Channel.empty()
+    ch_hmmer_unaligned = Channel.empty()
         .mix(HMMER_UNALIGNREF.out.seqreformated.map { [ it[0], it[1] ] })
         .mix(
-            ch_pp_data
+            ch_hmmer_data
                 .filter { it.data.hmmfile }
                 .map { [ it.meta, it.data.refseqfile ] }
         )
 
     ch_versions = ch_versions.mix(HMMER_UNALIGNREF.out.versions)
 
-    // 3. Align the reference and query sequences to the profile
-    ch_alignref = ch_hmm
-        .mix(ch_unaligned)
+    // 1.c Align the reference and query sequences to the profile
+    ch_hmmer_alignref = ch_hmm
+        .mix(ch_hmmer_unaligned)
         .groupTuple(size: 2, sort: { a, b -> a =~ /\.hmm/ ? 1 : -1 })
 
     HMMER_HMMALIGNREF ( 
-        ch_alignref.map { [ it[0], it[1][0] ] },
-        ch_alignref.map { it[1][1] }
+        ch_hmmer_alignref.map { [ it[0], it[1][0] ] },
+        ch_hmmer_alignref.map { it[1][1] }
     )
     ch_versions = ch_versions.mix(HMMER_HMMALIGNREF.out.versions)
 
-    ch_alignquery = Channel.empty()
-        .mix(ch_pp_data.map { [ it.meta, it.data.queryseqfile ] })
+    ch_hmmer_alignquery = Channel.empty()
+        .mix(ch_hmmer_data.map { [ it.meta, it.data.queryseqfile ] })
         .mix(ch_hmm)
         .groupTuple(size: 2, sort: { a, b -> a =~ /\.hmm/ ? 1 : -1 })
 
     HMMER_HMMALIGNQUERY (
-        ch_alignquery.map { [ it[0], it[1][0] ] },
-        ch_alignquery.map { it[1][1] }
+        ch_hmmer_alignquery.map { [ it[0], it[1][0] ] },
+        ch_hmmer_alignquery.map { it[1][1] }
     )
     ch_versions = ch_versions.mix(HMMER_HMMALIGNQUERY.out.versions)
 
-    // 4. Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
+    // 1.d Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
     HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKREF.out.versions)
 
     HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
-    // 5. Reformat alignments to "afa" (aligned fasta)
+    // 1.e Reformat alignments to "afa" (aligned fasta)
     HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATREF.out.versions)
 
     HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATQUERY.out.versions)
 
-    // 6. Do the placement
-    ch_epang_query = ch_pp_data.map { [ it.meta, it.data.model ] }
-        .join ( HMMER_AFAFORMATQUERY.out.seqreformated )
-        .map { [ [ id:it[0].id, model:it[1] ], it[2] ] }
-    EPANG (
-        ch_epang_query,
-        HMMER_AFAFORMATREF.out.seqreformated.map { it[1] },
-        ch_pp_data.map { it.data.refphylogeny },
-        [], [], []
+    // 2.a MAFFT profile alignment of query sequences to reference alignment
+    MAFFT (
+        ch_mafft_data.map { [ it.meta, it.data.refseqfile ] },
+        ch_mafft_data.map { [ it.data.queryseqfile ] }
     )
-    ch_versions = ch_versions.mix(EPANG.out.versions)
+    ch_versions = ch_versions.mix(MAFFT.out.versions)
+
+    // 2.b Split the profile alignment into reference and query parts
+    EPANG_SPLIT (
+        ch_mafft_data.map { [ it.meta, it.data.refseqfile ] }
+            .join(MAFFT.out.fas)
+    )
+    ch_versions = ch_versions.mix(EPANG_SPLIT.out.versions)
+
+    // 3. Do the placement
+    ch_epang_query = ch_pp_data.map { [ it.meta, it.data.model, it.data.refphylogeny ] }
+        .join ( HMMER_AFAFORMATQUERY.out.seqreformated )
+        .join ( HMMER_AFAFORMATREF.out.seqreformated )
+        .mix(
+            ch_pp_data.map { [ it.meta, it.data.model, it.data.refphylogeny ] }
+                .join(EPANG_SPLIT.out.query.map { [ it[0], it[1] ] } )
+                .join(EPANG_SPLIT.out.reference.map { [ it[0], it[1] ] } )
+        )
+        .map { [ [ id:it[0].id, model:it[1] ], it[3], it[4], it[2] ] }
+
+    EPANG_PLACE (
+        ch_epang_query,
+        [], []
+    )
+    ch_versions = ch_versions.mix(EPANG_PLACE.out.versions)
 
     // 7. Calculate a tree with the placed sequences
-    GAPPA_GRAFT ( EPANG.out.jplace )
+    GAPPA_GRAFT ( EPANG_PLACE.out.jplace )
     ch_versions = ch_versions.mix(GAPPA_GRAFT.out.versions)
 
     // 8. Classify
-    GAPPA_ASSIGN ( EPANG.out.jplace, ch_pp_data.map { it.data.taxonomy } )
+    GAPPA_ASSIGN ( 
+        EPANG_PLACE.out.jplace
+            .map { [ [ id:it[0].id ], it[1] ] }
+            .join( ch_pp_data.map { [ it.meta, it.data.taxonomy ] } )
+    )
     ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 
     // 9. Heat tree output
-    GAPPA_HEATTREE ( EPANG.out.jplace )
+    GAPPA_HEATTREE ( EPANG_PLACE.out.jplace )
     ch_versions = ch_versions.mix(GAPPA_HEATTREE.out.versions)
 
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    epang               = EPANG_PLACE.out.epang
+    jplace              = EPANG_PLACE.out.jplace
+    grafted_phylogeny   = GAPPA_GRAFT.out.newick
+    taxonomy_profile    = GAPPA_ASSIGN.out.profile
+    taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
+    heattree            = GAPPA_HEATTREE.out.svg
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions            = ch_versions                     // channel: [ versions.yml ]
 }
 
