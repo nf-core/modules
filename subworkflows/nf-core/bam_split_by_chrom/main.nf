@@ -51,9 +51,6 @@ workflow BAM_SPLIT_BY_CHROM {
     SAMTOOLS_INDEX(SAMTOOLS_VIEW.out.bam)
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
-    SAMTOOLS_VIEW.out.bam
-    SAMTOOLS_INDEX.out.bai
-
     // Emit channel in the same format as was taken in by joining each bam with its bai.
     ch_output = SAMTOOLS_VIEW.out.bam.join(SAMTOOLS_INDEX.out.bai)
 
