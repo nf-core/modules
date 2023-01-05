@@ -40,7 +40,7 @@ process ICHORCNA_RUN {
         ${pon} \\
         ${centro} \\
         --outDir .
-    
+
     cp */*genomeWide.pdf .
 
     cat <<-END_VERSIONS > versions.yml
