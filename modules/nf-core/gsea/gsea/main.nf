@@ -46,7 +46,7 @@ process GSEA_GSEA {
 
     // Remove any trailing dots from prefix when passed as report label, so
     // GSEA doesn't produce double-dotted top-level outputs
-    def rpt_label = prefix.replaceAll(".\$", "")
+    def rpt_label = prefix.replaceAll('\\.$', '')
 
     def chip_command = chip ? "-chip $chip -collapse true" : ''
     """
