@@ -15,7 +15,8 @@ workflow test_gsea_gsea {
 
     GSEA_GSEA (
         input,
-        contrast
+        contrast,
+        []
     )
 }
 
@@ -30,7 +31,8 @@ workflow test_gsea_gsea_nosets {
 
     GSEA_GSEA (
         input,
-        contrast
+        contrast,
+        []
     )
 }
 
@@ -45,6 +47,7 @@ workflow test_gsea_gsea_zip {
 
     GSEA_GSEA (
         input,
-        contrast
+        contrast,
+        []
     )
 }

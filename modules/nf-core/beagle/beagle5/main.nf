@@ -15,7 +15,7 @@ process BEAGLE_BEAGLE5 {
     path(exclmarkers)
 
     output:
-    tuple val(meta), path("*.vcf.gz")     , emit: impvcf
+    tuple val(meta), path("*.vcf.gz")     , emit: vcf
     tuple val(meta), path("*.log")        , emit: log
     path "versions.yml"                   , emit: versions
 
