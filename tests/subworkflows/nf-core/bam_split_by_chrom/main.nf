@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { SAMTOOLS_INDEX } from '../../../../modules/nf-core/samtools/index/main.nf'
-include { BAM_SPLIT_BY_CHROM } from '../../../../subworkflows/nf-core/bam_split_by_chrom/main.nf'
+include { BAM_SPLIT_BY_REGION } from '../../../../subworkflows/nf-core/bam_split_by_chrom/main.nf'
 
 workflow test_bam_split_by_chrom {
 
@@ -16,5 +16,5 @@ workflow test_bam_split_by_chrom {
     ch_bam_split_input=Channel.of(input)
             .join(SAMTOOLS_INDEX.out.bai)
 
-    BAM_SPLIT_BY_CHROM ( ch_bam_split_input )
+    BAM_SPLIT_BY_REGION ( ch_bam_split_input )
 }
