@@ -1,0 +1,13 @@
+- name: "yahs"
+  command: nextflow run ./tests/modules/nf-core/yahs -entry test_yahs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/yahs/nextflow.config
+  tags:
+    - "yahs"
+  files:
+    - path: "output/yahs/yahs.out_scaffolds_final.fa"
+      md5sum: 001352028c961d322ec75a79fefc6b44
+    - path: "output/yahs/yahs.out_scaffolds_final.agp"
+      md5sum: 22d59751e5c39d60d182404bb8f29d25
+    - path: "output/yahs/yahs.out.bin"
+      md5sum: bb1347b2a4cc7f50e43d36b05ebe6523
+    - path: "output/yahs/versions.yml"
+      md5sum: 29de05cff4ae625940d7308019949174

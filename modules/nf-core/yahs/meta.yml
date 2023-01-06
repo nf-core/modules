@@ -1,0 +1,84 @@
+name: "yahs"
+description: Performs assembly scaffolding using YaHS
+keywords:
+  - scaffolding
+  - assembly
+tools:
+  - "yahs":
+      description: "YaHS, yet another Hi-C scaffolding tool."
+      homepage: "https://github.com/c-zhou/yahs"
+      documentation: "https://github.com/c-zhou/yahs"
+      tool_dev_url: "https://github.com/c-zhou/yahs"
+      doi: "https://doi.org/10.1101/2022.06.09.495093"
+      licence: "['MIT']"
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  #
+  - bed:
+      type: file
+      description: BED file containing coordinates of duplicate alignments
+      pattern: "*.{bed}"
+
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+
+  - fai:
+      type: file
+      description: index of the reference file
+      pattern: "*.{fai}"
+
+  - if_break:
+      type: boolean
+      description: allow breaking contigs
+      pattern: "true or false"
+
+  - motif:
+      type: value
+      description: comma-separated list of motifs for restriction enzyme
+        e.g. GATC,GANTC
+
+  - resolutions:
+      type: value
+      description: comma-separated range of resultions in ascending order
+        e.g. 10000,20000,50000,100000,200000
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - scaffolds_fasta:
+      type: file
+      description: FASTA file with resulting contigs
+      pattern: "yahs.out_scaffolds_final.fa"
+
+  - scaffolds_agp:
+      type: file
+      description: AGP file containing contigs placing coordinates
+      pattern: "yahs.out_scaffolds_final.agp"
+
+  - binary:
+      type: file
+      description: BIN file with alignment results
+        of Hi-C reads to the contigs in internal YaHS
+        binary format
+      pattern: "yahs.out.bin"
+
+authors:
+  - "@ksenia-krasheninnikova"
