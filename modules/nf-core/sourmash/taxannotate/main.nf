@@ -25,7 +25,7 @@ process SOURMASH_TAXANNOTATE {
 
     # Currently, `sourmash tax annotate` does not support gz-compressed input,
     # streaming is also not supported
-    # so we need to decomress the input file first
+    # so we need to decompress the input file first
     gunzip -c ${gather_results} > ${prefix}.csv
 
     sourmash \\
