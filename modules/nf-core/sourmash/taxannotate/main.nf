@@ -23,15 +23,10 @@ process SOURMASH_TAXANNOTATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    # Currently, `sourmash tax annotate` does not support gz-compressed input,
-    # streaming is also not supported
-    # so we need to decompress the input file first
-    gunzip -c ${gather_results} > ${prefix}.csv
-
     sourmash \\
         tax annotate \
         $args \\
-        --gather-csv ${prefix}.csv \\
+        --gather-csv ${gather_results} \\
         --taxonomy ${taxonomy} \\
         --output-dir "."
 
@@ -39,9 +34,6 @@ process SOURMASH_TAXANNOTATE {
 
     ## Compress output
     gzip "${prefix}.with-lineages.csv"
-
-    # Remove decompressed file
-    rm "${prefix}.csv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
