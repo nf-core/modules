@@ -1,0 +1,10 @@
+- name: graphtyper genotype test_graphtyper_genotype
+  command: nextflow run ./tests/modules/nf-core/graphtyper/genotype -entry test_graphtyper_genotype -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/graphtyper/genotype/nextflow.config
+  tags:
+  - graphtyper/genotype
+  - graphtyper
+  files:
+  - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz
+    md5sum: fd6db06bf24caac78f284c91cc7f433a
+  - path: output/graphtyper/results/MT192765.1/000000001-000029829.vcf.gz.tbi
+    md5sum: 6cf39cb5edec1dad83e9bd85b68ae9d9
