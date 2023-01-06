@@ -1,12 +1,12 @@
-- name: bam_split_by_chrom test_bam_split_by_chrom
-  command: nextflow run ./tests/subworkflows/nf-core/bam_split_by_chrom -entry test_bam_split_by_chrom -c ./tests/config/nextflow.config
+- name: bam_split_by_region test_bam_split_by_region
+  command: nextflow run ./tests/subworkflows/nf-core/bam_split_by_region -entry test_bam_split_by_region -c ./tests/config/nextflow.config
   tags:
     - samtools
     - samtools/idxstats
     - samtools/index
     - samtools/view
     - subworkflows
-    - subworkflows/bam_split_by_chrom
+    - subworkflows/bam_split_by_region
   files:
     - path: output/samtools/test.idxstats
       md5sum: 094096b6f303cc18892e1e027c87f273
