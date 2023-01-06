@@ -47,10 +47,6 @@ output:
       type: file
       description: BAM/CRAM/SAM samtools index
       pattern: "*.{bai,crai,sai}"
-  - idxstats:
-      type: file
-      description: File containing samtools idxstats output
-      pattern: "*.{idxstats}"
   - versions:
       type: file
       description: File containing software versions
