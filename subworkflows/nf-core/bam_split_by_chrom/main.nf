@@ -2,22 +2,21 @@
 // Run SAMtools idxstats, then split reads in input bam into one bam per chromosome in idxstats output
 //
 
-include { SAMTOOLS_IDXSTATS      } from '../../../modules/nf-core/samtools/idxstats/main'
 include { SAMTOOLS_VIEW          } from '../../../modules/nf-core/samtools/view/main'
 include { SAMTOOLS_INDEX         } from '../../../modules/nf-core/samtools/index/main'
 
 workflow BAM_SPLIT_BY_REGION {
 
     take:
-    ch_bam // channel: [ val(meta), bam , bai ]
-    ch_bed // channel [ bed ]
+    ch_bam          // channel: [ val(meta), bam , bai ]
+    ch_regions_file // channel: [ regions_file ]
 
     main:
 
     ch_versions = Channel.empty()
 
     // Create channel containing the region names from the bed file.
-    ch_regions = ch_bed
+    ch_regions = ch_regions_file
                     .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t' )
                     .map{
                         stats ->
