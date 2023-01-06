@@ -2,7 +2,7 @@ process YAHS {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::yahs=1.2a.2" 
+    conda "bioconda::yahs=1.2a.2"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yahs:1.2a.2--h7132678_0':
         'quay.io/biocontainers/yahs:1.2a.2--h7132678_0' }"
@@ -25,7 +25,7 @@ process YAHS {
     """
     yahs $args \\
         $fasta \\
-        $bed 
+        $bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
