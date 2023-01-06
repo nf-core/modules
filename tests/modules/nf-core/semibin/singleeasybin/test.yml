@@ -1,8 +1,8 @@
 - name: semibin singleeasybin test_semibin_singleeasybin
   command: nextflow run ./tests/modules/nf-core/semibin/singleeasybin -entry test_semibin_singleeasybin -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/semibin/singleeasybin/nextflow.config
   tags:
-    - semibin
     - semibin/singleeasybin
+    - semibin
   files:
     - path: output/bowtie2/bowtie2/contigs.1.bt2
       md5sum: 79eb2026d333055a85273646363b217c
@@ -27,7 +27,7 @@
       md5sum: 5c8caa2644ed96d0e4c48db739c6affc
     - path: output/semibin/model.h5
       contains:
-        - '# TODO nf-core: file md5sum was variable, please replace this text with a string found in the file instead '
+        - '_non_persistent_buffers_setq'
     - path: output/semibin/output_prerecluster_bins/bin.0.fa
       md5sum: 3622f87e08fc2c13101fc18a0e5e973b
     - path: output/semibin/output_recluster_bins/bin.0.fa

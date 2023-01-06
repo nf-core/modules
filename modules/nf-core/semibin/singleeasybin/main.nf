@@ -36,9 +36,6 @@ process SEMIBIN_SINGLEEASYBIN {
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(fasta), path(bam)
-    val min_len
-    val ml_threshold
-    val minfasta_kbs	
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -55,6 +52,7 @@ process SEMIBIN_SINGLEEASYBIN {
 
     script:
     def args = task.ext.args ?: ''
+    def args3 = task.ext.args3 ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -74,11 +72,8 @@ process SEMIBIN_SINGLEEASYBIN {
         -b $bam \\
         -o $prefix \\
         -t $task.cpus \\
-        --min-len  $min_len \\
-        --self-supervised  \\
-        --ml-threshold $ml_threshold  \\
-        --minfasta-kbs $minfasta_kbs       
-    
+        $args3        
+
     mv $prefix/* .
 
     cat <<-END_VERSIONS > versions.yml
