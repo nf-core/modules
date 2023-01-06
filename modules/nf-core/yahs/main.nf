@@ -13,7 +13,7 @@ process YAHS {
     val(if_break)
     val(motif)
     val(resolutions)
-    
+
     output:
     tuple val(meta), path("yahs.out_scaffolds_final.fa"), emit: scaffolds_fasta
     tuple val(meta), path("yahs.out_scaffolds_final.agp"), emit: scaffolds_agp
