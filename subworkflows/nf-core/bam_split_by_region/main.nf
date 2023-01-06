@@ -59,7 +59,6 @@ workflow BAM_SPLIT_BY_REGION {
 
     emit:
     bam_bai     = ch_output                         // channel: [ val(meta), bam, bai ]
-    idxstats    = SAMTOOLS_IDXSTATS.out.idxstats    // channel: [ val(meta), idxstats ]
     versions    = ch_versions                       // channel: [ versions.yml ]
 }
 
