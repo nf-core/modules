@@ -13,5 +13,5 @@ workflow test_yahs {
           file(params.test_data['yahs']['ilEupCent1_fa_fai'], checkIfExists: true)
         ]
 
-    YAHS ( input_bed, input_fa, 'true', '', '' )
+    YAHS ( input_bed, input_fa )
 }

@@ -35,21 +35,6 @@ input:
       description: index of the reference file
       pattern: "*.{fai}"
 
-  - if_break:
-      type: boolean
-      description: allow breaking contigs
-      pattern: "true or false"
-
-  - motif:
-      type: value
-      description: comma-separated list of motifs for restriction enzyme
-        e.g. GATC,GANTC
-
-  - resolutions:
-      type: value
-      description: comma-separated range of resultions in ascending order
-        e.g. 10000,20000,50000,100000,200000
-
 output:
   #Only when we have meta
   - meta:
