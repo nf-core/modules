@@ -1,0 +1,38 @@
+name: "custom_tabulartogseagct"
+description: Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA
+keywords:
+  - gsea
+  - gct
+tools:
+  - "tabulartogseagct":
+      description: "Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing matrix information
+        e.g. [ id:'test' ]
+  - tabular:
+      type: file
+      description: Tabular (e.g. TSV or CSV file) containing a numeric matrix
+        with features (e.g. genes) by row and samples by column.
+      pattern: "*.{tsv,csv}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing matrix information
+        e.g. [ id:'test' ]
+  - gct:
+      type: file
+      description: GCT format version of input TSV
+      pattern: "*.{gct}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"

@@ -19,5 +19,5 @@ workflow test_krakentools_combinekreports {
     UNTAR ( db )
     KRAKEN2_KRAKEN2 ( input, UNTAR.out.untar.map{ it[1] }, false, false )
 
-    KRAKENTOOLS_COMBINEKREPORTS ( KRAKEN2_KRAKEN2.out.report.map{ [[id:"test"], it[1]] }.groupTuple().dump())
+    KRAKENTOOLS_COMBINEKREPORTS ( KRAKEN2_KRAKEN2.out.report.map{ [[id:"test"], it[1]] }.groupTuple())
 }

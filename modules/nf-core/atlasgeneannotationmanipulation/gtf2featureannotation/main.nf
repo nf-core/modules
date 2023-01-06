@@ -1,8 +1,8 @@
 process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
-    tag '${meta.id}'
+    tag "${meta.id}"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::atlas-gene-annotation-manipulation=1.1.0" : null)
+    conda "bioconda::atlas-gene-annotation-manipulation=1.1.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas-gene-annotation-manipulation%3A1.1.0--hdfd78af_0':
         'quay.io/biocontainers/atlas-gene-annotation-manipulation:1.1.0--hdfd78af_0' }"
@@ -27,8 +27,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     """
     gtf2featureAnnotation.R \\
         --gtf-file $gtf \\
-        --feature-type "gene" \\
-        --first-field "gene_id" \\
         --output-file ${prefix}.anno.tsv \\
         $reference_cdna \\
         $args

@@ -2,10 +2,10 @@ process BISCUIT_QC {
     tag "$meta.id"
     label 'process_long'
 
-    conda (params.enable_conda ? "bioconda::biscuit=1.0.2.20220113" : null)
+    conda "bioconda::biscuit=1.1.0.20220707"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biscuit:1.0.2.20220113--h81a5ba2_0':
-        'quay.io/biocontainers/biscuit:1.0.2.20220113--h81a5ba2_0' }"
+        'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
+        'quay.io/biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -23,7 +23,7 @@ process BISCUIT_QC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def se = meta.single_end ? "-s" : ""
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/.bis.amb//'`
+    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
 
     biscuit qc \\
         $args \\
