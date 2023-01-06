@@ -29,6 +29,6 @@ workflow test_semibin_singleeasybin {
         .join(BOWTIE2_ALIGN.out.bam)
         .set { input_semibin }
 
-    SEMIBIN_SINGLEEASYBIN ( input_semibin , 0 , 0 , 0 )
+    SEMIBIN_SINGLEEASYBIN ( input_semibin )
    
 }

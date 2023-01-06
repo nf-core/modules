@@ -28,13 +28,13 @@ process SEMIBIN_SINGLEEASYBIN {
     """
 
     SemiBin \\
-	$args \\
+        $args \\
         single_easy_bin \\
         -i $fasta \\
         -b $bam \\
         -o $prefix \\
         -t $task.cpus \\
-        $args3        
+        $args3
 
     mv $prefix/* .
 
