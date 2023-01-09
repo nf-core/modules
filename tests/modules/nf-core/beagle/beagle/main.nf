@@ -2,9 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-include { BEAGLE_BEAGLE5 } from '../../../../../modules/nf-core/beagle/beagle5/main.nf'
+include { BEAGLE_BEAGLE } from '../../../../../modules/nf-core/beagle/beagle/main.nf'
 
-workflow test_beagle_beagle5 {
+workflow test_beagle_beagle {
 
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -15,10 +15,10 @@ workflow test_beagle_beagle5 {
     exclsamples = []
     exclmarkers = []
 
-    BEAGLE_BEAGLE5 ( input, refpanel, genmap, exclsamples, exclmarkers )
+    BEAGLE_BEAGLE ( input, refpanel, genmap, exclsamples, exclmarkers )
 }
 
-workflow test_beagle_beagle5_ref {
+workflow test_beagle_beagle_ref {
 
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -29,10 +29,10 @@ workflow test_beagle_beagle5_ref {
     exclsamples = []
     exclmarkers = []
 
-    BEAGLE_BEAGLE5 ( input, refpanel, genmap, exclsamples, exclmarkers )
+    BEAGLE_BEAGLE ( input, refpanel, genmap, exclsamples, exclmarkers )
 }
 
-workflow test_beagle_beagle5_ref_map {
+workflow test_beagle_beagle_ref_map {
 
     input = [
         [ id:'test', single_end:false ], // meta map
@@ -43,5 +43,5 @@ workflow test_beagle_beagle5_ref_map {
     exclsamples = []
     exclmarkers = []
 
-    BEAGLE_BEAGLE5 ( input, refpanel, genmap, exclsamples, exclmarkers )
+    BEAGLE_BEAGLE ( input, refpanel, genmap, exclsamples, exclmarkers )
 }

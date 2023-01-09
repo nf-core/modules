@@ -1,4 +1,4 @@
-process BEAGLE_BEAGLE5 {
+process BEAGLE_BEAGLE {
     tag "$meta.id"
     label 'process_high'
 
