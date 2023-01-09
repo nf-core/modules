@@ -16,15 +16,18 @@ process YAHS {
     tuple val(meta), path("*scaffolds_final.fa") , emit: scaffolds_fasta
     tuple val(meta), path("*scaffolds_final.agp"), emit: scaffolds_agp
     tuple val(meta), path("*bin")                , emit: binary
-    path "versions.yml"                                  , emit: versions
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     yahs $args \\
+        -o $prefix \\
         $fasta \\
         $bed
 
