@@ -51,19 +51,19 @@ output:
   - scaffolds_fasta:
       type: file
       description: FASTA file with resulting contigs
-      pattern: "test_scaffolds_final.fa"
+      pattern: "*scaffolds_final.fa"
 
   - scaffolds_agp:
       type: file
       description: AGP file containing contigs placing coordinates
-      pattern: "test_scaffolds_final.agp"
+      pattern: "*scaffolds_final.agp"
 
   - binary:
       type: file
       description: BIN file with alignment results
         of Hi-C reads to the contigs in internal YaHS
         binary format
-      pattern: "test_bin"
+      pattern: "*bin"
 
 authors:
   - "@ksenia-krasheninnikova"
