@@ -9,12 +9,13 @@ process YAHS {
 
     input:
     tuple val(meta), path(bed)
-    tuple path(fasta), path(fai)
+    path fasta
+    path fai
 
     output:
-    tuple val(meta), path("yahs.out_scaffolds_final.fa") , emit: scaffolds_fasta
-    tuple val(meta), path("yahs.out_scaffolds_final.agp"), emit: scaffolds_agp
-    tuple val(meta), path("yahs.out.bin")                , emit: binary
+    tuple val(meta), path("*scaffolds_final.fa") , emit: scaffolds_fasta
+    tuple val(meta), path("*scaffolds_final.agp"), emit: scaffolds_agp
+    tuple val(meta), path("*bin")                , emit: binary
     path "versions.yml"                                  , emit: versions
 
     when:
