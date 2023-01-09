@@ -9,7 +9,7 @@ tools:
       homepage: "https://github.com/c-zhou/yahs"
       documentation: "https://github.com/c-zhou/yahs"
       tool_dev_url: "https://github.com/c-zhou/yahs"
-      doi: "https://doi.org/10.1101/2022.06.09.495093"
+      doi: "https://doi.org/10.1093/bioinformatics/btac808"
       licence: "['MIT']"
 
 input:
@@ -20,10 +20,10 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test' ]
   #
-  - bed:
+  - hic_map:
       type: file
       description: BED file containing coordinates of read alignments
-      pattern: "*.{bed}"
+      pattern: "*.{bed,bam,bin}"
 
   - fasta:
       type: file

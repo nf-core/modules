@@ -8,7 +8,7 @@ process YAHS {
         'quay.io/biocontainers/yahs:1.2a.2--h7132678_0' }"
 
     input:
-    tuple val(meta), path(bed)
+    tuple val(meta), path(hic_map)
     path fasta
     path fai
 
@@ -29,7 +29,7 @@ process YAHS {
     yahs $args \\
         -o $prefix \\
         $fasta \\
-        $bed
+        $hic_map
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
