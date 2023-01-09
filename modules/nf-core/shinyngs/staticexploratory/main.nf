@@ -37,8 +37,8 @@ process SHINYNGS_STATICEXPLORATORY {
         --sample_metadata $sample \\
         --feature_metadata $feature_meta \\
         --assay_files ${assay_files.join(',')} \\
-        --contrast_variable ${meta.id} \\
-        --outdir $prefix \\
+        --contrast_variable "${meta.id}" \\
+        --outdir "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
