@@ -3,10 +3,14 @@ process ASHLAR {
     label 'process_single'
 
     conda (params.enable_conda ? "bioconda::ashlar=1.17.0" : null)
-    // TODO nf-core: need to have this added
+    /* TODO nf-core: we'll provide a dockerfile as described in 5) under Software Requirements
+                     at https://nf-co.re/developers/modules#software-requirements
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ashlar':
         'quay.io/biocontainers/ashlar' }"
+
+    container 'ghcr.io/????/ashlar:1.17.0'
+    */
 
     input:
     tuple val(meta), val(file_in)
