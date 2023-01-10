@@ -26,9 +26,9 @@ process SHINYNGS_STATICDIFFERENTIAL {
     def prefix = task.ext.prefix ?: meta.id
     """
     differential_plots.R \\
-        --differential_file $differential_result \\
-        --feature_metadata $feature_meta \\
-        --outdir $prefix \\
+        --differential_file "$differential_result" \\
+        --feature_metadata "$feature_meta" \\
+        --outdir "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

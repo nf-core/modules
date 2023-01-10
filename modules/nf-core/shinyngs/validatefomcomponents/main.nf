@@ -27,11 +27,11 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     """
     validate_fom_components.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrasts_file $contrasts \\
-        --output_directory $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrasts_file "$contrasts" \\
+        --output_directory "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

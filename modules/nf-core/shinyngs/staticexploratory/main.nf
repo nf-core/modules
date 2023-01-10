@@ -34,11 +34,11 @@ process SHINYNGS_STATICEXPLORATORY {
     def prefix = task.ext.prefix ?: meta.id
     """
     exploratory_plots.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrast_variable ${meta.id} \\
-        --outdir $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrast_variable "${meta.id}" \\
+        --outdir "$prefix" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
